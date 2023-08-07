@@ -113,7 +113,7 @@ Symbol::Symbol(Symbol* pSymbol)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vUpdate(pSymbol);
+  vUpdate(pSymbol,false);
 
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);

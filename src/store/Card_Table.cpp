@@ -50,7 +50,7 @@ Card_Table::Card_Table(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vSymbol(Symbol(szTableNm,SF_OTHER));
+  vUpdateSymbol(Symbol(szTableNm, SF_OTHER));
 
   _checkInitialised_(CN_CARD);
 
@@ -577,7 +577,7 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
 //  if (pTable->bIsReplicated())
 //    xSymbol_actual.vSet_Tbl_Syn_rep();
 
-  this->pSymbol()->vUpdate(&xSymbol_actual);
+  this->pSymbol()->vUpdate(&xSymbol_actual,false);
   this->vMark1(MARK_CHANGED);
 
   if (pTable->bIsReplicated())

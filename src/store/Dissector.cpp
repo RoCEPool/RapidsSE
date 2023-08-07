@@ -164,7 +164,7 @@ void Dissector::vStage(i8 i_StageSpec)
       m_pBoard->pDeck()->vAppend(p_paramList);
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
-      p_param->vSymbol(Symbol(pParamsSpec->pGet(0)->szParamNm(),SF_OTHER));
+      p_param->vUpdateSymbol(Symbol(pParamsSpec->pGet(0)->szParamNm(), SF_OTHER));
       p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppend(p_param);
     }
@@ -321,7 +321,7 @@ Card* Dissector::pOp_Call(void)
   StrLib::vStrip(szSubPipeNm->azChar(),' ');
 
   Card_Call* pCard_Call = new Card_Call;
-  pCard_Call->vSymbol(Symbol(szSubPipeNm,SF_OTHER));
+  pCard_Call->vUpdateSymbol(Symbol(szSubPipeNm, SF_OTHER));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -508,7 +508,7 @@ Card* Dissector::pOp_Hash(void)
 
   Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
 
-  p_hshCol->pSymbol()->vUpdate(p_term2->pSymbol());
+  p_hshCol->pSymbol()->vUpdate(p_term2->pSymbol(),false);
   eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol());
   p_hshCol->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
 
@@ -572,7 +572,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vSymbol(Symbol(pIndex->szIndexNm(),SF_OTHER));
+  p_indexNm->vUpdateSymbol(Symbol(pIndex->szIndexNm(), SF_OTHER));
 
   p_indexList->vAppend(p_index);
 
@@ -590,7 +590,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
   if (p_term_first->bSameSymbol("LEFT_OUTER"_Stz)) {
     Card_OuterJoin* pCard_OuterJoin = new Card_OuterJoin;
-    pCard_OuterJoin->pSymbol()->vUpdate(p_term_first->pSymbol());
+    pCard_OuterJoin->pSymbol()->vUpdate(p_term_first->pSymbol(),false);
     pCard_IndexJoin->vAppend(pCard_OuterJoin);
   }
   pCard_Bound->vDeleteChild(p_term_first);
@@ -602,7 +602,7 @@ Card* Dissector::pOp_IndexJoin(void)
   i8 nTerms = pCard_Bound->nChildCards();
 
   Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
-  pCard_Bound->pSymbol()->vUpdate(p_term_last->pSymbol());
+  pCard_Bound->pSymbol()->vUpdate(p_term_last->pSymbol(),false);
   pCard_Bound->vDeleteChild(p_term_last);
 
   pCard_Bounds->vAppend(pCard_Bound);
@@ -675,7 +675,7 @@ Card* Dissector::pOp_IndexScan(void)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vSymbol(Symbol(szIndexNm,SF_OTHER));
+  p_indexNm->vUpdateSymbol(Symbol(szIndexNm, SF_OTHER));
 
   p_indexList->vAppend(p_index);
 
@@ -1175,7 +1175,7 @@ Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm, Table* pTable)
   Card_Index* p_index = new Card_Index;
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->vSymbol(Symbol(pIndex->szIndexNm(),SF_OTHER));
+  p_indexNm->vUpdateSymbol(Symbol(pIndex->szIndexNm(), SF_OTHER));
 
   p_index->vAppend(p_indexNm);
   p_indexList->vAppend(p_index);
@@ -1279,7 +1279,7 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
 
   // use last term to set bound symbol
   Card_Term* p_term_last = pCard_Bound->pGetTerm_last();
-  pCard_Bound->pSymbol()->vUpdate(p_term_last->pSymbol());
+  pCard_Bound->pSymbol()->vUpdate(p_term_last->pSymbol(),false);
 
   // cross-check validity of bound symbol
   RASSERT(Card_Bound::bValidBoundForRelnOp(p_term_bound->pSymbol(),
@@ -1347,11 +1347,11 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
 
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn(SF_KEY_COL,ri_Expr);
-    pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn);
+    pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn,false);
   }
   else {
     Symbol xSymbol_stmColOdn(SF_COL_NO,ri_Expr);
-    pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn);
+    pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn,false);
   }
 
   Stz* szP_Type = this->szPopType_char(pCard_RpnTerms);

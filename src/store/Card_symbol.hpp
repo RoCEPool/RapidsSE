@@ -14,9 +14,9 @@ namespace STORE
     
   public:
     Card_symbol(eCK eCard);
-    Card_symbol(eCK eCard, Stz* szSymbol, eSF eSymbol);
 
     ~Card_symbol(void) noexcept(false);
+
     CARD* SYM(Symbol xSymbol);
     CARD* SYM(Symbol* pSymbol);
     CARD* SYMPPY(Symbol* pSymbol);
@@ -38,21 +38,7 @@ Card_symbol<CARD>::Card_symbol(eCK eCard)
     : Card(eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
 }
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-template <class CARD>
-Card_symbol<CARD>::Card_symbol(eCK eCard, Stz* szSymbol, eSF eSymbol)
-    : Card(eCard, szSymbol, eSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -61,7 +47,6 @@ template <class CARD>
 Card_symbol<CARD>::~Card_symbol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +61,7 @@ CARD* Card_symbol<CARD>::SYM(Symbol xSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vSymbol(&xSymbol);
+  vUpdateSymbol(&xSymbol);
 
   return (CARD*)this;
 }
@@ -89,7 +74,7 @@ CARD* Card_symbol<CARD>::SYM(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vSymbol(pSymbol);
+  vUpdateSymbol(pSymbol);
 
   return (CARD*)this;
 }
@@ -102,7 +87,7 @@ CARD* Card_symbol<CARD>::SYMPPY(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vSymbol(pSymbol);
+  vUpdateSymbol(pSymbol);
   m_xSymbol.vUpdate(pSymbol,true);
 
   return (CARD*)this;

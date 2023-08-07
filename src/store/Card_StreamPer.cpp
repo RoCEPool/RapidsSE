@@ -233,7 +233,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       p_streamHead->vAppend((new Card_TableNm) ->SYM(SF_OTHER,p_table_ith->pSub_tableNm()->szSymbol()));
 
       if (p_table_ith->pSub_keyExists() || p_table_ith->pSub_keyNotExists()) {
-        p_streamHead->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
+        p_streamHead->vAppend((new Card_Note) ->SYM(SF_OTHER,"**CAN'T BE FIRST**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         i_InvalidAtJoin = i_Elm;
         break;
@@ -241,7 +241,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
       if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
         if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
-          p_streamHead->vAppend(new Card_Note("**BAD POS**"_Stz));
+          p_streamHead->vAppend((new Card_Note) ->SYM(SF_OTHER,"**BAD POS**"_Stz));
           pSymbol()->Y_vSet(P_Invalid);
           i_InvalidAtJoin = i_Elm;
           break;
@@ -263,7 +263,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
     if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
       if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
-        p_streamJoin->vAppend(new Card_Note("**BAD POS**"_Stz));
+        p_streamJoin->vAppend((new Card_Note) ->SYM(SF_OTHER,"**BAD POS**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         i_InvalidAtJoin = i_Elm;
         break;
@@ -297,7 +297,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       continue;
 
     // join of ith table is not possible at this point
-    p_streamJoin->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+    p_streamJoin->vAppend((new Card_Note) ->SYM(SF_OTHER,"**DOESN'T FOLLOW**"_Stz));
     pSymbol()->Y_vSet(P_Invalid);
 
     i_InvalidAtJoin = i_Elm;
@@ -388,7 +388,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
       vAppend(p_joinLocus);
 
       if (i_NotValid == i_Item) {
-        p_joinLocus->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+        p_joinLocus->vAppend((new Card_Note) ->SYM(SF_OTHER,"**DOESN'T FOLLOW**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         break;
       }

@@ -358,15 +358,15 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     pCI->vPrintBoard(__LINE__);
 
-    vSymbol(Symbol("=="_Stz,SF_OTHER));
+    vUpdateSymbol(Symbol("=="_Stz, SF_OTHER));
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szSymbol())); //temp
 
     Symbol x_Symbol_stmCol1;
     if (p_term) {
-      x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
-      p_term_one->pSymbol()->vUpdate(&x_Symbol_stmCol1);
+      x_Symbol_stmCol1.vUpdate(p_term->pSymbol(),false);
+      p_term_one->pSymbol()->vUpdate(&x_Symbol_stmCol1,false);
     }
     else {
       //x_Symbol_stmCol1.vSet_Col_No(1);
@@ -384,7 +384,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bSameSymbol("in"_Stz)) {
 
-    vSymbol(Symbol("=="_Stz,SF_OTHER));
+    vUpdateSymbol(Symbol("=="_Stz, SF_OTHER));
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
@@ -395,12 +395,12 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     if (p_term) {
       Symbol x_Symbol_stmCol1;
-      x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
-      p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
+      x_Symbol_stmCol1.vUpdate(p_term->pSymbol(),false);
+      p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1,false);
     }
     else {
       Symbol x_Symbol_stmCol1(SF_COL_NO, 1);
-      p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
+      p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1,false);
     }
 
     Card_Expr* p_expr_found =
@@ -415,7 +415,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bSameSymbol("notIn"_Stz)) {
 
-    vSymbol(Symbol("=="_Stz,SF_OTHER));
+    vUpdateSymbol(Symbol("=="_Stz, SF_OTHER));
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
@@ -426,8 +426,8 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     Symbol x_Symbol_stmCol1(SF_COL_NO,1);
     if (p_term)
-      x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
-    p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
+      x_Symbol_stmCol1.vUpdate(p_term->pSymbol(),false);
+    p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1,false);
     return;
   }
 
