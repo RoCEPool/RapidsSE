@@ -1234,7 +1234,7 @@ void Card::vSymbol(Symbol* pSymbol_arg)
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.vUpdate(pSymbol_arg,false);
+  m_xSymbol.vSym(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
