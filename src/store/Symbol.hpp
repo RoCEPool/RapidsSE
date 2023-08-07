@@ -180,6 +180,7 @@ namespace STORE
     void vSet_Idx_Col(i8 iIdxColOdn);
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Number(i8 iNumber);
+    void vSet_Other(Stz* szOther);
     void vSet_Prm_Col(i8 iOrdinal);
     void vSet_Sqy_No(i8 iSqNo);
     void vSet_Stg_No(i8 iStageNo);

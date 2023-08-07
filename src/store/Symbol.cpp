@@ -1418,6 +1418,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 
     case SF_AS_NM:  vSet_As_Nm(szStz);  break;
     case SF_COL_NM: vSet_Col_Nm(szStz); break;
+    case SF_OTHER:  vSet_Other(szStz); break;
 
     default: NEVER_REACH;
   }
@@ -1982,6 +1983,20 @@ void Symbol::vSet_Number(i8 iNumber)
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsNumber());
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Other(Stz* szOther)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! m_bSet);
+  m_bSet = true;
+
+  m_sSymbol = szOther;
+  m_eSymbol = SF_OTHER;
 }
 
 
