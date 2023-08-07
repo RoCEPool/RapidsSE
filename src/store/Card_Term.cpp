@@ -101,7 +101,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 
   i8 iStmColOdn = pSymbol()->iExtractOrdinal();
 
-  this->pSymbol()->vSet_Col_No(iStmColOdn + nBy);
+  this->pSymbol()->vInit_Col_No(iStmColOdn + nBy);
 
   if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);

@@ -1352,7 +1352,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   }
   else {
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSet_Col_No(ri_Expr);
+    xSymbol_stmColOdn.vInit_Col_No(ri_Expr);
     pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn);
   }
 

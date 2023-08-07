@@ -191,6 +191,24 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given stream-column                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vInit_Col_No(i8 iStmColOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("$%lld"_Stz, iStmColOdn);
+  m_eSymbol = SF_COL_TC;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsStreamOrdinal());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given index-column                                      */
 /*----------------------------------------------------------------------------*/
 void Symbol::vInit_Idx_Col(i8 iIdxColOdn)
