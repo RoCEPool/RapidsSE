@@ -37,24 +37,6 @@ Card::Card(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
-    : Object(CN_CARD)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vInit(eCard);
-
-  m_xSymbol.vUpdate(pSymbol,false);
-
-  if (bCopyProperties)
-    m_xSymbol.Y_vAll(pSymbol);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 void Card::vInit(eCK eCard)

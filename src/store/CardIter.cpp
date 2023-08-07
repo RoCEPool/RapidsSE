@@ -166,7 +166,9 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  Card* pChild = new Card(eChild,pSymbol,true);
+  Card* pChild = new Card(eChild);
+
+  pChild->pSymbol()->vSymPpy(pSymbol);
 
   pParent->vAppend(pChild);
   G_vMember(eChild, pChild, __func__);
