@@ -414,8 +414,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate expressions for null check
         if (pOpSketch->m_pNullStack->nValues()) {
-          vGenerateExprCode(pOpSketch->m_pNullStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
+          //vGenerateExprCode(pOpSketch->m_pNullStack, "  "_Stz);
+          //vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
