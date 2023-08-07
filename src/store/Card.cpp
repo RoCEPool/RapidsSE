@@ -434,7 +434,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->pSymbol()->vUpdate(pSymbol(),true);
+  pCard_dup->pSymbol()->vSymPpy(pSymbol());
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
