@@ -94,7 +94,7 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
   IndexDef* pIndexDef = pIndex->pIndexDef();
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->vUpdateSymbol(Symbol(pIndex->szIndexNm(), SF_OTHER));
+  p_indexNm->vUpdateSymbol(Symbol(SF_OTHER,pIndex->szIndexNm()));
   p_index->vAppend(p_indexNm);
 
   if (pIndexDef->bIsUnique()) {

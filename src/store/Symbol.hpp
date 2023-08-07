@@ -28,9 +28,7 @@ namespace STORE
     Symbol(void);
 
     Symbol(eSF eSymbol, i8 iInt);
-
-    Symbol(Stz* szSymbol, eSF eSymbol);
-    Symbol(eSF eSymbol, Stz* szSymbol);
+    Symbol(eSF eSymbol, Stz* szStz);
     Symbol(Symbol* pSymbol);
 
 

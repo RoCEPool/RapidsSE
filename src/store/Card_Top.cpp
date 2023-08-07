@@ -23,7 +23,7 @@ Card_Top::Card_Top(Stz* szRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vUpdateSymbol(Symbol(szRows, SF_OTHER));
+  vUpdateSymbol(Symbol(SF_OTHER,szRows));
 
   _checkInitialised_(CN_CARD);
   
