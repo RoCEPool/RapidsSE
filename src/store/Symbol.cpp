@@ -191,6 +191,43 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given number                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vInit_Prm_Col(i8 iOrdinal)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("%%%lld"_Stz, iOrdinal);
+  m_eSymbol = SF_PRM_COL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsNumber());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given subquery-number                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vInit_Sqy_No(i8 iSqyNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("__sq%02lld"_Stz, iSqyNo);
+  m_eSymbol = SF_SQY_NO;
+
+#ifdef X_SET_CROSS_CHECK
+  //RASSERT(bIsSubQueryColumn());
+#endif
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vInit_Tbl_Syn(char cTblSyn)
@@ -1620,6 +1657,9 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
     case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
     case SF_COL_NO:    vSet_Col_No(iInt);    break;
+    case SF_NUMBER:    vSet_Number(iInt);    break;
+    case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
+    case SF_STG_NO:    vSet_Stg_No(iInt);    break;
     case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
 
     default: NEVER_REACH;

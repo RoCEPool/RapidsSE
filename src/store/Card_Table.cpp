@@ -197,15 +197,15 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
     pCI->G.p_tableSize = new Card_TableSize;
-    pCI->G.p_tableSize->pSymbol()->vSet_Number(jTableSize);
+    pCI->G.p_tableSize->SYM(SF_NUMBER,jTableSize);
     pCI->G.p_table->vAppend(pCI->G.p_tableSize);
 
     pCI->G.p_rowSize = new Card_RowSize;
-    pCI->G.p_rowSize->pSymbol()->vSet_Number(jRowSize);
+    pCI->G.p_rowSize->SYM(SF_NUMBER,jRowSize);
     pCI->G.p_table->vAppend(pCI->G.p_rowSize);
 
     pCI->G.p_rowCount = new Card_RowCount;
-    pCI->G.p_rowCount->pSymbol()->vSet_Number(nRowCount);
+    pCI->G.p_rowCount->SYM(SF_NUMBER,nRowCount);
     pCI->G.p_table->vAppend(pCI->G.p_rowCount);
 
   }

@@ -148,7 +148,7 @@ void Dissector::vStage(i8 i_StageSpec)
     
 
   Card_Stage* pCard_Stage = new Card_Stage;
-  pCard_Stage->pSymbol()->vSet_Stg_No(i_StageSpec);
+  pCard_Stage->SYM(SF_STG_NO,i_StageSpec);
 
   Card_Topology* pCard_StageTopo = new Card_Topology(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
@@ -1105,7 +1105,7 @@ Card* Dissector::pOp_Top(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Count* pCard_Count = new Card_Count;
-  pCard_Count->pSymbol()->vSet_Number(iCount);
+  pCard_Count->SYM(SF_NUMBER,iCount);
   pCard_Top->vAppend(pCard_Count);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

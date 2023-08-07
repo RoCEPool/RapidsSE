@@ -125,7 +125,7 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   // todo: the %1 needs to be decoded... its a parameter
   Card* p_parent;
   Symbol xPrmOrd;
-  xPrmOrd.vSet_Prm_Col(1);
+  xPrmOrd.vInit_Prm_Col(1);
   Card_Term* p_term_sqyarg = _pCard_Term(p_table_exists->pFindSymbolRecursive(CK_TERM,&xPrmOrd,p_parent));
 
   Card_Expr* p_expr_found =
@@ -141,7 +141,7 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   //Card_Term::bReplaceValueOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
   Symbol xSymbol_prmOdn;
-  xSymbol_prmOdn.vSet_Prm_Col(1);
+  xSymbol_prmOdn.vInit_Prm_Col(1);
   p_table_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmOdn, p_term_sqarg->pSymbol());
 
   delete p_term_sqarg;
