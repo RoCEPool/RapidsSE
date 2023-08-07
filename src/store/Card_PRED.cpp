@@ -406,12 +406,15 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->bSameSymbol("#1"_Stz)); //temp
 
-    Symbol x_Symbol_stmCol1;
-    if (p_term)
+    if (p_term) {
+      Symbol x_Symbol_stmCol1;
       x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
-    else
-      x_Symbol_stmCol1.vInit(SF_COL_NO,1);
-    p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
+      p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
+    }
+    else {
+      Symbol x_Symbol_stmCol1(SF_COL_NO, 1);
+      p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
+    }
 
     Card_Expr* p_expr_found =
         pCI->Prior.m_pProjection->pGetExpr(0);
@@ -434,12 +437,9 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->bSameSymbol("#1"_Stz)); //temp
 
-    Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vInit(SF_COL_NO,1);
+    Symbol x_Symbol_stmCol1(SF_COL_NO,1);
     if (p_term)
       x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
-    else
-      x_Symbol_stmCol1.vInit(SF_COL_NO,1);
     p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
     return;
   }

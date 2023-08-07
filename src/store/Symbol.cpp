@@ -50,7 +50,16 @@ Symbol::Symbol(eSF eSymbol, i8 iInt)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vInit(eSymbol,iInt);
+  switch (eSymbol) {
+
+    case SF_COL_NO  : vSet_Col_No(iInt);   break;
+    case SF_IDX_COL : vSet_Idx_Col(iInt);  break;
+    case SF_KEY_COL : vSet_Key_Col(iInt);  break;
+    case SF_PRM_COL : vSet_Prm_Col(iInt);  break;
+    case SF_SQY_NO  : vSet_Sqy_No(iInt);   break;
+
+    default: NEVER_REACH;
+  }
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -207,26 +216,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
   return SF_OTHER;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given stream-column                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vInit(eSF eSymbol, i8 iInt)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eSymbol) {
-
-    case SF_COL_NO  : vSet_Col_No(iInt);   break;
-    case SF_IDX_COL : vSet_Idx_Col(iInt);  break;
-    case SF_KEY_COL : vSet_Key_Col(iInt);  break;
-    case SF_PRM_COL : vSet_Prm_Col(iInt);  break;
-    case SF_SQY_NO  : vSet_Sqy_No(iInt);   break;
-
-    default: NEVER_REACH;
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1301,276 +1290,6 @@ bool Symbol::bSame(Symbol* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_As_Nm(Stz* szAsNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  m_sSymbol = szAsNm;
-  m_eSymbol = SF_AS_NM;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsColNm());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Nm(Stz* szColNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(! m_bSet);
-  m_bSet = true;
-
-  m_sSymbol = szColNm;
-  m_eSymbol = SF_COL_NM;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given cross-reference no                                */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Xrf_No(i8 iCrossRef)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("#%lld"_Stz, iCrossRef);
-  m_eSymbol = SF_XRF_NO;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsCrossRef());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given disambiguated-column-name                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
-  m_eSymbol = SF_COL_NM_dis;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsDisambiguatedColNm());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given index-column                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("$I%lld"_Stz, iIdxColOdn);
-  m_eSymbol = SF_IDX_COL;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsIndexColumn());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given key-column                                        */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Key_Col(i8 iKeyOdn)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("$K%lld"_Stz, iKeyOdn);
-  m_eSymbol = SF_KEY_COL;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsKeyOrdinal());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given number                                             */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Number(i8 iNumber)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  m_sSymbol = iNumber;
-  m_eSymbol = SF_NUMBER;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsNumber());
-#endif
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given number                                             */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Prm_Col(i8 iOrdinal)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("%%%lld"_Stz, iOrdinal);
-  m_eSymbol = SF_PRM_COL;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsNumber());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Stg_No(i8 iStageNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("S%02lld"_Stz, iStageNo);
-  m_eSymbol = SF_OTHER;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given stream-column                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_No(i8 iStmColOdn)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("$%lld"_Stz, iStmColOdn);
-  m_eSymbol = SF_COL_TC;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsStreamOrdinal());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given subquery-number                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Sqy_No(i8 iSqNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("__sq%02lld"_Stz, iSqNo);
-  m_eSymbol = SF_SQY_NO;
-
-#ifdef X_SET_CROSS_CHECK
-  //RASSERT(bIsSubQueryColumn());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given synthetic-as                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_As_Nm_syn(i8 iAsNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("COL%lld"_Stz, iAsNo);
-  m_eSymbol = SF_AS_NM_syn;
-
-  Y_vSet(P_Synthetic);
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsSyntheticAs());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given table-synonym                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Tbl_Syn(char cTblSyn)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("%c"_Stz, cTblSyn);
-  m_eSymbol = SF_TBL_SYN;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsTableSyn());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given table-synonym                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Tbl_Syn_rep(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  char cTableSyn_actual = cSF_synonym();
-  cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
-
-  vSprint("%c"_Stz, cTableSyn_actual);
-  m_eSymbol = SF_TBL_SYN;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsTableSyn());
-#endif
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given table-column                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-  m_eSymbol = SF_COL_TC;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsColumnOrdinal());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* get symbol int                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iSF_number(void)
@@ -2141,6 +1860,276 @@ void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_As_Nm(Stz* szAsNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szAsNm;
+  m_eSymbol = SF_AS_NM;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsColNm());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Nm(Stz* szColNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! m_bSet);
+  m_bSet = true;
+
+  m_sSymbol = szColNm;
+  m_eSymbol = SF_COL_NM;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given cross-reference no                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Xrf_No(i8 iCrossRef)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("#%lld"_Stz, iCrossRef);
+  m_eSymbol = SF_XRF_NO;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsCrossRef());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given disambiguated-column-name                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
+  m_eSymbol = SF_COL_NM_dis;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsDisambiguatedColNm());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given index-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("$I%lld"_Stz, iIdxColOdn);
+  m_eSymbol = SF_IDX_COL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsIndexColumn());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given key-column                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Key_Col(i8 iKeyOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("$K%lld"_Stz, iKeyOdn);
+  m_eSymbol = SF_KEY_COL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsKeyOrdinal());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given number                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Number(i8 iNumber)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = iNumber;
+  m_eSymbol = SF_NUMBER;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsNumber());
+#endif
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given number                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Prm_Col(i8 iOrdinal)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("%%%lld"_Stz, iOrdinal);
+  m_eSymbol = SF_PRM_COL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsNumber());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Stg_No(i8 iStageNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("S%02lld"_Stz, iStageNo);
+  m_eSymbol = SF_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given stream-column                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_No(i8 iStmColOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("$%lld"_Stz, iStmColOdn);
+  m_eSymbol = SF_COL_TC;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsStreamOrdinal());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given subquery-number                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Sqy_No(i8 iSqNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("__sq%02lld"_Stz, iSqNo);
+  m_eSymbol = SF_SQY_NO;
+
+#ifdef X_SET_CROSS_CHECK
+  //RASSERT(bIsSubQueryColumn());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given synthetic-as                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_As_Nm_syn(i8 iAsNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("COL%lld"_Stz, iAsNo);
+  m_eSymbol = SF_AS_NM_syn;
+
+  Y_vSet(P_Synthetic);
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsSyntheticAs());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-synonym                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Tbl_Syn(char cTblSyn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("%c"_Stz, cTblSyn);
+  m_eSymbol = SF_TBL_SYN;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsTableSyn());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-synonym                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Tbl_Syn_rep(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  char cTableSyn_actual = cSF_synonym();
+  cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+
+  vSprint("%c"_Stz, cTableSyn_actual);
+  m_eSymbol = SF_TBL_SYN;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsTableSyn());
+#endif
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+  m_eSymbol = SF_COL_TC;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsColumnOrdinal());
+#endif
+}
 
 /*----------------------------------------------------------------------------*/
 /* sprint symbol                                                              */

@@ -90,10 +90,6 @@ namespace STORE
 
     void vIncTblSyn(void);
 
-  public:
-    void vInit(eSF eSymbol, i8 iInt);
-
-  public:
     void vInit_Tbl_Syn(char cTblSyn);
 
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
@@ -130,27 +126,6 @@ namespace STORE
     bool bSame(char cArg);
     bool bSame(Stz* szArg);
     bool bSame(Symbol* pArg);
-
-  private:
-    void vSet_As_Nm(Stz* szAsNm);
-    void vSet_As_Nm_syn(i8 iAsNo);
-    void vSet_Col_Nm(Stz* szColNm);
-    void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
-
-  public:
-
-  private:
-    void vSet_Col_No(i8 iStmColOdn);
-    void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
-    void vSet_Idx_Col(i8 iIdxColOdn);
-    void vSet_Key_Col(i8 iKeyOdn);
-    void vSet_Number(i8 iNumber);
-    void vSet_Prm_Col(i8 iOrdinal);
-    void vSet_Sqy_No(i8 iSqNo);
-    void vSet_Stg_No(i8 iStageNo);
-    void vSet_Tbl_Syn(char cTblSyn);
-    void vSet_Tbl_Syn_rep(void);
-    void vSet_Xrf_No(i8 iCrossRef);
 
   public:
     i8   iSF_number(void);
@@ -196,6 +171,22 @@ namespace STORE
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
   private:
+    void vSet_As_Nm(Stz* szAsNm);
+    void vSet_As_Nm_syn(i8 iAsNo);
+    void vSet_Col_Nm(Stz* szColNm);
+    void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
+    void vSet_Col_No(i8 iStmColOdn);
+    void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
+    void vSet_Idx_Col(i8 iIdxColOdn);
+    void vSet_Key_Col(i8 iKeyOdn);
+    void vSet_Number(i8 iNumber);
+    void vSet_Prm_Col(i8 iOrdinal);
+    void vSet_Sqy_No(i8 iSqNo);
+    void vSet_Stg_No(i8 iStageNo);
+    void vSet_Tbl_Syn(char cTblSyn);
+    void vSet_Tbl_Syn_rep(void);
+    void vSet_Xrf_No(i8 iCrossRef);
+
     void vSprint(Stz* szFormat, ...);
 
   protected:

@@ -76,8 +76,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
   p_expr_new->vAppend(p_rpnCalc_new);
 
-  Symbol xSymbol_keyOdn;
-  xSymbol_keyOdn.vInit(SF_KEY_COL,1);
+  Symbol xSymbol_keyOdn(SF_KEY_COL,1);
 
   Card_Term* p_term_new = p_expr_fold->pSub_term()->pClone(&xSymbol_keyOdn);
   p_rpnCalc_new->pSymbol()->Y_vSet(P_Type, p_expr_fold->szP_Type());

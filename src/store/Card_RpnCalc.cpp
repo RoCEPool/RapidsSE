@@ -425,8 +425,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
   Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
   p_rpnCalc_reduced->vColType(this);
 
-  Symbol xExprNo;
-  xExprNo.vInit(SF_COL_NO,i_Expr + 1);
+  Symbol xExprNo(SF_COL_NO,i_Expr + 1);
 
   Card_Term* p_term = new Card_Term(&xExprNo);
   p_term->vColType(this);

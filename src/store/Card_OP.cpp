@@ -266,8 +266,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     i8 nExpr_prior = pCI->G.p_projection->nChildCards();
     i8 i_Col = p_term->iGetOdn();
 
-    Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vInit(SF_COL_NO,nExpr_prior + i_Col);
+    Symbol xSymbol_stmColOdn(SF_COL_NO,nExpr_prior + i_Col);
     p_term->pSymbol()->vUpdate(xSymbol_stmColOdn.szSF_symbol());
     p_term->vMark1(MARK_CHANGED);
 
@@ -777,8 +776,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr = new Card_Expr;
-    Symbol xSymbol;
-    xSymbol.vInit(SF_COL_NO,i_Expr++);
+    Symbol xSymbol(SF_COL_NO,i_Expr++);
     p_expr->pSymbol()->vUpdate(&xSymbol);
     p_projection->vAppend(p_expr);
 

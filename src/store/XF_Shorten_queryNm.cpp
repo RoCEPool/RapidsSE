@@ -67,8 +67,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
   s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
   if (Symbol::bIsSubQueryName(sBoardNm)) {
     i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
-    Symbol xSymbol_sqNo;
-    xSymbol_sqNo.vInit(SF_SQY_NO,iSqNo);
+    Symbol xSymbol_sqNo(SF_SQY_NO,iSqNo);
     m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo.szSF_symbol());
   }
 
@@ -82,8 +81,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
 
     i8 iSqNo = StrLib::iGleanInt(p_card->szSymbol()->azChar());
 
-    Symbol xSymbol_sqNo;
-    xSymbol_sqNo.vInit(SF_SQY_NO,iSqNo);
+    Symbol xSymbol_sqNo(SF_SQY_NO,iSqNo);
     p_card->pSymbol()->vUpdate(&xSymbol_sqNo);
 
     return C_CONTINUE_RECURSION;
