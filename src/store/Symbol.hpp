@@ -140,7 +140,6 @@ namespace STORE
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 
     void vUpdate(Stz* szSymbol);
-    void vUpdate(Symbol* pSymbol, bool bUpdateProperties);
 
     Stz* szWhatIs(void);
 

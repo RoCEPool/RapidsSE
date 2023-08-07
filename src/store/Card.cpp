@@ -421,7 +421,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->pSymbol()->vUpdate(pSymbol(),false);
+  pCard_dup->pSymbol()->vSym(pSymbol());
 
   return pCard_dup;
 }

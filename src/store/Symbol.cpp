@@ -1457,34 +1457,6 @@ void Symbol::vUpdate(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol using given symbol                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::vUpdate(Symbol* pSymbol, bool bUpdateProperties)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  m_sSymbol = pSymbol->m_sSymbol;
-  m_eSymbol = pSymbol->m_eSymbol;
-
-  if (! bUpdateProperties)
-    return;
-
-  if (pSymbol->m_pProperties) {
-    if (! m_pProperties)
-      m_pProperties = new TagSet;
-    m_pProperties->vCopy(pSymbol->m_pProperties);
-  }
-  else
-  if (m_pProperties) {
-    delete m_pProperties;
-    m_pProperties = nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* what is this symbol?                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szWhatIs(void)

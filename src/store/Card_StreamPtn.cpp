@@ -49,7 +49,7 @@ void Card_StreamPtn::vAddKey(Symbol* p_Y_tblCol)
 
   Card_StreamKey* p_streamKey = new Card_StreamKey;
 
-  p_streamKey->pSymbol()->vUpdate(p_Y_tblCol,false);
+  p_streamKey->pSymbol()->vSym(p_Y_tblCol);
 
   vAppend(p_streamKey);
 }
