@@ -114,7 +114,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   RASSERT(p_expr_gby->szP_Type());
 
   Symbol xSymbol_Kn;
-  xSymbol_Kn.vInit_Key_Col(p_expr_gby->i_Child() + 1);
+  xSymbol_Kn.vInit(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;

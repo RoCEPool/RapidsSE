@@ -73,7 +73,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szSymbol());
 
   Symbol xSymbol_idxColOdn;
-  xSymbol_idxColOdn.vInit_Idx_Col(1);
+  xSymbol_idxColOdn.vInit(SF_IDX_COL,1);
 
   if (pTerm_0->pSymbol()->bIsColumnOrdinal()) {
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cExtractTableSynonym();
