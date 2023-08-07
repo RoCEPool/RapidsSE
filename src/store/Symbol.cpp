@@ -1431,6 +1431,18 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
+void Symbol::vSym(Symbol* pSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = pSymbol->m_sSymbol;
+  m_eSymbol = pSymbol->m_eSymbol;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
 void Symbol::vSymPpy(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);

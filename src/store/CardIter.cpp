@@ -177,6 +177,22 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  Card* pChild = new Card(eChild);
+
+  pChild->pSymbol()->vSym(&xSymbol);
+
+  pParent->vAppend(pChild);
+  G_vMember(eChild, pChild, __func__);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szSymbol, eSF eSymbol)
 {
   _precondition_(_MAGIC_,_FOOTER_);
