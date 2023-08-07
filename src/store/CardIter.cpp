@@ -182,7 +182,9 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szSymbol, eSF e
   eSF eSymbol_eval = Symbol::eEvalSymbol(szSymbol);
   RASSERT(eSymbol_eval == eSymbol);
 
-  Card* pChild = new Card(eChild, szSymbol, eSymbol);
+  Card* pChild = new Card(eChild);
+
+  pChild->pSymbol()->vSym(eSymbol,szSymbol);
 
   pParent->vAppend(pChild);
   G_vMember(eChild, pChild, __func__);

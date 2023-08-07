@@ -253,7 +253,6 @@ namespace STORE
   
     Card(eCK eCard);
     Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties);
-    Card(eCK eCard, Stz* szSymbol, eSF eSymbol);
     void vInit(eCK eCard);
 
    ~Card(void) noexcept(false);

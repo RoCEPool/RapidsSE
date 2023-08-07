@@ -207,7 +207,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIsNumber(szSymbol))             return SF_NUMBER;
   if (bIsKeyOrdinal(szSymbol))         return SF_KEY_COL;
   if (bIsParameterOrdinal(szSymbol))   return SF_PRM_COL;
-  if (bIsStreamOrdinal(szSymbol))      return SF_COL_TC;
+  if (bIsStreamOrdinal(szSymbol))      return SF_COL_NO;
   if (bIsSubQueryCKey(szSymbol))       return SF_SQY_KEY;
   if (bIsSubQueryColumn(szSymbol))     return SF_SQY_NO;
   if (bIsSyntheticAs(szSymbol))        return SF_AS_NM_syn;
@@ -1416,10 +1416,12 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 
   switch (eSymbol) {
 
-    case SF_AS_NM:  vSet_As_Nm(szStz);  break;
-    case SF_COL_NM: vSet_Col_Nm(szStz); break;
-    case SF_DIRECT: vSet_Direct(szStz); break;
-    case SF_OTHER:  vSet_Other(szStz);  break;
+    case SF_AS_NM:   vSet_As_Nm(szStz);  break;
+    case SF_COL_NM:  vSet_Col_Nm(szStz); break;
+    case SF_COL_NO:  vSet_Col_No(szStz); break;
+    case SF_DIRECT:  vSet_Direct(szStz); break;
+    case SF_OTHER:   vSet_Other(szStz);  break;
+    case SF_SQY_KEY: vSet_Other(szStz);  break;
 
     default: NEVER_REACH;
   }
@@ -1893,6 +1895,20 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
 
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NM;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_No(Stz* szColNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! m_bSet);
+  m_bSet = true;
+
+  m_sSymbol = szColNm;
+  m_eSymbol = SF_COL_NO;
 }
 
 

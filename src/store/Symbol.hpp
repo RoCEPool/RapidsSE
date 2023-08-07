@@ -175,6 +175,7 @@ namespace STORE
     void vSet_As_Nm_syn(i8 iAsNo);
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
+    void vSet_Col_No(Stz* szStz);
     void vSet_Col_No(i8 iStmColOdn);
     void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
     void vSet_Direct(Stz* szColNm);

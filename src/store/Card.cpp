@@ -54,20 +54,6 @@ Card::Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szSymbol, eSF eSymbol)
-    : Object(CN_CARD)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vInit(eCard);
-
-  vUpdateSymbol(Symbol(szSymbol, eSymbol));
-}
-
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
