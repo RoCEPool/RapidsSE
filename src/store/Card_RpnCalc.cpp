@@ -42,7 +42,7 @@ Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Term* p_term = new Card_Term(pSymbol);
+  Card_Term* p_term = (new Card_Term) ->SYMPPY(pSymbol);
   vAppend(p_term);
 
   vColType(p_term);
@@ -425,9 +425,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
   Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
   p_rpnCalc_reduced->vColType(this);
 
-  Symbol xExprNo(SF_COL_NO,i_Expr + 1);
-
-  Card_Term* p_term = new Card_Term(&xExprNo);
+  Card_Term* p_term =(new Card_Term) -> SYM(SF_COL_NO,i_Expr + 1);
   p_term->vColType(this);
 
   p_rpnCalc_reduced->vAppend(p_term);
