@@ -441,10 +441,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
             vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
           }
 
-          break;
         }
 
-        if (pOpSketch->m_bLeftOuter) {
+        else if (pOpSketch->m_bLeftOuter) {
+
+          vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
           vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO0"_Stz, pOperatorFile);
           vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
@@ -473,29 +474,31 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
             vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
           }
 
-          break;
         }
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // position the index
-        vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
-        vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
-        vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // dereference the join
-        vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pOperatorFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // inflate the right table columns
-        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
-
-        if (pOpSketch->m_pConstraintStack->nValues()) {
-          vAppendCodeFragment(pOpSketch, "iIndexJoinConstraint"_Stz, pOperatorFile);
-        }
         else {
-          vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // position the index
+          vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
+          vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
+          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // dereference the join
+          vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pOperatorFile);
+
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // inflate the right table columns
+          vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+
+          if (pOpSketch->m_pConstraintStack->nValues()) {
+            vAppendCodeFragment(pOpSketch, "iIndexJoinConstraint"_Stz, pOperatorFile);
+          }
+          else {
+            vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
+          }
         }
+
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the indexJoin code fragments file
