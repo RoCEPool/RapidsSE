@@ -129,7 +129,7 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
     if (pSymbol_term0->bIsColumnOrdinal()) {
-      vUpdateSymbol(pSymbol_term0);
+      vSymbol(pSymbol_term0);
       vMark1(MARK_CHANGED);
     }
   }

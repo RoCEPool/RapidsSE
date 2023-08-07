@@ -342,7 +342,7 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
   _static_
 
   Card_Cast* p_next = new Card_Cast;
-  p_next->vUpdateSymbol(Symbol(SF_OTHER,szNextValue));
+  p_next->SYM(SF_OTHER,szNextValue);
   if (C_UNKNOWN == ri_main) {
     pCI->G.pDeck->vAppend(p_next);
     return;

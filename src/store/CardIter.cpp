@@ -1550,7 +1550,7 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vUpdateSymbol(Symbol(SF_OTHER,szValue));
+  G.p_NEW->vSymbol(SF_OTHER,szValue);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1218,19 +1218,17 @@ Stz* Card::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vUpdateSymbol(Symbol xSymbol_arg)
+void Card::vSymbol(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
-
-  m_xSymbol.vUpdate(&xSymbol_arg,false);
+  m_xSymbol.vSym(eSymbol,szStz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vUpdateSymbol(Symbol* pSymbol_arg)
+void Card::vSymbol(Symbol* pSymbol_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1238,7 +1236,6 @@ void Card::vUpdateSymbol(Symbol* pSymbol_arg)
 
   m_xSymbol.vUpdate(pSymbol_arg,false);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* find sub card with given symbol and replace                                */

@@ -2013,7 +2013,7 @@ void Symbol::vSet_Other(Stz* szOther)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(! m_bSet);
+  //RASSERT(! m_bSet);
   m_bSet = true;
 
   m_sSymbol = szOther;

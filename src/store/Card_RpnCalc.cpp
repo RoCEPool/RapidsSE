@@ -150,7 +150,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       if (p_term_next->bSameSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->vUpdateSymbol(Symbol(SF_OTHER,"notExists"_Stz));
+        p_term->SYM(SF_OTHER,"notExists"_Stz);
         continue;
       }
       continue;
@@ -163,7 +163,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       if (p_term_next->bSameSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->vUpdateSymbol(Symbol(SF_OTHER,"notIn"_Stz));
+        p_term->SYM(SF_OTHER,"notIn"_Stz);
         DELETE_CARD(p_term_next);
         continue;
       }
@@ -578,7 +578,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vUpdateSymbol(Symbol(SF_OTHER,p_term_next->szSymbol()));
+        p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
@@ -603,7 +603,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vUpdateSymbol(Symbol(SF_OTHER,p_term_next->szSymbol()));
+        p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsSubQueryOp())
         p_boolCalc->vAppend(p_cmpPred);
@@ -616,7 +616,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vUpdateSymbol(Symbol(SF_OTHER,p_term_next->szSymbol()));
+          p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_cmpPred);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -626,7 +626,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vUpdateSymbol(Symbol(SF_OTHER,"in"_Stz));
+          p_cmpPred->SYM(SF_OTHER,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -640,7 +640,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vUpdateSymbol(Symbol(SF_OTHER,"in"_Stz));
+          p_cmpPred->SYM(SF_OTHER,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsBoolFn())
           p_boolCalc->vAppend(p_cmpPred);
@@ -657,7 +657,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vUpdateSymbol(Symbol(SF_OTHER,p_term_next->szSymbol()));
+          p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -669,7 +669,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
       case TE_BOOLFN:
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vUpdateSymbol(Symbol(SF_OTHER,p_term_next->szSymbol()));
+        p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
         p_boolCalc->vAppend(p_cmpPred);

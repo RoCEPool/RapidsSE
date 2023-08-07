@@ -167,7 +167,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case XK_BROADCAST:
-      p_cast_prev->vUpdateSymbol(Symbol(SF_OTHER,"broadcast"_Stz));
+      p_cast_prev->SYM(SF_OTHER,"broadcast"_Stz);
 
       if (p_project_prev && ! p_combined_prev) {
         Card_Combined *p_combined = new Card_Combined;
@@ -178,7 +178,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case XK_HASHCAST:
-      p_cast_prev->vUpdateSymbol(Symbol(SF_OTHER,"hashcast"_Stz));
+      p_cast_prev->SYM(SF_OTHER,"hashcast"_Stz);
 
       pCI->G.p_expr = pCI->pExpr_For_col(p_term_tblCol_hash, pCI->G.i_MainCard);
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr,p_projection_prev);

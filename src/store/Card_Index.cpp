@@ -94,7 +94,7 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
   IndexDef* pIndexDef = pIndex->pIndexDef();
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->vUpdateSymbol(Symbol(SF_OTHER,pIndex->szIndexNm()));
+  p_indexNm->SYM(SF_OTHER,pIndex->szIndexNm());
   p_index->vAppend(p_indexNm);
 
   if (pIndexDef->bIsUnique()) {
@@ -110,12 +110,12 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     Card_IdxCol* p_idxCol = new Card_IdxCol;
-    p_idxCol->vUpdateSymbol(Symbol(SF_COL_NM, pColumn->szColNm()));
+    p_idxCol->SYM(SF_COL_NM, pColumn->szColNm());
 
     p_idxColList->vAppend(p_idxCol);
 
 //    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
-//    p_idxColNm->vUpdateSymbol(pColumn->szColNm());
+//    p_idxColNm->vSymbol(pColumn->szColNm());
 //    p_idxCol->vAppend(p_idxColNm);
   }
 
