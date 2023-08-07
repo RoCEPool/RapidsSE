@@ -46,7 +46,7 @@ Card::Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
 
   vInit(eCard);
 
-  m_xSymbol.vUpdate(pSymbol);
+  m_xSymbol.vUpdate(pSymbol,false);
 
   if (bCopyProperties)
     m_xSymbol.Y_vAll(pSymbol);
@@ -453,7 +453,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->pSymbol()->vUpdate(pSymbol());
+  pCard_dup->pSymbol()->vUpdate(pSymbol(),false);
 
   return pCard_dup;
 }
@@ -1256,7 +1256,7 @@ void Card::vSymbol(Symbol xSymbol_arg)
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.vUpdate(&xSymbol_arg);
+  m_xSymbol.vUpdate(&xSymbol_arg,false);
 }
 
 /*----------------------------------------------------------------------------*/

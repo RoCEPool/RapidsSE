@@ -252,7 +252,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card(eCK eCard);
-    Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties=true);
+    Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties);
     Card(eCK eCard, Stz* szSymbol, eSF eSymbol);
     void vInit(eCK eCard);
 
@@ -333,6 +333,7 @@ namespace STORE
     i8   iSymbol(void);
     Stz* szSymbol(void);
     void vSymbol(Symbol xSymbol_arg);
+    void vSymbol_ppy(Symbol* pSymbol_arg);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 

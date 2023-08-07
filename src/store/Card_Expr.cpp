@@ -568,7 +568,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   Symbol xExprNo(SF_COL_NO,i_Expr + 1);
 
   Card_Expr* p_expr_reduced = new Card_Expr;
-  p_expr_reduced->pSymbol()->vUpdate(&xExprNo);
+  p_expr_reduced->pSymbol()->vUpdate(&xExprNo,false);
   p_expr_reduced->vColType(this);
 
   if (Card_As* p_as = pSub_as())

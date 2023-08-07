@@ -577,7 +577,7 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
 //  if (pTable->bIsReplicated())
 //    xSymbol_actual.vSet_Tbl_Syn_rep();
 
-  this->pSymbol()->vUpdate(&xSymbol_actual);
+  this->pSymbol()->vUpdate(&xSymbol_actual,false);
   this->vMark1(MARK_CHANGED);
 
   if (pTable->bIsReplicated())

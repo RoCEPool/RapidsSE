@@ -82,7 +82,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
     i8 iSqNo = StrLib::iGleanInt(p_card->szSymbol()->azChar());
 
     Symbol xSymbol_sqNo(SF_SQY_NO,iSqNo);
-    p_card->pSymbol()->vUpdate(&xSymbol_sqNo);
+    p_card->pSymbol()->vUpdate(&xSymbol_sqNo,false);
 
     return C_CONTINUE_RECURSION;
   };

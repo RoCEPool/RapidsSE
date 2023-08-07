@@ -272,7 +272,7 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->pSymbol()->vUpdate(pDiffSymbol);
+  p_term_clone->pSymbol()->vUpdate(pDiffSymbol,false);
 
   return p_term_clone;
 }
@@ -413,7 +413,7 @@ void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
 
   Symbol* pSym = pSymbol();
   if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
-    pSym->vUpdate(p_expr->pSymbol());
+    pSym->vUpdate(p_expr->pSymbol(),false);
   }
 }
 
