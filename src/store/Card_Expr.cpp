@@ -57,7 +57,7 @@ Card_Expr::Card_Expr(Card_As*      p_as_arg,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_As  *    p_as      = new Card_As(p_as_arg);
+  Card_As  *    p_as      = (new Card_As) ->SYM(SF_AS_NM,p_as_arg->szSymbol());
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 

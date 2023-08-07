@@ -15,13 +15,9 @@ namespace STORE
 
     Card_As(void);
 
-    //Card_As(i8 iAsNo);
-    //Card_As(Stz* szAs);
-    Card_As(Card_As* p_as_arg);
    ~Card_As(void) noexcept(false);
 
     Card_As* pClone(void);
-    bool bIsSame(Card_As* p_as_arg);
   };
 
   Card_As* _pCard_As(void* aAddr);
