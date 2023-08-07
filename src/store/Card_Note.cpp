@@ -27,21 +27,6 @@ Card_Note::Card_Note(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Note::Card_Note(Stz* szComment)
-: Card_symbol(CK_NOTE,szComment, SF_OTHER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vSymbol(szComment);
-    
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Note::~Card_Note(void) noexcept(false)
