@@ -86,6 +86,24 @@ Symbol::Symbol(Stz* szSymbol, eSF eSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eSymbol, Stz* szSymbol)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szSymbol;
+  m_eSymbol = eSymbol;
+  m_pProperties = nullptr;
+  m_bSet = true;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Symbol::Symbol(Symbol* pSymbol)
     : Object(CN_SYMBOL)
 {
