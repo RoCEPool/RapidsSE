@@ -792,9 +792,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
     p_expr->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
 
-    Symbol xSymbol_tblCol;
-    xSymbol_tblCol.vSet_Col_Tc(cTblSyn, i_Col + 1);
-    Card_Term *p_term = (new Card_Term) -> SYM(xSymbol_tblCol);
+    Card_Term *p_term = (new Card_Term) -> SYM(SF_COL_TC,cTblSyn, i_Col + 1);
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

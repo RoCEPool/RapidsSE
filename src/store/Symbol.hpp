@@ -135,9 +135,8 @@ namespace STORE
   public:
     void vSet_Col_No(i8 iStmColOdn);
 
-    void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
-
   private:
+    void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
     void vSet_Idx_Col(i8 iIdxColOdn);
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Number(i8 iNumber);

@@ -1677,6 +1677,8 @@ void Symbol::vSym(eSF eSymbol, char cChr, i8 iInt)
 
   switch (eSymbol) {
 
+    case SF_COL_TC:    vSet_Col_Tc(cChr,iInt);    break;
+
     default: NEVER_REACH;
   }
 
