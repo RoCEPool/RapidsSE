@@ -834,7 +834,7 @@ bool SePrompt::bPromptFunction(eEC* eErrorCode)
 // rdtscp timer
 //  oTimer.vStart();
 //  (pPromptDesc->m_fPrompt)(this);
-//  oTimer.vUpdate();
+//  oTimer.vSym();
 //
 //  if (m_pInpTagSet->bHasName(C_TAG_TIME))
 //    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());

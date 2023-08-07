@@ -148,7 +148,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 //    if (Card_Expr* p_expr_col =
 //        pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
 //      //p_expr_col->vDump();
-//      p_term->pSymbol()->vUpdate(p_expr_col->pSymbol());
+//      p_term->pSymbol()->vSym(p_expr_col->pSymbol());
 //    }
 //    else
     if (Card_Expr* p_expr_col =
@@ -245,7 +245,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       if (Card_Expr* p_expr_col = pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
         // record what $c.n it was
         p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
-        p_term->pSymbol()->vUpdate(p_expr_col->szSymbol());
+        p_term->pSymbol()->vSym(p_expr_col->szSymbol());
         p_term->vMark1(MARK_CHANGED);
 
         return C_CONTINUE_RECURSION;
@@ -267,7 +267,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     i8 i_Col = p_term->iGetOdn();
 
     Symbol xSymbol_stmColOdn(SF_COL_NO,nExpr_prior + i_Col);
-    p_term->pSymbol()->vUpdate(xSymbol_stmColOdn.szSF_symbol());
+    p_term->pSymbol()->vSym(xSymbol_stmColOdn.szSF_symbol());
     p_term->vMark1(MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;

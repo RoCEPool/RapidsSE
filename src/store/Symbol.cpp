@@ -1449,7 +1449,7 @@ bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
 /*----------------------------------------------------------------------------*/
 /* what is this symbol?                                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vUpdate(Stz* szSymbol)
+void Symbol::vSym(Stz* szSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

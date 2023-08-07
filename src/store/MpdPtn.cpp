@@ -228,7 +228,7 @@ bool MpdPtn::bValid(void)
 /*----------------------------------------------------------------------------*/
 /* set tLglPtn, iNodeId, iStreamId                                            */
 /*----------------------------------------------------------------------------*/
-//void MpdPtn::vUpdate(LglPtn tLglPtn, i8 iNodeId, i8 iStreamNo)
+//void MpdPtn::vSym(LglPtn tLglPtn, i8 iNodeId, i8 iStreamNo)
 //{
 //  vLglPtn(tLglPtn);
 //  vNodeId(iNodeId);

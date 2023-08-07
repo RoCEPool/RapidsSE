@@ -134,12 +134,11 @@ namespace STORE
     void vSym(eSF eSymbol, i8 iInt);
     void vSym(eSF eSymbol, i8 iInt, Symbol* pSymbol);
     void vSym(eSF eSymbol, Stz* szStz);
+    void vSym(Stz* szSymbol);
     void vSym(Symbol* pSymbol);
     void vSymPpy(Symbol* pSymbol);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
-
-    void vUpdate(Stz* szSymbol);
 
     Stz* szWhatIs(void);
 
