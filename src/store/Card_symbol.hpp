@@ -88,7 +88,7 @@ CARD* Card_symbol<CARD>::SYMPPY(Symbol* pSymbol)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vSymbol(pSymbol);
-  m_xSymbol.vUpdate(pSymbol,true);
+  m_xSymbol.vSymPpy(pSymbol);
 
   return (CARD*)this;
 }

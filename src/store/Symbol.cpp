@@ -1491,7 +1491,7 @@ Stz* Symbol::szWhatIs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Agg_Fn())            return "AggOp"_Stz;
+  if (bIs_Agg_Fn())          return "AggOp"_Stz;
   if (bIsBoolFn())           return "BoolFn"_Stz;
   if (bIsBound())            return "Bound"_Stz;
   if (bIsColumnOrdinal())    return "ColumnOrdinal"_Stz;

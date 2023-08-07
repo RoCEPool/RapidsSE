@@ -1253,7 +1253,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
     if (! pCard->bSameSymbol(pSymbol))
       return C_CONTINUE_RECURSION;
 
-    pCard->m_xSymbol.vUpdate(pWith,true);
+    pCard->m_xSymbol.vSymPpy(pWith);
 
     bReplaced = true;
 
