@@ -16,12 +16,10 @@ __vDeleteFunction(Card_Direction,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Direction::Card_Direction(Stz* szDirn)
-: Card_symbol(CK_DIRECTION,szDirn, SF_DIRECT)
+Card_Direction::Card_Direction(void)
+: Card_symbol(CK_DIRECTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vSymbol(szDirn);
 
   _checkInitialised_(CN_CARD);
   

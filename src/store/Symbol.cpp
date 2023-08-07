@@ -1418,7 +1418,8 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 
     case SF_AS_NM:  vSet_As_Nm(szStz);  break;
     case SF_COL_NM: vSet_Col_Nm(szStz); break;
-    case SF_OTHER:  vSet_Other(szStz); break;
+    case SF_DIRECT: vSet_Direct(szStz); break;
+    case SF_OTHER:  vSet_Other(szStz);  break;
 
     default: NEVER_REACH;
   }
@@ -1929,6 +1930,20 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsDisambiguatedColNm());
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Direct(Stz* szDirect)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! m_bSet);
+  m_bSet = true;
+
+  m_sSymbol = szDirect;
+  m_eSymbol = SF_DIRECT;
 }
 
 /*----------------------------------------------------------------------------*/

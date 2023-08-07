@@ -13,7 +13,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Direction(Stz* szDirn);
+    Card_Direction(void);
    ~Card_Direction(void) noexcept(false);
 
     bool bIsEqual(Card_Direction* p_direction_arg);
