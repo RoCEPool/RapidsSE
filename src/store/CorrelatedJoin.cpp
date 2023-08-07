@@ -345,7 +345,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
 
 
       Symbol xSymbol_keyOdn;
-      xSymbol_keyOdn.vSet_KeyCol(1);
+      xSymbol_keyOdn.vInit_Key_Col(1);
 
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "_SQCRLKEY_"_Stz, SF_SQY_KEY);

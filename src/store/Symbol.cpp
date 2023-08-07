@@ -191,6 +191,42 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given index-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vInit_Idx_Col(i8 iIdxColOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("$I%lld"_Stz, iIdxColOdn);
+  m_eSymbol = SF_IDX_COL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsIndexColumn());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given key-column                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vInit_Key_Col(i8 iKeyOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("$K%lld"_Stz, iKeyOdn);
+  m_eSymbol = SF_KEY_COL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsKeyOrdinal());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given number                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vInit_Prm_Col(i8 iOrdinal)
@@ -1388,7 +1424,7 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_KeyCol(i8 iKeyOdn)
+void Symbol::vSet_Key_Col(i8 iKeyOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1657,6 +1693,7 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
     case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
     case SF_COL_NO:    vSet_Col_No(iInt);    break;
+    case SF_KEY_COL:   vSet_Key_Col(iInt);   break;
     case SF_NUMBER:    vSet_Number(iInt);    break;
     case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
     case SF_STG_NO:    vSet_Stg_No(iInt);    break;
