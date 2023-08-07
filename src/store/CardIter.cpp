@@ -189,25 +189,6 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
   G_vMember(eChild, pChild, __func__);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szSymbol, eSF eSymbol)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  eSF eSymbol_eval = Symbol::eEvalSymbol(szSymbol);
-  RASSERT(eSymbol_eval == eSymbol);
-
-  Card* pChild = new Card(eChild);
-
-  pChild->pSymbol()->vSym(eSymbol,szSymbol);
-
-  pParent->vAppend(pChild);
-  G_vMember(eChild, pChild, __func__);
-}
-
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */
 /*----------------------------------------------------------------------------*/
