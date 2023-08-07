@@ -1220,7 +1220,7 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* pCard_RpnTerms)
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
   Stz* szAsNm = pCard_Term->szSymbol();
 
-  Card_As* pCard_As = new Card_As(szAsNm);
+  Card_As* pCard_As = (new Card_As) ->SYM(SF_AS_NM,szAsNm);
   delete pCard_Term;
   pCard_Term = nullptr;
 
@@ -1402,7 +1402,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
 
 
   if (! pCard_Expr->pSub_as()) {
-    Card_As* pCard_As = new Card_As(ri_Expr);
+    Card_As* pCard_As = (new Card_As) ->SYM(SF_AS_NM_syn,ri_Expr);
     pCard_Expr->vInsert(pCard_As);
   }
 

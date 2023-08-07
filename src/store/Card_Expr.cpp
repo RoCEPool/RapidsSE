@@ -116,7 +116,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
+  Card_As*      p_as      = szAs ? (new Card_As) ->SYM(SF_AS_NM,szAs) : (new Card_As);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
@@ -263,7 +263,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   if (p_as)
     p_expr_early->vAppend(p_as->pClone());
   else {
-    Card_As* p_as_new = new Card_As(i_Expr);
+    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM_syn,i_Expr);
     p_expr_early->vAppend(p_as_new);
   }
 
@@ -523,7 +523,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   if (p_as)
     p_expr_propagation->vAppend(p_as->pClone());
   else {
-    Card_As* p_as_new = new Card_As(this->szSymbol());
+    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,this->szSymbol());
     p_expr_propagation->vAppend(p_as_new);
   }
 

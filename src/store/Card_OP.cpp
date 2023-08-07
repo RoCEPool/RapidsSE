@@ -782,7 +782,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     eCT eColumnType = pColumn->eColumnType();
 
-    Card_As *p_as = new Card_As(pColumn->szColNm());
+    Card_As *p_as = (new Card_As) ->SYM(SF_AS_NM,pColumn->szColNm());
     p_expr->vAppend(p_as);
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;

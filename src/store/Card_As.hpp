@@ -13,8 +13,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Card_As(i8 iAsNo);
-    Card_As(Stz* szAs);
+    Card_As(void);
+
+    //Card_As(i8 iAsNo);
+    //Card_As(Stz* szAs);
     Card_As(Card_As* p_as_arg);
    ~Card_As(void) noexcept(false);
 
