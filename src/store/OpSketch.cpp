@@ -128,6 +128,7 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   }
 
   m_bLeftOuter = false;
+  m_bCrossJoin = false;
 
   m_eLowerIP = IP_NONE;
   m_eUpperIP = IP_NONE;

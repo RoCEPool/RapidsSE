@@ -600,6 +600,11 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
     pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
   }
 
+  // is it a cross join ?
+  if ( ! pOpSketch->m_pExprStack->nValues() ) {
+    pOpSketch->m_bCrossJoin = true;
+  }
+
   return pOpSketch;
 }
 

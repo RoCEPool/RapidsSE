@@ -93,6 +93,7 @@ namespace STORE
     TypedStack* m_pInitStack;
 
     bool m_bLeftOuter;
+    bool m_bCrossJoin;
 
     eIP m_eLowerIP;
     eIP m_eUpperIP;
