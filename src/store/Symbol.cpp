@@ -55,29 +55,12 @@ Symbol::Symbol(eSF eSymbol, i8 iInt)
     case SF_COL_NO  : vSet_Col_No(iInt);   break;
     case SF_IDX_COL : vSet_Idx_Col(iInt);  break;
     case SF_KEY_COL : vSet_Key_Col(iInt);  break;
+    case SF_NUMBER  : vSet_Number(iInt);   break;
     case SF_PRM_COL : vSet_Prm_Col(iInt);  break;
     case SF_SQY_NO  : vSet_Sqy_No(iInt);   break;
 
     default: NEVER_REACH;
   }
-
-  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Symbol::Symbol(i8 iNumber, eSF eSymbol)
-    : Object(CN_SYMBOL)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = iNumber;
-  m_eSymbol = eSymbol;
-  m_pProperties = nullptr;
-  m_bSet = true;
-
-  _checkInitialised_(CN_SYMBOL);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
