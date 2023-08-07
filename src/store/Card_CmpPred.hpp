@@ -16,7 +16,6 @@ namespace STORE
     void  operator delete(void*);
   
     Card_CmpPred(void);
-    Card_CmpPred(Stz* szCmp);
    ~Card_CmpPred(void) noexcept(false);
 
     eXK eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,

@@ -32,18 +32,6 @@ Card_CmpPred::Card_CmpPred(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred::Card_CmpPred(Stz* szCmp)
-    : Card_PRED(CK_CMPPRED, szCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

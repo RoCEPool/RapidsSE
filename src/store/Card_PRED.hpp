@@ -11,7 +11,6 @@ namespace STORE
   {  
   public:
     Card_PRED(eCK eCard);
-    Card_PRED(eCK eCard, Stz* szValue);
    ~Card_PRED(void) noexcept(false);
 
     static bool bIsPRED(Card* p_card);
