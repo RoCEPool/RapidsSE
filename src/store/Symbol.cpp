@@ -39,6 +39,25 @@ Symbol::Symbol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol::Symbol(eSF eSymbol, i8 iInt)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_eSymbol = SF_NONE;
+  m_pProperties = nullptr;
+  m_bSet = false;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  vInit(eSymbol,iInt);
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Symbol::Symbol(i8 iNumber, eSF eSymbol)
     : Object(CN_SYMBOL)
 {

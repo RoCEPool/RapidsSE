@@ -26,9 +26,14 @@ namespace STORE
 
   public:
     Symbol(void);
+
+    Symbol(eSF eSymbol, i8 iInt);
+
     Symbol(i8 iNumber, eSF eSymbol);
     Symbol(Stz* szSymbol, eSF eSymbol);
     Symbol(Symbol* pSymbol);
+
+
     ~Symbol(void);
 
     static eRO  eEvalRelnOp(Stz* szSymbol);
@@ -85,12 +90,10 @@ namespace STORE
 
     void vIncTblSyn(void);
 
+  public:
     void vInit(eSF eSymbol, i8 iInt);
 
-    //void vInit_Idx_Col(i8 iPrmCol);
-    //void vInit_Key_Col(i8 iPrmCol);
-    //void vInit_Prm_Col(i8 iPrmCol);
-    //void vInit_Sqy_No(i8 iSqyNo);
+  public:
     void vInit_Tbl_Syn(char cTblSyn);
 
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
