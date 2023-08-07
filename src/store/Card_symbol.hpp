@@ -14,11 +14,9 @@ namespace STORE
     
   public:
     Card_symbol(eCK eCard);
-    Card_symbol(eCK eCard, Symbol* pSymbol, bool bCopyProperties=true);
     Card_symbol(eCK eCard, Stz* szSymbol, eSF eSymbol);
 
     ~Card_symbol(void) noexcept(false);
-  //CARD* operator [](Symbol* pSymbol);
     CARD* SYM(Symbol xSymbol);
     CARD* SYM(Symbol* pSymbol);
     CARD* SYMPPY(Symbol* pSymbol);
@@ -42,17 +40,6 @@ Card_symbol<CARD>::Card_symbol(eCK eCard)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 }
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-template <class CARD>
-Card_symbol<CARD>::Card_symbol(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
-    : Card(eCard, pSymbol, bCopyProperties)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -80,19 +67,6 @@ Card_symbol<CARD>::~Card_symbol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* operator : []                       ]                                      */
-/*----------------------------------------------------------------------------*/
-//template <class CARD>
-//CARD* Card_symbol<CARD>::operator [](Symbol* pSymbol)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  vSymbol(pSymbol);
-//
-//  return this;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* SYM                                                                        */
