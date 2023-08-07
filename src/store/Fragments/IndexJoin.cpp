@@ -79,7 +79,7 @@ void vAntiJoinEnd(Dynamic_T* aDynamicT) {
 // function-vIndexJoinIntKey
 void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
-  i8 iLeftOuterRow;
+  bool bLeftOuterRow;
   i8 __KEY_KIND__;
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
@@ -103,7 +103,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
-    iLeftOuterRow = 0;
+    bLeftOuterRow = false;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
 
   }
@@ -117,7 +117,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 // function-vIndexJoinGenKey
 void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 
-  i8 iLeftOuterRow;
+  bool bLeftOuterRow;
   i8 __KEY_KIND__;
 
   __L_LABEL_OUTER_LOOP__:
@@ -138,7 +138,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
-    iLeftOuterRow = 0;
+    bLeftOuterRow = false;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
 
   }
@@ -235,14 +235,14 @@ void vIndexJoinContinueLO0(Dynamic_T* aDynamicT) {
 // function-vIndexJoinContinueLO1
 void vIndexJoinContinueLO1(Dynamic_T* aDynamicT) {
 
-  i8 iLeftOuterRow;
+  bool bLeftOuterRow;
   // marker-start
 
     // did we join any rows with current left row ?
     if (aDynamicT->m_iJoinedRows == 0) {
 
       aDynamicT->m_iProcessRow = 1;
-      iLeftOuterRow = 1;
+      bLeftOuterRow = true;
       printf("leftOuter = 1\n");
 
       // marker-end
@@ -362,7 +362,7 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
   IndexInfo __INDEX_INFO__;
   RowInfo __ROW_INFO_TO__;
 
-  i8 iLeftOuterRow;
+  bool bLeftOuterRow;
 
   // marker-start
   goto __L_LABEL_INDEX_RETURN__;
@@ -383,9 +383,9 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
   __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
 
   // check if last row was a leftOuter
-  if ( iLeftOuterRow ) {
+  if ( bLeftOuterRow ) {
     printf("got leftOuter \n");
-    iLeftOuterRow = 0;
+    bLeftOuterRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
@@ -404,6 +404,81 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iIndexJoinConstraint ----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iIndexJoinConstraint
+i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
+
+  void* aHeadLine;
+  void* aHeadLineSav;
+  bool bFilterResult;
+
+  IndexInfo __INDEX_INFO__;
+  RowInfo __ROW_INFO_TO__;
+
+  i8 __CONSTRAINTSTACK__;
+
+  bool bLeftOuterRow;
+
+  // marker-start
+  goto __L_LABEL_INDEX_RETURN__;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INFLATE-CRW-RET
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  __L_LABEL_INDEX_RETURN__:
+
+  aHeadLine = aHeadLineSav;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // join constraint
+  __CONSTRAINTSTACK__;
+
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  // check for constraint result
+  if (bFilterResult && bFilterResult != C_DATUM_NULL) {
+    aDynamicT->m_iProcessRow = 1;
+    aDynamicT->m_iJoinedRows++;
+  } else {
+    aDynamicT->m_iProcessRow = 0;
+  }
+
+  goto __L_LABEL_NEXT__;
+
+  __L_LABEL_LOOP__:
+
+  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+
+  // check if last row was a leftOuter
+  if ( bLeftOuterRow ) {
+    printf("got leftOuter \n");
+    bLeftOuterRow = false;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  // move to next entry
+#ifdef WITH_CLANG
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+      &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
+#endif
+
+  goto __L_LABEL_INDEX_DEREF__;
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+  __L_LABEL_INDEX_DEREF__:
+  __L_LABEL_OUTER_LOOP__:
+
+  return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -449,7 +524,7 @@ void vIndexJoinReturn02(Dynamic_T* aDynamicT) {
   IndexInfo __INDEX_INFO__;
   RowInfo __ROW_INFO_TO__;
 
-  i8 iLeftOuterRow;
+  bool bLeftOuterRow;
 
   // marker-start
   goto __L_LABEL_NEXT__;
@@ -459,9 +534,9 @@ void vIndexJoinReturn02(Dynamic_T* aDynamicT) {
   __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
 
   // check if last row was a leftOuter
-  if ( iLeftOuterRow ) {
+  if ( bLeftOuterRow ) {
     printf("got leftOuter \n");
-    iLeftOuterRow = 0;
+    bLeftOuterRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
 

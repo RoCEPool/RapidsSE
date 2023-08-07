@@ -415,14 +415,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // generate expressions for null check
         if (pOpSketch->m_pNullStack->nValues()) {
           vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
-          //vGenerateExprCode(pOpSketch->m_pNullStack, "  "_Stz);
-          //vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
         }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate expressions for populating the key
-        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // posisition the index
@@ -455,8 +452,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
         }
 
-
-
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join
         vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pOperatorFile);
@@ -466,16 +461,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         if (pOpSketch->m_pConstraintStack->nValues()) {
-          vAppendCodeFragment(pOpSketch, "vIndexJoinReturn01"_Stz, pOperatorFile);
-          vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
-          vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-          vAppendCodeFragment(pOpSketch, "vFilterEndIndexJoin"_Stz, pOperatorFile);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinReturn02"_Stz, pOperatorFile);
+          vAppendCodeFragment(pOpSketch, "iIndexJoinConstraint"_Stz, pOperatorFile);
         }
         else {
           vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
         }
-
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the indexJoin code fragments file

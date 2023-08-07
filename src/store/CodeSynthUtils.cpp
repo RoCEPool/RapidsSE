@@ -215,7 +215,7 @@ bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOp
   //s4K sCopy;
   TypeValueArea* pTypedCell;
 
-  if (StrLib::bContains(sLine->azChar(), "__NULL_EXPRSTACK__")) {
+  if (StrLib::bContains(sLine->azChar(), "__NULLSTACK__")) {
     TypedStack* pTypedStack = pOpSketch->m_pNullStack;
 
     i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
@@ -223,7 +223,32 @@ bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOp
     while ( nExpr >= 0) {
       pTypedCell = pTypedStack->aPeekItem(nExpr--);
       Stz* sExpr = pTypedCell->szStz();
-      //sCopy.vSprint("\n  %s"_Stz, sExpr->azChar());
+      StrLib::vSprintCat(sCode->szStz(), "\n %s"_Stz, sExpr->azChar());
+    }
+    return true;
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__EXPRSTACK__")) {
+    TypedStack* pTypedStack = pOpSketch->m_pExprStack;
+
+    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
+
+    while ( nExpr >= 0) {
+      pTypedCell = pTypedStack->aPeekItem(nExpr--);
+      Stz* sExpr = pTypedCell->szStz();
+      StrLib::vSprintCat(sCode->szStz(), "\n %s"_Stz, sExpr->azChar());
+    }
+    return true;
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__CONSTRAINTSTACK__")) {
+    TypedStack* pTypedStack = pOpSketch->m_pConstraintStack;
+
+    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
+
+    while ( nExpr >= 0) {
+      pTypedCell = pTypedStack->aPeekItem(nExpr--);
+      Stz* sExpr = pTypedCell->szStz();
       StrLib::vSprintCat(sCode->szStz(), "\n %s"_Stz, sExpr->azChar());
     }
     return true;

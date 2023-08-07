@@ -72,6 +72,29 @@ void vOperatorStub(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vExprStack---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vExprStack
+i8 vExprStack(Dynamic_T* aDynamicT) {
+
+  i8 __EXPRSTACK__;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the key
+  __EXPRSTACK__;
+
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  // marker-end
+
+  return 0; // ray-alka
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vExprCheck---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vExprCheck
@@ -96,15 +119,16 @@ i8 vExprCheck(Dynamic_T* aDynamicT) {
 i8 vNullCheck(Dynamic_T* aDynamicT) {
 
   bool bNullResult;
-  i8 __NULL_EXPRSTACK__;
+  i8 __NULLSTACK__;
 
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for nulls
-  __NULL_EXPRSTACK__;
+  __NULLSTACK__;
 
+  // check null result
   if (bNullResult) {
     aDynamicT->m_iProcessRow = 0;
     goto __L_LABEL_OUTER_LOOP__;

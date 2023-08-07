@@ -8,7 +8,11 @@
   char *szArg1      __attribute__ ((unused));
   char *szArg2      __attribute__ ((unused));
   char *szArg3      __attribute__ ((unused));
+
+  bool bLeftOuterRow __attribute__ ((unused));
+
   m8 *amCellAddress __attribute__ ((unused));
+
   i8 bFilterResult  __attribute__ ((unused));
   i8 bKeyMatch      __attribute__ ((unused));
   i8 bNullResult    __attribute__ ((unused));
@@ -21,7 +25,6 @@
   i8 iMixIn         __attribute__ ((unused));
   i8 iBufferJ       __attribute__ ((unused));
   i8 iItemJ         __attribute__ ((unused));
-  i8 iLeftOuterRow  __attribute__ ((unused));
   i8 iJoinedRows    __attribute__ ((unused));
   i8 i_BaseOffsetDataX __attribute__ ((unused));
   i8 iIndexBuffer      __attribute__ ((unused));
@@ -34,13 +37,14 @@
   i8 iScale           __attribute__ ((unused));
   i8 iInCount         __attribute__ ((unused));
   i8 *paW             __attribute__ ((unused));
+  i8 iScaleDiff           __attribute__ ((unused));
+
   union Bcd_T bcdArg1 __attribute__ ((unused));
   union Bcd_T bcdArg2 __attribute__ ((unused));
   union Bcd_T bcdArg3 __attribute__ ((unused));
   union Bcd_T bcdReScale1 __attribute__ ((unused));
   union Bcd_T bcdReScale2 __attribute__ ((unused));
   union Bcd_T bcdRound    __attribute__ ((unused));
-  i8 iScaleDiff           __attribute__ ((unused));
   union Dte_T xDte1       __attribute__ ((unused));
   union Dte_T xDte2       __attribute__ ((unused));
   union Dte_T xDte3       __attribute__ ((unused));
@@ -57,6 +61,7 @@
   union Tme_T xTme1   __attribute__ ((unused));
   union Tme_T xTme2   __attribute__ ((unused));
   union Tme_T xTme3   __attribute__ ((unused));
+
   void *aIndexCrw     __attribute__ ((unused));
   void *aEntInserted  __attribute__ ((unused));
   void *aEntFound     __attribute__ ((unused));
