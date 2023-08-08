@@ -1082,11 +1082,9 @@ Card* Dissector::pOp_Top(void)
 
   vCheckArgs(2);
 
-  i8 iCount = iGetInt(1);
+  i8 nRows = iGetInt(1);
 
-  s32 sCount;
-  sCount = iCount;
-  Card_Top* pCard_Top = new Card_Top(sCount);
+  Card_Top* pCard_Top = _pCard_Top((new Card_Top) ->SYM(SF_NUMBER, nRows));
 
 
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
@@ -1103,7 +1101,7 @@ Card* Dissector::pOp_Top(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Count* pCard_Count = new Card_Count;
-  pCard_Count->SYM(SF_NUMBER,iCount);
+  pCard_Count->SYM(SF_NUMBER, nRows);
   pCard_Top->vAppend(pCard_Count);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
