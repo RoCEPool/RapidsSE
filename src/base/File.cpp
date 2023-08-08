@@ -194,6 +194,8 @@ void File::vRepair(Object* pObject)
 /*---------------------------------------------------------------------------*/
 bool File::bAccess(Stz* szFilePath, i8 iPermission)
 {
+  _static_
+
   int iResult = access(szFilePath->azChar(),(int)iPermission);
 
   if (0 == iResult)
@@ -207,6 +209,8 @@ bool File::bAccess(Stz* szFilePath, i8 iPermission)
 /*---------------------------------------------------------------------------*/
 bool File::bExists(Stz* szFilePath, bool bWarning)
 {
+  _static_
+
   struct stat xStat;
   
   int iResult = stat(szFilePath->azChar(),&xStat);
@@ -224,10 +228,28 @@ bool File::bExists(Stz* szFilePath, bool bWarning)
 }
 
 /*---------------------------------------------------------------------------*/
+/* create unique temporary file name                                         */
+/*---------------------------------------------------------------------------*/
+void File::vMakeTempNm(BASE::String *pTempNm, BASE::Stz *szBaseNm)
+{
+  _static_
+
+  s256 sTemplate;
+
+  sTemplate.vSprint("%s_XXXXXX"_Stz,szBaseNm);
+
+  char* azTempNm = mkdtemp(sTemplate.azChar());
+
+  pTempNm->vCopy((Stz*)azTempNm);
+}
+
+/*---------------------------------------------------------------------------*/
 /* get the modification time of the file                                     */
 /*---------------------------------------------------------------------------*/
 bool File::bModTime(Stz* szFilePath, time_t& tTime)
 {
+  _static_
+
   struct stat xStat;
   
   int iResult = stat(szFilePath->azChar(),&xStat);
@@ -250,6 +272,8 @@ bool File::bModTime(Stz* szFilePath, time_t& tTime)
 /*----------------------------------------------------------------------------*/
 bool File::bRemove(Stz* szFilePath, bool bIgnoreMissing)
 {
+  _static_
+
   int iResult = unlink(szFilePath->azChar());
   
   if (-1 == iResult) {
@@ -269,6 +293,8 @@ bool File::bRemove(Stz* szFilePath, bool bIgnoreMissing)
 /*----------------------------------------------------------------------------*/
 bool File::bRename(Stz* szOldPath, Stz* szNewPath)
 {
+  _static_
+
   return (rename(szOldPath->azChar(), szNewPath->azChar()) == 0);
 }
 
@@ -277,6 +303,8 @@ bool File::bRename(Stz* szOldPath, Stz* szNewPath)
 /*----------------------------------------------------------------------------*/
 i8 File::nSize(Stz* szFilePath)
 {
+  _static_
+
   struct stat xStat;
   
   int iResult = stat(szFilePath->azChar(),&xStat);

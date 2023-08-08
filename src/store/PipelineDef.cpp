@@ -76,6 +76,9 @@ void PipelineDef::vDump(i8 i_Tab)
   vTrace("%sPipelineDef: %s\n"_Stz,
          Stz::szTab(i_Tab),
          m_sPipelineNm.szStz());
+  vTrace("%sFileNm: %s\n"_Stz,
+         Stz::szTab(i_Tab+1),
+         m_sFileNm.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - -
 
@@ -110,6 +113,8 @@ void PipelineDef::vPipelineNm(Stz* szPipelineNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 
   m_sPipelineNm = szPipelineNm;
+
+  File::vMakeTempNm(m_sFileNm,szPipelineNm);
 }
 
 /*----------------------------------------------------------------------------*/
