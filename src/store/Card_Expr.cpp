@@ -423,7 +423,7 @@ bool Card_Expr::bIsExpressionOfKey(void) {
 
   Symbol *pSymbol_0 = pGetSymbol(0);
 
-  if (pSymbol_0->bIsKeyOrdinal())
+  if (pSymbol_0->bIs_Key_Col())
     return true;
 
   return false;

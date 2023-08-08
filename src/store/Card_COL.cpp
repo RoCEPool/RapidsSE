@@ -40,7 +40,7 @@ bool Card_COL::bIsReplicated(Symbol* aCol)
   if (! aCol)
     return false;
 
-  if (!aCol->bIsColumnOrdinal())
+  if (!aCol->bIs_Col_Tc())
     return false;
 
   char cTblSyn = aCol->cExtractTableSynonym();

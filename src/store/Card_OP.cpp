@@ -139,7 +139,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
   auto b_colNm_To_stmCol = [pCI,this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
-    if (! p_term->pSymbol()->bIsColNm())
+    if (!p_term->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;
 
     //p_term->vDump(__func__);
@@ -238,7 +238,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       vDebugPoint();
     }
 
-    if (! p_term->pSymbol()->bIsColumnOrdinal())
+    if (!p_term->pSymbol()->bIs_Col_Tc())
       return C_CONTINUE_RECURSION;
 
     if (pCI->Prior.m_pProjection) {
@@ -885,8 +885,8 @@ void Card_OP::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
 
     Card_Term* p_term = _pCard_Term(pChildCard);
 
-    if (p_term->pSymbol()->bIsStreamOrdinal() ||
-        p_term->pSymbol()->bIsColumnOrdinal()) {
+    if (p_term->pSymbol()->bIs_Col_No() ||
+        p_term->pSymbol()->bIs_Col_Tc()) {
 
       if (!p_term->pSymbol()->Y_bHas(P_Type)) {
         p_term->vDump(__func__);
@@ -1069,8 +1069,8 @@ void Card_OP::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 
     Card_Term* p_term = _pCard_Term(pSubCard);
 
-    if (p_term->pSymbol()->bIsStreamOrdinal() ||
-        p_term->pSymbol()->bIsColumnOrdinal()) {
+    if (p_term->pSymbol()->bIs_Col_No() ||
+        p_term->pSymbol()->bIs_Col_Tc()) {
 
       if (!p_term->pSymbol()->Y_bHas(P_Type)) {
         p_term->vDump(__func__);
@@ -1161,8 +1161,8 @@ void Card_OP::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 
         Card_Term* p_term = _pCard_Term(pSubCard);
 
-        if (p_term->pSymbol()->bIsStreamOrdinal() ||
-            p_term->pSymbol()->bIsColumnOrdinal()) {
+        if (p_term->pSymbol()->bIs_Col_No() ||
+            p_term->pSymbol()->bIs_Col_Tc()) {
 
           if (!p_term->pSymbol()->Y_bHas(P_Type)) {
             p_term->vDump(__func__);
@@ -1217,8 +1217,8 @@ void Card_OP::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIsStreamOrdinal() ||
-          p_term->pSymbol()->bIsColumnOrdinal()) {
+      if (p_term->pSymbol()->bIs_Col_No() ||
+          p_term->pSymbol()->bIs_Col_Tc()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
           p_term->vDump(__func__);
@@ -1306,8 +1306,8 @@ void Card_OP::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIsStreamOrdinal() ||
-          p_term->pSymbol()->bIsColumnOrdinal()) {
+      if (p_term->pSymbol()->bIs_Col_No() ||
+          p_term->pSymbol()->bIs_Col_Tc()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
           p_term->vDump(__func__);
@@ -1605,8 +1605,8 @@ void Card_OP::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         szRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_TERM:
-        if (pSubCard->pSymbol()->bIsStreamOrdinal() ||
-            pSubCard->pSymbol()->bIsColumnOrdinal()) {
+        if (pSubCard->pSymbol()->bIs_Col_No() ||
+            pSubCard->pSymbol()->bIs_Col_Tc()) {
 
           if (!pSubCard->pSymbol()->Y_bHas(P_Type)) {
             //p_part->vDump();
@@ -1716,8 +1716,8 @@ void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCard_Term->pSymbol()->bIsStreamOrdinal() ||
-      pCard_Term->pSymbol()->bIsColumnOrdinal()) {
+  if (pCard_Term->pSymbol()->bIs_Col_No() ||
+      pCard_Term->pSymbol()->bIs_Col_Tc()) {
 
     if (!pCard_Term->pSymbol()->Y_bHas(P_Type)) {
       pCard_Term->vDump(__func__);

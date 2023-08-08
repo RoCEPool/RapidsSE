@@ -170,7 +170,7 @@ bool Card_PRED::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIsBoolFn())
+  if (pSymbol()->bIs_Bol_Fn())
     return true;
 
   return false;
@@ -217,10 +217,10 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (pTerm_0->pSymbol()->bIsColumnOrdinal()) {
+  if (pTerm_0->pSymbol()->bIs_Col_Tc()) {
     // + term_0 is $c.n
 
-    if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
+    if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -241,7 +241,7 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
+  if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
@@ -286,7 +286,7 @@ bool Card_PRED::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIsRelnOp())
+  if (pSymbol()->bIs_Rln_Op())
     return true;
 
   return false;
@@ -299,7 +299,7 @@ bool Card_PRED::bIsSubQueryOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIsSubQueryOp())
+  if (pSymbol()->bIs_Sqy_Op())
     return true;
 
   return false;
@@ -338,8 +338,8 @@ bool Card_PRED::bMaybeJoinPred(void)
   Card_Term* pTerm_0 = pGetTerm(0);
   Card_Term* pTerm_1 = pGetTerm(1);
 
-  if (pTerm_0->pSymbol()->bIsColumnOrdinal() &&
-      pTerm_1->pSymbol()->bIsColumnOrdinal())
+  if (pTerm_0->pSymbol()->bIs_Col_Tc() &&
+      pTerm_1->pSymbol()->bIs_Col_Tc())
     // + term_0 and term_1 are $c.n
     return true;
 

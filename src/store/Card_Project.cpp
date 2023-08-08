@@ -83,7 +83,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
     pCI->G.p_as = pCI->G.p_expr->pSub_as();
 
-    if (pCI->G.p_as->pSymbol()->bIsSubQueryColumn())
+    if (pCI->G.p_as->pSymbol()->bIs_Sqy_Rsl())
       continue;
 
     pCI->vPrintBoard(__LINE__);

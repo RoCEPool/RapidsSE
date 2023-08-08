@@ -548,11 +548,11 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   // parameters are considered within scope
-  if (p_term->pSymbol()->bIsParameterOrdinal())
+  if (p_term->pSymbol()->bIs_Sqy_Prm())
     return true;
 
   // literals are considered within scope
-  if (!p_term->pSymbol()->bIsColumnOrdinal()) {
+  if (!p_term->pSymbol()->bIs_Col_Tc()) {
     return true;
   }
 

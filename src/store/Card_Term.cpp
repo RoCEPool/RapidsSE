@@ -120,7 +120,7 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
     ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
   }
 
-  if (!pSymbol()->bIsStreamOrdinal())
+  if (!pSymbol()->bIs_Col_No())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,7 +128,7 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
   if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this)) {
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
-    if (pSymbol_term0->bIsColumnOrdinal()) {
+    if (pSymbol_term0->bIs_Col_Tc()) {
       pSymbol()->vSym(pSymbol_term0);
       vMark1(MARK_CHANGED);
     }
@@ -220,8 +220,8 @@ eTE Card_Term::eEvalTerm(void)
   else if (bSameSymbol("notExists"_Stz))  return TE_NOTEXISTS;
   else if (bSameSymbol("notIn"_Stz))      return TE_NOTIN;
 
-  else if (pSymbol()->bIsRelnOp())     return TE_RELNOP;
-  else if (pSymbol()->bIsBoolFn())     return TE_BOOLFN;
+  else if (pSymbol()->bIs_Rln_Op())     return TE_RELNOP;
+  else if (pSymbol()->bIs_Bol_Fn())     return TE_BOOLFN;
 
   else return TE_OTHER;
 }
@@ -284,7 +284,7 @@ bool Card_Term::bIsColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bIsColNm())
+  if (pSymbol()->bIs_Col_Nm())
     return true;
 
   return false;
@@ -297,7 +297,7 @@ bool Card_Term::bIsColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bIsColumnOrdinal())
+  if (pSymbol()->bIs_Col_Tc())
     return true;
 
   return false;
@@ -310,7 +310,7 @@ bool Card_Term::bIsKeyOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsKeyOrdinal();
+  bool b = pSymbol()->bIs_Key_Col();
 
   return b;
 }
@@ -322,7 +322,7 @@ bool Card_Term::bIsPrmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsParameterOrdinal();
+  bool b = pSymbol()->bIs_Sqy_Prm();
 
   return b;
 }
@@ -334,7 +334,7 @@ bool Card_Term::bIsStmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsStreamOrdinal();
+  bool b = pSymbol()->bIs_Col_No();
 
   return b;
 }
@@ -396,7 +396,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  if (m_xSymbol.bIsStreamOrdinal() || m_xSymbol.bIsColumnOrdinal())
+//  if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc())
 //    RASSERT(m_xSymbol.Y_bHas(P_Type));
 }
 

@@ -1253,7 +1253,7 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
 
   // is there a bound term sequence at the top of rpnTerms?
   Card_Term* p_term_first = _pCard_Term(pCard_RpnTerms->pPeek(0));
-  if (! p_term_first || ! p_term_first->pSymbol()->bIsBound())
+  if (! p_term_first || !p_term_first->pSymbol()->bIs_Bound())
     return nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1264,13 +1264,13 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
   // the first term in sequence will be a LBOUND or UBOUND
   //   which is not transfered but should match last reln op in sequence
   Card_Term* p_term_bound = pCard_RpnTerms->pPop_term();
-  RASSERT(p_term_bound->pSymbol()->bIsBound());
+  RASSERT(p_term_bound->pSymbol()->bIs_Bound());
 
   // transfer terms for this bound sequence
   Card_Term* p_term_xfr;
   for (i8 i_Loop = 0; ; i_Loop++) {
     Card_Term* p_term_top = _pCard_Term(pCard_RpnTerms->pPeek(0));
-    if (! p_term_top || p_term_top->pSymbol()->bIsBound())
+    if (! p_term_top || p_term_top->pSymbol()->bIs_Bound())
       break;
     p_term_xfr = pCard_RpnTerms->pPop_term();
     pCard_Bound->vAppend(p_term_xfr);
@@ -1437,7 +1437,7 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirectio
     }
 
     // SEPARATOR
-    if (pCard_Term_head->pSymbol()->bIsComma()) {
+    if (pCard_Term_head->pSymbol()->bIs_Comma()) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -1485,7 +1485,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
     }
 
     // SEPARATOR
-    if (pCard_Term_head->pSymbol()->bIsComma()) {
+    if (pCard_Term_head->pSymbol()->bIs_Comma()) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -1519,7 +1519,7 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
         || pCard_Term_popped->bSameSymbol("ASC"_Stz)
         || pCard_Term_popped->bSameSymbol("DESC"_Stz)
         || pCard_Term_popped->bSameSymbol("GROUPBY"_Stz)
-        || pCard_Term_popped->pSymbol()->bIsComma()
+        || pCard_Term_popped->pSymbol()->bIs_Comma()
         ) {
       pCard_RpnTerms->vPush(pCard_Term_popped);
       break;

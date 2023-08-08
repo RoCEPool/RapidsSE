@@ -52,7 +52,7 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
     while ((xCI2.G_bEachMain(CK_TERM))) {
       Stz *szTerm = xCI2.G.p_term->szSymbol();
 
-      if (xCI2.G.p_term->pSymbol()->bIsKeyOrdinal()) {
+      if (xCI2.G.p_term->pSymbol()->bIs_Key_Col()) {
         xCI2.G.p_term->vBumpKeyOdn();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
@@ -80,7 +80,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
     while (xCI2.G_bEachMain(CK_TERM)) {
       Stz *szTerm = xCI2.G.p_term->szSymbol();
 
-      if (xCI2.G.p_term->pSymbol()->bIsStreamOrdinal()) {
+      if (xCI2.G.p_term->pSymbol()->bIs_Col_No()) {
         xCI2.G.p_term->vBump_stmOdn();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
@@ -309,7 +309,7 @@ i8 Card_ELIST::nRenumberAll_syntheticAs(void)
   i8 i_Col = 0;
   for (Kid xCI(this); xCI.bEach(CK_EXPR); /**/) {
     if (Card_As* p_as = xCI.p_expr()->pSub_as())
-      if (p_as->pSymbol()->bIsSyntheticAs())
+      if (p_as->pSymbol()->bIs_As_Nm_syn())
         p_as->SYM(SF_AS_NM_syn,++i_Col);
   }
 

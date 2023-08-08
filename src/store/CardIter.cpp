@@ -2040,12 +2040,12 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   if (! p_projection_prior)
     return nullptr;
 
-   if (p_term->pSymbol()->bIsStreamOrdinal()) {
+   if (p_term->pSymbol()->bIs_Col_No()) {
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term->pSymbol());
     return p_expr_prior;
   }
   else
-  if (p_term->pSymbol()->bIsColumnOrdinal()) {
+  if (p_term->pSymbol()->bIs_Col_Tc()) {
     Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(p_term->pSymbol());
     return p_expr_prior;
   }

@@ -475,7 +475,7 @@ void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
       return;
   }
 
-  RASSERT(p_table->pSymbol()->bIsTableSyn());
+  RASSERT(p_table->pSymbol()->bIs_Tbl_Syn());
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -540,7 +540,7 @@ void XF_Synthesise_Code::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pCol
 
   auto bLambda = [p_table, pColsReq] (Card_Term* p_term) {
 
-    if (! p_term->pSymbol()->bIsStreamOrdinal())
+    if (!p_term->pSymbol()->bIs_Col_No())
       return C_CONTINUE_RECURSION;
 
     if (! p_term->pSymbol()->Y_bHas(P_TblCol))

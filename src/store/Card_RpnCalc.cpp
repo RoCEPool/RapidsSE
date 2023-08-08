@@ -80,7 +80,7 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
 
-    if (xCI.G.p_term- pSymbol()->bIsStreamOrdinal()) {
+    if (xCI.G.p_term- pSymbol()->bIs_Col_No()) {
       xCI.G.p_term->vBump_stmOdn(nBumpBy);
       xCI.G.p_term->vMark1(MARK_CHANGED);
     }

@@ -74,7 +74,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
 
   Symbol xSymbol_idxColOdn(SF_IDX_COL,1);
 
-  if (pTerm_0->pSymbol()->bIsColumnOrdinal()) {
+  if (pTerm_0->pSymbol()->bIs_Col_Tc()) {
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cExtractTableSynonym();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
@@ -83,7 +83,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
       p_bound->vAppend(p_term);
     }
     else
-    if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
+    if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
       char cTblSyn_term_1 = pTerm_1->pSymbol()->cExtractTableSynonym();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
@@ -96,7 +96,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
+  if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
     char cTblSyn_term_1 = pTerm_1->pSymbol()->cExtractTableSynonym();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
@@ -292,7 +292,7 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (xCI.G.p_term->pSymbol()->bIsIndexColumn())
+    if (xCI.G.p_term->pSymbol()->bIs_Idx_Col())
       return xCI.G.p_term;
 
   return nullptr;
@@ -307,7 +307,7 @@ Card_Term* Card_Bound::pGet_colOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (! xKid.p_term()->pSymbol()->bIsIndexColumn())
+    if (!xKid.p_term()->pSymbol()->bIs_Idx_Col())
       return xKid.p_term();
 
   return nullptr;
@@ -351,10 +351,10 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSymbol()->bIsIndexColumn())
+  if (pSymbol()->bIs_Idx_Col())
     return;
 
-  RASSERT(pSymbol()->bIsRelnOp());
+  RASSERT(pSymbol()->bIs_Rln_Op());
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
     xKid.p_term()->vValidate(pCI, iDepth + 1, pParent);

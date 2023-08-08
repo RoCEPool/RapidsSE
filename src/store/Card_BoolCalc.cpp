@@ -99,7 +99,7 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
     if (bSkipFoldExpr && p_term->bSameSymbol("$1"_Stz))
       return C_CONTINUE_RECURSION;
 
-    if (p_term->pSymbol()->bIsStreamOrdinal()) {
+    if (p_term->pSymbol()->bIs_Col_No()) {
       p_term->vBump_stmOdn(nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }
@@ -192,7 +192,7 @@ void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
 
   auto bLambdaFn = [p_projection_prior](Card* p_card)
   {
-    if (p_card->pSymbol()->bIsStreamOrdinal())
+    if (p_card->pSymbol()->bIs_Col_No())
       _pCard_Term(p_card)->vCorrectStmOdn(p_projection_prior);
 
     return C_CONTINUE_RECURSION;

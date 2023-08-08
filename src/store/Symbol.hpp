@@ -89,30 +89,29 @@ namespace STORE
     void vInit_Tbl_Syn(char cTblSyn);
 
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
-    bool bIsBoolFn(void);           // between, case ... matchTrailing
-    bool bIsBoolOp(void);           // and, not, or
-    bool bIsBound(void);            // BOUND, LBOUND, UBOUND
-    bool bIsColNm(void);            // bIsName() but not bIs_Agg_Fn() etc
-    bool bIsColumnOrdinal(void);    // $c.n
-    bool bIsComma(void);            // ,
-    bool bIsCrossRef(void);         // #n
-    bool bIsDirection(void);        // asc, desc
-    bool bIsDisambColNm(void);      // C_n
-    bool bIsIndexColumn(void);      // $In
-    bool bIsKeyOrdinal(void);       // $Kn
-    bool bIsMathOp(void);           // +, -, *, /
+    bool bIs_As_Nm_syn(void);       // __COLn
+    bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
+    bool bIs_Bol_Op(void);          // and, not, or
+    bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
+    bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
+    bool bIs_Col_Nm_dis(void);      // C_n
+    bool bIs_Col_No(void);          // $n
+    bool bIs_Col_Tc(void);          // $c.n
+    bool bIs_Comma(void);           // ,
+    bool bIs_Direction(void);       // asc, desc
+    bool bIs_Idx_Col(void);         // $In
+    bool bIs_Key_Col(void);         // $Kn
+    bool bIs_Mth_Op(void);          // +, -, *, /
+    bool bIs_Number(void);          // StrLib::bIsDecimal/Float/Integer()
+    bool bIs_Parenthesis(void);     // ( or )
+    bool bIs_Rln_Op(void);          // <, <=, ... >
+    bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
+    bool bIs_Sqy_Prm(void);         // %n
+    bool bIs_Sqy_Rsl(void);         // __n
+    bool bIs_Tbl_Syn(void);         // c
+    bool bIs_Xrf_No(void);          // #n
+
     bool bIsName(void);             // StrLib::bIsSqlName()
-    bool bIsNumber(void);           // StrLib::bIsDecimal/Float/Integer()
-    bool bIsOther(void);            //
-    bool bIsParameterOrdinal(void); // %n
-    bool bIsParenthesis(void);      // ( or )
-    bool bIsRelnOp(void);           // <, <=, ... >
-    bool bIsStreamOrdinal(void);    // $n
-    bool bIsSubQueryOp(void);       // exists, in, notExists, notIn
-    bool bIsSubQueryColumn(void);   // __n
-    bool bIsSyntheticAs(void);      // __COLn
-    bool bIsTableSyn(void);         // c
-    bool bIsValueOrdinal(void);     // $n or $c.n
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
