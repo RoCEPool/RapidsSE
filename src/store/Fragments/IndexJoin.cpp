@@ -538,6 +538,43 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iIndexSemiAntiJoinConstraint --------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iIndexSemiAntiJoinConstraint
+i8 iIndexSemiAntiJoinConstraint(Dynamic_T* aDynamicT) {
+
+    void* aHeadLine;
+    void* aHeadLineSav;
+    bool bFilterResult;
+
+    IndexInfo __INDEX_INFO__;
+    RowInfo __ROW_INFO_TO__;
+
+    i8 __CONSTRAINTSTACK__;
+
+    // marker-start
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // join constraint
+    __CONSTRAINTSTACK__;
+
+    // check for error
+    if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+        return 0;
+    }
+
+    // check for constraint result
+    if (bFilterResult && bFilterResult != C_DATUM_NULL) {
+        aDynamicT->m_iProcessRow = 1;
+    } else {
+        aDynamicT->m_iProcessRow = 0;
+    }
+
+    // marker-end
+
+    return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexJoinReturn01 ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinReturn01
