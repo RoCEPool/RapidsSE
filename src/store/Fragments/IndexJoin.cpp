@@ -614,22 +614,38 @@ void vIndexJoinReturn02(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vFilterEndIndexJoin -----------------------------------------------------*/
+/*-- vIndexLeftOuterJoinPosition ---------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vFilterEndIndexJoin
-void vFilterEndIndexJoin(Dynamic_T* aDynamicT, bool bFilterResult) {
+// function-vIndexLeftOuterJoinPosition
+void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
 
-  __L_LABEL_OUTER_LOOP__:
+  IndexInfo __INDEX_INFO__;
+  bool bLeftOuterRow;
 
   // marker-start
-  if (bFilterResult && bFilterResult != C_DATUM_NULL) {
-    aDynamicT->m_iProcessRow = 1;
-    aDynamicT->m_iJoinedRows++;
-  } else {
-    aDynamicT->m_iProcessRow = 0;
+
+#ifdef WITH_CLANG
+  // position at lower bound
+  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+#endif
+
+  // did we find the entry ?
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+
+    // did we join any rows with current left row ?
+    if (aDynamicT->m_iJoinedRows == 0) {
+
+      aDynamicT->m_iProcessRow = 1;
+      bLeftOuterRow = true;
+      printf("leftOuter = 1\n");
+
+      // marker-end
+    }
   }
 
-  // marker-end
+  L_Return:
+  return;
 
 }
 
