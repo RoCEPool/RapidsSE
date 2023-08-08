@@ -29,21 +29,6 @@ Card_Bound::Card_Bound(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Bound::Card_Bound(Stz* szRelnOp)
-    : Card_symbol(CK_BOUND)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  SYM(SF_OTHER,szRelnOp);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Bound::~Card_Bound(void) noexcept(false)
@@ -125,23 +110,17 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 
 
   if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
-    Card_Bound* p_lBound =  new Card_Bound(szRelnOp);
-    p_lBound->SYM(SF_OTHER,szRelnOp);
-    //p_lBound->vAppend(p_term_bound);
+    Card_Bound* p_lBound =  (new Card_Bound) ->SYM(SF_RLN_OP,szRelnOp);
     return p_lBound;
   }
 
   if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz)) {
-    Card_Bound* p_uBound =  new Card_Bound(szRelnOp);
-    p_uBound->SYM(SF_OTHER,szRelnOp);
-    //p_uBound->vAppend(p_term_bound);
+    Card_Bound* p_uBound =  (new Card_Bound) ->SYM(SF_RLN_OP,szRelnOp);
     return p_uBound;
   }
 
   if (szRelnOp->bSame("=="_Stz)) {
-    Card_Bound* p_eBound =  new Card_Bound(szRelnOp);
-    p_eBound->SYM(SF_OTHER,szRelnOp);
-    //p_eBound->vAppend(p_term_bound);
+    Card_Bound* p_eBound =  (new Card_Bound) ->SYM(SF_RLN_OP,szRelnOp);
     return p_eBound;
   }
 
