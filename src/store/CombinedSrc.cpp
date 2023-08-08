@@ -122,13 +122,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // open the index, indexJoin, inflate  and filter code fragments file
-        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
-        RASSERT ( bOpened );
 
         bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
-        RASSERT ( bOpened );
-
-        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
         RASSERT ( bOpened );
 
         bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
@@ -146,15 +141,18 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
           vAppendCodeFragment(pOpSketch, "vIndexJoinGenKey"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // generate expressions for null check
+        if (pOpSketch->m_pNullStack->nValues()) {
+            vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate expressions for populating the key
-        RASSERT(pOpSketch->m_pExprStack->nValues());
-        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // position at lower bound
         vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
-        //vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join
@@ -166,25 +164,17 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate code for the constraint
-        vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-        vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pFilterFile);
+        RASSERT(pOpSketch->m_pConstraintStack->nValues());
 
-        vAppendCodeFragment(pOpSketch, "vIndexJoinReturn01"_Stz, pOperatorFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // anti/semi-join end
         if (pOpSketch->eSketchKind() == SK_ANTIJOIN)
-          vAppendCodeFragment(pOpSketch, "vAntiJoinEnd"_Stz, pOperatorFile);
+          vAppendCodeFragment(pOpSketch, "iIndexAntiJoinConstraint"_Stz, pOperatorFile);
         else
-          vAppendCodeFragment(pOpSketch, "vSemiJoinEnd"_Stz, pOperatorFile);
+          vAppendCodeFragment(pOpSketch, "iIndexSemiJoinConstraint"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the indexJoin code fragments file
         pInflateFile->vClose();
         pOperatorFile->vClose();
-        pIndexFile->vClose();
-        pFilterFile->vClose();
 
         break;
 
@@ -391,8 +381,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // open the indexJoin code fragments file
-        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
-        RASSERT ( bOpened );
 
         bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
         RASSERT ( bOpened );
@@ -500,7 +488,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // close the indexJoin code fragments file
         pInflateFile->vClose();
         pOperatorFile->vClose();
-        pIndexFile->vClose();
 
         break;
 
