@@ -102,7 +102,7 @@ namespace STORE
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
-    void vPpyStr(String* pString);
+    void vPpy_To_String(String* pString);
 
     bool bSame(char cArg);
     bool bSame(Stz* szArg);
@@ -176,7 +176,7 @@ namespace STORE
     void vSet_Tbl_Syn_rep(void);
     void vSet_Xrf_No(i8 iCrossRef);
 
-    void vSprint(Stz* szFormat, ...);
+    void vSymSprint(Stz* szFormat, ...);
 
   protected:
     Footer* aFooter(void);

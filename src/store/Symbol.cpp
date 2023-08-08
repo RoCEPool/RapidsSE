@@ -192,7 +192,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("%c"_Stz, cTblSyn);
+  vSymSprint("%c"_Stz, cTblSyn);
   m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1132,7 +1132,7 @@ bool Symbol::bNeedsBrace(void)
 /*----------------------------------------------------------------------------*/
 /* convert properties to string                                               */
 /*----------------------------------------------------------------------------*/
-void Symbol::vPpyStr(String* pString)
+void Symbol::vPpy_To_String(String* pString)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1811,7 +1811,7 @@ void Symbol::vSet_Xrf_No(i8 iCrossRef)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("#%lld"_Stz, iCrossRef);
+  vSymSprint("#%lld"_Stz, iCrossRef);
   m_eSymbol = SF_XRF_NO;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1829,7 +1829,7 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
+  vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
   m_eSymbol = SF_COL_NM_dis;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1861,7 +1861,7 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("$I%lld"_Stz, iIdxColOdn);
+  vSymSprint("$I%lld"_Stz, iIdxColOdn);
   m_eSymbol = SF_IDX_COL;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1879,7 +1879,7 @@ void Symbol::vSet_Key_Col(i8 iKeyOdn)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("$K%lld"_Stz, iKeyOdn);
+  vSymSprint("$K%lld"_Stz, iKeyOdn);
   m_eSymbol = SF_KEY_COL;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1930,7 +1930,7 @@ void Symbol::vSet_Prm_Col(i8 iOrdinal)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("%%%lld"_Stz, iOrdinal);
+  vSymSprint("%%%lld"_Stz, iOrdinal);
   m_eSymbol = SF_PRM_COL;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1948,7 +1948,7 @@ void Symbol::vSet_Stg_No(i8 iStageNo)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("S%02lld"_Stz, iStageNo);
+  vSymSprint("S%02lld"_Stz, iStageNo);
   m_eSymbol = SF_OTHER;
 }
 
@@ -1962,7 +1962,7 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("$%lld"_Stz, iStmColOdn);
+  vSymSprint("$%lld"_Stz, iStmColOdn);
   m_eSymbol = SF_COL_TC;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1980,7 +1980,7 @@ void Symbol::vSet_Sqy_No(i8 iSqNo)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("__sq%02lld"_Stz, iSqNo);
+  vSymSprint("__sq%02lld"_Stz, iSqNo);
   m_eSymbol = SF_SQY_NO;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1998,7 +1998,7 @@ void Symbol::vSet_As_Nm_syn(i8 iAsNo)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("COL%lld"_Stz, iAsNo);
+  vSymSprint("COL%lld"_Stz, iAsNo);
   m_eSymbol = SF_AS_NM_syn;
 
   Y_vSet(P_Synthetic);
@@ -2018,7 +2018,7 @@ void Symbol::vSet_Tbl_Syn(char cTblSyn)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("%c"_Stz, cTblSyn);
+  vSymSprint("%c"_Stz, cTblSyn);
   m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
@@ -2039,7 +2039,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
   char cTableSyn_actual = cSF_char();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
-  vSprint("%c"_Stz, cTableSyn_actual);
+  vSymSprint("%c"_Stz, cTableSyn_actual);
   m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
@@ -2058,7 +2058,7 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+  vSymSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
   m_eSymbol = SF_COL_TC;
 
 #ifdef X_SET_CROSS_CHECK
@@ -2069,7 +2069,7 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 /* sprint symbol                                                              */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSprint(Stz* szFormat, ...)
+void Symbol::vSymSprint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

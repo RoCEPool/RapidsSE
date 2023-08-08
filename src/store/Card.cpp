@@ -394,7 +394,7 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
   }
 
   s4K sProperties;
-  m_xSymbol.vPpyStr(sProperties);
+  m_xSymbol.vPpy_To_String(sProperties);
 
   vTrace("  %p %s%s : %s {%s} %s\n"_Stz
         , this
