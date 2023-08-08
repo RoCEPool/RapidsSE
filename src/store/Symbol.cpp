@@ -133,18 +133,28 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   _static_
 
   if (bIs_Agg_Fn(szSymbol))       return SF_AGG_FN;
+  if (bIs_As(szSymbol))           return SF_AS;
   if (bIs_Col_Nm_dis(szSymbol))   return SF_COL_NM_dis;
   if (bIs_Col_Nm_syn(szSymbol))   return SF_COL_NM_syn;
   if (bIs_Col_No(szSymbol))       return SF_COL_NO;
   if (bIs_Col_Tc(szSymbol))       return SF_COL_TC;
+  if (bIs_Col_Type(szSymbol))     return SF_COL_TYPE;
+  if (bIs_Comma(szSymbol))        return SF_COMMA;
   if (bIs_Direction(szSymbol))    return SF_DIRECTION;
+  if (bIs_GroupBy(szSymbol))      return SF_GROUPBY;
   if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
   if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
   if (bIs_Number(szSymbol))       return SF_NUMBER;
+  if (bIs_Parenthesis(szSymbol))  return SF_PARENTHESIS;
+  if (bIs_Rln_Op(szSymbol))       return SF_RLN_OP;
   if (bIs_Sqy_Crl_Key(szSymbol))  return SF_SQY_KEY;
   if (bIs_Sqy_Prm(szSymbol))      return SF_PRM_COL;
+  if (bIs_Sqy_Op(szSymbol))       return SF_SQY_OP;
   if (bIs_Sqy_Rsl(szSymbol))      return SF_SQY_NO;
+  if (bIs_Stg_Cast(szSymbol))     return SF_STG_CAST;
+  if (bIs_String(szSymbol))       return SF_STRING;
   if (bIs_Tbl_Syn(szSymbol))      return SF_TBL_SYN;
+  if (bIs_Type(szSymbol))         return SF_TYPE;
   if (bIs_Xrf_No(szSymbol))       return SF_XRF_NO;
 
   //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
@@ -172,13 +182,25 @@ bool Symbol::bIs_Agg_Fn(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("avg"_Stz))      return true;
+       if (szArg->bSame("avg"_Stz))      return true;
   else if (szArg->bSame("count"_Stz))    return true;
   else if (szArg->bSame("countAll"_Stz)) return true;
   else if (szArg->bSame("max"_Stz))      return true;
   else if (szArg->bSame("min"_Stz))      return true;
 //else if (szArg->bSame("stddev"_Stz))   return true;
   else if (szArg->bSame("sum"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol an aggregate op?                                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_As(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("AS"_Stz))      return true;
 
   return false;
 }
@@ -241,12 +263,12 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (! StrLib::bIsSqlName(szArg->azChar()))
     return false;
 
-  if (bIs_Agg_Fn(szArg))       return false;
+  if (bIs_Agg_Fn(szArg))      return false;
   if (bIs_Bol_Fn(szArg))      return false;
   if (bIs_Bol_Op(szArg))      return false;
   if (bIs_Bound(szArg))       return false;
   if (bIs_Direction(szArg))   return false;
-  if (bIs_Sqy_Op(szArg))  return false;
+  if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
 }
@@ -273,30 +295,22 @@ bool Symbol::bIs_Col_Tc(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Comma(Stz* szArg)
-{
-  _static_
-
-  if (szArg->bSame(","_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Direction(Stz* szArg)
+bool Symbol::bIs_Col_Type(Stz* szArg)
 {
   _static_
 
-       if (szArg->bSame("ASC"_Stz))   return true;
-  else if (szArg->bSame("DESC"_Stz))  return true;
+       if (szArg->bSame("BOOLEAN"_Stz))      return true;
+  else if (szArg->bSame("DATE"_Stz))         return true;
+  else if (szArg->bSame("INTEGER"_Stz))      return true;
+  else if (szArg->bSame("FLOAT"_Stz))        return true;
+  else if (szArg->bSame("TIMESTAMP"_Stz))    return true;
+  else if (szArg->bSame("VARCHAR"_Stz))      return true;
 
   return false;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
@@ -369,6 +383,44 @@ bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
          && 'L' == acThird
          && StrLib::bIsDigit(acFourth))
     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Comma(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a sort direction?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Direction(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("ASC"_Stz))   return true;
+  else if (szArg->bSame("DESC"_Stz))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a sort direction?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_GroupBy(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("GROUPBY"_Stz))   return true;
 
   return false;
 }
@@ -448,6 +500,16 @@ bool Symbol::bIs_Mth_Op(Stz* szArg)
   if (szArg->bSame("/"_Stz))     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a math operator ?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Note(Stz* szArg)
+{
+  _static_
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,6 +655,19 @@ bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a sort direction?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Stg_Cast(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("BROADCAST"_Stz))   return true;
+  else if (szArg->bSame("HASHCAST"_Stz))    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Stg_Nm(BASE::Stz *szStz)
@@ -607,6 +682,21 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szStz)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a table-column (i.e. $c.n)                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_String(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+
+  if ('\'' == acFirst)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -674,6 +764,20 @@ bool Symbol::bIs_Type(Stz* szArg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Xk_Cast(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("XK_BROADCAST"_Stz))   return true;
+  if (szArg->bSame("XK_HASHCAST"_Stz))    return true;
+  if (szArg->bSame("XK_UNICAST"_Stz))     return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -895,6 +999,19 @@ bool Symbol::bIs_Agg_Fn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bIs_As(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_As(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_As_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -1010,6 +1127,19 @@ bool Symbol::bIs_Col_Tc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a table-column (i.e. $c.n)                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_Type(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Col_Type(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a comma separator?                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Comma(void)
@@ -1030,6 +1160,19 @@ bool Symbol::bIs_Direction(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Direction(m_sSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a sort direction?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_GroupBy(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_GroupBy(m_sSymbol))
     return true;
   else
     return false;
@@ -1082,6 +1225,19 @@ bool Symbol::bIs_Mth_Op(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Mth_Op(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a number?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Note(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Note(m_sSymbol))
     return true;
 
   return false;
@@ -1179,6 +1335,19 @@ bool Symbol::bIs_Sqy_Rsl(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a bound?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Stg_Cast(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Stg_Cast(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a subQuery-column?  (i.e. __n)                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Stg_Nm(void)
@@ -1186,6 +1355,19 @@ bool Symbol::bIs_Stg_Nm(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Stg_Nm(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_String(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_String(m_sSymbol))
     return true;
 
   return false;
@@ -1238,6 +1420,19 @@ bool Symbol::bIs_Type(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Type(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Xk_Cast(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Xk_Cast(m_sSymbol))
     return true;
 
   return false;
@@ -1451,8 +1646,8 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-//  if (SF_OTHER == eSymbol)
-//    eSymbol = eEvalSymbol(szStz);
+  if (SF_OTHER == eSymbol)
+    eSymbol = eEvalSymbol(szStz);
 
 //  if (SF_OTHER == eSymbol) {
 //
@@ -1462,17 +1657,35 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 
   switch (eSymbol) {
 
-    case SF_AGG_FN:     vSet_Agg_Fn(szStz);    break;
-    case SF_AS_NM:      vSet_As_Nm(szStz);     break;
-    case SF_COL_NM:     vSet_Col_Nm(szStz);    break;
-    case SF_COL_NO:     vSet_Col_No(szStz);    break;
-    case SF_COL_TC:     vSet_Col_Tc(szStz);    break;
-    case SF_DIRECTION:  vSet_Direction(szStz); break;
-    case SF_IDX_NM:     vSet_Idx_Nm(szStz);    break;
-    case SF_SQY_KEY:    vSet_Other(szStz);     break;
-    case SF_TBL_NM:     vSet_Tbl_Nm(szStz);    break;
+    case SF_AGG_FN:      vSet_Agg_Fn(szStz);      break;
+    case SF_AS:          vSet_As(szStz);          break;
+    case SF_AS_NM:       vSet_As_Nm(szStz);       break;
+    case SF_COL_NM:      vSet_Col_Nm(szStz);      break;
+    case SF_COL_NO:      vSet_Col_No(szStz);      break;
+    case SF_COL_TC:      vSet_Col_Tc(szStz);      break;
+    case SF_COL_TYPE:    vSet_Col_Type(szStz);    break;
+    case SF_COMMA:       vSet_Comma(szStz);       break;
+    case SF_DIRECTION:   vSet_Direction(szStz);   break;
+    case SF_GROUPBY:     vSet_GroupBy(szStz);     break;
+    case SF_IDX_COL:     vSet_Idx_Col(szStz);     break;
+    case SF_IDX_NM:      vSet_Idx_Nm(szStz);      break;
+    case SF_KEY_COL:     vSet_Key_Col(szStz);     break;
+    case SF_NOTE:        vSet_Note(szStz);        break;
+    case SF_NUMBER:      vSet_Number(szStz);      break;
+    case SF_PARENTHESIS: vSet_Parenthesis(szStz); break;
+    case SF_PRM_COL:     vSet_Prm_Col(szStz);     break;
+    case SF_RLN_OP:      vSet_Rln_Op(szStz);      break;
+    case SF_SQY_KEY:     vSet_Other(szStz);       break;
+    case SF_SQY_OP:      vSet_Sqy_Op(szStz);      break;
+    case SF_STG_CAST:    vSet_Stg_Cast(szStz);    break;
+    case SF_STRING:      vSet_String(szStz);      break;
+    case SF_TBL_NM:      vSet_Tbl_Nm(szStz);      break;
+    case SF_TBL_SYN:     vSet_Tbl_Syn(szStz);     break;
+    case SF_TYPE:        vSet_Type(szStz);        break;
+    case SF_XK_CAST:     vSet_Xk_Cast(szStz);     break;
+    case SF_XRF_NO:      vSet_Xrf_No(szStz);      break;
 
-    case SF_OTHER:      vSet_Other(szStz);     break;
+    case SF_OTHER:       vSet_Other(szStz);     break;
 
     default: NEVER_REACH;
   }
@@ -1929,6 +2142,19 @@ void Symbol::vSet_Agg_Fn(Stz* szAggFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
+void Symbol::vSet_As(Stz* szAs)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szAs;
+  m_eSymbol = SF_AS;
+
+  RASSERT(bIs_As());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
 void Symbol::vSet_As_Nm(Stz* szAsNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -2081,6 +2307,19 @@ void Symbol::vSet_Col_Tc(Stz* szColTc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given table-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Type(Stz* szColType)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szColType;
+  m_eSymbol = SF_COL_TYPE;
+
+  RASSERT(bIs_Col_Type());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given column-name                                       */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Direction(Stz* szColNm)
@@ -2091,7 +2330,19 @@ void Symbol::vSet_Direction(Stz* szColNm)
   m_eSymbol = SF_DIRECTION;
 
   RASSERT(bIs_Direction());
+}
 
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_GroupBy(Stz* szGroupBy)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szGroupBy;
+  m_eSymbol = SF_GROUPBY;
+
+  RASSERT(bIs_GroupBy());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2102,6 +2353,19 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSymSprint("$I%lld"_Stz, iIdxColOdn);
+  m_eSymbol = SF_IDX_COL;
+
+  RASSERT(bIs_Idx_Col());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given index-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Idx_Col(Stz* szIdxCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szIdxCol;
   m_eSymbol = SF_IDX_COL;
 
   RASSERT(bIs_Idx_Col());
@@ -2134,6 +2398,19 @@ void Symbol::vSet_Key_Col(i8 iKeyOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Key_Col(Stz* szKeyCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szKeyCol;
+  m_eSymbol = SF_KEY_COL;
+
+  RASSERT(bIs_Key_Col());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Mth_Op(Stz* szMthOp)
@@ -2147,6 +2424,19 @@ void Symbol::vSet_Mth_Op(Stz* szMthOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Note(Stz* szNote)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szNote;
+  m_eSymbol = SF_NOTE;
+
+  RASSERT(bIs_Note());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given number                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Number(i8 iNumber)
@@ -2154,6 +2444,19 @@ void Symbol::vSet_Number(i8 iNumber)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = iNumber;
+  m_eSymbol = SF_NUMBER;
+
+  RASSERT(bIs_Number());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Number(Stz* szNumber)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szNumber;
   m_eSymbol = SF_NUMBER;
 
   RASSERT(bIs_Number());
@@ -2197,6 +2500,19 @@ void Symbol::vSet_Prm_Col(i8 iOrdinal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given number                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Prm_Col(Stz* szPrmCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szPrmCol;
+  m_eSymbol = SF_PRM_COL;
+
+  RASSERT(bIs_Sqy_Prm());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Rln_Op(Stz* szRlnOp)
@@ -2232,7 +2548,20 @@ void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
   m_sSymbol = szSqyOp;
   m_eSymbol = SF_SQY_OP;
 
-  RASSERT(bIs_Rln_Op());
+  RASSERT(bIs_Sqy_Op());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Stg_Cast(Stz* szStgCast)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szStgCast;
+  m_eSymbol = SF_STG_CAST;
+
+  RASSERT(bIs_Stg_Cast());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2246,7 +2575,19 @@ void Symbol::vSet_Stg_Nm(i8 iStageNo)
   m_eSymbol = SF_STG_NO;
 
   RASSERT(bIs_Stg_Nm());
+}
 
+/*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_String(Stz* szString)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szString;
+  m_eSymbol = SF_STRING;
+
+  RASSERT(bIs_String());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2260,7 +2601,6 @@ void Symbol::vSet_Tbl_Nm(Stz* szTblNm)
   m_eSymbol = SF_TBL_NM;
 
   RASSERT(bIs_Tbl_Nm());
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2271,6 +2611,19 @@ void Symbol::vSet_Tbl_Syn(char cTblSyn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSymSprint("%c"_Stz, cTblSyn);
+  m_eSymbol = SF_TBL_SYN;
+
+  RASSERT(bIs_Tbl_Syn());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szTblSyn;
   m_eSymbol = SF_TBL_SYN;
 
   RASSERT(bIs_Tbl_Syn());
@@ -2306,6 +2659,19 @@ void Symbol::vSet_Type(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Xk_Cast(Stz* szXkCast)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szXkCast;
+  m_eSymbol = SF_XK_CAST;
+
+  RASSERT(bIs_Xk_Cast());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Xrf_No(i8 iXrefNo)
@@ -2313,6 +2679,19 @@ void Symbol::vSet_Xrf_No(i8 iXrefNo)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSymSprint("#%lld"_Stz, iXrefNo);
+  m_eSymbol = SF_XRF_NO;
+
+  RASSERT(bIs_Xrf_No());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Xrf_No(Stz* szXrefNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szXrefNo;
   m_eSymbol = SF_XRF_NO;
 
   RASSERT(bIs_Xrf_No());

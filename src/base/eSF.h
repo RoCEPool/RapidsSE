@@ -7,11 +7,12 @@ enum eSF // symbol form
 {
   /* */ SF_NONE = 0,    // none
 
-  /* */ SF_AGG_FN,      // Aggregate Function  : avg, count, ... sum
+  /* */ SF_AGG_FN,      // Aggregate Function  : AVG, COUNT, ... SUM
+  /* */ SF_AS,          // As                  : AS
   /* */ SF_AS_NM,       // As Name             : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_AS_NM_syn,   // As Name (synthetic) : __COLn
-  /* */ SF_BOL_FN,      // Boolean Function    : between, case ... matchTrailing
-  /* */ SF_BOL_OP,      // Boolean Operator    : and, not, or
+  /* */ SF_BOL_FN,      // Boolean Function    : BETWEEN, CASE ... MATCHTRAILING
+  /* */ SF_BOL_OP,      // Boolean Operator    : AND, NOT, OR
   /* */ SF_BOUND,       // Index Bound         : BOUND, LBOUND, UBOUND
 
   /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
@@ -19,13 +20,16 @@ enum eSF // symbol form
   /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
   /* */ SF_COL_NO,      // Column Number       : $n
   /* */ SF_COL_TC,      // (table) Column No   : $c.n
+  /* */ SF_COL_TYPE,    // Column Type         : INTEGER,
   /* */ SF_COMMA,       // comma               : ,
 
-  /* */ SF_DIRECTION,   // Direction           : asc, desc
+  /* */ SF_DIRECTION,   // Direction           : ASC, DESC
+  /* */ SF_GROUPBY,     // GroupBy             : GROUPBY
   /* */ SF_IDX_COL,     // Index Column no     : $In
   /* */ SF_IDX_NM,      // Index Name          : bIsName
   /* */ SF_KEY_COL,     // Key Column no       : $Kn
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
+  /* */ SF_NOTE,        // Note Literal        : ...any...
   /* */ SF_NUMBER,      // Numeric Literal     : StrLib::bIsDecimal/Float/Integer()
 
   /* */ SF_OTHER,       // other
@@ -38,11 +42,14 @@ enum eSF // symbol form
   /* */ SF_SQY_NO,      // SubQuery No         :
   /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_RSL,     // SubQuery Result     :
+  /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NO,      // Stage No            : Sn
+  /* */ SF_STRING,      // String              : 'abc'
   /* */ SF_TBL_NM,      // Table Name          : bIsName
   /* */ SF_TBL_SYN,     // Table Synonym       : c
   /* */ SF_TBL_SYN_rep, // " (replicated)      : C
   /* */ SF_TYPE,        // Type                : TYPE
+  /* */ SF_XK_CAST,     // CrossRef No         : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
   /* */ SF_XRF_NO,      // CrossRef No         : #n
 
   /* */ SF_ENUMS
@@ -53,6 +60,7 @@ static Stz* aSF[]
   /* */ "SF_NONE"_Stz,
 
   /* */ "SF_AGG_FN"_Stz,
+  /* */ "SF_AS"_Stz,
   /* */ "SF_AS_NM"_Stz,
   /* */ "SF_AS_NM_syn"_Stz,
   /* */ "SF_BOL_FN"_Stz,
@@ -64,13 +72,16 @@ static Stz* aSF[]
   /* */ "SF_COL_NM_syn"_Stz,
   /* */ "SF_COL_NO"_Stz,
   /* */ "SF_COL_TC"_Stz,
+  /* */ "SF_COL_TYPE"_Stz,
   /* */ "SF_COMMA"_Stz,
 
   /* */ "SF_DIRECTION"_Stz,
+  /* */ "SF_GROUPBY"_Stz,
   /* */ "SF_IDX_COL"_Stz,
   /* */ "SF_IDX_NM"_Stz,
   /* */ "SF_KEY_COL"_Stz,
   /* */ "SF_MTH_OP"_Stz,
+  /* */ "SF_NOTE"_Stz,
   /* */ "SF_NUMBER"_Stz,
 
   /* */ "SF_OTHER"_Stz,
@@ -82,10 +93,13 @@ static Stz* aSF[]
   /* */ "SF_SQY_NO"_Stz,
   /* */ "SF_SQY_OP"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
+  /* */ "SF_STG_CAST"_Stz,
   /* */ "SF_STG_NO"_Stz,
+  /* */ "SF_STRING"_Stz,
   /* */ "SF_TBL_NM"_Stz,
   /* */ "SF_TBL_SYN"_Stz,
   /* */ "SF_TYPE"_Stz,
+  /* */ "SF_XK_CAST"_Stz,
   /* */ "SF_XRF_NO"_Stz,
 
   /* */ "SF_ENUMS"_Stz
