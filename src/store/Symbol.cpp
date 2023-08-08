@@ -1673,11 +1673,11 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
   if (SF_OTHER == eSymbol)
     eSymbol = eEvalSymbol(szStz);
 
-//  if (SF_OTHER == eSymbol) {
-//
-//    vTrace("eEvalSymbol: %s\n"_Stz, szStz);
-//    NEVER_REACH
-//  }
+  if (SF_OTHER == eSymbol) {
+
+    vTrace("eEvalSymbol: %s\n"_Stz, szStz);
+    NEVER_REACH
+  }
 
   switch (eSymbol) {
 

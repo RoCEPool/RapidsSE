@@ -1554,6 +1554,18 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 }
 
 /*----------------------------------------------------------------------------*/
+/* step to next main and set member                                           */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vNewMember(eCK eMember, Symbol xSymbol, bool bUpdateMember)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G_vNewMember(eMember, bUpdateMember);
+
+  G.p_NEW->vSymbol(&xSymbol);
+}
+
+/*----------------------------------------------------------------------------*/
 /* clear the M members                                                        */
 /*----------------------------------------------------------------------------*/
 void CardIter::vNullMembers(bool bNull_OP)
