@@ -569,6 +569,16 @@ i8 iIndexSemiAntiJoinConstraint(Dynamic_T* aDynamicT) {
         aDynamicT->m_iProcessRow = 0;
     }
 
+    goto __L_LABEL_INDEX_RETURN__;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // INFLATE-CRW-RET
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    __L_LABEL_INDEX_RETURN__:
+
+    aHeadLine = aHeadLineSav;
+
     // marker-end
 
     return 0;

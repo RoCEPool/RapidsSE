@@ -153,15 +153,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate expressions for populating the key
-        //RASSERT(pOpSketch->m_pExprStack->nValues());
-        //vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        //vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // position at lower bound
         vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
-        //vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join
@@ -174,13 +170,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate code for the constraint
         RASSERT(pOpSketch->m_pConstraintStack->nValues());
-
-        //vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
-        //vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-        //vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pFilterFile);
         vAppendCodeFragment(pOpSketch, "iIndexSemiAntiJoinConstraint"_Stz, pOperatorFile);
 
-        vAppendCodeFragment(pOpSketch, "vIndexJoinReturn01"_Stz, pOperatorFile);
+        //vAppendCodeFragment(pOpSketch, "vIndexJoinReturn01"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // anti/semi-join end
