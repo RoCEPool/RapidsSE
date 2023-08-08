@@ -538,10 +538,10 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iIndexSemiAntiJoinConstraint --------------------------------------------*/
+/*-- iIndexAntiJoinConstraint --------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iIndexSemiAntiJoinConstraint
-i8 iIndexSemiAntiJoinConstraint(Dynamic_T* aDynamicT) {
+// function-iIndexAntiJoinConstraint
+i8 iIndexAntiJoinConstraint(Dynamic_T* aDynamicT) {
 
     void* aHeadLine;
     void* aHeadLineSav;
@@ -551,6 +551,8 @@ i8 iIndexSemiAntiJoinConstraint(Dynamic_T* aDynamicT) {
     RowInfo __ROW_INFO_TO__;
 
     i8 __CONSTRAINTSTACK__;
+
+    __L_LABEL_INDEX_DEREF__:
 
     // marker-start
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -578,6 +580,79 @@ i8 iIndexSemiAntiJoinConstraint(Dynamic_T* aDynamicT) {
     __L_LABEL_INDEX_RETURN__:
 
     aHeadLine = aHeadLineSav;
+
+    if ( aDynamicT->m_iProcessRow ) {
+#ifdef WITH_CLANG
+
+        aDynamicT->m_iProcessRow = 0;
+
+    // move to next entry
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+        &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
+#endif
+        goto __L_LABEL_INDEX_DEREF__;
+    }
+    else {
+        aDynamicT->m_iProcessRow = 1;
+    }
+
+    // marker-end
+
+    return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iIndexSemiJoinConstraint --------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iIndexSemiJoinConstraint
+i8 iIndexSemiJoinConstraint(Dynamic_T* aDynamicT) {
+
+    void* aHeadLine;
+    void* aHeadLineSav;
+    bool bFilterResult;
+
+    IndexInfo __INDEX_INFO__;
+    RowInfo __ROW_INFO_TO__;
+
+    i8 __CONSTRAINTSTACK__;
+
+    __L_LABEL_INDEX_DEREF__:
+
+    // marker-start
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // join constraint
+    __CONSTRAINTSTACK__;
+
+    // check for error
+    if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+        return 0;
+    }
+
+    // check for constraint result
+    if (bFilterResult && bFilterResult != C_DATUM_NULL) {
+        aDynamicT->m_iProcessRow = 1;
+    } else {
+        aDynamicT->m_iProcessRow = 0;
+    }
+
+    goto __L_LABEL_INDEX_RETURN__;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // INFLATE-CRW-RET
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    __L_LABEL_INDEX_RETURN__:
+
+    aHeadLine = aHeadLineSav;
+
+    if ( ! aDynamicT->m_iProcessRow ) {
+#ifdef WITH_CLANG
+        // move to next entry
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+        &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
+#endif
+        goto __L_LABEL_INDEX_DEREF__;
+    }
 
     // marker-end
 

@@ -170,16 +170,12 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate code for the constraint
         RASSERT(pOpSketch->m_pConstraintStack->nValues());
-        vAppendCodeFragment(pOpSketch, "iIndexSemiAntiJoinConstraint"_Stz, pOperatorFile);
-
-        //vAppendCodeFragment(pOpSketch, "vIndexJoinReturn01"_Stz, pOperatorFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // anti/semi-join end
+        //vAppendCodeFragment(pOpSketch, "iIndexSemiAntiJoinConstraint"_Stz, pOperatorFile);
+        
         if (pOpSketch->eSketchKind() == SK_ANTIJOIN)
-          vAppendCodeFragment(pOpSketch, "vAntiJoinEnd"_Stz, pOperatorFile);
+          vAppendCodeFragment(pOpSketch, "iIndexAntiJoinConstraint"_Stz, pOperatorFile);
         else
-          vAppendCodeFragment(pOpSketch, "vSemiJoinEnd"_Stz, pOperatorFile);
+          vAppendCodeFragment(pOpSketch, "iIndexSemiJoinConstraint"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the indexJoin code fragments file
