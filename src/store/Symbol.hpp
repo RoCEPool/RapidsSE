@@ -49,6 +49,7 @@ namespace STORE
     static bool bIs_Col_Type(Stz* szArg);        // INTEGER,
     static bool bIs_Comma(Stz* szArg);           // ,
     static bool bIs_Direction(Stz* szArg);       // asc, desc
+    static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
     static bool bIs_Idx_Col(Stz* szArg);         // $In
     static bool bIs_Idx_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
@@ -104,6 +105,7 @@ namespace STORE
     bool bIs_Col_Type(void);        // INTEGER,
     bool bIs_Comma(void);           // ,
     bool bIs_Direction(void);       // asc, desc
+    bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_GroupBy(void);         // GROUPBY
     bool bIs_Idx_Col(void);         // $In
     bool bIs_Idx_Nm(void);          // Sn
@@ -200,6 +202,7 @@ namespace STORE
     void vSet_Col_Type(Stz* szColType);
     void vSet_Comma(Stz* szComma);
     void vSet_Direction(Stz* szColNm);
+    void vSet_Fld_Nm(Stz* szFldNm);
     void vSet_GroupBy(Stz* szGroupBy);
     void vSet_Idx_Col(i8 iIdxColOdn);
     void vSet_Idx_Col(Stz* szIdxCol);

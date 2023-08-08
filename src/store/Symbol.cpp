@@ -416,6 +416,17 @@ bool Symbol::bIs_Direction(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Fld_Nm(Stz* szArg)
+{
+  _static_
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a sort direction?                                           */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_GroupBy(Stz* szArg)
 {
   _static_
@@ -1168,6 +1179,19 @@ bool Symbol::bIs_Direction(void)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Fld_Nm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Fld_Nm(m_sSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a sort direction?                                           */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_GroupBy(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -1666,6 +1690,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_COL_TYPE:    vSet_Col_Type(szStz);    break;
     case SF_COMMA:       vSet_Comma(szStz);       break;
     case SF_DIRECTION:   vSet_Direction(szStz);   break;
+    case SF_FLD_NM:      vSet_Fld_Nm(szStz);      break;
     case SF_GROUPBY:     vSet_GroupBy(szStz);     break;
     case SF_IDX_COL:     vSet_Idx_Col(szStz);     break;
     case SF_IDX_NM:      vSet_Idx_Nm(szStz);      break;
@@ -2330,6 +2355,19 @@ void Symbol::vSet_Direction(Stz* szColNm)
   m_eSymbol = SF_DIRECTION;
 
   RASSERT(bIs_Direction());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Fld_Nm(Stz* szFldNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szFldNm;
+  m_eSymbol = SF_FLD_NM;
+
+  RASSERT(bIs_Fld_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
