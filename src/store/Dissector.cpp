@@ -1326,7 +1326,7 @@ Card_Direction* Dissector::pPopDirection(Card_RpnTerms* pCard_RpnTerms)
   Stz* szDirn = pCard_Term->szSymbol();
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
-  Card_Direction* pCard_Direction = (new Card_Direction) ->SYM(SF_DIRECT,szDirn);
+  Card_Direction* pCard_Direction = (new Card_Direction) ->SYM(SF_DIRECTION, szDirn);
 
   delete pCard_Term;
   pCard_Term = nullptr;
@@ -1396,7 +1396,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   }
   else
   if (bEnsureDirection) {
-    Card_Direction* pCard_Direction = (new Card_Direction) ->SYM(SF_DIRECT,"ASC"_Stz);
+    Card_Direction* pCard_Direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
     pCard_Expr->vAppend(pCard_Direction);
   }
 

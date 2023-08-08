@@ -48,6 +48,7 @@ namespace STORE
     static bool bIs_Comma(Stz* szArg);           // ,
     static bool bIs_Direction(Stz* szArg);       // asc, desc
     static bool bIs_Idx_Col(Stz* szArg);         // $In
+    static bool bIs_Idx_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Key_Col(Stz* szArg);         // $Kn
     static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
     static bool bIs_Number(Stz* szArg);          // StrLib::bIsDecimal/Float/Integer()
@@ -94,6 +95,7 @@ namespace STORE
     bool bIs_Comma(void);           // ,
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Idx_Col(void);         // $In
+    bool bIs_Idx_Nm(void);          // Sn
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_Number(void);          // StrLib::bIsDecimal/Float/Integer()
@@ -180,6 +182,7 @@ namespace STORE
     void vSet_Comma(Stz* szComma);
     void vSet_Direction(Stz* szColNm);
     void vSet_Idx_Col(i8 iIdxColOdn);
+    void vSet_Idx_Nm(Stz* szIdxNm);
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Mth_Op(Stz* szMthOp);
     void vSet_Number(i8 iNumber);

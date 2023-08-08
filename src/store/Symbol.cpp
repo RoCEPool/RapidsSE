@@ -137,7 +137,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Col_Nm_syn(szSymbol))   return SF_COL_NM_syn;
   if (bIs_Col_No(szSymbol))       return SF_COL_NO;
   if (bIs_Col_Tc(szSymbol))       return SF_COL_TC;
-  if (bIs_Direction(szSymbol))    return SF_DIRECT;
+  if (bIs_Direction(szSymbol))    return SF_DIRECTION;
   if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
   if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
   if (bIs_Number(szSymbol))       return SF_NUMBER;
@@ -394,6 +394,26 @@ bool Symbol::bIs_Idx_Col(Stz* szArg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a index name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Idx_Nm(Stz* szArg)
+{
+  _static_
+
+  if (! StrLib::bIsSqlName(szArg->azChar()))
+    return false;
+
+  if (bIs_Agg_Fn(szArg))      return false;
+  if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Op(szArg))      return false;
+  if (bIs_Bound(szArg))       return false;
+  if (bIs_Direction(szArg))   return false;
+  if (bIs_Sqy_Op(szArg))      return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1018,6 +1038,19 @@ bool Symbol::bIs_Idx_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a index name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Idx_Nm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Idx_Nm(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Key_Col(void)
@@ -1399,14 +1432,15 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 
   switch (eSymbol) {
 
-    case SF_AS_NM:   vSet_As_Nm(szStz);     break;
-    case SF_COL_NM:  vSet_Col_Nm(szStz);    break;
-    case SF_COL_NO:  vSet_Col_No(szStz);    break;
-    case SF_DIRECT:  vSet_Direction(szStz); break;
-    case SF_SQY_KEY: vSet_Other(szStz);     break;
-    case SF_TBL_NM:  vSet_Tbl_Nm(szStz);    break;
+    case SF_AS_NM:      vSet_As_Nm(szStz);     break;
+    case SF_COL_NM:     vSet_Col_Nm(szStz);    break;
+    case SF_COL_NO:     vSet_Col_No(szStz);    break;
+    case SF_DIRECTION:  vSet_Direction(szStz); break;
+    case SF_IDX_NM:     vSet_Idx_Nm(szStz);    break;
+    case SF_SQY_KEY:    vSet_Other(szStz);     break;
+    case SF_TBL_NM:     vSet_Tbl_Nm(szStz);    break;
 
-    case SF_OTHER:   vSet_Other(szStz);     break;
+    case SF_OTHER:      vSet_Other(szStz);     break;
 
     default: NEVER_REACH;
   }
@@ -2009,7 +2043,7 @@ void Symbol::vSet_Direction(Stz* szColNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szColNm;
-  m_eSymbol = SF_DIRECT;
+  m_eSymbol = SF_DIRECTION;
 
   RASSERT(bIs_Direction());
 
@@ -2026,6 +2060,19 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
   m_eSymbol = SF_IDX_COL;
 
   RASSERT(bIs_Idx_Col());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szIdxNm;
+  m_eSymbol = SF_TBL_NM;
+
+  RASSERT(bIs_Idx_Nm());
 }
 
 /*----------------------------------------------------------------------------*/

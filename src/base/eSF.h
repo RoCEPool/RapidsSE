@@ -21,8 +21,9 @@ enum eSF // symbol form
   /* */ SF_COL_TC,      // (table) Column No   : $c.n
   /* */ SF_COMMA,       // comma               : ,
 
-  /* */ SF_DIRECT,      // Direction           : asc, desc
+  /* */ SF_DIRECTION,   // Direction           : asc, desc
   /* */ SF_IDX_COL,     // Index Column no     : $In
+  /* */ SF_IDX_NM,      // Index Name          : bIsName
   /* */ SF_KEY_COL,     // Key Column no       : $Kn
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
   /* */ SF_NUMBER,      // Numeric Literal     : StrLib::bIsDecimal/Float/Integer()
@@ -64,8 +65,9 @@ static Stz* aSF[]
   /* */ "SF_COL_TC"_Stz,
   /* */ "SF_COMMA"_Stz,
 
-  /* */ "SF_DIRECT"_Stz,
+  /* */ "SF_DIRECTION"_Stz,
   /* */ "SF_IDX_COL"_Stz,
+  /* */ "SF_IDX_NM"_Stz,
   /* */ "SF_KEY_COL"_Stz,
   /* */ "SF_MTH_OP"_Stz,
   /* */ "SF_NUMBER"_Stz,
