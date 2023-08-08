@@ -64,6 +64,7 @@ namespace STORE
     static bool bIs_Tbl_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c
     static bool bIs_Tbl_Syn_rep(Stz* szArg);     // $C
+    static bool bIs_Type(Stz* szArg);            // TYPE
     static bool bIs_Xrf_No(Stz* szArg);          // #n
 
     static void vStripDisamb(String* psArg);
@@ -109,6 +110,7 @@ namespace STORE
     bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Tbl_Syn_rep(void);     // c
+    bool bIs_Type(void);            // TYPE
     bool bIs_Xrf_No(void);          // #n
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
@@ -197,6 +199,7 @@ namespace STORE
     void vSet_Tbl_Nm(Stz* szTblNm);
     void vSet_Tbl_Syn(char cTblSyn);
     void vSet_Tbl_Syn_rep(void);
+    void vSet_Type(Stz* szType);
     void vSet_Xrf_No(i8 iXrefNo);
 
     void vSymSprint(Stz* szFormat, ...);

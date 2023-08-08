@@ -664,6 +664,19 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Type(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("TYPE"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a cross-refernece?  (i.e. #n)                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Xrf_No(Stz* szArg)
@@ -1212,6 +1225,19 @@ bool Symbol::bIs_Tbl_Syn_rep(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Tbl_Syn_rep(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a parenthesis?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Type(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Type(m_sSymbol))
     return true;
 
   return false;
@@ -2266,6 +2292,18 @@ void Symbol::vSet_Tbl_Syn_rep(void)
   RASSERT(bIs_Tbl_Syn_rep());
 }
 
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Type(Stz* szType)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szType;
+  m_eSymbol = SF_TYPE;
+
+  RASSERT(bIs_Type());
+}
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given cross-reference no                                */

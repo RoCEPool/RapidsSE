@@ -42,6 +42,7 @@ enum eSF // symbol form
   /* */ SF_TBL_NM,      // Table Name          : bIsName
   /* */ SF_TBL_SYN,     // Table Synonym       : c
   /* */ SF_TBL_SYN_rep, // " (replicated)      : C
+  /* */ SF_TYPE,        // Type                : TYPE
   /* */ SF_XRF_NO,      // CrossRef No         : #n
 
   /* */ SF_ENUMS
@@ -84,6 +85,7 @@ static Stz* aSF[]
   /* */ "SF_STG_NO"_Stz,
   /* */ "SF_TBL_NM"_Stz,
   /* */ "SF_TBL_SYN"_Stz,
+  /* */ "SF_TYPE"_Stz,
   /* */ "SF_XRF_NO"_Stz,
 
   /* */ "SF_ENUMS"_Stz
