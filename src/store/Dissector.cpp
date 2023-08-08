@@ -1193,7 +1193,7 @@ Card_Table* Dissector::pFormTable(Stz* szTableNm, Table* pTable)
   Card_Table* pCard_Table = new Card_Table;
   pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
 
-  Card_TableNm* pCard_TableNm = (new Card_TableNm) ->SYM(SF_OTHER,szTableNm);
+  Card_TableNm* pCard_TableNm = (new Card_TableNm) ->SYM(SF_TBL_NM,szTableNm);
   pCard_Table->vAppend(pCard_TableNm);
 
   return pCard_Table;

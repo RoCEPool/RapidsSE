@@ -150,8 +150,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
   return SF_OTHER;
-  //vTrace("eEvalSymbol: %s\n"_Stz,szSymbol);
-  //NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1430,11 +1428,19 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 //  if (SF_OTHER == eSymbol)
 //    eSymbol = eEvalSymbol(szStz);
 
+//  if (SF_OTHER == eSymbol) {
+//
+//    vTrace("eEvalSymbol: %s\n"_Stz, szStz);
+//    NEVER_REACH
+//  }
+
   switch (eSymbol) {
 
+    case SF_AGG_FN:     vSet_Agg_Fn(szStz);    break;
     case SF_AS_NM:      vSet_As_Nm(szStz);     break;
     case SF_COL_NM:     vSet_Col_Nm(szStz);    break;
     case SF_COL_NO:     vSet_Col_No(szStz);    break;
+    case SF_COL_TC:     vSet_Col_Tc(szStz);    break;
     case SF_DIRECTION:  vSet_Direction(szStz); break;
     case SF_IDX_NM:     vSet_Idx_Nm(szStz);    break;
     case SF_SQY_KEY:    vSet_Other(szStz);     break;
@@ -2030,6 +2036,19 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSymSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+  m_eSymbol = SF_COL_TC;
+
+  RASSERT(bIs_Col_Tc());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Tc(Stz* szColTc)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szColTc;
   m_eSymbol = SF_COL_TC;
 
   RASSERT(bIs_Col_Tc());
