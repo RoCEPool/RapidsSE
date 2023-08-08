@@ -17,12 +17,10 @@ __vDeleteFunction(Card_Limit,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(Stz* szRows)
+Card_Limit::Card_Limit(void)
 : Card_OP(CK_LIMIT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  SYM(SF_OTHER,szRows);
 
   _checkInitialised_(CN_CARD);
   

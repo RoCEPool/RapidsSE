@@ -839,10 +839,8 @@ Card* Dissector::pOp_Limit(void)
 
   i8 nRows = iGetInt(0);
 
-  s32 sRows;
-  sRows.vSprint("%lld"_Stz,nRows);
 
-  Card_Limit* pCard_Limit = new Card_Limit(sRows);
+  Card_Limit* pCard_Limit = _pCard_Limit((new Card_Limit) ->SYM(SF_NUMBER,nRows));
 
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
   Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
