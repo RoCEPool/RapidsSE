@@ -444,16 +444,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 					vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
           vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition"_Stz, pOperatorFile);
-          //vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-          //vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
-          //vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
-
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO3"_Stz, pOperatorFile);
-//          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
-//          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-//          vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
-//          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
-            vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // dereference the join
@@ -470,11 +461,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
             vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
           }
 
-            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
-            vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-            vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
-            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
-            //vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+					vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
+					vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+					vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
+					vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
         }
 
         else {

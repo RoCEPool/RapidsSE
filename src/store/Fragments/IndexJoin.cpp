@@ -146,38 +146,6 @@ void vIndexJoinContinueLO2(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexJoinContinueLO3 ---------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexJoinContinueLO3
-void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
-
-  JOIN_WITH_NULLS:
-    __L_LABEL_OUTER_LOOP__:
-
-  // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the upper bound entry
-
-#ifdef WITH_CLANG
-  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
-      aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
-#endif
-  __L_LABEL_INDEX_DEREF__:
-  aDynamicT->m_iProcessRow = 1;
-
-  if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
-      // did we join any rows with current left row ?
-      if (aDynamicT->m_iJoinedRows == 0)
-        goto JOIN_WITH_NULLS;
-      else {
-        aDynamicT->m_iProcessRow = 0;
-        goto __L_LABEL_OUTER_LOOP__;
-      }
-  }
-    // marker-end
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vIndexJoinCrossPosition ------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinCrossPosition
@@ -578,6 +546,7 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
   bool bLeftOuterRow;
 
   JOIN_WITH_NULLS:
+	__L_LABEL_OUTER_LOOP__:
 
   // marker-start
 #ifdef WITH_CLANG
@@ -592,6 +561,26 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
      goto JOIN_WITH_NULLS;
   }
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// find the upper bound entry
+
+#ifdef WITH_CLANG
+	aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
+      aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
+#endif
+	__L_LABEL_INDEX_DEREF__:
+	aDynamicT->m_iProcessRow = 1;
+
+	if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
+		// did we join any rows with current left row ?
+		if (aDynamicT->m_iJoinedRows == 0)
+			goto JOIN_WITH_NULLS;
+		else {
+			aDynamicT->m_iProcessRow = 0;
+			goto __L_LABEL_OUTER_LOOP__;
+		}
+	}
   // marker-end
 
 }
