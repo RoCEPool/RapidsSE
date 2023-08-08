@@ -19,19 +19,6 @@ __vDeleteFunction(Card_Term,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//Card_Term::Card_Term(Stz* szTerm)
-//: Card_symbol(CK_TERM, szTerm, SF_OTHER)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  _checkInitialised_(CN_CARD);
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Card_Term::Card_Term(void)
     : Card_symbol(CK_TERM)
 {
@@ -211,14 +198,14 @@ eTE Card_Term::eEvalTerm(void)
 
   Stz* szValue = this->szSymbol();
 
-       if (bSameSymbol("and"_Stz))        return TE_AND;
-  else if (bSameSymbol("or"_Stz))         return TE_OR;
-  else if (bSameSymbol("not"_Stz))        return TE_NOT;
-  else if (bSameSymbol("}"_Stz))          return TE_EXECUTE;
-  else if (bSameSymbol("exists"_Stz))     return TE_EXISTS;
-  else if (bSameSymbol("in"_Stz))         return TE_IN;
-  else if (bSameSymbol("notExists"_Stz))  return TE_NOTEXISTS;
-  else if (bSameSymbol("notIn"_Stz))      return TE_NOTIN;
+       if (pSymbol()->bSame("and"_Stz))        return TE_AND;
+  else if (pSymbol()->bSame("or"_Stz))         return TE_OR;
+  else if (pSymbol()->bSame("not"_Stz))        return TE_NOT;
+  else if (pSymbol()->bSame("}"_Stz))          return TE_EXECUTE;
+  else if (pSymbol()->bSame("exists"_Stz))     return TE_EXISTS;
+  else if (pSymbol()->bSame("in"_Stz))         return TE_IN;
+  else if (pSymbol()->bSame("notExists"_Stz))  return TE_NOTEXISTS;
+  else if (pSymbol()->bSame("notIn"_Stz))      return TE_NOTIN;
 
   else if (pSymbol()->bIs_Rln_Op())     return TE_RELNOP;
   else if (pSymbol()->bIs_Bol_Fn())     return TE_BOOLFN;
@@ -375,18 +362,6 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSprintDataRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
   //vPrintCard_bySettings(pRibbon, iDepth);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is                                                                         */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bSameAs(Card_Term* p_term_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = bSameSymbol(p_term_arg->szSymbol());
-
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/

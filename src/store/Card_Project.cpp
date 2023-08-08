@@ -78,7 +78,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     i_Col++;
 
     pCI->G.p_expr = _pCard_Expr(pCI->G.p_projection->pGetChild(i_expr_projection));
-    if (pCI->G.p_expr->bSameSymbol("$1"_Stz))
+    if (pCI->G.p_expr->pSymbol()->bSame("$1"_Stz))
       continue;
 
     pCI->G.p_as = pCI->G.p_expr->pSub_as();

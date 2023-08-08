@@ -96,7 +96,7 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (bSkipFoldExpr && p_term->bSameSymbol("$1"_Stz))
+    if (bSkipFoldExpr && p_term->pSymbol()->bSame("$1"_Stz))
       return C_CONTINUE_RECURSION;
 
     if (p_term->pSymbol()->bIs_Col_No()) {

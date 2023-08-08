@@ -1144,19 +1144,6 @@ bool Card::bSameSymbol(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
-bool Card::bSameSymbol(Stz* szSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (m_xSymbol.bSame(szSymbol))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this card's symbolic value the same as given arg?                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bSameSymbol(Card* pArg)

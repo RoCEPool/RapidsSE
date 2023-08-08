@@ -1050,7 +1050,7 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
             //p_as->vDump();
-            if (p_as->bSameSymbol(p_term->szSymbol())) {
+            if (p_as->pSymbol()->bSame(p_term->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }

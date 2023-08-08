@@ -492,7 +492,7 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
       continue;
 
     xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-    if (xCI.G.p_joinCast && !xCI.G.p_joinCast->bSameSymbol("XK_UNICAST"_Stz))
+    if (xCI.G.p_joinCast && !xCI.G.p_joinCast->pSymbol()->bSame("XK_UNICAST"_Stz))
       return false;
 
     if (xCI.G.p_MainCard->pSymbol()->cSF_char() == cTblSyn_prev)

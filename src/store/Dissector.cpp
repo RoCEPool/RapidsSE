@@ -588,7 +588,7 @@ Card* Dissector::pOp_IndexJoin(void)
   pCard_Bound->vTransferChildren(p_rpnTerms_bound);
 
   Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
-  if (p_term_first->bSameSymbol("LEFT_OUTER"_Stz)) {
+  if (p_term_first->pSymbol()->bSame("LEFT_OUTER"_Stz)) {
     Card_OuterJoin* pCard_OuterJoin = new Card_OuterJoin;
     pCard_OuterJoin->pSymbol()->vSym(p_term_first->pSymbol());
     pCard_IndexJoin->vAppend(pCard_OuterJoin);
@@ -596,7 +596,7 @@ Card* Dissector::pOp_IndexJoin(void)
   pCard_Bound->vDeleteChild(p_term_first);
 
   p_term_first = pCard_Bound->pGetTerm(0);
-  if (p_term_first->bSameSymbol("BOUND"_Stz))
+  if (p_term_first->pSymbol()->bSame("BOUND"_Stz))
     pCard_Bound->vDeleteChild(p_term_first);
 
   i8 nTerms = pCard_Bound->nChildCards();
@@ -1212,7 +1212,7 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* pCard_RpnTerms)
 
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term->bSameSymbol("AS"_Stz));
+  RASSERT(pCard_Term->pSymbol()->bSame("AS"_Stz));
   delete pCard_Term;
   pCard_Term = nullptr;
 
@@ -1360,7 +1360,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   // [ AS <as> ]
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bSameSymbol("AS"_Stz)) {
+      && pCard_Term_head->pSymbol()->bSame("AS"_Stz)) {
 
     Card_As* pCard_As = pPopAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -1378,7 +1378,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bSameSymbol("AS"_Stz)) {
+      && pCard_Term_head->pSymbol()->bSame("AS"_Stz)) {
 
     Card_As* pCard_As = pPopAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -1388,8 +1388,8 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   // [ ASC | DESC ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && (pCard_Term_head->bSameSymbol("ASC"_Stz) ||
-          pCard_Term_head->bSameSymbol("DESC"_Stz))) {
+      && (pCard_Term_head->pSymbol()->bSame("ASC"_Stz) ||
+          pCard_Term_head->pSymbol()->bSame("DESC"_Stz))) {
 
     Card_Direction* pCard_Direction = pPopDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_Direction);
@@ -1421,7 +1421,7 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirectio
 
   // GROUPBY
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
-  if (pCard_Term_head->bSameSymbol("GROUPBY"_Stz)) {
+  if (pCard_Term_head->pSymbol()->bSame("GROUPBY"_Stz)) {
     pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
     delete pCard_Term_head;
     pCard_Term_head = nullptr;
@@ -1432,7 +1432,7 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirectio
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
 
     // AGGREGATES
-    if (pCard_Term_head->bSameSymbol("AGGREGATES"_Stz)) {
+    if (pCard_Term_head->pSymbol()->bSame("AGGREGATES"_Stz)) {
       break;
     }
 
@@ -1469,7 +1469,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
   i8 iCardNo = 0;
 
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
-  if (pCard_Term_head->bSameSymbol("AGGREGATES"_Stz)) {
+  if (pCard_Term_head->pSymbol()->bSame("AGGREGATES"_Stz)) {
     pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
     delete pCard_Term_head;
 
@@ -1480,7 +1480,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
 
     // GROUPBY
-    if (pCard_Term_head->bSameSymbol("GROUPBY"_Stz)) {
+    if (pCard_Term_head->pSymbol()->bSame("GROUPBY"_Stz)) {
       break;
     }
 
@@ -1514,11 +1514,11 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
 
     if (
-        pCard_Term_popped->bSameSymbol("AGGREGATES"_Stz)
-        || pCard_Term_popped->bSameSymbol("AS"_Stz)
-        || pCard_Term_popped->bSameSymbol("ASC"_Stz)
-        || pCard_Term_popped->bSameSymbol("DESC"_Stz)
-        || pCard_Term_popped->bSameSymbol("GROUPBY"_Stz)
+        pCard_Term_popped->pSymbol()->bSame("AGGREGATES"_Stz)
+        || pCard_Term_popped->pSymbol()->bSame("AS"_Stz)
+        || pCard_Term_popped->pSymbol()->bSame("ASC"_Stz)
+        || pCard_Term_popped->pSymbol()->bSame("DESC"_Stz)
+        || pCard_Term_popped->pSymbol()->bSame("GROUPBY"_Stz)
         || pCard_Term_popped->pSymbol()->bIs_Comma()
         ) {
       pCard_RpnTerms->vPush(pCard_Term_popped);

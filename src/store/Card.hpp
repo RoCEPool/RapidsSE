@@ -322,11 +322,9 @@ namespace STORE
 
     bool bSameSymbol(char cSymbol);
     bool bSameSymbol(Symbol* pSymbol);
-    bool bSameSymbol(Stz* szSymbol);
     bool bSameSymbol(Card* pArg);
 
     Symbol* pSymbol(void);
-
     Stz* szSymbol(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);

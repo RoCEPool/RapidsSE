@@ -202,7 +202,7 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   while (xCI.G_bEachMain(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xCI.G.p_idxCol->bSameSymbol(szTblColOdn))
+    if (xCI.G.p_idxCol->pSymbol()->bSame(szTblColOdn))
       return true;
   }
 

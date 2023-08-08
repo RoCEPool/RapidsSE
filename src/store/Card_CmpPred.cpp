@@ -298,7 +298,7 @@ bool Card_CmpPred::bIsEqOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bSameSymbol("=="_Stz))
+  if (pSymbol()->bSame("=="_Stz))
     return true;
 
   return false;

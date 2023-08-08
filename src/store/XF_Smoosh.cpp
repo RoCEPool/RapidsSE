@@ -100,10 +100,12 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
   pCI->G.p_cmpPred = pCI->G.p_boolCalc->pCmpPred_whichCallsSubQuery(pCI);
 
-  if (pCI->G.p_cmpPred->bSameSymbol("in"_Stz) || pCI->G.p_cmpPred->bSameSymbol("exists"_Stz))
+  if (pCI->G.p_cmpPred->pSymbol()->bSame("in"_Stz) ||
+      pCI->G.p_cmpPred->pSymbol()->bSame("exists"_Stz))
     p_table_exists->vAppend(new Card_KeyExists);
   else
-  if (pCI->G.p_cmpPred->bSameSymbol("notIn"_Stz) || pCI->G.p_cmpPred->bSameSymbol("notExists"_Stz))
+  if (pCI->G.p_cmpPred->pSymbol()->bSame("notIn"_Stz) ||
+      pCI->G.p_cmpPred->pSymbol()->bSame("notExists"_Stz))
     p_table_exists->vAppend(new Card_KeyNotExists);
 
   pCI->Prior.m_pProjection = p_projection_table;

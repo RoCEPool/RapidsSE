@@ -461,7 +461,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
       if (!p_pred->pSymbol()->Y_bHas(P_CrlKeyTest))
         return;
 
-      RASSERT(p_pred->bSameSymbol("=="_Stz));
+      RASSERT(p_pred->pSymbol()->bSame("=="_Stz));
 
       CardIter xCI(p_pred);
       while (xCI.G_bEachMain()) {

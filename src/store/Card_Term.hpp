@@ -39,7 +39,6 @@ namespace STORE
     bool bIsStmOdn(void);   // $n
     bool bIsValOdn(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    bool bSameAs(Card_Term* p_term_arg);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
