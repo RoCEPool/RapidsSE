@@ -767,7 +767,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  char cTblSyn = bIsCard(CK_TABLE) ? cSymbol() : pSub_table()->cSymbol();
+  char cTblSyn = bIsCard(CK_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
 
   i8 i_Expr = p_projection->nExpr() + 1;
 

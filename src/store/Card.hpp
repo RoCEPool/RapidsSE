@@ -327,10 +327,8 @@ namespace STORE
 
     Symbol* pSymbol(void);
 
-    char cSymbol(void);
     i8   iSymbol(void);
     Stz* szSymbol(void);
-    void vSymbol(eSF esymbol, Stz* szStz);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 

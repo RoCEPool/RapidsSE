@@ -53,7 +53,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
 
   Card_TableNm* p_tableNm = p_table->pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
-  char cTableSyn = p_table->cSymbol();
+  char cTableSyn = p_table->pSymbol()->cSF_char();
 
   PtnDef* pPtnDef = pTable->pPtnDef();
   Column* pPtnColumn = pPtnDef->pGetColumn(0);

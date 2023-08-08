@@ -228,7 +228,7 @@ Card_Table* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
     if (pMain->bIsCard(CK_TABLE)) {
       Card_Table* p_table_test = _pCard_Table(pMain);
-      if (cTblSyn == p_table_test->cSymbol()) {
+      if (cTblSyn == p_table_test->pSymbol()->cSF_char()) {
         p_table = p_table_test;
         break;
       }
@@ -337,7 +337,7 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char cTblSyn = this->cSymbol();
+  char cTblSyn = this->pSymbol()->cSF_char();
 
   Card_Bound* p_bound;
   Card_PRED* p_childPRED;
@@ -418,7 +418,7 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
         p_index->vAppend(p_bounds);
       }
 
-      char cTblSyn = this->cSymbol();
+      char cTblSyn = this->pSymbol()->cSF_char();
       Card_Bound *p_bound = Card_Bound::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
       p_bounds->vAppend(p_bound);
 
@@ -516,7 +516,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
     sName.vToUpper();
 
   if (m_xSymbol.bHasSymbol())
-    sName.vCatSprint(" %c"_Stz, cSymbol());
+    sName.vCatSprint(" %c"_Stz, pSymbol()->cSF_tblSyn());
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
