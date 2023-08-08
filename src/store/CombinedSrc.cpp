@@ -153,8 +153,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // position at lower bound
-        vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
-        vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
+        vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
+        //vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join
@@ -445,8 +445,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         else if (pOpSketch->m_bLeftOuter) {
 
           vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition"_Stz, pOperatorFile);
-          //vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO0"_Stz, pOperatorFile);
-          //vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
           vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
           vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
