@@ -33,11 +33,12 @@ enum eSF // symbol form
 
   /* */ SF_PRM_COL,     // Parameter Column    : %n
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
-  /* */ SF_STG_NO,      // Stage No            : Sn
   /* */ SF_SQY_KEY,     // SubQuery Correl Key :
   /* */ SF_SQY_NO,      // SubQuery No         :
   /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_RSL,     // SubQuery Result     :
+  /* */ SF_STG_NO,      // Stage No            : Sn
+  /* */ SF_TBL_NM,      // Table Name          : bIsName
   /* */ SF_TBL_SYN,     // Table Synonym       : c
   /* */ SF_TBL_SYN_rep, // " (replicated)      : C
   /* */ SF_XRF_NO,      // CrossRef No         : #n
@@ -79,6 +80,7 @@ static Stz* aSF[]
   /* */ "SF_SQY_OP"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
   /* */ "SF_STG_NO"_Stz,
+  /* */ "SF_TBL_NM"_Stz,
   /* */ "SF_TBL_SYN"_Stz,
   /* */ "SF_XRF_NO"_Stz,
 

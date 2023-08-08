@@ -150,6 +150,8 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
   return SF_OTHER;
+  //vTrace("eEvalSymbol: %s\n"_Stz,szSymbol);
+  //NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -587,6 +589,26 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szStz)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a column name?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Nm(Stz* szArg)
+{
+  _static_
+
+  if (! StrLib::bIsSqlName(szArg->azChar()))
+    return false;
+
+  if (bIs_Agg_Fn(szArg))      return false;
+  if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Op(szArg))      return false;
+  if (bIs_Bound(szArg))       return false;
+  if (bIs_Direction(szArg))   return false;
+  if (bIs_Sqy_Op(szArg))      return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1126,6 +1148,19 @@ bool Symbol::bIs_Stg_Nm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a table name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Nm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Tbl_Nm(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol a table synonym?  (i.e. c)                                */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Syn(void)
@@ -1359,14 +1394,19 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  if (SF_OTHER == eSymbol)
+//    eSymbol = eEvalSymbol(szStz);
+
   switch (eSymbol) {
 
     case SF_AS_NM:   vSet_As_Nm(szStz);     break;
     case SF_COL_NM:  vSet_Col_Nm(szStz);    break;
     case SF_COL_NO:  vSet_Col_No(szStz);    break;
     case SF_DIRECT:  vSet_Direction(szStz); break;
-    case SF_OTHER:   vSet_Other(szStz);     break;
     case SF_SQY_KEY: vSet_Other(szStz);     break;
+    case SF_TBL_NM:  vSet_Tbl_Nm(szStz);    break;
+
+    case SF_OTHER:   vSet_Other(szStz);     break;
 
     default: NEVER_REACH;
   }
@@ -2078,20 +2118,6 @@ void Symbol::vSet_Rln_Op(Stz* szRlnOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Stg_Nm(i8 iStageNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vSymSprint("S%02lld"_Stz, iStageNo);
-  m_eSymbol = SF_STG_NO;
-
-  RASSERT(bIs_Stg_Nm());
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given subquery-number                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Sqy_No(i8 iSqNo)
@@ -2115,6 +2141,34 @@ void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
   m_eSymbol = SF_SQY_OP;
 
   RASSERT(bIs_Rln_Op());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Stg_Nm(i8 iStageNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSymSprint("S%02lld"_Stz, iStageNo);
+  m_eSymbol = SF_STG_NO;
+
+  RASSERT(bIs_Stg_Nm());
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Tbl_Nm(Stz* szTblNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szTblNm;
+  m_eSymbol = SF_TBL_NM;
+
+  RASSERT(bIs_Tbl_Nm());
+
 }
 
 /*----------------------------------------------------------------------------*/

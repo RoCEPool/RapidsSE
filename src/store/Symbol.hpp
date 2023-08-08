@@ -60,6 +60,7 @@ namespace STORE
     static bool bIs_Sqy_Prm(Stz* szArg);         // %n
     static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
     static bool bIs_Stg_Nm(Stz* szArg);          // Sn
+    static bool bIs_Tbl_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c
     static bool bIs_Tbl_Syn_rep(Stz* szArg);     // $C
     static bool bIs_Xrf_No(Stz* szArg);          // #n
@@ -103,6 +104,7 @@ namespace STORE
     bool bIs_Sqy_Prm(void);         // %n
     bool bIs_Sqy_Rsl(void);         // __n
     bool bIs_Stg_Nm(void);          // Sn
+    bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Tbl_Syn_rep(void);     // c
     bool bIs_Xrf_No(void);          // #n
@@ -188,6 +190,7 @@ namespace STORE
     void vSet_Sqy_No(i8 iSqNo);
     void vSet_Sqy_Op(Stz* szSqyOp);
     void vSet_Stg_Nm(i8 iStageNo);
+    void vSet_Tbl_Nm(Stz* szTblNm);
     void vSet_Tbl_Syn(char cTblSyn);
     void vSet_Tbl_Syn_rep(void);
     void vSet_Xrf_No(i8 iXrefNo);
