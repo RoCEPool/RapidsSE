@@ -37,6 +37,7 @@ namespace STORE
     static eSF  eEvalSymbol(Stz* szSymbol);
 
     static bool bIs_Agg_Fn(Stz* szArg);          // avg, count, ... sum
+    static bool bIs_As_Nm(Stz* szArg);           // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Bol_Fn(Stz* szArg);          // between, case ... matchTrailing
     static bool bIs_Bol_Op(Stz* szArg);          // and, not, or
     static bool bIs_Bound(Stz* szArg);           // BOUND, LBOUND, UBOUND
@@ -55,10 +56,13 @@ namespace STORE
     static bool bIs_Rln_Op(Stz* szArg);          // <, <=, ... >
     static bool bIs_Sqy_Crl_Key(Stz* szStz);     // _SQCRLKEY_
     static bool bIs_Sqy_Nm(Stz* szStz);          // __subqueryN
+    static bool bIs_Sqy_No(Stz* szStz);          // __subqueryN
     static bool bIs_Sqy_Op(Stz* szArg);          // exists, in, notExists, notIn
     static bool bIs_Sqy_Prm(Stz* szArg);         // %n
     static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
+    static bool bIs_Stg_Nm(Stz* szArg);          // Sn
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c
+    static bool bIs_Tbl_Syn_rep(Stz* szArg);     // $C
     static bool bIs_Xrf_No(Stz* szArg);          // #n
 
     static void vStripDisamb(String* psArg);
@@ -78,6 +82,7 @@ namespace STORE
     void vInit_Tbl_Syn(char cTblSyn);
 
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
+    bool bIs_As_Nm(void);           //
     bool bIs_As_Nm_syn(void);       // __COLn
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
     bool bIs_Bol_Op(void);          // and, not, or
@@ -94,10 +99,13 @@ namespace STORE
     bool bIs_Number(void);          // StrLib::bIsDecimal/Float/Integer()
     bool bIs_Parenthesis(void);     // ( or )
     bool bIs_Rln_Op(void);          // <, <=, ... >
+    bool bIs_Sqy_No(void);          // __sq%02lld
     bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
     bool bIs_Sqy_Prm(void);         // %n
     bool bIs_Sqy_Rsl(void);         // __n
+    bool bIs_Stg_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
+    bool bIs_Tbl_Syn_rep(void);     // c
     bool bIs_Xrf_No(void);          // #n
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing

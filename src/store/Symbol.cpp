@@ -323,23 +323,6 @@ bool Symbol::bIs_Comma(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Xrf_No(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-
-  if ('#' == acFirst &&
-      StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Direction(Stz* szArg)
@@ -350,6 +333,23 @@ bool Symbol::bIs_Direction(Stz* szArg)
   else if (szArg->bSame("DESC"_Stz))  return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_No(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+
+  if ('$' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -374,6 +374,31 @@ bool Symbol::bIs_Col_Nm_dis(Stz* szArg)
     return false;
 
   if (StrLib::bIsSqlName(acCursor_arg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+  char acFifth  = szArg->azChar()[4];
+  char acSixth  = szArg->azChar()[5];
+
+  if (   '_' == acFirst
+         && '_' == acSecond
+         && 'C' == acThird
+         && 'O' == acFourth
+         && 'L' == acFifth
+         && StrLib::bIsDigit(acSixth))
     return true;
 
   return false;
@@ -451,26 +476,6 @@ bool Symbol::bIs_Number(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Prm(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-
-  if ('%' == acFirst
-      && StrLib::bIsDigit(acSecond)
-      && ! acThird)
-    return true;
-  else
-    return false;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a parenthesis?                                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Parenthesis(Stz* szArg)
@@ -524,20 +529,17 @@ bool Symbol::bIs_Sqy_Nm(BASE::Stz *szStz)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_No(Stz* szArg)
+bool Symbol::bIs_Sqy_No(BASE::Stz *szStz)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-
-  if ('$' == acFirst &&
-      StrLib::bIsDigit(acSecond))
+  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
+      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,6 +555,26 @@ bool Symbol::bIs_Sqy_Op(Stz* szArg)
   else if (szArg->bSame("notIn"_Stz))     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_Prm(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+
+  if ('%' == acFirst
+      && StrLib::bIsDigit(acSecond)
+      && ! acThird)
+    return true;
+  else
+    return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,25 +604,14 @@ bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
+bool Symbol::bIs_Stg_Nm(BASE::Stz *szStz)
 {
   _static_
 
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
-  char acFifth  = szArg->azChar()[4];
-  char acSixth  = szArg->azChar()[5];
-
-  if (   '_' == acFirst
-         && '_' == acSecond
-         && 'C' == acThird
-         && 'O' == acFourth
-         && 'L' == acFifth
-         && StrLib::bIsDigit(acSixth))
+  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
+      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
     return true;
 
   return false;
@@ -608,22 +619,6 @@ bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
 
 /*----------------------------------------------------------------------------*/
 /* is this a symbol a table synonym?  (i.e. $c)                               */
-/*----------------------------------------------------------------------------*/
-//bool Symbol::bIs_Tbl_Syn(Stz* szArg)
-//{
-//  _static_
-//
-//  char acFirst  = szArg->azChar()[0];
-//  char acSecond = szArg->azChar()[1];
-//  char acThird  = szArg->azChar()[2];
-//
-//  if (   '$' == acFirst
-//         && StrLib::bIsAlpha(acSecond)
-//         && '\0' == acThird)
-//    return true;
-//
-//  return false;
-//}
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 {
@@ -637,6 +632,40 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol a table synonym?  (i.e. $c)                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+
+  if (   StrLib::bIsAlpha(acFirst)
+         && '\0' == acSecond)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Xrf_No(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+
+  if ('#' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -839,6 +868,32 @@ bool Symbol::bIs_Agg_Fn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_As_Nm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Col_Nm(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_As_Nm_syn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Col_Nm_syn(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a boolean function?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Fn(void)
@@ -891,6 +946,32 @@ bool Symbol::bIs_Col_Nm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_Nm_dis(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Col_Nm_dis(m_sSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_No(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Col_No(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Tc(void)
@@ -917,19 +998,6 @@ bool Symbol::bIs_Comma(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Xrf_No(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bIs_Xrf_No(m_sSymbol))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Direction(void)
@@ -937,19 +1005,6 @@ bool Symbol::bIs_Direction(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Direction(m_sSymbol))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm_dis(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bIs_Col_Nm_dis(m_sSymbol))
     return true;
   else
     return false;
@@ -982,19 +1037,6 @@ bool Symbol::bIs_Key_Col(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a number?                                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Number(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bIs_Number(m_sSymbol))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a math operator ?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Mth_Op(void)
@@ -1008,13 +1050,13 @@ bool Symbol::bIs_Mth_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
+/* is this a number?                                                          */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Prm(void)
+bool Symbol::bIs_Number(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Sqy_Prm(m_sSymbol))
+  if (bIs_Number(m_sSymbol))
     return true;
 
   return false;
@@ -1047,13 +1089,26 @@ bool Symbol::bIs_Rln_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_No(void)
+bool Symbol::bIs_Sqy_Prm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Col_No(m_sSymbol))
+  if (bIs_Sqy_Prm(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a subQuery-operator?                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Sqy_No(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Sqy_No(m_sSymbol))
     return true;
 
   return false;
@@ -1086,13 +1141,13 @@ bool Symbol::bIs_Sqy_Rsl(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_As_Nm_syn(void)
+bool Symbol::bIs_Stg_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Col_Nm_syn(m_sSymbol))
+  if (bIs_Stg_Nm(m_sSymbol))
     return true;
 
   return false;
@@ -1106,6 +1161,32 @@ bool Symbol::bIs_Tbl_Syn(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Tbl_Syn(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol a table synonym?  (i.e. c)                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Tbl_Syn_rep(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Tbl_Syn_rep(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Xrf_No(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Xrf_No(m_sSymbol))
     return true;
 
   return false;
@@ -1391,22 +1472,22 @@ Stz* Symbol::szWhatIs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Agg_Fn())          return "AggOp"_Stz;
-  if (bIs_Bol_Fn())           return "BoolFn"_Stz;
-  if (bIs_Bound())            return "Bound"_Stz;
-  if (bIs_Col_Tc())    return "ColumnOrdinal"_Stz;
-  if (bIs_Comma())            return "Comma"_Stz;
+  if (bIs_Agg_Fn())       return "AggOp"_Stz;
+  if (bIs_As_Nm_syn())    return "SyntheticAs"_Stz;
+  if (bIs_Bol_Fn())       return "BoolFn"_Stz;
+  if (bIs_Bound())        return "Bound"_Stz;
+  if (bIs_Col_No())       return "StreamOrdinal"_Stz;
+  if (bIs_Col_Tc())       return "ColumnOrdinal"_Stz;
+  if (bIs_Comma())        return "Comma"_Stz;
   if (bIs_Idx_Col())      return "IndexColumn"_Stz;
-  if (bIs_Key_Col())       return "KeyOrdinal"_Stz;
-  if (bIs_Number())           return "Number"_Stz;
-  if (bIs_Mth_Op())           return "NumbOp"_Stz;
-  if (bIs_Sqy_Prm()) return "ParameterOrdinal"_Stz;
-  if (bIs_Parenthesis())      return "Parenthesis"_Stz;
-  if (bIs_Rln_Op())           return "RelnOp"_Stz;
-  if (bIs_Col_No())    return "StreamOrdinal"_Stz;
+  if (bIs_Key_Col())      return "KeyOrdinal"_Stz;
+  if (bIs_Mth_Op())       return "NumbOp"_Stz;
+  if (bIs_Number())       return "Number"_Stz;
+  if (bIs_Parenthesis())  return "Parenthesis"_Stz;
+  if (bIs_Rln_Op())       return "RelnOp"_Stz;
   if (bIs_Sqy_Op())       return "SubQueryOp"_Stz;
-  if (bIs_Sqy_Rsl())   return "SubQueryColumn"_Stz;
-  if (bIs_As_Nm_syn())      return "SyntheticAs"_Stz;
+  if (bIs_Sqy_Prm())      return "ParameterOrdinal"_Stz;
+  if (bIs_Sqy_Rsl())      return "SubQueryColumn"_Stz;
 
   return "??WhatIs"_Stz;
 }
@@ -1768,7 +1849,7 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
   m_eSymbol = SF_AS_NM;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsColNm());
+  RASSERT(bIs_As_Nm());
 #endif
 }
 
@@ -1815,7 +1896,7 @@ void Symbol::vSet_Xrf_No(i8 iCrossRef)
   m_eSymbol = SF_XRF_NO;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsCrossRef());
+  RASSERT(bIs_Xrf_No());
 #endif
 }
 
@@ -1833,7 +1914,7 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
   m_eSymbol = SF_COL_NM_dis;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsDisambiguatedColNm());
+  RASSERT(bIs_Col_Nm_dis());
 #endif
 }
 
@@ -1849,6 +1930,11 @@ void Symbol::vSet_Direct(Stz* szDirect)
 
   m_sSymbol = szDirect;
   m_eSymbol = SF_DIRECT;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Direction());
+#endif
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1865,7 +1951,7 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
   m_eSymbol = SF_IDX_COL;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsIndexColumn());
+  RASSERT(bIs_Idx_Col());
 #endif
 }
 
@@ -1883,7 +1969,7 @@ void Symbol::vSet_Key_Col(i8 iKeyOdn)
   m_eSymbol = SF_KEY_COL;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsKeyOrdinal());
+  RASSERT(bIs_Key_Col());
 #endif
 }
 
@@ -1901,7 +1987,7 @@ void Symbol::vSet_Number(i8 iNumber)
   m_eSymbol = SF_NUMBER;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsNumber());
+  RASSERT(bIs_Number());
 #endif
 }
 
@@ -1934,7 +2020,7 @@ void Symbol::vSet_Prm_Col(i8 iOrdinal)
   m_eSymbol = SF_PRM_COL;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsNumber());
+  RASSERT(bIs_Sqy_Prm());
 #endif
 }
 
@@ -1950,6 +2036,11 @@ void Symbol::vSet_Stg_No(i8 iStageNo)
 
   vSymSprint("S%02lld"_Stz, iStageNo);
   m_eSymbol = SF_OTHER;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Stg_Nm());
+#endif
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1966,7 +2057,7 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
   m_eSymbol = SF_COL_TC;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsStreamOrdinal());
+  RASSERT(bIs_Col_No());
 #endif
 }
 
@@ -1984,7 +2075,7 @@ void Symbol::vSet_Sqy_No(i8 iSqNo)
   m_eSymbol = SF_SQY_NO;
 
 #ifdef X_SET_CROSS_CHECK
-  //RASSERT(bIs_Sqy_Rsl());
+  RASSERT(bIs_Sqy_No());
 #endif
 }
 
@@ -2004,7 +2095,7 @@ void Symbol::vSet_As_Nm_syn(i8 iAsNo)
   Y_vSet(P_Synthetic);
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsSyntheticAs());
+  RASSERT(bIs_As_Nm_syn());
 #endif
 }
 
@@ -2043,7 +2134,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
   m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIs_Tbl_Syn());
+  RASSERT(bIs_Tbl_Syn_rep());
 #endif
 }
 
@@ -2062,7 +2153,7 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
   m_eSymbol = SF_COL_TC;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsColumnOrdinal());
+  RASSERT(bIs_Col_Tc());
 #endif
 }
 
