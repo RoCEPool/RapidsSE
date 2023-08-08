@@ -18,7 +18,6 @@ namespace STORE
     eSF     m_eSymbol;
     s256    m_sSymbol;
     TagSet* m_pProperties;
-    bool    m_bSet;
 
   protected:
     // must be last
