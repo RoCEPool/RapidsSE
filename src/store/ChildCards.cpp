@@ -299,7 +299,7 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pGetChild_bySym(STORE::Symbol *pSymbol)
 {
-  i8 i_Child  = pSymbol->iExtractOrdinal() - 1;
+  i8 i_Child  = pSymbol->iSF_ordinal() - 1;
 
   Card* pCard = pGetChild(i_Child);
 

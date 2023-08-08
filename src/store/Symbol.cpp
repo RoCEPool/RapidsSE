@@ -437,19 +437,6 @@ bool Symbol::bIs_Mth_Op(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a name?                                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsName(Stz* szArg)
-{
-  _static_
-
-  if (StrLib::bIsSqlName(szArg->azChar()))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a number?                                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Number(Stz* szArg)
@@ -771,7 +758,7 @@ eQO Symbol::eEvalSubQryOp(void)
 /*----------------------------------------------------------------------------*/
 /* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
 /*----------------------------------------------------------------------------*/
-i8 Symbol::iExtractOrdinal(void)
+i8 Symbol::iSF_ordinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -783,7 +770,7 @@ i8 Symbol::iExtractOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* get table synonym from $c.n                                                */
 /*----------------------------------------------------------------------------*/
-char Symbol::cExtractTableSynonym(void)
+char Symbol::cSF_tblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -833,7 +820,7 @@ void Symbol::vIncTblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char cTblSyn = cSF_synonym();
+  char cTblSyn = cSF_char();
 
   vSet_Tbl_Syn(cTblSyn + 1);
 }
@@ -989,19 +976,6 @@ bool Symbol::bIs_Key_Col(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Key_Col(m_sSymbol))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a name?                                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsName(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (bIsName(m_sSymbol))
     return true;
 
   return false;
@@ -1232,7 +1206,7 @@ Stz* Symbol::szSF_symbol(void)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-char Symbol::cSF_synonym(void)
+char Symbol::cSF_char(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1429,7 +1403,6 @@ Stz* Symbol::szWhatIs(void)
   if (bIs_Sqy_Prm()) return "ParameterOrdinal"_Stz;
   if (bIs_Parenthesis())      return "Parenthesis"_Stz;
   if (bIs_Rln_Op())           return "RelnOp"_Stz;
-  if (bIsName())             return "Name"_Stz;
   if (bIs_Col_No())    return "StreamOrdinal"_Stz;
   if (bIs_Sqy_Op())       return "SubQueryOp"_Stz;
   if (bIs_Sqy_Rsl())   return "SubQueryColumn"_Stz;
@@ -2063,7 +2036,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  char cTableSyn_actual = cSF_synonym();
+  char cTableSyn_actual = cSF_char();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
   vSprint("%c"_Stz, cTableSyn_actual);

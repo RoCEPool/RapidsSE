@@ -401,7 +401,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
       if (pWhichTable) {
         p_card->vMark1(MARK_AT);
-        p_card->vMark2(pWhichTable->cSF_synonym());
+        p_card->vMark2(pWhichTable->cSF_char());
       }
       continue;
     }

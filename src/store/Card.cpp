@@ -1186,7 +1186,7 @@ char Card::cSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char c = m_xSymbol.cSF_synonym();
+  char c = m_xSymbol.cSF_char();
 
   return c;
 }

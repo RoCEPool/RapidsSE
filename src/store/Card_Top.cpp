@@ -117,7 +117,7 @@ void Card_Top::vColumn_Mapping(CardIter *pCI)
 
       Symbol *pSymbol_key = p_expr_prjn->pFirstKeyCol();
 
-      i_Cell_key = pSymbol_key->iExtractOrdinal();
+      i_Cell_key = pSymbol_key->iSF_ordinal();
 
       p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
       p_expr_prjn->pSymbol()->Y_vSet(P_Key);
@@ -131,7 +131,7 @@ void Card_Top::vColumn_Mapping(CardIter *pCI)
       Symbol* pSymbol_stmCol_projection = p_expr_prjn->pFirstStmCol();
 
       if (pSymbol_stmCol_projection) {
-        i_Cell_payload = pSymbol_stmCol_projection->iExtractOrdinal() - nExpr_key;
+        i_Cell_payload = pSymbol_stmCol_projection->iSF_ordinal() - nExpr_key;
 
         p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
         p_expr_prjn->pSymbol()->Y_vSet(P_Payload);
@@ -171,7 +171,7 @@ void Card_Top::vColumn_Mapping(CardIter *pCI)
 //
 //      Symbol *pSymbol_key = p_expr_prjn->pFirstKeyCol();
 //
-//      i_Cell_key = pSymbol_key->iExtractOrdinal();
+//      i_Cell_key = pSymbol_key->iSF_ordinal();
 //
 //      p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
 //      p_expr_prjn->pSymbol()->Y_vSet(P_Key);
@@ -183,7 +183,7 @@ void Card_Top::vColumn_Mapping(CardIter *pCI)
 //      Symbol* pSymbol_stmCol_projection = p_expr_prjn->pFirstStmCol();
 //
 //      if (pSymbol_stmCol_projection) {
-//        i_Cell_payload = pSymbol_stmCol_projection->iExtractOrdinal() - nExpr_key;
+//        i_Cell_payload = pSymbol_stmCol_projection->iSF_ordinal() - nExpr_key;
 //
 //        p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
 //        p_expr_prjn->pSymbol()->Y_vSet(P_Payload);

@@ -61,8 +61,6 @@ namespace STORE
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c
     static bool bIs_Xrf_No(Stz* szArg);          // #n
 
-    static bool bIsName(Stz* szArg);             // StrLib::bIsSqlName()
-
     static void vStripDisamb(String* psArg);
 
     static eCT  eTo_eCT_str(Stz* szType);
@@ -77,8 +75,6 @@ namespace STORE
 
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
-    i8   iExtractOrdinal(void);
-    char cExtractTableSynonym(void);
 
     bool bHasSymbolicValue(void);
     bool bHasProperties(void);
@@ -110,21 +106,19 @@ namespace STORE
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Xrf_No(void);          // #n
 
-    bool bIsName(void);             // StrLib::bIsSqlName()
-
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
     void vPpyStr(String* pString);
-
 
     bool bSame(char cArg);
     bool bSame(Stz* szArg);
     bool bSame(Symbol* pArg);
 
-  public:
+    char cSF_char(void);
     i8   iSF_number(void);
+    i8   iSF_ordinal(void);
     Stz* szSF_symbol(void);
-    char cSF_synonym(void);
+    char cSF_tblSyn(void);
 
     void vSym(eSF eSymbol);
     void vSym(eSF eSymbol, char cChr);

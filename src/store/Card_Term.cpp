@@ -66,7 +66,7 @@ void Card_Term::vBumpKeyOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = pSymbol()->iExtractOrdinal();
+  i8 iKeyOdn = pSymbol()->iSF_ordinal();
 
   this->SYM(SF_KEY_COL,iKeyOdn + nBy);
 
@@ -86,7 +86,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = pSymbol()->iExtractOrdinal();
+  i8 iStmColOdn = pSymbol()->iSF_ordinal();
 
  SYM(SF_COL_NO,iStmColOdn + nBy);
 

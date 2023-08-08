@@ -75,7 +75,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   Symbol xSymbol_idxColOdn(SF_IDX_COL,1);
 
   if (pTerm_0->pSymbol()->bIs_Col_Tc()) {
-    char cTblSyn_term_0 = pTerm_0->pSymbol()->cExtractTableSynonym();
+    char cTblSyn_term_0 = pTerm_0->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
       p_bound->vAppend(p_term);
@@ -84,7 +84,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     }
     else
     if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
-      char cTblSyn_term_1 = pTerm_1->pSymbol()->cExtractTableSynonym();
+      char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
         p_bound->vAppend(p_term);
@@ -97,7 +97,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   }
   else
   if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
-    char cTblSyn_term_1 = pTerm_1->pSymbol()->cExtractTableSynonym();
+    char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
       p_bound->vAppend(p_term);

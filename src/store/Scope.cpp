@@ -56,7 +56,7 @@ bool Scope::bInScope(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCOPE,_FOOTER_);
 
-  char cTblSyn = pSymbol->cExtractTableSynonym();
+  char cTblSyn = pSymbol->cSF_tblSyn();
 
   i8 i_Table = C_UNKNOWN;
   if (cTblSyn >= 'a' && cTblSyn <= 'j')
@@ -79,7 +79,7 @@ void Scope::vInScope(Symbol* pSymbol, bool bInScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCOPE,_FOOTER_);
 
-  char cTblSyn = pSymbol->cSF_synonym();
+  char cTblSyn = pSymbol->cSF_char();
 
   i8 i_Table = C_UNKNOWN;
   if (cTblSyn >= 'a' && cTblSyn <= 'j')

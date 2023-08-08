@@ -211,7 +211,7 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
     if (p_expr) {
       //p_expr->vDump(__func__);
 
-      i8 i_Child = p_expr->pSymbol()->iExtractOrdinal() - 1;
+      i8 i_Child = p_expr->pSymbol()->iSF_ordinal() - 1;
       p_term->SYM(SF_AS_NM_syn, i_Child, p_term->pSymbol());
     }
   }
