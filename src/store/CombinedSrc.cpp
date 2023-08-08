@@ -170,8 +170,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate code for the constraint
         RASSERT(pOpSketch->m_pConstraintStack->nValues());
-        //vAppendCodeFragment(pOpSketch, "iIndexSemiAntiJoinConstraint"_Stz, pOperatorFile);
-        
+
         if (pOpSketch->eSketchKind() == SK_ANTIJOIN)
           vAppendCodeFragment(pOpSketch, "iIndexAntiJoinConstraint"_Stz, pOperatorFile);
         else
