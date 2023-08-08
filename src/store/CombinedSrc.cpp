@@ -122,13 +122,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // open the index, indexJoin, inflate  and filter code fragments file
-        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
-        RASSERT ( bOpened );
 
         bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
-        RASSERT ( bOpened );
-
-        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
         RASSERT ( bOpened );
 
         bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
@@ -180,8 +175,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // close the indexJoin code fragments file
         pInflateFile->vClose();
         pOperatorFile->vClose();
-        pIndexFile->vClose();
-        pFilterFile->vClose();
 
         break;
 
@@ -388,8 +381,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // open the indexJoin code fragments file
-        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
-        RASSERT ( bOpened );
 
         bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
         RASSERT ( bOpened );
@@ -497,7 +488,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // close the indexJoin code fragments file
         pInflateFile->vClose();
         pOperatorFile->vClose();
-        pIndexFile->vClose();
 
         break;
 
