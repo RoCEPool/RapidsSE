@@ -191,30 +191,6 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexCrossJoinContinue -------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexCrossJoinContinue
-void vIndexCrossJoinContinue(Dynamic_T* aDynamicT) {
-
-  __L_LABEL_OUTER_LOOP__:
-
-  // marker-start
-
-  __L_LABEL_INDEX_DEREF__:
-
-  // did we find the entry ?
-  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
-    aDynamicT->m_iProcessRow = 0;
-    goto __L_LABEL_OUTER_LOOP__;
-  }
-
-  aDynamicT->m_iProcessRow = 1;
-
-  // marker-end
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vIndexJoinContinueLO0 ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinContinueLO0
@@ -292,6 +268,41 @@ void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
 
     // marker-end
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexJoinCrossPosition ------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinCrossPosition
+void vIndexJoinCrossPosition(Dynamic_T* aDynamicT) {
+
+  IndexInfo __INDEX_INFO__;
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+
+#ifdef WITH_CLANG
+  // position at beginning of the index
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
+        __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
+#endif
+
+  __L_LABEL_INDEX_DEREF__:
+
+  // did we find the entry ?
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+    aDynamicT->m_iProcessRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  aDynamicT->m_iProcessRow = 1;
+
+  // marker-end
+
+  L_Return:
+  return;
+
 }
 
 /*----------------------------------------------------------------------------*/

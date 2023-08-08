@@ -422,8 +422,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
         if (pOpSketch->m_bCrossJoin) {
-          vAppendCodeFragment(pOpSketch, "vIndexCrossPositionBegin"_Stz, pIndexFile);
-          vAppendCodeFragment(pOpSketch, "vIndexCrossJoinContinue"_Stz, pOperatorFile);
+          vAppendCodeFragment(pOpSketch, "vIndexJoinCrossPosition"_Stz, pOperatorFile);
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

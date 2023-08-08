@@ -164,30 +164,6 @@ void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexCrossPositionBegin ------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexCrossPositionBegin
-void vIndexCrossPositionBegin(Dynamic_T* aDynamicT) {
-
-  IndexInfo __INDEX_INFO__;
-
-  // marker-start
-
-#ifdef WITH_CLANG
-  // position at beginning of the index
-  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
-        __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
-#endif
-
-  // marker-end
-
-  L_Return:
-  return;
-
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- vIndexPositionLower -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexPositionLower
