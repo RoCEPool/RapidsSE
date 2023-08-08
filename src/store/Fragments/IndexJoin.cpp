@@ -614,6 +614,41 @@ void vIndexJoinReturn02(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexLeftOuterJoinPosition ---------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexLeftOuterJoinPosition
+void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
+
+  IndexInfo __INDEX_INFO__;
+  bool bLeftOuterRow;
+
+  // marker-start
+
+#ifdef WITH_CLANG
+  // position at lower bound
+  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+#endif
+
+  // did we find the entry ?
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+
+    // did we join any rows with current left row ?
+    if (aDynamicT->m_iJoinedRows == 0) {
+
+      aDynamicT->m_iProcessRow = 1;
+      bLeftOuterRow = true;
+      printf("leftOuter = 1\n");
+
+      // marker-end
+    }
+  }
+
+  L_Return:
+  return;
+
+}
+/*----------------------------------------------------------------------------*/
 /*-- vFilterEndIndexJoin -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vFilterEndIndexJoin
