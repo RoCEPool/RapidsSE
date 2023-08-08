@@ -62,6 +62,7 @@ namespace BASE
     
     static bool bAccess(Stz* szFilePath, i8 iPermission);
     static bool bExists(Stz* szFilePath, bool bWarning=true);
+    static void vMakeTempNm(String* pTempNm, Stz* szBaseNm);
     static bool bModTime(Stz* szFilePath, time_t& tTime);
     static bool bRemove(Stz* szFilePath, bool bIgnoreMissing=false);
     static bool bRename(Stz* szOldPath, Stz* szNewPath);

@@ -14,6 +14,8 @@ namespace STORE
   public:
     s32  m_sPipelineNm;
 
+    s256 m_sFileNm;
+
     s48K m_sCodeBlock;
 
   protected:
