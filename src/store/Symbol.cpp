@@ -411,10 +411,10 @@ bool Symbol::bIs_Cross(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("CROSS"_Stz))
-    return true;
-  else
-    return false;
+  if (szArg->bSame("CROSS"_Stz))       return true;
+  if (szArg->bSame("LEFT_OUTER"_Stz))  return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1149,6 +1149,19 @@ bool Symbol::bIs_Col_Nm_dis(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_Nm_syn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Col_Nm_syn(m_sSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_No(void)
@@ -1751,6 +1764,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_BOL_OP:      vSet_Bol_Op(szStz);      break;
     case SF_BOUND:       vSet_Bound(szStz);       break;
     case SF_COL_NM:      vSet_Col_Nm(szStz);      break;
+    case SF_COL_NM_syn:  vSet_Col_Nm_syn(szStz);  break;
     case SF_COL_NO:      vSet_Col_No(szStz);      break;
     case SF_COL_TC:      vSet_Col_Tc(szStz);      break;
     case SF_COL_TYPE:    vSet_Col_Type(szStz);    break;
@@ -2324,43 +2338,6 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_No(Stz* szColNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = szColNm;
-  m_eSymbol = SF_COL_NO;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Comma(Stz* szComma)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = szComma;
-  m_eSymbol = SF_COMMA;
-
-  RASSERT(bIs_Comma());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Cross(Stz* szCross)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = szCross;
-  m_eSymbol = SF_CROSS;
-
-  RASSERT(bIs_Cross());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
@@ -2371,6 +2348,19 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
   m_eSymbol = SF_COL_NM_dis;
 
   RASSERT(bIs_Col_Nm_dis());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given disambiguated-column-name                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Nm_syn(Stz* szColNm_syn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szColNm_syn;
+  m_eSymbol = SF_COL_NM_syn;
+
+  RASSERT(bIs_Col_Nm_syn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2410,6 +2400,43 @@ void Symbol::vSet_Col_Tc(Stz* szColTc)
   m_eSymbol = SF_COL_TC;
 
   RASSERT(bIs_Col_Tc());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_No(Stz* szColNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szColNm;
+  m_eSymbol = SF_COL_NO;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Comma(Stz* szComma)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szComma;
+  m_eSymbol = SF_COMMA;
+
+  RASSERT(bIs_Comma());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Cross(Stz* szCross)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szCross;
+  m_eSymbol = SF_CROSS;
+
+  RASSERT(bIs_Cross());
 }
 
 /*----------------------------------------------------------------------------*/

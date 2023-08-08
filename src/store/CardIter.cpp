@@ -1543,18 +1543,6 @@ void CardIter::G_vNewMember(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMember(eCK eMember, Stz* szValue)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  G_vNewMember(eMember);
-
-  G.p_NEW->vSymbol(SF_OTHER,szValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
 void CardIter::G_vNewMember(eCK eMember, Symbol xSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);

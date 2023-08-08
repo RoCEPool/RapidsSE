@@ -137,7 +137,6 @@ namespace STORE
     bool bMore(void);
 
     void  G_vNewMember(eCK eMember);
-    void  G_vNewMember(eCK eMember, Stz* szValue);
     void  G_vNewMember(eCK eMember, Symbol xSymbol);
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);

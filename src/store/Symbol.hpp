@@ -102,6 +102,7 @@ namespace STORE
     bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
     bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Col_Nm_dis(void);      // C_n
+    bool bIs_Col_Nm_syn(void);      // C_n
     bool bIs_Col_No(void);          // $n
     bool bIs_Col_Tc(void);          // $c.n
     bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
@@ -199,6 +200,7 @@ namespace STORE
     void vSet_Bound(Stz* szBound);
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
+    void vSet_Col_Nm_syn(Stz* szColNm_syn);
     void vSet_Col_No(Stz* szStz);
     void vSet_Col_No(i8 iStmColOdn);
     void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);

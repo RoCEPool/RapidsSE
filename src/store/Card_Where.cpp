@@ -131,7 +131,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
       pCI->G_vPushIter();
       if (pCI->G_bEachMain_reverse(CK_SCAN)) {
         pCI->G.p_table = pCI->G.p_scan->pSub_table();
-        pCI->G_vNewMember(CK_OUTERJOIN, "LEFT_OUTER"_Stz);
+        pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         pCI->G.p_table->vAppend(pCI->G.p_outerJoin);
       }
       pCI->G_vPopIter();
