@@ -206,7 +206,7 @@ IndexDef* Card_Key::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szSymbol();
-    eCT  eColType = p_term->pSymbol()->eColType();
+    eCT  eColType = p_term->pSymbol()->Y_eColType();
 
     if (! szColNm || CT_NONE == eColType)
       continue;

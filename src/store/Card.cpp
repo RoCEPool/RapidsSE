@@ -376,7 +376,7 @@ void Card::vColType(Card* pCard_arg)
 
   //pCard_arg->vDump(__func__);
 
-  m_xSymbol.Y_vSet(P_Type, pCard_arg->pSymbol()->szColType());
+  m_xSymbol.Y_vSet(P_Type, pCard_arg->pSymbol()->Y_szColType());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -946,7 +946,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
   s256 sNameSymbol;
 
   if (0 == iDepth) {
-    if (m_xSymbol.bHasSymbolicValue())
+    if (m_xSymbol.bHasSymbol())
       sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
@@ -964,7 +964,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprint("%s%lld]"_Stz,
                           Stz::szDots(iDepth - 1),
                           m_i_Child);
-    if (m_xSymbol.bHasSymbolicValue())
+    if (m_xSymbol.bHasSymbol())
       sNameSymbol.vSprintCat("%s%s %s"_Stz,
                              sName.szStz(),
                              sHiddenChildren.szStz(),
@@ -1045,7 +1045,7 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! m_xSymbol.bHasSymbolicValue())
+  if (!m_xSymbol.bHasSymbol())
     return;
 
   if (bPrintMarks)

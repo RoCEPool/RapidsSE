@@ -68,19 +68,13 @@ namespace STORE
 
     // - - - - - -
 
-    eCT  eColType(void);
-    Stz* szColType(void);
-    void vColType(Stz* szColType);
-
-
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
-    bool bHasSymbolicValue(void);
+    bool bHasSymbol(void);
     bool bHasProperties(void);
 
-    void vIncTblSyn(void);
-
+    void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
 
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
@@ -157,6 +151,10 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
+
+    eCT  Y_eColType(void);
+    Stz* Y_szColType(void);
+    void Y_vColType(Stz* szColType);
 
   private:
     void vSet_As_Nm(Stz* szAsNm);

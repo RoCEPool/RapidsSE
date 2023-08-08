@@ -696,7 +696,7 @@ eCT Symbol::eTo_eCT_char(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Symbol::eColType(void)
+eCT Symbol::Y_eColType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -712,7 +712,7 @@ eCT Symbol::eColType(void)
 /*----------------------------------------------------------------------------*/
 /* get type                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szColType(void)
+Stz* Symbol::Y_szColType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -724,7 +724,7 @@ Stz* Symbol::szColType(void)
 /*----------------------------------------------------------------------------*/
 /* get type                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vColType(Stz* szColType)
+void Symbol:: Y_vColType(Stz* szColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -790,7 +790,7 @@ char Symbol::cSF_tblSyn(void)
 /*----------------------------------------------------------------------------*/
 /* does symbol a symbolic value?                                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bHasSymbolicValue(void)
+bool Symbol::bHasSymbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -816,7 +816,7 @@ bool Symbol::bHasProperties(void)
 /*----------------------------------------------------------------------------*/
 /* increment table synonym                                                    */
 /*----------------------------------------------------------------------------*/
-void Symbol::vIncTblSyn(void)
+void Symbol::vInc_Tbl_Syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

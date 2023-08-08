@@ -515,7 +515,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  if (m_xSymbol.bHasSymbolicValue())
+  if (m_xSymbol.bHasSymbol())
     sName.vCatSprint(" %c"_Stz, cSymbol());
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
@@ -578,7 +578,7 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
   if (pTable->bIsReplicated())
     SYM(SF_TBL_SYN_rep);
 
-  pSymbol_tableSyn->vIncTblSyn();
+  pSymbol_tableSyn->vInc_Tbl_Syn();
 }
 
 /*----------------------------------------------------------------------------*/

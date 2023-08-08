@@ -610,7 +610,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
       eColType = p_expr->eColumnType();
 
-      //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColType]);
+      //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[Y_eColType]);
 
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
 
@@ -703,7 +703,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
     eColType = p_expr->eColumnType();
 
-    //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColType]);
+    //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[Y_eColType]);
 
     pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
 
