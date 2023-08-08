@@ -1182,18 +1182,6 @@ Symbol* Card::pSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* get card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card::iSymbol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 i = m_xSymbol.iSF_number();
-
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get card symbol                                                            */
-/*----------------------------------------------------------------------------*/
 Stz* Card::szSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

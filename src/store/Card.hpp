@@ -327,7 +327,6 @@ namespace STORE
 
     Symbol* pSymbol(void);
 
-    i8   iSymbol(void);
     Stz* szSymbol(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
