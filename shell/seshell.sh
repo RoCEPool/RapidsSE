@@ -11,4 +11,4 @@ export SE_PASSWORD=""
 
 OPTIONS="--continueBatchOnError"
 
-java -cp "${CLASSPATH}" com.rapidsdata.shell.RapidsShell "${OPTIONS}" "$@"
+java -cp "${CLASSPATH}" com.rapidsdata.shell.RapidsShell ${OPTIONS} "$@"
