@@ -162,20 +162,20 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   };
   */
 
-  if (bIsAggFn(szSymbol))              return SF_AGG_FN;
-  if (bIsColumnOrdinal(szSymbol))      return SF_COL_TC;
-  if (bIsCrossRef(szSymbol))           return SF_XRF_NO;
-  if (bIsDirection(szSymbol))          return SF_DIRECT;
-  if (bIsDisambColNm(szSymbol))        return SF_COL_NM_dis;
-  if (bIsIndexColumn(szSymbol))        return SF_IDX_COL;
-  if (bIsNumber(szSymbol))             return SF_NUMBER;
-  if (bIsKeyOrdinal(szSymbol))         return SF_KEY_COL;
-  if (bIsParameterOrdinal(szSymbol))   return SF_PRM_COL;
-  if (bIsStreamOrdinal(szSymbol))      return SF_COL_NO;
-  if (bIsSubQueryCKey(szSymbol))       return SF_SQY_KEY;
-  if (bIsSubQueryColumn(szSymbol))     return SF_SQY_NO;
-  if (bIsSyntheticAs(szSymbol))        return SF_AS_NM_syn;
-  if (bIsTableSyn(szSymbol))           return SF_TBL_SYN;
+  if (bIs_Agg_Fn(szSymbol))              return SF_AGG_FN;
+  if (bIs_Col_Tc(szSymbol))      return SF_COL_TC;
+  if (bIs_Xrf_No(szSymbol))           return SF_XRF_NO;
+  if (bIs_Direction(szSymbol))          return SF_DIRECT;
+  if (bIs_Col_Nm_dis(szSymbol))        return SF_COL_NM_dis;
+  if (bIs_Idx_Col(szSymbol))        return SF_IDX_COL;
+  if (bIs_Number(szSymbol))             return SF_NUMBER;
+  if (bIs_Key_Col(szSymbol))         return SF_KEY_COL;
+  if (bIs_Sqy_Prm(szSymbol))   return SF_PRM_COL;
+  if (bIs_Col_No(szSymbol))      return SF_COL_NO;
+  if (bIs_Sqy_Crl_Key(szSymbol))       return SF_SQY_KEY;
+  if (bIs_Sqy_Rsl(szSymbol))     return SF_SQY_NO;
+  if (bIs_Col_Nm_syn(szSymbol))        return SF_AS_NM_syn;
+  if (bIs_Tbl_Syn(szSymbol))           return SF_TBL_SYN;
 
   if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
@@ -196,7 +196,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
   m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsTableSyn());
+  RASSERT(bIs_Tbl_Syn());
 #endif
 }
 
@@ -205,7 +205,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsAggFn(Stz* szArg)
+bool Symbol::bIs_Agg_Fn(Stz* szArg)
 {
   _static_
 
@@ -223,7 +223,7 @@ bool Symbol::bIsAggFn(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a boolean function?                                         */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsBoolFn(Stz* szArg)
+bool Symbol::bIs_Bol_Fn(Stz* szArg)
 {
   _static_
 
@@ -243,7 +243,7 @@ bool Symbol::bIsBoolFn(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a boolean operator?                                         */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsBoolOp(Stz* szArg)
+bool Symbol::bIs_Bol_Op(Stz* szArg)
 {
   _static_
 
@@ -257,7 +257,7 @@ bool Symbol::bIsBoolOp(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a bound?                                                    */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsBound(Stz* szArg)
+bool Symbol::bIs_Bound(Stz* szArg)
 {
   _static_
 
@@ -271,19 +271,19 @@ bool Symbol::bIsBound(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a column name?                                                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsColNm(Stz* szArg)
+bool Symbol::bIs_Col_Nm(Stz* szArg)
 {
   _static_
 
   if (! StrLib::bIsSqlName(szArg->azChar()))
     return false;
 
-  if (bIsAggFn(szArg))       return false;
-  if (bIsBoolFn(szArg))      return false;
-  if (bIsBoolOp(szArg))      return false;
-  if (bIsBound(szArg))       return false;
-  if (bIsDirection(szArg))   return false;
-  if (bIsSubQueryOp(szArg))  return false;
+  if (bIs_Agg_Fn(szArg))       return false;
+  if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Op(szArg))      return false;
+  if (bIs_Bound(szArg))       return false;
+  if (bIs_Direction(szArg))   return false;
+  if (bIs_Sqy_Op(szArg))  return false;
 
   return true;
 }
@@ -291,7 +291,7 @@ bool Symbol::bIsColNm(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsColumnOrdinal(Stz* szArg)
+bool Symbol::bIs_Col_Tc(Stz* szArg)
 {
   _static_
 
@@ -312,7 +312,7 @@ bool Symbol::bIsColumnOrdinal(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a comma separator?                                          */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsComma(Stz* szArg)
+bool Symbol::bIs_Comma(Stz* szArg)
 {
   _static_
 
@@ -325,7 +325,7 @@ bool Symbol::bIsComma(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a cross-refernece?  (i.e. #n)                         */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsCrossRef(Stz* szArg)
+bool Symbol::bIs_Xrf_No(Stz* szArg)
 {
   _static_
 
@@ -342,7 +342,7 @@ bool Symbol::bIsCrossRef(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsDirection(Stz* szArg)
+bool Symbol::bIs_Direction(Stz* szArg)
 {
   _static_
 
@@ -355,7 +355,7 @@ bool Symbol::bIsDirection(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a disambiguated as?  (i.e. Cn_Xyz)                    */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsDisambColNm(Stz* szArg)
+bool Symbol::bIs_Col_Nm_dis(Stz* szArg)
 {
   _static_
 
@@ -382,7 +382,7 @@ bool Symbol::bIsDisambColNm(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for an index-column?  (i.e. $In)                          */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsIndexColumn(Stz* szArg)
+bool Symbol::bIs_Idx_Col(Stz* szArg)
 {
   _static_
 
@@ -403,7 +403,7 @@ bool Symbol::bIsIndexColumn(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsKeyOrdinal(Stz* szArg)
+bool Symbol::bIs_Key_Col(Stz* szArg)
 {
   _static_
 
@@ -424,7 +424,7 @@ bool Symbol::bIsKeyOrdinal(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a math operator ?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsMathOp(Stz* szArg)
+bool Symbol::bIs_Mth_Op(Stz* szArg)
 {
   _static_
 
@@ -452,7 +452,7 @@ bool Symbol::bIsName(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a number?                                                          */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsNumber(Stz* szArg)
+bool Symbol::bIs_Number(Stz* szArg)
 {
   _static_
 
@@ -464,19 +464,9 @@ bool Symbol::bIsNumber(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this an other?                                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsOther(Stz* szArg)
-{
-  _static_
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsParameterOrdinal(Stz* szArg)
+bool Symbol::bIs_Sqy_Prm(Stz* szArg)
 {
   _static_
 
@@ -496,7 +486,7 @@ bool Symbol::bIsParameterOrdinal(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a parenthesis?                                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsParenthesis(Stz* szArg)
+bool Symbol::bIs_Parenthesis(Stz* szArg)
 {
   _static_
 
@@ -509,7 +499,7 @@ bool Symbol::bIsParenthesis(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsRelnOp(Stz* szArg)
+bool Symbol::bIs_Rln_Op(Stz* szArg)
 {
   _static_
 
@@ -522,7 +512,7 @@ bool Symbol::bIsRelnOp(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryCKey(BASE::Stz *szStz)
+bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szStz)
 {
   _static_
 
@@ -535,7 +525,7 @@ bool Symbol::bIsSubQueryCKey(BASE::Stz *szStz)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryName(BASE::Stz *szStz)
+bool Symbol::bIs_Sqy_Nm(BASE::Stz *szStz)
 {
   _static_
 
@@ -549,7 +539,7 @@ bool Symbol::bIsSubQueryName(BASE::Stz *szStz)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsStreamOrdinal(Stz* szArg)
+bool Symbol::bIs_Col_No(Stz* szArg)
 {
   _static_
 
@@ -566,7 +556,7 @@ bool Symbol::bIsStreamOrdinal(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a subQuery-operator?                                  */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryOp(Stz* szArg)
+bool Symbol::bIs_Sqy_Op(Stz* szArg)
 {
   _static_
 
@@ -581,7 +571,7 @@ bool Symbol::bIsSubQueryOp(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a subQuery-column?  (i.e. __n)                        */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryColumn(Stz* szArg)
+bool Symbol::bIs_Sqy_Rsl(Stz* szArg)
 {
   _static_
 
@@ -607,7 +597,7 @@ bool Symbol::bIsSubQueryColumn(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsSyntheticAs(Stz* szArg)
+bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
 {
   _static_
 
@@ -632,7 +622,7 @@ bool Symbol::bIsSyntheticAs(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol a table synonym?  (i.e. $c)                               */
 /*----------------------------------------------------------------------------*/
-//bool Symbol::bIsTableSyn(Stz* szArg)
+//bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 //{
 //  _static_
 //
@@ -648,7 +638,7 @@ bool Symbol::bIsSyntheticAs(Stz* szArg)
 //  return false;
 //}
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsTableSyn(Stz* szArg)
+bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 {
   _static_
 
@@ -657,19 +647,6 @@ bool Symbol::bIsTableSyn(Stz* szArg)
 
   if (   StrLib::bIsAlpha(acFirst)
          && '\0' == acSecond)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsValueOrdinal(Stz* szArg)
-{
-  _static_
-
-  if (bIsStreamOrdinal(szArg) || bIsColumnOrdinal(szArg))
     return true;
 
   return false;
@@ -868,7 +845,7 @@ bool Symbol::bIs_Agg_Fn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsAggFn(m_sSymbol))
+  if (bIs_Agg_Fn(m_sSymbol))
     return true;
 
   return false;
@@ -881,7 +858,7 @@ bool Symbol::bIs_Bol_Fn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsBoolFn(m_sSymbol))
+  if (bIs_Bol_Fn(m_sSymbol))
     return true;
 
   return false;
@@ -894,7 +871,7 @@ bool Symbol::bIs_Bol_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsBoolOp(m_sSymbol))
+  if (bIs_Bol_Op(m_sSymbol))
     return true;
 
   return false;
@@ -907,7 +884,7 @@ bool Symbol::bIs_Bound(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsBound(m_sSymbol))
+  if (bIs_Bound(m_sSymbol))
     return true;
 
   return false;
@@ -920,7 +897,7 @@ bool Symbol::bIs_Col_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsColNm(m_sSymbol))
+  if (bIs_Col_Nm(m_sSymbol))
     return true;
 
   return false;
@@ -933,7 +910,7 @@ bool Symbol::bIs_Col_Tc(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsColumnOrdinal(m_sSymbol))
+  if (bIs_Col_Tc(m_sSymbol))
     return true;
 
   return false;
@@ -946,7 +923,7 @@ bool Symbol::bIs_Comma(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsComma(m_sSymbol))
+  if (bIs_Comma(m_sSymbol))
     return true;
   else
     return false;
@@ -959,7 +936,7 @@ bool Symbol::bIs_Xrf_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsCrossRef(m_sSymbol))
+  if (bIs_Xrf_No(m_sSymbol))
     return true;
 
   return false;
@@ -972,7 +949,7 @@ bool Symbol::bIs_Direction(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsDirection(m_sSymbol))
+  if (bIs_Direction(m_sSymbol))
     return true;
   else
     return false;
@@ -985,7 +962,7 @@ bool Symbol::bIs_Col_Nm_dis(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsDisambColNm(m_sSymbol))
+  if (bIs_Col_Nm_dis(m_sSymbol))
     return true;
   else
     return false;
@@ -998,7 +975,7 @@ bool Symbol::bIs_Idx_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsIndexColumn(m_sSymbol))
+  if (bIs_Idx_Col(m_sSymbol))
     return true;
 
   return false;
@@ -1011,7 +988,7 @@ bool Symbol::bIs_Key_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsKeyOrdinal(m_sSymbol))
+  if (bIs_Key_Col(m_sSymbol))
     return true;
 
   return false;
@@ -1037,7 +1014,7 @@ bool Symbol::bIs_Number(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsNumber(m_sSymbol))
+  if (bIs_Number(m_sSymbol))
     return true;
 
   return false;
@@ -1050,7 +1027,7 @@ bool Symbol::bIs_Mth_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsMathOp(m_sSymbol))
+  if (bIs_Mth_Op(m_sSymbol))
     return true;
 
   return false;
@@ -1063,7 +1040,7 @@ bool Symbol::bIs_Sqy_Prm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsParameterOrdinal(m_sSymbol))
+  if (bIs_Sqy_Prm(m_sSymbol))
     return true;
 
   return false;
@@ -1076,7 +1053,7 @@ bool Symbol::bIs_Parenthesis(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsParenthesis(m_sSymbol))
+  if (bIs_Parenthesis(m_sSymbol))
     return true;
 
   return false;
@@ -1089,7 +1066,7 @@ bool Symbol::bIs_Rln_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsRelnOp(m_sSymbol))
+  if (bIs_Rln_Op(m_sSymbol))
     return true;
 
   return false;
@@ -1102,7 +1079,7 @@ bool Symbol::bIs_Col_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsStreamOrdinal(m_sSymbol))
+  if (bIs_Col_No(m_sSymbol))
     return true;
 
   return false;
@@ -1115,7 +1092,7 @@ bool Symbol::bIs_Sqy_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsSubQueryOp(m_sSymbol))
+  if (bIs_Sqy_Op(m_sSymbol))
     return true;
 
   return false;
@@ -1128,7 +1105,7 @@ bool Symbol::bIs_Sqy_Rsl(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsSubQueryColumn(m_sSymbol))
+  if (bIs_Sqy_Rsl(m_sSymbol))
     return true;
 
   return false;
@@ -1141,7 +1118,7 @@ bool Symbol::bIs_As_Nm_syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsSyntheticAs(m_sSymbol))
+  if (bIs_Col_Nm_syn(m_sSymbol))
     return true;
 
   return false;
@@ -1154,7 +1131,7 @@ bool Symbol::bIs_Tbl_Syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsTableSyn(m_sSymbol))
+  if (bIs_Tbl_Syn(m_sSymbol))
     return true;
 
   return false;
@@ -2072,7 +2049,7 @@ void Symbol::vSet_Tbl_Syn(char cTblSyn)
   m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsTableSyn());
+  RASSERT(bIs_Tbl_Syn());
 #endif
 }
 
@@ -2093,7 +2070,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
   m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsTableSyn());
+  RASSERT(bIs_Tbl_Syn());
 #endif
 }
 

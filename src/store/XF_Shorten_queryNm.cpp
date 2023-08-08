@@ -65,7 +65,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
   m_pCI->vTransform(__func__, XF_SHORTEN_QUERYNM, "shorten query names"_Stz);
 
   s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
-  if (Symbol::bIsSubQueryName(sBoardNm)) {
+  if (Symbol::bIs_Sqy_Nm(sBoardNm)) {
     i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
     Symbol xSymbol_sqNo(SF_SQY_NO,iSqNo);
     m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo.szSF_symbol());
@@ -76,7 +76,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
   CardIter* pCI = m_pCI;
 
   auto bLambdaFn = [pCI](Card* p_card) {
-    if (!Symbol::bIsSubQueryName(p_card->szSymbol()))
+    if (!Symbol::bIs_Sqy_Nm(p_card->szSymbol()))
       return C_CONTINUE_RECURSION;
 
     i8 iSqNo = StrLib::iGleanInt(p_card->szSymbol()->azChar());

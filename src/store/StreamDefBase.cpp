@@ -355,7 +355,7 @@ Column* StreamDefBase::pFindColumn_disambig(BASE::Stz *szColNm_find)
 
     s32 sColNm = pColumn->szColNm();
 
-    if (Symbol::bIsDisambColNm(sColNm)) {
+    if (Symbol::bIs_Col_Nm_dis(sColNm)) {
       Symbol::vStripDisamb(sColNm);
     }
     else {

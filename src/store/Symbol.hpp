@@ -36,33 +36,32 @@ namespace STORE
     static eQO  eEvalSubQryOp(Stz* szSymbol);
     static eSF  eEvalSymbol(Stz* szSymbol);
 
-    static bool bIsAggFn(Stz* szArg);            // avg, count, ... sum
-    static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
-    static bool bIsBoolOp(Stz* szArg);           // and, not, or
-    static bool bIsBound(Stz* szArg);            // BOUND, LBOUND, UBOUND
-    static bool bIsColNm(Stz* szArg);            // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIsColumnOrdinal(Stz* szArg);    // $c.n
-    static bool bIsComma(Stz* szArg);            // ,
-    static bool bIsCrossRef(Stz* szArg);         // #n
-    static bool bIsDirection(Stz* szArg);        // asc, desc
-    static bool bIsDisambColNm(Stz* szArg);      // C_n
-    static bool bIsIndexColumn(Stz* szArg);      // $In
-    static bool bIsKeyOrdinal(Stz* szArg);       // $Kn
-    static bool bIsMathOp(Stz* szArg);           // +, -, *, /
+    static bool bIs_Agg_Fn(Stz* szArg);          // avg, count, ... sum
+    static bool bIs_Bol_Fn(Stz* szArg);          // between, case ... matchTrailing
+    static bool bIs_Bol_Op(Stz* szArg);          // and, not, or
+    static bool bIs_Bound(Stz* szArg);           // BOUND, LBOUND, UBOUND
+    static bool bIs_Col_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Col_Nm_dis(Stz* szArg);      // C_n
+    static bool bIs_Col_Nm_syn(Stz* szArg);      // __COLn
+    static bool bIs_Col_No(Stz* szArg);          // $n
+    static bool bIs_Col_Tc(Stz* szArg);          // $c.n
+    static bool bIs_Comma(Stz* szArg);           // ,
+    static bool bIs_Direction(Stz* szArg);       // asc, desc
+    static bool bIs_Idx_Col(Stz* szArg);         // $In
+    static bool bIs_Key_Col(Stz* szArg);         // $Kn
+    static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
+    static bool bIs_Number(Stz* szArg);          // StrLib::bIsDecimal/Float/Integer()
+    static bool bIs_Parenthesis(Stz* szArg);     // ( or )
+    static bool bIs_Rln_Op(Stz* szArg);          // <, <=, ... >
+    static bool bIs_Sqy_Crl_Key(Stz* szStz);     // _SQCRLKEY_
+    static bool bIs_Sqy_Nm(Stz* szStz);          // __subqueryN
+    static bool bIs_Sqy_Op(Stz* szArg);          // exists, in, notExists, notIn
+    static bool bIs_Sqy_Prm(Stz* szArg);         // %n
+    static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
+    static bool bIs_Tbl_Syn(Stz* szArg);         // $c
+    static bool bIs_Xrf_No(Stz* szArg);          // #n
+
     static bool bIsName(Stz* szArg);             // StrLib::bIsSqlName()
-    static bool bIsNumber(Stz* szArg);           // StrLib::bIsDecimal/Float/Integer()
-    static bool bIsOther(Stz* szArg);            //
-    static bool bIsParameterOrdinal(Stz* szArg); // %n
-    static bool bIsParenthesis(Stz* szArg);      // ( or )
-    static bool bIsRelnOp(Stz* szArg);           // <, <=, ... >
-    static bool bIsStreamOrdinal(Stz* szArg);    // $n
-    static bool bIsSubQueryCKey(Stz* szStz);     // _SQCRLKEY_
-    static bool bIsSubQueryName(Stz* szStz);     // __subqueryN
-    static bool bIsSubQueryOp(Stz* szArg);       // exists, in, notExists, notIn
-    static bool bIsSubQueryColumn(Stz* szArg);   // __n
-    static bool bIsSyntheticAs(Stz* szArg);      // __COLn
-    static bool bIsTableSyn(Stz* szArg);         // $c
-    static bool bIsValueOrdinal(Stz* szArg);     // $n or $c.n
 
     static void vStripDisamb(String* psArg);
 
