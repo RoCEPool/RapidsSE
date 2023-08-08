@@ -10,7 +10,7 @@
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
 
-//#define X_SET_CROSS_CHECK
+#define X_SET_CROSS_CHECK
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
@@ -395,6 +395,12 @@ bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
          && StrLib::bIsDigit(acSixth))
     return true;
 
+  if (   'C' == acFirst
+         && 'O' == acSecond
+         && 'L' == acThird
+         && StrLib::bIsDigit(acFourth))
+    return true;
+
   return false;
 }
 
@@ -604,8 +610,11 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szStz)
 {
   _static_
 
-  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
+  char acFirst  = szStz->azChar()[0];
+  char acSecond = szStz->azChar()[1];
+
+  if ('S' == acFirst
+      && StrLib::bIsDigit(acSecond))
     return true;
 
   return false;
