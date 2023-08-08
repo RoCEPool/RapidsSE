@@ -43,21 +43,6 @@ Card_Table::Card_Table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Table::Card_Table(Stz* szTableNm)
-    : Card_OP(CK_TABLE)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  SYM(SF_OTHER,szTableNm);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Table::~Card_Table(void) noexcept(false)

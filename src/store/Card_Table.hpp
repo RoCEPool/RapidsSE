@@ -18,7 +18,6 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Table(void);
-    Card_Table(Stz* szTableNm);
    ~Card_Table(void) noexcept(false);
 
     static Table* pAccess_Table(Stz* szTableNm);
