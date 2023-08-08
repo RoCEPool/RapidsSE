@@ -233,7 +233,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       p_streamHead->vAppend((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol()));
 
       if (p_table_ith->pSub_keyExists() || p_table_ith->pSub_keyNotExists()) {
-        p_streamHead->vAppend((new Card_Note) ->SYM(SF_OTHER,"**CAN'T BE FIRST**"_Stz));
+        p_streamHead->vAppend((new Card_Note) ->SYM(SF_NOTE,"**CAN'T BE FIRST**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         i_InvalidAtJoin = i_Elm;
         break;
@@ -241,7 +241,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
       if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
         if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
-          p_streamHead->vAppend((new Card_Note) ->SYM(SF_OTHER,"**BAD POS**"_Stz));
+          p_streamHead->vAppend((new Card_Note) ->SYM(SF_NOTE,"**BAD POS**"_Stz));
           pSymbol()->Y_vSet(P_Invalid);
           i_InvalidAtJoin = i_Elm;
           break;

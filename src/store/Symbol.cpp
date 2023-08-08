@@ -134,12 +134,16 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
 
   if (bIs_Agg_Fn(szSymbol))       return SF_AGG_FN;
   if (bIs_As(szSymbol))           return SF_AS;
+  if (bIs_Bol_Fn(szSymbol))       return SF_BOL_FN;
+  if (bIs_Bol_Op(szSymbol))       return SF_BOL_OP;
+  if (bIs_Bound(szSymbol))        return SF_BOUND;
   if (bIs_Col_Nm_dis(szSymbol))   return SF_COL_NM_dis;
   if (bIs_Col_Nm_syn(szSymbol))   return SF_COL_NM_syn;
   if (bIs_Col_No(szSymbol))       return SF_COL_NO;
   if (bIs_Col_Tc(szSymbol))       return SF_COL_TC;
   if (bIs_Col_Type(szSymbol))     return SF_COL_TYPE;
   if (bIs_Comma(szSymbol))        return SF_COMMA;
+  if (bIs_Cross(szSymbol))        return SF_CROSS;
   if (bIs_Direction(szSymbol))    return SF_DIRECTION;
   if (bIs_GroupBy(szSymbol))      return SF_GROUPBY;
   if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
@@ -401,6 +405,19 @@ bool Symbol::bIs_Comma(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Cross(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("CROSS"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Direction(Stz* szArg)
@@ -548,6 +565,26 @@ bool Symbol::bIs_Parenthesis(Stz* szArg)
   if (szArg->bSame(")"_Stz))     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a relational-operator?                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Ppe_Nm(Stz* szArg)
+{
+  _static_
+
+  if (! StrLib::bIsSqlName(szArg->azChar()))
+    return false;
+
+  if (bIs_Agg_Fn(szArg))      return false;
+  if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Op(szArg))      return false;
+  if (bIs_Bound(szArg))       return false;
+  if (bIs_Direction(szArg))   return false;
+  if (bIs_Sqy_Op(szArg))      return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1164,6 +1201,19 @@ bool Symbol::bIs_Comma(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Cross(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Cross(m_sSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Direction(void)
@@ -1288,6 +1338,19 @@ bool Symbol::bIs_Parenthesis(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Parenthesis(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a index name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Ppe_Nm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_Ppe_Nm(m_sSymbol))
     return true;
 
   return false;
@@ -1684,11 +1747,15 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_AGG_FN:      vSet_Agg_Fn(szStz);      break;
     case SF_AS:          vSet_As(szStz);          break;
     case SF_AS_NM:       vSet_As_Nm(szStz);       break;
+    case SF_BOL_FN:      vSet_Bol_Fn(szStz);      break;
+    case SF_BOL_OP:      vSet_Bol_Op(szStz);      break;
+    case SF_BOUND:       vSet_Bound(szStz);       break;
     case SF_COL_NM:      vSet_Col_Nm(szStz);      break;
     case SF_COL_NO:      vSet_Col_No(szStz);      break;
     case SF_COL_TC:      vSet_Col_Tc(szStz);      break;
     case SF_COL_TYPE:    vSet_Col_Type(szStz);    break;
     case SF_COMMA:       vSet_Comma(szStz);       break;
+    case SF_CROSS:       vSet_Cross(szStz);       break;
     case SF_DIRECTION:   vSet_Direction(szStz);   break;
     case SF_FLD_NM:      vSet_Fld_Nm(szStz);      break;
     case SF_GROUPBY:     vSet_GroupBy(szStz);     break;
@@ -1698,6 +1765,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_NOTE:        vSet_Note(szStz);        break;
     case SF_NUMBER:      vSet_Number(szStz);      break;
     case SF_PARENTHESIS: vSet_Parenthesis(szStz); break;
+    case SF_PPE_NM:      vSet_Ppe_Nm(szStz);      break;
     case SF_PRM_COL:     vSet_Prm_Col(szStz);     break;
     case SF_RLN_OP:      vSet_Rln_Op(szStz);      break;
     case SF_SQY_KEY:     vSet_Other(szStz);       break;
@@ -2280,6 +2348,19 @@ void Symbol::vSet_Comma(Stz* szComma)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Cross(Stz* szCross)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szCross;
+  m_eSymbol = SF_CROSS;
+
+  RASSERT(bIs_Cross());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
@@ -2522,6 +2603,19 @@ void Symbol::vSet_Parenthesis(Stz* szParenthesis)
   m_eSymbol = SF_PARENTHESIS;
 
   RASSERT(bIs_Parenthesis());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szPpeNm;
+  m_eSymbol = SF_PPE_NM;
+
+  RASSERT(bIs_Ppe_Nm());
 }
 
 /*----------------------------------------------------------------------------*/

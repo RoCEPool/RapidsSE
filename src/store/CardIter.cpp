@@ -1531,24 +1531,23 @@ Card* CardIter::pNextChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMember(eCK eMember, bool bUpdateMember)
+void CardIter::G_vNewMember(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
   G.p_NEW = new Card(eMember);
 
-  if (bUpdateMember)
-    G_vMember(eMember, G.p_NEW, __func__);
+  G_vMember(eMember, G.p_NEW, __func__);
 }
 
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
+void CardIter::G_vNewMember(eCK eMember, Stz* szValue)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G_vNewMember(eMember, bUpdateMember);
+  G_vNewMember(eMember);
 
   G.p_NEW->vSymbol(SF_OTHER,szValue);
 }
@@ -1556,13 +1555,13 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMember(eCK eMember, Symbol xSymbol, bool bUpdateMember)
+void CardIter::G_vNewMember(eCK eMember, Symbol xSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G_vNewMember(eMember, bUpdateMember);
+  G_vNewMember(eMember);
 
-  G.p_NEW->vSymbol(&xSymbol);
+  G.p_NEW->pSymbol()->vSym(&xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

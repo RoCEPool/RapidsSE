@@ -321,7 +321,7 @@ Card* Dissector::pOp_Call(void)
   StrLib::vStrip(szSubPipeNm->azChar(),' ');
 
   Card_Call* pCard_Call = new Card_Call;
-  pCard_Call->SYM(SF_OTHER,szSubPipeNm);
+  pCard_Call->SYM(SF_PPE_NM,szSubPipeNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -572,7 +572,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->SYM(SF_OTHER,pIndex->szIndexNm());
+  p_indexNm->SYM(SF_IDX_NM,pIndex->szIndexNm());
 
   p_indexList->vAppend(p_index);
 
@@ -675,7 +675,7 @@ Card* Dissector::pOp_IndexScan(void)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->SYM(SF_OTHER,szIndexNm);
+  p_indexNm->SYM(SF_IDX_NM,szIndexNm);
 
   p_indexList->vAppend(p_index);
 
@@ -1175,7 +1175,7 @@ Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm, Table* pTable)
   Card_Index* p_index = new Card_Index;
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->SYM(SF_OTHER,pIndex->szIndexNm());
+  p_indexNm->SYM(SF_IDX_NM,pIndex->szIndexNm());
 
   p_index->vAppend(p_indexNm);
   p_indexList->vAppend(p_index);

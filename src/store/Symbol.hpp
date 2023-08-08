@@ -46,8 +46,9 @@ namespace STORE
     static bool bIs_Col_Nm_syn(Stz* szArg);      // __COLn
     static bool bIs_Col_No(Stz* szArg);          // $n
     static bool bIs_Col_Tc(Stz* szArg);          // $c.n
-    static bool bIs_Col_Type(Stz* szArg);        // INTEGER,
+    static bool bIs_Col_Type(Stz* szArg);        // BOOLEAN, ... VARCHAR
     static bool bIs_Comma(Stz* szArg);           // ,
+    static bool bIs_Cross(Stz* szArg);           // CROSS
     static bool bIs_Direction(Stz* szArg);       // asc, desc
     static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
@@ -58,6 +59,7 @@ namespace STORE
     static bool bIs_Note(Stz* szArg);            // ...any...
     static bool bIs_Number(Stz* szArg);          // StrLib::bIsDecimal/Float/Integer()
     static bool bIs_Parenthesis(Stz* szArg);     // ( or )
+    static bool bIs_Ppe_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Rln_Op(Stz* szArg);          // <, <=, ... >
     static bool bIs_Sqy_Crl_Key(Stz* szStz);     // _SQCRLKEY_
     static bool bIs_Sqy_Nm(Stz* szStz);          // __subqueryN
@@ -102,8 +104,9 @@ namespace STORE
     bool bIs_Col_Nm_dis(void);      // C_n
     bool bIs_Col_No(void);          // $n
     bool bIs_Col_Tc(void);          // $c.n
-    bool bIs_Col_Type(void);        // INTEGER,
+    bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
     bool bIs_Comma(void);           // ,
+    bool bIs_Cross(void);           // CROSS
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_GroupBy(void);         // GROUPBY
@@ -114,6 +117,7 @@ namespace STORE
     bool bIs_Note(void);            // ...any...
     bool bIs_Number(void);          // StrLib::bIsDecimal/Float/Integer()
     bool bIs_Parenthesis(void);     // ( or )
+    bool bIs_Ppe_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Rln_Op(void);          // <, <=, ... >
     bool bIs_Sqy_No(void);          // __sq%02lld
     bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
@@ -201,6 +205,7 @@ namespace STORE
     void vSet_Col_Tc(Stz* szColTc);
     void vSet_Col_Type(Stz* szColType);
     void vSet_Comma(Stz* szComma);
+    void vSet_Cross(Stz* szCross);
     void vSet_Direction(Stz* szColNm);
     void vSet_Fld_Nm(Stz* szFldNm);
     void vSet_GroupBy(Stz* szGroupBy);
@@ -215,6 +220,7 @@ namespace STORE
     void vSet_Number(Stz* szNumber);
     void vSet_Other(Stz* szOther);
     void vSet_Parenthesis(Stz* szParenthesis);
+    void vSet_Ppe_Nm(Stz* szPpeNm);
     void vSet_Prm_Col(i8 iOrdinal);
     void vSet_Prm_Col(Stz* szPrmCol);
     void vSet_Rln_Op(Stz* szRlnOp);

@@ -136,9 +136,9 @@ namespace STORE
     void vMember(Card* pCard);
     bool bMore(void);
 
-    void  G_vNewMember(eCK eMember, bool bUpdateMember= true);
-    void  G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
-    void  G_vNewMember(eCK eMember, Symbol xSymbol, bool bUpdateMember= true);
+    void  G_vNewMember(eCK eMember);
+    void  G_vNewMember(eCK eMember, Stz* szValue);
+    void  G_vNewMember(eCK eMember, Symbol xSymbol);
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);
     void vNullMembers(bool bNull_OP=true);
