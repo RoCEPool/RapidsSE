@@ -165,24 +165,33 @@ namespace STORE
     void Y_vColType(Stz* szColType);
 
   private:
+    void vSet_Agg_Fn(Stz* szAggFn);
     void vSet_As_Nm(Stz* szAsNm);
     void vSet_As_Nm_syn(i8 iAsNo);
+    void vSet_Bol_Fn(Stz* szBolFn);
+    void vSet_Bol_Op(Stz* szBolOp);
+    void vSet_Bound(Stz* szBound);
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
     void vSet_Col_No(Stz* szStz);
     void vSet_Col_No(i8 iStmColOdn);
     void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
-    void vSet_Direct(Stz* szColNm);
+    void vSet_Comma(Stz* szComma);
+    void vSet_Direction(Stz* szColNm);
     void vSet_Idx_Col(i8 iIdxColOdn);
     void vSet_Key_Col(i8 iKeyOdn);
+    void vSet_Mth_Op(Stz* szMthOp);
     void vSet_Number(i8 iNumber);
     void vSet_Other(Stz* szOther);
+    void vSet_Parenthesis(Stz* szParenthesis);
     void vSet_Prm_Col(i8 iOrdinal);
+    void vSet_Rln_Op(Stz* szRlnOp);
     void vSet_Sqy_No(i8 iSqNo);
-    void vSet_Stg_No(i8 iStageNo);
+    void vSet_Sqy_Op(Stz* szSqyOp);
+    void vSet_Stg_Nm(i8 iStageNo);
     void vSet_Tbl_Syn(char cTblSyn);
     void vSet_Tbl_Syn_rep(void);
-    void vSet_Xrf_No(i8 iCrossRef);
+    void vSet_Xrf_No(i8 iXrefNo);
 
     void vSymSprint(Stz* szFormat, ...);
 

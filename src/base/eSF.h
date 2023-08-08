@@ -18,19 +18,24 @@ enum eSF // symbol form
   /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
   /* */ SF_COL_NO,      // Column Number       : $n
   /* */ SF_COL_TC,      // (table) Column No   : $c.n
+  /* */ SF_COMMA,       // comma               : ,
 
   /* */ SF_DIRECT,      // Direction           : asc, desc
   /* */ SF_IDX_COL,     // Index Column no     : $In
   /* */ SF_KEY_COL,     // Key Column no       : $Kn
+  /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
   /* */ SF_NUMBER,      // Numeric Literal     : StrLib::bIsDecimal/Float/Integer()
 
   /* */ SF_OTHER,       // other
+
+  /* */ SF_PARENTHESIS, // Parenthesis         : (, )
 
   /* */ SF_PRM_COL,     // Parameter Column    : %n
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
   /* */ SF_STG_NO,      // Stage No            : Sn
   /* */ SF_SQY_KEY,     // SubQuery Correl Key :
   /* */ SF_SQY_NO,      // SubQuery No         :
+  /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_TBL_SYN,     // Table Synonym       : c
   /* */ SF_TBL_SYN_rep, // " (replicated)      : C
@@ -54,18 +59,22 @@ static Stz* aSF[]
   /* */ "SF_COL_NM_dis"_Stz,
   /* */ "SF_COL_NO"_Stz,
   /* */ "SF_COL_TC"_Stz,
+  /* */ "SF_COMMA"_Stz,
 
   /* */ "SF_DIRECT"_Stz,
   /* */ "SF_IDX_COL"_Stz,
   /* */ "SF_KEY_COL"_Stz,
+  /* */ "SF_MTH_OP"_Stz,
   /* */ "SF_NUMBER"_Stz,
 
   /* */ "SF_OTHER"_Stz,
 
+  /* */ "SF_PARENTHESIS"_Stz,
   /* */ "SF_PRM_COL"_Stz,
   /* */ "SF_RLN_OP"_Stz,
   /* */ "SF_SQY_KEY"_Stz,
   /* */ "SF_SQY_NO"_Stz,
+  /* */ "SF_SQY_OP"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
   /* */ "SF_STG_NO"_Stz,
   /* */ "SF_TBL_SYN"_Stz,

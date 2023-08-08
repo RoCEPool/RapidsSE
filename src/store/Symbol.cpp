@@ -1356,7 +1356,8 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
     case SF_KEY_COL:   vSet_Key_Col(iInt);   break;
     case SF_NUMBER:    vSet_Number(iInt);    break;
     case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
-    case SF_STG_NO:    vSet_Stg_No(iInt);    break;
+    case SF_STG_NO:
+      vSet_Stg_Nm(iInt);    break;
     case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
 
     default: NEVER_REACH;
@@ -1392,7 +1393,8 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_AS_NM:   vSet_As_Nm(szStz);  break;
     case SF_COL_NM:  vSet_Col_Nm(szStz); break;
     case SF_COL_NO:  vSet_Col_No(szStz); break;
-    case SF_DIRECT:  vSet_Direct(szStz); break;
+    case SF_DIRECT:
+      vSet_Direction(szStz); break;
     case SF_OTHER:   vSet_Other(szStz);  break;
     case SF_SQY_KEY: vSet_Other(szStz);  break;
 
@@ -1838,6 +1840,24 @@ void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
+void Symbol::vSet_Agg_Fn(Stz* szAggFn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szAggFn;
+  m_eSymbol = SF_AGG_FN;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Agg_Fn());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
 void Symbol::vSet_As_Nm(Stz* szAsNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -1850,6 +1870,60 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_As_Nm());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Bol_Fn(Stz* szBolFn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szBolFn;
+  m_eSymbol = SF_BOL_FN;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Bol_Fn());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Bol_Op(Stz* szBolOp)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szBolOp;
+  m_eSymbol = SF_BOL_OP;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Bol_Op());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Bound(Stz* szBound)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szBound;
+  m_eSymbol = SF_BOUND;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Bound());
 #endif
 }
 
@@ -1881,24 +1955,24 @@ void Symbol::vSet_Col_No(Stz* szColNm)
   m_eSymbol = SF_COL_NO;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given cross-reference no                                */
+/* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Xrf_No(i8 iCrossRef)
+void Symbol::vSet_Comma(Stz* szComma)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSymSprint("#%lld"_Stz, iCrossRef);
-  m_eSymbol = SF_XRF_NO;
+  m_sSymbol = szComma;
+  m_eSymbol = SF_COMMA;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIs_Xrf_No());
+  RASSERT(bIs_Comma());
 #endif
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
@@ -1919,16 +1993,52 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given stream-column                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_No(i8 iStmColOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSymSprint("$%lld"_Stz, iStmColOdn);
+  m_eSymbol = SF_COL_TC;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Col_No());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSymSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+  m_eSymbol = SF_COL_TC;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Col_Tc());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given column-name                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Direct(Stz* szDirect)
+void Symbol::vSet_Direction(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(! m_bSet);
   m_bSet = true;
 
-  m_sSymbol = szDirect;
+  m_sSymbol = szColNm;
   m_eSymbol = SF_DIRECT;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1974,6 +2084,24 @@ void Symbol::vSet_Key_Col(i8 iKeyOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Mth_Op(Stz* szMthOp)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szMthOp;
+  m_eSymbol = SF_MTH_OP;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Bol_Op());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given number                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Number(i8 iNumber)
@@ -2005,6 +2133,25 @@ void Symbol::vSet_Other(Stz* szOther)
   m_eSymbol = SF_OTHER;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Parenthesis(Stz* szParenthesis)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szParenthesis;
+  m_eSymbol = SF_PARENTHESIS;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Parenthesis());
+#endif
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given number                                             */
@@ -2025,9 +2172,27 @@ void Symbol::vSet_Prm_Col(i8 iOrdinal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Rln_Op(Stz* szRlnOp)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szRlnOp;
+  m_eSymbol = SF_RLN_OP;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Rln_Op());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to a stage                                                 */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Stg_No(i8 iStageNo)
+void Symbol::vSet_Stg_Nm(i8 iStageNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2041,24 +2206,6 @@ void Symbol::vSet_Stg_No(i8 iStageNo)
   RASSERT(bIs_Stg_Nm());
 #endif
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given stream-column                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_No(i8 iStmColOdn)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  vSymSprint("$%lld"_Stz, iStmColOdn);
-  m_eSymbol = SF_COL_TC;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIs_Col_No());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2076,6 +2223,24 @@ void Symbol::vSet_Sqy_No(i8 iSqNo)
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Sqy_No());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = szSqyOp;
+  m_eSymbol = SF_SQY_OP;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIs_Rln_Op());
 #endif
 }
 
@@ -2140,20 +2305,20 @@ void Symbol::vSet_Tbl_Syn_rep(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given table-column                                      */
+/* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
+void Symbol::vSet_Xrf_No(i8 iXrefNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSymSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-  m_eSymbol = SF_COL_TC;
+  vSymSprint("#%lld"_Stz, iXrefNo);
+  m_eSymbol = SF_XRF_NO;
 
 #ifdef X_SET_CROSS_CHECK
-  RASSERT(bIs_Col_Tc());
+  RASSERT(bIs_Xrf_No());
 #endif
 }
 
