@@ -125,7 +125,7 @@ i8 vNullCheck(Dynamic_T* aDynamicT) {
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check for nulls
+  // check for null key
   __NULLSTACK__;
 
   // check null result
@@ -138,7 +138,6 @@ i8 vNullCheck(Dynamic_T* aDynamicT) {
 
   return 0; // ray-alka
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- vCreatePayLoad ----------------------------------------------------------*/

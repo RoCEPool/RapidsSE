@@ -38,24 +38,25 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL_LOOP__:
 
-   aDynamicT->m_iJoinedRows = 0;
+  aDynamicT->m_iJoinedRows = 0;
 
-   // process the row
-   aDynamicT->m_iProcessRow = 1;
+  // process the row
+  aDynamicT->m_iProcessRow = 1;
 
-   i_CurrentRow++;
-   if (i_CurrentRow  >= aDynamicT->m_nRows) {
-     goto L_Return;
-   }
+  i_CurrentRow++;
+  if (i_CurrentRow  >= aDynamicT->m_nRows) {
+    goto L_Return;
+  }
 
-   // get the next row (should be able to add rowsize)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the next row (should be able to add rowsize)
 #ifdef WITH_CLANG
-   aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_RowBufferCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
+  aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_RowBufferCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
 #endif
 
-   aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
+  aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
 
-   piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   // marker-end
   L_Return:

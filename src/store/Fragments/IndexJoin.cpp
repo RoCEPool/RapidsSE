@@ -106,14 +106,16 @@ void vIndexJoinContinueLO1(Dynamic_T* aDynamicT) {
   bool bLeftOuterRow;
   // marker-start
 
-    // did we join any rows with current left row ?
-    if (aDynamicT->m_iJoinedRows == 0) {
+  JOIN_WITH_NULLS:
 
-      aDynamicT->m_iProcessRow = 1;
-      bLeftOuterRow = true;
-      printf("leftOuter = 1\n");
+  // did we join any rows with current left row ?
+  if (aDynamicT->m_iJoinedRows == 0) {
 
-      // marker-end
+    aDynamicT->m_iProcessRow = 1;
+    bLeftOuterRow = true;
+    printf("leftOuter = 1\n");
+
+  // marker-end
 
   }
 }
@@ -126,16 +128,19 @@ void vIndexJoinContinueLO2(Dynamic_T* aDynamicT) {
 
   __L_LABEL_OUTER_LOOP__:
 
-  {
-    if (true) {
-      // marker-start
-      goto __L_LABEL_NEXT__;
-    } else {
+  if (true) {
+
+  // marker-start
+    goto __L_LABEL_NEXT__;
+
+  } else {
+
       aDynamicT->m_iProcessRow = 0;
       goto __L_LABEL_OUTER_LOOP__;
-    }
+
   }
-    // marker-end
+
+  // marker-end
   __L_LABEL_NEXT__:
   return;
 }
@@ -146,9 +151,13 @@ void vIndexJoinContinueLO2(Dynamic_T* aDynamicT) {
 // function-vIndexJoinContinueLO3
 void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
 
-  // marker-start
+  JOIN_WITH_NULLS:
+    __L_LABEL_OUTER_LOOP__:
 
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the upper bound entry
+
 #ifdef WITH_CLANG
   aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
@@ -157,9 +166,15 @@ void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
   aDynamicT->m_iProcessRow = 1;
 
   if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
-
-    // marker-end
+      // did we join any rows with current left row ?
+      if (aDynamicT->m_iJoinedRows == 0)
+        goto JOIN_WITH_NULLS;
+      else {
+        aDynamicT->m_iProcessRow = 0;
+        goto __L_LABEL_OUTER_LOOP__;
+      }
   }
+    // marker-end
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,7 +291,9 @@ void vIndexJoinPosition(Dynamic_T* aDynamicT) {
     goto __L_LABEL_OUTER_LOOP__;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the upper bound entry
+
 #ifdef WITH_CLANG
   aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
@@ -560,31 +577,51 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
   IndexInfo __INDEX_INFO__;
   bool bLeftOuterRow;
 
-  // marker-start
+  JOIN_WITH_NULLS:
 
+  // marker-start
 #ifdef WITH_CLANG
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position at lower bound
+
   __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
       __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
 #endif
 
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
-
-    // did we join any rows with current left row ?
-    if (aDynamicT->m_iJoinedRows == 0) {
-
-      aDynamicT->m_iProcessRow = 1;
-      bLeftOuterRow = true;
-      printf("leftOuter = 1\n");
-
-      // marker-end
-    }
+     goto JOIN_WITH_NULLS;
   }
+  // marker-end
 
-  L_Return:
-  return;
+}
 
+/*----------------------------------------------------------------------------*/
+/*-- vIndexLeftOuterNullCheck-------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexLeftOuterNullCheck
+i8 vIndexLeftOuterNullCheck(Dynamic_T* aDynamicT) {
+
+	bool bNullResult;
+	i8 __NULLSTACK__;
+
+	JOIN_WITH_NULLS:
+
+	__L_LABEL_OUTER_LOOP__:
+
+	// marker-start
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// check for null key
+	__NULLSTACK__;
+
+	// check null result
+	if (bNullResult) {
+		goto JOIN_WITH_NULLS;
+	}
+
+	// marker-end
+
+	return 0; // ray-alka
 }
 
 /*============================================================================*/
