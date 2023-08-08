@@ -399,17 +399,18 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         else
           vAppendCodeFragment(pOpSketch, "vIndexJoinGenKey"_Stz, pOperatorFile);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // generate expressions for null check
-        if (pOpSketch->m_pNullStack->nValues()) {
-          vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
-        }
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // generate expressions for populating the key
-        vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
-
         if (pOpSketch->m_bCrossJoin) {
+
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// generate expressions for null check
+					if (pOpSketch->m_pNullStack->nValues()) {
+							vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
+					}
+
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// generate expressions for populating the key
+					vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
+
           vAppendCodeFragment(pOpSketch, "vIndexJoinCrossPosition"_Stz, pOperatorFile);
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
 
@@ -432,16 +433,17 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         else if (pOpSketch->m_bLeftOuter) {
 
-          vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition"_Stz, pOperatorFile);
-          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-          vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// generate expressions for null check
+					if (pOpSketch->m_pNullStack->nValues()) {
+						vAppendCodeFragment(pOpSketch, "vIndexLeftOuterNullCheck"_Stz, pOperatorFile);
+					}
 
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO3"_Stz, pOperatorFile);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
-          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-          vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// generate expressions for populating the key
+					vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
+
+          vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition"_Stz, pOperatorFile);
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -459,9 +461,23 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
             vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
           }
 
+					vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
+					vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+					vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
+					vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
         }
 
         else {
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// generate expressions for null check
+					if (pOpSketch->m_pNullStack->nValues()) {
+					  vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
+					}
+
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// generate expressions for populating the key
+					vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
+
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // position the index
           vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
