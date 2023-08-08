@@ -320,7 +320,6 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSameSymbol(char cSymbol);
     bool bSameSymbol(Symbol* pSymbol);
     bool bSameSymbol(Card* pArg);
 

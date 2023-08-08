@@ -1120,19 +1120,6 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 /*----------------------------------------------------------------------------*/
 /* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
-bool Card::bSameSymbol(char cSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (m_xSymbol.bSame(cSymbol))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
 bool Card::bSameSymbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

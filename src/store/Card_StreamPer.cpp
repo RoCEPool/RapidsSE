@@ -424,7 +424,7 @@ bool Card_StreamPer::bHasKnownJoin(char cTblSyn)
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
     ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
-    if (xCI.G.p_MainCard->bSameSymbol(cTblSyn))
+    if (xCI.G.p_MainCard->pSymbol()->bSame(cTblSyn))
       return true;
   }
 
