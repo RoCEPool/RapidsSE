@@ -191,30 +191,6 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexCrossJoinContinue -------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexCrossJoinContinue
-void vIndexCrossJoinContinue(Dynamic_T* aDynamicT) {
-
-  __L_LABEL_OUTER_LOOP__:
-
-  // marker-start
-
-  __L_LABEL_INDEX_DEREF__:
-
-  // did we find the entry ?
-  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
-    aDynamicT->m_iProcessRow = 0;
-    goto __L_LABEL_OUTER_LOOP__;
-  }
-
-  aDynamicT->m_iProcessRow = 1;
-
-  // marker-end
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vIndexJoinContinueLO0 ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinContinueLO0
@@ -295,6 +271,41 @@ void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexJoinCrossPosition ------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinCrossPosition
+void vIndexJoinCrossPosition(Dynamic_T* aDynamicT) {
+
+  IndexInfo __INDEX_INFO__;
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+
+#ifdef WITH_CLANG
+  // position at beginning of the index
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
+        __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
+#endif
+
+  __L_LABEL_INDEX_DEREF__:
+
+  // did we find the entry ?
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+    aDynamicT->m_iProcessRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  aDynamicT->m_iProcessRow = 1;
+
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexJoinDereference ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinDereference
@@ -343,6 +354,51 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   // marker-end
 
   __L_LABEL_NEXT__:
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexJoinPosition -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinPosition
+void vIndexJoinPosition(Dynamic_T* aDynamicT) {
+
+  IndexInfo __INDEX_INFO__;
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+
+#ifdef WITH_CLANG
+  // position at lower bound
+  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
+#endif
+
+  // did we find the entry ?
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+    aDynamicT->m_iProcessRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  // find the upper bound entry
+#ifdef WITH_CLANG
+  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
+      aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
+#endif
+  __L_LABEL_INDEX_DEREF__:
+  aDynamicT->m_iProcessRow = 1;
+
+  if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
+
+    aDynamicT->m_iProcessRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  // marker-end
 
   L_Return:
   return;
