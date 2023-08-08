@@ -10,8 +10,6 @@
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
 
-#define X_SET_CROSS_CHECK
-
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -134,47 +132,22 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
 {
   _static_
 
-  /*
-  enum eSF // symbol form
-  {
-    SF_NONE = 0,   // none
+  if (bIs_Agg_Fn(szSymbol))       return SF_AGG_FN;
+  if (bIs_Col_Nm_dis(szSymbol))   return SF_COL_NM_dis;
+  if (bIs_Col_Nm_syn(szSymbol))   return SF_COL_NM_syn;
+  if (bIs_Col_No(szSymbol))       return SF_COL_NO;
+  if (bIs_Col_Tc(szSymbol))       return SF_COL_TC;
+  if (bIs_Direction(szSymbol))    return SF_DIRECT;
+  if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
+  if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
+  if (bIs_Number(szSymbol))       return SF_NUMBER;
+  if (bIs_Sqy_Crl_Key(szSymbol))  return SF_SQY_KEY;
+  if (bIs_Sqy_Prm(szSymbol))      return SF_PRM_COL;
+  if (bIs_Sqy_Rsl(szSymbol))      return SF_SQY_NO;
+  if (bIs_Tbl_Syn(szSymbol))      return SF_TBL_SYN;
+  if (bIs_Xrf_No(szSymbol))       return SF_XRF_NO;
 
-    SF_AS_NM,
-    SF_COL_NM_dis,
-    SF_IDX_COL,
-    SF_KEY_COL,
-    SF_NUMBER,
-
-    SF_OTHER,
-
-    SF_PRM_COL,
-    SF_AS_NM_syn,
-    SF_SQY_NO,
-    SF_COL_TC,
-    SF_TBLCOL,
-    SF_TBL_SYN,
-    SF_XRF_NO,
-
-    SF_ENUMS
-  };
-  */
-
-  if (bIs_Agg_Fn(szSymbol))              return SF_AGG_FN;
-  if (bIs_Col_Tc(szSymbol))      return SF_COL_TC;
-  if (bIs_Xrf_No(szSymbol))           return SF_XRF_NO;
-  if (bIs_Direction(szSymbol))          return SF_DIRECT;
-  if (bIs_Col_Nm_dis(szSymbol))        return SF_COL_NM_dis;
-  if (bIs_Idx_Col(szSymbol))        return SF_IDX_COL;
-  if (bIs_Number(szSymbol))             return SF_NUMBER;
-  if (bIs_Key_Col(szSymbol))         return SF_KEY_COL;
-  if (bIs_Sqy_Prm(szSymbol))   return SF_PRM_COL;
-  if (bIs_Col_No(szSymbol))      return SF_COL_NO;
-  if (bIs_Sqy_Crl_Key(szSymbol))       return SF_SQY_KEY;
-  if (bIs_Sqy_Rsl(szSymbol))     return SF_SQY_NO;
-  if (bIs_Col_Nm_syn(szSymbol))        return SF_AS_NM_syn;
-  if (bIs_Tbl_Syn(szSymbol))           return SF_TBL_SYN;
-
-  if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
+  //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
   return SF_OTHER;
 }
@@ -189,12 +162,8 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
   vSymSprint("%c"_Stz, cTblSyn);
   m_eSymbol = SF_TBL_SYN;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Tbl_Syn());
-#endif
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
@@ -1359,8 +1328,7 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
     case SF_KEY_COL:   vSet_Key_Col(iInt);   break;
     case SF_NUMBER:    vSet_Number(iInt);    break;
     case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
-    case SF_STG_NO:
-      vSet_Stg_Nm(iInt);    break;
+    case SF_STG_NO:    vSet_Stg_Nm(iInt);    break;
     case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
 
     default: NEVER_REACH;
@@ -1393,13 +1361,12 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 
   switch (eSymbol) {
 
-    case SF_AS_NM:   vSet_As_Nm(szStz);  break;
-    case SF_COL_NM:  vSet_Col_Nm(szStz); break;
-    case SF_COL_NO:  vSet_Col_No(szStz); break;
-    case SF_DIRECT:
-      vSet_Direction(szStz); break;
-    case SF_OTHER:   vSet_Other(szStz);  break;
-    case SF_SQY_KEY: vSet_Other(szStz);  break;
+    case SF_AS_NM:   vSet_As_Nm(szStz);     break;
+    case SF_COL_NM:  vSet_Col_Nm(szStz);    break;
+    case SF_COL_NO:  vSet_Col_No(szStz);    break;
+    case SF_DIRECT:  vSet_Direction(szStz); break;
+    case SF_OTHER:   vSet_Other(szStz);     break;
+    case SF_SQY_KEY: vSet_Other(szStz);     break;
 
     default: NEVER_REACH;
   }
@@ -1850,9 +1817,7 @@ void Symbol::vSet_Agg_Fn(Stz* szAggFn)
   m_sSymbol = szAggFn;
   m_eSymbol = SF_AGG_FN;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Agg_Fn());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1865,9 +1830,22 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
   m_sSymbol = szAsNm;
   m_eSymbol = SF_AS_NM;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_As_Nm());
-#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given synthetic-as                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_As_Nm_syn(i8 iAsNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSymSprint("COL%lld"_Stz, iAsNo);
+  m_eSymbol = SF_AS_NM_syn;
+
+  Y_vSet(P_Synthetic);
+
+  RASSERT(bIs_As_Nm_syn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1880,9 +1858,7 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
   m_sSymbol = szBolFn;
   m_eSymbol = SF_BOL_FN;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Bol_Fn());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1895,9 +1871,7 @@ void Symbol::vSet_Bol_Op(Stz* szBolOp)
   m_sSymbol = szBolOp;
   m_eSymbol = SF_BOL_OP;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Bol_Op());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1910,9 +1884,7 @@ void Symbol::vSet_Bound(Stz* szBound)
   m_sSymbol = szBound;
   m_eSymbol = SF_BOUND;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Bound());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1947,11 +1919,8 @@ void Symbol::vSet_Comma(Stz* szComma)
   m_sSymbol = szComma;
   m_eSymbol = SF_COMMA;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Comma());
-#endif
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
@@ -1963,9 +1932,7 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
   vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
   m_eSymbol = SF_COL_NM_dis;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Col_Nm_dis());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1978,9 +1945,7 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
   vSymSprint("$%lld"_Stz, iStmColOdn);
   m_eSymbol = SF_COL_TC;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Col_No());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1993,9 +1958,7 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
   vSymSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
   m_eSymbol = SF_COL_TC;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Col_Tc());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2008,9 +1971,7 @@ void Symbol::vSet_Direction(Stz* szColNm)
   m_sSymbol = szColNm;
   m_eSymbol = SF_DIRECT;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Direction());
-#endif
 
 }
 
@@ -2024,9 +1985,7 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
   vSymSprint("$I%lld"_Stz, iIdxColOdn);
   m_eSymbol = SF_IDX_COL;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Idx_Col());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2039,9 +1998,7 @@ void Symbol::vSet_Key_Col(i8 iKeyOdn)
   vSymSprint("$K%lld"_Stz, iKeyOdn);
   m_eSymbol = SF_KEY_COL;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Key_Col());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2054,9 +2011,7 @@ void Symbol::vSet_Mth_Op(Stz* szMthOp)
   m_sSymbol = szMthOp;
   m_eSymbol = SF_MTH_OP;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Bol_Op());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2069,9 +2024,7 @@ void Symbol::vSet_Number(i8 iNumber)
   m_sSymbol = iNumber;
   m_eSymbol = SF_NUMBER;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Number());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2095,12 +2048,8 @@ void Symbol::vSet_Parenthesis(Stz* szParenthesis)
   m_sSymbol = szParenthesis;
   m_eSymbol = SF_PARENTHESIS;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Parenthesis());
-#endif
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given number                                             */
@@ -2112,9 +2061,7 @@ void Symbol::vSet_Prm_Col(i8 iOrdinal)
   vSymSprint("%%%lld"_Stz, iOrdinal);
   m_eSymbol = SF_PRM_COL;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Sqy_Prm());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2127,9 +2074,7 @@ void Symbol::vSet_Rln_Op(Stz* szRlnOp)
   m_sSymbol = szRlnOp;
   m_eSymbol = SF_RLN_OP;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Rln_Op());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2140,11 +2085,9 @@ void Symbol::vSet_Stg_Nm(i8 iStageNo)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSymSprint("S%02lld"_Stz, iStageNo);
-  m_eSymbol = SF_OTHER;
+  m_eSymbol = SF_STG_NO;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Stg_Nm());
-#endif
 
 }
 
@@ -2158,9 +2101,7 @@ void Symbol::vSet_Sqy_No(i8 iSqNo)
   vSymSprint("__sq%02lld"_Stz, iSqNo);
   m_eSymbol = SF_SQY_NO;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Sqy_No());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2173,26 +2114,7 @@ void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
   m_sSymbol = szSqyOp;
   m_eSymbol = SF_SQY_OP;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Rln_Op());
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given synthetic-as                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_As_Nm_syn(i8 iAsNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vSymSprint("COL%lld"_Stz, iAsNo);
-  m_eSymbol = SF_AS_NM_syn;
-
-  Y_vSet(P_Synthetic);
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIs_As_Nm_syn());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2205,9 +2127,7 @@ void Symbol::vSet_Tbl_Syn(char cTblSyn)
   vSymSprint("%c"_Stz, cTblSyn);
   m_eSymbol = SF_TBL_SYN;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Tbl_Syn());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2223,9 +2143,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
   vSymSprint("%c"_Stz, cTableSyn_actual);
   m_eSymbol = SF_TBL_SYN;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Tbl_Syn_rep());
-#endif
 }
 
 
@@ -2239,9 +2157,7 @@ void Symbol::vSet_Xrf_No(i8 iXrefNo)
   vSymSprint("#%lld"_Stz, iXrefNo);
   m_eSymbol = SF_XRF_NO;
 
-#ifdef X_SET_CROSS_CHECK
   RASSERT(bIs_Xrf_No());
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

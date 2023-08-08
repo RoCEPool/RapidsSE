@@ -16,6 +16,7 @@ enum eSF // symbol form
 
   /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
+  /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
   /* */ SF_COL_NO,      // Column Number       : $n
   /* */ SF_COL_TC,      // (table) Column No   : $c.n
   /* */ SF_COMMA,       // comma               : ,
@@ -57,6 +58,7 @@ static Stz* aSF[]
 
   /* */ "SF_COL_NM"_Stz,
   /* */ "SF_COL_NM_dis"_Stz,
+  /* */ "SF_COL_NM_syn"_Stz,
   /* */ "SF_COL_NO"_Stz,
   /* */ "SF_COL_TC"_Stz,
   /* */ "SF_COMMA"_Stz,
