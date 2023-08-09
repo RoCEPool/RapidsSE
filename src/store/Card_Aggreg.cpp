@@ -58,6 +58,7 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 void Card_Aggreg::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,6 +78,7 @@ void Card_Aggreg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 void Card_Aggreg::vDerive_Projection_Key(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 
   // creates a new projection key
 
@@ -169,6 +171,7 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
 void Card_Aggreg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
 

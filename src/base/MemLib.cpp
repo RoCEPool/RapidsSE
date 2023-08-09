@@ -237,7 +237,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
   while (i_Remaining--)
     vTrace("%s "_Stz, "__"_Stz);
   
-  for (u8 i_Char = 0; i_Char < i_Byte % C_BYTES_PER_WORD; i_Char++) {
+  for (u8 i_Char = 0; i_Char < (u8)(i_Byte % C_BYTES_PER_WORD); i_Char++) {
     u1 cChar = *((u1*)aAddress + i_Word + i_Char);
     if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
       vTrace("%c"_Stz, '.');

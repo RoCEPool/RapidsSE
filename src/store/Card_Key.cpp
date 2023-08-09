@@ -243,6 +243,7 @@ void Card_Key::vX(void)
 void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
 

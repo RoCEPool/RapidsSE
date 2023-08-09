@@ -455,6 +455,7 @@ bool Symbol::bIs_Direction(Stz* szArg)
 bool Symbol::bIs_Fld_Nm(Stz* szArg)
 {
   _static_
+  UNUSED(szArg);
 
   return true;
 }
@@ -555,6 +556,7 @@ bool Symbol::bIs_Mth_Op(Stz* szArg)
 bool Symbol::bIs_Note(Stz* szArg)
 {
   _static_
+  UNUSED(szArg);
 
   return true;
 }

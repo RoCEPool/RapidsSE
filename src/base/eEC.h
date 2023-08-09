@@ -3,8 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-typedef enum eEC // error codes
-
+enum eEC // error codes
 {
   EC_NONE = 0,
 

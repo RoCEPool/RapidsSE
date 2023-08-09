@@ -289,7 +289,7 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
   char *z = azChars;
 
   i8 nIntegerDigits  = 0;
-  i8 nFractionDigits = 0;
+//  i8 nFractionDigits = 0;
   i8 nExponentDigits = 0;
 
   // we have seen a minus or a digit
@@ -360,7 +360,7 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
     // collect digits after decimal
     while (StrLib::bIsDigit(**aazCrs)) {
       *z++ = **aazCrs;
-      nFractionDigits++;
+//      nFractionDigits++;
       (*aazCrs)++;
     }
 

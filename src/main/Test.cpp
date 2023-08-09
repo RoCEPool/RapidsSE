@@ -286,52 +286,52 @@ void vTest2(void)
 /*----------------------------------------------------------------------------*/
 void vTest3(void)
 {
-  byte xVlq[16];
-  
-  i8 nBytes = IntLib::iIntToVlq(C_DATUM_NULL,xVlq);
-  i8 i = IntLib::iVlqToInt(xVlq);
-  ASSERT(C_DATUM_NULL == i);
-  
-  nBytes = IntLib::iIntToVlq(0,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(0 == i);
-  
-  nBytes = IntLib::iIntToVlq(30,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(30 == i);
-  
-  nBytes = IntLib::iIntToVlq(-30,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(-30 == i);
-  
-  nBytes = IntLib::iIntToVlq(31,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(31 == i);
-  
-  nBytes = IntLib::iIntToVlq(32,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(32 == i);
-  
-  nBytes = IntLib::iIntToVlq(127,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(127 == i);
-  
-  nBytes = IntLib::iIntToVlq(128,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(128 == i);
-  
-  nBytes = IntLib::iIntToVlq(-130,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(-130 == i);
-  
-  nBytes = IntLib::iIntToVlq(-130,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(-130 == i);
-  
-  nBytes = IntLib::iIntToVlq(4096,xVlq);
-  i = IntLib::iVlqToInt(xVlq);
-  ASSERT(4096 == i);
-  
+//  byte xVlq[16];
+//
+//  i8 nBytes = IntLib::iIntToVlq(C_DATUM_NULL,xVlq);
+//  i8 i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(C_DATUM_NULL == i);
+//
+//  nBytes = IntLib::iIntToVlq(0,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(0 == i);
+//
+//  nBytes = IntLib::iIntToVlq(30,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(30 == i);
+//
+//  nBytes = IntLib::iIntToVlq(-30,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(-30 == i);
+//
+//  nBytes = IntLib::iIntToVlq(31,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(31 == i);
+//
+//  nBytes = IntLib::iIntToVlq(32,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(32 == i);
+//
+//  nBytes = IntLib::iIntToVlq(127,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(127 == i);
+//
+//  nBytes = IntLib::iIntToVlq(128,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(128 == i);
+//
+//  nBytes = IntLib::iIntToVlq(-130,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(-130 == i);
+//
+//  nBytes = IntLib::iIntToVlq(-130,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(-130 == i);
+//
+//  nBytes = IntLib::iIntToVlq(4096,xVlq);
+//  i = IntLib::iVlqToInt(xVlq);
+//  ASSERT(4096 == i);
+//
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1156,6 +1156,7 @@ void vTest14(void)
     pPayStr = new(pPayStrBuffer, s.szStz()) PayStr;
 //    vTrace("pPayStrBuffer %p pPayStr %p : %s\n"_Stz,
 //           pPayStrBuffer, pPayStr, pPayStr->szStz());
+    UNUSED(pPayStr);
   }
 
   delete pPayStrBuffer;

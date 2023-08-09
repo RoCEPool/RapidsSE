@@ -129,7 +129,7 @@ Op::~Op(void) noexcept(false)
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
       if (pOperand->bIsMarker()) {
-        if ((_pMarker(pOperand))->eOpMarker() == EV_X_CHILDEXIT)
+        if ((_pMarker(pOperand))->eOpMarker() == (eOM) EV_X_CHILDEXIT)
           AM::vDeleteOperand(pOperand, nullptr);
         }
         else {
@@ -1559,6 +1559,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 
       // Pop and discard the operand from the queue, as we are sure it is in memory.
       Operand* pPopOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
+      UNUSED(pPopOperand);
       bLeft=true;
     }
   }

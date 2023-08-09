@@ -55,7 +55,15 @@ endif
 CPP = g++
 
 WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
-ERRORS = -Werror=return-type
+ERRORS  = -Werror=return-type
+##ERRORS += -Werror=unused-parameter
+##ERRORS += -Werror=unused-but-set-variable
+#ERRORS += -Werror=missing-declarations
+#ERRORS += -Werror=enum-compare
+#ERRORS += -Werror=tautological-constant-out-of-range-compare
+#ERRORS += -Werror=unused-lambda-capture
+##ERRORS += -Werror=unused-label
+#ERRORS += -Werror=uninitialized
 
 CPPFLAGS = -std=c++14 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
 CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
@@ -77,7 +85,10 @@ MAN_PAGES=se.man
 
 # Source Files
 SRC_DIR := .
-SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
+#SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
+# Note: We exclude the *.cpp files in the src/store/Fragments directory because they contain
+#       many warnings because they are, well, C++ fragments that are used dynamically.
+SOURCES := $(shell find $(SRC_DIR) -name "*.cpp" -not -path "$(SRC_DIR)/store/Fragments/*")
 SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/mersenne/*.cpp)

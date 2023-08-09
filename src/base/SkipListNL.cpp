@@ -825,6 +825,7 @@ SkipNode* SkipListNL::pLocateKey
             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  UNUSED(fPrintNode);
   
   SkipNode* pScanNode = m_pHead;
   
@@ -878,6 +879,7 @@ SkipNode* SkipListNL::pPositionPrior
             )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  UNUSED(fPrintNode);
 
   SkipNode* pPriorNode = m_pHead;
   

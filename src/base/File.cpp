@@ -777,6 +777,12 @@ void File::vPreAllocate(i8 nOffset, i8 nBytes)
     return;
   }
 #endif
+
+#ifdef WITH_APPLE
+  UNUSED(nOffset);
+  UNUSED(nBytes);
+  UNUSED(fd);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

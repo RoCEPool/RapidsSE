@@ -74,17 +74,12 @@ bool RecordChunk::bNextRecord(Stz** aszRecord, i8& nRecordBytes)
 bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
 {
   // test for explicit record ends
-  
-  char* aRecordStart;
-  
+
   // which record end are we looking for?
   switch (m_pFmt->m_eLineEnd) {
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case LE_NL: // advance to next [<terminator>]\n
-      
-      // debug
-      aRecordStart = *aazRecordEnd;
       
       for (;;) {
         
@@ -117,9 +112,6 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case LE_CR: // advance to next [<terminator>]\r
       
-      // debug
-      aRecordStart = *aazRecordEnd;
-      
       for (;;) {
         
         // find next \r within chunk
@@ -150,9 +142,6 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case LE_CRNL: // advance to next [terminator>]\r\n
-      
-      // debug
-      aRecordStart = *aazRecordEnd;
       
       for (;;) {
         

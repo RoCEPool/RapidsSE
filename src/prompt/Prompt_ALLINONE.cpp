@@ -467,13 +467,10 @@ bool PROMPT::bPrompt_classes(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
   
-  char cGroup;
   s256 sName;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // eCN enum
-  
-  cGroup = '~';
   
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
 
@@ -523,8 +520,7 @@ bool PROMPT::bPrompt_classes(SePrompt* pPrompt)
   
   vTrace("\n\n"_Stz);
 
-  cGroup = '~';
-  
+
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
     
 //    char cFirst = *aCN[i_Class]->azChar();
@@ -1858,16 +1854,16 @@ bool PROMPT::bPrompt_how(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+//  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
-  i8 nTokens = pInpTknVec->nItems();
+//  i8 nTokens = pInpTknVec->nItems();
 
   //i8 iReqId = pPrompt->iRequestId();
   
-  i8 iDetail = C_UNKNOWN;
-  if (2 == nTokens)
-    iDetail = pInpTknVec->pGet(1)->iToI8();
-  
+//  i8 iDetail = C_UNKNOWN;
+//  if (2 == nTokens)
+//    iDetail = pInpTknVec->pGet(1)->iToI8();
+
   vTrace("how: request\n"_Stz,
          
          //iReqId,
@@ -2002,7 +1998,7 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Token* pArg0 = nullptr;
+//  Token* pArg0 = nullptr;
   Token* pArg1 = nullptr;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -2011,7 +2007,7 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
   if (nTokens != 3)
     return false;
   
-  pArg0 = pInpTknVec->pGet(1);
+//  pArg0 = pInpTknVec->pGet(1);
   pArg1 = pInpTknVec->pGet(2);
   
   s32 sNumber;
@@ -5441,15 +5437,15 @@ bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bPmtTagSet = false;
+//  bool bPmtTagSet = false;
 
   if (pTkn->bSame("prompt"_Stz)) {
-    bPmtTagSet = true;
+//    bPmtTagSet = true;
     TKNpf();
   }
   else
   if (pTkn->bSame("user"_Stz)) {
-    bPmtTagSet = false;
+//    bPmtTagSet = false;
     TKNpf();
   }
 

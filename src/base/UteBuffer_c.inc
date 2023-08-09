@@ -39,6 +39,7 @@ inline void UTE_vInit(struct UteBuffer* aUteBuffer)
 /*----------------------------------------------------------------------------*/
 inline i8 UTE_nUnitOfSpace(struct UteBuffer* aUteBuffer)
 {
+  UNUSED(aUteBuffer);
   return 16;
 }
 

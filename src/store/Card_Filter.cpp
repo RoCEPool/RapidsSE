@@ -144,6 +144,7 @@ void Card_Filter::vAddPred(Card_PRED *p_PRED)
 void Card_Filter::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

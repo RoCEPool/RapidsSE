@@ -1081,6 +1081,7 @@ void AM::JOB::vSendReject(RejectJob *pRejectJob)
   // send the rejectJob
   pSocket->vGrabWrite();
   bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
+  UNUSED(bResult);
   pSocket->vDropWrite();
 }
 
@@ -1116,8 +1117,6 @@ void AM::JOB::vTriggerExecute(JobId tDistId)
   Task* pTaskParticipant = pJobParticipant->pTask();
 
   // get the state of the job
-  eTS eState = pTaskParticipant->eState();
-
   while (pTaskParticipant->eState() != TS_HIBERNATING)
   {;}
 
@@ -1868,6 +1867,8 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
 {
   _static_
+  UNUSED(pTask);
+  UNUSED(oBufferId);
 
 #ifdef WITH_PAGING
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
@@ -4204,6 +4205,8 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+
   struct timespec xReq;
   struct timespec xRem;
   
@@ -4235,6 +4238,8 @@ void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+
   struct timespec xReq;
   struct timespec xRem;
   
@@ -4630,7 +4635,10 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 void AM::vJobContentDump(Job* pJob) { pJob->vPrintJobContents(); }
 
 void AM::vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc) {
-  
+
+  UNUSED(pDeleter);
+  UNUSED(szFunc);
+
   Job* pJob = * ppJob;
   
   delete pJob;

@@ -388,11 +388,13 @@ void String_t<AREA>::vCatSprint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   va_list vaArgs;
-  
-  char* aEnd = aAdd<char*>(azChar(),nLength());
+
+  i8 nLen = nLength();
+  char* aEnd = aAdd<char*>(azChar(),nLen);
+  i8 iRemaining = this->m_nArea - nLen;
   
   va_start(vaArgs,szFormat);
-  vsprintf(aEnd,(char*)szFormat,vaArgs);
+  vsnprintf(aEnd,iRemaining,(char*)szFormat,vaArgs);
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);

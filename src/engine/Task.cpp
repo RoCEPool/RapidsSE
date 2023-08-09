@@ -968,8 +968,9 @@ void Task::vDropAllLocks(void)
 void Task::vDropTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Stz* szCaller = MY::szCallerNm();
+  UNUSED(szFunc);
+
+//  Stz* szCaller = MY::szCallerNm();
   
 //  if (m_sTaskNm.bSame("supervisor"_Stz)) {
 //
@@ -996,8 +997,9 @@ void Task::vDropTaskLock(Stz* szFunc)
 void Task::vGrabTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Stz* szCaller = MY::szCallerNm();
+  UNUSED(szFunc);
+
+//  Stz* szCaller = MY::szCallerNm();
 
   m_okLock.vGrabWrite();
 

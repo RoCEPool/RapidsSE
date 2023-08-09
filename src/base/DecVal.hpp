@@ -14,7 +14,8 @@ namespace BASE
 
   public:
     DecVal(void);
-  
+    DecVal(const DecVal& oCopy);
+
     void operator =(DecVal xDecVal);
     DecVal operator +(DecVal xDecVal);
     DecVal operator -(DecVal xDecVal);

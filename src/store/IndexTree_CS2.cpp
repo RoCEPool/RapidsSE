@@ -79,10 +79,12 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::aFindEntry_hint(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_recent)
 {
-  i8 iStart;
-  i8 iEnd;
-  u4 uProc_start;
-  u4 uProc_end;
+  UNUSED(aEnt_recent);
+
+//  i8 iStart;
+//  i8 iEnd;
+//  u4 uProc_start;
+//  u4 uProc_end;
 
   IndexDef* pIndexDef = pIndexTree->pIndexDef();
 
