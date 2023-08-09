@@ -321,6 +321,12 @@ namespace OBLIQUE
       static void vSignalHandler(i8 iSignal);
     };
 
+    class FILE
+    {
+    public:
+      static i8 iNextFileNo(void);
+    };
+
     class GRID
     {
     public:
