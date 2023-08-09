@@ -105,8 +105,7 @@ void vIndexJoinContinueLO1(Dynamic_T* aDynamicT) {
 
   bool bLeftOuterRow;
   // marker-start
-
-  JOIN_WITH_NULLS:
+	__L_LABEL_JOIN_NULLS__:
 
   // did we join any rows with current left row ?
   if (aDynamicT->m_iJoinedRows == 0) {
@@ -545,7 +544,7 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
   IndexInfo __INDEX_INFO__;
   bool bLeftOuterRow;
 
-  JOIN_WITH_NULLS:
+	__L_LABEL_JOIN_NULLS__:
 	__L_LABEL_OUTER_LOOP__:
 
   // marker-start
@@ -559,7 +558,7 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
 
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
-     goto JOIN_WITH_NULLS;
+     goto __L_LABEL_JOIN_NULLS__;
   }
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -575,7 +574,7 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
 	if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
 		// did we join any rows with current left row ?
 		if (aDynamicT->m_iJoinedRows == 0)
-			goto JOIN_WITH_NULLS;
+			goto __L_LABEL_JOIN_NULLS__;
 		else {
 			aDynamicT->m_iProcessRow = 0;
 			goto __L_LABEL_OUTER_LOOP__;
@@ -594,7 +593,7 @@ i8 vIndexLeftOuterNullCheck(Dynamic_T* aDynamicT) {
 	bool bNullResult;
 	i8 __NULLSTACK__;
 
-	JOIN_WITH_NULLS:
+	__L_LABEL_JOIN_NULLS__:
 
 	__L_LABEL_OUTER_LOOP__:
 
@@ -605,7 +604,7 @@ i8 vIndexLeftOuterNullCheck(Dynamic_T* aDynamicT) {
 
 	// check null result
 	if (bNullResult) {
-		goto JOIN_WITH_NULLS;
+		goto __L_LABEL_JOIN_NULLS__;
 	}
 
 	// marker-end

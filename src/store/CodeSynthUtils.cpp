@@ -104,6 +104,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceLabelNext(sLine, pOpSketch);
         vReplaceLabelLoop(sLine, pOpSketch);
         vReplaceLabelIndex(sLine, pOpSketch);
+				vReplaceLabelJoinNulls(sLine, pOpSketch);
 
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
@@ -727,6 +728,22 @@ void CodeSynthUtils::vReplaceLabelNext(Stz* sLine, OpSketch* pOpSketch)
     bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_NEXT__", pOpSketch->m_sLabelNext.azChar());
     RASSERT(bResult);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceLabelJoinNulls(Stz* sLine, OpSketch* pOpSketch)
+{
+	_static_
+
+	s256 sLabel;
+
+	if (StrLib::bContains(sLine->azChar(), "__L_LABEL_JOIN_NULLS__")) {
+		sLabel.vSprint("L_JoinNulls_%d"_Stz, pOpSketch->m_iOperatorNo);
+		bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_JOIN_NULLS__", sLabel.azChar());
+		RASSERT(bResult);
+	}
 }
 
 /*----------------------------------------------------------------------------*/

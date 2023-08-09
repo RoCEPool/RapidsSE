@@ -33,6 +33,7 @@ namespace STORE {
     static void vReplaceReturnToLabel(Stz *sLine, Stz* sReturnToLabel);
     static void vReplaceLabel(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceLabelIndex(Stz *sLine, OpSketch *pOpSketch);
+		static void vReplaceLabelJoinNulls(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceLabelNext(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceLabelLoop(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceColumnsInflated(Stz *sLine, OpSketch *pOpSketch);
