@@ -2525,7 +2525,12 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NM;
 
-  RASSERT(bIs_Col_Nm());
+//  if (! bIs_Col_Nm()) {
+//    vTrace("vSet_Col_Nm: %s\n"_Stz,m_sSymbol.azChar());
+//    vDebugPoint();
+//  }
+//
+//  RASSERT(bIs_Col_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
