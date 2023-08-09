@@ -1624,8 +1624,8 @@ bool Symbol::bIs_Tbl_Syn_rep(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-//  if (SF_TBL_SYN_rep != m_eSymbol)
-//    return false;
+  if (SF_TBL_SYN_rep != m_eSymbol)
+    return false;
 
   if (bIs_Tbl_Syn_rep(m_sSymbol))
     return true;
@@ -2924,7 +2924,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
   vSymSprint("%c"_Stz, cTableSyn_actual);
-  m_eSymbol = SF_TBL_SYN;
+  m_eSymbol = SF_TBL_SYN_rep;
 
   RASSERT(bIs_Tbl_Syn_rep());
 }

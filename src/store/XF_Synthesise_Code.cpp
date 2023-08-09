@@ -475,7 +475,7 @@ void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
       return;
   }
 
-  RASSERT(p_table->pSymbol()->bIs_Tbl_Syn());
+  RASSERT(p_table->pSymbol()->bIs_Tbl_Syn() || p_table->pSymbol()->bIs_Tbl_Syn_rep());
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
