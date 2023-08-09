@@ -151,7 +151,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Number(szSymbol))       return SF_NUMBER;
   if (bIs_Parenthesis(szSymbol))  return SF_PARENTHESIS;
   if (bIs_Rln_Op(szSymbol))       return SF_RLN_OP;
-  if (bIs_Sqy_Crl_Key(szSymbol))  return SF_SQY_KEY;
   if (bIs_Sqy_Prm(szSymbol))      return SF_PRM_COL;
   if (bIs_Sqy_Op(szSymbol))       return SF_SQY_OP;
   if (bIs_Sqy_Rsl(szSymbol))      return SF_SQY_NO;
@@ -1804,12 +1803,12 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_IDX_NM:      vSet_Idx_Nm(szStz);      break;
     case SF_KEY_COL:     vSet_Key_Col(szStz);     break;
     case SF_NOTE:        vSet_Note(szStz);        break;
+    case SF_MTH_OP:      vSet_Mth_Op(szStz);      break;
     case SF_NUMBER:      vSet_Number(szStz);      break;
     case SF_PARENTHESIS: vSet_Parenthesis(szStz); break;
     case SF_PPE_NM:      vSet_Ppe_Nm(szStz);      break;
     case SF_PRM_COL:     vSet_Prm_Col(szStz);     break;
     case SF_RLN_OP:      vSet_Rln_Op(szStz);      break;
-    case SF_SQY_KEY:     vSet_Other(szStz);       break;
     case SF_SQY_OP:      vSet_Sqy_Op(szStz);      break;
     case SF_STG_CAST:    vSet_Stg_Cast(szStz);    break;
     case SF_STRING:      vSet_String(szStz);      break;

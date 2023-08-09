@@ -347,7 +347,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       Symbol xSymbol_keyOdn(SF_KEY_COL,1);
 
       pCI->G_vNewMember(CK_EXPR);
-      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_SQY_KEY, "_SQCRLKEY_"_Stz));
+      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, "_SQCRLKEY_"_Stz));
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_keyOdn);
 
@@ -402,7 +402,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 
   // push <project>/_SQCRLKEY_
   pCI->G_vPushNewChild(pCI->G.p_projection, CK_EXPR);
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_SQY_KEY, szAs));
+  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, szAs));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
   Symbol x_Symbol_stmCol1(SF_COL_NO,1);

@@ -40,7 +40,6 @@ enum eSF // symbol form
   /* */ SF_PPE_NM,      // PipeName            : bIsName
   /* */ SF_PRM_COL,     // Parameter Column    : %n
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
-  /* */ SF_SQY_KEY,     // SubQuery Correl Key :
   /* */ SF_SQY_NO,      // SubQuery No         :
   /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_RSL,     // SubQuery Result     :
@@ -96,7 +95,6 @@ static Stz* aSF[]
   /* */ "SF_PPE_NM"_Stz,
   /* */ "SF_PRM_COL"_Stz,
   /* */ "SF_RLN_OP"_Stz,
-  /* */ "SF_SQY_KEY"_Stz,
   /* */ "SF_SQY_NO"_Stz,
   /* */ "SF_SQY_OP"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
