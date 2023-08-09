@@ -76,12 +76,12 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_IDXCOL)) {
-    Stz* szColNm = xCI.G.p_idxCol->szSymbol();
+    Stz* szColNm = xCI.G.p_idxCol->szSymbol(SF_NONE);
 
     CardIter xCI_p(p_projection);
     while (xCI_p.G_bEachMain_reverse(CK_EXPR)) {
       if (xCI_p.G.p_expr->pSub_as()->pSymbol()->bSame(szColNm)) {
-        Stz* szPrjCol = xCI_p.G.p_expr->pGetTerm(0)->szSymbol();
+        Stz* szPrjCol = xCI_p.G.p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
         eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
         RASSERT(SF_COL_TC == eSymbol);

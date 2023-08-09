@@ -509,7 +509,7 @@ Card* Dissector::pOp_Hash(void)
   Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
 
   p_hshCol->pSymbol()->vSym(p_term2->pSymbol());
-  eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol());
+  eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol(SF_NONE));
   p_hshCol->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
 
   Card_Term* p_term_hsh = p_term2->pClone();
@@ -1214,7 +1214,7 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* pCard_RpnTerms)
 
   // <name>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szAsNm = pCard_Term->szSymbol();
+  Stz* szAsNm = pCard_Term->szSymbol(SF_NONE);
 
   Card_As* pCard_As = (new Card_As) ->SYM(SF_AS_NM,szAsNm);
   delete pCard_Term;
@@ -1319,7 +1319,7 @@ Card_Direction* Dissector::pPopDirection(Card_RpnTerms* pCard_RpnTerms)
 
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szDirn = pCard_Term->szSymbol();
+  Stz* szDirn = pCard_Term->szSymbol(SF_NONE);
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* pCard_Direction = (new Card_Direction) ->SYM(SF_DIRECTION, szDirn);
@@ -1539,7 +1539,7 @@ Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
 
   // TYPE
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szTerm = pCard_Term->szSymbol();
+  Stz* szTerm = pCard_Term->szSymbol(SF_NONE);
   RASSERT(szTerm->bSame("TYPE"_Stz));
 
   delete pCard_Term;
@@ -1548,7 +1548,7 @@ Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
 
-  Stz* szType = szCT_char[Symbol::eTo_eCT_str(pCard_Term_type->szSymbol())];
+  Stz* szType = szCT_char[Symbol::eTo_eCT_str(pCard_Term_type->szSymbol(SF_NONE))];
 
   delete pCard_Term_type;
 

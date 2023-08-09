@@ -435,7 +435,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
       if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
         Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
 
-        p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol());
+        p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol(SF_NONE));
         p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
       }
     }
@@ -512,9 +512,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       p_key->vX();
       vDebugPoint();
@@ -540,9 +540,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       p_key->vX();
       vDebugPoint();
@@ -568,9 +568,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       p_key->vX();
       vDebugPoint();
@@ -597,9 +597,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       s32 sNm_modified;
       sNm_modified.vSprint("C%lld_%s"_Stz,
@@ -627,9 +627,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       s32 sNm_modified;
       sNm_modified.vSprint("C%lld_%s"_Stz,
@@ -657,9 +657,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
     if (CK_PROJECT == p_OP->eCard()) {
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       sColNm_mapped = sColNm;
 
@@ -667,9 +667,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
     else
     if (CK_SORT == p_OP->eCard()) {
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       s32 sNm_modified;
       sNm_modified.vSprint("C%lld_%s"_Stz,
@@ -681,9 +681,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
     }
     else {
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol();
+        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol();
+        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       s32 sNm_modified;
       sNm_modified.vSprint("C%lld_%s"_Stz,

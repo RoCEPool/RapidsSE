@@ -400,7 +400,7 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
         , this
         , Stz::szTab(iDepth)
         , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
-        , *szSymbol()->azChar() ? szSymbol() : "??Symbol"_Stz
+        , *szSymbol(SF_NONE)->azChar() ? szSymbol(SF_NONE) : "??Symbol"_Stz
         , sProperties.szStz()
         , pSymbol()->szWhatIs()
   );
@@ -848,12 +848,12 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
     else
     if (nSubs == 1) {
       Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintDataRight("%s"_Stz, pSub_0->szSymbol());
+      pRibbon->vSprintDataRight("%s"_Stz, pSub_0->szSymbol(SF_NONE));
     }
     else {
       Card *pSub_0 = pChild->pGetChild(0);
       Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintDataRight("%s == %s"_Stz, pSub_0->szSymbol(), pSub_1->szSymbol());
+      pRibbon->vSprintDataRight("%s == %s"_Stz, pSub_0->szSymbol(SF_NONE), pSub_1->szSymbol(SF_NONE));
     }
 
   }
@@ -950,7 +950,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
-                          szSymbol(),
+                          szSymbol(SF_NONE),
                           nItems());
     else
       sNameSymbol.vSprint("%s%s *%lld"_Stz,
@@ -968,7 +968,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprintCat("%s%s %s"_Stz,
                              sName.szStz(),
                              sHiddenChildren.szStz(),
-                             szSymbol());
+                             szSymbol(SF_NONE));
     else
       sNameSymbol.vSprintCat("%s%s"_Stz,
                              sName.szStz(),
@@ -1049,9 +1049,9 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks)
-    pRibbon->vSprintDataRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szSymbol());
+    pRibbon->vSprintDataRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szSymbol(SF_NONE));
   else
-    pRibbon->vSprintDataRight("  %s"_Stz, szSymbol());
+    pRibbon->vSprintDataRight("  %s"_Stz, szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1156,11 +1156,11 @@ Symbol* Card::pSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* get card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szSymbol(void)
+Stz* Card::szSymbol(eSF eSymbol_xchk)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* sz = m_xSymbol.szSF_symbol(SF_NONE);
+  Stz* sz = m_xSymbol.szSF_symbol(eSymbol_xchk);
 
   return sz;
 }

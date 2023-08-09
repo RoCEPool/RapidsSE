@@ -75,10 +75,10 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
 
 
   auto bLambdaFn = [](Card* p_card) {
-    if (!Symbol::bIs_Sqy_Nm(p_card->szSymbol()))
+    if (!Symbol::bIs_Sqy_Nm(p_card->szSymbol(SF_NONE)))
       return C_CONTINUE_RECURSION;
 
-    i8 iSqNo = StrLib::iGleanInt(p_card->szSymbol()->azChar());
+    i8 iSqNo = StrLib::iGleanInt(p_card->szSymbol(SF_NONE)->azChar());
 
     Symbol xSymbol_sqNo(SF_SQY_NO,iSqNo);
     p_card->pSymbol()->vSym(&xSymbol_sqNo);

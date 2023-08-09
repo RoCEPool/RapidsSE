@@ -144,7 +144,7 @@ void XF_subQuery_Analysis::vAnalysis_Of_from_call(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
-  Stz* szBoardNm = m_pCI->G.p_call->szSymbol();
+  Stz* szBoardNm = m_pCI->G.p_call->szSymbol(SF_NONE);
   Board* pBoard = m_pCI->m_pBench->pGetBoard(szBoardNm);
   SubQuery *pSubQuery = pBoard->pSubQuery();
   pSubQuery->vCaller(m_pCI->G.i_Board);
@@ -171,7 +171,7 @@ void XF_subQuery_Analysis::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
     if (p_pred->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Stz* szValue_term = p_pred->szSymbol();
+    Stz* szValue_term = p_pred->szSymbol(SF_NONE);
     eRO eRelnOp = RelOp::eDecode(szValue_term);
 
     if (RO_NONE == eRelnOp)
@@ -232,7 +232,7 @@ void XF_subQuery_Analysis::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 
     p_pred->pSymbol()->Y_vSet(P_SubQryCall);
 
-    Stz* szValue_pred = p_pred->szSymbol();
+    Stz* szValue_pred = p_pred->szSymbol(SF_NONE);
 
     if (p_pred->bIsRelnOp()) {
 

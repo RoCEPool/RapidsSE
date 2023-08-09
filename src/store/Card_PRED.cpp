@@ -75,7 +75,7 @@ bool Card_PRED::bContains_callToSubQuery(CardIter* pCI)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_term->szSymbol()))
+    if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_term->szSymbol(SF_NONE)))
       return true;
 
   return false;
@@ -109,7 +109,7 @@ Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Term* p_term = pGetTerm_boardNm(pCI))
-    return p_term->szSymbol();
+    return p_term->szSymbol(SF_NONE);
 
   return nullptr;
 }
@@ -155,7 +155,7 @@ Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
 
-    Stz* szValue_term = xCI.G.p_term->szSymbol();
+    Stz* szValue_term = xCI.G.p_term->szSymbol(SF_NONE);
     if (pCI->G_bIsBoardNm(szValue_term))
       return xCI.G.p_term;
   }
@@ -224,8 +224,8 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
-      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szSymbol()) ||
-          p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szSymbol()) )
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)) ||
+          p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
         return true;
 
       return false;
@@ -234,7 +234,7 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
       // + only term_0 is $c.n
 
       // ? is term_0:$c.n an index column
-      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szSymbol()))
+      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)))
         return true;
 
       return false;
@@ -245,7 +245,7 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
-    if (p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szSymbol()) )
+    if (p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
       return true;
 
     return false;
@@ -361,7 +361,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szSymbol())); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szSymbol(SF_NONE))); //temp
 
     Symbol x_Symbol_stmCol1;
     if (p_term) {
@@ -387,7 +387,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -418,7 +418,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));

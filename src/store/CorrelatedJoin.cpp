@@ -489,7 +489,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
           Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term);
           //p_expr_otr->vDump();
-          Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol();
+          Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol(SF_NONE);
           RASSERT(Symbol::bIs_Col_Tc(szProjectedCol));
           xCI.G.p_MainCard->pSymbol()->vSym(SF_COL_TC,szProjectedCol);  // TODO: hack!!
 
@@ -562,7 +562,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-        if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_MainCard->szSymbol())) {
+        if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_MainCard->szSymbol(SF_NONE))) {
           Card* p_arg = xCI.pPrevChild();
 
           Card_Term* p_term_new = (new Card_Term) ->SYM(SF_COL_NO,"$2"_Stz);

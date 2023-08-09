@@ -57,7 +57,7 @@ Card_Expr::Card_Expr(Card_As*      p_as_arg,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_As  *    p_as      = (new Card_As) ->SYM(SF_AS_NM,p_as_arg->szSymbol());
+  Card_As  *    p_as      = (new Card_As) ->SYM(SF_AS_NM,p_as_arg->szSymbol(SF_NONE));
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 
@@ -249,7 +249,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
    * produce the projection of this expression
    */
 
-  Stz* szExpr_this_stmcol = szSymbol();
+  Stz* szExpr_this_stmcol = szSymbol(SF_NONE);
   Card_As*      p_as;
   Card_RpnCalc* p_rpnCalc;
   Card_Term*    p_term_0;
@@ -523,7 +523,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   if (p_as)
     p_expr_propagation->vAppend(p_as->pClone());
   else {
-    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,this->szSymbol());
+    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,this->szSymbol(SF_NONE));
     p_expr_propagation->vAppend(p_as_new);
   }
 

@@ -55,7 +55,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   Card_Term* pTerm_0 = _pCard_Term(p_PRED->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_PRED->pGetChild(1));
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szSymbol());
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szSymbol(SF_NONE));
 
   Symbol xSymbol_idxColOdn(SF_IDX_COL,1);
 

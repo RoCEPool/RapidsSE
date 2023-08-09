@@ -196,7 +196,7 @@ eTE Card_Term::eEvalTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szValue = this->szSymbol();
+  Stz* szValue = this->szSymbol(SF_NONE);
 
        if (pSymbol()->bSame("and"_Stz))        return TE_AND;
   else if (pSymbol()->bSame("or"_Stz))         return TE_OR;
@@ -221,7 +221,7 @@ i8 Card_Term::iGetOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_Ord = StrLib::iGleanInt(this->szSymbol()->azChar());
+  i8 i_Ord = StrLib::iGleanInt(this->szSymbol(SF_NONE)->azChar());
 
   return i_Ord;
 }
@@ -233,7 +233,7 @@ char Card_Term::cGetTblSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->szSymbol();
+  Stz* szTerm = this->szSymbol(SF_NONE);
 
   char cSyn = szTerm->azChar()[1];
 
@@ -356,7 +356,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  s256 sTerm = szSymbol();
+  s256 sTerm = szSymbol(SF_NONE);
   s32 sType_short = pSymbol()->Y_szGet(P_Type);
 
   pRibbon->vSprintDataRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());

@@ -244,8 +244,8 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (pCI->Prior.m_pProjection) {
       if (Card_Expr* p_expr_col = pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
         // record what $c.n it was
-        p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
-        p_term->pSymbol()->vSym(SF_COL_NO,p_expr_col->szSymbol());
+        p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
+        p_term->pSymbol()->vSym(SF_COL_NO,p_expr_col->szSymbol(SF_NONE));
         p_term->vMark1(MARK_CHANGED);
 
         return C_CONTINUE_RECURSION;
@@ -260,7 +260,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     // column of this table
 
     // record what $c.n it was
-    p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
+    p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
 
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
     i8 nExpr_prior = pCI->G.p_projection->nChildCards();
@@ -756,7 +756,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   pCI->G.p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol());
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol(SF_NONE));
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Prior.m_pProjection)
@@ -859,7 +859,7 @@ void Card_OP::vRpnCombined(Stz* szRpnExpr, Card_Combined* pCard_Combined)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  szRpnExpr->vCatSprint("%s"_Stz, pCard_Combined->szSymbol());
+  szRpnExpr->vCatSprint("%s"_Stz, pCard_Combined->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -895,7 +895,7 @@ void Card_OP::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
       }
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
   }
 }
 
@@ -1002,7 +1002,7 @@ void Card_OP::vRpnHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
 
   szOpArgs->vCatSprint("type %s %s"_Stz,
                        aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szGet(P_Type))],
-                       p_term->szSymbol());
+                       p_term->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1079,10 +1079,10 @@ void Card_OP::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
       }
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
   }
 
-  szRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol());
+  szRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1171,12 +1171,12 @@ void Card_OP::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
           }
         }
 
-        szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+        szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
       }
 
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol(SF_NONE));
   }
 }
 
@@ -1227,10 +1227,10 @@ void Card_OP::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
         }
       }
 
-      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol(SF_NONE));
 
   }
 }
@@ -1316,10 +1316,10 @@ void Card_OP::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists
         }
       }
 
-      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol(SF_NONE));
   }
 
 }
@@ -1365,7 +1365,7 @@ void Card_OP::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Limit->szSymbol());
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Limit->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1507,7 +1507,7 @@ void Card_OP::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 
     Card* p_direction = pCard_Expr->pSub_direction();
 
-    szRpnExpr->vCatSprint(" %s"_Stz, p_direction->szSymbol());
+    szRpnExpr->vCatSprint(" %s"_Stz, p_direction->szSymbol(SF_NONE));
 
   }
 
@@ -1594,7 +1594,7 @@ void Card_OP::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         break;
       case CK_CMPPRED:
         vBoolPart(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
-        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol());
+        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol(SF_NONE));
         break;
       case CK_NOTPRED:
         vBoolPart(szRpnExpr, _pCard_NotPred(pSubCard), 0);
@@ -1614,7 +1614,7 @@ void Card_OP::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
             RASSERT(pSubCard->pSymbol()->Y_bHas(P_Type));
           }
         }
-        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol());
+        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol(SF_NONE));
         break;
       default:
         NEVER_REACH
@@ -1706,7 +1706,7 @@ void Card_OP::vAs(Stz* szRpnExpr, Card_As* pCard_As)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  szRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szSymbol());
+  szRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1725,7 +1725,7 @@ void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
     }
   }
 
-  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szSymbol());
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/

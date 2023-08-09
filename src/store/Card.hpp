@@ -325,7 +325,7 @@ namespace STORE
     bool bSameSymbol(Card* pArg);
 
     Symbol* pSymbol(void);
-    Stz* szSymbol(void);
+    Stz* szSymbol(eSF eSymbol_xchk);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 

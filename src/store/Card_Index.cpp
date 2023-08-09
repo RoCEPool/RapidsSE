@@ -216,14 +216,14 @@ Index* Card_Index::pGetIndex(Card_Table *p_Table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
+  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol(SF_NONE));
   if (! pTable)
     return nullptr;
 
-  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol(SF_NONE));
   if (! pIndex) {
     s256 sErrorMsg;
-    sErrorMsg.vSprint("index: %s"_Stz,pSub_indexNm()->szSymbol());
+    sErrorMsg.vSprint("index: %s"_Stz,pSub_indexNm()->szSymbol(SF_NONE));
     Error xError(EC_NO_SUCH_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
     throw xError;
   }

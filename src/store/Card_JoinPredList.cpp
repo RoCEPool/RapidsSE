@@ -82,9 +82,9 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+      pString->vSprint("Tables: %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol(SF_NONE));
     else
-      pString->vCatSprint(", %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+      pString->vCatSprint(", %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol(SF_NONE));
   }
 
 }

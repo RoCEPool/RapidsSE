@@ -86,7 +86,7 @@ void Card_Sort::vColumn_Mapping(CardIter *pCI)
 
       i_Emit++;
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
-      p_map_keyCell->pSymbol()->Y_vSet(P_StmCol, p_expr_projection->szSymbol());
+      p_map_keyCell->pSymbol()->Y_vSet(P_StmCol, p_expr_projection->szSymbol(SF_NONE));
 
     }
     else {

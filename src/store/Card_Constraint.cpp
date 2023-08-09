@@ -137,7 +137,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     Card_Expr* p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
     if (p_expr_col) {
       Card_As* p_as = p_expr_col->pSub_as();
-      szColNm = p_as->szSymbol();
+      szColNm = p_as->szSymbol(SF_NONE);
     }
     else {
 
@@ -208,7 +208,7 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
     if (! p_term->bIsColNm())
       continue;
 
-    //vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol());
+    //vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol(SF_NONE));
 
     Card_Expr* p_expr = pCI->G.p_projection->pFindExprOfAs(p_term->pSymbol());
     if (p_expr) {

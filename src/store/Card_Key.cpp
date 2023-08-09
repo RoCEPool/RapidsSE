@@ -69,7 +69,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr->szP_Type());
 
   if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol());
+    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol(SF_NONE));
     p_expr_new->vAppend(p_direction);
   }
   else
@@ -205,7 +205,7 @@ IndexDef* Card_Key::pToIndexDef(void)
     if (! p_term)
       continue;
 
-    Stz* szColNm  = p_term->szSymbol();
+    Stz* szColNm  = p_term->szSymbol(SF_NONE);
     eCT  eColType = p_term->pSymbol()->Y_eColType();
 
     if (! szColNm || CT_NONE == eColType)

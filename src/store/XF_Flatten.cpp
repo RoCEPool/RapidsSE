@@ -123,7 +123,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
     if (! m_pCI->G_bEachMain(CK_CALL))
       break;
 
-    s256 sSubQueryNm = m_pCI->G.p_call->szSymbol();
+    s256 sSubQueryNm = m_pCI->G.p_call->szSymbol(SF_NONE);
 
     Board *pOuterBoard_save = m_pCI->G.pBoard;
     m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
@@ -156,10 +156,10 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-       if (!pCI->G_bIsBoardNm(p_term->szSymbol()))
+       if (!pCI->G_bIsBoardNm(p_term->szSymbol(SF_NONE)))
          return C_CONTINUE_RECURSION;
 
-      s256 sSubQueryNm = p_term->szSymbol();
+      s256 sSubQueryNm = p_term->szSymbol(SF_NONE);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
@@ -200,10 +200,10 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-      if (!pCI->G_bIsBoardNm(p_term->szSymbol()))
+      if (!pCI->G_bIsBoardNm(p_term->szSymbol(SF_NONE)))
         return C_CONTINUE_RECURSION;
 
-      s256 sSubQueryNm = p_term->szSymbol();
+      s256 sSubQueryNm = p_term->szSymbol(SF_NONE);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
