@@ -444,7 +444,9 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
 
   p_rpnCalc_propagated->vColType(this);
 
-  Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_OTHER,p_expr_encasing->szSymbol());
+  eSF eSymbol = Symbol::eEvalSymbol(p_expr_encasing->szSymbol());
+  RASSERT(SF_COL_NO == eSymbol);
+  Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_COL_NO,p_expr_encasing->szSymbol());
   p_term_propagated->vColType(this);
 
   p_rpnCalc_propagated->vAppend(p_term_propagated);

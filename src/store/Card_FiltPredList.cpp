@@ -75,7 +75,7 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;
-      p_filtPred->SYM(SF_OTHER,xCI.G.p_table->szSymbol());
+      p_filtPred->SYM(SF_TBL_SYN,xCI.G.p_table->szSymbol());
       p_filtPred->pSymbol()->Y_vSet(P_Count,nFilters);
       p_filtPredList->vAppend(p_filtPred);
     }
