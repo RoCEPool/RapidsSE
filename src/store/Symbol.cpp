@@ -1214,8 +1214,11 @@ bool Symbol::bIs_Col_No(void)
 //  if (SF_COL_NO != m_eSymbol)
 //    return false;
 
-  if (bIs_Col_No(m_sSymbol))
+  if (bIs_Col_No(m_sSymbol)) {
+//    if (SF_COL_NO != m_eSymbol)
+//      return false;
     return true;
+  }
 
   return false;
 }
@@ -2507,7 +2510,7 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSymSprint("$%lld"_Stz, iStmColOdn);
-  m_eSymbol = SF_COL_TC;
+  m_eSymbol = SF_COL_NO;
 
   RASSERT(bIs_Col_No());
 }
