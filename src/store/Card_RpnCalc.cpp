@@ -580,7 +580,11 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
+        {
+          eSF eSymbol = Symbol::eEvalSymbol(p_term_next->szSymbol());
+          RASSERT(SF_RLN_OP == eSymbol);
+        }
+        p_cmpPred->SYM(SF_RLN_OP,p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
@@ -605,7 +609,11 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
+        {
+          eSF eSymbol = Symbol::eEvalSymbol(p_term_next->szSymbol());
+          RASSERT(SF_SQY_OP == eSymbol);
+        }
+        p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsSubQueryOp())
         p_boolCalc->vAppend(p_cmpPred);
