@@ -286,8 +286,12 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (bIs_Bol_Fn(szArg))      return false;
   if (bIs_Bol_Op(szArg))      return false;
   if (bIs_Bound(szArg))       return false;
+  if (bIs_Cross(szArg))       return false;
   if (bIs_Direction(szArg))   return false;
+  if (bIs_GroupBy(szArg))     return false;
   if (bIs_Sqy_Op(szArg))      return false;
+  if (bIs_Type(szArg))        return false;
+  if (bIs_When(szArg))        return false;
 
   return true;
 }
