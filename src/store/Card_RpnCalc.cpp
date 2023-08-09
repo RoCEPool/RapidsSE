@@ -123,7 +123,7 @@ void Card_RpnCalc::vConcat(STORE::Card_RpnCalc *p_rpnCalc)
   vTransferChildren(p_rpnCalc);
 
   if (bAppendAnd) {
-    Card_Term *p_term_and = (new Card_Term) ->SYM(SF_OTHER,"and"_Stz);
+    Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
     vAppend(p_term_and);
   }
 }
@@ -616,7 +616,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
+          p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_cmpPred);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -626,7 +626,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->SYM(SF_OTHER,"in"_Stz);
+          p_cmpPred->SYM(SF_SQY_OP,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -640,7 +640,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->SYM(SF_OTHER,"in"_Stz);
+          p_cmpPred->SYM(SF_SQY_OP,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsBoolFn())
           p_boolCalc->vAppend(p_cmpPred);
@@ -657,7 +657,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
+          p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -669,7 +669,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
       case TE_BOOLFN:
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->SYM(SF_OTHER,p_term_next->szSymbol());
+        p_cmpPred->SYM(SF_BOL_FN,p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
         p_boolCalc->vAppend(p_cmpPred);

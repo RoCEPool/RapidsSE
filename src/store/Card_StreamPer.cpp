@@ -388,7 +388,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
       vAppend(p_joinLocus);
 
       if (i_NotValid == i_Item) {
-        p_joinLocus->vAppend((new Card_Note) ->SYM(SF_OTHER,"**DOESN'T FOLLOW**"_Stz));
+        p_joinLocus->vAppend((new Card_Note) ->SYM(SF_NOTE,"**DOESN'T FOLLOW**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         break;
       }
