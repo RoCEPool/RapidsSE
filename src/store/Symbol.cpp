@@ -2513,6 +2513,19 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_No(Stz* szColNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szColNm;
+  m_eSymbol = SF_COL_NO;
+
+  RASSERT(bIs_Col_No());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given table-column                                      */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
@@ -2536,17 +2549,6 @@ void Symbol::vSet_Col_Tc(Stz* szColTc)
   m_eSymbol = SF_COL_TC;
 
   RASSERT(bIs_Col_Tc());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_No(Stz* szColNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = szColNm;
-  m_eSymbol = SF_COL_NO;
 }
 
 /*----------------------------------------------------------------------------*/
