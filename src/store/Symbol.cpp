@@ -148,6 +148,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_GroupBy(szSymbol))      return SF_GROUPBY;
   if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
   if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
+  if (bIs_Mth_Op(szSymbol))       return SF_MTH_OP;
   if (bIs_Number(szSymbol))       return SF_NUMBER;
   if (bIs_Parenthesis(szSymbol))  return SF_PARENTHESIS;
   if (bIs_Rln_Op(szSymbol))       return SF_RLN_OP;
@@ -1211,12 +1212,10 @@ bool Symbol::bIs_Col_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-//  if (SF_COL_NO != m_eSymbol)
-//    return false;
+  if (SF_COL_NO != m_eSymbol)
+    return false;
 
   if (bIs_Col_No(m_sSymbol)) {
-    if (SF_COL_NO != m_eSymbol)
-      return false;
     return true;
   }
 
@@ -2008,16 +2007,6 @@ bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
 /*----------------------------------------------------------------------------*/
 /* what is this symbol?                                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(Stz* szSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = szSymbol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* what is this symbol?                                                       */
-/*----------------------------------------------------------------------------*/
 Stz* Symbol::szWhatIs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -2487,6 +2476,8 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
 
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NM;
+
+  //RASSERT(bIs_Col_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2535,8 +2526,6 @@ void Symbol::vSet_Col_No(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bIs_Col_No(szColNm));
-
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NO;
 
@@ -2562,8 +2551,6 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 void Symbol::vSet_Col_Tc(Stz* szColTc)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bIs_Col_Tc(szColTc));
 
   m_sSymbol = szColTc;
   m_eSymbol = SF_COL_TC;
@@ -2724,7 +2711,7 @@ void Symbol::vSet_Mth_Op(Stz* szMthOp)
   m_sSymbol = szMthOp;
   m_eSymbol = SF_MTH_OP;
 
-  RASSERT(bIs_Bol_Op());
+  RASSERT(bIs_Mth_Op());
 }
 
 /*----------------------------------------------------------------------------*/
