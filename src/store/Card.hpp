@@ -154,6 +154,7 @@ static Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
 static Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
 static Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
+static Stz* P_DisamCol     = "bDisamCol"_Stz;
 static Stz* P_Early        = "bEarly"_Stz;
 static Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
 static Stz* P_FixedPos     = "bFixedPos"_Stz;

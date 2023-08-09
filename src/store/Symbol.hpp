@@ -43,7 +43,6 @@ namespace STORE
     static bool bIs_Bound(Stz* szArg);           // BOUND, LBOUND, UBOUND
     static bool bIs_Brace(Stz* szArg);           // {
     static bool bIs_Col_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Col_Nm_dis(Stz* szArg);      // C_n
     static bool bIs_Col_Nm_syn(Stz* szArg);      // __COLn
     static bool bIs_Col_No(Stz* szArg);          // $n
     static bool bIs_Col_Tc(Stz* szArg);          // $c.n

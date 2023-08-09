@@ -138,7 +138,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Bol_Op(szSymbol))       return SF_BOL_OP;
   if (bIs_Bound(szSymbol))        return SF_BOUND;
   if (bIs_Brace(szSymbol))        return SF_BRACE;
-  if (bIs_Col_Nm_dis(szSymbol))   return SF_COL_NM_dis;
   if (bIs_Col_Nm_syn(szSymbol))   return SF_COL_NM_syn;
   if (bIs_Col_No(szSymbol))       return SF_COL_NO;
   if (bIs_Col_Tc(szSymbol))       return SF_COL_TC;
@@ -297,6 +296,54 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+  char acFifth  = szArg->azChar()[4];
+  char acSixth  = szArg->azChar()[5];
+
+  if (   '_' == acFirst
+         && '_' == acSecond
+         && 'C' == acThird
+         && 'O' == acFourth
+         && 'L' == acFifth
+         && StrLib::bIsDigit(acSixth))
+    return true;
+
+  if (   'C' == acFirst
+         && 'O' == acSecond
+         && 'L' == acThird
+         && StrLib::bIsDigit(acFourth))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Col_No(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+
+  if ('$' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Tc(Stz* szArg)
@@ -334,81 +381,6 @@ bool Symbol::bIs_Col_Type(Stz* szArg)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a stream-column?  (i.e. $n)                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_No(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-
-  if ('$' == acFirst &&
-      StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a disambiguated as?  (i.e. Cn_Xyz)                    */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm_dis(Stz* szArg)
-{
-  _static_
-
-  char* acCursor_arg = szArg->azChar();
-
-  if ('C' != *acCursor_arg++)
-    return false;
-
-  i8 nDigits = 0;
-  while (StrLib::bIsDigit(*acCursor_arg++))
-    nDigits++;
-  if (! nDigits)
-    return false;
-
-  if ('_' != *acCursor_arg++)
-    return false;
-
-  if (StrLib::bIsSqlName(acCursor_arg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm_syn(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
-  char acFourth = szArg->azChar()[3];
-  char acFifth  = szArg->azChar()[4];
-  char acSixth  = szArg->azChar()[5];
-
-  if (   '_' == acFirst
-         && '_' == acSecond
-         && 'C' == acThird
-         && 'O' == acFourth
-         && 'L' == acFifth
-         && StrLib::bIsDigit(acSixth))
-    return true;
-
-  if (   'C' == acFirst
-         && 'O' == acSecond
-         && 'L' == acThird
-         && StrLib::bIsDigit(acFourth))
-    return true;
-
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* is this symbol a comma separator?                                          */
@@ -1214,13 +1186,13 @@ bool Symbol::bIs_Col_Nm_dis(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_COL_NM_dis != m_eSymbol)
+  if (! bIs_Col_Nm())
     return false;
 
-  if (bIs_Col_Nm_dis(m_sSymbol))
-    return true;
-  else
+  if (! Y_bHas(P_DisamCol))
     return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2525,12 +2497,10 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NM;
 
-//  if (! bIs_Col_Nm()) {
-//    vTrace("vSet_Col_Nm: %s\n"_Stz,m_sSymbol.azChar());
-//    vDebugPoint();
-//  }
+  Y_vCut(P_DisamCol);
 
- // RASSERT(bIs_Col_Nm());
+  RASSERT(bIs_Col_Nm());
+  RASSERT(! bIs_Col_Nm_dis());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2541,7 +2511,8 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
-  m_eSymbol = SF_COL_NM_dis;
+  m_eSymbol = SF_COL_NM;
+  Y_vSet(P_DisamCol);
 
   RASSERT(bIs_Col_Nm_dis());
 }
