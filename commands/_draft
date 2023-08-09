@@ -84,7 +84,7 @@ begin
     | stageQ18_1_b broadcast
     
   stage stageQ18_1_b on all partitions :
-    indexJoin 2 orders orders_orderkey "bound $I1 $L1 =="
+    indexJoin 2 orders orders_orderkey "bound $I1 $1 =="
     | combined 0
     | stageQ18_1_c broadcast
     
@@ -93,7 +93,7 @@ begin
     | stageQ18_1_d
     
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer customer_custkey "bound $I1 $L1 =="
+    indexJoin 2 customer customer_custkey "bound $I1 $1 =="
     | combined 0
     | stageQ18_1_e
     

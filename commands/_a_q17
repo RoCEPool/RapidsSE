@@ -88,7 +88,7 @@ begin
     | next broadcast
 
   stage S06 on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    indexJoin lineitem IxL_PARTKEY "bound $I1 $1 =="
     | filter " type BOOLEAN  J1_L_QUANTITY AV <  "
     | project " type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  "
     | combined 0

@@ -58,7 +58,7 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
         "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
                type INTEGER as O_ORDERKEY J1_O_ORDERKEY"

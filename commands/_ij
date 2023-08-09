@@ -31,7 +31,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter 2 " type BOOLEAN  L_KEY 2 <= "
-    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | indexJoin 2 rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
 
@@ -143,11 +143,11 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter 0 " type BOOLEAN  l_key 2 <= "
-    | indexJoin 0 rt ri "BOUND $I1 $L1 == "
+    | indexJoin 0 rt ri "BOUND $I1 $1 == "
     | stageC
   stage stageC on all partitions :
       project 0 " type INTEGER  as L_KEY L_KEY "
-      | indexJoin 0 rt ri "BOUND $I1 $L1 == "
+      | indexJoin 0 rt ri "BOUND $I1 $1 == "
       | stageD
   stage stageD on origin :
     output | sink | stageA
@@ -213,7 +213,7 @@ begin
     scan student | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 student_course student_course_idx "EQUAL $I1 $L1 == " | stageD
+    indexJoin 0 student_course student_course_idx "EQUAL $I1 $1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -249,16 +249,16 @@ begin
 
   stage stageB on all partitions :
     scan T | project 0 "type integer $1 " |
-     indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageC
+     indexJoin 0 J idx "EQUAL $I1 $1 ==" | stageC
 
   stage stageC on all partitions :
-    project 0 "type integer $1 , $2 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageD
+    project 0 "type integer $1 , $2 " | indexJoin 0 J idx "EQUAL $I1 $1 ==" | stageD
 
   stage stageD on all partitions :
-    project 0 "type integer $1 , $2 , $3 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageE
+    project 0 "type integer $1 , $2 , $3 " | indexJoin 0 J idx "EQUAL $I1 $1 ==" | stageE
 
   stage stageE on all partitions :
-     project 0 "type integer $1 , $2 , $3 , $4 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageF
+     project 0 "type integer $1 , $2 , $3 , $4 " | indexJoin 0 J idx "EQUAL $I1 $1 ==" | stageF
 
   stage stageF on origin :
     output | sink | stageA

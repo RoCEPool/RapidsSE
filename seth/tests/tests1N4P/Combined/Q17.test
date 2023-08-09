@@ -64,7 +64,7 @@ begin
     | next broadcast
 
   stage stageQ17_1_a on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    indexJoin lineitem IxL_PARTKEY "bound $I1 $1 =="
     | gbyAgg " groupBy  type integer $1 aggregates
                type integer as P_PARTKEY $K1 ,
                type DECIMAL )  $6 sum  ,
@@ -90,7 +90,7 @@ begin
     | next broadcast
 
   stage stageQ17_2_a on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    indexJoin lineitem IxL_PARTKEY "bound $I1 $1 =="
     | filter " type BOOLEAN  $7 $2 <  "
     | aggreg " type DECIMAL as avg_yearly ) $8 sum  "
     | combined 0

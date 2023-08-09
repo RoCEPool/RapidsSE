@@ -81,7 +81,7 @@ begin
     | stageMarker0429
   stage stageMarker0429 on all partitions :
     indexscan 2 customer customer_idx1 "LBOUND $I1 0 >="
-    | indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | indexJoin 2 orders orders_idx1 "BOUND $I1 $1 =="
     | combined 1
     | stageLast
   stage stageLast on origin :

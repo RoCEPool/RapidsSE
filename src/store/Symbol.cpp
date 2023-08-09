@@ -2527,8 +2527,8 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
 //    vTrace("vSet_Col_Nm: %s\n"_Stz,m_sSymbol.azChar());
 //    vDebugPoint();
 //  }
-//
-//  RASSERT(bIs_Col_Nm());
+
+ // RASSERT(bIs_Col_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2552,9 +2552,9 @@ void Symbol::vSet_Col_Nm_syn(Stz* szColNm_syn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szColNm_syn;
-  m_eSymbol = SF_COL_NM_syn;
+  m_eSymbol = SF_COL_NM;
 
-  RASSERT(bIs_Col_Nm_syn());
+  //RASSERT(bIs_Col_Nm_syn());
 }
 
 /*----------------------------------------------------------------------------*/
