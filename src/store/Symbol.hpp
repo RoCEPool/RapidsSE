@@ -74,6 +74,7 @@ namespace STORE
     static bool bIs_Tbl_Syn(Stz* szArg);         // $c
     static bool bIs_Tbl_Syn_rep(Stz* szArg);     // $C
     static bool bIs_Type(Stz* szArg);            // TYPE
+    static bool bIs_When(Stz* szArg);            // WHEN
     static bool bIs_Xk_Cast(Stz* szArg);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
     static bool bIs_Xrf_No(Stz* szArg);          // #n
 
@@ -131,6 +132,7 @@ namespace STORE
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Tbl_Syn_rep(void);     // c
     bool bIs_Type(void);            // TYPE
+    bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
     bool bIs_Xrf_No(void);          // #n
 
@@ -236,6 +238,7 @@ namespace STORE
     void vSet_Tbl_Syn(Stz* szTblSyn);
     void vSet_Tbl_Syn_rep(void);
     void vSet_Type(Stz* szType);
+    void vSet_When(Stz* szWhen);
     void vSet_Xk_Cast(Stz* szXkCast);
     void vSet_Xrf_No(i8 iXrefNo);
     void vSet_Xrf_No(Stz* szXrefNo);

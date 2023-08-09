@@ -52,6 +52,7 @@ enum eSF // symbol form
   /* */ SF_TBL_SYN,     // Table Synonym       : c
   /* */ SF_TBL_SYN_rep, // " (replicated)      : C
   /* */ SF_TYPE,        // Type                : TYPE
+  /* */ SF_WHEN,        // When                : WHEN
   /* */ SF_XK_CAST,     // CrossRef No         : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
   /* */ SF_XRF_NO,      // CrossRef No         : #n
 
@@ -106,6 +107,7 @@ static Stz* aSF[]
   /* */ "SF_TBL_NM"_Stz,
   /* */ "SF_TBL_SYN"_Stz,
   /* */ "SF_TYPE"_Stz,
+  /* */ "SF_WHEN"_Stz,
   /* */ "SF_XK_CAST"_Stz,
   /* */ "SF_XRF_NO"_Stz,
 

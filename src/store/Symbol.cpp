@@ -159,6 +159,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_String(szSymbol))       return SF_STRING;
   if (bIs_Tbl_Syn(szSymbol))      return SF_TBL_SYN;
   if (bIs_Type(szSymbol))         return SF_TYPE;
+  if (bIs_When(szSymbol))         return SF_WHEN;
   if (bIs_Xrf_No(szSymbol))       return SF_XRF_NO;
 
   //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
@@ -809,6 +810,19 @@ bool Symbol::bIs_Type(Stz* szArg)
   _static_
 
   if (szArg->bSame("TYPE"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_When(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("WHEN"_Stz))
     return true;
   else
     return false;
@@ -1526,6 +1540,19 @@ bool Symbol::bIs_Type(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a parenthesis?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_When(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIs_When(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a cross-refernece?  (i.e. #n)                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Xk_Cast(void)
@@ -1789,6 +1816,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_TBL_NM:      vSet_Tbl_Nm(szStz);      break;
     case SF_TBL_SYN:     vSet_Tbl_Syn(szStz);     break;
     case SF_TYPE:        vSet_Type(szStz);        break;
+    case SF_WHEN:        vSet_When(szStz);        break;
     case SF_XK_CAST:     vSet_Xk_Cast(szStz);     break;
     case SF_XRF_NO:      vSet_Xrf_No(szStz);      break;
 
@@ -2815,6 +2843,19 @@ void Symbol::vSet_Type(Stz* szType)
   m_eSymbol = SF_TYPE;
 
   RASSERT(bIs_Type());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_When(Stz* szWhen)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szWhen;
+  m_eSymbol = SF_WHEN;
+
+  RASSERT(bIs_When());
 }
 
 /*----------------------------------------------------------------------------*/
