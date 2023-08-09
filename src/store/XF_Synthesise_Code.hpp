@@ -59,6 +59,11 @@ namespace STORE
     void vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq,
                                 Card_Project* p_project);
 
+    void vUpdateColsReq_Scan(Card_Table* p_table, ColsReq* pColsReq,
+                                Card_Scan* p_scan);
+    void vUpdateColsReq_IndexJoin(Card_Table* p_table, ColsReq* pColsReq,
+                           Card_IndexJoin* p_indexJoin);
+
     void vUpdateColsReq_terms(Card_Table* p_table,
                               ColsReq* pColsReq, Card* pSubCard);
 

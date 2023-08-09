@@ -483,6 +483,7 @@ void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
   ColsReq* pColsReq = new ColsReq;
   m_pOpDef->vColsReq(pColsReq);
 
+  i8 nUpdates = 0;
   Kid xKid(m_pCI->G.pDeck);
   for (xKid.vSynch(p_OP); xKid.bEach(); /**/) {
     Card* p_later = xKid.pChild();
@@ -492,10 +493,12 @@ void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
 
       case CK_FILTER:
         vUpdateColsReq_filter(p_table, pColsReq, _pCard_Filter(p_later));
+        nUpdates++;
         continue;
 
       case CK_PROJECT:
         vUpdateColsReq_project(p_table, pColsReq, _pCard_Project(p_later));
+        nUpdates++;
         continue;
 
       default:
@@ -504,13 +507,28 @@ void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
 
   }
 
+  if (! nUpdates) {
+    if (CK_SCAN == eCard_OP) {
+      vUpdateColsReq_Scan(p_table, pColsReq, _pCard_Scan(p_OP));
+    }
+    else
+    if (CK_INDEXJOIN == eCard_OP) {
+      vUpdateColsReq_IndexJoin(p_table, pColsReq, _pCard_IndexJoin(p_OP));
+    }
+    else {
+      //NEVER_REACH
+    }
+  }
+
   pColsReq->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_Code::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq, Card_Filter* p_filter)
+void XF_Synthesise_Code::vUpdateColsReq_filter(Card_Table* p_table,
+                                               ColsReq* pColsReq,
+                                               Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
@@ -521,7 +539,9 @@ void XF_Synthesise_Code::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pCo
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_Code::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq, Card_Project* p_project)
+void XF_Synthesise_Code::vUpdateColsReq_project(Card_Table* p_table,
+                                                ColsReq* pColsReq,
+                                                Card_Project* p_project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
@@ -532,7 +552,77 @@ void XF_Synthesise_Code::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pC
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_Code::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card* pSubCard)
+void XF_Synthesise_Code::vUpdateColsReq_Scan(Card_Table* p_table,
+                                             ColsReq* pColsReq,
+                                             Card_Scan* p_scan)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
+
+  Card_Projection* p_projection = p_scan->pSub_projection();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambda = [p_table, pColsReq] (Card* pCard) {
+    Card_Expr* p_expr = _pCard_Expr(pCard);
+
+    Symbol* pSymbol_tblCol = p_expr->pFirstTblCol();
+
+    i8 i_Col = pSymbol_tblCol->iSF_ordinal();
+
+    pColsReq->vAddCol(i_Col, false, i_Col);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_scan->bApplyRecursive(CK_EXPR,bLambda);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the current cols required                                           */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_Code::vUpdateColsReq_IndexJoin(Card_Table* p_table,
+                                                  ColsReq* pColsReq,
+                                                  Card_IndexJoin* p_indexJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
+
+  Card_Projection* p_projection = p_indexJoin->pSub_projection();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambda = [p_table, pColsReq] (Card* pCard) {
+    Card_Expr* p_expr = _pCard_Expr(pCard);
+
+    Symbol* pSymbol_tblCol = p_expr->pFirstTblCol();
+    if (! pSymbol_tblCol)
+      return C_CONTINUE_RECURSION;
+
+    Stz* szTblCol = pSymbol_tblCol->szSF_symbol();
+    if (! p_table->bIsTblColOf(szTblCol))
+      return C_CONTINUE_RECURSION;
+
+    i8 i_Col = StrLib::iGleanInt(szTblCol->azChar());
+
+    pColsReq->vAddCol(i_Col, false, i_Col);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_indexJoin->bApplyRecursive(CK_EXPR,bLambda);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the current cols required                                           */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_Code::vUpdateColsReq_terms(Card_Table* p_table,
+                                              ColsReq* pColsReq,
+                                              Card* pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
