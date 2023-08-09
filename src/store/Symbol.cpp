@@ -267,6 +267,7 @@ bool Symbol::bIs_Brace(Stz* szArg)
   _static_
 
   if (szArg->bSame("{"_Stz))       return true;
+  if (szArg->bSame("}"_Stz))       return true;
 
   return false;
 }
@@ -2520,7 +2521,7 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NM;
 
-  //RASSERT(bIs_Col_Nm());
+  RASSERT(bIs_Col_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
