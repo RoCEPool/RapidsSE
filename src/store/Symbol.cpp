@@ -1215,8 +1215,8 @@ bool Symbol::bIs_Col_No(void)
 //    return false;
 
   if (bIs_Col_No(m_sSymbol)) {
-//    if (SF_COL_NO != m_eSymbol)
-//      return false;
+    if (SF_COL_NO != m_eSymbol)
+      return false;
     return true;
   }
 
@@ -1947,6 +1947,13 @@ void Symbol::vSym(Symbol* pSymbol)
 
   m_sSymbol = pSymbol->m_sSymbol;
   m_eSymbol = pSymbol->m_eSymbol;
+
+  if (SF_COL_NO == m_eSymbol)
+    RASSERT(Symbol::bIs_Col_No(m_sSymbol));
+
+  if (SF_COL_TC == m_eSymbol)
+    RASSERT(Symbol::bIs_Col_Tc(m_sSymbol));
+
 }
 
 
@@ -1959,6 +1966,12 @@ void Symbol::vSymPpy(Symbol* pSymbol)
 
   m_sSymbol = pSymbol->m_sSymbol;
   m_eSymbol = pSymbol->m_eSymbol;
+
+  if (SF_COL_NO == m_eSymbol)
+    RASSERT(Symbol::bIs_Col_No(m_sSymbol));
+
+  if (SF_COL_TC == m_eSymbol)
+    RASSERT(Symbol::bIs_Col_Tc(m_sSymbol));
 
   Y_vAll(pSymbol);
 }
@@ -2522,6 +2535,8 @@ void Symbol::vSet_Col_No(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(bIs_Col_No(szColNm));
+
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NO;
 
@@ -2547,6 +2562,8 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 void Symbol::vSet_Col_Tc(Stz* szColTc)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(bIs_Col_Tc(szColTc));
 
   m_sSymbol = szColTc;
   m_eSymbol = SF_COL_TC;
