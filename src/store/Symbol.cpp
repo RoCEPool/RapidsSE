@@ -1051,6 +1051,9 @@ bool Symbol::bIs_Agg_Fn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_AGG_FN != m_eSymbol)
+    return false;
+
   if (bIs_Agg_Fn(m_sSymbol))
     return true;
 
@@ -1063,6 +1066,9 @@ bool Symbol::bIs_Agg_Fn(void)
 bool Symbol::bIs_As(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_AS != m_eSymbol)
+    return false;
 
   if (bIs_As(m_sSymbol))
     return true;
@@ -1077,6 +1083,9 @@ bool Symbol::bIs_As_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_AS_NM != m_eSymbol)
+    return false;
+
   if (bIs_Col_Nm(m_sSymbol))
     return true;
 
@@ -1089,6 +1098,9 @@ bool Symbol::bIs_As_Nm(void)
 bool Symbol::bIs_As_Nm_syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_AS_NM_syn != m_eSymbol)
+    return false;
 
   if (bIs_Col_Nm_syn(m_sSymbol))
     return true;
@@ -1103,6 +1115,9 @@ bool Symbol::bIs_Bol_Fn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_BOL_FN != m_eSymbol)
+    return false;
+
   if (bIs_Bol_Fn(m_sSymbol))
     return true;
 
@@ -1115,6 +1130,9 @@ bool Symbol::bIs_Bol_Fn(void)
 bool Symbol::bIs_Bol_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_BOL_OP != m_eSymbol)
+    return false;
 
   if (bIs_Bol_Op(m_sSymbol))
     return true;
@@ -1129,6 +1147,9 @@ bool Symbol::bIs_Bound(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_BOUND != m_eSymbol)
+    return false;
+
   if (bIs_Bound(m_sSymbol))
     return true;
 
@@ -1141,6 +1162,9 @@ bool Symbol::bIs_Bound(void)
 bool Symbol::bIs_Col_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_COL_NM != m_eSymbol)
+    return false;
 
   if (bIs_Col_Nm(m_sSymbol))
     return true;
@@ -1155,6 +1179,9 @@ bool Symbol::bIs_Col_Nm_dis(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_COL_NM_dis != m_eSymbol)
+    return false;
+
   if (bIs_Col_Nm_dis(m_sSymbol))
     return true;
   else
@@ -1167,6 +1194,9 @@ bool Symbol::bIs_Col_Nm_dis(void)
 bool Symbol::bIs_Col_Nm_syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_COL_NM_syn != m_eSymbol)
+    return false;
 
   if (bIs_Col_Nm_syn(m_sSymbol))
     return true;
@@ -1181,6 +1211,9 @@ bool Symbol::bIs_Col_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  if (SF_COL_NO != m_eSymbol)
+//    return false;
+
   if (bIs_Col_No(m_sSymbol))
     return true;
 
@@ -1193,6 +1226,9 @@ bool Symbol::bIs_Col_No(void)
 bool Symbol::bIs_Col_Tc(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_COL_TC != m_eSymbol)
+    return false;
 
   if (bIs_Col_Tc(m_sSymbol))
     return true;
@@ -1207,6 +1243,9 @@ bool Symbol::bIs_Col_Type(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_COL_TYPE != m_eSymbol)
+    return false;
+
   if (bIs_Col_Type(m_sSymbol))
     return true;
 
@@ -1219,6 +1258,9 @@ bool Symbol::bIs_Col_Type(void)
 bool Symbol::bIs_Comma(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_COMMA != m_eSymbol)
+    return false;
 
   if (bIs_Comma(m_sSymbol))
     return true;
@@ -1233,6 +1275,9 @@ bool Symbol::bIs_Cross(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_CROSS != m_eSymbol)
+    return false;
+
   if (bIs_Cross(m_sSymbol))
     return true;
   else
@@ -1245,6 +1290,9 @@ bool Symbol::bIs_Cross(void)
 bool Symbol::bIs_Direction(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_DIRECTION != m_eSymbol)
+    return false;
 
   if (bIs_Direction(m_sSymbol))
     return true;
@@ -1259,6 +1307,9 @@ bool Symbol::bIs_Fld_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_FLD_NM != m_eSymbol)
+    return false;
+
   if (bIs_Fld_Nm(m_sSymbol))
     return true;
   else
@@ -1271,6 +1322,9 @@ bool Symbol::bIs_Fld_Nm(void)
 bool Symbol::bIs_GroupBy(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_GROUPBY != m_eSymbol)
+    return false;
 
   if (bIs_GroupBy(m_sSymbol))
     return true;
@@ -1285,6 +1339,9 @@ bool Symbol::bIs_Idx_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_IDX_COL != m_eSymbol)
+    return false;
+
   if (bIs_Idx_Col(m_sSymbol))
     return true;
 
@@ -1297,6 +1354,9 @@ bool Symbol::bIs_Idx_Col(void)
 bool Symbol::bIs_Idx_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_IDX_NM != m_eSymbol)
+    return false;
 
   if (bIs_Idx_Nm(m_sSymbol))
     return true;
@@ -1311,6 +1371,9 @@ bool Symbol::bIs_Key_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_KEY_COL != m_eSymbol)
+    return false;
+
   if (bIs_Key_Col(m_sSymbol))
     return true;
 
@@ -1323,6 +1386,9 @@ bool Symbol::bIs_Key_Col(void)
 bool Symbol::bIs_Mth_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_MTH_OP != m_eSymbol)
+    return false;
 
   if (bIs_Mth_Op(m_sSymbol))
     return true;
@@ -1337,6 +1403,9 @@ bool Symbol::bIs_Note(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_NOTE != m_eSymbol)
+    return false;
+
   if (bIs_Note(m_sSymbol))
     return true;
 
@@ -1349,6 +1418,9 @@ bool Symbol::bIs_Note(void)
 bool Symbol::bIs_Number(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_NUMBER != m_eSymbol)
+    return false;
 
   if (bIs_Number(m_sSymbol))
     return true;
@@ -1363,6 +1435,9 @@ bool Symbol::bIs_Parenthesis(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_PARENTHESIS != m_eSymbol)
+    return false;
+
   if (bIs_Parenthesis(m_sSymbol))
     return true;
 
@@ -1376,6 +1451,9 @@ bool Symbol::bIs_Ppe_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_PPE_NM != m_eSymbol)
+    return false;
+
   if (bIs_Ppe_Nm(m_sSymbol))
     return true;
 
@@ -1388,6 +1466,9 @@ bool Symbol::bIs_Ppe_Nm(void)
 bool Symbol::bIs_Rln_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_RLN_OP != m_eSymbol)
+    return false;
 
   if (bIs_Rln_Op(m_sSymbol))
     return true;
@@ -1415,6 +1496,9 @@ bool Symbol::bIs_Sqy_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_SQY_NO != m_eSymbol)
+    return false;
+
   if (bIs_Sqy_No(m_sSymbol))
     return true;
 
@@ -1427,6 +1511,9 @@ bool Symbol::bIs_Sqy_No(void)
 bool Symbol::bIs_Sqy_Op(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_SQY_OP != m_eSymbol)
+    return false;
 
   if (bIs_Sqy_Op(m_sSymbol))
     return true;
@@ -1441,6 +1528,9 @@ bool Symbol::bIs_Sqy_Rsl(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_SQY_RSL != m_eSymbol)
+    return false;
+
   if (bIs_Sqy_Rsl(m_sSymbol))
     return true;
 
@@ -1453,6 +1543,9 @@ bool Symbol::bIs_Sqy_Rsl(void)
 bool Symbol::bIs_Stg_Cast(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_STG_CAST != m_eSymbol)
+    return false;
 
   if (bIs_Stg_Cast(m_sSymbol))
     return true;
@@ -1467,6 +1560,9 @@ bool Symbol::bIs_Stg_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_STG_NO != m_eSymbol)
+    return false;
+
   if (bIs_Stg_Nm(m_sSymbol))
     return true;
 
@@ -1479,6 +1575,9 @@ bool Symbol::bIs_Stg_Nm(void)
 bool Symbol::bIs_String(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_STRING != m_eSymbol)
+    return false;
 
   if (bIs_String(m_sSymbol))
     return true;
@@ -1493,6 +1592,9 @@ bool Symbol::bIs_Tbl_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_TBL_NM != m_eSymbol)
+    return false;
+
   if (bIs_Tbl_Nm(m_sSymbol))
     return true;
 
@@ -1505,6 +1607,9 @@ bool Symbol::bIs_Tbl_Nm(void)
 bool Symbol::bIs_Tbl_Syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_TBL_SYN != m_eSymbol)
+    return false;
 
   if (bIs_Tbl_Syn(m_sSymbol))
     return true;
@@ -1519,6 +1624,9 @@ bool Symbol::bIs_Tbl_Syn_rep(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  if (SF_TBL_SYN_rep != m_eSymbol)
+//    return false;
+
   if (bIs_Tbl_Syn_rep(m_sSymbol))
     return true;
 
@@ -1531,6 +1639,9 @@ bool Symbol::bIs_Tbl_Syn_rep(void)
 bool Symbol::bIs_Type(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_TYPE != m_eSymbol)
+    return false;
 
   if (bIs_Type(m_sSymbol))
     return true;
@@ -1545,6 +1656,9 @@ bool Symbol::bIs_When(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_WHEN != m_eSymbol)
+    return false;
+
   if (bIs_When(m_sSymbol))
     return true;
 
@@ -1558,6 +1672,9 @@ bool Symbol::bIs_Xk_Cast(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  if (SF_XK_CAST != m_eSymbol)
+    return false;
+
   if (bIs_Xk_Cast(m_sSymbol))
     return true;
 
@@ -1570,6 +1687,9 @@ bool Symbol::bIs_Xk_Cast(void)
 bool Symbol::bIs_Xrf_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_XRF_NO != m_eSymbol)
+    return false;
 
   if (bIs_Xrf_No(m_sSymbol))
     return true;
@@ -2541,7 +2661,7 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szIdxNm;
-  m_eSymbol = SF_TBL_NM;
+  m_eSymbol = SF_IDX_NM;
 
   RASSERT(bIs_Idx_Nm());
 }
