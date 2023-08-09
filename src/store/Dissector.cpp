@@ -1643,7 +1643,7 @@ Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
     }
 
     eSF eSymbol = Symbol::eEvalSymbol(sDissectedVal);
-    if (SF_OTHER == eSymbol)
+    if (SF_NONE == eSymbol)
       eSymbol = SF_COL_NM;
     Card_Term* pCard_Term = (new Card_Term) ->SYM(eSymbol,sDissectedVal);
 

@@ -34,8 +34,6 @@ enum eSF // symbol form
   /* */ SF_NOTE,        // Note Literal        : ...any...
   /* */ SF_NUMBER,      // Numeric Literal     : StrLib::bIsDecimal/Float/Integer()
 
-  /* */ SF_OTHER,       // other
-
   /* */ SF_PARENTHESIS, // Parenthesis         : (, )
   /* */ SF_PPE_NM,      // PipeName            : bIsName
   /* */ SF_PRM_COL,     // Parameter Column    : %n
@@ -88,8 +86,6 @@ static Stz* aSF[]
   /* */ "SF_MTH_OP"_Stz,
   /* */ "SF_NOTE"_Stz,
   /* */ "SF_NUMBER"_Stz,
-
-  /* */ "SF_OTHER"_Stz,
 
   /* */ "SF_PARENTHESIS"_Stz,
   /* */ "SF_PPE_NM"_Stz,

@@ -163,7 +163,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
 
   //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
-  return SF_OTHER;
+  return SF_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1772,15 +1772,6 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_OTHER == eSymbol)
-    eSymbol = eEvalSymbol(szStz);
-
-  if (SF_OTHER == eSymbol) {
-
-    vTrace("eEvalSymbol: %s\n"_Stz, szStz);
-    NEVER_REACH
-  }
-
   switch (eSymbol) {
 
     case SF_AGG_FN:      vSet_Agg_Fn(szStz);      break;
@@ -1818,8 +1809,6 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_WHEN:        vSet_When(szStz);        break;
     case SF_XK_CAST:     vSet_Xk_Cast(szStz);     break;
     case SF_XRF_NO:      vSet_Xrf_No(szStz);      break;
-
-    case SF_OTHER:       vSet_Other(szStz);     break;
 
     default: NEVER_REACH;
   }
@@ -2633,17 +2622,6 @@ void Symbol::vSet_Number(Stz* szNumber)
   m_eSymbol = SF_NUMBER;
 
   RASSERT(bIs_Number());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Other(Stz* szOther)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = szOther;
-  m_eSymbol = SF_OTHER;
 }
 
 /*----------------------------------------------------------------------------*/

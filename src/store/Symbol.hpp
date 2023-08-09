@@ -222,7 +222,6 @@ namespace STORE
     void vSet_Note(Stz* szNote);
     void vSet_Number(i8 iNumber);
     void vSet_Number(Stz* szNumber);
-    void vSet_Other(Stz* szOther);
     void vSet_Parenthesis(Stz* szParenthesis);
     void vSet_Ppe_Nm(Stz* szPpeNm);
     void vSet_Prm_Col(i8 iOrdinal);
