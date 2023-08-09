@@ -66,14 +66,14 @@ begin
     | next broadcast
 
   stage stageQ18_1_b on all partitions :
-    indexJoin 1 orders IxO_ORDERKEY "bound $I1 $L1 =="
+    indexJoin 1 orders IxO_ORDERKEY "bound $I1 $1 =="
     //| combined 0
     | next broadcast
   stage stageQ18_1_c on all partitions :
     project 1 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type date as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
     | next
   stage stageQ18_1_d on all partitions :
-    indexJoin 1 customer IxL_CUSTKEY "bound $I1 $L1 =="
+    indexJoin 1 customer IxL_CUSTKEY "bound $I1 $1 =="
     //| combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :

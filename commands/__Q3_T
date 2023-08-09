@@ -87,11 +87,11 @@ begin
     | filter 1 " type BOOLEAN  C_MKTSEGMENT 'BUILDING'  ==  "
     | stageMarker8564 broadcast
   stage stageMarker8564 on all partitions :
-    indexJoin 1 orders IxO_CUSTKEY " BOUND $L1 $I2 ==  "
+    indexJoin 1 orders IxO_CUSTKEY " BOUND $1 $I2 ==  "
     | filter 1 " J1_O_ORDERDATE DATE '1995-03-15 00:00:00'  < "
     | stageMarker8567
   stage stageMarker8567 on all partitions :
-    indexJoin 1 lineitem IxL_ORDERKEY " BOUND $L9 $I1 ==  "
+    indexJoin 1 lineitem IxL_ORDERKEY " BOUND $9 $I1 ==  "
     | filter 1 " J2_L_SHIPDATE DATE '1995-03-15 00:00:00'  >  "
     | stageMarker8570
   stage stageMarker8570 on all partitions :

@@ -31,16 +31,16 @@ begin
 
   stage stageB on all partitions :
     scan T | project 0 "type integer $1 " | filter 0 "type integer $1 5 <= " | eachRow |
-    eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+    eachScan J | eachJoin 0 "$1 $R1 ==" | stageC
 
   stage stageC on all partitions :
-    project 0 "type integer $1 , $2 " | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageD
+    project 0 "type integer $1 , $2 " | eachRow | eachScan J | eachJoin 0 "$1 $R1 ==" | stageD
 
   stage stageD on all partitions :
-    project 0 "type integer $1 , $2 , $3 " | eachRow | eachScan T | eachJoin 0 "$L1 $R1 ==" | stageE
+    project 0 "type integer $1 , $2 , $3 " | eachRow | eachScan T | eachJoin 0 "$1 $R1 ==" | stageE
 
   stage stageE on all partitions :
-     project 0 "type integer $1 , $2 , $3 , $4 " | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageF
+     project 0 "type integer $1 , $2 , $3 , $4 " | eachRow | eachScan J | eachJoin 0 "$1 $R1 ==" | stageF
 
   stage stageF on origin :
     output | sink | stageA
@@ -56,7 +56,7 @@ begin
     scan T | eachRow | stageC
 
   stage stageC on all partitions :
-    eachScan J | filter 0 "type integer $1 2 <= " | eachJoin 0 "$L1 $R1 ==" | stageD
+    eachScan J | filter 0 "type integer $1 2 <= " | eachJoin 0 "$1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -77,11 +77,11 @@ begin
     eachScan J | project 0 "type integer $1 " | stageCC
 
   stage stageCC on all partitions :
-    eachJoin 0 "$L1 $R1 ==" | stageD
+    eachJoin 0 "$1 $R1 ==" | stageD
 
   stage stageD on all partitions :
     eachRow | eachScan J |
-    eachJoin 0 "$L1 $R1 ==" | stageE
+    eachJoin 0 "$1 $R1 ==" | stageE
 
   stage stageE on origin :
     output | sink | stageA
@@ -95,7 +95,7 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+    scan T | eachRow | eachScan J | eachJoin 0 "$1 $R1 ==" | stageC
 
   stage stageC on origin :
     output | sink | stageA
@@ -104,7 +104,7 @@ end;
 
 
 stage stageC on all partitions :
-    eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageD
+    eachRow | eachScan J | eachJoin 0 "$1 $R1 ==" | stageD
 
 pipeline eachRowExp
 begin
@@ -112,7 +112,7 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+    scan T | eachRow | eachScan J | eachJoin 0 "$1 $R1 ==" | stageC
 
   stage stageC on origin :
     output | sink | stageA
@@ -124,7 +124,7 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin 0 "$1 $R1 ==" | stageC
 
   stage stageC on origin :
     output | sink | stageA
@@ -139,7 +139,7 @@ begin
   stage stageB on all partitions :
     scan T | filter 0 "type boolean $1 5 >=" | eachRow |
     eachScan J | filter 0 "type boolean $1 15 >=" |
-    eachJoin 0 "$L1 $R1 ==" | stageC
+    eachJoin 0 "$1 $R1 ==" | stageC
 
   stage stageC on origin :
     output | sink | stageA

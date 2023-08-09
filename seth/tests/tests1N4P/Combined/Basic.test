@@ -180,7 +180,7 @@ begin
 
   stage stageM on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
     | combined 0
     | stageLast
 
@@ -403,7 +403,7 @@ begin
     | next
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
@@ -434,7 +434,7 @@ begin
     | next
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
@@ -471,7 +471,7 @@ begin
     | next
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY

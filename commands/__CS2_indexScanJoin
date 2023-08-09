@@ -12,7 +12,11 @@ load Region "../DATA/TPCH/region.tbl";
 CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
+CREATE INDEX IxN_REGIONKEY ON nation (N_REGIONKEY);
 
+/weaved select * from nation , region where n_regionkey = r_regionkey;
+
+/*
   /keepCodeFile
   /optimise_passthru
   pipeline _unnamed_
@@ -37,3 +41,4 @@ CREATE INDEX IxR_NAME      on REGION (R_NAME);
   | first
 
   end ;
+*/

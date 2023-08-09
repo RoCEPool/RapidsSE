@@ -72,7 +72,7 @@ begin
     scan rapidsse public nation
     | stageMarker0419
   stage stageMarker0419 on all partitions :
-    indexJoin 2 region IxR_REGIONKEY " BOUND $L1 $I1 ==  "
+    indexJoin 2 region IxR_REGIONKEY " BOUND $1 $I1 ==  "
     | combined 0
     | stageMarker0422
   stage stageMarker0422 on all partitions :
@@ -106,7 +106,7 @@ begin
     | stageMarker0668 broadcast
   stage stageMarker0668 on all partitions :
     scan rapidsse public region
-    | abstractJoin 2 " $L1 $R1 ==  "
+    | abstractJoin 2 " $1 $R1 ==  "
     | stageMarker0671
   stage stageMarker0671 on all partitions :
     project 2 " type INTEGER as n_nationkey $1 , type VARCHAR as r_name $6 "
