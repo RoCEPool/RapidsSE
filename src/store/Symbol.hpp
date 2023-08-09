@@ -147,7 +147,7 @@ namespace STORE
     char cSF_char(void);
     i8   iSF_number(void);
     i8   iSF_ordinal(void);
-    Stz* szSF_symbol(void);
+    Stz* szSF_symbol(eSF eSymbol_xchk);
     char cSF_tblSyn(void);
 
     void vSym(eSF eSymbol);

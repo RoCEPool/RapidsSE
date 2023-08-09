@@ -1160,7 +1160,7 @@ Stz* Card::szSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* sz = m_xSymbol.szSF_symbol();
+  Stz* sz = m_xSymbol.szSF_symbol(SF_NONE);
 
   return sz;
 }

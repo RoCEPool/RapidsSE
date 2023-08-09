@@ -1771,9 +1771,12 @@ i8 Symbol::iSF_number(void)
 /*----------------------------------------------------------------------------*/
 /* get symbol stz                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szSF_symbol(void)
+Stz* Symbol::szSF_symbol(eSF eSymbol_xchk)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_NONE != eSymbol_xchk)
+    RASSERT(eSymbol_xchk = m_eSymbol);
 
   return m_sSymbol.szStz();
 }

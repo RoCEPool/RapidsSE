@@ -600,7 +600,7 @@ void XF_Synthesise_Code::vUpdateColsReq_IndexJoin(Card_Table* p_table,
     if (! pSymbol_tblCol)
       return C_CONTINUE_RECURSION;
 
-    Stz* szTblCol = pSymbol_tblCol->szSF_symbol();
+    Stz* szTblCol = pSymbol_tblCol->szSF_symbol(SF_COL_TC);
     if (! p_table->bIsTblColOf(szTblCol))
       return C_CONTINUE_RECURSION;
 

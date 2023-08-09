@@ -68,7 +68,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
   if (Symbol::bIs_Sqy_Nm(sBoardNm)) {
     i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
     Symbol xSymbol_sqNo(SF_SQY_NO,iSqNo);
-    m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo.szSF_symbol());
+    m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo.szSF_symbol(SF_SQY_NO));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
