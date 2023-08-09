@@ -297,25 +297,6 @@ void Card_ELIST::vRenumberAll_expr(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* renumber all synthetic as (return number of synthetic as's)                */
-/*----------------------------------------------------------------------------*/
-i8 Card_ELIST::nRenumberAll_syntheticAs(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bIsKeyExpr = bIsCard(CK_KEY);
-
-  i8 i_Col = 0;
-  for (Kid xCI(this); xCI.bEach(CK_EXPR); /**/) {
-    if (Card_As* p_as = xCI.p_expr()->pSub_as())
-      if (p_as->pSymbol()->bIs_As_Nm_syn())
-        p_as->SYM(SF_AS_NM_syn,++i_Col);
-  }
-
-  return i_Col;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
