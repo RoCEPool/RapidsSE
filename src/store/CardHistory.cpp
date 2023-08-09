@@ -89,7 +89,7 @@ void CardHistory::vDump(i8 i_Tab)
 
   m_pHistoryPds->vDumpInUseList();
 
-  i8 nImages = m_pHistoryPds->nItems();
+//  i8 nImages = m_pHistoryPds->nItems();
   for (i8 i_Image = 1; /**/; i_Image++) {
     CardImage* pCardImage = pImage(i_Image);
     if (! pCardImage)

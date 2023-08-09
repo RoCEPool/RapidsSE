@@ -471,6 +471,7 @@ void vDdlLockAssertNone(void);
 
   void vDynamoCompile(void);
   void vDynamoDelete(void);
+	void vDynamoFileNameFetch(void);
   void vDynamoGet(void);
   void vDynamoNameFetch(void);
   void vDynamoNew(void);

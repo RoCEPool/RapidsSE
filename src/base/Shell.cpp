@@ -15,6 +15,8 @@
 /*----------------------------------------------------------------------------*/
 i8 Shell::iEdit(Object* pCaller, Stz* sFilePath, SysCall& oSysCall)
 {
+  UNUSED(pCaller);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // shell command to edit the file
   s256 sShellCommand;

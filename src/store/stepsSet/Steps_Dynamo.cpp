@@ -36,6 +36,7 @@ void Step::vAddSteps_Dynamo(void)
   vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
   vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
   vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
+	vAddStep("Dynamo[].fileName@"_Stz,&Step::vDynamoFileNameFetch);
   vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
   vAddStep("Dynamo[].name@"_Stz,    &Step::vDynamoNameFetch);
   vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
@@ -83,6 +84,23 @@ void Step::vDynamoDelete(void)
   m_pLogicUnit->m_xpDynamo.vDeleteComponent();
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].fileName@ -- fetch the file name of the dynamo pipeline           */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoFileNameFetch(void)
+{
+	ENTRY();
+
+	s4K sFileNm;
+
+	Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
+	sFileNm.vSprint("%s_%s_%lld"_Stz,
+	  pDynamo->szName(), AM::GRID::pGetThisNode()->szNodeNm(), AM::FILE::iNextFileNo());
+	m_pDataStack->vPushStr(sFileNm);
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

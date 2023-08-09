@@ -563,7 +563,8 @@ i8 Port::iRecvBufferSize(void)
                        ,(void*)&iOptValue
                        ,(socklen_t *)&iOptSize
                        );
-  
+  UNUSED(iResult);
+
   return iOptValue;
 }
 
@@ -636,7 +637,8 @@ i8 Port::iSendBufferSize(void)
                        ,(void*)&iOptValue
                        ,(socklen_t *)&iOptSize
                        );
-  
+  UNUSED(iResult);
+
   return iOptValue;
 }
 

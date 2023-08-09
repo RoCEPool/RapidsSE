@@ -212,7 +212,8 @@ void Peruse::vReset(void)
 void Peruse::vPrint(Stz* szFormat,...)
 {
   _precondition_(_MAGIC_,CN_PERUSE,_FOOTER_);
-  
+  UNUSED(szFormat);
+
   if (! m_iGrandCount) {
     //vTrace("cnt 0\n"_Stz);
     return;

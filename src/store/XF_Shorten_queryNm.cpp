@@ -73,9 +73,8 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  CardIter* pCI = m_pCI;
 
-  auto bLambdaFn = [pCI](Card* p_card) {
+  auto bLambdaFn = [](Card* p_card) {
     if (!Symbol::bIs_Sqy_Nm(p_card->szSymbol()))
       return C_CONTINUE_RECURSION;
 
@@ -90,6 +89,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE,bLambdaFn);
+  UNUSED(b);
 
 
   m_pCI->vEndTransform();

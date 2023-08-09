@@ -262,7 +262,7 @@ SkipListBlock* Pds::pInsert(i8 iKey)
     return nullptr;
   }
 
-  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
+//  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
 
   SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 

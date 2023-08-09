@@ -36,6 +36,8 @@ ApiHelper::~ApiHelper(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void* ApiHelper::pForkDemon(Stz* szPipeline)
 {
+  UNUSED(szPipeline);
+
   // to be coded
   NOT_IMPLEMENTED_YET;
   
@@ -59,6 +61,10 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
                                 Operand* pOperand,
                                 Task* pTriggeringTask)
 {
+  UNUSED(pCurrOp);
+  UNUSED(pOperand);
+  UNUSED(pTriggeringTask);
+
   // to be coded
   NOT_IMPLEMENTED_YET;
 }

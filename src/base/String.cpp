@@ -66,11 +66,13 @@ void String::vCatSprint(Stz* szFormat, ...)
   aFooter()->vAssertFooter();
   
   va_list vaArgs;
-  
-  char* aEnd = aAdd<char*>(m_caCharArea,nLength());
-  
+
+  i8 nLen = nLength();
+  char* aEnd = aAdd<char*>(m_caCharArea,nLen);
+  i8 nRemaining = m_nArea - nLen;
+
   va_start(vaArgs,szFormat);
-  vsprintf(aEnd,(char*)szFormat,vaArgs);
+  vsnprintf(aEnd,nRemaining,(char*)szFormat,vaArgs);
   va_end(vaArgs);
 }
 

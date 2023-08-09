@@ -54,7 +54,8 @@ bool Object::bInspect(Object* pObject)
 void Object::vRepair(Object* pObject)
 {
   _static_
-  
+  UNUSED(pObject);
+
   // DO NOTHING
 }
 

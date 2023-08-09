@@ -81,7 +81,7 @@ void LocalVars::vFramePop(void* aDiscardPoint_return)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  static i8 nCall = 0;
+//  static i8 nCall = 0;
   
   RASSERT(m_nLocalVars);
   
@@ -92,7 +92,6 @@ void LocalVars::vFramePop(void* aDiscardPoint_return)
   
   RASSERT(aDiscardPoint == aDiscardPoint_return);
   
-  i8 nDiscards = 0;
   while (m_nLocalVars) {
     //vVerify();
 
@@ -115,14 +114,13 @@ void LocalVars::vFramePop(void* aDiscardPoint_return)
     //vVerify();
 
     m_nLocalVars--;
-    nDiscards++;
   }
   
   //vVerify();
 
   RASSERT(m_nLocalVars >= 0);
   
-  nCall++;
+//  nCall++;
 }
 
 /*----------------------------------------------------------------------------*/

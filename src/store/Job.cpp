@@ -1387,6 +1387,7 @@ void Job::vOutputDestroy(void)
 void Job::vOutputEnabled(bool bEnabled)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  UNUSED(bEnabled);
 }
 
 /*----------------------------------------------------------------------------*/

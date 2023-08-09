@@ -74,6 +74,8 @@ void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
 void Card_Constraint::vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
+  UNUSED(p_expr_fold);
 
   vBump_Rightwards(1,true);
 }
@@ -163,6 +165,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  UNUSED(bIgnore);
 
 }
 
@@ -225,7 +228,9 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
 void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
 }
 
 /*============================================================================*/

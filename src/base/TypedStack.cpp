@@ -507,8 +507,9 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
                               const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  UNUSED(azCallingFunNm);
   
-  static i8 nCount = 0;
+//  static i8 nCount = 0;
   
 //  s48K sStackContents;
 //  vStackContents(sStackContents);

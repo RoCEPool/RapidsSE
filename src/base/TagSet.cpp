@@ -849,6 +849,7 @@ void TagSet::vReset(void)
 void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames, bool bDecode)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  UNUSED(bDecode);
   
   if (bParenth)
     sArgs->vCopy("("_Stz);

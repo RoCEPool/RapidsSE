@@ -582,6 +582,7 @@ i8 TokenVec::iFirstTag2(void)
   while (i_Scan >= 4) {
     
     Token* pTkn_value = pGet(i_Scan--);   //            _^ value
+    UNUSED(pTkn_value);
 
     Token* pTkn_assign = pGet(i_Scan--);  //          _^ = value
     if (! pTkn_assign->bIsAssign())

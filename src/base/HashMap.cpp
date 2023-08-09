@@ -50,7 +50,6 @@ HashMap::HashMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 
   m_pHashMapSlot = new HashMapSlot();
-  HashMapEntry* test = m_pHashMapSlot->m_pEntry[0];
   m_uNoOfEntries        = 0;
 
 #ifdef WITH_HASHMAP_DEBUG
@@ -153,8 +152,8 @@ void HashMap::vDeleteKey(void* pKey)
       // Arjun Hack:check if this databuffer is part of m_pOutputQueue
       // If it is, it should not be locked
 
-      DataBuffer *pDataBuffer = _pDataBuffer(pIter->m_pValObject);
 #ifdef WITH_PAGING
+      DataBuffer *pDataBuffer = _pDataBuffer(pIter->m_pValObject);
       if (pDataBuffer->bOutputQueued()) {
         RASSERT( ! pIter->m_okLock.bIsLocked());
       } else {

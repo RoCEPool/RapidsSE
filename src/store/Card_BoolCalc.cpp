@@ -59,6 +59,8 @@ Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 
   auto bLambdaFn = [&pCmpPred,pCI](Card_PRED* p_pred, bool bUpwards)
   {
+    UNUSED(bUpwards);
+
     if (p_pred->bContains_callToSubQuery(pCI)) {
       pCmpPred = _pCard_CmpPred(p_pred);
       return C_TERMINATE_RECURSION;
@@ -72,6 +74,7 @@ Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
   Card_PRED* p_pred_ROOT = this->pRootPred();
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  UNUSED(bIgnore);
 
   return pCmpPred;
 }
@@ -87,7 +90,7 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [this,nBumpBy,bSkipFoldExpr](Card_PRED* p_pred, bool bUpwards)
+  auto bLambdaFn = [nBumpBy,bSkipFoldExpr](Card_PRED* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -110,6 +113,7 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  UNUSED(bIgnore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +137,7 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [this,pCI](Card_PRED* p_pred, bool bUpwards)
+  auto bLambdaFn = [pCI](Card_PRED* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -150,6 +154,7 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  UNUSED(bIgnore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +206,7 @@ void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
-
+  UNUSED(bIgnore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,6 +372,7 @@ bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+  UNUSED(bIgnore);
 
   return bHas;
 }
@@ -378,7 +384,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Deck* p_deck = pCI->G.pDeck;
+//  Card_Deck* p_deck = pCI->G.pDeck;
 
   CardIter xCR(this);
   while (Card* p_card = xCR.pRecurseEach()) {
@@ -626,6 +632,9 @@ Stz* Card_BoolCalc::szP_Type(void)
 void Card_BoolCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
 }
 
 

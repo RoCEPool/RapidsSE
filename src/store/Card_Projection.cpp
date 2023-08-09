@@ -299,6 +299,7 @@ void Card_Projection::vDerivePrjKey(CardIter *pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Key* p_key_projection = pCI->G.p_projection->pSub_key();
+  UNUSED(p_key_projection);
 
   if (! pCI->StreamOrder.m_pKey_running)
     return;
@@ -507,7 +508,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
   if (CK_GBYAGG == p_OP->eCard()) {
 
-    i8 i_Col = 1;
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
@@ -536,7 +536,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
   if (CK_SORT == p_OP->eCard()) {
 
-    i8 i_Col = 1;
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
@@ -565,7 +564,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
   if (CK_TOP == p_OP->eCard()) {
 
-    i8 i_Col = 1;
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
@@ -593,6 +591,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 i_EmittedCol = 1;
+  UNUSED(i_EmittedCol);
   if (CK_PROJECT == p_OP->eCard()) {
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xProjection.p_expr();
@@ -652,11 +651,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
   RASSERT(CK_GBYAGG != p_OP->eCard());
   i_EmittedCol = 1;
 
-  i8 i_Cell;
 
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
     Card_Expr *p_expr = xProjection.p_expr();
-    i_Cell = C_UNKNOWN;
 
     if (CK_PROJECT == p_OP->eCard()) {
       if (p_expr->pSub_as())
@@ -681,7 +678,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       sColNm = sNm_modified;
       sColNm_mapped = sColNm;
 
-      i_Cell = i_EmittedCol;
     }
     else {
       if (p_expr->pSub_as())
@@ -735,6 +731,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
 

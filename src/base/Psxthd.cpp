@@ -593,7 +593,7 @@ void PsxThd::vGetPolicy(void)
   
 #ifdef WITH_APPLE
 
-  i8 iReturn = 0;
+  i8 iReturn;
 
   thread_affinity_policy_data_t current_policy;
   
@@ -608,6 +608,7 @@ void PsxThd::vGetPolicy(void)
                               (thread_policy_t)&current_policy,
                               &policy_count,
                               &get_default);
+  UNUSED(iReturn);
 #else
 
 #endif

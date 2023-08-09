@@ -216,6 +216,8 @@ void* Thread::aEntryPoint_dummy(void* pArg)
       i8 iSum = 0;
       for (i8 i_Loop = 0; i_Loop < AM::nDummyLoop(); i_Loop++)
         iSum += TickingDevice::iGetTick();
+
+      UNUSED(iSum);
     }
     
     //pThread->m_pPsxThd->vThreadExit();

@@ -534,8 +534,7 @@ then
 /* _ptp beg */
 /* _ptp beg */    LibInfo[].new
 /* _ptp beg */
-/* _ptp beg */    Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
-/* _ptp beg */    LibInfo[].compileFile not if
+/* _ptp beg */    Dynamo[].fileName@ LibInfo[].compileFile not if
 /* _ptp beg */      LibInfo[].error .
 /* _ptp beg */      EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
 /* _ptp beg */      job.sendRejectJob
@@ -564,8 +563,7 @@ then
 /* _ptp beg */
 /* _ptp beg */    LibInfo[].new
 /* _ptp beg */    [job].codeBlock@
-/* _ptp beg */      Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
-/* _ptp beg */      LibInfo[].compile not if
+/* _ptp beg */      Dynamo[].fileName@ LibInfo[].compile not if
 /* _ptp beg */        LibInfo[].error .
 /* _ptp beg */        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
 /* _ptp beg */        job.sendRejectJob

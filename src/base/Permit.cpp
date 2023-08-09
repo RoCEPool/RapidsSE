@@ -57,6 +57,7 @@ bool Permit::bMayContinue(void)
 void Permit::vSetBit(i8 i_Bit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMIT,_FOOTER_);
+  UNUSED(i_Bit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,6 +66,7 @@ void Permit::vSetBit(i8 i_Bit)
 bool Permit::bTestBit(i8 i_Bit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERMIT,_FOOTER_);
+  UNUSED(i_Bit);
 
   return false;
 }
