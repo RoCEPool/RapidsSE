@@ -137,6 +137,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Bol_Fn(szSymbol))       return SF_BOL_FN;
   if (bIs_Bol_Op(szSymbol))       return SF_BOL_OP;
   if (bIs_Bound(szSymbol))        return SF_BOUND;
+  if (bIs_Brace(szSymbol))        return SF_BRACE;
   if (bIs_Col_Nm_dis(szSymbol))   return SF_COL_NM_dis;
   if (bIs_Col_Nm_syn(szSymbol))   return SF_COL_NM_syn;
   if (bIs_Col_No(szSymbol))       return SF_COL_NO;
@@ -254,6 +255,18 @@ bool Symbol::bIs_Bound(Stz* szArg)
        if (szArg->bSame("BOUND"_Stz))   return true;
   else if (szArg->bSame("LBOUND"_Stz))  return true;
   else if (szArg->bSame("UBOUND"_Stz))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Brace(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("{"_Stz))       return true;
 
   return false;
 }
@@ -1158,6 +1171,22 @@ bool Symbol::bIs_Bound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a bound?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Brace(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_BRACE != m_eSymbol)
+    return false;
+
+  if (bIs_Brace(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a column name?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Nm(void)
@@ -1902,6 +1931,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_BOL_FN:      vSet_Bol_Fn(szStz);      break;
     case SF_BOL_OP:      vSet_Bol_Op(szStz);      break;
     case SF_BOUND:       vSet_Bound(szStz);       break;
+    case SF_BRACE:       vSet_Brace(szStz);       break;
     case SF_COL_NM:      vSet_Col_Nm(szStz);      break;
     case SF_COL_NM_syn:  vSet_Col_Nm_syn(szStz);  break;
     case SF_COL_NO:      vSet_Col_No(szStz);      break;
@@ -2465,6 +2495,19 @@ void Symbol::vSet_Bound(Stz* szBound)
   m_eSymbol = SF_BOUND;
 
   RASSERT(bIs_Bound());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Brace(Stz* szBrace)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szBrace;
+  m_eSymbol = SF_BRACE;
+
+  RASSERT(bIs_Brace());
 }
 
 /*----------------------------------------------------------------------------*/

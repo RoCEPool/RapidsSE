@@ -14,6 +14,7 @@ enum eSF // symbol form
   /* */ SF_BOL_FN,      // Boolean Function    : BETWEEN, CASE ... MATCHTRAILING
   /* */ SF_BOL_OP,      // Boolean Operator    : AND, NOT, OR
   /* */ SF_BOUND,       // Index Bound         : BOUND, LBOUND, UBOUND
+  /* */ SF_BRACE,       // Brace               : {
 
   /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
@@ -67,6 +68,7 @@ static Stz* aSF[]
   /* */ "SF_BOL_FN"_Stz,
   /* */ "SF_BOL_OP"_Stz,
   /* */ "SF_BOUND"_Stz,
+  /* */ "SF_BRACE"_Stz,
 
   /* */ "SF_COL_NM"_Stz,
   /* */ "SF_COL_NM_dis"_Stz,

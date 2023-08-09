@@ -41,6 +41,7 @@ namespace STORE
     static bool bIs_Bol_Fn(Stz* szArg);          // between, case ... matchTrailing
     static bool bIs_Bol_Op(Stz* szArg);          // and, not, or
     static bool bIs_Bound(Stz* szArg);           // BOUND, LBOUND, UBOUND
+    static bool bIs_Brace(Stz* szArg);           // {
     static bool bIs_Col_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Col_Nm_dis(Stz* szArg);      // C_n
     static bool bIs_Col_Nm_syn(Stz* szArg);      // __COLn
@@ -101,6 +102,7 @@ namespace STORE
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
     bool bIs_Bol_Op(void);          // and, not, or
     bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
+    bool bIs_Brace(void);           // BRACE
     bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Col_Nm_dis(void);      // C_n
     bool bIs_Col_Nm_syn(void);      // C_n
@@ -199,6 +201,7 @@ namespace STORE
     void vSet_Bol_Fn(Stz* szBolFn);
     void vSet_Bol_Op(Stz* szBolOp);
     void vSet_Bound(Stz* szBound);
+    void vSet_Brace(Stz* szBrace);
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
     void vSet_Col_Nm_syn(Stz* szColNm_syn);
