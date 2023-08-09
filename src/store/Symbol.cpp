@@ -1017,12 +1017,10 @@ char Symbol::cSF_tblSyn(void)
   char acThird  = m_sSymbol.azChar()[2];
   char acFourth = m_sSymbol.azChar()[3];
 
-  RASSERT('$' == acFirst);
-  RASSERT(StrLib::bIsAlpha(acSecond));
-  RASSERT('.' == acThird);
-  RASSERT(StrLib::bIsDigit(acFourth));
-
-  return acSecond;
+  if ('$' == acFirst && StrLib::bIsAlpha(acSecond))
+    return acSecond;
+  else
+    return acFirst;
 }
 
 /*----------------------------------------------------------------------------*/

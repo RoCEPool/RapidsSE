@@ -53,6 +53,7 @@ namespace STORE
     i8            m_iEpoch;
     EventHandlers m_oEventHandlers;
     FileMap*      m_pFileMap;
+    Atomic        m_ixFileNo;
     Format        m_oFormat;
     Grid*         m_pGrid;
     HashMap*      m_pHashMap;
