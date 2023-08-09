@@ -150,7 +150,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       if (p_term_next->pSymbol()->bSame("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->SYM(SF_OTHER,"notExists"_Stz);
+        p_term->SYM(SF_SQY_OP,"notExists"_Stz);
         continue;
       }
       continue;
@@ -163,7 +163,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       if (p_term_next->pSymbol()->bSame("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->SYM(SF_OTHER,"notIn"_Stz);
+        p_term->SYM(SF_SQY_OP,"notIn"_Stz);
         DELETE_CARD(p_term_next);
         continue;
       }
