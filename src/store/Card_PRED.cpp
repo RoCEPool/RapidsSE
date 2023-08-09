@@ -358,7 +358,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     pCI->vPrintBoard(__LINE__);
 
-    SYM(SF_OTHER,"=="_Stz);
+    SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szSymbol())); //temp
@@ -384,7 +384,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (pSymbol()->bSame("in"_Stz)) {
 
-    SYM(SF_OTHER,"=="_Stz);
+    SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
@@ -415,7 +415,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (pSymbol()->bSame("notIn"_Stz)) {
 
-    SYM(SF_OTHER,"=="_Stz);
+    SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
