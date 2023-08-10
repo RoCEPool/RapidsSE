@@ -9,6 +9,7 @@
 #include "eQO.h"
 #include "eRO.h"
 #include "eSF.h"
+#include "eST.h"
 
 namespace STORE
 {
@@ -16,6 +17,7 @@ namespace STORE
   {
   private:
     eSF     m_eSymbol;
+    eST     m_eSymbolType;
     s256    m_sSymbol;
     TagSet* m_pProperties;
 
@@ -25,7 +27,6 @@ namespace STORE
 
   public:
     Symbol(void);
-
     Symbol(eSF eSymbol, i8 iInt);
     Symbol(eSF eSymbol, Stz* szStz);
 

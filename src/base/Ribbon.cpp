@@ -244,7 +244,7 @@ void Ribbon::vPrintRibbon(i8 iBenchNo, i8 iPrintNo)
     Stz* szText = pRibbonLine->szText();
     if (C_UNKNOWN != iPrintNo)
 
-      vTrace("%llx %2llx %2llx: %s\n"_Stz,iBenchNo,iPrintNo,i_RibbonLine+1,szText);
+      vTrace("%llx %2llx %2llx %s\n"_Stz,iBenchNo,iPrintNo,i_RibbonLine+1,szText);
     else
       vTrace("%s\n"_Stz,szText);
   }
