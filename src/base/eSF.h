@@ -26,6 +26,7 @@ enum eSF // symbol form
   /* */ SF_COMMA,       // comma               : ,
   /* */ SF_CROSS,       // Cross               : CROSS
 
+  /* */ SF_DCM_LIT,     // Decimal Literal     : StrLib::bIsDecimal()
   /* */ SF_DIRECTION,   // Direction           : ASC, DESC
   /* */ SF_FLD_NM,      // Fold Name           : StrLib::bIsDecimal/Float/Integer()
   /* */ SF_GROUPBY,     // GroupBy             : GROUPBY
@@ -81,6 +82,7 @@ static Stz* aSF[]
   /* */ "SF_COMMA"_Stz,
   /* */ "SF_CROSS"_Stz,
 
+  /* */ "SF_DCM"_Stz,
   /* */ "SF_DIRECTION"_Stz,
   /* */ "SF_FLD_NM"_Stz,
   /* */ "SF_GROUPBY"_Stz,

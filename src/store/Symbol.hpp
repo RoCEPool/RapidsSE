@@ -50,6 +50,7 @@ namespace STORE
     static bool bIs_Col_Type(Stz* szArg);        // BOOLEAN, ... VARCHAR
     static bool bIs_Comma(Stz* szArg);           // ,
     static bool bIs_Cross(Stz* szArg);           // CROSS
+    static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
     static bool bIs_Direction(Stz* szArg);       // asc, desc
     static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
@@ -112,6 +113,7 @@ namespace STORE
     bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
     bool bIs_Comma(void);           // ,
     bool bIs_Cross(void);           // CROSS
+    bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_GroupBy(void);         // GROUPBY
@@ -214,6 +216,7 @@ namespace STORE
     void vSet_Col_Type(Stz* szColType);
     void vSet_Comma(Stz* szComma);
     void vSet_Cross(Stz* szCross);
+    void vSet_Dcm_Lit(Stz* szDcmLit);
     void vSet_Direction(Stz* szColNm);
     void vSet_Fld_Nm(Stz* szFldNm);
     void vSet_GroupBy(Stz* szGroupBy);
