@@ -10,9 +10,9 @@ namespace STORE
 {
   class SketchTkn : public Object
   {
-  public:
+  private:
     eST     m_eSketch;
-    s256    m_sSymbol;
+    s256    m_sChrSeq;
 
   protected:
     // must be last
@@ -22,9 +22,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    SketchTkn(void);
+    SketchTkn(Stz* szArg);
     ~SketchTkn(void) noexcept(false);
-    
+
+    static eST eEvalSketch(Stz* szArg);
+
+    Stz* szChrSeq(void);
+    eST  eSketch(void);
+
   protected:
     Footer* aFooter(void);
   };
