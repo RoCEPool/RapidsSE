@@ -30,14 +30,14 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
-/*
+
 /glean_interactive
 /transliterated
 /weaved
 /pipeline_def
 select * from T1;
 success
-*/
+
 
 
 /glean_interactive
