@@ -152,7 +152,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // position at lower bound
-        vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
+				if (pOpSketch->eSketchKind() == SK_ANTIJOIN)
+					vAppendCodeFragment(pOpSketch, "vIndexAntiJoinPosition"_Stz, pOperatorFile);
+				else
+          vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join

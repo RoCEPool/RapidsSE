@@ -13,6 +13,66 @@ __TPCH_SCHEMA
 /weaved
 /keepCodeFile
 /optimise_passthru
+pipeline unamed
+begin
+
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+   stage S01 on all partitions :
+      scan rapidsse public orders
+      | hash "type INTEGER O_ORDERKEY"
+      | combined 0
+      | next hashcast
+
+    stage S02 on all partitions :
+     keyNotExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+                  "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+      | combined 0
+      | next
+
+  stage S03 on origin :
+    output
+    | sink
+    | first
+end ;
+
+
+//rows: (30)
+
+
+/optimise_passthru
+pipeline unamed
+begin
+
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+    stage S02 on all partitions :
+      scan rapidsse public Customer
+      | keyNotExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+                         "type BOOLEAN O_ORDERSTATUS 'O' =="
+      | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
+      | combined 0
+      | next
+
+  stage S03 on origin :
+    output
+    | sink
+    | first
+end ;
+
+//rows: (150)
+
+/*
+/pipeline_def
+/weaved
+/keepCodeFile
+/optimise_passthru
 pipeline Query5
 begin
   stage stageStart on origin :
@@ -40,7 +100,6 @@ begin
     | first
 end ;
 
+//rows: (1500)
 
-/*
-rows: 1500
 */
