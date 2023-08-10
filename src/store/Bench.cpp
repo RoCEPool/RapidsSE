@@ -28,6 +28,8 @@ Bench::Bench(Optimiser* pOptimiser)
     
   m_pOptimiser = pOptimiser;
 
+  m_iBenchNo = AM::OPTIMISER::iNextBenchNo();
+
   m_cPrefix = ' ';
 
   m_bIsFlat = false;
@@ -507,6 +509,16 @@ i8 Bench::iPrint_inc(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   return m_iPrint++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation number                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iBenchNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iBenchNo;
 }
 
 

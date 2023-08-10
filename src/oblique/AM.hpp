@@ -498,6 +498,11 @@ namespace OBLIQUE
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
     };
 
+    class OPTIMISER
+    {
+    public:
+      static i8 iNextBenchNo(void);
+    };
     class PAGING
     {
     public:

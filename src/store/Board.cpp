@@ -553,8 +553,9 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinBanners(pRibbon);
 
+  i8 iBenchNo = m_pBench->iBenchNo();
   i8 iPrintNo = m_pBench->iPrint_inc();
-  pRibbon->vPrintRibbon(iPrintNo);
+  pRibbon->vPrintRibbon(iBenchNo,iPrintNo);
 
   delete pRibbon;
 }

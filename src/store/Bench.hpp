@@ -16,6 +16,8 @@ namespace STORE
   private:
     Optimiser* m_pOptimiser;
 
+    i8   m_iBenchNo;
+
     char m_cPrefix;
 
     bool m_bIsFlat;
@@ -95,6 +97,7 @@ namespace STORE
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
     i8   iPrint_inc(void);
+    i8   iBenchNo(void);
 
   private:
     Footer* aFooter(void);
