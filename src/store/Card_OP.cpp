@@ -787,15 +787,15 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
-    p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
-    p_expr->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
+    p_rpnCalc->pSymbol()->Y_vColType(szCT_char[eColumnType]);
+    p_expr->pSymbol()->Y_vColType(szCT_char[eColumnType]);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_COL_TC,cTblSyn, i_Col + 1);
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
+    p_term->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   }
 
   vAppend(p_projection);

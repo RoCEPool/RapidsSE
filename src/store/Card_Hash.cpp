@@ -58,7 +58,7 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
   p_hshCol->pSymbol()->vSym(p_expr->pGetTerm(0)->pSymbol());
 
   RASSERT(p_expr->szP_Type());
-  p_hshCol->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
+  p_hshCol->pSymbol()->Y_vColType(p_expr->szP_Type());
 
   p_hshCol->vAppend(p_expr->pGetTerm(0)->pClone());
 
