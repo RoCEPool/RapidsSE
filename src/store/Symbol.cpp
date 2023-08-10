@@ -1011,9 +1011,13 @@ void Symbol::vInc_Tbl_Syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_TBL_SYN == m_eSymbol);
+
   char cTblSyn = cSF_char();
 
-  vSet_Tbl_Syn(cTblSyn + 1);
+  vSymSprint("%c"_Stz, cTblSyn + 1);
+
+  RASSERT(bIs_Tbl_Syn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2372,6 +2376,8 @@ void Symbol::vSet_Agg_Fn(Stz* szAggFn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szAggFn;
   m_eSymbol = SF_AGG_FN;
 
@@ -2384,6 +2390,8 @@ void Symbol::vSet_Agg_Fn(Stz* szAggFn)
 void Symbol::vSet_As(Stz* szAs)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szAs;
   m_eSymbol = SF_AS;
@@ -2398,8 +2406,11 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol || SF_AS_NM == m_eSymbol);
+
   m_sSymbol = szAsNm;
   m_eSymbol = SF_AS_NM;
+  Y_vCut(P_Synthetic);
 
   RASSERT(bIs_As_Nm());
 }
@@ -2410,6 +2421,8 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
 void Symbol::vSet_As_Nm_syn(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   vSymSprint("COL%lld"_Stz, iAsNo);
   m_eSymbol = SF_AS_NM;
@@ -2425,6 +2438,8 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szBolFn;
   m_eSymbol = SF_BOL_FN;
 
@@ -2437,6 +2452,8 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
 void Symbol::vSet_Bol_Op(Stz* szBolOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szBolOp;
   m_eSymbol = SF_BOL_OP;
@@ -2451,6 +2468,8 @@ void Symbol::vSet_Bound(Stz* szBound)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szBound;
   m_eSymbol = SF_BOUND;
 
@@ -2464,6 +2483,8 @@ void Symbol::vSet_Brace(Stz* szBrace)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szBrace;
   m_eSymbol = SF_BRACE;
 
@@ -2476,6 +2497,8 @@ void Symbol::vSet_Brace(Stz* szBrace)
 void Symbol::vSet_Col_Nm(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol);
 
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NM;
@@ -2493,6 +2516,8 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
   m_eSymbol = SF_COL_NM;
   Y_vSet(P_DisamCol);
@@ -2506,6 +2531,8 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 void Symbol::vSet_Col_Nm_syn(Stz* szColNm_syn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szColNm_syn;
   m_eSymbol = SF_COL_NM;
@@ -2522,6 +2549,8 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol || SF_KEY_COL == m_eSymbol);
+
   vSymSprint("$%lld"_Stz, iStmColOdn);
   m_eSymbol = SF_COL_NO;
 
@@ -2534,6 +2563,8 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
 void Symbol::vSet_Col_No(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol  || SF_COL_TC == m_eSymbol);
 
   m_sSymbol = szColNm;
   m_eSymbol = SF_COL_NO;
@@ -2548,6 +2579,8 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   vSymSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
   m_eSymbol = SF_COL_TC;
 
@@ -2560,6 +2593,8 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 void Symbol::vSet_Col_Tc(Stz* szColTc)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_COL_NM == m_eSymbol || SF_COL_TC == m_eSymbol);
 
   m_sSymbol = szColTc;
   m_eSymbol = SF_COL_TC;
@@ -2574,6 +2609,8 @@ void Symbol::vSet_Comma(Stz* szComma)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szComma;
   m_eSymbol = SF_COMMA;
 
@@ -2586,6 +2623,8 @@ void Symbol::vSet_Comma(Stz* szComma)
 void Symbol::vSet_Cross(Stz* szCross)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szCross;
   m_eSymbol = SF_CROSS;
@@ -2600,6 +2639,8 @@ void Symbol::vSet_Col_Type(Stz* szColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szColType;
   m_eSymbol = SF_COL_TYPE;
 
@@ -2612,6 +2653,8 @@ void Symbol::vSet_Col_Type(Stz* szColType)
 void Symbol::vSet_Direction(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szColNm;
   m_eSymbol = SF_DIRECTION;
@@ -2626,6 +2669,8 @@ void Symbol::vSet_Fld_Nm(Stz* szFldNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szFldNm;
   m_eSymbol = SF_FLD_NM;
 
@@ -2638,6 +2683,8 @@ void Symbol::vSet_Fld_Nm(Stz* szFldNm)
 void Symbol::vSet_GroupBy(Stz* szGroupBy)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szGroupBy;
   m_eSymbol = SF_GROUPBY;
@@ -2652,6 +2699,8 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   vSymSprint("$I%lld"_Stz, iIdxColOdn);
   m_eSymbol = SF_IDX_COL;
 
@@ -2664,6 +2713,8 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
 void Symbol::vSet_Idx_Col(Stz* szIdxCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szIdxCol;
   m_eSymbol = SF_IDX_COL;
@@ -2678,6 +2729,8 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szIdxNm;
   m_eSymbol = SF_IDX_NM;
 
@@ -2690,6 +2743,8 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
 void Symbol::vSet_Key_Col(i8 iKeyOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_KEY_COL == m_eSymbol);
 
   vSymSprint("$K%lld"_Stz, iKeyOdn);
   m_eSymbol = SF_KEY_COL;
@@ -2704,6 +2759,8 @@ void Symbol::vSet_Key_Col(Stz* szKeyCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szKeyCol;
   m_eSymbol = SF_KEY_COL;
 
@@ -2716,6 +2773,8 @@ void Symbol::vSet_Key_Col(Stz* szKeyCol)
 void Symbol::vSet_Mth_Op(Stz* szMthOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szMthOp;
   m_eSymbol = SF_MTH_OP;
@@ -2730,6 +2789,8 @@ void Symbol::vSet_Note(Stz* szNote)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szNote;
   m_eSymbol = SF_NOTE;
 
@@ -2742,6 +2803,8 @@ void Symbol::vSet_Note(Stz* szNote)
 void Symbol::vSet_Number(i8 iNumber)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = iNumber;
   m_eSymbol = SF_NUMBER;
@@ -2756,6 +2819,8 @@ void Symbol::vSet_Number(Stz* szNumber)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szNumber;
   m_eSymbol = SF_NUMBER;
 
@@ -2768,6 +2833,8 @@ void Symbol::vSet_Number(Stz* szNumber)
 void Symbol::vSet_Parenthesis(Stz* szParenthesis)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szParenthesis;
   m_eSymbol = SF_PARENTHESIS;
@@ -2782,6 +2849,8 @@ void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szPpeNm;
   m_eSymbol = SF_PPE_NM;
 
@@ -2794,6 +2863,8 @@ void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
 void Symbol::vSet_Prm_Col(i8 iOrdinal)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   vSymSprint("%%%lld"_Stz, iOrdinal);
   m_eSymbol = SF_PRM_COL;
@@ -2808,6 +2879,8 @@ void Symbol::vSet_Prm_Col(Stz* szPrmCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szPrmCol;
   m_eSymbol = SF_PRM_COL;
 
@@ -2820,6 +2893,8 @@ void Symbol::vSet_Prm_Col(Stz* szPrmCol)
 void Symbol::vSet_Rln_Op(Stz* szRlnOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_SQY_OP == m_eSymbol);
 
   m_sSymbol = szRlnOp;
   m_eSymbol = SF_RLN_OP;
@@ -2834,6 +2909,8 @@ void Symbol::vSet_Sqy_No(i8 iSqNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   vSymSprint("__sq%02lld"_Stz, iSqNo);
   m_eSymbol = SF_SQY_NO;
 
@@ -2846,6 +2923,8 @@ void Symbol::vSet_Sqy_No(i8 iSqNo)
 void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_SQY_OP == m_eSymbol);
 
   m_sSymbol = szSqyOp;
   m_eSymbol = SF_SQY_OP;
@@ -2860,6 +2939,8 @@ void Symbol::vSet_Stg_Cast(Stz* szStgCast)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol || SF_STG_CAST == m_eSymbol);
+
   m_sSymbol = szStgCast;
   m_eSymbol = SF_STG_CAST;
 
@@ -2872,6 +2953,8 @@ void Symbol::vSet_Stg_Cast(Stz* szStgCast)
 void Symbol::vSet_Stg_Nm(i8 iStageNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   vSymSprint("S%02lld"_Stz, iStageNo);
   m_eSymbol = SF_STG_NO;
@@ -2886,6 +2969,8 @@ void Symbol::vSet_String(Stz* szString)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szString;
   m_eSymbol = SF_STRING;
 
@@ -2898,6 +2983,8 @@ void Symbol::vSet_String(Stz* szString)
 void Symbol::vSet_Tbl_Nm(Stz* szTblNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szTblNm;
   m_eSymbol = SF_TBL_NM;
@@ -2912,6 +2999,8 @@ void Symbol::vSet_Tbl_Syn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   vSymSprint("%c"_Stz, cTblSyn);
   m_eSymbol = SF_TBL_SYN;
 
@@ -2925,6 +3014,8 @@ void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szTblSyn;
   m_eSymbol = SF_TBL_SYN;
 
@@ -2937,6 +3028,8 @@ void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
 void Symbol::vSet_Tbl_Syn_rep(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_TBL_SYN == m_eSymbol);
 
   char cTableSyn_actual = cSF_char();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
@@ -2954,6 +3047,8 @@ void Symbol::vSet_Type(Stz* szType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szType;
   m_eSymbol = SF_TYPE;
 
@@ -2966,6 +3061,8 @@ void Symbol::vSet_Type(Stz* szType)
 void Symbol::vSet_When(Stz* szWhen)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szWhen;
   m_eSymbol = SF_WHEN;
@@ -2980,6 +3077,8 @@ void Symbol::vSet_Xk_Cast(Stz* szXkCast)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   m_sSymbol = szXkCast;
   m_eSymbol = SF_XK_CAST;
 
@@ -2993,6 +3092,8 @@ void Symbol::vSet_Xrf_No(i8 iXrefNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(SF_NONE == m_eSymbol);
+
   vSymSprint("#%lld"_Stz, iXrefNo);
   m_eSymbol = SF_XRF_NO;
 
@@ -3005,6 +3106,8 @@ void Symbol::vSet_Xrf_No(i8 iXrefNo)
 void Symbol::vSet_Xrf_No(Stz* szXrefNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
 
   m_sSymbol = szXrefNo;
   m_eSymbol = SF_XRF_NO;
