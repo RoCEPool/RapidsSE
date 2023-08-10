@@ -2,104 +2,35 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-_lineitem;
-
 __TPCH_SCHEMA
 
-//explain stage transliterate select O_ORDERKEY, C_CUSTKEY from customer , orders where c_custkey = o_custkey
-//  and o_orderkey < 10;
-
-/pipeline_def
 /weaved
-/keepCodeFile
-/optimise_passthru
-pipeline unamed
-begin
-
-    stage S00 on origin :
-      start
-      | pulse once
-      | next
-
-   stage S01 on all partitions :
-      scan rapidsse public orders
-      | hash "type INTEGER O_ORDERKEY"
-      | combined 0
-      | next hashcast
-
-    stage S02 on all partitions :
-     keyNotExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
-                  "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-      | combined 0
-      | next
-
-  stage S03 on origin :
-    output
-    | sink
-    | first
-end ;
-
-
-//rows: (30)
-
-
-/optimise_passthru
-pipeline unamed
-begin
-
-    stage S00 on origin :
-      start
-      | pulse once
-      | next
-
-    stage S02 on all partitions :
-      scan rapidsse public Customer
-      | keyNotExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
-                         "type BOOLEAN O_ORDERSTATUS 'O' =="
-      | project " type INTEGER as O_CUSTKEY C_CUSTKEY "
-      | combined 0
-      | next
-
-  stage S03 on origin :
-    output
-    | sink
-    | first
-end ;
-
-//rows: (150)
+select * from customer join orders on customer.c_custkey = orders.o_custkey where c_nationkey >=4;
 
 /*
-/pipeline_def
-/weaved
-/keepCodeFile
 /optimise_passthru
-pipeline Query5
+pipeline indexJoinTest
 begin
-  stage stageStart on origin :
+  stage stageA on origin :
     start
     | pulse once
-    | next
+    | stageB
 
-  stage S00 on all partitions :
-    scan rapidsse public Orders
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
+  stage stageB on all partitions :
+    scan customer
+    | filter "type boolean $4 4 >= "
     | combined 0
-    | next
+    | stageC
 
-  stage S01 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
+  stage stageC on all partitions :
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | combined 0
-    | next
+    | stageD
 
-  stage S10 on origin :
+  stage stageD on origin :
     output
     | sink
-    | first
+    | stageA
 end ;
-
-//rows: (1500)
-
 */
+//rows: 1220
