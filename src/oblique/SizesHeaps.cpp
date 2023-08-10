@@ -310,6 +310,7 @@
 #include "ColMap.hpp"
 #include "CardImage.hpp"
 #include "CardHistory.hpp"
+#include "SketchTkn.hpp"
 
 
 #include "graph/PlanConstants.hpp"
@@ -650,6 +651,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
   {CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
+  {CN_SKETCHTKN,       sizeof(SketchTkn),          HT_T_TINY    , FILL },
   {CN_SKIPLIST,        sizeof(SkipListNL),         HT_T_TINY    , FILL },
   {CN_SKIPLISTNODE,    sizeof(SkipListNode),       HT_INVALID   , FILL },
   {CN_SKIPLISTBLOCK,   sizeof(SkipListBlock),      HT_INVALID   , FILL },
