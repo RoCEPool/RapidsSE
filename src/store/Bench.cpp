@@ -40,6 +40,7 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_iXform        = 0;
   m_eXform        = XF_NONE;
+  m_iPrint        = 0;
 
   m_pCI = new CardIter(this);
 
@@ -497,6 +498,17 @@ void Bench::vXhand(const char* asXhand)
 
   m_sXhand = asXhand;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get transformation number                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iPrint_inc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iPrint++;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
