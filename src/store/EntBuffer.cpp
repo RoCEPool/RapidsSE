@@ -1544,6 +1544,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  UNUSED(bEntries);
   
   s256 sHigherBuffer;
   if (pHigherEntBuffer())

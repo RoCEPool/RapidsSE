@@ -77,7 +77,7 @@ void StreamDefRht::vPostRecv(void* aStreamDefRht)
 {
   _static_
 
-  StreamDefRht* pStreamDefRht = _pStreamDefRht(aStreamDefRht);
+//  StreamDefRht* pStreamDefRht = _pStreamDefRht(aStreamDefRht);
 }
 
 /*----------------------------------------------------------------------------*/

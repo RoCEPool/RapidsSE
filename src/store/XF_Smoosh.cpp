@@ -46,7 +46,8 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 void XF_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
-
+  UNUSED(pCI);
+  UNUSED(Smoosh);
 }
 
 /*----------------------------------------------------------------------------*/

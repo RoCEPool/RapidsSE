@@ -79,7 +79,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G.p_projection = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if (pCI->G.p_projection = pMain->pSub_projection())
+    if (pCI->G.p_projection == pMain->pSub_projection())
       break;
   }
   if (! pCI->G.p_projection)
@@ -112,7 +112,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   pCI->G.p_projection = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if (pCI->G.p_projection = pMain->pSub_projection())
+    if (pCI->G.p_projection == pMain->pSub_projection())
       break;
   }
   if (! pCI->G.p_projection)
@@ -172,6 +172,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  UNUSED(bIgnore);
 
   if (bFoundCall)
     return true;
@@ -489,6 +490,8 @@ void Board::vPinTitle(Ribbon* pRibbon,
                       i8 iTransformNo, Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  UNUSED(iTransformNo);
+  UNUSED(szDescription);
 
   if (! m_pCard_Deck->nItems())
     return;

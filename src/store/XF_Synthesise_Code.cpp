@@ -558,11 +558,11 @@ void XF_Synthesise_Code::vUpdateColsReq_Scan(Card_Table* p_table,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
-  Card_Projection* p_projection = p_scan->pSub_projection();
+//  Card_Projection* p_projection = p_scan->pSub_projection();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [p_table, pColsReq] (Card* pCard) {
+  auto bLambda = [pColsReq] (Card* pCard) {
     Card_Expr* p_expr = _pCard_Expr(pCard);
 
     Symbol* pSymbol_tblCol = p_expr->pFirstTblCol();
@@ -589,7 +589,7 @@ void XF_Synthesise_Code::vUpdateColsReq_IndexJoin(Card_Table* p_table,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
-  Card_Projection* p_projection = p_indexJoin->pSub_projection();
+//  Card_Projection* p_projection = p_indexJoin->pSub_projection();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

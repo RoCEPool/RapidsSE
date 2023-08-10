@@ -110,7 +110,6 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
   // things before sub-queries
 
-  SubQuery* pOuterQuery = m_pCI->Sqy.m_pSubQuery;
 
   XF_stmCol_To_tblCol::vXF_stmCol_To_tblCol(m_pCI);
 
@@ -135,6 +134,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
     m_pCI->G_vPopIter();
     m_pCI->G_vSetBoard(pOuterBoard_save);
     SubQuery *pSubQuery = m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+    UNUSED(pSubQuery);
     m_pCI->vPrintBoard(__LINE__);
 
     vFlattenByDecisionTree();
@@ -171,6 +171,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
       pCI->G_vPopIter();
       pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      UNUSED(pSubQuery);
       pCI->vPrintBoard(__LINE__);
 
       vFlattenByDecisionTree();
@@ -184,6 +185,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     bFound = false;
     bool b = m_pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn);
+    UNUSED(b);
     vDebugPoint();
   } while (bFound);
 
@@ -215,6 +217,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
       pCI->G_vPopIter();
       pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
+      UNUSED(pSubQuery);
       pCI->vPrintBoard(__LINE__);
 
       vFlattenByDecisionTree();
@@ -228,6 +231,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
     bFound = false;
     bool b = m_pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn);
+    UNUSED(b);
     vDebugPoint();
   } while (bFound);
 

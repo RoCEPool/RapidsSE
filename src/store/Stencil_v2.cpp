@@ -138,7 +138,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   s256 sLimitExpr = ""_Stz;
 
   OpSketch *pOpSketch;
-  OpDef* pOpDefScan = nullptr;
+//  OpDef* pOpDefScan = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the stage name of stage being synthesised

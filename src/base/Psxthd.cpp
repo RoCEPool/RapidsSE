@@ -623,15 +623,24 @@ void PsxThd::vSetOSThreadId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
-  i8 iOpSysThreadId = syscall(SYS_thread_selfid);
+  u8 uThreadId;
+  i8 iError = pthread_threadid_np(nullptr, &uThreadId);
+
+  if (iError != 0) {
+    vTrace("pthread_threadid_np() error; errno=%lld\n"_Stz,iError);
+  } else {
+    m_iOsThdId = (i8) uThreadId;
+  }
+
 #else
   i8 iOpSysThreadId = syscall(SYS_gettid);
-#endif
-  
-  if (-1 == iOpSysThreadId)
+
+  if (-1 == iOpSysThreadId) {
     vTrace("syscall(SYS_gettid) error; errno=%d\n"_Stz,errno);
-  else
+  } else {
     m_iOsThdId = iOpSysThreadId;
+  }
+#endif
 }
 
 

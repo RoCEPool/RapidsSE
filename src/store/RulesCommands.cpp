@@ -9,6 +9,9 @@
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r0(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r0\n"_Stz);
   
   s4K sCmd;
@@ -38,6 +41,9 @@ RulesFun __Rule_r0
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r1(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r1\n"_Stz);
   
   s4K sCmd;
@@ -67,6 +73,9 @@ RulesFun __Rule_r1
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r2(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r2\n"_Stz);
   
   s4K sCmd;
@@ -96,6 +105,9 @@ RulesFun __Rule_r2
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r3(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r3\n"_Stz);
   
   s4K sCmd;
@@ -125,6 +137,9 @@ RulesFun __Rule_r3
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r4(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r4\n"_Stz);
   
   s4K sCmd;
@@ -154,6 +169,9 @@ RulesFun __Rule_r4
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r5(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r5\n"_Stz);
   
   s4K sCmd;
@@ -183,6 +201,9 @@ RulesFun __Rule_r5
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r6(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r6\n"_Stz);
   
   s4K sCmd;
@@ -212,6 +233,9 @@ RulesFun __Rule_r6
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r7(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r7\n"_Stz);
   
   s4K sCmd;
@@ -241,6 +265,9 @@ RulesFun __Rule_r7
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r8(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r8\n"_Stz);
   
   s4K sCmd;
@@ -270,6 +297,9 @@ RulesFun __Rule_r8
 /*----------------------------------------------------------------------------*/
 bool STORE::bRule_r9(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  UNUSED(pOptimiser);
+  UNUSED(riAction);
+
   vTrace("bRule_r9\n"_Stz);
   
   s4K sCmd;

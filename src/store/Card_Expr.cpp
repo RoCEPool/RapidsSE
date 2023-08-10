@@ -172,7 +172,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 Card_Expr* Card_Expr::pProj_Simple_expr_Of_key(Card_Expr* p_expr_key)
 {
   _static_
-
+  UNUSED(p_expr_key);
   return nullptr;
 }
 
@@ -244,12 +244,12 @@ void Card_Expr::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   /*
    * produce the projection of this expression
    */
 
-  Stz* szExpr_this_stmcol = szSymbol(SF_NONE);
   Card_As*      p_as;
   Card_RpnCalc* p_rpnCalc;
   Card_Term*    p_term_0;

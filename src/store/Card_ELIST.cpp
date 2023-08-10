@@ -39,6 +39,7 @@ Card_ELIST::~Card_ELIST(void) noexcept(false)
 void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR)) {
@@ -50,7 +51,7 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 
     CardIter xCI2(xCI.G.p_rpnCalc);
     while ((xCI2.G_bEachMain(CK_TERM))) {
-      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
+//      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
 
       if (xCI2.G.p_term->pSymbol()->bIs_Key_Col()) {
         xCI2.G.p_term->vBumpKeyOdn();
@@ -78,7 +79,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 
     CardIter xCI2(xCI.G.p_rpnCalc);
     while (xCI2.G_bEachMain(CK_TERM)) {
-      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
+//      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
 
       if (xCI2.G.p_term->pSymbol()->bIs_Col_No()) {
         xCI2.G.p_term->vBump_stmOdn();
@@ -234,7 +235,7 @@ Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)
 void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
+  UNUSED(iDepth);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR)) {

@@ -48,6 +48,7 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,6 +137,7 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
 void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
 

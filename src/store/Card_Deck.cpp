@@ -58,7 +58,6 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eXK eStageCast;
-  Symbol* p_Y_streamPtn_curr = nullptr;
 
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
@@ -82,6 +81,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_cast_prior,
                                                              p_projection_prior,
                                                              pCI->G.p_OP);
+        UNUSED(eStageCast);
         pCI->G_vMainResynch();
         pCI->vPrintBoard(__LINE__);
         vDebugPoint();
@@ -473,7 +473,6 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
       pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
-  bool bSawFold = false;
 
   pCI->vBeginEach();
   pCI->Prior.m_pProjection = pCI->G.p_projection = nullptr;
@@ -481,7 +480,6 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   while (pCI->G_bEachMain()) {
 
     if (CK_FOLD == pCI->G.e_MainCard) {
-      bSawFold = true;
       continue;
     }
 
@@ -514,7 +512,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       case CK_TABLE:
         pCI->G.p_table->vUpdate_projection(pCI);
 
-        if (pCI->G.p_filter = pCI->G.p_table->pSub_filter()) {
+        if (pCI->G.p_filter == pCI->G.p_table->pSub_filter()) {
           if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
 
             pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);

@@ -163,8 +163,7 @@ bool RowCompactor::bCompactRow(Row* aRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
  
-  static i8 nRows = 0;
-  
+
   //m_pCrwNub->vDumpTails();
   
   //bool bResult = bAddRowAsCrw(aRow);
@@ -175,8 +174,7 @@ bool RowCompactor::bCompactRow(Row* aRow)
 //    SP_Encoding spEncoding;
 //    vTrace("\nvEncode_v2:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 //  }
-  nRows++;
-  
+
   //m_pCrwNub->vDumpTails();
 
   return bResult;
@@ -589,15 +587,7 @@ void RowCompactor::vCreateSampleTail(Column* pCol,
 bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  static  i8 nRows = 0;
-  
-  nRows++;
-  if (13 == nRows)
-    int iDebugB = 1;
 
-  bool bAllotTails = false;
-  
   m_pEncoding->vReset();
 
   i8 nCols = m_pStreamDef->nColumns();
@@ -829,7 +819,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   // .) encode tails
 
   i8 nExtraTails = 0;
-  i8 jExtraSize  = 0;
 
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];
@@ -874,7 +863,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     rxColEnc.m_jTailBytes = nUnits * C_SPACEUNIT_QUANTA + C_U_1B + C_L_2B + 1;
     
     nExtraTails++;
-    jExtraSize += rxColEnc.m_jTailBytes;
   }
   //m_pEncoding->vDumpEncoding();
 
@@ -985,7 +973,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   byte* aDataByte;
   i8 o_MetaOffset_head;
   //i8 o_DataOffset_over;
-  i8 jStrBytes;
   i8 i_Tail_rel;
 
   i8 o_BaseOffsetMeta = C_CONTROL_SIZE;
@@ -1068,20 +1055,20 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
   L_PackVch_Head:
-    if (MC_STRING_x1  == uHigh)
-      jStrBytes = STRx1(uLow);
-    else
-    if (MC_STRING_x2  == uHigh)
-      jStrBytes = STRx2(uLow);
-    else
-    if (MC_STRING_x4  == uHigh)
-      jStrBytes = STRx4(uLow);
-    else
-    if (MC_STRING_x8  == uHigh)
-      jStrBytes = STRx8(uLow);
-    else {
-      RASSERT(0);
-    }
+//    if (MC_STRING_x1  == uHigh)
+//      jStrBytes = STRx1(uLow);
+//    else
+//    if (MC_STRING_x2  == uHigh)
+//      jStrBytes = STRx2(uLow);
+//    else
+//    if (MC_STRING_x4  == uHigh)
+//      jStrBytes = STRx4(uLow);
+//    else
+//    if (MC_STRING_x8  == uHigh)
+//      jStrBytes = STRx8(uLow);
+//    else {
+//      RASSERT(0);
+//    }
     
     //      -- HeadLine / OverLine --
     // +--------------------------------+

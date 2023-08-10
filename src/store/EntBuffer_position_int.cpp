@@ -465,7 +465,6 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
   Ent* aScanEntry_sl = aSkipRoots();
   for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
-    i8 iItemAtScanLevel = 0;
     aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
@@ -502,7 +501,6 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
 
       aScanEntry_sl = aNextEntry_sl;
       aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-      iItemAtScanLevel++;
     }
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }

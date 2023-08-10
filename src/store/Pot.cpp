@@ -261,7 +261,6 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   *pbNewBuffer = false;
 
-  bool bWasNewed = false;
 
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
@@ -270,7 +269,6 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pRowPix);
     vAddBuffer(i_Ptn,pDstRowBuffer);
-    bWasNewed = true;
     //vTrace("Newed: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
   }
   else {

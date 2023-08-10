@@ -28,6 +28,8 @@ void* PipelineMetrics::operator new(size_t nSize, MetricsWsp* pMetricsWsp)
 /*----------------------------------------------------------------------------*/
 void PipelineMetrics::operator delete(void* aAddr)
 {
+  UNUSED(aAddr);
+
 }
 
 /*----------------------------------------------------------------------------*/

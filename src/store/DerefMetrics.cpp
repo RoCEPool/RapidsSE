@@ -27,6 +27,7 @@ void* DerefMetrics::operator new(size_t nSize, MetricsWsp* pMetricsWsp)
 /*----------------------------------------------------------------------------*/
 void DerefMetrics::operator delete(void* aAddr)
 {
+  UNUSED(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/

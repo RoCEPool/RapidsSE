@@ -504,7 +504,7 @@ void CardCtl::vPrintSubCards(i8 i_Card, bool bPrintSubCards)
 /*----------------------------------------------------------------------------*/
 /* set bPrintSubCards for card                                                */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vPrintSubCards(bool bPrintSubCards, ...)
+void CardCtl::vPrintSubCards(i8 bPrintSubCards, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 

@@ -325,15 +325,15 @@ void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  i8 nRowsTotal    = 0;
-  i8 nBuffersTotal = 0;
+//  i8 nRowsTotal    = 0;
+//  i8 nBuffersTotal = 0;
   i8 jSumRowBytes  = 0;
   TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 
   pTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
   
-  nRowsTotal += nRows;
-  nBuffersTotal += nBuffers;
+//  nRowsTotal += nRows;
+//  nBuffersTotal += nBuffers;
 
   if (nRows)
     jRowSize = jSumRowBytes / nRows;

@@ -230,6 +230,7 @@ void Card_IndexList::vTypes_For_stmColOdn(CardIter *pCI)
 void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   i8 nChosenIndexes = 0;
 

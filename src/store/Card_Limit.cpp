@@ -45,6 +45,7 @@ Card_Limit::~Card_Limit(void) noexcept(false)
 void Card_Limit::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,6 +54,7 @@ void Card_Limit::vComputeProjection(CardIter* pCI)
 void Card_Limit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_NONE);
 

@@ -4575,7 +4575,7 @@ bool StrLib::bSimilar(const char* azArg1, const char* azArg2, const char* azSep)
   const char* azCrs_Arg1 = azArg1;
   const char* azCrs_Arg2 = azArg2;
 
-  for (i8 i_Loop = 0; ; i_Loop++) {
+  while (true) {
 
     vTrace("%s : %s : %s\n"_Stz,azCrs_Arg1,azCrs_Arg2,azSep);
 
