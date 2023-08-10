@@ -498,6 +498,7 @@ bool Symbol::bIs_Mth_Op(Stz* szArg)
   if (szArg->bSame("-"_Stz))     return true;
   if (szArg->bSame("*"_Stz))     return true;
   if (szArg->bSame("/"_Stz))     return true;
+  if (szArg->bSame("%"_Stz))     return true;
 
   return false;
 }
