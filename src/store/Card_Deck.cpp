@@ -512,7 +512,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       case CK_TABLE:
         pCI->G.p_table->vUpdate_projection(pCI);
 
-        if (pCI->G.p_filter == pCI->G.p_table->pSub_filter()) {
+        if ((pCI->G.p_filter = pCI->G.p_table->pSub_filter())) {
           if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
 
             pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
