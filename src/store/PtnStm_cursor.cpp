@@ -69,6 +69,7 @@ PtnStm_cursor::~PtnStm_cursor(void) noexcept(false)
 void PtnStm_cursor::vRepair(Object* pObject, eRF eRepair)
 {
   _static_
+  UNUSED(eRepair);
 
   PtnStm_cursor* pPtnStm_cursor = _pPtnStm_cursor(pObject);
 

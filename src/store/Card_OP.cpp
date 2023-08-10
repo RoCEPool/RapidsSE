@@ -106,6 +106,7 @@ void Card_OP::vAdd_Pred_Under_filter(Card_PRED *p_PRED)
   if (! p_filter) {
     p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
     Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(p_filter->pAppendNewCard(CK_BOOLCALC));
+    UNUSED(p_boolCalc);
   }
 
   p_filter->vAddPred(p_PRED);
@@ -136,7 +137,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto b_colNm_To_stmCol = [pCI,this](Card* pCard)
+  auto b_colNm_To_stmCol = [pCI](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
     if (!p_term->pSymbol()->bIs_Col_Nm())
@@ -492,7 +493,7 @@ bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eCK eCard = this->eCard();
+//  eCK eCard = this->eCard();
 
   Card* pChild_prev = pCI->pPrevChild();
   eCK   eChild_prev = pChild_prev ? pChild_prev->eCard() : CK_NONE;
@@ -812,6 +813,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 void Card_OP::vCraftArg(BASE::String *pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -997,7 +999,7 @@ void Card_OP::vRpnHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
+//  Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   szOpArgs->vCatSprint("type %s %s"_Stz,
@@ -1477,6 +1479,8 @@ void Card_OP::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 void Card_OP::vRpnScan(Stz* szRpnExpr, Card_Scan* pCard_Scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(szRpnExpr);
+  UNUSED(pCard_Scan);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1519,6 +1523,8 @@ void Card_OP::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 void Card_OP::vRpnTable(Stz* szRpnExpr, Card_Table* pCard_Table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(szRpnExpr);
+  UNUSED(pCard_Table);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1580,6 +1586,7 @@ void Card_OP::vBoolCalc(Stz* szRpnExpr, Card_BoolCalc* pCard_BoolCalc)
 void Card_OP::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(i);
 
   i8 nSubCards = p_part->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1735,6 +1742,7 @@ ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
                                       IndexDef*  pIndexDef_gbyAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pIndexDef_gbyAgg);
 
   if (! bIsCard(CK_GBYAGG))
     return nullptr;
@@ -1744,7 +1752,7 @@ ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
   i8 nCols = pStreamDef_emitted->nColumns();
 
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column* pCol = pStreamDef_emitted->pGetColumn(i_Col);
+//    Column* pCol = pStreamDef_emitted->pGetColumn(i_Col);
 
     /// ????
 //    if $K

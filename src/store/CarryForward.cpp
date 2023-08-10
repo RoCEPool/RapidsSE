@@ -221,7 +221,6 @@ void CarryForward::vSetSeen(CardIter* pCI)
   }
 
   // [project]
-  bool bSawProject_postAgg = false;
   if (pCI->G_bIsNextMain(CK_PROJECT) && pCI->G_bEachMain(CK_PROJECT)) {
     Project_postAgg.m_bSeen = true;
   }

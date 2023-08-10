@@ -52,6 +52,8 @@ eXK Card_CmpPred::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
                             char cTblSyn_r, Card_TablePtn* p_tablePtn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(cTblSyn_l);
+  UNUSED(cTblSyn_r);
 
   // todo: alka and ray to discuss
 
@@ -359,7 +361,7 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
   CardIter xCI(p_bounds);
   while (xCI.G_bEachMain(CK_BOUND)) {
 
-    Stz* sz_bnd_idxColOdn = xCI.G.p_bound->pGetChild(0)->szSymbol(SF_NONE);
+//    Stz* sz_bnd_idxColOdn = xCI.G.p_bound->pGetChild(0)->szSymbol(SF_NONE);
     Stz* sz_bnd_stmColOdn = xCI.G.p_bound->pGetChild(1)->szSymbol(SF_NONE);
     Stz* sz_bnd_rlnOpr    = xCI.G.p_bound->szSymbol(SF_NONE);
 

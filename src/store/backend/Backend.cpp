@@ -758,8 +758,6 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
 
-  String* sPipeline = pBackend->m_sPipeline;
-
   QueryNode *pTableRef = TableScanOp::pTableRef(pNode);
   Stz *szCatalogName   = TableRef::szCatalog(pTableRef);
   Stz *szSchemaName    = TableRef::szSchema(pTableRef);
@@ -778,8 +776,6 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
 void Backend::vAppendScanRightOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
-
-  String* sPipeline = pBackend->m_sPipeline;
 
   QueryNode *pTableRef = TableScanOp::pTableRef(pNode);
   Stz *szCatalogName   = TableRef::szCatalog(pTableRef);
@@ -812,14 +808,16 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   PlanNode* pLeafStageMarker = nullptr;
 
   auto fLeafStageMarker = [&pLeafStageMarker](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl  {
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
     if (StageMarker::bIsExactType(pNode)) {
       pLeafStageMarker = pNode;
       return GraphNav::WALK_ABORT;
     }
     return GraphNav::WALK_CONTINUE;
   };
-
-  String* sPipeline = pBackend->m_sPipeline;
 
   // add child op's
 
@@ -828,6 +826,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
 
   // check for a unionOp
   auto fHasUnionOp = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return UnionOp::bIsExactType(pNode);
   };
 
@@ -866,8 +865,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
   _static_
       UNUSED(sPath);
   UNUSED(iDepth);
-
-  static bool bHasAgg = false;
 
   QueryNode* pOrdinalExpr = _pQueryNode(pExprNode);
 
@@ -947,6 +944,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       pWhenIter = CaseExpr::pWhenExprIter(_pQueryNode(pOrdinalExpr));
       while (pWhenIter->bHasNext()) {
         QueryNode* pWhenExpr = pWhenIter->pNext();
+        UNUSED(pWhenExpr);
         sPipeline->vCatSprint(" ENDIF "_Stz);
       }
 
@@ -1002,8 +1000,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
   if (ColumnOrdinal::bIsOfType(pOrdinalExpr)) {
     QueryNode* pColumnOrdinal = _pQueryNode(pOrdinalExpr);
 
-    i8 iColumnOrdinal = ColumnOrdinal::iOrdinal(pColumnOrdinal);
-
     sPipeline->vCatSprint(
         " $%lld"
         ""_Stz,
@@ -1054,8 +1050,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
         }
       }
 
-      bHasAgg = true;
-
     }
 
     else if (MinExpr::bIsOfType(pOrdinalExpr)) {
@@ -1072,9 +1066,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
         sPipeline->vCatSprint(
             " distinct "_Stz);
       }
-
-      bHasAgg = true;
-
     }
 
     else if (MaxExpr::bIsOfType(pOrdinalExpr)) {
@@ -1091,9 +1082,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
         sPipeline->vCatSprint(
             " distinct "_Stz);
       }
-
-      bHasAgg = true;
-
     }
 
     else if (SumExpr::bIsOfType(pOrdinalExpr)) {
@@ -1110,9 +1098,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
         sPipeline->vCatSprint(
             " distinct "_Stz);
       }
-
-      bHasAgg = true;
-
     }
 
 //    else {
@@ -1464,6 +1449,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
 {
   _static_
 
+  UNUSED(sPath);
   UNUSED(iDepth);
 
   QueryNode* pQueryNode = static_cast<QueryNode *>(pRootNode);
@@ -1551,6 +1537,8 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
 {
   _static_
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
   UNUSED(pvArg);
 
   // Continue walking till a StageMarker is hit
@@ -1566,6 +1554,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
 
   // check for a unionOp
   auto fHasUnionOp = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return UnionOp::bIsExactType(pNode);
   };
 
@@ -1620,6 +1609,8 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
 GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   _static_
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   // Continue walking till a StageMarker is hit
   if (!StageMarker::bIsOfType(pRootNode)) {
@@ -1667,6 +1658,8 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
 GraphNav::eWalkCtrl Backend::vVisitorSubQuery(PlanNode* pRootNode, s2K& sPath, i8 iDepth, void* pvArg)
 {
   _static_
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   // Continue walking till a subQueryMarker is hit
   if (!TableSubquery::bIsOfType(pRootNode) &&
@@ -1993,6 +1986,10 @@ bool Backend::bInTableSubquery(QueryNode* pNode) {
   // Lambda to call when we walk the graph upwards from the current node back to the root.
   auto fVisitor =
       [&pTableSubquery, &sTableSubqueryPath](PlanNode* pItem, s2K& sCurPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg) -> GraphNav::eWalkCtrl {
+
+        UNUSED(iDepth);
+        UNUSED(eEvent);
+        UNUSED(pvArg);
 
         if (!TableSubquery::bIsOfType(pItem)) {
           return GraphNav::WALK_CONTINUE;

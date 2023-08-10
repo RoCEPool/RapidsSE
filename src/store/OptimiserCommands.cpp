@@ -16,6 +16,8 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_default(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   pOptimiser->pCardCtl()->vUseDefault();
@@ -39,6 +41,8 @@ OptimiserFun __Opt_d
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_expanded(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   //pOptimiser->pCardCtl()->vUseExpanded();
@@ -63,6 +67,9 @@ OptimiserFun __Opt_e
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
+  UNUSED(pTknVec);
+
   gxOptimiserCatalog.vHelp();
   
   reOptAct = OA_INPUT_AGAIN;
@@ -97,6 +104,8 @@ OptimiserFun __Opt_h_1
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_longer(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   pOptimiser->pCardCtl()->vUseLonger();
@@ -120,6 +129,9 @@ OptimiserFun __Opt_l
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+  UNUSED(reOptAct);
+
   Bench* pBench = pOptimiser->pBench();
   Card_Deck* pDeck = pBench->pGetBoard((i8)0)->pDeck();
 
@@ -191,6 +203,8 @@ OptimiserFun __Opt_r
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_shorter(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   pOptimiser->pCardCtl()->vUseShorter();
@@ -217,6 +231,7 @@ bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
   vTrace("bOpt_weave\n"_Stz);
 
   UNUSED(pTknVec);
+  UNUSED(reOptAct);
 
   vTrace("%s\n"_Stz,pOptimiser->szWeave());
 
@@ -241,6 +256,9 @@ OptimiserFun __Opt_w
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_writePipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
+  UNUSED(reOptAct);
+
 //  reOptAct = OA_REPRINT_BOARD;
 //
 //  pOptimiser->pCardCtl()->vUseLonger();
@@ -272,6 +290,8 @@ OptimiserFun __Opt_wr
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_toEnd(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
+
   vTrace("bOpt_weave\n"_Stz);
 
   UNUSED(pTknVec);

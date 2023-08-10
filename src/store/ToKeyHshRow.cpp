@@ -1537,7 +1537,7 @@ L_Integer:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
   
-  vNUMBER_range(uWholeNumber,C_MAX_INTEGER_DIGITS,0,C_I8_MAX,
+  vNUMBER_range(uWholeNumber,C_MAX_INTEGER_DIGITS,0,(u8)C_I8_MAX,
                              EC_CSV_INTEGER_INVALID,
                              EC_CSV_INTEGER_TOO_LARGE);
   

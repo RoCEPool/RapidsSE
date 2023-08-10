@@ -290,6 +290,7 @@ void Card_Where::vUpdate_projection(CardIter* pCI)
 void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_NONE);
   pSub_level()->vValidate(pCI,iDepth+1,this);

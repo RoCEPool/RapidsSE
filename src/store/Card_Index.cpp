@@ -61,7 +61,7 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
 
   while (xCI_indexes.G_bEachMain(CK_INDEX)) {
 
-    bool bChosenIndex = xCI_indexes.G.p_index->pSymbol()->Y_bHas(P_ChosenIndex);
+//    bool bChosenIndex = xCI_indexes.G.p_index->pSymbol()->Y_bHas(P_ChosenIndex);
 
     xCI_indexes.G.p_bounds = xCI_indexes.G.p_index->pSub_bounds();
     if (! xCI_indexes.G.p_bounds)
@@ -248,10 +248,11 @@ void Card_Index::vEnsureTypes_For_stmOdn(CardIter *pCI)
 void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_INDEXNM,CK_NONE);
 
-  if (pCI->G.p_bounds = pSub_bounds())
+  if (pCI->G.p_bounds == pSub_bounds())
     pCI->G.p_bounds->vValidate(pCI,iDepth+1,this);
 
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {

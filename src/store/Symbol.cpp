@@ -969,8 +969,8 @@ char Symbol::cSF_tblSyn(void)
 
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
+//  char acThird  = m_sSymbol.azChar()[2];
+//  char acFourth = m_sSymbol.azChar()[3];
 
   if ('$' == acFirst && StrLib::bIsAlpha(acSecond))
     return acSecond;
