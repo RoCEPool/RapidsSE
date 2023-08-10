@@ -156,7 +156,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Sqy_Rsl(szSymbol))      return SF_SQY_NO;
   if (bIs_Stg_Cast(szSymbol))     return SF_STG_CAST;
   if (bIs_String(szSymbol))       return SF_STRING;
-  if (bIs_Tbl_Syn(szSymbol))      return SF_TBL_SYN;
   if (bIs_Type(szSymbol))         return SF_TYPE;
   if (bIs_When(szSymbol))         return SF_WHEN;
   if (bIs_Xrf_No(szSymbol))       return SF_XRF_NO;
