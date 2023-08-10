@@ -17,12 +17,12 @@ __aFooterFunction(SketchTkn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SketchTkn::SketchTkn(Stz* szArg)
+SketchTkn::SketchTkn(Stz* szChrSeq)
     : Object(CN_SKETCHTKN)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SKETCHTKN, _FOOTER_);
 
-  m_sChrSeq = szArg;
+  m_sChrSeq = szChrSeq;
   m_eSketch = eEvalSketch(m_sChrSeq);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_SKETCHTKN, _FOOTER_);
@@ -45,12 +45,12 @@ SketchTkn::~SketchTkn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert argument to eST                                                    */
 /*----------------------------------------------------------------------------*/
-eST SketchTkn::eEvalSketch(Stz* szArg)
+eST SketchTkn::eEvalSketch(Stz* szChrSeq)
 {
   _static_
 
   for (i8 i_Sketch = 0; i_Sketch < ST_ENUMS; i_Sketch++)
-    if (aST[i_Sketch]->bSame(szArg))
+    if (aST[i_Sketch]->bSame(szChrSeq))
       return (eST)i_Sketch;
 
   return ST_NONE;

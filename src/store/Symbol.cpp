@@ -139,6 +139,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Agg_Fn(szSymbol))       return SF_AGG_FN;
   if (bIs_As(szSymbol))           return SF_AS;
   if (bIs_Bol_Fn(szSymbol))       return SF_BOL_FN;
+  if (bIs_Bol_Lit(szSymbol))      return SF_BOL_LIT;
   if (bIs_Bol_Op(szSymbol))       return SF_BOL_OP;
   if (bIs_Bound(szSymbol))        return SF_BOUND;
   if (bIs_Brace(szSymbol))        return SF_BRACE;
@@ -246,6 +247,19 @@ bool Symbol::bIs_Bol_Fn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a boolean literal?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Bol_Lit(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("false"_Stz))  return true;
+  else if (szArg->bSame("true"_Stz))   return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a boolean operator?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Op(Stz* szArg)
@@ -298,6 +312,7 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 
   if (bIs_Agg_Fn(szArg))      return false;
   if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
   if (bIs_Bol_Op(szArg))      return false;
   if (bIs_Bound(szArg))       return false;
   if (bIs_Cross(szArg))       return false;
@@ -737,6 +752,7 @@ bool Symbol::bIs_Tbl_Nm(Stz* szArg)
 
   if (bIs_Agg_Fn(szArg))      return false;
   if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
   if (bIs_Bol_Op(szArg))      return false;
   if (bIs_Bound(szArg))       return false;
   if (bIs_Direction(szArg))   return false;
@@ -1099,6 +1115,22 @@ bool Symbol::bIs_Bol_Fn(void)
     return false;
 
   if (bIs_Bol_Fn(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a boolean literal?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Bol_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_BOL_LIT != m_eSymbol)
+    return false;
+
+  if (bIs_Bol_Lit(m_sSymbol))
     return true;
 
   return false;
@@ -1898,6 +1930,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_AS:          vSet_As(szStz);          break;
     case SF_AS_NM:       vSet_As_Nm(szStz);       break;
     case SF_BOL_FN:      vSet_Bol_Fn(szStz);      break;
+    case SF_BOL_LIT:     vSet_Bol_Lit(szStz);     break;
     case SF_BOL_OP:      vSet_Bol_Op(szStz);      break;
     case SF_BOUND:       vSet_Bound(szStz);       break;
     case SF_BRACE:       vSet_Brace(szStz);       break;
@@ -2448,6 +2481,21 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
   m_eSymbol = SF_BOL_FN;
 
   RASSERT(bIs_Bol_Fn());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Bol_Lit(Stz* szBolLit)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = szBolLit;
+  m_eSymbol = SF_BOL_LIT;
+
+  RASSERT(bIs_Bol_Lit());
 }
 
 /*----------------------------------------------------------------------------*/

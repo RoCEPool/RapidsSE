@@ -22,10 +22,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    SketchTkn(Stz* szArg);
+    SketchTkn(Stz* szChrSeq);
     ~SketchTkn(void) noexcept(false);
 
-    static eST eEvalSketch(Stz* szArg);
+    static eST eEvalSketch(Stz* szChrSeq);
 
     Stz* szChrSeq(void);
     eST  eSketch(void);
