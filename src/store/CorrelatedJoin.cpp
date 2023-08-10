@@ -46,6 +46,8 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 void CorrelatedJoin::vCorrelate(CardIter* pCI, eSM Correlate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(Correlate);
 
 }
 
@@ -128,9 +130,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // re-project the leading OQ:<table>* sequence
 
-  i8 nTables = 0;
   while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
-    nTables++;
     pCI->G.p_table->vSmooth(pCI);
     pCI->vPrintBoard(__LINE__);
   }
@@ -270,6 +270,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
   pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
   Card_PRED* p_PRED = static_cast<Card_PRED*>(pCI->G.p_boolCalc->pGetChild(0));
   bool bIgnore = p_PRED->bPredRecursive(bMarkCorrPred);
+  UNUSED(bIgnore);
 
   return bIsCorrPred;
 }
@@ -450,8 +451,8 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vResolve = [pCI, p_boolCalc](Card_PRED* p_pred,
-                                    auto&& vResolve /*oddity permits recursive lambda*/)
+  auto vResolve = [pCI](Card_PRED* p_pred,
+                        auto&& vResolve /*oddity permits recursive lambda*/)
   {
     if (! Card_PRED::bIsPRED(p_pred))
       return; /* this effectively declares resolve as void */
@@ -532,8 +533,8 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vResolve = [pCI, p_boolCalc](Card_PRED* p_pred,
-                                    auto&& vResolve /*oddity permits recursive lambda*/)
+  auto vResolve = [pCI](Card_PRED* p_pred,
+                        auto&& vResolve /*oddity permits recursive lambda*/)
   {
     if (! Card_PRED::bIsPRED(p_pred))
       return; /* this effectively declares resolve as void */

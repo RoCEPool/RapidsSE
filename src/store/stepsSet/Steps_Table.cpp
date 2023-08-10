@@ -289,8 +289,6 @@ void Step::vTableDumpMeta(void)
   }
 
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
-    TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
     sDumpBuffer.vCatSprint("\nPartition %lld  %lld"_Stz, i_TablePtn, pTable->pTablePtn(i_TablePtn)->tLglPtn().iAsI8());
 
     //pTablePtn->vDump();

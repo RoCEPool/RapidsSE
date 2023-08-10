@@ -156,8 +156,6 @@ LglPtn LglPtnMap::tRobinToLclPtnStream(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLPTNMAP,_FOOTER_);
 
-  i8 iThisNodeId = AM::GRID::iThisNodeId();
-
   i8 i_LglPtn = iRobin % m_nPtnsPerNode;
 
   LglPtn tLglPtn;

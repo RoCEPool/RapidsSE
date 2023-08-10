@@ -96,6 +96,8 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 Card_FiltPred* Card_FiltPredList::pFindFiltPred(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(cTblSyn);
+
 
 //  CardIter xCI(this);
 //  while (xCI.G_bEachMain(CK_CMPPRED)) {

@@ -448,11 +448,12 @@ void IndexTree::vCompact(void)
   // step thru each H1 buffer in the index
   
   i8 iH1BufferNo = -1;
-  
+  UNUSED(iH1BufferNo);
+
   for (EntBuffer* pH1 = pFirstH1Buffer(); pH1; pH1 = pH1->pNextEntBuffer()) {
     
     iH1BufferNo++;
-    
+
 #ifdef WITH_TRACE_INDEX_COMPACTION
      if (0 == iH1BufferNo % 10)
       vTrace("Compaction Progress: Partition %lld: H1 Buffer %lld of %lld\n"_Stz,
@@ -975,6 +976,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
       if (pBottomEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0()) {
 
         Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
+        UNUSED(aInsertedEntry);
 
         // delete the first key
         aFirstEnt = IndexTree::aIndexBegin(this, &pEntBuffer);

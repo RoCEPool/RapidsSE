@@ -106,11 +106,13 @@ void Step::vStrClip(void)
   //  vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
   //         "Invalid length for: str.clip"_Stz);
 
-  if (llabs(iLength) >= iHasLength)
-    if (iLength < 0)
-      iLength = - iHasLength;
-    else
+  if (llabs(iLength) >= iHasLength) {
+    if (iLength < 0) {
+      iLength = -iHasLength;
+    } else {
       iLength = iHasLength;
+    }
+  }
 
 
   char* pStart;

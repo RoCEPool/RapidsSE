@@ -543,8 +543,6 @@ void Board::vPrintBoard(Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
-
   Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
 
   vPinTitle(pRibbon, m_pBench->iXform(), szDescription);

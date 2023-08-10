@@ -2,45 +2,38 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-_lineitem;
-
 __TPCH_SCHEMA
 
-//explain stage transliterate select O_ORDERKEY, C_CUSTKEY from customer , orders where c_custkey = o_custkey
-//  and o_orderkey < 10;
-
-/pipeline_def
+/glean_interactive
+/transliterated
 /weaved
-/keepCodeFile
-/optimise_passthru
-pipeline Query5
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-
-  stage S00 on all partitions :
-    scan rapidsse public Orders
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
-    | combined 0
-    | next
-
-  stage S01 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as O_ORDERKEY O_ORDERKEY"
-    | combined 0
-    | next
-
-  stage S10 on origin :
-    output
-    | sink
-    | first
-end ;
-
+/pipeline_def
+select * from customer join orders on customer.c_custkey = orders.o_custkey where c_nationkey >=4;
 
 /*
-rows: 1500
+/optimise_passthru
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | filter "type boolean $4 4 >= "
+    | combined 0
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
 */
+//rows: 1220

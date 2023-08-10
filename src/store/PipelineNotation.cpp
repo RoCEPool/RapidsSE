@@ -66,7 +66,6 @@ void PipelineNotation::vPipelineFromFile(Stz* pFilename, Stz* sDstStr)
   }
 
   s256 sLine;
-  int i_Line = 0;
   while (pFile->bReadLine(sLine)) {
     if (StrLib::bEqualTo(sLine.azChar(), "// pipeline begin"))
     {
@@ -100,8 +99,8 @@ void PipelineNotation::vPipelineToFile(Stz* pFilename, Stz* sSrcStr)
     return;
   }
 
-  s256 sBegin = "\n// pipeline begin\n";
-  s256 sEnd = "\n// pipeline end\n";
+  s256 sBegin = "\n// pipeline begin\n"_Stz;
+  s256 sEnd = "\n// pipeline end\n"_Stz;
 
   pFile->bWriteBytes(sBegin.szStz(), sBegin.nLength());
   pFile->bWriteBytes(sSrcStr, sSrcStr->nLength());

@@ -303,8 +303,7 @@ void Step::vSocketSendObject(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   eCN eClass = pObject->eGetClassNo();
-  i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
-  
+
   RASSERT(CN_JOB == eClass ||
           CN_REJECTJOB == eClass ||
           _bIsValidOperand(eClass));
@@ -332,8 +331,8 @@ void Step::vSocketSet(void)
 
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
 
-  if ( ! pSocket)
-    i8 i = 1;
+//  if ( ! pSocket)
+//    i8 i = 1;
 
   ASSERT(! pSocket || m_pLogicUnit->m_xpSocket.bIsNull());
   m_pLogicUnit->m_xpSocket = _pSocket(pSocket);

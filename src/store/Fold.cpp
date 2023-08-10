@@ -360,6 +360,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
                                       eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  UNUSED(eSmoosh);
 
   CarryForward* pCarryForward = new CarryForward;
 

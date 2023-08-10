@@ -1015,7 +1015,7 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
   pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AdvanceNextRow"_Stz);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, m_sLabelLoop);
