@@ -250,7 +250,7 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
     Card_Term* p_term_valOdn = x_term.p_term();
 
     Card_Expr* p_expr_valOdn = new Card_Expr(p_term_valOdn->pSymbol());
-    p_expr_valOdn->pSymbol()->Y_vSet(P_Type,p_term_valOdn->pSymbol()->Y_szGet(P_Type));
+    p_expr_valOdn->pSymbol()->Y_vColType(p_term_valOdn->pSymbol()->Y_szColType());
 
     p_subSet->vAppend(p_expr_valOdn);
   }
@@ -734,7 +734,7 @@ Stz* Card_RpnCalc::szP_Type(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szP_Type = pSymbol()->Y_szGet(P_Type);
+  Stz* szP_Type = pSymbol()->Y_szColType();
   if (szP_Type)
     return szP_Type;
 

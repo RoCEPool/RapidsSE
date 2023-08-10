@@ -133,7 +133,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     RASSERT(p_expr_found->szP_Type());
 
-    pCI->G.p_term->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
+    pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 
     DELETE_CARD(p_term_1);
 

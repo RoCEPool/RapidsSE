@@ -510,10 +510,10 @@ Card* Dissector::pOp_Hash(void)
 
   p_hshCol->pSymbol()->vSym(p_term2->pSymbol());
   eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol(SF_NONE));
-  p_hshCol->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
+  p_hshCol->pSymbol()->Y_vColType(szCT_char[eColumnType]);
 
   Card_Term* p_term_hsh = p_term2->pClone();
-  p_term_hsh->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
+  p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   p_hshCol->vAppend(p_term_hsh);
   p_hshCol->pSymbol()->Y_vSet(P_BreakPt);
 
@@ -1367,8 +1367,8 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_RpnCalc);
 
-  pCard_RpnCalc->pSymbol()->Y_vSet(P_Type, szP_Type);
-  pCard_Expr->pSymbol()->Y_vSet(P_Type, szP_Type);
+  pCard_RpnCalc->pSymbol()->Y_vColType(szP_Type);
+  pCard_Expr->pSymbol()->Y_vColType(szP_Type);
 
 
   // [ AS <as> ]

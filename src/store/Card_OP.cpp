@@ -788,15 +788,15 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
-    p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
-    p_expr->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
+    p_rpnCalc->pSymbol()->Y_vColType(szCT_char[eColumnType]);
+    p_expr->pSymbol()->Y_vColType(szCT_char[eColumnType]);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_COL_TC,cTblSyn, i_Col + 1);
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
+    p_term->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   }
 
   vAppend(p_projection);
@@ -1003,7 +1003,7 @@ void Card_OP::vRpnHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   szOpArgs->vCatSprint("type %s %s"_Stz,
-                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szGet(P_Type))],
+                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szColType())],
                        p_term->szSymbol(SF_NONE));
 }
 
@@ -1695,7 +1695,7 @@ void Card_OP::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
   }
 
   szRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szGet(P_Type))]);
+                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szColType())]);
 
   if (p_as)
     vAs(szRpnExpr, p_as);
