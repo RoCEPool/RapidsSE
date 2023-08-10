@@ -196,6 +196,8 @@ eTE Card_Term::eEvalTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Stz* szValue = this->szSymbol(SF_NONE);
+
        if (pSymbol()->bSame("and"_Stz))        return TE_AND;
   else if (pSymbol()->bSame("or"_Stz))         return TE_OR;
   else if (pSymbol()->bSame("not"_Stz))        return TE_NOT;
@@ -368,9 +370,6 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
-  UNUSED(pParent);
 
 //  if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc())
 //    RASSERT(m_xSymbol.Y_bHas(P_Type));

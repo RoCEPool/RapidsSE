@@ -157,7 +157,6 @@ void Step::vInjectFPE(void)
   int j = 1;
   int k = 0;
   k = i / (j-j);
-  UNUSED(k);
 
   //raise(SIGFPE);
 

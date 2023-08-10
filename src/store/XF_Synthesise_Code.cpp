@@ -557,7 +557,6 @@ void XF_Synthesise_Code::vUpdateColsReq_Scan(Card_Table* p_table,
                                              Card_Scan* p_scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
-  UNUSED(p_table);
 
 //  Card_Projection* p_projection = p_scan->pSub_projection();
 

@@ -129,7 +129,7 @@ Op::~Op(void) noexcept(false)
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
       if (pOperand->bIsMarker()) {
-        if ((_pMarker(pOperand))->eOpMarker() == OM_CHILDEXIT)
+        if ((_pMarker(pOperand))->eOpMarker() == (eOM) EV_X_CHILDEXIT)
           AM::vDeleteOperand(pOperand, nullptr);
         }
         else {

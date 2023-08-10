@@ -418,7 +418,6 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     bool bIgnore = p_pred_root->bPredRecursive(bLambdaFn);
-    UNUSED(bIgnore);
   }
 }
 

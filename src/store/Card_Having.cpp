@@ -118,7 +118,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn_ro = [pCI](Card *pCard)
+  auto bLambdaFn_ro = [pCI,bBump](Card *pCard)
   {
     if (MARK_AT != pCard->cMark1())
       return C_CONTINUE_RECURSION;
@@ -170,7 +170,6 @@ void Card_Having::vUpdate_projection(CardIter* pCI)
 void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_NONE);
   pSub_level()->vValidate(pCI,iDepth+1,this);

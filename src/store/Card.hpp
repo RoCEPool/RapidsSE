@@ -296,7 +296,7 @@ namespace STORE
     bool bHasSubRecursive(Card* pSubCard);
 
     bool bIsCard(eCK eCard);
-    bool bIsOne(i8 /*eCK*/ iCard, ...);
+    bool bIsOne(eCK eCard, ...);
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -329,10 +329,10 @@ namespace STORE
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 
-    void vValidate_mayHave(i8 /*eCK*/ iCard_first, ...);
-    eCK  eValidate_mustEither(i8 /*eCK*/ iCard_first, ...);
-    void vValidate_mustHave(i8 /*eCK*/ iCard_first, ...);
-    void vValidate_notHave(i8 /*eCK*/ iCard, ...);
+    void vValidate_mayHave(eCK eCard_first, ...);
+    eCK  eValidate_mustEither(eCK eCard_first, ...);
+    void vValidate_mustHave(eCK eCard_first, ...);
+    void vValidate_notHave(eCK eCard, ...);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

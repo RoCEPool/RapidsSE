@@ -88,7 +88,6 @@ void StreamSet::vPostRecv(void* aStreamSet)
   _static_
   
   StreamSet* pStreamSet = _pStreamSet(aStreamSet);
-  UNUSED(pStreamSet);
 }
 
 

@@ -60,9 +60,6 @@ void Card_Combined::vDeleteAllCombined(CardIter* pCI) {
 void Card_Combined::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
-  UNUSED(pParent);
 }
 
 

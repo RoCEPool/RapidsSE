@@ -189,8 +189,7 @@ void Dissector::vStage(i8 i_StageSpec)
 void Dissector::vOp(i8 i_OpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  UNUSED(i_OpSpec);
-
+  
   Card* pCard;
 
   m_szOpNm = m_pOpSpec->szOpNm();
@@ -672,7 +671,6 @@ Card* Dissector::pOp_IndexScan(void)
   pCard_IndexScan->vAppend(p_indexList);
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  UNUSED(pIndex);
 
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
@@ -1267,8 +1265,6 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
   // transfer terms for this bound sequence
   Card_Term* p_term_xfr;
   for (i8 i_Loop = 0; ; i_Loop++) {
-    UNUSED(i_Loop);
-
     Card_Term* p_term_top = _pCard_Term(pCard_RpnTerms->pPeek(0));
     if (! p_term_top || p_term_top->pSymbol()->bIs_Bound())
       break;

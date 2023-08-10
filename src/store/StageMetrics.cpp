@@ -27,7 +27,6 @@ void* StageMetrics::operator new(size_t nSize, MetricsWsp* pMetricsWsp)
 /*----------------------------------------------------------------------------*/
 void StageMetrics::operator delete(void* aAddr)
 {
-  UNUSED(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/

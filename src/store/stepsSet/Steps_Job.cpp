@@ -705,8 +705,6 @@ void Step::vJobLabelObjectTracker(void)
   m_pDataStack->vPopStr(sEntry,__func__);
 
   Job* pJob = * m_pJob;
-  UNUSED(pJob);
-
   m_pJob->vLabelObjectTracker(sEntry);
 
   EXIT();
@@ -959,8 +957,6 @@ void Step::vJobPrintObjectTracker(void)
   ENTRY();
 
   Job* pJob = * m_pJob;
-  UNUSED(pJob);
-
   m_pJob->vObjectTrackerDump();
 
   EXIT();
@@ -1533,6 +1529,7 @@ void Step::vJobUpdateParent(void)
   // this could be a prompt thread
 
   eEC eErrorCode = EC_NONE;
+  Job* pParentJob;
   Job* pJob = pOuterJobOfTask();
 
   if ( ! pJob->bUpdateParent() )

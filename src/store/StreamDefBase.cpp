@@ -1392,8 +1392,7 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
 eEC StreamDefBase::eParseReplicated(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  UNUSED(pTknVec);
-
+  
   m_bReplicated = true;
   
   return EC_NONE;

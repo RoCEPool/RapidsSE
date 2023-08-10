@@ -27,7 +27,6 @@ void* OpMetrics::operator new(size_t nSize, MetricsWsp* pMetricsWsp)
 /*----------------------------------------------------------------------------*/
 void OpMetrics::operator delete(void* aAddr)
 {
-  UNUSED(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/
