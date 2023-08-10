@@ -138,7 +138,7 @@ bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAc
   CardIter xCI(pDeck);
 
   while (xCI.G_bEachMain()) {
-    s256 sShort = "";
+    s256 sShort = ""_Stz;
     StrLib::vShortHand(sShort.azChar(), xCI.G.p_MainCard->szCardNm()->azChar());
     vTrace("%s "_Stz, sShort.azChar());
 
@@ -171,8 +171,10 @@ OptimiserFun __Opt_n
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_readPipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(reOptAct);
+
   s256 sFile;
-  s16KB szPipeLineStatement = "";
+  s16KB szPipeLineStatement = ""_Stz;
 
   sFile = pTknVec->pGet(1)->szChars();
 
@@ -264,7 +266,7 @@ bool STORE::bOpt_writePipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& re
 //  pOptimiser->pCardCtl()->vUseLonger();
 
   s256 sFile;
-  s16KB sPipeLineStatement = "";
+  s16KB sPipeLineStatement = ""_Stz;
 
   sFile = pTknVec->pGet(1)->szChars();
 

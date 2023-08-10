@@ -62,6 +62,7 @@ SysMetrics::~SysMetrics(void) noexcept(false)
 void SysMetrics::vRepair(Object* pObject)
 {
   _static_
+  UNUSED(pObject);
 
 }
 

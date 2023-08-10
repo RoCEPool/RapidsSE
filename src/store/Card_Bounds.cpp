@@ -134,6 +134,7 @@ bool Card_Bounds::bUsesSqyRsl(void)
 void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   for (Kid xCI(this); xCI.bEach(CK_BOUND); /**/) {
     pCI->G.p_bound = xCI.p_bound();

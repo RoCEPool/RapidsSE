@@ -805,16 +805,12 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
   s256 sReturnToColumn;
   s16KB sCode;
   bool bExtracted;
-  bool bOpened = false;
 
-  i8 nCols = 0;
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
 //    if (nCols > pOpSketch->m_pColsReq->m_nCols) {
 //      break;
 //    }
-
-    nCols++;
 
     Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
 
@@ -881,7 +877,6 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
   s256 sReturnToColumn;
   s16KB sCode;
   bool bExtracted;
-  bool bOpened = false;
 
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefRht->nColumns(); i_Col++) {
 
@@ -941,7 +936,6 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
-    i8 i_Cell = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Cell;
     i8 i_EmittedCol = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_EmittedCol;
     Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_EmittedCol-1);
 
@@ -1326,13 +1320,10 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
   s16KB sCode;
 
-  bool bExtracted;
-
   IndexDef* pIndexDef = pOpSketch->m_pIndexDef;
   StreamDef *pStreamDefOut = pOpSketch->m_pStreamDefOut;
 
   s256 sColNm;
-  i8 i_DupCtr = 1;
   i8 nColumns = pStreamDefOut->nColumns();
 
   RASSERT(nColumns == pOpSketch->m_pColsMap->m_nCols);

@@ -507,6 +507,7 @@ void CrwBuffer::vInflateRows(StreamDef* pStreamDef)
 void CrwBuffer::vInflateRows(Tub* pTub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  UNUSED(pTub);
 
 //    #include "TccStuff.h"
 //

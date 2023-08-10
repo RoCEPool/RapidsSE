@@ -511,6 +511,7 @@ bool Dynamo::bCollectOpArgsExpr(StageSpec *p_StageSpec,
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
   UNUSED(p_StageSpec);
+  UNUSED(pOpSpec);
 
   SP_Token spToken;
   
@@ -1077,7 +1078,6 @@ bool Dynamo::bPass3_includes(void)
 
   Stz *szIncludePipNm;
 
-  TokenVec *pIncludeTknVec = nullptr;
 
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
@@ -1124,6 +1124,7 @@ bool Dynamo::bPass3_include(Stz *szIncludePipNm)
   bool b = Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
                                            pIncludeTknVec,
                                            &pwMatchedProc);
+  UNUSED(b);
 
   vTrace("Including: %s\n"_Stz, sPipelineSmt.szStz());
 
@@ -1135,6 +1136,7 @@ bool Dynamo::bPass3_include(Stz *szIncludePipNm)
   Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
   VertexSpec *pIncludePipeSpec = pDynamo->pCompile(sPipelineSmt.szStz());
+  UNUSED(pIncludePipeSpec);
 
   delete pDynamo;
 
@@ -1142,9 +1144,11 @@ bool Dynamo::bPass3_include(Stz *szIncludePipNm)
 
   if (pWrdTagSet->bHasName("<as_first>"_Stz)) {
     bool b = bPass3_includeFirst();
+    UNUSED(b);
   }
   else if (pWrdTagSet->bHasName("<as_last>"_Stz)) {
     bool b = bPass3_includeLast();
+    UNUSED(b);
   }
   else {
     NEVER_REACH;

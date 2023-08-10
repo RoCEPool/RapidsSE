@@ -421,13 +421,17 @@ bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
     Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     m_sJoinOrder.szStz(),
                                     C_VARGS_END);
+    UNUSED(pRow);
+
   }
   else if (bJoinPermutations) {
     RASSERT(pInfoSet);
-    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++)
-      Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++) {
+      Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                       m_sJoinPermutation[iIndex].szStz(),
                                       C_VARGS_END);
+      UNUSED(pRow);
+    }
   }
 
    return bClean;
