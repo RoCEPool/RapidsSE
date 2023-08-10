@@ -893,7 +893,7 @@ eCT Symbol::Y_eColType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  Stz* szType = Y_szGet(P_Type);
+  Stz* szType = Y_szColType();
   if (! szType)
     return CT_NONE;
 

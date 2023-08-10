@@ -1001,7 +1001,7 @@ void Card_OP::vRpnHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   szOpArgs->vCatSprint("type %s %s"_Stz,
-                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szGet(P_Type))],
+                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szColType())],
                        p_term->szSymbol(SF_NONE));
 }
 
@@ -1688,7 +1688,7 @@ void Card_OP::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
   }
 
   szRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szGet(P_Type))]);
+                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szColType())]);
 
   if (p_as)
     vAs(szRpnExpr, p_as);
