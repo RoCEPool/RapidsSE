@@ -72,6 +72,8 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  i8 i_ProjectionColNo = C_UNKNOWN;
+
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_IDXCOL)) {
     Stz* szColNm = xCI.G.p_idxCol->szSymbol(SF_NONE);

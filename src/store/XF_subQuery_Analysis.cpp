@@ -123,7 +123,6 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
-    UNUSED(pOuterQuery);
     //pOuterQuery->vDump();
   }
 
@@ -198,7 +197,6 @@ void XF_subQuery_Analysis::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
-  UNUSED(bIgnore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +260,6 @@ void XF_subQuery_Analysis::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
-  UNUSED(bIgnore);
 }
 
 

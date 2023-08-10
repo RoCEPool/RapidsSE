@@ -74,7 +74,7 @@ void ExtendedText::vConcat(Stz* szStr)
   // at least a first extended text buffer
   vEnsureBuffer();
 
-//  i8 nBytes_allGroups = 0;
+  i8 nBytes_allGroups = 0;
   i8 nAvailBytes;
   i8 nBytes_group;
   i8 nLines_group;
@@ -84,7 +84,6 @@ void ExtendedText::vConcat(Stz* szStr)
   char* azBegin_group = szStr->azChar();
 
   for (i8 i_Loop=0; ; i_Loop++) {
-    UNUSED(i_Loop);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get tail buffer with usable free space
@@ -123,7 +122,7 @@ void ExtendedText::vConcat(Stz* szStr)
 
     m_nLines += nLines_group;
 
-//    nBytes_allGroups += nBytes_group;
+    nBytes_allGroups += nBytes_group;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // end detection

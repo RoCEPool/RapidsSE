@@ -76,7 +76,6 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(bSkipFoldExpr);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
@@ -508,6 +507,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Stz* szSqyNm;
   Card_AndPred* p_andPred = nullptr;
   Card_CmpPred* p_cmpPred = nullptr;
   Card_NotPred* p_notPred = nullptr;
@@ -515,6 +515,10 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
   Card*  p_childA  = nullptr;
   Card*  p_childB  = nullptr;
+
+  bool bSawSqy = false;
+
+  Card_Term*    p_subQueryNm = nullptr;
 
   Card_RpnTerms*  p_TermSeries = new Card_RpnTerms;
 
@@ -597,6 +601,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         p_boolCalc->vAppend(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);
+        bSawSqy = false;
         //p_boolCalc->vDump(0,"COMPARE"_Stz);
         break;
 
@@ -740,7 +745,6 @@ Stz* Card_RpnCalc::szP_Type(void)
 void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
 
   vValidate_mustHave(CK_TERM, CK_NONE);
 

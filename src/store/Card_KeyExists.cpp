@@ -71,8 +71,6 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
 void Card_KeyExists::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(pCI);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,7 +231,6 @@ void Card_KeyExists::vUpdate_projection(CardIter* pCI)
 void Card_KeyExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_CONSTRAINT,CK_NONE);
 

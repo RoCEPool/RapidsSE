@@ -258,6 +258,8 @@ Dynamic::~Dynamic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
 
+  RowSingle* pRowSingle;
+
   if (m_xDynamicT.m_xIndexInfoPL.m_aIndexTree) {
     IndexTree* pIndexTree = _pIndexTree(m_xDynamicT.m_xIndexInfoPL.m_aIndexTree);
     delete pIndexTree;

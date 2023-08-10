@@ -852,11 +852,11 @@ void Parcel::vDispatchParcel(Op* pSendOp,
 void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-  UNUSED(pSendOp);
 
   m_bDeleteOperand = true;
 
   Operand* pOperand = pGetOperand();
+  DataBuffer* pBuffer = _pDataBuffer(pOperand);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // forward to this node, dst stage is a YS_NODE_STREAM
@@ -945,7 +945,6 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
 void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-  UNUSED(pSendOp);
 
   m_bDeleteOperand = true;
 
@@ -1008,11 +1007,10 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   bool bResult;
+  i8 nObjectSize;
   SysCall oSysCall;
   Object *pObject;
   Parcel *pParcel;
-
-  UNUSED(bResult);
 
   if (RV_NONE == m_eRecvInstructions) {
     vTrace("vSendParcelViaSocket has RV_NONE\n"_Stz);
@@ -1034,6 +1032,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
 
   // send the parcel instance
   pParcel = this;
+  nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendObject(pParcel,oSysCall,m_eSendWhy);
 
   //if (!bResult) {
@@ -1045,6 +1044,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   for (i8 i_Item = 0; i_Item < nObjects; i_Item++) {
     pObject = pParcel->pGetItem(i_Item);
     eCN eClassNo = pObject->eGetClassNo();
+    nObjectSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
     if (CN_IDXVEC == eClassNo) {
       i8 iSize1 = gxaSizeHeap[CN_INDEX].m_nClassSize;

@@ -79,9 +79,12 @@ void Step::vStencilSetup_v2(void)
 {
   ENTRY();
 
+  Stencil_v2* pStencil   = * m_pLogicUnit->m_xpStencil_v2;
+
   Dynamic* pDynamic = _pDynamic(m_pDataStack->pPopPtr(__func__));
 
   // get the current stream
+  Stream* pStream = _pStream(m_pOp->pStream());
 
   pDynamic->aDynamicT()->m_pTub        = *m_pLogicUnit->m_xpTub;
   pDynamic->aDynamicT()->m_pPot        = *m_pLogicUnit->m_xpPot;

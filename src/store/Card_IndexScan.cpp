@@ -91,7 +91,6 @@ void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 void Card_IndexScan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
 

@@ -55,36 +55,15 @@ endif
 CPP = g++
 
 WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
-
-# Warnings that are treated as errors
 ERRORS  = -Werror=return-type
-#ERRORS += -Werror=unused-parameter
-#ERRORS += -Werror=unused-variable
-#ERRORS += -Werror=unused-but-set-variable
+##ERRORS += -Werror=unused-parameter
+##ERRORS += -Werror=unused-but-set-variable
 #ERRORS += -Werror=missing-declarations
 #ERRORS += -Werror=enum-compare
 #ERRORS += -Werror=tautological-constant-out-of-range-compare
 #ERRORS += -Werror=unused-lambda-capture
-#ERRORS += -Werror=unused-label
+##ERRORS += -Werror=unused-label
 #ERRORS += -Werror=uninitialized
-#ERRORS += -Werror=varargs
-#ERRORS += -Werror=parentheses
-#ERRORS += -Werror=writable-strings
-#ERRORS += -Werror=reorder-ctor
-##ERRORS += -Werror=array-bounds
-##ERRORS += -Werror=deprecated-declarations
-ERRORS += -Werror=unused-value
-
-# Warnings that are ignored for the code in the src/store/Fragments directory
-FRAGMENT_IGNORE_WARNINGS  = -Wno-unused-parameter
-FRAGMENT_IGNORE_WARNINGS += -Wno-unused-variable
-FRAGMENT_IGNORE_WARNINGS += -Wno-unused-but-set-variable
-FRAGMENT_IGNORE_WARNINGS += -Wno-unused-label
-FRAGMENT_IGNORE_WARNINGS += -Wno-uninitialized
-FRAGMENT_IGNORE_WARNINGS += -Wno-unused-value
-
-# Warnings that are ignored for the ANTLR-generated code
-ANTLR_IGNORE_WARNINGS  = -Wno-unused-parameter
 
 CPPFLAGS = -std=c++14 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
 CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
@@ -106,10 +85,10 @@ MAN_PAGES=se.man
 
 # Source Files
 SRC_DIR := .
-SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
+#SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
 # Note: We exclude the *.cpp files in the src/store/Fragments directory because they contain
 #       many warnings because they are, well, C++ fragments that are used dynamically.
-#SOURCES := $(shell find $(SRC_DIR) -name "*.cpp" -not -path "$(SRC_DIR)/store/Fragments/*")
+SOURCES := $(shell find $(SRC_DIR) -name "*.cpp" -not -path "$(SRC_DIR)/store/Fragments/*")
 SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/mersenne/*.cpp)
@@ -224,23 +203,7 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS) 
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
-#-------------------------------------------------------
-# Source file compilation rules:
-#-------------------------------------------------------
-
-# Compile the src/store/Fragment source .cpp files into object files
-# These files have some warnings ignored.
-$(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.o: $(SRC_DIR)/store/Fragments/%.cpp $(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.d
-	$(DIR_GUARD)
-	@echo "Compiling fragment file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(FRAGMENT_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
-
-$(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.o: $(SRC_DIR)/../thirdparty/antlr/generated/%.cpp $(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.d
-	$(DIR_GUARD)
-	@echo "Compiling ANTLR-generated file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(ANTLR_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
-
-# Compile general source .cpp files into object files
+# Compile source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
@@ -257,8 +220,6 @@ $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
-
-#-------------------------------------------------------
 
 # Include all of the generated dependency rules from all .d files.
 # The '-' means ignore the exit status of the command.

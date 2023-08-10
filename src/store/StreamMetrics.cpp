@@ -27,7 +27,6 @@ void* StreamMetrics::operator new(size_t nSize, MetricsWsp* pMetricsWsp)
 /*----------------------------------------------------------------------------*/
 void StreamMetrics::operator delete(void* aAddr)
 {
-  UNUSED(aAddr);
 }
 
 /*----------------------------------------------------------------------------*/

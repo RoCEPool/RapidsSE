@@ -140,7 +140,6 @@ void Step::vOptimiserWeave(void)
   ENTRY();
     
   Stz* szOptStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
-  UNUSED(szOptStmt);
 
   //m_pJob->vCmdText(szOptStmt);
 

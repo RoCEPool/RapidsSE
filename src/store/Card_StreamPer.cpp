@@ -471,7 +471,6 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
                                        char cTblSyn_locus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(cTblSyn_locus);
 
   CardIter xCI(this);
 

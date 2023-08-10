@@ -599,8 +599,6 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
   i8 nD; i8 iEra;
   u1 uHigh; u1 uLow; u1 nQuanta;
   char* azVch;
-
-  UNUSED(uLow);
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     _ColEnc& rxColEnc = m_pEncoding->xaColEnc[i_Col];

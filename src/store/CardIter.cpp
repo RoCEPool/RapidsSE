@@ -388,7 +388,6 @@ eOA CardIter::eCueUser(Stz* szPrompt)
 
   eOA eOptAct = OA_CONTINUE_TRANSFORMING;
   bool bExecuted = pOptFun->m_fpOptFun(m_pBench->pOptimiser(),pTknVec,eOptAct);
-  UNUSED(bExecuted);
 
   delete pTknVec;
   pTknVec = nullptr;
@@ -1321,7 +1320,6 @@ void CardIter::G_vMainResynch(Card* pCard)
 void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  UNUSED(asFuncNm);
 
   RASSERT(!pCard || pCard->bIsCard(eMember));
 
@@ -1729,7 +1727,6 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 void CardIter::vPrintBoard(i8 iLineNo)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-  UNUSED(iLineNo);
 
   if (! AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
     return;
