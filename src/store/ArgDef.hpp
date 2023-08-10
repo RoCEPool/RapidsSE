@@ -4,10 +4,13 @@
 #pragma once
 
 #include "BASE.h"
+#include "SketchTkn.hpp"
+#include "ListExo2_t.hpp"
 
 namespace STORE
 {
   class ArgDef : public Object
+               , public ListExo2_t<SketchTkn>
   {
   public:
     i8  m_i_Arg;

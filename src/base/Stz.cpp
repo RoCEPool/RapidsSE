@@ -510,11 +510,11 @@ void Stz::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* _Stz literal suffix (which converts const char* to Stz*)                   */
 /*----------------------------------------------------------------------------*/
-Stz* BASE::operator "" _Stz(const char* szArg, size_t nSize)
+Stz* BASE::operator "" _Stz(const char* azArg, size_t nSize)
 {
   UNUSED(nSize);
   
-  return (Stz*)(szArg);
+  return (Stz*)(azArg);
 }
 
 /*============================================================================*/
