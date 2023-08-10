@@ -100,7 +100,7 @@ i8 ExtendedTextBuffer::nFreeBytes(void)
 //  else
 //    return C_4K - nTextSize;
 
-  i8 nBytesFree = m_sTextBlock.nFreeBytes();
+//  i8 nBytesFree = m_sTextBlock.nFreeBytes();
   return m_sTextBlock.nFreeBytes();
 }
 

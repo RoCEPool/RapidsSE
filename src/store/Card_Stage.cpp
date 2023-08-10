@@ -85,14 +85,14 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   while (pCI->G_bEachMain(CK_FLAT))
     pCI->G_vRemoveDeleteMain(CK_FLAT);
 
-  Card* p_prev = nullptr;
+//  Card* p_prev = nullptr;
   eCK   e_prev = CK_NONE;
   Card* p_main = p_stage;
   eCK   e_main = p_main->eCard();
 
   for (i8 i_Main = 1; i_Main < pCI->G.pDeck->nChildCards(); i_Main++) {
 
-    p_prev = p_main;
+//    p_prev = p_main;
     e_prev = e_main;
 
     p_main = pCI->G.pDeck->pGetChild(i_Main);
@@ -291,8 +291,6 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
   for (i8 i_Main = 1; i_Main < pCI->G.pDeck->nChildCards(); i_Main++) {
 
     Card_OP* p_card_OP = (Card_OP*)(pCI->G.pDeck->pGetChild(i_Main));
-    eCK      e_card_OP = p_card_OP->eCard();
-    eAL      e_level   = (eAL) p_card_OP->pSub_level()->pSymbol()->Y_iGet(P_Level);
 
     RASSERT(Card_OP::bIsOp(p_card_OP));
 
@@ -385,6 +383,9 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
 void Card_Stage::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
 
   vValidate_notHave(CK_LEVEL,CK_NONE);
 }

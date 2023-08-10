@@ -595,6 +595,15 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
                            i8 nQueueLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  UNUSED(i_EnumGroup);
+  UNUSED(i_Enum);
+  UNUSED(iItem);
+  UNUSED(nNanoSecs);
+  UNUSED(iAction);
+  UNUSED(i_ActEnumGroup);
+  UNUSED(i_ActEnum);
+  UNUSED(nQueueLength);
+
 
 //  if (!m_pRluDiary)
 //    m_pRluDiary = new RluDiary;
@@ -646,7 +655,7 @@ void LogicUnit::vEnter(void)
   
   if ( AM::bRLUDiary() ) {
     m_oSince.vUpdate();
-    i8 nNanoSeconds = m_oSince.iNanoseconds();
+//    i8 nNanoSeconds = m_oSince.iNanoseconds();
   
   //  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
   //         m_xRluCommon.m_iSql,
@@ -673,7 +682,7 @@ void LogicUnit::vExit(void)
   
   if ( AM::bRLUDiary() ) {
     m_oSince.vUpdate();
-    i8 nNanoSeconds = m_oSince.iNanoseconds();
+//    i8 nNanoSeconds = m_oSince.iNanoseconds();
     
   //  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
   //         m_xRluCommon.m_iSql,

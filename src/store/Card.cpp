@@ -85,8 +85,6 @@ Card::~Card(void) noexcept(false)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  static Card* pPriorCard = nullptr;
-
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
 //         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sSymbol.szStz(),md_Bearing);
 //
@@ -131,6 +129,8 @@ void Card::vCardLeaks(void)
 void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 {
   _static_
+  UNUSED(p_deck);
+  UNUSED(iTransformNo);
 
 //  for (i8 i_Card = 0; i_Card < m__iSeqGen; i_Card++) {
 //    if (! gapCard[i_Card])
@@ -598,14 +598,19 @@ bool Card::bIsCard(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* is this card the given kind?                                               */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsOne(eCK eCard, ...)
+bool Card::bIsOne(i8 /*eCK*/ iCard, ...)
 {
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   va_list xArgs;
 
-  va_start(xArgs, eCard);
-  eCK eCard_mayBe = eCard;
+  va_start(xArgs, iCard);
+  eCK eCard_mayBe = (eCK) iCard;
   while (CK_NONE != eCard_mayBe) {
 
     if (this->bIsCard(eCard_mayBe))
@@ -836,6 +841,7 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
 
   i8 nChildren = nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -892,8 +898,6 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
   s32 sHiddenChildren;
   if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
     sHiddenChildren = " +"_Stz;
-
-  Board* pBoard = _pBoard(pRibbon->pSurface());
 
   s32 sName;
   if (0 == iDepth) {
@@ -990,6 +994,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
 void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(iDepth);
 
   if (! m_xSymbol.bHasProperties())
     return;
@@ -1044,6 +1049,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
 
   if (!m_xSymbol.bHasSymbol())
     return;
@@ -1198,8 +1204,13 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_mayHave(eCK eCard_first, ...)
+void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
 {
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
   va_list xArgs;
 
 //  va_start(xArgs,eCard_first);
@@ -1218,8 +1229,8 @@ void Card::vValidate_mayHave(eCK eCard_first, ...)
 
     bool bMayHave = false;
 
-    va_start(xArgs, eCard_first);
-    eCK eCard_mayHave = eCard_first;
+    va_start(xArgs, iCard_first);
+    eCK eCard_mayHave = (eCK) iCard_first;
     while (CK_NONE != eCard_mayHave) {
       eCard_mayHave = (eCK)va_arg(xArgs, i8);
       if (eCard_test == eCard_mayHave) {
@@ -1240,14 +1251,19 @@ void Card::vValidate_mayHave(eCK eCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_mustHave(eCK eCard_first, ...)
+void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
 {
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
   va_list xArgs;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
-  va_start(xArgs, eCard_first);
-  eCK eCard_mustHave = eCard_first;
+  va_start(xArgs, iCard_first);
+  eCK eCard_mustHave = (eCK) iCard_first;
   while (CK_NONE != eCard_mustHave) {
 
     bool bMustHave = false;
@@ -1279,8 +1295,13 @@ void Card::vValidate_mustHave(eCK eCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_mustEither(eCK eCard_first, ...)
+eCK Card::eValidate_mustEither(i8 /*eCK*/ iCard_first, ...)
 {
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
   va_list xArgs;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
@@ -1288,8 +1309,8 @@ eCK Card::eValidate_mustEither(eCK eCard_first, ...)
   i8 nHas = 0;
   eCK eFound = CK_NONE;
 
-  va_start(xArgs, eCard_first);
-  eCK eCard_mustHave = eCard_first;
+  va_start(xArgs, iCard_first);
+  eCK eCard_mustHave = (eCK) iCard_first;
   while (CK_NONE != eCard_mustHave) {
 
     pSubCard_I->vBeforeFirst();
@@ -1320,14 +1341,19 @@ eCK Card::eValidate_mustEither(eCK eCard_first, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_notHave(eCK eCard, ...)
+void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
 {
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
   va_list xArgs;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
-  va_start(xArgs, eCard);
-  eCK eCard_mustHave = eCard;
+  va_start(xArgs, iCard);
+  eCK eCard_mustHave = (eCK) iCard;
   while (CK_NONE != eCard_mustHave) {
 
     bool bNotHave = false;

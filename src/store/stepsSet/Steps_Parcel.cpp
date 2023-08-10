@@ -258,7 +258,6 @@ void Step::vParcelPipeOut(void)
 
   Task* pCurTask = MY::pTask();
   
-  eCN eOperandClass = pOperand->eGetClassNo();
   eRV eRecvInstructions = pParcel->eRecvInstructions();
   //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 

@@ -489,6 +489,7 @@ void ChildCards::vTransferFrom(Card* pCards, Card* pFrom,
                                Card* pAt, bool bAfter)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
+  UNUSED(pCards);
 
   ListExoIter2_t<Card>* pCard_I = pNewIter();
 
@@ -522,6 +523,7 @@ void ChildCards::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
                                  Card* pAt, bool bAfter)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
+  UNUSED(pCards);
 
   ListExoIter2_t<Card>* pCard_I = pNewIter();
 

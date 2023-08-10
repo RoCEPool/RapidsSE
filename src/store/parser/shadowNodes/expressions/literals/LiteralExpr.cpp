@@ -445,21 +445,10 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
   ASSERT(LiteralExpr::bIsOfType(pExpr));
   ASSERT(LiteralExpr::xTypeId(pExpr, pRootNode).eCTVal() != CT_NONE);
 
-  QueryNode* pCoercedLiteral = nullptr;
-  Stz* szStr;
-  b1 bParseResult;
-  char* pEndPtr;
   TypeId xCurrentTypeId = Expr::xTypeId(pExpr, pRootNode);
   eCT eCurrentType = xCurrentTypeId.eCTVal();
   eCT eTargetType = xTargetTypeId.eCTVal();
-  QueryNode* pResultNode;
   s2K sBuf;
-  i8 iVal;
-  d8 dVal;
-  Bcd xBcd{};
-  Ivl xIvl{IV_NONE};
-  i8 iMagnitude;
-  i8 iMaxMagnitude;
 
   // Are we coercing the type to itself?
   if (xCurrentTypeId == xTargetTypeId) {
@@ -480,7 +469,6 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
     // Note: The string conversions are dependent on value of the string itself.
     case CT_CHAR:     // fall through
     case CT_VARCHAR:  // ******************************************** From CT_CHAR/CT_VARCHAR to...
-      szStr = StringLiteral::szValue(pExpr);
       switch (eTargetType) {
         case CT_DATE:             return      pVarcharToDate(pExpr, pRootNode);
         case CT_DECIMAL:          return   pVarcharToDecimal(pExpr, pRootNode);
@@ -616,6 +604,8 @@ QueryNode* LiteralExpr::pLiteralToVarchar(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pDateToTimestamp(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   Dte xDte = pExpr->xDateVal();
   Tsp xTsp;
   xTsp.vSet(xDte.iYear(), xDte.iMonth(), xDte.iDay(), 0, 0, 0, 0);
@@ -627,6 +617,8 @@ QueryNode* LiteralExpr::pDateToTimestamp(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pDecimalToFloat(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   d8 dVal;
   Bcd xBcd;
   i8 iMagnitude;
@@ -652,6 +644,8 @@ QueryNode* LiteralExpr::pDecimalToFloat(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pDecimalToInteger(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   i8 iVal;
   Bcd xBcd;
   i8 iMagnitude;
@@ -681,6 +675,8 @@ QueryNode* LiteralExpr::pDecimalToInteger(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pFloatToDecimal(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   d8 dVal;
   Bcd xBcd;
   s2K sBuf;
@@ -719,6 +715,8 @@ QueryNode* LiteralExpr::pFloatToDecimal(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pIntegerToDecimal(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   i8 iVal;
   Bcd xBcd;
   s2K sBuf;
@@ -756,6 +754,8 @@ QueryNode* LiteralExpr::pIntegerToDecimal(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pIntervalToDecimal(QueryNode* pExpr, PlanNode* pRootNode, eIV eCurrentIVType)
 {
+  UNUSED(pRootNode);
+
   // TODO: Support coercing the INTERVAL SECOND to a DECIMAL with fractional second support
 
   Ivl xIvl = IntervalLiteral::xValue(pExpr);
@@ -784,6 +784,8 @@ QueryNode* LiteralExpr::pIntervalToDecimal(QueryNode* pExpr, PlanNode* pRootNode
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pIntervalToFloat(QueryNode* pExpr, PlanNode* pRootNode, eIV eCurrentIVType)
 {
+  UNUSED(pRootNode);
+
   Ivl xIvl = IntervalLiteral::xValue(pExpr);
   d8 dVal;
 
@@ -810,6 +812,8 @@ QueryNode* LiteralExpr::pIntervalToFloat(QueryNode* pExpr, PlanNode* pRootNode, 
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pIntervalToInteger(QueryNode* pExpr, PlanNode* pRootNode, eIV eCurrentIVType)
 {
+  UNUSED(pRootNode);
+
   Ivl xIvl = IntervalLiteral::xValue(pExpr);
   i8 iVal;
 
@@ -836,6 +840,8 @@ QueryNode* LiteralExpr::pIntervalToInteger(QueryNode* pExpr, PlanNode* pRootNode
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pIntervalToInterval(QueryNode* pExpr, PlanNode* pRootNode, eIV eTargetIVType)
 {
+  UNUSED(pRootNode);
+
   Ivl xIvl = IntervalLiteral::xValue(pExpr);
   xIvl.T.m_xIvl.m_eType = eTargetIVType;
   return IntervalLiteral::pCreate(xIvl);
@@ -846,6 +852,8 @@ QueryNode* LiteralExpr::pIntervalToInterval(QueryNode* pExpr, PlanNode* pRootNod
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pTimestampToDate(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   Tsp xTsp;
   Dte xDte;
 
@@ -861,6 +869,8 @@ QueryNode* LiteralExpr::pTimestampToDate(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pTimestampToTime(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   Tsp xTsp;
   Tme xTme;
 
@@ -877,6 +887,8 @@ QueryNode* LiteralExpr::pTimestampToTime(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pVarcharToDate(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
 //  Stz* szStr = StringLiteral::szValue(pExpr);
 //  b1 bParseResult;
 //
@@ -917,6 +929,8 @@ QueryNode* LiteralExpr::pVarcharToDate(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pVarcharToDecimal(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   Stz* szStr = StringLiteral::szValue(pExpr);
   Bcd xBcd = DecimalLiteral::xParseStr(szStr);
   QueryNode* pCoercedLiteral = DecimalLiteral::pCreate(xBcd);
@@ -928,6 +942,8 @@ QueryNode* LiteralExpr::pVarcharToDecimal(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pVarcharToFloat(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   d8 dVal;
   Stz* szStr = StringLiteral::szValue(pExpr);
   char* pEndPtr;
@@ -975,6 +991,8 @@ QueryNode* LiteralExpr::pVarcharToFloat(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pVarcharToInteger(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   Stz* szStr = StringLiteral::szValue(pExpr);
   s2K sBuf;
   bool bOverflowed = false;
@@ -1004,6 +1022,8 @@ QueryNode* LiteralExpr::pVarcharToInteger(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pVarcharToTime(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   Stz* szStr = StringLiteral::szValue(pExpr);
   b1 bParseResult;
 
@@ -1033,6 +1053,8 @@ QueryNode* LiteralExpr::pVarcharToTime(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pVarcharToTimestamp(QueryNode* pExpr, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   Stz* szStr = StringLiteral::szValue(pExpr);
   b1 bParseResult;
   QueryNode* pCoercedLiteral;

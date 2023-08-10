@@ -73,6 +73,7 @@ void ColsReq::vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
 void ColsReq::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  UNUSED(i_Tab);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     vTrace("               [%lld] $%lld <- cell %lld \n"_Stz,

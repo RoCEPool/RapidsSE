@@ -353,11 +353,9 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
   i8 i_Col = 0;
   i8 i_ColPL = 0;
-  i8 i_ExprStack = 0;
   i8 i_DupCtr = 1;
   i8 iGbyCols;
   i8 iGkyCols = 0;
-  i8 nExpr;
   eDM eCastType;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -416,7 +414,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
         vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
         iGbyCols++;
 
-        if (m_eSketchKind == EK_AGGORD && iGbyCols >= 2)
+        if (m_eSketchKind == SK_ORDAGG && iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
       else if (ePreExp == PE_GKY) {
@@ -479,7 +477,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
       iGbyCols++;
 
-      if (m_eSketchKind == EK_AGGORD) {
+      if (m_eSketchKind == SK_ORDAGG) {
         if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aDynamicT->m_iErrorCode)"_Stz);
       }
@@ -921,6 +919,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // else
     if (pTkn->bSame("else"_Stz)) {
       eDM eColType1 = (eDM) pExprType->iPop();
+      UNUSED(eColType1);
       continue;
     }
 
@@ -936,6 +935,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // then
     if (pTkn->bSame("then"_Stz)) {
       eDM eColType1 = (eDM) pExprType->iPop();
+      UNUSED(eColType1);
       pExprStack->vPushStz("}"_Stz);
       pExprStack->vPushStz("else {"_Stz);
       continue;
@@ -1271,6 +1271,7 @@ void OpSketch::vInitAgg(ePE ePreExp)
 void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8 i_Col, i8 i_ColPL, i8& i_DupCtr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
+  UNUSED(i_DupCtr);
 
   s256 sStructColumn;
   s256 sOperation;
@@ -1923,6 +1924,7 @@ void OpSketch::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr, bool bConstraint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
+  UNUSED(i_DupCtr);
 
   s256 sPush;
   s256 sColumn;
@@ -2147,6 +2149,8 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
   eDM eExpr1;
   eDM eExpr2;
   eDM eExpr3;
+
+  UNUSED(eExpr3);
 
   switch(ePreExp) {
 

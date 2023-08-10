@@ -178,8 +178,6 @@ eKC Key::eMixCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
   //aKey_r->vShow(pIndexDef);
   //vTrace("\n"_Stz);
 
-  bool bSame = false;
-
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
 
     Column *pCol = pIndexDef->pGetColumn(i_Col);
