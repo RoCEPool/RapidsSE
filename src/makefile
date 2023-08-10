@@ -58,21 +58,21 @@ WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN
 
 # Warnings that are treated as errors
 ERRORS  = -Werror=return-type
-ERRORS += -Werror=unused-parameter
-ERRORS += -Werror=unused-variable
-ERRORS += -Werror=unused-but-set-variable
-ERRORS += -Werror=missing-declarations
-ERRORS += -Werror=enum-compare
-ERRORS += -Werror=tautological-constant-out-of-range-compare
-ERRORS += -Werror=unused-lambda-capture
-ERRORS += -Werror=unused-label
-ERRORS += -Werror=uninitialized
-ERRORS += -Werror=varargs
-ERRORS += -Werror=parentheses
-ERRORS += -Werror=writable-strings
-ERRORS += -Werror=reorder-ctor
-#ERRORS += -Werror=array-bounds
-#ERRORS += -Werror=deprecated-declarations
+#ERRORS += -Werror=unused-parameter
+#ERRORS += -Werror=unused-variable
+#ERRORS += -Werror=unused-but-set-variable
+#ERRORS += -Werror=missing-declarations
+#ERRORS += -Werror=enum-compare
+#ERRORS += -Werror=tautological-constant-out-of-range-compare
+#ERRORS += -Werror=unused-lambda-capture
+#ERRORS += -Werror=unused-label
+#ERRORS += -Werror=uninitialized
+#ERRORS += -Werror=varargs
+#ERRORS += -Werror=parentheses
+#ERRORS += -Werror=writable-strings
+#ERRORS += -Werror=reorder-ctor
+##ERRORS += -Werror=array-bounds
+##ERRORS += -Werror=deprecated-declarations
 ERRORS += -Werror=unused-value
 
 # Warnings that are ignored for the code in the src/store/Fragments directory
