@@ -42,7 +42,8 @@ namespace STORE
     s256  m_sLogRegion;
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
-  
+
+    Atomic        m_ixBenchNo;
     bool          m_bBootError;
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;

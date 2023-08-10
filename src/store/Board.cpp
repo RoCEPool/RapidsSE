@@ -79,7 +79,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G.p_projection = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if (pCI->G.p_projection == pMain->pSub_projection())
+    if ((pCI->G.p_projection = pMain->pSub_projection()))
       break;
   }
   if (! pCI->G.p_projection)
@@ -112,7 +112,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   pCI->G.p_projection = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if (pCI->G.p_projection == pMain->pSub_projection())
+    if ((pCI->G.p_projection = pMain->pSub_projection()))
       break;
   }
   if (! pCI->G.p_projection)
@@ -551,9 +551,9 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinBanners(pRibbon);
 
-  i8 iPrintNo = m_pBench->iXform();
-  pRibbon->vPrintRibbon(iPrintNo);
-  m_pBench->vXform_Inc();
+  i8 iBenchNo = m_pBench->iBenchNo();
+  i8 iPrintNo = m_pBench->iPrint_inc();
+  pRibbon->vPrintRibbon(iBenchNo,iPrintNo);
 
   delete pRibbon;
 }

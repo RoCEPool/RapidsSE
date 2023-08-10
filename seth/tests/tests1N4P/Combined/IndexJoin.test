@@ -30,30 +30,8 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
-/*
-/glean_interactive
-/transliterated
-/weaved
-/pipeline_def
-select * from T1;
-success
-*/
 
-
-/glean_interactive
-/transliterated
-/weaved
-/pipeline_def
-select * from T1, T2 where t1.a = t2.a;
-success
-
-
-
-/glean_interactive
 /optimise_passthru 
-/transliterated
-/weaved
-/pipeline_def
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -99,7 +77,6 @@ create index R_idx on R(r_int_col0);
 success
 
 // join
-/glean_interactive
 /optimise_passthru 
 pipeline unamed
 begin
@@ -121,7 +98,6 @@ end ;
 rows: 0
 
 // left outer join
-/glean_interactive
 /optimise_passthru 
 pipeline unamed
 begin
@@ -158,7 +134,6 @@ load R "../DATA/Joins/R.csv";
 success
 
 // join
-/glean_interactive
 /optimise_passthru 
 pipeline unamed
 begin
@@ -224,7 +199,6 @@ rows:
  (5,5,'a')
 
 // left outer join
-/glean_interactive
 /optimise_passthru 
 pipeline unamed
 begin
@@ -353,7 +327,6 @@ create table part (
 success
 
 // no data in lineitem and orders
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -378,7 +351,6 @@ load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 // no data in orders
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -407,7 +379,6 @@ success
 load part "../TPCH/SF_0001/part.csv";
 success
 
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -430,7 +401,6 @@ end ;
 
 rows: 5996
 
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -453,7 +423,6 @@ end ;
 
 rows: 1160
 
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -478,7 +447,6 @@ end ;
 rows: 36
 
 
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -501,7 +469,6 @@ end ;
 
 rows: 76
 
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -536,7 +503,6 @@ end ;
 
 rows: (3240)
 
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -573,7 +539,6 @@ rows:
   (53,820.00,30)
   (55,773.00,30)
 
-/glean_interactive
 /optimise_passthru 
 pipeline unnamed
 begin

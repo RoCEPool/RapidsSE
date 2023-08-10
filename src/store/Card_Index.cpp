@@ -252,7 +252,7 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_INDEXNM,CK_NONE);
 
-  if (pCI->G.p_bounds == pSub_bounds())
+  if ((pCI->G.p_bounds = pSub_bounds()))
     pCI->G.p_bounds->vValidate(pCI,iDepth+1,this);
 
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {
