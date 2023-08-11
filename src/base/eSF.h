@@ -28,7 +28,8 @@ enum eSF // symbol form
 
   /* */ SF_DCM_LIT,     // Decimal Literal     : StrLib::bIsDecimal()
   /* */ SF_DIRECTION,   // Direction           : ASC, DESC
-  /* */ SF_FLD_NM,      // Fold Name           : StrLib::bIsDecimal/Float/Integer()
+  /* */ SF_FLD_NM,      // Fold Name           :
+  /* */ SF_FLT_LIT,     // Float Literal       : StrLib::bIsFloat()
   /* */ SF_GROUPBY,     // GroupBy             : GROUPBY
   /* */ SF_IDX_COL,     // Index Column no     : $In
   /* */ SF_IDX_NM,      // Index Name          : bIsName
@@ -85,6 +86,7 @@ static Stz* aSF[]
   /* */ "SF_DCM"_Stz,
   /* */ "SF_DIRECTION"_Stz,
   /* */ "SF_FLD_NM"_Stz,
+  /* */ "SF_FLT_LIT"_Stz,
   /* */ "SF_GROUPBY"_Stz,
   /* */ "SF_IDX_COL"_Stz,
   /* */ "SF_IDX_NM"_Stz,

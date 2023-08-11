@@ -53,6 +53,7 @@ namespace STORE
     static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
     static bool bIs_Direction(Stz* szArg);       // asc, desc
     static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Flt_Lit(Stz* szArg);         // StrLib::bIsFloat()
     static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
     static bool bIs_Idx_Col(Stz* szArg);         // $In
     static bool bIs_Idx_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
@@ -116,6 +117,7 @@ namespace STORE
     bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
+    bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
     bool bIs_GroupBy(void);         // GROUPBY
     bool bIs_Idx_Col(void);         // $In
     bool bIs_Idx_Nm(void);          // Sn
@@ -219,6 +221,7 @@ namespace STORE
     void vSet_Dcm_Lit(Stz* szDcmLit);
     void vSet_Direction(Stz* szColNm);
     void vSet_Fld_Nm(Stz* szFldNm);
+    void vSet_Flt_Lit(Stz* szFltLit);
     void vSet_GroupBy(Stz* szGroupBy);
     void vSet_Idx_Col(i8 iIdxColOdn);
     void vSet_Idx_Col(Stz* szIdxCol);

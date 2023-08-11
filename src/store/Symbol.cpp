@@ -150,6 +150,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Cross(szSymbol))        return SF_CROSS;
   if (bIs_Dcm_Lit(szSymbol))      return SF_DCM_LIT;
   if (bIs_Direction(szSymbol))    return SF_DIRECTION;
+  if (bIs_Flt_Lit(szSymbol))      return SF_FLT_LIT;
   if (bIs_GroupBy(szSymbol))      return SF_GROUPBY;
   if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
   if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
@@ -319,6 +320,7 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (bIs_Cross(szArg))       return false;
   if (bIs_Dcm_Lit(szArg))     return false;
   if (bIs_Direction(szArg))   return false;
+  if (bIs_Flt_Lit(szArg))     return false;
   if (bIs_GroupBy(szArg))     return false;
   if (bIs_Sqy_Op(szArg))      return false;
   if (bIs_Type(szArg))        return false;
@@ -445,6 +447,17 @@ bool Symbol::bIs_Fld_Nm(Stz* szArg)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this a float literal?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Flt_Lit(Stz* szArg)
+{
+  _static_
+
+  if (StrLib::bIsFloat(szArg->azChar()))  return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
@@ -1378,6 +1391,22 @@ bool Symbol::bIs_Fld_Nm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a float literal?                                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Flt_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_FLT_LIT != m_eSymbol)
+    return false;
+
+  if (bIs_Flt_Lit(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_GroupBy(void)
@@ -1976,6 +2005,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_DCM_LIT:     vSet_Dcm_Lit(szStz);     break;
     case SF_DIRECTION:   vSet_Direction(szStz);   break;
     case SF_FLD_NM:      vSet_Fld_Nm(szStz);      break;
+    case SF_FLT_LIT:     vSet_Flt_Lit(szStz);     break;
     case SF_GROUPBY:     vSet_GroupBy(szStz);     break;
     case SF_IDX_COL:     vSet_Idx_Col(szStz);     break;
     case SF_IDX_NM:      vSet_Idx_Nm(szStz);      break;
@@ -2775,6 +2805,21 @@ void Symbol::vSet_Fld_Nm(Stz* szFldNm)
   m_eSymbol = SF_FLD_NM;
 
   RASSERT(bIs_Fld_Nm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to be a float literal                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Flt_Lit(Stz* szFltLit)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = szFltLit;
+  m_eSymbol = SF_FLT_LIT;
+
+  RASSERT(bIs_Flt_Lit());
 }
 
 /*----------------------------------------------------------------------------*/
