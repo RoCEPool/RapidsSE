@@ -49,17 +49,7 @@ Symbol::Symbol(eSF eSymbol, i8 iInt)
 
   _checkInitialised_(CN_SYMBOL);
 
-  switch (eSymbol) {
-
-    case SF_COL_NO  : vSet_Col_No(iInt);   break;
-    case SF_IDX_COL : vSet_Idx_Col(iInt);  break;
-    case SF_INT_LIT : vSet_Int_Lit(iInt);  break;
-    case SF_KEY_COL : vSet_Key_Col(iInt);  break;
-    case SF_PRM_COL : vSet_Prm_Col(iInt);  break;
-    case SF_SQY_NO  : vSet_Sqy_No(iInt);   break;
-
-    default: NEVER_REACH;
-  }
+  vSym(eSymbol,iInt);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -1929,10 +1919,12 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
     case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
     case SF_COL_NO:    vSet_Col_No(iInt);    break;
+    case SF_IDX_COL:   vSet_Idx_Col(iInt);   break;
     case SF_INT_LIT:   vSet_Int_Lit(iInt);   break;
     case SF_KEY_COL:   vSet_Key_Col(iInt);   break;
     case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
     case SF_STG_NO:    vSet_Stg_Nm(iInt);    break;
+    case SF_PRM_COL:   vSet_Prm_Col(iInt);   break;
     case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
 
     default: NEVER_REACH;
