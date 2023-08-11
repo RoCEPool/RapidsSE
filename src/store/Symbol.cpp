@@ -62,11 +62,12 @@ Symbol::Symbol(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_sSymbol = szStz;
-  m_eSymbol = eSymbol;
+  m_eSymbol = SF_NONE;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
+
+  vSym(eSymbol,szStz);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
