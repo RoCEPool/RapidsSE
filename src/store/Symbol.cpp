@@ -306,7 +306,7 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 {
   _static_
 
-  if (!bPossibleNm(szArg))
+  if (! bPossibleNm(szArg))
     return false;
 
   return true;
@@ -482,17 +482,8 @@ bool Symbol::bIs_Idx_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (! bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Lit(szArg))     return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Dcm_Lit(szArg))     return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
 }
@@ -577,15 +568,8 @@ bool Symbol::bIs_Ppe_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (! bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
 }
@@ -757,16 +741,8 @@ bool Symbol::bIs_Tbl_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (! bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Lit(szArg))     return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
 }
