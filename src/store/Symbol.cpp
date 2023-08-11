@@ -166,8 +166,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_When(szSymbol))         return SF_WHEN;
   if (bIs_Xrf_No(szSymbol))       return SF_XRF_NO;
 
-  //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
-
   return SF_NONE;
 }
 
@@ -308,23 +306,8 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (!bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Lit(szArg))     return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Cross(szArg))       return false;
-  if (bIs_Dcm_Lit(szArg))     return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Flt_Lit(szArg))     return false;
-  if (bIs_GroupBy(szArg))     return false;
-  if (bIs_Int_Lit(szArg))     return false;
-  if (bIs_Sqy_Op(szArg))      return false;
-  if (bIs_Type(szArg))        return false;
-  if (bIs_When(szArg))        return false;
 
   return true;
 }
@@ -885,6 +868,9 @@ bool Symbol::bIs_Xrf_No(Stz* szArg)
 bool Symbol::bPossibleNm(Stz* szChrSeq)
 {
   _static_
+
+  if (! StrLib::bIsSqlName(szChrSeq->azChar()))
+    return false;
 
   if (ST_NONE != SketchTkn::eEvalSketch(szChrSeq))
     return false;
