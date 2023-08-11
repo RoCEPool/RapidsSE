@@ -28,7 +28,6 @@ Symbol::Symbol(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_eSymbol = SF_NONE;
-
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -57,7 +56,7 @@ Symbol::Symbol(eSF eSymbol, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Symbol::Symbol(eSF eSymbol, Stz* szStz)
+Symbol::Symbol(eSF eSymbol, Stz* szChrSeq)
     : Object(CN_SYMBOL)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -67,7 +66,7 @@ Symbol::Symbol(eSF eSymbol, Stz* szStz)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vSym(eSymbol,szStz);
+  vSym(eSymbol,szChrSeq);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -89,14 +88,14 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
-eQO Symbol::eEvalSubQryOp(Stz* szSymbol)
+eQO Symbol::eEvalSubQryOp(Stz* szChrSeq)
 {
   _static_
 
-       if (szSymbol->bSame("exists"_Stz))    return QO_EXISTS_OP;
-  else if (szSymbol->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
-  else if (szSymbol->bSame("in"_Stz))        return QO_IN_OP;
-  else if (szSymbol->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+       if (szChrSeq->bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (szChrSeq->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (szChrSeq->bSame("in"_Stz))        return QO_IN_OP;
+  else if (szChrSeq->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
 
   else return QO_NONE;
 }
@@ -122,40 +121,40 @@ eRO Symbol::eEvalRelnOp(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* evaluate symbol form of given arg                                          */
 /*----------------------------------------------------------------------------*/
-eSF Symbol::eEvalSymbol(Stz* szSymbol)
+eSF Symbol::eEvalSymbol(Stz* szChrSeq)
 {
   _static_
 
-  if (bIs_Agg_Fn(szSymbol))       return SF_AGG_FN;
-  if (bIs_As(szSymbol))           return SF_AS;
-  if (bIs_Bol_Fn(szSymbol))       return SF_BOL_FN;
-  if (bIs_Bol_Lit(szSymbol))      return SF_BOL_LIT;
-  if (bIs_Bol_Op(szSymbol))       return SF_BOL_OP;
-  if (bIs_Bound(szSymbol))        return SF_BOUND;
-  if (bIs_Brace(szSymbol))        return SF_BRACE;
-  if (bIs_Col_No(szSymbol))       return SF_COL_NO;
-  if (bIs_Col_Tc(szSymbol))       return SF_COL_TC;
-  if (bIs_Col_Type(szSymbol))     return SF_COL_TYPE;
-  if (bIs_Comma(szSymbol))        return SF_COMMA;
-  if (bIs_Cross(szSymbol))        return SF_CROSS;
-  if (bIs_Dcm_Lit(szSymbol))      return SF_DCM_LIT;
-  if (bIs_Direction(szSymbol))    return SF_DIRECTION;
-  if (bIs_Flt_Lit(szSymbol))      return SF_FLT_LIT;
-  if (bIs_GroupBy(szSymbol))      return SF_GROUPBY;
-  if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
-  if (bIs_Int_Lit(szSymbol))      return SF_INT_LIT;
-  if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
-  if (bIs_Mth_Op(szSymbol))       return SF_MTH_OP;
-  if (bIs_Parenthesis(szSymbol))  return SF_PARENTHESIS;
-  if (bIs_Rln_Op(szSymbol))       return SF_RLN_OP;
-  if (bIs_Sqy_Prm(szSymbol))      return SF_PRM_COL;
-  if (bIs_Sqy_Op(szSymbol))       return SF_SQY_OP;
-  if (bIs_Sqy_Rsl(szSymbol))      return SF_SQY_NO;
-  if (bIs_Stg_Cast(szSymbol))     return SF_STG_CAST;
-  if (bIs_String(szSymbol))       return SF_STRING;
-  if (bIs_Type(szSymbol))         return SF_TYPE;
-  if (bIs_When(szSymbol))         return SF_WHEN;
-  if (bIs_Xrf_No(szSymbol))       return SF_XRF_NO;
+  if (bIs_Agg_Fn(szChrSeq))       return SF_AGG_FN;
+  if (bIs_As(szChrSeq))           return SF_AS;
+  if (bIs_Bol_Fn(szChrSeq))       return SF_BOL_FN;
+  if (bIs_Bol_Lit(szChrSeq))      return SF_BOL_LIT;
+  if (bIs_Bol_Op(szChrSeq))       return SF_BOL_OP;
+  if (bIs_Bound(szChrSeq))        return SF_BOUND;
+  if (bIs_Brace(szChrSeq))        return SF_BRACE;
+  if (bIs_Col_No(szChrSeq))       return SF_COL_NO;
+  if (bIs_Col_Tc(szChrSeq))       return SF_COL_TC;
+  if (bIs_Col_Type(szChrSeq))     return SF_COL_TYPE;
+  if (bIs_Comma(szChrSeq))        return SF_COMMA;
+  if (bIs_Cross(szChrSeq))        return SF_CROSS;
+  if (bIs_Dcm_Lit(szChrSeq))      return SF_DCM_LIT;
+  if (bIs_Direction(szChrSeq))    return SF_DIRECTION;
+  if (bIs_Flt_Lit(szChrSeq))      return SF_FLT_LIT;
+  if (bIs_GroupBy(szChrSeq))      return SF_GROUPBY;
+  if (bIs_Idx_Col(szChrSeq))      return SF_IDX_COL;
+  if (bIs_Int_Lit(szChrSeq))      return SF_INT_LIT;
+  if (bIs_Key_Col(szChrSeq))      return SF_KEY_COL;
+  if (bIs_Mth_Op(szChrSeq))       return SF_MTH_OP;
+  if (bIs_Parenthesis(szChrSeq))  return SF_PARENTHESIS;
+  if (bIs_Rln_Op(szChrSeq))       return SF_RLN_OP;
+  if (bIs_Sqy_Prm(szChrSeq))      return SF_PRM_COL;
+  if (bIs_Sqy_Op(szChrSeq))       return SF_SQY_OP;
+  if (bIs_Sqy_Rsl(szChrSeq))      return SF_SQY_NO;
+  if (bIs_Stg_Cast(szChrSeq))     return SF_STG_CAST;
+  if (bIs_String(szChrSeq))       return SF_STRING;
+  if (bIs_Type(szChrSeq))         return SF_TYPE;
+  if (bIs_When(szChrSeq))         return SF_WHEN;
+  if (bIs_Xrf_No(szChrSeq))       return SF_XRF_NO;
 
   return SF_NONE;
 }
@@ -581,11 +580,11 @@ bool Symbol::bIs_Rln_Op(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szStz)
+bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szChrSeq)
 {
   _static_
 
-  if (StrLib::bBeginsWith(szStz->azChar(), "_SQCRLKEY_"))
+  if (StrLib::bBeginsWith(szChrSeq->azChar(), "_SQCRLKEY_"))
     return true;
 
   return false;
@@ -594,12 +593,12 @@ bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szStz)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Nm(BASE::Stz *szStz)
+bool Symbol::bIs_Sqy_Nm(BASE::Stz *szChrSeq)
 {
   _static_
 
-  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
+  if (StrLib::bBeginsWith(szChrSeq->azChar(), "__subquery") ||
+      StrLib::bBeginsWith(szChrSeq->azChar(), "__sq"))
     return true;
 
   return false;
@@ -608,12 +607,12 @@ bool Symbol::bIs_Sqy_Nm(BASE::Stz *szStz)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_No(BASE::Stz *szStz)
+bool Symbol::bIs_Sqy_No(BASE::Stz *szChrSeq)
 {
   _static_
 
-  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
+  if (StrLib::bBeginsWith(szChrSeq->azChar(), "__subquery") ||
+      StrLib::bBeginsWith(szChrSeq->azChar(), "__sq"))
     return true;
 
   return false;
@@ -696,12 +695,12 @@ bool Symbol::bIs_Stg_Cast(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Stg_Nm(BASE::Stz *szStz)
+bool Symbol::bIs_Stg_Nm(BASE::Stz *szChrSeq)
 {
   _static_
 
-  char acFirst  = szStz->azChar()[0];
-  char acSecond = szStz->azChar()[1];
+  char acFirst  = szChrSeq->azChar()[0];
+  char acSecond = szChrSeq->azChar()[1];
 
   if ('S' == acFirst
       && StrLib::bIsDigit(acSecond))
@@ -949,7 +948,7 @@ eRO Symbol::eEvalRelnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eRO eRelnOp = eEvalRelnOp(m_sSymbol);
+  eRO eRelnOp = eEvalRelnOp(m_sChrSeq);
 
   return eRelnOp;
 }
@@ -961,7 +960,7 @@ eQO Symbol::eEvalSubQryOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eQO eSubQryOp = eEvalSubQryOp(m_sSymbol);
+  eQO eSubQryOp = eEvalSubQryOp(m_sChrSeq);
 
   return eSubQryOp;
 }
@@ -973,7 +972,7 @@ i8 Symbol::iSF_ordinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  i8 i_Col = StrLib::iGleanInt(m_sSymbol.azChar());
+  i8 i_Col = StrLib::iGleanInt(m_sChrSeq.azChar());
 
   return i_Col;
 }
@@ -985,10 +984,10 @@ char Symbol::cSF_tblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-//  char acThird  = m_sSymbol.azChar()[2];
-//  char acFourth = m_sSymbol.azChar()[3];
+  char acFirst  = m_sChrSeq.azChar()[0];
+  char acSecond = m_sChrSeq.azChar()[1];
+//  char acThird  = m_sChrSeq.azChar()[2];
+//  char acFourth = m_sChrSeq.azChar()[3];
 
   if ('$' == acFirst && StrLib::bIsAlpha(acSecond))
     return acSecond;
@@ -1003,7 +1002,7 @@ bool Symbol::bHasSymbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (* m_sSymbol.azChar())
+  if (* m_sChrSeq.azChar())
     return true;
 
   return false;
@@ -1048,7 +1047,7 @@ bool Symbol::bIs_Agg_Fn(void)
   if (SF_AGG_FN != m_eSymbol)
     return false;
 
-  if (bIs_Agg_Fn(m_sSymbol))
+  if (bIs_Agg_Fn(m_sChrSeq))
     return true;
 
   return false;
@@ -1064,7 +1063,7 @@ bool Symbol::bIs_As(void)
   if (SF_AS != m_eSymbol)
     return false;
 
-  if (bIs_As(m_sSymbol))
+  if (bIs_As(m_sChrSeq))
     return true;
 
   return false;
@@ -1080,7 +1079,7 @@ bool Symbol::bIs_As_Nm(void)
   if (SF_AS_NM != m_eSymbol)
     return false;
 
-  if (bIs_As_Nm(m_sSymbol))
+  if (bIs_As_Nm(m_sChrSeq))
     return true;
 
   return false;
@@ -1112,7 +1111,7 @@ bool Symbol::bIs_Bol_Fn(void)
   if (SF_BOL_FN != m_eSymbol)
     return false;
 
-  if (bIs_Bol_Fn(m_sSymbol))
+  if (bIs_Bol_Fn(m_sChrSeq))
     return true;
 
   return false;
@@ -1128,7 +1127,7 @@ bool Symbol::bIs_Bol_Lit(void)
   if (SF_BOL_LIT != m_eSymbol)
     return false;
 
-  if (bIs_Bol_Lit(m_sSymbol))
+  if (bIs_Bol_Lit(m_sChrSeq))
     return true;
 
   return false;
@@ -1144,7 +1143,7 @@ bool Symbol::bIs_Bol_Op(void)
   if (SF_BOL_OP != m_eSymbol)
     return false;
 
-  if (bIs_Bol_Op(m_sSymbol))
+  if (bIs_Bol_Op(m_sChrSeq))
     return true;
 
   return false;
@@ -1160,7 +1159,7 @@ bool Symbol::bIs_Bound(void)
   if (SF_BOUND != m_eSymbol)
     return false;
 
-  if (bIs_Bound(m_sSymbol))
+  if (bIs_Bound(m_sChrSeq))
     return true;
 
   return false;
@@ -1176,7 +1175,7 @@ bool Symbol::bIs_Brace(void)
   if (SF_BRACE != m_eSymbol)
     return false;
 
-  if (bIs_Brace(m_sSymbol))
+  if (bIs_Brace(m_sChrSeq))
     return true;
 
   return false;
@@ -1192,7 +1191,7 @@ bool Symbol::bIs_Col_Nm(void)
   if (SF_COL_NM != m_eSymbol)
     return false;
 
-  if (bIs_Col_Nm(m_sSymbol))
+  if (bIs_Col_Nm(m_sChrSeq))
     return true;
 
   return false;
@@ -1240,7 +1239,7 @@ bool Symbol::bIs_Col_No(void)
   if (SF_COL_NO != m_eSymbol)
     return false;
 
-  if (bIs_Col_No(m_sSymbol)) {
+  if (bIs_Col_No(m_sChrSeq)) {
     return true;
   }
 
@@ -1257,7 +1256,7 @@ bool Symbol::bIs_Col_Tc(void)
   if (SF_COL_TC != m_eSymbol)
     return false;
 
-  if (bIs_Col_Tc(m_sSymbol))
+  if (bIs_Col_Tc(m_sChrSeq))
     return true;
 
   return false;
@@ -1273,7 +1272,7 @@ bool Symbol::bIs_Col_Type(void)
   if (SF_COL_TYPE != m_eSymbol)
     return false;
 
-  if (bIs_Col_Type(m_sSymbol))
+  if (bIs_Col_Type(m_sChrSeq))
     return true;
 
   return false;
@@ -1289,7 +1288,7 @@ bool Symbol::bIs_Comma(void)
   if (SF_COMMA != m_eSymbol)
     return false;
 
-  if (bIs_Comma(m_sSymbol))
+  if (bIs_Comma(m_sChrSeq))
     return true;
   else
     return false;
@@ -1305,7 +1304,7 @@ bool Symbol::bIs_Cross(void)
   if (SF_CROSS != m_eSymbol)
     return false;
 
-  if (bIs_Cross(m_sSymbol))
+  if (bIs_Cross(m_sChrSeq))
     return true;
   else
     return false;
@@ -1321,7 +1320,7 @@ bool Symbol::bIs_Dcm_Lit(void)
   if (SF_DCM_LIT != m_eSymbol)
     return false;
 
-  if (bIs_Dcm_Lit(m_sSymbol))
+  if (bIs_Dcm_Lit(m_sChrSeq))
     return true;
 
   return false;
@@ -1337,7 +1336,7 @@ bool Symbol::bIs_Direction(void)
   if (SF_DIRECTION != m_eSymbol)
     return false;
 
-  if (bIs_Direction(m_sSymbol))
+  if (bIs_Direction(m_sChrSeq))
     return true;
   else
     return false;
@@ -1353,7 +1352,7 @@ bool Symbol::bIs_Fld_Nm(void)
   if (SF_FLD_NM != m_eSymbol)
     return false;
 
-  if (bIs_Fld_Nm(m_sSymbol))
+  if (bIs_Fld_Nm(m_sChrSeq))
     return true;
   else
     return false;
@@ -1369,7 +1368,7 @@ bool Symbol::bIs_Flt_Lit(void)
   if (SF_FLT_LIT != m_eSymbol)
     return false;
 
-  if (bIs_Flt_Lit(m_sSymbol))
+  if (bIs_Flt_Lit(m_sChrSeq))
     return true;
 
   return false;
@@ -1385,7 +1384,7 @@ bool Symbol::bIs_GroupBy(void)
   if (SF_GROUPBY != m_eSymbol)
     return false;
 
-  if (bIs_GroupBy(m_sSymbol))
+  if (bIs_GroupBy(m_sChrSeq))
     return true;
   else
     return false;
@@ -1401,7 +1400,7 @@ bool Symbol::bIs_Idx_Col(void)
   if (SF_IDX_COL != m_eSymbol)
     return false;
 
-  if (bIs_Idx_Col(m_sSymbol))
+  if (bIs_Idx_Col(m_sChrSeq))
     return true;
 
   return false;
@@ -1417,7 +1416,7 @@ bool Symbol::bIs_Idx_Nm(void)
   if (SF_IDX_NM != m_eSymbol)
     return false;
 
-  if (bIs_Idx_Nm(m_sSymbol))
+  if (bIs_Idx_Nm(m_sChrSeq))
     return true;
 
   return false;
@@ -1433,7 +1432,7 @@ bool Symbol::bIs_Int_Lit(void)
   if (SF_INT_LIT != m_eSymbol)
     return false;
 
-  if (bIs_Int_Lit(m_sSymbol))
+  if (bIs_Int_Lit(m_sChrSeq))
     return true;
 
   return false;
@@ -1449,7 +1448,7 @@ bool Symbol::bIs_Key_Col(void)
   if (SF_KEY_COL != m_eSymbol)
     return false;
 
-  if (bIs_Key_Col(m_sSymbol))
+  if (bIs_Key_Col(m_sChrSeq))
     return true;
 
   return false;
@@ -1465,7 +1464,7 @@ bool Symbol::bIs_Mth_Op(void)
   if (SF_MTH_OP != m_eSymbol)
     return false;
 
-  if (bIs_Mth_Op(m_sSymbol))
+  if (bIs_Mth_Op(m_sChrSeq))
     return true;
 
   return false;
@@ -1481,7 +1480,7 @@ bool Symbol::bIs_Note(void)
   if (SF_NOTE != m_eSymbol)
     return false;
 
-  if (bIs_Note(m_sSymbol))
+  if (bIs_Note(m_sChrSeq))
     return true;
 
   return false;
@@ -1497,7 +1496,7 @@ bool Symbol::bIs_Parenthesis(void)
   if (SF_PARENTHESIS != m_eSymbol)
     return false;
 
-  if (bIs_Parenthesis(m_sSymbol))
+  if (bIs_Parenthesis(m_sChrSeq))
     return true;
 
   return false;
@@ -1513,7 +1512,7 @@ bool Symbol::bIs_Ppe_Nm(void)
   if (SF_PPE_NM != m_eSymbol)
     return false;
 
-  if (bIs_Ppe_Nm(m_sSymbol))
+  if (bIs_Ppe_Nm(m_sChrSeq))
     return true;
 
   return false;
@@ -1529,7 +1528,7 @@ bool Symbol::bIs_Rln_Op(void)
   if (SF_RLN_OP != m_eSymbol)
     return false;
 
-  if (bIs_Rln_Op(m_sSymbol))
+  if (bIs_Rln_Op(m_sChrSeq))
     return true;
 
   return false;
@@ -1542,7 +1541,7 @@ bool Symbol::bIs_Sqy_Prm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIs_Sqy_Prm(m_sSymbol))
+  if (bIs_Sqy_Prm(m_sChrSeq))
     return true;
 
   return false;
@@ -1558,7 +1557,7 @@ bool Symbol::bIs_Sqy_No(void)
   if (SF_SQY_NO != m_eSymbol)
     return false;
 
-  if (bIs_Sqy_No(m_sSymbol))
+  if (bIs_Sqy_No(m_sChrSeq))
     return true;
 
   return false;
@@ -1574,7 +1573,7 @@ bool Symbol::bIs_Sqy_Op(void)
   if (SF_SQY_OP != m_eSymbol)
     return false;
 
-  if (bIs_Sqy_Op(m_sSymbol))
+  if (bIs_Sqy_Op(m_sChrSeq))
     return true;
 
   return false;
@@ -1590,7 +1589,7 @@ bool Symbol::bIs_Sqy_Rsl(void)
   if (SF_SQY_RSL != m_eSymbol)
     return false;
 
-  if (bIs_Sqy_Rsl(m_sSymbol))
+  if (bIs_Sqy_Rsl(m_sChrSeq))
     return true;
 
   return false;
@@ -1606,7 +1605,7 @@ bool Symbol::bIs_Stg_Cast(void)
   if (SF_STG_CAST != m_eSymbol)
     return false;
 
-  if (bIs_Stg_Cast(m_sSymbol))
+  if (bIs_Stg_Cast(m_sChrSeq))
     return true;
 
   return false;
@@ -1622,7 +1621,7 @@ bool Symbol::bIs_Stg_Nm(void)
   if (SF_STG_NO != m_eSymbol)
     return false;
 
-  if (bIs_Stg_Nm(m_sSymbol))
+  if (bIs_Stg_Nm(m_sChrSeq))
     return true;
 
   return false;
@@ -1638,7 +1637,7 @@ bool Symbol::bIs_String(void)
   if (SF_STRING != m_eSymbol)
     return false;
 
-  if (bIs_String(m_sSymbol))
+  if (bIs_String(m_sChrSeq))
     return true;
 
   return false;
@@ -1654,7 +1653,7 @@ bool Symbol::bIs_Tbl_Nm(void)
   if (SF_TBL_NM != m_eSymbol)
     return false;
 
-  if (bIs_Tbl_Nm(m_sSymbol))
+  if (bIs_Tbl_Nm(m_sChrSeq))
     return true;
 
   return false;
@@ -1670,7 +1669,7 @@ bool Symbol::bIs_Tbl_Syn(void)
   if (SF_TBL_SYN != m_eSymbol)
     return false;
 
-  if (bIs_Tbl_Syn(m_sSymbol))
+  if (bIs_Tbl_Syn(m_sChrSeq))
     return true;
 
   return false;
@@ -1686,7 +1685,7 @@ bool Symbol::bIs_Tbl_Syn_rep(void)
   if (SF_TBL_SYN_rep != m_eSymbol)
     return false;
 
-  if (bIs_Tbl_Syn_rep(m_sSymbol))
+  if (bIs_Tbl_Syn_rep(m_sChrSeq))
     return true;
 
   return false;
@@ -1702,7 +1701,7 @@ bool Symbol::bIs_Type(void)
   if (SF_TYPE != m_eSymbol)
     return false;
 
-  if (bIs_Type(m_sSymbol))
+  if (bIs_Type(m_sChrSeq))
     return true;
 
   return false;
@@ -1718,7 +1717,7 @@ bool Symbol::bIs_When(void)
   if (SF_WHEN != m_eSymbol)
     return false;
 
-  if (bIs_When(m_sSymbol))
+  if (bIs_When(m_sChrSeq))
     return true;
 
   return false;
@@ -1734,7 +1733,7 @@ bool Symbol::bIs_Xk_Cast(void)
   if (SF_XK_CAST != m_eSymbol)
     return false;
 
-  if (bIs_Xk_Cast(m_sSymbol))
+  if (bIs_Xk_Cast(m_sChrSeq))
     return true;
 
   return false;
@@ -1750,7 +1749,7 @@ bool Symbol::bIs_Xrf_No(void)
   if (SF_XRF_NO != m_eSymbol)
     return false;
 
-  if (bIs_Xrf_No(m_sSymbol))
+  if (bIs_Xrf_No(m_sChrSeq))
     return true;
 
   return false;
@@ -1763,13 +1762,13 @@ bool Symbol::bNeedsBrace(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("between"_Stz))        return true;
-  else if (m_sSymbol.bSame("case"_Stz))           return true;
-  else if (m_sSymbol.bSame("in"_Stz))             return true;
-  else if (m_sSymbol.bSame("matchLeading"_Stz))   return true;
-  else if (m_sSymbol.bSame("matchMiddle"_Stz))    return true;
-  else if (m_sSymbol.bSame("matchMiddle1"_Stz))   return true;
-  else if (m_sSymbol.bSame("matchTrailing"_Stz))  return true;
+       if (m_sChrSeq.bSame("between"_Stz))        return true;
+  else if (m_sChrSeq.bSame("case"_Stz))           return true;
+  else if (m_sChrSeq.bSame("in"_Stz))             return true;
+  else if (m_sChrSeq.bSame("matchLeading"_Stz))   return true;
+  else if (m_sChrSeq.bSame("matchMiddle"_Stz))    return true;
+  else if (m_sChrSeq.bSame("matchMiddle1"_Stz))   return true;
+  else if (m_sChrSeq.bSame("matchTrailing"_Stz))  return true;
 
   return false;
 }
@@ -1794,7 +1793,7 @@ bool Symbol::bSame(char cArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (*m_sSymbol.azChar() == cArg)
+  if (*m_sChrSeq.azChar() == cArg)
     return true;
   else
     return false;
@@ -1807,7 +1806,7 @@ bool Symbol::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (m_sSymbol.bSame(szArg))
+  if (m_sChrSeq.bSame(szArg))
     return true;
 
   return false;
@@ -1820,7 +1819,7 @@ bool Symbol::bSame(Symbol* pArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (m_sSymbol.bSame(pArg->m_sSymbol))
+  if (m_sChrSeq.bSame(pArg->m_sChrSeq))
     return true;
 
   return false;
@@ -1833,7 +1832,7 @@ i8 Symbol::iSF_number(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  i8 i = m_sSymbol.iToI8();
+  i8 i = m_sChrSeq.iToI8();
 
   return i;
 }
@@ -1848,7 +1847,7 @@ Stz* Symbol::szSF_symbol(eSF eSymbol_xchk)
   if (SF_NONE != eSymbol_xchk)
     RASSERT(eSymbol_xchk = m_eSymbol);
 
-  return m_sSymbol.szStz();
+  return m_sChrSeq.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1858,7 +1857,7 @@ char Symbol::cSF_char(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return * m_sSymbol.azChar();
+  return * m_sChrSeq.azChar();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1952,51 +1951,51 @@ void Symbol::vSym(eSF eSymbol, i8 iInt, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(eSF eSymbol, Stz* szStz)
+void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   switch (eSymbol) {
 
-    case SF_AGG_FN:      vSet_Agg_Fn(szStz);      break;
-    case SF_AS:          vSet_As(szStz);          break;
-    case SF_AS_NM:       vSet_As_Nm(szStz);       break;
-    case SF_BOL_FN:      vSet_Bol_Fn(szStz);      break;
-    case SF_BOL_LIT:     vSet_Bol_Lit(szStz);     break;
-    case SF_BOL_OP:      vSet_Bol_Op(szStz);      break;
-    case SF_BOUND:       vSet_Bound(szStz);       break;
-    case SF_BRACE:       vSet_Brace(szStz);       break;
-    case SF_COL_NM:      vSet_Col_Nm(szStz);      break;
-    case SF_COL_NM_syn:  vSet_Col_Nm_syn(szStz);  break;
-    case SF_COL_NO:      vSet_Col_No(szStz);      break;
-    case SF_COL_TC:      vSet_Col_Tc(szStz);      break;
-    case SF_COL_TYPE:    vSet_Col_Type(szStz);    break;
-    case SF_COMMA:       vSet_Comma(szStz);       break;
-    case SF_CROSS:       vSet_Cross(szStz);       break;
-    case SF_DCM_LIT:     vSet_Dcm_Lit(szStz);     break;
-    case SF_DIRECTION:   vSet_Direction(szStz);   break;
-    case SF_FLD_NM:      vSet_Fld_Nm(szStz);      break;
-    case SF_FLT_LIT:     vSet_Flt_Lit(szStz);     break;
-    case SF_GROUPBY:     vSet_GroupBy(szStz);     break;
-    case SF_IDX_COL:     vSet_Idx_Col(szStz);     break;
-    case SF_IDX_NM:      vSet_Idx_Nm(szStz);      break;
-    case SF_INT_LIT:     vSet_Int_Lit(szStz);     break;
-    case SF_KEY_COL:     vSet_Key_Col(szStz);     break;
-    case SF_NOTE:        vSet_Note(szStz);        break;
-    case SF_MTH_OP:      vSet_Mth_Op(szStz);      break;
-    case SF_PARENTHESIS: vSet_Parenthesis(szStz); break;
-    case SF_PPE_NM:      vSet_Ppe_Nm(szStz);      break;
-    case SF_PRM_COL:     vSet_Prm_Col(szStz);     break;
-    case SF_RLN_OP:      vSet_Rln_Op(szStz);      break;
-    case SF_SQY_OP:      vSet_Sqy_Op(szStz);      break;
-    case SF_STG_CAST:    vSet_Stg_Cast(szStz);    break;
-    case SF_STRING:      vSet_String(szStz);      break;
-    case SF_TBL_NM:      vSet_Tbl_Nm(szStz);      break;
-    case SF_TBL_SYN:     vSet_Tbl_Syn(szStz);     break;
-    case SF_TYPE:        vSet_Type(szStz);        break;
-    case SF_WHEN:        vSet_When(szStz);        break;
-    case SF_XK_CAST:     vSet_Xk_Cast(szStz);     break;
-    case SF_XRF_NO:      vSet_Xrf_No(szStz);      break;
+    case SF_AGG_FN:      vSet_Agg_Fn(szChrSeq);      break;
+    case SF_AS:          vSet_As(szChrSeq);          break;
+    case SF_AS_NM:       vSet_As_Nm(szChrSeq);       break;
+    case SF_BOL_FN:      vSet_Bol_Fn(szChrSeq);      break;
+    case SF_BOL_LIT:     vSet_Bol_Lit(szChrSeq);     break;
+    case SF_BOL_OP:      vSet_Bol_Op(szChrSeq);      break;
+    case SF_BOUND:       vSet_Bound(szChrSeq);       break;
+    case SF_BRACE:       vSet_Brace(szChrSeq);       break;
+    case SF_COL_NM:      vSet_Col_Nm(szChrSeq);      break;
+    case SF_COL_NM_syn:  vSet_Col_Nm_syn(szChrSeq);  break;
+    case SF_COL_NO:      vSet_Col_No(szChrSeq);      break;
+    case SF_COL_TC:      vSet_Col_Tc(szChrSeq);      break;
+    case SF_COL_TYPE:    vSet_Col_Type(szChrSeq);    break;
+    case SF_COMMA:       vSet_Comma(szChrSeq);       break;
+    case SF_CROSS:       vSet_Cross(szChrSeq);       break;
+    case SF_DCM_LIT:     vSet_Dcm_Lit(szChrSeq);     break;
+    case SF_DIRECTION:   vSet_Direction(szChrSeq);   break;
+    case SF_FLD_NM:      vSet_Fld_Nm(szChrSeq);      break;
+    case SF_FLT_LIT:     vSet_Flt_Lit(szChrSeq);     break;
+    case SF_GROUPBY:     vSet_GroupBy(szChrSeq);     break;
+    case SF_IDX_COL:     vSet_Idx_Col(szChrSeq);     break;
+    case SF_IDX_NM:      vSet_Idx_Nm(szChrSeq);      break;
+    case SF_INT_LIT:     vSet_Int_Lit(szChrSeq);     break;
+    case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
+    case SF_NOTE:        vSet_Note(szChrSeq);        break;
+    case SF_MTH_OP:      vSet_Mth_Op(szChrSeq);      break;
+    case SF_PARENTHESIS: vSet_Parenthesis(szChrSeq); break;
+    case SF_PPE_NM:      vSet_Ppe_Nm(szChrSeq);      break;
+    case SF_PRM_COL:     vSet_Prm_Col(szChrSeq);     break;
+    case SF_RLN_OP:      vSet_Rln_Op(szChrSeq);      break;
+    case SF_SQY_OP:      vSet_Sqy_Op(szChrSeq);      break;
+    case SF_STG_CAST:    vSet_Stg_Cast(szChrSeq);    break;
+    case SF_STRING:      vSet_String(szChrSeq);      break;
+    case SF_TBL_NM:      vSet_Tbl_Nm(szChrSeq);      break;
+    case SF_TBL_SYN:     vSet_Tbl_Syn(szChrSeq);     break;
+    case SF_TYPE:        vSet_Type(szChrSeq);        break;
+    case SF_WHEN:        vSet_When(szChrSeq);        break;
+    case SF_XK_CAST:     vSet_Xk_Cast(szChrSeq);     break;
+    case SF_XRF_NO:      vSet_Xrf_No(szChrSeq);      break;
 
     default: NEVER_REACH;
   }
@@ -2010,14 +2009,14 @@ void Symbol::vSym(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_sSymbol = pSymbol->m_sSymbol;
+  m_sChrSeq = pSymbol->m_sChrSeq;
   m_eSymbol = pSymbol->m_eSymbol;
 
   if (SF_COL_NO == m_eSymbol)
-    RASSERT(Symbol::bIs_Col_No(m_sSymbol));
+    RASSERT(Symbol::bIs_Col_No(m_sChrSeq));
 
   if (SF_COL_TC == m_eSymbol)
-    RASSERT(Symbol::bIs_Col_Tc(m_sSymbol));
+    RASSERT(Symbol::bIs_Col_Tc(m_sChrSeq));
 
 }
 
@@ -2029,14 +2028,14 @@ void Symbol::vSymPpy(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_sSymbol = pSymbol->m_sSymbol;
+  m_sChrSeq = pSymbol->m_sChrSeq;
   m_eSymbol = pSymbol->m_eSymbol;
 
   if (SF_COL_NO == m_eSymbol)
-    RASSERT(Symbol::bIs_Col_No(m_sSymbol));
+    RASSERT(Symbol::bIs_Col_No(m_sChrSeq));
 
   if (SF_COL_TC == m_eSymbol)
-    RASSERT(Symbol::bIs_Col_Tc(m_sSymbol));
+    RASSERT(Symbol::bIs_Col_Tc(m_sChrSeq));
 
   Y_vAll(pSymbol);
 }
@@ -2448,7 +2447,7 @@ void Symbol::vSet_Agg_Fn(Stz* szAggFn)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szAggFn;
+  m_sChrSeq = szAggFn;
   m_eSymbol = SF_AGG_FN;
 
   RASSERT(bIs_Agg_Fn());
@@ -2463,7 +2462,7 @@ void Symbol::vSet_As(Stz* szAs)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szAs;
+  m_sChrSeq = szAs;
   m_eSymbol = SF_AS;
 
   RASSERT(bIs_As());
@@ -2478,7 +2477,7 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
 
   RASSERT(SF_NONE == m_eSymbol || SF_AS_NM == m_eSymbol);
 
-  m_sSymbol = szAsNm;
+  m_sChrSeq = szAsNm;
   m_eSymbol = SF_AS_NM;
   Y_vCut(P_Synthetic);
 
@@ -2510,7 +2509,7 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szBolFn;
+  m_sChrSeq = szBolFn;
   m_eSymbol = SF_BOL_FN;
 
   RASSERT(bIs_Bol_Fn());
@@ -2525,7 +2524,7 @@ void Symbol::vSet_Bol_Lit(Stz* szBolLit)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szBolLit;
+  m_sChrSeq = szBolLit;
   m_eSymbol = SF_BOL_LIT;
 
   RASSERT(bIs_Bol_Lit());
@@ -2540,7 +2539,7 @@ void Symbol::vSet_Bol_Op(Stz* szBolOp)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szBolOp;
+  m_sChrSeq = szBolOp;
   m_eSymbol = SF_BOL_OP;
 
   RASSERT(bIs_Bol_Op());
@@ -2555,7 +2554,7 @@ void Symbol::vSet_Bound(Stz* szBound)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szBound;
+  m_sChrSeq = szBound;
   m_eSymbol = SF_BOUND;
 
   RASSERT(bIs_Bound());
@@ -2570,7 +2569,7 @@ void Symbol::vSet_Brace(Stz* szBrace)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szBrace;
+  m_sChrSeq = szBrace;
   m_eSymbol = SF_BRACE;
 
   RASSERT(bIs_Brace());
@@ -2585,7 +2584,7 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
 
   RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol);
 
-  m_sSymbol = szColNm;
+  m_sChrSeq = szColNm;
   m_eSymbol = SF_COL_NM;
 
   Y_vCut(P_DisamCol);
@@ -2603,7 +2602,7 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
+  vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sChrSeq.szStz());
   m_eSymbol = SF_COL_NM;
   Y_vSet(P_DisamCol);
 
@@ -2619,7 +2618,7 @@ void Symbol::vSet_Col_Nm_syn(Stz* szColNm_syn)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szColNm_syn;
+  m_sChrSeq = szColNm_syn;
   m_eSymbol = SF_COL_NM;
 
   Y_vSet(P_Synthetic);
@@ -2651,7 +2650,7 @@ void Symbol::vSet_Col_No(Stz* szColNm)
 
   RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol  || SF_COL_TC == m_eSymbol);
 
-  m_sSymbol = szColNm;
+  m_sChrSeq = szColNm;
   m_eSymbol = SF_COL_NO;
 
   RASSERT(bIs_Col_No());
@@ -2681,7 +2680,7 @@ void Symbol::vSet_Col_Tc(Stz* szColTc)
 
   RASSERT(SF_NONE == m_eSymbol || SF_COL_NM == m_eSymbol || SF_COL_TC == m_eSymbol);
 
-  m_sSymbol = szColTc;
+  m_sChrSeq = szColTc;
   m_eSymbol = SF_COL_TC;
 
   RASSERT(bIs_Col_Tc());
@@ -2696,7 +2695,7 @@ void Symbol::vSet_Comma(Stz* szComma)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szComma;
+  m_sChrSeq = szComma;
   m_eSymbol = SF_COMMA;
 
   RASSERT(bIs_Comma());
@@ -2711,7 +2710,7 @@ void Symbol::vSet_Cross(Stz* szCross)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szCross;
+  m_sChrSeq = szCross;
   m_eSymbol = SF_CROSS;
 
   RASSERT(bIs_Cross());
@@ -2726,7 +2725,7 @@ void Symbol::vSet_Col_Type(Stz* szColType)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szColType;
+  m_sChrSeq = szColType;
   m_eSymbol = SF_COL_TYPE;
 
   RASSERT(bIs_Col_Type());
@@ -2741,7 +2740,7 @@ void Symbol::vSet_Dcm_Lit(Stz* szDcmLit)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szDcmLit;
+  m_sChrSeq = szDcmLit;
   m_eSymbol = SF_DCM_LIT;
 
   RASSERT(bIs_Dcm_Lit());
@@ -2756,7 +2755,7 @@ void Symbol::vSet_Direction(Stz* szColNm)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szColNm;
+  m_sChrSeq = szColNm;
   m_eSymbol = SF_DIRECTION;
 
   RASSERT(bIs_Direction());
@@ -2771,7 +2770,7 @@ void Symbol::vSet_Fld_Nm(Stz* szFldNm)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szFldNm;
+  m_sChrSeq = szFldNm;
   m_eSymbol = SF_FLD_NM;
 
   RASSERT(bIs_Fld_Nm());
@@ -2786,7 +2785,7 @@ void Symbol::vSet_Flt_Lit(Stz* szFltLit)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szFltLit;
+  m_sChrSeq = szFltLit;
   m_eSymbol = SF_FLT_LIT;
 
   RASSERT(bIs_Flt_Lit());
@@ -2801,7 +2800,7 @@ void Symbol::vSet_GroupBy(Stz* szGroupBy)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szGroupBy;
+  m_sChrSeq = szGroupBy;
   m_eSymbol = SF_GROUPBY;
 
   RASSERT(bIs_GroupBy());
@@ -2831,7 +2830,7 @@ void Symbol::vSet_Idx_Col(Stz* szIdxCol)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szIdxCol;
+  m_sChrSeq = szIdxCol;
   m_eSymbol = SF_IDX_COL;
 
   RASSERT(bIs_Idx_Col());
@@ -2846,7 +2845,7 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szIdxNm;
+  m_sChrSeq = szIdxNm;
   m_eSymbol = SF_IDX_NM;
 
   RASSERT(bIs_Idx_Nm());
@@ -2861,7 +2860,7 @@ void Symbol::vSet_Int_Lit(i8 iIIntLIt)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = iIIntLIt;
+  m_sChrSeq = iIIntLIt;
   m_eSymbol = SF_INT_LIT;
 
   RASSERT(bIs_Int_Lit());
@@ -2876,7 +2875,7 @@ void Symbol::vSet_Int_Lit(Stz* szIntLit)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szIntLit;
+  m_sChrSeq = szIntLit;
   m_eSymbol = SF_INT_LIT;
 
   RASSERT(bIs_Int_Lit());
@@ -2906,7 +2905,7 @@ void Symbol::vSet_Key_Col(Stz* szKeyCol)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szKeyCol;
+  m_sChrSeq = szKeyCol;
   m_eSymbol = SF_KEY_COL;
 
   RASSERT(bIs_Key_Col());
@@ -2921,7 +2920,7 @@ void Symbol::vSet_Mth_Op(Stz* szMthOp)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szMthOp;
+  m_sChrSeq = szMthOp;
   m_eSymbol = SF_MTH_OP;
 
   RASSERT(bIs_Mth_Op());
@@ -2936,7 +2935,7 @@ void Symbol::vSet_Note(Stz* szNote)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szNote;
+  m_sChrSeq = szNote;
   m_eSymbol = SF_NOTE;
 
   RASSERT(bIs_Note());
@@ -2951,7 +2950,7 @@ void Symbol::vSet_Parenthesis(Stz* szParenthesis)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szParenthesis;
+  m_sChrSeq = szParenthesis;
   m_eSymbol = SF_PARENTHESIS;
 
   RASSERT(bIs_Parenthesis());
@@ -2966,7 +2965,7 @@ void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szPpeNm;
+  m_sChrSeq = szPpeNm;
   m_eSymbol = SF_PPE_NM;
 
   RASSERT(bIs_Ppe_Nm());
@@ -2996,7 +2995,7 @@ void Symbol::vSet_Prm_Col(Stz* szPrmCol)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szPrmCol;
+  m_sChrSeq = szPrmCol;
   m_eSymbol = SF_PRM_COL;
 
   RASSERT(bIs_Sqy_Prm());
@@ -3011,7 +3010,7 @@ void Symbol::vSet_Rln_Op(Stz* szRlnOp)
 
   RASSERT(SF_NONE == m_eSymbol || SF_SQY_OP == m_eSymbol);
 
-  m_sSymbol = szRlnOp;
+  m_sChrSeq = szRlnOp;
   m_eSymbol = SF_RLN_OP;
 
   RASSERT(bIs_Rln_Op());
@@ -3041,7 +3040,7 @@ void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
 
   RASSERT(SF_NONE == m_eSymbol || SF_SQY_OP == m_eSymbol);
 
-  m_sSymbol = szSqyOp;
+  m_sChrSeq = szSqyOp;
   m_eSymbol = SF_SQY_OP;
 
   RASSERT(bIs_Sqy_Op());
@@ -3056,7 +3055,7 @@ void Symbol::vSet_Stg_Cast(Stz* szStgCast)
 
   RASSERT(SF_NONE == m_eSymbol || SF_STG_CAST == m_eSymbol);
 
-  m_sSymbol = szStgCast;
+  m_sChrSeq = szStgCast;
   m_eSymbol = SF_STG_CAST;
 
   RASSERT(bIs_Stg_Cast());
@@ -3086,7 +3085,7 @@ void Symbol::vSet_String(Stz* szString)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szString;
+  m_sChrSeq = szString;
   m_eSymbol = SF_STRING;
 
   RASSERT(bIs_String());
@@ -3101,7 +3100,7 @@ void Symbol::vSet_Tbl_Nm(Stz* szTblNm)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szTblNm;
+  m_sChrSeq = szTblNm;
   m_eSymbol = SF_TBL_NM;
 
   RASSERT(bIs_Tbl_Nm());
@@ -3131,7 +3130,7 @@ void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szTblSyn;
+  m_sChrSeq = szTblSyn;
   m_eSymbol = SF_TBL_SYN;
 
   RASSERT(bIs_Tbl_Syn());
@@ -3164,7 +3163,7 @@ void Symbol::vSet_Type(Stz* szType)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szType;
+  m_sChrSeq = szType;
   m_eSymbol = SF_TYPE;
 
   RASSERT(bIs_Type());
@@ -3179,7 +3178,7 @@ void Symbol::vSet_When(Stz* szWhen)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szWhen;
+  m_sChrSeq = szWhen;
   m_eSymbol = SF_WHEN;
 
   RASSERT(bIs_When());
@@ -3194,7 +3193,7 @@ void Symbol::vSet_Xk_Cast(Stz* szXkCast)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szXkCast;
+  m_sChrSeq = szXkCast;
   m_eSymbol = SF_XK_CAST;
 
   RASSERT(bIs_Xk_Cast());
@@ -3224,7 +3223,7 @@ void Symbol::vSet_Xrf_No(Stz* szXrefNo)
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  m_sSymbol = szXrefNo;
+  m_sChrSeq = szXrefNo;
   m_eSymbol = SF_XRF_NO;
 
   RASSERT(bIs_Xrf_No());
@@ -3244,7 +3243,7 @@ void Symbol::vSymSprint(Stz* szFormat, ...)
   StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  m_sSymbol = sSymbol;
+  m_sChrSeq = sSymbol;
 }
 
 /*============================================================================*/

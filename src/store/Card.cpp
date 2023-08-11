@@ -57,7 +57,7 @@ void Card::vInit(eCK eCard)
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
-  //m_xSymbol.m_sSymbol = ""_Stz;
+  //m_xSymbol.m_sChrSeq = ""_Stz;
   m_cMark1 = MARK_BLANK;
   m_cMark2 = MARK_BLANK;
 
@@ -86,7 +86,7 @@ Card::~Card(void) noexcept(false)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sSymbol.szStz(),md_Bearing);
+//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sChrSeq.szStz(),md_Bearing);
 //
 //  if (this == pPriorCard)
 //    vDebugPoint();

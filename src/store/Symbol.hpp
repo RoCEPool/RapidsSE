@@ -17,7 +17,7 @@ namespace STORE
   {
   private:
     eSF     m_eSymbol;
-    s256    m_sSymbol;
+    s256    m_sChrSeq;
     TagSet* m_pProperties;
 
   protected:
@@ -27,7 +27,7 @@ namespace STORE
   public:
     Symbol(void);
     Symbol(eSF eSymbol, i8 iInt);
-    Symbol(eSF eSymbol, Stz* szStz);
+    Symbol(eSF eSymbol, Stz* szChrSeq);
 
     ~Symbol(void);
 
@@ -35,52 +35,52 @@ namespace STORE
     static eQO  eEvalSubQryOp(Stz* szSymbol);
     static eSF  eEvalSymbol(Stz* szSymbol);
 
-    static bool bIs_Agg_Fn(Stz* szArg);          // avg, count, ... sum
-    static bool bIs_As(Stz* szArg);              // AS
-    static bool bIs_As_Nm(Stz* szArg);           // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Bol_Fn(Stz* szArg);          // between, case ... matchTrailing
-    static bool bIs_Bol_Lit(Stz* szArg);         // FALSE, TRUE
-    static bool bIs_Bol_Op(Stz* szArg);          // and, not, or
-    static bool bIs_Bound(Stz* szArg);           // BOUND, LBOUND, UBOUND
-    static bool bIs_Brace(Stz* szArg);           // {
-    static bool bIs_Col_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Col_No(Stz* szArg);          // $n
-    static bool bIs_Col_Tc(Stz* szArg);          // $c.n
-    static bool bIs_Col_Type(Stz* szArg);        // BOOLEAN, ... VARCHAR
-    static bool bIs_Comma(Stz* szArg);           // ,
-    static bool bIs_Cross(Stz* szArg);           // CROSS
-    static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
-    static bool bIs_Direction(Stz* szArg);       // asc, desc
-    static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Flt_Lit(Stz* szArg);         // StrLib::bIsFloat()
-    static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
-    static bool bIs_Idx_Col(Stz* szArg);         // $In
-    static bool bIs_Idx_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Int_Lit(Stz* szArg);         // StrLib::bIsInteger()
-    static bool bIs_Key_Col(Stz* szArg);         // $Kn
-    static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
-    static bool bIs_Note(Stz* szArg);            // ...any...
-    static bool bIs_Parenthesis(Stz* szArg);     // ( or )
-    static bool bIs_Ppe_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Rln_Op(Stz* szArg);          // <, <=, ... >
-    static bool bIs_Sqy_Crl_Key(Stz* szStz);     // _SQCRLKEY_
-    static bool bIs_Sqy_Nm(Stz* szStz);          // __subqueryN
-    static bool bIs_Sqy_No(Stz* szStz);          // __subqueryN
-    static bool bIs_Sqy_Op(Stz* szArg);          // exists, in, notExists, notIn
-    static bool bIs_Sqy_Prm(Stz* szArg);         // %n
-    static bool bIs_Sqy_Rsl(Stz* szArg);         // __n
-    static bool bIs_Stg_Cast(Stz* szArg);        // BROADCAST, HASHCAST
-    static bool bIs_Stg_Nm(Stz* szArg);          // Sn
-    static bool bIs_String(Stz* szArg);          // 'abc'
-    static bool bIs_Tbl_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Tbl_Syn(Stz* szArg);         // $c
-    static bool bIs_Tbl_Syn_rep(Stz* szArg);     // $C
-    static bool bIs_Type(Stz* szArg);            // TYPE
-    static bool bIs_When(Stz* szArg);            // WHEN
-    static bool bIs_Xk_Cast(Stz* szArg);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
-    static bool bIs_Xrf_No(Stz* szArg);          // #n
+    static bool bIs_Agg_Fn(Stz* szChrSeq);          // avg, count, ... sum
+    static bool bIs_As(Stz* szChrSeq);              // AS
+    static bool bIs_As_Nm(Stz* szChrSeq);           // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Bol_Fn(Stz* szChrSeq);          // between, case ... matchTrailing
+    static bool bIs_Bol_Lit(Stz* szChrSeq);         // FALSE, TRUE
+    static bool bIs_Bol_Op(Stz* szChrSeq);          // and, not, or
+    static bool bIs_Bound(Stz* szChrSeq);           // BOUND, LBOUND, UBOUND
+    static bool bIs_Brace(Stz* szChrSeq);           // {
+    static bool bIs_Col_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Col_No(Stz* szChrSeq);          // $n
+    static bool bIs_Col_Tc(Stz* szChrSeq);          // $c.n
+    static bool bIs_Col_Type(Stz* szChrSeq);        // BOOLEAN, ... VARCHAR
+    static bool bIs_Comma(Stz* szChrSeq);           // ,
+    static bool bIs_Cross(Stz* szChrSeq);           // CROSS
+    static bool bIs_Dcm_Lit(Stz* szChrSeq);         // StrLib::bIsDecimal()
+    static bool bIs_Direction(Stz* szChrSeq);       // asc, desc
+    static bool bIs_Fld_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Flt_Lit(Stz* szChrSeq);         // StrLib::bIsFloat()
+    static bool bIs_GroupBy(Stz* szChrSeq);         // GROUPBY
+    static bool bIs_Idx_Col(Stz* szChrSeq);         // $In
+    static bool bIs_Idx_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Int_Lit(Stz* szChrSeq);         // StrLib::bIsInteger()
+    static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
+    static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
+    static bool bIs_Note(Stz* szChrSeq);            // ...any...
+    static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
+    static bool bIs_Ppe_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Rln_Op(Stz* szChrSeq);          // <, <=, ... >
+    static bool bIs_Sqy_Crl_Key(Stz* szChrSeq);     // _SQCRLKEY_
+    static bool bIs_Sqy_Nm(Stz* szChrSeq);          // __subqueryN
+    static bool bIs_Sqy_No(Stz* szChrSeq);          // __subqueryN
+    static bool bIs_Sqy_Op(Stz* szChrSeq);          // exists, in, notExists, notIn
+    static bool bIs_Sqy_Prm(Stz* szChrSeq);         // %n
+    static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
+    static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
+    static bool bIs_Stg_Nm(Stz* szChrSeq);          // Sn
+    static bool bIs_String(Stz* szChrSeq);          // 'abc'
+    static bool bIs_Tbl_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Tbl_Syn(Stz* szChrSeq);         // $c
+    static bool bIs_Tbl_Syn_rep(Stz* szChrSeq);     // $C
+    static bool bIs_Type(Stz* szChrSeq);            // TYPE
+    static bool bIs_When(Stz* szChrSeq);            // WHEN
+    static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
+    static bool bIs_Xrf_No(Stz* szChrSeq);          // #n
 
-    static bool bPossibleNm(Stz* szArg);
+    static bool bPossibleNm(Stz* szChrSeq);
 
     static void vStripDisamb(String* psArg);
 
@@ -149,7 +149,7 @@ namespace STORE
     void vPpy_To_String(String* pString);
 
     bool bSame(char cArg);
-    bool bSame(Stz* szArg);
+    bool bSame(Stz* szChrSeq);
     bool bSame(Symbol* pArg);
 
     char cSF_char(void);
@@ -163,7 +163,7 @@ namespace STORE
     void vSym(eSF eSymbol, char cChr, i8 iInt);
     void vSym(eSF eSymbol, i8 iInt);
     void vSym(eSF eSymbol, i8 iInt, Symbol* pSymbol);
-    void vSym(eSF eSymbol, Stz* szStz);
+    void vSym(eSF eSymbol, Stz* szChrSeq);
     void vSym(Symbol* pSymbol);
     void vSymPpy(Symbol* pSymbol);
 
@@ -212,7 +212,7 @@ namespace STORE
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
     void vSet_Col_Nm_syn(Stz* szColNm_syn);
-    void vSet_Col_No(Stz* szStz);
+    void vSet_Col_No(Stz* szChrSeq);
     void vSet_Col_No(i8 iStmColOdn);
     void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
     void vSet_Col_Tc(Stz* szColTc);
