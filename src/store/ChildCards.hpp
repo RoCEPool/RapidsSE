@@ -21,9 +21,7 @@ namespace STORE
    ~ChildCards(void) noexcept(false);
 
     i8   nChildCards(void);
-    void vConcatChildren(Stz* szTerms, eCK eChild=CK_NONE);
 
-    i8    iFindChild(eCK eCard);
     i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
@@ -46,13 +44,13 @@ namespace STORE
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
     Card* pPlopChild(void);
 
-    void vRemoveChild(Card* pChildCard);
+    void vRemoveChild(Card* pChild);
     void vDeleteAllChildren(void);
     void vDeleteChild(Card* pChild);
     void vRemoveSub(Card* pSubCard);
-    void vReplaceChildWithItsSubs(Card* pChildCard);
-    void vReplaceChild(Card* pChildCard, Card* pWithCard);
-    void vRotateChild(Card* pChildCard);
+    void vReplaceChildWithItsSubs(Card* pChild);
+    void vReplaceChild(Card* pChild, Card* pWith);
+    void vRotateChild(Card* pChild);
 
     void vTransferChildren(Card* pFrom);
     void vTransferChildren_limited(Card* pFrom, Symbol xSymbol);

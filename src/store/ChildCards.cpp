@@ -51,21 +51,6 @@ i8 ChildCards::nChildCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* concat children                                                            */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vConcatChildren(Stz* szTerms, eCK eChild)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChildCard = pGetChild(i_Child);
-    if (CK_NONE == eChild || eChild == pChildCard->eCard())
-      szTerms->vCatSprint(" %s"_Stz, pChildCard->szSymbol(SF_NONE));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove and delete all children (non-recursive)                             */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vDeleteAllChildren(void)
@@ -87,24 +72,6 @@ void ChildCards::vDeleteChild(Card* pChild)
   vRemove(pChild);
 
   delete pChild;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find immediate child-card                                                  */
-/*----------------------------------------------------------------------------*/
-i8 ChildCards::iFindChild(eCK eCard)
-{
-  //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nSubCards = nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pTestCard = pGetChild(i_Sub);
-
-    if (pTestCard->bIsCard(eCard))
-      return i_Sub;
-  }
-
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,10 +370,10 @@ Card* ChildCards::pPlopChild(void)
 /*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vRemoveChild(Card* pChildCard)
+void ChildCards::vRemoveChild(Card* pChild)
 {
 
-  vRemove(pChildCard);
+  vRemove(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,40 +401,40 @@ void ChildCards::vRemoveSub(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* remove given child card from this card and replace it with its children    */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vReplaceChildWithItsSubs(Card* pChildCard)
+void ChildCards::vReplaceChildWithItsSubs(Card* pChild)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  Card* pAfter = pChildCard;
+  Card* pAfter = pChild;
 
-  while (Card* pSub = pChildCard->pPop()) {
+  while (Card* pSub = pChild->pPop()) {
     vInsertAfter(pSub, pAfter);
     pAfter = pSub;
   }
 
-  vRemoveChild(pChildCard);
+  vRemoveChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
 /* replace immediate child with given card                                    */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vReplaceChild(Card* pChildCard, Card* pWithCard)
+void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  vReplace(pChildCard, pWithCard);
+  vReplace(pChild, pWith);
 }
 
 /*----------------------------------------------------------------------------*/
 /* replace immediate child with given card                                    */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vRotateChild(Card* pChildCard)
+void ChildCards::vRotateChild(Card* pChild)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  vRemoveChild(pChildCard);
+  vRemoveChild(pChild);
 
-  vPush(pChildCard);
+  vPush(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
