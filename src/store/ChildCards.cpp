@@ -338,11 +338,34 @@ void ChildCards::vOntoStzList(StzList* pStzList)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* ChildCards::pPeekChild(void)
+{
+  Card* pChild = pPeek(0);
+
+  return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* ChildCards::pPopChild(void)
 {
   Card* pChild = pPop();
 
   return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop top child if it matches given symbol                                   */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pPopChildIf(Symbol xSymbol)
+{
+  Card* pChild = pPeekChild();
+
+  if (! pChild->bSameSymbol(&xSymbol))
+    return nullptr;
+
+  return pPop();
 }
 
 /*----------------------------------------------------------------------------*/
