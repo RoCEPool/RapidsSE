@@ -12,6 +12,7 @@ enum eSF // symbol form
   /* */ SF_AS_NM,       // As Name             : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_AS_NM_syn,   // As Name (synthetic) : __COLn
   /* */ SF_BOL_FN,      // Boolean Function    : BETWEEN, CASE ... MATCHTRAILING
+  /* */ SF_BOL_LIT,     // Boolean Literal     : FALSE, TRUE
   /* */ SF_BOL_OP,      // Boolean Operator    : AND, NOT, OR
   /* */ SF_BOUND,       // Index Bound         : BOUND, LBOUND, UBOUND
   /* */ SF_BRACE,       // Brace               : {
@@ -25,11 +26,14 @@ enum eSF // symbol form
   /* */ SF_COMMA,       // comma               : ,
   /* */ SF_CROSS,       // Cross               : CROSS
 
+  /* */ SF_DCM_LIT,     // Decimal Literal     : StrLib::bIsDecimal()
   /* */ SF_DIRECTION,   // Direction           : ASC, DESC
-  /* */ SF_FLD_NM,      // Fold Name           : StrLib::bIsDecimal/Float/Integer()
+  /* */ SF_FLD_NM,      // Fold Name           :
+  /* */ SF_FLT_LIT,     // Float Literal       : StrLib::bIsFloat()
   /* */ SF_GROUPBY,     // GroupBy             : GROUPBY
   /* */ SF_IDX_COL,     // Index Column no     : $In
   /* */ SF_IDX_NM,      // Index Name          : bIsName
+  /* */ SF_INT_LIT,     // Integer Literal     : StrLib::bIsInteger()
   /* */ SF_KEY_COL,     // Key Column no       : $Kn
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
   /* */ SF_NOTE,        // Note Literal        : ...any...
@@ -66,6 +70,7 @@ static Stz* aSF[]
   /* */ "SF_AS_NM"_Stz,
   /* */ "SF_AS_NM_syn"_Stz,
   /* */ "SF_BOL_FN"_Stz,
+  /* */ "SF_BOL_LIT"_Stz,
   /* */ "SF_BOL_OP"_Stz,
   /* */ "SF_BOUND"_Stz,
   /* */ "SF_BRACE"_Stz,
@@ -79,11 +84,14 @@ static Stz* aSF[]
   /* */ "SF_COMMA"_Stz,
   /* */ "SF_CROSS"_Stz,
 
+  /* */ "SF_DCM"_Stz,
   /* */ "SF_DIRECTION"_Stz,
   /* */ "SF_FLD_NM"_Stz,
+  /* */ "SF_FLT_LIT"_Stz,
   /* */ "SF_GROUPBY"_Stz,
   /* */ "SF_IDX_COL"_Stz,
   /* */ "SF_IDX_NM"_Stz,
+  /* */ "SF_FLT_LIT"_Stz,
   /* */ "SF_KEY_COL"_Stz,
   /* */ "SF_MTH_OP"_Stz,
   /* */ "SF_NOTE"_Stz,

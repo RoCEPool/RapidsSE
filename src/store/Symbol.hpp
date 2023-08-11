@@ -40,6 +40,7 @@ namespace STORE
     static bool bIs_As(Stz* szArg);              // AS
     static bool bIs_As_Nm(Stz* szArg);           // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Bol_Fn(Stz* szArg);          // between, case ... matchTrailing
+    static bool bIs_Bol_Lit(Stz* szArg);         // FALSE, TRUE
     static bool bIs_Bol_Op(Stz* szArg);          // and, not, or
     static bool bIs_Bound(Stz* szArg);           // BOUND, LBOUND, UBOUND
     static bool bIs_Brace(Stz* szArg);           // {
@@ -49,11 +50,14 @@ namespace STORE
     static bool bIs_Col_Type(Stz* szArg);        // BOOLEAN, ... VARCHAR
     static bool bIs_Comma(Stz* szArg);           // ,
     static bool bIs_Cross(Stz* szArg);           // CROSS
+    static bool bIs_Dcm_Lit(Stz* szArg);         // StrLib::bIsDecimal()
     static bool bIs_Direction(Stz* szArg);       // asc, desc
     static bool bIs_Fld_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Flt_Lit(Stz* szArg);         // StrLib::bIsFloat()
     static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
     static bool bIs_Idx_Col(Stz* szArg);         // $In
     static bool bIs_Idx_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Int_Lit(Stz* szArg);         // StrLib::bIsInteger()
     static bool bIs_Key_Col(Stz* szArg);         // $Kn
     static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
     static bool bIs_Note(Stz* szArg);            // ...any...
@@ -99,6 +103,7 @@ namespace STORE
     bool bIs_As_Nm(void);           //
     bool bIs_As_Nm_syn(void);       // __COLn
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
+    bool bIs_Bol_Lit(void);         // FALSE, TRUE
     bool bIs_Bol_Op(void);          // and, not, or
     bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
     bool bIs_Brace(void);           // BRACE
@@ -110,11 +115,14 @@ namespace STORE
     bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
     bool bIs_Comma(void);           // ,
     bool bIs_Cross(void);           // CROSS
+    bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
+    bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
     bool bIs_GroupBy(void);         // GROUPBY
     bool bIs_Idx_Col(void);         // $In
     bool bIs_Idx_Nm(void);          // Sn
+    bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_Note(void);            // ...any...
@@ -198,6 +206,7 @@ namespace STORE
     void vSet_As_Nm(Stz* szAsNm);
     void vSet_As_Nm_syn(i8 iAsNo);
     void vSet_Bol_Fn(Stz* szBolFn);
+    void vSet_Bol_Lit(Stz* szBolLit);
     void vSet_Bol_Op(Stz* szBolOp);
     void vSet_Bound(Stz* szBound);
     void vSet_Brace(Stz* szBrace);
@@ -211,12 +220,15 @@ namespace STORE
     void vSet_Col_Type(Stz* szColType);
     void vSet_Comma(Stz* szComma);
     void vSet_Cross(Stz* szCross);
+    void vSet_Dcm_Lit(Stz* szDcmLit);
     void vSet_Direction(Stz* szColNm);
     void vSet_Fld_Nm(Stz* szFldNm);
+    void vSet_Flt_Lit(Stz* szFltLit);
     void vSet_GroupBy(Stz* szGroupBy);
     void vSet_Idx_Col(i8 iIdxColOdn);
     void vSet_Idx_Col(Stz* szIdxCol);
     void vSet_Idx_Nm(Stz* szIdxNm);
+    void vSet_Int_Lit(Stz* szFltLit);
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Key_Col(Stz* szKeyCol);
     void vSet_Mth_Op(Stz* szMthOp);

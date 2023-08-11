@@ -139,6 +139,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Agg_Fn(szSymbol))       return SF_AGG_FN;
   if (bIs_As(szSymbol))           return SF_AS;
   if (bIs_Bol_Fn(szSymbol))       return SF_BOL_FN;
+  if (bIs_Bol_Lit(szSymbol))      return SF_BOL_LIT;
   if (bIs_Bol_Op(szSymbol))       return SF_BOL_OP;
   if (bIs_Bound(szSymbol))        return SF_BOUND;
   if (bIs_Brace(szSymbol))        return SF_BRACE;
@@ -147,9 +148,12 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Col_Type(szSymbol))     return SF_COL_TYPE;
   if (bIs_Comma(szSymbol))        return SF_COMMA;
   if (bIs_Cross(szSymbol))        return SF_CROSS;
+  if (bIs_Dcm_Lit(szSymbol))      return SF_DCM_LIT;
   if (bIs_Direction(szSymbol))    return SF_DIRECTION;
+  if (bIs_Flt_Lit(szSymbol))      return SF_FLT_LIT;
   if (bIs_GroupBy(szSymbol))      return SF_GROUPBY;
   if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
+  if (bIs_Int_Lit(szSymbol))      return SF_INT_LIT;
   if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
   if (bIs_Mth_Op(szSymbol))       return SF_MTH_OP;
   if (bIs_Number(szSymbol))       return SF_NUMBER;
@@ -246,6 +250,19 @@ bool Symbol::bIs_Bol_Fn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a boolean literal?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Bol_Lit(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("false"_Stz))  return true;
+  else if (szArg->bSame("true"_Stz))   return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a boolean operator?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Op(Stz* szArg)
@@ -298,11 +315,15 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 
   if (bIs_Agg_Fn(szArg))      return false;
   if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
   if (bIs_Bol_Op(szArg))      return false;
   if (bIs_Bound(szArg))       return false;
   if (bIs_Cross(szArg))       return false;
+  if (bIs_Dcm_Lit(szArg))     return false;
   if (bIs_Direction(szArg))   return false;
+  if (bIs_Flt_Lit(szArg))     return false;
   if (bIs_GroupBy(szArg))     return false;
+  if (bIs_Int_Lit(szArg))     return false;
   if (bIs_Sqy_Op(szArg))      return false;
   if (bIs_Type(szArg))        return false;
   if (bIs_When(szArg))        return false;
@@ -393,6 +414,18 @@ bool Symbol::bIs_Cross(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a decimal literal?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Dcm_Lit(Stz* szArg)
+{
+  _static_
+
+  if (StrLib::bIsDecimal(szArg->azChar()))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Direction(Stz* szArg)
@@ -416,6 +449,17 @@ bool Symbol::bIs_Fld_Nm(Stz* szArg)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this a float literal?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Flt_Lit(Stz* szArg)
+{
+  _static_
+
+  if (StrLib::bIsFloat(szArg->azChar()))  return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
@@ -462,12 +506,26 @@ bool Symbol::bIs_Idx_Nm(Stz* szArg)
 
   if (bIs_Agg_Fn(szArg))      return false;
   if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
   if (bIs_Bol_Op(szArg))      return false;
   if (bIs_Bound(szArg))       return false;
+  if (bIs_Dcm_Lit(szArg))     return false;
   if (bIs_Direction(szArg))   return false;
   if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this an integer literal?                                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Int_Lit(Stz* szArg)
+{
+  _static_
+
+  if (StrLib::bIsInteger(szArg->azChar()))  return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -737,6 +795,7 @@ bool Symbol::bIs_Tbl_Nm(Stz* szArg)
 
   if (bIs_Agg_Fn(szArg))      return false;
   if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
   if (bIs_Bol_Op(szArg))      return false;
   if (bIs_Bound(szArg))       return false;
   if (bIs_Direction(szArg))   return false;
@@ -1105,6 +1164,22 @@ bool Symbol::bIs_Bol_Fn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a boolean literal?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Bol_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_BOL_LIT != m_eSymbol)
+    return false;
+
+  if (bIs_Bol_Lit(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a boolean operator?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Op(void)
@@ -1282,6 +1357,22 @@ bool Symbol::bIs_Cross(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a decimal literal?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Dcm_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_DCM_LIT != m_eSymbol)
+    return false;
+
+  if (bIs_Dcm_Lit(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Direction(void)
@@ -1311,6 +1402,22 @@ bool Symbol::bIs_Fld_Nm(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a float literal?                                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Flt_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_FLT_LIT != m_eSymbol)
+    return false;
+
+  if (bIs_Flt_Lit(m_sSymbol))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1356,6 +1463,22 @@ bool Symbol::bIs_Idx_Nm(void)
     return false;
 
   if (bIs_Idx_Nm(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a integer literal?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Int_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_INT_LIT != m_eSymbol)
+    return false;
+
+  if (bIs_Int_Lit(m_sSymbol))
     return true;
 
   return false;
@@ -1898,6 +2021,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_AS:          vSet_As(szStz);          break;
     case SF_AS_NM:       vSet_As_Nm(szStz);       break;
     case SF_BOL_FN:      vSet_Bol_Fn(szStz);      break;
+    case SF_BOL_LIT:     vSet_Bol_Lit(szStz);     break;
     case SF_BOL_OP:      vSet_Bol_Op(szStz);      break;
     case SF_BOUND:       vSet_Bound(szStz);       break;
     case SF_BRACE:       vSet_Brace(szStz);       break;
@@ -1908,11 +2032,14 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_COL_TYPE:    vSet_Col_Type(szStz);    break;
     case SF_COMMA:       vSet_Comma(szStz);       break;
     case SF_CROSS:       vSet_Cross(szStz);       break;
+    case SF_DCM_LIT:     vSet_Dcm_Lit(szStz);     break;
     case SF_DIRECTION:   vSet_Direction(szStz);   break;
     case SF_FLD_NM:      vSet_Fld_Nm(szStz);      break;
+    case SF_FLT_LIT:     vSet_Flt_Lit(szStz);     break;
     case SF_GROUPBY:     vSet_GroupBy(szStz);     break;
     case SF_IDX_COL:     vSet_Idx_Col(szStz);     break;
     case SF_IDX_NM:      vSet_Idx_Nm(szStz);      break;
+    case SF_INT_LIT:     vSet_Int_Lit(szStz);     break;
     case SF_KEY_COL:     vSet_Key_Col(szStz);     break;
     case SF_NOTE:        vSet_Note(szStz);        break;
     case SF_MTH_OP:      vSet_Mth_Op(szStz);      break;
@@ -2453,6 +2580,21 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
+void Symbol::vSet_Bol_Lit(Stz* szBolLit)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = szBolLit;
+  m_eSymbol = SF_BOL_LIT;
+
+  RASSERT(bIs_Bol_Lit());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
 void Symbol::vSet_Bol_Op(Stz* szBolOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -2652,6 +2794,21 @@ void Symbol::vSet_Col_Type(Stz* szColType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Dcm_Lit(Stz* szDcmLit)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = szDcmLit;
+  m_eSymbol = SF_DCM_LIT;
+
+  RASSERT(bIs_Dcm_Lit());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given column-name                                       */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Direction(Stz* szColNm)
@@ -2679,6 +2836,21 @@ void Symbol::vSet_Fld_Nm(Stz* szFldNm)
   m_eSymbol = SF_FLD_NM;
 
   RASSERT(bIs_Fld_Nm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to be a float literal                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Flt_Lit(Stz* szFltLit)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = szFltLit;
+  m_eSymbol = SF_FLT_LIT;
+
+  RASSERT(bIs_Flt_Lit());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2739,6 +2911,21 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
   m_eSymbol = SF_IDX_NM;
 
   RASSERT(bIs_Idx_Nm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to be a float literal                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Int_Lit(Stz* szIntLit)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = szIntLit;
+  m_eSymbol = SF_INT_LIT;
+
+  RASSERT(bIs_Int_Lit());
 }
 
 /*----------------------------------------------------------------------------*/
