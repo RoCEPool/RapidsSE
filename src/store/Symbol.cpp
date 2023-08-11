@@ -49,17 +49,7 @@ Symbol::Symbol(eSF eSymbol, i8 iInt)
 
   _checkInitialised_(CN_SYMBOL);
 
-  switch (eSymbol) {
-
-    case SF_COL_NO  : vSet_Col_No(iInt);   break;
-    case SF_IDX_COL : vSet_Idx_Col(iInt);  break;
-    case SF_INT_LIT : vSet_Int_Lit(iInt);  break;
-    case SF_KEY_COL : vSet_Key_Col(iInt);  break;
-    case SF_PRM_COL : vSet_Prm_Col(iInt);  break;
-    case SF_SQY_NO  : vSet_Sqy_No(iInt);   break;
-
-    default: NEVER_REACH;
-  }
+  vSym(eSymbol,iInt);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -72,11 +62,12 @@ Symbol::Symbol(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_sSymbol = szStz;
-  m_eSymbol = eSymbol;
+  m_eSymbol = SF_NONE;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
+
+  vSym(eSymbol,szStz);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -165,8 +156,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Type(szSymbol))         return SF_TYPE;
   if (bIs_When(szSymbol))         return SF_WHEN;
   if (bIs_Xrf_No(szSymbol))       return SF_XRF_NO;
-
-  //if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
   return SF_NONE;
 }
@@ -308,23 +297,8 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (! bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Lit(szArg))     return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Cross(szArg))       return false;
-  if (bIs_Dcm_Lit(szArg))     return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Flt_Lit(szArg))     return false;
-  if (bIs_GroupBy(szArg))     return false;
-  if (bIs_Int_Lit(szArg))     return false;
-  if (bIs_Sqy_Op(szArg))      return false;
-  if (bIs_Type(szArg))        return false;
-  if (bIs_When(szArg))        return false;
 
   return true;
 }
@@ -499,17 +473,8 @@ bool Symbol::bIs_Idx_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (! bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Lit(szArg))     return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Dcm_Lit(szArg))     return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
 }
@@ -594,15 +559,8 @@ bool Symbol::bIs_Ppe_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (! bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
 }
@@ -774,16 +732,8 @@ bool Symbol::bIs_Tbl_Nm(Stz* szArg)
 {
   _static_
 
-  if (! StrLib::bIsSqlName(szArg->azChar()))
+  if (! bPossibleNm(szArg))
     return false;
-
-  if (bIs_Agg_Fn(szArg))      return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Lit(szArg))     return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
 }
@@ -885,6 +835,9 @@ bool Symbol::bIs_Xrf_No(Stz* szArg)
 bool Symbol::bPossibleNm(Stz* szChrSeq)
 {
   _static_
+
+  if (! StrLib::bIsSqlName(szChrSeq->azChar()))
+    return false;
 
   if (ST_NONE != SketchTkn::eEvalSketch(szChrSeq))
     return false;
@@ -1967,10 +1920,12 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
     case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
     case SF_COL_NO:    vSet_Col_No(iInt);    break;
+    case SF_IDX_COL:   vSet_Idx_Col(iInt);   break;
     case SF_INT_LIT:   vSet_Int_Lit(iInt);   break;
     case SF_KEY_COL:   vSet_Key_Col(iInt);   break;
     case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
     case SF_STG_NO:    vSet_Stg_Nm(iInt);    break;
+    case SF_PRM_COL:   vSet_Prm_Col(iInt);   break;
     case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
 
     default: NEVER_REACH;
