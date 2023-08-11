@@ -30,7 +30,7 @@ namespace BASE
     static void  vAppendNull(char** aaz);
     static void  vAppendPad(char** aaz, const char* s, i8 nLength);
     static void  vAppendString(char** aaz, const char* s);
-    static void  vAppendString(char** aaz, const char* s, i8* piLineNo);
+    static void  vAppendString(char** aaz, i8 nBufSize, const char* s, i8* piLineNo);
     static char* azAscii(i8 i_Char);
     
     static bool  bBackward(char** ps, char* pBegin, const char c);
@@ -137,7 +137,7 @@ namespace BASE
     static bool  bFind(char** ps, const char cArg, i8 iOccurence);
     static bool  bFind(char** ps, const char* sArg);
     static bool  bFind(char** ps, const char* sArg, i8 iLenArg);
-    static void  vFormatFraction(char* sDst, u8 uFraction, i8 iDigits);
+    static void  vFormatFraction(char* sDst, i8 nBufSize, u8 uFraction, i8 iDigits);
     static void  vFree(char** ps);
     
     static i8    iGleanInt(char* azArg);
@@ -269,11 +269,11 @@ namespace BASE
                                char cEnclosedBy_Trailing);
     static void  vSkipWhite(char** ps);
     static void  vSplitSeries(char* azStr, char* azInt, char* sSrc);
-    static void  vSprint(Stz* sDst, Stz* sFormat, ...);
-    static void  vSprint(char* sDst, Stz* sFormat, ...);
-    static void  vSprint(char* sDst, va_list args, const char* sFormat);
-    static void  vSprintCat(Stz*  sDst, Stz* sFormat, ...);
-    static void  vSprintCat(char* sDst, va_list args, const char* sFormat);
+    static void  vSprint(Stz* sDst, i8 nBufSize, Stz* sFormat, ...);
+    static void  vSprint(char* sDst, i8 nBufSize, Stz* sFormat, ...);
+    static void  vSprint(char* sDst, i8 nBufSize, va_list args, const char* sFormat);
+    static void  vSprintCat(Stz*  sDst, i8 nBufSize, Stz* sFormat, ...);
+    static void  vSprintCat(char* sDst, i8 nBufSize, va_list args, const char* sFormat);
     static void  vStrip(char* s, char cTrailing);
     static void  vSubPath(char* azDst, char* azSrc);
 

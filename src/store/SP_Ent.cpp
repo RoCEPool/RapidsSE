@@ -92,13 +92,18 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IndexDef* pIndexDef)
   Stz* szRef = spRef.sz(aEnt->rxRef());
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   "%s %s PaySize: %lld; NEO:"_Stz,
                   szRef,
                   szKey,
                   aEnt->bPayload() ? aEnt->nPaySize() : C_UNKNOWN);
   
   for (i8 i_Level = 0; i_Level < aEnt->nSkipLevels(); i_Level++)
-    StrLib::vSprintCat((Stz*)m_caResult," %d"_Stz,aEnt->tNextEntry(i_Level));
+    StrLib::vSprintCat((Stz*)m_caResult,
+                       sizeof(m_caResult),
+                       " %d"_Stz,
+                       aEnt->tNextEntry(i_Level)
+                       );
 
 }
 

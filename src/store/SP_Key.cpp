@@ -96,7 +96,9 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     
     Column* pCol = pIndexDef->pGetColumn(0);
     
-    StrLib::vSprint((Stz*)m_caResult,"IntElm0 %s %lld"_Stz,
+    StrLib::vSprint((Stz*)m_caResult,
+                    sizeof(m_caResult),
+                    "IntElm0 %s %lld"_Stz,
                     aDM[pCol->eDatum()],
                     *(i8*)aKey);
     return;
@@ -107,7 +109,10 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
   Dtm* ayCursor = aKey->aElmSeq_dtm();
   
 
-  StrLib::vSprint((Stz*)m_caResult,"Key[%lldB]; "_Stz,aKey->nElmSeqSize());
+  StrLib::vSprint((Stz*)m_caResult,
+                  sizeof(m_caResult),
+                  "Key[%lldB]; "_Stz,
+                  aKey->nElmSeqSize());
 
   i8 nIdxCols = pIndexDef->nColumns();
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
@@ -126,7 +131,9 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     if (i_IdxCol)
       StrLib::vConcat(m_caResult,", ");
 
-    StrLib::vSprint((Stz*)caElm,"Elm[%lld %s %lldB] %s"_Stz,
+    StrLib::vSprint((Stz*)caElm,
+                    sizeof(caElm),
+                    "Elm[%lld %s %lldB] %s"_Stz,
                     i_IdxCol,
                     aDM[pCol->eDatum()],
                     nElmBytes,

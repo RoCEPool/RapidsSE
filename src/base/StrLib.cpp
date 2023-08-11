@@ -260,13 +260,16 @@ void StrLib::vAppendString(char** aazCrs, const char* pString)
 /*----------------------------------------------------------------------------*/
 /* vAppendString: append string to workspace with line numbers                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendString(char** aazCrs, const char* pString, i8* piLineNumber)
+void StrLib::vAppendString(char** aazCrs, i8 nBufSize, const char* pString, i8* piLineNumber)
 {
   _static_
 
   char *z = *aazCrs;
+  i8 nOrigBufSize = nBufSize;
   bool bInQuote = false;
   i8 iLineNumber = *piLineNumber;
+
+  UNUSED(nOrigBufSize);
 
   while (*pString) {
     if (*pString == '"') {
@@ -277,12 +280,19 @@ void StrLib::vAppendString(char** aazCrs, const char* pString, i8* piLineNumber)
     }
     if (*pString == '\n' && !bInQuote ) {
       //char* x = z;
-      vSprintCat((Stz*)z, "\n/* %04d */ "_Stz, iLineNumber++);
+      vSprintCat((Stz*)z, nBufSize, "\n/* %04d */ "_Stz, iLineNumber++);
       z += 12;
+      nBufSize -= 12;
+      if (nBufSize < 0) {
+        nBufSize = 0;
+      }
       pString++;
     }
     else {
-      *z++ = *pString++;
+      if (nBufSize > 1) {   // need room for the null terminator
+        *z++ = *pString++;
+        --nBufSize;
+      }
     }
   }
 
@@ -2569,17 +2579,18 @@ bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
 /*----------------------------------------------------------------------------*/
 /* vFormatFraction: format a fraction                                         */
 /*----------------------------------------------------------------------------*/
-void StrLib::vFormatFraction(char* sDst, u8 uFraction, i8 iDigits)
+void StrLib::vFormatFraction(char* sDst, i8 nBufSize, u8 uFraction, i8 iDigits)
 {
   _static_
-  
-  char caFormat[16];
+
+  const i8 nFormatSize = 16;
+  char caFormat[nFormatSize];
   
   // create the format
-  sprintf(caFormat,"%%0%lldlld",iDigits);
+  snprintf(caFormat, nFormatSize, "%%0%lldlld", iDigits);
   
   // sprint the number as an integer
-  sprintf(sDst,caFormat,uFraction);
+  snprintf(sDst, nBufSize, caFormat, uFraction);
   
   // strip off trailing zero's
 //  char *z = sDst;
@@ -3931,13 +3942,14 @@ bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
 char* StrLib::sNew(const char* sFormat, ...)
 {
   _static_
-  
-  char w[C_STRING_ARRAY];
+
+  const i8 nBufSize = C_STRING_ARRAY;
+  char w[nBufSize];
   
   va_list args;
   
   va_start(args,sFormat);
-  vsprintf(w,sFormat,args);
+  vsnprintf(w,nBufSize,sFormat,args);
   va_end(args);
   
   char* s = sDupe(w);
@@ -4803,67 +4815,71 @@ void StrLib::vSplitSeries(char* azStr, char* azInt, char* azSrc)
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, Stz* szFormat, ...)
+void StrLib::vSprint(char* sDst, i8 nBufSize, Stz* szFormat, ...)
 {
   _static_
   
   va_list args;
   
   va_start(args,szFormat);
-  vsprintf(sDst,szFormat->azChar(),args);
+  vsnprintf(sDst, nBufSize, szFormat->azChar(), args);
   va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(Stz* sDst, Stz* szFormat, ...)
+void StrLib::vSprint(Stz* sDst, i8 nBufSize, Stz* szFormat, ...)
 {
   _static_
   
   va_list args;
   
   va_start(args,szFormat);
-  vsprintf(sDst->azChar(),szFormat->azChar(),args);
+  vsnprintf(sDst->azChar(), nBufSize, szFormat->azChar(), args);
   va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, va_list args, const char* sFormat)
+void StrLib::vSprint(char* sDst, i8 nBufSize, va_list args, const char* sFormat)
 {
   _static_
   
-  vsprintf(sDst,sFormat,args);
+  vsnprintf(sDst, nBufSize, sFormat, args);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprintCat(Stz* sDst, Stz* sFormat, ...)
+void StrLib::vSprintCat(Stz* sDst, i8 nBufSize, Stz* sFormat, ...)
 {
   _static_
   
   va_list args;
-  
-  char* sEnd = sDst->azChar() + nLength(sDst->azChar());
-  
+
+  i8 nStrLen = nLength(sDst->azChar());
+  char* sEnd = sDst->azChar() + nStrLen;
+  i8 nBufRemaining = nBufSize - nStrLen;
+
   va_start(args,sFormat);
-  vsprintf(sEnd,sFormat->azChar(),args);
+  vsnprintf(sEnd, nBufRemaining, sFormat->azChar(), args);
   va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprintCat(char* sDst, va_list args, const char* sFormat)
+void StrLib::vSprintCat(char* sDst, i8 nBufSize, va_list args, const char* sFormat)
 {
   _static_
-  
-  char* sEnd = sDst + nLength(sDst);
-  
-  vsprintf(sEnd,sFormat,args);
+
+  i8 nStrLen = nLength(sDst);
+  char* sEnd = sDst + nStrLen;
+  i8 nBufRemaining = nBufSize - nStrLen;
+
+  vsnprintf(sEnd, nBufRemaining, sFormat, args);
 }
 
 /*----------------------------------------------------------------------------*/

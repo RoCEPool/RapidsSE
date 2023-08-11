@@ -143,9 +143,9 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
   
-  StrLib::vSprint(m_caFormat,"%%%llds"_Stz,iLength);
+  StrLib::vSprint(m_caFormat,sizeof(m_caResult),"%%%llds"_Stz,iLength);
 
-  StrLib::vSprint(m_caResult,(Stz*)m_caFormat,szString);
+  StrLib::vSprint(m_caResult,sizeof(m_caResult),(Stz*)m_caFormat,szString);
   
   if (StrLib::bClip(m_caResult,iLength))
     StrLib::vReplaceTail(m_caResult,(char*)"..."_Stz);

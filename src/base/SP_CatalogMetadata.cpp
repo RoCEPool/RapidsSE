@@ -43,6 +43,7 @@ Stz* SP_CatalogMetadata::sz(CatalogMetadata* pCatalogMeta)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
           
   StrLib::vSprint(m_caResult
+    ,sizeof(m_caResult)
                   
     ,"%s"_Stz
                   

@@ -25,7 +25,7 @@ namespace PRIMITIVES
     void vAssertFooter(void) const;
     eEC  eValidFooter(void);
     void vSetFooter(void);
-    void vSprint(Stz* szHeader);
+    void vSprint(Stz* szHeader, i8 nBufSize);
     bool bValidFooter(void);
     i8   iWhenAllocated(void);
   };

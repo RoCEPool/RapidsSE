@@ -2423,7 +2423,7 @@ void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sPpy.azChar(), xArgs, (char*)szFormat);
+  StrLib::vSprint(sPpy.azChar(), sPpy.nArea(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
   Y_vSet(szPpyNm, sPpy);
@@ -3240,7 +3240,7 @@ void Symbol::vSymSprint(Stz* szFormat, ...)
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
+  StrLib::vSprint(sSymbol.azChar(), sSymbol.nArea(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
   m_sChrSeq = sSymbol;

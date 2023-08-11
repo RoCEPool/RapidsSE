@@ -40,6 +40,7 @@ Stz* SP_Node::sz(Node* pNode)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult
+                  ,sizeof(m_caResult)
                   ,"[%lld] %8s %s %lld %8s recv=%p send=%p [%s]"_Stz
                   
                   ,pNode->iNodeId()

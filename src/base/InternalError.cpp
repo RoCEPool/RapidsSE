@@ -91,9 +91,10 @@ char* InternalError::azText(void)
 /*----------------------------------------------------------------------------*/
 void InternalError::vPrint(void)
 {
-  char zIntoBuf[1024];
+  const i8 nBufSize = 1024;
+  char zIntoBuf[nBufSize];
 
-  vSprint(zIntoBuf);
+  vSprint(zIntoBuf, nBufSize);
 
   printf("%s\n",zIntoBuf);
 
@@ -103,9 +104,10 @@ void InternalError::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sprint the exception into given char buffer                                */
 /*----------------------------------------------------------------------------*/
-void InternalError::vSprint(char* azIntoBuf)
+void InternalError::vSprint(char* azIntoBuf, i8 nBufSize)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
+                  nBufSize,
 
                   "Exception eFK=%lld:%s`%s`; "
                   "%s() "

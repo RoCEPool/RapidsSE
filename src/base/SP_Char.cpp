@@ -40,6 +40,7 @@ Stz* SP_Char::sz(char cChar)
     
   if ('\0' == cChar)
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     "null hex %02x"_Stz,
                     
                     cChar
@@ -47,6 +48,7 @@ Stz* SP_Char::sz(char cChar)
   else
   if ('\n' == cChar)
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     "\\n   hex %02x"_Stz,
                     
                     cChar
@@ -54,6 +56,7 @@ Stz* SP_Char::sz(char cChar)
   else
   if (' ' > cChar)
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     "%s hex %02x"_Stz,
                     
                     StrLib::azAscii(cChar),
@@ -61,6 +64,7 @@ Stz* SP_Char::sz(char cChar)
                     );
   else
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     "'%c'  hex %02x"_Stz,
                     
                     cChar,

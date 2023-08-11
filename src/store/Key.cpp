@@ -416,7 +416,12 @@ void Key::vShow(IndexDef* pIndexDef)
     if (0 == i_Col && bReadApi) {
       Rrf xwRef;
       xwRef = * (Rrf*)ayElm;
-      StrLib::vSprint(caLiteral,"%lld.%lld"_Stz,xwRef.iBuffer(),xwRef.iItem());
+      StrLib::vSprint(caLiteral,
+                      sizeof(caLiteral),
+                      "%lld.%lld"_Stz,
+                      xwRef.iBuffer(),
+                      xwRef.iItem()
+                      );
     }
     else
     if (eDatum == DM_VCH) {
@@ -440,7 +445,10 @@ void Key::vShowIntKey(void)
   char caLiteral[128];
 
   i8 iInt = (i8)* (i8*)aElmSeq_dtm();
-  StrLib::vSprint(caLiteral,"%05lld"_Stz,iInt);
+  StrLib::vSprint(caLiteral,
+                  sizeof(caLiteral),
+                  "%05lld"_Stz,
+                  iInt);
   
   vTrace(" Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);
 }

@@ -77,9 +77,7 @@ Stz* SP_Flt::sz(d8 dFlt)
     // See SE-265.
 
     s256 sTmpStr;
-    StrLib::vSprint(sTmpStr.szStz(),
-                    "%.10e"_Stz,
-                    dFlt);
+    sTmpStr.vSprint("%.10e"_Stz, dFlt);
 
     // Find the position of the 'e' in the printed string
     i8 iIdx = StrLib::iFind(sTmpStr.azChar(), 'e');
@@ -93,6 +91,7 @@ Stz* SP_Flt::sz(d8 dFlt)
   }
   else {
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     (Stz *) m_caFormat,
                     dFlt);
   }

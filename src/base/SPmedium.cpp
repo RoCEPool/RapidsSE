@@ -46,7 +46,7 @@ void SPmedium::vCatf(Stz* szFormat, ...)
   
   va_start(vaArgs,szFormat);
 
-  StrLib::vSprintCat(m_caResult,vaArgs,szFormat->azChar());
+  StrLib::vSprintCat(m_caResult,sizeof(m_caResult),vaArgs,szFormat->azChar());
   
   va_end(vaArgs);
 }
@@ -65,7 +65,7 @@ void SPmedium::vCatf(i8 iDepth, Stz* szFormat, ...)
   
   va_start(vaArgs,szFormat);
 
-  StrLib::vSprintCat(m_caResult,vaArgs,szFormat->azChar());
+  StrLib::vSprintCat(m_caResult,sizeof(m_caResult),vaArgs,szFormat->azChar());
   
   va_end(vaArgs);
 }

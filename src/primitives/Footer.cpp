@@ -62,9 +62,10 @@ void Footer::vSetFooter(void)
 /*----------------------------------------------------------------------------*/
 /* sprint the header into readable form                                       */
 /*----------------------------------------------------------------------------*/
-void Footer::vSprint(Stz* szHeader)
+void Footer::vSprint(Stz* szHeader, i8 nBufSize)
 {
   StrLib::vSprint(szHeader,
+                  nBufSize,
                   "Footer: %c%c%c%c%c%c%c%c (%s)"_Stz,
                   m_caFooter[0],
                   m_caFooter[1],

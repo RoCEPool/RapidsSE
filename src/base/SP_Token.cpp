@@ -39,6 +39,7 @@ Stz* SP_Token::sz(Token* pToken)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   "Token[%02lld] %s %s L%03lld C%02lld"_Stz,
                   
                   pToken->i_Token(),

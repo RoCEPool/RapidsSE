@@ -39,13 +39,14 @@ Stz* SP_Word::sz(Word* pWord)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   if (! pWord) {
-    StrLib::vSprint(m_caResult,"%p"_Stz,pWord);
+    StrLib::vSprint(m_caResult,sizeof(m_caResult),"%p"_Stz,pWord);
     return (Stz*) &m_caResult[0];
   }
   
   //  COLON /__dicRoot/std_recoveryWord=0x2048061b0440 \word
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   "%p: %s /%s/%s "
                   "%s"
                   "%s"_Stz
@@ -64,6 +65,7 @@ Stz* SP_Word::sz(Word* pWord)
   
   if (* pWord->szExitHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
+                       sizeof(m_caResult),
                        " exitHook=%s"_Stz,
                        pWord->szExitHook());
   

@@ -715,7 +715,7 @@ void String_t<AREA>::vSprint(Stz* szFormat, ...)
   va_list vaArgs;
   
   va_start(vaArgs,szFormat);
-  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
+  StrLib::vSprint(azChar(),AREA,vaArgs,szFormat->azChar());
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -732,7 +732,7 @@ void String_t<AREA>::vSprintCat(Stz* szFormat, ...)
   va_list vaArgs;
   
   va_start(vaArgs,szFormat);
-  StrLib::vSprintCat(azChar(),vaArgs,szFormat->azChar());
+  StrLib::vSprintCat(azChar(),AREA,vaArgs,szFormat->azChar());
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -746,7 +746,7 @@ void String_t<AREA>::vSprintVA(Stz* szFormat, va_list vaArgs)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
+  StrLib::vSprint(azChar(),AREA,vaArgs,szFormat->azChar());
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
