@@ -4,12 +4,6 @@
 
 #include "BASE.h"
 
-#include <stdatomic.h>
-
-#ifdef WITH_APPLE
-#include <libkern/OSAtomic.h>
-#endif
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -77,7 +71,9 @@ u8 Atomic::uAtomicInc(i8* pWord)
 /*----------------------------------------------------------------------------*/
 bool Atomic::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
 {
+  // Ref: https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
   bool uResult = __atomic_compare_exchange_n(pWord, &uIf, uThen, false, __ATOMIC_SEQ_CST, __ATOMIC_RELAXED);
+
   return uResult;
 }
 
