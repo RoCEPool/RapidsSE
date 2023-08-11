@@ -363,7 +363,7 @@ bool PsxThd::bBindThread(i8 i_Core)
 //  if (iResult == -1) {
 //    vTrace("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
 //  }
-
+  UNUSED(i_Core);
   return true;
 #endif
 }
@@ -502,7 +502,7 @@ void PsxThd::vEnableRealtime_2(void)
   }
   
 #else
-  
+
 #endif
 }
 
@@ -541,7 +541,10 @@ bool PsxThd::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
   iSleep  = xInfoExtended.pth_sleep_time;
   
 #else
-  
+  UNUSED(iUser);
+  UNUSED(iSystem);
+  UNUSED(iUsage);
+  UNUSED(iSleep);
 #endif
   
   return true;

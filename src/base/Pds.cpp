@@ -2,6 +2,7 @@
 /* Pds.cpp -- Primary Data Structure (PDS)                                    */
 /*============================================================================*/
 
+#include <climits>
 #include "BASE.h"
 
 #include "Pds.hpp"

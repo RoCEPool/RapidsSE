@@ -13,7 +13,25 @@
 # Refer to the below url for details:
 #  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 
-DARWIN_WARNINGS := -Werror=invalid-noreturn -Wfatal-errors
+# Warnings that are specific to clang on MacOS
+DARWIN_WARNINGS := -Werror=invalid-noreturn
+DARWIN_WARNINGS +=  -Wfatal-errors
+
+# Specific warnings that are being promoted to errors on clang on MacOS
+DARWIN_ERRORS := -Werror=unused-variable
+DARWIN_ERRORS += -Werror=tautological-constant-out-of-range-compare
+DARWIN_ERRORS += -Werror=unused-lambda-capture
+DARWIN_ERRORS += -Werror=writable-strings
+DARWIN_ERRORS += -Werror=reorder-ctor
+DARWIN_ERRORS += -Werror=missing-declarations
+
+# Warnings specific to MacOS that are to be ignored when compiling
+# the code synthesizer fragment files.
+DARWIN_FRAGMENT_IGNORE_WARNINGS :=
+
+# Warnings specific to MacOS that are to be ignored when compiling
+# the ANTLR-generated tokeniser/parser files.
+DARWIN_ANTLR_IGNORE_WARNINGS :=
 
 DARWIN_CPPFLAGS := -mmacosx-version-min=10.12 -D__APPLE__
 DARWIN_CPPFLAGS_DEBUG := -mmacosx-version-min=10.12 -D__APPLE__
@@ -28,5 +46,4 @@ DARWIN_LIBRARY_EXT := dylib
 DARWIN_LIBS :=
 
 # Any darwin-specific library search paths to include?
-DARWIN_LIB_DIRS := 
-
+DARWIN_LIB_DIRS :=

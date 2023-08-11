@@ -712,11 +712,11 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 iColVal_boolean;     // boolean
   
   Dte iColVal_date;       // date
-  i8 i_DateComponent;
-  u8 uYearComponent;
-  u8 uMonthComponent;
-  u8 uDayComponent;
-  bool bIsLeapYear;
+  i8 i_DateComponent = 0;
+  u8 uYearComponent = 0;
+  u8 uMonthComponent = 0;
+  u8 uDayComponent = 0;
+  bool bIsLeapYear = false;
 
   i8 iColVal_decimal;     // decimal
   u8 uUnscaledNumber;

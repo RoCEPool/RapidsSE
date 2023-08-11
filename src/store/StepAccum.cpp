@@ -84,6 +84,9 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
     m_nMaxMisses = nDiffMisses;
 #else
   // do nothing
+  UNUSED(nEnterCycles);
+  UNUSED(nEnterMisses);
+
 #endif
   if(m_nSumAllocs > m_nMaxAllocs)
     m_nMaxAllocs = m_nSumAllocs;

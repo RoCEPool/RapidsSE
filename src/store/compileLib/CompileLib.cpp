@@ -141,7 +141,7 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz
   ASSERT(!szCompiler || !szCompiler->bIsEmpty());
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -203,7 +203,7 @@ bool CompileLib::bCompile(ExtendedText* pSource, Stz* szDynLibNm, LibInfo* pLibI
   ASSERT(!szCompiler || !szCompiler->bIsEmpty());
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -283,7 +283,7 @@ bool CompileLib::bCompileFile(Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompile
   ASSERT(!szCompiler || !szCompiler->bIsEmpty());
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -390,7 +390,7 @@ void* CompileLib::pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo)
   ASSERT(szSymbolNm);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -423,7 +423,7 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
   ASSERT(pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -454,7 +454,7 @@ void CompileLib::vDelete(LibInfo* pLibInfo, bool bDeleteFile)
   ASSERT(!pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
