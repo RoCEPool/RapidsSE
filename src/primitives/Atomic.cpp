@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include <stdatomic.h>
+
 #ifdef WITH_APPLE
 #include <libkern/OSAtomic.h>
 #endif
@@ -75,18 +77,7 @@ u8 Atomic::uAtomicInc(i8* pWord)
 /*----------------------------------------------------------------------------*/
 bool Atomic::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
 {
-#ifdef WITH_APPLE
-  //u8 uResult = OSAtomicCompareAndSwap64((i8)uIf,(i8)uThen,(i8*)pWord);
-  bool uResult = __sync_bool_compare_and_swap(pWord, uIf, uThen);
-
-#elif defined(WITH_LINUX)
-  bool uResult = __sync_bool_compare_and_swap(pWord, uIf, uThen);
-
-#else
-  u8 uResult = iTestSet(pWord, uIf, uThen);
-  
-#endif
-  
+  bool uResult = __atomic_compare_exchange_n(pWord, &uIf, uThen, false, __ATOMIC_SEQ_CST, __ATOMIC_RELAXED);
   return uResult;
 }
 
