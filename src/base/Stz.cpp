@@ -368,20 +368,6 @@ bool Stz::bIsSomeTrue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this Stz is "$nn"                                                  */
-/*----------------------------------------------------------------------------*/
-bool Stz::bIsStreamColOrd(void)
-{
-  if (! StrLib::bIsDollar(m_caChar[0]))
-    return false;
-
-  if (! StrLib::bIsInteger(&m_caChar[1]))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* bOneOf: test if this Stz is same as one of the args (ignores case)         */
 /*----------------------------------------------------------------------------*/
 bool Stz::bOneOf(Stz* szArg, ...)
@@ -444,22 +430,6 @@ void Stz::vSprint(Stz* szFormat, ...)
   vsprintf(azChar(),szFormat->azChar(),args);
   
   va_end(args);
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this Stz is "$nn"                                                  */
-/*----------------------------------------------------------------------------*/
-char Stz::cTableSyn(void)
-{
-  if (! StrLib::bIsDollar(m_caChar[0]))
-    return '?';
-
-  if (! StrLib::bIsDollar(m_caChar[1]))
-    return '?';
-
-  char cTableSyn = m_caChar[2];
-
-  return cTableSyn;
 }
 
 /*----------------------------------------------------------------------------*/

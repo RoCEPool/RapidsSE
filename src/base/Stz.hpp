@@ -51,14 +51,12 @@ namespace BASE
     bool  bIsInteger(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
-    bool  bIsStreamColOrd(void);
     i8    nLength(void);
     bool  bOneOf(Stz* szArg, ...);
     i8    iOrdinal(void);
     bool  bSame(Stz* szArg);
     i8    nSize(void);
     void  vSprint(Stz* szFormat, ...);
-    char  cTableSyn(void);
     i8    iToI8(void);
     void  vToLower(void);
   };
