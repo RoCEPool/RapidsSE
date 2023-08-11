@@ -289,6 +289,7 @@ void Weaver::vStageLast(void)
 void Weaver::vDynamic(StageDef* pStageDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+  UNUSED(pStageDef);
 
   vTabOp();
   vConcat_cmd("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
@@ -314,8 +315,6 @@ void Weaver::vOp(Card* pCard, bool bCommented)
       return;
   if (CK_COMBINED == eCard)
     return;
-
-  Card_OP* p_OP = (Card_OP*)pCard;
 
   switch (eCard) {
 
@@ -428,6 +427,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 void Weaver::vArgAbsJoin(Stz* szOpArgs, Card_AbsJoin*   pCard_AbsJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+  UNUSED(pCard_AbsJoin);
 
   szOpArgs->vCatSprint("abstractJoin \" 1 \""_Stz);
 }
@@ -546,6 +546,8 @@ void Weaver::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
   m_bSawHash = true;
 
   Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
+  UNUSED(p_hshCol);
+
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   szOpArgs->vCatSprint("\"type %s %s\""_Stz,

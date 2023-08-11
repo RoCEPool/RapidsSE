@@ -129,7 +129,7 @@ void Step::vUnloadToFile(void)
   s256 sDirNm;
   m_pDataStack->vPopStr(sDirNm, __func__);
 
-  s256 sDirPath = "../tmp/";
+  s256 sDirPath = "../tmp/"_Stz;
 
   sDirPath.vConcat(sDirNm);
 

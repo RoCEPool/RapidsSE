@@ -288,6 +288,7 @@ void Queue::vVerify(void)
   }
   
   ASSERT(iCount == m_nItems);
+  UNUSED(iCount);
 }
 
 

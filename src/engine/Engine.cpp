@@ -1018,6 +1018,7 @@ void Engine::vMungeCheck(void)
   Dir* pDir = new Dir(nullptr);
   bool bResult = pDir->bOpen("../sen"_Stz);
   ASSERT(bResult);
+  UNUSED(bResult);
   
   s256 sEntryNm;
   s256 sFilePath;

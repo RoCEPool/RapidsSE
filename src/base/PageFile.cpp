@@ -101,6 +101,7 @@ void PageFile::vInitFooter(void)
     m_pFile->vSeek(iSeekOffset);
     bool bResult = m_pFile->bWriteBytes((void*)&uFooter, sizeof(C_FOOTER));
     ASSERT(bResult);
+    UNUSED(bResult);
   }
 
 }
@@ -115,6 +116,7 @@ void PageFile::vInitMagic(void)
     uMagic = C_MAGIC;
     bool bResult = m_pFile->bWriteBytes(&uMagic, sizeof(C_MAGIC));
     ASSERT(bResult);
+    UNUSED(bResult);
     return;
   }
 
@@ -126,6 +128,7 @@ void PageFile::vInitMagic(void)
     m_pFile->vSeekStart();
     bool bResult = m_pFile->bWriteBytes(&uMagic, sizeof(C_MAGIC));
     ASSERT(bResult);
+    UNUSED(bResult);
   }
 
 }

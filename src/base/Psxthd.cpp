@@ -916,13 +916,16 @@ void PsxThd::vThreadBoost(i8 nPoints)
   
   i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iError);
+
   xSched.sched_priority += (int)nPoints;
   iError = pthread_setschedparam(m_iPsxThdId,iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iError);
+
 #else
   ASSERT(nPoints >= 0);
+  UNUSED(nPoints);
   //vTrace("Boost thread priority not implemented!\n");
 #endif
 
@@ -941,13 +944,17 @@ void PsxThd::vThreadPriority(i8 iPriority)
   
   i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iPolicy);
+  UNUSED(iError);
+
   xSched.sched_priority = (int)iPriority;
   iError = pthread_setschedparam(m_iPsxThdId,iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iError);
+
 #else
   ASSERT(iPriority >= 0);
+  UNUSED(iPriority);
   //vTrace("Set thread priority not implemented!\n");
 #endif
 

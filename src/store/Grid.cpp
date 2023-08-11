@@ -429,7 +429,6 @@ void Grid::vResetNetwork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  Node*   pNode;
   Socket* pSndSkt;
   Socket* pRcvSkt;
   Totup*  pTotup;
@@ -501,7 +500,6 @@ void Grid::vShowGrid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  Node*   pNode;
   Socket* pSndSkt;
   Socket* pRcvSkt;
 
@@ -774,7 +772,9 @@ Parcel* Grid::pParcel(void)
 /* reassemble object parts from the received parcel                           */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
+i8  Grid::iReassembleFromParcel(Parcel* pParcel)
+{
+  UNUSED(pParcel);
 
   return C_UNKNOWN;
 }

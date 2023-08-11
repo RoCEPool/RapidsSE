@@ -43,6 +43,9 @@ Card_Level::~Card_Level(void) noexcept(false)
 void Card_Level::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
 
   eAL eLevel = (eAL)pSymbol()->Y_iGet(P_Level);
 

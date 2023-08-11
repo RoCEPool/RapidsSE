@@ -76,6 +76,7 @@ StreamDefRht::~StreamDefRht(void) noexcept(false)
 void StreamDefRht::vPostRecv(void* aStreamDefRht)
 {
   _static_
+  UNUSED()aStreamDefRht;
 
 //  StreamDefRht* pStreamDefRht = _pStreamDefRht(aStreamDefRht);
 }

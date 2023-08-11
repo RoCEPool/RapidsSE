@@ -542,6 +542,7 @@ void TablePtn::vTruncateIndex(Index *pIndex)
   }
 
   ASSERT(bFoundIndex);
+  UNUSED(bFoundIndex);
 }
 
 /*----------------------------------------------------------------------------*/

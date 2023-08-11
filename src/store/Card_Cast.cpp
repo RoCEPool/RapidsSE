@@ -144,6 +144,9 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
 void Card_Cast::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
 
   vValidate_notHave(CK_LEVEL,CK_NONE);
 }

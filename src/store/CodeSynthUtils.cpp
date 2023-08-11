@@ -24,9 +24,6 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 {
   _static_
 
-  i8 nFileSize = pFile->iSize();
-  i8 nStringSize = sCode->nArea();
-
   s4K sLine;
   s4K sReplacedLine;
   bool bFoundFunc = false;
@@ -144,9 +141,6 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
 {
 
   _static_
-
-  i8 nFileSize = pFile->iSize();
-  i8 nStringSize = sCode->nArea();
 
   s4K sLine;
   bool bFoundFunc = false;
@@ -505,6 +499,7 @@ bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch*
   _static_
 
   bool bResult;
+  UNUSED(bResult);
 
   if (StrLib::bContains(sLine->azChar(), "__TABLENAME__")) {
     bool bResult = StrLib::bReplace(sLine->azChar(), "__TABLENAME__", pOpSketch->m_pTable->szTableNm()->azChar());

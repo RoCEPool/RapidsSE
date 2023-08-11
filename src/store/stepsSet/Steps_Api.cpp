@@ -382,7 +382,6 @@ void Step::vApiReapableJobTagsFetch(void)
 {
   ENTRY();
 
-  TagSet* pTagSet = nullptr;
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   m_pDataStack->vPushPtr(pJob->pJobTags());

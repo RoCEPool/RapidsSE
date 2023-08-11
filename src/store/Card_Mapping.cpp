@@ -47,6 +47,8 @@ ColMap* Card_Mapping::pToColMap(ColMap* pColMap,
                                 Card* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(p_key);
+  UNUSED(p_OP);
 
   for (Kid xKeyCells(pSub_keyCells()); xKeyCells.bEach(CK_MAP); /**/) {
     Card_Map* p_map = xKeyCells.p_map();

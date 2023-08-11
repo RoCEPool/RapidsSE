@@ -51,6 +51,7 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
                               Card_Projection* p_projection_prev)
 {
   _static_
+  UNUSED(p_projection_prev);
 
   Card_Hash* p_hash = new Card_Hash;
 
@@ -78,6 +79,10 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
 void Card_Hash::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
+
 }
 
 
