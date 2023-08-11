@@ -46,9 +46,6 @@ namespace STORE
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
     Card* pPlopChild(void);
 
-    void vPromoteSubs(Card* pChildCard);
-
-    void vRemoveAllChildren(void);
     void vRemoveChild(Card* pChildCard);
     void vDeleteAllChildren(void);
     void vDeleteChild(Card* pChild);
@@ -57,19 +54,8 @@ namespace STORE
     void vReplaceChild(Card* pChildCard, Card* pWithCard);
     void vRotateChild(Card* pChildCard);
 
-    StzList* pToStzList(void);
-
-    void vTransferChildren(Card* pFromCard);
-    void vTransferFrom(Card* pCards, Card* pFrom,
-                       Card* pAt=nullptr, bool bAfter=true);
-    void vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
-                         Card* pAt=nullptr, bool bAfter=true);
-    void vTransferTill(Card* pCards, Card* pTill,
-                       Card* pAt=nullptr, bool bAfter=true);
-
-    i8 nTrimChildren(eCK eCard, Stz* szSymbol);
-
-
+    void vTransferChildren(Card* pFrom);
+    void vTransferChildren_limited(Card* pFrom, Symbol xSymbol);
   };
 }
 

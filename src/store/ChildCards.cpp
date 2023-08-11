@@ -400,32 +400,6 @@ Card* ChildCards::pPlopChild(void)
   return pChild;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vPromoteSubs(Card* pChildCard)
-{
-  Card* p_after = pChildCard;
-
-  while (Card* pSub = pChildCard->pPop()) {
-    vInsertAfter(pSub,p_after);
-    p_after = pSub;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove all children (non-recursive)                                        */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vRemoveAllChildren(void)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  while(Card* pChild = pPopChild()) {
-    vRemoveChild(pChild);
-  }
-}
-
 /*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
@@ -497,141 +471,29 @@ void ChildCards::vRotateChild(Card* pChildCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert child values to an stz list                                        */
+/* transfer all child card (incl. sub-cards) from given card set to this card */
 /*----------------------------------------------------------------------------*/
-StzList* ChildCards::pToStzList(void)
+void ChildCards::vTransferChildren(Card* pFrom)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  StzList* pStzList = new StzList;
-
-  vOntoStzList(pStzList);
-
-  return pStzList;
+  while (Card* pPoppedChild = pFrom->pPop())
+    vAppend(pPoppedChild);
 }
 
 /*----------------------------------------------------------------------------*/
 /* transfer all child card (incl. sub-cards) from given card set to this card */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vTransferChildren(Card* pFromCard)
+void ChildCards::vTransferChildren_limited(Card* pFrom, Symbol xSymbol)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  while (Card* pPoppedChildCard = pFromCard->pPop())
-    vAppend(pPoppedChildCard);
-}
+  while (Card *pPoppedChild = pFrom->pPop()) {
+    vAppend(pPoppedChild);
 
-/*----------------------------------------------------------------------------*/
-/* transfer cards to this card from given card onwards                        */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vTransferFrom(Card* pCards, Card* pFrom,
-                               Card* pAt, bool bAfter)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-  UNUSED(pCards);
-
-  ListExoIter2_t<Card>* pCard_I = pNewIter();
-
-  bool b = pCard_I->bPositionBefore(pFrom);
-  if (! b) {
-    delete pCard_I;
-    return;
-  }
-
-  while (pCard_I->bHasNext()) {
-    Card* pCard = pCard_I->pNext();
-
-    pCard_I->vRemove();
-
-    if (! pAt)
-      vAppend(pCard);
-    else
-    if (bAfter)
-      vInsertAfter(pAt,pCard);
-    else
-      vInsertBefore(pAt,pCard);
-  }
-
-  delete pCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer subset of cards from given card up till (and including) given card*/
-/*----------------------------------------------------------------------------*/
-void ChildCards::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
-                                 Card* pAt, bool bAfter)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-  UNUSED(pCards);
-
-  ListExoIter2_t<Card>* pCard_I = pNewIter();
-
-  bool b = pCard_I->bPositionBefore(pFrom);
-  if (! b) {
-    delete pCard_I;
-    return;
-  }
-
-  while (pCard_I->bHasNext()) {
-    Card* pCard = pCard_I->pNext();
-
-    pCard_I->vRemove();
-
-    if (! pAt)
-      vAppend(pCard);
-    else
-    if (bAfter)
-      vInsertAfter(pAt,pCard);
-    else
-      vInsertBefore(pAt,pCard);
-
-    if (pTill == pCard)
+    if (pPoppedChild->bSameSymbol(&xSymbol))
       break;
   }
-
-  delete pCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* transfer cards to this card up till (and including) given card             */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vTransferTill(Card* pCards, Card* pTill,
-                               Card* pAt, bool bAfter)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  while (Card* pCard = pCards->pPop()) {
-
-    if (! pAt)
-      vAppend(pCard);
-    else
-    if (bAfter)
-      vInsertAfter(pAt,pCard);
-    else
-      vInsertBefore(pAt,pCard);
-
-    if (pTill == pCard)
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove any child with matching symbol                                      */
-/*----------------------------------------------------------------------------*/
-i8 ChildCards::nTrimChildren(eCK eCard, Stz* szSymbol)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  i8 nTrimmed = 0;
-
-  i8 i_Child;
-
-  while (Card* pChild = pFindChild(eCard,szSymbol,i_Child))  {
-    vDeleteChild(pChild);
-    nTrimmed++;
-  }
-
-  return nTrimmed;
 }
 
 /*============================================================================*/
