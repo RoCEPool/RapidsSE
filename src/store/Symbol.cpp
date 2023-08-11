@@ -153,6 +153,7 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Flt_Lit(szSymbol))      return SF_FLT_LIT;
   if (bIs_GroupBy(szSymbol))      return SF_GROUPBY;
   if (bIs_Idx_Col(szSymbol))      return SF_IDX_COL;
+  if (bIs_Int_Lit(szSymbol))      return SF_INT_LIT;
   if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
   if (bIs_Mth_Op(szSymbol))       return SF_MTH_OP;
   if (bIs_Number(szSymbol))       return SF_NUMBER;
@@ -322,6 +323,7 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (bIs_Direction(szArg))   return false;
   if (bIs_Flt_Lit(szArg))     return false;
   if (bIs_GroupBy(szArg))     return false;
+  if (bIs_Int_Lit(szArg))     return false;
   if (bIs_Sqy_Op(szArg))      return false;
   if (bIs_Type(szArg))        return false;
   if (bIs_When(szArg))        return false;
@@ -512,6 +514,18 @@ bool Symbol::bIs_Idx_Nm(Stz* szArg)
   if (bIs_Sqy_Op(szArg))      return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this an integer literal?                                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Int_Lit(Stz* szArg)
+{
+  _static_
+
+  if (StrLib::bIsInteger(szArg->azChar()))  return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1455,6 +1469,22 @@ bool Symbol::bIs_Idx_Nm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a integer literal?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Int_Lit(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_INT_LIT != m_eSymbol)
+    return false;
+
+  if (bIs_Int_Lit(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Key_Col(void)
@@ -2009,6 +2039,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_GROUPBY:     vSet_GroupBy(szStz);     break;
     case SF_IDX_COL:     vSet_Idx_Col(szStz);     break;
     case SF_IDX_NM:      vSet_Idx_Nm(szStz);      break;
+    case SF_INT_LIT:     vSet_Int_Lit(szStz);     break;
     case SF_KEY_COL:     vSet_Key_Col(szStz);     break;
     case SF_NOTE:        vSet_Note(szStz);        break;
     case SF_MTH_OP:      vSet_Mth_Op(szStz);      break;
@@ -2880,6 +2911,21 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
   m_eSymbol = SF_IDX_NM;
 
   RASSERT(bIs_Idx_Nm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to be a float literal                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Int_Lit(Stz* szIntLit)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = szIntLit;
+  m_eSymbol = SF_INT_LIT;
+
+  RASSERT(bIs_Int_Lit());
 }
 
 /*----------------------------------------------------------------------------*/

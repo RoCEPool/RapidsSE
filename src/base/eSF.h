@@ -33,6 +33,7 @@ enum eSF // symbol form
   /* */ SF_GROUPBY,     // GroupBy             : GROUPBY
   /* */ SF_IDX_COL,     // Index Column no     : $In
   /* */ SF_IDX_NM,      // Index Name          : bIsName
+  /* */ SF_INT_LIT,     // Integer Literal     : StrLib::bIsInteger()
   /* */ SF_KEY_COL,     // Key Column no       : $Kn
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
   /* */ SF_NOTE,        // Note Literal        : ...any...
@@ -90,6 +91,7 @@ static Stz* aSF[]
   /* */ "SF_GROUPBY"_Stz,
   /* */ "SF_IDX_COL"_Stz,
   /* */ "SF_IDX_NM"_Stz,
+  /* */ "SF_FLT_LIT"_Stz,
   /* */ "SF_KEY_COL"_Stz,
   /* */ "SF_MTH_OP"_Stz,
   /* */ "SF_NOTE"_Stz,

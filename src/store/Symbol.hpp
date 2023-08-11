@@ -57,6 +57,7 @@ namespace STORE
     static bool bIs_GroupBy(Stz* szArg);         // GROUPBY
     static bool bIs_Idx_Col(Stz* szArg);         // $In
     static bool bIs_Idx_Nm(Stz* szArg);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Int_Lit(Stz* szArg);         // StrLib::bIsInteger()
     static bool bIs_Key_Col(Stz* szArg);         // $Kn
     static bool bIs_Mth_Op(Stz* szArg);          // +, -, *, /
     static bool bIs_Note(Stz* szArg);            // ...any...
@@ -121,6 +122,7 @@ namespace STORE
     bool bIs_GroupBy(void);         // GROUPBY
     bool bIs_Idx_Col(void);         // $In
     bool bIs_Idx_Nm(void);          // Sn
+    bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_Note(void);            // ...any...
@@ -226,6 +228,7 @@ namespace STORE
     void vSet_Idx_Col(i8 iIdxColOdn);
     void vSet_Idx_Col(Stz* szIdxCol);
     void vSet_Idx_Nm(Stz* szIdxNm);
+    void vSet_Int_Lit(Stz* szFltLit);
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Key_Col(Stz* szKeyCol);
     void vSet_Mth_Op(Stz* szMthOp);
