@@ -26,7 +26,6 @@ Symbol::Symbol(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_eSymbol = SF_NONE;
-  m_eSketch = ST_NONE;
 
   m_pProperties = nullptr;
 
@@ -44,7 +43,6 @@ Symbol::Symbol(eSF eSymbol, i8 iInt)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_eSymbol = SF_NONE;
-  m_eSketch = ST_NONE;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -73,7 +71,6 @@ Symbol::Symbol(eSF eSymbol, Stz* szStz)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szStz;
-  m_eSketch = ST_NONE;
   m_eSymbol = eSymbol;
   m_pProperties = nullptr;
 

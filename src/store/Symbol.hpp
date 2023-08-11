@@ -17,7 +17,6 @@ namespace STORE
   {
   private:
     eSF     m_eSymbol;
-    eST     m_eSketch;
     s256    m_sSymbol;
     TagSet* m_pProperties;
 
