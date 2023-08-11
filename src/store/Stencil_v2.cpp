@@ -137,7 +137,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   s256 sHashExpr = ""_Stz;
   s256 sLimitExpr = ""_Stz;
 
-  OpSketch *pOpSketch;
+  OpSketch *pOpSketch = nullptr;
 //  OpDef* pOpDefScan = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

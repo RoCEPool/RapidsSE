@@ -45,7 +45,19 @@ Then from the Source directory run the following command to build rapidsse:
   endif
 endif
 
+# Warnings that are specific to g++ on Linux
 LINUX_WARNINGS :=
+
+# Specific warnings that are being promoted to errors on g++ on Linux
+LINUX_ERRORS :=
+
+# Warnings specific to linux that are to be ignored when compiling
+# the code synthesizer fragment files.
+LINUX_FRAGMENT_IGNORE_WARNINGS :=
+
+# Warnings specific to linux that are to be ignored when compiling
+# the ANTLR-generated tokeniser/parser files.
+LINUX_ANTLR_IGNORE_WARNINGS := -Wno-attributes
 
 LINUX_CPPFLAGS := -D__LINUX__
 LINUX_CPPFLAGS_DEBUG := -D__LINUX__

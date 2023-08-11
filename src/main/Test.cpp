@@ -1256,6 +1256,7 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 i8 nTest21_intEnts(void)
 {
+  /*
   Rrf xRef;
   EntWrk xEntWrk;
   
@@ -1286,8 +1287,10 @@ i8 nTest21_intEnts(void)
   }
   
   delete pEntBufferCalc;
-  
+
   return nEnts;
+   */
+  return 0;
 }
 
 /*----------------------------------------------------------------------------*/

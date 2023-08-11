@@ -354,9 +354,9 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
   i8 i_Col = 0;
   i8 i_ColPL = 0;
   i8 i_DupCtr = 1;
-  i8 iGbyCols;
+  i8 iGbyCols = 0;
   i8 iGkyCols = 0;
-  eDM eCastType;
+  eDM eCastType = DM_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
@@ -1603,7 +1603,7 @@ void OpSketch::vPushCount(TypedStack* pExprStack, IntStack* pTypeStack, Token* p
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
   s256 sOperation;
-  eDM eExprType;
+  eDM eExprType = DM_NONE;
 
   Stz *sCount = pTkn->szChars() + 1;
   i8 iCount = sCount->iToI8();

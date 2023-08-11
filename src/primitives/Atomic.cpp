@@ -4,10 +4,6 @@
 
 #include "BASE.h"
 
-#ifdef WITH_APPLE
-#include <libkern/OSAtomic.h>
-#endif
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -42,15 +38,8 @@ Atomic::~Atomic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 u8 Atomic::uAtomicAdd(i8* pWord, i8 iValue)
 {
-#ifdef WITH_APPLE
-  u8 uResult = OSAtomicAdd64(iValue, pWord);
-  
-#elif defined(WITH_LINUX)
-  u8 uResult = __sync_add_and_fetch((u8*)pWord, iValue);
-  
-#else
-#error "Unknown Operating Library"
-#endif
+  // Ref: https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
+  u8 uResult = __atomic_add_fetch((u8*)pWord, iValue, __ATOMIC_SEQ_CST);
   
   return uResult;
 }
@@ -60,16 +49,8 @@ u8 Atomic::uAtomicAdd(i8* pWord, i8 iValue)
 /*----------------------------------------------------------------------------*/
 u8 Atomic::uAtomicDec(i8* pWord)
 {
-#ifdef WITH_APPLE
-  u8 uResult = OSAtomicDecrement64(pWord);
-  
-#elif defined(WITH_LINUX)
-  u8 uResult = __sync_sub_and_fetch((u8*)pWord, 1);
-  
-#else
-  u8 uResult = iAtomicDec(pWord);
-  
-#endif
+  // Ref: https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
+  u8 uResult = __atomic_sub_fetch((u8*)pWord, 1, __ATOMIC_SEQ_CST);
   
   return uResult;
 }
@@ -79,17 +60,9 @@ u8 Atomic::uAtomicDec(i8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Atomic::uAtomicInc(i8* pWord)
 {
-#ifdef WITH_APPLE
-  u8 uResult = OSAtomicIncrement64(pWord);
-  
-#elif defined(WITH_LINUX)
-  u8 uResult = __sync_add_and_fetch((u8*)pWord, 1);
-  
-#else
-  u8 uResult = iAtomicInc(pWord);
-  
-#endif
-  
+  // Ref: https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
+  u8 uResult = __atomic_add_fetch((u8*)pWord, 1, __ATOMIC_SEQ_CST);
+
   return uResult;
 }
 
@@ -98,18 +71,9 @@ u8 Atomic::uAtomicInc(i8* pWord)
 /*----------------------------------------------------------------------------*/
 bool Atomic::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
 {
-#ifdef WITH_APPLE
-  //u8 uResult = OSAtomicCompareAndSwap64((i8)uIf,(i8)uThen,(i8*)pWord);
-  bool uResult = __sync_bool_compare_and_swap(pWord, uIf, uThen);
+  // Ref: https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
+  bool uResult = __atomic_compare_exchange_n(pWord, &uIf, uThen, false, __ATOMIC_SEQ_CST, __ATOMIC_RELAXED);
 
-#elif defined(WITH_LINUX)
-  bool uResult = __sync_bool_compare_and_swap(pWord, uIf, uThen);
-
-#else
-  u8 uResult = iTestSet(pWord, uIf, uThen);
-  
-#endif
-  
   return uResult;
 }
 

@@ -56,27 +56,29 @@ CPP = g++
 
 WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
 
-# Warnings that are treated as errors
-ERRORS  = -Werror=return-type
-#ERRORS += -Werror=unused-parameter
-#ERRORS += -Werror=unused-variable
-#ERRORS += -Werror=unused-but-set-variable
-#ERRORS += -Werror=missing-declarations
-#ERRORS += -Werror=enum-compare
-#ERRORS += -Werror=tautological-constant-out-of-range-compare
-#ERRORS += -Werror=unused-lambda-capture
-#ERRORS += -Werror=unused-label
-#ERRORS += -Werror=uninitialized
-#ERRORS += -Werror=varargs
-#ERRORS += -Werror=parentheses
-#ERRORS += -Werror=writable-strings
-#ERRORS += -Werror=reorder-ctor
-##ERRORS += -Werror=array-bounds
-##ERRORS += -Werror=deprecated-declarations
-#ERRORS += -Werror=unused-value
+# Warnings that are treated as errors.
+# We first add the gcc/clang-specific warnings, then we add the warnings
+# that are common to both tools. Getting this wrong will cause a compilation
+# failure on one system or the other.
+ERRORS  = $(strip $(LINUX_ERRORS) $(DARWIN_ERRORS))
+ERRORS += -Werror=return-type
+ERRORS += -Werror=unused-parameter
+#ERRORS += -Werror=unused-variable			# currently MacOS only
+ERRORS += -Werror=unused-but-set-variable
+#ERRORS += -Werror=missing-declarations		# currently MacOS only
+ERRORS += -Werror=enum-compare
+ERRORS += -Werror=unused-label
+ERRORS += -Werror=uninitialized
+ERRORS += -Werror=varargs
+ERRORS += -Werror=parentheses
+#ERRORS += -Werror=array-bounds				# not ready
+#ERRORS += -Werror=deprecated-declarations	# not ready
+ERRORS += -Werror=unused-value
 
-# Warnings that are ignored for the code in the src/store/Fragments directory
-FRAGMENT_IGNORE_WARNINGS  = -Wno-unused-parameter
+# Warnings that are ignored for the code in the src/store/Fragments directory.
+# These need to be common for both gcc and clang.
+FRAGMENT_IGNORE_WARNINGS  = $(strip $(LINUX_FRAGMENT_IGNORE_WARNINGS) $(DARWIN_FRAGMENT_IGNORE_WARNINGS))
+FRAGMENT_IGNORE_WARNINGS += -Wno-unused-parameter
 FRAGMENT_IGNORE_WARNINGS += -Wno-unused-variable
 FRAGMENT_IGNORE_WARNINGS += -Wno-unused-but-set-variable
 FRAGMENT_IGNORE_WARNINGS += -Wno-unused-label
@@ -84,7 +86,9 @@ FRAGMENT_IGNORE_WARNINGS += -Wno-uninitialized
 FRAGMENT_IGNORE_WARNINGS += -Wno-unused-value
 
 # Warnings that are ignored for the ANTLR-generated code
-ANTLR_IGNORE_WARNINGS  = -Wno-unused-parameter
+# These need to be common for both gcc and clang.
+ANTLR_IGNORE_WARNINGS  = $(strip $(LINUX_ANTLR_IGNORE_WARNINGS) $(DARWIN_ANTLR_IGNORE_WARNINGS))
+ANTLR_IGNORE_WARNINGS += -Wno-unused-parameter
 
 CPPFLAGS = -std=c++14 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
 CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
