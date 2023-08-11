@@ -10,6 +10,8 @@
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
 
+#include "SketchTkn.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -875,6 +877,24 @@ bool Symbol::bIs_Xrf_No(Stz* szArg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* strip disambiguation                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bPossibleNm(Stz* szChrSeq)
+{
+  _static_
+
+  if (ST_NONE != SketchTkn::eEvalSketch(szChrSeq))
+    return false;
+
+  if (bIs_Col_No(szChrSeq))   return false;
+  if (bIs_Col_Tc(szChrSeq))   return false;
+  if (bIs_Sqy_Prm(szChrSeq))  return false;
+  if (bIs_Sqy_Rsl(szChrSeq))  return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

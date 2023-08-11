@@ -80,6 +80,8 @@ namespace STORE
     static bool bIs_Xk_Cast(Stz* szArg);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
     static bool bIs_Xrf_No(Stz* szArg);          // #n
 
+    static bool bPossibleNm(Stz* szArg);
+
     static void vStripDisamb(String* psArg);
 
     static eCT  eTo_eCT_str(Stz* szType);
