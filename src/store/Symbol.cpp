@@ -53,8 +53,8 @@ Symbol::Symbol(eSF eSymbol, i8 iInt)
 
     case SF_COL_NO  : vSet_Col_No(iInt);   break;
     case SF_IDX_COL : vSet_Idx_Col(iInt);  break;
+    case SF_INT_LIT : vSet_Int_Lit(iInt);  break;
     case SF_KEY_COL : vSet_Key_Col(iInt);  break;
-    case SF_NUMBER  : vSet_Number(iInt);   break;
     case SF_PRM_COL : vSet_Prm_Col(iInt);  break;
     case SF_SQY_NO  : vSet_Sqy_No(iInt);   break;
 
@@ -156,7 +156,6 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIs_Int_Lit(szSymbol))      return SF_INT_LIT;
   if (bIs_Key_Col(szSymbol))      return SF_KEY_COL;
   if (bIs_Mth_Op(szSymbol))       return SF_MTH_OP;
-  if (bIs_Number(szSymbol))       return SF_NUMBER;
   if (bIs_Parenthesis(szSymbol))  return SF_PARENTHESIS;
   if (bIs_Rln_Op(szSymbol))       return SF_RLN_OP;
   if (bIs_Sqy_Prm(szSymbol))      return SF_PRM_COL;
@@ -574,20 +573,6 @@ bool Symbol::bIs_Note(Stz* szArg)
   UNUSED(szArg);
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a number?                                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Number(Stz* szArg)
-{
-  _static_
-
-  if (StrLib::bIsDecimal(szArg->azChar()))  return true;
-  if (StrLib::bIsFloat(szArg->azChar()))    return true;
-  if (StrLib::bIsInteger(szArg->azChar()))  return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1533,22 +1518,6 @@ bool Symbol::bIs_Note(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a number?                                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Number(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NUMBER != m_eSymbol)
-    return false;
-
-  if (bIs_Number(m_sSymbol))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a parenthesis?                                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Parenthesis(void)
@@ -1981,8 +1950,8 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
     case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
     case SF_COL_NO:    vSet_Col_No(iInt);    break;
+    case SF_INT_LIT:   vSet_Int_Lit(iInt);   break;
     case SF_KEY_COL:   vSet_Key_Col(iInt);   break;
-    case SF_NUMBER:    vSet_Number(iInt);    break;
     case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
     case SF_STG_NO:    vSet_Stg_Nm(iInt);    break;
     case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
@@ -2043,7 +2012,6 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
     case SF_KEY_COL:     vSet_Key_Col(szStz);     break;
     case SF_NOTE:        vSet_Note(szStz);        break;
     case SF_MTH_OP:      vSet_Mth_Op(szStz);      break;
-    case SF_NUMBER:      vSet_Number(szStz);      break;
     case SF_PARENTHESIS: vSet_Parenthesis(szStz); break;
     case SF_PPE_NM:      vSet_Ppe_Nm(szStz);      break;
     case SF_PRM_COL:     vSet_Prm_Col(szStz);     break;
@@ -2147,7 +2115,6 @@ Stz* Symbol::szWhatIs(void)
   if (bIs_Idx_Col())      return "IndexColumn"_Stz;
   if (bIs_Key_Col())      return "KeyOrdinal"_Stz;
   if (bIs_Mth_Op())       return "NumbOp"_Stz;
-  if (bIs_Number())       return "Number"_Stz;
   if (bIs_Parenthesis())  return "Parenthesis"_Stz;
   if (bIs_Rln_Op())       return "RelnOp"_Stz;
   if (bIs_Sqy_Op())       return "SubQueryOp"_Stz;
@@ -2914,7 +2881,22 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to be a float literal                                      */
+/* set this symbol to given number                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Int_Lit(i8 iIIntLIt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sSymbol = iIIntLIt;
+  m_eSymbol = SF_INT_LIT;
+
+  RASSERT(bIs_Int_Lit());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to be a integer literal                                    */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Int_Lit(Stz* szIntLit)
 {
@@ -2989,36 +2971,6 @@ void Symbol::vSet_Note(Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given number                                             */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Number(i8 iNumber)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == m_eSymbol);
-
-  m_sSymbol = iNumber;
-  m_eSymbol = SF_NUMBER;
-
-  RASSERT(bIs_Number());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_Number(Stz* szNumber)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == m_eSymbol);
-
-  m_sSymbol = szNumber;
-  m_eSymbol = SF_NUMBER;
-
-  RASSERT(bIs_Number());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Parenthesis(Stz* szParenthesis)
@@ -3049,7 +3001,7 @@ void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given number                                             */
+/* set this symbol to given number                                            */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Prm_Col(i8 iOrdinal)
 {
