@@ -125,9 +125,9 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     if (! p_rpnCalc_on->nChildCards())
       continue;
 
-    // remove LEFT_OUTER (temp)
-    i8 nTrimed = p_rpnCalc_on->nTrimChildren(CK_TERM,"LEFT_OUTER"_Stz);
-    if (nTrimed) {
+    // move LEFT_OUTER to scan
+    if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
+                                        Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
       pCI->G_vPushIter();
       if (pCI->G_bEachMain_reverse(CK_SCAN)) {
         pCI->G.p_table = pCI->G.p_scan->pSub_table();
@@ -142,14 +142,11 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
       continue;
 
     if (! pCI->G.p_where) {
-      // create a new <where> if none exists
-      //pCI->G_vNewMember(CK_WHERE);
-      pCI->G.p_where = Card_Where::pNewWhereConstruct();
+      // create a new <where>/...
+      pCI->G.p_where = Card_Where::pNewWhereAssembly();
       pCI->G.pDeck->vInsertAfter(pCI->G.p_where,pCI->G.p_absJoin);
 
       pCI->G.p_rpnCalc = pCI->G.p_where->pSub_rpnCalc();
-      // create an initial empty /<rpnCalc>
-      //pCI->G_vAppendNewChild(pCI->G.p_where,CK_RPNCALC);
     }
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
@@ -164,7 +161,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create new <where>/<constraint>/<expr $1>/<rpnCalc>                        */
 /*----------------------------------------------------------------------------*/
-Card_Where* Card_Where::pNewWhereConstruct(void)
+Card_Where* Card_Where::pNewWhereAssembly(void)
 {
   _static_
 

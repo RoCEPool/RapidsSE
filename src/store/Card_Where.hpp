@@ -25,7 +25,7 @@ namespace STORE
     static void vMoveWherePredsToTableFilter(CardIter* pCI);
     static void vMove_All_on_To_where(CardIter* pCI);
 
-    static Card_Where* pNewWhereConstruct(void);
+    static Card_Where* pNewWhereAssembly(void);
 
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vEarlyProject_add_transients(CardIter* pCI);

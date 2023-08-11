@@ -43,6 +43,7 @@ namespace STORE
     Card* pPeekChild(void);
     Card* pPopChild(void);
     Card* pPopChildIf(Symbol xSymbol);
+    bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
     Card* pPlopChild(void);
 
     void vPromoteSubs(Card* pChildCard);

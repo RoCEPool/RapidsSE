@@ -369,6 +369,22 @@ Card* ChildCards::pPopChildIf(Symbol xSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop top child if it matches given symbol                                   */
+/*----------------------------------------------------------------------------*/
+bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
+{
+  Card* pChild = pPeekChild();
+
+  if (pChild && pChild->bIsCard(eCard) && pChild->bSameSymbol(&xSymbol)) {
+    pChild = pPop();
+    delete pChild;
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pPlopChild(void)
