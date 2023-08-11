@@ -73,7 +73,7 @@ ERRORS  = -Werror=return-type
 #ERRORS += -Werror=reorder-ctor
 ##ERRORS += -Werror=array-bounds
 ##ERRORS += -Werror=deprecated-declarations
-ERRORS += -Werror=unused-value
+#ERRORS += -Werror=unused-value
 
 # Warnings that are ignored for the code in the src/store/Fragments directory
 FRAGMENT_IGNORE_WARNINGS  = -Wno-unused-parameter

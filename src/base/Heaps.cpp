@@ -664,6 +664,7 @@ void Heaps::vReloadPHeaps(void)
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
   bool bResult = pFile->bOpenRead(szNode0Path);
   ASSERT(bResult);
+  UNUSED(bResult);
 
   // Read the Header information to get the address of this pool buffer
   i8 nBytes = pFile->nReadBytes(aHeader, nSizeHeader);

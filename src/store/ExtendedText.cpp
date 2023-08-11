@@ -197,6 +197,7 @@ void ExtendedText::vCopy(ExtendedText* pExtText_arg)
 
     b = pBuffer_this->bConcat(szTextBlock);
     ASSERT(b);
+    UNUSED(b);
   }
 }
 

@@ -82,6 +82,7 @@ NEVER_REACH;
 DataBuffer* FileMap::pDataBufferFromDisk(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+  UNUSED(oBufferId);
 
   //---------------------------------------------------------------------------
   // Ensure id flag bit is set

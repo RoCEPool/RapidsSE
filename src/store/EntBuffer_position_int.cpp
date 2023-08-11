@@ -204,6 +204,7 @@ EntBuffer* EntBuffer::pFindLeafBuffer_int(Key* aForKey)
     i8 iBufferHeight;
     Ent* aEnt;
     Ent* aEntPrev;
+    UNUSED(aEntPrev);
   
     while (true) {
       
