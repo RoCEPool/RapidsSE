@@ -213,9 +213,9 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
   Card_CostNetwork*  p_costNetwork  = new Card_CostNetwork;
   Card_CostJoining*  p_costJoining  = new Card_CostJoining;
 
-  p_costUnicast->SYM(SF_NUMBER,nBuff_popped_by_unicast);
-  p_costNetwork->SYM(SF_NUMBER,nBuff_recv_over_network);
-  p_costJoining->SYM(SF_NUMBER,nUnfiltBuff_produced_by_join);
+  p_costUnicast->SYM(SF_INT_LIT,nBuff_popped_by_unicast);
+  p_costNetwork->SYM(SF_INT_LIT,nBuff_recv_over_network);
+  p_costJoining->SYM(SF_INT_LIT,nUnfiltBuff_produced_by_join);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

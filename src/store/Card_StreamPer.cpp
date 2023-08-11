@@ -136,10 +136,10 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
   // record the sum network and unicast costs
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
-  p_costNetwork->SYM(SF_NUMBER,nSumNetworkCost);
+  p_costNetwork->SYM(SF_INT_LIT,nSumNetworkCost);
 
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
-  p_costUnicast->SYM(SF_NUMBER,nSumUnicastCost);
+  p_costUnicast->SYM(SF_INT_LIT,nSumUnicastCost);
 
   Card_CostStream* p_costQuery = new Card_CostStream;
   p_costQuery->vAppend(p_costNetwork);

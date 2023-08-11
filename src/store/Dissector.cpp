@@ -842,7 +842,7 @@ Card* Dissector::pOp_Limit(void)
   i8 nRows = iGetInt(0);
 
 
-  Card_Limit* pCard_Limit = _pCard_Limit((new Card_Limit) ->SYM(SF_NUMBER,nRows));
+  Card_Limit* pCard_Limit = _pCard_Limit((new Card_Limit) ->SYM(SF_INT_LIT,nRows));
 
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
   Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
@@ -1086,7 +1086,7 @@ Card* Dissector::pOp_Top(void)
 
   i8 nRows = iGetInt(1);
 
-  Card_Top* pCard_Top = _pCard_Top((new Card_Top) ->SYM(SF_NUMBER, nRows));
+  Card_Top* pCard_Top = _pCard_Top((new Card_Top) ->SYM(SF_INT_LIT, nRows));
 
 
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
@@ -1103,7 +1103,7 @@ Card* Dissector::pOp_Top(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Count* pCard_Count = new Card_Count;
-  pCard_Count->SYM(SF_NUMBER, nRows);
+  pCard_Count->SYM(SF_INT_LIT, nRows);
   pCard_Top->vAppend(pCard_Count);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

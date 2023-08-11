@@ -25,7 +25,7 @@ Card_Combined::Card_Combined(void)
 
   _checkInitialised_(CN_CARD);
 
-  SYM(SF_NUMBER,(i8) 0);
+  SYM(SF_INT_LIT,(i8) 0);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

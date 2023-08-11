@@ -64,7 +64,7 @@ Card_TableSize* Card_TableSize::pDerive(Table* pTable)
   Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
   Card_TableSize* p_size = new Card_TableSize;
-  p_size->SYM(SF_NUMBER,jTableSize);
+  p_size->SYM(SF_INT_LIT,jTableSize);
 
   return p_size;
 }
