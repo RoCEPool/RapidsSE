@@ -493,6 +493,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_SYNTHESISE_CODE,
   /* */ CN_XF_TABLE_ANALYSIS,
   /* */ CN_XF_TBLCOL_TO_STMCOL,
+  /* */ CN_XF_UPDATE_PROJECTION,
 
   /* */ CN__Y__,
 
@@ -986,6 +987,7 @@ static Stz* aCN[]
   /* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
   /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
   /* */ "XF_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
+  /* */ "XF_UPDATE_PROJECTION"_Stz,         // CN_XF_UPDATE_PROJECTION
 
   /* */ "_Y__"_Stz,                 // CN__Y__
 

@@ -6,6 +6,7 @@
 
 #include "Fold.hpp"
 #include "XF_Smooth.hpp"
+#include "XF_Update_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -120,9 +121,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   delete pFold;
 
 
-  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
-  m_pCI->vRenumberCards();
-  m_pCI->vPrintBoard(__LINE__);
+  XF_Update_projection::vXF_Update_projection(m_pCI);
 
   vValidate();
 }

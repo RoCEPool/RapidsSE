@@ -58,6 +58,7 @@ enum eXF // transform
   /* */ XF_SYNTHESISE_CODE,
   /* */ XF_TABLE_ANALYSIS,
   /* */ XF_TBLCOL_TO_STMCOL,
+  /* */ XF_UPDATE_PROJECTION,
 
   /* */ XF_ENUMS
 };
@@ -117,6 +118,7 @@ static Stz* aXF[]
   /* */ "XF_SYNTHESISE_CODE"_Stz,
   /* */ "XF_TABLE_ANALYSIS"_Stz,
   /* */ "XF_TBLCOL_TO_STMCOL"_Stz,
+  /* */ "XF_UPDATE_PROJECTION"_Stz,
 
   /* */ "XF_ENUMS"_Stz
 };

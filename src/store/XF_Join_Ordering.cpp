@@ -16,6 +16,7 @@
 #include "XF_Delete_Empty_where.hpp"
 #include "XF_Predicate_Pull_Up.hpp"
 #include "XF_Predicate_Reposition.hpp"
+#include "XF_Update_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -102,7 +103,7 @@ void XF_Join_Ordering::vJoinOrdering(void)
   // Join Ordering Proper
 
   if (AM::JOB::bHasTag(C_JO_DISABLE)) {
-    m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+    XF_Update_projection::vXF_Update_projection(m_pCI);
     return;
   }
 

@@ -293,6 +293,7 @@
 #include "XF_Predicate_Pull_Up.hpp"
 #include "XF_Predicate_Reposition.hpp"
 #include "XF_Column_Mapping.hpp"
+#include "XF_Update_projection.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -820,6 +821,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_SYNTHESISE_CODE,          sizeof(XF_Synthesise_Code),          HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,           sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_TBLCOL_TO_STMCOL,         sizeof(XF_tblCol_To_stmCol),         HT_T_TINY    , FILL },
+  {CN_XF_UPDATE_PROJECTION,        sizeof(XF_Update_projection),        HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),                         HT_INVALID   , FILL },
 
