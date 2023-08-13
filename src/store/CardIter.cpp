@@ -980,8 +980,6 @@ void CardIter::vEndTransform(void)
 
   G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
-  G.pBoard->pState()->vDumpSet();
-
   vPrintBoard();
 }
 

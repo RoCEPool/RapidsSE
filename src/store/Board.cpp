@@ -225,6 +225,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
     return;
 
   pCI->vSave();
+  pCI->vNullMembers();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // main cards
