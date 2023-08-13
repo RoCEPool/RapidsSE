@@ -92,6 +92,8 @@ namespace STORE
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
+    bool bFormIs(eSF eSymbol);
+
     bool bHasSymbol(void);
     bool bHasProperties(void);
 

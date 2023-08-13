@@ -966,6 +966,19 @@ eQO Symbol::eEvalSubQryOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* true if symbol is given form                                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bFormIs(eSF eSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (eSymbol == m_eSymbol)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iSF_ordinal(void)

@@ -451,14 +451,14 @@ void ChildCards::vTransferChildren(Card* pFrom)
 /*----------------------------------------------------------------------------*/
 /* transfer all child card (incl. sub-cards) from given card set to this card */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vTransferChildren_limited(Card* pFrom, Symbol xSymbol)
+void ChildCards::vTransferChildren(Card* pFrom, eSF eSymbol_limit)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   while (Card *pPoppedChild = pFrom->pPop()) {
     vAppend(pPoppedChild);
 
-    if (pPoppedChild->bSameSymbol(&xSymbol))
+    if (pPoppedChild->pSymbol()->bFormIs(eSymbol_limit))
       break;
   }
 }

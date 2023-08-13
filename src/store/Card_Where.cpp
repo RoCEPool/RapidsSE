@@ -117,6 +117,8 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
   // for each <absJoin>/<on>/<rpnCalc>
   //   move/append to <where>/<rpnCalc>
 
+  Card_Table* p_table = nullptr;
+
   pCI->vBeginEach();
   while (pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
 
@@ -130,7 +132,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
       pCI->G_vPushIter();
       if (pCI->G_bEachMain_reverse(CK_SCAN)) {
-        pCI->G.p_table = pCI->G.p_scan->pSub_table();
+        p_table = pCI->G.p_table = pCI->G.p_scan->pSub_table();
         pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         pCI->G.p_table->vAppend(pCI->G.p_outerJoin);
       }
@@ -150,7 +152,15 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     }
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
-    pCI->G.p_rpnCalc->vConcat(p_rpnCalc_on);
+    pCI->G.p_rpnCalc->vTransfer(p_rpnCalc_on,SF_RLN_OP);
+
+    if (p_rpnCalc_on->nChildCards()) {
+      delete p_rpnCalc_on->pPlopChild();
+      pCI->G_vAppendNewChild(p_table,CK_CONSTRAINT);
+      pCI->G_vAppendNewChild(pCI->G.p_constraint,CK_RPNCALC);
+      pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
+      p_table->vConvert_rpnCalc_To_boolCalc(pCI);
+    }
 
     // remove and delete <absJoin>/<on>
     pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);

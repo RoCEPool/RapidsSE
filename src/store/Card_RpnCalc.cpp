@@ -113,25 +113,6 @@ Card_RpnCalc* Card_RpnCalc::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vConcat(STORE::Card_RpnCalc *p_rpnCalc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bAppendAnd = false;
-  if (nChildCards())
-    bAppendAnd = true;
-
-  vTransferChildren(p_rpnCalc);
-
-  if (bAppendAnd) {
-    Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
-    vAppend(p_term_and);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -718,6 +699,25 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
   //p_boolCalc->vDump();
 
   return p_boolCalc;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vTransfer(STORE::Card_RpnCalc *p_rpnCalc, eSF eSymbol_limit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bAppendAnd = false;
+  if (nChildCards())
+    bAppendAnd = true;
+
+  vTransferChildren(p_rpnCalc,eSymbol_limit);
+
+  if (bAppendAnd) {
+    Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
+    vAppend(p_term_and);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -6,6 +6,8 @@
 #include "ListExo2_t.hpp"
 
 #include "eCK.h"
+#include "eSF.h"
+
 #include "StzList.hpp"
 
 namespace STORE
@@ -53,7 +55,7 @@ namespace STORE
     void vRotateChild(Card* pChild);
 
     void vTransferChildren(Card* pFrom);
-    void vTransferChildren_limited(Card* pFrom, Symbol xSymbol);
+    void vTransferChildren(Card* pFrom, eSF eSymbol_limit);
   };
 }
 
