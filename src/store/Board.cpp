@@ -224,101 +224,58 @@ void Board::vValidate_SubQuery(CardIter *pCI)
   if (!pCI->m_pBench->bMadeSimpler())
     return;
 
-  Card_Deck* pDeck = pCI->G.pDeck;
+  pCI->vSave();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // main cards
 
-  CardIter xCI(pCI);
-  RASSERT(xCI.m_pBench);
-  while (xCI.G_bEachMain()) {
+  RASSERT(pCI->m_pBench);
 
-    switch (xCI.G.e_MainCard) {
+  Card_Deck* pDeck = pCI->G.pDeck;
 
-      case CK_AGGREG:       xCI.G.p_aggreg->vValidate       (&xCI,0,pDeck); break;
-      case CK_CALL:         xCI.G.p_call->vValidate         (&xCI,0,pDeck); break;
-      case CK_CAST:         xCI.G.p_cast->vValidate         (&xCI,0,pDeck); break;
-      case CK_COMBINED:     xCI.G.p_combined->vValidate     (&xCI,0,pDeck); break;
+  while (pCI->G_bEachMain()) {
+
+    switch (pCI->G.e_MainCard) {
+
+      case CK_AGGREG:       pCI->G.p_aggreg->vValidate       (pCI,0,pDeck); break;
+      case CK_CALL:         pCI->G.p_call->vValidate         (pCI,0,pDeck); break;
+      case CK_CAST:         pCI->G.p_cast->vValidate         (pCI,0,pDeck); break;
+      case CK_COMBINED:     pCI->G.p_combined->vValidate     (pCI,0,pDeck); break;
       case CK_CORRELATION:  break;
-      case CK_CROSSJOIN:    xCI.G.p_crossJoin->vValidate    (&xCI,0,pDeck); break;
-      case CK_FLAT:         xCI.G.p_flat->vValidate         (&xCI,0,pDeck); break;
-      case CK_FILTER:       xCI.G.p_filter->vValidate       (&xCI,0,pDeck); break;
-      case CK_FOLD:         xCI.G.p_fold->vValidate         (&xCI,0,pDeck); break;
-      case CK_GBYAGG:       xCI.G.p_gbyAgg->vValidate       (&xCI,0,pDeck); break;
-      case CK_HAVING:       xCI.G.p_having->vValidate       (&xCI,0,pDeck); break;
-      case CK_HASH:         xCI.G.p_hash->vValidate         (&xCI,0,pDeck); break;
-      case CK_INDEXJOIN:    xCI.G.p_indexJoin->vValidate    (&xCI,0,pDeck); break;
-      case CK_INDEXSCAN:    xCI.G.p_indexScan->vValidate    (&xCI,0,pDeck); break;
-      case CK_KEYEXISTS:    xCI.G.p_keyExists->vValidate    (&xCI,0,pDeck); break;
-      case CK_KEYNOTEXISTS: xCI.G.p_keyNotExists->vValidate (&xCI,0,pDeck); break;
-      case CK_LIMIT:        xCI.G.p_limit->vValidate        (&xCI,0,pDeck); break;
-      case CK_ORDAGG:       xCI.G.p_ordAgg->vValidate       (&xCI,0,pDeck); break;
-      case CK_PROJECT:      xCI.G.p_project->vValidate      (&xCI,0,pDeck); break;
-      case CK_SCAN:         xCI.G.p_scan->vValidate         (&xCI,0,pDeck); break;
+      case CK_CROSSJOIN:    pCI->G.p_crossJoin->vValidate    (pCI,0,pDeck); break;
+      case CK_FLAT:         pCI->G.p_flat->vValidate         (pCI,0,pDeck); break;
+      case CK_FILTER:       pCI->G.p_filter->vValidate       (pCI,0,pDeck); break;
+      case CK_FOLD:         pCI->G.p_fold->vValidate         (pCI,0,pDeck); break;
+      case CK_GBYAGG:       pCI->G.p_gbyAgg->vValidate       (pCI,0,pDeck); break;
+      case CK_HAVING:       pCI->G.p_having->vValidate       (pCI,0,pDeck); break;
+      case CK_HASH:         pCI->G.p_hash->vValidate         (pCI,0,pDeck); break;
+      case CK_INDEXJOIN:    pCI->G.p_indexJoin->vValidate    (pCI,0,pDeck); break;
+      case CK_INDEXSCAN:    pCI->G.p_indexScan->vValidate    (pCI,0,pDeck); break;
+      case CK_KEYEXISTS:    pCI->G.p_keyExists->vValidate    (pCI,0,pDeck); break;
+      case CK_KEYNOTEXISTS: pCI->G.p_keyNotExists->vValidate (pCI,0,pDeck); break;
+      case CK_LIMIT:        pCI->G.p_limit->vValidate        (pCI,0,pDeck); break;
+      case CK_ORDAGG:       pCI->G.p_ordAgg->vValidate       (pCI,0,pDeck); break;
+      case CK_PROJECT:      pCI->G.p_project->vValidate      (pCI,0,pDeck); break;
+      case CK_SCAN:         pCI->G.p_scan->vValidate         (pCI,0,pDeck); break;
       case CK_SEND:         break;
-      case CK_SORT:         xCI.G.p_sort->vValidate         (&xCI,0,pDeck); break;
-      case CK_STAGE:        xCI.G.p_stage->vValidate        (&xCI,0,pDeck); break;
-      case CK_TABLE:        xCI.G.p_table->vValidate        (&xCI,0,pDeck); break;
-      case CK_TOP:          xCI.G.p_top->vValidate          (&xCI,0,pDeck); break;
-      case CK_WHERE:        xCI.G.p_where->vValidate        (&xCI,0,pDeck); break;
+      case CK_SORT:         pCI->G.p_sort->vValidate         (pCI,0,pDeck); break;
+      case CK_STAGE:        pCI->G.p_stage->vValidate        (pCI,0,pDeck); break;
+      case CK_TABLE:        pCI->G.p_table->vValidate        (pCI,0,pDeck); break;
+      case CK_TOP:          pCI->G.p_top->vValidate          (pCI,0,pDeck); break;
+      case CK_WHERE:        pCI->G.p_where->vValidate        (pCI,0,pDeck); break;
 
       default:
-        xCI.G.p_MainCard->vDump(__func__);
-        vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
+        pCI->G.p_MainCard->vDump(__func__);
+        vTrace("Missing Case: %lld %s\n"_Stz, (i8) pCI->G.e_MainCard, aCK[pCI->G.e_MainCard]);
         NEVER_REACH
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // sub lists
-/*
-    if ((xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList())) {
-      CardIter xCI_indexList(&xCI);
-      while (xCI_indexList.G_bEachMain()) {
-        switch (xCI_indexList.G.e_MainCard) {
-          default:
-            vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
-            NEVER_REACH
-        }
-      }
-    }
 
-    if ((xCI.G.p_key = xCI.G.p_MainCard->pSub_key())) {
-      CardIter xCI_key(&xCI);
-      while (xCI_key.G_bEachMain()) {
-        switch (xCI_key.G.e_MainCard) {
-          default:
-            vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
-            NEVER_REACH
-        }
-      }
-    }
-
-    if ((xCI.G.p_projection = xCI.G.p_MainCard->pSub_projection())) {
-      CardIter xCI_projection(&xCI);
-      while (xCI_projection.G_bEachMain()) {
-        switch (xCI_projection.G.e_MainCard) {
-          default:
-            vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
-            NEVER_REACH
-        }
-      }
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // specific
-
-    if ((xCI.G.p_level = xCI.G.p_MainCard->pSub_level())) {
-
-    }
-
-    if ((xCI.G.p_table = xCI.G.p_MainCard->pSub_table())) {
-
-    }
-
-  */
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  pCI->vRestore();
 }
 
 
