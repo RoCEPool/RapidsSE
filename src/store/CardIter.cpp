@@ -978,13 +978,9 @@ void CardIter::vEndTransform(void)
 
   vRenumberCards();
 
-  //m_pCardCtl->vUseXform();
-  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
+  G.pBoard->pState()->vAppend(aXF[m_pBench->eXform()]);
 
   vPrintBoard();
-
-  //m_pCardCtl->vUseDefault();
-
 }
 
 /*----------------------------------------------------------------------------*/

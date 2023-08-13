@@ -29,20 +29,22 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
+Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_i_Board    = i_Board;
   m_sBoardNm   = szBoardNm;
-  m_eBoardKind = eBoardKind;
+  m_eBoard = eBoard;
 
   m_pBench     = pBench;
 
-  m_pCard_Deck = new Card_Deck;
+  m_pDeck = new Card_Deck;
 
   m_pSubQuery = new SubQuery(this);
+
+  m_pState = new TagSet;
 
   _checkInitialised_(CN_BOARD);
 
@@ -58,11 +60,13 @@ Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  //m_pCard_Deck->vRemoveAll();
+  //m_pDeck->vRemoveAll();
 
-  delete m_pCard_Deck;
+  delete m_pDeck;
 
   delete m_pSubQuery;
+
+  delete m_pState;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,7 +210,7 @@ void Board::vValidate(CardIter* pCI)
 
   //pCI->vUsingBoard((i8)0);
 
-  if (pCI->G.pBoard->eBoardKind() == BK_SUBQUERY)
+  if (pCI->G.pBoard->eBoard() == BK_SUBQUERY)
     vValidate_SubQuery(pCI);
 }
 
@@ -323,13 +327,43 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Bench* Board::pBench(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  return m_pBench;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Board::i_Board(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  return m_i_Board;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vBoardNo(i8 i_Board)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  m_i_Board = i_Board;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get board kind                                                             */
 /*----------------------------------------------------------------------------*/
-eBK Board::eBoardKind(void)
+eBK Board::eBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_eBoardKind;
+  return m_eBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -369,7 +403,7 @@ void Board::vClearMarks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_pCard_Deck->vMarksClearRecursive();
+  m_pDeck->vMarksClearRecursive();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,9 +413,65 @@ Card_Deck* Board::pDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_pCard_Deck;
+  return m_pDeck;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPrintBoard(Stz* szDescription)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
+
+  vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
+
+  vPinCards(pRibbon);
+
+  vPinBanners(pRibbon);
+
+  i8 iBenchNo = m_pBench->iBenchNo();
+  i8 iPrintNo = m_pBench->iPrint_inc();
+  pRibbon->vPrintRibbon(iBenchNo,iPrintNo);
+
+  delete pRibbon;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-query                                                              */
+/*----------------------------------------------------------------------------*/
+void Board::vRenumberCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_pDeck->vRenumberRoot(m_i_Board);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card subSet                                                            */
+/*----------------------------------------------------------------------------*/
+TagSet* Board::pState(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_pState;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get sub-query                                                              */
+/*----------------------------------------------------------------------------*/
+SubQuery* Board::pSubQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_pSubQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
@@ -425,7 +515,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
 
-  if (! m_pCard_Deck->nItems())
+  if (! m_pDeck->nItems())
     return;
 
   pRibbon->vLaneFirst();
@@ -434,7 +524,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   Ribbon* pSubRibbon = new Ribbon(pCardCtl,this);
 
-  CardIter xBI(m_pCard_Deck);
+  CardIter xBI(m_pDeck);
 
   i8 nCount = 0;
 
@@ -470,7 +560,7 @@ void Board::vPinCards(Ribbon* pRibbon)
       eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
     xBI.G.p_MainCard->vPrintCardRecursive(pSubRibbon,
                                           0,
-                                          m_pCard_Deck,
+                                          m_pDeck,
                                           bPrune,
                                           eLevel,
                                           false,
@@ -479,7 +569,7 @@ void Board::vPinCards(Ribbon* pRibbon)
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);
-  
+
   delete pSubRibbon;
 }
 
@@ -493,21 +583,21 @@ void Board::vPinTitle(Ribbon* pRibbon,
   UNUSED(iTransformNo);
   UNUSED(szDescription);
 
-  if (! m_pCard_Deck->nItems())
+  if (! m_pDeck->nItems())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
   pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s %s"_Stz,
-                         m_pBench->iXform(),
-                         m_i_Board,
-                         m_sBoardNm.szStz(),
-                         this,
-                         m_pBench->pOptimiser()->szQueryNm(),
-                         AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU) ?
-                           "/optimise_passthru" : ""
-                         );
+                        m_pBench->iXform(),
+                        m_i_Board,
+                        m_sBoardNm.szStz(),
+                        this,
+                        m_pBench->pOptimiser()->szQueryNm(),
+                        AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU) ?
+                        "/optimise_passthru" : ""
+  );
 
   // line 2
   pRibbon->vSprintOther("%s %s"_Stz,
@@ -517,95 +607,23 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // line 3
   if (0 == m_i_Board)
     pRibbon->vSprintOther("%s %s"_Stz,
-                     "MainQuery"_Stz,
-                     aQD[m_pSubQuery->eDisposition()]);
+                          "MainQuery"_Stz,
+                          aQD[m_pSubQuery->eDisposition()]);
   else
     pRibbon->vSprintOther("%s(%lld params) %s caller: board[%lld] %s %s %s"_Stz,
-                     "SubQuery"_Stz,
-                     m_pSubQuery->nCorrCols(),
-                     aQD[m_pSubQuery->eDisposition()],
+                          "SubQuery"_Stz,
+                          m_pSubQuery->nCorrCols(),
+                          aQD[m_pSubQuery->eDisposition()],
 
-                     m_pSubQuery->pBoard()->i_Board(),
-                     aQC[m_pSubQuery->eClause()],
-                     aQO[m_pSubQuery->eCallOp()],
-                     aRO[m_pSubQuery->eRelnOp()]
-                     );
+                          m_pSubQuery->pBoard()->i_Board(),
+                          aQC[m_pSubQuery->eClause()],
+                          aQO[m_pSubQuery->eCallOp()],
+                          aRO[m_pSubQuery->eRelnOp()]
+    );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pRibbon->vTitleLines();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szDescription)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
-
-  vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
-
-  vPinCards(pRibbon);
-
-  vPinBanners(pRibbon);
-
-  i8 iBenchNo = m_pBench->iBenchNo();
-  i8 iPrintNo = m_pBench->iPrint_inc();
-  pRibbon->vPrintRibbon(iBenchNo,iPrintNo);
-
-  delete pRibbon;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Bench* Board::pBench(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  return m_pBench;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Board::i_Board(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  return m_i_Board;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vBoardNo(i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
-
-  m_i_Board = i_Board;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sub-query                                                              */
-/*----------------------------------------------------------------------------*/
-void Board::vRenumberCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_pCard_Deck->vRenumberRoot(m_i_Board);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sub-query                                                              */
-/*----------------------------------------------------------------------------*/
-SubQuery* Board::pSubQuery(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_pSubQuery;
 }
 
 /*============================================================================*/

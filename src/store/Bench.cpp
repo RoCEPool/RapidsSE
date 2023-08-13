@@ -102,7 +102,7 @@ void Bench::vAddBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //RASSERT(! pGetBoard(pBoard->eBoardKind()));
+  //RASSERT(! pGetBoard(pBoard->eBoard()));
 
   vPush(pBoard);
 }

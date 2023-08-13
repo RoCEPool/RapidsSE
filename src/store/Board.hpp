@@ -150,11 +150,13 @@ namespace STORE
   protected:
     i8          m_i_Board;
     s32         m_sBoardNm;
-    eBK         m_eBoardKind;  // joinOrdering, subquery
+    eBK         m_eBoard;  // joinOrdering, subquery
 
     Bench*      m_pBench;
     SubQuery*   m_pSubQuery;
-    Card_Deck*  m_pCard_Deck;
+    Card_Deck*  m_pDeck;
+
+    TagSet*     m_pState;
 
   private:
     // must be last
@@ -164,7 +166,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench);
+    Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench);
    ~Board(void) noexcept(false);
 
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
@@ -178,10 +180,9 @@ namespace STORE
     static void vValidate_SubQuery(CardIter* pCI);
 
     Bench* pBench(void);
-
-    i8  i_Board(void);
+    i8   i_Board(void);
     void vBoardNo(i8 i_Board);
-    eBK eBoardKind(void);
+    eBK  eBoard(void);
     Stz* szBoardNm(void);
     void vBoardNm(Stz* szBoardNm);
 
@@ -190,19 +191,20 @@ namespace STORE
 
     Card_Deck* pDeck(void);
 
+    void vPrintBoard(Stz* szDescription=nullptr);
 
+    void vRenumberCards(void);
+
+    TagSet* pState(void);
+    SubQuery* pSubQuery(void);
+
+  private:
     void vPinBanners(Ribbon* pRibbon);
     void vPinCards(Ribbon* pRibbon);
     void vPinTitle(Ribbon* pRibbon,
                    i8 iTransformNo,
                    Stz* szExplain=nullptr);
-    void vPrintBoard(Stz* szDescription=nullptr);
 
-    SubQuery* pSubQuery(void);
-
-    void vRenumberCards(void);
-
-  private:
     Footer* aFooter(void);
   };
 
