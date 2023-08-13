@@ -39,13 +39,14 @@ Stz* SP_Pointer::sz(Object* pPointer)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
   if (! pPointer) {
-    StrLib::vSprint(m_caResult,"nullptr"_Stz);
+    StrLib::vSprint(m_caResult,sizeof(m_caResult),"nullptr"_Stz);
     return (Stz*) &m_caResult[0];
   }
   
   eEC eError = AM::OBJECT::eValidObject(pPointer);
   if (EC_NONE != eError) {
     StrLib::vSprint(m_caResult
+                    ,sizeof(m_caResult)
                     ,"Pointer %p INVALID eError=%lld %s"_Stz
                     
                     ,pPointer
@@ -56,6 +57,7 @@ Stz* SP_Pointer::sz(Object* pPointer)
   }
 
   StrLib::vSprint(m_caResult
+                  ,sizeof(m_caResult)
                   ,"Pointer %p class %lld %s"_Stz
                   
                   ,pPointer

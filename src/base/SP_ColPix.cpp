@@ -43,6 +43,7 @@ Stz* SP_ColPix::sz(ColPix* pColPix)
   Stz* szColNm = aAdd<Stz*>(pColPix,pColPix->m_uName);
     
   StrLib::vSprint(m_caResult
+    ,sizeof(m_caResult)
                   
     ,"%02lld %16s : kind %s type %s datum %s "
      "length %5lld scale %2lld %s %s"_Stz

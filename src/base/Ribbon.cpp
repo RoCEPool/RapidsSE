@@ -257,11 +257,12 @@ void Ribbon::vSprintData(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  char zData[1024];
+  const i8 nBufSize = 1024;
+  char zData[nBufSize];
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zData, xArgs, (char*)szFormat);
+  StrLib::vSprint(zData, nBufSize, xArgs, (char*)szFormat);
   va_end(xArgs);
 
   vPutData(m_i_Line++,m_i_Char,(Stz*)zData);
@@ -274,11 +275,12 @@ void Ribbon::vSprintOther(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  char zOther[1024];
+  const i8 nBufSize = 1024;
+  char zOther[nBufSize];
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zOther, xArgs, (char*)szFormat);
+  StrLib::vSprint(zOther, nBufSize, xArgs, (char*)szFormat);
   va_end(xArgs);
 
   vPutOther(m_i_Line++,m_i_Char,(Stz*)zOther);
@@ -328,16 +330,17 @@ void Ribbon::vSprintDataRight(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  char zData[1024];
+  const i8 nBufSize = 1024;
+  char zData[nBufSize];
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zData, xArgs, (char*)szFormat);
+  StrLib::vSprint(zData, nBufSize, xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  char zDataRight[1024];
+  char zDataRight[nBufSize];
 
-  StrLib::vSprint(zDataRight, m_sRightFormat.szStz(), (Stz*)zData);
+  StrLib::vSprint(zDataRight, nBufSize, m_sRightFormat.szStz(), (Stz*)zData);
 
   vPutData(m_i_Line++,m_i_Char,(Stz*)zDataRight);
 }

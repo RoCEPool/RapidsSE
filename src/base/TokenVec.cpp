@@ -348,7 +348,7 @@ Token* TokenVec::pCurrToken(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into debug string                                        */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vDbgStr(Stz* szDstStr)
+void TokenVec::vDbgStr(Stz* szDstStr, i8 nBufSize)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -362,7 +362,7 @@ void TokenVec::vDbgStr(Stz* szDstStr)
     if (0 == i_Token % 8)
       StrLib::vConcat(szDstStr,"\n  "_Stz);
 
-    StrLib::vSprintCat(szDstStr,"[%lld]"_Stz,i_Token);
+    StrLib::vSprintCat(szDstStr, nBufSize, "[%lld]"_Stz, i_Token);
 
     Token* pToken = pGet(i_Token);
     

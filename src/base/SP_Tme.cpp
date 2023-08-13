@@ -44,11 +44,13 @@ Stz* SP_Tme::sz(i8 iTme)
   wTme = iTme;
   
   if (wTme.m_wTme.m_uMicro) {
-    
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,wTme.m_wTme.m_uMicro,6);
+
+    const i8 nLen = 16;
+    char caFraction[nLen];
+    StrLib::vFormatFraction(caFraction,nLen,wTme.m_wTme.m_uMicro,6);
     
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     (Stz*)F_TME_frac,
 
                     (i8)wTme.m_wTme.m_uHour,
@@ -59,6 +61,7 @@ Stz* SP_Tme::sz(i8 iTme)
   }
   else {
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     (Stz*)F_TME,
 
                     (i8)wTme.m_wTme.m_uHour,

@@ -59,6 +59,7 @@ Stz* SP_Bcd::sz(i8 iBcd, i8 iScale)
 
   if (iScale > nDigits) {
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     (Stz*)F_BCD_frac,
                     iBcd < 0 ? "-" : "",
                     0,
@@ -87,6 +88,7 @@ Stz* SP_Bcd::sz(i8 iBcd, i8 iScale)
   
   if (iScale)
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     (Stz*)F_BCD_frac,
                     bNegative ? "-" : "",
                     iBcd_magn,
@@ -94,6 +96,7 @@ Stz* SP_Bcd::sz(i8 iBcd, i8 iScale)
                     iBcd_frac);
   else
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
                     (Stz*)F_BCD,
                     bNegative ? "-" : "",
                     iBcd_magn);

@@ -197,7 +197,9 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
   MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWBUFFER);
   m_caModel[sizeof(m_caModel) - 1] = '\0';
   
-  StrLib::vSprint(m_caModel,"RapidsSE %s SeFormat %s"_Stz,
+  StrLib::vSprint(m_caModel,
+                  sizeof(m_caModel),
+                  "RapidsSE %s SeFormat %s"_Stz,
                   AM::szVersionString(),
                   AM::szFormatString());
   

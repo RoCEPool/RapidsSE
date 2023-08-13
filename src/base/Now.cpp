@@ -87,6 +87,7 @@ void Now::vSetNow(void)
   m_wTsp.T.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   (Stz*)F_NOW,
                   
                   (i8)m_wTsp.T.m_uYearDelta + C_YEAR_BASE,
@@ -130,6 +131,7 @@ void Now::vSetNowUTC(void)
   m_wTsp.T.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   (Stz*)F_NOW,
                   
                   (i8)m_wTsp.T.m_uYearDelta + C_YEAR_BASE,
@@ -193,6 +195,7 @@ Stz* Now::szPath(void)
    m_wTsp.T.m_uMicro     = 0;
 
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   (Stz*)F_NOW_path,
                   
                   (i8)m_wTsp.T.m_uYearDelta + C_YEAR_BASE,
@@ -214,6 +217,7 @@ Stz* Now::sz(Dtm* aTsp)
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   (Stz*)F_NOW,
                   
                   (i8)aTsp->m_wTsp.T.m_uYearDelta + C_YEAR_BASE,

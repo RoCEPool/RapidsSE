@@ -41,6 +41,7 @@ Stz* SP_Int::sz(i8 iInt)
   _precondition_(_MAGIC_,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   (Stz*)m_caFormat,
                   iInt);
 

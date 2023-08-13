@@ -44,6 +44,7 @@ Stz* SP_Dte::sz(i8 iDte)
   wDte = iDte;
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   (Stz*)m_caFormat,
                   
                   (i8)wDte.T.m_uYearDelta + C_YEAR_BASE,

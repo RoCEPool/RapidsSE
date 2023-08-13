@@ -106,12 +106,13 @@ void RibbonLine::vPut(i8 i_Char, char cChr, i8 nTimes)
 void RibbonLine::vSprint(i8 i_Char, Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
-  
+
+  const i8 nBufSize = 1024;
   char zText[1024];
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zText,xArgs,(char*)szFormat);
+  StrLib::vSprint(zText,nBufSize,xArgs,(char*)szFormat);
   va_end(xArgs);
 
   vPut(i_Char,(Stz*)zText);

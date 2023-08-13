@@ -817,7 +817,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 
     Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
 
-    StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
+    sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
 //    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_EmittedCol == C_UNKNOWN) {
 //      sCode = ""_Stz;
@@ -884,7 +884,7 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefRht->nColumns(); i_Col++) {
 
     Column* pColumn = pOpSketch->m_pStreamDefRht->pGetColumn(i_Col);
-    StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
+    sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
     sCode = ""_Stz;
     pOperatorFile->vSeekStart();

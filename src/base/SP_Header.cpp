@@ -44,6 +44,7 @@ Stz* SP_Header::sz(Header* aHeader)
   i8 nClassSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
                   "<cn%03d %s %lldB %s>"_Stz,
                   
                   eClassNo,

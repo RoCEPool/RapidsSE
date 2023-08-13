@@ -93,9 +93,10 @@ char* Exception::azText(void)
 /*----------------------------------------------------------------------------*/
 void Exception::vPrint(void)
 {
-  char zIntoBuf[1024];
+  const i8 nBufSize = 1024;
+  char zIntoBuf[nBufSize];
   
-  vSprint(zIntoBuf);
+  vSprint(zIntoBuf, nBufSize);
   
   vTrace("%s\n"_Stz,zIntoBuf);
   
@@ -105,9 +106,10 @@ void Exception::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sprint the exception into given char buffer                                */
 /*----------------------------------------------------------------------------*/
-void Exception::vSprint(char* azIntoBuf)
+void Exception::vSprint(char* azIntoBuf, i8 nBufSize)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
+                  nBufSize,
                   
                   "Exception eFK=%lld:%s`%s`; "
                   "%s() "

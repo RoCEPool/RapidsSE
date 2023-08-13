@@ -317,7 +317,7 @@ bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& roSysCall)
   xAddrInfo.ai_flags    = AI_PASSIVE;
   
   s256 sPort;
-  StrLib::vSprint(sPort.szStz(), "%lld"_Stz, iPort);
+  sPort.vSprint("%lld"_Stz, iPort);
   
   i8 iReturn = getaddrinfo(sAddr->azChar(), sPort.azChar(), &xAddrInfo, &pAddrInfo);
   if (iReturn != 0) {

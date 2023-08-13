@@ -43,9 +43,10 @@ Stz* SP_PartitionKeyMetadata::sz(PartitionKeyMetadata* pPartitionKeyMetadata)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
           
   StrLib::vSprint(m_caResult
-                  
+    ,sizeof(m_caResult)
+
     ,"%s %s %s %lld %s"_Stz
-                  
+
     ,pPartitionKeyMetadata->szCatalogName()
     ,pPartitionKeyMetadata->szSchemaName()
     ,pPartitionKeyMetadata->szTableName()

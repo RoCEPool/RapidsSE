@@ -94,9 +94,10 @@ char* LowMemory::azText(void)
 /*----------------------------------------------------------------------------*/
 void LowMemory::vPrint(void)
 {
-  char zIntoBuf[1024];
+  i8 nBufSize = 1024;
+  char zIntoBuf[nBufSize];
 
-  vSprint(zIntoBuf);
+  vSprint(zIntoBuf, nBufSize);
 
   printf("%s\n",zIntoBuf);
 
@@ -106,9 +107,10 @@ void LowMemory::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sprint the exception into given char buffer                                */
 /*----------------------------------------------------------------------------*/
-void LowMemory::vSprint(char* azIntoBuf)
+void LowMemory::vSprint(char* azIntoBuf, i8 nBufSize)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
+                  nBufSize,
 
                   "Exception eFK=%lld:%s`%s`; "
                   "%s() "

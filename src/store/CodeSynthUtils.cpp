@@ -30,7 +30,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
   bool bFoundStart = false;
 
   //if ( ! sLabel->bSame(""_Stz) )
-  //  StrLib::vSprintCat(sCode->szStz(), "\n%s:\n"_Stz, sLabel->azChar());
+  //  sCode->vCatSprint("\n%s:\n"_Stz, sLabel->azChar());
 
   sLine = ""_Stz;
 
@@ -70,7 +70,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         }
         else {
           // copy line into sCode
-          StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+          sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
         }
       }
     }
@@ -125,7 +125,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceIndexPosition(sLine, pOpSketch);
 
         // copy line into sCode
-        StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+        sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
       }
     }
     sLine = ""_Stz;
@@ -177,7 +177,7 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
         }
         else {
           // copy line into sCode
-          StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+          sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
         }
       }
     }
@@ -188,7 +188,7 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
         vReplaceReturnToLabel(sLine, sReturnToLabel);
 
         // copy line into sCode
-        StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+        sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
       }
     }
   }
@@ -218,7 +218,7 @@ bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOp
     while ( nExpr >= 0) {
       pTypedCell = pTypedStack->aPeekItem(nExpr--);
       Stz* sExpr = pTypedCell->szStz();
-      StrLib::vSprintCat(sCode->szStz(), "\n %s"_Stz, sExpr->azChar());
+      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
     }
     return true;
   }
@@ -231,7 +231,7 @@ bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOp
     while ( nExpr >= 0) {
       pTypedCell = pTypedStack->aPeekItem(nExpr--);
       Stz* sExpr = pTypedCell->szStz();
-      StrLib::vSprintCat(sCode->szStz(), "\n %s"_Stz, sExpr->azChar());
+      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
     }
     return true;
   }
@@ -244,7 +244,7 @@ bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOp
     while ( nExpr >= 0) {
       pTypedCell = pTypedStack->aPeekItem(nExpr--);
       Stz* sExpr = pTypedCell->szStz();
-      StrLib::vSprintCat(sCode->szStz(), "\n %s"_Stz, sExpr->azChar());
+      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
     }
     return true;
   }
@@ -261,7 +261,7 @@ void CodeSynthUtils::vReplaceColumnNo(Stz* sLine, Column* pColumn) {
 
   if (StrLib::bContains(sLine->azChar(), "__COLUMN_NO__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pColumn->iColumnNo());
+    sColumn.vSprint("%lld"_Stz, pColumn->iColumnNo());
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMN_NO__", sColumn.azChar());
     RASSERT(bResult);
   }
@@ -565,21 +565,21 @@ void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
 
   if (StrLib::bContains(sLine->azChar(), "__COLUMNS_IN__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
     bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_IN__", sColumn.azChar());
     RASSERT(bResult);
   }
 
   if (StrLib::bContains(sLine->azChar(), "__COLUMNS_OUT__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefOut->nColumns());
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefOut->nColumns());
     bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_OUT__", sColumn.azChar());
     RASSERT(bResult);
   }
 
   if (StrLib::bContains(sLine->azChar(), "__INDEX_COLUMNS__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pIndexDef->nColumns());
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pIndexDef->nColumns());
     bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_COLUMNS__", sColumn.azChar());
     RASSERT(bResult);
   }
@@ -594,7 +594,7 @@ void CodeSynthUtils::vReplaceIndexColumn(Stz* sLine, i8 iIndexColumn)
 
   if (StrLib::bContains(sLine->azChar(), "__INDEX_COLUMN__")) {
     s256 sIndexColumn;
-    StrLib::vSprint(sIndexColumn,"%lld"_Stz,iIndexColumn);
+    sIndexColumn.vSprint("%lld"_Stz,iIndexColumn);
     bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_COLUMN__", sIndexColumn.azChar());
     RASSERT(bResult);
   }
@@ -773,15 +773,15 @@ void CodeSynthUtils::vReplaceColumnsInflated(Stz* sLine, OpSketch* pOpSketch)
     s256 sColumnsInflated;
     if (pOpSketch->m_eSketchKind == SK_INDEXJOIN) {
       RASSERT( pOpSketch->m_pStreamDefLft );
-      StrLib::vSprint(sColumnsInflated,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+      sColumnsInflated.vSprint("%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
     }
     else if (pOpSketch->m_eSketchKind == SK_SEMIJOIN ||
              pOpSketch->m_eSketchKind == SK_ANTIJOIN) {
-      StrLib::vSprint(sColumnsInflated,"%lld"_Stz,0);
+      sColumnsInflated.vSprint("%lld"_Stz,0);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
-      StrLib::vSprint(sColumnsInflated,"0"_Stz);
+      sColumnsInflated.vSprint("0"_Stz);
     }
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_INFLATED__", sColumnsInflated.azChar());
     RASSERT(bResult);
@@ -802,11 +802,11 @@ void CodeSynthUtils::vReplaceColumnsToInflate(Stz* sLine, OpSketch* pOpSketch)
          pOpSketch->m_eSketchKind == SK_SEMIJOIN  ||
          pOpSketch->m_eSketchKind == SK_ANTIJOIN ) {
       RASSERT(pOpSketch->m_pStreamDefRht);
-      StrLib::vSprint(sColumnsToInflate, "%lld"_Stz, pOpSketch->m_pStreamDefRht->nColumns());
+      sColumnsToInflate.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefRht->nColumns());
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
-      StrLib::vSprint(sColumnsToInflate,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+      sColumnsToInflate.vSprint("%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
     }
 
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_TO_INFLATE_", sColumnsToInflate.azChar());

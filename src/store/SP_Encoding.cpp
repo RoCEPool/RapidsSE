@@ -64,6 +64,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
   
   m_caEncoding[0] = '\0';
   StrLib::vSprint(m_caEncoding,
+                  sizeof(m_caEncoding),
                   "HeadSize %lldB <W=%lld> MetaSize %lldB "
                   "BytesNeeded %lldB ShiftOver %lldB\n"_Stz,
                   pEncoding->m_jHeadSize,
