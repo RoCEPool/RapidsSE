@@ -978,7 +978,9 @@ void CardIter::vEndTransform(void)
 
   vRenumberCards();
 
-  G.pBoard->pState()->vAppend(aXF[m_pBench->eXform()]);
+  G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
+
+  G.pBoard->pState()->vDumpSet();
 
   vPrintBoard();
 }
