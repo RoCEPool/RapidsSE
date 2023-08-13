@@ -96,9 +96,6 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
-  m_pCI->vRenumberCards();
-  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
@@ -121,6 +118,11 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
+
+
+  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+  m_pCI->vRenumberCards();
+  m_pCI->vPrintBoard(__LINE__);
 
   vValidate();
 }
