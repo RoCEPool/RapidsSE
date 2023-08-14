@@ -1484,6 +1484,8 @@ void Card::vValidationFailed(Stz *szFormat, ...)
 void Card::vValidationPassed(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_cMark1 = MARK_BLANK;
 }
 
 /*----------------------------------------------------------------------------*/

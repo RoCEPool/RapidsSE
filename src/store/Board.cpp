@@ -234,6 +234,9 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 
   Card_Deck* pDeck = pCI->G.pDeck;
 
+  pDeck->vMarksClearRecursive();
+  pDeck->vMark1Recursive('X');
+
   while (pCI->G_bEachMain()) {
 
     switch (pCI->G.e_MainCard) {
