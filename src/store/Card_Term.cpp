@@ -372,10 +372,18 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-//  if (pCI->G.pBoard->pState()->bHasName(aXF[CN_XF_UPDATE_PROJECTION])) {
-//    if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc())
-//      RASSERT(m_xSymbol.Y_bHas(P_Type));
-//  }
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROJECTION_ANALYSIS]) ||
+      pCI->G.pBoard->pState()->bHasName(aXF[XF_UPDATE_PROJECTION])) {
+    if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
+      if (! m_xSymbol.Y_bHas(P_Type)) {
+        if (! pCI->G.p_call) {
+          vValidationFailed("<<replace>> %p"_Stz,this);
+        }
+      }
+    }
+  }
+
+  vValidationPassed();
 }
 
 /*----------------------------------------------------------------------------*/

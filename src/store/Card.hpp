@@ -290,8 +290,10 @@ namespace STORE
 
     Card* pFindCardRecursive(eCK eOfCard);
     Card* pFindParentRecursive(Card* pSubCard);
-    Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
+    Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
+    Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
+    Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
 
     bool bHasSubRecursive(Card* pSubCard);
 
@@ -300,8 +302,10 @@ namespace STORE
 
     char cMark1(void);
     void vMark1(char cMark1);
+    void vMark1Recursive(char cMark1);
     char cMark2(void);
     void vMark2(char cMark2);
+    void vMark2Recursive(char cMark1);
     void vMarksClearRecursive(void);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
@@ -333,6 +337,9 @@ namespace STORE
     eCK  eValidate_mustEither(i8 /*eCK*/ iCard_first, ...);
     void vValidate_mustHave(i8 /*eCK*/ iCard_first, ...);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
+
+    void vValidationFailed(Stz* szFormat, ...);
+    void vValidationPassed(void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

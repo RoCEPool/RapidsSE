@@ -2,11 +2,10 @@
 /* _r_Q16 -- TCPH query 16 test                                               */
 /*============================================================================*/
 
-// /glean_interactive
-/jobMetrics
-/joWrite
+/glean_interactive
 /transliterated
 /weaved
+/pipeline_def
 /pipelineName = "_r_Q16"
 select
   p_brand,

@@ -749,6 +749,8 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     Card_Term *p_term = xRpnCalc.p_term();
     p_term->vValidate(pCI, iDepth + 1, this);
   }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

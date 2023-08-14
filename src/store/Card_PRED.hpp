@@ -17,6 +17,7 @@ namespace STORE
 
     bool bContains_callToSubQuery(CardIter* pCI);
     bool bDescend(std::function<bool(Card_PRED* )> bfLambdaFn);
+    void vEnsureTypesFor_stmOdn(CardIter* pCI);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
@@ -34,6 +35,9 @@ namespace STORE
     bool bPredHasBounds (Index* pIndex);
     bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
     Symbol* pTable_WhichTableFor_Pred(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 }
 

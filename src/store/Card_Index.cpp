@@ -261,6 +261,8 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   else {
     RASSERT(! pFindPpyRecursive(P_ChosenBound, CK_BOUND));
   }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

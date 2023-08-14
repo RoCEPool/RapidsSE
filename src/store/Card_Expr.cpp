@@ -663,6 +663,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (pParent && ! pParent->bIsCard(CK_KEY)) {
     vValidate_mustHave(CK_AS,CK_NONE);
   }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

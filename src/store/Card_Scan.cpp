@@ -114,6 +114,8 @@ void Card_Scan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
 
   pSub_level()->vValidate(pCI,iDepth+1,this);
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

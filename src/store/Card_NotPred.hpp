@@ -15,6 +15,10 @@ namespace STORE
   
     Card_NotPred(void);
    ~Card_NotPred(void) noexcept(false);
+
+    void vEnsureTypesFor_stmOdn(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_NotPred* _pCard_NotPred(void* aAddr);

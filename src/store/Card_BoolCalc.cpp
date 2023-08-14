@@ -275,6 +275,19 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure all terms have a type                                               */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_PRED* p_PRED = static_cast<Card_PRED*>(pGetChild(0));
+
+  if (p_PRED)
+    p_PRED->vEnsureTypesFor_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* find predicate with given mark                                             */
 /*----------------------------------------------------------------------------*/
 Card_PRED* Card_BoolCalc::pFindMarkedPred(char cWithMark)
@@ -635,6 +648,15 @@ void Card_BoolCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+  Card_PRED* p_PRED = reinterpret_cast<Card_PRED*>(pPeekChild());
+
+  if (! p_PRED)
+    return;
+
+  p_PRED->vValidate(pCI,iDepth+1,this);
+
+  vValidationPassed();
 }
 
 

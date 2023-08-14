@@ -515,6 +515,8 @@ void Card_GbyAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pSub_level()->vValidate(pCI,iDepth+1,this);
   pSub_key()->vValidate(pCI,iDepth+1,this);
   pSub_projection()->vValidate(pCI,iDepth+1,this);
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

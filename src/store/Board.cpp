@@ -225,6 +225,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
     return;
 
   pCI->vSave();
+  pCI->vNullMembers();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // main cards
@@ -232,6 +233,9 @@ void Board::vValidate_SubQuery(CardIter *pCI)
   RASSERT(pCI->m_pBench);
 
   Card_Deck* pDeck = pCI->G.pDeck;
+
+  pDeck->vMarksClearRecursive();
+  pDeck->vMark1Recursive('X');
 
   while (pCI->G_bEachMain()) {
 

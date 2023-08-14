@@ -184,6 +184,33 @@ Card_Term* Card_CmpPred::pGetCorrCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_CmpPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xCmpPred(this);
+  while (xCmpPred.bEach()) {
+    Card* pCard = xCmpPred.pChild();
+    eCK eCard = pCard->eCard();
+
+    switch (eCard) {
+
+      case CK_ANDPRED: _pCard_AndPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_CMPPRED: _pCard_CmpPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_NOTPRED: _pCard_NotPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_ORPRED:  _pCard_OrPred(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
+
+      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmOdn(pCI);     break;
+
+      default:
+        NEVER_REACH
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_CmpPred::pExtractParamTerm(void)
@@ -415,6 +442,38 @@ bool Card_CmpPred::bUsesTables(char cTblSyn_a, char cTblSyn_b)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_CmpPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
+
+  Kid xRpnCalc(this);
+  while (xRpnCalc.bEach()) {
+    Card* pCard = xRpnCalc.pChild();
+    eCK eCard = pCard->eCard();
+
+    switch (eCard) {
+
+      case CK_ANDPRED: _pCard_AndPred(pCard)->vValidate(pCI,iDepth+1,this); break;
+      case CK_CMPPRED: _pCard_CmpPred(pCard)->vValidate(pCI,iDepth+1,this); break;
+      case CK_NOTPRED: _pCard_NotPred(pCard)->vValidate(pCI,iDepth+1,this); break;
+      case CK_ORPRED:  _pCard_OrPred(pCard)->vValidate(pCI,iDepth+1,this);  break;
+
+      case CK_TERM:    _pCard_Term(pCard)->vValidate(pCI,iDepth+1,this);    break;
+
+      default:
+        vValidationFailed("<<replace>> %p"_Stz,this);
+    }
+  }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

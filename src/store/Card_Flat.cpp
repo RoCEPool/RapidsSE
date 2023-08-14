@@ -44,6 +44,8 @@ void Card_Flat::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+  vValidationPassed();
 }
 
 

@@ -24,6 +24,8 @@ namespace STORE
     Card_CmpPred* pCmpPredFindBound(Index* pIndex, ePB eBound);
     bool bCmpPredHasBounds(Index* pIndex);
     bool bCoPtnWith(Card_CmpPred* p_cmpPred_arg);
+    void vEnsureTypesFor_stmOdn(CardIter* pCI);
+
     Card_Term* pGetCorrCol(void);
     Card_Term* pExtractParamTerm(void);
     char cGetTable_a(void);
@@ -39,6 +41,7 @@ namespace STORE
     bool bUsesTable(char cTblSyn);
     bool bUsesTables(char cTblSyn_a, char cTblSyn_b);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CmpPred* _pCard_CmpPred(void* aAddr);

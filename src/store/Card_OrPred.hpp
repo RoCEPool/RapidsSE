@@ -18,6 +18,10 @@ namespace STORE
 
     Card_CmpPred* pOrPredFindBound(Index* pIndex, ePB eBound);
     bool bOrPredHasBounds(Index* pIndex);
+
+    void vEnsureTypesFor_stmOdn(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_OrPred* _pCard_OrPred(void* aAddr);

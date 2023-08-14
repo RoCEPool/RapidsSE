@@ -338,6 +338,8 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
     xKid.p_term()->vValidate(pCI, iDepth + 1, pParent);
   }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

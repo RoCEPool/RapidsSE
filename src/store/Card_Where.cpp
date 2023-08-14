@@ -306,6 +306,8 @@ void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     pSub_boolCalc()->vValidate(pCI,iDepth+1,this);
   else
     pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
+
+  vValidationPassed();
 }
 
 /*============================================================================*/
