@@ -299,6 +299,13 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
     if (CK_TABLE == pCI->G.e_MainCard) {
       pCI->G.p_table->vUpdate_projection(pCI);
       pCI->vPrintBoard();
+
+      if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
+        if (pCI->Prior.m_pProjection) {
+          pCI->G.p_constraint->vEnsureTypes_For_stmColOdn(pCI);
+        }
+      }
+
       continue;
     }
 
@@ -355,6 +362,12 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       }
 
       pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
+    }
+
+    if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
+      if (pCI->Prior.m_pProjection) {
+        pCI->G.p_constraint->vEnsureTypes_For_stmColOdn(pCI);
+      }
     }
 
   }

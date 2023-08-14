@@ -102,6 +102,29 @@ bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_PRED::vEnsureTypesFor_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_ANDPRED: _pCard_AndPred(this)->vEnsureTypesFor_stmOdn(pCI); break;
+    case CK_CMPPRED: _pCard_CmpPred(this)->vEnsureTypesFor_stmOdn(pCI); break;
+    case CK_NOTPRED: _pCard_NotPred(this)->vEnsureTypesFor_stmOdn(pCI); break;
+    case CK_ORPRED:  _pCard_OrPred(this)->vEnsureTypesFor_stmOdn(pCI);  break;
+
+    case CK_TERM:    _pCard_Term(this)->vEnsureTypeFor_stmOdn(pCI);     break;
+
+    default:
+      NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to get board name from one of the terms of this predicate          */
 /*----------------------------------------------------------------------------*/
 Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)

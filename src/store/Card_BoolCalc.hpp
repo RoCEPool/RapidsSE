@@ -25,6 +25,7 @@ namespace STORE
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     void vCullPred(char cWithMark);
     bool bCullPred(Card_PRED* p_pred, char cWithMark);
+    void vEnsureTypesFor_stmOdn(CardIter* pCI);
     Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
     bool bIsScalarCol(void);
