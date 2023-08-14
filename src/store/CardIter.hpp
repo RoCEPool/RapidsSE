@@ -182,6 +182,8 @@ namespace STORE
     void vUsingBoard(i8 i_Board);
     void vUsingBoard(Board* pBoard);
 
+    void vValidateChildren(Card* pCard, i8 iDepth);
+
     Stz* szXdesc(void);
     i8   iXform(void);
     Stz* szXfunc(void);

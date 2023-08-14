@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_OuterColNm.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -32,6 +33,18 @@ Card_OuterColNm::Card_OuterColNm(void)
 Card_OuterColNm::~Card_OuterColNm(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OuterColNm::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

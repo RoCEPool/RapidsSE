@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Direction.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -51,6 +52,19 @@ bool Card_Direction::bIsEqual(Card_Direction* p_direction_arg)
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Direction::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

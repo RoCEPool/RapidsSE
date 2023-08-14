@@ -4,6 +4,8 @@
 
 #include "Card_TableNm.hpp"
 
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -32,6 +34,18 @@ Card_TableNm::Card_TableNm(void)
 Card_TableNm::~Card_TableNm(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TableNm::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

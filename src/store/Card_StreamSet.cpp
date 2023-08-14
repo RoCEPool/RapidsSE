@@ -195,6 +195,19 @@ void Card_StreamSet::vRemoveInvalid(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamSet::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

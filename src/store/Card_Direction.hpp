@@ -18,6 +18,7 @@ namespace STORE
 
     bool bIsEqual(Card_Direction* p_direction_arg);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Direction* _pCard_Direction(void* aAddr);

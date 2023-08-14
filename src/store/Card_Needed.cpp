@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Needed.cpp -- Stream                                                  */
+/* Card_Needed.cpp -- Needed                                                  */
 /*============================================================================*/
 
 #include "Card_Needed.hpp"
@@ -74,6 +74,18 @@ Card_Project* Card_Needed::pNew_project_early(CardIter* pCI)
   p_project_early->vAppend(pCI->Early.m_pNeeded_later->pClone());
 
   return p_project_early;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Needed::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

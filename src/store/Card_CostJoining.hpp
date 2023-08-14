@@ -15,6 +15,8 @@ namespace STORE
   
     Card_CostJoining(void);
    ~Card_CostJoining(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CostJoining* _pCard_CostJoining(void* aAddr);

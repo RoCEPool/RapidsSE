@@ -15,6 +15,8 @@ namespace STORE
   
     Card_NCorrCols(void);
    ~Card_NCorrCols(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_NCorrCols* _pCard_NCorrCols(void* aAddr);

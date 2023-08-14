@@ -24,6 +24,8 @@ namespace STORE
     void vJoinOrderString(String* pString, Card_TableList* p_tableList,
                           bool bNumbers=false);
     void vReorder(Card_Deck* pDeck);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_JoinOrdering* _pCard_JoinOrdering(void* aAddr);

@@ -22,6 +22,8 @@ namespace STORE
                     i8 nFiltPred_prev,
                     eXK eJoinCast,
                     i8 nBuff_joining_with);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_StreamJoin* _pCard_StreamJoin(void* aAddr);

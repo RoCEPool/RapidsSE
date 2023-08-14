@@ -350,21 +350,11 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
 void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
-
-  pCI->G.p_indexList = pSub_indexList();
-
-  pCI->G.p_indexList->vValidate(pCI,iDepth+1,this);
-
-  RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
-
-  if ((pCI->G.p_constraint = pSub_constraint()))
-    pCI->G.p_constraint->vValidate(pCI,iDepth+1,this);
-
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
 

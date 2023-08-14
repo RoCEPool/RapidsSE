@@ -16,6 +16,7 @@ namespace STORE
     Card_HshCol(void);
    ~Card_HshCol(void) noexcept(false);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_HshCol* _pCard_HshCol(void* aAddr);

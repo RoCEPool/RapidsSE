@@ -11,6 +11,7 @@
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -51,7 +52,17 @@ Card_FiltPred::~Card_FiltPred(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_FiltPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

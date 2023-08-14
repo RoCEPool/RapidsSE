@@ -15,6 +15,8 @@ namespace STORE
   
     Card_JoinOrder(void);
    ~Card_JoinOrder(void) noexcept(false);
+
+     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
    };
 
   Card_JoinOrder* _pCard_JoinOrder(void* aAddr);

@@ -4,6 +4,7 @@
 
 #include "Card_Limit.hpp"
 #include "Card_Level.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -58,8 +59,8 @@ void Card_Limit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_LEVEL,CK_NONE);
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
-
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
 

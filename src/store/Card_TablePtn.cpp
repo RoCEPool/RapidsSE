@@ -8,6 +8,7 @@
 #include "Table.hpp"
 #include "PtnDef.hpp"
 #include "Card_TableNm.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -79,6 +80,18 @@ bool Card_TablePtn::bColumnMatchesPtn(Symbol* p_Y_tblPtn, Symbol* p_Y_tblCol)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TablePtn::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

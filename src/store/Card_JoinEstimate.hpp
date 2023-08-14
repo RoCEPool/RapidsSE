@@ -15,6 +15,8 @@ namespace STORE
   
     Card_JoinEstimate(void);
    ~Card_JoinEstimate(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_JoinEstimate* _pCard_JoinEstimate(void* aAddr);

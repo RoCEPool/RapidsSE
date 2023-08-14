@@ -87,6 +87,19 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
   pCI->G.p_projection->vPush(p_expr_new);
 }
 
-//*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_FoldElist::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
+
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

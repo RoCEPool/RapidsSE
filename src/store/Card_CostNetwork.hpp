@@ -15,6 +15,8 @@ namespace STORE
   
     Card_CostNetwork(void);
    ~Card_CostNetwork(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CostNetwork* _pCard_CostNetwork(void* aAddr);

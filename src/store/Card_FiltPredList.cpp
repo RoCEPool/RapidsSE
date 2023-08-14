@@ -12,6 +12,8 @@
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
 
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -125,6 +127,18 @@ i8 Card_FiltPredList::nFiltersFor(char cTblSyn)
 
   return 0;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_FiltPredList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

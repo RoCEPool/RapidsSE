@@ -17,6 +17,8 @@ namespace STORE
    ~Card_TableSize(void) noexcept(false);
 
    static Card_TableSize* pDerive(Table* pTable);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_TableSize* _pCard_TableSize(void* aAddr);

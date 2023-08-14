@@ -618,6 +618,9 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (Card_IndexList* p_indexList = pSub_indexList())
     p_indexList->vValidate(pCI,iDepth+1,this);
 
+  if ((pCI->G.p_projection = pSub_projection()))
+    pCI->G.p_projection->vValidate(pCI,iDepth+1,this);
+
   vValidationPassed();
 }
 

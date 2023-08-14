@@ -18,6 +18,8 @@ namespace STORE
 
     bool bIsHigherCost(Card_CostStream* p_costQuery_arg);
     bool bIsLowerCost(Card_CostStream* p_costQuery_arg);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CostStream* _pCard_CostStream(void* aAddr);

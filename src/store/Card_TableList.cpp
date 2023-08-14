@@ -207,6 +207,19 @@ Stz* Card_TableList::szToTableNm(char cTblSyn)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TableList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

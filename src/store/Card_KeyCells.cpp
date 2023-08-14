@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_KeyCells.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -49,6 +50,19 @@ Card_Map* Card_KeyCells::pDecodeMap(Symbol* pSymbol)
 
   return p_map;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_KeyCells::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

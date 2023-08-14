@@ -2242,6 +2242,318 @@ void CardIter::vUsingBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate children                                                          */
+/*----------------------------------------------------------------------------*/
+void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (Kid xKid(pCard); xKid.bEach(); /**/) {
+
+    Card* pChild = xKid.pChild();
+
+    eCK eChild = pChild->eCard();
+
+    vMember(pChild);
+
+    switch (eChild) {
+
+      case CK_ABSJOIN:
+        G.p_absJoin->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_AGGREG:
+        G.p_aggreg->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_ANDPRED:
+        G.p_andPred->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_AS:
+        G.p_as->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_BOOLCALC:
+        G.p_boolCalc->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_BOUND:
+        G.p_bound->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_BOUNDS:
+        G.p_bounds->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_CALL:
+        G.p_call->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_CAST:
+        G.p_cast->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_CMPPRED:
+        G.p_cmpPred->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_COMBINED:
+        G.p_combined->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_CONSTRAINT:
+        G.p_constraint->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_CORRELATION:
+        G.p_correlation->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_COSTJOINING:
+        G.p_costJoining->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_COSTNETWORK:
+        G.p_costNetwork->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_COSTSTREAM:
+        G.p_costQuery->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_COSTUNICAST:
+        G.p_costUnicast->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_COUNT:
+        G.p_count->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_CROSSJOIN:
+        G.p_crossJoin->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_DIRECTION:
+        G.p_direction->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_EXPR:
+        G.p_expr->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_FILTER:
+        G.p_filter->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_FILTPRED:
+        G.p_filtPred->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_FILTPREDLIST:
+        G.p_filtPredList->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_FLAT:
+        G.p_flat->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_FOLD:
+        G.p_fold->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_FOLDELIST:
+        G.p_foldElist->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_FROM:
+        G.p_from->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_GBYAGG:
+        G.p_gbyAgg->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_HASH:
+        G.p_hash->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_HAVING:
+        G.p_having->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_HSHCOL:
+        G.p_hshCol->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_IDXCOL:
+        G.p_idxCol->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_IDXCOLLIST:
+        G.p_idxColList->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_INDEX:
+        G.p_index->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_INDEXJOIN:
+        G.p_indexJoin->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_INDEXLIST:
+        G.p_indexList->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_INDEXNM:
+        G.p_indexNm->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_INDEXSCAN:
+        G.p_indexScan->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_JOINCAST:
+        G.p_joinCast->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_JOINESTIMATE:
+        G.p_joinEstimate->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_JOINORDER:
+        G.p_joinOrder->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_JOINORDERING:
+        G.p_joinOrdering->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_JOINPREDLIST:
+        G.p_joinPredList->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_KEY:
+        G.p_key->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_KEYCELLS:
+        G.p_keyCells->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_KEYEXISTS:
+        G.p_keyExists->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_KEYNOTEXISTS:
+        G.p_keyNotExists->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_LEVEL:
+        G.p_level->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_LIMIT:
+        G.p_limit->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_MAP:
+        G.p_map->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_MAPPING:
+        G.p_mapping->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_NCORRCOLS:
+        G.p_nCorrCols->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_NEEDED:
+        G.p_needed->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_NOTE:
+        G.p_note->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_NOTPRED:
+        G.p_notPred->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_ON:
+        G.p_on->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_ORDAGG:
+        G.p_ordAgg->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_ORPRED:
+        G.p_orPred->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_OUTERCOLNM:
+        G.p_outerColNm->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_OUTERJOIN:
+        G.p_outerJoin->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_PAYLOADCELLS:
+        G.p_payloadCells->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_PROJECT:
+        G.p_project->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_PROJECTION:
+        G.p_projection->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_ROWCOUNT:
+        G.p_rowCount->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_ROWSIZE:
+        G.p_rowSize->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_RPNCALC:
+        G.p_rpnCalc->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_SCAN:
+        G.p_scan->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_SECTION:
+        G.p_section->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_SEND:
+        G.p_send->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_SORT:
+        G.p_sort->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_STAGE:
+        G.p_stage->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_STREAMHEAD:
+        G.p_streamHead->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_STREAMJOIN:
+        G.p_streamJoin->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_STREAMKEY:
+        G.p_streamKey->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_STREAMPER:
+        G.p_streamPer->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_STREAMPTN:
+        G.p_streamPtn->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_STREAMSET:
+        G.p_streamSet->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_SUBSET:
+        G.p_subSet->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_TABLE:
+        G.p_table->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_TABLELIST:
+        G.p_tableList->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_TABLENM:
+        G.p_tableNm->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_TABLEPTN:
+        G.p_tablePtn->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_TABLESIZE:
+        G.p_tableSize->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_TERM:
+        G.p_term->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_TOP:
+        G.p_top->vValidate(this, iDepth + 1, pCard);
+        break;
+      case CK_TOPOLOGY:
+        G.p_topology->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_UNIQUE:
+        G.p_unique->vValidate(this, iDepth + 1, pCard);
+        break;
+
+      case CK_WHERE:
+        G.p_where->vValidate(this, iDepth + 1, pCard);
+        break;
+      default:
+        NEVER_REACH
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get transform number                                                       */
 /*----------------------------------------------------------------------------*/
 i8 CardIter::iXform(void)

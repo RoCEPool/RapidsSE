@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Projection.hpp -- Needed (for projection)                             */
+/* Card_Needed.hpp -- Needed (for projection)                                 */
 /*============================================================================*/
 #pragma once
 
@@ -18,6 +18,8 @@ namespace STORE
 
     Card_Needed* pClone(void);
     Card_Project* pNew_project_early(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Needed* _pCard_Needed(void* aAddr);

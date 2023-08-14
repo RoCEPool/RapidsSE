@@ -42,6 +42,8 @@ namespace STORE
      bool bUnicastPermitted(char cTblSyn_prior,
                             char cTblSyn_prev,
                             char cTblSyn_locus);
+
+     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
    };
 
   Card_StreamPer* _pCard_StreamPer(void* aAddr);

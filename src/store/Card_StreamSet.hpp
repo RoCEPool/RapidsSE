@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-   class Card_StreamSet : public Card_symbol<Card_StreamSet>
+  class Card_StreamSet : public Card_symbol<Card_StreamSet>
   {
   public:
     void* operator new(size_t);
@@ -25,7 +25,9 @@ namespace STORE
     Card_StreamPer* pJoinOrder(i8 iJoinOrder);
     Card_StreamPer* pLowestCost(void);
     void vRemoveInvalid(void);
-   };
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+  };
 
   Card_StreamSet* _pCard_StreamSet(void* aAddr);
 }
