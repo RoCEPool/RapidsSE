@@ -15,6 +15,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Key(void);
+    Card_Key(eCK eCard);
    ~Card_Key(void) noexcept(false);
 
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);
