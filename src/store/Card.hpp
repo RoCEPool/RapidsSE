@@ -333,8 +333,6 @@ namespace STORE
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 
-    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
-
     void vValidate_mayHave(i8 /*eCK*/ iCard_first, ...);
     eCK  eValidate_mustEither(i8 /*eCK*/ iCard_first, ...);
     void vValidate_mustHave(i8 /*eCK*/ iCard_first, ...);
