@@ -20,6 +20,8 @@ namespace STORE
     ColMap* pToColMap(ColMap* pColMap,
                       Card_Key* p_key,
                       Card* p_OP);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Mapping* _pCard_Mapping(void* aAddr);

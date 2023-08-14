@@ -22,6 +22,8 @@ namespace STORE
 
     void vBuildList(Card_Filter* pCard_cmpPred, Card_IndexList* p_indexList);
 
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_JoinPredList* _pCard_JoinPredList(void* aAddr);

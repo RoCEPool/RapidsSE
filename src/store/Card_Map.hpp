@@ -15,6 +15,8 @@ namespace STORE
   
     Card_Map(void);
    ~Card_Map(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Map* _pCard_Map(void* aAddr);
