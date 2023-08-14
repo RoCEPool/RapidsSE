@@ -88,7 +88,7 @@ namespace STORE
     i8      jTableSize(void);
     void    vToColPix(RowPix* pRowPix, bool bAddKeyHash);
     void    vToRowPix(RowPix* pRowPix, bool bAddKeyHash);
-    void    vToMetadata(Stz* sMetaData);
+    void    vToMetadata(String* psMetadata);
 
     bool    bUnique(void);
     void    vUnique(bool bUnique);

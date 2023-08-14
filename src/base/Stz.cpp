@@ -212,20 +212,6 @@ b1 Stz::bBeginsWith(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* formatted concatenated sprint                                              */
-/*----------------------------------------------------------------------------*/
-void Stz::vCatSprint(Stz* szFormat, ...)
-{
-  va_list args;
-  
-  char* aEnd = azChar() + nLength();
-
-  va_start(args,szFormat);
-  vsprintf(aEnd,szFormat->azChar(),args);
-  va_end(args);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get as char*                                                               */
 /*----------------------------------------------------------------------------*/
 char* Stz::azChar(void)
@@ -417,19 +403,6 @@ i8 Stz::nSize(void)
   i8 n = StrLib::nSize(azChar());
   
   return n;
-}
-
-/*----------------------------------------------------------------------------*/
-/* vSprint: formatted sprint                                                  */
-/*----------------------------------------------------------------------------*/
-void Stz::vSprint(Stz* szFormat, ...)
-{
-  va_list args;
-  va_start(args,szFormat);
-  
-  vsprintf(azChar(),szFormat->azChar(),args);
-  
-  va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/

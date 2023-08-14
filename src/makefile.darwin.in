@@ -13,17 +13,12 @@
 # Refer to the below url for details:
 #  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 
-# Warnings that are specific to clang on MacOS
-DARWIN_WARNINGS := -Werror=invalid-noreturn
-DARWIN_WARNINGS +=  -Wfatal-errors
+# Warnings flags that are specific to clang on MacOS
+DARWIN_WARNINGS :=
 
-# Specific warnings that are being promoted to errors on clang on MacOS
-DARWIN_ERRORS := -Werror=unused-variable
-DARWIN_ERRORS += -Werror=tautological-constant-out-of-range-compare
-DARWIN_ERRORS += -Werror=unused-lambda-capture
-DARWIN_ERRORS += -Werror=writable-strings
-DARWIN_ERRORS += -Werror=reorder-ctor
-DARWIN_ERRORS += -Werror=missing-declarations
+# Specific error flags and warnings that are being promoted to errors on clang on MacOS
+# Turn all warnings into errors on clang on MacOS
+DARWIN_ERRORS := -Werror
 
 # Warnings specific to MacOS that are to be ignored when compiling
 # the code synthesizer fragment files.

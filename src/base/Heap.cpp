@@ -567,7 +567,7 @@ void Heap::vSummaryReport(String* pReportString)
   s32 sMagSum;   MagLib::vByteMag(nTotalHeapSize(),sMagSum);
   s32 sMagSize;  MagLib::vByteMag(nObjectSize(),sMagSize);
 
-  pReportString->szStz()->vSprint(
+  pReportString->vSprint(
                                   
     "%16s (%6s)"
     " buffers %-6lld alloc %-6lld free %-6lld (sum=%s)"_Stz,

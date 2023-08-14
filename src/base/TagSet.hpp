@@ -42,8 +42,8 @@ namespace BASE
     void vAppend(Stz* szName, Object* pObject);
     void vAppend(Stz* szName, Stz* szValue);
   
-    void vConcat(Stz* szCmd);
-    void vConcat(Stz* szCmd, i8 i_Tag);
+    void vConcat(String* pCmd);
+    void vConcat(String* pCmd, i8 i_Tag);
     void vContentDump(void);
     void vCopy(TagSet* pSrcTagSet);
   

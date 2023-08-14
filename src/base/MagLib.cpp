@@ -71,7 +71,7 @@ bool MagLib::bToBytes(Stz* psBuf, i8& iBytes)
 /*----------------------------------------------------------------------------*/
 /* convert bytes to its magnitude equivalent                                  */
 /*----------------------------------------------------------------------------*/
-void MagLib::vByteMag(i8 iValue, Stz* psBuf)
+void MagLib::vByteMag(i8 iValue, String* psBuf)
 {
        if (iValue < C_1KB) psBuf->vSprint("%lldB"_Stz, iValue);
   else if (iValue < C_1MB) psBuf->vSprint("%lldKB"_Stz,iValue/C_1KB);
@@ -85,7 +85,7 @@ void MagLib::vByteMag(i8 iValue, Stz* psBuf)
 /*----------------------------------------------------------------------------*/
 /* convert bytes to its magnitude equivalent upto n decimals                  */
 /*----------------------------------------------------------------------------*/
-void MagLib::vByteMag(i8 iValue, i8 nDecimals, Stz* psBuf)
+void MagLib::vByteMag(i8 iValue, i8 nDecimals, String* psBuf)
 {
   //ASSERT(iDecimals > 0);
   
@@ -104,7 +104,7 @@ void MagLib::vByteMag(i8 iValue, i8 nDecimals, Stz* psBuf)
 /*----------------------------------------------------------------------------*/
 /* convert bytes to its magnitude equivalent                                  */
 /*----------------------------------------------------------------------------*/
-void MagLib::vHzMag(i8 iValue, Stz* psBuf)
+void MagLib::vHzMag(i8 iValue, String* psBuf)
 {
   d8 dValue = (d8)iValue;
   int nPoints = 3;
@@ -121,7 +121,7 @@ void MagLib::vHzMag(i8 iValue, Stz* psBuf)
 /*----------------------------------------------------------------------------*/
 /* convert timer nanoseconds to its magnitude equivalent (ns, us, ms, s)      */
 /*----------------------------------------------------------------------------*/
-void MagLib::vTimeMag(i8 iValue, Stz* psBuf)
+void MagLib::vTimeMag(i8 iValue, String* psBuf)
 {
        if (iValue < C_1K) psBuf->vSprint("%lldns"_Stz,iValue);
   else if (iValue < C_1M) psBuf->vSprint("%lldus"_Stz,iValue/C_1K);
@@ -132,7 +132,7 @@ void MagLib::vTimeMag(i8 iValue, Stz* psBuf)
 /*----------------------------------------------------------------------------*/
 /* convert bytes to its magnitude equivalent                                  */
 /*----------------------------------------------------------------------------*/
-void MagLib::vUnitMag(i8 iValue, Stz* psBuf)
+void MagLib::vUnitMag(i8 iValue, String* psBuf)
 {
        if (iValue < C_1K) psBuf->vSprint("%lld"_Stz, iValue);
   else if (iValue < C_1M) psBuf->vSprint("%lldK"_Stz,iValue/C_1K);

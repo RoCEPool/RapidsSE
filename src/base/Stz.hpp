@@ -38,7 +38,6 @@ namespace BASE
     void operator =(void*);
 
     b1    bBeginsWith(Stz* szArg);
-    void  vCatSprint(Stz* szFormat, ...);
     char* azChar(void);
     i8    iCompare(Stz* szArg);
     void  vConcat(Stz* szArg);
@@ -56,7 +55,6 @@ namespace BASE
     i8    iOrdinal(void);
     bool  bSame(Stz* szArg);
     i8    nSize(void);
-    void  vSprint(Stz* szFormat, ...);
     i8    iToI8(void);
     void  vToLower(void);
   };

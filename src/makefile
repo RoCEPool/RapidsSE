@@ -61,19 +61,26 @@ WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN
 # that are common to both tools. Getting this wrong will cause a compilation
 # failure on one system or the other.
 ERRORS  = $(strip $(LINUX_ERRORS) $(DARWIN_ERRORS))
-ERRORS += -Werror=return-type
-ERRORS += -Werror=unused-parameter
-#ERRORS += -Werror=unused-variable			# currently MacOS only
-ERRORS += -Werror=unused-but-set-variable
+
+#ERRORS += -Werror=return-type
+#ERRORS += -Werror=unused-parameter
+#ERRORS += -Werror=unused-but-set-variable
+#ERRORS += -Werror=enum-compare
+#ERRORS += -Werror=unused-label
+#ERRORS += -Werror=uninitialized
+#ERRORS += -Werror=varargs
+#ERRORS += -Werror=parentheses
+#ERRORS += -Werror=unused-value
+
+#ERRORS := -Werror=unused-variable			# currently MacOS only
 #ERRORS += -Werror=missing-declarations		# currently MacOS only
-ERRORS += -Werror=enum-compare
-ERRORS += -Werror=unused-label
-ERRORS += -Werror=uninitialized
-ERRORS += -Werror=varargs
-ERRORS += -Werror=parentheses
-#ERRORS += -Werror=array-bounds				# not ready
-#ERRORS += -Werror=deprecated-declarations	# not ready
-ERRORS += -Werror=unused-value
+#ERRORS += -Werror=tautological-constant-out-of-range-compare
+#ERRORS += -Werror=unused-lambda-capture
+#ERRORS += -Werror=writable-strings
+#ERRORS += -Werror=reorder-ctor
+#ERRORS += -Werror=missing-declarations
+#ERRORS += -Werror=array-bounds
+#ERRORS += -Werror=deprecated-declarations
 
 # Warnings that are ignored for the code in the src/store/Fragments directory.
 # These need to be common for both gcc and clang.
