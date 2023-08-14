@@ -66,9 +66,6 @@ void XF_as_Review::vXF_as_Review(void)
 
   m_pCI->vClearRestart();
 
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
-
   while (m_pCI->G_bEachMain()) {
 
     switch (m_pCI->G.e_MainCard) {
@@ -81,11 +78,7 @@ void XF_as_Review::vXF_as_Review(void)
       case CK_INDEXSCAN:  break;
       case CK_PROJECT:    break;
       case CK_SORT:       break;
-
-      case CK_TABLE:
-        m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_table->pSub_projection();
-        m_pCI->StreamOrder.m_pKey_running = nullptr;
-        break;
+      case CK_TABLE:      break;
 
       default:
         break;

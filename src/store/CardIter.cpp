@@ -288,8 +288,9 @@ void CardIter::G_vClearRegisters(void)
   Early.m_pOP_leaf   = nullptr;
   Early.m_pNeeded_later   = nullptr;
 
-  StreamOrder.m_pProjection_running = nullptr;
   StreamOrder.m_pKey_running        = nullptr;
+  StreamOrder.m_pStreamKey_running  = nullptr;
+  StreamOrder.m_pProjection_running = nullptr;
 
 
   Sqy.m_i_FoldCard = C_UNKNOWN;
