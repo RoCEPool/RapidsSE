@@ -72,7 +72,7 @@ void String::vCatSprint(Stz* szFormat, ...)
   i8 nRemaining = m_nArea - nLen;
 
   va_start(vaArgs,szFormat);
-  vsnprintf(aEnd,nRemaining,(char*)szFormat,vaArgs);
+  StrLib::vSprint(aEnd, nRemaining, vaArgs, (char*)szFormat);
   va_end(vaArgs);
 }
 
@@ -132,9 +132,9 @@ void String::vSprint(Stz* szFormat, ...)
 {
   va_list args;
   va_start(args,szFormat);
-  
-  vsnprintf(m_caCharArea, m_nArea, szFormat->azChar(),args);
-  
+
+  StrLib::vSprint(m_caCharArea, m_nArea, args, szFormat->azChar());
+
   va_end(args);
 }
 

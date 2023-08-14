@@ -869,7 +869,7 @@ void Weaver::vConcat_cmd_vargs(Stz* aFormat, va_list xArgs)
   static char caFormatted[C_1MB] = {'\0'};
 
   // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
+  StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());
 
   if (! m_pOptStmt)
     m_pOptStmt = new ExtendedText;
@@ -899,7 +899,7 @@ void Weaver::vConcat_code_vargs(Stz* aFormat, va_list xArgs)
   static char caFormatted[C_1MB] = {'\0'};
 
   // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
+  StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());
 
   if (! m_pCodeBlock)
     m_pCodeBlock = new ExtendedText;

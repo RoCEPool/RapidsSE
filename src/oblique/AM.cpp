@@ -4185,7 +4185,7 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
   //  printf("NOT LOCKING TRACE\n");
   
   // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
+  StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());
 
   // print formatted line
   fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);

@@ -394,7 +394,7 @@ void String_t<AREA>::vCatSprint(Stz* szFormat, ...)
   i8 iRemaining = this->m_nArea - nLen;
   
   va_start(vaArgs,szFormat);
-  vsnprintf(aEnd,iRemaining,(char*)szFormat,vaArgs);
+  StrLib::vSprint(aEnd, iRemaining, vaArgs, szFormat->azChar());
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);

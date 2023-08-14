@@ -208,7 +208,7 @@
 }
 
 
-#define _FLT_TOVCH(iErrorCode, szStrArea)                             \
+#define _FLT_TOVCH(iErrorCode, psStrArea)                             \
 {                                                                     \
   fltArg1.m_iAsI8 = *(--paW);                                         \
   if (iErrorCode != EC_NONE ||                                        \
@@ -216,7 +216,7 @@
     *paW++ = C_DATUM_NULL;                                            \
   }                                                                   \
   else {                                                              \
-    sprintf(szStrArea, "%.9e", fltArg1.m_dFlt);                       \
+    psStrArea->vSprint("%.9e", fltArg1.m_dFlt);                       \
     *paW++ = (i8)szStrArea;                                           \
     szStrArea += strlen(szStrArea) + 1;                               \
   }                                                                   \
