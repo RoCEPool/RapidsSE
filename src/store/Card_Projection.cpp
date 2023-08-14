@@ -735,6 +735,9 @@ void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
 
+  if ((pCI->G.p_as = pSub_as()))
+    pCI->G.p_as->vValidate(pCI,iDepth+1,pParent);
+
   pSub_expr()->vValidate(pCI,iDepth+1,this);
 
   vValidationPassed();

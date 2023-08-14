@@ -18,6 +18,8 @@ namespace STORE
    ~Card_As(void) noexcept(false);
 
     Card_As* pClone(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_As* _pCard_As(void* aAddr);

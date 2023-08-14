@@ -115,6 +115,9 @@ void Card_Scan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   pSub_level()->vValidate(pCI,iDepth+1,this);
 
+  if ((pCI->G.p_projection = pSub_projection()))
+    pCI->G.p_projection->vValidate(pCI,iDepth+1,this);
+
   vValidationPassed();
 }
 
