@@ -276,6 +276,7 @@ namespace STORE
     void vBearing(Card* pParentCard);
 
     eCK  eCard(void);
+    Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
     i8   i_Child(void);
