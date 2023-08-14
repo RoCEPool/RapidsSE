@@ -545,7 +545,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         // print the metadata
         if (AM::bMetadata()) {
           s4K sMetadata;
-          m_pStreamDef_result->vToMetadata(sMetadata.szStz());
+          m_pStreamDef_result->vToMetadata(sMetadata);
           vTrace("\n%s\n"_Stz, sMetadata.szStz());
         }
       }

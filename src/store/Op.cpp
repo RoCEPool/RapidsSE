@@ -1919,12 +1919,12 @@ i8 Op::nTmpIndexSize(void)
 /*----------------------------------------------------------------------------*/
 /* print stage spec                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vToCmdStr(Stz* szCmdStr)
+void Op::vToCmdStr(String* psCmdStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
-  szCmdStr->vCopy(szOpNm());
-  m_p_OpSpec->pArgTags()->vConcat(szCmdStr);
+
+  psCmdStr->vCopy(szOpNm());
+  m_p_OpSpec->pArgTags()->vConcat(psCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 

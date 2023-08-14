@@ -518,23 +518,23 @@ Stz* Stencil_v2::szStageNm(void)
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault) {
+void Stencil_v2::vGetNextLabel(String* psLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   i8 iNextOp = i_Op + 1;
 
   if (iNextOp >= pStageDef->nItems()) {
-    sLabelNext->vCopy(sDefault);
+    psLabelNext->vCopy(sDefault);
   }
   else {
 
     OpDef *pOpNext = pStageDef->pGet(iNextOp);
 
     if (pOpNext->szOpNm()->bSame("hash"_Stz))
-      sLabelNext->vCopy(sDefault);
+      psLabelNext->vCopy(sDefault);
     else {
       // form next label using next op
-      sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
+      psLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
     }
 
   }

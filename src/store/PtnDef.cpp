@@ -512,27 +512,27 @@ void PtnDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */
 /*----------------------------------------------------------------------------*/
-void PtnDef::vToMetadata(Stz* sMetadata)
+void PtnDef::vToMetadata(String* psMetadata)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
-  sMetadata->vCopy("metadata: ("_Stz);
+  psMetadata->vCopy("metadata: ("_Stz);
   
   i8 i_DefSet = 0;
     
   if (i_DefSet != 0)
-    sMetadata->vConcat(","_Stz);
+    psMetadata->vConcat(","_Stz);
 
   for (i8 i_DefColumn = 0; i_DefColumn < m_nColumns; i_DefColumn++) {
 
     if (i_DefColumn != 0)
-      sMetadata->vConcat(","_Stz);
+      psMetadata->vConcat(","_Stz);
 
-    sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                          aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+    psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
+                           aCT[m_xaColumn[i_DefColumn].eColumnType()]);
   }
 
-  sMetadata->vConcat(")"_Stz);
+  psMetadata->vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

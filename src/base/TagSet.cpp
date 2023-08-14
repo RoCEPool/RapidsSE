@@ -180,46 +180,46 @@ void TagSet::vAppend(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* concat tagSet to cmd string                                              */
 /*----------------------------------------------------------------------------*/
-void TagSet::vConcat(Stz* szCmd)
+void TagSet::vConcat(String* pCmd)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
     
-    szCmd->vConcat(" "_Stz);
+    pCmd->vConcat(" "_Stz);
     
     if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
-      
-      szCmd->vCatSprint("%lld "_Stz,
+
+      pCmd->vCatSprint("%lld "_Stz,
              m_xaTag[i_Tag].m_i_Value
              );
       continue;
     }
-    szCmd->vConcat("\""_Stz);
-    szCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
-    szCmd->vConcat("\""_Stz);
+    pCmd->vConcat("\""_Stz);
+    pCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    pCmd->vConcat("\""_Stz);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* append tagSet to cmd string                                                */
 /*----------------------------------------------------------------------------*/
-void TagSet::vConcat(Stz* szCmd, i8 i_Tag)
+void TagSet::vConcat(String* pCmd, i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  szCmd->vConcat(" "_Stz);
+  pCmd->vConcat(" "_Stz);
   
   if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
     
-    szCmd->vCatSprint("%lld "_Stz,
+    pCmd->vCatSprint("%lld "_Stz,
                       m_xaTag[i_Tag].m_i_Value
                       );
   }
   else {
-    szCmd->vConcat("\""_Stz);
-    szCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
-    szCmd->vConcat("\""_Stz);
+    pCmd->vConcat("\""_Stz);
+    pCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    pCmd->vConcat("\""_Stz);
   }
 }
 
