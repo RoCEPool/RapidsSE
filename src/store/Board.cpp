@@ -234,49 +234,8 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 
   Card_Deck* pDeck = pCI->G.pDeck;
 
-  pDeck->vMarksClearRecursive();
-  pDeck->vMark1Recursive('X');
 
-  while (pCI->G_bEachMain()) {
-
-    switch (pCI->G.e_MainCard) {
-
-      case CK_AGGREG:       pCI->G.p_aggreg->vValidate       (pCI,0,pDeck); break;
-      case CK_CALL:         pCI->G.p_call->vValidate         (pCI,0,pDeck); break;
-      case CK_CAST:         pCI->G.p_cast->vValidate         (pCI,0,pDeck); break;
-      case CK_COMBINED:     pCI->G.p_combined->vValidate     (pCI,0,pDeck); break;
-      case CK_CORRELATION:  break;
-      case CK_CROSSJOIN:    pCI->G.p_crossJoin->vValidate    (pCI,0,pDeck); break;
-      case CK_FLAT:         pCI->G.p_flat->vValidate         (pCI,0,pDeck); break;
-      case CK_FILTER:       pCI->G.p_filter->vValidate       (pCI,0,pDeck); break;
-      case CK_FOLD:         pCI->G.p_fold->vValidate         (pCI,0,pDeck); break;
-      case CK_GBYAGG:       pCI->G.p_gbyAgg->vValidate       (pCI,0,pDeck); break;
-      case CK_HAVING:       pCI->G.p_having->vValidate       (pCI,0,pDeck); break;
-      case CK_HASH:         pCI->G.p_hash->vValidate         (pCI,0,pDeck); break;
-      case CK_INDEXJOIN:    pCI->G.p_indexJoin->vValidate    (pCI,0,pDeck); break;
-      case CK_INDEXSCAN:    pCI->G.p_indexScan->vValidate    (pCI,0,pDeck); break;
-      case CK_KEYEXISTS:    pCI->G.p_keyExists->vValidate    (pCI,0,pDeck); break;
-      case CK_KEYNOTEXISTS: pCI->G.p_keyNotExists->vValidate (pCI,0,pDeck); break;
-      case CK_LIMIT:        pCI->G.p_limit->vValidate        (pCI,0,pDeck); break;
-      case CK_ORDAGG:       pCI->G.p_ordAgg->vValidate       (pCI,0,pDeck); break;
-      case CK_PROJECT:      pCI->G.p_project->vValidate      (pCI,0,pDeck); break;
-      case CK_SCAN:         pCI->G.p_scan->vValidate         (pCI,0,pDeck); break;
-      case CK_SEND:         break;
-      case CK_SORT:         pCI->G.p_sort->vValidate         (pCI,0,pDeck); break;
-      case CK_STAGE:        pCI->G.p_stage->vValidate        (pCI,0,pDeck); break;
-      case CK_TABLE:        pCI->G.p_table->vValidate        (pCI,0,pDeck); break;
-      case CK_TOP:          pCI->G.p_top->vValidate          (pCI,0,pDeck); break;
-      case CK_WHERE:        pCI->G.p_where->vValidate        (pCI,0,pDeck); break;
-
-      default:
-        pCI->G.p_MainCard->vDump(__func__);
-        vTrace("Missing Case: %lld %s\n"_Stz, (i8) pCI->G.e_MainCard, aCK[pCI->G.e_MainCard]);
-        NEVER_REACH
-    }
-
-
-  }
-
+  pDeck->vValidate(pCI);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vRestore();
