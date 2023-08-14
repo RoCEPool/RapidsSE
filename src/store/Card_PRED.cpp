@@ -426,8 +426,8 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     Symbol x_Symbol_stmCol1(SF_COL_NO,1);
     if (p_term)
-      x_Symbol_stmCol1.vSym(p_term->pSymbol());
-    p_term_head->pSymbol()->vSym(&x_Symbol_stmCol1);
+      x_Symbol_stmCol1.vSymPpy(p_term->pSymbol());
+    p_term_head->pSymbol()->vSymPpy(&x_Symbol_stmCol1);
     return;
   }
 
@@ -596,18 +596,18 @@ void Card_PRED::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-//  eCK eCard = this->eCard();
-//
-//  switch (eCard) {
-//
-//    case CK_ANDPRED: _pCard_AndPred(this)->vValidate(pCI,iDepth+1,this); break;
-//    case CK_CMPPRED: _pCard_CmpPred(this)->vValidate(pCI,iDepth+1,this); break;
-//    case CK_NOTPRED: _pCard_NotPred(this)->vValidate(pCI,iDepth+1,this); break;
-//    case CK_ORPRED:  _pCard_OrPred(this)->vValidate(pCI,iDepth+1,this);  break;
-//
-//    default:
-//      NEVER_REACH
-//  }
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_ANDPRED: _pCard_AndPred(this)->vValidate(pCI,iDepth+1,this); break;
+    case CK_CMPPRED: _pCard_CmpPred(this)->vValidate(pCI,iDepth+1,this); break;
+    case CK_NOTPRED: _pCard_NotPred(this)->vValidate(pCI,iDepth+1,this); break;
+    case CK_ORPRED:  _pCard_OrPred(this)->vValidate(pCI,iDepth+1,this);  break;
+
+    default:
+      NEVER_REACH
+  }
 }
 
 /*============================================================================*/

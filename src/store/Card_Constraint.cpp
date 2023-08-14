@@ -233,7 +233,7 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (! (pCI->G.p_boolCalc = pSub_boolCalc()) )
-    NEVER_REACH;
+    return;
 
   pCI->G.p_boolCalc->vValidate(pCI,iDepth+1,this);
 
