@@ -4,6 +4,8 @@
 
 #include "Card_Call.hpp"
 
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -43,6 +45,8 @@ void Card_Call::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+  pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();
 }

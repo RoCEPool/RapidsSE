@@ -127,6 +127,7 @@ namespace STORE
     bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
+    bool bIs_None(void);            //
     bool bIs_Note(void);            // ...any...
     bool bIs_Parenthesis(void);     // ( or )
     bool bIs_Ppe_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc

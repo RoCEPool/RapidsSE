@@ -8,6 +8,7 @@
 #include "Card_Expr.hpp"
 #include "Card_Term.hpp"
 #include "Card_Projection.hpp"
+#include "CardIter.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +83,8 @@ void Card_Hash::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+  pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();
 }

@@ -660,7 +660,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
 
   // all non-key expr must have an AS
-  if (pParent && ! pParent->bIsCard(CK_KEY)) {
+  if (pParent && ! pParent->bIsCard(CK_KEY) && ! pParent->bIsCard(CK_NEEDED)) {
     vValidate_mustHave(CK_AS,CK_NONE);
   }
 

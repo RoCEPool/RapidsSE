@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Card_OuterJoin : public Card_PRED
+  class Card_OuterJoin : public Card
   {  
   public:
     void* operator new(size_t);
@@ -16,6 +16,7 @@ namespace STORE
     Card_OuterJoin(void);
    ~Card_OuterJoin(void) noexcept(false);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_OuterJoin* _pCard_OuterJoin(void* aAddr);

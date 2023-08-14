@@ -333,7 +333,7 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (pSymbol()->bIs_Idx_Col())
     return;
 
-  RASSERT(pSymbol()->bIs_Rln_Op());
+  RASSERT(pSymbol()->bIs_Rln_Op() || pSymbol()->bIs_None());
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
     xKid.p_term()->vValidate(pCI, iDepth + 1, pParent);

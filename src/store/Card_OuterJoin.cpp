@@ -4,6 +4,7 @@
 
 #include "Card_OuterJoin.hpp"
 #include "Card_PRED.hpp"
+#include "CardIter.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -19,7 +20,7 @@ __vDeleteFunction(Card_OuterJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OuterJoin::Card_OuterJoin(void)
-: Card_PRED(CK_OUTERJOIN)
+: Card(CK_OUTERJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -39,6 +40,18 @@ Card_OuterJoin::~Card_OuterJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OuterJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

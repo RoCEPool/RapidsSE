@@ -689,6 +689,17 @@ void Card_Deck::vValidate(CardIter* pCI)
     }
 
   }
+
+  vValidationPassed();
+
+  if (Card* pCard_notValidate = pFindMark1Recursive('X')) {
+    if (CK_KEY != pCard_notValidate->eCard()) {
+      pCI->vPrintBoard(__LINE__,true);
+      pCard_notValidate->vDump(__func__);
+      vDebugPoint();
+    }
+  }
+
 }
 
 

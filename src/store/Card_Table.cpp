@@ -610,17 +610,23 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if (pParent->bIsCard(CK_KEYEXISTS) || pParent->bIsCard(CK_KEYNOTEXISTS)) {
     vValidate_mustHave(CK_TABLENM, CK_NONE);
   }
+  else
+  if (pParent->bIsCard(CK_SCAN) || pParent->bIsCard(CK_INDEXJOIN) || pParent->bIsCard(CK_INDEXSCAN)) {
+    vValidate_mustHave(CK_TABLENM, CK_NONE);
+  }
+
   else {
     vValidate_mustHave(CK_TABLENM, CK_TABLEPTN,
                        CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_NONE);
   }
 
-  if (Card_IndexList* p_indexList = pSub_indexList())
-    p_indexList->vValidate(pCI,iDepth+1,this);
+//  if (Card_IndexList* p_indexList = pSub_indexList())
+//    p_indexList->vValidate(pCI,iDepth+1,this);
+//
+//  if ((pCI->G.p_projection = pSub_projection()))
+//    pCI->G.p_projection->vValidate(pCI,iDepth+1,this);
 
-  if ((pCI->G.p_projection = pSub_projection()))
-    pCI->G.p_projection->vValidate(pCI,iDepth+1,this);
-
+  pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
 
