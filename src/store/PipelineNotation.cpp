@@ -54,13 +54,13 @@ void PipelineNotation::vPipelineNotation(Stz* szPipelineStatement)
 /*----------------------------------------------------------------------------*/
 /* Extract the pipeline from a file                                           */
 /*----------------------------------------------------------------------------*/
-void PipelineNotation::vPipelineFromFile(Stz* pFilename, Stz* sDstStr)
+void PipelineNotation::vPipelineFromFile(Stz* szFilename, String* psDstStr)
 {
   _static_
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
 
-  if (! pFile->bOpenRead(pFilename)) {
+  if (! pFile->bOpenRead(szFilename)) {
     vTrace("No such file\n"_Stz);
     return;
   }
@@ -75,7 +75,7 @@ void PipelineNotation::vPipelineFromFile(Stz* pFilename, Stz* sDstStr)
           break;
         }
         sLine.vAppend('\n');
-        sDstStr->vConcat(sLine);
+        psDstStr->vConcat(sLine);
       }
       break;
     }

@@ -1794,7 +1794,7 @@ void Symbol::vPpy_To_String(String* pString)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (m_pProperties)
-    m_pProperties->vToString(pString->szStz());
+    m_pProperties->vToString(pString);
   else
     pString->vCopy("nil"_Stz);
 }

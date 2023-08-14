@@ -34,16 +34,12 @@ namespace BASE
     static Stz* szHeight(i8 iHeight);
 
     void operator =(i8);
-    void operator =(Stz*);
     void operator =(void*);
 
     b1    bBeginsWith(Stz* szArg);
     char* azChar(void);
     i8    iCompare(Stz* szArg);
-    void  vConcat(Stz* szArg);
     bool  bContains(Stz* szArg);
-    void  vCopy(Stz* szArg);
-    void  vCopyLen(Stz* szArg, i8 nBytes);
     bool  bEqual(Stz* szArg);
     bool  bGreater(Stz* szArg);
     bool  bIsEmpty(void);

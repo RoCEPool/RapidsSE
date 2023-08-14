@@ -607,7 +607,7 @@ namespace OBLIQUE
     class STR
     {
     public:
-      static void vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags);
+      static void vReplaceTags(String* psDst, Stz* szSrc, TagSet* pTags);
     };
 
     class SYSARGS

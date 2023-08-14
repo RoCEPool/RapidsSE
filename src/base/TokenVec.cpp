@@ -190,7 +190,7 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
   Stz* szExtension = _szByteSpaceExtend(nSize);
   
   pToken->vChars(szExtension);
-  szExtension->vCopy(szArgChars);
+  StrLib::vCopyLen(szExtension->azChar(), szArgChars->azChar(), nSize);
 
   pToken->vToken(eToken);
 
@@ -683,7 +683,7 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy the inserting token into place
   
-  szInsAt->vCopy(szArgChars);
+  StrLib::vCopyLen(szInsAt->azChar(), szArgChars->azChar(), nBytesToIns);
   pTkn_insAt->vToken(eToken);
   
   //vDumpVec(16);
@@ -1269,7 +1269,7 @@ Stz* TokenVec::_szByteSpaceExtend(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  Stz* szExtension = m_xyByteSpace.szLatter();;
+  Stz* szExtension = m_xyByteSpace.szLatter();
   
   * szExtension->azChar() = '\0';
 
@@ -1348,7 +1348,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   _vByteSpaceInsert(szInsitui,nInsSize);
   _vVecRippleRight(i_Tkn,nInsSize);
 
-  szInsitui->vCopy(szArgChars);
+  StrLib::vCopyLen(szInsitui->azChar(), szArgChars->azChar(), nInsSize);
   // * * * * * * * * * * * * * * * * * * * *
 
   
@@ -1373,7 +1373,8 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
   
   pDstToken->vChars(szExtension);
 
-  szExtension->vCopy(szArgChars);
+  StrLib::vCopyLen(szExtension->azChar(), szArgChars->azChar(), nSize);
+
   vListTokens();
   vIntegrityCheck();
 }

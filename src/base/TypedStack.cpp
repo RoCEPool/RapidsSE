@@ -433,7 +433,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop stz from stack                                                         */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPopStz(Stz* szStz, const char* azCallingFunNm)
+void TypedStack::vPopStz(Text* psText, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -446,7 +446,7 @@ void TypedStack::vPopStz(Stz* szStz, const char* azCallingFunNm)
   
   TypeValueArea* aTypedCell = _aTypeValueArea(aTopVal());
   
-  szStz->vCopy(aTypedCell->szStz());
+  psText->vSet(aTypedCell->szStz());
     
   vDiscardTop();
   

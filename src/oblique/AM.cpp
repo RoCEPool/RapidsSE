@@ -2642,11 +2642,11 @@ Starter* AM::STARTER::pStarter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
+void AM::STR::vReplaceTags(String* psDst, Stz* szSrc, TagSet* pTags)
 {
   _static_
 
-  szDst->vCopy(szSrc);
+  psDst->vCopy(szSrc);
 
   i8 nEnames = pTags->nItems();
   for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
@@ -2656,7 +2656,7 @@ void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
     Stz* szName  = pTags->szName(i_Tag);
     Stz* szValue = pTags->szValue(i_Tag);
 
-    IGNORE_RETURN( StrLib::bReplace(szDst->azChar(),
+    IGNORE_RETURN( StrLib::bReplace(psDst->azStr(),
                                     szName->azChar(),
                                     szValue->azChar()) );
   }
