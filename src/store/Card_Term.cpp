@@ -377,12 +377,13 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {
-          vDump(__func__);
-          NEVER_REACH
+          vValidationFailed("<<replace>> %p"_Stz,this);
         }
       }
     }
   }
+
+  vValidationPassed();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -83,6 +83,7 @@ void Card_Hash::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
+  vValidationPassed();
 }
 
 

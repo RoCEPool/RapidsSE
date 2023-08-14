@@ -629,8 +629,10 @@ void Card_PRED::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     case CK_ORPRED:  _pCard_OrPred(this)->vValidate(pCI,iDepth+1,this);  break;
 
     default:
-      NEVER_REACH
+      vValidationFailed("<<replace>> %p"_Stz,this);
   }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

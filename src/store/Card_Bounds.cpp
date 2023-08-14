@@ -141,6 +141,8 @@ void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
     pCI->G.p_bound->vValidate(pCI, iDepth + 1, this);
   }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

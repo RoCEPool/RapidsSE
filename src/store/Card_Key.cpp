@@ -253,6 +253,8 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
     p_expr->vValidate(pCI,iDepth+1,this);
   }
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

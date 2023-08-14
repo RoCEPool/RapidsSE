@@ -1389,8 +1389,6 @@ void Card::vValidationFailed(Stz *szFormat, ...)
 
   s4K sError;
 
-  sError.vSprintVA();
-
   va_list xArgs;
   va_start(xArgs,szFormat);
   sError.vSprintVA(szFormat,xArgs);
@@ -1403,6 +1401,13 @@ void Card::vValidationFailed(Stz *szFormat, ...)
   NEVER_REACH;
 }
 
+/*----------------------------------------------------------------------------*/
+/* validation has passed                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vValidationPassed(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

@@ -163,6 +163,8 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
     }
 
   }
+
+  vValidationPassed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,6 +181,8 @@ void Card_Aggreg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   if (pCI->m_pBench->bMadeFlat())
     pSub_projection()->vValidate(pCI,iDepth+1,this);
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

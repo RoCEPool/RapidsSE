@@ -364,6 +364,8 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   if ((pCI->G.p_constraint = pSub_constraint()))
     pCI->G.p_constraint->vValidate(pCI,iDepth+1,this);
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

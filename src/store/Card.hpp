@@ -335,6 +335,7 @@ namespace STORE
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
 
     void vValidationFailed(Stz* szFormat, ...);
+    void vValidationPassed(void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
