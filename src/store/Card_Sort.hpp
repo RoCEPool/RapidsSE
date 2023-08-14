@@ -21,7 +21,7 @@ namespace STORE
 
     void vCut_sort(CardIter* pCI);
 
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
 
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 

@@ -75,7 +75,7 @@ void Card_Aggreg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vDerive_Projection_Key(CardIter* pCI)
+void Card_Aggreg::vDerive_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   UNUSED(pCI);

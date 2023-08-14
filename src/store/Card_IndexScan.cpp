@@ -49,7 +49,7 @@ Card_IndexScan::~Card_IndexScan(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
+void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -57,7 +57,7 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 
   // snap onto <indexScan>/<projection>, delete existing <indexScan>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vDeletePrjKey(pCI);
+  pCI->G.p_projection->vDelete_streamKey(pCI);
 
   // derive new <indexScan>/<projection>/<key>
   pCI->G.p_key = new Card_Key;

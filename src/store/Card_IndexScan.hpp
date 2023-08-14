@@ -18,7 +18,7 @@ namespace STORE
 
     static void vIndividuateFilter(CardIter* pCI);
 
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_leaf(CardIter* pCI);
 

@@ -25,8 +25,8 @@ namespace STORE
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDedupe_as(void);
-    void vDeletePrjKey(CardIter* pCI);
-    void vDerivePrjKey(CardIter* pCI);
+    void vDelete_streamKey(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
     Card_Projection* pPropagate(CardIter* pCI);
     Card_Expr* pFindExprOfAs(Symbol* pSymbol);

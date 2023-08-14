@@ -30,7 +30,7 @@ namespace STORE
 
     void vDedupe_as(void);
 
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_given_leaf(CardIter* pCI);
     void vEarlyProject_needed_recurse(CardIter* pCI);

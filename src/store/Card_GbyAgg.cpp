@@ -297,12 +297,12 @@ void Card_GbyAgg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* create a new <gbyAgg>/<projection>/<key> by copying <gbyAgg>/<key>         */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
+void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(bPeg_Projection(pCI));
-  pCI->G.p_projection->vDeletePrjKey(pCI);
+  pCI->G.p_projection->vDelete_streamKey(pCI);
 
   RASSERT(bPeg_Key(pCI));
 

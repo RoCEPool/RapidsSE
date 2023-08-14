@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* _ray_sort                                                                  */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+
+load customer "<tpch_dir>/customer.<suffix>" ;
+
+/transliterated
+/glean_interactive
+/weaved
+/pipelineName = "_ray_sort"
+select *
+  from Customer
+ order by C_CUSTKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -281,7 +281,7 @@ void Card_Projection::vDedupe_as(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vDeletePrjKey(CardIter* pCI)
+void Card_Projection::vDelete_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -294,7 +294,7 @@ void Card_Projection::vDeletePrjKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* derive the key of this projection (of running key)                         */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vDerivePrjKey(CardIter *pCI)
+void Card_Projection::vDerive_streamKey(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

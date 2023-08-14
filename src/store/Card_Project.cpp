@@ -193,17 +193,17 @@ void Card_Project::vDedupe_as(void)
 /*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vDerive_Projection_Key(CardIter* pCI)
+void Card_Project::vDerive_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vDeletePrjKey(pCI);
+  pCI->G.p_projection->vDelete_streamKey(pCI);
 
   // derive new <project>/<projection>/<key>
   pCI->G.p_key = new Card_Key;
-  pCI->G.p_projection->vDerivePrjKey(pCI);
+  pCI->G.p_projection->vDerive_streamKey(pCI);
 
   if (! pCI->G.p_key->nChildCards()) {
     delete pCI->G.p_key;

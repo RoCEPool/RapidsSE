@@ -105,11 +105,11 @@ void XF_Derive_streamKey::vXF_Derive_streamKey(void)
 //
 //      switch (m_pCI->G.e_MainCard) {
 //
-//        case CK_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);     break;
-//        case CK_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_Projection_Key(m_pCI);  break;
-//        case CK_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_Projection_Key(m_pCI);  break;
-//        case CK_PROJECT:    m_pCI->G.p_project->vDerive_Projection_Key(m_pCI);    break;
-//        case CK_SORT:       m_pCI->G.p_sort->vDerive_Projection_Key(m_pCI);       break;
+//        case CK_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
+//        case CK_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_streamKey(m_pCI);  break;
+//        case CK_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_streamKey(m_pCI);  break;
+//        case CK_PROJECT:    m_pCI->G.p_project->vDerive_streamKey(m_pCI);    break;
+//        case CK_SORT:       m_pCI->G.p_sort->vDerive_streamKey(m_pCI);       break;
 //
 //        default:
 //          break;
@@ -168,11 +168,11 @@ void XF_Derive_streamKey::vPropagate_streamKey(void)
 
     switch (m_pCI->G.e_MainCard) {
 
-      case CK_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);     break;
-      case CK_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_Projection_Key(m_pCI);  break;
-      case CK_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_Projection_Key(m_pCI);  break;
-      case CK_PROJECT:    m_pCI->G.p_project->vDerive_Projection_Key(m_pCI);    break;
-      case CK_SORT:       m_pCI->G.p_sort->vDerive_Projection_Key(m_pCI);       break;
+      case CK_GBYAGG:     m_pCI->G.p_gbyAgg->vDerive_streamKey(m_pCI);     break;
+      case CK_INDEXJOIN:  m_pCI->G.p_indexJoin->vDerive_streamKey(m_pCI);  break;
+      case CK_INDEXSCAN:  m_pCI->G.p_indexScan->vDerive_streamKey(m_pCI);  break;
+      case CK_PROJECT:    m_pCI->G.p_project->vDerive_streamKey(m_pCI);    break;
+      case CK_SORT:       m_pCI->G.p_sort->vDerive_streamKey(m_pCI);       break;
 
       default:
         break;
