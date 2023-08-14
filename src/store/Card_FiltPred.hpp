@@ -15,6 +15,8 @@ namespace STORE
   
     Card_FiltPred(void);
    ~Card_FiltPred(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_FiltPred* _pCard_FiltPred(void* aAddr);

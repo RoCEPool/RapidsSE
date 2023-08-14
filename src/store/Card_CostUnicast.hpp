@@ -15,6 +15,8 @@ namespace STORE
   
     Card_CostUnicast(void);
    ~Card_CostUnicast(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CostUnicast* _pCard_CostUnicast(void* aAddr);

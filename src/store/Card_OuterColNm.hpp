@@ -15,6 +15,8 @@ namespace STORE
   
     Card_OuterColNm(void);
    ~Card_OuterColNm(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_OuterColNm* _pCard_OuterColNm(void* aAddr);

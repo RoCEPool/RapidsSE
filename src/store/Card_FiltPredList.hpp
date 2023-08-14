@@ -24,6 +24,7 @@ namespace STORE
 
     i8 nFiltersFor(char cTblSyn);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_FiltPredList* _pCard_FiltPredList(void* aAddr);
