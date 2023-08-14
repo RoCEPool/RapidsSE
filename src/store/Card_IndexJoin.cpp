@@ -361,6 +361,9 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pCI->G.p_indexList->vValidate(pCI,iDepth+1,this);
 
   RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+
+  if ((pCI->G.p_constraint = pSub_constraint()))
+    pCI->G.p_constraint->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

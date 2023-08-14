@@ -586,6 +586,30 @@ Symbol* Card_PRED::pTable_WhichTableFor_Pred(CardIter* pCI)
   NEVER_REACH;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_PRED::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
+
+//  eCK eCard = this->eCard();
+//
+//  switch (eCard) {
+//
+//    case CK_ANDPRED: _pCard_AndPred(this)->vValidate(pCI,iDepth+1,this); break;
+//    case CK_CMPPRED: _pCard_CmpPred(this)->vValidate(pCI,iDepth+1,this); break;
+//    case CK_NOTPRED: _pCard_NotPred(this)->vValidate(pCI,iDepth+1,this); break;
+//    case CK_ORPRED:  _pCard_OrPred(this)->vValidate(pCI,iDepth+1,this);  break;
+//
+//    default:
+//      NEVER_REACH
+//  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

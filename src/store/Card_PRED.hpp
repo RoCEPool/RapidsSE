@@ -34,6 +34,9 @@ namespace STORE
     bool bPredHasBounds (Index* pIndex);
     bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
     Symbol* pTable_WhichTableFor_Pred(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 }
 

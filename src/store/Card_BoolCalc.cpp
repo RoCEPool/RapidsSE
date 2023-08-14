@@ -635,6 +635,27 @@ void Card_BoolCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+  Card_PRED* p_PRED = reinterpret_cast<Card_PRED*>(pPeekChild());
+
+  if (! p_PRED)
+    return;
+
+//  eCK eCard = p_PRED->eCard();
+//
+//  switch (eCard) {
+//
+//    case CK_ANDPRED: _pCard_AndPred(p_PRED)->vValidate(pCI,iDepth+1,this); break;
+//    case CK_CMPPRED: _pCard_CmpPred(p_PRED)->vValidate(pCI,iDepth+1,this); break;
+//    case CK_NOTPRED: _pCard_NotPred(p_PRED)->vValidate(pCI,iDepth+1,this); break;
+//    case CK_ORPRED:  _pCard_OrPred(p_PRED)->vValidate(pCI,iDepth+1,this);  break;
+//
+//    default:
+//      NEVER_REACH
+//  }
+
+
+  p_PRED->vValidate(pCI,iDepth+1,this);
 }
 
 

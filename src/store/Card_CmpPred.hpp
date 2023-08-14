@@ -39,6 +39,7 @@ namespace STORE
     bool bUsesTable(char cTblSyn);
     bool bUsesTables(char cTblSyn_a, char cTblSyn_b);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CmpPred* _pCard_CmpPred(void* aAddr);

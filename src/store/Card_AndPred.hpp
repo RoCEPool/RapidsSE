@@ -18,6 +18,8 @@ namespace STORE
 
     Card_CmpPred* pAndPredFindBound(Index* pIndex, ePB eBound);
     bool bAndPredHasBounds(Index* pIndex);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_AndPred* _pCard_AndPred(void* aAddr);
