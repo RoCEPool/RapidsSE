@@ -738,7 +738,12 @@ void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if ((pCI->G.p_as = pSub_as()))
     pCI->G.p_as->vValidate(pCI,iDepth+1,pParent);
 
-  pSub_expr()->vValidate(pCI,iDepth+1,this);
+
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr = xProjection.p_expr();
+
+    p_expr->vValidate(pCI,iDepth+1,this);
+  }
 
   vValidationPassed();
 }
