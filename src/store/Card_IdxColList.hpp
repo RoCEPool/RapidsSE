@@ -19,6 +19,8 @@ namespace STORE
     void vAdd_key_exprs(CardIter* pCI);
     void vAffix_tblColOdn(Card_Projection* p_projection);
     Card_IdxCol* pGetIdxCol_byIdxColOdn(Stz* szIdxColOdn);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);

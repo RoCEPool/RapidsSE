@@ -15,6 +15,8 @@ namespace STORE
   
     Card_Topology(eYG eStageTopo);
    ~Card_Topology(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Topology* _pCard_Topology(void* aAddr);
