@@ -1380,7 +1380,28 @@ void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
   delete pSubCard_I;
 }
 
+/*----------------------------------------------------------------------------*/
+/* validation has failed                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vValidationFailed(Stz *szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  s4K sError;
+
+  sError.vSprintVA();
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  sError.vSprintVA(szFormat,xArgs);
+  va_end(xArgs);
+
+  vTrace(sError);
+
+  vDump(__func__ );
+
+  NEVER_REACH;
+}
 
 
 /*----------------------------------------------------------------------------*/

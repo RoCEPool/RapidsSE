@@ -334,6 +334,8 @@ namespace STORE
     void vValidate_mustHave(i8 /*eCK*/ iCard_first, ...);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
 
+    void vValidationFailed(Stz* szFormat, ...);
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_Aggreg*        pSub_aggreg(void);
