@@ -16,6 +16,7 @@ namespace STORE
     Card_StreamKey(void);
    ~Card_StreamKey(void) noexcept(false);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_StreamKey* _pCard_StreamKey(void* aAddr);

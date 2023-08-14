@@ -27,6 +27,8 @@ namespace STORE
     Card_TableSize* pGetTableSize(char cTblSyn);
 
     Stz* szToTableNm(char cTblSyn);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_TableList* _pCard_TableList(void* aAddr);

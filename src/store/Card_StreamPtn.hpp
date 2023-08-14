@@ -20,6 +20,8 @@ namespace STORE
     bool bContainsKey(Symbol* p_Y_tblCol);
     bool bIsEmpty(void);
     void vResetKeys(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_StreamPtn* _pCard_StreamPtn(void* aAddr);

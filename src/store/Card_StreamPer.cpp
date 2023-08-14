@@ -568,6 +568,19 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
 //  return true;
 //}
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamPer::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
