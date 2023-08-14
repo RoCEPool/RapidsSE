@@ -233,16 +233,15 @@ void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   i8 nChosenIndexes = 0;
-
   for (Kid xCI(this); xCI.bEach(CK_INDEX); /**/) {
     pCI->G.p_index = xCI.p_index();
-    pCI->G.p_index->vValidate(pCI, iDepth + 1, this);
     if (pCI->G.p_index->pSymbol()->Y_bHas(P_ChosenIndex))
       nChosenIndexes++;
   }
-
   RASSERT(nChosenIndexes <= 1);
 
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
 

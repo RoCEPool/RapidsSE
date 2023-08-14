@@ -248,12 +248,8 @@ void Card_Index::vEnsureTypes_For_stmOdn(CardIter *pCI)
 void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pParent);
 
   vValidate_mustHave(CK_INDEXNM,CK_NONE);
-
-  if ((pCI->G.p_bounds = pSub_bounds()))
-    pCI->G.p_bounds->vValidate(pCI,iDepth+1,this);
 
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {
     RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));
@@ -262,6 +258,8 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     RASSERT(! pFindPpyRecursive(P_ChosenBound, CK_BOUND));
   }
 
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
 

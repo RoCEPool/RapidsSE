@@ -240,17 +240,8 @@ void Card_Constraint::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
+
   UNUSED(pParent);
-
-
-//  if (! (pCI->G.p_boolCalc = pSub_boolCalc()) ) {
-//    vValidationPassed();
-//    return;
-//  }
-//
-//  pCI->G.p_boolCalc->vValidate(pCI,iDepth+1,this);
 
   pCI->vValidateChildren(this,iDepth+1);
 
