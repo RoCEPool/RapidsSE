@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Derive_projection_key.hpp -- Derive projection key                      */
+/* XF_Derive_streamKey.hpp -- Derive projection key                      */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Derive_projection_key : public XF_TRANSFORM
+  class XF_Derive_streamKey : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,22 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Derive_projection_key(CardIter* pCI);
-   ~XF_Derive_projection_key(void) noexcept(false);
+    XF_Derive_streamKey(CardIter* pCI);
+   ~XF_Derive_streamKey(void) noexcept(false);
 
-    static void vXF_Derive_projection_key(CardIter* pCI);
+    static void vXF_Derive_streamKey(CardIter* pCI);
 
-    void vXF_Derive_projection_key(void);
+    void vXF_Derive_streamKey(void);
 
   private:
+    bool bFindStart_streamKey(void);
+    void vPropagate_streamKey(void);
+
+
     Footer* aFooter(void);
   };
 
-  XF_Derive_projection_key* _pXF_Derive_projection_key(void* aAddr);
+  XF_Derive_streamKey* _pXF_Derive_streamKey(void* aAddr);
 }
 
 /*============================================================================*/

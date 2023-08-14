@@ -15,7 +15,7 @@
 #include "XF_Dedupe_as.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Delete_flat.hpp"
-#include "XF_Derive_projection_key.hpp"
+#include "XF_Derive_streamKey.hpp"
 #include "XF_Early_projection.hpp"
 #include "XF_Flatten.hpp"
 #include "XF_Individuate_filter.hpp"
@@ -158,7 +158,7 @@ void XF::vTransform(void)
 
   XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
 
-  XF_Derive_projection_key::vXF_Derive_projection_key(m_pCI);
+  XF_Derive_streamKey::vXF_Derive_streamKey(m_pCI);
 
   XF_Cut_sort::vXF_Cut_sort(m_pCI);
 
