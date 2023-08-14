@@ -517,27 +517,48 @@ Card* Card::pFindCardRecursive(eCK eOfCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt find of symbolic value                                             */
+/* find mark1 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
+Card* Card::pFindMark1Recursive(char cMark1, eCK eOfCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eOfCard == m_eCard && bSameSymbol(pSymbol)) {
-    rpParent = _pWalkParent_;
-    return this;
+  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+    if (cMark1 == m_cMark1)
+      return this;
   }
+
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(eOfCard, pSymbol, rpParent, this))
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindMark1Recursive(cMark1,eOfCard))
       return pFoundCard;
   }
 
-  rpParent = nullptr;
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find mark2 recursively within this card                                    */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+    if (cMark2 == m_cMark2)
+      return this;
+  }
+
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindMark2Recursive(cMark2,eOfCard))
+      return pFoundCard;
+  }
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find property recursively within this card                                 */
@@ -558,6 +579,28 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
       return pFoundCard;
   }
 
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt find of symbolic value                                             */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eOfCard == m_eCard && bSameSymbol(pSymbol)) {
+    rpParent = _pWalkParent_;
+    return this;
+  }
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(eOfCard, pSymbol, rpParent, this))
+      return pFoundCard;
+  }
+
+  rpParent = nullptr;
   return nullptr;
 }
 

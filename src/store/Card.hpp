@@ -290,8 +290,10 @@ namespace STORE
 
     Card* pFindCardRecursive(eCK eOfCard);
     Card* pFindParentRecursive(Card* pSubCard);
-    Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
+    Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
+    Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
+    Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
 
     bool bHasSubRecursive(Card* pSubCard);
 
