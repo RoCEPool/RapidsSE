@@ -15,6 +15,8 @@ namespace STORE
   
     Card_RowCount(void);
    ~Card_RowCount(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_RowCount* _pCard_RowCount(void* aAddr);

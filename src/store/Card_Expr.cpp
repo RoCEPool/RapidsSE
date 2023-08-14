@@ -667,6 +667,9 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   if ((pCI->G.p_as = pSub_as()))
     pCI->G.p_as->vValidate(pCI,iDepth+1,pParent);
 
+  if ((pCI->G.p_direction = pSub_direction()))
+    pCI->G.p_direction->vValidate(pCI,iDepth+1,pParent);
+
 
   vValidationPassed();
 }

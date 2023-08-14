@@ -7,6 +7,7 @@
 #include "Card_Table.hpp"
 
 #include "Table.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -69,6 +70,17 @@ Card_TableSize* Card_TableSize::pDerive(Table* pTable)
   return p_size;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TableSize::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */
