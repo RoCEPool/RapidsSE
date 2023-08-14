@@ -300,8 +300,10 @@ namespace STORE
 
     char cMark1(void);
     void vMark1(char cMark1);
+    void vMark1Recursive(char cMark1);
     char cMark2(void);
     void vMark2(char cMark2);
+    void vMark2Recursive(char cMark1);
     void vMarksClearRecursive(void);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,

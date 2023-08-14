@@ -645,6 +645,23 @@ void Card::vMark1(char cMark1)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set mark 1 recursively                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vMark1Recursive(char cMark1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_cMark1 = cMark1;
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vMark1Recursive(cMark1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get mark 2                                                                 */
 /*----------------------------------------------------------------------------*/
 char Card::cMark2(void)
@@ -662,6 +679,23 @@ void Card::vMark2(char cMark2)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_cMark2 = cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 2 recursively                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vMark2Recursive(char cMark2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_cMark2 = cMark2;
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vMark2Recursive(cMark2);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
