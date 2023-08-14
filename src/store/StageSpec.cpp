@@ -519,7 +519,7 @@ void StageSpec::vStreamTopology(eYS eStreamTopology)
 /*----------------------------------------------------------------------------*/
 /* print stage spec                                                           */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vToPipeStr(Stz* szPipeStr)
+void StageSpec::vToPipeStr(String* psPipeStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
@@ -527,9 +527,9 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
     OpSpec* pOpSpec = pGet(i_Op);
 
     if (i_Op)
-      szPipeStr->vConcat(" | "_Stz);
+      psPipeStr->vConcat(" | "_Stz);
     
-    szPipeStr->vConcat(pOpSpec->szOpNm());
+    psPipeStr->vConcat(pOpSpec->szOpNm());
     
 //    if (pOpSpec->szArgs()->iLength()) {
 //      szPipeStr->vConcat(" "_Stz);

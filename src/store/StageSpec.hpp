@@ -75,7 +75,7 @@ namespace STORE
     void vStageTopology(eYG eStageTopology);
     eYS  eStreamTopology(void);
     void vStreamTopology(eYS eStreamTopology);
-    void vToPipeStr(Stz* szPipeStr);
+    void vToPipeStr(String* psPipeStr);
   
     Footer* aFooter(void);
   };

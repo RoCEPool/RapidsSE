@@ -821,11 +821,11 @@ Dic* DicStack::pTop(void)
 /*----------------------------------------------------------------------------*/
 /* get topmost dictionary                                                     */
 /*----------------------------------------------------------------------------*/
-void DicStack::vToPathStr(Stz* szPath)
+void DicStack::vToPathStr(String* psPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
-  szPath->vCopy(""_Stz);
+  psPath->vReset();
   
   for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
     
@@ -834,9 +834,9 @@ void DicStack::vToPathStr(Stz* szPath)
     //vTrace("[%02lld] %s\n"_Stz,i_Dic,pDic->szName());
     
     //if (i_Dic != m_iTop)
-    szPath->vConcat("/"_Stz);
+    psPath->vConcat("/"_Stz);
 
-    szPath->vConcat(pDic->szDicNm());
+    psPath->vConcat(pDic->szDicNm());
   }
   
 }

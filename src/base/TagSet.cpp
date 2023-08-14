@@ -846,26 +846,26 @@ void TagSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
-void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames, bool bDecode)
+void TagSet::vSprint(String* psArgs, bool bParenth, bool bNames, bool bDecode)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   UNUSED(bDecode);
   
   if (bParenth)
-    sArgs->vCopy("("_Stz);
+    psArgs->vCopy("("_Stz);
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
     
     if (i_Tag)
-      sArgs->vConcat(", "_Stz);
+      psArgs->vConcat(", "_Stz);
     
     if (bNames) {
-      sArgs->vConcat(szName(i_Tag));
-      sArgs->vConcat("="_Stz);
+      psArgs->vConcat(szName(i_Tag));
+      psArgs->vConcat("="_Stz);
     }
     
     if (bIsString(i_Tag)) {
-      sArgs->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+      psArgs->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
       continue;
     }
     
@@ -877,11 +877,11 @@ void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames, bool bDecode)
       sValue = szValueDecoded(i_Tag);
     else
       sValue.vSprint("%lld"_Stz,iValue(i_Tag));
-    sArgs->vConcat(sValue);
+    psArgs->vConcat(sValue);
   }
   
   if (bParenth)
-    sArgs->vConcat(")"_Stz);
+    psArgs->vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -953,12 +953,12 @@ bool TagSet::bSame(TagSet* pTagSet_arg)
 /*----------------------------------------------------------------------------*/
 /* to string                                                                  */
 /*----------------------------------------------------------------------------*/
-void TagSet::vToString(Stz* szStz, bool bValueOnly)
+void TagSet::vToString(String* psStr, bool bValueOnly)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   if (! m_nItems) {
-    szStz->vConcat("(empty)"_Stz);
+    psStr->vConcat("(empty)"_Stz);
     return;
   }
   
@@ -966,18 +966,18 @@ void TagSet::vToString(Stz* szStz, bool bValueOnly)
 
     if (bValueOnly) {
       if (i_Tag)
-        szStz->vConcat(" "_Stz);
+        psStr->vConcat(" "_Stz);
     }
     else {
       if (i_Tag)
-        szStz->vConcat(", "_Stz);
+        psStr->vConcat(", "_Stz);
 
-      szStz->vConcat(szName(i_Tag));
-      szStz->vConcat("="_Stz);
+      psStr->vConcat(szName(i_Tag));
+      psStr->vConcat("="_Stz);
     }
 
     if (bIsString(i_Tag)) {
-      szStz->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+      psStr->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
       continue;
     }
     
@@ -987,7 +987,7 @@ void TagSet::vToString(Stz* szStz, bool bValueOnly)
 
     if (bIsObject(i_Tag)) {
       sValue.vSprint( "%p"_Stz, pValue(i_Tag));
-      szStz->vConcat(sValue);
+      psStr->vConcat(sValue);
       continue;
     }
 
@@ -996,7 +996,7 @@ void TagSet::vToString(Stz* szStz, bool bValueOnly)
 
     else
       sValue.vSprint("%lld"_Stz,iValue(i_Tag));
-    szStz->vConcat(sValue);
+    psStr->vConcat(sValue);
   }
 }
 

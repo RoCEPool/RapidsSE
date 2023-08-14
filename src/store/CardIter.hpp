@@ -85,7 +85,7 @@ namespace STORE
     void G_vClearRegisters(void);
     void G_vClearRegistersIf(Card* pCard);
     void vClearRestart(void);
-    eOA  eCueUser(Stz* szPrompt);
+    eOA  eCueUser(String* psPrompt);
 
     void G_vDeleteMember(Card* pMember);
     void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);

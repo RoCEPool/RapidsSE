@@ -462,7 +462,7 @@ Heap* Heaps::pEachHeap(eHT& reLastHeap)
 /*----------------------------------------------------------------------------*/
 /* Find Ptn0 reload file path                                                 */
 /*----------------------------------------------------------------------------*/
-void Heaps::vFindPtn0FilePath(Stz *szFilePath)
+void Heaps::vFindPtn0FilePath(String* psFilePath)
 {
   i8 nDiskpaths = gxCmdLineArgs.m_xSysArgs.m_nDiskPaths;
   if(nDiskpaths <= 0)
@@ -481,7 +481,7 @@ void Heaps::vFindPtn0FilePath(Stz *szFilePath)
 
     if(File::bExists(szTmp))
     {
-      szFilePath->vCopy(szTmp);
+      psFilePath->vCopy(szTmp);
       return;
     }
   }

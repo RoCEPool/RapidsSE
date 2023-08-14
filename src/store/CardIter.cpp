@@ -337,7 +337,7 @@ void CardIter::vClearRestart(void)
 /*----------------------------------------------------------------------------*/
 /* cue user                                                                   */
 /*----------------------------------------------------------------------------*/
-eOA CardIter::eCueUser(Stz* szPrompt)
+eOA CardIter::eCueUser(String* psPrompt)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -346,7 +346,7 @@ eOA CardIter::eCueUser(Stz* szPrompt)
   if (m_pCardCtl->bCueDisabled())
     return OA_CONTINUE_TRANSFORMING;
 
-  szPrompt->vConcat(" >> "_Stz);
+  psPrompt->vConcat(" >> "_Stz);
 
   m_pCardCtl->vCued(true);
 
@@ -355,7 +355,7 @@ eOA CardIter::eCueUser(Stz* szPrompt)
   L_Input:
 
   s4K sInput;
-  Cue::vGetInput(szPrompt,sInput);
+  Cue::vGetInput(psPrompt->szStz(), sInput);
 
   if (0 == sInput.nLength())
     return OA_CONTINUE_TRANSFORMING;
