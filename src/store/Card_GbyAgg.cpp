@@ -418,12 +418,12 @@ void Card_GbyAgg::vPromote_gbyAgg_To_ordAgg(CardIter* pCI)
   if (AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
     return;
 
-  if (! pCI->StreamOrder.m_pKey_running)
+  if (! pCI->StreamOrder.m_pStreamKey_running)
     return;
 
   pCI->G.p_key = pSub_key();
 
-  if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pKey_running))
+  if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pStreamKey_running))
     return;
 
   vCard(CK_ORDAGG);
