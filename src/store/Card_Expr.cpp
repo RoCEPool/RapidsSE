@@ -651,14 +651,6 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     RASSERT(0);
   }
 
-
-  eCK eHas = eValidate_mustEither(CK_BOOLCALC,CK_RPNCALC,CK_NONE);
-
-  if (CK_BOOLCALC == eHas)
-    pSub_boolCalc()->vValidate(pCI,iDepth+1,this);
-  else
-    pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
-
   // all non-key expr must have an AS
   if (pParent && ! pParent->bIsCard(CK_KEY)
               && ! pParent->bIsCard(CK_STREAMKEY)
@@ -666,13 +658,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     vValidate_mustHave(CK_AS,CK_NONE);
   }
 
-  if ((pCI->G.p_as = pSub_as()))
-    pCI->G.p_as->vValidate(pCI,iDepth+1,pParent);
-
-  if ((pCI->G.p_direction = pSub_direction()))
-    pCI->G.p_direction->vValidate(pCI,iDepth+1,pParent);
-
-
+  UNUSED(pParent);
+  pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
 
