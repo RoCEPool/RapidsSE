@@ -63,13 +63,19 @@ void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
     pCI->G.p_scan->vRemoveChild(p_level);
   }
 
-  Card_Table* p_table = pCI->G.p_scan->pSub_table();
+  pCI->G.p_table = pCI->G.p_scan->pSub_table();
 
   pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->G.p_scan);
   DELETE_CARD(pCI->G.p_scan);
 
   if (p_level)
-    p_table->vInsert(p_level);
+    pCI->G.p_table->vInsert(p_level);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G_vAppendNewChild(pCI->G.p_table,CK_FROM);
+
+  pCI->G.p_from->vAppend(pCI->G.p_table->pSub_tableNm()->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
