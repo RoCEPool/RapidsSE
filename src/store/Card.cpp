@@ -2231,6 +2231,19 @@ Card_Section* Card::pSub_section(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Spare.hpp"
+Card_Spare* Card::pSub_spare(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Spare* p_spare =
+      _pCard_Spare(pFindSubCard(CK_SPARE));
+  return p_spare;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_StreamKey.hpp"
 Card_StreamKey* Card::pSub_streamKey(void)
 {

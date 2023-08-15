@@ -99,6 +99,7 @@ enum eCK : i8 // card kind
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
   /* */ CK_SORT,
+  /* */ CK_SPARE,
   /* */ CK_STAGE,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
@@ -223,6 +224,7 @@ static Stz* aCK[]
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SORT"_Stz,         // CK_SORT
+  /* */ "CK_SPARET"_Stz,       // CK_SPARE
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
   /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
@@ -348,6 +350,7 @@ static Stz* aCK_short[]
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sort"_Stz,            // CK_SORT
+  /* */ "spare"_Stz,           // CK_SPARE
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
   /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
