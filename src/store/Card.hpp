@@ -120,6 +120,7 @@ namespace STORE
   class Card_Sort;
   class Card_Stage;
   class Card_StreamJoin;
+  class Card_StreamKey;
   class Card_StreamPtn;
   class Card_SubSet;
 
@@ -372,18 +373,18 @@ namespace STORE
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
     Card_JoinCast*      pSub_locusCast(void);
-    Card_StreamJoin*     pSub_joinLocus(void);
-    Card_StreamSet*   pSub_joinPermAll(void);
-    Card_StreamPer*   pSub_joinPermList(void);
+    Card_StreamJoin*    pSub_joinLocus(void);
+    Card_StreamSet*     pSub_joinPermAll(void);
+    Card_StreamPer*     pSub_joinPermList(void);
     Card_Key*           pSub_key(void);
     Card_KeyCells*      pSub_keyCells(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_Level*         pSub_level(void);
-    Card_JoinEstimate*     pSub_joinEstimate(void);
+    Card_JoinEstimate*  pSub_joinEstimate(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
-    Card_CostStream*     pSub_costQuery(void);
+    Card_CostStream*    pSub_costQuery(void);
     Card_CostUnicast*   pSub_costUnicast(void);
     Card_Map*           pSub_map(void);
     Card_Mapping*       pSub_mapping(void);
@@ -402,6 +403,7 @@ namespace STORE
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
+    Card_StreamKey*     pSub_streamKey(void);
     Card_StreamPtn*     pSub_streamPtn(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);

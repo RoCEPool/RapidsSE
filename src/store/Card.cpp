@@ -2233,13 +2233,26 @@ Card_Section* Card::pSub_section(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_StreamKey.hpp"
+Card_StreamKey* Card::pSub_streamKey(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamKey* p_streamKey =
+      _pCard_StreamKey(pFindSubCard(CK_STREAMKEY));
+  return p_streamKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_StreamPtn.hpp"
 Card_StreamPtn* Card::pSub_streamPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_StreamPtn* p_streamPtn =
-      _pCard_StreamPtn(pFindSubCard(CK_SECTION));
+      _pCard_StreamPtn(pFindSubCard(CK_STREAMPTN));
   return p_streamPtn;
 }
 
