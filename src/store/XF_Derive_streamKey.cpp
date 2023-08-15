@@ -65,7 +65,7 @@ void XF_Derive_streamKey::vXF_Derive_streamKey(void)
   m_pCI->vTransform(__func__, XF_DERIVE_PROJECTION_KEY, "Derive projection keys"_Stz);
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey_running);
 
   if (bFindStart_streamKey())
     vPropagate_streamKey();
