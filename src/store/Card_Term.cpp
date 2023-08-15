@@ -363,6 +363,23 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* correct stmOdn                                                             */
+/*----------------------------------------------------------------------------*/
+
+void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! bIsStmOdn())
+    return;
+
+  Symbol* pSym = pSymbol();
+  if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
+    pSym->vSym(p_expr->pSymbol());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
@@ -384,23 +401,6 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   vValidationPassed();
-}
-
-/*----------------------------------------------------------------------------*/
-/* correct stmOdn                                                             */
-/*----------------------------------------------------------------------------*/
-
-void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! bIsStmOdn())
-    return;
-
-  Symbol* pSym = pSymbol();
-  if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
-    pSym->vSym(p_expr->pSymbol());
-  }
 }
 
 /*============================================================================*/
