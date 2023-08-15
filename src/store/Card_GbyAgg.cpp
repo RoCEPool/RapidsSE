@@ -305,8 +305,8 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
   RASSERT(bPeg_Key(pCI));
   pCI->G.p_projection->vDelete_streamKey(pCI);
 
-  pCI->G.p_key = _pCard_Key(pCI->G.p_key->pDupCardRecursive());
-  pCI->G.p_projection->vAppend(pCI->G.p_key);
+//  pCI->G.p_key = _pCard_Key(pCI->G.p_key->pDupCardRecursive());
+//  pCI->G.p_projection->vAppend(pCI->G.p_key);
 
 
   pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);

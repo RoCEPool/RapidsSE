@@ -132,7 +132,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   // this projection will be in an aggreg, gbyAgg or ordAgg
   RASSERT(pCI->G.p_OP->bIsEarlyRoot());
 
-  pCI->G.p_key = pSub_key();
+  pCI->G.p_streamKey = pSub_streamKey();
 
   Card_Needed* p_needed = new Card_Needed;
 
@@ -150,9 +150,9 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
       // only interested in columns
 
       if (xCI_rpnCalc.G.p_term->bIsKeyOdn()) {
-        RASSERT(pCI->G.p_key);
+        RASSERT(pCI->G.p_streamKey);
 
-        Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(xCI_rpnCalc.G.p_term->pSymbol());
+        Card_Expr* p_expr_key = pCI->G.p_streamKey->pDecodeExpr(xCI_rpnCalc.G.p_term->pSymbol());
         Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
 
         vDebugPoint();
