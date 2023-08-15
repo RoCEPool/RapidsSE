@@ -649,13 +649,6 @@ void Card_BoolCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-//  Card_PRED* p_PRED = reinterpret_cast<Card_PRED*>(pPeekChild());
-//
-//  if (! p_PRED)
-//    return;
-//
-//  p_PRED->vValidate(pCI,iDepth+1,this);
-
   pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();
