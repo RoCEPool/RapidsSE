@@ -40,7 +40,6 @@ namespace STORE
 
     void vBounds_AddPred(Card_Index* p_index,
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);
-    Stz* szColNm(i8 i_Col_base0);
     bool bIsTblColOf(Stz* szTblCol);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vDeriveBoundsFrom_filter(Card_Filter* p_filter);

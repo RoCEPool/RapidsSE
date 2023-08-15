@@ -349,26 +349,6 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 }
 
 /*----------------------------------------------------------------------------*/
-/* table projection analysis                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Table::szColNm(i8 i_Col_base0)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_TableNm* p_tableNm = pSub_tableNm();
-
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  Column* pColumn = pStreamDef->pGetColumn(i_Col_base0);
-
-  Stz* szColNm = pColumn->szColNm();
-
-  return szColNm;
-}
-
-/*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
