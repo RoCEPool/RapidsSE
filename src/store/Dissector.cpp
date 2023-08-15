@@ -993,6 +993,14 @@ Card* Dissector::pOp_Scan(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Card_From* p_from = new Card_From;
+  pOp_Scan->vAppend(p_from);
+
+  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  p_from->vAppend(p_tableNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   return pOp_Scan;
 }
 
