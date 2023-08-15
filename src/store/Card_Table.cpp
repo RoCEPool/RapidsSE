@@ -608,21 +608,21 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (pParent->bIsCard(CK_DECK)) {
-    vValidate_mustHave(CK_LEVEL, CK_TABLENM, CK_TABLEPTN,
+    vValidate_mustHave(CK_LEVEL, CK_TABLEPTN,
                        CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_PROJECTION, CK_NONE);
     pSub_level()->vValidate(pCI,iDepth+1,this);
   }
   else
   if (pParent->bIsCard(CK_KEYEXISTS) || pParent->bIsCard(CK_KEYNOTEXISTS)) {
-    vValidate_mustHave(CK_TABLENM, CK_NONE);
+    //vValidate_mustHave(CK_TABLENM, CK_NONE);
   }
   else
   if (pParent->bIsCard(CK_SCAN) || pParent->bIsCard(CK_INDEXJOIN) || pParent->bIsCard(CK_INDEXSCAN)) {
-    vValidate_mustHave(CK_TABLENM, CK_NONE);
+    //vValidate_mustHave(CK_TABLENM, CK_NONE);
   }
 
   else {
-    vValidate_mustHave(CK_TABLENM, CK_TABLEPTN,
+    vValidate_mustHave(CK_TABLEPTN,
                        CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_NONE);
   }
 
