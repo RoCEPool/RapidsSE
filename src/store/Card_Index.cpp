@@ -212,11 +212,11 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Index* Card_Index::pGetIndex(Card_Table *p_Table)
+Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
   if (! pTable)
     return nullptr;
 

@@ -1827,8 +1827,8 @@ Index* Card_OP::pCraftIndex_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Table* p_table = pSub_table();
-  if (! p_table)
+  Card_From* p_from = pSub_from();
+  if (! p_from)
     return nullptr;
 
   Card_IndexList* p_indexList = pSub_indexList();
@@ -1839,7 +1839,7 @@ Index* Card_OP::pCraftIndex_indexJoin(void)
   if (! p_index)
     return nullptr;
 
-  Index* pIndex = p_index->pGetIndex(p_table);
+  Index* pIndex = p_index->pGetIndex(p_from->pSub_tableNm());
 
   return pIndex;
 }
@@ -1851,8 +1851,8 @@ Index* Card_OP::pCraftIndex_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Table* p_table = pSub_table();
-  if (! p_table)
+  Card_From* p_from = pSub_from();
+  if (! p_from)
     return nullptr;
 
   Card_IndexList* p_indexList = pSub_indexList();
@@ -1863,31 +1863,7 @@ Index* Card_OP::pCraftIndex_indexScan(void)
   if (! p_index)
     return nullptr;
 
-  Index* pIndex = p_index->pGetIndex(p_table);
-
-  return pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft index for indexSemi                                                  */
-/*----------------------------------------------------------------------------*/
-Index* Card_OP::pCraftIndex_indexSemi(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Table* p_table = pSub_table();
-  if (! p_table)
-    return nullptr;
-
-  Card_IndexList* p_indexList = pSub_indexList();
-  if (! p_indexList)
-    return nullptr;
-
-  Card_Index* p_index = p_indexList->pFindChosenIndex();
-  if (! p_index)
-    return nullptr;
-
-  Index* pIndex = p_index->pGetIndex(p_table);
+  Index* pIndex = p_index->pGetIndex(p_from->pSub_tableNm());
 
   return pIndex;
 }

@@ -988,7 +988,11 @@ Card* Dissector::pOp_Scan(void)
   // form table
   Table* pTable = AM::pTableFind(szTableNm);
 
-  Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
+  Card_Table* pCard_Table = new Card_Table; //pFormTable(szTableNm,pTable);
+  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
+  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  pCard_Table->vAppend(p_tableNm);
+
   pOp_Scan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -996,7 +1000,7 @@ Card* Dissector::pOp_Scan(void)
   Card_From* p_from = new Card_From;
   pOp_Scan->vAppend(p_from);
 
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
   p_from->vAppend(p_tableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

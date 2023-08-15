@@ -92,7 +92,6 @@ namespace STORE
 
     Index*    pCraftIndex_indexJoin(void);
     Index*    pCraftIndex_indexScan(void);
-    Index*    pCraftIndex_indexSemi(void);
 
     IndexDef* pCraftIndexDef_gbyAgg(void);
     IndexDef* pCraftIndexDef_sort(void);

@@ -28,7 +28,7 @@ namespace STORE
     void vSet_Choose_index(void);
     bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
 
-    Index*    pGetIndex(Card_Table* p_Table);
+    Index*    pGetIndex(Card_TableNm* p_tableNm);
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
 
