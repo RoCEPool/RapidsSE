@@ -67,7 +67,7 @@ void XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
   m_pCI->vClearRestart();
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey_running);
 
   while (m_pCI->G_bEachMain()) {
 
