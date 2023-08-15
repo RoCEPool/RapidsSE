@@ -248,15 +248,12 @@ void Card_Projection::vDerive_streamKey(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Key* p_key_projection = pCI->G.p_projection->pSub_key();
-  UNUSED(p_key_projection);
-
-  if (! pCI->StreamOrder.m_pKey_running)
+  if (! pCI->StreamOrder.m_pStreamKey_running)
     return;
 
-  i8 nKeyExpr = pCI->StreamOrder.m_pKey_running->nChildCards();
+  i8 nKeyExpr = pCI->StreamOrder.m_pStreamKey_running->nChildCards();
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
-    Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pKey_running->pGetExpr(i_RunKeyExpr);
+    Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey_running->pGetExpr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGetTerm(0);
     Card_Expr* p_expr_prjCol = pFindExpr(p_term_runkey->pSymbol());
@@ -268,7 +265,6 @@ void Card_Projection::vDerive_streamKey(CardIter *pCI)
         p_expr_prjCol->vAppend(p_expr_runkey->pSub_direction()->pDupCardRecursive());
       }
 
-      pCI->G.p_key->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
       pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
     }
 

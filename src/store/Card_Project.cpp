@@ -206,8 +206,7 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
   pCI->G.p_streamKey = new Card_StreamKey;
   pCI->G.p_projection->vDerive_streamKey(pCI);
 
-  if (! pCI->G.p_key->nChildCards()) {
-    RASSERT(! pCI->G.p_streamKey->nChildCards());
+  if (! pCI->G.p_streamKey->nChildCards()) {
 
     delete pCI->G.p_key;
     pCI->StreamOrder.m_pKey_running = nullptr;
