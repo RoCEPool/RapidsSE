@@ -52,7 +52,7 @@ namespace BASE
     Stz* szStz(void);
     i8   nStzSize(void);
 
-    void vToString(Stz* szDst);
+    void vToString(String* psStz);
     eCN  eType(void);
     TypeValue* aTypeValue(void);
     TypeValueArea* aTypeValueArea(void);
