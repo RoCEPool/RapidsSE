@@ -49,7 +49,7 @@ Card_StreamKey::~Card_StreamKey(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Card_StreamKey* Card_StreamKey::pTo_streamKey(Card_Key* p_key)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _static_
 
   Card_Key* p_key_dupe = _pCard_Key(p_key->pDupCardRecursive());
 
