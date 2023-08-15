@@ -563,6 +563,14 @@ Card* Dissector::pOp_IndexJoin(void)
   pCard_IndexJoin->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_From* p_from = new Card_From;
+  pCard_IndexJoin->vAppend(p_from);
+
+  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  p_from->vAppend(p_tableNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
 
   Card_IndexList* p_indexList = new Card_IndexList;
@@ -666,6 +674,14 @@ Card* Dissector::pOp_IndexScan(void)
   pCard_IndexScan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_From* p_from = new Card_From;
+  pCard_IndexScan->vAppend(p_from);
+
+  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  p_from->vAppend(p_tableNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
 
   Card_IndexList* p_indexList = new Card_IndexList;
@@ -732,6 +748,14 @@ Card* Dissector::pOp_KeyExists(void)
   pCard_KeyExists->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_From* p_from = new Card_From;
+  pCard_KeyExists->vAppend(p_from);
+
+  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  p_from->vAppend(p_tableNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index list
 
   Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
@@ -794,6 +818,14 @@ Card* Dissector::pOp_KeyNotExists(void)
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
   pCard_KeyNotExists->vAppend(pCard_Table);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_From* p_from = new Card_From;
+  pCard_KeyNotExists->vAppend(p_from);
+
+  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  p_from->vAppend(p_tableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index list
@@ -988,11 +1020,7 @@ Card* Dissector::pOp_Scan(void)
   // form table
   Table* pTable = AM::pTableFind(szTableNm);
 
-  Card_Table* pCard_Table = new Card_Table; //pFormTable(szTableNm,pTable);
-  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
-  pCard_Table->vAppend(p_tableNm);
-
+  Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
   pOp_Scan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1000,7 +1028,7 @@ Card* Dissector::pOp_Scan(void)
   Card_From* p_from = new Card_From;
   pOp_Scan->vAppend(p_from);
 
-  p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
+  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
   p_from->vAppend(p_tableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
