@@ -264,15 +264,17 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
 
-  Kid xKey(this);
-  while (xKey.bEach(CK_EXPR)) {
-    Card_Expr *p_expr = xKey.p_expr();
+//  Kid xKey(this);
+//  while (xKey.bEach(CK_EXPR)) {
+//    Card_Expr *p_expr = xKey.p_expr();
+//
+//    p_expr->vValidate(pCI,iDepth+1,this);
+//  }
+//
+//  if ((pCI->G.p_direction = pSub_direction()))
+//    pCI->G.p_direction->vValidate(pCI,iDepth+1,this);
 
-    p_expr->vValidate(pCI,iDepth+1,this);
-  }
-
-  if ((pCI->G.p_direction = pSub_direction()))
-    pCI->G.p_direction->vValidate(pCI,iDepth+1,this);
+  pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();
 }
