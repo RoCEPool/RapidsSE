@@ -80,6 +80,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   p_expr_new->vAppend(p_rpnCalc);
 
   p_rpnCalc->pSymbol()->Y_vColType(p_expr->szP_Type());
+  p_expr_new->pSymbol()->Y_vColType(p_expr->szP_Type());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol(SF_NONE));
@@ -90,6 +91,9 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
     p_expr_new->vAppend(p_direction);
   }
+
+  p_expr_new->vDump(__func__);
+
   vAppend(p_expr_new);
 }
 

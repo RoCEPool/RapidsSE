@@ -1368,9 +1368,7 @@ void Card::vValidate_mustHave(i8 /*eCK*/ iCard_first, ...)
     }
 
     if (! bMustHave) {
-      vTrace("vValidate_mustHave: missing %lld %lls\n"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
-      vDump(__func__);
-      RASSERT(bMustHave);
+      vValidationFailed("vValidate_mustHave: missing %lld %lls"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
     }
 
     eCard_mustHave = (eCK)va_arg(xArgs, i8);

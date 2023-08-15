@@ -693,12 +693,9 @@ void Card_Deck::vValidate(CardIter* pCI)
   vValidationPassed();
 
   if (Card* pCard_notValidate = pFindMark1Recursive('X')) {
-    eCK eCard_notValidated = pCard_notValidate->eCard();
-    if (! (CK_KEY == eCard_notValidated || CK_STREAMKEY == eCard_notValidated) ) {
-      pCI->vPrintBoard(__LINE__,true);
-      pCard_notValidate->vDump(__func__);
-      vDebugPoint();
-    }
+    pCI->vPrintBoard(__LINE__,true);
+    pCard_notValidate->vDump(__func__);
+    vDebugPoint();
   }
 
 }
