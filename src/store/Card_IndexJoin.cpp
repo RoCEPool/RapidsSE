@@ -50,11 +50,10 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   // extends the projection key
 
+  RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-
-  // snap onto <indexJoin>/<projection>, delete existing <indexJoin>/<projection>/<key>
-  pCI->G.p_projection = pSub_projection();
   pCI->G.p_projection->vDelete_streamKey(pCI);
+
 
   if (pCI->StreamOrder.m_pKey_running) {
     pCI->G.p_key = _pCard_Key(pCI->StreamOrder.m_pKey_running->pDupCardRecursive());

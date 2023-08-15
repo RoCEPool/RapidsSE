@@ -257,19 +257,19 @@ void TypeValueArea::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void TypeValueArea::vToStz(Stz* szDst)
+void TypeValueArea::vToStr(String* psDst)
 {
   if (CN_BOLVAL == eType())
-    * szDst = iBol();
+    StrLib::wToString(iBol(), psDst->azStr());
   else
   if (CN_INTVAL == eType())
-    * szDst = iInt();
+    StrLib::wToString(iInt(), psDst->azStr());
   else
   if (CN_STZVAL == eType())
-    StrLib::vCopy(szDst->azChar(),m_caStringArea);
+    psDst->vCopy((Stz*) m_caStringArea);
   else
   if (CN_PTRVAL == eType())
-    * szDst = reinterpret_cast<void*>(pObj());
+    StrLib::wToPointer(pObj(), psDst->azStr());
   else
     NEVER_REACH;
 
