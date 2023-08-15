@@ -692,6 +692,10 @@ void Card_OP::vRelegate_table(CardIter* pCI, Card_OP* p_under)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  pCI->G.p_level = pSub_level();
+  pCI->G.p_from = pSub_from();
+  pCI->G.p_table->vRemoveSub(pCI->G.p_from);
+
   pCI->G.p_table->vRemoveSub(p_under);
   p_under->vTransferChildren(pCI->G.p_table);
   p_under->vInsert(pCI->G.p_table);
@@ -723,6 +727,9 @@ void Card_OP::vRelegate_table(CardIter* pCI, Card_OP* p_under)
     pCI->G.p_MainCard->vRemoveSub(pCI->G.p_rowCount);
     pCI->G.p_table->vAppend(pCI->G.p_rowCount);
   }
+
+  p_under->vInsertAfter(pCI->G.p_from,pCI->G.p_level);
+
 }
 
 /*----------------------------------------------------------------------------*/
