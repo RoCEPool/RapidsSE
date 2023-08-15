@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stz.cpp -- null terminated str                                             */
+/* Stz.hpp -- a read only null terminated string for mapping over char*       */
 /*============================================================================*/
 
 #include "BASE.h"

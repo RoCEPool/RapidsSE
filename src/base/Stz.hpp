@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stz.hpp -- null terminated string                                          */
+/* Stz.hpp -- a read only null terminated string for mapping over char*       */
 /*============================================================================*/
 #pragma once
 
@@ -22,7 +22,6 @@ namespace BASE
   public:
     void* operator new(size_t);
   
-  //Stz() = default;
     Stz(void);
    ~Stz(void) noexcept(false);
   
