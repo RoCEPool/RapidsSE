@@ -62,6 +62,43 @@ Stz* Card_From::szColNm(i8 i_Col_base0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* affix table syntax to all tables                                           */
+/*----------------------------------------------------------------------------*/
+void Card_From::vProduceTablePtns(CardIter* pCI) {
+
+  _static_
+
+  while (pCI->G_bEachMainWith2Sub(CK_TABLE, CK_TABLENM, CK_FROM)) {
+
+    pCI->G.p_tablePtn = Card_TablePtn::pDerive(pCI->G.p_table);
+    pCI->G.p_from->vAppend(pCI->G.p_tablePtn);
+    //pCI->G.p_table->vAppend(pCI->G.p_tablePtn->pDupCardRecursive());
+
+
+    Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
+    Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+    pCI->G.p_from->pSymbol()->Y_vSet(P_Pointer,pTable);
+
+    i8 jTableSize;
+    i8 jRowSize;
+    i8 nRowCount;
+
+    Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
+
+    pCI->G.p_tableSize = (new Card_TableSize) ->SYM(SF_INT_LIT,jTableSize);
+    pCI->G.p_from->vAppend(pCI->G.p_tableSize);
+
+    pCI->G.p_rowSize = (new Card_RowSize) ->SYM(SF_INT_LIT,jRowSize);
+    pCI->G.p_from->vAppend(pCI->G.p_rowSize);
+
+    pCI->G.p_rowCount = (new Card_RowCount) ->SYM(SF_INT_LIT,nRowCount);
+    pCI->G.p_from->vAppend(pCI->G.p_rowCount);
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_From::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

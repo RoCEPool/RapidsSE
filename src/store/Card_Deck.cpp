@@ -70,8 +70,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
         CK_SCAN         == pCI->G.e_MainCard) {
 
       if (! p_OP_prev) {
-        Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
-        p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
+        Card_From* p_from_first = pCI->G.p_OP->pSub_from();
+        p_streamPtn->vAddKey(p_from_first->pSub_tablePtn()->pSymbol());
       }
       else {
         eStageCast = pCI->G.pDeck->eAddStageCast_toPrev_cast(pCI,
@@ -137,8 +137,9 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
 
   RASSERT(p_streamPtn);
 
-  Card_Table*      p_table_join      = p_OP_curr->pSub_table();
-  Card_TablePtn*   p_tablePtn_join   = p_table_join->pSub_tablePtn();
+  //Card_Table*      p_table_join      = p_OP_curr->pSub_table();
+  Card_From*       p_from_join       = p_OP_curr->pSub_from();
+  Card_TablePtn*   p_tablePtn_join   = p_from_join->pSub_tablePtn();
   Card_IndexList*  p_indexList_join  = p_OP_curr->pSub_indexList();
   Card_Index*      p_index_join      = p_indexList_join->pFindChosenIndex();
   Card_IdxColList* p_idxColList_join = p_index_join->pSub_idxColList();

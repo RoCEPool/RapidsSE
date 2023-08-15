@@ -85,7 +85,7 @@ void XF_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table
   m_pCI->vClearRestart();
-  Card_Table::vProduceTablePtns(m_pCI);
+  Card_From::vProduceTablePtns(m_pCI);
 
   m_pCI->vEndTransform();
 
