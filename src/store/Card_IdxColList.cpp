@@ -46,7 +46,7 @@ Card_IdxColList::~Card_IdxColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
+void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -60,6 +60,7 @@ void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
       continue;
 
     pCI->G.p_key->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr,true);
+    pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr,true);
   }
   //pCI->G.p_key->vDump();
 }

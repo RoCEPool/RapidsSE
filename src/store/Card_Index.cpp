@@ -130,13 +130,13 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vAdd_key_exprs(CardIter* pCI)
+void Card_Index::vAdd_streamKey_exprs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->G.p_idxColList = pSub_idxColList();
 
-  pCI->G.p_idxColList->vAdd_key_exprs(pCI);
+  pCI->G.p_idxColList->vAdd_streamKey_exprs(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

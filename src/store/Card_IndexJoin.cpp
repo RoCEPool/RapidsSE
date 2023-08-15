@@ -63,10 +63,11 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
     pCI->G.p_key = new Card_Key;
     pCI->G.p_projection->vAppend(pCI->G.p_key);
   }
-  pCI->G.p_index->vAdd_key_exprs(pCI);
 
 
-  pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
+  pCI->G.p_streamKey = pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
+  pCI->G.p_index->vAdd_streamKey_exprs(pCI);
+
   pCI->G.p_projection->vAppend(pCI->StreamOrder.m_pStreamKey_running);
 
 
