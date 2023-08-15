@@ -203,22 +203,26 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
 
   // derive new <project>/<projection>/<key>
   pCI->G.p_key = new Card_Key;
+  pCI->G.p_streamKey = new Card_StreamKey;
   pCI->G.p_projection->vDerive_streamKey(pCI);
 
   if (! pCI->G.p_key->nChildCards()) {
+    RASSERT(! pCI->G.p_streamKey->nChildCards());
+
     delete pCI->G.p_key;
     pCI->StreamOrder.m_pKey_running = nullptr;
+    delete pCI->G.p_streamKey;
+    pCI->G.p_streamKey = nullptr;
     return;
   }
   pCI->G.p_projection->vAppend(pCI->G.p_key);
+  pCI->G.p_projection->vAppend(pCI->G.p_streamKey);
 
-
-  pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
-  pCI->G.p_projection->vAppend(pCI->StreamOrder.m_pStreamKey_running);
 
   // set running projection for use by next op
   pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
   pCI->StreamOrder.m_pKey_running = pCI->G.p_key;
+  pCI->StreamOrder.m_pStreamKey_running = pCI->G.p_streamKey;
 
 
 }

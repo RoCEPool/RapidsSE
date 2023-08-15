@@ -269,6 +269,7 @@ void Card_Projection::vDerive_streamKey(CardIter *pCI)
       }
 
       pCI->G.p_key->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
+      pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
     }
 
   }
