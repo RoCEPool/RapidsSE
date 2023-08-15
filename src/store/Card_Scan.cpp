@@ -74,25 +74,6 @@ void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
 
   DELETE_CARD(pCI->G.p_scan);
 }
-/*----------------------------------------------------------------------------*/
-// void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
-// {
-//   _static_
-//
-//   Card_Level* p_level = nullptr;
-//   if ((p_level = pCI->G.p_scan->pSub_level())) {
-//     pCI->G.p_scan->vRemoveChild(p_level);
-//   }
-//
-//   pCI->G.p_table = pCI->G.p_scan->pSub_table();
-//
-//   pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->G.p_scan);
-//   DELETE_CARD(pCI->G.p_scan);
-//
-//   if (p_level)
-//     pCI->G.p_table->vInsert(p_level);
-//
-// }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

@@ -186,18 +186,15 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
 
     pCI->G.p_tableSize = new Card_TableSize;
     pCI->G.p_tableSize->SYM(SF_INT_LIT,jTableSize);
-    pCI->G.p_table->vAppend(pCI->G.p_tableSize);
-    pCI->G.p_from->vAppend(pCI->G.p_tableSize->pDupCardRecursive());
+    pCI->G.p_from->vAppend(pCI->G.p_tableSize);
 
     pCI->G.p_rowSize = new Card_RowSize;
     pCI->G.p_rowSize->SYM(SF_INT_LIT,jRowSize);
-    pCI->G.p_table->vAppend(pCI->G.p_rowSize);
-    pCI->G.p_from->vAppend(pCI->G.p_rowSize->pDupCardRecursive());
+    pCI->G.p_from->vAppend(pCI->G.p_rowSize);
 
     pCI->G.p_rowCount = new Card_RowCount;
     pCI->G.p_rowCount->SYM(SF_INT_LIT,nRowCount);
-    pCI->G.p_table->vAppend(pCI->G.p_rowCount);
-    pCI->G.p_from->vAppend(pCI->G.p_rowCount->pDupCardRecursive());
+    pCI->G.p_from->vAppend(pCI->G.p_rowCount);
 
   }
 
@@ -588,29 +585,9 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (pParent->bIsCard(CK_DECK)) {
-    vValidate_mustHave(CK_LEVEL, CK_TABLEPTN,
-                       CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_PROJECTION, CK_NONE);
+    vValidate_mustHave(CK_LEVEL, CK_PROJECTION, CK_NONE);
     pSub_level()->vValidate(pCI,iDepth+1,this);
   }
-  else
-  if (pParent->bIsCard(CK_KEYEXISTS) || pParent->bIsCard(CK_KEYNOTEXISTS)) {
-    //vValidate_mustHave(CK_TABLENM, CK_NONE);
-  }
-  else
-  if (pParent->bIsCard(CK_SCAN) || pParent->bIsCard(CK_INDEXJOIN) || pParent->bIsCard(CK_INDEXSCAN)) {
-    //vValidate_mustHave(CK_TABLENM, CK_NONE);
-  }
-
-  else {
-    vValidate_mustHave(CK_TABLEPTN,
-                       CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_NONE);
-  }
-
-//  if (Card_IndexList* p_indexList = pSub_indexList())
-//    p_indexList->vValidate(pCI,iDepth+1,this);
-//
-//  if ((pCI->G.p_projection = pSub_projection()))
-//    pCI->G.p_projection->vValidate(pCI,iDepth+1,this);
 
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
