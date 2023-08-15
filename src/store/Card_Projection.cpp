@@ -235,10 +235,10 @@ void Card_Projection::vDelete_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_key = pSub_key()))
-    vDeleteChild(pCI->G.p_key);
+  if ((pCI->G.p_streamKey = pSub_streamKey()))
+    vDeleteChild(pCI->G.p_streamKey);
 
-  pCI->G.p_key = nullptr;
+  pCI->G.p_streamKey = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

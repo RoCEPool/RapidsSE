@@ -173,11 +173,8 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(bPeg_Projection(pCI));
-
-  RASSERT(bPeg_Projection(pCI));
-  pCI->G.p_projection->vDelete_streamKey(pCI);
-
   RASSERT(bPeg_Key(pCI));
+  pCI->G.p_projection->vDelete_streamKey(pCI);
 
   pCI->G.p_key = _pCard_Key(pCI->G.p_key->pDupCardRecursive());
   pCI->G.p_projection->vAppend(pCI->G.p_key);
@@ -189,7 +186,6 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 
   // set running projection for use by next op
   pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
-  pCI->StreamOrder.m_pKey_running = pCI->G.p_key;
 }
 
 /*----------------------------------------------------------------------------*/
