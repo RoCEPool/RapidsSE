@@ -114,6 +114,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   pCI->vPrintBoard();
 
+  pCI->G.p_from = pSub_from();
   vUpdate_projection(pCI);
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);

@@ -298,6 +298,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       vDebugPoint();
 
     if (CK_TABLE == pCI->G.e_MainCard) {
+      pCI->G.p_from = pCI->G.p_MainCard->pSub_from();
       pCI->G.p_table->vUpdate_projection(pCI);
       pCI->vPrintBoard();
 
@@ -411,6 +412,11 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
         CK_INDEXJOIN == pCI->G.e_MainCard ||
         CK_INDEXSCAN == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+      pCI->G.p_from = pCI->G.p_MainCard->pSub_from();
+      if (! pCI->G.p_from) {
+        pCI->G.p_MainCard->vDump(__func__);
+        vDebugPoint();
+      }
       pCI->G.p_table->vUpdate_projection(pCI);
 
       pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
@@ -519,6 +525,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
         break;
 
       case CK_TABLE:
+        pCI->G.p_from = pCI->G.p_MainCard->pSub_from();
         pCI->G.p_table->vUpdate_projection(pCI);
 
         if ((pCI->G.p_filter = pCI->G.p_table->pSub_filter())) {

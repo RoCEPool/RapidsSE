@@ -131,6 +131,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // re-project the leading OQ:<table>* sequence
 
   while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
+    pCI->G.p_from = pCI->G.p_table->pSub_from();
     pCI->G.p_table->vSmooth(pCI);
     pCI->vPrintBoard(__LINE__);
   }

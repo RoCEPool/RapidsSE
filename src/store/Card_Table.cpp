@@ -108,8 +108,8 @@ void Card_Table::vAffixTableSyn(CardIter* pCI, Symbol* pSymbol_tableSyn)
 
 _static_
 
-  while (pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
+  while (pCI->G_bEachMainWith2Sub(CK_TABLE, CK_FROM, CK_TABLENM))  {
+    pCI->G.p_table->vSet_Syn(pCI, pSymbol_tableSyn);
   }
 }
 
@@ -121,8 +121,8 @@ void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn
 
   _static_
 
-  while (pCI->G_bEach2SubOfMain(CK_TABLE, CK_TABLENM))  {
-    pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
+  while (pCI->G_bEach3SubOfMain(CK_TABLE, CK_FROM, CK_TABLENM))  {
+    pCI->G.p_table->vSet_Syn(pCI, pSymbol_tableSyn);
   }
 }
 
@@ -494,14 +494,14 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
 /*----------------------------------------------------------------------------*/
 /* set synonym of table                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
+void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   SYM(pSymbol_tableSyn);
   this->vMark1(MARK_CHANGED);
 
-  Card_TableNm* p_tableNm = this->pSub_tableNm();
+  Card_TableNm* p_tableNm = pCI->G.p_from->pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
   if (pTable->bIsReplicated())
     SYM(SF_TBL_SYN_rep);

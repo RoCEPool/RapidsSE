@@ -62,6 +62,7 @@ void XF_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyE
   // Table*
   while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
     if (pCarryForward->Table.m_bSeen) {
+      pCI->G.p_from = pCI->G.p_table->pSub_from();
       pCI->G.p_table->vSmooth(pCI, pCarryForward);
       pCI->vPrintBoard(__LINE__);
     }

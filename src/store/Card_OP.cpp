@@ -762,7 +762,12 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_tableNm = pSub_tableNm();
+  pCI->G.p_tableNm = pCI->G.p_from->pSub_tableNm();
+
+  if (! pCI->G.p_tableNm) {
+    vDump(__func__);
+    vDebugPoint();
+  }
 
   Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol(SF_NONE));
   StreamDef* pStreamDef = pTable->pStreamDef();
