@@ -50,6 +50,7 @@ namespace STORE
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
+    Card_Cast *          p_cast;
     Card_CmpPred *       p_cmpPred;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
@@ -106,7 +107,6 @@ namespace STORE
 
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
-    Card_Cast *          p_cast;
     Card_Note *          p_note;
     Card_NotPred *       p_notPred;
 
@@ -128,6 +128,7 @@ namespace STORE
     Card_Section *       p_section;
     Card_Send *          p_send;
     Card_Sort *          p_sort;
+    Card_Spare *         p_spare;
     Card_Stage *         p_stage;
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;

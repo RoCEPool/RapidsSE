@@ -92,8 +92,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_expr_new->vAppend(p_direction);
   }
 
-  p_expr_new->vDump(__func__);
-
   vAppend(p_expr_new);
 }
 

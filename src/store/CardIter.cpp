@@ -1194,13 +1194,14 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SCAN:             return G.p_scan;
     case CK_SECTION:          return G.p_section;
     case CK_SEND:             return G.p_send;
+    case CK_SPARE:            return G.p_spare;
+    case CK_SORT:             return G.p_sort;
     case CK_STREAMHEAD:       return G.p_streamHead;
     case CK_STREAMJOIN:       return G.p_streamJoin;
     case CK_STREAMKEY:        return G.p_streamKey;
     case CK_STREAMPER:        return G.p_streamPer;
     case CK_STREAMPTN:        return G.p_streamPtn;
     case CK_STREAMSET:        return G.p_streamSet;
-    case CK_SORT:             return G.p_sort;
     case CK_STAGE:            return G.p_stage;
     case CK_SUBSET:           return G.p_subSet;
 
@@ -1436,6 +1437,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_SORT:             *((Card**)&G.p_sort)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+    case CK_SPARE:            *((Card**)&G.p_section)          = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_STAGE:            *((Card**)&G.p_stage)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_STREAMHEAD:       *((Card**)&G.p_streamHead)       = pCard; break;
@@ -1645,11 +1648,12 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_scan             = nullptr;
   G.p_section          = nullptr;
   G.p_send             = nullptr;
+  G.p_spare            = nullptr;
+  G.p_sort             = nullptr;
   G.p_streamKey        = nullptr;
   G.p_streamPer        = nullptr;
   G.p_streamPtn        = nullptr;
   G.p_streamSet        = nullptr;
-  G.p_sort             = nullptr;
   G.p_stage            = nullptr;
   G.p_streamHead       = nullptr;
   G.p_streamJoin       = nullptr;
@@ -2485,6 +2489,9 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
         break;
       case CK_SEND:
         G.p_send->vValidate(this, iDepth, pCard);
+        break;
+      case CK_SPARE:
+        G.p_spare->vValidate(this, iDepth, pCard);
         break;
       case CK_SORT:
         G.p_sort->vValidate(this, iDepth, pCard);
