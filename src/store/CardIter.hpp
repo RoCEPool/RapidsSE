@@ -49,8 +49,7 @@ namespace STORE
     } Sqy;
 
     struct {
-      Card_Key *        m_pKey_running;
-      Card_StreamKey *  m_pStreamKey_running;
+     Card_StreamKey *  m_pStreamKey_running;
       Card_Projection * m_pProjection_running;
     } StreamOrder;
 

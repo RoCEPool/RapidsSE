@@ -79,9 +79,7 @@ void XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
 
       default:
         if (m_pCI->G.p_MainCard->pSub_projection()) {
-          //RASSERT(m_pCI->G.p_MainCard->pSub_projection()->pSub_streamKey());
           m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
-          //m_pCI->StreamOrder.m_pKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_key();
           m_pCI->StreamOrder.m_pStreamKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_streamKey();
         }
         break;
