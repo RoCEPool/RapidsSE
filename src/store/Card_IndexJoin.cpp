@@ -55,26 +55,54 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
   pCI->G.p_projection->vDelete_streamKey(pCI);
 
 
-  if (pCI->StreamOrder.m_pKey_running) {
-    pCI->G.p_key = _pCard_Key(pCI->StreamOrder.m_pKey_running->pDupCardRecursive());
-    pCI->G.p_projection->vAppend(pCI->G.p_key);
+  if (pCI->StreamOrder.m_pStreamKey_running) {
+    pCI->G.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey_running->pDupCardRecursive());
   }
   else {
-    pCI->G.p_key = new Card_Key;
-    pCI->G.p_projection->vAppend(pCI->G.p_key);
+    pCI->G.p_streamKey = new Card_StreamKey;
   }
 
-
-  pCI->G.p_streamKey = pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
   pCI->G.p_index->vAdd_streamKey_exprs(pCI);
 
-  pCI->G.p_projection->vAppend(pCI->StreamOrder.m_pStreamKey_running);
+  pCI->G.p_projection->vAppend(pCI->G.p_streamKey);
 
 
   // set running projection for use by next op
   pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
-  pCI->StreamOrder.m_pKey_running = pCI->G.p_key;
+  pCI->StreamOrder.m_pStreamKey_running  = pCI->G.p_streamKey;
 }
+/*----------------------------------------------------------------------------*/
+//void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  // extends the projection key
+//
+//  RASSERT(bPeg_Projection(pCI));
+//  RASSERT(bPeg_Chosen_index(pCI));
+//  pCI->G.p_projection->vDelete_streamKey(pCI);
+//
+//
+//  if (pCI->StreamOrder.m_pKey_running) {
+//    pCI->G.p_key = _pCard_Key(pCI->StreamOrder.m_pKey_running->pDupCardRecursive());
+//    pCI->G.p_projection->vAppend(pCI->G.p_key);
+//  }
+//  else {
+//    pCI->G.p_key = new Card_Key;
+//    pCI->G.p_projection->vAppend(pCI->G.p_key);
+//  }
+//
+//
+//  pCI->G.p_streamKey = pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
+//  pCI->G.p_index->vAdd_streamKey_exprs(pCI);
+//
+//  pCI->G.p_projection->vAppend(pCI->StreamOrder.m_pStreamKey_running);
+//
+//
+//  // set running projection for use by next op
+//  pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
+//  pCI->StreamOrder.m_pKey_running = pCI->G.p_key;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
