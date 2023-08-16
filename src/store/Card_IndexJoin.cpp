@@ -114,7 +114,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   pCI->vPrintBoard();
 
-  pCI->G.p_from = pSub_from();
+  pCI->G.p_table = pSub_table();
   vUpdate_projection(pCI);
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);
@@ -336,8 +336,9 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
     throw xError;
   }
 
-  pCI->G_vNewMember(CK_INDEXJOIN);
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_indexJoin);
+//  pCI->G_vNewMember(CK_INDEXJOIN);
+//  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_indexJoin);
+  pCI->G.p_indexJoin = _pCard_IndexJoin(pCI->G.p_from->pCard(CK_INDEXJOIN));
 
   pCI->G.p_indexList->vChoose_index_For_indexJoin();
 }
@@ -353,7 +354,9 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
+
+  RASSERT(pSub_table()->pSub_indexList());
 
   UNUSED(pParent);
   pCI->vValidateChildren(this,iDepth+1);

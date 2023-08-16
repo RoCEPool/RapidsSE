@@ -70,8 +70,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
         CK_SCAN         == pCI->G.e_MainCard) {
 
       if (! p_OP_prev) {
-        Card_From* p_from_first = pCI->G.p_OP->pSub_from();
-        p_streamPtn->vAddKey(p_from_first->pSub_tablePtn()->pSymbol());
+        Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
+        p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
         eStageCast = pCI->G.pDeck->eAddStageCast_toPrev_cast(pCI,
@@ -138,8 +138,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
   RASSERT(p_streamPtn);
 
   //Card_Table*      p_table_join      = p_OP_curr->pSub_table();
-  Card_From*       p_from_join       = p_OP_curr->pSub_from();
-  Card_TablePtn*   p_tablePtn_join   = p_from_join->pSub_tablePtn();
+  //Card_From*       p_from_join       = p_OP_curr->pSub_from();
+  Card_TablePtn*   p_tablePtn_join   = p_OP_curr->pSub_tablePtn();
   Card_IndexList*  p_indexList_join  = p_OP_curr->pSub_indexList();
   Card_Index*      p_index_join      = p_indexList_join->pFindChosenIndex();
   Card_IdxColList* p_idxColList_join = p_index_join->pSub_idxColList();
@@ -280,7 +280,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain(CK_TABLE))
+  while (pCI->G_bEachMainWithSub(CK_FROM,CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
       pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
@@ -297,9 +297,15 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
     if (pCI->G.p_MainCard->bIsCard(CK_TOP))
       vDebugPoint();
 
-    if (CK_TABLE == pCI->G.e_MainCard) {
-      pCI->G.p_from = pCI->G.p_MainCard->pSub_from();
-      pCI->G.p_table->vUpdate_projection(pCI);
+    if (CK_FROM == pCI->G.e_MainCard) {
+      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+      pCI->G.p_from->vUpdate_projection(pCI);
+
+      // todo: fix...
+//      pCI->G.p_projection = pCI->G.p_table->pSub_projection();
+//      pCI->G.p_table->vRemoveChild(pCI->G.p_projection);
+//      pCI->G.p_from->vAppend(pCI->G.p_projection);
+
       pCI->vPrintBoard();
 
       if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
@@ -412,12 +418,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
         CK_INDEXJOIN == pCI->G.e_MainCard ||
         CK_INDEXSCAN == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_from = pCI->G.p_MainCard->pSub_from();
-      if (! pCI->G.p_from) {
-        pCI->G.p_MainCard->vDump(__func__);
-        vDebugPoint();
-      }
-      pCI->G.p_table->vUpdate_projection(pCI);
+       pCI->G.p_OP->vUpdate_projection(pCI);
 
       pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
 
@@ -489,9 +490,8 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain(CK_TABLE))
-    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-      pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
+  while (pCI->G_bEachMainWithSub(CK_FROM,CK_PROJECTION))
+    pCI->G.p_from->vDeleteChild(pCI->G.p_projection);
 
 
   pCI->vBeginEach();
@@ -524,15 +524,15 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       case CK_SORT:
         break;
 
-      case CK_TABLE:
-        pCI->G.p_from = pCI->G.p_MainCard->pSub_from();
-        pCI->G.p_table->vUpdate_projection(pCI);
+      case CK_FROM:
+        pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+        pCI->G.p_from->vUpdate_projection(pCI);
 
-        if ((pCI->G.p_filter = pCI->G.p_table->pSub_filter())) {
+        if ((pCI->G.p_filter = pCI->G.p_from->pSub_filter())) {
           if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
 
             pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
-            pCI->G.p_filter->vAppend(pCI->G.p_table->pSub_projection()->pClone());
+            pCI->G.p_filter->vAppend(pCI->G.p_from->pSub_projection()->pClone());
 
           }
         }
@@ -569,7 +569,7 @@ void Card_Deck::vValidate(CardIter* pCI)
   _precondition_(_MAGIC_, _FOOTER_);
 
   vMarksClearRecursive();
-  vMark1Recursive('X');
+  vMark1Recursive(MARK_UNVALID);
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
 
@@ -700,12 +700,23 @@ void Card_Deck::vValidate(CardIter* pCI)
 
   vValidationPassed();
 
-  if (Card* pCard_notValidate = pFindMark1Recursive('X')) {
+  vMark1RecursiveIf(MARK_BLANK,MARK_VALID);
+
+  if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID)) {
     pCI->vPrintBoard(__LINE__,true);
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
+    NEVER_REACH
   }
 
+  if (Card* pCard_notValidate = pFindMark1Recursive(MARK_DUPLICATE)) {
+    pCI->vPrintBoard(__LINE__,true);
+    pCard_notValidate->vDump(__func__);
+    vDebugPoint();
+    NEVER_REACH
+  }
+
+  vMarksClearRecursive();
 }
 
 

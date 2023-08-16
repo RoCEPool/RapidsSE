@@ -98,6 +98,10 @@ Card::~Card(void) noexcept(false)
 
   //gapCard[md__SeqNo] = nullptr;
 
+  RASSERT(MARK_DELETED != m_cMark1);
+
+  m_cMark1 = MARK_DELETED;
+
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
 }
@@ -717,6 +721,25 @@ void Card::vMark1Recursive(char cMark1)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set mark 1 recursively                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vMark1RecursiveIf(char cMark1, char cIf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (cIf == m_cMark1)
+    m_cMark1 = cMark1;
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vMark1RecursiveIf(cMark1,cIf);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get mark 2                                                                 */
 /*----------------------------------------------------------------------------*/
 char Card::cMark2(void)
@@ -750,6 +773,24 @@ void Card::vMark2Recursive(char cMark2)
     Card *pSubCard = pGetChild(i_Sub);
 
     pSubCard->vMark2Recursive(cMark2);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 2 recursively                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vMark2RecursiveIf(char cMark2, char cIf)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (cIf == m_cMark1)
+    m_cMark2 = cMark2;
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vMark2RecursiveIf(cMark2,cIf);
   }
 }
 
@@ -1495,7 +1536,11 @@ void Card::vValidationPassed(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_cMark1 = MARK_BLANK;
+  if (m_cMark1 == MARK_VALID)
+    m_cMark1 = MARK_DUPLICATE;
+  else
+  if (m_cMark1 == MARK_UNVALID)
+    m_cMark1 = MARK_VALID;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -201,7 +201,7 @@ void CarryForward::vSetSeen(CardIter* pCI)
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
 
   // Table*
-  while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
+  while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     Table.m_bSeen = true;
     Table.m_nTables++;
   }

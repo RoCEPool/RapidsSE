@@ -69,7 +69,7 @@ void XF_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_FROM, CK_BOOLCALC)) {
     m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI);
   }
 
@@ -80,7 +80,7 @@ void XF_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_FROM, CK_BOOLCALC)) {
     m_pCI->G.p_boolCalc->vCopyMarkedPredsToTable(m_pCI->G.pDeck);
   }
 
@@ -88,7 +88,7 @@ void XF_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_FROM, CK_BOOLCALC)) {
     m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
   }
 
@@ -100,8 +100,8 @@ void XF_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
-    m_pCI->G.p_table->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_FROM, CK_FILTER)) {
+    m_pCI->G.p_from->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
   }
 
   m_pCI->vPrintBoard(__LINE__);

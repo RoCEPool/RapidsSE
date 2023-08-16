@@ -215,10 +215,15 @@ static d8 C_FILTER_COEFF    = 0.30;
 static d8 C_JOIN_COEFF      = 2.00;  // bump the larger
 static d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
 
+static char MARK_NIL        = 0;
 static char MARK_AT         = '@';
 static char MARK_BLANK      = ' ';
 static char MARK_CHANGED    = '`';
 static char MARK_UP         = '^';
+static char MARK_UNVALID    = 'X';
+static char MARK_VALID      = 'Y';
+static char MARK_DUPLICATE  = 'D';
+static char MARK_DELETED    = 'Z';
 
 namespace STORE
 {
@@ -306,9 +311,11 @@ namespace STORE
     char cMark1(void);
     void vMark1(char cMark1);
     void vMark1Recursive(char cMark1);
+    void vMark1RecursiveIf(char cMark, char cIf);
     char cMark2(void);
     void vMark2(char cMark2);
     void vMark2Recursive(char cMark1);
+    void vMark2RecursiveIf(char cMark1, char cIf);
     void vMarksClearRecursive(void);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,

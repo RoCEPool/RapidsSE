@@ -204,17 +204,17 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
     Stz* szTableSyn = xCI_joinOrder.G.p_joinOrder->szSymbol(SF_NONE);
 
     i8 i_Table = C_UNKNOWN;
-    Card_Table* p_table =
-        _pCard_Table(pDeck->pFindChild(CK_TABLE,szTableSyn,i_Table));
+    Card_From* p_from =
+        _pCard_From(pDeck->pFindChildWithSub(CK_FROM,CK_TABLE,szTableSyn,i_Table));
 
-    pDeck->vRemoveChild(p_table);
+    pDeck->vRemoveChild(p_from);
 
     if (pAfter)
-      pDeck->vInsertAfter(p_table,pAfter);
+      pDeck->vInsertAfter(p_from,pAfter);
     else
-      pDeck->vPush(p_table);
+      pDeck->vPush(p_from);
 
-    pAfter = p_table;
+    pAfter = p_from;
   }
 
 }

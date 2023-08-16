@@ -62,7 +62,7 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
   if (! xCI.G_bEachMain_reverse(CK_FOLD))
     xCI.vBeginEach();
 
-  while (xCI.G_bEachMain(CK_TABLE)) {
+  while (xCI.G_bEachMainWithSub(CK_FROM,CK_TABLE)) {
 
     Card* p_table_dup = _pCard_Table(xCI.G.p_table->pDupCard());
     p_tableList->vAppend(p_table_dup);

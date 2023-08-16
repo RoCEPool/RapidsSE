@@ -394,12 +394,17 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {
-          vValidationFailed("<<replace>> %p"_Stz,this);
+          vValidationFailed("Type Missing : %p"_Stz,this);
         }
       }
     }
   }
 
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_TBLCOL_TO_STMCOL])) {
+    if (m_xSymbol.bIs_Col_Tc()) {
+      vValidationFailed("Validation %s : %p"_Stz,aXF[XF_TBLCOL_TO_STMCOL],this);
+    }
+  }
   vValidationPassed();
 }
 

@@ -575,7 +575,7 @@ Card* Dissector::pOp_IndexJoin(void)
   // index
 
   Card_IndexList* p_indexList = new Card_IndexList;
-  pCard_IndexJoin->vAppend(p_indexList);
+  pCard_Table->vAppend(p_indexList);
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
 
@@ -668,13 +668,6 @@ Card* Dissector::pOp_IndexScan(void)
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   pCard_IndexScan->vAppend(p_level);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_From* p_from = pFormFrom(szTableNm,pTable);
-  pCard_IndexScan->vAppend(p_from);
-
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
-  p_from->vAppend(p_tableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
@@ -688,7 +681,7 @@ Card* Dissector::pOp_IndexScan(void)
   // index
 
   Card_IndexList* p_indexList = new Card_IndexList;
-  pCard_IndexScan->vAppend(p_indexList);
+  pCard_Table->vAppend(p_indexList);
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
   UNUSED(pIndex);
@@ -1024,14 +1017,6 @@ Card* Dissector::pOp_Scan(void)
   pOp_Scan->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_From* p_from = pFormFrom(szTableNm,pTable);
-  pOp_Scan->vAppend(p_from);
-
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
-  p_from->vAppend(p_tableNm);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form table
 
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
@@ -1173,8 +1158,8 @@ Card_From* Dissector::pFormFrom(Stz* szTableNm, Table* pTable)
   pCard_From->pSymbol()->Y_vSet(P_Pointer,pTable);
 
   UNUSED(szTableNm);
-  Card_TableNm* pCard_TableNm = (new Card_TableNm) ->SYM(SF_TBL_NM,szTableNm);
-  pCard_From->vAppend(pCard_TableNm);
+//  Card_TableNm* pCard_TableNm = (new Card_TableNm) ->SYM(SF_TBL_NM,szTableNm);
+//  pCard_From->vAppend(pCard_TableNm);
 
   return pCard_From;
 }
@@ -1211,7 +1196,8 @@ Card_Table* Dissector::pFormTable(Stz* szTableNm, Table* pTable)
   Card_Table* pCard_Table = new Card_Table;
   pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
 
-  UNUSED(szTableNm);
+  Card_TableNm* pCard_TableNm = (new Card_TableNm) ->SYM(SF_TBL_NM,szTableNm);
+  pCard_Table->vAppend(pCard_TableNm);
 
   return pCard_Table;
 }

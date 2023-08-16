@@ -252,10 +252,57 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
         return C_CONTINUE_RECURSION;
       }
     }
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
+        pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
+
+      // column of this table
+
+      // record what $c.n it was
+      p_term->pSymbol()->Y_vSet(P_TblCol, p_term->szSymbol(SF_NONE));
+
+      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+      i8 nExpr_prior = pCI->G.p_projection->nChildCards();
+      i8 i_Col = p_term->iGetOdn();
+
+      i8 i_ColOdn = nExpr_prior + i_Col;
+
+      Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
+      p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
+
+      p_term->vMark1(MARK_CHANGED);
+
+      return C_CONTINUE_RECURSION;
+    }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-    if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
+    if ( pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
+
+      // column of this table
+
+      // record what $c.n it was
+      p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
+
+      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+      i8 i_Col = p_term->iGetOdn();
+
+      i8 i_ColOdn = i_Col;
+
+      Symbol xSymbol_stmColOdn(SF_COL_NO,i_ColOdn);
+      p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
+
+      p_term->vMark1(MARK_CHANGED);
+
+      return C_CONTINUE_RECURSION;
+    }
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    if (! (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
+           pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
+           pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
       return C_CONTINUE_RECURSION;
 
     // column of this table
@@ -267,8 +314,11 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     i8 nExpr_prior = pCI->G.p_projection->nChildCards();
     i8 i_Col = p_term->iGetOdn();
 
-    Symbol xSymbol_stmColOdn(SF_COL_NO,nExpr_prior + i_Col);
+    i8 i_ColOdn = pCI->G.p_MainCard->bIsCard(CK_SCAN) ? i_Col : nExpr_prior + i_Col;
+
+    Symbol xSymbol_stmColOdn(SF_COL_NO,i_ColOdn);
     p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
+
     p_term->vMark1(MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
@@ -613,7 +663,7 @@ bool Card_OP::bNeedsProjectionAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsCard(CK_TABLE)        ||
+  if (bIsCard(CK_FROM)         ||
       bIsCard(CK_SCAN)         ||
       bIsCard(CK_SORT)         ||
       bIsCard(CK_KEYEXISTS)    ||
@@ -762,7 +812,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_tableNm = pCI->G.p_from->pSub_tableNm();
+  pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
 
   if (! pCI->G.p_tableNm) {
     vDump(__func__);
@@ -1832,8 +1882,8 @@ Index* Card_OP::pCraftIndex_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_From* p_from = pSub_from();
-  if (! p_from)
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
     return nullptr;
 
   Card_IndexList* p_indexList = pSub_indexList();
@@ -1844,7 +1894,7 @@ Index* Card_OP::pCraftIndex_indexJoin(void)
   if (! p_index)
     return nullptr;
 
-  Index* pIndex = p_index->pGetIndex(p_from->pSub_tableNm());
+  Index* pIndex = p_index->pGetIndex(p_table->pSub_tableNm());
 
   return pIndex;
 }
@@ -1856,8 +1906,8 @@ Index* Card_OP::pCraftIndex_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_From* p_from = pSub_from();
-  if (! p_from)
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
     return nullptr;
 
   Card_IndexList* p_indexList = pSub_indexList();
@@ -1868,7 +1918,7 @@ Index* Card_OP::pCraftIndex_indexScan(void)
   if (! p_index)
     return nullptr;
 
-  Index* pIndex = p_index->pGetIndex(p_from->pSub_tableNm());
+  Index* pIndex = p_index->pGetIndex(p_table->pSub_tableNm());
 
   return pIndex;
 }

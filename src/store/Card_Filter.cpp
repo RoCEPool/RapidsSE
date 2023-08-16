@@ -286,6 +286,11 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_BOOLCALC,CK_NONE);
 
+  if (iDepth > 2) {
+    pCI->vPrintBoard();
+    vValidationFailed("Filter is at depth %lld"_Stz, iDepth);
+  }
+
   if (CK_DECK == pParent->eCard()) {
     vValidate_mustHave(CK_LEVEL, CK_PROJECTION, CK_NONE);
   }

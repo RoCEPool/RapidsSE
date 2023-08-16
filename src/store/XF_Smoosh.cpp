@@ -58,7 +58,7 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 
   pCI->vClearRestart();
-  RASSERT(pCI->G_bEachMain_foldBreak(CK_TABLE));
+  RASSERT(pCI->G_bEachMain_foldBreak(CK_FROM));
 
 
   //RASSERT(pCI->G_bEachMain(CK_WHERE));
@@ -70,8 +70,8 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 //  //pCI->G.p_filter = Card_Filter::pNew(p_constraint);
 //  pCI->G.p_table->vAppend(pCI->G.p_constraint);
 
-  Card_Table* p_table_exists = pCI->G.p_table;
-  pCI->G.pDeck->vRemove(p_table_exists);
+  Card_From* p_from_exists = pCI->G.p_from;
+  pCI->G.pDeck->vRemove(p_from_exists);
 
   pCI->G.p_term = pCI->G.p_project->pSub_term();
   pCI->G.p_project->vRemoveSub(pCI->G.p_term);
@@ -89,25 +89,25 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->vBeginEach();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
 
-  RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_TABLE));
-  Card_Projection* p_projection_table = pCI->G.p_table->pSub_projection();
+  RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_FROM));
+  Card_Projection* p_projection_table = pCI->G.p_from->pSub_projection();
 
   pCI->vBeginEach();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
 
 
-  pCI->G.pDeck->vInsertBefore(p_table_exists,pCI->G.p_where);
+  pCI->G.pDeck->vInsertBefore(p_from_exists,pCI->G.p_where);
 
   pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
   pCI->G.p_cmpPred = pCI->G.p_boolCalc->pCmpPred_whichCallsSubQuery(pCI);
 
   if (pCI->G.p_cmpPred->pSymbol()->bSame("in"_Stz) ||
       pCI->G.p_cmpPred->pSymbol()->bSame("exists"_Stz))
-    p_table_exists->vAppend(new Card_KeyExists);
+    p_from_exists->vAppend(new Card_KeyExists);
   else
   if (pCI->G.p_cmpPred->pSymbol()->bSame("notIn"_Stz) ||
       pCI->G.p_cmpPred->pSymbol()->bSame("notExists"_Stz))
-    p_table_exists->vAppend(new Card_KeyNotExists);
+    p_from_exists->vAppend(new Card_KeyNotExists);
 
   pCI->Prior.m_pProjection = p_projection_table;
   pCI->G.p_cmpPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
@@ -128,7 +128,7 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   // todo: the %1 needs to be decoded... its a parameter
   Card* p_parent;
   Symbol xPrmOrd(SF_PRM_COL,1);
-  Card_Term* p_term_sqyarg = _pCard_Term(p_table_exists->pFindSymbolRecursive(CK_TERM,&xPrmOrd,p_parent));
+  Card_Term* p_term_sqyarg = _pCard_Term(p_from_exists->pFindSymbolRecursive(CK_TERM,&xPrmOrd,p_parent));
 
   Card_Expr* p_expr_found =
       p_projection_table->pGetExpr(p_term_sqyarg->iGetOdn() - 1);
@@ -147,7 +147,7 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   //Card_Term::bReplaceValueOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
   Symbol xSymbol_prmOdn(SF_PRM_COL,1);
-  p_table_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmOdn, p_term_sqarg->pSymbol());
+  p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmOdn, p_term_sqarg->pSymbol());
 
   delete p_term_sqarg;
 

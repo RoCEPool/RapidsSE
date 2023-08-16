@@ -591,8 +591,8 @@ Symbol* Card_PRED::pTable_WhichTableFor_Pred(CardIter* pCI)
 
     eCK eMainCard = pMainCard->eCard();
 
-    if (CK_TABLE == eMainCard) {
-      Card_Table* p_table = _pCard_Table(pMainCard);
+    if (CK_FROM == eMainCard) {
+      Card_Table* p_table = pMainCard->pSub_table();
       Symbol* pSymbol_table = p_table->pSymbol();
       pScope->vInScope(pSymbol_table,true);
       if (p_table->bScopeContains_Pred(this, pScope)) {

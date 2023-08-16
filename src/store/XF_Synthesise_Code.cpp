@@ -194,7 +194,7 @@ void XF_Synthesise_Code::vCraftOpDef(Card_OP* p_OP)
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz,p_OP->szBearing());
   else if (p_OP->bIsCard(CK_HASH))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz,p_OP->szBearing());
-  else if (p_OP->bIsCard(CK_TABLE))
+  else if (p_OP->bIsCard(CK_FROM))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz,p_OP->szBearing());
   else if (p_OP->bIsCard(CK_WHERE))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz,p_OP->szBearing());
@@ -566,9 +566,9 @@ void XF_Synthesise_Code::vUpdateColsReq_Scan(Card_Table* p_table,
   auto bLambda = [pColsReq] (Card* pCard) {
     Card_Expr* p_expr = _pCard_Expr(pCard);
 
-    Symbol* pSymbol_tblCol = p_expr->pFirstTblCol();
+    Symbol* pSymbol_stmCol = p_expr->pFirstStmCol();
 
-    i8 i_Col = pSymbol_tblCol->iSF_ordinal();
+    i8 i_Col = pSymbol_stmCol->iSF_ordinal();
 
     pColsReq->vAddCol(i_Col, false, i_Col);
 

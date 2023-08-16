@@ -56,7 +56,7 @@ Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
   Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
 
   CardIter xCI(p_deck);
-  while (xCI.G_bEachMain(CK_TABLE)) {
+  while (xCI.G_bEachMainWithSub(CK_FROM,CK_TABLE)) {
     if (! (xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList()) )
       continue;
     if (! (xCI.G.p_filter = xCI.G.p_MainCard->pSub_filter()) )

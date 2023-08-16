@@ -84,7 +84,12 @@ void Card_Needed::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   UNUSED(pParent);
-  pCI->vValidateChildren(this,iDepth+1);
+  if (! pCI->G.pBoard->pState()->bHasName(aXF[XF_TBLCOL_TO_STMCOL])) {
+    pCI->vValidateChildren(this, iDepth + 1);
+  }
+  else {
+    vMark1Recursive(MARK_BLANK);
+  }
   vValidationPassed();
 }
 

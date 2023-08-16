@@ -50,10 +50,11 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 
   pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
 
-  pCI->G_vNewMember(CK_CROSSJOIN);
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
+//  pCI->G_vNewMember(CK_CROSSJOIN);
+//  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
 
 
+  pCI->G.p_crossJoin = _pCard_CrossJoin(pCI->G.p_from->pCard(CK_CROSSJOIN));
   pCI->G.p_index = pCI->G.p_crossJoin->pSub_index();
 
   pCI->G_vNewMember(CK_BOUNDS,Symbol(SF_CROSS,"cross"_Stz));
@@ -120,7 +121,9 @@ void Card_CrossJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
+
+  RASSERT(pSub_table()->pSub_indexList());
 
   pCI->vValidateChildren(this,iDepth+1);
 

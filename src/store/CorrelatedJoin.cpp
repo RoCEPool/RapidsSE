@@ -78,7 +78,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                              //             %1
 
   pCI->vClearRestart();
-  while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER))
+  while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_PROJECTION,CK_FILTER))
    if (bIdentify_Correlation_Key_Predicate(pCI))
      break;
   RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
@@ -130,8 +130,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // re-project the leading OQ:<table>* sequence
 
-  while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
-    pCI->G.p_from = pCI->G.p_table->pSub_from();
+  while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
+    pCI->G.p_table = pCI->G.p_from->pSub_table();
     pCI->G.p_table->vSmooth(pCI);
     pCI->vPrintBoard(__LINE__);
   }
@@ -155,14 +155,14 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //             %1
 
   Card_PRED* p_PRED_corr = nullptr;
-  while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_FILTER,CK_BOOLCALC))
+  while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_FILTER,CK_BOOLCALC))
     if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, p_PRED_corr))
       break;
   RASSERT(p_PRED_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
   pCI->vPrintBoard(__LINE__);
 
   // tidy up empty SQ:<table>/<filter>
-  pCI->G.p_table->vDeleteFilterIfEmpty(pCI->G.p_filter);
+  pCI->G.p_from->vDeleteFilterIfEmpty(pCI->G.p_filter);
   pCI->vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
@@ -624,9 +624,10 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc
 
   Card_Term* p_term_tblColOdn = p_pred_corr->pGetFirstTerm_tblColOdn();
   char cTblSyn = p_term_tblColOdn->cGetTblSyn();
-  Card_Table* p_table = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 
-  p_table->vAdd_Pred_Under_filter(p_pred_corr);
+  Card_OP* p_OP = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
+
+  p_OP->vAdd_Pred_Under_filter(p_pred_corr);
 }
 
 

@@ -193,7 +193,7 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
   pCI->vPrintBoard(__LINE__);
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMain(CK_TABLE)) {
+  while (pCI->G_bEachMainWithSub(CK_FROM,CK_TABLE)) {
 
     pCI->G.p_table->vMorph_table_To_EEop(pCI);
   }

@@ -47,9 +47,12 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
 {
   _static_
 
-  pCI->G.p_keyExists = pCI->G.p_table->pSub_keyExists();
+  pCI->G.p_keyExists = pCI->G.p_from->pSub_keyExists();
 
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyExists);
+  //pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyExists);
+  pCI->G.p_from->vDeleteChild(pCI->G.p_keyExists);
+
+  pCI->G.p_keyExists = _pCard_KeyExists(pCI->G.p_from->pCard(CK_KEYEXISTS));
 
   // todo: this should be in index list
   pCI->G.p_index = pCI->G.p_keyExists->pSub_index();
@@ -236,7 +239,7 @@ void Card_KeyExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (1 == iDepth) {
-    vValidate_mustHave(CK_LEVEL, CK_TABLE, CK_INDEXLIST, CK_CONSTRAINT, CK_NONE);
+    vValidate_mustHave(CK_LEVEL, CK_TABLE, CK_CONSTRAINT, CK_NONE);
     RASSERT(pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
   }
 

@@ -47,8 +47,9 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 {
   _static_
 
-  pCI->G_vNewMember(CK_SCAN);
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_scan);
+    pCI->G.p_from->vCard(CK_SCAN);
+//  pCI->G_vNewMember(CK_SCAN);
+//  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_scan);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,21 +59,23 @@ void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
 {
   _static_
 
-  pCI->G.p_level = pCI->G.p_scan->pSub_level();
-  pCI->G.p_table = pCI->G.p_scan->pSub_table();
-  pCI->G.p_from  = pCI->G.p_scan->pSub_from();
+//  pCI->G.p_level = pCI->G.p_scan->pSub_level();
+//  pCI->G.p_table = pCI->G.p_scan->pSub_table();
+//  pCI->G.p_from  = pCI->G.p_scan->pSub_from();
+//
+//  pCI->G.p_scan->vRemoveChild(pCI->G.p_table);
+//  pCI->G.p_scan->vRemoveChild(pCI->G.p_level);
+//  pCI->G.p_scan->vRemoveChild(pCI->G.p_from);
+//
+//  pCI->G.pDeck->vReplace(pCI->G.p_scan,pCI->G.p_from);
+//
+//  pCI->G.p_from->vAppend(pCI->G.p_level);
+//  pCI->G.p_from->vAppend(pCI->G.p_table);
 
-  pCI->G.p_scan->vRemoveChild(pCI->G.p_table);
-  pCI->G.p_scan->vRemoveChild(pCI->G.p_level);
-  pCI->G.p_scan->vRemoveChild(pCI->G.p_from);
 
-  pCI->G.pDeck->vReplace(pCI->G.p_scan,pCI->G.p_table);
+  pCI->G.p_scan->vCard(CK_FROM);
 
-  pCI->G.p_table->vAppend(pCI->G.p_level);
-  pCI->G.p_table->vAppend(pCI->G.p_from);
-
-
-  DELETE_CARD(pCI->G.p_scan);
+  //DELETE_CARD(pCI->G.p_scan);
 }
 
 /*----------------------------------------------------------------------------*/
