@@ -63,7 +63,7 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eCT Column::eColumn(Stz* szType)
 {
-  i8 nEntries = sizeof(aCT) / sizeof (Stz*);
+  i8 nEntries = CT_ENUMS;
   
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
     

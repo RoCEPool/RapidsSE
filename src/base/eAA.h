@@ -18,35 +18,8 @@ enum eAA // api actions
   /*    */ AA_ENUMS,
 };
 
-static Stz* aAA[]
-{
-  /*  0 */ "NONE"_Stz,
-
-  /*    */ "AA_API_ERROR"_Stz,
-  /*    */ "AA_API_ENTRY"_Stz,
-  /*    */ "AA_API_EXIT"_Stz,
-  /*    */ "AA_API_SPAWN_JOB"_Stz,
-
-  /*    */ "AA_SSN_CONSTRUCT"_Stz,
-  /*    */ "AA_SSN_DESTRUCT"_Stz,
-  
-  /*    */ "ENUMS"_Stz,
-};
-
-static Stz* aAA_short[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "Api error"_Stz,
-  /*    */ "Api entry"_Stz,
-  /*    */ "Api exit"_Stz,
-  /*    */ "Api spawn job"_Stz,
-
-  /*    */ "Session construct"_Stz,
-  /*    */ "Session destruct"_Stz,
-  
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aAA[AA_ENUMS];
+extern Stz* aAA_short[AA_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

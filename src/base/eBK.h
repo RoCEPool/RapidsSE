@@ -13,15 +13,7 @@ enum eBK // board kind
   /*    */ BK_ENUMS,
 };
 
-static Stz* aBK[]
-{
-  /*  0 */ "NONE"_Stz,
-
-  /*    */ "BK_JOINORDERING"_Stz,
-  /*    */ "BK_SUBQUERY"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aBK[BK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

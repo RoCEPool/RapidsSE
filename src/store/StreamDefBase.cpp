@@ -103,7 +103,7 @@ eCT StreamDefBase::eColumn(Stz* szType)
 {
   _static_
   
-  i8 nEntries = sizeof(aCT) / sizeof (Stz*);
+  i8 nEntries = CT_ENUMS;
 
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
 
@@ -125,7 +125,7 @@ eDM StreamDefBase::eDatum(Stz* szType)
 {
   _static_
   
-  i8 nEntries = sizeof(aDM) / sizeof (Stz*);
+  i8 nEntries = DM_ENUMS;
 
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
 
