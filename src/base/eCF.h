@@ -12,7 +12,7 @@ enum eCF // meta class
   /*    */ CF_ENUMS
 };
 
-extern Stz* aCF[];
+extern Stz* aCF[CF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

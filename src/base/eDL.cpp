@@ -4,12 +4,12 @@
 #include "BASE.h"
 #include "eDL.h"
 
-Stz* aDL[]
+Stz* aDL[DL_ENUMS]
 {
   /* 0 */ "none"_Stz,
   /* 1 */ "grab_read"_Stz,
   /* 2 */ "grab_write"_Stz,
-  /* 3 */ "enums"_Stz
+//  /* 3 */ "enums"_Stz
 };
 
 /*============================================================================*/

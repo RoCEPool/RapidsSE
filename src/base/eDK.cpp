@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eDK.h"
 
-Stz* aDK[]
+Stz* aDK[DK_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   /*  1 */ "CATALOG"_Stz,

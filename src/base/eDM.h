@@ -23,7 +23,7 @@ enum eDM : u1 // Dtm Kind
   /* 12 */ DM_ENUMS
 };
 
-extern Stz* aDM[];
+extern Stz* aDM[DM_ENUMS];
 
 
 /*============================================================================*/

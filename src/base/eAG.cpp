@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eAG.h"
 
-Stz* aAG[]
+Stz* aAG[AG_ENUMS]
 {
   /* 0 */ "NONE"_Stz,
   /* 1 */ "COUNTALL"_Stz,
@@ -14,7 +14,7 @@ Stz* aAG[]
   /* 5 */ "STD"_Stz,
   /* 6 */ "SUM"_Stz,
   /* 7 */ "VAR"_Stz,
-  /* 8 */ "ENUMS"_Stz
+//  /* 8 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

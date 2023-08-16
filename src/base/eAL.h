@@ -12,7 +12,7 @@ enum eAL // aggregate level
   /* 4 */ AL_ENUMS
 };
 
-extern Stz* aAL[];
+extern Stz* aAL[AL_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

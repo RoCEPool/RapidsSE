@@ -5,7 +5,7 @@
 #include "BASE.h"
 #include "eAA.h"
 
-Stz* aAA[]
+Stz* aAA[AA_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
 
@@ -17,10 +17,10 @@ Stz* aAA[]
   /*    */ "AA_SSN_CONSTRUCT"_Stz,
   /*    */ "AA_SSN_DESTRUCT"_Stz,
   
-  /*    */ "ENUMS"_Stz,
+//  /*    */ "ENUMS"_Stz,
 };
 
-Stz* aAA_short[]
+Stz* aAA_short[AA_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   
@@ -32,7 +32,7 @@ Stz* aAA_short[]
   /*    */ "Session construct"_Stz,
   /*    */ "Session destruct"_Stz,
   
-  /*    */ "ENUMS"_Stz,
+//  /*    */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

@@ -8,10 +8,10 @@ enum eAK // arg kind
   /* 0 */ AK_NONE=0,
   /* 1 */ AK_COLUMNNM,
   /* 2 */ AK_LITERAL,
-  /* 4 */ AK_ENUMS
+  /* 3 */ AK_ENUMS
 };
 
-extern Stz* aAK[];
+extern Stz* aAK[AK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

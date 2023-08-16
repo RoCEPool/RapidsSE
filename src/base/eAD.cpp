@@ -4,14 +4,14 @@
 #include "BASE.h"
 #include "eAD.h"
 
-Stz* aAD[]
+Stz* aAD[AD_ENUMS]
 {
   /* */ "AD_NONE"_Stz,
   
   /* */ "AD_RAPIDSSE"_Stz,
   /* */ "AD_WIRELINE"_Stz,
   
-  /* */ "AD_ENUMS"_Stz,
+//  /* */ "AD_ENUMS"_Stz,
 };
 
 /*============================================================================*/

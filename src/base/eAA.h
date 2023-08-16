@@ -18,9 +18,8 @@ enum eAA // api actions
   /*    */ AA_ENUMS,
 };
 
-extern Stz* aAA[];
-
-extern Stz* aAA_short[];
+extern Stz* aAA[AA_ENUMS];
+extern Stz* aAA_short[AA_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

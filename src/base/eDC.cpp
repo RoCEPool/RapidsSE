@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eDC.h"
 
-Stz* aDC[]
+Stz* aDC[DC_ENUMS]
 {
   /* 0 */ "none"_Stz,
   /* 1 */ "YYYY"_Stz,

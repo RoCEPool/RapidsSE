@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eDR.h"
 
-Stz* aDR[]
+Stz* aDR[DR_ENUMS]
 {
   /* 0 */ "DR_NONE"_Stz,
   
@@ -14,10 +14,10 @@ Stz* aDR[]
   /* 4 */ "DR_DEREF"_Stz,
   /* 5 */ "DR_NEW"_Stz,
 
-  /* 6 */ "DR_ENUMS"_Stz
+//  /* 6 */ "DR_ENUMS"_Stz
 };
 
-Stz* aDR_short[]
+Stz* aDR_short[DR_ENUMS]
 {
   /* 0 */ "NONE"_Stz,
     
@@ -27,7 +27,7 @@ Stz* aDR_short[]
   /* 4 */ "deref"_Stz,
   /* 5 */ "new"_Stz,
   
-  /* 6 */ "ENUMS"_Stz
+//  /* 6 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

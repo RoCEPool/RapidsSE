@@ -18,7 +18,7 @@ enum eAR // resource actions
   /*    */ AR_ENUMS,
 };
 
-extern Stz* aAR[];
+extern Stz* aAR[AR_ENUMS];
 
 
 /*============================================================================*/

@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eDU.h"
 
-Stz* aDU[]
+Stz* aDU[DU_ENUMS]
 {
   /* 0 */ "DU_NONE"_Stz,
   /* 1 */ "DU_DATA_ENTRY"_Stz,

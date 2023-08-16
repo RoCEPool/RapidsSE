@@ -13,7 +13,7 @@ enum eBK // board kind
   /*    */ BK_ENUMS,
 };
 
-extern Stz* aBK[];
+extern Stz* aBK[BK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eAC.h"
 
-Stz* aAC[]
+Stz* aAC[AC_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
 
@@ -34,7 +34,7 @@ Stz* aAC[]
 
   /* 25 */ "RapidsSE_TranslateError"_Stz,
 
-  /* 26 */ "ENUMS"_Stz
+//  /* 26 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

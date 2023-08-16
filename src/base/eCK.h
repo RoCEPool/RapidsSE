@@ -128,8 +128,8 @@ enum eCK : i8 // card kind
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-extern Stz* aCK[];
-extern Stz* aCK_short[];
+extern Stz* aCK[CK_ENUMS];
+extern Stz* aCK_short[CK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

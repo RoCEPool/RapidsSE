@@ -14,7 +14,7 @@ enum eAT // access technique
   /* 6 */ AT_ENUMS
 };
 
-extern Stz* aAT[];
+extern Stz* aAT[AT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

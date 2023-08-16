@@ -4,13 +4,13 @@
 #include "BASE.h"
 #include "eDS.h"
 
-Stz* aDS[]
+Stz* aDS[DS_ENUMS]
 {
   /* 0 */ "none"_Stz,
   /* 1 */ "ingest"_Stz,
   /* 2 */ "insert"_Stz,
   /* 3 */ "load"_Stz,
-  /* 4 */ "enums"_Stz
+//  /* 4 */ "enums"_Stz
 };
 
 /*============================================================================*/

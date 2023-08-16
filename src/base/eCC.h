@@ -13,7 +13,7 @@ enum eCC // meta class
   /*    */ CC_ENUMS
 };
 
-extern Stz* aCC[];
+extern Stz* aCC[CC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -24,8 +24,8 @@ enum eCT // Column Type
   /* 13 */ CT_ENUMS
 };
 
-extern Stz* aCT[];
-extern Stz* szCT_char[];
+extern Stz* aCT[CT_ENUMS];
+extern Stz* szCT_char[CT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

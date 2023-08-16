@@ -7,10 +7,11 @@ enum eDU // Delete Upwards
 {
   /* 0 */ DU_NONE=0,
   /* 1 */ DU_DATA_ENTRY,
-  /* 2 */ DU_HIGH_LEFT_LEAD
+  /* 2 */ DU_HIGH_LEFT_LEAD,
+  /* 3 */ DU_ENUMS
 };
 
-extern Stz* aDU[];
+extern Stz* aDU[DU_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

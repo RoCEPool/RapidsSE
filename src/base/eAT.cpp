@@ -5,7 +5,7 @@
 #include "BASE.h"
 #include "eAT.h"
 
-Stz* aAT[]
+Stz* aAT[AT_ENUMS]
 {
   /* 0 */ "none"_Stz,
   /* 1 */ "exact"_Stz,
@@ -13,7 +13,7 @@ Stz* aAT[]
   /* 3 */ "upper"_Stz,
   /* 4 */ "range"_Stz,
   /* 5 */ "scan"_Stz,
-  /* 6 */ "enums"_Stz
+//  /* 6 */ "enums"_Stz
 };
 
 /*============================================================================*/

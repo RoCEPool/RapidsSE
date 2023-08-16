@@ -16,8 +16,8 @@ enum eDR // De-Reference Action
   /* 6 */ DR_ENUMS
 };
 
-extern Stz* aDR[];
-extern Stz* aDR_short[];
+extern Stz* aDR[DR_ENUMS];
+extern Stz* aDR_short[DR_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -6,7 +6,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Stz* aCK[]
+Stz* aCK[CK_ENUMS]
 {
   /* */ "NONE"_Stz,
 
@@ -126,12 +126,12 @@ Stz* aCK[]
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
 
-  /* */ "ENUMS"_Stz
+//  /* */ "ENUMS"_Stz
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-Stz* aCK_short[]
+Stz* aCK_short[CK_ENUMS]
 {
   /* */ "NONE"_Stz,
 
@@ -252,7 +252,7 @@ Stz* aCK_short[]
 
   /* */ "where"_Stz,           // CK_WHERE
 
-  /* */ "ENUMS"_Stz
+//  /* */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

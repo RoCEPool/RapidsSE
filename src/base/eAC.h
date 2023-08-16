@@ -35,7 +35,7 @@ enum eAC // api call kind
   /* 26 */ AC_ENUMS
 };
 
-extern Stz* aAC[];
+extern Stz* aAC[AC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

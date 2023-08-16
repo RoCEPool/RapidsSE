@@ -4,13 +4,13 @@
 #include "BASE.h"
 #include "eAL.h"
 
-Stz* aAL[]
+Stz* aAL[AL_ENUMS]
 {
   /* 0 */ "AL_NONE"_Stz,
   /* 1 */ "AL_PARTITION"_Stz,
   /* 2 */ "AL_NODE"_Stz,
   /* 3 */ "AL_ORIGIN"_Stz,
-  /* 4 */ "AL_ENUMS"_Stz,
+//  /* 4 */ "AL_ENUMS"_Stz,
 };
 
 /*============================================================================*/

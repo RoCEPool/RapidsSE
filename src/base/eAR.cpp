@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eAR.h"
 
-Stz* aAR[]
+Stz* aAR[AR_ENUMS]
 {
   /*  0 */ "AR_NONE"_Stz,
 
@@ -16,7 +16,7 @@ Stz* aAR[]
   /*    */ "AR_SEND"_Stz,
   /*    */ "AR_WRITE"_Stz,
 
-  /*    */ "ENUMS"_Stz,
+//  /*    */ "ENUMS"_Stz,
 };
 
 

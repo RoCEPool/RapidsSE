@@ -10,7 +10,7 @@ using namespace BASE;
 
 // This should contain the text string representation of the EC enum.
 // Not the error message.
-Stz* aEC[EC_ENUMS + 1] =
+Stz* aEC[EC_ENUMS] =
 {
   /* */ (Stz*)"none",
 
@@ -273,7 +273,7 @@ Stz* aEC[EC_ENUMS + 1] =
   /* _Z_ */
   /* EC_ZZZ_OTHER                     */ (Stz*)"zzz other error (temp filler)",
 
-  /* EC_ENUMS                         */ (Stz*)"enums"
+//  /* EC_ENUMS                         */ (Stz*)"enums"
 };
 
 // This line will cause a compile-time failure if the above array initialiser
@@ -284,7 +284,7 @@ Stz* aEC[EC_ENUMS + 1] =
 
 // This should contain the text string representation of the EC enum.
 // Not the error message.
-Stz* aEC2[] = // error code
+Stz* aEC2[EC_ENUMS] = // error code
 {
   /* */ (Stz*)"EC_NONE",
 
@@ -548,7 +548,7 @@ Stz* aEC2[] = // error code
   /* _Z_ */
   /* EC_ZZZ_OTHER                     */ (Stz*)"EC_ZZZ_OTHER",
 
-  /* EC_ENUMS                         */ (Stz*)"EC_ENUMS"
+//  /* EC_ENUMS                         */ (Stz*)"EC_ENUMS"
 };
 
 // This line will cause a compile-time failure if the above array initialiser
@@ -568,7 +568,7 @@ Stz* aEC2[] = // error code
 // That way the error can be easily documented as "Table is not empty".
 // Parameters could be dynamically appended to these error messages as
 // is necessary.
-Stz* aErrorMsg[EC_ENUMS + 1] =
+Stz* aErrorMsg[EC_ENUMS] =
 {
   /* EC_NONE                          */ (Stz*)"none",
 
@@ -832,7 +832,7 @@ Stz* aErrorMsg[EC_ENUMS + 1] =
 
   // - - - - - - - - - - - - - - - - - - -
 
-  /* EC_ENUMS                         */ (Stz*)"enums"
+//  /* EC_ENUMS                         */ (Stz*)"enums"
 };
 
 // This line will cause a compile-time failure if the above array initialiser

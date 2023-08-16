@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eCM.h"
 
-Stz* aCM[]
+Stz* aCM[CM_ENUMS]
 {
   /* 0 */ "CM_NONE"_Stz,
   
@@ -14,7 +14,7 @@ Stz* aCM[]
   /* 4 */ "CM_INTERPRETING"_Stz,
   /* 5 */ "CM_POSTPONING"_Stz,
 
-  /* 6 */ "CM_ENUMS"_Stz
+//  /* 6 */ "CM_ENUMS"_Stz
 };
 
 /*============================================================================*/

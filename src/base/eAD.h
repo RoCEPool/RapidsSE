@@ -13,7 +13,7 @@ enum eAD // adaptor identification
   /* */ AD_ENUMS
 };
 
-extern Stz* aAD[];
+extern Stz* aAD[AD_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

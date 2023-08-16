@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eDM.h"
 
-Stz* aDM[]
+Stz* aDM[DM_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
 
@@ -19,7 +19,7 @@ Stz* aDM[]
   /*  9 */ "TIMESTAMP"_Stz,
   /* 10 */ "VARCHAR"_Stz,
   /* 11 */ "UNKNOWN"_Stz,
-  /* 12 */ "ENUMS"_Stz
+//  /* 12 */ "ENUMS"_Stz
 };
 
 

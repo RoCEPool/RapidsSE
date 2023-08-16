@@ -4,11 +4,12 @@
 #include "BASE.h"
 #include "eAK.h"
 
-Stz* aAK[]
+Stz* aAK[AK_ENUMS]
 {
   /* 0 */ "none"_Stz,
   /* 1 */ "columnnm"_Stz,
   /* 2 */ "literal"_Stz,
+//  /* 3 */ "nEnums"_Stz,
 };
 
 /*============================================================================*/

@@ -4,13 +4,13 @@
 #include "BASE.h"
 #include "eCF.h"
 
-Stz* aCF[]
+Stz* aCF[CF_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   
   /*    */ "CF_INSPECT"_Stz,
   
-  /*    */ "ENUMS"_Stz
+//  /*    */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

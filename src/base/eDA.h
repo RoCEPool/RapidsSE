@@ -21,8 +21,8 @@ enum eDA // ddl actions
   /*    */ DA_ENUMS,
 };
 
-extern Stz* aDA[];
-extern Stz* aDA_short[];
+extern Stz* aDA[DA_ENUMS];
+extern Stz* aDA_short[DA_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

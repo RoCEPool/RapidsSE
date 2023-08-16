@@ -4,14 +4,14 @@
 #include "BASE.h"
 #include "eCC.h"
 
-Stz* aCC[]
+Stz* aCC[CC_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   
   /*    */ "CC_CLASS"_Stz,
   /*    */ "CC_TEMPLATE"_Stz,
   
-  /*    */ "ENUMS"_Stz
+//  /*    */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

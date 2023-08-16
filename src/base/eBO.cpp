@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eBO.h"
 
-Stz* aBO[]
+Stz* aBO[BO_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   
@@ -17,7 +17,7 @@ Stz* aBO[]
   /*    */ "STOP"_Stz,
   /*    */ "UNLINK"_Stz,
   
-  /*    */ "ENUMS"_Stz,
+//  /*    */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

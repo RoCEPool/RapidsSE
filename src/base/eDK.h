@@ -13,10 +13,11 @@ enum eDK // dictionary kind
   /*  2 */ DK_FOLDER,
   /*  3 */ DK_SCHEMA,
   /*  4 */ DK_TABLE,
-  /*  5 */ DK_TENANT
+  /*  5 */ DK_TENANT,
+  /*  6 */ DK_ENUMS
 };
 
-extern Stz* aDK[];
+extern Stz* aDK[DK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

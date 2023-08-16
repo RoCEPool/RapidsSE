@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eCT.h"
 
-Stz* aCT[]
+Stz* aCT[CT_ENUMS]
 {
     /*  0 */ "NONE"_Stz,
     /*  1 */ "BOOLEAN"_Stz,
@@ -19,10 +19,10 @@ Stz* aCT[]
     /* 10 */ "TIMESTAMP"_Stz,
     /* 11 */ "VARCHAR"_Stz,
     /* 12 */ "NULL"_Stz,
-    /* 13 */ "ENUMS"_Stz
+//    /* 13 */ "ENUMS"_Stz
 };
 
-Stz* szCT_char[]
+Stz* szCT_char[CT_ENUMS]
 {
   /*  0 */ "!"_Stz,
   /*  1 */ "b"_Stz, // boolean
@@ -37,7 +37,7 @@ Stz* szCT_char[]
   /* 10 */ "p"_Stz, // timestamp
   /* 11 */ "v"_Stz, // varchar
   /* 12 */ "x"_Stz, // unknown
-  /* 13 */ "?"_Stz
+//  /* 13 */ "?"_Stz
 };
 
 /*============================================================================*/

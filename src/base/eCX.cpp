@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eCX.h"
 
-Stz* aCX[]
+Stz* aCX[CX_ENUMS]
 {
   /* 0 */ "CX_USERCOL"_Stz,
   /* 1 */ "CX_PTNHASH"_Stz,

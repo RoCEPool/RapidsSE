@@ -12,7 +12,7 @@ enum eDS // data source
   /* 3 */ DS_ENUMS
 };
 
-extern Stz* aDS[];
+extern Stz* aDS[DS_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

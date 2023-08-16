@@ -16,7 +16,7 @@ enum eCM // compiler mode
   /* 6 */ CM_ENUMS
 };
 
-extern Stz* aCM[];
+extern Stz* aCM[CM_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

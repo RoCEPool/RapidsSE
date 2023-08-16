@@ -11,7 +11,7 @@ enum eDL // ddl lock
   /* 3 */ DL_ENUMS
 };
 
-extern Stz* aDL[];
+extern Stz* aDL[DL_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -19,7 +19,7 @@ enum eBO // boot options
   /*    */ BO_ENUMS,
 };
 
-extern Stz* aBO[];
+extern Stz* aBO[BO_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

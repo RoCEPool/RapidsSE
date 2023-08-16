@@ -284,11 +284,11 @@ enum eEC // error codes
 
 // This should contain the text string representation of the EC enum.
 // Not the error message.
-extern Stz* aEC[];
+extern Stz* aEC[EC_ENUMS];
 
 // This should contain the text string representation of the EC enum.
 // Not the error message.
-extern Stz* aEC2[];
+extern Stz* aEC2[EC_ENUMS];
 
 // Error messages corresponding to the EC enum above.
 //
@@ -302,7 +302,7 @@ extern Stz* aEC2[];
 // That way the error can be easily documented as "Table is not empty".
 // Parameters could be dynamically appended to these error messages as
 // is necessary.
-extern Stz* aErrorMsg[];
+extern Stz* aErrorMsg[EC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

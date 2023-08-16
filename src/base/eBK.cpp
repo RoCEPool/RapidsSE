@@ -4,14 +4,14 @@
 #include "BASE.h"
 #include "eBK.h"
 
-Stz* aBK[]
+Stz* aBK[BK_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
 
   /*    */ "BK_JOINORDERING"_Stz,
   /*    */ "BK_SUBQUERY"_Stz,
 
-  /*    */ "ENUMS"_Stz,
+//  /*    */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

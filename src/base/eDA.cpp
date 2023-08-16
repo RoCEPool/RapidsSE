@@ -4,7 +4,7 @@
 #include "BASE.h"
 #include "eDA.h"
 
-Stz* aDA[]
+Stz* aDA[DA_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   
@@ -19,10 +19,10 @@ Stz* aDA[]
   /*  0 */ "DA_DDL_DROP_TABLE"_Stz,
   /*  0 */ "DA_DDL_DROP_TENANT"_Stz,
 
-  /*    */ "ENUMS"_Stz,
+//  /*    */ "ENUMS"_Stz,
 };
 
-Stz* aDA_short[]
+Stz* aDA_short[DA_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
   
@@ -37,7 +37,7 @@ Stz* aDA_short[]
   /*  0 */ "drop table"_Stz,
   /*  0 */ "drop tenant"_Stz,
 
-  /*    */ "ENUMS"_Stz,
+//  /*    */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/
