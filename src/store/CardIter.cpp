@@ -1366,7 +1366,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_FLAT:             *((Card**)&G.p_flat)             = pCard; break;
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
-    case CK_FROM:             *((Card**)&G.p_from)             = pCard; break;
+    case CK_FROM:             *((Card**)&G.p_from)             = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
 
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
