@@ -15,18 +15,7 @@ enum eAG {
   /* 8 */ AG_ENUMS
 };
 
-static Stz* aAG[]
-{
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "COUNTALL"_Stz,
-  /* 2 */ "COUNT"_Stz,
-  /* 3 */ "MIN"_Stz,
-  /* 4 */ "MAX"_Stz,
-  /* 5 */ "STD"_Stz,
-  /* 6 */ "SUM"_Stz,
-  /* 7 */ "VAR"_Stz,
-  /* 8 */ "ENUMS"_Stz
-};
+extern Stz* aAG[];
 
 /*============================================================================*/
 /* end                                                                        */

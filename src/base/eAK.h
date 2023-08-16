@@ -11,12 +11,7 @@ enum eAK // arg kind
   /* 4 */ AK_ENUMS
 };
 
-static Stz* aAK[]
-{
-  /* 0 */ "none"_Stz,
-  /* 1 */ "columnnm"_Stz,
-  /* 2 */ "literal"_Stz,
-};
+extern Stz* aAK[];
 
 /*============================================================================*/
 /* end                                                                        */

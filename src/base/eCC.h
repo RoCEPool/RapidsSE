@@ -13,15 +13,7 @@ enum eCC // meta class
   /*    */ CC_ENUMS
 };
 
-static Stz* aCC[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "CC_CLASS"_Stz,
-  /*    */ "CC_TEMPLATE"_Stz,
-  
-  /*    */ "ENUMS"_Stz
-};
+extern Stz* aCC[];
 
 /*============================================================================*/
 /* end                                                                        */

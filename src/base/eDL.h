@@ -11,13 +11,7 @@ enum eDL // ddl lock
   /* 3 */ DL_ENUMS
 };
 
-static Stz* aDL[]
-{
-  /* 0 */ "none"_Stz,
-  /* 1 */ "grab_read"_Stz,
-  /* 2 */ "grab_write"_Stz,
-  /* 3 */ "enums"_Stz
-};
+extern Stz* aDL[];
 
 /*============================================================================*/
 /* end                                                                        */

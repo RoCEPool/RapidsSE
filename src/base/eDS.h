@@ -12,14 +12,7 @@ enum eDS // data source
   /* 3 */ DS_ENUMS
 };
 
-static Stz* aDS[]
-{
-  /* 0 */ "none"_Stz,
-  /* 1 */ "ingest"_Stz,
-  /* 2 */ "insert"_Stz,
-  /* 3 */ "load"_Stz,
-  /* 4 */ "enums"_Stz
-};
+extern Stz* aDS[];
 
 /*============================================================================*/
 /* end                                                                        */

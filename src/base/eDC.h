@@ -11,13 +11,7 @@ enum eDC // date components
   /* 3 */ DC_DD
 };
 
-static Stz* aDC[]
-{
-  /* 0 */ "none"_Stz,
-  /* 1 */ "YYYY"_Stz,
-  /* 2 */ "MM"_Stz,
-  /* 3 */ "DD"_Stz
-};
+extern Stz* aDC[];
 
 /*============================================================================*/
 /* end                                                                        */
