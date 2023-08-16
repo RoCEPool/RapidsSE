@@ -16,8 +16,18 @@ typedef struct {
   eIV  m_eIVVal;         // interval sub-type value
   b1   m_bIsAbstract;
   Stz* m_szNamespace;
-  Stz* m_szTypeName;
+  Stz** m_ppszTypeName;  // Note: Stz**, not Stz*. See explanation below.
 } TypeDescriptor;
+
+// NOTE ON Stz**:
+// The member m_ppszTypeName is a Stz** and not a Stz* for a good reason.
+// Because the axTypes[] array below is a static variable, it is initialised
+// before main() is entered. However this array references another global array
+// aCT[], and the order that these two arrays are initialised is not strict.
+// Hence if axTypes[] is initialised first then the value of aCT[CT_BOOLEAN] will
+// initially be a nullptr. So instead we store the address of aCT[CT_BOOLEAN]
+// and at runtime when we need to look this up then aCT[CT_BOOLEAN] will have
+// been initialised by then.
 
 static Stz* C_DEFAULT_NAMESPACE = "rapids"_Stz;
 static constexpr i8 C_INVALID_TYPEID = -1;
@@ -27,30 +37,30 @@ static constexpr i8 C_INVALID_TYPEID = -1;
 // proper indexed tree.
 static i8 C_NEXT_TYPE_ID = 0;
 static TypeDescriptor axTypes[] = {
-/*00*/  { C_NEXT_TYPE_ID++, -1, CT_BOOLEAN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_BOOLEAN]          },
-/*01*/  { C_NEXT_TYPE_ID++, -1, CT_CHAR,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_CHAR]             },
-/*02*/  { C_NEXT_TYPE_ID++, -1, CT_DATE,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_DATE]             },
-/*03*/  { C_NEXT_TYPE_ID++, -1, CT_DECIMAL,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_DECIMAL]          },
-/*04*/  { C_NEXT_TYPE_ID++, -1, CT_FLOAT,       IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_FLOAT]            },
-/*05*/  { C_NEXT_TYPE_ID++, -1, CT_INTEGER,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_INTEGER]          },
-/*06*/  { C_NEXT_TYPE_ID++, -1, CT_TIME,        IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_TIME]             },
-/*07*/  { C_NEXT_TYPE_ID++, -1, CT_TIMESTAMP,   IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_TIMESTAMP]        },
-/*08*/  { C_NEXT_TYPE_ID++, -1, CT_VARCHAR,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_VARCHAR]          },
-/*09*/  { C_NEXT_TYPE_ID++, -1, CT_UNKNOWN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, aCT[CT_UNKNOWN]          },
+/*00*/  { C_NEXT_TYPE_ID++, -1, CT_BOOLEAN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_BOOLEAN])          },
+/*01*/  { C_NEXT_TYPE_ID++, -1, CT_CHAR,        IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_CHAR])             },
+/*02*/  { C_NEXT_TYPE_ID++, -1, CT_DATE,        IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_DATE])             },
+/*03*/  { C_NEXT_TYPE_ID++, -1, CT_DECIMAL,     IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_DECIMAL])          },
+/*04*/  { C_NEXT_TYPE_ID++, -1, CT_FLOAT,       IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_FLOAT])            },
+/*05*/  { C_NEXT_TYPE_ID++, -1, CT_INTEGER,     IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_INTEGER])          },
+/*06*/  { C_NEXT_TYPE_ID++, -1, CT_TIME,        IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_TIME])             },
+/*07*/  { C_NEXT_TYPE_ID++, -1, CT_TIMESTAMP,   IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_TIMESTAMP])        },
+/*08*/  { C_NEXT_TYPE_ID++, -1, CT_VARCHAR,     IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_VARCHAR])          },
+/*09*/  { C_NEXT_TYPE_ID++, -1, CT_UNKNOWN,     IV_NONE,             false, C_DEFAULT_NAMESPACE, &(aCT[CT_UNKNOWN])          },
 
-/*10*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR,             false, C_DEFAULT_NAMESPACE, aIV[IV_YEAR]             },
-/*11*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_MONTH,            false, C_DEFAULT_NAMESPACE, aIV[IV_MONTH]            },
-/*12*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR_TO_MONTH,    false, C_DEFAULT_NAMESPACE, aIV[IV_YEAR_TO_MONTH]    },
-/*13*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY,              false, C_DEFAULT_NAMESPACE, aIV[IV_DAY]              },
-/*14*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR,             false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR]             },
-/*15*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE,           false, C_DEFAULT_NAMESPACE, aIV[IV_MINUTE]           },
-/*16*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_SECOND,           false, C_DEFAULT_NAMESPACE, aIV[IV_SECOND]           },
-/*17*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_HOUR,      false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_HOUR]      },
-/*18*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_MINUTE,    false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_MINUTE]    },
-/*19*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_SECOND,    false, C_DEFAULT_NAMESPACE, aIV[IV_DAY_TO_SECOND]    },
-/*20*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_MINUTE,   false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR_TO_MINUTE]   },
-/*21*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_SECOND,   false, C_DEFAULT_NAMESPACE, aIV[IV_HOUR_TO_SECOND]   },
-/*22*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE_TO_SECOND, false, C_DEFAULT_NAMESPACE, aIV[IV_MINUTE_TO_SECOND] },
+/*10*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR,             false, C_DEFAULT_NAMESPACE, &(aIV[IV_YEAR])             },
+/*11*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_MONTH,            false, C_DEFAULT_NAMESPACE, &(aIV[IV_MONTH])            },
+/*12*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_YM, IV_YEAR_TO_MONTH,    false, C_DEFAULT_NAMESPACE, &(aIV[IV_YEAR_TO_MONTH])    },
+/*13*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY,              false, C_DEFAULT_NAMESPACE, &(aIV[IV_DAY])              },
+/*14*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR,             false, C_DEFAULT_NAMESPACE, &(aIV[IV_HOUR])             },
+/*15*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE,           false, C_DEFAULT_NAMESPACE, &(aIV[IV_MINUTE])           },
+/*16*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_SECOND,           false, C_DEFAULT_NAMESPACE, &(aIV[IV_SECOND])           },
+/*17*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_HOUR,      false, C_DEFAULT_NAMESPACE, &(aIV[IV_DAY_TO_HOUR])      },
+/*18*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_MINUTE,    false, C_DEFAULT_NAMESPACE, &(aIV[IV_DAY_TO_MINUTE])    },
+/*19*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_DAY_TO_SECOND,    false, C_DEFAULT_NAMESPACE, &(aIV[IV_DAY_TO_SECOND])    },
+/*20*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_MINUTE,   false, C_DEFAULT_NAMESPACE, &(aIV[IV_HOUR_TO_MINUTE])   },
+/*21*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_HOUR_TO_SECOND,   false, C_DEFAULT_NAMESPACE, &(aIV[IV_HOUR_TO_SECOND])   },
+/*22*/  { C_NEXT_TYPE_ID++, -1, CT_INTERVAL_DT, IV_MINUTE_TO_SECOND, false, C_DEFAULT_NAMESPACE, &(aIV[IV_MINUTE_TO_SECOND]) },
 };
 
 constexpr i8 C_MAXTYPEID = (sizeof(axTypes) / sizeof(*axTypes)) - 1; // number of entries in the array
@@ -182,7 +192,7 @@ Stz* TypeSystem::szTypeName(TypeId xTypeId)
 {
   ASSERT(bIsValid(xTypeId));
 
-  return axTypes[xTypeId.iIdVal()].m_szTypeName;
+  return *(axTypes[xTypeId.iIdVal()].m_ppszTypeName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +239,7 @@ TypeId TypeSystem::xIdOf(Stz* szNamespace, Stz* szTypeName)
   for (i8 i=0; i <= C_MAXTYPEID; i++) {
 
     if (axTypes[i].m_szNamespace->bSame(szNamespace) &&
-        axTypes[i].m_szTypeName->bSame(szTypeName) ) {
+        (*(axTypes[i].m_ppszTypeName))->bSame(szTypeName) ) {
       return TypeId{axTypes[i].m_iTypeId};
     }
 
