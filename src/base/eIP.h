@@ -13,21 +13,10 @@ enum eIP // index position
   /*    */ IP_LT,
   /*    */ IP_LE,
 
-  /*    */ IP_ENUMT_
+  /*    */ IP_ENUM
 };
 
-static Stz* aIP[]
-{
-    /*  0 */ "IP_NONE"_Stz,
-
-    /*  1 */ "IP_BG"_Stz,
-    /*  2 */ "IP_GE"_Stz,
-    /*  3 */ "IP_GT"_Stz,
-    /*  4 */ "IP_LE"_Stz,
-    /*  5 */ "IP_LT"_Stz,
-
-    /*    */ "IP_ENUMS_"_Stz
-};
+extern Stz* aIP[IP_ENUM];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -24,8 +24,8 @@ typedef struct {
 // Because the axTypes[] array below is a static variable, it is initialised
 // before main() is entered. However this array references another global array
 // aCT[], and the order that these two arrays are initialised is not strict.
-// Hence if axTypes[] is initialised first then the value of aCT[CT_BOOLEAN] will
-// initially be a nullptr. So instead we store the address of aCT[CT_BOOLEAN]
+// Hence if axTypes[] is initialised first then the value of aCT[CT_BOOLEAN] (for example)
+// will initially be a nullptr. So instead we store the address of aCT[CT_BOOLEAN]
 // and at runtime when we need to look this up then aCT[CT_BOOLEAN] will have
 // been initialised by then.
 

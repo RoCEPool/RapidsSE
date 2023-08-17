@@ -6,14 +6,11 @@
 enum eIT // Index Type
 {
   /* 0 */ IT_NONE=0,
-  /* 1 */ IT_SKIP_LIST
+  /* 1 */ IT_SKIP_LIST,
+  /* 2 */ IT_ENUMS
 };
 
-static Stz* aIT[]
-{
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "SKIP_LIST"_Stz
-};
+extern Stz* aIT[IT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

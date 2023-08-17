@@ -14,16 +14,7 @@ enum eII // indexInfo
   /*    */ II_ENUMS
 };
 
-static Stz* aII[]
-{
-    /*  0 */ "NONE"_Stz,
-
-    /*    */ "II_IT"_Stz,
-    /*    */ "II_JJ"_Stz,
-    /*    */ "II_PL"_Stz,
-
-    /*    */ "ENUMS"_Stz
-};
+extern Stz* aII[II_ENUMS];
 
 
 /*============================================================================*/
