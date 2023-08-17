@@ -12,14 +12,7 @@ enum eMG // meta member
   /*    */ MG_ENUMS
 };
 
-static Stz* aMG[]
-{
-  /*  0 */ "MG_ORDINARY"_Stz,
-  /*    */ "MG_CHAIN"_Stz,
-  /*    */ "MG_MANAGER"_Stz,
-  
-  /*    */ "MG_ENUMS"_Stz
-};
+extern Stz* aMG[MG_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -7,15 +7,11 @@ enum eLE // line end
 {
   /* 0 */ LE_NL,     // line ends with \n
   /* 1 */ LE_CR,     // line ends with \r
-  /* 2 */ LE_CRNL    // line ends with \r\n
+  /* 2 */ LE_CRNL,   // line ends with \r\n
+  /* 3 */ LE_ENUMS
 };
 
-static Stz* aLE[]
-{
-  /* 0 */ "NL"_Stz,
-  /* 1 */ "CR"_Stz,
-  /* 2 */ "CRNL"_Stz
-};
+extern Stz* aLE[LE_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -174,6 +174,9 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
       return true;
       
       break;
+
+    default:
+      NEVER_REACH
   }
   
   NEVER_REACH;

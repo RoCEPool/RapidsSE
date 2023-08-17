@@ -13,15 +13,7 @@ enum eNE // next entry
   /*  5 */ NE_ENUMT_
 };
 
-static Stz* aNE[]
-{
-  /*  0 */ "NEXT_LEFT"_Stz,
-  /*  1 */ "NEXT_RIGHT"_Stz,
-  /*  2 */ "NEXT_LEFT_RIGHT"_Stz,
-  /*  3 */ "NEXT_NONE"_Stz,
-  /*  4 */ "NEXT_EXIT"_Stz,
-  /*  5 */ "ENUMT_"_Stz
-};
+extern Stz* aNE[NE_ENUMT_];
 
 /*============================================================================*/
 /* end                                                                        */

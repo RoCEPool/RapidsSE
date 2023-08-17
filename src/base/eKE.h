@@ -11,13 +11,7 @@ enum eKE // entry key kind
   /* 3 */ KE_ENUMS
 };
 
-static Stz* aKE[]
-{
-  /* 0 */ "KE_GENERAL"_Stz,
-  /* 1 */ "KE_INT"_Stz,
-  /* 2 */ "KE_INT_INT"_Stz,
-  /* 3 */ "KE_ENUMS"_Stz,
-};
+extern Stz* aKE[KE_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

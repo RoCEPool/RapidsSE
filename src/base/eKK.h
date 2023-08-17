@@ -13,16 +13,7 @@ enum eKK // stack kind
   /* 5 */ KK_ENUMS
 };
 
-static Stz* aKK[]
-{
-  /* 0 */ "none"_Stz,
-  /* 1 */ "AUX_STACK"_Stz,
-  /* 2 */ "DATA_STACK"_Stz,
-  /* 3 */ "JOB_STACK"_Stz,
-  /* 4 */ "RETURN_STACK"_Stz,
-  /* 5 */ "PARSER_STACK"_Stz,
-  /* 6 */ "enums"_Stz,
-};
+extern Stz* aKK[KK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

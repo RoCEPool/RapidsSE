@@ -16,18 +16,7 @@ enum eMT // meta type
   /*    */ MT_ENUMS
 };
 
-static Stz* aMT[]
-{
-  /*  0 */ "NONE"_Stz,
-
-  /*    */ "MT_SIMPLEX"_Stz,
-
-  /*    */ "MT_LINEAR"_Stz,
-  /*    */ "MT_TEMPLATE"_Stz,
-  /*    */ "MT_UNION"_Stz,
-  
-  /*    */ "ENUMS"_Stz
-};
+extern Stz* aMT[MT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */
