@@ -3,9 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_OP.hpp"
+#include "Card_symbol.hpp"
 #include "Scope.hpp"
 
+#include "Card_OP.hpp"
 
 namespace STORE
 {

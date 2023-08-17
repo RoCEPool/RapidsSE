@@ -169,20 +169,6 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_rpnCalc_To_boolCalc(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  pCI->G.p_boolCalc = pCI->G.p_rpnCalc->pToBoolCalc(pCI);
-
-  vReplaceSubCard(pCI->G.p_rpnCalc,pCI->G.p_boolCalc);
-
-  pCI->G_vDeleteMember(pCI->G.p_rpnCalc);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

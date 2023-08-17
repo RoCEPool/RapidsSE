@@ -24,7 +24,6 @@ namespace STORE
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
     void vConvert_colNm_To_stmCol(CardIter* pCI);
-    void vConvert_rpnCalc_To_boolCalc(CardIter* pCI);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 

@@ -559,17 +559,15 @@ void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate table                                                             */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pParent->bIsCard(CK_DECK)) {
-    vValidate_mustHave(CK_LEVEL, CK_PROJECTION, CK_NONE);
-    pSub_level()->vValidate(pCI,iDepth+1,this);
-  }
+  RASSERT(2 == iDepth);
 
+  UNUSED(pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

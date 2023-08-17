@@ -9,9 +9,10 @@ _customer
 
 load customer "<tpch_dir>/customer.<suffix>" ;
 
-// /transliterated
-// /glean_interactive
-// /weaved
+/glean_interactive
+/transliterated
+/pipeline_def
+/weaved
 /pipelineName = "_ray_sort"
 select *
   from Customer

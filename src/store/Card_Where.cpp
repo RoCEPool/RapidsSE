@@ -159,7 +159,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
       pCI->G_vAppendNewChild(p_table,CK_CONSTRAINT);
       pCI->G_vAppendNewChild(pCI->G.p_constraint,CK_RPNCALC);
       pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
-      p_table->vConvert_rpnCalc_To_boolCalc(pCI);
+      pCI->G.p_where->vConvert_rpnCalc_To_boolCalc(pCI);
     }
 
     // remove and delete <absJoin>/<on>
