@@ -13,15 +13,7 @@ enum ePK // predicate kind
   /* 5 */ PK_ENUMS
 };
 
-static Stz* aPK[]
-{
-  /* 0 */ "none"_Stz,
-  /* 1 */ "column column op"_Stz,
-  /* 2 */ "column literal op"_Stz,
-  /* 3 */ "literal literal op"_Stz,
-  /* 4 */ "literal column op"_Stz,
-  /* 5 */ "enums"_Stz,
-};
+extern Stz* aPK[PK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

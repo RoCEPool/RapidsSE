@@ -18,15 +18,7 @@ enum eRG // registers
   /*   */ RG_ENUMS
 };
 
-static Stz* aRG[]
-{
-  /* 0 */ "NONE"_Stz,
-  
-  /*   */ "DIR0"_Stz,
-  /*   */ "FILE0"_Stz,
-  
-  /*   */ "ENUMS"_Stz
-};
+extern Stz* aRG[RG_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -13,15 +13,7 @@ enum ePD // pipe actions
   /*    */ PD_ENUMS,
 };
 
-static Stz* aPD[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "PD_PIPE_IN"_Stz,
-  /*    */ "PD_PIPE_OUT"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aPD[PD_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */
