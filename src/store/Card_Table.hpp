@@ -3,10 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
-#include "Scope.hpp"
 
 #include "Card_OP.hpp"
+#include "Scope.hpp"
 
 namespace STORE
 {
@@ -49,8 +48,6 @@ namespace STORE
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn);
-    void vSmooth(CardIter* pCI);
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

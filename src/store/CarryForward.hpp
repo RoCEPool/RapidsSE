@@ -4,14 +4,17 @@
 #pragma once
 
 #include "BASE.h"
-#include "Board.hpp"
 #include "eSM.h"
 
 
 namespace STORE
 {
+  class Card_Expr;
+  class CardIter;
+
   class CarryForward : public Object
   {
+
   private:
     Card_Expr* m_p_sqCrlKey;
     bool       m_bCrlKeyActive;

@@ -3,9 +3,11 @@
 /*============================================================================*/
 
 #include "Card_From.hpp"
+#include "Card_Table.hpp"
+
+#include "Table.hpp"
 
 #include "CardIter.hpp"
-#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -100,6 +102,38 @@ void Card_From::vProduceTablePtns(CardIter* pCI) {
   }
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_From::vSmooth(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pSymbol()->Y_vSet(P_Smoothed);
+
+  pCI->G.p_table = pSub_table();
+
+  vUpdate_projection(pCI);
+  pCI->vRenumberCards();
+}
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_From::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pSymbol()->Y_vSet(P_Smoothed);
+
+  pCI->G.p_table = pSub_table();
+
+  RASSERT(pCarryForward->Table.m_bReproject);
+  vUpdate_projection(pCI);
+  pCI->vRenumberCards();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

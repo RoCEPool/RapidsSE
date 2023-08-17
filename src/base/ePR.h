@@ -16,18 +16,7 @@ enum ePR // property
   /*    */ PR_ENUMS
 };
 
-static Stz* aPR[]
-{
-  /*  0 */ "PR_NONE"_Stz,
-  
-  /*    */ "PR_FACT"_Stz,
-  /*    */ "PR_INT"_Stz,
-  /*    */ "PR_OBJECT"_Stz,
-  /*    */ "PR_OPAQUE"_Stz,
-  /*    */ "PR_TEXT"_Stz,
-
-  /*    */ "PR_ENUMS"_Stz
-};
+extern Stz* aPR[PR_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

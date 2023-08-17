@@ -532,33 +532,6 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Table::vSmooth(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_table->pSymbol()->Y_vSet(P_Smoothed);
-
-  pCI->G.p_table->vUpdate_projection(pCI);
-  pCI->vRenumberCards();
-}
-
-/*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_table->pSymbol()->Y_vSet(P_Smoothed);
-
-  RASSERT(pCarryForward->Table.m_bReproject);
-  pCI->G.p_table->vUpdate_projection(pCI);
-  pCI->vRenumberCards();
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate table                                                             */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

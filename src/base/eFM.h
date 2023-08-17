@@ -372,7 +372,7 @@ enum eFM : u2 // function macros
 //----------------------------------------------------------------------------
 
 // when not being included by the tcc compiler
-extern Stz* aFM[];
+extern Stz* aFM[FM_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

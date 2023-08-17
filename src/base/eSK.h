@@ -25,33 +25,10 @@ enum eSK // sketch kind
   /*   */ SK_STREAMDEF,   // streamDef
   /*   */ SK_TOP,         // top
   /*   */ SK_TUB,         // tub
+  /*   */ SK_ENUMS,
 };
 
-static Stz* aSK[]
-{
-  /*   */ "NONE"_Stz,
-  /*   */ "AGGORD"_Stz,
-  /*   */ "AGGREG"_Stz,
-  /*   */ "ANTIJOIN"_Stz,
-  /*   */ "EOS"_Stz,
-  /*   */ "FILTER"_Stz,
-  /*   */ "GBYAGG"_Stz,
-  /*   */ "INDEXJOIN"_Stz,
-  /*   */ "INDEXSCAN"_Stz,
-  /*   */ "INFLATE_CRW"_Stz,
-  /*   */ "INFLATE_ROW"_Stz,
-  /*   */ "LIMIT"_Stz,
-  /*   */ "ORDAGG"_Stz,
-  /*   */ "POT"_Stz,
-  /*   */ "PROJECT"_Stz,
-  /*   */ "SEMIJOIN"_Stz,
-  /*   */ "SORT"_Stz,
-  /*   */ "STREAMDEF"_Stz,
-  /*   */ "TOP"_Stz,
-  /*   */ "TUB"_Stz,
-
- /*   */ "ENUMS"_Stz
-};
+extern Stz* aSK[SK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

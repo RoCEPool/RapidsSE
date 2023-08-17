@@ -16,18 +16,7 @@ enum eOK // operator kind
   /*    */ OK_ENUMS,
 };
 
-static Stz* aOK[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "SINGLE"_Stz,
-  
-  /*    */ "SOURCE"_Stz,
-  /*    */ "SINK"_Stz,
-  /*    */ "DUPLEX"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aOK[OK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

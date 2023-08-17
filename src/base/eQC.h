@@ -14,16 +14,7 @@ enum eQC // subquery calling clause
   /*   */ QC_ENUMS
 };
 
-static Stz* aQC[]
-{
-  /*   */ "QC_NONE"_Stz,
-
-  /*   */ "QC_FROM_CLAUSE"_Stz,
-  /*   */ "QC_HAVING_CLAUSE"_Stz,
-  /*   */ "QC_WHERE_CLAUSE"_Stz,
-
-  /*   */ "QC_ENUMS"_Stz,
-};
+extern Stz* aQC[QC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

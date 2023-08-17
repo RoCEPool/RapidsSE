@@ -1,21 +1,17 @@
 /*============================================================================*/
-/* eNK.h -- Name Kind                                                         */
+/* eUK.cpp -- Dynamic Function Kind                                           */
 /*============================================================================*/
-#pragma once
+#include "BASE.h"
+#include "eUK.h"
 
-enum eNK // name kind
+Stz* aUK[UK_ENUMS]
 {
-  /*  0 */ NK_NONE=0,
-  
-  /*    */ NK_ENUMS
-};
-
-static Stz* aNK[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  
-  /*    */ "ENUMS"_Stz
+  /* 0 */ "UK_NONE"_Stz,
+  /* 1 */ "UK_AGG"_Stz,
+  /* 2 */ "UK_FILTER"_Stz,
+  /* 3 */ "UK_KEY"_Stz,
+  /* 4 */ "UK_PROJECT"_Stz,
+//  /* 5 */ "UK_ENUMS"_Stz
 };
 
 /*============================================================================*/

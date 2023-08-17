@@ -60,61 +60,7 @@ enum eSF // symbol form
   /* */ SF_ENUMS
 };
 
-static Stz* aSF[]
-{
-  /* */ "SF_NONE"_Stz,
-
-  /* */ "SF_AGG_FN"_Stz,
-  /* */ "SF_AS"_Stz,
-  /* */ "SF_AS_NM"_Stz,
-  /* */ "SF_AS_NM_syn"_Stz,
-  /* */ "SF_BOL_FN"_Stz,
-  /* */ "SF_BOL_LIT"_Stz,
-  /* */ "SF_BOL_OP"_Stz,
-  /* */ "SF_BOUND"_Stz,
-  /* */ "SF_BRACE"_Stz,
-
-  /* */ "SF_COL_NM"_Stz,
-  /* */ "SF_COL_NM_dis"_Stz,
-  /* */ "SF_COL_NM_syn"_Stz,
-  /* */ "SF_COL_NO"_Stz,
-  /* */ "SF_COL_TC"_Stz,
-  /* */ "SF_COL_TYPE"_Stz,
-  /* */ "SF_COMMA"_Stz,
-  /* */ "SF_CROSS"_Stz,
-
-  /* */ "SF_DCM"_Stz,
-  /* */ "SF_DIRECTION"_Stz,
-  /* */ "SF_FLD_NM"_Stz,
-  /* */ "SF_FLT_LIT"_Stz,
-  /* */ "SF_GROUPBY"_Stz,
-  /* */ "SF_IDX_COL"_Stz,
-  /* */ "SF_IDX_NM"_Stz,
-  /* */ "SF_FLT_LIT"_Stz,
-  /* */ "SF_KEY_COL"_Stz,
-  /* */ "SF_MTH_OP"_Stz,
-  /* */ "SF_NOTE"_Stz,
-
-  /* */ "SF_PARENTHESIS"_Stz,
-  /* */ "SF_PPE_NM"_Stz,
-  /* */ "SF_PRM_COL"_Stz,
-  /* */ "SF_RLN_OP"_Stz,
-  /* */ "SF_SQY_NO"_Stz,
-  /* */ "SF_SQY_OP"_Stz,
-  /* */ "SF_SQY_RSL"_Stz,
-  /* */ "SF_STG_CAST"_Stz,
-  /* */ "SF_STG_NO"_Stz,
-  /* */ "SF_STRING"_Stz,
-
-  /* */ "SF_TBL_NM"_Stz,
-  /* */ "SF_TBL_SYN"_Stz,
-  /* */ "SF_TYPE"_Stz,
-  /* */ "SF_WHEN"_Stz,
-  /* */ "SF_XK_CAST"_Stz,
-  /* */ "SF_XRF_NO"_Stz,
-
-  /* */ "SF_ENUMS"_Stz
-};
+extern Stz* aSF[SF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

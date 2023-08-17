@@ -13,15 +13,7 @@ enum eWK // word kind
   /*  5 */ WK_ENUMS
 };
 
-static Stz* aWK[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "CPPOBJECT"_Stz,
-  /*  2 */ "INTRINSIC"_Stz,
-  /*  3 */ "LOCAL"_Stz,
-  /*  4 */ "COLON"_Stz,
-  /*  5 */ "ENUMS"_Stz,
-};
+extern Stz* aWK[WK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

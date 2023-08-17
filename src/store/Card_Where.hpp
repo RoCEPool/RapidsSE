@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card_symbol.hpp"
-#include "CarryForward.hpp"
+#include "Card_COND.hpp"
 
 namespace STORE
 {

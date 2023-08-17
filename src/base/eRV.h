@@ -13,15 +13,7 @@ enum eRV // receiver rnstructions
   /*    */ RV_ENUMS
 };
 
-static Stz* aRV[]
-{
-  /*  0 */ "RV_NONE"_Stz,
-  
-  /*    */ "RV_ALL_PTNS"_Stz,
-  /*    */ "RV_ONE_PTN"_Stz,
-  
-  /*    */ "RV_ENUMS"_Stz,
-};
+extern Stz* aRV[RV_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

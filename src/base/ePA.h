@@ -18,35 +18,8 @@ enum ePA // prompt actions
   /*    */ PA_PRM_ENUMS,
 };
 
-static Stz* aPA[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "PA_PRM_COMMAND"_Stz,
-  /*    */ "PA_PRM_DELETE_JOB"_Stz,
-  /*    */ "PA_PRM_FREE_SPACE"_Stz,
-  /*    */ "PA_PRM_LOG_NOTE"_Stz,
-  /*    */ "PA_PRM_NEW_JOB"_Stz,
-  /*    */ "PA_PRM_RESUMES"_Stz,
-  /*    */ "PA_PRM_WAITS"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
-
-static Stz* aPA_short[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "PROMPT command"_Stz,
-  /*    */ "PROMPT delete job"_Stz,
-  /*    */ "PROMPT free space"_Stz,
-  /*    */ "PROMPT log note"_Stz,
-  /*    */ "PROMPT new job"_Stz,
-  /*    */ "PROMPT resumes"_Stz,
-  /*    */ "PROMPT waits"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aPA[PA_PRM_ENUMS];
+extern Stz* aPA_short[PA_PRM_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

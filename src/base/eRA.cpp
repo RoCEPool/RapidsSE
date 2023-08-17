@@ -1,0 +1,152 @@
+/*============================================================================*/
+/* eRA.cpp -- Resource Actions                                                */
+/*============================================================================*/
+#include "BASE.h"
+#include "eRA.h"
+
+Stz* aRA[RA_ENUMS]
+{
+  /*  0 */ "NONE"_Stz,
+
+  /*    */ "RA_DIR_CLOSED"_Stz,
+  /*    */ "RA_DIR_CONSTRUCT"_Stz,
+  /*    */ "RA_DIR_DESTRUCT"_Stz,
+  /*    */ "RA_DIR_ERROR"_Stz,
+  /*    */ "RA_DIR_OPENED"_Stz,
+  /*    */ "RA_DIR_STATS"_Stz,
+
+  /*    */ "RA_FIL_CLOSED"_Stz,
+  /*    */ "RA_FIL_CONSTRUCT"_Stz,
+  /*    */ "RA_FIL_DESTRUCT"_Stz,
+  /*    */ "RA_FIL_ERROR"_Stz,
+  /*    */ "RA_FIL_OPENED"_Stz,
+  /*    */ "RA_FIL_STATS"_Stz,
+
+  /*    */ "RA_FIO_CONSTRUCT"_Stz,
+  /*    */ "RA_FIO_DESTRUCT"_Stz,
+  /*    */ "RA_FIO_ERROR"_Stz,
+  /*    */ "RA_FIO_MADE"_Stz,
+  /*    */ "RA_FIO_REMOVED"_Stz,
+  /*    */ "RA_FIO_STATS"_Stz,
+
+  /*    */ "RA_MTX_BROADCAST"_Stz,
+  /*    */ "RA_MTX_BUSY"_Stz,
+  /*    */ "RA_MTX_CONSTRUCT"_Stz,
+  /*    */ "RA_MTX_DESTRUCT"_Stz,
+  /*    */ "RA_MTX_ERROR"_Stz,
+  /*    */ "RA_MTX_LOCK"_Stz,
+  /*    */ "RA_MTX_LOCKED"_Stz,
+  /*    */ "RA_MTX_SIGNAL"_Stz,
+  /*    */ "RA_MTX_SIGNALED"_Stz,
+  /*    */ "RA_MTX_STATS"_Stz,
+  /*    */ "RA_MTX_TIMEDOUT"_Stz,
+  /*    */ "RA_MTX_UNLOCKED"_Stz,
+  /*    */ "RA_MTX_WAIT_SIGNAL"_Stz,
+  /*    */ "RA_MTX_WAIT_TIMED"_Stz,
+
+  /*    */ "RA_SKT_ACCEPTED"_Stz,
+  /*    */ "RA_SKT_CLOSED"_Stz,
+  /*    */ "RA_SKT_CONNECT"_Stz,
+  /*    */ "RA_SKT_CONNECTED"_Stz,
+  /*    */ "RA_SKT_CONSTRUCT"_Stz,
+  /*    */ "RA_SKT_DESTRUCT"_Stz,
+  /*    */ "RA_SKT_DROPPED"_Stz,
+  /*    */ "RA_SKT_ERROR"_Stz,
+  /*    */ "RA_SKT_GRAB"_Stz,
+  /*    */ "RA_SKT_GRABBED"_Stz,
+  /*    */ "RA_SKT_LISTENER"_Stz,
+  /*    */ "RA_SKT_RECEIVE"_Stz,
+  /*    */ "RA_SKT_RECEIVED"_Stz,
+  /*    */ "RA_SKT_SEND"_Stz,
+  /*    */ "RA_SKT_SENT"_Stz,
+  /*    */ "RA_SKT_STATS"_Stz,
+
+  /*    */ "RA_THD_AWAKE"_Stz,
+  /*    */ "RA_THD_CONSTRUCT"_Stz,
+  /*    */ "RA_THD_DESTRUCT"_Stz,
+  /*    */ "RA_THD_ENTRY"_Stz,
+  /*    */ "RA_THD_ERROR"_Stz,
+  /*    */ "RA_THD_EXIT"_Stz,
+  /*    */ "RA_THD_SLEEP"_Stz,
+  /*    */ "RA_THD_SLEEP_INDEF"_Stz,
+  /*    */ "RA_THD_SPAWNED"_Stz,
+  /*    */ "RA_THD_STATS"_Stz,
+
+//  /*    */ "ENUMS"_Stz,
+};
+
+Stz* aRA_short[RA_ENUMS]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Dir closed"_Stz,
+  /*    */ "Dir construct"_Stz,
+  /*    */ "Dir destruct"_Stz,
+  /*    */ "Dir error"_Stz,
+  /*    */ "Dir opened"_Stz,
+  /*    */ "Dir stats"_Stz,
+  
+  /*    */ "File closed"_Stz,
+  /*    */ "File construct"_Stz,
+  /*    */ "File destruct"_Stz,
+  /*    */ "File error"_Stz,
+  /*    */ "File opened"_Stz,
+  /*    */ "File stats"_Stz,
+  
+  /*    */ "Fifo construct"_Stz,
+  /*    */ "Fifo destruct"_Stz,
+  /*    */ "Fifo error"_Stz,
+  /*    */ "Fifo made"_Stz,
+  /*    */ "Fifo removed"_Stz,
+  /*    */ "Fifo stats"_Stz,
+  
+  /*    */ "Mutex broadcast"_Stz,
+  /*    */ "Mutex busy"_Stz,
+  /*    */ "Mutex construct"_Stz,
+  /*    */ "Mutex destruct"_Stz,
+  /*    */ "Mutex error"_Stz,
+  /*    */ "Mutex lock"_Stz,
+  /*    */ "Mutex locked"_Stz,
+  /*    */ "Mutex signal"_Stz,
+  /*    */ "Mutex signaled"_Stz,
+  /*    */ "Mutex stats"_Stz,
+  /*    */ "Mutex timedout"_Stz,
+  /*    */ "Mutex unlocked"_Stz,
+  /*    */ "Mutex wait signal"_Stz,
+  /*    */ "Mutex wait timed"_Stz,
+  
+  /*    */ "Socket accepted"_Stz,
+  /*    */ "Socket closed"_Stz,
+  /*    */ "Socket connect"_Stz,
+  /*    */ "Socket connected"_Stz,
+  /*    */ "Socket construct"_Stz,
+  /*    */ "Socket destruct"_Stz,
+  /*    */ "Socket dropped"_Stz,
+  /*    */ "Socket error"_Stz,
+  /*    */ "Socket grab"_Stz,
+  /*    */ "Socket grabbed"_Stz,
+  /*    */ "Socket listener"_Stz,
+  /*    */ "Socket receive"_Stz,
+  /*    */ "Socket received"_Stz,
+  /*    */ "Socket send"_Stz,
+  /*    */ "Socket sent"_Stz,
+  /*    */ "Socket stats"_Stz,
+  
+  /*    */ "Thread awake"_Stz,
+  /*    */ "Thread construct"_Stz,
+  /*    */ "Thread destruct"_Stz,
+  /*    */ "Thread entry"_Stz,
+  /*    */ "Thread error"_Stz,
+  /*    */ "Thread exit"_Stz,
+  /*    */ "Thread sleep"_Stz,
+  /*    */ "Thread sleep indefinite"_Stz,
+  /*    */ "Thread spawned"_Stz,
+  /*    */ "Thread stats"_Stz,
+
+//  /*    */ "ENUMS"_Stz,
+};
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

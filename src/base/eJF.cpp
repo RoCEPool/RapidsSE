@@ -1,28 +1,14 @@
 /*============================================================================*/
-/* eWL.h -- Wire Line Adaptor message types                                   */
+/* eJF.cpp -- Job Flags                                                       */
 /*============================================================================*/
-#pragma once
+#include "BASE.h"
+#include "eJF.h"
 
-enum eWL // wire line message type
+Stz* aJF[JF_ENUMS]
 {
-  /* */ WL_NONE=0, // none
-  
-  /* */ WL_A
-  /* */ WL_B
-  /* */ WL_C
-  
-  /* */ WL_ENUMS
-};
-
-static Stz* aWL[]
-{
-  /* */ "WL_NONE"_Stz,
-  
-  /* */ "WL_A"_Stz,
-  /* */ "WL_B"_Stz,
-  /* */ "WL_C"_Stz,
-  
-  /* */ "WL_ENUMS"_Stz,
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "LOWMEM"_Stz,
+//  /*  2 */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

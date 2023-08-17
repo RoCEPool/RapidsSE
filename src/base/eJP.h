@@ -19,21 +19,7 @@ enum eJP // job phase
   /*  9 */ JP_ENUMS
 };
 
-static Stz* aJP[]
-{
-  /*  0 */ "JP_NONE"_Stz,
-  
-  /*  1 */ "JP_BEGINNING"_Stz,
-  /*  2 */ "JP_BEGUN"_Stz,
-  /*  3 */ "JP_EXECUTING"_Stz,
-  /*  4 */ "JP_EXECUTED"_Stz,
-  /*  5 */ "JP_ENDING"_Stz,
-  /*  6 */ "JP_ENDED"_Stz,
-  /*  7 */ "JP_CANCELING"_Stz,
-  /*  8 */ "JP_CANCELED"_Stz,
-  
-  /*  9 */ "JP_ENUMS"_Stz,
-};
+extern Stz* aJP[JP_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

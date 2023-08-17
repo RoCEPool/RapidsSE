@@ -7,6 +7,8 @@
 
 namespace STORE
 {
+  class CarryForward;
+
   class Card_From : public Card_OP
   {
   public:
@@ -18,6 +20,8 @@ namespace STORE
 
     Stz* szColNm(i8 i_Col_base0);
     static void vProduceTablePtns(CardIter* pCI);
+    void vSmooth(CardIter* pCI);
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

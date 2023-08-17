@@ -12,14 +12,7 @@ enum eRU // Resource Usage
   /*  4 */ RU_ENUMS
 };
 
-static Stz* aRU[]
-{
-  /*  0 */ "RU_NONE"_Stz,
-  /*  1 */ "RU_SMALL"_Stz,
-  /*  2 */ "RU_MEDIUM"_Stz,
-  /*  3 */ "RU_LARGE"_Stz,
-  /*  4 */ "RU_ENUMS"_Stz,
-};
+extern Stz* aRU[RU_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

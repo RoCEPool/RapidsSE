@@ -10,22 +10,8 @@ enum eXC // cross/transform check
   /* */ XC_ENUMS
 };
 
-static Stz* aXC[]
-{
-  /* */ "XC_NONE"_Stz,
-
-
-  /* */ "XF_ENUMS"_Stz
-};
-
-static Stz* aXC_note[]
-{
-  /* XC_NONE  */
-    "NONE"_Stz,
-
-  /* XC_ENUMS */
-    "ENUMS"_Stz,
-};
+extern Stz* aXC[XC_ENUMS];
+extern Stz* aXC_note[XC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */
