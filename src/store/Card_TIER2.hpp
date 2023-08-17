@@ -16,6 +16,7 @@ namespace STORE
     Card_TIER2(eCK eCard);
    ~Card_TIER2(void) noexcept(false);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_TIER2* _pCard_TIER2(void* aAddr);

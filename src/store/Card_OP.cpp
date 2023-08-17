@@ -1566,16 +1566,6 @@ void Card_OP::vRpnSort(String* psRpnExpr, Card_Sort* pCard_Sort)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for table op                                                */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRpnTable(String* psRpnExpr, Card_Table* pCard_Table)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(psRpnExpr);
-  UNUSED(pCard_Table);
-}
-
-/*----------------------------------------------------------------------------*/
 /* produce <expr> for top op                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpnTop(String* psRpnExpr, Card_Top* pCard_Top)

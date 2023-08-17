@@ -74,7 +74,6 @@ namespace STORE
     void vRpnProject     (String* psRpnExpr, Card_Project*   pCard_Project);
     void vRpnScan        (String* psRpnExpr, Card_Scan*      pCard_Scan);
     void vRpnSort        (String* psRpnExpr, Card_Sort*      pCard_Sort);
-    void vRpnTable       (String* psRpnExpr, Card_Table*     pCard_Table);
     void vRpnTop         (String* psRpnExpr, Card_Top*       pCard_Top);
     void vRpnWhere       (String* psRpnExpr, Card_Where*     pCard_Where);
 

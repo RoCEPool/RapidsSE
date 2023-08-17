@@ -796,14 +796,11 @@ void Weaver::vArgTable(String* psOpArgs, Card_Table* pCard_Table)
 
   // scan : 0) {table}
 
-  s4K sRpnExpr;
-
-  pCard_Table->vRpnTable(sRpnExpr,pCard_Table);
 
   Card_TableNm* p_tableNm = pCard_Table->pSub_tableNm();
 
   Stz* szTableNm = p_tableNm->szSymbol(SF_NONE);
-  //m_i_Op_stage++;
+
 
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
 }
