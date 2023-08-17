@@ -19,18 +19,7 @@
 //  /*  7 */ SI_ENUMS
 //};
 
-static Stz* aSI[]
-{
-  /*  0 */ "SI_NONE"_Stz,
-
-  /*  3 */ "SI_CELLARRAY_ADR"_Stz,
-  /*  4 */ "SI_CELLARRAY_ANT"_Stz,
-  /*  5 */ "SI_CELLARRAY_PST"_Stz,
-  /*  6 */ "SI_KEY"_Stz,
-  /*  1 */ "SI_STRAREA_ADR"_Stz,
-  /*  2 */ "SI_STRAREA_OFS"_Stz,
-  /*  7 */ "SI_ENUMS"_Stz
-};
+extern Stz* aSI[SI_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

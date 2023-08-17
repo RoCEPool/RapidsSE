@@ -11,21 +11,8 @@ enum eSD // sort direction
   /*  3 */ SD_ENUMS
 };
 
-static Stz* aSD[]
-{
-  /*  0 */ "SD_NONE"_Stz,
-  /*  1 */ "SD_ASC"_Stz,
-  /*  2 */ "SD_DESC"_Stz,
-  /*  3 */ "SD_ENUMS"_Stz
-};
-
-static Stz* aSD_short[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "ASC"_Stz,
-  /*  2 */ "DESC"_Stz,
-  /*  3 */ "ENUMS"_Stz
-};
+extern Stz* aSD[SD_ENUMS];
+extern Stz* aSD_short[SD_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

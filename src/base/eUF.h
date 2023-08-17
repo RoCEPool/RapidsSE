@@ -11,13 +11,7 @@ enum eUF // token form
   /*  3 */ UF_ENUMS
 };
 
-static Stz* aUF[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "UF_CPP_TOKENS"_Stz,
-  /*  2 */ "UF_SEN_TOKENS"_Stz,
-  /*  3 */ "ENUMS"_Stz,
-};
+extern Stz* aUF[UF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,28 +1,17 @@
 /*============================================================================*/
-/* eWL.h -- Wire Line Adaptor message types                                   */
+/* eUK.cpp -- Dynamic Function Kind                                           */
 /*============================================================================*/
-#pragma once
+#include "BASE.h"
+#include "eUK.h"
 
-enum eWL // wire line message type
+Stz* aUK[UK_ENUMS]
 {
-  /* */ WL_NONE=0, // none
-  
-  /* */ WL_A
-  /* */ WL_B
-  /* */ WL_C
-  
-  /* */ WL_ENUMS
-};
-
-static Stz* aWL[]
-{
-  /* */ "WL_NONE"_Stz,
-  
-  /* */ "WL_A"_Stz,
-  /* */ "WL_B"_Stz,
-  /* */ "WL_C"_Stz,
-  
-  /* */ "WL_ENUMS"_Stz,
+  /* 0 */ "UK_NONE"_Stz,
+  /* 1 */ "UK_AGG"_Stz,
+  /* 2 */ "UK_FILTER"_Stz,
+  /* 3 */ "UK_KEY"_Stz,
+  /* 4 */ "UK_PROJECT"_Stz,
+//  /* 5 */ "UK_ENUMS"_Stz
 };
 
 /*============================================================================*/

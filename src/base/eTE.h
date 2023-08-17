@@ -22,24 +22,7 @@ enum eTE // atom evaluation
   /* */ TE_ENUMS
 };
 
-static Stz* aTE[]
-{
-  /*  */ "TE_NONE"_Stz,
-
-  /*  */ "TE_AND"_Stz,
-  /*  */ "TE_BOOLFN"_Stz,
-  /*  */ "TE_EXECUTE"_Stz,
-  /*  */ "TE_EXISTS"_Stz,
-  /*  */ "TE_IN"_Stz,
-  /*  */ "TE_NOT"_Stz,
-  /*  */ "TE_NOTEXISTS"_Stz,
-  /*  */ "TE_NOTIN"_Stz,
-  /*  */ "TE_OR"_Stz,
-  /*  */ "TE_OTHER"_Stz,
-  /*  */ "TE_RELNOP"_Stz,
-
-  /*  */ "TE_ENUMS"_Stz
-};
+extern Stz* aTE[TE_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */
