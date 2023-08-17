@@ -538,9 +538,8 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(2 == iDepth);
+  Card_TIER2::vValidate(pCI, iDepth, pParent);
 
-  UNUSED(pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
