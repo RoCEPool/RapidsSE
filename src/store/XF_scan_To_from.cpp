@@ -1,39 +1,39 @@
 /*============================================================================*/
-/* XF_scan_To_table.cpp -- Scan Becomes Table                            */
+/* XF_scan_To_from.cpp -- Scan Becomes Table                            */
 /*============================================================================*/
 
-#include "XF_scan_To_table.hpp"
+#include "XF_scan_To_from.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_scan_To_table, CN_XF_SCAN_TO_TABLE)
-__aNewFunction(XF_scan_To_table, CN_XF_SCAN_TO_TABLE)
-__vDeleteFunction(XF_scan_To_table, CN_XF_SCAN_TO_TABLE)
-__aFooterFunction(XF_scan_To_table)
+__pCastFunction(STORE, XF_scan_To_from, CN_XF_SCAN_TO_FROM)
+__aNewFunction(XF_scan_To_from, CN_XF_SCAN_TO_FROM)
+__vDeleteFunction(XF_scan_To_from, CN_XF_SCAN_TO_FROM)
+__aFooterFunction(XF_scan_To_from)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_scan_To_table::XF_scan_To_table(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_SCAN_TO_TABLE, pCI)
+XF_scan_To_from::XF_scan_To_from(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_SCAN_TO_FROM, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 
-  _checkInitialised_(CN_XF_SCAN_TO_TABLE);
+  _checkInitialised_(CN_XF_SCAN_TO_FROM);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_scan_To_table::~XF_scan_To_table(void) noexcept(false)
+XF_scan_To_from::~XF_scan_To_from(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 }
 
 
@@ -44,11 +44,11 @@ XF_scan_To_table::~XF_scan_To_table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_scan_To_table::vXF_scan_To_table(CardIter* pCI)
+void XF_scan_To_from::vXF_scan_To_table(CardIter* pCI)
 {
   _static_
 
-  XF_scan_To_table* pXF_scan_Becomes_table = new XF_scan_To_table(pCI);
+  XF_scan_To_from* pXF_scan_Becomes_table = new XF_scan_To_from(pCI);
 
   pXF_scan_Becomes_table->vXF_scan_To_table();
 
@@ -63,9 +63,9 @@ void XF_scan_To_table::vXF_scan_To_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* scan to table                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_scan_To_table::vXF_scan_To_table(void)
+void XF_scan_To_from::vXF_scan_To_table(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_SCAN_TO_TABLE, "scan to table"_Stz);
 

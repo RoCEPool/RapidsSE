@@ -482,7 +482,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_PROJECTION_ANALYSIS,
   /* */ CN_XF_REINSTATE_STAGE,
   /* */ CN_XF_RPNCALC_TO_BOOLCALC,
-  /* */ CN_XF_SCAN_TO_TABLE,
+  /* */ CN_XF_SCAN_TO_FROM,
   /* */ CN_XF_SHORTEN_QUERYNM,
   /* */ CN_XF_SMOOSH,
   /* */ CN_XF_SMOOTH,
@@ -976,7 +976,7 @@ static Stz* aCN[]
   /* */ "XF_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
   /* */ "XF_REINSTATE_STAGE"_Stz,           // CN_XF_REINSTATE_STAGE
   /* */ "XF_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
-  /* */ "XF_SCAN_TO_TABLE"_Stz,             // CN_XF_SCAN_TO_TABLE
+  /* */ "XF_SCAN_TO_FROM"_Stz,              // CN_XF_SCAN_TO_FROM
   /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_SHORTEN_QUERYNM
   /* */ "XF_SMOOSH"_Stz,                    // CN_XF_SMOOSH
   /* */ "XF_SMOOTH"_Stz,                    // CN_XF_SMOOTH

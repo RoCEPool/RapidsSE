@@ -280,7 +280,7 @@
 #include "XF_not_Ops.hpp"
 #include "XF_projection_Analysis.hpp"
 #include "XF_rpnCalc_To_boolCalc.hpp"
-#include "XF_scan_To_table.hpp"
+#include "XF_scan_To_from.hpp"
 #include "XF_stage_cast.hpp"
 #include "XF_stmCol_To_colNm.hpp"
 #include "XF_subQuery_Analysis.hpp"
@@ -810,7 +810,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROJECTION_ANALYSIS,          sizeof(XF_projection_Analysis),          HT_T_TINY    , FILL },
   {CN_XF_REINSTATE_STAGE,              sizeof(XF_Reinstate_stage),              HT_T_TINY    , FILL },
   {CN_XF_RPNCALC_TO_BOOLCALC,          sizeof(XF_rpnCalc_To_boolCalc),          HT_T_TINY    , FILL },
-  {CN_XF_SCAN_TO_TABLE,                sizeof(XF_scan_To_table),                HT_T_TINY    , FILL },
+  {CN_XF_SCAN_TO_FROM,                 sizeof(XF_scan_To_from),                 HT_T_TINY    , FILL },
   {CN_XF_SHORTEN_QUERYNM,              sizeof(XF_Shorten_queryNm),              HT_T_TINY    , FILL },
   {CN_XF_SMOOSH,                       sizeof(XF_Smoosh),                       HT_T_TINY    , FILL },
   {CN_XF_SMOOTH,                       sizeof(XF_Smooth),                       HT_T_TINY    , FILL },
@@ -818,9 +818,9 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_STMCOL_TO_COLNM,              sizeof(XF_stmCol_To_colNm),              HT_T_TINY    , FILL },
   {CN_XF_STMCOL_TO_TBLCOL,             sizeof(XF_stmCol_To_tblCol),             HT_T_TINY    , FILL },
   {CN_XF_SUBQUERY_ANALYSIS,            sizeof(XF_subQuery_Analysis),            HT_T_TINY    , FILL },
-  {CN_XF_SYNTHESISE_CODE,          sizeof(XF_Synthesise_Code),          HT_T_TINY    , FILL },
-  {CN_XF_TABLE_ANALYSIS,           sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },
-  {CN_XF_TBLCOL_TO_STMCOL,         sizeof(XF_tblCol_To_stmCol),         HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_Code),              HT_T_TINY    , FILL },
+  {CN_XF_TABLE_ANALYSIS,               sizeof(XF_table_Analysis),               HT_T_TINY    , FILL },
+  {CN_XF_TBLCOL_TO_STMCOL,             sizeof(XF_tblCol_To_stmCol),             HT_T_TINY    , FILL },
   {CN_XF_UPDATE_PROJECTION,        sizeof(XF_Update_projection),        HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),                         HT_INVALID   , FILL },

@@ -32,7 +32,7 @@
 #include "XF_not_Ops.hpp"
 #include "XF_projection_Analysis.hpp"
 #include "XF_rpnCalc_To_boolCalc.hpp"
-#include "XF_scan_To_table.hpp"
+#include "XF_scan_To_from.hpp"
 #include "XF_stage_cast.hpp"
 #include "XF_stmCol_To_colNm.hpp"
 #include "XF_subQuery_Analysis.hpp"
@@ -126,7 +126,7 @@ void XF::vTransform(void)
 
     //vGroup_CondenseInfo();
     XF_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
-    XF_scan_To_table::vXF_scan_To_table(m_pCI);
+    XF_scan_To_from::vXF_scan_To_table(m_pCI);
     XF_Add_level::vXF_Add_level(m_pCI);
     XF_not_Ops::vXF_not_Ops(m_pCI);
 
