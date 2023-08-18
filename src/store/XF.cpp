@@ -21,7 +21,7 @@
 #include "XF_Individuate_filter.hpp"
 #include "XF_Synthesise_Code.hpp"
 #include "XF_OT_Replace_scan_By_indexScan.hpp"
-#include "XF_Morph_table_To_EEop.hpp"
+#include "XF_Morph_from_To_OP.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
 #include "XF_OT_Reduce_gbyAgg_key.hpp"
@@ -156,7 +156,7 @@ void XF::vTransform(void)
 
   XF_Delete_flat::vXF_Delete_flat(m_pCI);
 
-  XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(m_pCI);
+  XF_Morph_from_To_OP::vXF_Morph_table_To_EEop(m_pCI);
 
   XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
 

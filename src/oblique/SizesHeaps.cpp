@@ -269,7 +269,7 @@
 #include "XF_OT_Early_projection.hpp"
 #include "XF_Individuate_filter.hpp"
 #include "XF_OT_Replace_scan_By_indexScan.hpp"
-#include "XF_Morph_table_To_EEop.hpp"
+#include "XF_Morph_from_To_OP.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
 #include "XF_OT_Reduce_gbyAgg_key.hpp"
@@ -786,7 +786,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN,                     sizeof(XF_Flatten),                     HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_10_F,                sizeof(XF_Flatten_10_F),                HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_24_W_A_C_RO,         sizeof(XF_Flatten_24_W_A_C_ro),         HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_32_W_A_NC_I,         sizeof(XF_Flatten_32_W_A_NC_I),          HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_32_W_A_NC_I,          sizeof(XF_Flatten_32_W_A_NC_I),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_34_W_A_NC_RO,         sizeof(XF_Flatten_34_W_A_NC_ro),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_40_W_L_C_E,           sizeof(XF_Flatten_40_W_L_C_E),           HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,   sizeof(XF_Flatten_52_W_L_NC_I_exists),   HT_T_TINY    , FILL },
@@ -796,7 +796,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_74_H_A_NC_RO,         sizeof(XF_Flatten_74_H_A_NC_ro),         HT_T_TINY    , FILL },
   {CN_XF_INDEX_ANALYSIS,               sizeof(XF_index_Analysis),               HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,           sizeof(XF_Individuate_filter),           HT_T_TINY    , FILL },
-  {CN_XF_MORPH_TABLE_TO_EEOP,          sizeof(XF_Morph_table_To_EEop),          HT_T_TINY    , FILL },
+  {CN_XF_MORPH_FROM_TO_EE,             sizeof(XF_Morph_from_To_OP),             HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                      sizeof(XF_Move_on),                      HT_T_TINY    , FILL },
   {CN_XF_NOT_OPS,                      sizeof(XF_not_Ops),                      HT_T_TINY    , FILL },
   {CN_XF_OT_CUT_SORT,                  sizeof(XF_OT_Cut_sort),                  HT_T_TINY    , FILL },

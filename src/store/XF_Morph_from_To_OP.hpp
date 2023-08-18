@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Morph_table_To_EEop.hpp -- Morph table to EE op                         */
+/* XF_Morph_from_To_OP.hpp -- Morph table to EE op                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Morph_table_To_EEop : public XF_TRANSFORM
+  class XF_Morph_from_To_OP : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Morph_table_To_EEop(CardIter* pCI);
-   ~XF_Morph_table_To_EEop(void) noexcept(false);
+    XF_Morph_from_To_OP(CardIter* pCI);
+   ~XF_Morph_from_To_OP(void) noexcept(false);
 
     static void vXF_Morph_table_To_EEop(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Morph_table_To_EEop* _pXF_Morph_table_To_EEop(void* aAddr);
+  XF_Morph_from_To_OP* _pXF_Morph_from_To_OP(void* aAddr);
 }
 
 /*============================================================================*/

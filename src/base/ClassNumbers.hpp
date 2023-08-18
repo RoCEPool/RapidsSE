@@ -468,7 +468,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_FLATTEN_74_H_A_NC_RO,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
-  /* */ CN_XF_MORPH_TABLE_TO_EEOP,
+  /* */ CN_XF_MORPH_FROM_TO_EE,
   /* */ CN_XF_MOVE_ON,
   /* */ CN_XF_NOT_OPS,
   /* */ CN_XF_OT_CUT_SORT,
@@ -962,7 +962,7 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,      // CN_XF_FLATTEN_74_H_A_NC_RO,
   /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
-  /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
+  /* */ "XF_MORPH_FROM_TO_OP"_Stz,          // CN_XF_MORPH_FROM_TO_EE
   /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
   /* */ "XF_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
   /* */ "XF_OT_CUT_SORT"_Stz,                  // CN_XF_OT_CUT_SORT
