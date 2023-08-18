@@ -447,7 +447,6 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_COLNM_TO_STMCOL,
   /* */ CN_XF_COLUMN_MAPPING,
   /* */ CN_XF_CULL_NONUSED_BOUND,
-  /* */ CN_XF_CULL_USED_BOUND,
   /* */ CN_XF_DEDUPE_AS,
   /* */ CN_XF_DELETE_EMPTY_WHERE,
   /* */ CN_XF_DELETE_FLAT,
@@ -941,7 +940,6 @@ static Stz* aCN[]
   /* */ "XF_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL
   /* */ "XF_COLUMN_MAPPING"_Stz,            // CN_XF_COLUMN_MAPPING
   /* */ "XF_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
-  /* */ "XF_CULL_USED_BOUND"_Stz,           // CN_XF_CULL_USED_BOUND
   /* */ "XF_DEDUPE_AS"_Stz,                 // CN_XF_DEDUPE_AS
   /* */ "XF_DELETE_EMPTY_WHERE"_Stz,        // CN_XF_DELETE_EMPTY_WHERE
   /* */ "XF_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT

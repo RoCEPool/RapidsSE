@@ -10,7 +10,6 @@
 
 #include "XF_Add_level.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
-#include "XF_Cull_Used_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Dedupe_as.hpp"
 #include "XF_Delete_Unneeded.hpp"
@@ -24,7 +23,7 @@
 #include "XF_Optimise_from_To_OP.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
-#include "XF_OT_Reduce_gbyAgg_key.hpp"
+#include "XF_Optimise_Reduce_gbyAgg_key.hpp"
 #include "XF_Reinstate_stage.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_as_Review.hpp"
@@ -175,13 +174,10 @@ void XF::vTransform(void)
   XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
   XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(m_pCI);
-  //XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
 
   XF_Optimise_Early_projection::vXF_Early_projection(m_pCI);
 
-
-
-  XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
+  XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
   m_pCI->m_pBench->vMadeOptimal(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

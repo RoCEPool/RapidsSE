@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_OT_Reduce_gbyAgg_key.hpp -- Reduce key of gbyAgg                           */
+/* XF_Optimise_Reduce_gbyAgg_key.hpp -- Reduce key of gbyAgg                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_OT_Reduce_gbyAgg_key : public XF_TRANSFORM
+  class XF_Optimise_Reduce_gbyAgg_key : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    XF_OT_Reduce_gbyAgg_key(CardIter* pCI);
-   ~XF_OT_Reduce_gbyAgg_key(void) noexcept(false);
+    XF_Optimise_Reduce_gbyAgg_key(CardIter* pCI);
+   ~XF_Optimise_Reduce_gbyAgg_key(void) noexcept(false);
 
     static void vXF_Reduce_key_gbyAgg(CardIter* pCI);
 
@@ -29,7 +29,7 @@ namespace STORE
 
   };
 
-  XF_OT_Reduce_gbyAgg_key* _pXF_OT_Reduce_gbyAgg_key(void* aAddr);
+  XF_Optimise_Reduce_gbyAgg_key* _pXF_Optimise_Reduce_gbyAgg_key(void* aAddr);
 }
 
 /*============================================================================*/
