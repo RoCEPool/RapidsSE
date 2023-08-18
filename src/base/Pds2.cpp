@@ -354,6 +354,89 @@ SkipListBlock* Pds2::pFind(void* pKey)
 
   return nullptr;
 }
+/*----------------------------------------------------------------------------*/
+/* find last block less than the given key                                    */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds2::pFindLessThan(void* pKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS2,_FOOTER_);
+
+  u2 uOffset = m_uInUseRootOffset;
+  for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
+    if(m_iNumEntries[i_Level] == 0)
+      continue;
+
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
+
+    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
+    while(pNext != nullptr) {
+      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+
+      if(iCompareRes == 0) {
+        return pNext;
+      } else if(iCompareRes > 0) {
+        // pNext > pKey
+        if(i_Level == 0) {
+          return pCursor;
+        }
+        uOffset = uGetOffsetFromBase(pCursor);
+        break;
+      }
+
+      pCursor = pNext;
+      pNext = pNextSLBlock(pNext, i_Level);
+
+      if(pNext == nullptr && i_Level == 0) {
+        return pCursor;
+      }
+
+    }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find first block greater than given key                                    */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds2::pFindGreaterThan(void* pKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS2,_FOOTER_);
+
+  u2 uOffset = m_uInUseRootOffset;
+  for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
+    if(m_iNumEntries[i_Level] == 0)
+      continue;
+
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
+
+    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
+    while(pNext != nullptr) {
+      i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
+
+      if(iCompareRes == 0) {
+        return pNext;
+      } else if(iCompareRes > 0) {
+        // pNext > pKey
+        if(i_Level == 0) {
+          return pNext;
+        }
+        uOffset = uGetOffsetFromBase(pCursor);
+        break;
+      }
+
+      pCursor = pNext;
+      pNext = pNextSLBlock(pNext, i_Level);
+
+      if(pNext == nullptr && i_Level == 0) {
+        return pCursor;
+      }
+
+    }
+  }
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Get the first block after the root block                                   */
@@ -377,11 +460,11 @@ SkipListBlock* Pds2::pFirstBlock(void)
 /*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
 /*----------------------------------------------------------------------------*/
-i8 Pds2::iNumEntries(void)
+i8 Pds2::iNumEntries(i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS2,_FOOTER_);
-
-  return m_iNumEntries[0];
+  RASSERT(iLevel >= 0 && iLevel < C_MAX_LVL_LEVELS);
+  return m_iNumEntries[iLevel];
 }
 
 /*----------------------------------------------------------------------------*/

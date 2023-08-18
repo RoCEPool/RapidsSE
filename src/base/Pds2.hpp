@@ -50,8 +50,10 @@ namespace BASE
     void            vDumpInUseList(void);
     SkipListBlock*  pInsert(void* pKey);
     SkipListBlock*  pFind(void* pKey);
+    SkipListBlock*  pFindLessThan(void* pKey);
+    SkipListBlock*  pFindGreaterThan(void* pKey);
     SkipListBlock*  pFirstBlock(void);
-    i8              iNumEntries(void);
+    i8              iNumEntries(i8 iLevel);
 
     // private:
     SkipListBlock*  aAllotSkipListBlock(void);

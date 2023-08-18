@@ -20,16 +20,15 @@ __aFooterFunction(LglBufSet)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LglBufSet::LglBufSet(void)
-: Object(CN_LGLBUFSET)
+    : Object(CN_LGLBUFSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
-  
 
-  for (LglPtn tLglPtn = 0; tLglPtn < C_MAX_LGLPTNS; tLglPtn++)
-    m_paBufferChain[tLglPtn] = nullptr;
-    
+  m_iSynthKey = 0;
+  m_pPdsOfBuffers = new Pds2_t<LglBufSetItem>(STORE::iLglBufSetKeyCompare);
+
   _checkInitialised_(CN_LGLBUFSET);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 }
 
@@ -41,8 +40,8 @@ LglBufSet::~LglBufSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   // Assert we don't have any dangling buffers
-  for (LglPtn tLglPtn = 0; tLglPtn < AM::PTNMAP::nPtnsInGrid(); tLglPtn++)
-    RASSERT(! m_paBufferChain[tLglPtn]);
+  RASSERT(m_pPdsOfBuffers->iNumEntries(0) == 0);
+  delete m_pPdsOfBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,25 +55,47 @@ void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
-   // link the old with this
-   pDataBuffer->vNextLinkedBuffer(m_paBufferChain[tLglPtn]);
-   
-   if (m_paBufferChain[tLglPtn])
-     m_paBufferChain[tLglPtn]->vPrevLinkedBuffer(pDataBuffer);
-   
-   m_paBufferChain[tLglPtn] = pDataBuffer;
+  // Append a buffer to this pds
+  // Use a synthetic key to ensure the buffers are added in ascending order
+  LglBufSetItem oItem;
+
+  oItem.iLglPtn = tLglPtn.iAsI8();
+  oItem.iSynthKey = m_iSynthKey++;
+  oItem.oBufferId = pDataBuffer->oGetBufferId();
+
+  RASSERT(oItem.oBufferId.m_iAsI8 != 0);
+
+  SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
+
+  *(LglBufSetItem*)(pResultBlock->aItem()) = oItem;
 }
 
 /*----------------------------------------------------------------------------*/
-/* return a full crwBuffer for given partition (if any)                       */
+/* return a crwBuffer for given partition from head of chain (non-completed buffer) (if any)*/
 /*----------------------------------------------------------------------------*/
 DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
-  DataBuffer* pBuffer = m_paBufferChain[tLglPtn];
+  LglBufSetItem oSearchKey;
+  oSearchKey.iLglPtn = tLglPtn.iAsI8();
+  oSearchKey.iSynthKey = C_INT_MAX;
 
-  return pBuffer;
+  // Find the first block that is less than LglPtn,Max key
+  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+
+  if(pHead != nullptr) {
+    // If the block is not null, extract the keys and values
+    LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
+
+    // If the LglPtn value matches, we found a buffer part of this LglPtn chain
+    // Delete it from the Pds and return the DataBuffer associated with it's bufferId
+    if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
+      return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
+    }
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,29 +105,28 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
-  DataBuffer* pCompletedBuffer = nullptr;
-  
-  DataBuffer* pDataBuffer = (DataBuffer*)
-                              (m_paBufferChain[tLglPtn]
-                                 ? m_paBufferChain[tLglPtn]->pNextLinkedBuffer()
-                                 : nullptr);
-  while (pDataBuffer) {
-    pCompletedBuffer = pDataBuffer;
-    pDataBuffer = (DataBuffer*)pDataBuffer->pNextLinkedBuffer();
-  }
-  
-  if (pCompletedBuffer) {
-    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevLinkedBuffer();
-    pPrevBuffer->vNextLinkedBuffer(nullptr);
+  LglBufSetItem oSearchKey;
+  oSearchKey.iLglPtn = tLglPtn.iAsI8();
+  oSearchKey.iSynthKey = C_INT_MIN;
 
-    // TODO: Arjun - Remember to update this section to use the PDS once implemented in RowBuffer
+  // Get the first block that is greater than LglPtn,Min
+  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
 
-    // TODO: Arjun - Temp test to see if anything uses these pointers after it has left this operator
-    pCompletedBuffer->vNextLinkedBuffer(nullptr);
-    pCompletedBuffer->vPrevLinkedBuffer(nullptr);
+  if(pHead != nullptr) {
+    // If the block is not null, extract the keys and values
+    LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
+
+    // If the LglPtn value matches, we found a buffer part of this LglPtn chain
+    // Delete it from the Pds and return the DataBuffer associated with it's bufferId
+    if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
+      BufferId oBufferId = pItem->oBufferId;
+      bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+      RASSERT(bResult);
+      return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+    }
   }
-  // Arjun: Potential race condition
-  return pCompletedBuffer;
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,12 +135,65 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
 DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
-  
-  DataBuffer* pDataBuffer = m_paBufferChain[tLglPtn];
-  
-  m_paBufferChain[tLglPtn] = nullptr;
-  
-  return pDataBuffer;
+
+  LglBufSetItem oSearchKey;
+  oSearchKey.iLglPtn = tLglPtn.iAsI8();
+  oSearchKey.iSynthKey = C_INT_MIN;
+  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
+
+  if(pHead != nullptr) {
+    // Assert that there are no more buffers associated with this LglPtn
+    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
+    if(pNextBlock != nullptr) {
+      LglBufSetItem* pNextItem = (LglBufSetItem*) pNextBlock->aItem();
+      RASSERT(pNextItem != nullptr);
+      // Assert that the next block (if it exists) does not have the same LglPtn number
+      RASSERT(pNextItem->iLglPtn != tLglPtn.iAsI8());
+    }
+
+    // Get the current head block of this LglPtn and extract the values
+    LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
+
+    // Delete it from the Pds and return the DataBuffer associated with it's bufferId
+    // If the LglPtn matches.
+    if(pItem != nullptr && pItem->iLglPtn == tLglPtn.iAsI8()) {
+      BufferId oBufferId = pItem->oBufferId;
+      bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+      RASSERT(bResult);
+      return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+    }
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare two nodes                                          */
+/*----------------------------------------------------------------------------*/
+i8 STORE::iLglBufSetKeyCompare(void* aItem_l, void* aItem_r)
+{
+  _static_
+
+  LglBufSetItem* pKey_l = (LglBufSetItem*) aItem_l;
+  LglBufSetItem* pKey_r = (LglBufSetItem*) aItem_r;
+
+  // do the node names match?
+  if (pKey_l->iLglPtn == pKey_r->iLglPtn) {
+    if (pKey_l->iSynthKey == pKey_r->iSynthKey) {
+      return 0;
+    }
+    else {
+      if (pKey_l->iSynthKey >= pKey_r->iSynthKey)
+        return 1;
+      else
+        return -1;
+    }
+  } else {
+    if (pKey_l->iLglPtn >= pKey_r->iLglPtn)
+      return 1;
+    else
+      return -1;
+  }
 }
 
 /*============================================================================*/

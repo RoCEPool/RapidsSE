@@ -3418,8 +3418,32 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = 3;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = 4;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
   oDKey.iKey_1 = 12;
   oDKey.iKey_2 = 2;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = 5;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = 3;
   pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
@@ -3431,7 +3455,7 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 12;
-  oDKey.iKey_2 = 3;
+  oDKey.iKey_2 = 8;
   pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
@@ -3442,11 +3466,113 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
-  RASSERT(PDS_doubleKey->m_iNumEntries[0] == 5);
+  oDKey.iKey_1 = 14;
+  oDKey.iKey_2 = 5;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  RASSERT(PDS_doubleKey->m_iNumEntries[0] == 10);
   RASSERT(PDS_doubleKey->m_iFreeListEntries == 0);
 
   PDS_doubleKey->vDumpInUseList();
   PDS_doubleKey->vDumpFreeList();
+
+  // Find lowest block where iKey_1 == 12
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 12);
+  RASSERT(oSearchKey->iKey_2 == 1);
+
+
+  // Find lowest block where iKey_1 == 10
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 10);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+  // Find lowest block where iKey_1 == 14
+  oDKey.iKey_1 = 14;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 14);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+  // Find lowest block (first block greater than given key)
+  oDKey.iKey_1 = C_INT_MIN;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 10);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+  // Find lowest block where iKey_1 == 13 which does not exist
+  // So return first block greater than iKey_1 == 13
+  oDKey.iKey_1 = 13;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 14);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+
+  // Find highest block where iKey_1 == 12
+  // i.e Find first block less than 12,max
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 12);
+  RASSERT(oSearchKey->iKey_2 == 8);
+
+  // Find highest block where iKey_1 == 10
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 10);
+  RASSERT(oSearchKey->iKey_2 == 4);
+
+  // Find highest block (Last block less than given key)
+  oDKey.iKey_1 = C_INT_MAX;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 14);
+  RASSERT(oSearchKey->iKey_2 == 5);
+
+  // Find highest block where iKey_1 == 13 which does not exist
+  // So find the last block less than the given key
+  oDKey.iKey_1 = 13;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 12);
+  RASSERT(oSearchKey->iKey_2 == 8);
+
 
   delete PDS_doubleKey;
 
