@@ -208,6 +208,7 @@ void Card_KeyNotExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
   }
 
+  Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

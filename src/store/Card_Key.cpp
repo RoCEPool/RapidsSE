@@ -261,6 +261,7 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
+  Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

@@ -387,6 +387,7 @@ void Card_Stage::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_notHave(CK_LEVEL,CK_NONE);
 
   UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

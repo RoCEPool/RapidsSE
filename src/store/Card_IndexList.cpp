@@ -241,6 +241,7 @@ void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(nChosenIndexes <= 1);
 
   UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

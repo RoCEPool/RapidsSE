@@ -226,6 +226,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_LEVEL,CK_KEY,CK_PROJECTION,CK_NONE);
 
   UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

@@ -331,7 +331,8 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (pSymbol()->bIs_Idx_Col()) {
-    pCI->vValidateChildren(this,iDepth+1);
+    Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
     vValidationPassed();
     return;
   }
@@ -339,6 +340,7 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(pSymbol()->bIs_Rln_Op() || pSymbol()->bIs_None());
 
   UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }
