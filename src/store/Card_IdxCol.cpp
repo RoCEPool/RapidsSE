@@ -19,7 +19,7 @@ __vDeleteFunction(Card_IdxCol, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IdxCol::Card_IdxCol(void)
-    : Card_COL(CK_IDXCOL)
+    : Card_COL(CK_IDXCOL, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

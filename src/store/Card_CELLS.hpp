@@ -10,7 +10,7 @@ namespace STORE
   class Card_CELLS : public Card_LIST
   {  
   public:
-    Card_CELLS(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
+    Card_CELLS(eCK eCard, i8 iFixedDepth);
    ~Card_CELLS(void) noexcept(false);
 
   };

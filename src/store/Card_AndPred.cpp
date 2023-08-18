@@ -20,7 +20,7 @@ __vDeleteFunction(Card_AndPred, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AndPred::Card_AndPred(void)
-: Card_PRED(CK_ANDPRED)
+: Card_PRED(CK_ANDPRED,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

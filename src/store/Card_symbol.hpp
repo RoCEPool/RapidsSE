@@ -13,7 +13,7 @@ namespace STORE
   private:
     
   public:
-    Card_symbol(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
+    Card_symbol(eCK eCard, i8 iFixedDepth);
 
     ~Card_symbol(void) noexcept(false);
 

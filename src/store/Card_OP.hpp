@@ -13,7 +13,7 @@ namespace STORE
   class Card_OP : public Card_symbol<Card_OP>
   {  
   public:
-    Card_OP(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
+    Card_OP(eCK eCard, i8 iFixedDepth);
    ~Card_OP(void) noexcept(false);
 
     static bool bIsOp(Card* pCard);

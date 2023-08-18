@@ -10,7 +10,7 @@ namespace STORE
   class Card_COL : public Card_symbol<Card_COL>
   {  
   public:
-    Card_COL(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
+    Card_COL(eCK eCard, i8 iFixedDepth);
    ~Card_COL(void) noexcept(false);
 
     static bool bIsReplicated (Symbol* aCol);

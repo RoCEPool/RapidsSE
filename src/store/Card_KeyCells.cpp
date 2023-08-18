@@ -18,7 +18,7 @@ __vDeleteFunction(Card_KeyCells,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyCells::Card_KeyCells(void)
-: Card_CELLS(CK_KEYCELLS)
+: Card_CELLS(CK_KEYCELLS,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

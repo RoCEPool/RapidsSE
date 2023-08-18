@@ -20,7 +20,7 @@ __vDeleteFunction(Card_OuterJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OuterJoin::Card_OuterJoin(void)
-: Card(CK_OUTERJOIN)
+: Card(CK_OUTERJOIN,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

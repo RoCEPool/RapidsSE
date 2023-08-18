@@ -20,7 +20,7 @@ __vDeleteFunction(Card_IndexJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexJoin::Card_IndexJoin(void)
-: Card_OP(CK_INDEXJOIN,1)
+: Card_OP(CK_INDEXJOIN,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

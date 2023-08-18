@@ -153,7 +153,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pChild = new Card(eChild);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pParent->vAppend(pChild);
   G_vMember(eChild, pChild, __func__);
@@ -166,7 +166,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  Card* pChild = new Card(eChild);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pChild->pSymbol()->vSymPpy(pSymbol);
 
@@ -181,7 +181,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  Card* pChild = new Card(eChild);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pChild->pSymbol()->vSym(&xSymbol);
 
@@ -1537,7 +1537,7 @@ void CardIter::G_vNewMember(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.p_NEW = new Card(eMember);
+  G.p_NEW = new Card(eMember,C_UNKNOWN);
 
   G_vMember(eMember, G.p_NEW, __func__);
 }
@@ -1854,7 +1854,7 @@ void CardIter::G_vPushNewChild(Card* pParent, eCK eChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pChild = new Card(eChild);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
 
   pParent->vPush(pChild);
   G_vMember(eChild, pChild, __func__);

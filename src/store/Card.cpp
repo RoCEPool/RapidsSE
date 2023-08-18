@@ -117,6 +117,10 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+
+  if (CK_FROM == eCard && C_UNKNOWN != iFixedDepth)
+    vDebugPoint();
+
   if (CK_CROSSJOIN == eCard)
     vDebugPoint();
 
@@ -297,7 +301,7 @@ Card* Card::pAppendNewCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard = new Card(eCard);
+  Card* pCard = new Card(eCard,C_UNKNOWN);
 
   vPushTail(pCard);
 
@@ -515,7 +519,7 @@ Card* Card::pDupCard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard_dup = new Card(m_eCard);
+  Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
   pCard_dup->pSymbol()->vSym(pSymbol());
 
   return pCard_dup;
@@ -528,7 +532,7 @@ Card* Card::pDupCardRecursive(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card* pCard_dup = new Card(m_eCard);
+  Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
   pCard_dup->pSymbol()->vSymPpy(pSymbol());
 
   i8 nSubCards = this->nChildCards();
