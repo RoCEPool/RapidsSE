@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "XF_OT_Early_projection.hpp"
+#include "eOT.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -104,6 +105,9 @@ void XF_OT_Early_projection::vXF_Early_projection(void)
 
     m_pCI->G_vMainResynch(m_pCI->Early.m_pOP_leaf);
   }
+
+  m_pCI->pBoard()->pState()->vInsert(aOT[OT_EARLY_PROJECTION]);
+
 
   m_pCI->vEndTransform();
   vDebugPoint();

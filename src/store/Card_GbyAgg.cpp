@@ -402,29 +402,31 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* promote gbyAgg to ordAgg                                                   */
+/* replace gbyAgg by ordAgg                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vPromote_gbyAgg_To_ordAgg(CardIter* pCI)
+bool Card_GbyAgg::bReplace_gbyAgg_By_ordAgg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! (pCI->G.p_level = pSub_level()) )
-    return;
+    return false;
 
   if (AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
-    return;
+    return false;
 
   if (! pCI->StreamOrder.m_pStreamKey_running)
-    return;
+    return false;
 
   pCI->G.p_key = pSub_key();
 
   if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pStreamKey_running))
-    return;
+    return false;
 
   vCard(CK_ORDAGG);
 
   vDebugPoint();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

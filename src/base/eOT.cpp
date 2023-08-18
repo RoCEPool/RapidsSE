@@ -16,7 +16,7 @@ Stz* aOT[OT_ENUMS]
 
   // EARLY
   /*  */ "OT_ELY_FILTERS"_Stz,
-  /*  */ "OT_ELY_PROJECTIONS"_Stz,
+  /*  */ "OT_EARLY_PROJECTION"_Stz,
 
   // MINIMIZE
   /*  */ "OTRED_GRPAGG_KEY"_Stz,
@@ -29,9 +29,9 @@ Stz* aOT[OT_ENUMS]
 
   // REPLACE
   /*  */ "OT_RPL_AGGREG_BY_SORT_ORDAGG"_Stz,
-  /*  */ "OT_RPL_GBYAGG_BY_ORDAGG"_Stz,
+  /*  */ "OT_REPLACE_GBYAGG_BY_ORDAGG"_Stz,
   /*  */ "OT_RPL_MAX_BY_TOP"_Stz,
-  /*  */ "OT_RPL_SCAN_BY_INDEXSCAN"_Stz,
+  /*  */ "OT_REPLACE_SCAN_BY_INDEXSCAN"_Stz,
   /*  */ "OT_RPL_SORTDESC_LIMIT_BY_TOP"_Stz,
   /*  */ "OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS"_Stz,
 

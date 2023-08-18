@@ -18,6 +18,8 @@
 #include "XF_Predicate_Reposition.hpp"
 #include "XF_Update_projection.hpp"
 
+#include "eOT.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -333,6 +335,8 @@ void XF_OT_Join_Ordering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+
+  m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);
 
   m_pCI->vPrintBoard(__LINE__);
 

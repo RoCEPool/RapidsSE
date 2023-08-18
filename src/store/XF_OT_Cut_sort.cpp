@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "XF_OT_Cut_sort.hpp"
+#include "eOT.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -75,6 +76,8 @@ void XF_OT_Cut_sort::vXF_Cut_sort(void)
 
       case CK_SORT:
         m_pCI->G.p_sort->vCut_sort(m_pCI);
+        m_pCI->pBoard()->pState()->vInsert(aOT[OT_CUT_SORT]);
+
         break;
 
       default:

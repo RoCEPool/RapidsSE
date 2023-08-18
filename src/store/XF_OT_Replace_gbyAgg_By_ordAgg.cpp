@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
+#include "eOT.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +75,9 @@ void XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
     switch (m_pCI->G.e_MainCard) {
 
       case CK_GBYAGG:
-        m_pCI->G.p_gbyAgg->vPromote_gbyAgg_To_ordAgg(m_pCI);
+        if (m_pCI->G.p_gbyAgg->bReplace_gbyAgg_By_ordAgg(m_pCI))
+          m_pCI->pBoard()->pState()->vInsert(aOT[OT_REPLACE_GBYAGG_BY_ORDAGG]);
+
         break;
 
       default:

@@ -4,6 +4,7 @@
 
 #include "XF_OT_Reduce_gbyAgg_key.hpp"
 
+#include "eOT.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -49,7 +50,7 @@ void XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(CardIter* pCI)
 
   XF_OT_Reduce_gbyAgg_key* pXF_Reduce_key_gbyAgg = new XF_OT_Reduce_gbyAgg_key(pCI);
 
-  pXF_Reduce_key_gbyAgg->vXF_Reduce_key_gbyAgg();
+  pXF_Reduce_key_gbyAgg->vXF_Reduce_gbyAgg_key();
 
   delete pXF_Reduce_key_gbyAgg;
 }
@@ -62,9 +63,11 @@ void XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(void)
+void XF_OT_Reduce_gbyAgg_key::vXF_Reduce_gbyAgg_key(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
+
+  m_pCI->pBoard()->pState()->vInsert(aOT[OT_REDUCE_GBYAGG_KEY]);
 
   vValidate();
 
