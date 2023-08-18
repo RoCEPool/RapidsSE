@@ -13,7 +13,6 @@
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Dedupe_as.hpp"
 #include "XF_Prolog_Delete_Unneeded.hpp"
-#include "XF_Delete_flat.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
 #include "XF_Optimise_Early_projection.hpp"
 #include "XF_Flatten.hpp"
@@ -158,7 +157,6 @@ void XF::vTransform(void)
   Bench::vValidate(m_pCI);
 
 
-  XF_Delete_flat::vXF_Delete_flat(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3/5) optimisw

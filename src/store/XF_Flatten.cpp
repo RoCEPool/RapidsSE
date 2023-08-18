@@ -20,6 +20,7 @@
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
+#include "XF_Flatten_Delete_flat.hpp"
 
 #include "XF_stmCol_To_tblCol.hpp"
 
@@ -96,9 +97,9 @@ void XF_Flatten::vFlatten(void)
 //  vFlatten_recurse();
   vFlatten_recurse(0);
 
+  XF_Flatten_Delete_flat::vXF_Delete_flat(m_pCI);
 
   m_pCI->m_pBench->vMadeFlat(true);
-
 }
 
 /*----------------------------------------------------------------------------*/
