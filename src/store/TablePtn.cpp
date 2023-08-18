@@ -300,6 +300,25 @@ void TablePtn::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the table                                                             */
+/*----------------------------------------------------------------------------*/
+BufferId TablePtn::oExtractBufferId(void* pItemAddr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return m_pCrwTablePtn->oExtractBufferId(pItemAddr);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get IndexTree                                                              */
 /*----------------------------------------------------------------------------*/
 IndexTree *TablePtn::pIndexTree(i8 iIndexNo)

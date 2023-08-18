@@ -41,6 +41,7 @@ void Step::vAddSteps_TablePtn(void)
   vAddStep("TablePtn[].cleanup"_Stz,          &Step::vTablePtnCleanup);
   vAddStep("TablePtn[].dropRead"_Stz,         &Step::vTablePtnDropRead);
   vAddStep("TablePtn[].dropWrite"_Stz,        &Step::vTablePtnDropWrite);
+  vAddStep("TablePtn[].extractBufferId"_Stz,  &Step::vTablePtnExtractBufferId);
   vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
   vAddStep("TablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
   vAddStep("TablePtn[].rootBufferId"_Stz ,    &Step::vTablePtnRootBufferId);
@@ -177,6 +178,26 @@ void Step::vTablePtnDropWrite(void)
   // drop the write lock
   pTablePtn->vDropWrite();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].extractBufferId -- extract bufferId from SkipListBlock          */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnExtractBufferId(void)
+{
+  ENTRY();
+
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+
+  // Pop the SkipList Item address
+  void* pItemAddr = (void*)m_pDataStack->pPopPtr(__func__);
+
+  BufferId oBufferId = pTablePtn->oExtractBufferId(pItemAddr);
+
+  m_pDataStack->vPushPtr((Object*)oBufferId.m_pvAsAddress);
+
   EXIT();
 }
 

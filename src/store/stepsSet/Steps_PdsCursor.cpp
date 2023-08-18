@@ -16,22 +16,22 @@ void Step::vAddSteps_PdsCursor(void)
 {
   vAddStep("PdsCursor[]"_Stz,                     &Step::vPdsCursorGet);
 
-  vAddStep("PdsCursor[].getItemBodyAddr"_Stz,     &Step::vPdsCursorItemBodyAddr);
+  vAddStep("PdsCursor[].getItemAddr"_Stz,         &Step::vPdsCursorItemAddr);
   vAddStep("PdsCursor[].currIsNotNull"_Stz  ,     &Step::vPdsCursorCurrIsNotNull);
   vAddStep("PdsCursor[].next"_Stz,                &Step::vPdsCursorNext);
   vAddStep("PdsCursor[].set"_Stz  ,               &Step::vPdsCursorSet);
 }
 /*----------------------------------------------------------------------------*/
-/* PdsCursor[].getItemBodyAddr -- get the start addr of the item body in this pds block */
+/* PdsCursor[].getItemAddr -- get the start addr of the item in this pds block */
 /*----------------------------------------------------------------------------*/
-void Step::vPdsCursorItemBodyAddr(void)
+void Step::vPdsCursorItemAddr(void)
 {
   ENTRY();
 
   PdsCursor* pPdsCursor = _pPdsCursor(*m_pLogicUnit->m_xpPdsCursor);
   SkipListBlock* pSLBlock = pPdsCursor->m_pCurrentBlock;
   RASSERT(pSLBlock != nullptr);
-  m_pDataStack->vPushPtr((Object*)pSLBlock->aItemBody());
+  m_pDataStack->vPushPtr((Object*)pSLBlock->aItem());
 
   EXIT();
 }

@@ -15,7 +15,7 @@ namespace STORE
   {
   public:
     i8                      m_iSynthKey;     // Synthetic key used to append buffers to the Pds structure
-    Pds2_t<LglBufSetItem>*  m_pPdsOfBuffers; // Pds of buffers
+    Pds_t<LglBufSetItem>*   m_pPdsOfBuffers; // Pds of buffers
 
     // must be last
     Footer m_xFooter;

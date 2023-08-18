@@ -235,7 +235,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
   /* */ CN_PDS,
-  /* */ CN_PDS2,
   /* */ CN_PDSCURSOR,
   /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
@@ -731,7 +730,6 @@ static Stz* aCN[]
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PDS"_Stz,                  // CN_PDS
-  /* */ "PDS2"_Stz,                 // CN_PDS2
   /* */ "PDSCURSOR"_Stz,            // CN_PDSCURSOR
   /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT

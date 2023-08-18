@@ -1655,7 +1655,7 @@ void vJobIdLastJobIdFetch(void);
 
   // pds Cursor
   void vPdsCursorGet(void);
-  void vPdsCursorItemBodyAddr(void);
+  void vPdsCursorItemAddr(void);
   void vPdsCursorCurrIsNotNull(void);
   void vPdsCursorNext(void);
   void vPdsCursorSet(void);
@@ -2166,6 +2166,7 @@ void vJobIdLastJobIdFetch(void);
   // table partition
   void vTablePtnAppendBuffer(void);
   void vTablePtnGet(void);
+  void vTablePtnExtractBufferId(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnRoot(void);
   void vTablePtnRootBufferId(void);

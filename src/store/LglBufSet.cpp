@@ -25,7 +25,7 @@ LglBufSet::LglBufSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   m_iSynthKey = 0;
-  m_pPdsOfBuffers = new Pds2_t<LglBufSetItem>(STORE::iLglBufSetKeyCompare);
+  m_pPdsOfBuffers = new Pds_t<LglBufSetItem>(STORE::iLglBufSetKeyCompare);
 
   _checkInitialised_(CN_LGLBUFSET);
 

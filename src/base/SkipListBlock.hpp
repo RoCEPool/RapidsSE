@@ -26,7 +26,6 @@ namespace BASE
     SkipListBlock(eCN eClassNo, i8 nSizeEnt);
     ~SkipListBlock(void) noexcept(false);
 
-    void* aItemBody(void);
     void* aItem(void);
     i8 iKey(void);
 

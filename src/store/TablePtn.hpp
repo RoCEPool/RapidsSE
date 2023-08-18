@@ -52,6 +52,7 @@ namespace STORE
     void vAppendBuffer(DataBuffer* pDataBuffer);
     i8   nBuffers(void);
     void vDump(void);
+    BufferId oExtractBufferId(void* pItemAddr);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);

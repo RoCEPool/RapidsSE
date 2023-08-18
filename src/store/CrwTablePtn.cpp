@@ -39,8 +39,9 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
 
   m_pTable    = pTable;
   m_tLglPtn    = tLglPtn;
+  m_iSynthKey  = 0;
 
-  m_pPdsOfBufferIds = new Pds_t<xBufferId>();
+  m_pPdsOfBufferIds = new Pds_t<xBufferId>(nullptr);
   //m_pIndexTreeVec  = new IndexTreeVec;
 
   _checkInitialised_(CN_CRWTABLEPTN);
@@ -94,13 +95,14 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append a new Skip List Block to the PDS
-  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pAppendWithSynthKey();
+  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pInsert(&m_iSynthKey);
 
-  // Get the start address of it's body after the key in ITEM
-  BufferId* pItem = (BufferId*) pSLBlock->aItemBody();
+  xBufferId oBufferIdStruct;
+  oBufferIdStruct.iKey = m_iSynthKey++;
+  oBufferIdStruct.oBufferId = pCrwBuffer->oGetBufferId();
 
-  // Update the contents of it's body with the BufferId
-  *pItem = pCrwBuffer->oGetBufferId();
+  // Update the contents of SkipListBlock Item with the key and bufferId
+  *(xBufferId*)(pSLBlock->aItem()) = oBufferIdStruct;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are done with the current buffer, allow it to be paged out by dropping
@@ -116,7 +118,7 @@ i8 CrwTablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  return m_pPdsOfBufferIds->iNumEntries();
+  return m_pPdsOfBufferIds->iNumEntries(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,14 +162,27 @@ void CrwTablePtn::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the table                                                             */
+/*----------------------------------------------------------------------------*/
+BufferId CrwTablePtn::oExtractBufferId(void *pItemAddr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  xBufferId oBufferIdStruct = *(xBufferId*) pItemAddr;
+
+  return oBufferIdStruct.oBufferId;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* extract the bufferid from pds and get the address of the buffer            */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwTablePtn::pGetBuffer(SkipListBlock* pSLBlock)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  BufferId oBufferId = *(BufferId*)pSLBlock->aItemBody();
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(oBufferId));
+  xBufferId* pBufferIdStruct = (xBufferId*) pSLBlock->aItem();
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(pBufferIdStruct->oBufferId));
 
   RASSERT(pCrwBuffer != nullptr);
   RASSERT(pCrwBuffer->bIsClassNo(BASE::CN_CRWBUFFER));
@@ -234,7 +249,8 @@ BufferId CrwTablePtn::oRootCrwBufferId(void)
   // Extract the buffer Id, set to 0 if it doesn't exist
   oRootBufferId.m_iAsI8 = 0;
   if(pSLBlock != nullptr) {
-    oRootBufferId = *(BufferId*)pSLBlock->aItemBody();
+    xBufferId* pPdsItem = (xBufferId*)pSLBlock->aItem();
+    oRootBufferId = pPdsItem->oBufferId;
   }
 
   return oRootBufferId;
@@ -273,17 +289,16 @@ void CrwTablePtn::vTruncate(void)
   while(pCurrBlock) {
     SkipListBlock* pNextBlock = m_pPdsOfBufferIds->pNextSLBlock(pCurrBlock, 0);
 
-    CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
+    xBufferId oBufferIdStruct = *(xBufferId*) pCurrBlock->aItem();
+
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
+    m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
     delete pCrwBuffer;
-
-//    RASSERT(pCrwBuffer->eGetClassNo() == BASE::CN_CRWBUFFER);
-
-    m_pPdsOfBufferIds->bDelete(pCurrBlock->iKey());
 
     pCurrBlock = pNextBlock;
   }
 
-  RASSERT(m_pPdsOfBufferIds->iNumEntries() == 0);
+  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) == 0);
 }
 
 /*----------------------------------------------------------------------------*/

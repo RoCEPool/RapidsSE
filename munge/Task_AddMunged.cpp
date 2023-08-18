@@ -15997,7 +15997,7 @@ void Task::vAddMunged(Task* )
     "  begin\n"
     "    PdsCursor[].currIsNotNull\n"
     "  while\n"
-    "    PdsCursor[].getItemBodyAddr BufferId[].deRefSet\n"
+    "    PdsCursor[].getItemAddr TablePtn[].extractBufferId to BufferId[]\n"
     "\n"
     "    BufferId[].pipeOut\n"
     "\n"

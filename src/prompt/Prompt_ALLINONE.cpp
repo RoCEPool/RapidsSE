@@ -3060,7 +3060,7 @@ PromptFun __Prompt_pdsTest (
 bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-  typedef Pds2_t<i8> Pds_i8;
+  typedef Pds_t<i8> Pds_i8;
   Pds_i8* PDS_i8;
 
 /*----------------------------------------------------------------------------*/
@@ -3337,8 +3337,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
     i8 iKey_2;
   }typedef DoubleKey;
 
-  Pds2_t<DoubleKey>* PDS_doubleKey;
-  PDS_doubleKey = new Pds2_t<DoubleKey>(BASE::iDoubleKeyCompare);
+  Pds_t<DoubleKey>* PDS_doubleKey;
+  PDS_doubleKey = new Pds_t<DoubleKey>(BASE::iDoubleKeyCompare);
 
   // Insert single element
   DoubleKey oDKey;
@@ -3409,7 +3409,7 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   // Test Case - 5 element double key tests
 /*----------------------------------------------------------------------------*/
 
-  PDS_doubleKey = new Pds2_t<DoubleKey>(BASE::iDoubleKeyCompare);
+  PDS_doubleKey = new Pds_t<DoubleKey>(BASE::iDoubleKeyCompare);
 
   // Insert 5 elements out of order
   oDKey.iKey_1 = 10;

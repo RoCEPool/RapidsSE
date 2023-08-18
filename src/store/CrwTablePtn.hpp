@@ -15,6 +15,7 @@ namespace STORE
   private:
     Table* m_pTable;        // table this partition belongs to
     LglPtn    m_tLglPtn;        // partition number (in grid)
+    i8     m_iSynthKey;     // Synthetic key for the Pds
 
     Pds_t<xBufferId>* m_pPdsOfBufferIds;
 
@@ -36,6 +37,7 @@ namespace STORE
     void vCleanup(void);
     void vDropAllPagingLocks(void);
     void vDump(void);
+    BufferId oExtractBufferId(void* pItemAddr);
     CrwBuffer* pGetBuffer(SkipListBlock* pSLBlock);
     void* pPds(void);
 
