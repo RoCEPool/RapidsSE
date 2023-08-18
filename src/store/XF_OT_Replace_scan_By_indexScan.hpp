@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Cut_sort.hpp -- Cut sort                                                */
+/* XF_OT_Replace_scan_By_indexScan.hpp -- Morph scan to indexScan                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Cut_sort : public XF_TRANSFORM
+  class XF_OT_Replace_scan_By_indexScan : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Cut_sort(CardIter* pCI);
-   ~XF_Cut_sort(void) noexcept(false);
+    XF_OT_Replace_scan_By_indexScan(CardIter* pCI);
+   ~XF_OT_Replace_scan_By_indexScan(void) noexcept(false);
 
-    static void vXF_Cut_sort(CardIter* pCI);
+    static void vXF_Morph_scan_To_indexScan(CardIter* pCI);
 
-    void vXF_Cut_sort(void);
+    void vXF_Morph_scan_To_indexScan(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Cut_sort* _pXF_Cut_sort(void* aAddr);
+  XF_OT_Replace_scan_By_indexScan* _pXF_OT_Replace_scan_By_indexScan(void* aAddr);
 }
 
 /*============================================================================*/

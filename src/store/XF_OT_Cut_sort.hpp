@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Early_projection.hpp -- Early projection                                */
+/* XF_OT_Cut_sort.hpp -- Cut sort                                                */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Early_projection : public XF_TRANSFORM
+  class XF_OT_Cut_sort : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -16,20 +16,19 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
+  
+    XF_OT_Cut_sort(CardIter* pCI);
+   ~XF_OT_Cut_sort(void) noexcept(false);
 
-    XF_Early_projection(CardIter* pCI);
-   ~XF_Early_projection(void) noexcept(false);
+    static void vXF_Cut_sort(CardIter* pCI);
 
-    static void vXF_Early_projection(CardIter* pCI);
-
-    void vXF_Early_projection(void);
+    void vXF_Cut_sort(void);
 
   private:
     Footer* aFooter(void);
-
   };
 
-  XF_Early_projection* _pXF_Early_projection(void* aAddr);
+  XF_OT_Cut_sort* _pXF_OT_Cut_sort(void* aAddr);
 }
 
 /*============================================================================*/

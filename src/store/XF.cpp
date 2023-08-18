@@ -11,16 +11,16 @@
 #include "XF_Add_level.hpp"
 #include "XF_Cull_NonUsed_bound.hpp"
 #include "XF_Cull_Used_bound.hpp"
-#include "XF_Cut_sort.hpp"
+#include "XF_OT_Cut_sort.hpp"
 #include "XF_Dedupe_as.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Derive_streamKey.hpp"
-#include "XF_Early_projection.hpp"
+#include "XF_OT_Early_projection.hpp"
 #include "XF_Flatten.hpp"
 #include "XF_Individuate_filter.hpp"
 #include "XF_Synthesise_Code.hpp"
-#include "XF_Morph_scan_To_indexScan.hpp"
+#include "XF_OT_Replace_scan_By_indexScan.hpp"
 #include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_Promote_gbyAgg_To_ordAgg.hpp"
@@ -158,11 +158,11 @@ void XF::vTransform(void)
 
   XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(m_pCI);
 
-  XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
+  XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
 
   XF_Derive_streamKey::vXF_Derive_streamKey(m_pCI);
 
-  XF_Cut_sort::vXF_Cut_sort(m_pCI);
+  XF_OT_Cut_sort::vXF_Cut_sort(m_pCI);
 
   XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
@@ -170,7 +170,7 @@ void XF::vTransform(void)
 
   XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
 
-  XF_Early_projection::vXF_Early_projection(m_pCI);
+  XF_OT_Early_projection::vXF_Early_projection(m_pCI);
 
   XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
 

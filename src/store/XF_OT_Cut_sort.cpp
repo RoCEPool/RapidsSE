@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Cut_sort.cpp -- Cut Sort                                                */
+/* XF_OT_Cut_sort.cpp -- Cut Sort                                                */
 /*============================================================================*/
 
-#include "XF_Cut_sort.hpp"
+#include "XF_OT_Cut_sort.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Cut_sort, CN_XF_CUT_SORT)
-__aNewFunction(XF_Cut_sort, CN_XF_CUT_SORT)
-__vDeleteFunction(XF_Cut_sort, CN_XF_CUT_SORT)
-__aFooterFunction(XF_Cut_sort)
+__pCastFunction(STORE, XF_OT_Cut_sort, CN_XF_CUT_SORT)
+__aNewFunction(XF_OT_Cut_sort, CN_XF_CUT_SORT)
+__vDeleteFunction(XF_OT_Cut_sort, CN_XF_CUT_SORT)
+__aFooterFunction(XF_OT_Cut_sort)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Cut_sort::XF_Cut_sort(CardIter* pCI)
+XF_OT_Cut_sort::XF_OT_Cut_sort(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_CUT_SORT, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Cut_sort::XF_Cut_sort(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Cut_sort::~XF_Cut_sort(void) noexcept(false)
+XF_OT_Cut_sort::~XF_OT_Cut_sort(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_Cut_sort::~XF_Cut_sort(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Cut_sort::vXF_Cut_sort(CardIter* pCI)
+void XF_OT_Cut_sort::vXF_Cut_sort(CardIter* pCI)
 {
   _static_
 
-  XF_Cut_sort* pXF_Cut_sort = new XF_Cut_sort(pCI);
+  XF_OT_Cut_sort* pXF_Cut_sort = new XF_OT_Cut_sort(pCI);
 
   pXF_Cut_sort->vXF_Cut_sort();
 
@@ -58,7 +58,7 @@ void XF_Cut_sort::vXF_Cut_sort(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Cut_sort::vXF_Cut_sort(void)
+void XF_OT_Cut_sort::vXF_Cut_sort(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
 

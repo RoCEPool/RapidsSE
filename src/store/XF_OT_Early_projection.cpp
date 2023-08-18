@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Early_projection.cpp -- Early projection                                */
+/* XF_OT_Early_projection.cpp -- Early projection                                */
 /*============================================================================*/
 
-#include "XF_Early_projection.hpp"
+#include "XF_OT_Early_projection.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,XF_Early_projection,CN_XF_EARLY_PROJECTION)
-__aNewFunction(XF_Early_projection,CN_XF_EARLY_PROJECTION)
-__vDeleteFunction(XF_Early_projection,CN_XF_EARLY_PROJECTION)
-__aFooterFunction(XF_Early_projection)
+__pCastFunction(STORE, XF_OT_Early_projection, CN_XF_EARLY_PROJECTION)
+__aNewFunction(XF_OT_Early_projection, CN_XF_EARLY_PROJECTION)
+__vDeleteFunction(XF_OT_Early_projection, CN_XF_EARLY_PROJECTION)
+__aFooterFunction(XF_OT_Early_projection)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Early_projection::XF_Early_projection(CardIter* pCI)
+XF_OT_Early_projection::XF_OT_Early_projection(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_EARLY_PROJECTION,pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_EARLY_PROJECTION,_FOOTER_);
@@ -31,7 +31,7 @@ XF_Early_projection::XF_Early_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Early_projection::~XF_Early_projection(void) noexcept(false)
+XF_OT_Early_projection::~XF_OT_Early_projection(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_EARLY_PROJECTION,_FOOTER_);
 }
@@ -43,11 +43,11 @@ XF_Early_projection::~XF_Early_projection(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Early_projection::vXF_Early_projection(CardIter* pCI)
+void XF_OT_Early_projection::vXF_Early_projection(CardIter* pCI)
 {
   _static_
 
-  XF_Early_projection* pXF_Early_projection = new XF_Early_projection(pCI);
+  XF_OT_Early_projection* pXF_Early_projection = new XF_OT_Early_projection(pCI);
 
   pXF_Early_projection->vXF_Early_projection();
 
@@ -62,7 +62,7 @@ void XF_Early_projection::vXF_Early_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Early_projection::vXF_Early_projection(void)
+void XF_OT_Early_projection::vXF_Early_projection(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_EARLY_PROJECTION,_FOOTER_);
 

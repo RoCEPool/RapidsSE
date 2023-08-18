@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Morph_scan_To_indexScan.cpp -- Delete flat                                          */
+/* XF_OT_Replace_scan_By_indexScan.cpp -- Delete flat                                          */
 /*============================================================================*/
 
-#include "XF_Morph_scan_To_indexScan.hpp"
+#include "XF_OT_Replace_scan_By_indexScan.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Morph_scan_To_indexScan, CN_XF_MORPH_SCAN_TO_INDEXSCAN)
-__aNewFunction(XF_Morph_scan_To_indexScan, CN_XF_MORPH_SCAN_TO_INDEXSCAN)
-__vDeleteFunction(XF_Morph_scan_To_indexScan, CN_XF_MORPH_SCAN_TO_INDEXSCAN)
-__aFooterFunction(XF_Morph_scan_To_indexScan)
+__pCastFunction(STORE, XF_OT_Replace_scan_By_indexScan, CN_XF_MORPH_SCAN_TO_INDEXSCAN)
+__aNewFunction(XF_OT_Replace_scan_By_indexScan, CN_XF_MORPH_SCAN_TO_INDEXSCAN)
+__vDeleteFunction(XF_OT_Replace_scan_By_indexScan, CN_XF_MORPH_SCAN_TO_INDEXSCAN)
+__aFooterFunction(XF_OT_Replace_scan_By_indexScan)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Morph_scan_To_indexScan::XF_Morph_scan_To_indexScan(CardIter* pCI)
+XF_OT_Replace_scan_By_indexScan::XF_OT_Replace_scan_By_indexScan(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_MORPH_SCAN_TO_INDEXSCAN, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_SCAN_TO_INDEXSCAN, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Morph_scan_To_indexScan::XF_Morph_scan_To_indexScan(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Morph_scan_To_indexScan::~XF_Morph_scan_To_indexScan(void) noexcept(false)
+XF_OT_Replace_scan_By_indexScan::~XF_OT_Replace_scan_By_indexScan(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_SCAN_TO_INDEXSCAN, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_Morph_scan_To_indexScan::~XF_Morph_scan_To_indexScan(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(CardIter* pCI)
+void XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(CardIter* pCI)
 {
   _static_
 
-  XF_Morph_scan_To_indexScan* pXF_Morph_scan_To_indexScan = new XF_Morph_scan_To_indexScan(pCI);
+  XF_OT_Replace_scan_By_indexScan* pXF_Morph_scan_To_indexScan = new XF_OT_Replace_scan_By_indexScan(pCI);
 
   pXF_Morph_scan_To_indexScan->vXF_Morph_scan_To_indexScan();
 
@@ -58,7 +58,7 @@ void XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(void)
+void XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_SCAN_TO_INDEXSCAN, _FOOTER_);
 
