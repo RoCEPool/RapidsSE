@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Level, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Level::Card_Level(eAL eLevel)
-: Card_symbol(CK_LEVEL)
+: Card_TIER2(CK_LEVEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -47,6 +47,8 @@ void Card_Level::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+  Card_TIER2::vValidate(pCI, iDepth, pParent);
 
   eAL eLevel = (eAL)pSymbol()->Y_iGet(P_Level);
 

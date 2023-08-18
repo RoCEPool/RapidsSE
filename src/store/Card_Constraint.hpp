@@ -3,12 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
-#include "Card_PRED.hpp"
+#include "Card_TIER2_ELIST.hpp"
 
 namespace STORE
 {
-  class Card_Constraint : public Card_symbol<Card_Constraint>
+  class Card_Constraint : public Card_TIER2_ELIST
   {
   public:
     void* operator new(size_t);

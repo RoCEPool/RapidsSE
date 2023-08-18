@@ -27,6 +27,9 @@ namespace STORE
     Card_Expr* pGetExpr(i8 i_Expr);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vRenumberAll_expr(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 
   Card_ELIST* _pCard_ELIST(void* aAddr);
