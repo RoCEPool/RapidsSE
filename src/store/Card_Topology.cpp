@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Topology, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Topology::Card_Topology(eYG eStageTopo)
-: Card_symbol(CK_TOPOLOGY)
+: Card_TIER2(CK_TOPOLOGY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -48,6 +48,8 @@ Card_Topology::~Card_Topology(void) noexcept(false)
 void Card_Topology::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_TIER2::vValidate(pCI, iDepth, pParent);
 
   UNUSED(pParent);
   pCI->vValidateChildren(this,iDepth+1);

@@ -249,6 +249,8 @@ namespace STORE
 
     Card*   m_pLastPrintParent;
 
+    i8      m_iFixedDepth;
+
     i8 md__SeqNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
@@ -261,8 +263,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eCard);
-    void vInit(eCK eCard);
+    Card(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
 
    ~Card(void) noexcept(false);
 
@@ -304,6 +305,8 @@ namespace STORE
     Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
     Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
     Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    i8    iFixedDepth(void);
+    void  vFixedDepth(i8 iFixedDepth);
 
     bool bHasSubRecursive(Card* pSubCard);
 

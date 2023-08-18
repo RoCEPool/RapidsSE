@@ -23,7 +23,7 @@ __vDeleteFunction(Card_Needed, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Needed::Card_Needed(void)
-: Card_ELIST(CK_NEEDED)
+: Card_TIER2_ELIST(CK_NEEDED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -82,6 +82,8 @@ Card_Project* Card_Needed::pNew_project_early(CardIter* pCI)
 void Card_Needed::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_TIER2_ELIST::vValidate(pCI, iDepth, pParent);
 
   UNUSED(pParent);
   if (! pCI->G.pBoard->pState()->bHasName(aXF[XF_TBLCOL_TO_STMCOL])) {

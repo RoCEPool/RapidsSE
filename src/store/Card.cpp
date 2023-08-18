@@ -112,20 +112,8 @@ char MARK_DELETED    = 'Z';
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard)
+Card::Card(eCK eCard, i8 iFixedDepth)
 : Object(CN_CARD)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vInit(eCard);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* init                                                                       */
-/*----------------------------------------------------------------------------*/
-void Card::vInit(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -154,6 +142,8 @@ void Card::vInit(eCK eCard)
   md__FirstDetected  = C_UNKNOWN;
   md__LeakDetected   = C_UNKNOWN;
 
+  m_iFixedDepth = iFixedDepth;
+
   s32 sBearing;
   sBearing.vSprint("((%s new %04lld))"_Stz,aCK[m_eCard],md__SeqNo);
   StrLib::vCopy(md_Bearing,sBearing.azChar());
@@ -161,6 +151,9 @@ void Card::vInit(eCK eCard)
 //    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();
 //  }
+
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 
@@ -704,6 +697,26 @@ Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, 
 
   rpParent = nullptr;
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get fixed depth                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card::iFixedDepth(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_iFixedDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set fixed depth                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vFixedDepth(i8 iFixedDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_iFixedDepth = iFixedDepth;
 }
 
 /*----------------------------------------------------------------------------*/

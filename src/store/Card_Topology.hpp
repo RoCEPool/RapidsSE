@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
+#include "Card_TIER2.hpp"
 
 namespace STORE
 {
-  class Card_Topology : public Card_symbol<Card_Topology>
+  class Card_Topology : public Card_TIER2
   {
   public:
     void* operator new(size_t);
