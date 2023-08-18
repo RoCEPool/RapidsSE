@@ -23,7 +23,7 @@ __vDeleteFunction(Card_Projection, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Projection::Card_Projection(i8 iCrossRef)
-: Card_TIER2_ELIST(CK_PROJECTION)
+: Card_ELIST(CK_PROJECTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -635,7 +635,7 @@ void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_TIER2_ELIST::vValidate(pCI, iDepth, pParent);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
   vValidate_notHave(CK_KEY,CK_NONE);

@@ -124,8 +124,6 @@
 #include "Card_TablePtn.hpp"
 #include "Card_TableSize.hpp"
 #include "Card_TblSyn.hpp"
-#include "Card_TIER2.hpp"
-#include "Card_TIER2_ELIST.hpp"
 #include "Card_Term.hpp"
 #include "Card_Top.hpp"
 #include "Card_Topology.hpp"

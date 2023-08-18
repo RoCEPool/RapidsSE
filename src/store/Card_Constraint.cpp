@@ -28,7 +28,7 @@ __vDeleteFunction(Card_Constraint,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Constraint::Card_Constraint(void)
-: Card_TIER2_ELIST(CK_CONSTRAINT)
+: Card_symbol(CK_CONSTRAINT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -240,8 +240,7 @@ void Card_Constraint::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_TIER2_ELIST::vValidate(pCI, iDepth, pParent);
+  UNUSED(pParent);
 
   pCI->vValidateChildren(this,iDepth+1);
 

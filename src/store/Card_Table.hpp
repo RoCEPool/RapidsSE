@@ -4,14 +4,14 @@
 #pragma once
 
 
-#include "Card_TIER2.hpp"
+#include "Card_symbol.hpp"
 #include "Scope.hpp"
 
 namespace STORE
 {
   class CarryForward;
 
-  class Card_Table : public Card_TIER2
+  class Card_Table : public Card_symbol<Card_Table>
   {
   public:
     void* operator new(size_t);

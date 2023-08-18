@@ -25,7 +25,7 @@ __vDeleteFunction(Card_Key,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Key::Card_Key(void)
-: Card_TIER2_ELIST(CK_KEY)
+: Card_ELIST(CK_KEY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -38,7 +38,7 @@ Card_Key::Card_Key(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Key::Card_Key(eCK eCard)
-    : Card_TIER2_ELIST(eCard)
+    : Card_ELIST(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -259,8 +259,6 @@ void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
-
-  Card_TIER2_ELIST::vValidate(pCI, iDepth, pParent);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
   pCI->vValidateChildren(this,iDepth+1);
