@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_OT_Early_projection, CN_XF_EARLY_PROJECTION)
-__aNewFunction(XF_OT_Early_projection, CN_XF_EARLY_PROJECTION)
-__vDeleteFunction(XF_OT_Early_projection, CN_XF_EARLY_PROJECTION)
+__pCastFunction(STORE, XF_OT_Early_projection, CN_XF_OT_EARLY_PROJECTION)
+__aNewFunction(XF_OT_Early_projection, CN_XF_OT_EARLY_PROJECTION)
+__vDeleteFunction(XF_OT_Early_projection, CN_XF_OT_EARLY_PROJECTION)
 __aFooterFunction(XF_OT_Early_projection)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_OT_Early_projection)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_OT_Early_projection::XF_OT_Early_projection(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_EARLY_PROJECTION,pCI)
+: XF_TRANSFORM(CN_XF_OT_EARLY_PROJECTION, pCI)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_EARLY_PROJECTION,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
 
-  _checkInitialised_(CN_XF_EARLY_PROJECTION);
+  _checkInitialised_(CN_XF_OT_EARLY_PROJECTION);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_XF_EARLY_PROJECTION,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_OT_Early_projection::XF_OT_Early_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_OT_Early_projection::~XF_OT_Early_projection(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_EARLY_PROJECTION,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ void XF_OT_Early_projection::vXF_Early_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_OT_Early_projection::vXF_Early_projection(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_EARLY_PROJECTION,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
 
 //  if (! AM::JOB::bHasTag(C_EP_ENABLE))
 //    return;

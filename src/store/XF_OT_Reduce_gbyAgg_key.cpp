@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_OT_Reduce_gbyAgg_key, CN_XF_REDUCE_KEY_GBYAGG)
-__aNewFunction(XF_OT_Reduce_gbyAgg_key, CN_XF_REDUCE_KEY_GBYAGG)
-__vDeleteFunction(XF_OT_Reduce_gbyAgg_key, CN_XF_REDUCE_KEY_GBYAGG)
+__pCastFunction(STORE, XF_OT_Reduce_gbyAgg_key, CN_XF_OT_REDUCE_GBYAGG_KEY)
+__aNewFunction(XF_OT_Reduce_gbyAgg_key, CN_XF_OT_REDUCE_GBYAGG_KEY)
+__vDeleteFunction(XF_OT_Reduce_gbyAgg_key, CN_XF_OT_REDUCE_GBYAGG_KEY)
 __aFooterFunction(XF_OT_Reduce_gbyAgg_key)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_OT_Reduce_gbyAgg_key)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_OT_Reduce_gbyAgg_key::XF_OT_Reduce_gbyAgg_key(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_REDUCE_KEY_GBYAGG,pCI)
+: XF_TRANSFORM(CN_XF_OT_REDUCE_GBYAGG_KEY, pCI)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_REDUCE_KEY_GBYAGG,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_REDUCE_KEY_GBYAGG);
+  _checkInitialised_(CN_XF_OT_REDUCE_GBYAGG_KEY);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_XF_REDUCE_KEY_GBYAGG,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_OT_Reduce_gbyAgg_key::XF_OT_Reduce_gbyAgg_key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_OT_Reduce_gbyAgg_key::~XF_OT_Reduce_gbyAgg_key(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_REDUCE_KEY_GBYAGG,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ void XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_REDUCE_KEY_GBYAGG,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 
   vValidate();
 

@@ -23,7 +23,7 @@
 #include "XF_OT_Replace_scan_By_indexScan.hpp"
 #include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Move_on.hpp"
-#include "XF_Promote_gbyAgg_To_ordAgg.hpp"
+#include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
 #include "XF_OT_Reduce_gbyAgg_key.hpp"
 #include "XF_Reinstate_stage.hpp"
 #include "XF_Shorten_queryNm.hpp"
@@ -164,7 +164,7 @@ void XF::vTransform(void)
 
   XF_OT_Cut_sort::vXF_Cut_sort(m_pCI);
 
-  XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
+  XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
   XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(m_pCI);
 

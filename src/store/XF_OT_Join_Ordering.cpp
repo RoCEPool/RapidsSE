@@ -22,24 +22,24 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_OT_Join_Ordering, CN_XF_JOIN_ORDERING)
-__aNewFunction(XF_OT_Join_Ordering, CN_XF_JOIN_ORDERING)
-__vDeleteFunction(XF_OT_Join_Ordering, CN_XF_JOIN_ORDERING)
+__pCastFunction(STORE, XF_OT_Join_Ordering, CN_XF_OT_JOIN_ORDERING)
+__aNewFunction(XF_OT_Join_Ordering, CN_XF_OT_JOIN_ORDERING)
+__vDeleteFunction(XF_OT_Join_Ordering, CN_XF_OT_JOIN_ORDERING)
 __aFooterFunction(XF_OT_Join_Ordering)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_OT_Join_Ordering::XF_OT_Join_Ordering(CardIter* pCI)
-: Object(CN_XF_JOIN_ORDERING)
+: Object(CN_XF_OT_JOIN_ORDERING)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_JOIN_ORDERING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_JOIN_ORDERING, _FOOTER_);
 
   m_pCI = pCI;
 
-  _checkInitialised_(CN_XF_JOIN_ORDERING);
+  _checkInitialised_(CN_XF_OT_JOIN_ORDERING);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_JOIN_ORDERING, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_JOIN_ORDERING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ XF_OT_Join_Ordering::XF_OT_Join_Ordering(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_OT_Join_Ordering::~XF_OT_Join_Ordering(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_JOIN_ORDERING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_JOIN_ORDERING, _FOOTER_);
 }
 
 
@@ -79,7 +79,7 @@ void XF_OT_Join_Ordering::vXF_Join_Ordering(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_OT_Join_Ordering::vJoinOrdering(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_JOIN_ORDERING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_JOIN_ORDERING, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Predicate Pull Up : move suitable where predicates to table filter
@@ -131,7 +131,7 @@ void XF_OT_Join_Ordering::vJoinOrdering(void)
 /*----------------------------------------------------------------------------*/
 void XF_OT_Join_Ordering::vReorderTables(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_JOIN_ORDERING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_JOIN_ORDERING, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_JOIN_ORDERING, "join ordering"_Stz);
 

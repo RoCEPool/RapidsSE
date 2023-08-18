@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_OT_Cut_sort, CN_XF_CUT_SORT)
-__aNewFunction(XF_OT_Cut_sort, CN_XF_CUT_SORT)
-__vDeleteFunction(XF_OT_Cut_sort, CN_XF_CUT_SORT)
+__pCastFunction(STORE, XF_OT_Cut_sort, CN_XF_OT_CUT_SORT)
+__aNewFunction(XF_OT_Cut_sort, CN_XF_OT_CUT_SORT)
+__vDeleteFunction(XF_OT_Cut_sort, CN_XF_OT_CUT_SORT)
 __aFooterFunction(XF_OT_Cut_sort)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_OT_Cut_sort)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_OT_Cut_sort::XF_OT_Cut_sort(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_CUT_SORT, pCI)
+: XF_TRANSFORM(CN_XF_OT_CUT_SORT, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
 
-  _checkInitialised_(CN_XF_CUT_SORT);
+  _checkInitialised_(CN_XF_OT_CUT_SORT);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_OT_Cut_sort::XF_OT_Cut_sort(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_OT_Cut_sort::~XF_OT_Cut_sort(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_OT_Cut_sort::vXF_Cut_sort(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_OT_Cut_sort::vXF_Cut_sort(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_CUT_SORT, "Cut sort"_Stz);
 

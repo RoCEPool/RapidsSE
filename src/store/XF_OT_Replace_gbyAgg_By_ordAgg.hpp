@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Promote_gbyAgg_To_ordAgg.hpp -- Promote gbyAgg to ordAgg                */
+/* XF_OT_Replace_gbyAgg_By_ordAgg.hpp -- Promote gbyAgg to ordAgg                */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Promote_gbyAgg_To_ordAgg : public XF_TRANSFORM
+  class XF_OT_Replace_gbyAgg_By_ordAgg : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Promote_gbyAgg_To_ordAgg(CardIter* pCI);
-   ~XF_Promote_gbyAgg_To_ordAgg(void) noexcept(false);
+    XF_OT_Replace_gbyAgg_By_ordAgg(CardIter* pCI);
+   ~XF_OT_Replace_gbyAgg_By_ordAgg(void) noexcept(false);
 
     static void vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Promote_gbyAgg_To_ordAgg* _pXF_Promote_gbyAgg_To_ordAgg(void* aAddr);
+  XF_OT_Replace_gbyAgg_By_ordAgg* _pXF_OT_Replace_gbyAgg_By_ordAgg(void* aAddr);
 }
 
 /*============================================================================*/

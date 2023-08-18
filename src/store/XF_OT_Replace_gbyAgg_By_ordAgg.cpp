@@ -1,49 +1,49 @@
 /*============================================================================*/
-/* XF_Promote_gbyAgg_To_ordAgg.cpp -- Promote gbyAgg to ordAgg                */
+/* XF_OT_Replace_gbyAgg_By_ordAgg.cpp -- Promote gbyAgg to ordAgg                */
 /*============================================================================*/
 
-#include "XF_Promote_gbyAgg_To_ordAgg.hpp"
+#include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Promote_gbyAgg_To_ordAgg, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG)
-__aNewFunction(XF_Promote_gbyAgg_To_ordAgg, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG)
-__vDeleteFunction(XF_Promote_gbyAgg_To_ordAgg, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG)
-__aFooterFunction(XF_Promote_gbyAgg_To_ordAgg)
+__pCastFunction(STORE, XF_OT_Replace_gbyAgg_By_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
+__aNewFunction(XF_OT_Replace_gbyAgg_By_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
+__vDeleteFunction(XF_OT_Replace_gbyAgg_By_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
+__aFooterFunction(XF_OT_Replace_gbyAgg_By_ordAgg)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Promote_gbyAgg_To_ordAgg::XF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, pCI)
+XF_OT_Replace_gbyAgg_By_ordAgg::XF_OT_Replace_gbyAgg_By_ordAgg(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROMOTE_GBYAGG_TO_ORDAGG);
+  _checkInitialised_(CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Promote_gbyAgg_To_ordAgg::~XF_Promote_gbyAgg_To_ordAgg(void) noexcept(false)
+XF_OT_Replace_gbyAgg_By_ordAgg::~XF_OT_Replace_gbyAgg_By_ordAgg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
+void XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
 {
   _static_
 
-  XF_Promote_gbyAgg_To_ordAgg* pXF_Promote_gbyAgg_To_ordAgg = new XF_Promote_gbyAgg_To_ordAgg(pCI);
+  XF_OT_Replace_gbyAgg_By_ordAgg* pXF_Promote_gbyAgg_To_ordAgg = new XF_OT_Replace_gbyAgg_By_ordAgg(pCI);
 
   pXF_Promote_gbyAgg_To_ordAgg->vXF_Promote_gbyAgg_To_ordAgg();
 
@@ -58,9 +58,9 @@ void XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
+void XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROMOTE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
 
