@@ -146,6 +146,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Key_Col(szChrSeq))      return SF_KEY_COL;
   if (bIs_Mth_Op(szChrSeq))       return SF_MTH_OP;
   if (bIs_Parenthesis(szChrSeq))  return SF_PARENTHESIS;
+  if (bIs_Prm_Col(szChrSeq))      return SF_PRM_COL;
   if (bIs_Rln_Op(szChrSeq))       return SF_RLN_OP;
   if (bIs_Sqy_Prm(szChrSeq))      return SF_PRM_COL;
   if (bIs_Sqy_Op(szChrSeq))       return SF_SQY_OP;
@@ -530,6 +531,21 @@ bool Symbol::bIs_Mth_Op(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a math operator ?                                           */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bIs_None(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+
+  if (acFirst)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a math operator ?                                           */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Note(Stz* szArg)
 {
   _static_
@@ -562,6 +578,23 @@ bool Symbol::bIs_Ppe_Nm(Stz* szArg)
     return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a parameter-column?  (i.e. %n)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Prm_Col(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+
+  if ('%' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -902,6 +935,16 @@ eCT Symbol::eTo_eCT_char(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get column type                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vDump(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vTrace("Symbol : %%lld %s\n"_Stz,(i8)m_eSymbol,aSF[m_eSymbol]);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
@@ -1493,7 +1536,10 @@ bool Symbol::bIs_None(void)
   if (SF_NONE != m_eSymbol)
     return false;
 
-  return true;
+  if (bIs_None(m_sChrSeq))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1539,6 +1585,22 @@ bool Symbol::bIs_Ppe_Nm(void)
     return false;
 
   if (bIs_Ppe_Nm(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a parameter column?                                                */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Prm_Col(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_PRM_COL != m_eSymbol)
+    return false;
+
+  if (bIs_Prm_Col(m_sChrSeq))
     return true;
 
   return false;
@@ -2096,6 +2158,80 @@ bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate symbol                                                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bValidate(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  bool b = false;
+
+  switch (m_eSymbol) {
+    case SF_NONE:        b = bIs_None();        break;
+    case SF_AGG_FN:      b = bIs_Agg_Fn();      break;
+    case SF_AS:          b = bIs_As();          break;
+    case SF_AS_NM:       b = bIs_As_Nm();       break;
+    case SF_BOL_FN:      b = bIs_Bol_Fn();      break;
+    case SF_BOL_LIT:     b = bIs_Bol_Lit();     break;
+    case SF_BOL_OP:      b = bIs_Bol_Op();      break;
+    case SF_BOUND:       b = bIs_Bound();       break;
+    case SF_BRACE:       b = bIs_Brace();       break;
+    case SF_COL_NM:      b = bIs_Col_Nm();      break;
+    case SF_COL_NM_syn:  b = bIs_Col_Nm_syn();  break;
+    case SF_COL_NO:      b = bIs_Col_No();      break;
+    case SF_COL_TC:      b = bIs_Col_Tc();      break;
+    case SF_COL_TYPE:    b = bIs_Col_Type();    break;
+    case SF_COMMA:       b = bIs_Comma();       break;
+    case SF_CROSS:       b = bIs_Cross();       break;
+    case SF_DCM_LIT:     b = bIs_Dcm_Lit();     break;
+    case SF_DIRECTION:   b = bIs_Direction();   break;
+    case SF_FLD_NM:      b = bIs_Fld_Nm();      break;
+    case SF_FLT_LIT:     b = bIs_Flt_Lit();     break;
+    case SF_GROUPBY:     b = bIs_GroupBy();     break;
+    case SF_IDX_COL:     b = bIs_Idx_Col();     break;
+    case SF_IDX_NM:      b = bIs_Idx_Nm();      break;
+    case SF_INT_LIT:     b = bIs_Int_Lit();     break;
+    case SF_KEY_COL:     b = bIs_Key_Col();     break;
+    case SF_NOTE:        b = bIs_Note();        break;
+    case SF_MTH_OP:      b = bIs_Mth_Op();      break;
+    case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
+    case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
+    case SF_PRM_COL:     b = bIs_Prm_Col();     break;
+    case SF_RLN_OP:      b = bIs_Rln_Op();      break;
+    case SF_SQY_OP:      b = bIs_Sqy_Op();      break;
+    case SF_STG_NO:      b = bIs_Stg_Nm();      break;
+    case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
+    case SF_STRING:      b = bIs_String();      break;
+    case SF_TBL_NM:      b = bIs_Tbl_Nm();      break;
+    case SF_TBL_SYN:     b = bIs_Tbl_Syn();     break;
+    case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(); break;
+    case SF_TYPE:        b = bIs_Type();        break;
+    case SF_WHEN:        b = bIs_When();        break;
+    case SF_XK_CAST:     b = bIs_Xk_Cast();     break;
+    case SF_XRF_NO:      b = bIs_Xrf_No();      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate symbol                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vValidate(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  bool b = bValidate();
+  if (! b) {
+    vDump();
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* what is this symbol?                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szWhatIs(void)
@@ -2120,6 +2256,7 @@ Stz* Symbol::szWhatIs(void)
 
   return "??WhatIs"_Stz;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */

@@ -31,6 +31,8 @@ namespace STORE
 
     ~Symbol(void);
 
+    void vDump(void);
+
     static eRO  eEvalRelnOp(Stz* szSymbol);
     static eQO  eEvalSubQryOp(Stz* szSymbol);
     static eSF  eEvalSymbol(Stz* szSymbol);
@@ -59,9 +61,11 @@ namespace STORE
     static bool bIs_Int_Lit(Stz* szChrSeq);         // StrLib::bIsInteger()
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
+    static bool bIs_None(Stz* szChrSeq);            // <none>
     static bool bIs_Note(Stz* szChrSeq);            // ...any...
     static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
     static bool bIs_Ppe_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
+    static bool bIs_Prm_Col(Stz* szChrSeq);         // %n
     static bool bIs_Rln_Op(Stz* szChrSeq);          // <, <=, ... >
     static bool bIs_Sqy_Crl_Key(Stz* szChrSeq);     // _SQCRLKEY_
     static bool bIs_Sqy_Nm(Stz* szChrSeq);          // __subqueryN
@@ -131,6 +135,7 @@ namespace STORE
     bool bIs_Note(void);            // ...any...
     bool bIs_Parenthesis(void);     // ( or )
     bool bIs_Ppe_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
+    bool bIs_Prm_Col(void);         // %n
     bool bIs_Rln_Op(void);          // <, <=, ... >
     bool bIs_Sqy_No(void);          // __sq%02lld
     bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
@@ -171,6 +176,9 @@ namespace STORE
     void vSymPpy(Symbol* pSymbol);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
+
+    bool bValidate(void);
+    void vValidate(void);
 
     Stz* szWhatIs(void);
 
