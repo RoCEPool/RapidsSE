@@ -32,8 +32,9 @@ namespace STORE
     void vTransform(void);
     void vTransform_passThru(void);
 
-
   private:
+
+    void vCrosscheck_Optimisations(void);
 
   protected:
     Footer* aFooter(void);

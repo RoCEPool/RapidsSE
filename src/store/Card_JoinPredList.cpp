@@ -25,7 +25,7 @@ __vDeleteFunction(Card_JoinPredList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinPredList::Card_JoinPredList(void)
-: Card_symbol(CK_JOINPREDLIST)
+: Card_symbol(CK_JOINPREDLIST, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -19,7 +19,7 @@ __vDeleteFunction(Card_OrdAgg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::Card_OrdAgg(void)
-: Card_AGG(CK_ORDAGG)
+: Card_AGG(CK_ORDAGG,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

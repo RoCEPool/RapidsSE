@@ -26,7 +26,7 @@ __vDeleteFunction(Card_CostNetwork, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CostNetwork::Card_CostNetwork(void)
-: Card_symbol(CK_COSTNETWORK)
+: Card_symbol(CK_COSTNETWORK, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

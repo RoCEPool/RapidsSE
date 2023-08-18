@@ -20,7 +20,7 @@ __vDeleteFunction(Card_NotPred, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_NotPred::Card_NotPred(void)
-: Card_PRED(CK_NOTPRED)
+: Card_PRED(CK_NOTPRED,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

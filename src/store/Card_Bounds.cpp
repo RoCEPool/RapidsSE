@@ -27,7 +27,7 @@ __vDeleteFunction(Card_Bounds, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Bounds::Card_Bounds(void)
-: Card_symbol(CK_BOUNDS)
+: Card_symbol(CK_BOUNDS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

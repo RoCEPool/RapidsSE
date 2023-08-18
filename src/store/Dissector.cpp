@@ -558,14 +558,6 @@ Card* Dissector::pOp_IndexJoin(void)
   pCard_IndexJoin->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_From* p_from = pFormFrom(szTableNm,pTable);
-  pCard_IndexJoin->vAppend(p_from);
-
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
-  p_from->vAppend(p_tableNm);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
   
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
@@ -739,14 +731,6 @@ Card* Dissector::pOp_KeyExists(void)
   pCard_KeyExists->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_From* p_from = pFormFrom(szTableNm,pTable);
-  pCard_KeyExists->vAppend(p_from);
-
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
-  p_from->vAppend(p_tableNm);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
 
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
@@ -756,7 +740,7 @@ Card* Dissector::pOp_KeyExists(void)
   // index list
 
   Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
-  pCard_KeyExists->vAppend(p_indexList);
+  pCard_Table->vAppend(p_indexList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
@@ -812,14 +796,6 @@ Card* Dissector::pOp_KeyNotExists(void)
   pCard_KeyNotExists->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_From* p_from = pFormFrom(szTableNm,pTable);
-  pCard_KeyNotExists->vAppend(p_from);
-
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
-  p_from->vAppend(p_tableNm);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
 
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
@@ -829,7 +805,7 @@ Card* Dissector::pOp_KeyNotExists(void)
   // index list
 
   Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
-  pCard_KeyNotExists->vAppend(p_indexList);
+  pCard_Table->vAppend(p_indexList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds

@@ -18,7 +18,7 @@ __vDeleteFunction(Card_PayloadCells,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_PayloadCells::Card_PayloadCells(void)
-: Card_CELLS(CK_PAYLOADCELLS)
+: Card_CELLS(CK_PAYLOADCELLS,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

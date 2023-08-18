@@ -6,37 +6,37 @@
 
 Stz* aOT[OT_ENUMS]
 {
-  /*   */ "NONE"_Stz,
+  /*   */ "OT_NONE"_Stz,
 
   // CUT
-  /*  */ "CUT_SORT"_Stz,
+  /*  */ "OT_CUT_SORT"_Stz,
 
   // DUPLICATE
-  /*  */ "DUP_FILTER"_Stz,
+  /*  */ "OT_DUP_FILTER"_Stz,
 
   // EARLY
-  /*  */ "ELY_FILTERS"_Stz,
-  /*  */ "ELY_PROJECTIONS"_Stz,
+  /*  */ "OT_ELY_FILTERS"_Stz,
+  /*  */ "OT_ELY_PROJECTIONS"_Stz,
 
   // MINIMIZE
-  /*  */ "MIN_GROUPBY"_Stz,
+  /*  */ "OT_MIN_GROUPBY"_Stz,
 
   // ONE-TIME CALCULATIONS
-  /*  */ "OTM_CALCULATIONS"_Stz,
+  /*  */ "OT_OTM_CALCULATIONS"_Stz,
 
   // Postpone
-  /*  */ "PPT_PROJECTIONS"_Stz,
+  /*  */ "OT_PPT_PROJECTIONS"_Stz,
 
   // REPLACE
-  /*  */ "RPL_AGGREG_BY_ORDAGG"_Stz,
-  /*  */ "RPL_AGGREG_BY_SORT_ORDAGG"_Stz,
-  /*  */ "RPL_MAX_BY_TOP"_Stz,
-  /*  */ "RPL_SCAN_BY_INDEXSCAN"_Stz,
-  /*  */ "RPL_SORTDESC_LIMIT_BY_TOP"_Stz,
-  /*  */ "RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS"_Stz,
+  /*  */ "OT_RPL_AGGREG_BY_ORDAGG"_Stz,
+  /*  */ "OT_RPL_AGGREG_BY_SORT_ORDAGG"_Stz,
+  /*  */ "OT_RPL_MAX_BY_TOP"_Stz,
+  /*  */ "OT_RPL_SCAN_BY_INDEXSCAN"_Stz,
+  /*  */ "OT_RPL_SORTDESC_LIMIT_BY_TOP"_Stz,
+  /*  */ "OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS"_Stz,
 
   // SEQUENCING
-  /*  */ "JOI_ORD"_Stz,
+  /*  */ "OT_JOI_ORD"_Stz,
 
 //  /*  */ "ENUMS"_Stz,
 };

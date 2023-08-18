@@ -19,7 +19,7 @@ __vDeleteFunction(Card_StreamPtn,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamPtn::Card_StreamPtn(void)
-: Card_symbol(CK_STREAMPTN)
+: Card_symbol(CK_STREAMPTN, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

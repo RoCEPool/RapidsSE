@@ -10,7 +10,7 @@ namespace STORE
   class Card_LIST : public Card_symbol<Card_LIST>
   {  
   public:
-    Card_LIST(eCK eCard);
+    Card_LIST(eCK eCard, i8 iFixedDepth);
    ~Card_LIST(void) noexcept(false);
 
   };

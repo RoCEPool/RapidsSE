@@ -20,7 +20,7 @@ __vDeleteFunction(Card_On, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_On::Card_On(void)
-: Card_symbol(CK_ON)
+: Card_symbol(CK_ON, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

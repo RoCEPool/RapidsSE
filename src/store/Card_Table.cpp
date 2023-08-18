@@ -33,7 +33,7 @@ __vDeleteFunction(Card_Table, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(void)
-: Card_symbol(CK_TABLE)
+: Card_symbol(CK_TABLE, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

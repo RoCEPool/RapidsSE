@@ -13,8 +13,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CELLS::Card_CELLS(eCK eCard)
-: Card_LIST(eCard)
+Card_CELLS::Card_CELLS(eCK eCard, i8 iFixedDepth)
+: Card_LIST(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

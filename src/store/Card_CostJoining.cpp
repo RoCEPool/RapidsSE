@@ -28,7 +28,7 @@ __vDeleteFunction(Card_CostJoining, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CostJoining::Card_CostJoining(void)
-: Card_symbol(CK_COSTJOINING)
+: Card_symbol(CK_COSTJOINING, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

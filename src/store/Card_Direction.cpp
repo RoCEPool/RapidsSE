@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Direction,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Direction::Card_Direction(void)
-: Card_symbol(CK_DIRECTION)
+: Card_symbol(CK_DIRECTION, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

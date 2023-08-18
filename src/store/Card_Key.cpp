@@ -25,7 +25,7 @@ __vDeleteFunction(Card_Key,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Key::Card_Key(void)
-: Card_ELIST(CK_KEY)
+: Card_ELIST(CK_KEY,2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -37,8 +37,8 @@ Card_Key::Card_Key(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Key::Card_Key(eCK eCard)
-    : Card_ELIST(eCard)
+Card_Key::Card_Key(eCK eCard, i8 iMaxDepth)
+    : Card_ELIST(eCard,iMaxDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

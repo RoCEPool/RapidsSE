@@ -41,6 +41,8 @@
 #include "XF_Column_Mapping.hpp"
 #include "XF_colNm_To_stmCol.hpp"
 
+#include "eOT.h"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -192,6 +194,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vMadeWeavable(true);
 
+  vCrosscheck_Optimisations();
 
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 
@@ -278,12 +281,35 @@ void XF::vTransform_passThru(void)
 
   XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
 
+  vCrosscheck_Optimisations();
+
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* crosscheck optimisations                                                   */
+/*----------------------------------------------------------------------------*/
+void XF::vCrosscheck_Optimisations(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
+
+  for (i8 i_OT = 0; i_OT < OT_ENUMS; i_OT++) {
+    Stz *szOptimisation = aOT[i_OT];
+
+    if (!AM::JOB::bHasTag(szOptimisation))
+      continue;
+
+    if (m_pCI->pBoard()->pState()->bHasName(szOptimisation))
+      continue;
+
+    vTrace("Missing optimisation : %lld %lls"_Stz,i_OT,szOptimisation);
+    m_pCI->vPrintBoard();
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */

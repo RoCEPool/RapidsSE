@@ -19,7 +19,7 @@ __vDeleteFunction(Card_RpnTerms,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnTerms::Card_RpnTerms(void)
-: Card_symbol(CK_RPNTERMS)
+: Card_symbol(CK_RPNTERMS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

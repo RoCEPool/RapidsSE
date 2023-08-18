@@ -13,7 +13,7 @@ namespace STORE
   private:
     
   public:
-    Card_symbol(eCK eCard);
+    Card_symbol(eCK eCard, i8 iFixedDepth);
 
     ~Card_symbol(void) noexcept(false);
 
@@ -34,8 +34,8 @@ namespace STORE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-Card_symbol<CARD>::Card_symbol(eCK eCard)
-    : Card(eCard)
+Card_symbol<CARD>::Card_symbol(eCK eCard, i8 iFixedDepth)
+    : Card(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

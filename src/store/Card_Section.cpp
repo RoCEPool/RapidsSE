@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Section,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Section::Card_Section(void)
-    : Card_symbol(CK_SECTION)
+    : Card_symbol(CK_SECTION, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

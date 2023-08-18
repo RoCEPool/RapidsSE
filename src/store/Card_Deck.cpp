@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Deck, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Deck::Card_Deck(void)
-: Card_symbol(CK_DECK)
+: Card_symbol(CK_DECK, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

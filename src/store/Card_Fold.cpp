@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Fold,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Fold::Card_Fold(void)
-: Card_OP(CK_FOLD)
+: Card_OP(CK_FOLD,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

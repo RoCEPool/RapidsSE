@@ -263,7 +263,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
+    Card(eCK eCard, i8 iFixedDepth);
 
    ~Card(void) noexcept(false);
 

@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Limit,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Limit::Card_Limit(void)
-: Card_OP(CK_LIMIT)
+: Card_OP(CK_LIMIT,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

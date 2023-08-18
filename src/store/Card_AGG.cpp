@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AGG::Card_AGG(eCK eCard)
-: Card_OP(eCard)
+Card_AGG::Card_AGG(eCK eCard, i8 iFixedDepth)
+: Card_OP(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

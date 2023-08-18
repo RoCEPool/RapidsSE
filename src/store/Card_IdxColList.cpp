@@ -22,7 +22,7 @@ __vDeleteFunction(Card_IdxColList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IdxColList::Card_IdxColList(void)
-    : Card_symbol(CK_IDXCOLLIST)
+    : Card_symbol(CK_IDXCOLLIST, 5)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

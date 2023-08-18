@@ -31,7 +31,7 @@ __vDeleteFunction(Card_StreamJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamJoin::Card_StreamJoin(void)
-: Card_symbol(CK_STREAMJOIN)
+: Card_symbol(CK_STREAMJOIN, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

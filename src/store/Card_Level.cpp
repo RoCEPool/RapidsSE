@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Level, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Level::Card_Level(eAL eLevel)
-: Card_symbol(CK_LEVEL)
+: Card_symbol(CK_LEVEL, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -23,7 +23,7 @@ __vDeleteFunction(Card_Projection, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Projection::Card_Projection(i8 iCrossRef)
-: Card_ELIST(CK_PROJECTION)
+: Card_ELIST(CK_PROJECTION,2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

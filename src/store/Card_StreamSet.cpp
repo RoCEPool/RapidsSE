@@ -28,7 +28,7 @@ __vDeleteFunction(Card_StreamSet, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamSet::Card_StreamSet(void)
-: Card_symbol(CK_STREAMSET)
+: Card_symbol(CK_STREAMSET, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

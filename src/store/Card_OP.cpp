@@ -18,8 +18,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OP::Card_OP(eCK eCard)
-: Card_symbol(eCard)
+Card_OP::Card_OP(eCK eCard, i8 iFixedDepth)
+: Card_symbol(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -11,7 +11,7 @@ namespace STORE
   class Card_COND : public Card_OP
   {
   public:
-    Card_COND(eCK eCard);
+    Card_COND(eCK eCard, i8 iFixedDepth);
    ~Card_COND(void) noexcept(false);
 
    void vAddTransients(CardIter* pCI);
