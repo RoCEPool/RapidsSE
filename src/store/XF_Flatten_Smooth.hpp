@@ -1,17 +1,16 @@
 /*============================================================================*/
-/* XF_Smoosh.hpp -- XF_Smoosh                                                       */
+/* XF_Flatten_Smooth.hpp -- XF_Flatten_Smooth                                                       */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
-#include "eSM.h"
 
 namespace STORE
 {
   class CardIter;
   class CarryForward;
 
-  class XF_Smoosh : public Object
+  class XF_Flatten_Smooth : public Object
   {
   private:
 
@@ -22,18 +21,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Smoosh(void);
-   ~XF_Smoosh(void) noexcept(false);
+    XF_Flatten_Smooth(void);
+   ~XF_Flatten_Smooth(void) noexcept(false);
 
-    void vSmoosh(CardIter* pCI, eSM eSmoosh);
-
-    void vInto_KEYnotEXISTS(CardIter* pCI);
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Smoosh* _pXF_Smoosh(void* aAddr);
+  XF_Flatten_Smooth* _pXF_Flatten_Smooth(void* aAddr);
 
 }
 

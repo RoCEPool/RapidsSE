@@ -5,7 +5,7 @@
 #include "XF_Flatten_34_W_A_NC_ro.hpp"
 
 #include "Fold.hpp"
-#include "XF_Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
-  XF_Smooth* pSmooth = new XF_Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

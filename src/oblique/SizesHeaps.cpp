@@ -238,11 +238,11 @@
 #include "ParamsSpec.hpp"
 #include "Scope.hpp"
 #include "Fold.hpp"
-#include "XF_Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten.hpp"
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
-#include "XF_Smoosh.hpp"
+#include "XF_Flatten_Smoosh.hpp"
 #include "XF_Flatten_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
@@ -287,7 +287,7 @@
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Flatten_Fix_table_Pos.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
-#include "XF_stmCol_To_tblCol.hpp"
+#include "XF_Flatten_stmCol_To_tblCol.hpp"
 #include "XF_Flatten_Delete_Empty_where.hpp"
 #include "XF_Flatten_Predicate_Pull_Up.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
@@ -810,20 +810,20 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_RPNCALC_TO_BOOLCALC,          sizeof(XF_Prolog_rpnCalc_To_boolCalc),   HT_T_TINY    , FILL },
   {CN_XF_SCAN_TO_FROM,                 sizeof(XF_Prolog_scan_To_from),          HT_T_TINY    , FILL },
   {CN_XF_SHORTEN_QUERYNM,              sizeof(XF_Prolog_Shorten_queryNm),       HT_T_TINY    , FILL },
-  {CN_XF_SMOOSH,                       sizeof(XF_Smoosh),                       HT_T_TINY    , FILL },
-  {CN_XF_SMOOTH,                       sizeof(XF_Smooth),                       HT_T_TINY    , FILL },
+  {CN_XF_SMOOSH,                       sizeof(XF_Flatten_Smoosh),               HT_T_TINY    , FILL },
+  {CN_XF_SMOOTH,                       sizeof(XF_Flatten_Smooth),               HT_T_TINY    , FILL },
   {CN_XF_STAGE_CAST,                   sizeof(XF_Epilog_stage_cast),            HT_T_TINY    , FILL },
   {CN_XF_STMCOL_TO_COLNM,              sizeof(XF_Epilog_stmCol_To_colNm),       HT_T_TINY    , FILL },
-  {CN_XF_STMCOL_TO_TBLCOL,             sizeof(XF_stmCol_To_tblCol),             HT_T_TINY    , FILL },
-  {CN_XF_SUBQUERY_ANALYSIS,            sizeof(XF_Prolog_subQuery_Analysis),   HT_T_TINY    , FILL },
-  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_Code),            HT_T_TINY    , FILL },
-  {CN_XF_TABLE_ANALYSIS,               sizeof(XF_Prolog_table_Analysis),      HT_T_TINY    , FILL },
-  {CN_XF_TBLCOL_TO_STMCOL,             sizeof(XF_Epilog_tblCol_To_stmCol),    HT_T_TINY    , FILL },
-  {CN_XF_UPDATE_PROJECTION,        sizeof(XF_Update_projection),              HT_T_TINY    , FILL },
+  {CN_XF_STMCOL_TO_TBLCOL,             sizeof(XF_Flatten_stmCol_To_tblCol),     HT_T_TINY    , FILL },
+  {CN_XF_SUBQUERY_ANALYSIS,            sizeof(XF_Prolog_subQuery_Analysis),     HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_Code),              HT_T_TINY    , FILL },
+  {CN_XF_TABLE_ANALYSIS,               sizeof(XF_Prolog_table_Analysis),        HT_T_TINY    , FILL },
+  {CN_XF_TBLCOL_TO_STMCOL,             sizeof(XF_Epilog_tblCol_To_stmCol),      HT_T_TINY    , FILL },
+  {CN_XF_UPDATE_PROJECTION,        sizeof(XF_Update_projection),                HT_T_TINY    , FILL },
 
-  {CN__Y__,                    'Y' - ('A' - 1),                               HT_INVALID   , FILL },
+  {CN__Y__,                    'Y' - ('A' - 1),                                 HT_INVALID   , FILL },
 
-  {CN__Z__,                    'Z' - ('A' - 1),                               HT_INVALID   , FILL },
+  {CN__Z__,                    'Z' - ('A' - 1),                                 HT_INVALID   , FILL },
 
   {CN_ENUMS,                       C_VARGS_END,                               HT_INVALID   , FILL }
 };

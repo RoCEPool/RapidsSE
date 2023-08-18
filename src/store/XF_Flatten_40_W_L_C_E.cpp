@@ -5,8 +5,8 @@
 #include "XF_Flatten_40_W_L_C_E.hpp"
 
 #include "Fold.hpp"
-#include "XF_Smooth.hpp"
-#include "XF_Smoosh.hpp"
+#include "XF_Flatten_Smooth.hpp"
+#include "XF_Flatten_Smoosh.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
   pFold->vFold_basic(m_pCI,"40_W_L_C_E"_Stz,CK_WHERE);
   m_pCI->vPrintBoard(__LINE__);
 
-  XF_Smoosh* pSmoosh = new XF_Smoosh;
+  XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh;
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 

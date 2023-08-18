@@ -1,34 +1,40 @@
 /*============================================================================*/
-/* XF_stmCol_To_tblCol.hpp -- StmCol to TblCol                                 */
+/* XF_Flatten_Smoosh.hpp -- XF_Flatten_Smoosh                                                       */
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "BASE.h"
+#include "eSM.h"
 
 namespace STORE
 {
-  class XF_stmCol_To_tblCol : public XF_TRANSFORM
+  class CardIter;
+  class CarryForward;
+
+  class XF_Flatten_Smoosh : public Object
   {
   private:
+
     // must be last
     Footer m_xFooter;
 
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    XF_stmCol_To_tblCol(CardIter* pCI);
-   ~XF_stmCol_To_tblCol(void) noexcept(false);
+    
+    XF_Flatten_Smoosh(void);
+   ~XF_Flatten_Smoosh(void) noexcept(false);
 
-    static void vXF_stmCol_To_tblCol(CardIter* pCI);
+    void vSmoosh(CardIter* pCI, eSM eSmoosh);
 
-    void vXF_stmCol_To_tblCol(void);
+    void vInto_KEYnotEXISTS(CardIter* pCI);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_stmCol_To_tblCol* _pXF_stmCol_To_tblCol(void* aAddr);
+  XF_Flatten_Smoosh* _pXF_Flatten_Smoosh(void* aAddr);
+
 }
 
 /*============================================================================*/

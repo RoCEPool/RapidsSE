@@ -5,8 +5,8 @@
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
 #include "Fold.hpp"
-#include "XF_Smooth.hpp"
-#include "XF_Smoosh.hpp"
+#include "XF_Flatten_Smooth.hpp"
+#include "XF_Flatten_Smoosh.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -95,7 +95,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smooshing
 
-  XF_Smoosh* pSmoosh = new XF_Smoosh();
+  XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh();
 
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
@@ -110,7 +110,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   CarryForward* pCarryForward = new CarryForward;
   pCarryForward->Table.m_bReproject = true;
 
-  XF_Smooth* pSmooth = new XF_Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   m_pCI->vPrintBoard(__LINE__);

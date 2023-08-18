@@ -5,7 +5,7 @@
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 
 #include "Fold.hpp"
-#include "XF_Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -118,7 +118,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
   m_pCI->vPrintBoard(__LINE__);
 
 
-  XF_Smooth* pSmooth = new XF_Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
   m_pCI->vPrintBoard(__LINE__);
 

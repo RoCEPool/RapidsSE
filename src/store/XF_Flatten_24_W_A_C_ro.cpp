@@ -5,7 +5,7 @@
 #include "XF_Flatten_24_W_A_C_ro.hpp"
 
 #include "Fold.hpp"
-#include "XF_Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 #include "CorrelatedJoin.hpp"
 
 

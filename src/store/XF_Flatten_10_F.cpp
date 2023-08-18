@@ -5,7 +5,7 @@
 #include "XF_Flatten_10_F.hpp"
 
 #include "Fold.hpp"
-#include "XF_Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 #include "XF_Update_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   // smoothing
 
   pCarryForward->Table.m_bReproject = true;
-  XF_Smooth* pSmooth = new XF_Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
 

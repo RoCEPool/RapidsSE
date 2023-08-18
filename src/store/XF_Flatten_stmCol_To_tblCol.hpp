@@ -1,37 +1,34 @@
 /*============================================================================*/
-/* XF_Smooth.hpp -- XF_Smooth                                                       */
+/* XF_Flatten_stmCol_To_tblCol.hpp -- StmCol to TblCol                                 */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "XF_TRANSFORM.hpp"
 
 namespace STORE
 {
-  class CardIter;
-  class CarryForward;
-
-  class XF_Smooth : public Object
+  class XF_Flatten_stmCol_To_tblCol : public XF_TRANSFORM
   {
   private:
-
     // must be last
     Footer m_xFooter;
 
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
-    XF_Smooth(void);
-   ~XF_Smooth(void) noexcept(false);
+  
+    XF_Flatten_stmCol_To_tblCol(CardIter* pCI);
+   ~XF_Flatten_stmCol_To_tblCol(void) noexcept(false);
 
-    void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
+    static void vXF_stmCol_To_tblCol(CardIter* pCI);
+
+    void vXF_stmCol_To_tblCol(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Smooth* _pXF_Smooth(void* aAddr);
-
+  XF_Flatten_stmCol_To_tblCol* _pXF_Flatten_stmCol_To_tblCol(void* aAddr);
 }
 
 /*============================================================================*/
