@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_as_Review.hpp -- As Review                                              */
+/* XF_Prolog_Add_level.hpp -- As Review                                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_as_Review : public XF_TRANSFORM
+  class XF_Prolog_Add_level : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_as_Review(CardIter* pCI);
-   ~XF_as_Review(void) noexcept(false);
+    XF_Prolog_Add_level(CardIter* pCI);
+   ~XF_Prolog_Add_level(void) noexcept(false);
 
-    static void vXF_as_Review(CardIter* pCI);
+    static void vXF_Add_level(CardIter* pCI);
 
-    void vXF_as_Review(void);
+    void vXF_Add_level(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_as_Review* _pXF_as_Review(void* aAddr);
+  XF_Prolog_Add_level* _pXF_Prolog_Add_level(void* aAddr);
 }
 
 /*============================================================================*/

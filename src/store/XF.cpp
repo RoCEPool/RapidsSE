@@ -8,11 +8,11 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
-#include "XF_Add_level.hpp"
+#include "XF_Prolog_Add_level.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Dedupe_as.hpp"
-#include "XF_Delete_Unneeded.hpp"
+#include "XF_Prolog_Delete_Unneeded.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
 #include "XF_Optimise_Early_projection.hpp"
@@ -21,21 +21,21 @@
 #include "XF_Synthesise_Code.hpp"
 #include "XF_Optimise_scan_To_indexScan.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
-#include "XF_Move_on.hpp"
+#include "XF_Prolog_Move_on.hpp"
 #include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
-#include "XF_Shorten_queryNm.hpp"
-#include "XF_as_Review.hpp"
-#include "XF_index_Analysis.hpp"
-#include "XF_not_Ops.hpp"
-#include "XF_projection_Analysis.hpp"
-#include "XF_rpnCalc_To_boolCalc.hpp"
-#include "XF_scan_To_from.hpp"
+#include "XF_Prolog_Shorten_queryNm.hpp"
+#include "XF_Prolog_as_Review.hpp"
+#include "XF_Prolog_index_Analysis.hpp"
+#include "XF_Prolog_not_Ops.hpp"
+#include "XF_Prolog_projection_Analysis.hpp"
+#include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
+#include "XF_Prolog_scan_To_from.hpp"
 #include "XF_Epilog_stage_cast.hpp"
 #include "XF_Epilog_stmCol_To_colNm.hpp"
-#include "XF_subQuery_Analysis.hpp"
-#include "XF_table_Analysis.hpp"
+#include "XF_Prolog_subQuery_Analysis.hpp"
+#include "XF_Prolog_table_Analysis.hpp"
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
 #include "XF_colNm_To_stmCol.hpp"
@@ -118,34 +118,34 @@ void XF::vTransform(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
-    XF_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
+    XF_Prolog_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
 
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
 
     //vGroup_InitialAdjustments();
-    XF_Move_on::vXF_Move_on(m_pCI);
+    XF_Prolog_Move_on::vXF_Move_on(m_pCI);
 
     //vGroup_CondenseInfo();
-    XF_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
-    XF_scan_To_from::vXF_scan_To_table(m_pCI);
-    XF_Add_level::vXF_Add_level(m_pCI);
-    XF_not_Ops::vXF_not_Ops(m_pCI);
+    XF_Prolog_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
+    XF_Prolog_scan_To_from::vXF_scan_To_table(m_pCI);
+    XF_Prolog_Add_level::vXF_Add_level(m_pCI);
+    XF_Prolog_not_Ops::vXF_not_Ops(m_pCI);
 
     //vGroup_MetaAnalysis();
-    XF_table_Analysis::vXF_table_Analysis(m_pCI,&m_xSymbol_tableSyn);
-    XF_projection_Analysis::vXF_projection_Analysis(m_pCI);
-    XF_index_Analysis::vXF_index_Analysis(m_pCI);
+    XF_Prolog_table_Analysis::vXF_table_Analysis(m_pCI, &m_xSymbol_tableSyn);
+    XF_Prolog_projection_Analysis::vXF_projection_Analysis(m_pCI);
+    XF_Prolog_index_Analysis::vXF_index_Analysis(m_pCI);
 
     //vGroup_PreliminaryConversions();
-    XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
-    XF_as_Review::vXF_as_Review(m_pCI);
+    XF_Prolog_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
+    XF_Prolog_as_Review::vXF_as_Review(m_pCI);
 
     vDebugPoint();
   }
 
-  XF_subQuery_Analysis::vXF_subQuery_Analysis(m_pCI);
+  XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(m_pCI);
 
   m_pCI->m_pBench->vMadeSimpler(true);
 
@@ -217,13 +217,13 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
-    XF_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
+    XF_Prolog_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
 
-    XF_table_Analysis::vXF_table_Analysis_passThru(m_pCI,&m_xSymbol_tableSyn);
-    XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
+    XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(m_pCI, &m_xSymbol_tableSyn);
+    XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
     m_pCI->vTransform(__func__, XF_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
     while (m_pCI->G_bEachMain())
@@ -273,7 +273,7 @@ void XF::vTransform_passThru(void)
     }
     m_pCI->vEndTransform();
 
-    XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
+    XF_Prolog_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
 
     vDebugPoint();
   }

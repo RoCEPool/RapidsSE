@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_index_Analysis.hpp -- Index Prior                                    */
+/* XF_Prolog_rpnCalc_To_boolCalc.hpp -- RpnCalc to BoolCalc                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_index_Analysis : public XF_TRANSFORM
+  class XF_Prolog_rpnCalc_To_boolCalc : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,20 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_index_Analysis(CardIter* pCI);
-   ~XF_index_Analysis(void) noexcept(false);
+    XF_Prolog_rpnCalc_To_boolCalc(CardIter* pCI);
+   ~XF_Prolog_rpnCalc_To_boolCalc(void) noexcept(false);
 
-    static void vXF_index_Analysis(CardIter* pCI);
-    static void vXF_index_Analysis_passThru(CardIter* pCI);
+    static void vXF_rpnCalc_To_boolCalc(CardIter* pCI);
 
-    void vXF_index_Analysis(void);
-    void vXF_index_Analysis_passThru(void);
+    void vXF_rpnCalc_To_boolCalc(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_index_Analysis* _pXF_index_Analysis(void* aAddr);
+  XF_Prolog_rpnCalc_To_boolCalc* _pXF_Prolog_rpnCalc_To_boolCalc(void* aAddr);
 }
 
 /*============================================================================*/

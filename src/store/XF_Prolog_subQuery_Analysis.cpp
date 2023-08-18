@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_subQuery_Analysis.cpp -- Add Level                                              */
+/* XF_Prolog_subQuery_Analysis.cpp -- Add Level                                              */
 /*============================================================================*/
 
-#include "XF_subQuery_Analysis.hpp"
+#include "XF_Prolog_subQuery_Analysis.hpp"
 
 #include "RelOp.hpp"
 
@@ -11,16 +11,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_subQuery_Analysis, CN_XF_SUBQUERY_ANALYSIS)
-__aNewFunction(XF_subQuery_Analysis, CN_XF_SUBQUERY_ANALYSIS)
-__vDeleteFunction(XF_subQuery_Analysis, CN_XF_SUBQUERY_ANALYSIS)
-__aFooterFunction(XF_subQuery_Analysis)
+__pCastFunction(STORE, XF_Prolog_subQuery_Analysis, CN_XF_SUBQUERY_ANALYSIS)
+__aNewFunction(XF_Prolog_subQuery_Analysis, CN_XF_SUBQUERY_ANALYSIS)
+__vDeleteFunction(XF_Prolog_subQuery_Analysis, CN_XF_SUBQUERY_ANALYSIS)
+__aFooterFunction(XF_Prolog_subQuery_Analysis)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_subQuery_Analysis::XF_subQuery_Analysis(CardIter* m_pCI)
+XF_Prolog_subQuery_Analysis::XF_Prolog_subQuery_Analysis(CardIter* m_pCI)
 : XF_TRANSFORM(CN_XF_SUBQUERY_ANALYSIS, m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
@@ -33,7 +33,7 @@ XF_subQuery_Analysis::XF_subQuery_Analysis(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_subQuery_Analysis::~XF_subQuery_Analysis(void) noexcept(false)
+XF_Prolog_subQuery_Analysis::~XF_Prolog_subQuery_Analysis(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 }
@@ -41,11 +41,11 @@ XF_subQuery_Analysis::~XF_subQuery_Analysis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_subQuery_Analysis::vXF_subQuery_Analysis(CardIter* m_pCI)
+void XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(CardIter* m_pCI)
 {
   _static_
 
-  XF_subQuery_Analysis* pXF_subQuery_Analysis = new XF_subQuery_Analysis(m_pCI);
+  XF_Prolog_subQuery_Analysis* pXF_subQuery_Analysis = new XF_Prolog_subQuery_Analysis(m_pCI);
 
   pXF_subQuery_Analysis->vXF_subQuery_Analysis();
 
@@ -60,7 +60,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /* subQuery analysis                                                          */
 /*----------------------------------------------------------------------------*/
-void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
+void XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
@@ -141,7 +141,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_subQuery_Analysis::vAnalysis_Of_from_call(CardIter* m_pCI)
+void XF_Prolog_subQuery_Analysis::vAnalysis_Of_from_call(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
@@ -156,7 +156,7 @@ void XF_subQuery_Analysis::vAnalysis_Of_from_call(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_subQuery_Analysis::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
+void XF_Prolog_subQuery_Analysis::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
@@ -204,7 +204,7 @@ void XF_subQuery_Analysis::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_subQuery_Analysis::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
+void XF_Prolog_subQuery_Analysis::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 

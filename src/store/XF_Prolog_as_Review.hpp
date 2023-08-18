@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Shorten_queryNm.hpp -- Shorten Query Names                           */
+/* XF_Prolog_as_Review.hpp -- As Review                                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Shorten_queryNm : public XF_TRANSFORM
+  class XF_Prolog_as_Review : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Shorten_queryNm(CardIter* pCI);
-   ~XF_Shorten_queryNm(void) noexcept(false);
+    XF_Prolog_as_Review(CardIter* pCI);
+   ~XF_Prolog_as_Review(void) noexcept(false);
 
-    static void vXF_Shorten_queryNm(CardIter* pCI);
+    static void vXF_as_Review(CardIter* pCI);
 
-    void vXF_Shorten_queryNm(void);
+    void vXF_as_Review(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Shorten_queryNm* _pXF_Shorten_queryNm(void* aAddr);
+  XF_Prolog_as_Review* _pXF_Prolog_as_Review(void* aAddr);
 }
 
 /*============================================================================*/

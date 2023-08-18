@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_projection_Analysis.hpp -- Projection Prior                          */
+/* XF_Prolog_Delete_Unneeded.hpp -- Delete Unneeded                                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_projection_Analysis : public XF_TRANSFORM
+  class XF_Prolog_Delete_Unneeded : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,20 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_projection_Analysis(CardIter* pCI);
-   ~XF_projection_Analysis(void) noexcept(false);
+    XF_Prolog_Delete_Unneeded(CardIter* pCI);
+   ~XF_Prolog_Delete_Unneeded(void) noexcept(false);
 
-    static void vXF_projection_Analysis(CardIter* pCI);
-    static void vXF_projection_Analysis_passThru(CardIter* pCI);
+    static void vXF_Delete_Unneeded(CardIter* pCI);
 
-    void vXF_projection_Analysis(void);
-    void vXF_projection_Analysis_passThru(void);
+    void vXF_Delete_Unneeded(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_projection_Analysis* _pXF_projection_Analysis(void* aAddr);
+  XF_Prolog_Delete_Unneeded* _pXF_Prolog_Delete_Unneeded(void* aAddr);
 }
 
 /*============================================================================*/

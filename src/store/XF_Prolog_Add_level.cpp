@@ -1,58 +1,53 @@
 /*============================================================================*/
-/* XF_not_Ops.cpp -- Not Ops                                                  */
+/* XF_Prolog_Add_level.cpp -- Add Level                                              */
 /*============================================================================*/
 
-#include "XF_not_Ops.hpp"
+#include "XF_Prolog_Add_level.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_not_Ops, CN_XF_NOT_OPS)
-__aNewFunction(XF_not_Ops, CN_XF_NOT_OPS)
-__vDeleteFunction(XF_not_Ops, CN_XF_NOT_OPS)
-__aFooterFunction(XF_not_Ops)
+__pCastFunction(STORE, XF_Prolog_Add_level, CN_XF_ADD_LEVEL)
+__aNewFunction(XF_Prolog_Add_level, CN_XF_ADD_LEVEL)
+__vDeleteFunction(XF_Prolog_Add_level, CN_XF_ADD_LEVEL)
+__aFooterFunction(XF_Prolog_Add_level)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_not_Ops::XF_not_Ops(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_NOT_OPS, pCI)
+XF_Prolog_Add_level::XF_Prolog_Add_level(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_NOT_OPS);
+  _checkInitialised_(CN_XF_ADD_LEVEL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_not_Ops::~XF_not_Ops(void) noexcept(false)
+XF_Prolog_Add_level::~XF_Prolog_Add_level(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
-
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
-    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
-
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_not_Ops::vXF_not_Ops(CardIter* pCI)
+void XF_Prolog_Add_level::vXF_Add_level(CardIter* pCI)
 {
   _static_
 
-  XF_not_Ops* pXF_not_Ops = new XF_not_Ops(pCI);
+  XF_Prolog_Add_level* pXF_Add_level = new XF_Prolog_Add_level(pCI);
 
-  pXF_not_Ops->vXF_not_Ops();
+  pXF_Add_level->vXF_Add_level();
 
-  delete pXF_not_Ops;
+  delete pXF_Add_level;
 }
 
 
@@ -61,17 +56,17 @@ void XF_not_Ops::vXF_not_Ops(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* not ops                                                                    */
+/* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_not_Ops::vXF_not_Ops(void)
+void XF_Prolog_Add_level::vXF_Add_level(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NOT_OPS, "not ops"_Stz);
+  m_pCI->vTransform(__func__, XF_ADD_LEVEL, "add level to op"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
-    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
+  while (m_pCI->G_bEachMain())
+    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
 
   m_pCI->vEndTransform();
 

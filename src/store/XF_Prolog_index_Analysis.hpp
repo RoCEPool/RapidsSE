@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_subQuery_Analysis.hpp -- SubQuery Prior                              */
+/* XF_Prolog_index_Analysis.hpp -- Index Prior                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_subQuery_Analysis : public XF_TRANSFORM
+  class XF_Prolog_index_Analysis : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,22 +17,20 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_subQuery_Analysis(CardIter* pCI);
-   ~XF_subQuery_Analysis(void) noexcept(false);
+    XF_Prolog_index_Analysis(CardIter* pCI);
+   ~XF_Prolog_index_Analysis(void) noexcept(false);
 
-    static void vXF_subQuery_Analysis(CardIter* pCI);
+    static void vXF_index_Analysis(CardIter* pCI);
+    static void vXF_index_Analysis_passThru(CardIter* pCI);
 
-    void vXF_subQuery_Analysis(void);
+    void vXF_index_Analysis(void);
+    void vXF_index_Analysis_passThru(void);
 
   private:
-    void vAnalysis_Of_from_call(CardIter* pCI);
-    void vAnalysis_Of_having_boolCalc(CardIter* pCI);
-    void vAnalysis_Of_where_boolCalc(CardIter*  pCI);
-
     Footer* aFooter(void);
   };
 
-  XF_subQuery_Analysis* _pXF_subQuery_Analysis(void* aAddr);
+  XF_Prolog_index_Analysis* _pXF_Prolog_index_Analysis(void* aAddr);
 }
 
 /*============================================================================*/

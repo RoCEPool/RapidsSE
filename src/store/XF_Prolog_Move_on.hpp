@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_not_Ops.hpp -- Not Ops                                                  */
+/* XF_Prolog_Move_on.hpp -- Move On                                                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_not_Ops : public XF_TRANSFORM
+  class XF_Prolog_Move_on : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_not_Ops(CardIter* pCI);
-   ~XF_not_Ops(void) noexcept(false);
+    XF_Prolog_Move_on(CardIter* pCI);
+   ~XF_Prolog_Move_on(void) noexcept(false);
 
-    static void vXF_not_Ops(CardIter* pCI);
+    static void vXF_Move_on(CardIter* pCI);
 
-    void vXF_not_Ops(void);
+    void vXF_Move_on(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_not_Ops* _pXF_not_Ops(void* aAddr);
+  XF_Prolog_Move_on* _pXF_Prolog_Move_on(void* aAddr);
 }
 
 /*============================================================================*/

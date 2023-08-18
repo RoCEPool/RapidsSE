@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_table_Analysis.cpp -- Table Prior                                    */
+/* XF_Prolog_table_Analysis.cpp -- Table Prior                                    */
 /*============================================================================*/
 
-#include "XF_table_Analysis.hpp"
+#include "XF_Prolog_table_Analysis.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_table_Analysis, CN_XF_TABLE_ANALYSIS)
-__aNewFunction(XF_table_Analysis, CN_XF_TABLE_ANALYSIS)
-__vDeleteFunction(XF_table_Analysis, CN_XF_TABLE_ANALYSIS)
-__aFooterFunction(XF_table_Analysis)
+__pCastFunction(STORE, XF_Prolog_table_Analysis, CN_XF_TABLE_ANALYSIS)
+__aNewFunction(XF_Prolog_table_Analysis, CN_XF_TABLE_ANALYSIS)
+__vDeleteFunction(XF_Prolog_table_Analysis, CN_XF_TABLE_ANALYSIS)
+__aFooterFunction(XF_Prolog_table_Analysis)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_table_Analysis::XF_table_Analysis(CardIter* pCI)
+XF_Prolog_table_Analysis::XF_Prolog_table_Analysis(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_TABLE_ANALYSIS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
@@ -31,7 +31,7 @@ XF_table_Analysis::XF_table_Analysis(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_table_Analysis::~XF_table_Analysis(void) noexcept(false)
+XF_Prolog_table_Analysis::~XF_Prolog_table_Analysis(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_table_Analysis::~XF_table_Analysis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis(CardIter* pCI, Symbol* pSymbol_tableSyn)
+void XF_Prolog_table_Analysis::vXF_table_Analysis(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
   _static_
 
-  XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI);
+  XF_Prolog_table_Analysis* pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
 
   pXF_table_Analysis->vXF_table_Analysis(pSymbol_tableSyn);
 
@@ -53,11 +53,11 @@ void XF_table_Analysis::vXF_table_Analysis(CardIter* pCI, Symbol* pSymbol_tableS
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn)
+void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
   _static_
 
-  XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI);
+  XF_Prolog_table_Analysis* pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
 
   pXF_table_Analysis->vXF_table_Analysis_passThru(pSymbol_tableSyn);
 
@@ -72,7 +72,7 @@ void XF_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, Symbol* pSymb
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
+void XF_Prolog_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
 
@@ -95,7 +95,7 @@ void XF_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis_passThru(Symbol* pSymbol_tableSyn)
+void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Add_level.hpp -- As Review                                              */
+/* XF_Prolog_Shorten_queryNm.hpp -- Shorten Query Names                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Add_level : public XF_TRANSFORM
+  class XF_Prolog_Shorten_queryNm : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Add_level(CardIter* pCI);
-   ~XF_Add_level(void) noexcept(false);
+    XF_Prolog_Shorten_queryNm(CardIter* pCI);
+   ~XF_Prolog_Shorten_queryNm(void) noexcept(false);
 
-    static void vXF_Add_level(CardIter* pCI);
+    static void vXF_Shorten_queryNm(CardIter* pCI);
 
-    void vXF_Add_level(void);
+    void vXF_Shorten_queryNm(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Add_level* _pXF_Add_level(void* aAddr);
+  XF_Prolog_Shorten_queryNm* _pXF_Prolog_Shorten_queryNm(void* aAddr);
 }
 
 /*============================================================================*/

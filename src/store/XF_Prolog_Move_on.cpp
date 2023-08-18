@@ -1,53 +1,53 @@
 /*============================================================================*/
-/* XF_as_Review.cpp -- As Review                                              */
+/* XF_Prolog_Move_on.cpp -- Move On                                                  */
 /*============================================================================*/
 
-#include "XF_as_Review.hpp"
+#include "XF_Prolog_Move_on.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_as_Review, CN_XF_AS_REVIEW)
-__aNewFunction(XF_as_Review, CN_XF_AS_REVIEW)
-__vDeleteFunction(XF_as_Review, CN_XF_AS_REVIEW)
-__aFooterFunction(XF_as_Review)
+__pCastFunction(STORE, XF_Prolog_Move_on, CN_XF_MOVE_ON)
+__aNewFunction(XF_Prolog_Move_on, CN_XF_MOVE_ON)
+__vDeleteFunction(XF_Prolog_Move_on, CN_XF_MOVE_ON)
+__aFooterFunction(XF_Prolog_Move_on)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_as_Review::XF_as_Review(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_AS_REVIEW, pCI)
+XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_MOVE_ON, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 
-  _checkInitialised_(CN_XF_AS_REVIEW);
+  _checkInitialised_(CN_XF_MOVE_ON);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_as_Review::~XF_as_Review(void) noexcept(false)
+XF_Prolog_Move_on::~XF_Prolog_Move_on(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_as_Review::vXF_as_Review(CardIter* pCI)
+void XF_Prolog_Move_on::vXF_Move_on(CardIter* pCI)
 {
   _static_
 
-  XF_as_Review* pXF_as_Review = new XF_as_Review(pCI);
+  XF_Prolog_Move_on* pXF_Move_on = new XF_Prolog_Move_on(pCI);
 
-  pXF_as_Review->vXF_as_Review();
+  pXF_Move_on->vXF_Move_on();
 
-  delete pXF_as_Review;
+  delete pXF_Move_on;
 }
 
 
@@ -56,36 +56,15 @@ void XF_as_Review::vXF_as_Review(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* move <on> in <absJoin>'s to <where>                                        */
 /*----------------------------------------------------------------------------*/
-void XF_as_Review::vXF_as_Review(void)
+void XF_Prolog_Move_on::vXF_Move_on(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_AS_REVIEW, "as review"_Stz);
+  m_pCI->vTransform(__func__, XF_MOVE_ON, "move <on> in <absJoin>'s to <where>"_Stz);
 
-  m_pCI->vClearRestart();
-
-  while (m_pCI->G_bEachMain()) {
-
-    switch (m_pCI->G.e_MainCard) {
-
-      case CK_GBYAGG:
-        m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
-        break;
-
-      case CK_INDEXJOIN:  break;
-      case CK_INDEXSCAN:  break;
-      case CK_PROJECT:    break;
-      case CK_SORT:       break;
-      case CK_TABLE:      break;
-
-      default:
-        break;
-    }
-
-    m_pCI->vPrintBoard(__LINE__);
-  }
+  Card_Where::vMove_All_on_To_where(m_pCI);
 
   m_pCI->vEndTransform();
 

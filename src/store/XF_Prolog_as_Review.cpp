@@ -1,53 +1,53 @@
 /*============================================================================*/
-/* XF_rpnCalc_To_boolCalc.cpp -- RpnCalc to BoolCalc                          */
+/* XF_Prolog_as_Review.cpp -- As Review                                              */
 /*============================================================================*/
 
-#include "XF_rpnCalc_To_boolCalc.hpp"
+#include "XF_Prolog_as_Review.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_rpnCalc_To_boolCalc, CN_XF_RPNCALC_TO_BOOLCALC)
-__aNewFunction(XF_rpnCalc_To_boolCalc, CN_XF_RPNCALC_TO_BOOLCALC)
-__vDeleteFunction(XF_rpnCalc_To_boolCalc, CN_XF_RPNCALC_TO_BOOLCALC)
-__aFooterFunction(XF_rpnCalc_To_boolCalc)
+__pCastFunction(STORE, XF_Prolog_as_Review, CN_XF_AS_REVIEW)
+__aNewFunction(XF_Prolog_as_Review, CN_XF_AS_REVIEW)
+__vDeleteFunction(XF_Prolog_as_Review, CN_XF_AS_REVIEW)
+__aFooterFunction(XF_Prolog_as_Review)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_rpnCalc_To_boolCalc::XF_rpnCalc_To_boolCalc(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_RPNCALC_TO_BOOLCALC, pCI)
+XF_Prolog_as_Review::XF_Prolog_as_Review(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_AS_REVIEW, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 
-  _checkInitialised_(CN_XF_RPNCALC_TO_BOOLCALC);
+  _checkInitialised_(CN_XF_AS_REVIEW);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_rpnCalc_To_boolCalc::~XF_rpnCalc_To_boolCalc(void) noexcept(false)
+XF_Prolog_as_Review::~XF_Prolog_as_Review(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(CardIter* pCI)
+void XF_Prolog_as_Review::vXF_as_Review(CardIter* pCI)
 {
   _static_
 
-  XF_rpnCalc_To_boolCalc* pXF_rpnCalc_To_boolCalc = new XF_rpnCalc_To_boolCalc(pCI);
+  XF_Prolog_as_Review* pXF_as_Review = new XF_Prolog_as_Review(pCI);
 
-  pXF_rpnCalc_To_boolCalc->vXF_rpnCalc_To_boolCalc();
+  pXF_as_Review->vXF_as_Review();
 
-  delete pXF_rpnCalc_To_boolCalc;
+  delete pXF_as_Review;
 }
 
 
@@ -56,21 +56,36 @@ void XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* all $n become $c.n                                                         */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(void)
+void XF_Prolog_as_Review::vXF_as_Review(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_RPNCALC_TO_BOOLCALC, "all $n become $c.n"_Stz);
-
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))
-    m_pCI->G.p_where->vConvert_rpnCalc_To_boolCalc(m_pCI);
+  m_pCI->vTransform(__func__, XF_AS_REVIEW, "as review"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC))
-    m_pCI->G.p_having->vConvert_rpnCalc_To_boolCalc(m_pCI);
+
+  while (m_pCI->G_bEachMain()) {
+
+    switch (m_pCI->G.e_MainCard) {
+
+      case CK_GBYAGG:
+        m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
+        break;
+
+      case CK_INDEXJOIN:  break;
+      case CK_INDEXSCAN:  break;
+      case CK_PROJECT:    break;
+      case CK_SORT:       break;
+      case CK_TABLE:      break;
+
+      default:
+        break;
+    }
+
+    m_pCI->vPrintBoard(__LINE__);
+  }
 
   m_pCI->vEndTransform();
 

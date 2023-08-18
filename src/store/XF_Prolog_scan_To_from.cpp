@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_scan_To_from.cpp -- Scan Becomes Table                            */
+/* XF_Prolog_scan_To_from.cpp -- Scan Becomes Table                            */
 /*============================================================================*/
 
-#include "XF_scan_To_from.hpp"
+#include "XF_Prolog_scan_To_from.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_scan_To_from, CN_XF_SCAN_TO_FROM)
-__aNewFunction(XF_scan_To_from, CN_XF_SCAN_TO_FROM)
-__vDeleteFunction(XF_scan_To_from, CN_XF_SCAN_TO_FROM)
-__aFooterFunction(XF_scan_To_from)
+__pCastFunction(STORE, XF_Prolog_scan_To_from, CN_XF_SCAN_TO_FROM)
+__aNewFunction(XF_Prolog_scan_To_from, CN_XF_SCAN_TO_FROM)
+__vDeleteFunction(XF_Prolog_scan_To_from, CN_XF_SCAN_TO_FROM)
+__aFooterFunction(XF_Prolog_scan_To_from)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_scan_To_from::XF_scan_To_from(CardIter* pCI)
+XF_Prolog_scan_To_from::XF_Prolog_scan_To_from(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_SCAN_TO_FROM, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
@@ -31,7 +31,7 @@ XF_scan_To_from::XF_scan_To_from(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_scan_To_from::~XF_scan_To_from(void) noexcept(false)
+XF_Prolog_scan_To_from::~XF_Prolog_scan_To_from(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 }
@@ -44,11 +44,11 @@ XF_scan_To_from::~XF_scan_To_from(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_scan_To_from::vXF_scan_To_table(CardIter* pCI)
+void XF_Prolog_scan_To_from::vXF_scan_To_table(CardIter* pCI)
 {
   _static_
 
-  XF_scan_To_from* pXF_scan_Becomes_table = new XF_scan_To_from(pCI);
+  XF_Prolog_scan_To_from* pXF_scan_Becomes_table = new XF_Prolog_scan_To_from(pCI);
 
   pXF_scan_Becomes_table->vXF_scan_To_table();
 
@@ -63,7 +63,7 @@ void XF_scan_To_from::vXF_scan_To_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* scan to table                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_scan_To_from::vXF_scan_To_table(void)
+void XF_Prolog_scan_To_from::vXF_scan_To_table(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_rpnCalc_To_boolCalc.hpp -- RpnCalc to BoolCalc                          */
+/* XF_Prolog_subQuery_Analysis.hpp -- SubQuery Prior                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_rpnCalc_To_boolCalc : public XF_TRANSFORM
+  class XF_Prolog_subQuery_Analysis : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,22 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_rpnCalc_To_boolCalc(CardIter* pCI);
-   ~XF_rpnCalc_To_boolCalc(void) noexcept(false);
+    XF_Prolog_subQuery_Analysis(CardIter* pCI);
+   ~XF_Prolog_subQuery_Analysis(void) noexcept(false);
 
-    static void vXF_rpnCalc_To_boolCalc(CardIter* pCI);
+    static void vXF_subQuery_Analysis(CardIter* pCI);
 
-    void vXF_rpnCalc_To_boolCalc(void);
+    void vXF_subQuery_Analysis(void);
 
   private:
+    void vAnalysis_Of_from_call(CardIter* pCI);
+    void vAnalysis_Of_having_boolCalc(CardIter* pCI);
+    void vAnalysis_Of_where_boolCalc(CardIter*  pCI);
+
     Footer* aFooter(void);
   };
 
-  XF_rpnCalc_To_boolCalc* _pXF_rpnCalc_To_boolCalc(void* aAddr);
+  XF_Prolog_subQuery_Analysis* _pXF_Prolog_subQuery_Analysis(void* aAddr);
 }
 
 /*============================================================================*/

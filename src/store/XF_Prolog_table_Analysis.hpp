@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_scan_To_from.hpp -- Scan Becomes Table                            */
+/* XF_Prolog_table_Analysis.hpp -- Table Prior                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_scan_To_from : public XF_TRANSFORM
+  class XF_Prolog_table_Analysis : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,20 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_scan_To_from(CardIter* pCI);
-   ~XF_scan_To_from(void) noexcept(false);
+    XF_Prolog_table_Analysis(CardIter* pCI);
+   ~XF_Prolog_table_Analysis(void) noexcept(false);
 
-    static void vXF_scan_To_table(CardIter* pCI);
+    static void vXF_table_Analysis(CardIter* pCI, Symbol* pSymbol_tableSyn);
+    static void vXF_table_Analysis_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn);
 
-    void vXF_scan_To_table(void);
+    void vXF_table_Analysis(Symbol* pSymbol_tableSyn);
+    void vXF_table_Analysis_passThru(Symbol* pSymbol_tableSyn);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_scan_To_from* _pXF_scan_To_from(void* aAddr);
+  XF_Prolog_table_Analysis* _pXF_Prolog_table_Analysis(void* aAddr);
 }
 
 /*============================================================================*/
