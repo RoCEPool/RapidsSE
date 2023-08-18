@@ -4,6 +4,8 @@
 
 #include "XF_OT_Replace_scan_By_indexScan.hpp"
 
+#include "eOT.h"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -39,13 +41,13 @@ XF_OT_Replace_scan_By_indexScan::~XF_OT_Replace_scan_By_indexScan(void) noexcept
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(CardIter* pCI)
+void XF_OT_Replace_scan_By_indexScan::vXF_Replace_scan_By_indexScan(CardIter* pCI)
 {
   _static_
 
   XF_OT_Replace_scan_By_indexScan* pXF_Morph_scan_To_indexScan = new XF_OT_Replace_scan_By_indexScan(pCI);
 
-  pXF_Morph_scan_To_indexScan->vXF_Morph_scan_To_indexScan();
+  pXF_Morph_scan_To_indexScan->vXF_Replace_scan_By_indexScan();
 
   delete pXF_Morph_scan_To_indexScan;
 }
@@ -58,7 +60,7 @@ void XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(void)
+void XF_OT_Replace_scan_By_indexScan::vXF_Replace_scan_By_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
 
@@ -72,6 +74,8 @@ void XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(void)
 
 
       m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
+
+      m_pCI->pBoard()->pState()->vInsert(aOT[OT_RPL_SCAN_BY_INDEXSCAN]);
 
       m_pCI->G.p_indexList->vChoose_index_For_indexScan();
     }

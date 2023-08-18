@@ -158,7 +158,7 @@ void XF::vTransform(void)
 
   XF_from_To_OP::vXF_Morph_table_To_EEop(m_pCI);
 
-  XF_OT_Replace_scan_By_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
+  XF_OT_Replace_scan_By_indexScan::vXF_Replace_scan_By_indexScan(m_pCI);
 
   XF_Derive_streamKey::vXF_Derive_streamKey(m_pCI);
 
