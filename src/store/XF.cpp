@@ -113,6 +113,10 @@ void XF::vTransform(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1/5) prolog
+
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
     XF_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
@@ -146,15 +150,19 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vMadeSimpler(true);
 
-
   Bench::vValidate(m_pCI);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2/5) flatten
 
   XF_Flatten::vFlatten(m_pCI);
   Bench::vValidate(m_pCI);
 
 
   XF_Delete_flat::vXF_Delete_flat(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3/5) optimisw
 
   XF_from_To_OP::vXF_Morph_table_To_EEop(m_pCI);
 
@@ -174,11 +182,12 @@ void XF::vTransform(void)
 
   XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
 
+
   XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
   m_pCI->m_pBench->vMadeOptimal(true);
 
-
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 4/5) epilog
 
   XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
 
@@ -195,6 +204,9 @@ void XF::vTransform(void)
   m_pCI->m_pBench->vMadeWeavable(true);
 
   vCrosscheck_Optimisations();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 5/5) synthesise
 
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 
