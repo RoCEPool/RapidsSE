@@ -11,11 +11,11 @@
 #include "XF_Smooth.hpp"
 #include "Optimiser.hpp"
 
-#include "XF_Fix_table_Pos.hpp"
-#include "XF_Derive_bounds.hpp"
-#include "XF_Delete_Empty_where.hpp"
-#include "XF_Predicate_Pull_Up.hpp"
-#include "XF_Predicate_Reposition.hpp"
+#include "XF_Flatten_Fix_table_Pos.hpp"
+#include "XF_Flatten_Derive_bounds.hpp"
+#include "XF_Flatten_Delete_Empty_where.hpp"
+#include "XF_Flatten_Predicate_Pull_Up.hpp"
+#include "XF_Flatten_Predicate_Reposition.hpp"
 #include "XF_Update_projection.hpp"
 
 #include "eOT.h"
@@ -86,20 +86,20 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Predicate Pull Up : move suitable where predicates to table filter
 
-  XF_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
+  XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
 
   // delete empty where
-  XF_Delete_Empty_where::vXF_Delete_Empty_where(m_pCI);
+  XF_Flatten_Delete_Empty_where::vXF_Delete_Empty_where(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Index Bounds : move table filter predicates to table index bounds
 
   // derive index bounds from table filter
-  XF_Derive_bounds::vXF_Derive_bounds(m_pCI);
+  XF_Flatten_Derive_bounds::vXF_Derive_bounds(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix position of table which uses subquery result as pos 0
-  XF_Fix_table_Pos::vXF_Fix_table_Pos(m_pCI);
+  XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
@@ -115,12 +115,12 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // reorder the tables
   vReorderTables();
 
-  XF_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
+  XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
 
-  XF_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
+  XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
 
   // re-derive bounds from filter after join ordering
-  XF_Derive_bounds::vXF_Derive_bounds(m_pCI);
+  XF_Flatten_Derive_bounds::vXF_Derive_bounds(m_pCI);
 }
 
 

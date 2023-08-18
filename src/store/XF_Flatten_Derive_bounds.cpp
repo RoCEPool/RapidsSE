@@ -1,53 +1,53 @@
 /*============================================================================*/
-/* XF_Dedupe_as.cpp -- De-Duplicate As (column name)                          */
+/* XF_Flatten_Derive_bounds.cpp -- Derive Bounds (from filter)                        */
 /*============================================================================*/
 
-#include "XF_Dedupe_as.hpp"
+#include "XF_Flatten_Derive_bounds.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Dedupe_as, CN_XF_DEDUPE_AS)
-__aNewFunction(XF_Dedupe_as, CN_XF_DEDUPE_AS)
-__vDeleteFunction(XF_Dedupe_as, CN_XF_DEDUPE_AS)
-__aFooterFunction(XF_Dedupe_as)
+__pCastFunction(STORE, XF_Flatten_Derive_bounds, CN_XF_DERIVE_BOUNDS)
+__aNewFunction(XF_Flatten_Derive_bounds, CN_XF_DERIVE_BOUNDS)
+__vDeleteFunction(XF_Flatten_Derive_bounds, CN_XF_DERIVE_BOUNDS)
+__aFooterFunction(XF_Flatten_Derive_bounds)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Dedupe_as::XF_Dedupe_as(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_DEDUPE_AS, pCI)
+XF_Flatten_Derive_bounds::XF_Flatten_Derive_bounds(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_DERIVE_BOUNDS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_DEDUPE_AS);
+  _checkInitialised_(CN_XF_DERIVE_BOUNDS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Dedupe_as::~XF_Dedupe_as(void) noexcept(false)
+XF_Flatten_Derive_bounds::~XF_Flatten_Derive_bounds(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* de-duplicate as (column names)                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Dedupe_as::vXF_Dedupe_as(CardIter* pCI)
+void XF_Flatten_Derive_bounds::vXF_Derive_bounds(CardIter* pCI)
 {
   _static_
 
-  XF_Dedupe_as* pXF_Dedupe_colNm = new XF_Dedupe_as(pCI);
+  XF_Flatten_Derive_bounds* pXF_Derive_bounds = new XF_Flatten_Derive_bounds(pCI);
 
-  pXF_Dedupe_colNm->vXF_Dedupe_as();
+  pXF_Derive_bounds->vXF_Derive_bounds();
 
-  delete pXF_Dedupe_colNm;
+  delete pXF_Derive_bounds;
 }
 
 
@@ -56,20 +56,14 @@ void XF_Dedupe_as::vXF_Dedupe_as(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* de-duplicate as (column names)                                             */
+/* derive index bounds from table filter                                      */
 /*----------------------------------------------------------------------------*/
-void XF_Dedupe_as::vXF_Dedupe_as(void)
+void XF_Flatten_Derive_bounds::vXF_Derive_bounds(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_DEDUPE_AS, "de-duplicate as (column names)"_Stz);
-
-  m_pCI->vClearRestart();
-
-  while (m_pCI->G_bEachMainWith2Sub(CK_INDEXJOIN,CK_PROJECTION,CK_CONSTRAINT)) {
-    m_pCI->G.p_constraint->vDisambiguate(m_pCI);
-  }
-
+  m_pCI->vTransform(__func__, XF_DERIVE_BOUNDS, "derive index bounds from table filter"_Stz);
+  Card_Table::vDeriveBoundsFromFilter(m_pCI);
   m_pCI->vEndTransform();
 
   vValidate();

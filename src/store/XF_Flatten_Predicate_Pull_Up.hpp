@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Predicate_Reposition.hpp -- Predicate Reposition                        */
+/* XF_Flatten_Predicate_Pull_Up.hpp -- Predicate Pull Up                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Predicate_Reposition : public XF_TRANSFORM
+  class XF_Flatten_Predicate_Pull_Up : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Predicate_Reposition(CardIter* pCI);
-   ~XF_Predicate_Reposition(void) noexcept(false);
+    XF_Flatten_Predicate_Pull_Up(CardIter* pCI);
+   ~XF_Flatten_Predicate_Pull_Up(void) noexcept(false);
 
-    static void vXF_Predicate_Reposition(CardIter* pCI);
+    static void vXF_Predicate_Pull_Up(CardIter* pCI);
 
-    void vXF_Predicate_Reposition(void);
+    void vXF_Predicate_Pull_Up(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Predicate_Reposition* _pXF_Predicate_Reposition(void* aAddr);
+  XF_Flatten_Predicate_Pull_Up* _pXF_Flatten_Predicate_Pull_Up(void* aAddr);
 }
 
 /*============================================================================*/

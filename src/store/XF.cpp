@@ -11,7 +11,7 @@
 #include "XF_Prolog_Add_level.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
-#include "XF_Dedupe_as.hpp"
+#include "XF_Epilog_Dedupe_as.hpp"
 #include "XF_Prolog_Delete_Unneeded.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
 #include "XF_Optimise_Early_projection.hpp"
@@ -191,7 +191,7 @@ void XF::vTransform(void)
 
   XF_Epilog_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
 
-  //XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
+  //XF_Epilog_Dedupe_as::vXF_Dedupe_as(m_pCI);
 
   XF_Epilog_Column_mapping::vXF_Column_Mapping(m_pCI);
 
@@ -285,7 +285,7 @@ void XF::vTransform_passThru(void)
 
   XF_Epilog_Column_mapping::vXF_Column_Mapping(m_pCI);
 
-  XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
+  XF_Epilog_Dedupe_as::vXF_Dedupe_as(m_pCI);
 
   vCrosscheck_Optimisations();
 

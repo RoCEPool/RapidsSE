@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Fix_table_Pos.cpp -- Fix Table Position                                 */
+/* XF_Flatten_Predicate_Pull_Up.cpp -- Predicate Pull Up                              */
 /*============================================================================*/
 
-#include "XF_Fix_table_Pos.hpp"
+#include "XF_Flatten_Predicate_Pull_Up.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Fix_table_Pos, CN_XF_ADD_LEVEL)
-__aNewFunction(XF_Fix_table_Pos, CN_XF_ADD_LEVEL)
-__vDeleteFunction(XF_Fix_table_Pos, CN_XF_ADD_LEVEL)
-__aFooterFunction(XF_Fix_table_Pos)
+__pCastFunction(STORE, XF_Flatten_Predicate_Pull_Up, CN_XF_ADD_LEVEL)
+__aNewFunction(XF_Flatten_Predicate_Pull_Up, CN_XF_ADD_LEVEL)
+__vDeleteFunction(XF_Flatten_Predicate_Pull_Up, CN_XF_ADD_LEVEL)
+__aFooterFunction(XF_Flatten_Predicate_Pull_Up)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Fix_table_Pos::XF_Fix_table_Pos(CardIter* pCI)
+XF_Flatten_Predicate_Pull_Up::XF_Flatten_Predicate_Pull_Up(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Fix_table_Pos::XF_Fix_table_Pos(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Fix_table_Pos::~XF_Fix_table_Pos(void) noexcept(false)
+XF_Flatten_Predicate_Pull_Up::~XF_Flatten_Predicate_Pull_Up(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 }
@@ -39,15 +39,15 @@ XF_Fix_table_Pos::~XF_Fix_table_Pos(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Fix_table_Pos::vXF_Fix_table_Pos(CardIter* pCI)
+void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(CardIter* pCI)
 {
   _static_
 
-  XF_Fix_table_Pos* pXF_Fix_table_Pos = new XF_Fix_table_Pos(pCI);
+  XF_Flatten_Predicate_Pull_Up* pXF_Predicate_Pull_Up = new XF_Flatten_Predicate_Pull_Up(pCI);
 
-  pXF_Fix_table_Pos->vXF_Fix_table_Pos();
+  pXF_Predicate_Pull_Up->vXF_Predicate_Pull_Up();
 
-  delete pXF_Fix_table_Pos;
+  delete pXF_Predicate_Pull_Up;
 }
 
 
@@ -56,15 +56,25 @@ void XF_Fix_table_Pos::vXF_Fix_table_Pos(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* fix table position                                                         */
+/* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Fix_table_Pos::vXF_Fix_table_Pos(void)
+void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
-  // fix position of table which uses subquery result as pos 0
-  m_pCI->vTransform(__func__, XF_FIX_TABLE_POS, "fix position of table which uses subquery result"_Stz);
-  Card_Table::vFixTablePos(m_pCI);
+  // @ mark where predicates wrt. table
+  m_pCI->vTransform(__func__, XF_PREDICATE_PULL_UP, "put a table @c against where pred"_Stz);
+  Card_Where::vMarkWherePredWrtTable(m_pCI);
+  m_pCI->vEndTransform();
+
+  // move @ marked where predicates to table filter
+  m_pCI->vTransform(__func__, XF_PREDICATE_PULL_UP, "move @ marked where predicates to table filter"_Stz);
+  Card_Where::vMoveWherePredsToTableFilter(m_pCI);
+  m_pCI->vEndTransform();
+
+  // cull @ marked where predicates
+  m_pCI->vTransform(__func__, XF_PREDICATE_PULL_UP, "cull @ marked where predicates"_Stz);
+  Card_Where::vCullMarkedCmpPred(m_pCI);
   m_pCI->vEndTransform();
 
   vValidate();

@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Predicate_Reposition.cpp -- Predicate Reposition                        */
+/* XF_Flatten_Predicate_Reposition.cpp -- Predicate Reposition                        */
 /*============================================================================*/
 
-#include "XF_Predicate_Reposition.hpp"
+#include "XF_Flatten_Predicate_Reposition.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
-__aNewFunction(XF_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
-__vDeleteFunction(XF_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
-__aFooterFunction(XF_Predicate_Reposition)
+__pCastFunction(STORE, XF_Flatten_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
+__aNewFunction(XF_Flatten_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
+__vDeleteFunction(XF_Flatten_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
+__aFooterFunction(XF_Flatten_Predicate_Reposition)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Predicate_Reposition::XF_Predicate_Reposition(CardIter* pCI)
+XF_Flatten_Predicate_Reposition::XF_Flatten_Predicate_Reposition(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_PREDICATE_REPOSITION, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Predicate_Reposition::XF_Predicate_Reposition(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Predicate_Reposition::~XF_Predicate_Reposition(void) noexcept(false)
+XF_Flatten_Predicate_Reposition::~XF_Flatten_Predicate_Reposition(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_Predicate_Reposition::~XF_Predicate_Reposition(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Predicate_Reposition::vXF_Predicate_Reposition(CardIter* pCI)
+void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(CardIter* pCI)
 {
   _static_
 
-  XF_Predicate_Reposition* pXF_Predicate_Reposition = new XF_Predicate_Reposition(pCI);
+  XF_Flatten_Predicate_Reposition* pXF_Predicate_Reposition = new XF_Flatten_Predicate_Reposition(pCI);
 
   pXF_Predicate_Reposition->vXF_Predicate_Reposition();
 
@@ -58,7 +58,7 @@ void XF_Predicate_Reposition::vXF_Predicate_Reposition(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Predicate_Reposition::vXF_Predicate_Reposition(void)
+void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
 

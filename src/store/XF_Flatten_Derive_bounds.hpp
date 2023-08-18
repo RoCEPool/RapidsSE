@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Dedupe_as.hpp -- De-Duplicate As (column name)                          */
+/* XF_Flatten_Derive_bounds.hpp -- Derive Bounds (from filter)                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Dedupe_as : public XF_TRANSFORM
+  class XF_Flatten_Derive_bounds : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Dedupe_as(CardIter* pCI);
-   ~XF_Dedupe_as(void) noexcept(false);
+    XF_Flatten_Derive_bounds(CardIter* pCI);
+   ~XF_Flatten_Derive_bounds(void) noexcept(false);
 
-    static void vXF_Dedupe_as(CardIter* pCI);
+    static void vXF_Derive_bounds(CardIter* pCI);
 
-    void vXF_Dedupe_as(void);
+    void vXF_Derive_bounds(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Dedupe_as* _pXF_Dedupe_as(void* aAddr);
+  XF_Flatten_Derive_bounds* _pXF_Flatten_Derive_bounds(void* aAddr);
 }
 
 /*============================================================================*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Fix_table_Pos.hpp -- Fix Table Position                                 */
+/* XF_Flatten_Delete_Empty_where.hpp -- Delete Empty Where                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Fix_table_Pos : public XF_TRANSFORM
+  class XF_Flatten_Delete_Empty_where : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Fix_table_Pos(CardIter* pCI);
-   ~XF_Fix_table_Pos(void) noexcept(false);
+    XF_Flatten_Delete_Empty_where(CardIter* pCI);
+   ~XF_Flatten_Delete_Empty_where(void) noexcept(false);
 
-    static void vXF_Fix_table_Pos(CardIter* pCI);
+    static void vXF_Delete_Empty_where(CardIter* pCI);
 
-    void vXF_Fix_table_Pos(void);
+    void vXF_Delete_Empty_where(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Fix_table_Pos* _pXF_Fix_table_Pos(void* aAddr);
+  XF_Flatten_Delete_Empty_where* _pXF_Flatten_Delete_Empty_where(void* aAddr);
 }
 
 /*============================================================================*/
