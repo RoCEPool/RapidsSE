@@ -23,6 +23,7 @@ namespace STORE
     static void vXF_Cull_NonUsed_bound(CardIter* pCI);
 
     void vXF_Cull_NonUsed_bound(void);
+    void vXF_Cull_Used_bound(void);
 
   private:
     Footer* aFooter(void);

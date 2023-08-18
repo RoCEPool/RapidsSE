@@ -175,7 +175,7 @@ void XF::vTransform(void)
   XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
   XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(m_pCI);
-  XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
+  //XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
 
   XF_Optimise_Early_projection::vXF_Early_projection(m_pCI);
 
