@@ -37,7 +37,7 @@ namespace BASE
     static bool  bBeginsWith(const char* s, const char* sArg);
     static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
-    static Stz*  szCharToStr(char cArg);
+    static Stz*  szCharToStr(unsigned char cArg);
     static void  vCheckIsNot(char cArg, char cIsNot);
     static void  vClick(char* aArg);
     static bool  bClip(char* aArg, i8 iLen);

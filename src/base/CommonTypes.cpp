@@ -156,24 +156,30 @@ void Ivl::vSetMax()
   T.m_xIvl.m_bIsNeg = false;
   T.m_xIvl.m_iSpare = 0;
 
+  // Note: the [[gnu::fallthrough]]; statement needs to occur before the next case
+  // label. This will suppress the -Wimplicit-fallthrough warning.
+  // The semicolon at the end is significant.
+  // If/when we adopt C++17 then we can use [[fallthrough]]; instead.
+
   switch(T.m_xIvl.m_eType)    {
-    case IV_YEAR:   // fall through
-    case IV_MONTH:  // fall through
+    case IV_YEAR:               [[gnu::fallthrough]];
+    case IV_MONTH:              [[gnu::fallthrough]];
     case IV_YEAR_TO_MONTH:
       T.m_xIvl.u.m_xIvlYM.m_uMonths = C_IVL_MONTH_MAX;
       break;
 
-    case IV_DAY:              // fall through
-    case IV_HOUR:             // fall through
-    case IV_MINUTE:           // fall through
-    case IV_SECOND:           // fall through
-    case IV_DAY_TO_HOUR:      // fall through
-    case IV_DAY_TO_MINUTE:    // fall through
-    case IV_DAY_TO_SECOND:    // fall through
-    case IV_HOUR_TO_MINUTE:   // fall through
-    case IV_HOUR_TO_SECOND:   // fall through
+    case IV_DAY:                [[gnu::fallthrough]];
+    case IV_HOUR:               [[gnu::fallthrough]];
+    case IV_MINUTE:             [[gnu::fallthrough]];
+    case IV_SECOND:             [[gnu::fallthrough]];
+    case IV_DAY_TO_HOUR:        [[gnu::fallthrough]];
+    case IV_DAY_TO_MINUTE:      [[gnu::fallthrough]];
+    case IV_DAY_TO_SECOND:      [[gnu::fallthrough]];
+    case IV_HOUR_TO_MINUTE:     [[gnu::fallthrough]];
+    case IV_HOUR_TO_SECOND:     [[gnu::fallthrough]];
     case IV_MINUTE_TO_SECOND:
       T.m_xIvl.u.m_xIvlDT.m_uMicros = C_IVL_USEC_MAX;
+      break;
 
     default:
      NEVER_REACH
@@ -190,23 +196,28 @@ void Ivl::vSetZero()
   T.m_xIvl.m_bIsNeg = false;
   T.m_xIvl.m_iSpare = 0;
 
+  // Note: the [[gnu::fallthrough]]; statement needs to occur before the next case
+  // label. This will suppress the -Wimplicit-fallthrough warning.
+  // The semicolon at the end is significant.
+  // If/when we adopt C++17 then we can use [[fallthrough]]; instead.
+
   switch(T.m_xIvl.m_eType)    {
-    case IV_YEAR:           // fall through
-    case IV_MONTH:          // fall through
-    case IV_YEAR_TO_MONTH:  // fall through
+    case IV_YEAR:             [[gnu::fallthrough]];
+    case IV_MONTH:            [[gnu::fallthrough]];
+    case IV_YEAR_TO_MONTH:
       T.m_xIvl.u.m_xIvlYM.m_uMonths = 0;
       break;
 
-    case IV_DAY:              // fall through
-    case IV_HOUR:             // fall through
-    case IV_MINUTE:           // fall through
-    case IV_SECOND:           // fall through
-    case IV_DAY_TO_HOUR:      // fall through
-    case IV_DAY_TO_MINUTE:    // fall through
-    case IV_DAY_TO_SECOND:    // fall through
-    case IV_HOUR_TO_MINUTE:   // fall through
-    case IV_HOUR_TO_SECOND:   // fall through
-    case IV_MINUTE_TO_SECOND: // fall through
+    case IV_DAY:              [[gnu::fallthrough]];
+    case IV_HOUR:             [[gnu::fallthrough]];
+    case IV_MINUTE:           [[gnu::fallthrough]];
+    case IV_SECOND:           [[gnu::fallthrough]];
+    case IV_DAY_TO_HOUR:      [[gnu::fallthrough]];
+    case IV_DAY_TO_MINUTE:    [[gnu::fallthrough]];
+    case IV_DAY_TO_SECOND:    [[gnu::fallthrough]];
+    case IV_HOUR_TO_MINUTE:   [[gnu::fallthrough]];
+    case IV_HOUR_TO_SECOND:   [[gnu::fallthrough]];
+    case IV_MINUTE_TO_SECOND:
       T.m_xIvl.u.m_xIvlDT.m_uMicros = 0;
       break;
 

@@ -46,7 +46,7 @@ Then from the Source directory run the following command to build rapidsse:
 endif
 
 # Warnings flags that are specific to g++ on Linux
-LINUX_WARNINGS := -Wfatal-errors    # Stop compiling when an error is encountered
+LINUX_WARNINGS := -Wfatal-errors -Wno-attributes    # Stop compiling when an error is encountered
 
 # Specific error flags and warnings that are being promoted to errors on g++ on Linux
 LINUX_ERRORS := -Werror=return-type

@@ -247,8 +247,8 @@ void CardCtl::vPrintBelow(i8 iBelow, va_list xVarArgs)
   m_xaCardCtl[iBelow].m_bPrintBelow = true;
 
   for (;;) {
-    iBelow = (i8)va_arg(xVarArgs,eCK);
-    if (CK_NONE == iBelow)
+    iBelow = va_arg(xVarArgs,i8);
+    if (CK_NONE == (eCK) iBelow)
       return;
     m_xaCardCtl[iBelow].m_bPrintBelow = true;
   }

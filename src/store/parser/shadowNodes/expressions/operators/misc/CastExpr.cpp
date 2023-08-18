@@ -418,6 +418,7 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
             return bFoundInteger;
           }
           // TODO: Support casting an INTERVAL SECOND to a DECIMAL.
+          break;
 
         default:
           break;

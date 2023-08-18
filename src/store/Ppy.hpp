@@ -20,7 +20,7 @@ namespace STORE
     Ppy(void);
     Ppy(i8 iPpy);
     Ppy(Ppy* pPpy);
-    //Ppy(Ppy xPpy);
+    Ppy(Ppy& xPpy);
     Ppy(Stz* szPpy);
     ~Ppy(void) noexcept(false);
 
