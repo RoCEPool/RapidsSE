@@ -117,10 +117,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-
-  if (CK_FROM == eCard && C_UNKNOWN != iFixedDepth)
-    vDebugPoint();
-
   if (CK_CROSSJOIN == eCard)
     vDebugPoint();
 
