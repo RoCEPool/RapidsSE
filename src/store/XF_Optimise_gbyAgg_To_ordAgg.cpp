@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_OT_Replace_gbyAgg_By_ordAgg.cpp -- Promote gbyAgg to ordAgg                */
+/* XF_Optimise_gbyAgg_To_ordAgg.cpp -- Promote gbyAgg to ordAgg                */
 /*============================================================================*/
 
-#include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
+#include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
 #include "eOT.h"
 
 
@@ -10,16 +10,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_OT_Replace_gbyAgg_By_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
-__aNewFunction(XF_OT_Replace_gbyAgg_By_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
-__vDeleteFunction(XF_OT_Replace_gbyAgg_By_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
-__aFooterFunction(XF_OT_Replace_gbyAgg_By_ordAgg)
+__pCastFunction(STORE, XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
+__aNewFunction(XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
+__vDeleteFunction(XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG)
+__aFooterFunction(XF_Optimise_gbyAgg_To_ordAgg)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_OT_Replace_gbyAgg_By_ordAgg::XF_OT_Replace_gbyAgg_By_ordAgg(CardIter* pCI)
+XF_Optimise_gbyAgg_To_ordAgg::XF_Optimise_gbyAgg_To_ordAgg(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
@@ -32,7 +32,7 @@ XF_OT_Replace_gbyAgg_By_ordAgg::XF_OT_Replace_gbyAgg_By_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_OT_Replace_gbyAgg_By_ordAgg::~XF_OT_Replace_gbyAgg_By_ordAgg(void) noexcept(false)
+XF_Optimise_gbyAgg_To_ordAgg::~XF_Optimise_gbyAgg_To_ordAgg(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 }
@@ -40,11 +40,11 @@ XF_OT_Replace_gbyAgg_By_ordAgg::~XF_OT_Replace_gbyAgg_By_ordAgg(void) noexcept(f
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
+void XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
 {
   _static_
 
-  XF_OT_Replace_gbyAgg_By_ordAgg* pXF_Promote_gbyAgg_To_ordAgg = new XF_OT_Replace_gbyAgg_By_ordAgg(pCI);
+  XF_Optimise_gbyAgg_To_ordAgg* pXF_Promote_gbyAgg_To_ordAgg = new XF_Optimise_gbyAgg_To_ordAgg(pCI);
 
   pXF_Promote_gbyAgg_To_ordAgg->vXF_Promote_gbyAgg_To_ordAgg();
 
@@ -59,7 +59,7 @@ void XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
+void XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 

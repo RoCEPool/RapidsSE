@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Cull_NonUsed_bound.hpp -- Cull non-used bound                           */
+/* XF_Optimise_Cull_bound.hpp -- Cull non-used bound                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Cull_NonUsed_bound : public XF_TRANSFORM
+  class XF_Optimise_Cull_bound : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Cull_NonUsed_bound(CardIter* pCI);
-   ~XF_Cull_NonUsed_bound(void) noexcept(false);
+    XF_Optimise_Cull_bound(CardIter* pCI);
+   ~XF_Optimise_Cull_bound(void) noexcept(false);
 
     static void vXF_Cull_NonUsed_bound(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Cull_NonUsed_bound* _pXF_Cull_NonUsed_bound(void* aAddr);
+  XF_Optimise_Cull_bound* _pXF_Optimise_Cull_bound(void* aAddr);
 }
 
 /*============================================================================*/

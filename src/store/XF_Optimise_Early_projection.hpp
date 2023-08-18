@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_OT_Early_projection.hpp -- Early projection                                */
+/* XF_Optimise_Early_projection.hpp -- Early projection                                */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_OT_Early_projection : public XF_TRANSFORM
+  class XF_Optimise_Early_projection : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    XF_OT_Early_projection(CardIter* pCI);
-   ~XF_OT_Early_projection(void) noexcept(false);
+    XF_Optimise_Early_projection(CardIter* pCI);
+   ~XF_Optimise_Early_projection(void) noexcept(false);
 
     static void vXF_Early_projection(CardIter* pCI);
 
@@ -29,7 +29,7 @@ namespace STORE
 
   };
 
-  XF_OT_Early_projection* _pXF_OT_Early_projection(void* aAddr);
+  XF_Optimise_Early_projection* _pXF_Optimise_Early_projection(void* aAddr);
 }
 
 /*============================================================================*/

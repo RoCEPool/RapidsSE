@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Individuate_filter.hpp -- Individuate filter                            */
+/* XF_Optimise_Promote_filter.hpp -- Individuate filter                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Individuate_filter : public XF_TRANSFORM
+  class XF_Optimise_Promote_filter : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    XF_Individuate_filter(CardIter* pCI);
-   ~XF_Individuate_filter(void) noexcept(false);
+    XF_Optimise_Promote_filter(CardIter* pCI);
+   ~XF_Optimise_Promote_filter(void) noexcept(false);
 
     static void vXF_Individuate_filter(CardIter* pCI);
 
@@ -29,7 +29,7 @@ namespace STORE
 
   };
 
-  XF_Individuate_filter* _pXF_Individuate_filter(void* aAddr);
+  XF_Optimise_Promote_filter* _pXF_Optimise_Promote_filter(void* aAddr);
 }
 
 /*============================================================================*/

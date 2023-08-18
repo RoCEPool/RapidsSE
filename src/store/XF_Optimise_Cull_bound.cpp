@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Cull_NonUsed_bound.cpp -- Cut Sort                                                */
+/* XF_Optimise_Cull_bound.cpp -- Cut Sort                                                */
 /*============================================================================*/
 
-#include "XF_Cull_NonUsed_bound.hpp"
+#include "XF_Optimise_Cull_bound.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Cull_NonUsed_bound, CN_XF_CULL_NONUSED_BOUND)
-__aNewFunction(XF_Cull_NonUsed_bound, CN_XF_CULL_NONUSED_BOUND)
-__vDeleteFunction(XF_Cull_NonUsed_bound, CN_XF_CULL_NONUSED_BOUND)
-__aFooterFunction(XF_Cull_NonUsed_bound)
+__pCastFunction(STORE, XF_Optimise_Cull_bound, CN_XF_CULL_NONUSED_BOUND)
+__aNewFunction(XF_Optimise_Cull_bound, CN_XF_CULL_NONUSED_BOUND)
+__vDeleteFunction(XF_Optimise_Cull_bound, CN_XF_CULL_NONUSED_BOUND)
+__aFooterFunction(XF_Optimise_Cull_bound)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Cull_NonUsed_bound::XF_Cull_NonUsed_bound(CardIter* pCI)
+XF_Optimise_Cull_bound::XF_Optimise_Cull_bound(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_CULL_NONUSED_BOUND, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Cull_NonUsed_bound::XF_Cull_NonUsed_bound(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Cull_NonUsed_bound::~XF_Cull_NonUsed_bound(void) noexcept(false)
+XF_Optimise_Cull_bound::~XF_Optimise_Cull_bound(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_Cull_NonUsed_bound::~XF_Cull_NonUsed_bound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(CardIter* pCI)
+void XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(CardIter* pCI)
 {
   _static_
 
-  XF_Cull_NonUsed_bound* pXF_Cull_NonUsed_bound = new XF_Cull_NonUsed_bound(pCI);
+  XF_Optimise_Cull_bound* pXF_Cull_NonUsed_bound = new XF_Optimise_Cull_bound(pCI);
 
   pXF_Cull_NonUsed_bound->vXF_Cull_NonUsed_bound();
 
@@ -58,7 +58,7 @@ void XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* cull non-used bounds                                                       */
 /*----------------------------------------------------------------------------*/
-void XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(void)
+void XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 

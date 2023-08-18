@@ -9,21 +9,21 @@
 #include "Optimiser.hpp"
 
 #include "XF_Add_level.hpp"
-#include "XF_Cull_NonUsed_bound.hpp"
+#include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Cull_Used_bound.hpp"
-#include "XF_OT_Cut_sort.hpp"
+#include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Dedupe_as.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
-#include "XF_OT_Early_projection.hpp"
+#include "XF_Optimise_Early_projection.hpp"
 #include "XF_Flatten.hpp"
-#include "XF_Individuate_filter.hpp"
+#include "XF_Optimise_Promote_filter.hpp"
 #include "XF_Synthesise_Code.hpp"
 #include "XF_Optimise_scan_To_indexScan.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
 #include "XF_Move_on.hpp"
-#include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
+#include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
 #include "XF_OT_Reduce_gbyAgg_key.hpp"
 #include "XF_Reinstate_stage.hpp"
 #include "XF_Shorten_queryNm.hpp"
@@ -170,17 +170,15 @@ void XF::vTransform(void)
 
   XF_Optimise_Derive_streamKey::vXF_Optimise_Derive_streamKey(m_pCI);
 
-  XF_OT_Cut_sort::vXF_Cut_sort(m_pCI);
+  XF_Optimise_Cut_sort::vXF_Cut_sort(m_pCI);
 
-  XF_OT_Replace_gbyAgg_By_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
+  XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
-  XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(m_pCI);
-
+  XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(m_pCI);
   XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
 
-  XF_OT_Early_projection::vXF_Early_projection(m_pCI);
+  XF_Optimise_Early_projection::vXF_Early_projection(m_pCI);
 
-  XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
 
 
   XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
@@ -188,6 +186,8 @@ void XF::vTransform(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
+
+  XF_Optimise_Promote_filter::vXF_Individuate_filter(m_pCI);
 
   XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
 
