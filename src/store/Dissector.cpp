@@ -558,11 +558,6 @@ Card* Dissector::pOp_IndexJoin(void)
   pCard_IndexJoin->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_TableNm* p_tableNm = (new Card_TableNm) -> SYM(SF_TBL_NM,szTableNm);
-  pCard_IndexJoin->vAppend(p_tableNm);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
   
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);

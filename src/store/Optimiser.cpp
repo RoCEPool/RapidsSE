@@ -61,7 +61,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   _checkInitialised_(CN_OPTIMISER);
 
-  //MY::pJob()->pJobTags()->vAppend(C_GLEAN_INTERACTIVE);
+  MY::pJob()->pJobTags()->vAppend(C_GLEAN_INTERACTIVE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
