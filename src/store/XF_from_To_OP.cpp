@@ -1,49 +1,49 @@
 /*============================================================================*/
-/* XF_Morph_from_To_OP.cpp -- Delete flat                                          */
+/* XF_from_To_OP.cpp -- Delete flat                                          */
 /*============================================================================*/
 
-#include "XF_Morph_from_To_OP.hpp"
+#include "XF_from_To_OP.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Morph_from_To_OP, CN_XF_MORPH_FROM_TO_EE)
-__aNewFunction(XF_Morph_from_To_OP, CN_XF_MORPH_FROM_TO_EE)
-__vDeleteFunction(XF_Morph_from_To_OP, CN_XF_MORPH_FROM_TO_EE)
-__aFooterFunction(XF_Morph_from_To_OP)
+__pCastFunction(STORE, XF_from_To_OP, CN_XF_FROM_TO_OP)
+__aNewFunction(XF_from_To_OP, CN_XF_FROM_TO_OP)
+__vDeleteFunction(XF_from_To_OP, CN_XF_FROM_TO_OP)
+__aFooterFunction(XF_from_To_OP)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Morph_from_To_OP::XF_Morph_from_To_OP(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_MORPH_FROM_TO_EE, pCI)
+XF_from_To_OP::XF_from_To_OP(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_FROM_TO_OP, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_FROM_TO_EE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 
-  _checkInitialised_(CN_XF_MORPH_FROM_TO_EE);
+  _checkInitialised_(CN_XF_FROM_TO_OP);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_FROM_TO_EE, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Morph_from_To_OP::~XF_Morph_from_To_OP(void) noexcept(false)
+XF_from_To_OP::~XF_from_To_OP(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_FROM_TO_EE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Morph_from_To_OP::vXF_Morph_table_To_EEop(CardIter* pCI)
+void XF_from_To_OP::vXF_Morph_table_To_EEop(CardIter* pCI)
 {
   _static_
 
-  XF_Morph_from_To_OP* pXF_Morph_table_To_EEop = new XF_Morph_from_To_OP(pCI);
+  XF_from_To_OP* pXF_Morph_table_To_EEop = new XF_from_To_OP(pCI);
 
   pXF_Morph_table_To_EEop->vXF_Morph_table_To_EEop();
 
@@ -58,9 +58,9 @@ void XF_Morph_from_To_OP::vXF_Morph_table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Morph_from_To_OP::vXF_Morph_table_To_EEop(void)
+void XF_from_To_OP::vXF_Morph_table_To_EEop(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_FROM_TO_EE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_MORPH_TABLE_TO_EEOP, "morph table to EE op"_Stz);
 
