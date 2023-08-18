@@ -18,7 +18,7 @@ __vDeleteFunction(Card_SubSet,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_SubSet::Card_SubSet(void)
-: Card_symbol(CK_SUBSET)
+: Card_symbol(CK_SUBSET, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

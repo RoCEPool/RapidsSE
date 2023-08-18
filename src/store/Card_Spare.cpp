@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Spare,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Spare::Card_Spare(void)
-: Card_symbol(CK_SPARE)
+: Card_symbol(CK_SPARE, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

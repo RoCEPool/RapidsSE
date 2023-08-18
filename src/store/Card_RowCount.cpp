@@ -20,7 +20,7 @@ __vDeleteFunction(Card_RowCount,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RowCount::Card_RowCount(void)
-: Card_symbol(CK_ROWCOUNT)
+: Card_symbol(CK_ROWCOUNT, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

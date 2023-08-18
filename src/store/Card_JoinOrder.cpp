@@ -24,7 +24,7 @@ __vDeleteFunction(Card_JoinOrder,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinOrder::Card_JoinOrder(void)
-: Card_symbol(CK_JOINORDER)
+: Card_symbol(CK_JOINORDER, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

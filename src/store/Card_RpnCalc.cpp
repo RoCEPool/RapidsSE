@@ -25,7 +25,7 @@ __vDeleteFunction(Card_RpnCalc, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnCalc::Card_RpnCalc(void)
-: Card_symbol(CK_RPNCALC)
+: Card_symbol(CK_RPNCALC, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -38,7 +38,7 @@ Card_RpnCalc::Card_RpnCalc(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
-: Card_symbol(CK_RPNCALC)
+: Card_symbol(CK_RPNCALC, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

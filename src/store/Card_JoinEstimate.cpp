@@ -26,7 +26,7 @@ __vDeleteFunction(Card_JoinEstimate, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinEstimate::Card_JoinEstimate(void)
-: Card_symbol(CK_JOINESTIMATE)
+: Card_symbol(CK_JOINESTIMATE, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
