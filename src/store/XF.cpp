@@ -24,7 +24,7 @@
 #include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_Promote_gbyAgg_To_ordAgg.hpp"
-#include "XF_Reduce_key_gbyAgg.hpp"
+#include "XF_OT_Reduce_gbyAgg_key.hpp"
 #include "XF_Reinstate_stage.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_as_Review.hpp"
@@ -174,7 +174,7 @@ void XF::vTransform(void)
 
   XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
 
-  XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
+  XF_OT_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
   m_pCI->m_pBench->vMadeOptimal(true);
 
 

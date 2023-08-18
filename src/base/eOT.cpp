@@ -19,7 +19,7 @@ Stz* aOT[OT_ENUMS]
   /*  */ "OT_ELY_PROJECTIONS"_Stz,
 
   // MINIMIZE
-  /*  */ "OT_MIN_GROUPBY"_Stz,
+  /*  */ "OTRED_GRPAGG_KEY"_Stz,
 
   // ONE-TIME CALCULATIONS
   /*  */ "OT_OTM_CALCULATIONS"_Stz,
@@ -28,15 +28,15 @@ Stz* aOT[OT_ENUMS]
   /*  */ "OT_PPT_PROJECTIONS"_Stz,
 
   // REPLACE
-  /*  */ "OT_RPL_AGGREG_BY_ORDAGG"_Stz,
   /*  */ "OT_RPL_AGGREG_BY_SORT_ORDAGG"_Stz,
+  /*  */ "OT_RPL_GBYAGG_BY_ORDAGG"_Stz,
   /*  */ "OT_RPL_MAX_BY_TOP"_Stz,
   /*  */ "OT_RPL_SCAN_BY_INDEXSCAN"_Stz,
   /*  */ "OT_RPL_SORTDESC_LIMIT_BY_TOP"_Stz,
   /*  */ "OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS"_Stz,
 
   // SEQUENCING
-  /*  */ "OT_JOI_ORD"_Stz,
+  /*  */ "OT_JOIN_ORDERINT"_Stz,
 
 //  /*  */ "ENUMS"_Stz,
 };

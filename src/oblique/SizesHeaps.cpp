@@ -243,7 +243,7 @@
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
 #include "XF_Smoosh.hpp"
-#include "XF_Join_Ordering.hpp"
+#include "XF_OT_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
 
@@ -272,7 +272,7 @@
 #include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_Promote_gbyAgg_To_ordAgg.hpp"
-#include "XF_Reduce_key_gbyAgg.hpp"
+#include "XF_OT_Reduce_gbyAgg_key.hpp"
 #include "XF_Reinstate_stage.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_as_Review.hpp"
@@ -797,27 +797,27 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,sizeof(XF_Flatten_53_W_L_NC_NI_join),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_74_H_A_NC_RO,     sizeof(XF_Flatten_74_H_A_NC_ro),           HT_T_TINY    , FILL },
   {CN_XF_INDEX_ANALYSIS,           sizeof(XF_index_Analysis),                 HT_T_TINY    , FILL },
-  {CN_XF_INDIVIDUATE_FILTER,       sizeof(XF_Individuate_filter),             HT_T_TINY    , FILL },
-  {CN_XF_JOIN_ORDERING,            sizeof(XF_Join_Ordering),                  HT_T_TINY    , FILL },
-  {CN_XF_MORPH_SCAN_TO_INDEXSCAN,  sizeof(XF_OT_Replace_scan_By_indexScan),   HT_T_TINY    , FILL },
-  {CN_XF_MORPH_TABLE_TO_EEOP,      sizeof(XF_Morph_table_To_EEop),            HT_T_TINY    , FILL },
-  {CN_XF_MOVE_ON,                  sizeof(XF_Move_on),                        HT_T_TINY    , FILL },
-  {CN_XF_NOT_OPS,                  sizeof(XF_not_Ops),                        HT_T_TINY    , FILL },
-  {CN_XF_PREDICATE_PULL_UP,        sizeof(XF_Predicate_Pull_Up),              HT_T_TINY    , FILL },
-  {CN_XF_PREDICATE_REPOSITION,     sizeof(XF_Predicate_Reposition),           HT_T_TINY    , FILL },
-  {CN_XF_PROJECTION_ANALYSIS,      sizeof(XF_projection_Analysis),            HT_T_TINY    , FILL },
-  {CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, sizeof(XF_Promote_gbyAgg_To_ordAgg),       HT_T_TINY    , FILL },
-  {CN_XF_REDUCE_KEY_GBYAGG,        sizeof(XF_Reduce_key_gbyAgg),              HT_T_TINY    , FILL },
-  {CN_XF_REINSTATE_STAGE,          sizeof(XF_Reinstate_stage),                HT_T_TINY    , FILL },
-  {CN_XF_RPNCALC_TO_BOOLCALC,      sizeof(XF_rpnCalc_To_boolCalc),            HT_T_TINY    , FILL },
-  {CN_XF_SCAN_TO_TABLE,            sizeof(XF_scan_To_table),            HT_T_TINY    , FILL },
-  {CN_XF_SHORTEN_QUERYNM,          sizeof(XF_Shorten_queryNm),          HT_T_TINY    , FILL },
-  {CN_XF_SMOOSH,                   sizeof(XF_Smoosh),                   HT_T_TINY    , FILL },
-  {CN_XF_SMOOTH,                   sizeof(XF_Smooth),                   HT_T_TINY    , FILL },
-  {CN_XF_STAGE_CAST,               sizeof(XF_stage_cast),               HT_T_TINY    , FILL },
-  {CN_XF_STMCOL_TO_COLNM,          sizeof(XF_stmCol_To_colNm),          HT_T_TINY    , FILL },
-  {CN_XF_STMCOL_TO_TBLCOL,         sizeof(XF_stmCol_To_tblCol),         HT_T_TINY    , FILL },
-  {CN_XF_SUBQUERY_ANALYSIS,        sizeof(XF_subQuery_Analysis),        HT_T_TINY    , FILL },
+  {CN_XF_INDIVIDUATE_FILTER,       sizeof(XF_Individuate_filter),           HT_T_TINY    , FILL },
+  {CN_XF_JOIN_ORDERING,            sizeof(XF_OT_Join_Ordering),             HT_T_TINY    , FILL },
+  {CN_XF_MORPH_SCAN_TO_INDEXSCAN,  sizeof(XF_OT_Replace_scan_By_indexScan), HT_T_TINY    , FILL },
+  {CN_XF_MORPH_TABLE_TO_EEOP,      sizeof(XF_Morph_table_To_EEop),          HT_T_TINY    , FILL },
+  {CN_XF_MOVE_ON,                  sizeof(XF_Move_on),                      HT_T_TINY    , FILL },
+  {CN_XF_NOT_OPS,                  sizeof(XF_not_Ops),                      HT_T_TINY    , FILL },
+  {CN_XF_PREDICATE_PULL_UP,        sizeof(XF_Predicate_Pull_Up),            HT_T_TINY    , FILL },
+  {CN_XF_PREDICATE_REPOSITION,     sizeof(XF_Predicate_Reposition),         HT_T_TINY    , FILL },
+  {CN_XF_PROJECTION_ANALYSIS,      sizeof(XF_projection_Analysis),          HT_T_TINY    , FILL },
+  {CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, sizeof(XF_Promote_gbyAgg_To_ordAgg),     HT_T_TINY    , FILL },
+  {CN_XF_REDUCE_KEY_GBYAGG,        sizeof(XF_OT_Reduce_gbyAgg_key),         HT_T_TINY    , FILL },
+  {CN_XF_REINSTATE_STAGE,          sizeof(XF_Reinstate_stage),              HT_T_TINY    , FILL },
+  {CN_XF_RPNCALC_TO_BOOLCALC,      sizeof(XF_rpnCalc_To_boolCalc),          HT_T_TINY    , FILL },
+  {CN_XF_SCAN_TO_TABLE,            sizeof(XF_scan_To_table),                HT_T_TINY    , FILL },
+  {CN_XF_SHORTEN_QUERYNM,          sizeof(XF_Shorten_queryNm),              HT_T_TINY    , FILL },
+  {CN_XF_SMOOSH,                   sizeof(XF_Smoosh),                       HT_T_TINY    , FILL },
+  {CN_XF_SMOOTH,                   sizeof(XF_Smooth),                       HT_T_TINY    , FILL },
+  {CN_XF_STAGE_CAST,               sizeof(XF_stage_cast),                   HT_T_TINY    , FILL },
+  {CN_XF_STMCOL_TO_COLNM,          sizeof(XF_stmCol_To_colNm),              HT_T_TINY    , FILL },
+  {CN_XF_STMCOL_TO_TBLCOL,         sizeof(XF_stmCol_To_tblCol),             HT_T_TINY    , FILL },
+  {CN_XF_SUBQUERY_ANALYSIS,        sizeof(XF_subQuery_Analysis),            HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,          sizeof(XF_Synthesise_Code),          HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,           sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_TBLCOL_TO_STMCOL,         sizeof(XF_tblCol_To_stmCol),         HT_T_TINY    , FILL },
