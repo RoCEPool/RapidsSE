@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Optimise_Promote_filter.hpp -- Individuate filter                            */
+/* XF_Epilog_stage_cast.hpp -- Stage Cast                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Optimise_Promote_filter : public XF_TRANSFORM
+  class XF_Epilog_stage_cast : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -16,20 +16,19 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
+  
+    XF_Epilog_stage_cast(CardIter* pCI);
+   ~XF_Epilog_stage_cast(void) noexcept(false);
 
-    XF_Optimise_Promote_filter(CardIter* pCI);
-   ~XF_Optimise_Promote_filter(void) noexcept(false);
+    static void vXF_stage_cast(CardIter* pCI);
 
-    static void vXF_Individuate_filter(CardIter* pCI);
-
-    void vXF_Individuate_filter(void);
+    void vXF_stage_cast(void);
 
   private:
     Footer* aFooter(void);
-
   };
 
-  XF_Optimise_Promote_filter* _pXF_Optimise_Promote_filter(void* aAddr);
+  XF_Epilog_stage_cast* _pXF_Epilog_stage_cast(void* aAddr);
 }
 
 /*============================================================================*/

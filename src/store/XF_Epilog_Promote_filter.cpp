@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Optimise_Promote_filter.cpp -- Individuate filter                            */
+/* XF_Epilog_Promote_filter.cpp -- Individuate filter                            */
 /*============================================================================*/
 
-#include "XF_Optimise_Promote_filter.hpp"
+#include "XF_Epilog_Promote_filter.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
-__aNewFunction(XF_Optimise_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
-__vDeleteFunction(XF_Optimise_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
-__aFooterFunction(XF_Optimise_Promote_filter)
+__pCastFunction(STORE, XF_Epilog_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
+__aNewFunction(XF_Epilog_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
+__vDeleteFunction(XF_Epilog_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
+__aFooterFunction(XF_Epilog_Promote_filter)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Optimise_Promote_filter::XF_Optimise_Promote_filter(CardIter* pCI)
+XF_Epilog_Promote_filter::XF_Epilog_Promote_filter(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_INDIVIDUATE_FILTER,pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
@@ -31,7 +31,7 @@ XF_Optimise_Promote_filter::XF_Optimise_Promote_filter(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Optimise_Promote_filter::~XF_Optimise_Promote_filter(void) noexcept(false)
+XF_Epilog_Promote_filter::~XF_Epilog_Promote_filter(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
 }
@@ -43,11 +43,11 @@ XF_Optimise_Promote_filter::~XF_Optimise_Promote_filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Promote_filter::vXF_Individuate_filter(CardIter* pCI)
+void XF_Epilog_Promote_filter::vXF_Individuate_filter(CardIter* pCI)
 {
   _static_
 
-  XF_Optimise_Promote_filter* pXF_Individuate_filter = new XF_Optimise_Promote_filter(pCI);
+  XF_Epilog_Promote_filter* pXF_Individuate_filter = new XF_Epilog_Promote_filter(pCI);
 
   pXF_Individuate_filter->vXF_Individuate_filter();
 
@@ -62,7 +62,7 @@ void XF_Optimise_Promote_filter::vXF_Individuate_filter(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Promote_filter::vXF_Individuate_filter(void)
+void XF_Epilog_Promote_filter::vXF_Individuate_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
 

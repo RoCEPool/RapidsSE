@@ -1,53 +1,53 @@
 /*============================================================================*/
-/* XF_Column_Mapping.cpp -- Column Mapping                                    */
+/* XF_Epilog_stage_cast.cpp -- Stage Cast                                            */
 /*============================================================================*/
 
-#include "XF_Column_Mapping.hpp"
+#include "XF_Epilog_stage_cast.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Column_Mapping, CN_XF_COLUMN_MAPPING)
-__aNewFunction(XF_Column_Mapping, CN_XF_COLUMN_MAPPING)
-__vDeleteFunction(XF_Column_Mapping, CN_XF_COLUMN_MAPPING)
-__aFooterFunction(XF_Column_Mapping)
+__pCastFunction(STORE, XF_Epilog_stage_cast, CN_XF_STAGE_CAST)
+__aNewFunction(XF_Epilog_stage_cast, CN_XF_STAGE_CAST)
+__vDeleteFunction(XF_Epilog_stage_cast, CN_XF_STAGE_CAST)
+__aFooterFunction(XF_Epilog_stage_cast)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Column_Mapping::XF_Column_Mapping(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_COLUMN_MAPPING, pCI)
+XF_Epilog_stage_cast::XF_Epilog_stage_cast(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_STAGE_CAST, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
 
-  _checkInitialised_(CN_XF_COLUMN_MAPPING);
+  _checkInitialised_(CN_XF_STAGE_CAST);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Column_Mapping::~XF_Column_Mapping(void) noexcept(false)
+XF_Epilog_stage_cast::~XF_Epilog_stage_cast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Column_Mapping::vXF_Column_Mapping(CardIter* pCI)
+void XF_Epilog_stage_cast::vXF_stage_cast(CardIter* pCI)
 {
   _static_
 
-  XF_Column_Mapping* pXF_Column_Mapping = new XF_Column_Mapping(pCI);
+  XF_Epilog_stage_cast* pXF_stage_cast = new XF_Epilog_stage_cast(pCI);
 
-  pXF_Column_Mapping->vXF_Column_Mapping();
+  pXF_stage_cast->vXF_stage_cast();
 
-  delete pXF_Column_Mapping;
+  delete pXF_stage_cast;
 }
 
 
@@ -56,33 +56,16 @@ void XF_Column_Mapping::vXF_Column_Mapping(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* column mapping                                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Column_Mapping::vXF_Column_Mapping(void)
+void XF_Epilog_stage_cast::vXF_stage_cast(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for gbyAgg"_Stz);
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G.p_gbyAgg->vColumn_Mapping(m_pCI);
-  }
-  m_pCI->vEndTransform();
+  m_pCI->vTransform(__func__, XF_NONE, "add stage casts"_Stz);
 
+  m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 
-  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for sort"_Stz);
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_SORT)) {
-    m_pCI->G.p_sort->vColumn_Mapping(m_pCI);
-  }
-  m_pCI->vEndTransform();
-
-
-  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for top"_Stz);
-  m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_TOP)) {
-    m_pCI->G.p_top->vColumn_Mapping(m_pCI);
-  }
   m_pCI->vEndTransform();
 
   vValidate();

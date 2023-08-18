@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_tblCol_To_stmCol.hpp -- Table-Column to Stream-Column                   */
+/* XF_Epilog_Reinstate_stage.hpp -- Reinstate Stage                                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_tblCol_To_stmCol : public XF_TRANSFORM
+  class XF_Epilog_Reinstate_stage : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_tblCol_To_stmCol(CardIter* pCI);
-   ~XF_tblCol_To_stmCol(void) noexcept(false);
+    XF_Epilog_Reinstate_stage(CardIter* pCI);
+   ~XF_Epilog_Reinstate_stage(void) noexcept(false);
 
-    static void vXF_tblCol_To_stmCol(CardIter* pCI);
+    static void vXF_Reinstate_stage(CardIter* pCI);
 
-    void vXF_tblCol_To_stmCol(void);
+    void vXF_Reinstate_stage(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_tblCol_To_stmCol* _pXF_tblCol_To_stmCol(void* aAddr);
+  XF_Epilog_Reinstate_stage* _pXF_Epilog_Reinstate_stage(void* aAddr);
 }
 
 /*============================================================================*/

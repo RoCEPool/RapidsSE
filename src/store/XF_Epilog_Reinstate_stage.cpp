@@ -1,53 +1,53 @@
 /*============================================================================*/
-/* XF_stage_cast.cpp -- Stage Cast                                            */
+/* XF_Epilog_Reinstate_stage.cpp -- Reinstate Stage                                  */
 /*============================================================================*/
 
-#include "XF_stage_cast.hpp"
+#include "XF_Epilog_Reinstate_stage.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_stage_cast, CN_XF_STAGE_CAST)
-__aNewFunction(XF_stage_cast, CN_XF_STAGE_CAST)
-__vDeleteFunction(XF_stage_cast, CN_XF_STAGE_CAST)
-__aFooterFunction(XF_stage_cast)
+__pCastFunction(STORE, XF_Epilog_Reinstate_stage, CN_XF_REINSTATE_STAGE)
+__aNewFunction(XF_Epilog_Reinstate_stage, CN_XF_REINSTATE_STAGE)
+__vDeleteFunction(XF_Epilog_Reinstate_stage, CN_XF_REINSTATE_STAGE)
+__aFooterFunction(XF_Epilog_Reinstate_stage)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_stage_cast::XF_stage_cast(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_STAGE_CAST, pCI)
+XF_Epilog_Reinstate_stage::XF_Epilog_Reinstate_stage(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_REINSTATE_STAGE, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_REINSTATE_STAGE, _FOOTER_);
 
-  _checkInitialised_(CN_XF_STAGE_CAST);
+  _checkInitialised_(CN_XF_REINSTATE_STAGE);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_REINSTATE_STAGE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_stage_cast::~XF_stage_cast(void) noexcept(false)
+XF_Epilog_Reinstate_stage::~XF_Epilog_Reinstate_stage(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_REINSTATE_STAGE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_stage_cast::vXF_stage_cast(CardIter* pCI)
+void XF_Epilog_Reinstate_stage::vXF_Reinstate_stage(CardIter* pCI)
 {
   _static_
 
-  XF_stage_cast* pXF_stage_cast = new XF_stage_cast(pCI);
+  XF_Epilog_Reinstate_stage* pXF_Reinstate_stage = new XF_Epilog_Reinstate_stage(pCI);
 
-  pXF_stage_cast->vXF_stage_cast();
+  pXF_Reinstate_stage->vXF_Reinstate_stage();
 
-  delete pXF_stage_cast;
+  delete pXF_Reinstate_stage;
 }
 
 
@@ -56,15 +56,15 @@ void XF_stage_cast::vXF_stage_cast(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_stage_cast::vXF_stage_cast(void)
+void XF_Epilog_Reinstate_stage::vXF_Reinstate_stage(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_REINSTATE_STAGE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "add stage casts"_Stz);
+  m_pCI->vTransform(__func__, XF_REINSTATE_STAGE, "reinstate stages"_Stz);
 
-  m_pCI->G.pDeck->vAddStageCasts(m_pCI);
+  Card_Stage::vReinstate_stages(m_pCI);
 
   m_pCI->vEndTransform();
 

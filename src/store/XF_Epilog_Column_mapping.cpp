@@ -1,53 +1,53 @@
 /*============================================================================*/
-/* XF_stmCol_To_colNm.cpp -- Stream-Column to Column-Name                     */
+/* XF_Epilog_Column_mapping.cpp -- Column Mapping                                    */
 /*============================================================================*/
 
-#include "XF_stmCol_To_colNm.hpp"
+#include "XF_Epilog_Column_mapping.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_stmCol_To_colNm, CN_XF_STMCOL_TO_COLNM)
-__aNewFunction(XF_stmCol_To_colNm, CN_XF_STMCOL_TO_COLNM)
-__vDeleteFunction(XF_stmCol_To_colNm, CN_XF_STMCOL_TO_COLNM)
-__aFooterFunction(XF_stmCol_To_colNm)
+__pCastFunction(STORE, XF_Epilog_Column_mapping, CN_XF_COLUMN_MAPPING)
+__aNewFunction(XF_Epilog_Column_mapping, CN_XF_COLUMN_MAPPING)
+__vDeleteFunction(XF_Epilog_Column_mapping, CN_XF_COLUMN_MAPPING)
+__aFooterFunction(XF_Epilog_Column_mapping)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_stmCol_To_colNm::XF_stmCol_To_colNm(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_STMCOL_TO_COLNM, pCI)
+XF_Epilog_Column_mapping::XF_Epilog_Column_mapping(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_COLUMN_MAPPING, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_COLNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 
-  _checkInitialised_(CN_XF_STMCOL_TO_COLNM);
+  _checkInitialised_(CN_XF_COLUMN_MAPPING);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_COLNM, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_stmCol_To_colNm::~XF_stmCol_To_colNm(void) noexcept(false)
+XF_Epilog_Column_mapping::~XF_Epilog_Column_mapping(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_COLNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_stmCol_To_colNm::vXF_stmCol_To_colNm(CardIter* pCI)
+void XF_Epilog_Column_mapping::vXF_Column_Mapping(CardIter* pCI)
 {
   _static_
 
-  XF_stmCol_To_colNm* pXF_stmCol_to_colNm = new XF_stmCol_To_colNm(pCI);
+  XF_Epilog_Column_mapping* pXF_Column_Mapping = new XF_Epilog_Column_mapping(pCI);
 
-  pXF_stmCol_to_colNm->vXF_stmCol_To_colNm();
+  pXF_Column_Mapping->vXF_Column_Mapping();
 
-  delete pXF_stmCol_to_colNm;
+  delete pXF_Column_Mapping;
 }
 
 
@@ -56,27 +56,33 @@ void XF_stmCol_To_colNm::vXF_stmCol_To_colNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* stream-column to column-name                                               */
+/* column mapping                                                             */
 /*----------------------------------------------------------------------------*/
-void XF_stmCol_To_colNm::vXF_stmCol_To_colNm(void)
+void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_COLNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_STMCOL_TO_COLNM, "stream-column to column-name"_Stz);
-
-  m_pCI->vBeginEach();
-
-  while (m_pCI->G_bEachMain()) {
-
-    if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
-              || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))
-      continue;
-
-    m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();
-
-    m_pCI->G.p_constraint->vConvert_stmColOdn_To_stmColNm(m_pCI);
+  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for gbyAgg"_Stz);
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain(CK_GBYAGG)) {
+    m_pCI->G.p_gbyAgg->vColumn_Mapping(m_pCI);
   }
+  m_pCI->vEndTransform();
 
+
+  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for sort"_Stz);
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain(CK_SORT)) {
+    m_pCI->G.p_sort->vColumn_Mapping(m_pCI);
+  }
+  m_pCI->vEndTransform();
+
+
+  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for top"_Stz);
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain(CK_TOP)) {
+    m_pCI->G.p_top->vColumn_Mapping(m_pCI);
+  }
   m_pCI->vEndTransform();
 
   vValidate();

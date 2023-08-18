@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Column_Mapping.hpp -- Column Mapping                                    */
+/* XF_Epilog_Promote_filter.hpp -- Individuate filter                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Column_Mapping : public XF_TRANSFORM
+  class XF_Epilog_Promote_filter : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -16,19 +16,20 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-    XF_Column_Mapping(CardIter* pCI);
-   ~XF_Column_Mapping(void) noexcept(false);
 
-    static void vXF_Column_Mapping(CardIter* pCI);
+    XF_Epilog_Promote_filter(CardIter* pCI);
+   ~XF_Epilog_Promote_filter(void) noexcept(false);
 
-    void vXF_Column_Mapping(void);
+    static void vXF_Individuate_filter(CardIter* pCI);
+
+    void vXF_Individuate_filter(void);
 
   private:
     Footer* aFooter(void);
+
   };
 
-  XF_Column_Mapping* _pXF_Column_Mapping(void* aAddr);
+  XF_Epilog_Promote_filter* _pXF_Epilog_Promote_filter(void* aAddr);
 }
 
 /*============================================================================*/

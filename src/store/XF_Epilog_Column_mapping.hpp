@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Reinstate_stage.hpp -- Reinstate Stage                                  */
+/* XF_Epilog_Column_mapping.hpp -- Column Mapping                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Reinstate_stage : public XF_TRANSFORM
+  class XF_Epilog_Column_mapping : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Reinstate_stage(CardIter* pCI);
-   ~XF_Reinstate_stage(void) noexcept(false);
+    XF_Epilog_Column_mapping(CardIter* pCI);
+   ~XF_Epilog_Column_mapping(void) noexcept(false);
 
-    static void vXF_Reinstate_stage(CardIter* pCI);
+    static void vXF_Column_Mapping(CardIter* pCI);
 
-    void vXF_Reinstate_stage(void);
+    void vXF_Column_Mapping(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Reinstate_stage* _pXF_Reinstate_stage(void* aAddr);
+  XF_Epilog_Column_mapping* _pXF_Epilog_Column_mapping(void* aAddr);
 }
 
 /*============================================================================*/

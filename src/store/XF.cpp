@@ -17,14 +17,14 @@
 #include "XF_Optimise_Derive_streamKey.hpp"
 #include "XF_Optimise_Early_projection.hpp"
 #include "XF_Flatten.hpp"
-#include "XF_Optimise_Promote_filter.hpp"
+#include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Synthesise_Code.hpp"
 #include "XF_Optimise_scan_To_indexScan.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
-#include "XF_Reinstate_stage.hpp"
+#include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_as_Review.hpp"
 #include "XF_index_Analysis.hpp"
@@ -32,12 +32,12 @@
 #include "XF_projection_Analysis.hpp"
 #include "XF_rpnCalc_To_boolCalc.hpp"
 #include "XF_scan_To_from.hpp"
-#include "XF_stage_cast.hpp"
-#include "XF_stmCol_To_colNm.hpp"
+#include "XF_Epilog_stage_cast.hpp"
+#include "XF_Epilog_stmCol_To_colNm.hpp"
 #include "XF_subQuery_Analysis.hpp"
 #include "XF_table_Analysis.hpp"
-#include "XF_tblCol_To_stmCol.hpp"
-#include "XF_Column_Mapping.hpp"
+#include "XF_Epilog_tblCol_To_stmCol.hpp"
+#include "XF_Epilog_Column_mapping.hpp"
 #include "XF_colNm_To_stmCol.hpp"
 
 #include "eOT.h"
@@ -183,19 +183,19 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
 
-  XF_Optimise_Promote_filter::vXF_Individuate_filter(m_pCI);
+  XF_Epilog_Promote_filter::vXF_Individuate_filter(m_pCI);
 
-  XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
+  XF_Epilog_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
 
-  XF_stage_cast::vXF_stage_cast(m_pCI);
+  XF_Epilog_stage_cast::vXF_stage_cast(m_pCI);
 
-  XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+  XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
-  XF_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
+  XF_Epilog_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
 
   //XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
 
-  XF_Column_Mapping::vXF_Column_Mapping(m_pCI);
+  XF_Epilog_Column_mapping::vXF_Column_Mapping(m_pCI);
 
   m_pCI->m_pBench->vMadeWeavable(true);
 
@@ -283,9 +283,9 @@ void XF::vTransform_passThru(void)
   Bench::vValidate(m_pCI);
 
   m_pCI->vUsingBoard((i8)0);
-  XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+  XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
-  XF_Column_Mapping::vXF_Column_Mapping(m_pCI);
+  XF_Epilog_Column_mapping::vXF_Column_Mapping(m_pCI);
 
   XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
 
