@@ -55,6 +55,7 @@ Card_StreamKey* Card_StreamKey::pTo_streamKey(Card_Key* p_key)
 
   Card_StreamKey* p_streamKey = _pCard_StreamKey(p_key_dupe->pCard(CK_STREAMKEY));
 
+  p_streamKey->vFixedDepth(3);
   return p_streamKey;
 }
 
