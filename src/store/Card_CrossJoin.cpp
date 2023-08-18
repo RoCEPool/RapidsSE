@@ -19,7 +19,7 @@ __vDeleteFunction(Card_CrossJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CrossJoin::Card_CrossJoin(void)
-: Card_OP(CK_CROSSJOIN)
+: Card_OP(CK_CROSSJOIN,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

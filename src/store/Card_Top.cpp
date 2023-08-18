@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Top,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Top::Card_Top(void)
-: Card_OP(CK_TOP)
+: Card_OP(CK_TOP,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

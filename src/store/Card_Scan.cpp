@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Scan,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Scan::Card_Scan(void)
-: Card_OP(CK_SCAN)
+: Card_OP(CK_SCAN,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

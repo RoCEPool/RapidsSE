@@ -24,7 +24,7 @@ __vDeleteFunction(Card_Hash,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Hash::Card_Hash(void)
-: Card_OP(CK_HASH)
+: Card_OP(CK_HASH,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

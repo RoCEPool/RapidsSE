@@ -1455,7 +1455,7 @@ void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(pParent);
 
-  RASSERT(iDepth);
+  RASSERT(bFixedDepth(iDepth));
 }
 
 /*----------------------------------------------------------------------------*/
