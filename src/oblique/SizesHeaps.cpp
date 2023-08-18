@@ -243,7 +243,7 @@
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
 #include "XF_Smoosh.hpp"
-#include "XF_OT_Join_Ordering.hpp"
+#include "XF_Flatten_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
 
@@ -258,7 +258,7 @@
 #include "Weaver.hpp"
 #include "XF.hpp"
 #include "XF_Prolog_Add_level.hpp"
-#include "XF_colNm_To_stmCol.hpp"
+#include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Dedupe_as.hpp"
@@ -771,7 +771,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF,                      sizeof(XF),                                  HT_T_TINY    , FILL },
   {CN_XF_ADD_LEVEL,            sizeof(XF_Prolog_Add_level),                 HT_T_TINY    , FILL },
   {CN_XF_AS_REVIEW,            sizeof(XF_Prolog_as_Review),                 HT_T_TINY    , FILL },
-  {CN_XF_COLNM_TO_STMCOL,      sizeof(XF_colNm_To_stmCol),                  HT_T_TINY    , FILL },
+  {CN_XF_COLNM_TO_STMCOL,      sizeof(XF_Prolog_colNm_To_stmCol),           HT_T_TINY    , FILL },
   {CN_XF_COLUMN_MAPPING,              sizeof(XF_Epilog_Column_mapping),     HT_T_TINY    , FILL },
   {CN_XF_CULL_NONUSED_BOUND,          sizeof(XF_Optimise_Cull_bound),       HT_T_TINY    , FILL },
   {CN_XF_DEDUPE_AS,                   sizeof(XF_Dedupe_as),                 HT_T_TINY    , FILL },
@@ -797,19 +797,19 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_INDIVIDUATE_FILTER,           sizeof(XF_Epilog_Promote_filter),       HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                      sizeof(XF_Prolog_Move_on),              HT_T_TINY    , FILL },
   {CN_XF_NOT_OPS,                      sizeof(XF_Prolog_not_Ops),              HT_T_TINY    , FILL },
-  {CN_XF_OT_CUT_SORT,                  sizeof(XF_Optimise_Cut_sort),          HT_T_TINY    , FILL },
-  {CN_XF_OT_EARLY_PROJECTION,          sizeof(XF_Optimise_Early_projection),  HT_T_TINY    , FILL },
-  {CN_XF_OT_JOIN_ORDERING,             sizeof(XF_OT_Join_Ordering),           HT_T_TINY    , FILL },
-  {CN_XF_OT_REDUCE_GBYAGG_KEY,         sizeof(XF_Optimise_Reduce_gbyAgg_key), HT_T_TINY    , FILL },
-  {CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG,  sizeof(XF_Optimise_gbyAgg_To_ordAgg),  HT_T_TINY    , FILL },
-  {CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, sizeof(XF_Optimise_scan_To_indexScan), HT_T_TINY    , FILL },
-  {CN_XF_PREDICATE_PULL_UP,            sizeof(XF_Predicate_Pull_Up),          HT_T_TINY    , FILL },
-  {CN_XF_PREDICATE_REPOSITION,         sizeof(XF_Predicate_Reposition),       HT_T_TINY    , FILL },
-  {CN_XF_PROJECTION_ANALYSIS,          sizeof(XF_Prolog_projection_Analysis), HT_T_TINY    , FILL },
-  {CN_XF_REINSTATE_STAGE,              sizeof(XF_Epilog_Reinstate_stage),     HT_T_TINY    , FILL },
-  {CN_XF_RPNCALC_TO_BOOLCALC,          sizeof(XF_Prolog_rpnCalc_To_boolCalc), HT_T_TINY    , FILL },
-  {CN_XF_SCAN_TO_FROM,                 sizeof(XF_Prolog_scan_To_from),        HT_T_TINY    , FILL },
-  {CN_XF_SHORTEN_QUERYNM,              sizeof(XF_Prolog_Shorten_queryNm),     HT_T_TINY    , FILL },
+  {CN_XF_OT_CUT_SORT,                  sizeof(XF_Optimise_Cut_sort),           HT_T_TINY    , FILL },
+  {CN_XF_OT_EARLY_PROJECTION,          sizeof(XF_Optimise_Early_projection),   HT_T_TINY    , FILL },
+  {CN_XF_OT_JOIN_ORDERING,             sizeof(XF_Flatten_Join_Ordering),       HT_T_TINY    , FILL },
+  {CN_XF_OT_REDUCE_GBYAGG_KEY,         sizeof(XF_Optimise_Reduce_gbyAgg_key),  HT_T_TINY    , FILL },
+  {CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG,  sizeof(XF_Optimise_gbyAgg_To_ordAgg),   HT_T_TINY    , FILL },
+  {CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, sizeof(XF_Optimise_scan_To_indexScan),  HT_T_TINY    , FILL },
+  {CN_XF_PREDICATE_PULL_UP,            sizeof(XF_Predicate_Pull_Up),           HT_T_TINY    , FILL },
+  {CN_XF_PREDICATE_REPOSITION,         sizeof(XF_Predicate_Reposition),        HT_T_TINY    , FILL },
+  {CN_XF_PROJECTION_ANALYSIS,          sizeof(XF_Prolog_projection_Analysis),  HT_T_TINY    , FILL },
+  {CN_XF_REINSTATE_STAGE,              sizeof(XF_Epilog_Reinstate_stage),      HT_T_TINY    , FILL },
+  {CN_XF_RPNCALC_TO_BOOLCALC,          sizeof(XF_Prolog_rpnCalc_To_boolCalc),  HT_T_TINY    , FILL },
+  {CN_XF_SCAN_TO_FROM,                 sizeof(XF_Prolog_scan_To_from),         HT_T_TINY    , FILL },
+  {CN_XF_SHORTEN_QUERYNM,              sizeof(XF_Prolog_Shorten_queryNm),      HT_T_TINY    , FILL },
   {CN_XF_SMOOSH,                       sizeof(XF_Smoosh),                     HT_T_TINY    , FILL },
   {CN_XF_SMOOTH,                       sizeof(XF_Smooth),                     HT_T_TINY    , FILL },
   {CN_XF_STAGE_CAST,                   sizeof(XF_Epilog_stage_cast),          HT_T_TINY    , FILL },

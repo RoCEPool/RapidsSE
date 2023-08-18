@@ -37,7 +37,7 @@
 #include "XF_Prolog_table_Analysis.hpp"
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
-#include "XF_colNm_To_stmCol.hpp"
+#include "XF_Prolog_colNm_To_stmCol.hpp"
 
 #include "eOT.h"
 
@@ -229,7 +229,7 @@ void XF::vTransform_passThru(void)
     m_pCI->vEndTransform();
 
     // todo: needs discussion with Alka re constraint
-    XF_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
+    XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
 
 
     m_pCI->vTransform(__func__, XF_NONE, "adjust sort"_Stz);

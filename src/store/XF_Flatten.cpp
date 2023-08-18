@@ -7,7 +7,7 @@
 #include "Board.hpp"
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
-#include "XF_OT_Join_Ordering.hpp"
+#include "XF_Flatten_Join_Ordering.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -239,7 +239,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
 
-  XF_OT_Join_Ordering::vXF_Join_Ordering(m_pCI);
+  XF_Flatten_Join_Ordering::vXF_Join_Ordering(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sub-query has been flattened
