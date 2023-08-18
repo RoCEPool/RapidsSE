@@ -376,7 +376,7 @@ i8 StrLib::nBurstArgs(Stz* szaArgv[], Stz* szArgStr)
 /*----------------------------------------------------------------------------*/
 /* decode char into a string                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* StrLib::szCharToStr(char cArg)
+Stz* StrLib::szCharToStr(unsigned char cArg)
 {
   _static_
   
@@ -1788,8 +1788,8 @@ bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
     //if (' ' == **ps || cDelimiter == **ps)
     bOnce = true;
     
-  if (cDelimiter == **ps)
-    break;
+    if (cDelimiter == **ps)
+      break;
   
     *a++ = **ps;
   }

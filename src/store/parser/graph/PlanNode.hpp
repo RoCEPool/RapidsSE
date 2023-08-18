@@ -579,6 +579,7 @@ namespace Parser
           } else {
             NEVER_REACH
           }
+          break;
 
         default:
           NEVER_REACH

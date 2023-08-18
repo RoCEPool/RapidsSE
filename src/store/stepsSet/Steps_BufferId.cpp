@@ -108,8 +108,9 @@ void Step::vBufferIdSet(void)
   ENTRY();
 
   m_pLogicUnit->m_oBufferId.m_pvAsAddress = m_pDataStack->pPopPtr(__func__);
-  if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr)
+  if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr) {
     ASSERT(m_pLogicUnit->m_oBufferId.m_bIdFlag == 1);
+  }
 
   EXIT();
 }

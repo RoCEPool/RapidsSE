@@ -30,6 +30,7 @@ PhyPtn::PhyPtn(i8 iAsI8)
 /* copy constructor                                                           */
 /*----------------------------------------------------------------------------*/
 PhyPtn::PhyPtn(const PhyPtn& oCopy)
+ : Gid_t<CN_PTNID>()
 {
   m_iAsI8 = oCopy.m_iAsI8;
 }

@@ -59,16 +59,21 @@ namespace BASE
     {
       byte* aSrc = (byte*)&wArg;
       byte* aDst = ((byte*)this) + i_Byte;
-      
+
+      // Note: the [[gnu::fallthrough]]; statement needs to occur before the next case
+      // label. This will suppress the -Wimplicit-fallthrough warning.
+      // The semicolon at the end is significant.
+      // If/when we adopt C++17 then we can use [[fallthrough]]; instead.
+
       switch (nBytes) {
-        case C_8B: *aDst++ = *aSrc++;
-        case C_7B: *aDst++ = *aSrc++;
-        case C_6B: *aDst++ = *aSrc++;
-        case C_5B: *aDst++ = *aSrc++;
-        case C_4B: *aDst++ = *aSrc++;
-        case C_3B: *aDst++ = *aSrc++;
-        case C_2B: *aDst++ = *aSrc++;
-        case C_1B: *aDst   = *aSrc;
+        case C_8B: *aDst++ = *aSrc++;  [[gnu::fallthrough]];
+        case C_7B: *aDst++ = *aSrc++;  [[gnu::fallthrough]];
+        case C_6B: *aDst++ = *aSrc++;  [[gnu::fallthrough]];
+        case C_5B: *aDst++ = *aSrc++;  [[gnu::fallthrough]];
+        case C_4B: *aDst++ = *aSrc++;  [[gnu::fallthrough]];
+        case C_3B: *aDst++ = *aSrc++;  [[gnu::fallthrough]];
+        case C_2B: *aDst++ = *aSrc++;  [[gnu::fallthrough]];
+        case C_1B: *aDst   = *aSrc;    [[gnu::fallthrough]];
         case C_0B: return;
           
         default:

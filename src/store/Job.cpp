@@ -1732,7 +1732,7 @@ void Job::vPostRecv(void)
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 03 */ m_pMutex       = new Mutex(this);
-  /* 07 */ m_pTask        = m_pTask = new Task(szJobNm(),this);
+  /* 07 */ m_pTask        = new Task(szJobNm(),this);
   /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
   /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
 

@@ -82,9 +82,13 @@ void Step::vInjectSigsegv(void)
   ENTRY();
   
   Object* pObject = nullptr;
-  
+
+  // Tell GCC not to error out on this fault injection
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnonnull"
   pObject->vMemoryDump();
-  
+#pragma GCC diagnostic pop
+
   NEVER_REACH;
   
   EXIT();
@@ -156,7 +160,14 @@ void Step::vInjectFPE(void)
   int i = 114;
   int j = 1;
   int k = 0;
+
+  // Need to work around gcc detecting a divide by zero too well.
+  // Clang is easily confused into thinking this is ok.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdiv-by-zero"
   k = i / (j-j);
+#pragma GCC diagnostic pop
+
   UNUSED(k);
 
   //raise(SIGFPE);

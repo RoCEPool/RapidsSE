@@ -8,28 +8,13 @@
 #include "Steps.hpp"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Steps* STORE::_pSteps(void* aAddr)
-{
-  Steps* pSteps = reinterpret_cast<Steps*>(aAddr);
-  
-  RASSERT_TYPE(pSteps,CN_STEPS);
-  
-  return pSteps;
-}
+__pCastFunction(STORE,Steps,CN_STEPS)
+__aNewFunction(Steps,CN_STEPS)
+__vDeleteFunction(Steps,CN_STEPS)
+__aFooterFunction(Steps)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Steps::operator new(size_t)
-{
-  RASSERT(! AM::pSteps());
-  
-  Steps* pSteps = (Steps*)Heaps::pAllocate(CN_STEPS);
-  
-  return pSteps;
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -253,20 +238,6 @@ void Steps::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
   pFile->vClose();
   
   delete pFile;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Steps::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPS);
-  
-  return &m_xFooter;
 }
 
 /*============================================================================*/

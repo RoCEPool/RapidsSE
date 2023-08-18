@@ -234,8 +234,10 @@ bool Bench::bIsSubQueryNm(Stz* szSubQueryNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pGetBoard(szSubQueryNm))
+  if (Board* pBoard = pGetBoard(szSubQueryNm)) {
+    UNUSED(pBoard);
     return true;
+  }
 
   return false;
 }

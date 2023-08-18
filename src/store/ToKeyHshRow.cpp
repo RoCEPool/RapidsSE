@@ -338,8 +338,8 @@ void ToKeyHshRow::vNewRowBuffer(void)
   if (nWholeDigits > _maxDigits) \
     vFIELD_ERROR(_errorCode2)
 
-#define vNUMBER_range(_uComponent,_maxDigits,_minValue,_maxValue, \
-                      _errorCode1,_errorCode2) \
+#define vNUMBER_range_both(_uComponent,_maxDigits,_minValue,_maxValue, \
+                          _errorCode1,_errorCode2) \
   \
   _uComponent = 0; \
   \
@@ -357,6 +357,28 @@ void ToKeyHshRow::vNewRowBuffer(void)
     vFIELD_ERROR(_errorCode2) \
   \
   if (_uComponent < _minValue || _uComponent > _maxValue) \
+    vFIELD_ERROR(_errorCode1)
+
+
+#define vNUMBER_range_upper(_uComponent,_maxDigits,_maxValue, \
+                          _errorCode1,_errorCode2) \
+  \
+  _uComponent = 0; \
+  \
+  nWholeDigits = 0; \
+  while (nWholeDigits <= _maxDigits && bIS_DIGIT()) { \
+    vCOLLECT_INT_DIGIT(_uComponent); \
+    nWholeDigits++; \
+   vACCEPT_CHAR(); \
+  } \
+  \
+  if (! nWholeDigits) \
+    vFIELD_ERROR(_errorCode1) \
+  \
+  if (nWholeDigits > _maxDigits) \
+    vFIELD_ERROR(_errorCode2) \
+  \
+  if (_uComponent > _maxValue) \
     vFIELD_ERROR(_errorCode1)
 
 
@@ -1222,8 +1244,8 @@ L_Date_year:
     
 L_Date_month:
   
-  vNUMBER_range(uMonthComponent,2,1,12,
-                EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+  vNUMBER_range_both(uMonthComponent, 2, 1, 12,
+                     EC_CSV_MONTH_INVALID, EC_CSV_MONTH_TOO_LARGE);
   
   goto L_Date_nextComponent;
 
@@ -1536,10 +1558,10 @@ L_Integer:
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // unsigned whole portion
-  
-  vNUMBER_range(uWholeNumber,C_MAX_INTEGER_DIGITS,0,(u8)C_I8_MAX,
-                             EC_CSV_INTEGER_INVALID,
-                             EC_CSV_INTEGER_TOO_LARGE);
+
+  vNUMBER_range_upper(uWholeNumber, C_MAX_INTEGER_DIGITS, (u8)C_I8_MAX,
+                     EC_CSV_INTEGER_INVALID,
+                     EC_CSV_INTEGER_TOO_LARGE);
   
   vFRACTION_ignore();
   
@@ -1701,17 +1723,17 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // hour component
 
-  vNUMBER_range(uHourComponent,2,0,23,
-                EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+  vNUMBER_range_upper(uHourComponent, 2, 23,
+                     EC_CSV_HOUR_INVALID, EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
   vTIME_SEPARATOR();
   
   // ---- ---- ---- ---- ---- ---- ---- ----
   // minute component
-  
-  vNUMBER_range(uMinuteComponent,2,0,59,
-                EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+
+  vNUMBER_range_upper(uMinuteComponent, 2, 59,
+                     EC_CSV_MINUTE_INVALID, EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
   vTIME_SEPARATOR();
@@ -1719,8 +1741,8 @@ L_Time:
   // ---- ---- ---- ---- ---- ---- ---- ----
   // second component
 
-  vNUMBER_range(uSecondComponent,2,0,59,
-                EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+  vNUMBER_range_upper(uSecondComponent, 2, 59,
+                     EC_CSV_SECOND_INVALID, EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond portion
@@ -1844,9 +1866,9 @@ L_Timestamp_month:
   
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_month:\n"_Stz);
-  
-  vNUMBER_range(uMonthComponent,2,1,12,
-                EC_CSV_MONTH_INVALID,EC_CSV_MONTH_TOO_LARGE);
+
+  vNUMBER_range_both(uMonthComponent, 2, 1, 12,
+                     EC_CSV_MONTH_INVALID, EC_CSV_MONTH_TOO_LARGE);
 
   goto L_Timestamp_nextComponent;
   
@@ -1894,9 +1916,9 @@ L_Timestamp_dateCollected:
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_hour:\n"_Stz);
-  
-  vNUMBER_range(uHourComponent,2,0,23,
-                EC_CSV_HOUR_INVALID,EC_CSV_HOUR_TOO_LARGE);
+
+  vNUMBER_range_upper(uHourComponent, 2, 23,
+                     EC_CSV_HOUR_INVALID, EC_CSV_HOUR_TOO_LARGE);
 
   // skip over mandatory time separator
   
@@ -1907,9 +1929,9 @@ L_Timestamp_dateCollected:
 
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_minute:\n"_Stz);
-    
-  vNUMBER_range(uMinuteComponent,2,0,59,
-                EC_CSV_MINUTE_INVALID,EC_CSV_MINUTE_TOO_LARGE);
+
+  vNUMBER_range_upper(uMinuteComponent, 2, 59,
+                     EC_CSV_MINUTE_INVALID, EC_CSV_MINUTE_TOO_LARGE);
 
   // skip over mandatory time separator
   vTIME_SEPARATOR();
@@ -1920,8 +1942,8 @@ L_Timestamp_dateCollected:
   if (iTraceBits & C_BIT_Timestamp)
     vTrace("L_Timestamp_second:\n"_Stz);
   
-  vNUMBER_range(uSecondComponent,2,0,59,
-                EC_CSV_SECOND_INVALID,EC_CSV_SECOND_TOO_LARGE);
+  vNUMBER_range_upper(uSecondComponent, 2, 59,
+                     EC_CSV_SECOND_INVALID, EC_CSV_SECOND_TOO_LARGE);
 
   // ---- ---- ---- ---- ---- ---- ---- ----
   // optional microsecond component

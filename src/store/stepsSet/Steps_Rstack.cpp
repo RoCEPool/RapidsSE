@@ -202,26 +202,31 @@ void Step::vRstackReverse(void)
   SenCell xVal8;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
-  
+
+  // Note: the [[gnu::fallthrough]]; statement needs to occur before the next case
+  // label. This will suppress the -Wimplicit-fallthrough warning.
+  // The semicolon at the end is significant.
+  // If/when we adopt C++17 then we can use [[fallthrough]]; instead.
+
   switch (nValues) {
-    case 8: m_pReturnStack->vPopSenCell(xVal8,__func__);
-    case 7: m_pReturnStack->vPopSenCell(xVal7,__func__);
-    case 6: m_pReturnStack->vPopSenCell(xVal6,__func__);
-    case 5: m_pReturnStack->vPopSenCell(xVal5,__func__);
-    case 4: m_pReturnStack->vPopSenCell(xVal4,__func__);
-    case 3: m_pReturnStack->vPopSenCell(xVal3,__func__);
-    case 2: m_pReturnStack->vPopSenCell(xVal2,__func__);
+    case 8: m_pReturnStack->vPopSenCell(xVal8,__func__);  [[gnu::fallthrough]];
+    case 7: m_pReturnStack->vPopSenCell(xVal7,__func__);  [[gnu::fallthrough]];
+    case 6: m_pReturnStack->vPopSenCell(xVal6,__func__);  [[gnu::fallthrough]];
+    case 5: m_pReturnStack->vPopSenCell(xVal5,__func__);  [[gnu::fallthrough]];
+    case 4: m_pReturnStack->vPopSenCell(xVal4,__func__);  [[gnu::fallthrough]];
+    case 3: m_pReturnStack->vPopSenCell(xVal3,__func__);  [[gnu::fallthrough]];
+    case 2: m_pReturnStack->vPopSenCell(xVal2,__func__);  [[gnu::fallthrough]];
     case 1: m_pReturnStack->vPopSenCell(xVal1,__func__);
   }
- 
+
   switch (nValues) {
-    case 8: m_pReturnStack->vPushSenCell(xVal8);
-    case 7: m_pReturnStack->vPushSenCell(xVal7);
-    case 6: m_pReturnStack->vPushSenCell(xVal6);
-    case 5: m_pReturnStack->vPushSenCell(xVal5);
-    case 4: m_pReturnStack->vPushSenCell(xVal4);
-    case 3: m_pReturnStack->vPushSenCell(xVal3);
-    case 2: m_pReturnStack->vPushSenCell(xVal2);
+    case 8: m_pReturnStack->vPushSenCell(xVal8);  [[gnu::fallthrough]];
+    case 7: m_pReturnStack->vPushSenCell(xVal7);  [[gnu::fallthrough]];
+    case 6: m_pReturnStack->vPushSenCell(xVal6);  [[gnu::fallthrough]];
+    case 5: m_pReturnStack->vPushSenCell(xVal5);  [[gnu::fallthrough]];
+    case 4: m_pReturnStack->vPushSenCell(xVal4);  [[gnu::fallthrough]];
+    case 3: m_pReturnStack->vPushSenCell(xVal3);  [[gnu::fallthrough]];
+    case 2: m_pReturnStack->vPushSenCell(xVal2);  [[gnu::fallthrough]];
     case 1: m_pReturnStack->vPushSenCell(xVal1);
   }
 

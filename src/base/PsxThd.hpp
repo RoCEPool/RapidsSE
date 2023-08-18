@@ -29,7 +29,6 @@ namespace BASE
    ~PsxThd(void) noexcept(false);
   
     static void* aGetStackBase(void);
-    static void* aGetStackPointer(void);
     static i8    iGetStackSize(void);
   
     static bool  bIsCppThread(void);
