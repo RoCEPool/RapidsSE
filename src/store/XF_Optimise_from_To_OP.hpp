@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Derive_streamKey.hpp -- Derive projection key                      */
+/* XF_Optimise_from_To_OP.hpp -- Morph table to EE op                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Derive_streamKey : public XF_TRANSFORM
+  class XF_Optimise_from_To_OP : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,22 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Derive_streamKey(CardIter* pCI);
-   ~XF_Derive_streamKey(void) noexcept(false);
+    XF_Optimise_from_To_OP(CardIter* pCI);
+   ~XF_Optimise_from_To_OP(void) noexcept(false);
 
-    static void vXF_Derive_streamKey(CardIter* pCI);
+    static void vXF_Optimise_from_By_OP(CardIter* pCI);
 
-    void vXF_Derive_streamKey(void);
+    void vXF_Morph_table_To_EEop(void);
 
   private:
-    bool bFindStart_streamKey(void);
-    void vPropagate_streamKey(void);
-
-
     Footer* aFooter(void);
   };
 
-  XF_Derive_streamKey* _pXF_Derive_streamKey(void* aAddr);
+  XF_Optimise_from_To_OP* _pXF_Optimise_from_To_OP(void* aAddr);
 }
 
 /*============================================================================*/

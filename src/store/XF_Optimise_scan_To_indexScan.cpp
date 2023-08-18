@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_OT_Replace_scan_By_indexScan.cpp -- Delete flat                                          */
+/* XF_Optimise_scan_To_indexScan.cpp -- Delete flat                                          */
 /*============================================================================*/
 
-#include "XF_OT_Replace_scan_By_indexScan.hpp"
+#include "XF_Optimise_scan_To_indexScan.hpp"
 
 #include "eOT.h"
 
@@ -11,16 +11,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_OT_Replace_scan_By_indexScan, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN)
-__aNewFunction(XF_OT_Replace_scan_By_indexScan, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN)
-__vDeleteFunction(XF_OT_Replace_scan_By_indexScan, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN)
-__aFooterFunction(XF_OT_Replace_scan_By_indexScan)
+__pCastFunction(STORE, XF_Optimise_scan_To_indexScan, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN)
+__aNewFunction(XF_Optimise_scan_To_indexScan, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN)
+__vDeleteFunction(XF_Optimise_scan_To_indexScan, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN)
+__aFooterFunction(XF_Optimise_scan_To_indexScan)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_OT_Replace_scan_By_indexScan::XF_OT_Replace_scan_By_indexScan(CardIter* pCI)
+XF_Optimise_scan_To_indexScan::XF_Optimise_scan_To_indexScan(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
@@ -33,7 +33,7 @@ XF_OT_Replace_scan_By_indexScan::XF_OT_Replace_scan_By_indexScan(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_OT_Replace_scan_By_indexScan::~XF_OT_Replace_scan_By_indexScan(void) noexcept(false)
+XF_Optimise_scan_To_indexScan::~XF_Optimise_scan_To_indexScan(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
 }
@@ -41,11 +41,11 @@ XF_OT_Replace_scan_By_indexScan::~XF_OT_Replace_scan_By_indexScan(void) noexcept
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_OT_Replace_scan_By_indexScan::vXF_Replace_scan_By_indexScan(CardIter* pCI)
+void XF_Optimise_scan_To_indexScan::vXF_Optimise_scan_To_indexScan(CardIter* pCI)
 {
   _static_
 
-  XF_OT_Replace_scan_By_indexScan* pXF_Morph_scan_To_indexScan = new XF_OT_Replace_scan_By_indexScan(pCI);
+  XF_Optimise_scan_To_indexScan* pXF_Morph_scan_To_indexScan = new XF_Optimise_scan_To_indexScan(pCI);
 
   pXF_Morph_scan_To_indexScan->vXF_Replace_scan_By_indexScan();
 
@@ -60,7 +60,7 @@ void XF_OT_Replace_scan_By_indexScan::vXF_Replace_scan_By_indexScan(CardIter* pC
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_OT_Replace_scan_By_indexScan::vXF_Replace_scan_By_indexScan(void)
+void XF_Optimise_scan_To_indexScan::vXF_Replace_scan_By_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
 

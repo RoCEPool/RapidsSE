@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Derive_streamKey.cpp -- Derive projection key                      */
+/* XF_Optimise_Derive_streamKey.cpp -- Derive projection key                      */
 /*============================================================================*/
 
-#include "XF_Derive_streamKey.hpp"
+#include "XF_Optimise_Derive_streamKey.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
-__aNewFunction(XF_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
-__vDeleteFunction(XF_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
-__aFooterFunction(XF_Derive_streamKey)
+__pCastFunction(STORE, XF_Optimise_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
+__aNewFunction(XF_Optimise_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
+__vDeleteFunction(XF_Optimise_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
+__aFooterFunction(XF_Optimise_Derive_streamKey)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Derive_streamKey::XF_Derive_streamKey(CardIter* pCI)
+XF_Optimise_Derive_streamKey::XF_Optimise_Derive_streamKey(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_DERIVE_STREAM_KEY, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Derive_streamKey::XF_Derive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Derive_streamKey::~XF_Derive_streamKey(void) noexcept(false)
+XF_Optimise_Derive_streamKey::~XF_Optimise_Derive_streamKey(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_Derive_streamKey::~XF_Derive_streamKey(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Derive_streamKey::vXF_Derive_streamKey(CardIter* pCI)
+void XF_Optimise_Derive_streamKey::vXF_Optimise_Derive_streamKey(CardIter* pCI)
 {
   _static_
 
-  XF_Derive_streamKey* pXF_Derive_projection_key = new XF_Derive_streamKey(pCI);
+  XF_Optimise_Derive_streamKey* pXF_Derive_projection_key = new XF_Optimise_Derive_streamKey(pCI);
 
   pXF_Derive_projection_key->vXF_Derive_streamKey();
 
@@ -58,7 +58,7 @@ void XF_Derive_streamKey::vXF_Derive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Derive_streamKey::vXF_Derive_streamKey(void)
+void XF_Optimise_Derive_streamKey::vXF_Derive_streamKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
 
@@ -82,7 +82,7 @@ void XF_Derive_streamKey::vXF_Derive_streamKey(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Derive_streamKey::bFindStart_streamKey(void)
+bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
 
@@ -108,7 +108,7 @@ bool XF_Derive_streamKey::bFindStart_streamKey(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Derive_streamKey::vPropagate_streamKey(void)
+void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
 

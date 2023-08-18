@@ -15,13 +15,13 @@
 #include "XF_Dedupe_as.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Delete_flat.hpp"
-#include "XF_Derive_streamKey.hpp"
+#include "XF_Optimise_Derive_streamKey.hpp"
 #include "XF_OT_Early_projection.hpp"
 #include "XF_Flatten.hpp"
 #include "XF_Individuate_filter.hpp"
 #include "XF_Synthesise_Code.hpp"
-#include "XF_OT_Replace_scan_By_indexScan.hpp"
-#include "XF_from_To_OP.hpp"
+#include "XF_Optimise_scan_To_indexScan.hpp"
+#include "XF_Optimise_from_To_OP.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_OT_Replace_gbyAgg_By_ordAgg.hpp"
 #include "XF_OT_Reduce_gbyAgg_key.hpp"
@@ -164,11 +164,11 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3/5) optimisw
 
-  XF_from_To_OP::vXF_Morph_table_To_EEop(m_pCI);
+  XF_Optimise_from_To_OP::vXF_Optimise_from_By_OP(m_pCI);
 
-  XF_OT_Replace_scan_By_indexScan::vXF_Replace_scan_By_indexScan(m_pCI);
+  XF_Optimise_scan_To_indexScan::vXF_Optimise_scan_To_indexScan(m_pCI);
 
-  XF_Derive_streamKey::vXF_Derive_streamKey(m_pCI);
+  XF_Optimise_Derive_streamKey::vXF_Optimise_Derive_streamKey(m_pCI);
 
   XF_OT_Cut_sort::vXF_Cut_sort(m_pCI);
 
