@@ -10,7 +10,7 @@ namespace STORE
   class Card_PRED : public Card_symbol<Card_PRED>
   {  
   public:
-    Card_PRED(eCK eCard);
+    Card_PRED(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
    ~Card_PRED(void) noexcept(false);
 
     static bool bIsPRED(Card* p_card);

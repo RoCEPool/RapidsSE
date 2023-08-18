@@ -10,7 +10,7 @@ namespace STORE
   class Card_ELIST : public Card_LIST
   {  
   public:
-    Card_ELIST(eCK eCard);
+    Card_ELIST(eCK eCard, i8 iFixedDepth=C_UNKNOWN);
    ~Card_ELIST(void) noexcept(false);
 
     void vBump_keyOdn_In_rpnCalc(CardIter* pCI);
