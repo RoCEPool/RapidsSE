@@ -33,26 +33,6 @@ Token::Token(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Token::Token(Token* pToCopy, TokenVec* pCaller)
-: Object(CN_TOKEN)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  m_p_ExoTknVec = nullptr;
-  m_i_Token     = C_UNKNOWN;
-
-  vReset();
-  
-  vCopyToken_restricted(pToCopy,pCaller);
-  
-  _checkInitialised_(CN_TOKEN);
-  
-  _postcondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Token::~Token(void) noexcept(false)

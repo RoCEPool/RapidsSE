@@ -18,7 +18,11 @@ DARWIN_WARNINGS :=
 
 # Specific error flags and warnings that are being promoted to errors on clang on MacOS
 # Turn all warnings into errors on clang on MacOS
-DARWIN_ERRORS := -Werror -Werror=implicit-fallthrough
+DARWIN_ERRORS := -Werror
+DARWIN_ERRORS += -Werror=implicit-fallthrough   # this is normally an 'extra' warning
+DARWIN_ERRORS += -Werror=div-by-zero            # this is normally an 'extra' warning
+DARWIN_ERRORS += -Werror=return-stack-address
+DARWIN_ERRORS += -Werror=empty-body
 
 # Warnings specific to MacOS that are to be ignored when compiling
 # the code synthesizer fragment files.

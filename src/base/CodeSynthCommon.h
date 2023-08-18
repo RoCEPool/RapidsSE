@@ -289,8 +289,10 @@ enum eMC // meta code
   /* E */ MC_NEGATIVE,    // -ve digit -15 .. -0
   /* F */ MC_POSITIVE,    // +ve digit   0 .. 15
 
-  /* 16 */ MC_ENUMS,
+//  /* 16 */ MC_ENUMS,  // NOTE: No room for this in _ColEnc structure
 };
+
+static const i8 MC_ENUMS = 16;
 
 static const i8 _C_1M = 1000000;
 static const i8 _C_16KB = 16*1024;

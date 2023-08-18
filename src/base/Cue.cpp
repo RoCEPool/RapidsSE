@@ -18,7 +18,8 @@ void Cue::vGetInput(Stz* szPrompt, String* pString)
   char *azLine = nullptr;
   size_t iLineCapacity = 0;
 
-  getline(&azLine,&iLineCapacity,stdin);
+  i8 iCharsRead = getline(&azLine,&iLineCapacity,stdin);
+  UNUSED(iCharsRead);
 
   //printf(">>`%s`<<\n",azLine);
 
@@ -31,7 +32,8 @@ void Cue::vGetInput(Stz* szPrompt, String* pString)
 void Cue::vGetReturn(void)
 {
   s256 sIn;
-  fgets(sIn.azChar(),128,stdin);
+  char* pcResult = fgets(sIn.azChar(),128,stdin);
+  UNUSED(pcResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +44,8 @@ void Cue::vGetReturn(Stz* szPrompt)
   vTrace("%s"_Stz,(char*)szPrompt);
   
   s256 sIn;
-  fgets(sIn.azChar(),128,stdin);
+  char* pcResult = fgets(sIn.azChar(),128,stdin);
+  UNUSED(pcResult);
 }
 
 /*============================================================================*/

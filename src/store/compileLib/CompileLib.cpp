@@ -762,7 +762,14 @@ bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
   if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     delete pSrcFile;
@@ -772,7 +779,14 @@ bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
   if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     pSrcFile->vClose();
@@ -798,7 +812,14 @@ bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
   if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     delete pSrcFile;
@@ -822,7 +843,14 @@ bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
     if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
       pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-      strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+      int result;
+#else
+      char* result;
+#endif
+      result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+      UNUSED(result);
+
       pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
       pSrcFile->vClose();

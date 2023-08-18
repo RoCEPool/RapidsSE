@@ -590,18 +590,16 @@ void TablePtn::vVisualizeTable(void)
 /*----------------------------------------------------------------------------*/
 /* dump the table data of this partition                                      */
 /*----------------------------------------------------------------------------*/
-Stz* TablePtn::szDumpContents(void)
+void TablePtn::vDumpContents(String* pStr)
 {
   i8 nBuffers = m_pCrwTablePtn->nBuffers();
-  s4K sDumpBuffer = ""_Stz;
   if (nBuffers > 0) {
-    sDumpBuffer.vCatSprint("  PtnId:%lld   nBuffers:%lld\n"_Stz, m_tLglPtn.iAsI8(), nBuffers);
+    pStr->vCatSprint("  PtnId:%lld   nBuffers:%lld\n"_Stz, m_tLglPtn.iAsI8(), nBuffers);
     for (i8 i_PoolBuffer = 0; i_PoolBuffer < nBuffers; i_PoolBuffer++) {
       i8 nRows = m_pCrwTablePtn->pRootCrwBuffer()->nRows();
-      sDumpBuffer.vCatSprint("     Buffer:%lld   PtnId:%lld   nRows:%lld\n"_Stz, i_PoolBuffer, m_tLglPtn.iAsI8(), nRows);
+      pStr->vCatSprint("     Buffer:%lld   PtnId:%lld   nRows:%lld\n"_Stz, i_PoolBuffer, m_tLglPtn.iAsI8(), nRows);
     }
   }
-  return sDumpBuffer;
 }
 
 /*============================================================================*/

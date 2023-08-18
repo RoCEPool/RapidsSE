@@ -395,23 +395,6 @@ PayStr* IndexTree::pAllotPayStr(Stz* szStz)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze table                                                              */
-/*----------------------------------------------------------------------------*/
-Stz* IndexTree::pAnalyze(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  s48K sAnalysis;
-  
-  sAnalysis.vCatSprint("N%lld: Prior of Index %s of table %s\n"_Stz,
-                        AM::NODE::iThisNodeId(),
-                        m_pIndex->szIndexNm(),
-                        m_pIndex->pTable()->szTableNm());
-  
-  return sAnalysis;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
 i8 IndexTree::nBufferCount(void)

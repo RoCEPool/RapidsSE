@@ -65,7 +65,8 @@ void Step::vSupervisorCollectInfo(void)
   xHeartbeat.m_iClusterID = gxCmdLineArgs.m_xSysArgs.m_iClusterID;
   xHeartbeat.m_iSeqNo = ++iSeq;
   xHeartbeat.m_iSincePosixEpoch = time(0);
-  strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, sizeof(xHeartbeat.m_acBuildGitHash));
+  strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, sizeof(xHeartbeat.m_acBuildGitHash) - 1);
+  xHeartbeat.m_acBuildGitHash[sizeof(xHeartbeat.m_acBuildGitHash) - 1] = 0;
   xHeartbeat.m_iPid = Process::iGetPid();
 
   // Add node name to the packet

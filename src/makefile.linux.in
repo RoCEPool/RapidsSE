@@ -46,9 +46,15 @@ Then from the Source directory run the following command to build rapidsse:
 endif
 
 # Warnings flags that are specific to g++ on Linux
-LINUX_WARNINGS := -Wfatal-errors -Wno-attributes    # Stop compiling when an error is encountered
+LINUX_WARNINGS := -Wfatal-errors     # Stop compiling when an error is encountered
+LINUX_WARNINGS += -Wno-attributes    # Ignore function attributes that don't apply
 
 # Specific error flags and warnings that are being promoted to errors on g++ on Linux
+#LINUX_ERRORS := -Werror
+LINUX_ERRORS :=
+LINUX_ERRORS += -Werror=div-by-zero     # this is normally an 'extra' warning
+
+# These errors can be removed once we turn on -Werror above.
 LINUX_ERRORS := -Werror=return-type
 LINUX_ERRORS += -Werror=unused-parameter
 LINUX_ERRORS += -Werror=unused-but-set-variable
@@ -58,8 +64,8 @@ LINUX_ERRORS += -Werror=uninitialized
 LINUX_ERRORS += -Werror=varargs
 LINUX_ERRORS += -Werror=parentheses
 LINUX_ERRORS += -Werror=unused-value
-# LINUX_ERRORS += -Werror=array-bounds  # Not ready yet
 LINUX_ERRORS += -Werror=deprecated-declarations
+# LINUX_ERRORS += -Werror=array-bounds  # Not ready yet
 
 
 # Warnings specific to linux that are to be ignored when compiling
@@ -70,7 +76,7 @@ LINUX_FRAGMENT_IGNORE_WARNINGS :=
 # the ANTLR-generated tokeniser/parser files.
 LINUX_ANTLR_IGNORE_WARNINGS := -Wno-attributes
 
-LINUX_CPPFLAGS := -D__LINUX__
+LINUX_CPPFLAGS :=       -D__LINUX__
 LINUX_CPPFLAGS_DEBUG := -D__LINUX__
 
 LINUX_LDFLAGS := -rdynamic

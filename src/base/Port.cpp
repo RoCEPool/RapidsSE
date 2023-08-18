@@ -215,7 +215,7 @@ void Port::vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort)
   MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_PORT);
   
   aAddr->sin_family      = AF_INET;
-  aAddr->sin_addr.s_addr = sAddr->azChar() == nullptr ? C_UNKNOWN : inet_addr(sAddr->azChar());
+  aAddr->sin_addr.s_addr = sAddr == nullptr ? C_UNKNOWN : inet_addr(sAddr->azChar());
   aAddr->sin_port        = htons((int)iPort);
 }
 

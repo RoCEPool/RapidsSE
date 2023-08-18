@@ -246,7 +246,9 @@ void Step::vTableDumpBkt(void)
 
   sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_KEYBUCKETS);
 
-  sDumpBuffer.vConcat(pTable->szDumpTablePtn());
+  s4K sPtnBuf;
+  pTable->vDumpTablePtn(sPtnBuf);
+  sDumpBuffer.vConcat(sPtnBuf);
 
   sDumpBuffer.vConcat("======================================================\n\n"_Stz);
   m_pDataStack->vPushStr(sDumpBuffer);
