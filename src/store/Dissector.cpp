@@ -740,7 +740,7 @@ Card* Dissector::pOp_KeyExists(void)
   // index list
 
   Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
-  pCard_KeyExists->vAppend(p_indexList);
+  pCard_Table->vAppend(p_indexList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
@@ -805,7 +805,7 @@ Card* Dissector::pOp_KeyNotExists(void)
   // index list
 
   Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
-  pCard_KeyNotExists->vAppend(p_indexList);
+  pCard_Table->vAppend(p_indexList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
