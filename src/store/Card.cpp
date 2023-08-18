@@ -21,7 +21,93 @@ __aNewFunction(Card,CN_CARD)
 __vDeleteFunction(Card,CN_CARD)
 __aFooterFunction(Card)
 
+/*----------------------------------------------------------------------------*/
+/* Constants and static variables                                             */
+/*----------------------------------------------------------------------------*/
 i8 Card::m__iSeqGen { 1 };
+
+Stz* P_AggOp        = "bAggOp"_Stz;
+Stz* P_As           = "szAs"_Stz;
+Stz* P_BreakPt      = "bBreakPt"_Stz;
+Stz* P_BumpedBy     = "nBumpedBy"_Stz;
+Stz* P_Cell         = "i_Cell"_Stz;
+Stz* P_ChosenBound  = "bChosenBound"_Stz;
+Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
+Stz* P_Column       = "bColumn"_Stz;
+Stz* P_Count        = "nCount"_Stz;
+Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;
+Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
+Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
+Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
+Stz* P_DebugOption  = "szDebugOption"_Stz;
+Stz* P_DisamCol     = "bDisamCol"_Stz;
+Stz* P_Early        = "bEarly"_Stz;
+Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
+Stz* P_FixedPos     = "bFixedPos"_Stz;
+Stz* P_HideHeat     = "bHideHeat"_Stz;
+Stz* P_Injected     = "bInjected"_Stz;
+Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
+Stz* P_Invalid      = "bInvalid"_Stz;
+Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
+Stz* P_Key          = "bKey"_Stz;
+Stz* P_Level        = "eLevel"_Stz;
+Stz* P_Network      = "nNetwork"_Stz;
+Stz* P_Payload      = "bPayload"_Stz;
+Stz* P_ParamOdn     = "szParamOdn"_Stz;
+Stz* P_Permutation  = "i_Permutation"_Stz;
+Stz* P_Pointer      = "pProinter"_Stz;
+Stz* P_ProjBump     = "nProjBump"_Stz;
+Stz* P_ProjBumped   = "nProjBumped"_Stz;
+Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
+Stz* P_ReqCol       = "bReqCol"_Stz;
+Stz* P_SendKind     = "eSendKind"_Stz;
+Stz* P_SentOut      = "nSentOut"_Stz;
+Stz* P_Smoothed     = "bSmoothed"_Stz;
+Stz* P_StageTopo    = "eStageTopo"_Stz;
+Stz* P_StmCol       = "szStmCol"_Stz;
+Stz* P_SubQryCall   = "bSubQryCall"_Stz;
+Stz* P_Synthetic    = "bSynthetic"_Stz;
+Stz* P_TableUsed    = "bTableUsed"_Stz;
+Stz* P_TblCol       = "szTblCol"_Stz;
+Stz* P_Type         = "szType"_Stz;
+Stz* P_Unproject    = "bUnproject"_Stz;
+
+Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;
+Stz* C_GLEAN_INTERACTIVE = "<glean_interactive>"_Stz;
+Stz* C_GLEAN_TRACE       = "<glean_trace>"_Stz;
+Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
+Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
+Stz* C_NA                = "n/a"_Stz;
+
+Stz* C_CARD_HISTORY = "<card_history>"_Stz;
+Stz* C_CODE_BLOCK = "<code_block>"_Stz;
+Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
+Stz* C_EP_ENABLE  = "<ep_enable>"_Stz;
+Stz* C_FILTERPRED = "<filterPred>"_Stz;
+Stz* C_JOINORDER    = "<joinOrder>"_Stz;
+Stz* C_JOINPERMUTATIONS = "<joinPermutations>"_Stz;
+Stz* C_JO_DISABLE = "<jo_disable>"_Stz;
+Stz* C_JO_PICK    = "<jo_pick>"_Stz;
+Stz* C_JOWRITE    = "<joWrite>"_Stz;
+Stz* C_OPTIMISE_PASSTHRU = "<optimise_passThru>"_Stz;
+Stz* C_PIPELINE_DEF = "<pipeline_def>"_Stz;
+Stz* C_WEAVED     = "<weaved>"_Stz;
+Stz* C_NOCODESYNTHESIS = "<noCodeSynthesis>"_Stz;
+
+d8 C_EXPANSION_COEFF = 1.60;  // crw -> row buffer
+d8 C_FILTER_COEFF    = 0.30;
+d8 C_JOIN_COEFF      = 2.00;  // bump the larger
+d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
+
+char MARK_NIL        = 0;
+char MARK_AT         = '@';
+char MARK_BLANK      = ' ';
+char MARK_CHANGED    = '`';
+char MARK_UP         = '^';
+char MARK_UNVALID    = 'X';
+char MARK_VALID      = 'Y';
+char MARK_DUPLICATE  = 'D';
+char MARK_DELETED    = 'Z';
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

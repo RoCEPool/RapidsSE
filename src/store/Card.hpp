@@ -142,88 +142,90 @@ namespace STORE
   class CardIter;
 }
 
-static Stz* P_AggOp        = "bAggOp"_Stz;
-static Stz* P_As           = "szAs"_Stz;
-static Stz* P_BreakPt      = "bBreakPt"_Stz;
-static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
-static Stz* P_Cell         = "i_Cell"_Stz;
-static Stz* P_ChosenBound  = "bChosenBound"_Stz;
-static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
-static Stz* P_Column       = "bColumn"_Stz;
-static Stz* P_Count        = "nCount"_Stz;
-static Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;
-static Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
-static Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
-static Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
-static Stz* P_DebugOption  = "szDebugOption"_Stz;
-static Stz* P_DisamCol     = "bDisamCol"_Stz;
-static Stz* P_Early        = "bEarly"_Stz;
-static Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
-static Stz* P_FixedPos     = "bFixedPos"_Stz;
-static Stz* P_HideHeat     = "bHideHeat"_Stz;
-static Stz* P_Injected     = "bInjected"_Stz;
-static Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
-static Stz* P_Invalid      = "bInvalid"_Stz;
-static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
-static Stz* P_Key          = "bKey"_Stz;
-static Stz* P_Level        = "eLevel"_Stz;
-static Stz* P_Network      = "nNetwork"_Stz;
-static Stz* P_Payload      = "bPayload"_Stz;
-static Stz* P_ParamOdn     = "szParamOdn"_Stz;
-static Stz* P_Permutation  = "i_Permutation"_Stz;
-static Stz* P_Pointer      = "pProinter"_Stz;
-static Stz* P_ProjBump     = "nProjBump"_Stz;
-static Stz* P_ProjBumped   = "nProjBumped"_Stz;
-static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
-static Stz* P_ReqCol       = "bReqCol"_Stz;
-static Stz* P_SendKind     = "eSendKind"_Stz;
-static Stz* P_SentOut      = "nSentOut"_Stz;
-static Stz* P_Smoothed     = "bSmoothed"_Stz;
-static Stz* P_StageTopo    = "eStageTopo"_Stz;
-static Stz* P_StmCol       = "szStmCol"_Stz;
-static Stz* P_SubQryCall   = "bSubQryCall"_Stz;
-static Stz* P_Synthetic    = "bSynthetic"_Stz;
-static Stz* P_TableUsed    = "bTableUsed"_Stz;
-static Stz* P_TblCol       = "szTblCol"_Stz;
-static Stz* P_Type         = "szType"_Stz;
-static Stz* P_Unproject    = "bUnproject"_Stz;
+// These would really benefit from being const and being in a namespace
+// or class to avoid polluting the global namespace.
+extern Stz* P_AggOp;
+extern Stz* P_As;
+extern Stz* P_BreakPt;
+extern Stz* P_BumpedBy;
+extern Stz* P_Cell;
+extern Stz* P_ChosenBound;
+extern Stz* P_ChosenIndex;
+extern Stz* P_Column;
+extern Stz* P_Count;
+extern Stz* P_CrlKeyExpr;
+extern Stz* P_CrlKeyPred;
+extern Stz* P_CrlKeyTest;
+extern Stz* P_CrlRslTest;
+extern Stz* P_DebugOption;
+extern Stz* P_DisamCol;
+extern Stz* P_Early;
+extern Stz* P_EmittedCol;
+extern Stz* P_FixedPos;
+extern Stz* P_HideHeat;
+extern Stz* P_Injected;
+extern Stz* P_InjCrlKey;
+extern Stz* P_Invalid;
+extern Stz* P_JoinedBuff;
+extern Stz* P_Key;
+extern Stz* P_Level;
+extern Stz* P_Network;
+extern Stz* P_Payload;
+extern Stz* P_ParamOdn;
+extern Stz* P_Permutation;
+extern Stz* P_Pointer;
+extern Stz* P_ProjBump;
+extern Stz* P_ProjBumped;
+extern Stz* P_PtndJoin;
+extern Stz* P_ReqCol;
+extern Stz* P_SendKind;
+extern Stz* P_SentOut;
+extern Stz* P_Smoothed;
+extern Stz* P_StageTopo;
+extern Stz* P_StmCol;
+extern Stz* P_SubQryCall;
+extern Stz* P_Synthetic;
+extern Stz* P_TableUsed;
+extern Stz* P_TblCol;
+extern Stz* P_Type;
+extern Stz* P_Unproject;
 
-static Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;
-static Stz* C_GLEAN_INTERACTIVE = "<glean_interactive>"_Stz;
-static Stz* C_GLEAN_TRACE       = "<glean_trace>"_Stz;
-static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
-static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
-static Stz* C_NA                = "n/a"_Stz;
+extern Stz* C_GLEAN_CUE_FROM;
+extern Stz* C_GLEAN_INTERACTIVE;
+extern Stz* C_GLEAN_TRACE;
+extern Stz* C_GLEAN_XFORM;
+extern Stz* C_GLEAN_XHAND;
+extern Stz* C_NA;
 
-static Stz* C_CARD_HISTORY = "<card_history>"_Stz;
-static Stz* C_CODE_BLOCK = "<code_block>"_Stz;
-static Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
-static Stz* C_EP_ENABLE  = "<ep_enable>"_Stz;
-static Stz* C_FILTERPRED = "<filterPred>"_Stz;
-static Stz* C_JOINORDER    = "<joinOrder>"_Stz;
-static Stz* C_JOINPERMUTATIONS = "<joinPermutations>"_Stz;
-static Stz* C_JO_DISABLE = "<jo_disable>"_Stz;
-static Stz* C_JO_PICK    = "<jo_pick>"_Stz;
-static Stz* C_JOWRITE    = "<joWrite>"_Stz;
-static Stz* C_OPTIMISE_PASSTHRU = "<optimise_passThru>"_Stz;
-static Stz* C_PIPELINE_DEF = "<pipeline_def>"_Stz;
-static Stz* C_WEAVED     = "<weaved>"_Stz;
-static Stz* C_NOCODESYNTHESIS = "<noCodeSynthesis>"_Stz;
+extern Stz* C_CARD_HISTORY;
+extern Stz* C_CODE_BLOCK;
+extern Stz* C_EP_DISABLE;
+extern Stz* C_EP_ENABLE;
+extern Stz* C_FILTERPRED;
+extern Stz* C_JOINORDER;
+extern Stz* C_JOINPERMUTATIONS;
+extern Stz* C_JO_DISABLE;
+extern Stz* C_JO_PICK;
+extern Stz* C_JOWRITE;
+extern Stz* C_OPTIMISE_PASSTHRU;
+extern Stz* C_PIPELINE_DEF;
+extern Stz* C_WEAVED;
+extern Stz* C_NOCODESYNTHESIS;
 
-static d8 C_EXPANSION_COEFF = 1.60;  // crw -> row buffer
-static d8 C_FILTER_COEFF    = 0.30;
-static d8 C_JOIN_COEFF      = 2.00;  // bump the larger
-static d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
+extern d8 C_EXPANSION_COEFF;  // crw -> row buffer
+extern d8 C_FILTER_COEFF;
+extern d8 C_JOIN_COEFF;  // bump the larger
+extern d8 C_JOIN_LONGER;  // joined row gets longer
 
-static char MARK_NIL        = 0;
-static char MARK_AT         = '@';
-static char MARK_BLANK      = ' ';
-static char MARK_CHANGED    = '`';
-static char MARK_UP         = '^';
-static char MARK_UNVALID    = 'X';
-static char MARK_VALID      = 'Y';
-static char MARK_DUPLICATE  = 'D';
-static char MARK_DELETED    = 'Z';
+extern char MARK_NIL;
+extern char MARK_AT;
+extern char MARK_BLANK;
+extern char MARK_CHANGED;
+extern char MARK_UP;
+extern char MARK_UNVALID;
+extern char MARK_VALID;
+extern char MARK_DUPLICATE;
+extern char MARK_DELETED;
 
 namespace STORE
 {
