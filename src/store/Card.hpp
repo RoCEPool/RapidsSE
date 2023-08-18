@@ -305,6 +305,7 @@ namespace STORE
     Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
     Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
     Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);
     void  vFixedDepth(i8 iFixedDepth);
 
@@ -347,6 +348,8 @@ namespace STORE
     Stz* szSymbol(eSF eSymbol_xchk);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
     void vValidate_mayHave(i8 /*eCK*/ iCard_first, ...);
     eCK  eValidate_mustEither(i8 /*eCK*/ iCard_first, ...);

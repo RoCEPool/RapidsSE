@@ -700,6 +700,22 @@ Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, 
 }
 
 /*----------------------------------------------------------------------------*/
+/* test fixed depth                                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bFixedDepth(i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (C_UNKNOWN == iDepth || C_UNKNOWN == m_iFixedDepth)
+    return true;
+
+  if (iDepth == m_iFixedDepth)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get fixed depth                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Card::iFixedDepth(void)
@@ -1428,6 +1444,18 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
   bApplyRecursive(eSub, bfUpdateSymbol);
 
   return bReplaced;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(pParent);
+
+  RASSERT(iDepth);
 }
 
 /*----------------------------------------------------------------------------*/
