@@ -33,7 +33,10 @@ namespace STORE
 
     void vDump(void);
 
+    bool bSame(Stz* szArg);
+
     void vSprint(Stz* szFormat, ...);
+
 
   protected:
     Footer* aFooter(void);

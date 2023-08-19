@@ -324,11 +324,13 @@ namespace STORE
     bool bIsCard(eCK eCard);
     bool bIsOne(i8 /*eCK*/ iCard, ...);
 
+    bool bMark1(Stz* szArg);
     char cMark1(void);
     Stz* szMark1(void);
     void vMark1(char cMark1);
     void vMark1Recursive(char cMark1);
     void vMark1RecursiveIf(char cMark, char cIf);
+    bool bMark2(Stz* szArg);
     char cMark2(void);
     Stz* szMark2(void);
     void vMark2(char cMark2);
