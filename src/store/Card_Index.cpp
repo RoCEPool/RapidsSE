@@ -198,11 +198,11 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
 
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
-  CardIter xCI(p_idxColList);
-  while (xCI.G_bEachMain(CK_IDXCOL)) {
+  Kid xCI(p_idxColList);
+  while (xCI.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xCI.G.p_idxCol->pSymbol()->bSame(szTblColOdn))
+    if (xCI.pChild()->pSymbol()->bSame(szTblColOdn))
       return true;
   }
 
