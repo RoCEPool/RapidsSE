@@ -4,13 +4,6 @@
 
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
-#include "Card_IdxCol.hpp"
-#include "Card_IdxColList.hpp"
-#include "Card_Index.hpp"
-#include "Card_Table.hpp"
-#include "Card_TablePtn.hpp"
-#include "Card_Term.hpp"
-#include "Card_PRED.hpp"
 #include "CardIter.hpp"
 #include "Card_CmpPred.hpp"
 
@@ -59,14 +52,13 @@ void Card_Bounds::vCullBound(char cWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI_bounds(this);
-  while (xCI_bounds.G_bEachMain()) {
-    if (xCI_bounds.G.p_MainCard->cMark1() != cWithMark)
+  Kid xCI_bounds(this);
+  while (xCI_bounds.bEach()) {
+    if (xCI_bounds.pChild()->cMark1() != cWithMark)
       continue;
 
-    vRemoveChild(xCI_bounds.G.p_MainCard);
-    DELETE_CARD(xCI_bounds.G.p_MainCard);
-    xCI_bounds.vRewind();
+    vDeleteChild(xCI_bounds.pChild());
+    xCI_bounds.vPrev();
   }
 }
 
@@ -77,10 +69,10 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_BOUND)) {
-    if (xCI.G.p_bound->pSymbol()->Y_bHas(P_ChosenBound))
-      return xCI.G.p_bound;
+  Kid xCI(this);
+  while (xCI.bEach(CK_BOUND)) {
+    if (xCI.pChild()->pSymbol()->Y_bHas(P_ChosenBound))
+      return _pCard_Bound(xCI.pChild());
   }
 
   return nullptr;
