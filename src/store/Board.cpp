@@ -450,20 +450,6 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   while (xBI.G_bEachMain()) {
 
-    // skip non-printable horizontal lines
-    if (pCardCtl->bHeatNext(xBI.G.e_MainCard) &&
-        xBI.G.p_MainCard->pSymbol()->Y_bHas(pCardCtl->szHorizExclude(xBI.G.e_MainCard))) {
-
-      while (Card* pNextMain = xBI.pNextChild()) {
-        eCK eNextCard = pNextMain->eCard();
-        if (pCardCtl->bHeatNext(eNextCard))
-          break;
-        xBI.vForward();
-      }
-
-      continue;
-    }
-
     if (! nCount++)
       pSubRibbon->vLaneFirst();
     else

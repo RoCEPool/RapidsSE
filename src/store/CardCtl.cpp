@@ -285,34 +285,6 @@ void CardCtl::vPrintByKind(i8 i_Card, bool bPrintByKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get szHorizExclude for card                                                */
-/*----------------------------------------------------------------------------*/
-Stz* CardCtl::szHorizExclude(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  Stz* szHorizExclude = m_xaCardCtl[i_Card].m_sHideHeat;
-
-  return szHorizExclude;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set szHorizExclude for card                                                */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vHorizExclude(i8 i_Card, Stz* szHorizExclude)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (i_Card) {
-    m_xaCardCtl[i_Card].m_sHideHeat = szHorizExclude;
-    return;
-  }
-
-  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
-    m_xaCardCtl[i_Card].m_sHideHeat = szHorizExclude;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get bPrintName for card                                                    */
 /*----------------------------------------------------------------------------*/
 bool CardCtl::bPrintName(i8 i_Card)
@@ -592,7 +564,6 @@ void CardCtl::vReset(void)
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
 
     m_xaCardCtl[i_Card].m_bHeatNext = false;
-    m_xaCardCtl[i_Card].m_sHideHeat = C_NA;
 
     m_xaCardCtl[i_Card].m_bPrintBelow      = false;
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
@@ -628,7 +599,6 @@ void CardCtl::vReset(void)
   vHeatNext(CK_SECTION, true);
 
   vHeatNext(CK_STAGE, true);
-  vHorizExclude(CK_STAGE, P_HideHeat);
 
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);

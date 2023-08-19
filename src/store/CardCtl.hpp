@@ -13,7 +13,6 @@ namespace STORE
   struct _CardCtl
   {
     bool m_bHeatNext;        // print card on new horizontal heat/row
-    s32  m_sHideHeat;        // hide this heat (when it starts with this card)
 
     bool m_bPrintBelow;      // force print of subcards below this one
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
@@ -79,8 +78,6 @@ namespace STORE
     void vPrintBelow(i8 iBelow, va_list xVarArgs);
     bool bPrintByKind(i8 i_Card);
     void vPrintByKind(i8 i_Card, bool bPrintByKind);
-    Stz* szHorizExclude(i8 i_Card);
-    void vHorizExclude(i8 i_Card, Stz* szHorizExclude);
     bool bPrintName(i8 i_Card);
     void vPrintName(i8 i_Card, bool bPrintName);
     bool bPrintNo(i8 i_Card);
