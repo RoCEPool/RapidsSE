@@ -153,35 +153,24 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_INDEX)) {
-    if (! xCI.G.p_index->pSub_bounds())
+  Kid xCI(this);
+  while (xCI.bEach(CK_INDEX)) {
+    if (! xCI.pChild()->pSub_bounds())
       continue;
-    CardIter xCI_bounds(xCI.G.p_index->pSub_bounds());
-    while (xCI_bounds.G_bEachMain(CK_BOUND)) {
-      if (xCI_bounds.G.p_bound->bIsLBound() ||
-          xCI_bounds.G.p_bound->bIsUBound()) {
-        xCI.G.p_index->vSet_Choose_index();
-        xCI_bounds.G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
+
+    //CardIter xCI_bounds(xCI.G.p_index->pSub_bounds());
+    Kid xCI_bounds(xCI.pChild()->pSub_bounds());
+    while (xCI_bounds.bEach(CK_BOUND)) {
+      if (_pCard_Bound(xCI_bounds.pChild())->bIsLBound() ||
+          _pCard_Bound(xCI_bounds.pChild())->bIsUBound()) {
+        _pCard_Index(xCI.pChild())->vSet_Choose_index();
+        xCI_bounds.pChild()->pSymbol()->Y_vSet(P_ChosenBound);
         return;
       }
     }
   }
 
 }
-/*----------------------------------------------------------------------------*/
-//void Card_IndexList::vChoose_index_For_indexScan(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  CardIter xCI(this);
-//  while (xCI.G_bEachMain(CK_INDEX)) {
-//    if (xCI.G.p_index->pSub_bounds()) {
-//      xCI.G.p_index->vSet_Choose_index();
-//      break;
-//    }
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* does this index-list have a bound logically equivalent to given compare?   */
