@@ -361,6 +361,8 @@ void Board::vPrintBoard(Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  Stz* szQueryNm = m_pBench->pOptimiser()->szQueryNm();
+
   Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
 
   vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
@@ -374,7 +376,7 @@ void Board::vPrintBoard(Stz* szDescription)
 
   i8 iBenchNo = m_pBench->iBenchNo();
   i8 iPrintNo = m_pBench->iPrint_inc();
-  pRibbon->vPrintRibbon(iBenchNo,iPrintNo);
+  pRibbon->vPrintRibbon(szQueryNm, iBenchNo,iPrintNo);
 
   delete pRibbon;
 }
