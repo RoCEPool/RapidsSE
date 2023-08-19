@@ -77,13 +77,15 @@ void Bench::vValidate(CardIter* pCI)
 
   //Board::vValidate(pCI);
 
-  Bench* pBench = pCI->m_pBench;
+  CardIter xValidate(pCI);
+
+  Bench* pBench = xValidate.m_pBench;
 
   i8 nBoards = pBench->nBoards();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = pBench->pGet(i_Board);
-    pCI->vUsingBoard(pBoard);
-    pBoard->vValidate(pCI);
+    xValidate.vUsingBoard(pBoard);
+    pBoard->vValidate(&xValidate);
   }
 
   XC::vXC(pCI);
