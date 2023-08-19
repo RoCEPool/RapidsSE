@@ -18,6 +18,7 @@
 
 #include "Ribbon.hpp"
 
+#include "Mark.hpp"
 #include "Symbol.hpp"
 
 namespace STORE
@@ -245,6 +246,10 @@ namespace STORE
 
     char    m_cMark1;
     char    m_cMark2;
+
+    Mark    m_xMark1;
+    Mark    m_xMark2;
+
     Symbol  m_xSymbol;
 
     Card*   m_pLastPrintParent;
