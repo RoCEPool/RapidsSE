@@ -6,6 +6,7 @@
 #include "CardCtl.hpp"
 #include "Board.hpp"
 #include "CardIter.hpp"
+#include "Kid.hpp"
 
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
@@ -317,9 +318,9 @@ bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambd
       return C_TERMINATE_RECURSION;
   }
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
-    bool bContinue = xCI.G.p_MainCard->bApplyRecursive(eToSubs, bfLambdaFn);
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    bool bContinue = xKid.pChild()->bApplyRecursive(eToSubs, bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -340,9 +341,9 @@ bool Card::bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaF
       return false;
   }
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
-    if (! xCI.G.p_MainCard->bApplyRecursive_term(bfLambdaFn))
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    if (!xKid.pChild()->bApplyRecursive_term(bfLambdaFn))
       return false;
   }
 
