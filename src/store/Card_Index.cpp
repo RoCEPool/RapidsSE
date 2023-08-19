@@ -54,32 +54,31 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
 
   _static_
 
-  // find & ignore the first ebound
-  //bool bFoundFirst = false;
+  pCI->vSave();
 
-  CardIter xCI_indexes(pCI->G.p_indexList);
+  pCI->vChangeCard(pCI->G.p_indexList);
 
-  while (xCI_indexes.G_bEachMain(CK_INDEX)) {
+  while (pCI->G_bEachMain(CK_INDEX)) {
 
-//    bool bChosenIndex = xCI_indexes.G.p_index->pSymbol()->Y_bHas(P_ChosenIndex);
-
-    xCI_indexes.G.p_bounds = xCI_indexes.G.p_index->pSub_bounds();
-    if (! xCI_indexes.G.p_bounds)
+    pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
+    if (! pCI->G.p_bounds)
       continue;
 
-    CardIter xCI_bounds(xCI_indexes.G.p_bounds);
-    while (xCI_bounds.G_bEachMain(CK_BOUND)) {
-      if (xCI_bounds.G.p_bound->pSymbol()->Y_bHas(P_ChosenBound)) {
+    Kid xCI_bounds(pCI->G.p_bounds);
+    while (xCI_bounds.bEach(CK_BOUND)) {
+      if (xCI_bounds.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
         continue;
       }
 
-      xCI_bounds.G.p_MainCard->vMark1(MARK_AT);
+      xCI_bounds.pChild()->vMark1(MARK_AT);
     }
 
     pCI->vPrintBoard(__LINE__);
-    xCI_indexes.G.p_bounds->vCullBound(MARK_AT);
+    pCI->G.p_bounds->vCullBound(MARK_AT);
 
   }
+
+  pCI->vRestore();
 
 }
 
