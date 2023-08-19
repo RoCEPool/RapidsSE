@@ -151,7 +151,7 @@ void Bench::vClearMarks(void)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = this->pGet(i_Board);
 
-    pBoard->vClearMarks();
+    pBoard->vClearCardMarks();
   }
 }
 

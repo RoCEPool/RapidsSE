@@ -139,6 +139,7 @@
 
 #include "SubQuery.hpp"
 #include "Scope.hpp"
+#include "Mark.hpp"
 
 
 namespace STORE
@@ -160,6 +161,8 @@ namespace STORE
     Card_Deck*  m_pDeck;
 
     TagSet*     m_pState;
+
+    Mark*       m_pMark;
 
   private:
     // must be last
@@ -190,9 +193,11 @@ namespace STORE
     void vBoardNm(Stz* szBoardNm);
 
     CardCtl* pCardCtl(void);
-    void vClearMarks(void);
+    void vClearCardMarks(void);
 
     Card_Deck* pDeck(void);
+
+    Mark* pMark(void);
 
     void vPrintBoard(Stz* szDescription=nullptr);
 

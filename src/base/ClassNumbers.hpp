@@ -186,6 +186,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
+  /* */ CN_MARK,
   /* */ CN_MARKER,
   /* */ CN_MARKERCHAIN,
   /* */ CN_MARKERMGR,
@@ -679,6 +680,7 @@ static Stz* aCN[]
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__
+  /* */ "MARK"_Stz,                 // CN_MARK
   /* */ "MARKER"_Stz,               // CN_MARKER
   /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
   /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR

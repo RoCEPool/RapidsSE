@@ -46,6 +46,8 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
 
   m_pState = new TagSet;
 
+  m_pMark = new Mark("Yn"_Stz);
+
   _checkInitialised_(CN_BOARD);
 
   pBench->vAddBoard(this);
@@ -60,13 +62,13 @@ Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  //m_pDeck->vRemoveAll();
-
   delete m_pDeck;
 
   delete m_pSubQuery;
 
   delete m_pState;
+
+  delete m_pMark;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +321,7 @@ CardCtl* Board::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* clear all marks                                                           */
 /*----------------------------------------------------------------------------*/
-void Board::vClearMarks(void)
+void Board::vClearCardMarks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -334,6 +336,16 @@ Card_Deck* Board::pDeck(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   return m_pDeck;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mark                                                                   */
+/*----------------------------------------------------------------------------*/
+Mark* Board::pMark(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_pMark;
 }
 
 /*----------------------------------------------------------------------------*/
