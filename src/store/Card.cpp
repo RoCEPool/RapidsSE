@@ -132,10 +132,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
-  //m_xSymbol.m_sChrSeq = ""_Stz;
-  m_cMark1 = MARK_BLANK;
-  m_cMark2 = MARK_BLANK;
-
   m_pLastPrintParent = nullptr;
 
   md__SeqNo = Card::m__iSeqGen++;
@@ -144,6 +140,9 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   md__LeakDetected   = C_UNKNOWN;
 
   m_iFixedDepth = iFixedDepth;
+
+  vMark1(MARK_BLANK);
+  vMark2(MARK_BLANK);
 
   s32 sBearing;
   sBearing.vSprint("((%s new %04lld))"_Stz,aCK[m_eCard],md__SeqNo);
@@ -178,9 +177,9 @@ Card::~Card(void) noexcept(false)
 
   //gapCard[md__SeqNo] = nullptr;
 
-  RASSERT(MARK_DELETED != m_cMark1);
+  RASSERT(MARK_DELETED != m_xMark1.cChr());
 
-  m_cMark1 = MARK_DELETED;
+  vMark1(MARK_DELETED);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -620,7 +619,7 @@ Card* Card::pFindMark1Recursive(char cMark1, eCK eOfCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
-    if (cMark1 == m_cMark1)
+    if (cMark1 == this->cMark1())
       return this;
   }
 
@@ -642,7 +641,7 @@ Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
-    if (cMark2 == m_cMark2)
+    if (cMark2 == this->cMark2())
       return this;
   }
 
@@ -806,7 +805,7 @@ char Card::cMark1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_cMark1;
+  return m_xMark1.cChr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -816,8 +815,7 @@ void Card::vMark1(char cMark1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_cMark1 = cMark1;
-  m_xMark1 = cMark1;
+  m_xMark1.vChr(cMark1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -844,7 +842,7 @@ void Card::vMark1RecursiveIf(char cMark1, char cIf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (cIf == m_cMark1) {
+  if (cIf == this->cMark1()) {
     vMark1(cMark1);
   }
 
@@ -864,7 +862,7 @@ char Card::cMark2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_cMark2;
+  return m_xMark2.cChr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -874,8 +872,7 @@ void Card::vMark2(char cMark2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_cMark2 = cMark2;
-  m_xMark2 = cMark2;
+  m_xMark2.vChr(cMark2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -902,7 +899,7 @@ void Card::vMark2RecursiveIf(char cMark2, char cIf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (cIf == m_cMark2) {
+  if (cIf == this->cMark2()) {
     vMark2(cMark2);
   }
 
@@ -959,8 +956,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
   if (m_pLastPrintParent != pParent) {
-    if (MARK_BLANK == m_cMark1)
-      m_cMark1 = MARK_CHANGED;
+    if (MARK_BLANK == this->cMark1())
+      vMark1(MARK_CHANGED);
     m_pLastPrintParent = pParent;
   }
 
@@ -969,8 +966,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   else
     vPrintCard_bySettings(pRibbon, iDepth);
 
-  if (MARK_CHANGED == m_cMark1)
-    m_cMark1 = MARK_BLANK;
+  if (MARK_CHANGED == this->cMark1())
+    vMark1(MARK_BLANK);
 
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;
@@ -1177,7 +1174,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
                        sHiddenChildren.szStz());
   }
 
-  pRibbon->vSprintData("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sName.szStz());
+  pRibbon->vSprintData("%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1230,7 +1227,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
   }
 
   if (sNameSymbol.nLength() <= 18) {
-    pRibbon->vSprintData("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameSymbol.szStz());
+    pRibbon->vSprintData("%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
   }
   else {
     vPrintName(pRibbon, iDepth);
@@ -1305,7 +1302,7 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks)
-    pRibbon->vSprintDataRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szSymbol(SF_NONE));
+    pRibbon->vSprintDataRight("%c%c%18s"_Stz, this->cMark1(), this->cMark2(), szSymbol(SF_NONE));
   else
     pRibbon->vSprintDataRight("  %s"_Stz, szSymbol(SF_NONE));
 }
@@ -1670,11 +1667,11 @@ void Card::vValidationPassed(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (m_cMark1 == MARK_VALID)
-    m_cMark1 = MARK_DUPLICATE;
+  if (cMark1() == MARK_VALID)
+    vMark1(MARK_DUPLICATE);
   else
-  if (m_cMark1 == MARK_UNVALID)
-    m_cMark1 = MARK_VALID;
+  if (cMark1() == MARK_UNVALID)
+    vMark1(MARK_VALID);
 }
 
 /*----------------------------------------------------------------------------*/

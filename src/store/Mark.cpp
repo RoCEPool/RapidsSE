@@ -93,7 +93,7 @@ void Mark::vChr(char cChr)
 {
   _precondition_(_MAGIC_, CN_MARK, _FOOTER_);
 
-  m_sChrSeq = cChr;
+  m_sChrSeq.vSprint("%c"_Stz,cChr);
 }
 
 /*----------------------------------------------------------------------------*/

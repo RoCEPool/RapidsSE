@@ -244,9 +244,6 @@ namespace STORE
     eCK     m_eCard;
     i8      m_i_Child;
 
-    char    m_cMark1;
-    char    m_cMark2;
-
     Mark    m_xMark1;
     Mark    m_xMark2;
 
