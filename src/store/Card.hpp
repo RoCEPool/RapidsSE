@@ -218,7 +218,6 @@ extern d8 C_FILTER_COEFF;
 extern d8 C_JOIN_COEFF;  // bump the larger
 extern d8 C_JOIN_LONGER;  // joined row gets longer
 
-extern char MARK_NIL;
 extern char MARK_AT;
 extern char MARK_BLANK;
 extern char MARK_CHANGED;
@@ -227,6 +226,15 @@ extern char MARK_UNVALID;
 extern char MARK_VALID;
 extern char MARK_DUPLICATE;
 extern char MARK_DELETED;
+
+extern Stz* MARK_AT_STZ;
+extern Stz* MARK_BLANK_STZ;
+extern Stz* MARK_CHANGED_STZ;
+extern Stz* MARK_UP_STZ;
+extern Stz* MARK_UNVALID_STZ;
+extern Stz* MARK_VALID_STZ;
+extern Stz* MARK_DUPLICATE_STZ;
+extern Stz* MARK_DELETED_STZ;
 
 namespace STORE
 {

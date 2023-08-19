@@ -100,7 +100,6 @@ d8 C_FILTER_COEFF    = 0.30;
 d8 C_JOIN_COEFF      = 2.00;  // bump the larger
 d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
 
-char MARK_NIL        = 0;
 char MARK_AT         = '@';
 char MARK_BLANK      = ' ';
 char MARK_CHANGED    = '`';
@@ -109,6 +108,15 @@ char MARK_UNVALID    = 'X';
 char MARK_VALID      = 'Y';
 char MARK_DUPLICATE  = 'D';
 char MARK_DELETED    = 'Z';
+
+Stz* MARK_AT_STZ         = "@"_Stz;
+Stz* MARK_BLANK_STZ      = " "_Stz;
+Stz* MARK_CHANGED_STZ    = "`"_Stz;
+Stz* MARK_UP_STZ         = "^"_Stz;
+Stz* MARK_UNVALID_STZ    = "X"_Stz;
+Stz* MARK_VALID_STZ      = "Y"_Stz;
+Stz* MARK_DUPLICATE_STZ  = "D"_Stz;
+Stz* MARK_DELETED_STZ    = "Z"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
