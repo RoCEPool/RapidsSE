@@ -80,9 +80,9 @@ void Card_IndexList::vDeleteAll_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_INDEX))
-    xCI.G.p_index->vDeleteBounds();
+  Kid xCI(this);
+  while (xCI.bEach(CK_INDEX))
+    _pCard_Index(xCI.pChild())->vDeleteBounds();
 }
 
 
@@ -93,10 +93,10 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_INDEX)) {
-    if (xCI.G.p_index->pSymbol()->Y_bHas(P_ChosenIndex))
-      return xCI.G.p_index;
+  Kid xCI(this);
+  while (xCI.bEach(CK_INDEX)) {
+    if (xCI.pChild()->pSymbol()->Y_bHas(P_ChosenIndex))
+      return _pCard_Index(xCI.pChild());
   }
 
   return nullptr;
@@ -109,16 +109,17 @@ void Card_IndexList::vChoose_index_For_crossJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_INDEX)) {
-    xCI.G.p_bounds = xCI.G.p_index->pSub_bounds();
-    if (! xCI.G.p_bounds)
+  Kid xCI(this);
+  while (xCI.bEach(CK_INDEX)) {
+    Card_Index* p_index = _pCard_Index(xCI.pChild());
+    Card_Bounds* p_bounds = xCI.pChild()->pSub_bounds();
+    if (! p_bounds)
       continue;
-    xCI.G.p_bound = xCI.G.p_bounds->pSub_bound();
-    if (! xCI.G.p_bound)
+    Card_Bound* p_bound = p_bounds->pSub_bound();
+    if (! p_bound)
       continue;
-    xCI.G.p_index->vSet_Choose_index();
-    xCI.G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
+    p_index->vSet_Choose_index();
+    p_bound->pSymbol()->Y_vSet(P_ChosenBound);
     return;
   }
 
