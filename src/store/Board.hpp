@@ -207,7 +207,7 @@ namespace STORE
     SubQuery* pSubQuery(void);
 
   private:
-    void vPinBanners(Ribbon* pRibbon);
+    void vPinMargin(Ribbon* pRibbon);
     void vPinCards(Ribbon* pRibbon);
     void vPinTitle(Ribbon* pRibbon,
                    i8 iTransformNo,

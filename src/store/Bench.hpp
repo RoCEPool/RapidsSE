@@ -18,8 +18,6 @@ namespace STORE
 
     i8   m_iBenchNo;
 
-    char m_cPrefix;
-
     bool m_bIsFlat;
 
     bool m_bMadeSimpler;
@@ -67,8 +65,6 @@ namespace STORE
     void vIsFlat(bool bIsFlat);
     bool bIsSubQueryNm(Stz* szSubQueryNm);
     Optimiser* pOptimiser(void);
-    char cPrefix(void);
-    void vPrefix(char cPrefix);
 
 
     bool bMadeSimpler(void);

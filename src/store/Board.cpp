@@ -46,9 +46,15 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
 
   m_pState = new TagSet;
 
-  m_pMark = new Mark("Yn"_Stz);
+  m_pMark = new Mark;
+
 
   _checkInitialised_(CN_BOARD);
+
+  if (BK_JOINORDERING == eBoard)
+    m_pMark->vChrSeq("JO"_Stz);
+  else
+    m_pMark->vSprint("Y%lld"_Stz,i_Board);
 
   pBench->vAddBoard(this);
   
@@ -361,7 +367,10 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinCards(pRibbon);
 
-  vPinBanners(pRibbon);
+  pRibbon->vDrawH('-',true);
+  pRibbon->vDrawH('=');
+
+  vPinMargin(pRibbon);
 
   i8 iBenchNo = m_pBench->iBenchNo();
   i8 iPrintNo = m_pBench->iPrint_inc();
@@ -406,37 +415,48 @@ SubQuery* Board::pSubQuery(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pin board onto given ribbon                                                */
+/* pin left margin                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPinBanners(Ribbon* pRibbon)
+void Board::vPinMargin(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  pRibbon->vDrawH('-',true);
-
-  pRibbon->vDrawH('=');
-
-  //pRibbon->vPutTextRight(szXhand(),1);
-  //pRibbon->vPutTextRight(szXfunc(),2);
-
   s32 sLeftMargin;
 
-  char cPrefix = m_pBench->cPrefix();
-
-  if (' ' == cPrefix)
-    sLeftMargin.vSprint("%lld "_Stz, m_i_Board);
-  else
-  if ('m' == cPrefix || 'w' == cPrefix)
-    sLeftMargin.vSprint("%c "_Stz, cPrefix);
-  else
-  if (m_pBench->bIsFlat() && 0 == m_i_Board)
-    sLeftMargin.vSprint("fq "_Stz);
-  else
-    sLeftMargin.vSprint("%c%lld "_Stz, cPrefix,m_i_Board);
+  sLeftMargin.vSprint("%s "_Stz,
+                      m_pMark->szChrSeq());
 
   pRibbon->vInsertCharsV(0,0,sLeftMargin);
-  //pRibbon->vDrawV(0,0,"x"_Stz);
 }
+/*----------------------------------------------------------------------------*/
+//void Board::vPinMargin(Ribbon* pRibbon)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+////  pRibbon->vDrawH('-',true);
+////  pRibbon->vDrawH('=');
+//
+//  //pRibbon->vPutTextRight(szXhand(),1);
+//  //pRibbon->vPutTextRight(szXfunc(),2);
+//
+//  s32 sLeftMargin;
+//
+//  char cPrefix = m_pBench->cPrefix();
+//
+//  if (' ' == cPrefix)
+//    sLeftMargin.vSprint("%lld "_Stz, m_i_Board);
+//  else
+//  if ('m' == cPrefix || 'w' == cPrefix)
+//    sLeftMargin.vSprint("%c "_Stz, cPrefix);
+//  else
+//  if (m_pBench->bIsFlat() && 0 == m_i_Board)
+//    sLeftMargin.vSprint("fq "_Stz);
+//  else
+//    sLeftMargin.vSprint("%c%lld "_Stz, cPrefix,m_i_Board);
+//
+//  pRibbon->vInsertCharsV(0,0,sLeftMargin);
+//  //pRibbon->vDrawV(0,0,"x"_Stz);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */

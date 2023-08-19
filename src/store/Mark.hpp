@@ -30,7 +30,10 @@ namespace STORE
     void vChr(char cChr);
     Stz* szChrSeq(void);
     void vChrSeq(Stz* szChrSeq);
+
     void vDump(void);
+
+    void vSprint(Stz* szFormat, ...);
 
   protected:
     Footer* aFooter(void);

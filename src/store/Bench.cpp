@@ -30,8 +30,6 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_iBenchNo = AM::OPTIMISER::iNextBenchNo();
 
-  m_cPrefix = ' ';
-
   m_bIsFlat = false;
 
   m_bMadeSimpler  = false;
@@ -248,26 +246,6 @@ Optimiser* Bench::pOptimiser(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
   return m_pOptimiser;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-char Bench::cPrefix(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  return m_cPrefix;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vPrefix(char cPrefix)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_cPrefix = cPrefix;
 }
 
 /*----------------------------------------------------------------------------*/
