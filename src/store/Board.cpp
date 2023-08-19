@@ -444,16 +444,16 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   Ribbon* pSubRibbon = new Ribbon(pCardCtl,this);
 
-  CardIter xBI(m_pDeck);
+  Kid xBI(m_pDeck);
 
   i8 nCount = 0;
 
-  while (xBI.G_bEachMain()) {
+  while (xBI.bEach()) {
 
     if (! nCount++)
       pSubRibbon->vLaneFirst();
     else
-    if (pSubRibbon->i_Char() && pCardCtl->bHeatNext(xBI.G.e_MainCard))
+    if (pSubRibbon->i_Char() && pCardCtl->bHeatNext(xBI.pChild()->eCard()))
       pSubRibbon->vHeatNext();
     else
       pSubRibbon->vLaneNext();
@@ -461,10 +461,10 @@ void Board::vPinCards(Ribbon* pRibbon)
 
     bool bPrune = false;
     eAL eLevel = AL_NONE;
-    Card_Level* p_level = xBI.G.p_MainCard->pSub_level();
+    Card_Level* p_level = xBI.pChild()->pSub_level();
     if (p_level)
       eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
-    xBI.G.p_MainCard->vPrintCardRecursive(pSubRibbon,
+    xBI.pChild()->vPrintCardRecursive(pSubRibbon,
                                           0,
                                           m_pDeck,
                                           bPrune,
