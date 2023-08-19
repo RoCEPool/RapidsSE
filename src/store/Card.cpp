@@ -809,6 +809,16 @@ char Card::cMark1(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get mark 1                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szMark1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_xMark1.szChrSeq();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set mark 1                                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vMark1(char cMark1)
@@ -863,6 +873,16 @@ char Card::cMark2(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_xMark2.cChr();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mark 2                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szMark2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_xMark2.szChrSeq();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1302,7 +1322,10 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks)
-    pRibbon->vSprintDataRight("%c%c%18s"_Stz, this->cMark1(), this->cMark2(), szSymbol(SF_NONE));
+    pRibbon->vSprintDataRight("%s%s%18s"_Stz,
+                              this->szMark1(),
+                              this->szMark2(),
+                              szSymbol(SF_NONE));
   else
     pRibbon->vSprintDataRight("  %s"_Stz, szSymbol(SF_NONE));
 }
