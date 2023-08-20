@@ -101,10 +101,6 @@ d8 C_JOIN_COEFF      = 2.00;  // bump the larger
 d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
 
 char MARK_AT_CHR         = '@';
-char MARK_CHANGED_CHR    = '`';
-char MARK_UNVALID_CHR    = 'X';
-char MARK_VALID_CHR      = 'Y';
-char MARK_DUPLICATE_CHR  = 'D';
 
 Stz* MARK_AND_STZ        = "&"_Stz;
 Stz* MARK_AT_STZ         = "@"_Stz;
@@ -1156,7 +1152,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   else
     vPrintCard_bySettings(pRibbon, iDepth);
 
-  if (MARK_CHANGED_CHR == this->cMark1())
+  if (this->bMark1(MARK_CHANGED_STZ))
     vMark1(MARK_BLANK_STZ);
 
   if (pCardCtl->bPrune(m_eCard))
@@ -1860,10 +1856,10 @@ void Card::vValidationPassed(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (cMark1() == MARK_VALID_CHR)
+  if (bMark1(MARK_VALID_STZ))
     vMark1(MARK_DUPLICATE_STZ);
   else
-  if (cMark1() == MARK_UNVALID_CHR)
+  if (bMark1(MARK_UNVALID_STZ))
     vMark1(MARK_VALID_STZ);
 }
 

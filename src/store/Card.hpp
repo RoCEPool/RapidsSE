@@ -219,10 +219,6 @@ extern d8 C_JOIN_COEFF;  // bump the larger
 extern d8 C_JOIN_LONGER;  // joined row gets longer
 
 extern char MARK_AT_CHR;
-extern char MARK_CHANGED_CHR;
-extern char MARK_UNVALID_CHR;
-extern char MARK_VALID_CHR;
-extern char MARK_DUPLICATE_CHR;
 
 extern Stz* MARK_AND_STZ;
 extern Stz* MARK_AT_STZ;
