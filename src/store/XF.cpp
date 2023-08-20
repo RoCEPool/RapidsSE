@@ -151,7 +151,12 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vMadeSimpler(true);
 
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vEndPhase();
+
   Bench::vValidate(m_pCI);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2/5) flatten
@@ -161,8 +166,12 @@ void XF::vTransform(void)
     m_pCI->pBoard()->vPhase(OH_FLATTEN);
 
   XF_Flatten::vFlatten(m_pCI);
-  Bench::vValidate(m_pCI);
 
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vEndPhase();
+
+  Bench::vValidate(m_pCI);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -191,6 +200,12 @@ void XF::vTransform(void)
   XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
   m_pCI->m_pBench->vMadeOptimal(true);
 
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vEndPhase();
+
+  Bench::vValidate(m_pCI);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
 
@@ -216,6 +231,10 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vMadeWeavable(true);
 
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vEndPhase();
+
   vCrosscheck_Optimisations();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -228,6 +247,11 @@ void XF::vTransform(void)
   RASSERT(m_pCI->bEachBoard());
 
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vEndPhase();
+
 
 }
 

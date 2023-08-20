@@ -56,6 +56,11 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
 
   Card_Hash* p_hash = new Card_Hash;
 
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  p_hash->vAppend(p_level);
+
+
   Card_HshCol* p_hshCol = new Card_HshCol;
   p_hshCol->pSymbol()->vSym(p_expr->pGetTerm(0)->pSymbol());
 
@@ -85,6 +90,7 @@ void Card_Hash::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();

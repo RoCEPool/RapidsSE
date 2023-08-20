@@ -360,6 +360,7 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

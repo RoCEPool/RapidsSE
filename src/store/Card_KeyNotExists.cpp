@@ -209,6 +209,8 @@ void Card_KeyNotExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
   Card::vValidate(pCI,iDepth,pParent);
+  if (1 == iDepth)
+    Card_OP::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
   vValidationPassed();
 }

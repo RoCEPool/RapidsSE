@@ -126,6 +126,7 @@ void Card_CrossJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   RASSERT(pSub_table()->pSub_indexList());
 
   Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();

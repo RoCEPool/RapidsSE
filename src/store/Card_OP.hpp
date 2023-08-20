@@ -96,6 +96,8 @@ namespace STORE
     IndexDef* pCraftIndexDef_top(void);
 
     StreamDef* pCraftStreamDef_emitted(ColMap** ppColMap);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_OP* _pCard_OP(void* aAddr);

@@ -249,7 +249,8 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   // 5) add <fold> (before MQ)
   pCI->G_vNewMember(CK_FOLD, Symbol(SF_FLD_NM,szFold));
   pCI->G.pDeck->vPush(pCI->G.p_fold);
-
+  pCI->G.p_level = new Card_Level(AL_NONE);
+  pCI->G.p_fold->vAppend(pCI->G.p_level);
 
   v_fold(pCI->G.p_fold);
 
@@ -310,6 +311,8 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
   pCI->G_vNewMember(CK_FOLD, Symbol(SF_FLD_NM,szFold));
   pCI->G.pDeck->vPush(pCI->G.p_fold);
+  pCI->G.p_level = new Card_Level(AL_NONE);
+  pCI->G.p_fold->vAppend(pCI->G.p_level);
 
   pCI->vPrintBoard(__LINE__);
 
@@ -393,6 +396,8 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   // 5) add <fold> (before MQ)
   pCI->G_vNewMember(CK_FOLD, Symbol(SF_FLD_NM,szFold));
   pCI->G.pDeck->vPush(pCI->G.p_fold);
+  pCI->G.p_level = new Card_Level(AL_NONE);
+  pCI->G.p_fold->vAppend(pCI->G.p_level);
 
 
   v_fold(pCI->G.p_fold);

@@ -395,6 +395,7 @@ void Card_Project::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();

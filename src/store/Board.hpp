@@ -200,6 +200,8 @@ namespace STORE
 
     Card_Deck* pDeck(void);
 
+    void vEndPhase(void);
+
     Mark* pMark(void);
 
     void vPrintBoard(Stz* szDescription=nullptr);

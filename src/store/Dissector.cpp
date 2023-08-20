@@ -499,7 +499,11 @@ Card* Dissector::pOp_Hash(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Hash* pCard_Hash = new Card_Hash;
-  
+
+  eAL eLevel = m_pStageSpec->eAggegLevel();
+  Card_Level* p_level = new Card_Level(eLevel);
+  pCard_Hash->vAppend(p_level);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calcExpr : calculation expression list
 
