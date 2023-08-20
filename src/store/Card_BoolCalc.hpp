@@ -23,10 +23,9 @@ namespace STORE
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     void vCopyMarkedPredsToTable(Card_Deck* p_deck);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
-    void vCullPred(char cWithMark);
-    bool bCullPred(Card_PRED* p_pred, char cWithMark);
+    void vCullPred(Stz* szWithMark);
+    bool bCullPred(Card_PRED* p_pred, Stz* szWithMark);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
-    Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
@@ -36,8 +35,8 @@ namespace STORE
     void vPushPred(Card_PRED* p_pred_toBeAdded);
     void vRemovePred(Card_PRED* p_pred);
     Card_PRED* pRootPred(void);
-    bool bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked);
-    bool bYank_PRED(char cWithMark, Card* p_test, Card_PRED*& p_pred_yanked);
+    bool bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked);
+    bool bYank_PRED(Stz* szWithMark, Card* p_test, Card_PRED*& p_pred_yanked);
 
 
     bool bIsBraced(void);

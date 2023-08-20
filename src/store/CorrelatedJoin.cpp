@@ -155,7 +155,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   Card_PRED* p_PRED_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_FILTER,CK_BOOLCALC))
-    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT_CHR, p_PRED_corr))
+    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT_STZ, p_PRED_corr))
       break;
   RASSERT(p_PRED_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
   pCI->vPrintBoard(__LINE__);

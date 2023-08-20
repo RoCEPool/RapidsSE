@@ -212,7 +212,7 @@ void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCullPred(char cWithMark)
+void Card_BoolCalc::vCullPred(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -222,7 +222,7 @@ void Card_BoolCalc::vCullPred(char cWithMark)
   Card_PRED* pCard_pred = this->pRootPred();
 
   while (pCard_pred &&
-      bCullPred(pCard_pred, cWithMark) &&
+      bCullPred(pCard_pred, szWithMark) &&
          this->nChildCards()) {
     pCard_pred = static_cast<Card_PRED*>(this->pGetChild(0));
   }
@@ -231,14 +231,14 @@ void Card_BoolCalc::vCullPred(char cWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
+bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   eCK eCard_pred = p_pred->eCard();
 
   if (CK_ANDPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
+    if (p_pred->bMark1(szWithMark)) {
       this->vRemovePred(p_pred);
       delete p_pred;
       return true;
@@ -246,7 +246,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   }
   else
   if (CK_ORPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
+    if (p_pred->bMark1(szWithMark)) {
       this->vRemovePred(p_pred);
       delete p_pred;
       return true;
@@ -254,7 +254,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   }
   else
   if (CK_CMPPRED == eCard_pred) {
-    if (cWithMark == p_pred->cMark1()) {
+    if (p_pred->bMark1(szWithMark)) {
       this->vRemovePred(p_pred);
       delete p_pred;
       return true;
@@ -267,7 +267,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, char cWithMark)
   i8 nChildren = p_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(p_pred->pGetChild(i_Child));
-    if (this->bCullPred(pCard_pred_child, cWithMark))
+    if (this->bCullPred(pCard_pred_child, szWithMark))
       return true;
   }
 
@@ -285,22 +285,6 @@ void Card_BoolCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 
   if (p_PRED)
     p_PRED->vEnsureTypesFor_stmOdn(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/* find predicate with given mark                                             */
-/*----------------------------------------------------------------------------*/
-Card_PRED* Card_BoolCalc::pFindMarkedPred(char cWithMark)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCR(this);
-  while (Card_PRED *p_pred = (Card_PRED *) xCR.pRecurseEach()) {
-    if (cWithMark == p_pred->cMark1())
-      return p_pred;
-  }
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,7 +523,7 @@ bool Card_BoolCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
+bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -553,7 +537,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   auto bYank = [](Card_BoolCalc* p_boolCalc,
-                  char cWithMark,
+                  Stz* szWithMark,
                   Card* p_test,
                   Card_PRED*& p_pred_yanked,
                   auto&& bYank /*oddity permits recursive lambda*/)
@@ -561,7 +545,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
     //p_test->vDump();
 
     if (Card_PRED::bIsPRED(p_test)) {
-      if (p_test->cMark1() == cWithMark) {
+      if (p_test->bMark1(szWithMark)) {
         p_pred_yanked = static_cast<Card_PRED*>(p_test);
         p_boolCalc->vRemovePred(p_pred_yanked);
         RASSERT(p_pred_yanked);
@@ -571,7 +555,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
 
     CardIter xCI(p_test);
     while (xCI.G_bEachMain()) {
-      if (bYank(p_boolCalc,cWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
+      if (bYank(p_boolCalc,szWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
         RASSERT(p_pred_yanked);
         return true;
       }
@@ -586,7 +570,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    if (bYank(this,cWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
+    if (bYank(this,szWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
       RASSERT(p_pred_yanked);
       return true;
     }
@@ -599,13 +583,13 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bYank_PRED(char cWithMark, Card* p_test,
+bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card* p_test,
                                Card_PRED*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_PRED::bIsPRED(p_test)) {
-    if (p_test->cMark1() == cWithMark) {
+    if (p_test->bMark1(szWithMark)) {
       p_pred_yanked = static_cast<Card_PRED*>(p_test);
       this->vRemovePred(p_pred_yanked);
       RASSERT(p_pred_yanked);
@@ -615,7 +599,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card* p_test,
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    if (this->bYank_PRED(cWithMark, xCI.G.p_MainCard, p_pred_yanked)) {
+    if (this->bYank_PRED(szWithMark, xCI.G.p_MainCard, p_pred_yanked)) {
       RASSERT(p_pred_yanked);
       return true;
     }

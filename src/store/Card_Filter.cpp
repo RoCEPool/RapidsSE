@@ -57,7 +57,7 @@ void Card_Filter::vCullUsedBounds(CardIter* pCI) {
 
   while (pCI->G_bEachMain()) {
     if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      pCI->G.p_filter->vCullPred(MARK_AT_CHR);
+      pCI->G.p_filter->vCullPred(MARK_AT_STZ);
   }
 }
 
@@ -178,25 +178,12 @@ void Card_Filter::vCorrectStmOdn(Card_Projection* p_projection_prior)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vCullPred(char cWithMark)
+void Card_Filter::vCullPred(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolCalc* p_boolCalc = pSub_boolCalc();
-  p_boolCalc->vCullPred(cWithMark);
-
-//  i8 nChildren = this->nChildCards();
-//  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-//    Card* pChildCard = this->pGetChild(i_Child);
-//
-//    eCK eCard = pChildCard->eCard();
-//    if (eCard != CK_BOOLCALC)
-//      continue;
-//
-//    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
-//
-//    p_boolCalc->vCullPred(cWithMark);
-//  }
+  p_boolCalc->vCullPred(szWithMark);
 }
 
 /*----------------------------------------------------------------------------*/

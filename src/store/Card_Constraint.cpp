@@ -59,7 +59,7 @@ void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
 
   while (pCI->G_bEachMain()) {
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint()))
-      pCI->G.p_constraint->vCullPred(MARK_AT_CHR);
+      pCI->G.p_constraint->vCullPred(MARK_AT_STZ);
   }
 }
 
@@ -172,25 +172,13 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vCullPred(char cWithMark)
+void Card_Constraint::vCullPred(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolCalc* p_boolCalc = pSub_boolCalc();
-  p_boolCalc->vCullPred(cWithMark);
+  p_boolCalc->vCullPred(szWithMark);
 
-//  i8 nChildren = this->nChildCards();
-//  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-//    Card* pChildCard = this->pGetChild(i_Child);
-//
-//    eCK eCard = pChildCard->eCard();
-//    if (eCard != CK_BOOLCALC)
-//      continue;
-//
-//    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pChildCard);
-//
-//    p_boolCalc->vCullPred(cWithMark);
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
