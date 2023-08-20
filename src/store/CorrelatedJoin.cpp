@@ -155,7 +155,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   Card_PRED* p_PRED_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_FILTER,CK_BOOLCALC))
-    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT_STZ, p_PRED_corr))
+    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, p_PRED_corr))
       break;
   RASSERT(p_PRED_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
   pCI->vPrintBoard(__LINE__);
@@ -260,7 +260,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     Card_Term* pTerm_corrCol = static_cast<Card_CmpPred *>(p_pred)->pGetCorrCol();
     pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
 
-    p_pred->vMark1(MARK_AT_STZ);
+    p_pred->vMark1(MARK_AT);
     p_pred->pSymbol()->Y_vSet(P_CrlKeyPred);
     return C_TERMINATE_RECURSION;
   };
@@ -287,7 +287,7 @@ void CorrelatedJoin::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
 
   pCI->Sqy.m_pExpr_corr = pCI->pExpr_For_col(pCI->Sqy.m_pTerm_corrCol,pCI->G.i_MainCard+1);
 
-  pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT_STZ);
+  pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
   pCI->Sqy.m_pExpr_corr->pSymbol()->Y_vSet(P_CrlKeyExpr);
 }
 

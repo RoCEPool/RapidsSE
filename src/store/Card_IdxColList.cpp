@@ -85,7 +85,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
         RASSERT(SF_COL_TC == eSymbol);
 
         xCI.G.p_idxCol->SYM(SF_COL_TC,szPrjCol);
-        xCI.G.p_idxCol->vMark1(MARK_CHANGED_STZ);
+        xCI.G.p_idxCol->vMark1(MARK_CHANGED);
       }
     }
   }

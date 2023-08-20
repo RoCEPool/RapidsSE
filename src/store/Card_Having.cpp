@@ -120,7 +120,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   auto bLambdaFn_ro = [pCI](Card *pCard)
   {
-    if (! pCard->bMark1(MARK_AT_STZ))
+    if (! pCard->bMark1(MARK_AT))
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));

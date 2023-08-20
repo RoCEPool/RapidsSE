@@ -59,7 +59,7 @@ void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
 
   while (pCI->G_bEachMain()) {
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint()))
-      pCI->G.p_constraint->vCullPred(MARK_AT_STZ);
+      pCI->G.p_constraint->vCullPred(MARK_AT);
   }
 }
 
@@ -156,7 +156,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 
     if (szColNm) {
       p_term->SYM(SF_COL_NM,szColNm);
-      p_term->vMark1(MARK_CHANGED_STZ);
+      p_term->vMark1(MARK_CHANGED);
     }
 
     return C_CONTINUE_RECURSION;

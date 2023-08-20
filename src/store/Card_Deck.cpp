@@ -569,7 +569,7 @@ void Card_Deck::vValidate(CardIter* pCI)
   _precondition_(_MAGIC_, _FOOTER_);
 
   vMarksClearRecursive();
-  vMark1Recursive(MARK_UNVALID_STZ);
+  vMark1Recursive(MARK_UNVALID);
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
 
@@ -700,16 +700,16 @@ void Card_Deck::vValidate(CardIter* pCI)
 
   vValidationPassed();
 
-  vMark1RecursiveIf(MARK_BLANK_STZ, MARK_VALID_STZ);
+  vMark1RecursiveIf(MARK_BLANK, MARK_VALID);
 
-  if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID_STZ)) {
+  if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID)) {
     pCI->vPrintBoard(__LINE__,true);
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH
   }
 
-  if (Card* pCard_notValidate = pFindMark1Recursive(MARK_DUPLICATE_STZ)) {
+  if (Card* pCard_notValidate = pFindMark1Recursive(MARK_DUPLICATE)) {
     pCI->vPrintBoard(__LINE__,true);
     pCard_notValidate->vDump(__func__);
     vDebugPoint();

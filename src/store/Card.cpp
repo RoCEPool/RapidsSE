@@ -100,20 +100,18 @@ d8 C_FILTER_COEFF    = 0.30;
 d8 C_JOIN_COEFF      = 2.00;  // bump the larger
 d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
 
-char MARK_AT_CHR         = '@';
-
-Stz* MARK_AND_STZ        = "&"_Stz;
-Stz* MARK_AT_STZ         = "@"_Stz;
-Stz* MARK_BLANK_STZ      = " "_Stz;
-Stz* MARK_CMP_STZ        = "="_Stz;
-Stz* MARK_CHANGED_STZ    = "`"_Stz;
-Stz* MARK_DELETED_STZ    = "Z"_Stz;
-Stz* MARK_DUPLICATE_STZ  = "D"_Stz;
-Stz* MARK_NOT_STZ        = "!"_Stz;
-Stz* MARK_OR_STZ         = "|"_Stz;
-Stz* MARK_UP_STZ         = "^"_Stz;
-Stz* MARK_UNVALID_STZ    = "X"_Stz;
-Stz* MARK_VALID_STZ      = "Y"_Stz;
+Stz* MARK_AND        = "&"_Stz;
+Stz* MARK_AT         = "@"_Stz;
+Stz* MARK_BLANK      = " "_Stz;
+Stz* MARK_CHANGED    = "`"_Stz;
+Stz* MARK_COMPARE    = "="_Stz;
+Stz* MARK_DELETED    = "Z"_Stz;
+Stz* MARK_DUPLICATE  = "D"_Stz;
+Stz* MARK_NOT        = "!"_Stz;
+Stz* MARK_OR         = "|"_Stz;
+Stz* MARK_UP         = "^"_Stz;
+Stz* MARK_UNVALID    = "X"_Stz;
+Stz* MARK_VALID      = "Y"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -146,8 +144,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_iFixedDepth = iFixedDepth;
 
-  vMark1(MARK_BLANK_STZ);
-  vMark2(MARK_BLANK_STZ);
+  vMark1(MARK_BLANK);
+  vMark2(MARK_BLANK);
 
   s32 sBearing;
   sBearing.vSprint("((%s new %04lld))"_Stz,aCK[m_eCard],md__SeqNo);
@@ -182,9 +180,9 @@ Card::~Card(void) noexcept(false)
 
   //gapCard[md__SeqNo] = nullptr;
 
-  RASSERT(! bMark1(MARK_DELETED_STZ));
+  RASSERT(! bMark1(MARK_DELETED));
 
-  vMark1(MARK_DELETED_STZ);
+  vMark1(MARK_DELETED);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -1104,8 +1102,8 @@ void Card::vMarksClearRecursive(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vMark1(MARK_BLANK_STZ);
-  vMark2(MARK_BLANK_STZ);
+  vMark1(MARK_BLANK);
+  vMark2(MARK_BLANK);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
@@ -1142,8 +1140,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
   if (m_pLastPrintParent != pParent) {
-    if (bMark1(MARK_BLANK_STZ))
-      vMark1(MARK_CHANGED_STZ);
+    if (bMark1(MARK_BLANK))
+      vMark1(MARK_CHANGED);
     m_pLastPrintParent = pParent;
   }
 
@@ -1152,8 +1150,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   else
     vPrintCard_bySettings(pRibbon, iDepth);
 
-  if (this->bMark1(MARK_CHANGED_STZ))
-    vMark1(MARK_BLANK_STZ);
+  if (this->bMark1(MARK_CHANGED))
+    vMark1(MARK_BLANK);
 
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;
@@ -1856,11 +1854,11 @@ void Card::vValidationPassed(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bMark1(MARK_VALID_STZ))
-    vMark1(MARK_DUPLICATE_STZ);
+  if (bMark1(MARK_VALID))
+    vMark1(MARK_DUPLICATE);
   else
-  if (bMark1(MARK_UNVALID_STZ))
-    vMark1(MARK_VALID_STZ);
+  if (bMark1(MARK_UNVALID))
+    vMark1(MARK_VALID);
 }
 
 /*----------------------------------------------------------------------------*/

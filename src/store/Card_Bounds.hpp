@@ -16,7 +16,7 @@ namespace STORE
     Card_Bounds(void);
    ~Card_Bounds(void) noexcept(false);
 
-    void vCullBound(char cWithMark);
+    void vCullBound(Stz* szWithMark);
     Card_Bound* pFindChosenBound(void);
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);

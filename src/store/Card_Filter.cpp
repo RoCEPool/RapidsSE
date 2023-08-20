@@ -57,7 +57,7 @@ void Card_Filter::vCullUsedBounds(CardIter* pCI) {
 
   while (pCI->G_bEachMain()) {
     if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      pCI->G.p_filter->vCullPred(MARK_AT_STZ);
+      pCI->G.p_filter->vCullPred(MARK_AT);
   }
 }
 

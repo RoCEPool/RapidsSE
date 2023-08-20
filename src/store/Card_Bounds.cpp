@@ -48,13 +48,13 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vCullBound(char cWithMark)
+void Card_Bounds::vCullBound(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xCI_bounds(this);
   while (xCI_bounds.bEach()) {
-    if (xCI_bounds.pChild()->cMark1() != cWithMark)
+    if (! xCI_bounds.pChild()->bMark1(szWithMark))
       continue;
 
     vDeleteChild(xCI_bounds.pChild());

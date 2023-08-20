@@ -104,7 +104,7 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 
     if (p_term->pSymbol()->bIs_Col_No()) {
       p_term->vBump_stmOdn(nBumpBy);
-      p_term->vMark1(MARK_CHANGED_STZ);
+      p_term->vMark1(MARK_CHANGED);
     }
 
     return C_CONTINUE_RECURSION;
@@ -168,7 +168,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
 
   CardIter xCR(this);
   while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
-    if (! p_pred->bMark1(MARK_AT_STZ))
+    if (! p_pred->bMark1(MARK_AT))
       continue;
 
     char cTableSyn = p_pred->cMark2();
@@ -387,30 +387,30 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
   while (Card* p_card = xCR.pRecurseEach()) {
 
     if (p_card->bIsCard(CK_NOTPRED)) {
-      p_card->vMark1(MARK_NOT_STZ);
+      p_card->vMark1(MARK_NOT);
       xCR.vDontDescend();
       continue;
     }
     if (p_card->bIsCard(CK_ANDPRED)) {
-      p_card->vMark1(MARK_AND_STZ);
+      p_card->vMark1(MARK_AND);
       continue;
     }
 
     if (p_card->bIsCard(CK_CMPPRED)) {
-      p_card->vMark1(MARK_CMP_STZ);
+      p_card->vMark1(MARK_COMPARE);
       xCR.vDontDescend();
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
         continue;
       Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
       if (pWhichTable) {
-        p_card->vMark1(MARK_AT_STZ);
+        p_card->vMark1(MARK_AT);
         p_card->vMark2(pWhichTable->cSF_char());
       }
       continue;
     }
 
     if (p_card->bIsCard(CK_ORPRED)) {
-      p_card->vMark1(MARK_OR_STZ);
+      p_card->vMark1(MARK_OR);
       xCR.vDontDescend();
       continue;
     }

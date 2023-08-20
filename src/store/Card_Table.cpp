@@ -369,7 +369,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       Card_Bound *p_bound = Card_Bound::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
       p_bounds->vAppend(p_bound);
 
-      p_pred_Of_filter->vMark1(MARK_UP_STZ);
+      p_pred_Of_filter->vMark1(MARK_UP);
 
 //      if (p_bound->bIsEBound())
 //        p_index->vSet_Choose_index();
@@ -521,7 +521,7 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
   UNUSED(pCI);
 
   SYM(pSymbol_tableSyn);
-  this->vMark1(MARK_CHANGED_STZ);
+  this->vMark1(MARK_CHANGED);
 
   Card_TableNm* p_tableNm = pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
