@@ -543,8 +543,6 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(MARK_BLANK != cWithMark);
-
   p_pred_yanked = nullptr;
 
   if (! this->nChildCards()) {
@@ -605,8 +603,6 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card* p_test,
                                Card_PRED*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(MARK_BLANK != cWithMark);
 
   if (Card_PRED::bIsPRED(p_test)) {
     if (p_test->cMark1() == cWithMark) {
