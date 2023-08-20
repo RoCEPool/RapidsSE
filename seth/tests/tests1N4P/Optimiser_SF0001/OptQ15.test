@@ -13,7 +13,7 @@ create table revenue (supplier_no, total_revenue) as
     group by l_suppkey;
 success
 
-/pipelineName = "_r_Q15"
+/pipelineName = "OptQ15"
 select
 	s_suppkey,
 	s_name,
