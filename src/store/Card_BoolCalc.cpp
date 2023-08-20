@@ -403,30 +403,30 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
   while (Card* p_card = xCR.pRecurseEach()) {
 
     if (p_card->bIsCard(CK_NOTPRED)) {
-      p_card->vMark1('!');
+      p_card->vMark1(MARK_NOT_STZ);
       xCR.vDontDescend();
       continue;
     }
     if (p_card->bIsCard(CK_ANDPRED)) {
-      p_card->vMark1('&');
+      p_card->vMark1(MARK_AND_STZ);
       continue;
     }
 
     if (p_card->bIsCard(CK_CMPPRED)) {
-      p_card->vMark1('b');
+      p_card->vMark1(MARK_CMP_STZ);
       xCR.vDontDescend();
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
         continue;
       Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
       if (pWhichTable) {
-        p_card->vMark1(MARK_AT);
+        p_card->vMark1(MARK_AT_STZ);
         p_card->vMark2(pWhichTable->cSF_char());
       }
       continue;
     }
 
     if (p_card->bIsCard(CK_ORPRED)) {
-      p_card->vMark1('|');
+      p_card->vMark1(MARK_OR_STZ);
       xCR.vDontDescend();
       continue;
     }

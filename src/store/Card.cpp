@@ -109,9 +109,13 @@ char MARK_VALID      = 'Y';
 char MARK_DUPLICATE  = 'D';
 char MARK_DELETED    = 'Z';
 
+Stz* MARK_AND_STZ        = "&"_Stz;
 Stz* MARK_AT_STZ         = "@"_Stz;
 Stz* MARK_BLANK_STZ      = " "_Stz;
+Stz* MARK_CMP_STZ        = "="_Stz;
 Stz* MARK_CHANGED_STZ    = "`"_Stz;
+Stz* MARK_NOT_STZ        = "!"_Stz;
+Stz* MARK_OR_STZ         = "|"_Stz;
 Stz* MARK_UP_STZ         = "^"_Stz;
 Stz* MARK_UNVALID_STZ    = "X"_Stz;
 Stz* MARK_VALID_STZ      = "Y"_Stz;

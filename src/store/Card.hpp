@@ -227,9 +227,13 @@ extern char MARK_VALID;
 extern char MARK_DUPLICATE;
 extern char MARK_DELETED;
 
+extern Stz* MARK_AND_STZ;
 extern Stz* MARK_AT_STZ;
 extern Stz* MARK_BLANK_STZ;
+extern Stz* MARK_CMP_STZ;
 extern Stz* MARK_CHANGED_STZ;
+extern Stz* MARK_NOT_STZ;
+extern Stz* MARK_OR_STZ;
 extern Stz* MARK_UP_STZ;
 extern Stz* MARK_UNVALID_STZ;
 extern Stz* MARK_VALID_STZ;
