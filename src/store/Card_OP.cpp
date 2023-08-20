@@ -1959,7 +1959,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_EPILOG]))
-    vValidate_mustHave(CK_LEVEL,CK_NONE);
+    vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
 }
 
 /*============================================================================*/

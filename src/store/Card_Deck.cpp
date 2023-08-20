@@ -106,8 +106,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
     }
 
     // -- -- -- -- --
-//    if (pCI->G.p_OP->pSub_projection())
-//      p_projection_prior = pCI->G.p_OP->pSub_projection();
+    if (pCI->G.p_OP->pSub_projection())
+      p_projection_prior = pCI->G.p_OP->pSub_projection();
   }
 
   delete p_streamPtn;

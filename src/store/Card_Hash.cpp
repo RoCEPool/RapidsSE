@@ -73,6 +73,8 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
 
   p_hash->vAppend(p_hshCol);
 
+  p_hash->vAppend(p_projection_prev->pDupCardRecursive());
+
 //  if (p_projection_prev)
 //    p_hash->vAppend(p_projection_prev->pClone());
 
