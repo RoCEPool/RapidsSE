@@ -218,14 +218,14 @@ extern d8 C_FILTER_COEFF;
 extern d8 C_JOIN_COEFF;  // bump the larger
 extern d8 C_JOIN_LONGER;  // joined row gets longer
 
-extern char MARK_AT;
-extern char MARK_BLANK;
-extern char MARK_CHANGED;
-extern char MARK_UP;
-extern char MARK_UNVALID;
-extern char MARK_VALID;
-extern char MARK_DUPLICATE;
-extern char MARK_DELETED;
+extern char MARK_AT_CHR;
+extern char MARK_BLANK_CHR;
+extern char MARK_CHANGED_CHR;
+extern char MARK_UP_CHR;
+extern char MARK_UNVALID_CHR;
+extern char MARK_VALID_CHR;
+extern char MARK_DUPLICATE_CHR;
+extern char MARK_DELETED_CHR;
 
 extern Stz* MARK_AND_STZ;
 extern Stz* MARK_AT_STZ;

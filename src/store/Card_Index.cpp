@@ -74,7 +74,7 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
     }
 
     pCI->vPrintBoard(__LINE__);
-    pCI->G.p_bounds->vCullBound(MARK_AT);
+    pCI->G.p_bounds->vCullBound(MARK_AT_CHR);
 
   }
 

@@ -98,7 +98,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
 //  m_pCI->vClearRestart();
 //  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
 //    m_pCI->G.p_where->Y_vSet(P_Smoothed);
-//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
+//    m_pCI->G.p_boolCalc->vCullPred(MARK_AT_CHR);
 //    if (0 == m_pCI->G.p_boolCalc->nChildCards())
 //      m_pCI->G_vRemoveDeleteMain(CK_WHERE);
 //  }

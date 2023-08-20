@@ -160,9 +160,9 @@ void XF_Optimise_Cull_bound::vXF_Cull_Used_bound(void)
 
   while (m_pCI->G_bEachMain()) {
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      m_pCI->G.p_filter->vCullPred(MARK_AT);
+      m_pCI->G.p_filter->vCullPred(MARK_AT_CHR);
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      m_pCI->G.p_constraint->vCullPred(MARK_AT);
+      m_pCI->G.p_constraint->vCullPred(MARK_AT_CHR);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

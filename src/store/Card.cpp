@@ -100,14 +100,14 @@ d8 C_FILTER_COEFF    = 0.30;
 d8 C_JOIN_COEFF      = 2.00;  // bump the larger
 d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
 
-char MARK_AT         = '@';
-char MARK_BLANK      = ' ';
-char MARK_CHANGED    = '`';
-char MARK_UP         = '^';
-char MARK_UNVALID    = 'X';
-char MARK_VALID      = 'Y';
-char MARK_DUPLICATE  = 'D';
-char MARK_DELETED    = 'Z';
+char MARK_AT_CHR         = '@';
+char MARK_BLANK_CHR      = ' ';
+char MARK_CHANGED_CHR    = '`';
+char MARK_UP_CHR         = '^';
+char MARK_UNVALID_CHR    = 'X';
+char MARK_VALID_CHR      = 'Y';
+char MARK_DUPLICATE_CHR  = 'D';
+char MARK_DELETED_CHR    = 'Z';
 
 Stz* MARK_AND_STZ        = "&"_Stz;
 Stz* MARK_AT_STZ         = "@"_Stz;
@@ -189,7 +189,7 @@ Card::~Card(void) noexcept(false)
 
   //gapCard[md__SeqNo] = nullptr;
 
-  RASSERT(MARK_DELETED != m_xMark1.cChr());
+  RASSERT(MARK_DELETED_CHR != m_xMark1.cChr());
 
   vMark1(MARK_DELETED_STZ);
 
@@ -1105,7 +1105,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
   if (m_pLastPrintParent != pParent) {
-    if (MARK_BLANK == this->cMark1())
+    if (MARK_BLANK_CHR == this->cMark1())
       vMark1(MARK_CHANGED_STZ);
     m_pLastPrintParent = pParent;
   }
@@ -1115,7 +1115,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   else
     vPrintCard_bySettings(pRibbon, iDepth);
 
-  if (MARK_CHANGED == this->cMark1())
+  if (MARK_CHANGED_CHR == this->cMark1())
     vMark1(MARK_BLANK_STZ);
 
   if (pCardCtl->bPrune(m_eCard))
@@ -1819,10 +1819,10 @@ void Card::vValidationPassed(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (cMark1() == MARK_VALID)
+  if (cMark1() == MARK_VALID_CHR)
     vMark1(MARK_DUPLICATE_STZ);
   else
-  if (cMark1() == MARK_UNVALID)
+  if (cMark1() == MARK_UNVALID_CHR)
     vMark1(MARK_VALID_STZ);
 }
 
