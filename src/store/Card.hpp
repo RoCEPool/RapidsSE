@@ -223,7 +223,6 @@ extern char MARK_CHANGED_CHR;
 extern char MARK_UNVALID_CHR;
 extern char MARK_VALID_CHR;
 extern char MARK_DUPLICATE_CHR;
-extern char MARK_DELETED_CHR;
 
 extern Stz* MARK_AND_STZ;
 extern Stz* MARK_AT_STZ;
@@ -315,7 +314,9 @@ namespace STORE
     Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
     Card* pFindMark1Recursive(char cMark1, eCK eOfCard=CK_NONE);
+    Card* pFindMark1Recursive(Stz* szMark1, eCK eOfCard=CK_NONE);
     Card* pFindMark2Recursive(char cMark2, eCK eOfCard=CK_NONE);
+    Card* pFindMark2Recursive(Stz* szMark2, eCK eOfCard=CK_NONE);
     Card* pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     bool  bFixedDepth(i8 iDepth);
     i8    iFixedDepth(void);

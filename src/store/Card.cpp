@@ -105,20 +105,19 @@ char MARK_CHANGED_CHR    = '`';
 char MARK_UNVALID_CHR    = 'X';
 char MARK_VALID_CHR      = 'Y';
 char MARK_DUPLICATE_CHR  = 'D';
-char MARK_DELETED_CHR    = 'Z';
 
 Stz* MARK_AND_STZ        = "&"_Stz;
 Stz* MARK_AT_STZ         = "@"_Stz;
 Stz* MARK_BLANK_STZ      = " "_Stz;
 Stz* MARK_CMP_STZ        = "="_Stz;
 Stz* MARK_CHANGED_STZ    = "`"_Stz;
+Stz* MARK_DELETED_STZ    = "Z"_Stz;
+Stz* MARK_DUPLICATE_STZ  = "D"_Stz;
 Stz* MARK_NOT_STZ        = "!"_Stz;
 Stz* MARK_OR_STZ         = "|"_Stz;
 Stz* MARK_UP_STZ         = "^"_Stz;
 Stz* MARK_UNVALID_STZ    = "X"_Stz;
 Stz* MARK_VALID_STZ      = "Y"_Stz;
-Stz* MARK_DUPLICATE_STZ  = "D"_Stz;
-Stz* MARK_DELETED_STZ    = "Z"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -187,7 +186,7 @@ Card::~Card(void) noexcept(false)
 
   //gapCard[md__SeqNo] = nullptr;
 
-  RASSERT(MARK_DELETED_CHR != m_xMark1.cChr());
+  RASSERT(! bMark1(MARK_DELETED_STZ));
 
   vMark1(MARK_DELETED_STZ);
 
@@ -644,6 +643,28 @@ Card* Card::pFindMark1Recursive(char cMark1, eCK eOfCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find mark1 recursively within this card                                    */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindMark1Recursive(Stz* szMark1, eCK eOfCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+    if (this->bMark1(szMark1))
+      return this;
+  }
+
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindMark1Recursive(szMark1,eOfCard))
+      return pFoundCard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find mark2 recursively within this card                                    */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
@@ -659,6 +680,28 @@ Card* Card::pFindMark2Recursive(char cMark2, eCK eOfCard)
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     if (Card *pFoundCard = pGetChild(i_Child)->pFindMark2Recursive(cMark2,eOfCard))
+      return pFoundCard;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find mark2 recursively within this card                                    */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindMark2Recursive(Stz* szMark2, eCK eOfCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
+    if (this->bMark2(szMark2))
+      return this;
+  }
+
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindMark2Recursive(szMark2,eOfCard))
       return pFoundCard;
   }
 
