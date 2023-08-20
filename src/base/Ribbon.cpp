@@ -84,7 +84,7 @@ CardCtl* Ribbon::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* draw horizontal line using given char                                      */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vDrawH(char cChr, bool bTop)
+void Ribbon::vDrawH(char cChr,  i8 i_Line)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -94,12 +94,16 @@ void Ribbon::vDrawH(char cChr, bool bTop)
 
   pDrawnLine->vPut(0,cChr,nTimes);
 
-  if (bTop) {
-    vInsertBefore(pDrawnLine, pHead());
-    m_nTitleLines++;
-  }
-  else {
+  if (C_UNKNOWN == i_Line) {
     vAppend(pDrawnLine);
+  }
+//  else if (0 == i_Line) {
+//    vInsertBefore(pDrawnLine, pHead());
+//    m_nTitleLines++;
+//  }
+  else {
+    vInsertBefore(pDrawnLine, pGet(i_Line));
+    m_nTitleLines++;
   }
 }
 
@@ -229,7 +233,7 @@ void Ribbon::vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon)
 /*----------------------------------------------------------------------------*/
 /* print all the lines of this ribbon                                         */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, i8 iPrintNo)
+void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -241,17 +245,18 @@ void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, i8 iPrintNo)
   for (i8 i_RibbonLine = 0; i_RibbonLine < nLines; i_RibbonLine++) {
     RibbonLine* pRibbonLine = pGet(i_RibbonLine);
     
-    Stz* szText = pRibbonLine->szText();
+    Stz* szText_ribbon = pRibbonLine->szText();
     if (C_UNKNOWN != iPrintNo)
 
-      vTrace("%llx %s %2llx %2llx %s\n"_Stz,
+      vTrace("%llx %s %2llx %s %2llx %s\n"_Stz,
              iBenchNo,
              szQueryNm,
              iPrintNo,
+             aOH_short[ePhase],
              i_RibbonLine+1,
-             szText);
+             szText_ribbon);
     else
-      vTrace("%s\n"_Stz,szText);
+      vTrace("%s\n"_Stz, szText_ribbon);
   }
 }
 

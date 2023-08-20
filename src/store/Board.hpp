@@ -7,6 +7,7 @@
 
 #include "eBK.h"
 #include "eXF.h"
+#include "eOH.h"
 
 #include "CarryForward.hpp"
 
@@ -164,6 +165,8 @@ namespace STORE
 
     Mark*       m_pMark;
 
+    eOH         m_ePhase;
+
   private:
     // must be last
     Footer m_xFooter;
@@ -200,6 +203,9 @@ namespace STORE
     Mark* pMark(void);
 
     void vPrintBoard(Stz* szDescription=nullptr);
+
+    eOH  ePhase(void);
+    void vPhase(eOH ePhase);
 
     void vRenumberCards(void);
 

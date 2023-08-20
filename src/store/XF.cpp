@@ -117,8 +117,11 @@ void XF::vTransform(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
-    XF_Prolog_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
+    m_pCI->pBoard()->vPhase(OH_EPILOG);
 
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    XF_Prolog_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
@@ -153,6 +156,10 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2/5) flatten
 
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vPhase(OH_FLATTEN);
+
   XF_Flatten::vFlatten(m_pCI);
   Bench::vValidate(m_pCI);
 
@@ -160,6 +167,12 @@ void XF::vTransform(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3/5) optimisw
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vPhase(OH_OPTIMISE);
+  m_pCI->vBoardIteration();
+  RASSERT(m_pCI->bEachBoard());
 
   XF_Optimise_from_To_OP::vXF_Optimise_from_By_OP(m_pCI);
 
@@ -181,6 +194,12 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
 
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vPhase(OH_EPILOG);
+  m_pCI->vBoardIteration();
+  RASSERT(m_pCI->bEachBoard());
+
   XF_Epilog_Promote_filter::vXF_Individuate_filter(m_pCI);
 
   XF_Epilog_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
@@ -201,6 +220,12 @@ void XF::vTransform(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5/5) synthesise
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vPhase(OH_SYNTHESISE);
+  m_pCI->vBoardIteration();
+  RASSERT(m_pCI->bEachBoard());
 
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 

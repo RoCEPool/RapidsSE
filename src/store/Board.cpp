@@ -48,6 +48,7 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
 
   m_pMark = new Mark;
 
+  m_ePhase = OH_NONE;
 
   _checkInitialised_(CN_BOARD);
 
@@ -357,6 +358,26 @@ Mark* Board::pMark(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eOH Board::ePhase(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  return m_ePhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPhase(eOH ePhase)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  m_ePhase = ePhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vPrintBoard(Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -369,14 +390,16 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinCards(pRibbon);
 
-  pRibbon->vDrawH('-',true);
+  pRibbon->vDrawH('-',0);
+  pRibbon->vDrawH('-',2);
   pRibbon->vDrawH('=');
 
   vPinMargin(pRibbon);
 
   i8 iBenchNo = m_pBench->iBenchNo();
+  eOH ePhase  = this->ePhase();
   i8 iPrintNo = m_pBench->iPrint_inc();
-  pRibbon->vPrintRibbon(szQueryNm, iBenchNo,iPrintNo);
+  pRibbon->vPrintRibbon(szQueryNm, iBenchNo, ePhase, iPrintNo);
 
   delete pRibbon;
 }
@@ -529,15 +552,15 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s %s"_Stz,
-                        m_pBench->iXform(),
-                        m_i_Board,
-                        m_sBoardNm.szStz(),
-                        this,
-                        m_pBench->pOptimiser()->szQueryNm(),
-                        AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU) ?
-                        "/optimise_passthru" : ""
-  );
+//  pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s %s"_Stz,
+//                        m_pBench->iXform(),
+//                        m_i_Board,
+//                        m_sBoardNm.szStz(),
+//                        this,
+//                        m_pBench->pOptimiser()->szQueryNm(),
+//                        AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU) ?
+//                        "/optimise_passthru" : ""
+//  );
 
   // line 2
   pRibbon->vSprintOther("%s %s"_Stz,
@@ -545,21 +568,21 @@ void Board::vPinTitle(Ribbon* pRibbon,
                         m_pBench->szXdesc());
 
   // line 3
-  if (0 == m_i_Board)
-    pRibbon->vSprintOther("%s %s"_Stz,
-                          "MainQuery"_Stz,
-                          aQD[m_pSubQuery->eDisposition()]);
-  else
-    pRibbon->vSprintOther("%s(%lld params) %s caller: board[%lld] %s %s %s"_Stz,
-                          "SubQuery"_Stz,
-                          m_pSubQuery->nCorrCols(),
-                          aQD[m_pSubQuery->eDisposition()],
-
-                          m_pSubQuery->pBoard()->i_Board(),
-                          aQC[m_pSubQuery->eClause()],
-                          aQO[m_pSubQuery->eCallOp()],
-                          aRO[m_pSubQuery->eRelnOp()]
-    );
+//  if (0 == m_i_Board)
+//    pRibbon->vSprintOther("%s %s"_Stz,
+//                          "MainQuery"_Stz,
+//                          aQD[m_pSubQuery->eDisposition()]);
+//  else
+//    pRibbon->vSprintOther("%s(%lld params) %s caller: board[%lld] %s %s %s"_Stz,
+//                          "SubQuery"_Stz,
+//                          m_pSubQuery->nCorrCols(),
+//                          aQD[m_pSubQuery->eDisposition()],
+//
+//                          m_pSubQuery->pBoard()->i_Board(),
+//                          aQC[m_pSubQuery->eClause()],
+//                          aQO[m_pSubQuery->eCallOp()],
+//                          aRO[m_pSubQuery->eRelnOp()]
+//    );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -8,6 +8,7 @@
 #include "RibbonLine.hpp"
 #include "StzList.hpp"
 #include "CardCtl.hpp"
+#include "eOH.h"
 
 namespace BASE
 {
@@ -47,7 +48,7 @@ namespace BASE
     i8   i_Char(void);
     CardCtl* pCardCtl(void);
 
-    void vDrawH(char cChr, bool bTop=false);
+    void vDrawH(char cChr, i8 i_Line=C_UNKNOWN);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
 
     i8   i_Heat(void);
@@ -61,7 +62,7 @@ namespace BASE
     void vLaneNext(void);
 
     void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
-    void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, i8 iPrintNo=C_UNKNOWN);
+    void vPrintRibbon(Stz* szQueryNm, i8 BenchNo, eOH ePhase, i8 iPrintNo=C_UNKNOWN);
     void vPutData(i8 i_Line, i8 i_Char, Stz* szData);
     void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
