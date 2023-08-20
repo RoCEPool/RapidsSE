@@ -153,8 +153,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_iFixedDepth = iFixedDepth;
 
-  vMark1(MARK_BLANK);
-  vMark2(MARK_BLANK);
+  vMark1(MARK_BLANK_STZ);
+  vMark2(MARK_BLANK_STZ);
 
   s32 sBearing;
   sBearing.vSprint("((%s new %04lld))"_Stz,aCK[m_eCard],md__SeqNo);
@@ -191,7 +191,7 @@ Card::~Card(void) noexcept(false)
 
   RASSERT(MARK_DELETED != m_xMark1.cChr());
 
-  vMark1(MARK_DELETED);
+  vMark1(MARK_DELETED_STZ);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -1067,8 +1067,8 @@ void Card::vMarksClearRecursive(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vMark1(MARK_BLANK);
-  vMark2(MARK_BLANK);
+  vMark1(MARK_BLANK_STZ);
+  vMark2(MARK_BLANK_STZ);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
@@ -1106,7 +1106,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
 
   if (m_pLastPrintParent != pParent) {
     if (MARK_BLANK == this->cMark1())
-      vMark1(MARK_CHANGED);
+      vMark1(MARK_CHANGED_STZ);
     m_pLastPrintParent = pParent;
   }
 
@@ -1116,7 +1116,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
     vPrintCard_bySettings(pRibbon, iDepth);
 
   if (MARK_CHANGED == this->cMark1())
-    vMark1(MARK_BLANK);
+    vMark1(MARK_BLANK_STZ);
 
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;
@@ -1820,10 +1820,10 @@ void Card::vValidationPassed(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (cMark1() == MARK_VALID)
-    vMark1(MARK_DUPLICATE);
+    vMark1(MARK_DUPLICATE_STZ);
   else
   if (cMark1() == MARK_UNVALID)
-    vMark1(MARK_VALID);
+    vMark1(MARK_VALID_STZ);
 }
 
 /*----------------------------------------------------------------------------*/

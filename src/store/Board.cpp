@@ -157,7 +157,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqCall->szSymbol(SF_NONE);
-    p_pred->vMark1(MARK_AT);
+    p_pred->vMark1(MARK_AT_STZ);
     bFoundCall = true;
 
     if (p_pred->pSymbol()->bSame("exists"_Stz) ||

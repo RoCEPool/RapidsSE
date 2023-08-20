@@ -233,7 +233,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
         // record what $c.n it was
         p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
         p_term->pSymbol()->vSym(SF_COL_NO,p_expr_col->szSymbol(SF_NONE));
-        p_term->vMark1(MARK_CHANGED);
+        p_term->vMark1(MARK_CHANGED_STZ);
 
         return C_CONTINUE_RECURSION;
       }
@@ -257,7 +257,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
       p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
 
-      p_term->vMark1(MARK_CHANGED);
+      p_term->vMark1(MARK_CHANGED_STZ);
 
       return C_CONTINUE_RECURSION;
     }
@@ -279,7 +279,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       Symbol xSymbol_stmColOdn(SF_COL_NO,i_ColOdn);
       p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
 
-      p_term->vMark1(MARK_CHANGED);
+      p_term->vMark1(MARK_CHANGED_STZ);
 
       return C_CONTINUE_RECURSION;
     }
@@ -305,7 +305,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     Symbol xSymbol_stmColOdn(SF_COL_NO,i_ColOdn);
     p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
 
-    p_term->vMark1(MARK_CHANGED);
+    p_term->vMark1(MARK_CHANGED_STZ);
 
     return C_CONTINUE_RECURSION;
   };

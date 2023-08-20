@@ -70,7 +70,7 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
         continue;
       }
 
-      xCI_bounds.pChild()->vMark1(MARK_AT);
+      xCI_bounds.pChild()->vMark1(MARK_AT_STZ);
     }
 
     pCI->vPrintBoard(__LINE__);

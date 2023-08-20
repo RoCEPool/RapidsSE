@@ -128,7 +128,7 @@ void XF_Optimise_Cull_bound::vXF_Cull_Used_bound(void)
       while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
         if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
           //RASSERT(m_pCI->G.p_cmpPred->bIsJoinPred());
-          m_pCI->G.p_cmpPred->vMark1(MARK_AT);
+          m_pCI->G.p_cmpPred->vMark1(MARK_AT_STZ);
         }
       }
 
@@ -143,7 +143,7 @@ void XF_Optimise_Cull_bound::vXF_Cull_Used_bound(void)
       while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(xCR.pRecurseEach(CK_CMPPRED)))) {
         if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
           //RASSERT(m_pCI->G.p_cmpPred->bIsJoinPred());
-          m_pCI->G.p_cmpPred->vMark1(MARK_AT);
+          m_pCI->G.p_cmpPred->vMark1(MARK_AT_STZ);
         }
       }
 

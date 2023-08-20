@@ -55,7 +55,7 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 
       if (xCI2.G.p_term->pSymbol()->bIs_Key_Col()) {
         xCI2.G.p_term->vBumpKeyOdn();
-        xCI2.G.p_term->vMark1(MARK_CHANGED);
+        xCI2.G.p_term->vMark1(MARK_CHANGED_STZ);
         continue;
       }
     }
@@ -83,7 +83,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 
       if (xCI2.G.p_term->pSymbol()->bIs_Col_No()) {
         xCI2.G.p_term->vBump_stmOdn();
-        xCI2.G.p_term->vMark1(MARK_CHANGED);
+        xCI2.G.p_term->vMark1(MARK_CHANGED_STZ);
         continue;
       }
     }

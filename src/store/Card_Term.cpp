@@ -117,7 +117,7 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
 
     if (pSymbol_term0->bIs_Col_Tc()) {
       pSymbol()->vSym(pSymbol_term0);
-      vMark1(MARK_CHANGED);
+      vMark1(MARK_CHANGED_STZ);
     }
   }
 }

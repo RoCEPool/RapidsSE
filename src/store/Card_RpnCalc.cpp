@@ -83,7 +83,7 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 
     if (xCI.G.p_term- pSymbol()->bIs_Col_No()) {
       xCI.G.p_term->vBump_stmOdn(nBumpBy);
-      xCI.G.p_term->vMark1(MARK_CHANGED);
+      xCI.G.p_term->vMark1(MARK_CHANGED_STZ);
     }
   }
 }

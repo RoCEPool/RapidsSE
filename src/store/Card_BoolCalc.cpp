@@ -104,7 +104,7 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 
     if (p_term->pSymbol()->bIs_Col_No()) {
       p_term->vBump_stmOdn(nBumpBy);
-      p_term->vMark1(MARK_CHANGED);
+      p_term->vMark1(MARK_CHANGED_STZ);
     }
 
     return C_CONTINUE_RECURSION;
