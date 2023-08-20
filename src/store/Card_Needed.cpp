@@ -89,7 +89,7 @@ void Card_Needed::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pCI->vValidateChildren(this, iDepth + 1);
   }
   else {
-    vMark1Recursive(MARK_BLANK_CHR);
+    vMark1Recursive(MARK_BLANK_STZ);
   }
   vValidationPassed();
 }

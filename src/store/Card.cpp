@@ -101,9 +101,7 @@ d8 C_JOIN_COEFF      = 2.00;  // bump the larger
 d8 C_JOIN_LONGER     = 1.50;  // joined row gets longer
 
 char MARK_AT_CHR         = '@';
-char MARK_BLANK_CHR      = ' ';
 char MARK_CHANGED_CHR    = '`';
-char MARK_UP_CHR         = '^';
 char MARK_UNVALID_CHR    = 'X';
 char MARK_VALID_CHR      = 'Y';
 char MARK_DUPLICATE_CHR  = 'D';
@@ -1105,7 +1103,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
 
   if (m_pLastPrintParent != pParent) {
-    if (MARK_BLANK_CHR == this->cMark1())
+    if (bMark1(MARK_BLANK_STZ))
       vMark1(MARK_CHANGED_STZ);
     m_pLastPrintParent = pParent;
   }

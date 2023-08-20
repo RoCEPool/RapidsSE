@@ -700,7 +700,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
   vValidationPassed();
 
-  vMark1RecursiveIf(MARK_BLANK_CHR, MARK_VALID_CHR);
+  vMark1RecursiveIf(MARK_BLANK_STZ, MARK_VALID_STZ);
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID_CHR)) {
     pCI->vPrintBoard(__LINE__,true);
