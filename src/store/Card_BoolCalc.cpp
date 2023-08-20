@@ -168,7 +168,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
 
   CardIter xCR(this);
   while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
-    if (MARK_AT_CHR != p_pred->cMark1())
+    if (! p_pred->bMark1(MARK_AT_STZ))
       continue;
 
     char cTableSyn = p_pred->cMark2();
