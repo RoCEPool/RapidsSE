@@ -28,14 +28,14 @@ __aFooterFunction(XF_Synthesise_Code)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Synthesise_Code::XF_Synthesise_Code(CardIter* pCI, PipelineDef* pPipelineDef)
+XF_Synthesise_Code::XF_Synthesise_Code(CardIter* pCI)
 : Object(CN_XF_SYNTHESISE_CODE)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   m_pCI = pCI;
 
-  m_pPipelineDef = pPipelineDef;
+  m_pPipelineDef = m_pCI->m_pBench->pOptimiser()->pPipelineDef();
   m_pStageDef    = nullptr;
   m_pOpDef       = nullptr;
 
@@ -62,11 +62,11 @@ XF_Synthesise_Code::~XF_Synthesise_Code(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_Code::vXF_Make_Code(CardIter* pCI, PipelineDef* pPipelineDef)
+void XF_Synthesise_Code::vXF_Make_Code(CardIter* pCI)
 {
   _static_
 
-  XF_Synthesise_Code* pXF_Make_Code = new XF_Synthesise_Code(pCI, pPipelineDef);
+  XF_Synthesise_Code* pXF_Make_Code = new XF_Synthesise_Code(pCI);
   pXF_Make_Code->vSynthesise();
 
   delete pXF_Make_Code;

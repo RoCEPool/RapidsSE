@@ -30,10 +30,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Synthesise_Code(CardIter* pCI, PipelineDef*  pPipelineDef);
+    XF_Synthesise_Code(CardIter* pCI);
    ~XF_Synthesise_Code(void) noexcept(false);
 
-    static void vXF_Make_Code(CardIter* pCI, PipelineDef*  pPipelineDef);
+    static void vXF_Make_Code(CardIter* pCI);
 
     PipelineDef* pPipelineDef(void);
     void vPipelineDef(PipelineDef* pPipelineDef);

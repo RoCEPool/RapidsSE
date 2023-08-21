@@ -228,7 +228,8 @@ void XF::vTransform(void)
   RASSERT(m_pCI->bEachBoard());
 
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
-  XF_Synthesise_Code::vXF_Make_Code(m_pCI,m_pCI->m_pBench->pOptimiser()->pPipelineDef());
+
+  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 
   m_pCI->m_pBench->vEndPhase();
 }
@@ -315,7 +316,8 @@ void XF::vTransform_passThru(void)
   vCrosscheck_Optimisations();
 
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
-  XF_Synthesise_Code::vXF_Make_Code(m_pCI,m_pCI->m_pBench->pOptimiser()->pPipelineDef());
+
+  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/
