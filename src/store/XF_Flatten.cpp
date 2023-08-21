@@ -98,8 +98,6 @@ void XF_Flatten::vFlatten(void)
   vFlatten_recurse(0);
 
   XF_Flatten_Delete_flat::vXF_Delete_flat(m_pCI);
-
-  m_pCI->m_pBench->vMadeFlat(true);
 }
 
 /*----------------------------------------------------------------------------*/

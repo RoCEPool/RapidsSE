@@ -75,8 +75,6 @@ void XF_Synthesise_Code::vXF_Make_Code(CardIter* pCI)
   pCI->m_pBench->pOptimiser()->vPipelineDef(pPipelineDef);
 
   delete pXF_Make_Code;
-
-  pCI->m_pBench->vMadeCode(true);
 }
 
 

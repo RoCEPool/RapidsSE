@@ -18,14 +18,6 @@ namespace STORE
 
     i8   m_iBenchNo;
 
-    bool m_bIsFlat;
-
-    bool m_bMadeSimpler;
-    bool m_bMadeFlat;
-    bool m_bMadeOptimal;
-    bool m_bMadeWeavable;
-    bool m_bMadeCode;
-
     i8          m_iXform;
     s32         m_sXhand;
     s256        m_sXfunc;
@@ -63,18 +55,6 @@ namespace STORE
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
     bool bIsSubQueryNm(Stz* szSubQueryNm);
     Optimiser* pOptimiser(void);
-
-
-    bool bMadeSimpler(void);
-    void vMadeSimpler(bool bMadeSimpler);
-    bool bMadeFlat(void);
-    void vMadeFlat(bool bMadeFlat);
-    bool bMadeOptimal(void);
-    void vMadeOptimal(bool bMadeOptimal);
-    bool bMadeWeavable(void);
-    void vMadeWeavable(bool bMadeWeavable);
-    bool bMadeCode(void);
-    void vMadeCode(bool bMadeCode);
 
     bool bPastPhase(eOH ePhase);
 

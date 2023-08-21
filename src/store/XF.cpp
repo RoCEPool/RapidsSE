@@ -147,8 +147,6 @@ void XF::vTransform(void)
 
   XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(m_pCI);
 
-  m_pCI->m_pBench->vMadeSimpler(true);
-
   m_pCI->m_pBench->vEndPhase();
 
   Bench::vValidate(m_pCI);
@@ -189,7 +187,6 @@ void XF::vTransform(void)
   XF_Optimise_Early_projection::vXF_Early_projection(m_pCI);
 
   XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
-  m_pCI->m_pBench->vMadeOptimal(true);
 
   m_pCI->m_pBench->vEndPhase();
 
@@ -216,8 +213,6 @@ void XF::vTransform(void)
   //XF_Epilog_Dedupe_as::vXF_Dedupe_as(m_pCI);
 
   XF_Epilog_Column_mapping::vXF_Column_Mapping(m_pCI);
-
-  m_pCI->m_pBench->vMadeWeavable(true);
 
   m_pCI->m_pBench->vEndPhase();
 
@@ -305,8 +300,6 @@ void XF::vTransform_passThru(void)
 
     vDebugPoint();
   }
-
-  m_pCI->m_pBench->vMadeSimpler(true);
 
   Bench::vValidate(m_pCI);
 
