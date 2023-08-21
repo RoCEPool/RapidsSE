@@ -145,7 +145,6 @@
 #include "Weaver.hpp"
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
-#include "RowTablePtn.hpp"
 #include "Optimiser.hpp"
 
 #include "Card.hpp"
@@ -621,7 +620,6 @@ SizeHeap gxaSizeHeap[]
   { CN_ROWPIX,                   sizeof(RowPix),             HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLE,                sizeof(RowSingle),          HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLELIST,            sizeof(RowSingleList),      HT_T_TINY    ,FILL },
-  { CN_ROWTABLEPTN,              sizeof(RowTablePtn),        HT_T_TINY    ,FILL },
   { CN_ROWTRAY,                  sizeof(RowTray),            HT_T_LARGE   ,FILL },
   { CN_RUCPU,                    sizeof(RU_Cpu),             HT_INVALID   ,FILL },
   { CN_RUDIR,                    0,/*sizeof(RU_Dir)*/        HT_INVALID   ,FILL },

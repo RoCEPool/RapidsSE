@@ -294,7 +294,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWPIX,
   /* */ CN_ROWSINGLE,
   /* */ CN_ROWSINGLELIST,
-  /* */ CN_ROWTABLEPTN,
   /* */ CN_ROWTRAY,
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
@@ -789,7 +788,6 @@ static Stz* aCN[]
   /* */ "ROWPIX"_Stz,               // CN_ROWPIX
   /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
   /* */ "ROWSINGLELIST"_Stz,        // CN_ROWSINGLELIST
-  /* */ "ROWTABLEPTN"_Stz,          // CN_ROWTABLEPTN
   /* */ "ROWTRAY"_Stz,              // CN_ROWTRAY
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
