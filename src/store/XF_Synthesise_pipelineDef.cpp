@@ -53,7 +53,6 @@ XF_Synthesise_pipelineDef::~XF_Synthesise_pipelineDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  delete m_pPipelineDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,18 +62,20 @@ XF_Synthesise_pipelineDef::~XF_Synthesise_pipelineDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vXF_Make_Code(CardIter* pCI)
+void XF_Synthesise_pipelineDef::vSynthesise(CardIter* pCI)
 {
   _static_
 
-  XF_Synthesise_pipelineDef* pXF_Make_Code = new XF_Synthesise_pipelineDef(pCI);
-  pXF_Make_Code->vSynthesise();
+  UNUSED(pCI);
 
-  PipelineDef* pPipelineDef = pXF_Make_Code->pPipelineDef();
-  pXF_Make_Code->vPipelineDef(nullptr);
+  XF_Synthesise_pipelineDef* pXF_Synthesise_pipelineDef = new XF_Synthesise_pipelineDef(pCI);
+  pXF_Synthesise_pipelineDef->vSynthesise();
+
+  PipelineDef* pPipelineDef = pXF_Synthesise_pipelineDef->pPipelineDef();
+  pXF_Synthesise_pipelineDef->vPipelineDef(nullptr);
   pCI->m_pBench->pOptimiser()->vPipelineDef(pPipelineDef);
 
-  delete pXF_Make_Code;
+  delete pXF_Synthesise_pipelineDef;
 }
 
 
@@ -116,13 +117,6 @@ void XF_Synthesise_pipelineDef::vSynthesise(void)
   Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
 
   vCraftPipelineDef(pBoard);
-
-  if (AM::JOB::bHasTag(C_NOCODESYNTHESIS))
-    return;
-
-  eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
-  UNUSED(eError);
-
 }
 
 /*----------------------------------------------------------------------------*/

@@ -33,7 +33,7 @@ namespace STORE
     XF_Synthesise_pipelineDef(CardIter* pCI);
    ~XF_Synthesise_pipelineDef(void) noexcept(false);
 
-    static void vXF_Make_Code(CardIter* pCI);
+    static void vSynthesise(CardIter* pCI);
 
     PipelineDef* pPipelineDef(void);
     void vPipelineDef(PipelineDef* pPipelineDef);

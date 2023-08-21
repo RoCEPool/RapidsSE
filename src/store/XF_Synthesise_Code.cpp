@@ -28,14 +28,14 @@ __aFooterFunction(XF_Synthesise_Code)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Synthesise_Code::XF_Synthesise_Code(CardIter* pCI)
+XF_Synthesise_Code::XF_Synthesise_Code(CardIter* pCI, PipelineDef* pPipelineDef)
 : Object(CN_XF_SYNTHESISE_CODE)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   m_pCI = pCI;
 
-  m_pPipelineDef = nullptr;
+  m_pPipelineDef = pPipelineDef;
   m_pStageDef    = nullptr;
   m_pOpDef       = nullptr;
 
@@ -53,7 +53,6 @@ XF_Synthesise_Code::~XF_Synthesise_Code(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
-  delete m_pPipelineDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,16 +62,12 @@ XF_Synthesise_Code::~XF_Synthesise_Code(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_Code::vXF_Make_Code(CardIter* pCI)
+void XF_Synthesise_Code::vXF_Make_Code(CardIter* pCI, PipelineDef* pPipelineDef)
 {
   _static_
 
-  XF_Synthesise_Code* pXF_Make_Code = new XF_Synthesise_Code(pCI);
+  XF_Synthesise_Code* pXF_Make_Code = new XF_Synthesise_Code(pCI, pPipelineDef);
   pXF_Make_Code->vSynthesise();
-
-  PipelineDef* pPipelineDef = pXF_Make_Code->pPipelineDef();
-  pXF_Make_Code->vPipelineDef(nullptr);
-  pCI->m_pBench->pOptimiser()->vPipelineDef(pPipelineDef);
 
   delete pXF_Make_Code;
 }
@@ -112,10 +107,6 @@ void XF_Synthesise_Code::vPipelineDef(PipelineDef* pPipelineDef)
 void XF_Synthesise_Code::vSynthesise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
-
-  Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
-
-  vCraftPipelineDef(pBoard);
 
   if (AM::JOB::bHasTag(C_NOCODESYNTHESIS))
     return;

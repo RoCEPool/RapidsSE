@@ -8,36 +8,37 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
-#include "XF_Prolog_Add_level.hpp"
+#include "XF_Epilog_Column_mapping.hpp"
+#include "XF_Epilog_Dedupe_as.hpp"
+#include "XF_Epilog_Promote_filter.hpp"
+#include "XF_Epilog_Reinstate_stage.hpp"
+#include "XF_Epilog_stage_cast.hpp"
+#include "XF_Epilog_stmCol_To_colNm.hpp"
+#include "XF_Epilog_tblCol_To_stmCol.hpp"
+#include "XF_Flatten.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
-#include "XF_Epilog_Dedupe_as.hpp"
-#include "XF_Prolog_Delete_Unneeded.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
 #include "XF_Optimise_Early_projection.hpp"
-#include "XF_Flatten.hpp"
-#include "XF_Epilog_Promote_filter.hpp"
-#include "XF_Synthesise_Code.hpp"
-#include "XF_Optimise_scan_To_indexScan.hpp"
-#include "XF_Optimise_from_To_OP.hpp"
-#include "XF_Prolog_Move_on.hpp"
-#include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
-#include "XF_Epilog_Reinstate_stage.hpp"
+#include "XF_Optimise_from_To_OP.hpp"
+#include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
+#include "XF_Optimise_scan_To_indexScan.hpp"
+#include "XF_Prolog_Add_level.hpp"
+#include "XF_Prolog_Delete_Unneeded.hpp"
+#include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Shorten_queryNm.hpp"
 #include "XF_Prolog_as_Review.hpp"
+#include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Prolog_index_Analysis.hpp"
 #include "XF_Prolog_not_Ops.hpp"
 #include "XF_Prolog_projection_Analysis.hpp"
 #include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
 #include "XF_Prolog_scan_To_from.hpp"
-#include "XF_Epilog_stage_cast.hpp"
-#include "XF_Epilog_stmCol_To_colNm.hpp"
 #include "XF_Prolog_subQuery_Analysis.hpp"
 #include "XF_Prolog_table_Analysis.hpp"
-#include "XF_Epilog_tblCol_To_stmCol.hpp"
-#include "XF_Epilog_Column_mapping.hpp"
-#include "XF_Prolog_colNm_To_stmCol.hpp"
+#include "XF_Synthesise_Code.hpp"
+#include "XF_Synthesise_pipelineDef.hpp"
 
 #include "eOT.h"
 
@@ -226,7 +227,8 @@ void XF::vTransform(void)
   m_pCI->vBoardIteration();
   RASSERT(m_pCI->bEachBoard());
 
-  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
+  XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
+  XF_Synthesise_Code::vXF_Make_Code(m_pCI,m_pCI->m_pBench->pOptimiser()->pPipelineDef());
 
   m_pCI->m_pBench->vEndPhase();
 }
@@ -312,7 +314,8 @@ void XF::vTransform_passThru(void)
 
   vCrosscheck_Optimisations();
 
-  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
+  XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
+  XF_Synthesise_Code::vXF_Make_Code(m_pCI,m_pCI->m_pBench->pOptimiser()->pPipelineDef());
 }
 
 /*----------------------------------------------------------------------------*/
