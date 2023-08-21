@@ -40,15 +40,9 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 
   m_iBufferNo  = iBufferNo();
 
-  if(eClassNo == CN_CRWBUFFER ||
-     eClassNo == CN_ROWBUFFER) {
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 
-    m_oBufferId = AM::pFileMap()->oGetNewBufferId();
-
-    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
-  } else {
-    m_oBufferId.m_iAsI8 = 0;
-  }
+  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 
   m_tLglPtn     = C_UNKNOWN;
   

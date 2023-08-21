@@ -3650,6 +3650,25 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+
+      if (pCsvBuffer->bIsPermanent()) {
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this csvbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pCsvBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pCsvBuffer->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this csvbuffer
+        // should not have any locks on it
+
+        pCsvBuffer->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
+        break;
+      }
+
       delete pCsvBuffer;
       break;
     }
@@ -3676,6 +3695,25 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
+
+      if (pInfoSet->bIsPermanent()) {
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this infoset
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pInfoSet->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pInfoSet->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this infoset
+        // should not have any locks on it
+
+        pInfoSet->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pInfoSet->oGetBufferId().m_pvAsAddress));
+        break;
+      }
+
       delete pInfoSet;
       break;
     }

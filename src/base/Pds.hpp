@@ -26,7 +26,7 @@ namespace BASE
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
 
-    i8 m_iSyntheticKey; // Synthetic key used when we only append to the Skip List
+//    i8 m_iSyntheticKey; // Synthetic key used when we only append to the Skip List
 
     // Save the last usable offset for asserts
 
@@ -44,7 +44,7 @@ namespace BASE
 
     // Note: Only the public functions grab a lock
     // public:
-    SkipListBlock*  pAppendWithSynthKey(void);
+//    SkipListBlock*  pAppendWithSynthKey(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
     void            vDumpInUseList(void);
