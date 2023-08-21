@@ -233,7 +233,8 @@ void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
       
     case DM_FLT: {
       SP_Flt spFlt;
-      StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(*(d8*)&iVal));
+      d8* pdVal = (d8*) &iVal;
+      StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(*pdVal));
       break;
     }
       
