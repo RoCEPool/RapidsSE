@@ -92,9 +92,9 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   while (pCI->G_bEachMainWith3Sub(CK_FROM,CK_TABLE,CK_PROJECTION,CK_INDEXLIST)) {
 
-    CardIter xCI(pCI->G.p_indexList);
-    while (xCI.G_bEachMain(CK_INDEX)) {
-      pCI->G.p_idxColList = xCI.G.p_index->pSub_idxColList();
+    Kid xCI(pCI->G.p_indexList);
+    while (xCI.bEach(CK_INDEX)) {
+      pCI->G.p_idxColList = xCI.p_index()->pSub_idxColList();
       pCI->G.p_idxColList->vAffix_tblColOdn(pCI->G.p_projection);
     }
   }
@@ -337,12 +337,12 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
   RASSERT(1 == p_boolCalc->nChildCards());
   Card_PRED* p_pred_root = p_boolCalc->pRootPred();
 
-  CardIter xCI(pCI->G.p_indexList);
-  while (xCI.G_bEachMain(CK_INDEX)) {
+  Kid xCI(pCI->G.p_indexList);
+  while (xCI.bEach(CK_INDEX)) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    Card_Index* p_index = xCI.G.p_index;
+    Card_Index* p_index = xCI.p_index();
 
     //p_index->vDump(__func__);
 
@@ -478,9 +478,9 @@ bool Card_Table::bScopeContains_Pred(Card_PRED* p_pred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI(p_pred);
-  while (xCI.G_bEachMain(CK_TERM)) {
-    if (! this->bScopeContains_term(xCI.G.p_term, pScope))
+  Kid xCI(p_pred);
+  while (xCI.bEach(CK_TERM)) {
+    if (! this->bScopeContains_term(xCI.p_term(), pScope))
       return false;
   }
 
