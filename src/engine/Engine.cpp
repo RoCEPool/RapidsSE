@@ -2074,7 +2074,7 @@ void Engine::vWaitStop(void)
   
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
-    AM::vNapMsec(10,CN_NONE);
+    AM::vNapMsec(100,CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/

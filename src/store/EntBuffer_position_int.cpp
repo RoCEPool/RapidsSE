@@ -93,7 +93,9 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
 
   if (nItems() == 0)
     return aSkipRoots();
-  
+
+  RASSERT( ! pIndexDef()->bHasDescending() );
+
   i8 nLvlLevels = AM::nLvlLevels();
   
   Ent* aSkipRoots = this->aSkipRoots();
@@ -118,15 +120,6 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
 
-//      if (pIndexDef()->bHasDescending()) {
-//        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
-//          break;
-//      }
-//      else {
-//        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
-//          break;
-//      }
-      RASSERT( ! pIndexDef()->bHasDescending() );
       if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
         break;
       
@@ -376,7 +369,8 @@ void EntBuffer::vPosVecPriorToEntry_int(Key* aGivenKey_int,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
   RASSERT(KE_INT == m_eEntKind);
-  
+  RASSERT( ! pIndexDef()->bHasDescending() );
+
   i8 nLvlLevels = AM::nLvlLevels();
     
   Ent* aSkipRoots = this->aSkipRoots();
@@ -406,16 +400,6 @@ void EntBuffer::vPosVecPriorToEntry_int(Key* aGivenKey_int,
       aNextEnt_int = GET_ENTRY(tNextEnt);
       iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
 
-//      if (pIndexDef()->bHasDescending()) {
-//        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
-//          break;
-//      }
-//      else {
-//        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
-//          break;
-//      }
-
-      RASSERT( ! pIndexDef()->bHasDescending() );
       if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
         break;
       
@@ -440,10 +424,9 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   RASSERT(KE_INT == m_eEntKind);
-  
-  //ASSERT(0 == m_iBufferHeight);
 
   IndexDef* pIndexDef = this->pIndexDef();
+  RASSERT( ! pIndexDef->bHasDescending() );
 
   i8 nLvlLevels = AM::nLvlLevels();
   
@@ -477,16 +460,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
       
       i8 iNextInt = aNextEntry_sl->iIntElm0();
       i8 iWithInt = *(i8*)aWithKey;
-      
-      //bGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
-//      if (pIndexDef->bHasDescending()) {
-//        bGreaterEqual = (iNextInt <= iWithInt);
-//      }
-//      else {
-//        bGreaterEqual = (iNextInt >= iWithInt);
-//      }
 
-      RASSERT( ! pIndexDef->bHasDescending() );
       bGreaterEqual = (iNextInt >= iWithInt);
 
       if (bGreaterEqual) {

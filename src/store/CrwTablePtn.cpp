@@ -359,6 +359,7 @@ void CrwTablePtn::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 void CrwTablePtn::vVerifyPds(void)
 {
+#ifdef WITH_DEBUG_VERSIO
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   SkipListBlock* pPdsCursor = m_pPdsOfBufferIds->pFirstBlock();
@@ -377,6 +378,8 @@ void CrwTablePtn::vVerifyPds(void)
 
   RASSERT(pPdsCursor == nullptr);
   RASSERT(pLLCursor == nullptr);
+
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
