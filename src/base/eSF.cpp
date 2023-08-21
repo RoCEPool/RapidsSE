@@ -53,6 +53,7 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_TBL_NM"_Stz,
   /* */ "SF_TBL_SYN"_Stz,
+  /* */ "SF_TBL_SYN_rep"_Stz,
   /* */ "SF_TYPE"_Stz,
   /* */ "SF_WHEN"_Stz,
   /* */ "SF_XK_CAST"_Stz,
