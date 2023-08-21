@@ -207,7 +207,7 @@ void DataBuffer::vTable_dbuff(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_);
   //vTrace("DataBuffer::vTable\n"_Stz);
   m_pTable_dbuff = pTable;
-  vStreamDef_dbuff(pTable->pStreamDef());
+  vStreamDef_dbuff(pTable == nullptr ? nullptr : pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
