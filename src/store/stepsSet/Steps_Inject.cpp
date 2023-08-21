@@ -197,9 +197,8 @@ void Step::vInjectILL(void)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnonnull"
   strcpy(pC,"abc");
-#pragma GCC diagnostic pop
-
   printf("%s\n", pC);
+#pragma GCC diagnostic pop
 
   //raise(SIGILL);
 
