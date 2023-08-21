@@ -1326,145 +1326,145 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_NONE: break;
 
-    case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
-    case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_ANDPRED:          *((Card**)&G.p_andPred)          = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
-    case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
+    case CK_ABSJOIN:          G.p_absJoin          = (Card_AbsJoin*)        pCard; break;
+    case CK_AGGREG:           G.p_aggreg           = (Card_Aggreg*)         pCard;
+                              G.p_OP               = (Card_OP*)             pCard; break;
+    case CK_ANDPRED:          G.p_andPred          = (Card_AndPred*)        pCard;
+                              G.p_PRED             = (Card_PRED*)           pCard; break;
+    case CK_AS:               G.p_as               = (Card_As*)             pCard; break;
 
-    case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
-    case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;
-    case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
+    case CK_BOOLCALC:         G.p_boolCalc         = (Card_BoolCalc*)       pCard; break;
+    case CK_BOUND:            G.p_bound            = (Card_Bound*)          pCard; break;
+    case CK_BOUNDS:           G.p_bounds           = (Card_Bounds*)         pCard; break;
 
-    case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
-    case CK_CAST:             *((Card**)&G.p_cast)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
+    case CK_CALL:             G.p_call              = (Card_Call*)          pCard; break;
+    case CK_CAST:             G.p_cast              = (Card_Cast*)          pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_CMPPRED:          G.p_cmpPred           = (Card_CmpPred*)       pCard;
+                              G.p_PRED              = (Card_PRED*)          pCard; break;
 
-    case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;
-    case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
-    case CK_COSTJOINING:      *((Card**)&G.p_costJoining)      = pCard; break;
-    case CK_COSTNETWORK:      *((Card**)&G.p_costNetwork)      = pCard; break;
-    case CK_COSTSTREAM:       *((Card**)&G.p_costQuery)        = pCard; break;
-    case CK_COSTUNICAST:      *((Card**)&G.p_costUnicast)      = pCard; break;
-    case CK_COUNT:            *((Card**)&G.p_count)            = pCard; break;
-    case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_COMBINED:         G.p_combined          = (Card_Combined*)      pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_CONSTRAINT:       G.p_constraint        = (Card_Constraint*)    pCard; break;
+    case CK_CORRELATION:      G.p_correlation       = (Card_Correlation*)   pCard; break;
+    case CK_COSTJOINING:      G.p_costJoining       = (Card_CostJoining*)   pCard; break;
+    case CK_COSTNETWORK:      G.p_costNetwork       = (Card_CostNetwork*)   pCard; break;
+    case CK_COSTSTREAM:       G.p_costQuery         = (Card_CostStream*)    pCard; break;
+    case CK_COSTUNICAST:      G.p_costUnicast       = (Card_CostUnicast*)   pCard; break;
+    case CK_COUNT:            G.p_count             = (Card_Count*)         pCard; break;
+    case CK_CROSSJOIN:        G.p_crossJoin         = (Card_CrossJoin*)     pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
 
-    case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
+    case CK_DIRECTION:        G.p_direction         = (Card_Direction*)     pCard; break;
 
-    case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
+    case CK_EXPR:             G.p_expr              = (Card_Expr*)          pCard; break;
 
-    case CK_FILTER:           *((Card**)&G.p_filter)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_FILTPRED:         *((Card**)&G.p_filtPred)         = pCard; break;
-    case CK_FILTPREDLIST:     *((Card**)&G.p_filtPredList)     = pCard; break;
-    case CK_FLAT:             *((Card**)&G.p_flat)             = pCard; break;
-    case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
-    case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
-    case CK_FROM:             *((Card**)&G.p_from)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_FILTER:           G.p_filter            = (Card_Filter*)        pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_FILTPRED:         G.p_filtPred          = (Card_FiltPred*)      pCard; break;
+    case CK_FILTPREDLIST:     G.p_filtPredList      = (Card_FiltPredList*)  pCard; break;
+    case CK_FLAT:             G.p_flat              = (Card_Flat*)          pCard; break;
+    case CK_FOLD:             G.p_fold              = (Card_Fold*)          pCard; break;
+    case CK_FOLDELIST:        G.p_foldElist         = (Card_FoldElist*)     pCard; break;
+    case CK_FROM:             G.p_from              = (Card_From*)          pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
 
-    case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_GBYAGG:           G.p_gbyAgg            = (Card_GbyAgg*)        pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
 
-    case CK_HASH:             *((Card**)&G.p_hash)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_HAVING:           *((Card**)&G.p_having)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_HSHCOL:           *((Card**)&G.p_hshCol)           = pCard; break;
+    case CK_HASH:             G.p_hash              = (Card_Hash*)          pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_HAVING:           G.p_having            = (Card_Having*)        pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_HSHCOL:           G.p_hshCol            = (Card_HshCol*)        pCard; break;
 
-    case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
-    case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
-    case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
-    case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
-    case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
-    case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_IDXCOL:           G.p_idxCol            = (Card_IdxCol*)        pCard; break;
+    case CK_IDXCOLLIST:       G.p_idxColList        = (Card_IdxColList*)    pCard; break;
+    case CK_INDEX:            G.p_index             = (Card_Index*)         pCard; break;
+    case CK_INDEXJOIN:        G.p_indexJoin         = (Card_IndexJoin*)     pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_INDEXLIST:        G.p_indexList         = (Card_IndexList*)     pCard; break;
+    case CK_INDEXNM:          G.p_indexNm           = (Card_IndexNm*)       pCard; break;
+    case CK_INDEXSCAN:        G.p_indexScan         = (Card_IndexScan*)     pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
 
-    case CK_JOINCAST:         *((Card**)&G.p_joinCast)         = pCard; break;
-    case CK_JOINESTIMATE:     *((Card**)&G.p_joinEstimate)     = pCard; break;
-    case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
-    case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
-    case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
+    case CK_JOINCAST:         G.p_joinCast          = (Card_JoinCast*)      pCard; break;
+    case CK_JOINESTIMATE:     G.p_joinEstimate      = (Card_JoinEstimate*)  pCard; break;
+    case CK_JOINORDER:        G.p_joinOrder         = (Card_JoinOrder*)     pCard; break;
+    case CK_JOINORDERING:     G.p_joinOrdering      = (Card_JoinOrdering*)  pCard; break;
+    case CK_JOINPREDLIST:     G.p_joinPredList      = (Card_JoinPredList*)  pCard; break;
 
-    case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
-    case CK_KEYCELLS:         *((Card**)&G.p_keyCells)         = pCard; break;
-    case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_KEY:              G.p_key               = (Card_Key*)           pCard; break;
+    case CK_KEYCELLS:         G.p_keyCells          = (Card_KeyCells*)      pCard; break;
+    case CK_KEYEXISTS:        G.p_keyExists         = (Card_KeyExists*)     pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_KEYNOTEXISTS:     G.p_keyNotExists      = (Card_KeyNotExists*)  pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
 
-    case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
-    case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_LEVEL:            G.p_level             = (Card_Level*)         pCard; break;
+    case CK_LIMIT:            G.p_limit             = (Card_Limit*)         pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
 
-    case CK_MAP:              *((Card**)&G.p_map)              = pCard; break;
-    case CK_MAPPING:          *((Card**)&G.p_mapping)          = pCard; break;
+    case CK_MAP:              G.p_map               = (Card_Map*)           pCard; break;
+    case CK_MAPPING:          G.p_mapping           = (Card_Mapping*)       pCard; break;
 
-    case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
-    case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;
-    case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
-    case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
+    case CK_NCORRCOLS:        G.p_nCorrCols         = (Card_NCorrCols*)     pCard; break;
+    case CK_NEEDED:           G.p_needed            = (Card_Needed*)        pCard; break;
+    case CK_NOTE:             G.p_note              = (Card_Note*)          pCard; break;
+    case CK_NOTPRED:          G.p_notPred           = (Card_NotPred*)       pCard;
+                              G.p_PRED              = (Card_PRED*)          pCard; break;
 
-    case CK_ON:               *((Card**)&G.p_on)               = pCard; break;
-    case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_ORPRED:           *((Card**)&G.p_orPred)           = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
-    case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
-    case CK_OUTERJOIN:        *((Card**)&G.p_outerJoin)        = pCard; break;
+    case CK_ON:               G.p_on                = (Card_On*)            pCard; break;
+    case CK_ORDAGG:           G.p_ordAgg            = (Card_OrdAgg*)        pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_ORPRED:           G.p_orPred            = (Card_OrPred*)        pCard;
+                              G.p_PRED              = (Card_PRED*)          pCard; break;
+    case CK_OUTERCOLNM:       G.p_outerColNm        = (Card_OuterColNm*)    pCard; break;
+    case CK_OUTERJOIN:        G.p_outerJoin         = (Card_OuterJoin*)     pCard; break;
 
-    case CK_PAYLOADCELLS:     *((Card**)&G.p_payloadCells)     = pCard; break;
-    case CK_PROJECT:          *((Card**)&G.p_project)          = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
+    case CK_PAYLOADCELLS:     G.p_payloadCells      = (Card_PayloadCells*)  pCard; break;
+    case CK_PROJECT:          G.p_project           = (Card_Project*)       pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_PROJECTION:       G.p_projection        = (Card_Projection*)    pCard; break;
 
-    case CK_ROWCOUNT:         *((Card**)&G.p_rowCount)         = pCard; break;
-    case CK_ROWSIZE:          *((Card**)&G.p_rowSize)          = pCard; break;
-    case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
+    case CK_ROWCOUNT:         G.p_rowCount          = (Card_RowCount*)      pCard; break;
+    case CK_ROWSIZE:          G.p_rowSize           = (Card_RowSize*)       pCard; break;
+    case CK_RPNCALC:          G.p_rpnCalc           = (Card_RpnCalc*)       pCard; break;
 
-    case CK_SCAN:             *((Card**)&G.p_scan)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
-    case CK_SEND:             *((Card**)&G.p_send)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_SORT:             *((Card**)&G.p_sort)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_SPARE:            *((Card**)&G.p_section)          = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_STAGE:            *((Card**)&G.p_stage)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_STREAMHEAD:       *((Card**)&G.p_streamHead)       = pCard; break;
-    case CK_STREAMJOIN:       *((Card**)&G.p_streamJoin)       = pCard; break;
-    case CK_STREAMKEY:        *((Card**)&G.p_streamKey)        = pCard; break;
-    case CK_STREAMPER:        *((Card**)&G.p_streamPer)        = pCard; break;
-    case CK_STREAMPTN:        *((Card**)&G.p_streamPtn)        = pCard; break;
-    case CK_STREAMSET:        *((Card**)&G.p_streamSet)        = pCard; break;
-    case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
-    case CK_TABLE:            *((Card**)&G.p_table)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_SCAN:             G.p_scan              = (Card_Scan*)          pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_SECTION:          G.p_section           = (Card_Section*)       pCard; break;
+    case CK_SEND:             G.p_send              = (Card_Send*)          pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_SORT:             G.p_sort              = (Card_Sort*)          pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_SPARE:            G.p_section           = (Card_Section*)       pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_STAGE:            G.p_stage             = (Card_Stage*)         pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_STREAMHEAD:       G.p_streamHead        = (Card_StreamHead*)    pCard; break;
+    case CK_STREAMJOIN:       G.p_streamJoin        = (Card_StreamJoin*)    pCard; break;
+    case CK_STREAMKEY:        G.p_streamKey         = (Card_StreamKey*)     pCard; break;
+    case CK_STREAMPER:        G.p_streamPer         = (Card_StreamPer*)     pCard; break;
+    case CK_STREAMPTN:        G.p_streamPtn         = (Card_StreamPtn*)     pCard; break;
+    case CK_STREAMSET:        G.p_streamSet         = (Card_StreamSet*)     pCard; break;
+    case CK_SUBSET:           G.p_subSet            = (Card_SubSet*)        pCard; break;
+    case CK_TABLE:            G.p_table             = (Card_Table*)         pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
 
-    case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
-    case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
-    case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
-    case CK_TABLESIZE:        *((Card**)&G.p_tableSize)        = pCard; break;
-    case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
-    case CK_TOP:              *((Card**)&G.p_top)              = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
+    case CK_TABLELIST:        G.p_tableList         = (Card_TableList*)     pCard; break;
+    case CK_TABLENM:          G.p_tableNm           = (Card_TableNm*)       pCard; break;
+    case CK_TABLEPTN:         G.p_tablePtn          = (Card_TablePtn*)      pCard; break;
+    case CK_TABLESIZE:        G.p_tableSize         = (Card_TableSize*)     pCard; break;
+    case CK_TERM:             G.p_term              = (Card_Term*)          pCard; break;
+    case CK_TOP:              G.p_top               = (Card_Top*)           pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_TOPOLOGY:         G.p_topology          = (Card_Topology*)      pCard; break;
 
-    case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
+    case CK_UNIQUE:           G.p_unique            = (Card_Unique*)        pCard; break;
 
-    case CK_WHERE:            *((Card**)&G.p_where)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_WHERE:            G.p_where             = (Card_Where*)         pCard;
+                              G.p_OP                = (Card_OP*)            pCard; break;
     default:
       NEVER_REACH
   }

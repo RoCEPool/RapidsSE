@@ -240,7 +240,7 @@ void CrwBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   DataBuffer::vTable_dbuff(pTable);
-  vStreamDef(pTable->pStreamDef());
+  vStreamDef(pTable == nullptr ? nullptr : pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
