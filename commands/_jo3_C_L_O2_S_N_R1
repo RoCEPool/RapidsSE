@@ -10,7 +10,7 @@ tag default <suffix>   = "csv";
 __TPCH_SCHEMA
 
 /filterPred
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /joWrite

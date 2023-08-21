@@ -5,7 +5,7 @@
 _r_schema
 
 /transliterated
-/glean_interactive
+/optimiser_trace
 /weaved
 /pipelineName = "_ray"
 select substring(c_phone from 1 for 2) as cntrycode

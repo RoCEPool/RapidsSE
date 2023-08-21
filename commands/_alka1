@@ -27,7 +27,7 @@ load T2 "../DATA/Joins/T2.csv" ;
 
 //WORKS!!!
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipeline_def
@@ -36,7 +36,7 @@ select * from T1;
 */
 
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipeline_def
@@ -44,7 +44,7 @@ select * from T1, T2 where t1.a = t2.a;
 
 
 /*
-/glean_interactive
+/optimiser_trace
 /optimise_passthru
 /transliterated
 /weaved

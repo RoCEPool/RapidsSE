@@ -1732,7 +1732,7 @@ void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
   _precondition_(_MAGIC_, _FOOTER_);
   UNUSED(iLineNo);
 
-  if (! AM::JOB::bHasTag(C_GLEAN_INTERACTIVE) && ! bForce)
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE) && ! bForce)
     return;
 
   G.pBoard->vPrintBoard(szXdesc());

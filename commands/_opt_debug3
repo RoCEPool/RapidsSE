@@ -50,7 +50,7 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
 /glean_cue_trace = "x"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
   select count(*) from table1 join table9 on pcol1 = pcol9 where not colb1 ='green' and not colb9='green';

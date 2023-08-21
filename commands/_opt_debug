@@ -46,7 +46,7 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 
 /glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
 /glean_cue_trace = "x"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
   select *

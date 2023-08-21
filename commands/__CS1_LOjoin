@@ -9,7 +9,7 @@ load L "../DATA/Joins/L.csv";
 load R "../DATA/Joins/R.csv";
 
 /transliterated
-/glean_interactive
+/optimiser_trace
 /weaved
 select * from L left outer join R on l_int_col0 = r_int_col0;
 

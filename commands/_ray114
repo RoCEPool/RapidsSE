@@ -5,7 +5,7 @@
 
 //NOTE: Optimiser should detect table does not exist
 
-/glean_interactive
+/optimiser_trace
 /pipeline_def
 /weaved
 /optimise_passthru

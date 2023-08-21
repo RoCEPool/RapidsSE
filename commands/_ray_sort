@@ -9,7 +9,7 @@ _customer
 
 load customer "<tpch_dir>/customer.<suffix>" ;
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /pipeline_def
 /weaved

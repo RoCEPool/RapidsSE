@@ -17,7 +17,7 @@ select * from dummy;
 
 trackMemory;
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_tpchQ9_debug"

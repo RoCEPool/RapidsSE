@@ -22,7 +22,7 @@ select count(*)
 
 /optimise
 /glean_cue_from = "vSeries_75_EE_operators"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_JOIN_TWO_INDEX"

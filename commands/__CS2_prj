@@ -11,7 +11,7 @@ trackMemory;
 
 
 /weaved
-/glean_interactive
+/optimiser_trace
 /optimise_passThru
 pipeline unamed
 begin

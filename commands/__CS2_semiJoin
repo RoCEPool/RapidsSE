@@ -13,7 +13,7 @@ CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /optimise_passthru

@@ -192,7 +192,7 @@ extern Stz* P_Type;
 extern Stz* P_Unproject;
 
 extern Stz* C_GLEAN_CUE_FROM;
-extern Stz* C_GLEAN_INTERACTIVE;
+extern Stz* C_OPTIMISER_TRACE;
 extern Stz* C_GLEAN_TRACE;
 extern Stz* C_GLEAN_XFORM;
 extern Stz* C_GLEAN_XHAND;

@@ -42,7 +42,7 @@ select count(*)
 
 
 /optimise
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "__flatL1_s1"

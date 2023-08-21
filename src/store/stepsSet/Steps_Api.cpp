@@ -96,8 +96,8 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_NOCODESYNTHESIS))
     pCmdTagSet->vInsert(C_TAG_NOCODESYNTHESIS);
 
-  if (pJobTags->bHasName(C_TAG_GLEAN_INTERACTIVE))
-    pCmdTagSet->vInsert(C_TAG_GLEAN_INTERACTIVE);
+  if (pJobTags->bHasName(C_TAG_OPTIMISER_TRACE))
+    pCmdTagSet->vInsert(C_TAG_OPTIMISER_TRACE);
 
   if (pJobTags->bHasName(C_CARD_HISTORY))
     pCmdTagSet->vInsert(C_CARD_HISTORY);

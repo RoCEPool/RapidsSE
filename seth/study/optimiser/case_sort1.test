@@ -8,7 +8,7 @@ LOG 'Case Sort 1 ...';
 select count(*) from customer;
 success
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /pipeline_def
 /weaved

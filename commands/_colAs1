@@ -6,7 +6,7 @@ _part
 CREATE INDEX IxP_PARTKEY ON part(p_partkey);
 load part "../TPCH/SF_0001/part.csv";
 
-/glean_interactive
+/optimiser_trace
 /weaved
 /transliterated
 /pipeline_def

@@ -12,7 +12,7 @@ _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
 /joWrite
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /filterPred

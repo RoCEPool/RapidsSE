@@ -61,7 +61,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   _checkInitialised_(CN_OPTIMISER);
 
-  //MY::pJob()->pJobTags()->vAppend(C_GLEAN_INTERACTIVE);
+  //MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
@@ -124,7 +124,7 @@ bool Optimiser::bApplyTransformations(Error& rxError)
 
   try {
 
-    if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE)) {
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
       vTrace("JobTags\n"_Stz);
       MY::pJob()->pJobTags()->vDumpSet(true);
     }

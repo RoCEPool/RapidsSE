@@ -43,7 +43,7 @@ select * from dummy;
 trackMemory;
 
 /optimise
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_jo3_s8"

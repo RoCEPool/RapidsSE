@@ -20,7 +20,7 @@ load part "../tpch/sf_0001/part.csv" ;
 
 /optimise
 /glean_cue_from = "OTvAppend_indexList_To_scan"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r14"
