@@ -5,6 +5,11 @@
 
 namespace STORE
 {
+  typedef struct {
+    i8 iKey;
+    BufferId oBufferId;
+  } PdsBufferIdItem;
+
   class ToKeyHshRow : public Object
   {
   private:
@@ -18,7 +23,8 @@ namespace STORE
     bool       m_bFirst;
     i8         m_i_Rec;
 
-    RowBuffer* m_pRowBuffer;
+    i8     m_iSynthKey;     // Synthetic key for the Pds
+    Pds_t<PdsBufferIdItem>* m_pPdsOfBufferIds;
   
     //--
   
