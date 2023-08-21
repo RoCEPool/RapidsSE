@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Code.cpp -- Code Fragments                                                 */
+/* CommonCode.cpp -- Common Code Fragments                                    */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -1010,10 +1010,9 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
    }
    else {
      nSrcSize = strlen(szSrcStz) + 1;
-
      // get the destination string
      szDstStz = aDynamicT->m_xRowInfoTO.m_acStrArea;
-     strncpy(szDstStz, szSrcStz, nSrcSize);
+     strncpy(szDstStz, szSrcStz, sizeof(aDynamicT->m_xRowInfoTO.m_cStringArea));
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
@@ -1092,7 +1091,7 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
 #endif
 
     szDstStz = (char*)aDynamicT->m_aiPayload[__INDEX_COLUMN__];
-    strncpy(szDstStz, szSrcStz, nSrcSize);
+    strncpy(szDstStz, szSrcStz, 1024); // todo: discuss with Alka
   }
   // marker-end
 }
