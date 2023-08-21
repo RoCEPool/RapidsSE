@@ -293,6 +293,7 @@
 #include "XF_Flatten_Predicate_Reposition.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
 #include "XF_Update_projection.hpp"
+#include "XF_Synthesise_pipelineDef.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -818,6 +819,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_STMCOL_TO_TBLCOL,             sizeof(XF_Flatten_stmCol_To_tblCol),     HT_T_TINY    , FILL },
   {CN_XF_SUBQUERY_ANALYSIS,            sizeof(XF_Prolog_subQuery_Analysis),     HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,              sizeof(XF_Synthesise_Code),              HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_PIPELINEDEF,       sizeof(XF_Synthesise_pipelineDef),       HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,               sizeof(XF_Prolog_table_Analysis),        HT_T_TINY    , FILL },
   {CN_XF_TBLCOL_TO_STMCOL,             sizeof(XF_Epilog_tblCol_To_stmCol),      HT_T_TINY    , FILL },
   {CN_XF_UPDATE_PROJECTION,        sizeof(XF_Update_projection),                HT_T_TINY    , FILL },
