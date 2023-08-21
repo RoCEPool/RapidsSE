@@ -104,19 +104,6 @@ void Bench::vAddBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does given board exist?                                                    */
-/*----------------------------------------------------------------------------*/
-bool Bench::bBoardExists(i8 i_SubBoard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (pGetBoard(i_SubBoard))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of board                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Bench::nBoards(void)
@@ -139,18 +126,15 @@ CardCtl* Bench::pCardCtl(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear marks                                                                */
+/* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
-void Bench::vClearMarks(void)
+void Bench::vEndPhase(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  i8 nBoards = this->nBoards();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-
-    pBoard->vClearCardMarks();
-  }
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vEndPhase();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,27 +184,6 @@ SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
   SubQuery* pSubQuery= pBoard->pSubQuery();
 
   return pSubQuery;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* is the bench flat?                                                         */
-/*----------------------------------------------------------------------------*/
-bool Bench::bIsFlat(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  return m_bIsFlat;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set is the bench flat?                                                     */
-/*----------------------------------------------------------------------------*/
-void Bench::vIsFlat(bool bIsFlat)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_bIsFlat = bIsFlat;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,6 +312,18 @@ void Bench::vMadeCode(bool bMadeCode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
   m_bMadeCode = bMadeCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin phase                                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vPhase(eOH ePhase)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    m_pCI->pBoard()->vPhase(ePhase);
 }
 
 /*----------------------------------------------------------------------------*/

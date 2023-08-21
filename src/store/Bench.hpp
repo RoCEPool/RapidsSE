@@ -54,15 +54,13 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBoard(Board* pBoard);
-    bool bBoardExists(i8 i_SubBoard = C_UNKNOWN);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
-    void vClearMarks(void);
+    void vEndPhase(void);
+
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
-    bool bIsFlat(void);
-    void vIsFlat(bool bIsFlat);
     bool bIsSubQueryNm(Stz* szSubQueryNm);
     Optimiser* pOptimiser(void);
 
@@ -78,7 +76,10 @@ namespace STORE
     bool bMadeCode(void);
     void vMadeCode(bool bMadeCode);
 
+    void vPhase(eOH ePhase);
+
     void vRenumberCards(void);
+
 
     void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
 
