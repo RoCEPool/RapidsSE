@@ -41,21 +41,20 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_EXPR)) {
+  Kid xCI(this);
+  while (xCI.bEach(CK_EXPR)) {
 
-    xCI.G.p_rpnCalc = xCI.G.p_expr->pSub_rpnCalc();
+    Card_RpnCalc* p_rpnCalc = xCI.p_expr()->pSub_rpnCalc();
 
-    if (! xCI.G.p_rpnCalc)
+    if (! p_rpnCalc)
       continue;
 
-    CardIter xCI2(xCI.G.p_rpnCalc);
-    while ((xCI2.G_bEachMain(CK_TERM))) {
-//      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
+    Kid xCI2(p_rpnCalc);
+    while ((xCI2.bEach(CK_TERM))) {
 
-      if (xCI2.G.p_term->pSymbol()->bIs_Key_Col()) {
-        xCI2.G.p_term->vBumpKeyOdn();
-        xCI2.G.p_term->vMark1(MARK_CHANGED);
+      if (xCI2.p_term()->pSymbol()->bIs_Key_Col()) {
+        xCI2.p_term()->vBumpKeyOdn();
+        xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }
     }
@@ -69,21 +68,21 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_EXPR)) {
+  Kid xCI(this);
+  while (xCI.bEach(CK_EXPR)) {
 
-    xCI.G.p_rpnCalc = xCI.G.p_expr->pSub_rpnCalc();
+    Card_RpnCalc* p_rpnCalc = xCI.p_expr()->pSub_rpnCalc();
 
-    if (! xCI.G.p_rpnCalc)
+    if (! p_rpnCalc)
       continue;
 
-    CardIter xCI2(xCI.G.p_rpnCalc);
-    while (xCI2.G_bEachMain(CK_TERM)) {
+    Kid xCI2(p_rpnCalc);
+    while (xCI2.bEach(CK_TERM)) {
 //      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
 
-      if (xCI2.G.p_term->pSymbol()->bIs_Col_No()) {
-        xCI2.G.p_term->vBump_stmOdn();
-        xCI2.G.p_term->vMark1(MARK_CHANGED);
+      if (xCI2.p_term()->pSymbol()->bIs_Col_No()) {
+        xCI2.p_term()->vBump_stmOdn();
+        xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }
     }
@@ -98,9 +97,9 @@ void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vBump_stmOdn(nBumpBy);
+  Kid xCI(this);
+  while (xCI.bEach(CK_EXPR))
+    xCI.p_expr()->vBump_stmOdn(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,10 +109,10 @@ Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_EXPR))
-    if (xCI_this.G.p_expr->bSameAs(p_expr_arg))
-      return xCI_this.G.p_expr;
+  Kid xCI_this(this);
+  while (xCI_this.bEach(CK_EXPR))
+    if (xCI_this.p_expr()->bSameAs(p_expr_arg))
+      return xCI_this.p_expr();
 
   return nullptr;
 }
@@ -126,9 +125,9 @@ void Card_ELIST::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vConvertAll_stmOdn_To_colOdn(pCI);
+  Kid xCI(this);
+  while (xCI.bEach(CK_EXPR))
+    xCI.p_expr()->vConvertAll_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,13 +236,13 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(iDepth);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_EXPR)) {
+  Kid xCI(this);
+  while (xCI.bEach(CK_EXPR)) {
     StzList* pStzList = new StzList;
 
-    pStzList->vAppend(xCI.G.p_expr->szSymbol(SF_NONE));
+    pStzList->vAppend(xCI.p_expr()->szSymbol(SF_NONE));
 
-    CardIter xCI_expr(xCI.G.p_expr);
+    CardIter xCI_expr(xCI.p_expr());
     xCI_expr.G.p_as        = nullptr;
     xCI_expr.G.p_boolCalc  = nullptr;
     xCI_expr.G.p_rpnCalc   = nullptr;
