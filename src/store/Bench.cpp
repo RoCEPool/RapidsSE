@@ -315,6 +315,21 @@ void Bench::vMadeCode(bool bMadeCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* past given phase?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Bench::bPastPhase(eOH ePhase)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard())
+    if (! m_pCI->pBoard()->bPastPhase(ePhase))
+      return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin phase                                                                */
 /*----------------------------------------------------------------------------*/
 void Bench::vPhase(eOH ePhase)

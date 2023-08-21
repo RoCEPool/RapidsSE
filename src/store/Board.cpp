@@ -230,7 +230,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 {
   _static_
 
-  if (!pCI->m_pBench->bMadeSimpler())
+  if (! pCI->m_pBench->bPastPhase(OH_EPILOG))
     return;
 
   pCI->vSave();
@@ -365,6 +365,19 @@ Mark* Board::pMark(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   return m_pMark;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has board passed given phase                                               */
+/*----------------------------------------------------------------------------*/
+bool Board::bPastPhase(eOH ePhase)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  if (m_pState->bHasName(aOH[ePhase]))
+    return true;
+
+  return false;;
 }
 
 /*----------------------------------------------------------------------------*/

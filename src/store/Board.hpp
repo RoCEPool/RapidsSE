@@ -206,6 +206,8 @@ namespace STORE
 
     void vPrintBoard(Stz* szDescription=nullptr);
 
+    bool bPastPhase(eOH ePhase);
+
     eOH  ePhase(void);
     void vPhase(eOH ePhase);
 

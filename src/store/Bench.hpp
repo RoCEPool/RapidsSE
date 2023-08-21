@@ -76,6 +76,8 @@ namespace STORE
     bool bMadeCode(void);
     void vMadeCode(bool bMadeCode);
 
+    bool bPastPhase(eOH ePhase);
+
     void vPhase(eOH ePhase);
 
     void vRenumberCards(void);
