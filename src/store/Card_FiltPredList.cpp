@@ -95,24 +95,6 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 /*----------------------------------------------------------------------------*/
 /* find the first cmpPred which uses given table                              */
 /*----------------------------------------------------------------------------*/
-Card_FiltPred* Card_FiltPredList::pFindFiltPred(char cTblSyn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(cTblSyn);
-
-
-//  CardIter xCI(this);
-//  while (xCI.G_bEachMain(CK_CMPPRED)) {
-//    if (xCI.G.p_cmpPred->bUsesTable(cTblSyn))
-//      return xCI.G.p_cmpPred;
-//  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find the first cmpPred which uses given table                              */
-/*----------------------------------------------------------------------------*/
 i8 Card_FiltPredList::nFiltersFor(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

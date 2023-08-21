@@ -20,8 +20,6 @@ namespace STORE
 
     static Card_FiltPredList* pExtractList(Card_Deck* p_deck);
 
-    Card_FiltPred* pFindFiltPred(char cTblSyn);
-
     i8 nFiltersFor(char cTblSyn);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
