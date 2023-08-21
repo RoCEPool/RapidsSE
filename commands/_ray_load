@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _ray_load                                                                  */
+/*============================================================================*/
+
+tag default <tpch_dir> = "/users/shared/rapidsse/TPCH/SF10";
+tag default <suffix>   = "csv";
+
+_lineitem
+
+//create index lineItem_Idx1 ON LineItem(L_ORDERKEY);
+//create index lineItem_Idx2 ON LineItem(L_SHIPDATE);
+
+/time load lineitem "<tpch_dir>/lineitem.<suffix>" ;
+
+/pipelineName = "_ray_load"
+select count(*)
+  from lineitem
+;
+
+drop table lineitem;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
