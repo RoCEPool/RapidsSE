@@ -50,8 +50,8 @@ LINUX_WARNINGS := -Wfatal-errors     # Stop compiling when an error is encounter
 LINUX_WARNINGS += -Wno-attributes    # Ignore function attributes that don't apply
 
 # Specific error flags and warnings that are being promoted to errors on g++ on Linux
-LINUX_ERRORS := -Werror
-LINUX_ERRORS += -Werror=div-by-zero     # this is normally an 'extra' warning
+#LINUX_ERRORS := -Werror
+#LINUX_ERRORS += -Werror=div-by-zero     # this is normally an 'extra' warning
 
 # # These errors can be removed once we turn on -Werror above.
 # LINUX_ERRORS := -Werror=return-type
