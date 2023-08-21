@@ -438,8 +438,8 @@ eEV MY::eOperand(void)
 void* MY::pPdsCrwTablePtn(void)
 {
   _static_
-
-  if (C_UNKNOWN == (i8)giTLS_PDSCrwTablePtn)
+  i8 iTLSVal = (i8) giTLS_PDSCrwTablePtn;
+  if (C_UNKNOWN == iTLSVal)
     return nullptr;
 
   void* pPdsBufferId = static_cast<void*>(PsxThd::pTlsGet(giTLS_PDSCrwTablePtn));
@@ -480,7 +480,8 @@ StepAccum* MY::pStepAccum(void)
 {
   _static_
 
-  if (C_UNKNOWN == (i8)giTLS_StepAccum)
+  i8 iTLSVal = (i8) giTLS_StepAccum;
+  if (C_UNKNOWN == iTLSVal)
     return nullptr;
 
   StepAccum* pStepAccum = static_cast<StepAccum*>(PsxThd::pTlsGet(giTLS_StepAccum));
