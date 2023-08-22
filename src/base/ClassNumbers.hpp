@@ -471,6 +471,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_MOVE_ON,
   /* */ CN_XF_NOT_OPS,
+  /* */ CN_XF_OPTIMISE_ONETIME_CALC,
   /* */ CN_XF_OT_CUT_SORT,
   /* */ CN_XF_OT_EARLY_PROJECTION,
   /* */ CN_XF_OT_JOIN_ORDERING,
@@ -966,6 +967,7 @@ static Stz* aCN[]
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
   /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
   /* */ "XF_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
+  /* */ "XF_OPTIMISE_ONETIME_CALC"_Stz,     // CN_XF_OPTIMISE_ONETIME_CALC
   /* */ "XF_OT_CUT_SORT"_Stz,                  // CN_XF_OT_CUT_SORT
   /* */ "XF_OT_EARLY_PROJECTION"_Stz,          // CN_XF_OT_EARLY_PROJECTION
   /* */ "XF_OT_JOIN_ORDERING"_Stz,             // CN_XF_OT_JOIN_ORDERING

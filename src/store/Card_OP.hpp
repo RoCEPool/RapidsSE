@@ -34,7 +34,6 @@ namespace STORE
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);
 
-    bool bIsDataInclusion(void);
     bool bIsEarlyLeaf(CardIter* pCI);
     bool bIsEarlyRoot(void);
     bool bIsNodeLevel(void);
@@ -42,18 +41,12 @@ namespace STORE
     bool bIsPartitionLevel(void);
 
     bool bNeedsProjectionAnalysis(void);
-    bool bNeedsProjectionCorrection(void);
 
     bool bPeg_Chosen_index(CardIter* pCI);
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vRelegate_table(CardIter* pCI, Card_OP* p_under);
-
     void vUpdate_projection(CardIter* pCI);
-
-    void vCraftArg(String* pString);
-
 
     void vRpnAggreg      (String* psRpnExpr, Card_Aggreg*    pCard_Aggreg);
     void vRpnCombined    (String* psRpnExpr, Card_Combined*  pCard_Combined);

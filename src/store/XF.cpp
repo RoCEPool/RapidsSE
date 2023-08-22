@@ -23,6 +23,7 @@
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
 #include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
+#include "XF_Optimise_OneTime_calc.hpp"
 #include "XF_Optimise_scan_To_indexScan.hpp"
 #include "XF_Prolog_Add_level.hpp"
 #include "XF_Prolog_Delete_Unneeded.hpp"
@@ -188,6 +189,8 @@ void XF::vTransform(void)
   XF_Optimise_Early_projection::vXF_Early_projection(m_pCI);
 
   XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
+
+  XF_Optimise_OneTime_calc::vOptimise(m_pCI);
 
   m_pCI->m_pBench->vEndPhase();
 

@@ -503,26 +503,6 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this op bring data into the pipeline                                  */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bIsDataInclusion(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-    case CK_INDEXJOIN:
-    case CK_INDEXSCAN:
-    case CK_SCAN:
-    case CK_TABLE:
-      return true;
-    default:
-      return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
@@ -662,21 +642,6 @@ bool Card_OP::bNeedsProjectionAnalysis(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does op needs projection correction?                                       */
-/*----------------------------------------------------------------------------*/
-bool Card_OP::bNeedsProjectionCorrection(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (bIsCard(CK_GBYAGG)    ||
-      bIsCard(CK_ORDAGG))
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bPeg_Chosen_index(CardIter* pCI)
@@ -719,53 +684,6 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRelegate_table(CardIter* pCI, Card_OP* p_under)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_level = pSub_level();
-  pCI->G.p_from = pSub_from();
-  pCI->G.p_table->vRemoveSub(pCI->G.p_from);
-
-  pCI->G.p_table->vRemoveSub(p_under);
-  p_under->vTransferChildren(pCI->G.p_table);
-  p_under->vInsert(pCI->G.p_table);
-
-  pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, p_under);
-
-  pCI->G.p_MainCard = p_under;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // restructure
-
-  if ((pCI->G.p_tableNm = pCI->G.p_MainCard->pSub_tableNm())) {
-    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tableNm);
-    pCI->G.p_table->vAppend(pCI->G.p_tableNm);
-  }
-  if ((pCI->G.p_tablePtn = pCI->G.p_MainCard->pSub_tablePtn())) {
-    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tablePtn);
-    pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
-  }
-  if ((pCI->G.p_tableSize = pCI->G.p_MainCard->pSub_tableSize())) {
-    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tableSize);
-    pCI->G.p_table->vAppend(pCI->G.p_tableSize);
-  }
-  if ((pCI->G.p_rowSize = pCI->G.p_MainCard->pSub_rowSize())) {
-    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_rowSize);
-    pCI->G.p_table->vAppend(pCI->G.p_rowSize);
-  }
-  if ((pCI->G.p_rowCount = pCI->G.p_MainCard->pSub_rowCount())) {
-    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_rowCount);
-    pCI->G.p_table->vAppend(pCI->G.p_rowCount);
-  }
-
-  p_under->vInsertAfter(pCI->G.p_from,pCI->G.p_level);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -853,15 +771,6 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   if (p_projection_needed)
     vAppend(p_projection_needed);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vCraftArg(BASE::String *pString)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pString);
 }
 
 /*----------------------------------------------------------------------------*/

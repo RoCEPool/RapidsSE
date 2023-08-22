@@ -294,6 +294,7 @@
 #include "XF_Epilog_Column_mapping.hpp"
 #include "XF_Update_projection.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
+#include "XF_Optimise_OneTime_calc.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -799,6 +800,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_INDIVIDUATE_FILTER,           sizeof(XF_Epilog_Promote_filter),        HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                      sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },
   {CN_XF_NOT_OPS,                      sizeof(XF_Prolog_not_Ops),               HT_T_TINY    , FILL },
+  {CN_XF_OPTIMISE_ONETIME_CALC,        sizeof(XF_Optimise_OneTime_calc),        HT_T_TINY    , FILL },
   {CN_XF_OT_CUT_SORT,                  sizeof(XF_Optimise_Cut_sort),            HT_T_TINY    , FILL },
   {CN_XF_OT_EARLY_PROJECTION,          sizeof(XF_Optimise_Early_projection),    HT_T_TINY    , FILL },
   {CN_XF_OT_JOIN_ORDERING,             sizeof(XF_Flatten_Join_Ordering),        HT_T_TINY    , FILL },
