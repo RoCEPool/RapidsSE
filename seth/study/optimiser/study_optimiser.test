@@ -23,6 +23,75 @@ INCLUDE 'case_sort1.test';
 //------------------------------------------------------------------------------
 
 LOG ' ';
+LOG 'Running tpch query 1...';
+INCLUDE 'tpch_q1.test';
+
+//LOG 'Running tpch query 2...';
+//INCLUDE 'tpch_q2.test';
+
+LOG 'Running tpch query 3...';
+INCLUDE 'tpch_q3.test';
+
+LOG 'Running tpch query 4...';
+INCLUDE 'tpch_q4.test';
+
+LOG 'Running tpch query 5...';
+INCLUDE 'tpch_q5.test';
+
+LOG 'Running tpch query 6...';
+INCLUDE 'tpch_q6.test';
+
+LOG 'Running tpch query 7...';
+INCLUDE 'tpch_q7.test';
+
+LOG 'Running tpch query 8...';
+INCLUDE 'tpch_q8.test';
+
+LOG 'Running tpch query 9...';
+INCLUDE 'tpch_q9.test';
+
+LOG 'Running tpch query 10...';
+INCLUDE 'tpch_q10.test';
+
+LOG 'Running tpch query 11...';
+INCLUDE 'tpch_q11.test';
+
+LOG 'Running tpch query 12...';
+INCLUDE 'tpch_q12.test';
+
+//LOG 'Running tpch query 13...';
+//INCLUDE 'tpch_q13.test';
+
+LOG 'Running tpch query 14...';
+INCLUDE 'tpch_q14.test';
+
+//LOG 'Running tpch query 15...';
+//INCLUDE 'tpch_q15.test';
+
+LOG 'Running tpch query 16...';
+INCLUDE 'tpch_q16.test';
+
+LOG 'Running tpch query 17...';
+INCLUDE 'tpch_q17.test';
+
+LOG 'Running tpch query 18...';
+INCLUDE 'tpch_q18.test';
+
+LOG 'Running tpch query 19...';
+INCLUDE 'tpch_q19.test';
+
+//LOG 'Running tpch query 20...';
+//INCLUDE 'tpch_q20.test';
+
+//LOG 'Running tpch query 21...';
+//INCLUDE 'tpch_q21.test';
+
+//LOG 'Running tpch query 22...';
+//INCLUDE 'tpch_q22.test';
+
+//------------------------------------------------------------------------------
+
+LOG ' ';
 INCLUDE 'drop_tables.test';
 
 //------------------------------------------------------------------------------
