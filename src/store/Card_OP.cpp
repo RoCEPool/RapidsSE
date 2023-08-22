@@ -249,10 +249,10 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       p_term->pSymbol()->Y_vSet(P_TblCol, p_term->szSymbol(SF_NONE));
 
       pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-      i8 nExpr_prior = pCI->G.p_projection->nChildCards();
+      i8 nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
       i8 i_Col = p_term->iGetOdn();
 
-      i8 i_ColOdn = nExpr_prior + i_Col;
+      i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
 
       Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
       p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
@@ -264,7 +264,8 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-    if ( pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
+    if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
+        pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
 
       // column of this table
 
@@ -286,7 +287,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-    if (! (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
+    if (! (
            pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
            pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
       return C_CONTINUE_RECURSION;
@@ -297,10 +298,10 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
 
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-    i8 nExpr_prior = pCI->G.p_projection->nChildCards();
+    i8 nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
     i8 i_Col = p_term->iGetOdn();
 
-    i8 i_ColOdn = pCI->G.p_MainCard->bIsCard(CK_SCAN) ? i_Col : nExpr_prior + i_Col;
+    i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
 
     Symbol xSymbol_stmColOdn(SF_COL_NO,i_ColOdn);
     p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
