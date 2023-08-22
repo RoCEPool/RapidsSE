@@ -192,8 +192,13 @@ void Step::vInjectILL(void)
   // this would cause ILL
   //BUT: after a few tries, m_xpInfoSetTable.bIsNull(); thrown in ~LogicUnit (LogicUnit.cpp:315)
   char* pC=nullptr;
+
+  // Tell gcc to ignore the nullptr
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnonnull"
   strcpy(pC,"abc");
   printf("%s\n", pC);
+#pragma GCC diagnostic pop
 
   //raise(SIGILL);
 

@@ -270,7 +270,8 @@ Task::~Task(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Task* Task::pThisTLSTask(void)
 {
-  if (C_UNKNOWN == (i8)giTLS_TaskKey)
+  i8 iTLSVal = (i8) giTLS_TaskKey;
+  if (C_UNKNOWN == iTLSVal)
     return nullptr;
   
   Task* pTask = static_cast<Task*>(PsxThd::pTlsGet(giTLS_TaskKey));

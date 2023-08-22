@@ -6,6 +6,7 @@
 #include "BASE.h"
 #include "EnumValidator.hpp"
 
+#include "eAA.h"
 #include "eCT.h"
 #include "eEC.h"
 #include "eEV.h"
@@ -32,6 +33,9 @@ void EnumValidator::vValidateEnumStzArrays(void)
 
   // The list of enums that we wish to validate.
   struct Validator validations[] = {
+      {       aAA[AA_ENUMS - 1],       "aAA[]"_Stz,   "eAA"_Stz },
+
+
       {       aEC[EC_ENUMS - 1],       "aEC[]"_Stz,   "eEC"_Stz },
       {      aEC2[EC_ENUMS - 1],      "aEC2[]"_Stz,   "eEC"_Stz },
       { aErrorMsg[EC_ENUMS - 1], "aErrorMsg[]"_Stz,   "eEC"_Stz },

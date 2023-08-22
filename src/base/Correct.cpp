@@ -893,7 +893,10 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // put a breakpoint here to trap throws
   sleep(0);
   
-  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+  if (eGotClass < CN_ENUMS)
+    // Note: No need to check eGotClass >= CN_NONE because this is always true
+    // (according to annoying compiler messages). I guess this is probably because
+    // the eCN enum is implemented as an unsigned type, thus it is always >= 0.
     StrLib::vSprint(zCondition,
                     sizeof(zCondition),
                     "Expecting class %d %s; "
@@ -949,7 +952,10 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // put a breakpoint here to trap throws
   sleep(0);
   
-  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+  if (eGotClass < CN_ENUMS)
+    // Note: No need to check eGotClass >= CN_NONE because this is always true
+    // (according to annoying compiler messages). I guess this is probably because
+    // the eCN enum is implemented as an unsigned type, thus it is always >= 0.
     StrLib::vSprint(zCondition,
                     sizeof(zCondition),
                     "Expecting class %d %s; "
