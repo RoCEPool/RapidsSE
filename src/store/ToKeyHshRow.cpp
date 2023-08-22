@@ -49,7 +49,7 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   m_bFirst  = true;
 
   m_iSynthKey  = 0;
-  m_pPdsOfBufferIds = new Pds_t<PdsBufferIdItem>(nullptr);
+  m_pPdsOfBufferIds = new Pds_t<PdsItem_BufferId>(nullptr);
 
   //--
   
@@ -112,7 +112,7 @@ void ToKeyHshRow::vRepairList(Object* pObject)
   while(pCurrBlock) {
     SkipListBlock* pNextBlock = pPds->pNextSLBlock(pCurrBlock, 0);
 
-    PdsBufferIdItem oBufferIdStruct = *(PdsBufferIdItem*) pCurrBlock->aItem();
+    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
 
     RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
     pPds->bDelete((void*)&oBufferIdStruct.iKey);
@@ -145,7 +145,7 @@ RowBuffer* ToKeyHshRow::pDanglingRowBuffer(void)
   SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
   RASSERT(pCurrBlock != nullptr);
 
-  PdsBufferIdItem oBufferIdStruct = *(PdsBufferIdItem*) pCurrBlock->aItem();
+  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
 
   RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
 
@@ -169,7 +169,7 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
   SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
   RASSERT(pCurrBlock != nullptr);
 
-  PdsBufferIdItem oBufferIdStruct = *(PdsBufferIdItem*) pCurrBlock->aItem();
+  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
 
   RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
 
@@ -185,13 +185,13 @@ RowBuffer* ToKeyHshRow::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  PdsBufferIdItem oKey;
+  PdsItem_BufferId oKey;
   oKey.iKey = C_INT_MAX;
 
   SkipListBlock* pSearchBlock = m_pPdsOfBufferIds->pFindLessThan((void *) &oKey);
 
   if(pSearchBlock != nullptr) {
-    PdsBufferIdItem oBufferIdStruct = *(PdsBufferIdItem*) pSearchBlock->aItem();
+    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pSearchBlock->aItem();
 
     RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
     return pRowBuffer;
@@ -245,14 +245,14 @@ void ToKeyHshRow::vNewRowBuffer(void)
   RowBuffer* pRowBuffer = new RowBuffer;
 
   // create the key
-  PdsBufferIdItem oKey;
+  PdsItem_BufferId oKey;
   oKey.iKey = ++m_iSynthKey;
   oKey.oBufferId = pRowBuffer->oGetBufferId();
 
   SkipListBlock* pSkipListBlock = m_pPdsOfBufferIds->pInsert((void*) &oKey);
   RASSERT(pSkipListBlock != nullptr);
 
-  *(PdsBufferIdItem*) (pSkipListBlock->aItem()) = oKey;
+  *(PdsItem_BufferId*) (pSkipListBlock->aItem()) = oKey;
   
   // initialise the row slab inside the new row buffer
   pRowBuffer->vInitPix(m_pStreamDef,true);

@@ -67,6 +67,7 @@ void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
   RASSERT(oItem.oBufferId.m_bIdFlag == 1);
 
   SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
+  RASSERT(pResultBlock != nullptr);
 
   *(LglBufSetItem*)(pResultBlock->aItem()) = oItem;
 }

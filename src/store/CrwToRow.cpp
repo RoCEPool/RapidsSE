@@ -42,9 +42,22 @@ CrwToRow::CrwToRow(StreamDef* pStreamDef)
 
   m_pStreamDef = pStreamDef;
 
-  m_pRowBuffer = new RowBuffer;
+  m_iSynthKey  = 0;
 
-  m_pRowBuffer->vResolveRowPix(pStreamDef);
+  RowBuffer* pRowBuffer = new RowBuffer;
+
+  pRowBuffer->vResolveRowPix(pStreamDef);
+
+  m_pPdsOfBufferIds = new Pds_t<PdsItem_BufferId>(nullptr);
+
+  PdsItem_BufferId oItem;
+  oItem.iKey = ++m_iSynthKey;
+  oItem.oBufferId = pRowBuffer->oGetBufferId();
+  SkipListBlock* pBlock = m_pPdsOfBufferIds->pInsert((void*)&oItem);
+  RASSERT(pBlock != nullptr);
+
+  *(PdsItem_BufferId*)(pBlock->aItem()) = oItem;
+
   
   _checkInitialised_(CN_CRWTOROW);
 
@@ -58,7 +71,7 @@ CrwToRow::~CrwToRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  ASSERT(!m_pRowBuffer);
+  delete m_pPdsOfBufferIds;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,17 +85,23 @@ void CrwToRow::vRepair(Object* pObject)
   _static_
 
   CrwToRow* pCrwToRow = _pCrwToRow(pObject);
+  Pds* pPds = pCrwToRow->m_pPdsOfBufferIds;
 
-  RowBuffer* pRowBuffer = pCrwToRow->m_pRowBuffer;
+  SkipListBlock* pCurrBlock = pPds->pFirstBlock();
 
-  while (pRowBuffer) {
+  while(pCurrBlock) {
+    SkipListBlock* pNextBlock = pPds->pNextSLBlock(pCurrBlock, 0);
 
-    RowBuffer* pNextRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
+    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
 
-    AM::vDeleteOperand(pRowBuffer, nullptr);
-    pRowBuffer = pNextRowBuffer;
+    RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
+    pPds->bDelete((void*)&oBufferIdStruct.iKey);
+    AM::vDeleteOperand(pRowBuffer,nullptr);
 
+    pCurrBlock = pNextBlock;
   }
+
+  RASSERT(pPds->iNumEntries(0) == 0);
 
   // delete the CrwToRow
   delete pCrwToRow;
@@ -106,7 +125,7 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
 
     vAllotNewRow();
     
-    RowInflator::vInflate_AllColumns_into_RowBuffer(m_pRowBuffer, pCrwHead);
+    RowInflator::vInflate_AllColumns_into_RowBuffer(pRowBuffer(), pCrwHead);
   }
 
   return true;
@@ -118,12 +137,24 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
 RowBuffer* CrwToRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
-  
-  RowBuffer* pDanglingRowBuffer = m_pRowBuffer;
 
-  m_pRowBuffer = nullptr;
-  
-  return pDanglingRowBuffer;
+  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) <= 1);
+
+  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
+    return nullptr;
+
+  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
+  RASSERT(pCurrBlock != nullptr);
+
+  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
+
+  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
+
+  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) == 0);
+
+  return pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,21 +164,41 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  if (!m_pRowBuffer)
-    return nullptr;
-  
-  RowBuffer* pScanRowBuffer = m_pRowBuffer;
-  if (! pScanRowBuffer->pNextLinkedBuffer())
+  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
     return nullptr;
 
-  while (pScanRowBuffer->pNextLinkedBuffer()->pNextLinkedBuffer())
-    pScanRowBuffer = _pRowBuffer(pScanRowBuffer->pNextLinkedBuffer());
-  
-  RowBuffer* pLastRowBuffer  = _pRowBuffer(pScanRowBuffer->pNextLinkedBuffer());
-  
-  pScanRowBuffer->vNextLinkedBuffer(nullptr);
+  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
+  RASSERT(pCurrBlock != nullptr);
 
-  return pLastRowBuffer;
+  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
+
+  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
+
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return tail of chain (most recently added buffer)                          */
+/*----------------------------------------------------------------------------*/
+RowBuffer* CrwToRow::pRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
+
+  PdsItem_BufferId oKey;
+  oKey.iKey = C_INT_MAX;
+
+  SkipListBlock* pSearchBlock = m_pPdsOfBufferIds->pFindLessThan((void *) &oKey);
+
+  if(pSearchBlock != nullptr) {
+    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pSearchBlock->aItem();
+
+    RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
+    return pRowBuffer;
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,10 +212,10 @@ void CrwToRow::vAllotNewRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
   
-  if (m_pRowBuffer->nFreeBytes() < C_MAX_RECORD)
+  if (pRowBuffer()->nFreeBytes() < C_MAX_RECORD)
     vNewRowBuffer();
   
-  Row* pRow = m_pRowBuffer->pAllotRow();
+  Row* pRow = pRowBuffer()->pAllotRow();
   UNUSED(pRow);
 }
 
@@ -181,15 +232,16 @@ void CrwToRow::vNewRowBuffer(void)
   // initialise the column pix inside the new row buffer
   pNewRowBuffer->vInitPix(m_pStreamDef,false);
 
-  if (! m_pRowBuffer) {
-    // set as head of empty row buffer chain
-    m_pRowBuffer = pNewRowBuffer;
-    return;
-  }
 
-  // add as head of existing row buffer chain
-  pNewRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
-  m_pRowBuffer = pNewRowBuffer;
+  PdsItem_BufferId oItem;
+  oItem.iKey = ++m_iSynthKey;
+  oItem.oBufferId = pNewRowBuffer->oGetBufferId();
+
+  SkipListBlock* pBlock = m_pPdsOfBufferIds->pInsert((void*) &oItem);
+  RASSERT(pBlock != nullptr);
+  *(PdsItem_BufferId*)(pBlock->aItem()) = oItem;
+
+  return;
 }
 
 /*============================================================================*/

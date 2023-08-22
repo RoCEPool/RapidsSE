@@ -172,6 +172,10 @@ bool Pds::bDelete(void* pKey)
   }
 
   if(pDeleteEntry){
+    // Assert we are not deleting the root block
+    u8 uOffsetToDelete = uGetOffsetFromBase(pDeleteEntry);
+    RASSERT(uOffsetToDelete != m_uInUseRootOffset);
+
     vMoveToFreeList(pDeleteEntry);
     return true;
   }
@@ -293,7 +297,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
   if( ! bResult) {
     // Got duplicate key, error
     vMoveToFreeList(pNewSLBlock);
-    // vTrace("Pds Skip List attempting to insert a duplicate key %lld\nAborting insert...\n"_Stz, iKey);
+    vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
     return nullptr;
   }
 
@@ -310,6 +314,9 @@ SkipListBlock* Pds::pInsert(void* pKey)
 
     // Insert element, update offset values
     SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
+
+    // Assert that we are not inserting a block before the dummy root block
+    RASSERT(uGetOffsetFromBase(pNext) != m_uInUseRootOffset);
 
     bool bResult = bSetNextSLBlock(pCursor, pNewSLBlock, i_Level);
     RASSERT(bResult);
@@ -342,6 +349,10 @@ SkipListBlock* Pds::pFind(void* pKey)
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
 
       if(iCompareRes == 0) {
+        //Ensure that we are not returning the dummy root block
+        if(uGetOffsetFromBase(pNext) == m_uInUseRootOffset)
+          return nullptr;
+
         return pNext;
       } else if(iCompareRes > 0) {
         // pNext > pKey
@@ -375,10 +386,16 @@ SkipListBlock* Pds::pFindLessThan(void* pKey)
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
 
       if(iCompareRes == 0) {
+        // Ensure we are not returning the dummy root block
+        if(uGetOffsetFromBase(pNext) == m_uInUseRootOffset)
+          return nullptr;
         return pNext;
       } else if(iCompareRes > 0) {
         // pNext > pKey
         if(i_Level == 0) {
+          // Ensure we are not returning the dummy root block
+          if(uGetOffsetFromBase(pCursor) == m_uInUseRootOffset)
+            return nullptr;
           return pCursor;
         }
         uOffset = uGetOffsetFromBase(pCursor);
@@ -389,6 +406,9 @@ SkipListBlock* Pds::pFindLessThan(void* pKey)
       pNext = pNextSLBlock(pNext, i_Level);
 
       if(pNext == nullptr && i_Level == 0) {
+        // Ensure we are not returning the dummy root block
+        if(uGetOffsetFromBase(pCursor) == m_uInUseRootOffset)
+          return nullptr;
         return pCursor;
       }
 
@@ -417,10 +437,16 @@ SkipListBlock* Pds::pFindGreaterThan(void* pKey)
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
 
       if(iCompareRes == 0) {
+        // Ensure we are not returning the dummy root block
+        if(uGetOffsetFromBase(pNext) == m_uInUseRootOffset)
+          return nullptr;
         return pNext;
       } else if(iCompareRes > 0) {
         // pNext > pKey
         if(i_Level == 0) {
+          // Ensure we are not returning the dummy root block
+          if(uGetOffsetFromBase(pNext) == m_uInUseRootOffset)
+            return nullptr;
           return pNext;
         }
         uOffset = uGetOffsetFromBase(pCursor);
@@ -431,6 +457,9 @@ SkipListBlock* Pds::pFindGreaterThan(void* pKey)
       pNext = pNextSLBlock(pNext, i_Level);
 
       if(pNext == nullptr && i_Level == 0) {
+        // Ensure we are not returning the dummy root block
+        if(uGetOffsetFromBase(pCursor) == m_uInUseRootOffset)
+          return nullptr;
         return pCursor;
       }
 
@@ -455,6 +484,7 @@ SkipListBlock* Pds::pFirstBlock(void)
   SkipListBlock* pFirstBlock = pNextSLBlock(pRootBlock, 0);
 
   RASSERT(pFirstBlock != nullptr);
+  RASSERT(pFirstBlock != pRootBlock);
 
   return pFirstBlock;
 }
@@ -557,6 +587,7 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLBlock)
 
   // Clear its values
 //  pSLBlock->vSetKey(0);
+  // Clear the offset values for all the levels for this block
   for(i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     pSLBlock->m_xNode.vNext(i_Level, 0);
   }
