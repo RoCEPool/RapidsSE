@@ -27,6 +27,7 @@
 #include "XF_Optimise_max_To_top.hpp"
 #include "XF_Optimise_OneTime_calc.hpp"
 #include "XF_Optimise_scan_To_indexScan.hpp"
+#include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Optimise_sortDesc_limit_To_top.hpp"
 #include "XF_Prolog_Add_level.hpp"
 #include "XF_Prolog_Delete_Unneeded.hpp"
@@ -197,6 +198,7 @@ void XF::vTransform(void)
   XF_Optimise_max_To_top::vOptimise(m_pCI);
   XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(m_pCI);
   XF_Optimise_sortDesc_limit_to_top::vOptimise(m_pCI);
+  XF_Optimise_sort_limit_All_Levels::vOptimise(m_pCI);
 
   m_pCI->m_pBench->vEndPhase();
 

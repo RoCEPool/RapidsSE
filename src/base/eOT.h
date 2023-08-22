@@ -20,7 +20,7 @@ enum eOT // Optimiser Transformations
   /* */ OT_REPLACE_MAX_TO_TOP,         // Replace: MAX with TOP
   /* */ OT_REPLACE_SCAN_TO_INDEXSCAN,  // Replace: SCAN with INDEXSCAN
   /* */ OT_REPLACE_SORTDESC_LIMIT_TO_TOP,  // Replace: SORTDESC +LIMIT with TOP
-  /* */ OT_REPLACE_SORT_LIMIT_ONORIGIN_TO_ALLLEVELS,  // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
+  /* */ OT_SORT_LIMIT_ALL_LEVELS,      // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
 
   /* 15 */ OT_ENUMS,
 };

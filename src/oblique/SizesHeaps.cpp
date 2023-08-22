@@ -298,6 +298,7 @@
 #include "XF_Optimise_max_To_top.hpp"
 #include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_sortDesc_limit_To_top.hpp"
+#include "XF_Optimise_sort_limit_All_Levels.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -806,6 +807,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG,sizeof(XF_Optimise_aggreg_To_sort_ordAgg),HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_MAX_TO_TOP,          sizeof(XF_Optimise_max_To_top),          HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_ONETIME_CALC,        sizeof(XF_Optimise_OneTime_calc),        HT_T_TINY    , FILL },
+  {CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS,sizeof(XF_Optimise_sort_limit_All_Levels),HT_T_TINY  , FILL },
   {CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP,sizeof(XF_Optimise_sortDesc_limit_to_top),HT_T_TINY  , FILL },
   {CN_XF_OT_CUT_SORT,                  sizeof(XF_Optimise_Cut_sort),            HT_T_TINY    , FILL },
   {CN_XF_OT_EARLY_PROJECTION,          sizeof(XF_Optimise_Early_projection),    HT_T_TINY    , FILL },

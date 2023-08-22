@@ -21,7 +21,7 @@ Stz* aOT[OT_ENUMS]
   /*  */ "OT_REPLACE_MAX_TO_TOP"_Stz,
   /*  */ "OT_REPLACE_SCAN_TO_INDEXSCAN"_Stz,
   /*  */ "OT_REPLACE_SORTDESC_LIMIT_TO_TOP"_Stz,
-  /*  */ "OT_REPLACE_SORT_LIMIT_ONORIGIN_TO_ALLLEVELS"_Stz,
+  /*  */ "OT_SORT_LIMIT_ALL_LEVELS"_Stz,
 
 //  /*  */ "ENUMS"_Stz,
 };
