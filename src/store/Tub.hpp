@@ -11,10 +11,8 @@ namespace STORE
   class Tub : public Object
   {
   private:
-    DataBuffer*  m_pBufferChain;
-  
-    CrwBuffer*   m_pInCrwBuffer;
-    RowBuffer*   m_pInRowBuffer;
+    i8     m_iSynthKey;     // Synthetic key for the Pds
+    Pds_t<PdsItem_BufferId>* m_pPdsOfBufferIds;
 
     RowPix*      m_pRowPix;
 

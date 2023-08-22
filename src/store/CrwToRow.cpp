@@ -164,7 +164,11 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
+  // don't return a buffer if only one exists in the pds
+  // since it may not be full. Only the buffer at the end
+  // of the pds chain may not be not full.
+  // [Root-Block]-->[Full-Buffer]-->[Full-Buffer]-->[Non-Full-Buffer]-->NULL
+  if(m_pPdsOfBufferIds->iNumEntries(0) <= 1)
     return nullptr;
 
   SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
@@ -185,6 +189,9 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 RowBuffer* CrwToRow::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
+
+  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
+    return nullptr;
 
   PdsItem_BufferId oKey;
   oKey.iKey = C_INT_MAX;

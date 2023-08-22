@@ -163,6 +163,8 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
+  // if there is only one entry, it may not be full...
+  // check with ray
   if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
     return nullptr;
 
