@@ -22,7 +22,7 @@ enum eOT // Optimiser Transformations
   /* */ OT_SORT_LIMIT_ALL_LEVELS,      // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
   /* */ OT_STATIC_CALC,                // One-Time: CALCULATIONS
 
-  /* 15 */ OT_ENUMS,
+  /* */ OT_ENUMS,
 };
 
 extern Stz* aOT[OT_ENUMS];

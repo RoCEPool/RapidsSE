@@ -2602,7 +2602,7 @@ void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given aggregate fn                                      */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Agg_Fn(Stz* szAggFn)
 {
@@ -2617,7 +2617,7 @@ void Symbol::vSet_Agg_Fn(Stz* szAggFn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given as                                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_As(Stz* szAs)
 {
@@ -2648,7 +2648,7 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given synthetic-as                                      */
+/* set this symbol to given synthetic-as no                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_As_Nm_syn(i8 iAsNo)
 {
@@ -2664,7 +2664,7 @@ void Symbol::vSet_As_Nm_syn(i8 iAsNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given boolean fn                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Bol_Fn(Stz* szBolFn)
 {
@@ -2679,7 +2679,7 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given boolean literal                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Bol_Lit(Stz* szBolLit)
 {
@@ -2694,7 +2694,7 @@ void Symbol::vSet_Bol_Lit(Stz* szBolLit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given boolean op                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Bol_Op(Stz* szBolOp)
 {
@@ -2709,7 +2709,7 @@ void Symbol::vSet_Bol_Op(Stz* szBolOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given bound                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Bound(Stz* szBound)
 {
@@ -2724,7 +2724,7 @@ void Symbol::vSet_Bound(Stz* szBound)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given brace                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Brace(Stz* szBrace)
 {
@@ -2767,6 +2767,7 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 
   vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sChrSeq.szStz());
   m_eSymbol = SF_COL_NM;
+
   Y_vSet(P_DisamCol);
 
   RASSERT(bIs_Col_Nm_dis());
@@ -2790,13 +2791,22 @@ void Symbol::vSet_Col_Nm_syn(Stz* szColNm_syn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given stream-column                                     */
+/* set this symbol to given column number                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Col_No(i8 iStmColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol || SF_KEY_COL == m_eSymbol);
+
+  if (bIs_Col_Tc()) {
+    Y_vSet(P_StmCol, szSF_symbol(SF_COL_TC));
+    Y_vSet(P_WasStmCol, szSF_symbol(SF_COL_TC));
+  }
+  else
+  if (bIs_Key_Col()) {
+    Y_vSet(P_WasKeyCol, szSF_symbol(SF_KEY_COL));
+  }
 
   vSymSprint("$%lld"_Stz, iStmColOdn);
   m_eSymbol = SF_COL_NO;
@@ -2805,15 +2815,19 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
+/* set this symbol to given column nuber                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_No(Stz* szColNm)
+void Symbol::vSet_Col_No(Stz* szColNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol  || SF_COL_TC == m_eSymbol);
 
-  m_sChrSeq = szColNm;
+  if (bIs_Col_Tc()) {
+    Y_vSet(P_StmCol, szSF_symbol(SF_COL_TC));
+    Y_vSet(P_WasStmCol, szSF_symbol(SF_COL_TC));
+  }
+  m_sChrSeq = szColNo;
   m_eSymbol = SF_COL_NO;
 
   RASSERT(bIs_Col_No());
@@ -2850,7 +2864,7 @@ void Symbol::vSet_Col_Tc(Stz* szColTc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given comma                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Comma(Stz* szComma)
 {
@@ -2865,7 +2879,7 @@ void Symbol::vSet_Comma(Stz* szComma)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given cross                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Cross(Stz* szCross)
 {
@@ -2880,7 +2894,7 @@ void Symbol::vSet_Cross(Stz* szCross)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given table-column                                      */
+/* set this symbol to given type                                              */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Col_Type(Stz* szColType)
 {
@@ -2895,7 +2909,7 @@ void Symbol::vSet_Col_Type(Stz* szColType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given decimal literal                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Dcm_Lit(Stz* szDcmLit)
 {
@@ -2910,7 +2924,7 @@ void Symbol::vSet_Dcm_Lit(Stz* szDcmLit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
+/* set this symbol to given direction                                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Direction(Stz* szColNm)
 {
@@ -2925,7 +2939,7 @@ void Symbol::vSet_Direction(Stz* szColNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
+/* set this symbol to given fold name                                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Fld_Nm(Stz* szFldNm)
 {
@@ -2955,7 +2969,7 @@ void Symbol::vSet_Flt_Lit(Stz* szFltLit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
+/* set this symbol to given group-by                                          */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_GroupBy(Stz* szGroupBy)
 {
@@ -3000,7 +3014,7 @@ void Symbol::vSet_Idx_Col(Stz* szIdxCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
+/* set this symbol to a index name                                            */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
 {
@@ -3015,7 +3029,7 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given number                                             */
+/* set this symbol to given integer literal                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Int_Lit(i8 iIIntLIt)
 {
@@ -3060,7 +3074,7 @@ void Symbol::vSet_Key_Col(i8 iKeyOdn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
+/* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Key_Col(Stz* szKeyCol)
 {
@@ -3075,7 +3089,7 @@ void Symbol::vSet_Key_Col(Stz* szKeyCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given math op                                           */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Mth_Op(Stz* szMthOp)
 {
@@ -3090,7 +3104,7 @@ void Symbol::vSet_Mth_Op(Stz* szMthOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given note                                              */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Note(Stz* szNote)
 {
@@ -3105,7 +3119,7 @@ void Symbol::vSet_Note(Stz* szNote)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given parenthesis                                       */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Parenthesis(Stz* szParenthesis)
 {
@@ -3120,7 +3134,7 @@ void Symbol::vSet_Parenthesis(Stz* szParenthesis)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
+/* set this symbol to given pipeline name                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
 {
@@ -3135,7 +3149,7 @@ void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given number                                            */
+/* set this symbol to given parameter column                                  */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Prm_Col(i8 iOrdinal)
 {
@@ -3150,7 +3164,7 @@ void Symbol::vSet_Prm_Col(i8 iOrdinal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given number                                             */
+/* set this symbol to given parameter column                                  */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Prm_Col(Stz* szPrmCol)
 {
@@ -3165,7 +3179,7 @@ void Symbol::vSet_Prm_Col(Stz* szPrmCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given relational op                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Rln_Op(Stz* szRlnOp)
 {
@@ -3195,7 +3209,7 @@ void Symbol::vSet_Sqy_No(i8 iSqNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given subquery op                                       */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
 {
@@ -3210,7 +3224,7 @@ void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given stage cast                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Stg_Cast(Stz* szStgCast)
 {
@@ -3225,7 +3239,7 @@ void Symbol::vSet_Stg_Cast(Stz* szStgCast)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
+/* set this symbol to iven stage name                                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Stg_Nm(i8 iStageNo)
 {
@@ -3240,7 +3254,7 @@ void Symbol::vSet_Stg_Nm(i8 iStageNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
+/* set this symbol to given string                                            */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_String(Stz* szString)
 {
@@ -3255,7 +3269,7 @@ void Symbol::vSet_String(Stz* szString)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
+/* set this symbol to given table name                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Tbl_Nm(Stz* szTblNm)
 {
@@ -3285,7 +3299,7 @@ void Symbol::vSet_Tbl_Syn(char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to a stage                                                 */
+/* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
 {
@@ -3300,7 +3314,7 @@ void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given table-synonym                                     */
+/* set this symbol to given ttable-synonym replicated                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Tbl_Syn_rep(void)
 {
@@ -3318,7 +3332,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given type                                              */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Type(Stz* szType)
 {
@@ -3333,7 +3347,7 @@ void Symbol::vSet_Type(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given when                                              */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_When(Stz* szWhen)
 {
@@ -3348,7 +3362,7 @@ void Symbol::vSet_When(Stz* szWhen)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given xk cast                                           */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Xk_Cast(Stz* szXkCast)
 {
@@ -3378,7 +3392,7 @@ void Symbol::vSet_Xrf_No(i8 iXrefNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
+/* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Xrf_No(Stz* szXrefNo)
 {

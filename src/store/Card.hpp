@@ -190,6 +190,8 @@ extern Stz* P_TableUsed;
 extern Stz* P_TblCol;
 extern Stz* P_Type;
 extern Stz* P_Unproject;
+extern Stz* P_WasKeyCol;
+extern Stz* P_WasStmCol;
 
 extern Stz* C_GLEAN_CUE_FROM;
 extern Stz* C_OPTIMISER_TRACE;

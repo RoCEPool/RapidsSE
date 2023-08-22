@@ -72,6 +72,8 @@ Stz* P_TableUsed    = "bTableUsed"_Stz;
 Stz* P_TblCol       = "szTblCol"_Stz;
 Stz* P_Type         = "szType"_Stz;
 Stz* P_Unproject    = "bUnproject"_Stz;
+Stz* P_WasKeyCol    = "bWasKeyCol"_Stz;
+Stz* P_WasStmCol    = "szWasStmCol"_Stz;
 
 Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;
 Stz* C_OPTIMISER_TRACE = "<optimiser_trace>"_Stz;
