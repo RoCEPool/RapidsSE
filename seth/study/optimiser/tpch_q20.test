@@ -2,6 +2,12 @@
 -- tpch query20 (SF_0001)
 --------------------------------------------------------------------------------
 
+LOG 'TPC-H Q20...';
+
+trackMemory;
+success
+
+
 /pipelineName = "OptQ20"
 select s_name, s_address
   from supplier, nation
@@ -25,6 +31,9 @@ select s_name, s_address
 
 rows:
   ('Supplier#000000005','Gcdm2rJRzl5qlTVzc')
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   bye;

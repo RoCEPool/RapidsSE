@@ -1,6 +1,12 @@
 --------------------------------------------------------------------------------
 -- tpch query21 (SF_0001)
 --------------------------------------------------------------------------------
+
+LOG 'TPC-H Q21...';
+
+trackMemory;
+success
+
 /*  (original Query)
 
 /pipelineName = "OptQ21"
@@ -25,6 +31,9 @@ select s_name,s_address
  order by s_name;
 
 */
+
+MemoryLeaks;
+rows: 0
 
 
 CLEANUP {

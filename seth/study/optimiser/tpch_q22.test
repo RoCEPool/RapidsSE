@@ -2,6 +2,11 @@
 -- tpch query22 (SF_0001)
 --------------------------------------------------------------------------------
 
+LOG 'TPC-H Q22...';
+
+trackMemory;
+success
+
 
 /pipelineName = "OptQ22"
 select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
@@ -27,6 +32,8 @@ rows:
  ('30',2,17528.46)
  ('31',2,18611.84)
 
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   bye;
