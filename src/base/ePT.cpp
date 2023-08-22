@@ -8,7 +8,7 @@ Stz* aPT[PT_ENUMS]
 {
   /* 0 */ "NONE"_Stz,
   
-  /*   */ "PT_OUTPUT"_Stz
+  /*   */ "PT_OUTPUT"_Stz,
   /*   */ "PT_REPORT"_Stz
 
 //  /*   */ "ENUMS"_Stz
