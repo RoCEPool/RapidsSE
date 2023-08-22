@@ -99,10 +99,12 @@ i8 Card_FiltPredList::nFiltersFor(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI_filtPred(this);
-  while (xCI_filtPred.G_bEachMain()) {
-    if (xCI_filtPred.G.p_filtPred->pSymbol()->cSF_char() == cTblSyn) {
-      i8 nFilter = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
+  Kid xCI_filtPred(this);
+  while (xCI_filtPred.bEach()) {
+    Card_FiltPred* p_filtPred = _pCard_FiltPred(xCI_filtPred.pChild());
+
+    if (p_filtPred->pSymbol()->cSF_char() == cTblSyn) {
+      i8 nFilter = p_filtPred->pSymbol()->Y_iGet(P_Count);
       return nFilter;
     }
   }
