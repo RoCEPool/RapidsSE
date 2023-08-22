@@ -16,6 +16,7 @@
 #include "XF_Epilog_stmCol_To_colNm.hpp"
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Flatten.hpp"
+#include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
@@ -193,6 +194,7 @@ void XF::vTransform(void)
 
   XF_Optimise_OneTime_calc::vOptimise(m_pCI);
   XF_Optimise_max_To_top::vOptimise(m_pCI);
+  XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(m_pCI);
 
   m_pCI->m_pBench->vEndPhase();
 
