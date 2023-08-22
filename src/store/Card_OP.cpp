@@ -248,75 +248,16 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
         pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
       nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
     }
-    else if (! (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
-                pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN))) {
+    else
+    if (! (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
+           pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN))) {
       return C_CONTINUE_RECURSION;
     }
 
-    if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
-        pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
-
-      // column of this table
-
-      // record what $c.n it was
-      p_term->pSymbol()->Y_vSet(P_TblCol, p_term->szSymbol(SF_NONE));
-
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-      nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
-      i8 i_Col = p_term->iGetOdn();
-
-      i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
-
-      Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
-      p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
-
-      p_term->vMark1(MARK_CHANGED);
-
-      return C_CONTINUE_RECURSION;
-    }
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-    if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
-        pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
-
-      // column of this table
-
-      // record what $c.n it was
-      p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
-
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-      i8 i_Col = p_term->iGetOdn();
-
-      i8 i_ColOdn = i_Col;
-
-      Symbol xSymbol_stmColOdn(SF_COL_NO,i_ColOdn);
-      p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
-
-      p_term->vMark1(MARK_CHANGED);
-
-      return C_CONTINUE_RECURSION;
-    }
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-//    if (! (
-//           pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
-//           pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
-//      return C_CONTINUE_RECURSION;
-
-    // column of this table
-
-    // record what $c.n it was
-    p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
-
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-    nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
     i8 i_Col = p_term->iGetOdn();
-
     i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
 
-    Symbol xSymbol_stmColOdn(SF_COL_NO,i_ColOdn);
+    Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
     p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
 
     p_term->vMark1(MARK_CHANGED);
