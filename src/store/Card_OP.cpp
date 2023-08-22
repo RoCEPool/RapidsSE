@@ -240,6 +240,19 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     }
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+    i8 nCols_injectedByThisCard = 0;
+    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+    if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
+        pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
+        pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
+        pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
+      nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
+    }
+    else if (! (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
+                pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN))) {
+      return C_CONTINUE_RECURSION;
+    }
+
     if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
         pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
 
@@ -249,7 +262,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       p_term->pSymbol()->Y_vSet(P_TblCol, p_term->szSymbol(SF_NONE));
 
       pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-      i8 nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
+      nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
       i8 i_Col = p_term->iGetOdn();
 
       i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
@@ -287,10 +300,10 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-    if (! (
-           pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
-           pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
-      return C_CONTINUE_RECURSION;
+//    if (! (
+//           pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
+//           pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
+//      return C_CONTINUE_RECURSION;
 
     // column of this table
 
@@ -298,7 +311,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
 
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-    i8 nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
+    nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
     i8 i_Col = p_term->iGetOdn();
 
     i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
