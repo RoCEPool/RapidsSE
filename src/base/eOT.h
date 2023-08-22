@@ -15,12 +15,12 @@ enum eOT // Optimiser Transformations
   /* */ OT_ONETIME_CALCULATIONS,       // One-Time: CALCULATIONS
   /* */ OT_POSTPONE_PROJECTIONS,       // Postpone: VARCHAR Projections after re-join
   /* */ OT_REDUCE_GBYAGG_KEY,          // Minimize: group by keys based on unique keys
-  /* */ OT_REPLACE_AGGREG_BY_SORT_ORDAGG, // Replace: AGGREG with SORT AND ORDAGG
-  /* */ OT_REPLACE_GBYAGG_BY_ORDAGG,   // Replace: GBYAGG with ORDAGG
-  /* */ OT_REPLACE_MAX_BY_TOP,         // Replace: MAX with TOP
-  /* */ OT_REPLACE_SCAN_BY_INDEXSCAN,  // Replace: SCAN with INDEXSCAN
-  /* */ OT_REPLACE_SORTDESC_LIMIT_BY_TOP,  // Replace: SORTDESC +LIMIT with TOP
-  /* */ OT_REPLACE_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS,  // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
+  /* */ OT_REPLACE_AGGREG_TO_SORT_ORDAGG, // Replace: AGGREG with SORT AND ORDAGG
+  /* */ OT_REPLACE_GBYAGG_TO_ORDAGG,   // Replace: GBYAGG with ORDAGG
+  /* */ OT_REPLACE_MAX_TO_TOP,         // Replace: MAX with TOP
+  /* */ OT_REPLACE_SCAN_TO_INDEXSCAN,  // Replace: SCAN with INDEXSCAN
+  /* */ OT_REPLACE_SORTDESC_LIMIT_TO_TOP,  // Replace: SORTDESC +LIMIT with TOP
+  /* */ OT_REPLACE_SORT_LIMIT_ONORIGIN_TO_ALLLEVELS,  // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
 
   /* 15 */ OT_ENUMS,
 };

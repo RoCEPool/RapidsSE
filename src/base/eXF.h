@@ -40,6 +40,7 @@ enum eXF // transform
   /* */ XF_MORPH_TABLE_TO_EEOP,
   /* */ XF_MOVE_ON,
   /* */ XF_NOT_OPS,
+  /* */ XF_OPTIMISE_MAX_TO_TOP,
   /* */ XF_OPTIMISE_ONETIME_CALC,
   /* */ XF_PREDICATE_PULL_UP,
   /* */ XF_PREDICATE_REPOSITION,

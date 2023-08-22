@@ -41,6 +41,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,
   /* */ "XF_MOVE_ON"_Stz,
   /* */ "XF_NOT_OPS"_Stz,
+  /* */ "XF_OPTIMISE_MAX_TO_TOP"_Stz,
   /* */ "XF_OPTIMISE_ONETIME_CALC"_Stz,
   /* */ "XF_PREDICATE_PULL_UP"_Stz,
   /* */ "XF_PREDICATE_REPOSITION"_Stz,
