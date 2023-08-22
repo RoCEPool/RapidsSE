@@ -77,51 +77,16 @@ void Step::vApiForkChild(void)
 
 
   TagSet* pJobTags = pOuterJobOfTask()->pJobTags();
-  //pJobTags->vContentDump();
+
+  pCmdTagSet->vCopy(pJobTags);
 
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
-  if (pJobTags->bHasName(C_TAG_CCODE))
-    pCmdTagSet->vInsert(C_TAG_CCODE);
+  if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
+      pCmdTagSet->bHasName(C_TAG_WAIT))
+    pCmdTagSet->vDelete(C_TAG_WAIT);
 
-  if (pJobTags->bHasName(C_TAG_JOBMETRICS))
-    pCmdTagSet->vInsert(C_TAG_JOBMETRICS);
 
-  if (pJobTags->bHasName(C_TAG_PIPELINENAME))
-    pCmdTagSet->vInsert(C_TAG_PIPELINENAME, pJobTags->szValue(C_TAG_PIPELINENAME));
-
-  if (pJobTags->bHasName(C_TAG_KEEPCODEFILE))
-    pCmdTagSet->vInsert(C_TAG_KEEPCODEFILE);
-
-  if (pJobTags->bHasName(C_TAG_NOCODESYNTHESIS))
-    pCmdTagSet->vInsert(C_TAG_NOCODESYNTHESIS);
-
-  if (pJobTags->bHasName(C_TAG_OPTIMISER_TRACE))
-    pCmdTagSet->vInsert(C_TAG_OPTIMISER_TRACE);
-
-  if (pJobTags->bHasName(C_CARD_HISTORY))
-    pCmdTagSet->vInsert(C_CARD_HISTORY);
-
-  if (pJobTags->bHasName(C_TAG_TRANSLITERATED))
-    pCmdTagSet->vInsert(C_TAG_TRANSLITERATED);
-
-  if (pJobTags->bHasName(C_TAG_WEAVED))
-    pCmdTagSet->vInsert(C_TAG_WEAVED);
-
-  if (pJobTags->bHasName(C_CODE_BLOCK))
-    pCmdTagSet->vInsert(C_CODE_BLOCK);
-
-  if (pJobTags->bHasName(C_PIPELINE_DEF))
-    pCmdTagSet->vInsert(C_PIPELINE_DEF);
-
-//  if (pJobTags->bHasName(C_JOINORDER))
-//    pCmdTagSet->vInsert(C_JOINORDER);
-//
-//  if (pJobTags->bHasName(C_JOINPERMUTATIONS))
-//    pCmdTagSet->vInsert(C_JOINPERMUTATIONS);
-
-  if (pJobTags->bHasName(C_SHOW_CMD_TAGS))
-    pCmdTagSet->vInsert(C_SHOW_CMD_TAGS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
