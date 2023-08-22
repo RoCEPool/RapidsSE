@@ -553,9 +553,9 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
       }
     }
 
-    CardIter xCI(p_test);
-    while (xCI.G_bEachMain()) {
-      if (bYank(p_boolCalc,szWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
+    Kid xCI(p_test);
+    while (xCI.bEach()) {
+      if (bYank(p_boolCalc,szWithMark,xCI.pChild(),p_pred_yanked,bYank)) {
         RASSERT(p_pred_yanked);
         return true;
       }
@@ -568,9 +568,9 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
-    if (bYank(this,szWithMark,xCI.G.p_MainCard,p_pred_yanked,bYank)) {
+  Kid xCI(this);
+  while (xCI.bEach()) {
+    if (bYank(this,szWithMark,xCI.pChild(),p_pred_yanked,bYank)) {
       RASSERT(p_pred_yanked);
       return true;
     }
@@ -597,9 +597,9 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card* p_test,
     }
   }
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
-    if (this->bYank_PRED(szWithMark, xCI.G.p_MainCard, p_pred_yanked)) {
+  Kid xCI(this);
+  while (xCI.bEach()) {
+    if (this->bYank_PRED(szWithMark, xCI.pChild(), p_pred_yanked)) {
       RASSERT(p_pred_yanked);
       return true;
     }
