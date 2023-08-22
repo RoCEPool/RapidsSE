@@ -19,7 +19,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OP::Card_OP(eCK eCard, i8 iFixedDepth)
-: Card_symbol(eCard, iFixedDepth)
+: Card_MAIN(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1957,6 +1957,8 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+  Card_MAIN::vValidate(pCI, iDepth, pParent);
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_EPILOG]))
     vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
