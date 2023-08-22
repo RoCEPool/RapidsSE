@@ -75,7 +75,7 @@ void XF_Optimise_scan_To_indexScan::vXF_Replace_scan_By_indexScan(void)
 
       m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
 
-      m_pCI->pBoard()->pState()->vInsert(aOT[OT_REPLACE_SCAN_TO_INDEXSCAN]);
+      m_pCI->pBoard()->pState()->vInsert(aOT[OT_SCAN_TO_INDEXSCAN]);
 
       m_pCI->G.p_indexList->vChoose_index_For_indexScan();
     }

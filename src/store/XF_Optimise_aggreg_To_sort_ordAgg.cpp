@@ -67,7 +67,7 @@ void XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(void)
 
   m_pCI->vClearRestart();
 
-  m_pCI->pBoard()->pState()->vInsert(aOT[OT_REPLACE_AGGREG_TO_SORT_ORDAGG]);
+  m_pCI->pBoard()->pState()->vInsert(aOT[OT_AGGREG_TO_SORT_ORDAGG]);
 
   m_pCI->vEndTransform();
 

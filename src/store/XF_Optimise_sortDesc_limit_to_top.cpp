@@ -68,7 +68,7 @@ void XF_Optimise_sortDesc_limit_to_top::vOptimise(void)
   m_pCI->vClearRestart();
 
 
-  m_pCI->pBoard()->pState()->vInsert(aOT[OT_REPLACE_SORTDESC_LIMIT_TO_TOP]);
+  m_pCI->pBoard()->pState()->vInsert(aOT[OT_SORTDESC_LIMIT_TO_TOP]);
 
   m_pCI->vEndTransform();
 

@@ -67,7 +67,7 @@ void XF_Optimise_max_To_top::vOptimise(void)
 
   m_pCI->vClearRestart();
 
-  m_pCI->pBoard()->pState()->vInsert(aOT[OT_REPLACE_MAX_TO_TOP]);
+  m_pCI->pBoard()->pState()->vInsert(aOT[OT_MAX_TO_TOP]);
 
   m_pCI->vEndTransform();
 
