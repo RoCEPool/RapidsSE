@@ -10,7 +10,7 @@ Stz* aOT[OT_ENUMS]
 
   /*  */ "OT_AGGREG_TO_SORT_ORDAGG"_Stz,
   /*  */ "OT_CUT_SORT"_Stz,
-  /*  */ "OT_DUPLICATE_FILTERS"_Stz,
+  /*  */ "OT_DUPLICATE_FILTER"_Stz,
   /*  */ "OT_EARLY_FILTER"_Stz,
   /*  */ "OT_EARLY_PROJECTION"_Stz,
   /*  */ "OT_GBYAGG_TO_ORDAGG"_Stz,

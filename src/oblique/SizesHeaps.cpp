@@ -301,6 +301,7 @@
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Optimise_Early_filter.hpp"
 #include "XF_Optimise_Late_projection.hpp"
+#include "XF_Optimise_Duplicate_filter.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -807,6 +808,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_MOVE_ON,                      sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },
   {CN_XF_NOT_OPS,                      sizeof(XF_Prolog_not_Ops),               HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG,sizeof(XF_Optimise_aggreg_To_sort_ordAgg),HT_T_TINY    , FILL },
+  {CN_XF_OPTIMISE_DUPLICATE_FILTER,    sizeof(XF_Optimise_Duplicate_filter),    HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_FILTER,        sizeof(XF_Optimise_Early_filter),        HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_LATE_PROJECTION,     sizeof(XF_Optimise_Late_projection),     HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_MAX_TO_TOP,          sizeof(XF_Optimise_max_To_top),          HT_T_TINY    , FILL },

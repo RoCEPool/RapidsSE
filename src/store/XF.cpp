@@ -20,6 +20,7 @@
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
+#include "XF_Optimise_Duplicate_filter.hpp"
 #include "XF_Optimise_Early_filter.hpp"
 #include "XF_Optimise_Early_projection.hpp"
 #include "XF_Optimise_Late_projection.hpp"
@@ -203,6 +204,7 @@ void XF::vTransform(void)
   XF_Optimise_sort_limit_All_Levels::vOptimise(m_pCI);
   XF_Optimise_Early_filter::vOptimise(m_pCI);
   XF_Optimise_Late_projection::vOptimise(m_pCI);
+  XF_Optimise_Duplicate_filter::vOptimise(m_pCI);
 
   m_pCI->m_pBench->vEndPhase();
 

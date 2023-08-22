@@ -9,7 +9,7 @@ enum eOT // Optimiser Transformations
 
   /* */ OT_AGGREG_TO_SORT_ORDAGG,      // Replace: AGGREG with SORT AND ORDAGG
   /* */ OT_CUT_SORT,                   // Cut : SORT (AGGREG and SORT on SAME COLUMNS)
-  /* */ OT_DUPLICATE_FILTERS,          // Duplicate: Join-dependent predicate duplicates
+  /* */ OT_DUPLICATE_FILTER,           // Duplicate: Join-dependent predicate duplicates
   /* */ OT_EARLY_FILTER,               // Early: Filters
   /* */ OT_EARLY_PROJECTION,           // Early: Projections
   /* */ OT_GBYAGG_TO_ORDAGG,           // Replace: GBYAGG with ORDAGG
