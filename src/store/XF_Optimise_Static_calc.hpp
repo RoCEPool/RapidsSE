@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Optimise_OneTime_calc.hpp -- Optimise onetime calculations              */
+/* XF_Optimise_Static_calc.hpp -- Optimise onetime calculations              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Optimise_OneTime_calc : public XF_TRANSFORM
+  class XF_Optimise_Static_calc : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Optimise_OneTime_calc(CardIter* pCI);
-   ~XF_Optimise_OneTime_calc(void) noexcept(false);
+    XF_Optimise_Static_calc(CardIter* pCI);
+   ~XF_Optimise_Static_calc(void) noexcept(false);
 
     static void vOptimise(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Optimise_OneTime_calc* _pXF_Optimise_OneTime_calc(void* aAddr);
+  XF_Optimise_Static_calc* _pXF_Optimise_Static_calc(void* aAddr);
 }
 
 /*============================================================================*/

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Optimise_OneTime_calc.cpp -- Optimise Onetime Calculations              */
+/* XF_Optimise_Static_calc.cpp -- Optimise Onetime Calculations               */
 /*============================================================================*/
 
-#include "XF_Optimise_OneTime_calc.hpp"
+#include "XF_Optimise_Static_calc.hpp"
 
 #include "eOT.h"
 
@@ -10,41 +10,41 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_OneTime_calc, CN_XF_AS_REVIEW)
-__aNewFunction(XF_Optimise_OneTime_calc, CN_XF_AS_REVIEW)
-__vDeleteFunction(XF_Optimise_OneTime_calc, CN_XF_AS_REVIEW)
-__aFooterFunction(XF_Optimise_OneTime_calc)
+__pCastFunction(STORE, XF_Optimise_Static_calc, CN_XF_OPTIMISE_STATIC_CALC)
+__aNewFunction(XF_Optimise_Static_calc, CN_XF_OPTIMISE_STATIC_CALC)
+__vDeleteFunction(XF_Optimise_Static_calc, CN_XF_OPTIMISE_STATIC_CALC)
+__aFooterFunction(XF_Optimise_Static_calc)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Optimise_OneTime_calc::XF_Optimise_OneTime_calc(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_AS_REVIEW, pCI)
+XF_Optimise_Static_calc::XF_Optimise_Static_calc(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_OPTIMISE_STATIC_CALC, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_STATIC_CALC, _FOOTER_);
 
-  _checkInitialised_(CN_XF_AS_REVIEW);
+  _checkInitialised_(CN_XF_OPTIMISE_STATIC_CALC);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_STATIC_CALC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Optimise_OneTime_calc::~XF_Optimise_OneTime_calc(void) noexcept(false)
+XF_Optimise_Static_calc::~XF_Optimise_Static_calc(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_STATIC_CALC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_OneTime_calc::vOptimise(CardIter* pCI)
+void XF_Optimise_Static_calc::vOptimise(CardIter* pCI)
 {
   _static_
 
-  XF_Optimise_OneTime_calc* pXF_Optimise_OneTime_calc = new XF_Optimise_OneTime_calc(pCI);
+  XF_Optimise_Static_calc* pXF_Optimise_OneTime_calc = new XF_Optimise_Static_calc(pCI);
 
   pXF_Optimise_OneTime_calc->vOptimise();
 
@@ -59,15 +59,15 @@ void XF_Optimise_OneTime_calc::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_OneTime_calc::vOptimise(void)
+void XF_Optimise_Static_calc::vOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_STATIC_CALC, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_OPTIMISE_ONETIME_CALC, "optimise one time calcs"_Stz);
 
   m_pCI->vClearRestart();
 
-  m_pCI->pBoard()->pState()->vInsert(aOT[OT_ONETIME_CALCULATIONS]);
+  m_pCI->pBoard()->pState()->vInsert(aOT[OT_STATIC_CALC]);
 
   m_pCI->vEndTransform();
 

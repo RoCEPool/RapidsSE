@@ -16,11 +16,11 @@ enum eOT // Optimiser Transformations
   /* */ OT_JOIN_ORDERING,              // Sequence: Join Ordering
   /* */ OT_LATE_PROJECTION,            // Postpone: VARCHAR Projections after re-join
   /* */ OT_MAX_TO_TOP,                 // Replace: MAX with TOP
-  /* */ OT_ONETIME_CALCULATIONS,       // One-Time: CALCULATIONS
   /* */ OT_REDUCE_GBYAGG_KEY,          // Minimize: group by keys based on unique keys
   /* */ OT_SCAN_TO_INDEXSCAN,          // Replace: SCAN with INDEXSCAN
   /* */ OT_SORTDESC_LIMIT_TO_TOP,      // Replace: SORTDESC +LIMIT with TOP
   /* */ OT_SORT_LIMIT_ALL_LEVELS,      // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
+  /* */ OT_STATIC_CALC,                // One-Time: CALCULATIONS
 
   /* 15 */ OT_ENUMS,
 };

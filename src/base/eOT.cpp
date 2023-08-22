@@ -17,11 +17,11 @@ Stz* aOT[OT_ENUMS]
   /*  */ "OT_JOIN_ORDERINT"_Stz,
   /*  */ "OT_LATE_PROJECTION"_Stz,
   /*  */ "OT_MAX_TO_TOP"_Stz,
-  /*  */ "OT_ONETIME_CALCULATIONS"_Stz,
   /*  */ "OT_REDUCE_GBYAGG_KEY"_Stz,
   /*  */ "OT_SCAN_TO_INDEXSCAN"_Stz,
   /*  */ "OT_SORTDESC_LIMIT_TO_TOP"_Stz,
   /*  */ "OT_SORT_LIMIT_ALL_LEVELS"_Stz,
+  /*  */ "OT_STATIC_CALC"_Stz,
 
 //  /*  */ "ENUMS"_Stz,
 };
