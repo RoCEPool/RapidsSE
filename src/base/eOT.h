@@ -9,7 +9,7 @@ enum eOT // Optimiser Transformations
 
   /* */ OT_CUT_SORT,                   // Cut : SORT (AGGREG and SORT on SAME COLUMNS)
   /* */ OT_DUPLICATE_FILTERS,          // Duplicate: Join-dependent predicate duplicates
-  /* */ OT_EARLY_FILTERS,              // Early: Filters
+  /* */ OT_EARLY_FILTER,               // Early: Filters
   /* */ OT_EARLY_PROJECTION,           // Early: Projections
   /* */ OT_JOIN_ORDERING,              // Sequence: Join Ordering
   /* */ OT_ONETIME_CALCULATIONS,       // One-Time: CALCULATIONS
