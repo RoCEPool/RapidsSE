@@ -14,9 +14,9 @@ enum eOT // Optimiser Transformations
   /* */ OT_EARLY_PROJECTION,           // Early: Projections
   /* */ OT_GBYAGG_TO_ORDAGG,           // Replace: GBYAGG with ORDAGG
   /* */ OT_JOIN_ORDERING,              // Sequence: Join Ordering
+  /* */ OT_LATE_PROJECTION,            // Postpone: VARCHAR Projections after re-join
   /* */ OT_MAX_TO_TOP,                 // Replace: MAX with TOP
   /* */ OT_ONETIME_CALCULATIONS,       // One-Time: CALCULATIONS
-  /* */ OT_POSTPONE_PROJECTIONS,       // Postpone: VARCHAR Projections after re-join
   /* */ OT_REDUCE_GBYAGG_KEY,          // Minimize: group by keys based on unique keys
   /* */ OT_SCAN_TO_INDEXSCAN,          // Replace: SCAN with INDEXSCAN
   /* */ OT_SORTDESC_LIMIT_TO_TOP,      // Replace: SORTDESC +LIMIT with TOP
