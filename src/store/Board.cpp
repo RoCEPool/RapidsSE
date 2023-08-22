@@ -230,7 +230,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 {
   _static_
 
-  if (! pCI->m_pBench->bPastPhase(OH_EPILOG))
+  if (! pCI->m_pBench->bPastPhase(OH_PROLOG))
     return;
 
   pCI->vSave();

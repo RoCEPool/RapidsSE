@@ -63,6 +63,9 @@ void Bench::vValidate(CardIter* pCI)
 {
   _static_
 
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    return;
+
   pCI->vSave();
 
   Bench* pBench = pCI->m_pBench;

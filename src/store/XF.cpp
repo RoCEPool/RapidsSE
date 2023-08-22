@@ -116,7 +116,7 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1/5) prolog
 
-  m_pCI->m_pBench->vPhase(OH_EPILOG);
+  m_pCI->m_pBench->vPhase(OH_PROLOG);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
