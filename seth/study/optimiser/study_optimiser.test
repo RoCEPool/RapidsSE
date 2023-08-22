@@ -2,7 +2,8 @@
 -- optimiser study
 --------------------------------------------------------------------------------
 
-LOG 'Optimiser study test:';
+LOG ' ';
+LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
 
@@ -52,13 +53,13 @@ INCLUDE 'tpch_q19.test';
 LOG ' ';
 INCLUDE 'drop_tables.test';
 
-LOG 'End optimiser study test';
+LOG 'End Optimiser Study';
 
 //------------------------------------------------------------------------------
 
 LOG ' ';
 
-LOG 'Double checking:';
+LOG 'Double Checking:';
 
 LOG 'AggregExpr.test';
 INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
@@ -67,7 +68,7 @@ INCLUDE '../../tests/tests1N4P/Combined/IndexJoin.test';
 LOG 'operator.test';
 INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
 
-LOG 'End double checking:';
+LOG 'End Double Checking:';
 
 //------------------------------------------------------------------------------
 
