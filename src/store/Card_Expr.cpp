@@ -479,7 +479,11 @@ bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol)
   if (pSymbol_0->bSame(pSymbol))
     return true;
 
-  return false;
+  if (pSymbol_0->Y_bHas(P_WasStmCol) &&
+      pSymbol_0->Y_szGet(P_WasStmCol)->bSame(pSymbol->szSF_symbol(SF_NONE)))
+    return true;
+
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

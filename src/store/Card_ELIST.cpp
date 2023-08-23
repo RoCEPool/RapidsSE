@@ -165,6 +165,7 @@ Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
   for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
+
     Card_Expr* p_expr = pGetExpr(i_Expr);
     if (p_expr->bExpressionOfSymbol(pSymbol))
       return p_expr;
