@@ -18,8 +18,7 @@ namespace STORE
     bool       m_bFirst;
     i8         m_i_Rec;
 
-    i8     m_iSynthKey;     // Synthetic key for the Pds
-    Pds_t<PdsItem_BufferId>* m_pPdsOfBufferIds;
+    PdsBufferIdQueue* m_pBufferIdQueue;
   
     //--
   

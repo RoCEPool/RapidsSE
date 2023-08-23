@@ -69,8 +69,7 @@ Tub::Tub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  m_iSynthKey = 0;
-  m_pPdsOfBufferIds = new Pds_t<PdsItem_BufferId>(nullptr);
+  m_pBufferIdQueue = new PdsBufferIdQueue();
 
   m_pRowPix      = nullptr;
   
@@ -88,7 +87,7 @@ Tub::~Tub(void) noexcept(false)
 
   delete m_pRowPix;
 
-  delete m_pPdsOfBufferIds;
+  delete m_pBufferIdQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,13 +181,7 @@ void Tub::vAddBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  PdsItem_BufferId oItem;
-  oItem.iKey = ++m_iSynthKey;
-  oItem.oBufferId = pDataBuffer->oGetBufferId();
-
-  SkipListBlock* pBlock = m_pPdsOfBufferIds->pInsert((void*) &oItem);
-  RASSERT(pBlock != nullptr);
-  *(PdsItem_BufferId*)(pBlock->aItem()) = oItem;
+  m_pBufferIdQueue->vAddBuffer(pDataBuffer);
 
   return;
 }
@@ -200,23 +193,7 @@ DataBuffer* Tub::pCompletedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  // don't return a buffer if only one exists in the pds
-  // since it may not be full. Only the buffer at the end
-  // of the pds chain may not be not full.
-  // [Root-Block]-->[Full-Buffer]-->[Full-Buffer]-->[Non-Full-Buffer]-->NULL
-  if(m_pPdsOfBufferIds->iNumEntries(0) <= 1)
-    return nullptr;
-
-  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
-  RASSERT(pCurrBlock != nullptr);
-
-  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
-
-  DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-
-  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
-
-  return pDataBuffer;
+  return m_pBufferIdQueue->pCompletedBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,23 +203,7 @@ DataBuffer* Tub::pDanglingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) <= 1);
-
-  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
-    return nullptr;
-
-  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
-  RASSERT(pCurrBlock != nullptr);
-
-  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
-
-  DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-
-  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
-
-  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) == 0);
-
-  return pDataBuffer;
+  return m_pBufferIdQueue->pDanglingBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,7 +213,7 @@ bool Tub::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
   
-  return m_pPdsOfBufferIds->iNumEntries(0) == 0;
+  return m_pBufferIdQueue->bIsEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,23 +243,7 @@ DataBuffer* Tub::pWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
-    return nullptr;
-
-  PdsItem_BufferId oKey;
-  oKey.iKey = C_INT_MAX;
-
-  // Find the last block less than MAX
-  SkipListBlock* pSearchBlock = m_pPdsOfBufferIds->pFindLessThan((void *) &oKey);
-
-  if(pSearchBlock != nullptr) {
-    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pSearchBlock->aItem();
-
-    DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-    return pDataBuffer;
-  }
-
-  return nullptr;
+  return m_pBufferIdQueue->pDataBuffer();
 }
 
 /*============================================================================*/

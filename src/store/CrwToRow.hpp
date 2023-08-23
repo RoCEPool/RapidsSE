@@ -10,8 +10,7 @@ namespace STORE
   private:
 
     StreamDef* m_pStreamDef;
-    i8     m_iSynthKey;     // Synthetic key for the Pds
-    Pds_t<PdsItem_BufferId>* m_pPdsOfBufferIds;
+    PdsBufferIdQueue* m_pBufferIdQueue;
 
   
     // must be last

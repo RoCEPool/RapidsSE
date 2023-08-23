@@ -48,8 +48,7 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   m_i_Rec   = -1;
   m_bFirst  = true;
 
-  m_iSynthKey  = 0;
-  m_pPdsOfBufferIds = new Pds_t<PdsItem_BufferId>(nullptr);
+  m_pBufferIdQueue = new PdsBufferIdQueue();
 
   //--
   
@@ -91,7 +90,7 @@ ToKeyHshRow::~ToKeyHshRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  delete m_pPdsOfBufferIds;
+  delete m_pBufferIdQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,24 +105,9 @@ void ToKeyHshRow::vRepairList(Object* pObject)
   _static_
 
   ToKeyHshRow* pToRow = _pToKeyHshRow(pObject);
-  Pds* pPds = pToRow->m_pPdsOfBufferIds;
-  SkipListBlock* pCurrBlock = pPds->pFirstBlock();
+  PdsBufferIdQueue::vRepair(pToRow->m_pBufferIdQueue);
 
-  while(pCurrBlock) {
-    SkipListBlock* pNextBlock = pPds->pNextSLBlock(pCurrBlock, 0);
-
-    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
-
-    RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-    pPds->bDelete((void*)&oBufferIdStruct.iKey);
-    AM::vDeleteOperand(pRowBuffer,nullptr);
-
-    pCurrBlock = pNextBlock;
-  }
-
-  RASSERT(pPds->iNumEntries(0) == 0);
-
-  // delete the toRow
+  // delete the pToRow
   delete pToRow;
 }
 
@@ -137,23 +121,7 @@ void ToKeyHshRow::vRepairList(Object* pObject)
 RowBuffer* ToKeyHshRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
-  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) <= 1);
-
-  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
-    return nullptr;
-
-  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
-  RASSERT(pCurrBlock != nullptr);
-
-  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
-
-  RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-
-  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
-
-  RASSERT(m_pPdsOfBufferIds->iNumEntries(0) == 0);
-
-  return pRowBuffer;
+  return _pRowBuffer(m_pBufferIdQueue->pDanglingBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,43 +131,17 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  // if there is only one entry, it may not be full...
-  // check with ray
-  if(m_pPdsOfBufferIds->iNumEntries(0) == 0)
-    return nullptr;
-
-  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
-  RASSERT(pCurrBlock != nullptr);
-
-  PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
-
-  RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-
-  m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
-
-  return pRowBuffer;
+  return _pRowBuffer(m_pBufferIdQueue->pCompletedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
-/* return last remaining dangling rowBuffer (if any)                          */
+/* return tail of chain (most recently added buffer)                          */
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToKeyHshRow::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  PdsItem_BufferId oKey;
-  oKey.iKey = C_INT_MAX;
-
-  SkipListBlock* pSearchBlock = m_pPdsOfBufferIds->pFindLessThan((void *) &oKey);
-
-  if(pSearchBlock != nullptr) {
-    PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pSearchBlock->aItem();
-
-    RowBuffer* pRowBuffer = _pRowBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
-    return pRowBuffer;
-  }
-
-  return nullptr;
+  return _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,22 +184,16 @@ i8 ToKeyHshRow::iRowsSkipped(void)
 void ToKeyHshRow::vNewRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
-  
+
   //  create a new buffer
-  RowBuffer* pRowBuffer = new RowBuffer;
+  RowBuffer* pNewRowBuffer = new RowBuffer;
 
-  // create the key
-  PdsItem_BufferId oKey;
-  oKey.iKey = ++m_iSynthKey;
-  oKey.oBufferId = pRowBuffer->oGetBufferId();
-
-  SkipListBlock* pSkipListBlock = m_pPdsOfBufferIds->pInsert((void*) &oKey);
-  RASSERT(pSkipListBlock != nullptr);
-
-  *(PdsItem_BufferId*) (pSkipListBlock->aItem()) = oKey;
-  
   // initialise the row slab inside the new row buffer
-  pRowBuffer->vInitPix(m_pStreamDef,true);
+  pNewRowBuffer->vInitPix(m_pStreamDef,true);
+
+  m_pBufferIdQueue->vAddBuffer(pNewRowBuffer);
+
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
