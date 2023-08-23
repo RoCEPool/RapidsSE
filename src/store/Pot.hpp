@@ -5,13 +5,20 @@
 
 namespace STORE
 {
+  typedef struct {
+    i8 iLglPtn;
+    i8 iSynthKey;
+    BufferId oBufferId;
+  } PotPdsItem;
+
   class Pot : public Object
   {
   private:
   
     RowPix* m_pRowPix;    // condensed stream def
 
-    DataBuffer*  m_paBufferChain[C_MAX_LGLPTNS];
+    i8                      m_iSynthKey;     // Synthetic key used to append buffers to the Pds structure
+    Pds_t<PotPdsItem>*      m_pPdsOfBuffers; // Pds of buffers
 
     // must be last
     Footer m_xFooter;
@@ -44,6 +51,8 @@ namespace STORE
 
     Footer* aFooter(void);
   };
+
+  static i8 iPotPdsItemKeyCompare(void* aItem_l, void* aItem_r);
 
   Pot* _pPot(void* aAddr);
   void* aPot_AllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);

@@ -108,7 +108,16 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
+  // don't return a buffer if only one exists in the pds for this LglPtn
+  // since it may not be full. Only the buffer at the end
+  // of the pds chain may not be not full.
+  // Cases:
+  // a) [Root-Block]-->[Full-Buffer]-->[Full-Buffer]-->[Non-Full-Buffer]-->NULL
+  // b) [Root-Block]-->[Non-Full-Buffer]-->NULL
+  // c) [Root-Block]-->NULL
+
   LglBufSetItem oSearchKey;
+  // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
   oSearchKey.iLglPtn = tLglPtn.iAsI8() + 1;
   oSearchKey.iSynthKey = C_INT_MIN;
 
@@ -116,10 +125,20 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
   SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
+    // Check if the next block in this chain exists for this LglPtn
+    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
+    if(pNextBlock != nullptr) {
+      // Next block exists, check if the key is the same as this LglPtn
+      LglBufSetItem* pNextItem = (LglBufSetItem*) pNextBlock->aItem();
+      RASSERT(pNextItem != nullptr);
+      if(pNextItem->iLglPtn == (tLglPtn.iAsI8() + 1))
+        return nullptr;
+    }
+
     // If the block is not null, extract the keys and values
     LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
 
-    // If the LglPtn value matches, we found a buffer part of this LglPtn chain
+    // If the LglPtn value matches, we found a completed buffer part of this LglPtn chain
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
     if(pItem != nullptr && pItem->iLglPtn == (tLglPtn.iAsI8() + 1)) {
       BufferId oBufferId = pItem->oBufferId;
