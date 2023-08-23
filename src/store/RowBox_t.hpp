@@ -676,8 +676,9 @@ void RowBox_t<AREA>::vDepositColVal(Stz* szColVal)
   _poolAddress_(this); _footer_();
 
   char* azTgt = azDepositString_begin();
-  
-  i8 nLen = StrLib::nCopy(azTgt,szColVal->azChar());
+  i8 iFreeBytes = WspConvergent_t<AREA,Stz,Row>::nFreeBytes();
+
+  i8 nLen = StrLib::nCopy(azTgt, iFreeBytes, szColVal->azChar());
 
   vDepositString_end(nLen + 1);
 }

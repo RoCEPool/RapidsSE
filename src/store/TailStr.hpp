@@ -30,6 +30,7 @@ namespace STORE
     void vAssign(Stz* szStz);
     void vSet(Stz* szStz);
     Stz* sz(void);
+    i8   iSzRemaining(void);
     void vDump(void);
     void vReset(void);
   };

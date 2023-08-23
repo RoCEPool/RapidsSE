@@ -60,7 +60,7 @@ namespace BASE
     static void  vConcat(char* pWS, i8 iDstBufSize, i8 i, bool* pbResult = nullptr);                                    // yes
     static bool  bContains(char* s, const char cArg);                                                                   // ✕
     static bool  bContains(char* s, const char* sArg);                                                                  // ✕
-    static i8    nCopy(char* psDst, const char* psSrc);                                                                 // ✕
+    static i8    nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
     static i8    nCopy_nonull(char* psDst, const char* psSrc);                                                          // ✕
     static void  vCopy(char* psDst, const char* psSrc);                                                                 // ✕
     static void  vCopyLen(char* psDst, const char* psSrc, i8 nBytes);                                                   // ✕
