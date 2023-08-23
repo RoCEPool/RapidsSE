@@ -608,7 +608,7 @@ void TypedStack::vPushStr(String* pStr)
   i8 nSize = StrLib::nSize(pStr->azStr());
   TypeValueArea* aTypedCell = aAllotStzVal(nSize);
 
-  aTypedCell->vStz(pStr->szStz());
+  aTypedCell->vStz(pStr->szStz(), nSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -623,7 +623,7 @@ void TypedStack::vPushStz(Stz* szStz)
   i8 nSize = szStz->nSize();
   TypeValueArea* aTypedCell = aAllotStzVal(nSize);
   
-  aTypedCell->vStz(szStz);
+  aTypedCell->vStz(szStz, nSize);
 }
 
 /*----------------------------------------------------------------------------*/

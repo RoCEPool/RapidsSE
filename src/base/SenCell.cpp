@@ -107,7 +107,7 @@ void SenCell::operator =(Stz* szColVal)
 //
 //  m_xTypedCell.vType(CN_STZVAL);
   
-  m_xTypeValueArea.vStz(szColVal);
+  m_xTypeValueArea.vStz(szColVal, sizeof(m_xTypeValueArea.m_caStringArea));
 }
 
 /*----------------------------------------------------------------------------*/
