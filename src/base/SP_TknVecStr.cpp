@@ -57,7 +57,7 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec, i8 i_From, i8 i_Till)
   for (i8 i_Token = i_From; i_Token <= i_Till; i_Token++) {
     
     if (i_Token > i_From)
-      StrLib::vConcat(m_caResult," ");
+      StrLib::vConcat(m_caResult, sizeof(m_caResult), ' ');
 
     Token* pToken = pTknVec->pGet(i_Token);
     
@@ -66,37 +66,37 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec, i8 i_From, i8 i_Till)
     switch (eToken) {
         
       case TN_BOOLEAN:
-        StrLib::vConcat(m_caResult,pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
         break;
         
       case TN_DECIMAL:
-        StrLib::vConcat(m_caResult,pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
         break;
         
       case TN_FLOAT:
-        StrLib::vConcat(m_caResult,pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(m_caResult,pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(m_caResult,pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(m_caResult,pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(m_caResult,"\"");
-        StrLib::vConcat(m_caResult,pToken->azChars());
-        StrLib::vConcat(m_caResult,"\"");
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), '"');
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), '"');
         break;
         
       case TN_TAG:
-        StrLib::vConcat(m_caResult,pToken->azChars());
+        StrLib::vConcat(m_caResult, sizeof(m_caResult), pToken->azChars());
         break;
         
       default:

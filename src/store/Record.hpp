@@ -27,6 +27,7 @@ namespace STORE
     char* az(void);
     Stz* sz(void);
     Stz* sz(Row* pRow, bool bNewLine=false);
+    i8 iStrBufSize(void);
   
     void vPrintAsCsv(void);
     void vPrintAsRow(Stz* szLabel=nullptr);

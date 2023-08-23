@@ -86,7 +86,7 @@ Stz* SP_Flt::sz(d8 dFlt)
     StrLib::vCopyLen(m_caResult, sTmpStr.azChar(), iIdx - 1);
 
     // Now copy the 'e' and everything after it
-    StrLib::vConcat(m_caResult, sTmpStr.azChar() + iIdx);
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), sTmpStr.azChar() + iIdx);
 
   }
   else {

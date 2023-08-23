@@ -221,7 +221,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     
     StrLib::vAppendString(&szCrs,(char*)"\n"_Stz);
     
-    StrLib::vConcat(m_caEncoding,caLine);
+    StrLib::vConcat(m_caEncoding, sizeof(m_caEncoding), caLine);
   }
 }
 

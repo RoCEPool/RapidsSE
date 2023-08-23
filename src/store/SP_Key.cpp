@@ -129,7 +129,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
       Literal::vSprint((Stz*)caLiteral,ayElm,pCol);
  
     if (i_IdxCol)
-      StrLib::vConcat(m_caResult,", ");
+      StrLib::vConcat(m_caResult, sizeof(m_caResult), ", ");
 
     StrLib::vSprint((Stz*)caElm,
                     sizeof(caElm),
@@ -139,7 +139,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
                     nElmBytes,
                     caLiteral);
     
-    StrLib::vConcat(m_caResult,caElm);
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), caElm);
   }
 
 }
