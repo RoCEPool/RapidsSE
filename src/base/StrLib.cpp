@@ -750,23 +750,6 @@ i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy src into dst (not including '\0' terminator)                          */
-/*----------------------------------------------------------------------------*/
-i8 StrLib::nCopy_nonull(char* psDst, const char* psSrc)
-{
-  _static_
-  
-  i8 nBytes = 0;
-  
-  while ( * psSrc ) {
-    *psDst++ = *psSrc++;
-    nBytes++; // won't be executed when \0 is copied
-  }
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* vCopy: copy src into dst                                                   */
 /*----------------------------------------------------------------------------*/
 void StrLib::vCopy(char* psDst, const char* psSrc)
@@ -4490,7 +4473,7 @@ inline void StrLib::vReportStringTruncation(const char* azFuncName, i8 iReqBufSi
 {
   vTrace("Warning: Unhandled string truncation occurred in function %s.\n"
          "Destination buffer required %lld bytes, only had %lld bytes.\n"
-         "Call stack follows."_Stz,
+         "Call stack follows.\n"_Stz,
          azFuncName,
          iReqBufSize,
          iDstBufSize);
@@ -4511,19 +4494,6 @@ void StrLib::vReverse(char* azDst, char* azSrc)
     *acDst++ = *acSrc--;
   
   *acDst = '\0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* add src substr to right side of destination                                */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRight(char* azDst, char* azSrc, i8 i_At)
-{
-  _static_
-  
-  vPad(azDst, i_At,' ');
-  
-  char* azDst_into = azDst + i_At - strlen(azSrc) + 1;
-  nCopy_nonull(azDst_into,azSrc);
 }
 
 /*----------------------------------------------------------------------------*/
