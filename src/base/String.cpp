@@ -84,7 +84,7 @@ void String::vConcat(Stz* szArg)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
   
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea, m_nArea, szArg->azChar());
 }
 
 

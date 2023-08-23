@@ -291,7 +291,7 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stringise the modified text vector into a pipeline statement
   
-  pPrdTxtVec->vVecToString(pToPipelineStmt->szStz(),0,true);
+  pPrdTxtVec->vVecToString(pToPipelineStmt,0,true);
   
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE))
     vTrace(" => %s\n"_Stz,pToPipelineStmt->szStz());

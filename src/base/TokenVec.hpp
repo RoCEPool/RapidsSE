@@ -76,8 +76,8 @@ namespace BASE
     i8   nTokens(void);
     void vUpdateToken(Token* pDstToken, Stz* szArgChars);
     i8   nUsedByteSpace(void);
-    void vToTknString(Stz* szDstStr);
-    void vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon);
+    void vToTknString(String* psDstStr);
+    void vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon);
   
   private:
     Stz* _szByteSpaceExtend(i8 nBytes);

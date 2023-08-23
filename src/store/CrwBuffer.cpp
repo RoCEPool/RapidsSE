@@ -826,7 +826,7 @@ void CrwBuffer::vToCsv(Tub* pTub)
     vGetRow_single(hvRowSingle, i_Row);
     
     hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
-    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
+    StrLib::vConcat(hvRecord->az(), hvRecord->iStrBufSize(), '\n');           //! sub-optimal
     nSize = hvRecord->sz()->nSize();
     
     if (pCsvBuffer->nFreeBytes() < nSize + 1) {
@@ -869,7 +869,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     // append the row to the record
     hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
     
-    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
+    StrLib::vConcat(hvRecord->az(), hvRecord->iStrBufSize(), '\n');           //! sub-optimal
     
     nBytes = hvRecord->sz()->nSize();
     

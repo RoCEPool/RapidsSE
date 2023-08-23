@@ -2,6 +2,41 @@
 /* StrLib.cpp -- char* string utility                                         */
 /*============================================================================*/
 
+// STRING LIBRARY PRINCIPLES & RATIONALE
+// *************************************
+//
+// These are some core principles that the string library is working towards.
+// It isn't there yet, but it should help guide us with any new APIs as well
+// as correcting the existing APIs.
+//
+// (1) All string operations must know the size of the underlying buffer.
+//     That is, no blindly writing to a char* without knowing its size
+//     and the size of the string you're writing.
+//
+// (2) The StrLib method MUST check whether a string truncation would occur.
+//     More on how this is handled in a little bit.
+//
+// (3) The StrLib methods MUST include the ability for the caller to know that
+//     a string truncation has occurred.
+//     In many cases a string truncation should never happen, but in some cases
+//     it is unavoidable (e.g. a SQL command concatenating column values) and
+//     it is the responsibility of the caller to check for truncation and then
+//     handle this error themselves.
+//
+// (4) If the caller is not checking for truncation then the system should at
+//     least record that it has happened. It could do this by writing information
+//     to the logfile about the nature of the operation and how it got there.
+//     e.g. a stack trace.
+//     This is important so that we as developers can check to see if a truncation
+//     is occurring because at the time of writing we don't have any callers
+//     actually check for truncation. Also, if it occurs at runtime then we would
+//     like to know more about this.
+//
+// (5) All source/destination strings and arguments are properly null terminated
+//     such that we can rely on strlen() as needed.
+//
+// Note: This is a work in progress.
+
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
@@ -388,6 +423,41 @@ Stz* StrLib::szCharToStr(unsigned char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Checks if there is sufficient buffer space & optionally sets the           */
+/* callerResult if not null. Otherwise reports the truncation in the log file.*/
+/* Returns true if everything is ok or false if a string truncation will occur*/
+/*----------------------------------------------------------------------------*/
+inline bool StrLib::bCheckBufferSpace(const char* azFuncName, i8 iReqBufSize, i8 iDstBufSize, bool* pbCallerResult)
+{
+  ASSERT(azFuncName);
+  ASSERT(iReqBufSize >= 0);
+  ASSERT(iDstBufSize > 1);  // need at least room for a null terminator
+
+  // Is there enough space?
+  if (iDstBufSize < iReqBufSize) {
+
+    if (pbCallerResult) {
+      // (Optional) Caller is checking for and handling the error condition
+      *pbCallerResult = false;
+
+    } else {
+      // No handling of this error condition. At least log it.
+      vReportStringTruncation(azFuncName, iReqBufSize, iDstBufSize);
+    }
+
+    return false;
+  }
+
+  if (pbCallerResult) {
+    // (Optional) Caller is checking for the error condition
+    *pbCallerResult = true;
+  }
+
+  // No truncation will occur
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* check char                                                                 */
 /*----------------------------------------------------------------------------*/
 void StrLib::vCheckIsNot(char cArg, char cIsNot) {
@@ -451,7 +521,7 @@ void StrLib::vComma(char* azDst, i8 iArg)
   _static_
   
   char caInteger[32];
-  vToString(caInteger,iArg);
+  vToString(caInteger, sizeof(caInteger), iArg);
   
   char caReverse[32];
   vReverse(caReverse,caInteger);
@@ -530,23 +600,41 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate character to workspace                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* pWS, char cChar)
+void StrLib::vConcat(char* pWS, i8 iDstBufSize, const char cChar, bool* pbResult)
 {
   _static_
   
-  i8 i = nLength(pWS);
-  pWS[i] = cChar;
-  pWS[i+1] = '\0';
+  i8 iDstStrLen = nLength(pWS);     // how much space in the dest buffer (not including null terminator)
+  i8 iReqBufSize = iDstStrLen + 2;  // how much space required (including extra char & null terminator)
+
+  if (!bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult)) {
+    // No space to add 1 char, so we can't do this operation.
+    return;
+  }
+
+  pWS[iDstStrLen] = cChar;
+  pWS[iDstStrLen+1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate arg onto dst string                                   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* psDst, const char* psArg)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg, bool* pbResult)
 {
   _static_
-  
-  strcat(psDst,psArg);
+
+  i8 iDstStrLen = nLength(psDst);   // how much space in the dest buffer (not including null terminator)
+  i8 iArgStrLen = nLength(psArg);   // length of the argument
+  i8 iReqBufSize = iDstStrLen + iArgStrLen + 1;  // how much space required (including extra char & null terminator)
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  // The remaining space for writing the arg string, not including the null terminator.
+  i8 iRemainingSpace = iDstBufSize - iDstStrLen - 1;
+
+  strncat(psDst,psArg, iRemainingSpace);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -574,14 +662,14 @@ void StrLib::vConcat(char* psDst, const char* psArg1, const char* psArg2)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate i8 arg onto dst string                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* psDst, i8 iArg)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
   
   char aInt[32];
-  
-  wToString(iArg,aInt);
-  vConcat(psDst,aInt);
+
+  wToString(iArg, aInt, sizeof(aInt));  // This should never fail
+  vConcat(psDst, iDstBufSize, aInt, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4192,6 +4280,71 @@ void StrLib::vRemoveTailInt(char *azArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove till given char                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+{
+  _static_
+
+  char* azSrc = azArg;
+  while (*azSrc && *azSrc != cTill)
+    azSrc++;
+
+  if (! *azSrc)
+    return;
+
+  if (bRemoveTheTill)
+    azSrc++;
+
+  vShuffleLeft(azArg,azSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove leading token                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveToken(char* azArg)
+{
+  _static_
+
+  char* azRight = azArg;
+
+  // skip leading whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  // skip token
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight)
+      break;
+    azRight++;
+  }
+
+  // skip whitespace
+  while (*azRight) {
+    if (' ' == *azRight || '\n' == *azRight) {
+      azRight++;
+      continue;
+    }
+    break;
+  }
+
+  // something still to process?
+  if (! *azRight)
+    return;
+
+  vShuffleLeft(azArg,azRight);
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace sub-string                                                         */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
@@ -4329,68 +4482,17 @@ void StrLib::vReplaceTail(char* azArg, char* azTail)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove till given char                                                     */
+/* Record internally that a string truncation has occurred                    */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+inline void StrLib::vReportStringTruncation(const char* azFuncName, i8 iReqBufSize, i8 iDstBufSize)
 {
-  _static_
-
-  char* azSrc = azArg;
-  while (*azSrc && *azSrc != cTill)
-    azSrc++;
-
-  if (! *azSrc)
-    return;
-
-  if (bRemoveTheTill)
-    azSrc++;
-
-  vShuffleLeft(azArg,azSrc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove leading token                                                       */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRemoveToken(char* azArg)
-{
-  _static_
-
-  char* azRight = azArg;
-
-  // skip leading whitespace
-  while (*azRight) {
-    if (' ' == *azRight || '\n' == *azRight) {
-      azRight++;
-      continue;
-    }
-    break;
-  }
-
-  // something still to process?
-  if (! *azRight)
-    return;
-
-  // skip token
-  while (*azRight) {
-    if (' ' == *azRight || '\n' == *azRight)
-      break;
-    azRight++;
-  }
-
-  // skip whitespace
-  while (*azRight) {
-    if (' ' == *azRight || '\n' == *azRight) {
-      azRight++;
-      continue;
-    }
-    break;
-  }
-
-  // something still to process?
-  if (! *azRight)
-    return;
-
-  vShuffleLeft(azArg,azRight);
+  vTrace("Warning: Unhandled string truncation occurred in function %s.\n"
+         "Destination buffer required %lld bytes, only had %lld bytes.\n"
+         "Call stack follows."_Stz,
+         azFuncName,
+         iReqBufSize,
+         iDstBufSize);
+  vThreadCallStackDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5290,11 +5392,11 @@ char* StrLib::wToString(bool b, char* w)
 /*----------------------------------------------------------------------------*/
 /* convert given float into its char/str form                                 */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToString(char* psDst, i8 iArg)
+void StrLib::vToString(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
   
-  wToString(iArg,psDst);
+  wToString(iArg, psDst, iDstBufSize, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5316,34 +5418,63 @@ char* StrLib::wToString(d8 d, char* w)
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToString(i8 i, char* w)
+char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
-  
+  ASSERT(iDstBufSize > 1);
+
+  i8 iSpaceNeeded = 1; // start with the null terminator
   bool bNegative = false;
   
   if (i < 0) {
     i = -i;
     bNegative = true;
+    ++iSpaceNeeded; // Account for the negative now
   }
   
-  char *p = w, *q = w;
+  char *p = psDst, *q = psDst;
   do {
-    *p++ = (i % 10) + '0';
+    ++iSpaceNeeded;
+    if (iSpaceNeeded <= iDstBufSize) {
+      *p++ = (i % 10) + '0';
+    }
+
     i /= 10ll;
   } while (i);
-  
+
+  if (iSpaceNeeded > iDstBufSize) {
+    // Try to put a value into the destination buffer
+    if (iDstBufSize > 1) {
+      psDst[0] = '0'; psDst[1] = 0;
+    } else {
+      psDst[0] = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+    return psDst;
+  }
+
+  // We have enough space. Now reverse the string that was generated.
+
   if (bNegative)
     *p++ = '-';
-  
+
   *p = '\0';
   while (--p > q) {
     char c = *p;
     *p = *q;
     *q++ = c;
   }
-  
-  return w;
+
+  if (pbResult) {
+    *pbResult = true;
+  }
+
+  return psDst;
 }
 
 /*----------------------------------------------------------------------------*/

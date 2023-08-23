@@ -77,7 +77,7 @@ void SPmedium::vCats(Stz* szSubstring)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 
-  StrLib::vConcat(m_caResult,szSubstring->azChar());
+  StrLib::vConcat(m_caResult, sizeof(m_caResult), szSubstring->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ void SPmedium::vCats(i8 iDepth, Stz* szSubstring)
   if (iDepth)
     vCats(Stz::szTab(iDepth));
 
-  StrLib::vConcat(m_caResult,szSubstring->azChar());
+  StrLib::vConcat(m_caResult, sizeof(m_caResult), szSubstring->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

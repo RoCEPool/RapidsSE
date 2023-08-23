@@ -25,7 +25,7 @@ void BASE::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vThreadCallStackDump(void)
 {
-//  vThreadCallStackDump_Mangled(); vThreadCallStackDump_Demangled();
+  vThreadCallStackDump_Demangled();
 }
 
 /*----------------------------------------------------------------------------*/

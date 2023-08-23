@@ -102,6 +102,16 @@ Stz* Record::sz(Row* aRow, bool bNewLine)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return size of the string buffer size                                      */
+/*----------------------------------------------------------------------------*/
+i8 Record::iStrBufSize(void)
+{
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+
+  return sizeof(m_caRecord);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print record string as csv,...                                              */
 /*----------------------------------------------------------------------------*/
 void Record::vPrintAsCsv(void)

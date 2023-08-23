@@ -190,12 +190,12 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   StrLib::vCopyLen(caSubStrAfter,szCursor->azChar(),iAfter);
   StrLib::vEscape(caEscapedAfter,caSubStrAfter);
   
-  StrLib::vConcat(m_caResult,caEscapedAfter);
+  StrLib::vConcat(m_caResult, sizeof(m_caResult), caEscapedAfter);
 
   if (StrLib::nSize(szCursor->azChar()) < iAfter)
-    StrLib::vConcat(m_caResult,"\\0");
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), "\\0");
   else
-    StrLib::vConcat(m_caResult,"...");
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), "...");
 
   return (Stz*) &m_caResult[0];
 }

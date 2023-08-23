@@ -226,7 +226,7 @@ void String_t<AREA>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::wToString(iArg,m_caCharArea);
+  StrLib::wToString(iArg, m_caCharArea, sizeof(m_caCharArea));
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -284,7 +284,7 @@ void String_t<AREA>::vAppend(const char cChar)
   
   // limit???
   
-  StrLib::vConcat(m_caCharArea,cChar);
+  StrLib::vConcat(m_caCharArea, m_nArea, cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -363,7 +363,7 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea, m_nArea, szArg->azChar());
   
   
   va_list xVarArgs;
@@ -372,7 +372,7 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
   
   
   while (Stz* szVal = va_arg(xVarArgs,Stz*)) {
-    StrLib::vConcat(m_caCharArea,szVal->azChar());
+    StrLib::vConcat(m_caCharArea, m_nArea, szVal->azChar());
   }
   
   va_end(xVarArgs);
@@ -433,7 +433,7 @@ void String_t<AREA>::vConcat(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea,szArg->azChar(), AREA);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }

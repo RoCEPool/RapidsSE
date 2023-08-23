@@ -2264,11 +2264,11 @@ bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
   
   StrLib::vPad(caSection,127-iSectNmLen-4,'#');
   
-  StrLib::vConcat(caSection,' ');
-  StrLib::vConcat(caSection,szSectionNm->azChar());
-  StrLib::vConcat(caSection,' ');
-  StrLib::vConcat(caSection,'#');
-  StrLib::vConcat(caSection,'#');
+  StrLib::vConcat(caSection, sizeof(caSection),' ');
+  StrLib::vConcat(caSection, sizeof(caSection),szSectionNm->azChar());
+  StrLib::vConcat(caSection, sizeof(caSection),' ');
+  StrLib::vConcat(caSection, sizeof(caSection),'#');
+  StrLib::vConcat(caSection, sizeof(caSection),'#');
   
   return true;
 }
@@ -4434,7 +4434,7 @@ bool PROMPT::bPrompt_shortcut(SePrompt* pPrompt)
   
   pTknVec->vStripSemicolon();
   
-  pTknVec->vVecToString(sCmd.szStz(),2,false);
+  pTknVec->vVecToString(sCmd,2,false);
   
   ShortCut* pShortCut = new ShortCut(sNm,sCmd);
   
