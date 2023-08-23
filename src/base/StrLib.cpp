@@ -651,8 +651,12 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg, i8 nCatLen,
 
   i8 iDstStrLen = nLength(psDst);   // how much space in the dest buffer (not including null terminator)
   i8 iArgStrLen = nLength(psArg);   // length of the argument
-  i8 iMaxArgLen = iArgStrLen > nCatLen ? iArgStrLen : nCatLen;
-  i8 iReqBufSize = iDstStrLen + iMaxArgLen + 1;  // how much space required (including extra char & null terminator)
+//i8 iMaxArgLen = iArgStrLen > nCatLen ? iArgStrLen : nCatLen;
+//  i8 iReqBufSize = iDstStrLen + iMaxArgLen + 1;  // how much space required (including extra char & null terminator)
+
+  // will strncat the minimum of nCatLen or nLength(psArg)
+  i8 iMinArgLen = nCatLen < iArgStrLen ? nCatLen : iArgStrLen;
+  i8 iReqBufSize = iDstStrLen + iMinArgLen + 1;  // how much space required (including extra char & null terminator)
 
   bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
   UNUSED(bWillTruncate);
