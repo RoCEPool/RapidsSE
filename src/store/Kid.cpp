@@ -28,8 +28,6 @@ Kid::Kid(void)
   m_pParent = nullptr;
   m_i_Child = C_UNKNOWN;
 
-  m_bActive = false;
-
   _checkInitialised_(CN_KID);
 
   //_postcondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
@@ -45,8 +43,6 @@ Kid::Kid(Card* pParent)
 
   m_pParent = pParent;
   m_i_Child = C_UNKNOWN;
-
-  m_bActive = false;
 
   _checkInitialised_(CN_KID);
 
@@ -70,8 +66,6 @@ Kid::~Kid(void) noexcept(false)
 void Kid::vBegin(void)
 {
   m_i_Child = C_UNKNOWN;
-
-  m_bActive = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,8 +393,6 @@ void Kid::vParent(Card*  pParent)
 
   m_pParent = pParent;
   m_i_Child = C_UNKNOWN;
-
-  m_bActive = true;
  }
 
 /*----------------------------------------------------------------------------*/
@@ -410,8 +402,6 @@ void Kid::vChild(i8 i_Child)
 {
 
   m_i_Child = i_Child;
-
-  //m_bActive = true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,9 +13,6 @@ namespace STORE
   private:
     Card *m_pParent;
     i8 m_i_Child;
-  public:
-
-    bool m_bActive;
 
   private:
 //    // must be last
