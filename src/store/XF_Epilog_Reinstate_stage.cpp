@@ -19,7 +19,7 @@ __aFooterFunction(XF_Epilog_Reinstate_stage)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Reinstate_stage::XF_Epilog_Reinstate_stage(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_REINSTATE_STAGE, pCI)
+: XF_EPILOG(CN_XF_REINSTATE_STAGE, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_REINSTATE_STAGE, _FOOTER_);
 

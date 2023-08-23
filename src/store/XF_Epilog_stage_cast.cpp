@@ -19,7 +19,7 @@ __aFooterFunction(XF_Epilog_stage_cast)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_stage_cast::XF_Epilog_stage_cast(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_STAGE_CAST, pCI)
+: XF_EPILOG(CN_XF_STAGE_CAST, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
 

@@ -19,7 +19,7 @@ __aFooterFunction(XF_Epilog_Promote_filter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Promote_filter::XF_Epilog_Promote_filter(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_INDIVIDUATE_FILTER,pCI)
+: XF_EPILOG(CN_XF_INDIVIDUATE_FILTER,pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
 

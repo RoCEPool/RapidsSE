@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_EPILOG.hpp"
 
 namespace STORE
 {
-  class XF_Epilog_Promote_filter : public XF_TRANSFORM
+  class XF_Epilog_Promote_filter : public XF_EPILOG
   {
   private:
     // must be last

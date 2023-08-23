@@ -19,7 +19,7 @@ __aFooterFunction(XF_Epilog_Dedupe_as)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Dedupe_as::XF_Epilog_Dedupe_as(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_DEDUPE_AS, pCI)
+: XF_EPILOG(CN_XF_DEDUPE_AS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
 

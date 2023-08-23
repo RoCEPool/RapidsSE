@@ -19,7 +19,7 @@ __aFooterFunction(XF_Epilog_Column_mapping)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Column_mapping::XF_Epilog_Column_mapping(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_COLUMN_MAPPING, pCI)
+: XF_EPILOG(CN_XF_COLUMN_MAPPING, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 

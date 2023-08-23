@@ -19,7 +19,7 @@ __aFooterFunction(XF_Epilog_stmCol_To_colNm)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_stmCol_To_colNm::XF_Epilog_stmCol_To_colNm(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_STMCOL_TO_COLNM, pCI)
+: XF_EPILOG(CN_XF_STMCOL_TO_COLNM, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_COLNM, _FOOTER_);
 
