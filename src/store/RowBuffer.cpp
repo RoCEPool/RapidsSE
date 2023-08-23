@@ -243,7 +243,7 @@ Row* RowBuffer::pAllotCopyRow(RowSingle* pRowSingle)
       // STRING_DEPOSIT
       // allocate a string from the tail
       Stz* acDstString = aAllotHead(nSrcLength);
-      i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
+      i8 nCopyBytes = StrLib::nCopy((char*)acDstString, nSrcLength, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
       UNUSED(nCopyBytes);
       // set offset of tail string

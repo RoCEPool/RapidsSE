@@ -53,7 +53,7 @@ i8 TailStr::nBytes(void)
 i8 TailStr::nUnits(void)
 {
   i8 nSizeUnits = w8_1B(0);
-  
+
   return nSizeUnits;
 }
 
@@ -111,7 +111,7 @@ void TailStr::vU(i8 nUnits)
 /*----------------------------------------------------------------------------*/
 void TailStr::vAssign(Stz* szStz)
 {
-  i8 nL = StrLib::nCopy((char*)sz(),(char*)szStz);
+  i8 nL = StrLib::nCopy(sz()->azChar(), iSzRemaining(), (char*)szStz);
   
   vL(nL);
 }
@@ -124,7 +124,8 @@ void TailStr::vSet(Stz* szStz)
 //  vBegin();
   MemLib::vZero(m_yaByte, sizeof(m_yaByte), CN_ROWCOMPACTOR);
 
-  i8 nL = StrLib::nCopy((char*)sz(),(char*)szStz) + C_1B;
+
+  i8 nL = StrLib::nCopy(sz()->azChar(),iSzRemaining(), (char*)szStz) + C_1B;
   
   vL(nL);
   
@@ -141,6 +142,20 @@ Stz* TailStr::sz(void)
   Stz* szStz = (Stz*) &m_yaByte[C_U_1B + C_L_2B];
   
   return szStz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get buffer space remaining when a pointer is retrieved from sz()           */
+/*----------------------------------------------------------------------------*/
+i8 TailStr::iSzRemaining(void)
+{
+  byte* pSz = (byte*) sz();
+  i8 iOffset = (i8) ((byte*)pSz - m_yaByte);
+  ASSERT(iOffset >= 0);
+
+  i8 iRemaining = (i8) sizeof(m_yaByte) - iOffset;
+
+  return iRemaining;
 }
 
 /*----------------------------------------------------------------------------*/

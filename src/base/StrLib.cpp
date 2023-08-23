@@ -722,14 +722,29 @@ bool StrLib::bContains(char* s, const char* sArg)
 /*----------------------------------------------------------------------------*/
 /* copy src into dst, return bytes copied (not including '\0' terminator)     */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::nCopy(char* psDst, const char* psSrc)
+i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
-  
+
+  i8 iSrcStrLen = nLength(psSrc);   // length of the argument
+  i8 iReqBufSize = iSrcStrLen + 1;  // how much space required (including extra char & null terminator)
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  void* pvLastAddr = psDst + iDstBufSize - 1;
+
   i8 nBytes = 0;
   
-  while ( (*psDst++ = *psSrc++))
+  while ( (psDst != pvLastAddr) && (*psDst++ = *psSrc++)) {
     nBytes++; // won't be executed when \0 is copied
+  }
+
+  if (psDst == pvLastAddr) {
+    // We need to null terminate the truncated string
+    *psDst = 0;
+  }
   
   return nBytes;
 }

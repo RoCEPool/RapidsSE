@@ -95,7 +95,7 @@ void TypeValueArea::vStz(Stz* szStz)
 {
   vType(CN_STZVAL);
   
-  i8 nBytesFollowing = StrLib::nCopy(m_caStringArea,szStz->azChar()) + 1;
+  i8 nBytesFollowing = StrLib::nCopy(m_caStringArea, sizeof(m_caStringArea), szStz->azChar()) + 1;
   
   m_wxValue = nBytesFollowing;
 }

@@ -28,6 +28,7 @@ namespace STORE
     void vAssign(Stz* szStz);
     void vDump(void);
     Stz* sz(void);
+    i8   iSzRemaining(void);
   };
   
   /*--------------------------------------------------------------------------*/
