@@ -33,7 +33,7 @@
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Optimise_sortDesc_limit_To_top.hpp"
 #include "XF_Prolog_Add_level.hpp"
-#include "XF_Prolog_Delete_Unneeded.hpp"
+#include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Shorten_queryNm.hpp"
 #include "XF_Prolog_as_Review.hpp"
@@ -137,7 +137,7 @@ void XF::vTransform(void)
     XF_Prolog_Move_on::vXF_Move_on(m_pCI);
 
     //vGroup_CondenseInfo();
-    XF_Prolog_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
+    XF_Prolog_Erase_construction::vXF_Delete_Unneeded(m_pCI);
     XF_Prolog_scan_To_from::vXF_scan_To_table(m_pCI);
     XF_Prolog_Add_level::vXF_Add_level(m_pCI);
     XF_Prolog_not_Ops::vXF_not_Ops(m_pCI);

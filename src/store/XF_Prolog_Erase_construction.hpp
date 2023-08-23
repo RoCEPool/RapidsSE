@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_Delete_Unneeded.hpp -- Delete Unneeded                                  */
+/* XF_Prolog_Erase_construction.hpp -- Delete Unneeded                                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_Delete_Unneeded : public XF_TRANSFORM
+  class XF_Prolog_Erase_construction : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_Delete_Unneeded(CardIter* pCI);
-   ~XF_Prolog_Delete_Unneeded(void) noexcept(false);
+    XF_Prolog_Erase_construction(CardIter* pCI);
+   ~XF_Prolog_Erase_construction(void) noexcept(false);
 
     static void vXF_Delete_Unneeded(CardIter* pCI);
 
-    void vXF_Delete_Unneeded(void);
+    void vProlog(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Prolog_Delete_Unneeded* _pXF_Prolog_Delete_Unneeded(void* aAddr);
+  XF_Prolog_Erase_construction* _pXF_Prolog_Erase_construction(void* aAddr);
 }
 
 /*============================================================================*/

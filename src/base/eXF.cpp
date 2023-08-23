@@ -18,7 +18,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_DEDUPE_AS"_Stz,
   /* */ "XF_DELETE_EMPTY_WHERE"_Stz,
   /* */ "XF_DELETE_FLAT"_Stz,
-  /* */ "XF_DELETE_UNNEEDED"_Stz,
+  /* */ "XF_ERASE_CONSTRUCTION"_Stz,
   /* */ "XF_DERIVE_BOUNDS"_Stz,
   /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,
   /* */ "XF_EARLY_PROJECTION"_Stz,

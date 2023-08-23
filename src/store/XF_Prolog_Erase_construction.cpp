@@ -1,51 +1,51 @@
 /*============================================================================*/
-/* XF_Prolog_Delete_Unneeded.cpp -- Delete Unneeded                                  */
+/* XF_Prolog_Erase_construction.cpp -- Delete Unneeded                                  */
 /*============================================================================*/
 
-#include "XF_Prolog_Delete_Unneeded.hpp"
+#include "XF_Prolog_Erase_construction.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Delete_Unneeded, CN_XF_DELETE_UNNEEDED)
-__aNewFunction(XF_Prolog_Delete_Unneeded, CN_XF_DELETE_UNNEEDED)
-__vDeleteFunction(XF_Prolog_Delete_Unneeded, CN_XF_DELETE_UNNEEDED)
-__aFooterFunction(XF_Prolog_Delete_Unneeded)
+__pCastFunction(STORE, XF_Prolog_Erase_construction, CN_XF_ERASE_CONSTRUCTION)
+__aNewFunction(XF_Prolog_Erase_construction, CN_XF_ERASE_CONSTRUCTION)
+__vDeleteFunction(XF_Prolog_Erase_construction, CN_XF_ERASE_CONSTRUCTION)
+__aFooterFunction(XF_Prolog_Erase_construction)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Delete_Unneeded::XF_Prolog_Delete_Unneeded(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_DELETE_UNNEEDED, pCI)
+XF_Prolog_Erase_construction::XF_Prolog_Erase_construction(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_ERASE_CONSTRUCTION, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_UNNEEDED, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
 
-  _checkInitialised_(CN_XF_DELETE_UNNEEDED);
+  _checkInitialised_(CN_XF_ERASE_CONSTRUCTION);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_UNNEEDED, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Delete_Unneeded::~XF_Prolog_Delete_Unneeded(void) noexcept(false)
+XF_Prolog_Erase_construction::~XF_Prolog_Erase_construction(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_UNNEEDED, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Delete_Unneeded::vXF_Delete_Unneeded(CardIter* pCI)
+void XF_Prolog_Erase_construction::vXF_Delete_Unneeded(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_Delete_Unneeded* pXF_Delete_Unneeded = new XF_Prolog_Delete_Unneeded(pCI);
+  XF_Prolog_Erase_construction* pXF_Delete_Unneeded = new XF_Prolog_Erase_construction(pCI);
 
-  pXF_Delete_Unneeded->vXF_Delete_Unneeded();
+  pXF_Delete_Unneeded->vProlog();
 
   delete pXF_Delete_Unneeded;
 }
@@ -58,11 +58,11 @@ void XF_Prolog_Delete_Unneeded::vXF_Delete_Unneeded(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Delete_Unneeded::vXF_Delete_Unneeded(void)
+void XF_Prolog_Erase_construction::vProlog(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_UNNEEDED, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_DELETE_UNNEEDED, "delete superfluous <absJoin>'s"_Stz);
+  m_pCI->vTransform(__func__, XF_ERASE_CONSTRUCTION, "erase constructions"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin

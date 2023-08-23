@@ -17,7 +17,7 @@ enum eXF // transform
   /* */ XF_DEDUPE_AS,
   /* */ XF_DELETE_EMPTY_WHERE,
   /* */ XF_DELETE_FLAT,
-  /* */ XF_DELETE_UNNEEDED,
+  /* */ XF_ERASE_CONSTRUCTION,
   /* */ XF_DERIVE_BOUNDS,
   /* */ XF_DERIVE_PROJECTION_KEY,
   /* */ XF_EARLY_PROJECTION,
