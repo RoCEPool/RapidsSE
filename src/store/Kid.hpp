@@ -8,36 +8,21 @@
 
 namespace STORE
 {
-  class Kid //: public Object
+  class Kid
   {
   private:
     Card *m_pParent;
     i8 m_i_Child;
-  public:
 
-    bool m_bActive;
-
-  private:
-//    // must be last
-//    Footer m_xFooter;
+    Card *m_pChild;
 
   public:
-//    void* operator new(size_t);
-//    void  operator delete(void*);
-
     Kid(void);
-
     Kid(Card *pParent);
-
     ~Kid(void) noexcept(false);
 
     void vBeginForward(void);
-
     void vBeginReverse(void);
-
-    void vFirst(void);
-
-    void vLast(void);
 
     void vNext(void);
 
@@ -73,25 +58,11 @@ namespace STORE
 
     i8 iGetOdn(void);
 
-    Card *pFirstChild(void);
-
-    Card *pNextChild(void);
-
-    Card *pPrevChild(void);
-
-    Card *pLastChild(void);
-
-    bool bIsFirst(void);
-
-    bool bIsLast(void);
-
     void vForward(void);
 
     void vReverse(void);
 
     bool bInRange(void);
-
-    i8 nChildren(void);
 
     void vParent(Card *pParent);
 
@@ -101,9 +72,12 @@ namespace STORE
 
     void vSynch(Card *pChild_with);
 
-//  private:
-//
-//    Footer* aFooter(void);
+    private:
+    void vChildDec(void);
+    void vChildInc(void);
+    void vChildReset(void);
+    void vChildUpdate(void);
+
   };
 }
 /*============================================================================*/

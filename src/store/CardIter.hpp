@@ -128,7 +128,6 @@ namespace STORE
     bool G_bIsBoardNm(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
 
-    bool bJustRestarted(void);
 
     void G_vMainResynch(void);
     void G_vMainResynch(Card* pCard);

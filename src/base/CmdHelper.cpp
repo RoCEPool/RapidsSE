@@ -22,7 +22,7 @@ TagSet* CmdHelper::pDefTagSet(Stz* szCmdNm)
 
   // form the cmdTag name
   s32 sCmdTagNm(szCmdNm);
-  StrLib::vConcat(sCmdTagNm.azChar(), sCmdTagNm.nArea(), "_cmdTags");
+  StrLib::vConcat(sCmdTagNm.azChar(), sCmdTagNm.nAreaBytes(), "_cmdTags");
   
   // find the CmdTagNm word
   Word* pCmdWord = AM::DIC::pRoot()->pFindWord(sCmdTagNm);

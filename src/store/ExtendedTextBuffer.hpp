@@ -24,6 +24,8 @@ namespace STORE
     ExtendedTextBuffer(void);
    ~ExtendedTextBuffer(void) noexcept(false);
 
+    i8 nAreaBytes(void);
+
     bool bConcat(Stz* szSubStr);
     bool bConcat(Stz* szSubStr, i8 nLen);
 

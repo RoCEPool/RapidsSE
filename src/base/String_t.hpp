@@ -37,7 +37,7 @@ namespace BASE
 
     void vAppend(const char cChar);
     void vAppend(char** aazCursor, Stz* szArg);
-    i8   nArea(void);
+    i8   nAreaBytes(void);
     bool bBeginsWith(Stz* szArg);
     bool bBreak(i8 iBreakAt, i8& iPrevBreak);
     byte* ayByte(void);
@@ -308,7 +308,7 @@ void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
 /* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-i8 String_t<AREA>::nArea(void)
+i8 String_t<AREA>::nAreaBytes(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
