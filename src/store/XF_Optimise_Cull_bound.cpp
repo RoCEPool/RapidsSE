@@ -4,6 +4,7 @@
 
 #include "XF_Optimise_Cull_bound.hpp"
 
+#include "eOT.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -19,7 +20,7 @@ __aFooterFunction(XF_Optimise_Cull_bound)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Cull_bound::XF_Optimise_Cull_bound(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_CULL_NONUSED_BOUND, pCI)
+: XF_Optimise(CN_XF_CULL_NONUSED_BOUND, OT_CULL_BOUND, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 
@@ -45,8 +46,10 @@ void XF_Optimise_Cull_bound::vOptimise(CardIter* pCI)
 
   XF_Optimise_Cull_bound* pXF_Cull_NonUsed_bound = new XF_Optimise_Cull_bound(pCI);
 
-  pXF_Cull_NonUsed_bound->bXF_Cull_NonUsed_bound();
-  pXF_Cull_NonUsed_bound->bXF_Cull_Used_bound();
+  bool b1 = pXF_Cull_NonUsed_bound->bXF_Cull_NonUsed_bound();
+  bool b2 = pXF_Cull_NonUsed_bound->bXF_Cull_Used_bound();
+
+  pXF_Cull_NonUsed_bound->vOptimised(b1 | b2);
 
   delete pXF_Cull_NonUsed_bound;
 }

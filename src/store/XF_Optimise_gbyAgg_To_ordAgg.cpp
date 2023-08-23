@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_gbyAgg_To_ordAgg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_gbyAgg_To_ordAgg::XF_Optimise_gbyAgg_To_ordAgg(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, pCI)
+: XF_Optimise(CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, OT_GBYAGG_TO_ORDAGG, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 
@@ -46,7 +46,9 @@ void XF_Optimise_gbyAgg_To_ordAgg::vOptimise(CardIter* pCI)
 
   XF_Optimise_gbyAgg_To_ordAgg* pXF_Promote_gbyAgg_To_ordAgg = new XF_Optimise_gbyAgg_To_ordAgg(pCI);
 
-  pXF_Promote_gbyAgg_To_ordAgg->bOptimise();
+  bool b1 = pXF_Promote_gbyAgg_To_ordAgg->bOptimise();
+
+  pXF_Promote_gbyAgg_To_ordAgg->vOptimised(b1);
 
   delete pXF_Promote_gbyAgg_To_ordAgg;
 }

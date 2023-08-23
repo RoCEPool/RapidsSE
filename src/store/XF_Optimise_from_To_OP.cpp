@@ -19,7 +19,7 @@ __aFooterFunction(XF_Optimise_from_To_OP)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_from_To_OP::XF_Optimise_from_To_OP(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_FROM_TO_OP, pCI)
+: XF_Optimise(CN_XF_FROM_TO_OP, OT_NONE, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 
@@ -45,7 +45,9 @@ void XF_Optimise_from_To_OP::vOptimise(CardIter* pCI)
 
   XF_Optimise_from_To_OP* pXF_Morph_table_To_EEop = new XF_Optimise_from_To_OP(pCI);
 
-  pXF_Morph_table_To_EEop->bOptimise();
+  bool b1 = pXF_Morph_table_To_EEop->bOptimise();
+
+  pXF_Morph_table_To_EEop->vOptimised(b1);
 
   delete pXF_Morph_table_To_EEop;
 }

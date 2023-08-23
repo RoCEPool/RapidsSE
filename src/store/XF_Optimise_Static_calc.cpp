@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Static_calc)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Static_calc::XF_Optimise_Static_calc(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_OPTIMISE_STATIC_CALC, pCI)
+: XF_Optimise(CN_XF_OPTIMISE_STATIC_CALC, OT_STATIC_CALC, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_STATIC_CALC, _FOOTER_);
 
@@ -46,7 +46,9 @@ void XF_Optimise_Static_calc::vOptimise(CardIter* pCI)
 
   XF_Optimise_Static_calc* pXF_Optimise_OneTime_calc = new XF_Optimise_Static_calc(pCI);
 
-  pXF_Optimise_OneTime_calc->bOptimise();
+  bool b1 = pXF_Optimise_OneTime_calc->bOptimise();
+
+  pXF_Optimise_OneTime_calc->vOptimised(b1);
 
   delete pXF_Optimise_OneTime_calc;
 }

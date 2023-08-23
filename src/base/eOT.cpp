@@ -9,6 +9,7 @@ Stz* aOT[OT_ENUMS]
   /*   */ "OT_NONE"_Stz,
 
   /*  */ "OT_AGGREG_TO_SORT_ORDAGG"_Stz,
+  /*  */ "OT_CULL_BOUND"_Stz,
   /*  */ "OT_CUT_SORT"_Stz,
   /*  */ "OT_DERIVE_STREAM_KEY"_Stz,
   /*  */ "OT_DUPLICATE_FILTER"_Stz,

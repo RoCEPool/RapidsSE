@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Late_projection)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Late_projection::XF_Optimise_Late_projection(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_OPTIMISE_LATE_PROJECTION, pCI)
+: XF_Optimise(CN_XF_OPTIMISE_LATE_PROJECTION, OT_LATE_PROJECTION, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_LATE_PROJECTION, _FOOTER_);
 
@@ -46,7 +46,9 @@ void XF_Optimise_Late_projection::vOptimise(CardIter* pCI)
 
   XF_Optimise_Late_projection* pXF_Optimise_Late_projection = new XF_Optimise_Late_projection(pCI);
 
-  pXF_Optimise_Late_projection->bOptimise();
+  bool b1 = pXF_Optimise_Late_projection->bOptimise();
+
+  pXF_Optimise_Late_projection->vOptimised(b1);
 
   delete pXF_Optimise_Late_projection;
 }

@@ -8,6 +8,7 @@ enum eOT // Optimiser Transformations
   /* 00 */ OT_NONE = 0,
 
   /* */ OT_AGGREG_TO_SORT_ORDAGG,      // Replace: AGGREG with SORT AND ORDAGG
+  /* */ OT_CULL_BOUND,                 // Cull bound
   /* */ OT_CUT_SORT,                   // Cut : SORT (AGGREG and SORT on SAME COLUMNS)
   /* */ OT_DERIVE_STREAM_KEY,          // Derive: stream key
   /* */ OT_DUPLICATE_FILTER,           // Duplicate: Join-dependent predicate duplicates

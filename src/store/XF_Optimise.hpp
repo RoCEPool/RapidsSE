@@ -4,31 +4,27 @@
 #pragma once
 
 #include "XF_TRANSFORM.hpp"
+#include "eOT.h"
 
 namespace STORE
 {
-  class XF_Optimise_max_To_top : public XF_TRANSFORM
+  class XF_Optimise : public XF_TRANSFORM
   {
   private:
-    // must be last
-    Footer m_xFooter;
+
+    eOT m_eOptimisation;
 
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
-  
-    XF_Optimise_max_To_top(CardIter* pCI);
-   ~XF_Optimise_max_To_top(void) noexcept(false);
+
+    XF_Optimise(eCN eClass, eOT eOptimisation, CardIter* pCI);
+   ~XF_Optimise(void) noexcept(false);
 
     static void vOptimise(CardIter* pCI);
 
-    bool bOptimise(void);
+    void vOptimised(bool b);
 
-  private:
-    Footer* aFooter(void);
-  };
+   };
 
-  XF_Optimise_max_To_top* _pXF_Optimise_max_To_top(void* aAddr);
 }
 
 /*============================================================================*/

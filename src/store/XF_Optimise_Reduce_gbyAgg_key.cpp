@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Reduce_gbyAgg_key)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Reduce_gbyAgg_key::XF_Optimise_Reduce_gbyAgg_key(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_OT_REDUCE_GBYAGG_KEY, pCI)
+: XF_Optimise(CN_XF_OT_REDUCE_GBYAGG_KEY, OT_REDUCE_GBYAGG_KEY, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 
@@ -50,7 +50,9 @@ void XF_Optimise_Reduce_gbyAgg_key::vOptimise(CardIter* pCI)
 
   XF_Optimise_Reduce_gbyAgg_key* pXF_Reduce_key_gbyAgg = new XF_Optimise_Reduce_gbyAgg_key(pCI);
 
-  pXF_Reduce_key_gbyAgg->bOptimise();
+  bool b1 = pXF_Reduce_key_gbyAgg->bOptimise();
+
+  pXF_Reduce_key_gbyAgg->vOptimised(b1);
 
   delete pXF_Reduce_key_gbyAgg;
 }

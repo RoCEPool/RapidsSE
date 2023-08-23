@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_sort_limit_All_Levels)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_sort_limit_All_Levels::XF_Optimise_sort_limit_All_Levels(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, pCI)
+: XF_Optimise(CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, OT_SORT_LIMIT_ALL_LEVELS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, _FOOTER_);
 
@@ -46,7 +46,9 @@ void XF_Optimise_sort_limit_All_Levels::vOptimise(CardIter* pCI)
 
   XF_Optimise_sort_limit_All_Levels* pXF_Optimise_sort_limit_All_Levels = new XF_Optimise_sort_limit_All_Levels(pCI);
 
-  pXF_Optimise_sort_limit_All_Levels->bOptimise();
+  bool b1 = pXF_Optimise_sort_limit_All_Levels->bOptimise();
+
+  pXF_Optimise_sort_limit_All_Levels->vOptimised(b1);
 
   delete pXF_Optimise_sort_limit_All_Levels;
 }

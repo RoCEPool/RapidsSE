@@ -109,7 +109,10 @@ void TailLine::vAssign(Stz* szStz)               //! still need to do long tails
   //
   
   char* azStr = (char*)szStz;
-  i8 nL = StrLib::nCopy(sz()->azChar(), iSzRemaining(), azStr) + C_NULL_1B;
+  char* azDst = sz()->azChar();
+  i8    nBytes_dst = iSzRemaining();
+
+  i8 nL = StrLib::nCopy(azDst, nBytes_dst, azStr) + C_NULL_1B;
   
   vL(nL);
 }
@@ -144,14 +147,20 @@ Stz* TailLine::sz(void)
 /*----------------------------------------------------------------------------*/
 i8 TailLine::iSzRemaining(void)
 {
-  byte* pSz = (byte*) sz();
-  i8 iOffset = (i8) ((byte*)pSz - T.m_yaByte);
-  ASSERT(iOffset >= 0);
-
-  i8 iRemaining = (i8) sizeof(T.m_yaByte) - iOffset;
+  i8 iRemaining = nBytes() - (C_U_1B + C_L_2B);
 
   return iRemaining;
 }
+//i8 TailLine::iSzRemaining(void)
+//{
+//  byte* pSz = (byte*) sz();
+//  i8 iOffset = (i8) ((byte*)pSz - T.m_yaByte);
+//  ASSERT(iOffset >= 0);
+//
+//  i8 iRemaining = (i8) sizeof(T.m_yaByte) - iOffset;
+//
+//  return iRemaining;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -21,7 +21,7 @@ __aFooterFunction(XF_Optimise_scan_To_indexScan)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_scan_To_indexScan::XF_Optimise_scan_To_indexScan(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, pCI)
+: XF_Optimise(CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, OT_SCAN_TO_INDEXSCAN, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
 
@@ -47,7 +47,9 @@ void XF_Optimise_scan_To_indexScan::vOptimise(CardIter* pCI)
 
   XF_Optimise_scan_To_indexScan* pXF_Morph_scan_To_indexScan = new XF_Optimise_scan_To_indexScan(pCI);
 
-  pXF_Morph_scan_To_indexScan->bOptimise();
+  bool b1 = pXF_Morph_scan_To_indexScan->bOptimise();
+
+  pXF_Morph_scan_To_indexScan->vOptimised(b1);
 
   delete pXF_Morph_scan_To_indexScan;
 }
