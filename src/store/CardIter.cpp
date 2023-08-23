@@ -513,8 +513,6 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
-
   G.xKid.vBeginForward();
 
   for (;;) {
@@ -1080,6 +1078,7 @@ void CardIter::vForward(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   Card* pChild = pNextChild();
 
@@ -1473,6 +1472,7 @@ bool CardIter::bMore(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   if (G.xKid.i_Child() + 1 < G.xKid.pParent()->nChildCards())
     return true;
@@ -1486,8 +1486,6 @@ bool CardIter::bMore(void)
 Card* CardIter::pNextChild(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.m_bActive);
 
   i8 i_Next = G.xKid.i_Child() + 1;
 
@@ -1505,8 +1503,6 @@ Card* CardIter::pNextChild(void)
 Card* CardIter::pNextChildIf(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.m_bActive);
 
   Card* pNextMain = this->pNextChild();
   if (! pNextMain || eCard != pNextMain->eCard())
@@ -1682,6 +1678,7 @@ Card* CardIter::pPrevChild(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   i8 i_Prev = G.xKid.i_Child() - 1;
 
@@ -1701,6 +1698,7 @@ Card* CardIter::pPrevChildIf(eCK eCard)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   Card* pPrevMain = this->pPrevChild();
   if (! pPrevMain || eCard != pPrevMain->eCard())
@@ -1911,6 +1909,7 @@ void CardIter::vRemoveChild(Card* pChild)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   if (pChild == G.xKid.pChild())
     vRemoveCurr(G.xKid.eChild());
@@ -1926,6 +1925,7 @@ void CardIter::vRemoveDeleteChild(Card*& rpChild)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   vRemoveChild(rpChild);
 
@@ -1942,6 +1942,7 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   RASSERT(eCrossCheck == G.xKid.eChild());
 
@@ -1960,6 +1961,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   RASSERT(eCrossCheck == G.xKid.eChild());
 
@@ -2061,6 +2063,7 @@ void CardIter::vRewind(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
 //  if (G.xKid.m_i_Child == 0) {
 //    G.xKid.m_i_Child = C_UNKNOWN;
@@ -2140,6 +2143,7 @@ void CardIter::vSet(Card* pChild)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   G.xKid.vChild(G.xKid.pParent()->iFindChild(pChild));
 }
@@ -2166,6 +2170,7 @@ void CardIter::vSet(i8 i_Child)
   _precondition_(_MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bInRange());
 
   G.xKid.vChild(i_Child);
 }
