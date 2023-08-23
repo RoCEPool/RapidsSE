@@ -74,7 +74,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 #define dPV(sNM,pTV) { \
   if (AM::TRACE::bVerbose(C_VB_PROCEDURE)) { \
     s48K sDbgStr; \
-    pTV->vDbgStr(sDbgStr, sDbgStr.nArea()); \
+    pTV->vDbgStr(sDbgStr); \
     vTrace("%s=%s\n"_Stz,sNM->azChar(),sDbgStr.azChar()); \
   } \
 }

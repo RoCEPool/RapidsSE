@@ -433,7 +433,7 @@ void String_t<AREA>::vConcat(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_caCharArea,szArg->azChar(), AREA);
+  StrLib::vConcat(m_caCharArea,AREA, szArg->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -446,7 +446,7 @@ void String_t<AREA>::vConcat(Stz* szArg, i8 nLen)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vConcat(m_caCharArea,szArg->azChar(),nLen);
+  StrLib::vConcat(m_caCharArea, AREA, szArg->azChar(), nLen);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

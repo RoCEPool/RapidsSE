@@ -35,6 +35,11 @@
 // (5) All source/destination strings and arguments are properly null terminated
 //     such that we can rely on strlen() as needed.
 //
+// (6) All applicable string operations should come through StrLib as opposed to
+//     naked calls to system string routines throughout the code.
+//     This allows for a common place for handling of string operations, a
+//     common methodology, interface and semantics, and a common way to handle errors.
+//
 // Note: This is a work in progress.
 
 #include "BASE.h"
@@ -638,25 +643,33 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg, bool* pbRes
 }
 
 /*----------------------------------------------------------------------------*/
-/* vConcat: concatenate arg onto dst string                                   */
+/* vConcat: concatenate up to nCatLen characters of arg onto dst string       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* psDst, const char* psArg, i8 nLen)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg, i8 nCatLen, bool* pbResult)
 {
   _static_
 
-  strncat(psDst,psArg,nLen);
+  i8 iDstStrLen = nLength(psDst);   // how much space in the dest buffer (not including null terminator)
+  i8 iArgStrLen = nLength(psArg);   // length of the argument
+  i8 iMaxArgLen = iArgStrLen > nCatLen ? iArgStrLen : nCatLen;
+  i8 iReqBufSize = iDstStrLen + iMaxArgLen + 1;  // how much space required (including extra char & null terminator)
 
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  strncat(psDst, psArg, nCatLen);
 }
 
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate arg1 & arg2 onto dst string                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* psDst, const char* psArg1, const char* psArg2)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg1, const char* psArg2, bool* pbResult)
 {
   _static_
-  
-  strcat(psDst,psArg1);
-  strcat(psDst,psArg2);
+
+  vConcat(psDst, iDstBufSize, psArg1, pbResult);
+  vConcat(psDst, iDstBufSize, psArg2, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -670,36 +683,6 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 
   wToString(iArg, aInt, sizeof(aInt));  // This should never fail
   vConcat(psDst, iDstBufSize, aInt, pbResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* vConcat: concatenate i8 arg onto dst string                                */
-/*----------------------------------------------------------------------------*/
-void StrLib::vConcat(Stz* szDst, Stz* szArg)
-{
-  _static_
-  
-  strcat(szDst->azChar(),szArg->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* sConcat: concatenate two strings                                           */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wConcat(const char* s1, const char* s2)
-{
-  _static_
-  
-  i8 iLen1 = nLength(s1);
-  i8 iLen2 = nLength(s2);
-  
-  i8 iSize = iLen1 + iLen2 + 1;
-  
-  char* w = wAllocate(iSize);
-  
-  strcpy(w,s1);
-  strcat(w,s2);
-  
-  return w;
 }
 
 /*----------------------------------------------------------------------------*/
