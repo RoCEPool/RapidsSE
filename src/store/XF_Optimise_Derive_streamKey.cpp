@@ -4,6 +4,7 @@
 
 #include "XF_Optimise_Derive_streamKey.hpp"
 
+#include "eOT.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -67,10 +68,13 @@ void XF_Optimise_Derive_streamKey::vXF_Derive_streamKey(void)
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey_running);
 
-  if (bFindStart_streamKey())
+  if (bFindStart_streamKey()) {
     vPropagate_streamKey();
+    m_pCI->pBoard()->pState()->vInsert(aOT[OT_DERIVE_STREAM_KEY]);
+  }
 
-  m_pCI->vEndTransform();
+
+    m_pCI->vEndTransform();
 
   vValidate();
 }
