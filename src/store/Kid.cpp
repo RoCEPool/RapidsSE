@@ -21,32 +21,28 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Kid::Kid(void)
-//: Object(CN_KID)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
+  _nonProper_
 
   m_pParent = nullptr;
-  m_i_Child = C_UNKNOWN;
+
+  vChildReset();
 
   _checkInitialised_(CN_KID);
-
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Kid::Kid(Card* pParent)
-//: Object(CN_KID)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
+  _nonProper_
 
   m_pParent = pParent;
-  m_i_Child = C_UNKNOWN;
+
+  vChildReset();
 
   _checkInitialised_(CN_KID);
-
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
 }
 
 
@@ -55,17 +51,21 @@ Kid::Kid(Card* pParent)
 /*----------------------------------------------------------------------------*/
 Kid::~Kid(void) noexcept(false)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
-
+  _nonProper_
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Kid::vBegin(void)
 {
-  m_i_Child = C_UNKNOWN;
+  _nonProper_
+
+  vChildReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,9 +73,10 @@ void Kid::vBegin(void)
 /*----------------------------------------------------------------------------*/
 void Kid::vBeginForward(void)
 {
+  _nonProper_
 
   if (C_UNKNOWN == m_i_Child)
-    m_i_Child= 0;
+    m_i_Child = 0;
   else
     m_i_Child++;
 }
@@ -85,6 +86,7 @@ void Kid::vBeginForward(void)
 /*----------------------------------------------------------------------------*/
 void Kid::vBeginReverse(void)
 {
+  _nonProper_
 
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = m_pParent->nChildCards() - 1;
@@ -97,6 +99,8 @@ void Kid::vBeginReverse(void)
 /*----------------------------------------------------------------------------*/
 Card* Kid::pParent(void)
 {
+  _nonProper_
+
   return m_pParent;
 }
 
@@ -105,6 +109,8 @@ Card* Kid::pParent(void)
 /*----------------------------------------------------------------------------*/
 Card* Kid::pChild(void)
 {
+  _nonProper_
+
   return pChild(m_i_Child);
 }
 
@@ -113,6 +119,8 @@ Card* Kid::pChild(void)
 /*----------------------------------------------------------------------------*/
 Card* Kid::pChild(i8 i_Child)
 {
+  _nonProper_
+
   i8 nChildren = m_pParent->nChildCards();
 
   if (i_Child >= 0 && i_Child < nChildren) {
@@ -128,6 +136,8 @@ Card* Kid::pChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 eCK Kid::eChild(void)
 {
+  _nonProper_
+
   Card* pChild = this->pChild();
 
   if (pChild)
@@ -141,6 +151,7 @@ eCK Kid::eChild(void)
 /*----------------------------------------------------------------------------*/
 i8 Kid::i_Child(void)
 {
+  _nonProper_
 
   return m_i_Child;
 }
@@ -150,6 +161,8 @@ i8 Kid::i_Child(void)
 /*----------------------------------------------------------------------------*/
 Card_Bound* Kid::p_bound(void)
 {
+  _nonProper_
+
   return _pCard_Bound(pChild());
 }
 
@@ -158,6 +171,8 @@ Card_Bound* Kid::p_bound(void)
 /*----------------------------------------------------------------------------*/
 Card_Expr* Kid::p_expr(void)
 {
+  _nonProper_
+
   return _pCard_Expr(pChild());
 }
 
@@ -166,6 +181,8 @@ Card_Expr* Kid::p_expr(void)
 /*----------------------------------------------------------------------------*/
 Card_IdxCol* Kid::p_idxCol(void)
 {
+  _nonProper_
+
   return _pCard_IdxCol(pChild());
 }
 
@@ -174,6 +191,8 @@ Card_IdxCol* Kid::p_idxCol(void)
 /*----------------------------------------------------------------------------*/
 Card_Index* Kid::p_index(void)
 {
+  _nonProper_
+
   return _pCard_Index(pChild());
 }
 
@@ -182,6 +201,8 @@ Card_Index* Kid::p_index(void)
 /*----------------------------------------------------------------------------*/
 Card_Map* Kid::p_map(void)
 {
+  _nonProper_
+
   return _pCard_Map(pChild());
 }
 
@@ -191,6 +212,8 @@ Card_Map* Kid::p_map(void)
 /*----------------------------------------------------------------------------*/
 Card_OP* Kid::p_OP(void)
 {
+  _nonProper_
+
   return (Card_OP*)pChild();
 }
 
@@ -199,6 +222,8 @@ Card_OP* Kid::p_OP(void)
 /*----------------------------------------------------------------------------*/
 Card_Stage* Kid::p_stage(void)
 {
+  _nonProper_
+
   return _pCard_Stage(pChild());
 }
 
@@ -207,6 +232,8 @@ Card_Stage* Kid::p_stage(void)
 /*----------------------------------------------------------------------------*/
 Card_Table* Kid::p_table(void)
 {
+  _nonProper_
+
   return _pCard_Table(pChild());
 }
 
@@ -215,6 +242,8 @@ Card_Table* Kid::p_table(void)
 /*----------------------------------------------------------------------------*/
 Card_Term* Kid::p_term(void)
 {
+  _nonProper_
+
   return _pCard_Term(pChild());
 }
 
@@ -223,39 +252,9 @@ Card_Term* Kid::p_term(void)
 /*----------------------------------------------------------------------------*/
 i8 Kid::iGetOdn(void)
 {
+  _nonProper_
+
   return p_term()->iGetOdn();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pNextChild(void)
-{
-  return pChild(m_i_Child + 1);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pPrevChild(void)
-{
-  return pChild(m_i_Child - 1);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vFirst(void)
-{
-  m_i_Child = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vLast(void)
-{
-  m_i_Child = m_pParent->nChildCards() - 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,6 +262,8 @@ void Kid::vLast(void)
 /*----------------------------------------------------------------------------*/
 void Kid::vNext(void)
 {
+  _nonProper_
+
   m_i_Child++;
 }
 
@@ -271,6 +272,8 @@ void Kid::vNext(void)
 /*----------------------------------------------------------------------------*/
 void Kid::vPrev(void)
 {
+  _nonProper_
+
   m_i_Child--;
 }
 
@@ -279,7 +282,9 @@ void Kid::vPrev(void)
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach(void)
 {
-  vNext();
+  _nonProper_
+
+  vChildInc();
   if (bInRange())
     return true;
 
@@ -291,7 +296,9 @@ bool Kid::bEach(void)
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach_reverse(void)
 {
-  vPrev();
+  _nonProper_
+
+  vChildDec();
   if (bInRange())
     return true;
 
@@ -304,6 +311,8 @@ bool Kid::bEach_reverse(void)
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach(eCK eCard)
 {
+  _nonProper_
+
   while (bEach())
     if (eChild() == eCard)
       return true;
@@ -316,6 +325,8 @@ bool Kid::bEach(eCK eCard)
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach_reverse(eCK eCard)
 {
+  _nonProper_
+
   while (bEach_reverse())
     if (eChild() == eCard)
       return true;
@@ -326,35 +337,11 @@ bool Kid::bEach_reverse(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Kid::bIsFirst(void)
-{
-  i8 nChildren = m_pParent->nChildCards();
-
-  if (nChildren && 0 == m_i_Child)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bIsLast(void)
-{
-  i8 nChildren = m_pParent->nChildCards();
-
-  if (nChildren && nChildren - 1 == m_i_Child)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Kid::vForward(void)
 {
-  m_i_Child++;
+  _nonProper_
+
+  vChildInc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,7 +349,9 @@ void Kid::vForward(void)
 /*----------------------------------------------------------------------------*/
 void Kid::vReverse(void)
 {
-  m_i_Child--;
+  _nonProper_
+
+  vChildDec();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -370,6 +359,8 @@ void Kid::vReverse(void)
 /*----------------------------------------------------------------------------*/
 bool Kid::bInRange(void)
 {
+  _nonProper_
+
   if (m_i_Child >= 0 && m_i_Child < m_pParent->nChildCards())
     return true;
 
@@ -379,17 +370,9 @@ bool Kid::bInRange(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Kid::nChildren(void)
-{
-  return m_pParent->nChildCards();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Kid::vParent(Card*  pParent)
 {
+  _nonProper_
 
   m_pParent = pParent;
   m_i_Child = C_UNKNOWN;
@@ -400,8 +383,10 @@ void Kid::vParent(Card*  pParent)
 /*----------------------------------------------------------------------------*/
 void Kid::vChild(i8 i_Child)
 {
+  _nonProper_
 
   m_i_Child = i_Child;
+  vChildUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,6 +394,8 @@ void Kid::vChild(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 void Kid::vSynch(Card* pChild_with)
 {
+  _nonProper_
+
   i8 nChildren = m_pParent->nChildCards();
 
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -417,6 +404,61 @@ void Kid::vSynch(Card* pChild_with)
       m_i_Child = i_Child;
       return;
     }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dec child                                                                  */
+/*----------------------------------------------------------------------------*/
+void Kid::vChildDec(void)
+{
+  _nonProper_
+
+  m_i_Child--;
+  vChildUpdate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc child                                                                  */
+/*----------------------------------------------------------------------------*/
+void Kid::vChildInc(void)
+{
+  _nonProper_
+
+  m_i_Child++;
+  vChildUpdate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset child                                                                */
+/*----------------------------------------------------------------------------*/
+void Kid::vChildReset(void)
+{
+  _nonProper_
+
+  m_i_Child = C_UNKNOWN;
+  m_pChild  = nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* update child                                                               */
+/*----------------------------------------------------------------------------*/
+void Kid::vChildUpdate(void)
+{
+  _nonProper_
+
+  i8 nChildren = m_pParent->nChildCards();
+
+  if (m_i_Child >= 0 && m_i_Child < nChildren) {
+    m_pChild = m_pParent->pGetChild(m_i_Child);
+  }
+  else {
+    m_pChild = nullptr;
   }
 }
 
