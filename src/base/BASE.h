@@ -305,6 +305,7 @@ extern d8 C_D8_MID;
 #include "Pds_t.hpp"
 #include "PdsCursor.hpp"
 #include "PdsItem_BufferId.h"
+#include "PdsBufferIdQueue.hpp"
 // -- -- -- -- -- -- -- --
 
 #include "Dir.hpp"
