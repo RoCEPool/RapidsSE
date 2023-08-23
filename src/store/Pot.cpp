@@ -264,25 +264,22 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
 
   PotPdsItem oSearchKey;
   oSearchKey.iLglPtn = i_Ptn + 1;
-  oSearchKey.iSynthKey = C_INT_MIN;
-  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
+  oSearchKey.iSynthKey = C_INT_MAX;
+  // Find the buffer part of this LglPtn at the front of the queue.
+  // There may be more than one.
+  // Pop the head and return it.
+  // Note: This function is slightly different than the implementation in
+  // LglBufSet as there can be more than one dangling buffer in the queue
+
+  // Find last buffer less than the Key,MAX (i.e front of queue)
+  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
-    // Assert that there are no more buffers associated with this LglPtn
-    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
-
-    // Assert that the next block (if it exists) does not have the same LglPtn number
-    if(pNextBlock != nullptr) {
-      PotPdsItem* pNextItem = (PotPdsItem*) pNextBlock->aItem();
-      RASSERT(pNextItem != nullptr);
-      RASSERT(pNextItem->iLglPtn != (i_Ptn + 1));
-    }
-
     // Get the current head block of this LglPtn and extract the values
     PotPdsItem* pItem = (PotPdsItem*) pHead->aItem();
 
     // Delete it from the Pds and return the DataBuffer associated with it's bufferId
-    // If the LglPtn matches.
+    // if the LglPtn matches.
     if(pItem != nullptr && pItem->iLglPtn == (i_Ptn + 1)) {
       BufferId oBufferId = pItem->oBufferId;
       RASSERT(oBufferId.m_bIdFlag == 1);
