@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_index_Analysis)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_index_Analysis::XF_Prolog_index_Analysis(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_INDEX_ANALYSIS, pCI)
+: XF_PROLOG(CN_XF_INDEX_ANALYSIS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_INDEX_ANALYSIS, _FOOTER_);
 

@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_colNm_To_stmCol)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_colNm_To_stmCol::XF_Prolog_colNm_To_stmCol(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_TBLCOL_TO_STMCOL, pCI)
+: XF_PROLOG(CN_XF_TBLCOL_TO_STMCOL, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
 

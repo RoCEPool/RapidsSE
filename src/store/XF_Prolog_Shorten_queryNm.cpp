@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_Shorten_queryNm)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Shorten_queryNm::XF_Prolog_Shorten_queryNm(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_SHORTEN_QUERYNM, pCI)
+: XF_PROLOG(CN_XF_SHORTEN_QUERYNM, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SHORTEN_QUERYNM, _FOOTER_);
 

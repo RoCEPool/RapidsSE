@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_projection_Analysis)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_projection_Analysis::XF_Prolog_projection_Analysis(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_PROJECTION_ANALYSIS, pCI)
+: XF_PROLOG(CN_XF_PROJECTION_ANALYSIS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
 

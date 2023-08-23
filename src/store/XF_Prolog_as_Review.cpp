@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_as_Review)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_as_Review::XF_Prolog_as_Review(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_AS_REVIEW, pCI)
+: XF_PROLOG(CN_XF_AS_REVIEW, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 

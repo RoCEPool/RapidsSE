@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_Move_on)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_MOVE_ON, pCI)
+: XF_PROLOG(CN_XF_MOVE_ON, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 

@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_Add_level)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Add_level::XF_Prolog_Add_level(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
+: XF_PROLOG(CN_XF_ADD_LEVEL, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 

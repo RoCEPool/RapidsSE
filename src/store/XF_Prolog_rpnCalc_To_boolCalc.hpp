@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_PROLOG.hpp"
 
 namespace STORE
 {
-  class XF_Prolog_rpnCalc_To_boolCalc : public XF_TRANSFORM
+  class XF_Prolog_rpnCalc_To_boolCalc : public XF_PROLOG
   {
   private:
     // must be last

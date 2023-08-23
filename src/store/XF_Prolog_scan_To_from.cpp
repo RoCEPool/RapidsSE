@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_scan_To_from)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_scan_To_from::XF_Prolog_scan_To_from(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_SCAN_TO_FROM, pCI)
+: XF_PROLOG(CN_XF_SCAN_TO_FROM, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 

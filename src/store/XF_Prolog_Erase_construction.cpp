@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_Erase_construction)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Erase_construction::XF_Prolog_Erase_construction(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ERASE_CONSTRUCTION, pCI)
+: XF_PROLOG(CN_XF_ERASE_CONSTRUCTION, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
 

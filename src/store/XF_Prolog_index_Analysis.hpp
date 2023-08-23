@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_TRANSFORM.hpp"
+#include "XF_PROLOG.hpp"
 
 namespace STORE
 {
-  class XF_Prolog_index_Analysis : public XF_TRANSFORM
+  class XF_Prolog_index_Analysis : public XF_PROLOG
   {
   private:
     // must be last

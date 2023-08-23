@@ -19,7 +19,7 @@ __aFooterFunction(XF_Prolog_not_Ops)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_not_Ops::XF_Prolog_not_Ops(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_NOT_OPS, pCI)
+: XF_PROLOG(CN_XF_NOT_OPS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
 

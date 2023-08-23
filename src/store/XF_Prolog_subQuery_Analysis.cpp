@@ -21,7 +21,7 @@ __aFooterFunction(XF_Prolog_subQuery_Analysis)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_subQuery_Analysis::XF_Prolog_subQuery_Analysis(CardIter* m_pCI)
-: XF_TRANSFORM(CN_XF_SUBQUERY_ANALYSIS, m_pCI)
+: XF_PROLOG(CN_XF_SUBQUERY_ANALYSIS, m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
