@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_Optimise.hpp"
+#include "XF_OPTIMISE.hpp"
 
 namespace STORE
 {
-  class XF_Optimise_aggreg_To_sort_ordAgg : public XF_Optimise
+  class XF_Optimise_aggreg_To_sort_ordAgg : public XF_OPTIMISE
   {
   private:
     // must be last

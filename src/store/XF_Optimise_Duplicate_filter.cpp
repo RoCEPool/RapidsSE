@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Duplicate_filter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Duplicate_filter::XF_Optimise_Duplicate_filter(CardIter* pCI)
-: XF_Optimise(CN_XF_OPTIMISE_DUPLICATE_FILTER, OT_DUPLICATE_FILTER, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_DUPLICATE_FILTER, OT_DUPLICATE_FILTER, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DUPLICATE_FILTER, _FOOTER_);
 

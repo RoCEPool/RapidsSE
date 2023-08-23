@@ -21,7 +21,7 @@ __aFooterFunction(XF_Optimise_scan_To_indexScan)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_scan_To_indexScan::XF_Optimise_scan_To_indexScan(CardIter* pCI)
-: XF_Optimise(CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, OT_SCAN_TO_INDEXSCAN, pCI)
+: XF_OPTIMISE(CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, OT_SCAN_TO_INDEXSCAN, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
 

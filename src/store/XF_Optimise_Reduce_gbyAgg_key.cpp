@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Reduce_gbyAgg_key)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Reduce_gbyAgg_key::XF_Optimise_Reduce_gbyAgg_key(CardIter* pCI)
-: XF_Optimise(CN_XF_OT_REDUCE_GBYAGG_KEY, OT_REDUCE_GBYAGG_KEY, pCI)
+: XF_OPTIMISE(CN_XF_OT_REDUCE_GBYAGG_KEY, OT_REDUCE_GBYAGG_KEY, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 

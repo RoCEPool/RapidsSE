@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_max_To_top)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_max_To_top::XF_Optimise_max_To_top(CardIter* pCI)
-: XF_Optimise(CN_XF_OPTIMISE_MAX_TO_TOP, OT_MAX_TO_TOP, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_MAX_TO_TOP, OT_MAX_TO_TOP, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_MAX_TO_TOP, _FOOTER_);
 

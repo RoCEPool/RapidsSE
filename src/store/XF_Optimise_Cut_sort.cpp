@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Cut_sort)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Cut_sort::XF_Optimise_Cut_sort(CardIter* pCI)
-: XF_Optimise(CN_XF_OT_CUT_SORT, OT_CUT_SORT, pCI)
+: XF_OPTIMISE(CN_XF_OT_CUT_SORT, OT_CUT_SORT, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
 

@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_sortDesc_limit_to_top)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_sortDesc_limit_to_top::XF_Optimise_sortDesc_limit_to_top(CardIter* pCI)
-: XF_Optimise(CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP, OT_SORTDESC_LIMIT_TO_TOP, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP, OT_SORTDESC_LIMIT_TO_TOP, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP, _FOOTER_);
 

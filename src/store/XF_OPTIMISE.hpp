@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class XF_Optimise : public XF_TRANSFORM
+  class XF_OPTIMISE : public XF_TRANSFORM
   {
   private:
 
@@ -16,8 +16,8 @@ namespace STORE
 
   public:
 
-    XF_Optimise(eCN eClass, eOT eOptimisation, CardIter* pCI);
-   ~XF_Optimise(void) noexcept(false);
+    XF_OPTIMISE(eCN eClass, eOT eOptimisation, CardIter* pCI);
+   ~XF_OPTIMISE(void) noexcept(false);
 
     static void vOptimise(CardIter* pCI);
 

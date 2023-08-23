@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Early_filter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Early_filter::XF_Optimise_Early_filter(CardIter* pCI)
-: XF_Optimise(CN_XF_OPTIMISE_EARLY_FILTER, OT_EARLY_FILTER, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_EARLY_FILTER, OT_EARLY_FILTER, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_FILTER, _FOOTER_);
 

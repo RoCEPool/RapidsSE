@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_aggreg_To_sort_ordAgg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_aggreg_To_sort_ordAgg::XF_Optimise_aggreg_To_sort_ordAgg(CardIter* pCI)
-: XF_Optimise(CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, OT_AGGREG_TO_SORT_ORDAGG,pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, OT_AGGREG_TO_SORT_ORDAGG, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, _FOOTER_);
 

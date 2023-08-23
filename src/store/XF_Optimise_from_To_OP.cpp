@@ -19,7 +19,7 @@ __aFooterFunction(XF_Optimise_from_To_OP)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_from_To_OP::XF_Optimise_from_To_OP(CardIter* pCI)
-: XF_Optimise(CN_XF_FROM_TO_OP, OT_NONE, pCI)
+: XF_OPTIMISE(CN_XF_FROM_TO_OP, OT_FROM_TO_OP, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 

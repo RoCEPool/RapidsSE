@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "XF_Optimise.hpp"
+#include "XF_OPTIMISE.hpp"
 
 namespace STORE
 {
-  class XF_Optimise_Cull_bound : public XF_Optimise
+  class XF_Optimise_Cull_bound : public XF_OPTIMISE
   {
   private:
     // must be last

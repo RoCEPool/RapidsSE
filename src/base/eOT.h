@@ -14,6 +14,7 @@ enum eOT // Optimiser Transformations
   /* */ OT_DUPLICATE_FILTER,           // Duplicate: Join-dependent predicate duplicates
   /* */ OT_EARLY_FILTER,               // Early: Filters
   /* */ OT_EARLY_PROJECTION,           // Early: Projections
+  /* */ OT_FROM_TO_OP,                 // Replace from with op
   /* */ OT_GBYAGG_TO_ORDAGG,           // Replace: GBYAGG with ORDAGG
   /* */ OT_JOIN_ORDERING,              // Sequence: Join Ordering
   /* */ OT_LATE_PROJECTION,            // Postpone: VARCHAR Projections after re-join

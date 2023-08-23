@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Cull_bound)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Cull_bound::XF_Optimise_Cull_bound(CardIter* pCI)
-: XF_Optimise(CN_XF_CULL_NONUSED_BOUND, OT_CULL_BOUND, pCI)
+: XF_OPTIMISE(CN_XF_CULL_NONUSED_BOUND, OT_CULL_BOUND, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 

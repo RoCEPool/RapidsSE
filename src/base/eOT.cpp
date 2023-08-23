@@ -15,6 +15,7 @@ Stz* aOT[OT_ENUMS]
   /*  */ "OT_DUPLICATE_FILTER"_Stz,
   /*  */ "OT_EARLY_FILTER"_Stz,
   /*  */ "OT_EARLY_PROJECTION"_Stz,
+  /*  */ "OT_FROM_TO_OP"_Stz,
   /*  */ "OT_GBYAGG_TO_ORDAGG"_Stz,
   /*  */ "OT_JOIN_ORDERING"_Stz,
   /*  */ "OT_LATE_PROJECTION"_Stz,

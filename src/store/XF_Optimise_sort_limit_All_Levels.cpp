@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_sort_limit_All_Levels)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_sort_limit_All_Levels::XF_Optimise_sort_limit_All_Levels(CardIter* pCI)
-: XF_Optimise(CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, OT_SORT_LIMIT_ALL_LEVELS, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, OT_SORT_LIMIT_ALL_LEVELS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, _FOOTER_);
 

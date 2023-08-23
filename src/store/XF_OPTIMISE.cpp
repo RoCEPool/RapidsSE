@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Optimise.cpp -- Optimise                                                */
+/* XF_OPTIMISE.cpp -- Optimise                                                */
 /*============================================================================*/
 
-#include "XF_Optimise.hpp"
+#include "XF_OPTIMISE.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Optimise::XF_Optimise(eCN eClass, eOT eOptimisation, CardIter* pCI)
+XF_OPTIMISE::XF_OPTIMISE(eCN eClass, eOT eOptimisation, CardIter* pCI)
 : XF_TRANSFORM(eClass, pCI)
 {
   m_eOptimisation = eOptimisation;
@@ -22,7 +22,7 @@ XF_Optimise::XF_Optimise(eCN eClass, eOT eOptimisation, CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Optimise::~XF_Optimise(void) noexcept(false)
+XF_OPTIMISE::~XF_OPTIMISE(void) noexcept(false)
 {
 }
 
@@ -34,7 +34,7 @@ XF_Optimise::~XF_Optimise(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise::vOptimised(bool b)
+void XF_OPTIMISE::vOptimised(bool b)
 {
   if (b)
     m_pCI->pBoard()->pState()->vInsert(aOT[m_eOptimisation]);

@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Early_projection)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Early_projection::XF_Optimise_Early_projection(CardIter* pCI)
-: XF_Optimise(CN_XF_OT_EARLY_PROJECTION, OT_EARLY_PROJECTION, pCI)
+: XF_OPTIMISE(CN_XF_OT_EARLY_PROJECTION, OT_EARLY_PROJECTION, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
 
