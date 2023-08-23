@@ -348,21 +348,22 @@ Token* TokenVec::pCurrToken(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into debug string                                        */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vDbgStr(Stz* szDstStr, i8 nBufSize)
+void TokenVec::vDbgStr(String* psDstStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  StrLib::vCopy(szDstStr->azChar(),"");
-  
+
+  psDstStr->vReset();
+
   i8 nTokens = this->nTokens();
   
   // concat all the tokens together
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
-    if (0 == i_Token % 8)
-      StrLib::vConcat(szDstStr,"\n  "_Stz);
+    if (0 == i_Token % 8){
+      psDstStr->vConcat("\n  "_Stz);
+    }
 
-    StrLib::vSprintCat(szDstStr, nBufSize, "[%lld]"_Stz, i_Token);
+    psDstStr->vCatSprint("[%lld]"_Stz, i_Token);
 
     Token* pToken = pGet(i_Token);
     
@@ -374,47 +375,47 @@ void TokenVec::vDbgStr(Stz* szDstStr, i8 nBufSize)
         break;
         
       case TN_BOOLEAN:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_DECIMAL:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_FLOAT:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_NULL:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(szDstStr,"\""_Stz);
-        StrLib::vConcat(szDstStr,pToken->szChars());
-        StrLib::vConcat(szDstStr,"\""_Stz);
+        psDstStr->vConcat("\""_Stz);
+        psDstStr->vConcat(pToken->szChars());
+        psDstStr->vConcat("\""_Stz);
         break;
         
       case TN_TAG:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       default:
         NEVER_REACH;
     }
     
-    StrLib::vConcat(szDstStr," "_Stz);
+    psDstStr->vConcat(" "_Stz);
   }
 }
 
