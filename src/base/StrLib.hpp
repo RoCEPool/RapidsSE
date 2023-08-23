@@ -61,7 +61,6 @@ namespace BASE
     static bool  bContains(char* s, const char cArg);                                                                   // ✕
     static bool  bContains(char* s, const char* sArg);                                                                  // ✕
     static i8    nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
-    static i8    nCopy_nonull(char* psDst, const char* psSrc);                                                          // ✕
     static void  vCopy(char* psDst, const char* psSrc);                                                                 // ✕
     static void  vCopyLen(char* psDst, const char* psSrc, i8 nBytes);                                                   // ✕
     static void  vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit);                                         // ✕
@@ -250,7 +249,6 @@ namespace BASE
                           const char* pThis, const char* pThat);                                                        // ✕
     static void  vReplaceTail(char* azArg, char* azTail);                                                               // ✕
     static void  vReverse(char* azDst, char* azSrc);                                                                    // ✕
-    static void  vRight(char* azDst, char* azSrc, i8 i_At);                                                             // ✕
     static void  vRotate(char* zArg, i8 nby);                                                                           // ✕
     static void  vRuler(char* azDst, i8 iLength);                                                                       // ✕
 
