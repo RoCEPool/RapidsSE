@@ -12,11 +12,6 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//__pCastFunction(STORE,Kid,CN_KID)
-//__aNewFunction(Kid,CN_KID)
-//__vDeleteFunction(Kid,CN_KID)
-//__aFooterFunction(Kid)
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -79,6 +74,8 @@ void Kid::vBeginForward(void)
     m_i_Child = 0;
   else
     m_i_Child++;
+
+  vChildUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,6 +89,8 @@ void Kid::vBeginReverse(void)
     m_i_Child = m_pParent->nChildCards() - 1;
   else
     m_i_Child--;
+
+  vChildUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,10 +100,8 @@ eCK Kid::eChild(void)
 {
   _nonProper_
 
-  Card* pChild = this->pChild();
-
-  if (pChild)
-    return pChild->eCard();
+  if (m_pChild)
+    return m_pChild->eCard();
 
   return CK_NONE;
 }
@@ -126,24 +123,7 @@ Card* Kid::pChild(void)
 {
   _nonProper_
 
-  return pChild(m_i_Child);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pChild(i8 i_Child)
-{
-  _nonProper_
-
-  i8 nChildren = m_pParent->nChildCards();
-
-  if (i_Child >= 0 && i_Child < nChildren) {
-    Card* pChild = m_pParent->pGetChild(i_Child);
-    return pChild;
-  }
-
-  return nullptr;
+  return m_pChild;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +255,7 @@ void Kid::vParent(Card*  pParent)
   _nonProper_
 
   m_pParent = pParent;
-  m_i_Child = C_UNKNOWN;
+  vChildReset();
 }
 
 /*----------------------------------------------------------------------------*/

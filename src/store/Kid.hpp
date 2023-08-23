@@ -28,7 +28,6 @@ namespace STORE
     eCK  eChild(void);
     i8   i_Child(void);
     Card *pChild(void);
-    Card *pChild(i8 i_Child);
     void vChild(i8 i_Child);
 
     bool bEach(void);
