@@ -65,8 +65,6 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(CardIter* pCI)
 //  m_pCI->vTransform(__func__, XF_TBLCOL_TO_STMCOL, "transform table-columns to stream-columns"_Stz);
 //
 //  for (m_pCI->vClearRestart(); m_pCI->G_bEachMain(); m_pCI->vPriorProjection()) {
-//    if (! m_pCI->Prior.m_pProjection)
-//      continue;
 //
 //    m_pCI->G.p_OP->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 //  }

@@ -2097,8 +2097,13 @@ void Symbol::vSym(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_sChrSeq = pSymbol->m_sChrSeq;
-  m_eSymbol = pSymbol->m_eSymbol;
+  if (SF_COL_NO == pSymbol->m_eSymbol) {
+    vSet_Col_No(pSymbol->m_sChrSeq);
+  }
+  else {
+    m_sChrSeq = pSymbol->m_sChrSeq;
+    m_eSymbol = pSymbol->m_eSymbol;
+  }
 
   if (SF_COL_NO == m_eSymbol)
     RASSERT(Symbol::bIs_Col_No(m_sChrSeq));
@@ -2821,7 +2826,14 @@ void Symbol::vSet_Col_No(Stz* szColNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol  || SF_COL_TC == m_eSymbol);
+  RASSERT(SF_NONE == m_eSymbol   || SF_COL_NO == m_eSymbol  ||
+          SF_COL_TC == m_eSymbol ||
+
+          SF_KEY_COL == m_eSymbol ||  // todo: these need to be investigated
+          SF_PARENTHESIS == m_eSymbol ||
+          SF_PRM_COL == m_eSymbol ||
+          SF_XRF_NO == m_eSymbol
+          );
 
   if (bIs_Col_Tc()) {
     Y_vSet(P_StmCol, szSF_symbol(SF_COL_TC));
