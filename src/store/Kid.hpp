@@ -12,9 +12,13 @@ namespace STORE
   {
   private:
     Card *m_pParent;
-    i8 m_i_Child;
 
+    i8 m_i_Child;
     Card *m_pChild;
+
+    Card *m_pSub1;
+    Card *m_pSub2;
+    Card *m_pSub3;
 
   public:
     Kid(void);
@@ -32,11 +36,15 @@ namespace STORE
 
     bool bEach(void);
     bool bEach(eCK eCard);
+    bool bEach(eCK eCard, eCK eSub1);
+    bool bEach(eCK eCard, eCK eSub1, eCK eSub2);
+    bool bEach(eCK eCard, eCK eSub1, eCK eSub2, eCK eSub3);
     bool bEach_reverse(void);
     bool bEach_reverse(eCK eCard);
 
     void vForward(void);
 
+    Card *pGetCard(i8 i_Card);
     i8 iGetOdn(void);
 
     bool bInRange(void);
@@ -48,6 +56,10 @@ namespace STORE
     void vPrev(void);
 
     void vReverse(void);
+
+    Card *pSub1(void);
+    Card *pSub2(void);
+    Card *pSub3(void);
 
     void vSynch(Card *pChild_with);
 

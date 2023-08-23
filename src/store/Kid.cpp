@@ -138,7 +138,7 @@ void Kid::vChild(i8 i_Child)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* next child                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach(void)
 {
@@ -152,15 +152,79 @@ bool Kid::bEach(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* next child of given card                                                   */
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach(eCK eCard)
 {
   _nonProper_
 
-  while (bEach())
+  while (bEach()) {
     if (eChild() == eCard)
       return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* next child of given card and sub1                                          */
+/*----------------------------------------------------------------------------*/
+bool Kid::bEach(eCK eCard, eCK eSub1)
+{
+  _nonProper_
+
+  while (bEach()) {
+    if (eChild() == eCard) {
+      if (! (m_pSub1 = m_pChild->pFindChild(eSub1)) )
+        continue;
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* next child of given card and sub1 & sub2                                   */
+/*----------------------------------------------------------------------------*/
+bool Kid::bEach(eCK eCard, eCK eSub1, eCK eSub2)
+{
+  _nonProper_
+
+  while (bEach()) {
+    if (eChild() == eCard) {
+      if (! (m_pSub1 = m_pChild->pFindChild(eSub1)) )
+        continue;
+      if (! (m_pSub2 = m_pChild->pFindChild(eSub2)) )
+        continue;
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* next child of given card and sub1 & sub2 & sub3                            */
+/*----------------------------------------------------------------------------*/
+bool Kid::bEach(eCK eCard, eCK eSub1, eCK eSub2, eCK eSub3)
+{
+  _nonProper_
+
+  while (bEach()) {
+    if (eChild() == eCard) {
+      if (! (m_pSub1 = m_pChild->pFindChild(eSub1)) )
+        continue;
+      if (! (m_pSub2 = m_pChild->pFindChild(eSub2)) )
+        continue;
+      if (! (m_pSub3 = m_pChild->pFindChild(eSub3)) )
+        continue;
+
+      return true;
+    }
+  }
 
   return false;
 }
@@ -203,6 +267,24 @@ void Kid::vForward(void)
   vChildInc();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get card member                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Kid::pGetCard(i8 i_Card)
+{
+  _nonProper_
+
+  switch (i_Card) {
+
+    case 0: return m_pChild;
+    case 1: return m_pSub1;
+    case 2: return m_pSub2;
+    case 3: return m_pSub3;
+
+    default:
+      NEVER_REACH
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -276,6 +358,36 @@ void Kid::vReverse(void)
   _nonProper_
 
   vChildDec();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Kid::pSub1(void)
+{
+  _nonProper_
+
+  return m_pSub1;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Kid::pSub2(void)
+{
+  _nonProper_
+
+  return m_pSub2;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Kid::pSub3(void)
+{
+  _nonProper_
+
+  return m_pSub3;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,8 +535,11 @@ void Kid::vChildReset(void)
 
   m_i_Child = C_UNKNOWN;
   m_pChild  = nullptr;
-}
 
+  m_pSub1 = nullptr;
+  m_pSub2 = nullptr;
+  m_pSub3 = nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* update child                                                               */
