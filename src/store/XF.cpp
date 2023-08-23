@@ -50,6 +50,8 @@
 
 #include "eOT.h"
 
+#include "Job.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -348,17 +350,23 @@ void XF::vCrosscheck_Optimisations(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
+  MY::pJob()->pJobTags()->vDumpSet();
+
+  s32 sOT;
+
   for (i8 i_OT = 0; i_OT < OT_ENUMS; i_OT++) {
     Stz *szOptimisation = aOT[i_OT];
 
-    if (!AM::JOB::bHasTag(szOptimisation))
+    sOT.vSprint("<%s>"_Stz,szOptimisation);
+    if (! AM::JOB::bHasTag(sOT))
       continue;
 
     if (m_pCI->pBoard()->pState()->bHasName(szOptimisation))
       continue;
 
-    vTrace("Missing optimisation : %lld %lls"_Stz,i_OT,szOptimisation);
     m_pCI->vPrintBoard();
+    vTrace("Missing optimisation : %lld %lls\n"_Stz,i_OT,szOptimisation);
+    NEVER_REACH
   }
 }
 
