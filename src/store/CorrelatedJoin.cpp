@@ -464,23 +464,23 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
       RASSERT(p_pred->pSymbol()->bSame("=="_Stz));
 
-      CardIter xCI(p_pred);
-      while (xCI.G_bEachMain()) {
+      Kid xCI(p_pred);
+      while (xCI.bEach()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (xCI.G.p_MainCard->pSymbol()->bIs_Sqy_Prm()) {
+        if (xCI.pChild()->pSymbol()->bIs_Sqy_Prm()) {
 
           Symbol x_Symbol_stmCol1(SF_COL_NO,1);
-          xCI.G.p_MainCard->pSymbol()->vSym(&x_Symbol_stmCol1);  // TODO: hack!!
+          xCI.pChild()->pSymbol()->vSym(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
               pCI->Prior.m_pProjection->pGetExpr(0);
 
-          xCI.G.p_MainCard->pSymbol()->Y_vColType(p_expr_found->szP_Type());
+          xCI.pChild()->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 
         }
         else
-        if (xCI.G.p_MainCard->bIsCard(CK_TERM) && xCI.G.p_MainCard->pSymbol()->bIs_Col_Tc()) {
+        if (xCI.pChild()->bIsCard(CK_TERM) && xCI.pChild()->pSymbol()->bIs_Col_Tc()) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
@@ -492,7 +492,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol(SF_NONE);
           RASSERT(Symbol::bIs_Col_Tc(szProjectedCol));
-          xCI.G.p_MainCard->pSymbol()->vSym(SF_COL_TC,szProjectedCol);  // TODO: hack!!
+          xCI.pChild()->pSymbol()->vSym(SF_COL_TC,szProjectedCol);  // TODO: hack!!
 
           DELETE_CARD(p_term);
         }
@@ -504,10 +504,10 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
     }
     else
     if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
-      CardIter xCI(p_pred);
-      while (xCI.G_bEachMain()) {
-        RASSERT(Card_PRED::bIsPRED(xCI.G.p_PRED));
-        vResolve(xCI.G.p_PRED, vResolve);
+      Kid xCI(p_pred);
+      while (xCI.bEach()) {
+        RASSERT(Card_PRED::bIsPRED(xCI.pChild()));
+        vResolve((Card_PRED*)xCI.pChild(), vResolve);
       }
     }
     else {

@@ -7,6 +7,8 @@
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
 
+#include "eOT.h"
+
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -1737,43 +1739,33 @@ void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
 
   G.pBoard->vPrintBoard(szXdesc());
 
+
+  s32 sOT;
+
+  bool bPrinted = false;
+  i8 nPrinted = 0;
+  for (i8 i_OT = 0; i_OT < OT_ENUMS; i_OT++) {
+    Stz *szOptimisation = aOT[i_OT];
+
+    if (! G.pBoard->pState()->bHasName(szOptimisation))
+      continue;
+
+    vTrace("%lls "_Stz,szOptimisation);
+    bPrinted = true;
+    if (++nPrinted == 8) {
+      vTrace("\n"_Stz);
+      bPrinted = false;
+    }
+  }
+  if (bPrinted)
+    vTrace("\n"_Stz);
+
+
   s256 sWhere;
   sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXfunc());
 
   vTrace("%s\n"_Stz, sWhere.azChar());
 }
-/*----------------------------------------------------------------------------*/
-//void CardIter::vPrintBoard(i8 iLineNo)
-//{
-//  _precondition_(_MAGIC_,_FOOTER_);
-//
-//  if (! m_pCardCtl->bBoardPrint())
-//    return;
-//
-//  char cPrefix = m_pBench->cPrefix();
-//
-//  s256 sPrompt;
-//
-//  i8 nBoards = m_pBench->nItems();
-//
-//  for (;;) {
-//    G.pBoard->vPrintBoard(szXdesc());
-//
-//    if (! m_pCardCtl->bCueUser(szXhand(), szXfunc())) {
-//      m_pCardCtl->vFormPrompt(sPrompt,
-//                              cPrefix, szXhand(), szXfunc(),
-//                              G.pBoard->i_Board(), nBoards, iLineNo);
-//      printf("%s\n", sPrompt.azChar());
-//      break;
-//    }
-//
-//    m_pCardCtl->vFormPrompt(sPrompt,
-//                            cPrefix, szXhand(), szXfunc(),
-//                            G.pBoard->i_Board(), nBoards, iLineNo);
-//    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
-//      break;
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* capture prior projection                                                   */
