@@ -426,8 +426,6 @@ void CardIter::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(this->bJustRestarted());
-
   if (! G_bEachMainWithSub(eMain,eSub))
     return;
 
@@ -1266,21 +1264,6 @@ bool CardIter::G_bIsNextMain(eCK eMember)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (this->pNextChildIf(eMember))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bJustRestarted(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (C_UNKNOWN == G.xKid.i_Child() &&
-      nullptr == G.xKid.pChild() &&
-      true == G.xKid.m_bActive)
     return true;
 
   return false;
