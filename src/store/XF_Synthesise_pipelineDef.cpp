@@ -29,7 +29,7 @@ __aFooterFunction(XF_Synthesise_pipelineDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Synthesise_pipelineDef::XF_Synthesise_pipelineDef(CardIter* pCI)
-: Object(CN_XF_SYNTHESISE_PIPELINEDEF)
+: XF_SYNTHESISE(CN_XF_SYNTHESISE_PIPELINEDEF,pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 

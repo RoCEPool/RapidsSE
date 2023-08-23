@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "XF_SYNTHESISE.hpp"
+
 #include "Bench.hpp"
 #include "CardIter.hpp"
 
@@ -10,7 +12,7 @@
 
 namespace STORE
 {
-  class XF_Synthesise_Code : public Object
+  class XF_Synthesise_Code : public XF_SYNTHESISE
   {
   private:
 

@@ -29,7 +29,7 @@ __aFooterFunction(XF_Synthesise_Code)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Synthesise_Code::XF_Synthesise_Code(CardIter* pCI)
-: Object(CN_XF_SYNTHESISE_CODE)
+: XF_SYNTHESISE(CN_XF_SYNTHESISE_CODE,pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
