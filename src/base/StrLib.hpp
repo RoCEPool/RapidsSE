@@ -30,8 +30,6 @@ namespace BASE
     inline static void vReportStringTruncation(const char* azFuncName, i8 iReqBufSize, i8 iDstBufSize);
     
   public:                                                                                                               // SAFE?
-    static char* wAllocate(i8 nBytes);                                                                                  // yes
-    static char* wAllocate(const char* s);                                                                              // yes
     static void  vAppendChar(char** aaz, char c);                                                                       // ✕
     static void  vAppendDecimal(char** aaz, i8 i);                                                                      // ✕
     static void  vAppendHex(char** aaz, i8 i);                                                                          // ✕
@@ -53,11 +51,11 @@ namespace BASE
     static i8    iCompare(const char* pArg1, const char* pArg2);                                                        // yes
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 iCase);                                              // yes
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);                                   // yes
-    static void  vConcat(char* pWS, i8 iDstBufSize, const char cChar, bool* pbResult = nullptr);                        // yes
+    static void  vConcat(char* psDst, i8 iDstBufSize, const char cChar,  bool* pbResult = nullptr);                     // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg, bool* pbResult = nullptr);                     // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg, i8 nCatLen, bool* pbResult=nullptr);           // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg1, const char* psArg2, bool* pbResult=nullptr);  // yes
-    static void  vConcat(char* pWS, i8 iDstBufSize, i8 i, bool* pbResult = nullptr);                                    // yes
+    static void  vConcat(char* psDst, i8 iDstBufSize, i8 i, bool* pbResult = nullptr);                                  // yes
     static bool  bContains(char* s, const char cArg);                                                                   // ✕
     static bool  bContains(char* s, const char* sArg);                                                                  // ✕
     static i8    nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
@@ -68,9 +66,7 @@ namespace BASE
     
     static i8    iDigitToI8(char cDigit);                                                                               // ✕
     static void  vDump(const char* s, i8 nMax, const char* pSuffix);                                                    // ✕
-    static char* sDupe(const char* s);                                                                                  // ✕
-    static char* sDupeStripped(const char* s);                                                                          // ✕
-  
+
     static bool  bEachLine(char** ps, char* caLine);                                                                    // ✕
     static bool  bEqualTo(const char* s1, const char* s2);                                                              // ✕
     static bool  bEqualTo(const char* s1, i8 nLen2, const char* s2);                                                    // ✕
@@ -224,7 +220,6 @@ namespace BASE
     static bool  bMatchHere(char* azStr, char* azRegExp);                                                               // ✕
     static bool  bMatchStar(char* azStr, char* azRegExp, char cChr);                                                    // ✕
 
-    static char* sNew(const char* azFormat, ...);                                                                       // ✕
     static char* azNullTerminator(char* s);                                                                             // ✕
 
     static i8    iOccurrence(char* ps, const char cArg);                                                                // ✕

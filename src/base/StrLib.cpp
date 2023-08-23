@@ -40,7 +40,15 @@
 //     This allows for a common place for handling of string operations, a
 //     common methodology, interface and semantics, and a common way to handle errors.
 //
-// Note: This is a work in progress.
+// (7) StrLib should have consistent calling semantics. This includes things like:
+//      (a) The name of the destination buffer should be called psDst.
+//      (b) The size of the destination buffer should come immediately after the
+//           pointer to the destination buffer in the parameter list.
+//      (c) A writable buffer should be a char* and not a Stz*. Stz should be
+//          considered a read-only data structure.
+//
+//
+// Note: All of the above is a work in progress.
 
 #include "BASE.h"
 
@@ -138,34 +146,6 @@ i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {
 /*----------------------------------------------------------------------------*/
 /* A                                  A                                     A */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allocate a workspace/string of given size                                  */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wAllocate(i8 nBytes)
-{
-  _static_
-  
-  char* w = static_cast<char*>(malloc(nBytes));
-  *w = '\0';
-  return w;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a workspace/string and initialize with given string               */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wAllocate(const char* s)
-{
-  _static_
-  
-  i8 nBytes = nSize(s);
-  
-  char* w = wAllocate(nBytes);
-  
-  vCopy(w,s);
-  
-  return w;
-}
 
 /*----------------------------------------------------------------------------*/
 /* append character to end of workspace                                       */
@@ -605,11 +585,11 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate character to workspace                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* pWS, i8 iDstBufSize, const char cChar, bool* pbResult)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char cChar, bool* pbResult)
 {
   _static_
   
-  i8 iDstStrLen = nLength(pWS);     // how much space in the dest buffer (not including null terminator)
+  i8 iDstStrLen = nLength(psDst);     // how much space in the dest buffer (not including null terminator)
   i8 iReqBufSize = iDstStrLen + 2;  // how much space required (including extra char & null terminator)
 
   if (!bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult)) {
@@ -617,8 +597,8 @@ void StrLib::vConcat(char* pWS, i8 iDstBufSize, const char cChar, bool* pbResult
     return;
   }
 
-  pWS[iDstStrLen] = cChar;
-  pWS[iDstStrLen+1] = '\0';
+  psDst[iDstStrLen] = cChar;
+  psDst[iDstStrLen + 1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -874,49 +854,6 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
   *z = '\0';
   
   vTrace("%s"_Stz,caString);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sDupe: duplicate string                                                    */
-/*----------------------------------------------------------------------------*/
-char* StrLib::sDupe(const char* psArg)
-{
-  _static_
-  
-  i8 iSize = StrLib::nSize(psArg);
-
-  char* psString = wAllocate(iSize);
-
-  StrLib::vCopy(psString,psArg);
-
-  return psString;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sDupeStripped: duplicate stripped string                                   */
-/*----------------------------------------------------------------------------*/
-char* StrLib::sDupeStripped(const char* s)
-{
-  _static_
-  
-  if ('"' != *s)
-    return sDupe(s);
-  
-  i8 iSize = StrLib::nSize(s) - 2;
-  
-  char* psString = wAllocate(iSize);
-  
-  char* p = psString;
-  
-  for (s++; '"' != *s; )
-  {
-    if ('\\' == *s)
-      s++;
-    *p++ = *s++;
-  }
-  *p = '\0';
-  
-  return psString;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4007,27 +3944,6 @@ bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
   } while (*azStr != '\0' && (*azStr++ == cChr || cChr == '.'));
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sNew: new a string from formatted args                                     */
-/*----------------------------------------------------------------------------*/
-char* StrLib::sNew(const char* sFormat, ...)
-{
-  _static_
-
-  const i8 nBufSize = C_STRING_ARRAY;
-  char w[nBufSize];
-  
-  va_list args;
-  
-  va_start(args,sFormat);
-  vsnprintf(w,nBufSize,sFormat,args);
-  va_end(args);
-  
-  char* s = sDupe(w);
-  
-  return s;
 }
 
 /*----------------------------------------------------------------------------*/
