@@ -350,7 +350,7 @@ void XF::vCrosscheck_Optimisations(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
-  MY::pJob()->pJobTags()->vDumpSet();
+  //MY::pJob()->pJobTags()->vDumpSet();
 
   s32 sOT;
 
