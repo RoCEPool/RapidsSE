@@ -225,8 +225,8 @@ template <i8 AREA>
 void String_t<AREA>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
-  
-  StrLib::wToString(iArg, m_caCharArea, sizeof(m_caCharArea));
+
+  StrLib::vToString(iArg, m_caCharArea, sizeof(m_caCharArea));
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

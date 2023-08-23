@@ -293,7 +293,7 @@ namespace BASE
     static char* wToString(bool bArg, char* w);                                                                         // ✕
     static void  vToString(char* azDst, i8 iDstBufSize, i8 iArg, bool* pbResult = nullptr);                             // yes
     static char* wToString(d8 dArg, char* w);                                                                           // ✕
-    static char* wToString(i8 iArg, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                             // yes
+    static void  vToString(i8 iArg, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                             // yes
     static void  vTrim(char* azArg, char cTrim);                                                                        // ✕
 
     static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);                                                          // ✕

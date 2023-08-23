@@ -884,7 +884,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopBcd(__func__);
       
       char caValue[32];
-      StrLib::wToString(iInt, caValue, sizeof(caValue));
+      StrLib::vToString(iInt, caValue, sizeof(caValue));
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -925,7 +925,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopInt(__func__);
       
       char caValue[32];
-      StrLib::wToString(iInt, caValue, sizeof(caValue));
+      StrLib::vToString(iInt, caValue, sizeof(caValue));
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;

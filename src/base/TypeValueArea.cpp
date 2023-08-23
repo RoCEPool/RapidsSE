@@ -260,10 +260,10 @@ void TypeValueArea::vStzSize(i8 nSize)
 void TypeValueArea::vToStr(String* psDst)
 {
   if (CN_BOLVAL == eType())
-    StrLib::wToString(iBol(), psDst->azStr(), psDst->nArea());
+    StrLib::vToString(iBol(), psDst->azStr(), psDst->nArea());
   else
   if (CN_INTVAL == eType())
-    StrLib::wToString(iInt(), psDst->azStr(), psDst->nArea());
+    StrLib::vToString(iInt(), psDst->azStr(), psDst->nArea());
   else
   if (CN_STZVAL == eType())
     psDst->vCopy((Stz*) m_caStringArea);

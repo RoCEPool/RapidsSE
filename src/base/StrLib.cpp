@@ -665,7 +665,7 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
   
   char aInt[32];
 
-  wToString(iArg, aInt, sizeof(aInt));  // This should never fail
+  vToString(iArg, aInt, sizeof(aInt));  // This should never fail
   vConcat(psDst, iDstBufSize, aInt, pbResult);
 }
 
@@ -5283,8 +5283,8 @@ char* StrLib::wToString(bool b, char* w)
 void StrLib::vToString(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
-  
-  wToString(iArg, psDst, iDstBufSize, pbResult);
+
+  vToString(iArg, psDst, iDstBufSize, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5306,7 +5306,7 @@ char* StrLib::wToString(d8 d, char* w)
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
+void StrLib::vToString(i8 iArg, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
   ASSERT(iDstBufSize > 1);
@@ -5314,8 +5314,8 @@ char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
   i8 iSpaceNeeded = 1; // start with the null terminator
   bool bNegative = false;
   
-  if (i < 0) {
-    i = -i;
+  if (iArg < 0) {
+    iArg = -iArg;
     bNegative = true;
     ++iSpaceNeeded; // Account for the negative now
   }
@@ -5324,11 +5324,11 @@ char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
   do {
     ++iSpaceNeeded;
     if (iSpaceNeeded <= iDstBufSize) {
-      *p++ = (i % 10) + '0';
+      *p++ = (iArg % 10) + '0';
     }
 
-    i /= 10ll;
-  } while (i);
+    iArg /= 10ll;
+  } while (iArg);
 
   if (iSpaceNeeded > iDstBufSize) {
     // Try to put a value into the destination buffer
@@ -5343,7 +5343,7 @@ char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
     } else {
       vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
     }
-    return psDst;
+    return;
   }
 
   // We have enough space. Now reverse the string that was generated.
@@ -5362,7 +5362,7 @@ char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
     *pbResult = true;
   }
 
-  return psDst;
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
