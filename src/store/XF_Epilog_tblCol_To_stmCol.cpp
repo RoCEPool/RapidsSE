@@ -64,7 +64,7 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 
   m_pCI->vTransform(__func__, XF_TBLCOL_TO_STMCOL, "transform table-columns to stream-columns"_Stz);
 
-  for (m_pCI->vClearRestart(); m_pCI->G_bEachMain(); m_pCI->vPriorProjection()) {
+  for (m_pCI->vClearRestart(); m_pCI->G_bEachMain(); m_pCI->vSnapPriorProjection()) {
 
     m_pCI->G.p_OP->vConvert_tblColOdn_To_stmColOdn(m_pCI);
   }
@@ -72,29 +72,6 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 
   vValidate();
 }
-/*----------------------------------------------------------------------------*/
-//void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
-//
-//  m_pCI->vTransform(__func__, XF_TBLCOL_TO_STMCOL, "transform table-columns to stream-columns"_Stz);
-//
-//  m_pCI->vClearRestart();
-//  while (m_pCI->G_bEachMain_reverse()) {
-//
-//    m_pCI->Prior.m_pProjection = Card_Projection::pResolvePriorProjection(m_pCI);
-//
-//    m_pCI->G.p_OP->vConvert_tblColOdn_To_stmColOdn(m_pCI);
-//
-////    if (m_pCI->G.p_OP->pSub_projection())
-////      m_pCI->Prior.m_pProjection =
-////          m_pCI->G.p_OP->pSub_projection();
-//  }
-//  m_pCI->vEndTransform();
-//
-//  vValidate();
-//}
-
 
 /*============================================================================*/
 /* end                                                                        */

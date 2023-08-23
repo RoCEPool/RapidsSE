@@ -147,7 +147,7 @@ namespace STORE
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN, bool bForce=false);
-    void vPriorProjection(void);
+    void vSnapPriorProjection(void);
     void G_vPushBoard(Board* pBoard);
     void G_vPushBoard(Stz* szBoardNm);
     bool G_bPushBoard(i8 i_Board);
