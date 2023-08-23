@@ -22,7 +22,7 @@ namespace STORE
 
     static void vOptimise(CardIter* pCI);
 
-    void vOptimise(void);
+    bool bOptimise(void);
 
   private:
     Footer* aFooter(void);

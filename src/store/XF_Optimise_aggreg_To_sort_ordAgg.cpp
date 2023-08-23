@@ -46,7 +46,7 @@ void XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(CardIter* pCI)
 
   XF_Optimise_aggreg_To_sort_ordAgg* pXF_Optimise_aggreg_To_sort_ordAgg = new XF_Optimise_aggreg_To_sort_ordAgg(pCI);
 
-  pXF_Optimise_aggreg_To_sort_ordAgg->vOptimise();
+  pXF_Optimise_aggreg_To_sort_ordAgg->bOptimise();
 
   delete pXF_Optimise_aggreg_To_sort_ordAgg;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(void)
+bool XF_Optimise_aggreg_To_sort_ordAgg::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, _FOOTER_);
 
@@ -72,6 +72,8 @@ void XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

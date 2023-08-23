@@ -46,7 +46,7 @@ void XF_Optimise_sort_limit_All_Levels::vOptimise(CardIter* pCI)
 
   XF_Optimise_sort_limit_All_Levels* pXF_Optimise_sort_limit_All_Levels = new XF_Optimise_sort_limit_All_Levels(pCI);
 
-  pXF_Optimise_sort_limit_All_Levels->vOptimise();
+  pXF_Optimise_sort_limit_All_Levels->bOptimise();
 
   delete pXF_Optimise_sort_limit_All_Levels;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_sort_limit_All_Levels::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_sort_limit_All_Levels::vOptimise(void)
+bool XF_Optimise_sort_limit_All_Levels::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, _FOOTER_);
 
@@ -72,6 +72,8 @@ void XF_Optimise_sort_limit_All_Levels::vOptimise(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

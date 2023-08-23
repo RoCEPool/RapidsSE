@@ -46,7 +46,7 @@ void XF_Optimise_Late_projection::vOptimise(CardIter* pCI)
 
   XF_Optimise_Late_projection* pXF_Optimise_Late_projection = new XF_Optimise_Late_projection(pCI);
 
-  pXF_Optimise_Late_projection->vOptimise();
+  pXF_Optimise_Late_projection->bOptimise();
 
   delete pXF_Optimise_Late_projection;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_Late_projection::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Late_projection::vOptimise(void)
+bool XF_Optimise_Late_projection::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_LATE_PROJECTION, _FOOTER_);
 
@@ -72,6 +72,8 @@ void XF_Optimise_Late_projection::vOptimise(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

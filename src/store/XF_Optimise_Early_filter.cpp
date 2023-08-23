@@ -46,7 +46,7 @@ void XF_Optimise_Early_filter::vOptimise(CardIter* pCI)
 
   XF_Optimise_Early_filter* pXF_Optimise_Early_filter = new XF_Optimise_Early_filter(pCI);
 
-  pXF_Optimise_Early_filter->vOptimise();
+  pXF_Optimise_Early_filter->bOptimise();
 
   delete pXF_Optimise_Early_filter;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_Early_filter::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_filter::vOptimise(void)
+bool XF_Optimise_Early_filter::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_FILTER, _FOOTER_);
 
@@ -72,6 +72,8 @@ void XF_Optimise_Early_filter::vOptimise(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

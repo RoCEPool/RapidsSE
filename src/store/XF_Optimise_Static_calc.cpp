@@ -46,7 +46,7 @@ void XF_Optimise_Static_calc::vOptimise(CardIter* pCI)
 
   XF_Optimise_Static_calc* pXF_Optimise_OneTime_calc = new XF_Optimise_Static_calc(pCI);
 
-  pXF_Optimise_OneTime_calc->vOptimise();
+  pXF_Optimise_OneTime_calc->bOptimise();
 
   delete pXF_Optimise_OneTime_calc;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_Static_calc::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Static_calc::vOptimise(void)
+bool XF_Optimise_Static_calc::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_STATIC_CALC, _FOOTER_);
 
@@ -72,6 +72,8 @@ void XF_Optimise_Static_calc::vOptimise(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/
