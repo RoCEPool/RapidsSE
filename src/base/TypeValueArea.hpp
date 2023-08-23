@@ -48,7 +48,7 @@ namespace BASE
     i8    nStackUsage(void);
   
     Stz*  szStz(void);
-    void  vStz(Stz* szStz);
+    void  vStz(Stz* szStz, i8 iAllottedSize);
     i8    nStzSize(void);
     void  vStzSize(i8 nSize);
   

@@ -436,7 +436,7 @@ inline bool StrLib::bCheckBufferSpace(const char* azFuncName, i8 iReqBufSize, i8
 {
   ASSERT(azFuncName);
   ASSERT(iReqBufSize >= 0);
-  ASSERT(iDstBufSize > 1);  // need at least room for a null terminator
+  ASSERT(iDstBufSize >= 1);  // need at least room for a null terminator
 
   // Is there enough space?
   if (iDstBufSize < iReqBufSize) {
