@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_ANCILLARY.hpp"
+#include "Card_CONSTRUCTION.hpp"
 
 namespace STORE
 {
   class Card_OP;
   class SawOpCards;
 
-  class Card_Stage : public Card_ANCILLARY
+  class Card_Stage : public Card_CONSTRUCTION
   {  
   public:
     void* operator new(size_t);

@@ -22,7 +22,7 @@ __vDeleteFunction(Card_Stage,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stage::Card_Stage(void)
-: Card_ANCILLARY(CK_STAGE, C_UNKNOWN)
+: Card_CONSTRUCTION(CK_STAGE, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

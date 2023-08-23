@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Combined, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Combined::Card_Combined(void)
-: Card_OP(CK_COMBINED,1)
+: Card_CONSTRUCTION(CK_COMBINED,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

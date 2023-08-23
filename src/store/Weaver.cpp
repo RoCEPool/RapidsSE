@@ -470,7 +470,8 @@ void Weaver::vArgCombined(String* psOpArgs, Card_Combined* pCard_Combine)
 
   s4K sRpnExpr;
 
-  pCard_Combine->vRpnCombined(sRpnExpr, pCard_Combine);
+  //pCard_Combine->vRpnCombined(sRpnExpr, pCard_Combine);
+  sRpnExpr.vCatSprint("%s"_Stz, pCard_Combine->szSymbol(SF_NONE));
 
   psOpArgs->vCatSprint("%s"_Stz, sRpnExpr.szStz());
 }
