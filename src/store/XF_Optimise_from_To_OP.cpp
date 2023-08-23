@@ -39,13 +39,13 @@ XF_Optimise_from_To_OP::~XF_Optimise_from_To_OP(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_from_To_OP::vXF_Optimise_from_By_OP(CardIter* pCI)
+void XF_Optimise_from_To_OP::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_from_To_OP* pXF_Morph_table_To_EEop = new XF_Optimise_from_To_OP(pCI);
 
-  pXF_Morph_table_To_EEop->vXF_Morph_table_To_EEop();
+  pXF_Morph_table_To_EEop->bOptimise();
 
   delete pXF_Morph_table_To_EEop;
 }
@@ -58,7 +58,7 @@ void XF_Optimise_from_To_OP::vXF_Optimise_from_By_OP(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_from_To_OP::vXF_Morph_table_To_EEop(void)
+bool XF_Optimise_from_To_OP::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 
@@ -69,6 +69,8 @@ void XF_Optimise_from_To_OP::vXF_Morph_table_To_EEop(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

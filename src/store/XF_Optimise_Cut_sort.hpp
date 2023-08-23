@@ -20,9 +20,9 @@ namespace STORE
     XF_Optimise_Cut_sort(CardIter* pCI);
    ~XF_Optimise_Cut_sort(void) noexcept(false);
 
-    static void vXF_Cut_sort(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Cut_sort(void);
+    bool bOptimise(void);
 
   private:
     Footer* aFooter(void);

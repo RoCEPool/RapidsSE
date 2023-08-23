@@ -20,9 +20,9 @@ namespace STORE
     XF_Optimise_gbyAgg_To_ordAgg(CardIter* pCI);
    ~XF_Optimise_gbyAgg_To_ordAgg(void) noexcept(false);
 
-    static void vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Promote_gbyAgg_To_ordAgg(void);
+    bool bOptimise(void);
 
   private:
     Footer* aFooter(void);

@@ -20,9 +20,9 @@ namespace STORE
     XF_Optimise_Reduce_gbyAgg_key(CardIter* pCI);
    ~XF_Optimise_Reduce_gbyAgg_key(void) noexcept(false);
 
-    static void vXF_Reduce_key_gbyAgg(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Reduce_gbyAgg_key(void);
+    bool bOptimise(void);
 
   private:
     Footer* aFooter(void);

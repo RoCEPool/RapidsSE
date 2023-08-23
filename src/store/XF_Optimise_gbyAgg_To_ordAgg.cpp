@@ -40,13 +40,13 @@ XF_Optimise_gbyAgg_To_ordAgg::~XF_Optimise_gbyAgg_To_ordAgg(void) noexcept(false
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
+void XF_Optimise_gbyAgg_To_ordAgg::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_gbyAgg_To_ordAgg* pXF_Promote_gbyAgg_To_ordAgg = new XF_Optimise_gbyAgg_To_ordAgg(pCI);
 
-  pXF_Promote_gbyAgg_To_ordAgg->vXF_Promote_gbyAgg_To_ordAgg();
+  pXF_Promote_gbyAgg_To_ordAgg->bOptimise();
 
   delete pXF_Promote_gbyAgg_To_ordAgg;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
+bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 
@@ -94,6 +94,8 @@ void XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

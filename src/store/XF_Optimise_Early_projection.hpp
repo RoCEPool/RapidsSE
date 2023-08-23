@@ -20,9 +20,9 @@ namespace STORE
     XF_Optimise_Early_projection(CardIter* pCI);
    ~XF_Optimise_Early_projection(void) noexcept(false);
 
-    static void vXF_Early_projection(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Early_projection(void);
+    bool bOptimise(void);
 
   private:
     Footer* aFooter(void);

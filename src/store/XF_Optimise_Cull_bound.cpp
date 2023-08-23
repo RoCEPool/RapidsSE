@@ -39,14 +39,14 @@ XF_Optimise_Cull_bound::~XF_Optimise_Cull_bound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(CardIter* pCI)
+void XF_Optimise_Cull_bound::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_Cull_bound* pXF_Cull_NonUsed_bound = new XF_Optimise_Cull_bound(pCI);
 
-  pXF_Cull_NonUsed_bound->vXF_Cull_NonUsed_bound();
-  pXF_Cull_NonUsed_bound->vXF_Cull_Used_bound();
+  pXF_Cull_NonUsed_bound->bXF_Cull_NonUsed_bound();
+  pXF_Cull_NonUsed_bound->bXF_Cull_Used_bound();
 
   delete pXF_Cull_NonUsed_bound;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* cull non-used bounds                                                       */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(void)
+bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 
@@ -92,12 +92,14 @@ void XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* cull non-used bounds                                                       */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Cull_bound::vXF_Cull_Used_bound(void)
+bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 
@@ -181,6 +183,8 @@ void XF_Optimise_Cull_bound::vXF_Cull_Used_bound(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 

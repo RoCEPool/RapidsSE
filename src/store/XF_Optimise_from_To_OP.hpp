@@ -20,9 +20,9 @@ namespace STORE
     XF_Optimise_from_To_OP(CardIter* pCI);
    ~XF_Optimise_from_To_OP(void) noexcept(false);
 
-    static void vXF_Optimise_from_By_OP(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Morph_table_To_EEop(void);
+    bool bOptimise(void);
 
   private:
     Footer* aFooter(void);

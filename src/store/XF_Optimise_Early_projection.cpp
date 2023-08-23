@@ -44,13 +44,13 @@ XF_Optimise_Early_projection::~XF_Optimise_Early_projection(void) noexcept(false
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_projection::vXF_Early_projection(CardIter* pCI)
+void XF_Optimise_Early_projection::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_Early_projection* pXF_Early_projection = new XF_Optimise_Early_projection(pCI);
 
-  pXF_Early_projection->vXF_Early_projection();
+  pXF_Early_projection->bOptimise();
 
   delete pXF_Early_projection;
 }
@@ -63,14 +63,14 @@ void XF_Optimise_Early_projection::vXF_Early_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Early_projection::vXF_Early_projection(void)
+bool XF_Optimise_Early_projection::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
 
 //  if (! AM::JOB::bHasTag(C_EP_ENABLE))
 //    return;
   if (AM::JOB::bHasTag(C_EP_DISABLE))
-    return;
+    return false;
 
   m_pCI->vTransform(__func__, XF_EARLY_PROJECTION, "Early projections"_Stz);
 
@@ -113,6 +113,8 @@ void XF_Optimise_Early_projection::vXF_Early_projection(void)
   vDebugPoint();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

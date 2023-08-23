@@ -20,9 +20,9 @@ namespace STORE
     XF_Optimise_Derive_streamKey(CardIter* pCI);
    ~XF_Optimise_Derive_streamKey(void) noexcept(false);
 
-    static void vXF_Optimise_Derive_streamKey(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Derive_streamKey(void);
+    bool bOptimise(void);
 
   private:
     bool bFindStart_streamKey(void);

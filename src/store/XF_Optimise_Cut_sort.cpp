@@ -40,13 +40,13 @@ XF_Optimise_Cut_sort::~XF_Optimise_Cut_sort(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Cut_sort::vXF_Cut_sort(CardIter* pCI)
+void XF_Optimise_Cut_sort::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_Cut_sort* pXF_Cut_sort = new XF_Optimise_Cut_sort(pCI);
 
-  pXF_Cut_sort->vXF_Cut_sort();
+  pXF_Cut_sort->bOptimise();
 
   delete pXF_Cut_sort;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_Cut_sort::vXF_Cut_sort(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Cut_sort::vXF_Cut_sort(void)
+bool XF_Optimise_Cut_sort::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
 
@@ -94,6 +94,8 @@ void XF_Optimise_Cut_sort::vXF_Cut_sort(void)
   m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

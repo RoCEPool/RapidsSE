@@ -41,13 +41,13 @@ XF_Optimise_scan_To_indexScan::~XF_Optimise_scan_To_indexScan(void) noexcept(fal
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_scan_To_indexScan::vXF_Optimise_scan_To_indexScan(CardIter* pCI)
+void XF_Optimise_scan_To_indexScan::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_scan_To_indexScan* pXF_Morph_scan_To_indexScan = new XF_Optimise_scan_To_indexScan(pCI);
 
-  pXF_Morph_scan_To_indexScan->vXF_Replace_scan_By_indexScan();
+  pXF_Morph_scan_To_indexScan->bOptimise();
 
   delete pXF_Morph_scan_To_indexScan;
 }
@@ -60,7 +60,7 @@ void XF_Optimise_scan_To_indexScan::vXF_Optimise_scan_To_indexScan(CardIter* pCI
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_scan_To_indexScan::vXF_Replace_scan_By_indexScan(void)
+bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
 
@@ -85,6 +85,8 @@ void XF_Optimise_scan_To_indexScan::vXF_Replace_scan_By_indexScan(void)
 
 
   vValidate();
+
+  return true;
 }
 
 /*============================================================================*/

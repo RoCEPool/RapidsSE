@@ -20,9 +20,9 @@ namespace STORE
     XF_Optimise_scan_To_indexScan(CardIter* pCI);
    ~XF_Optimise_scan_To_indexScan(void) noexcept(false);
 
-    static void vXF_Optimise_scan_To_indexScan(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Replace_scan_By_indexScan(void);
+    bool bOptimise(void);
 
   private:
     Footer* aFooter(void);

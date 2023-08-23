@@ -44,13 +44,13 @@ XF_Optimise_Reduce_gbyAgg_key::~XF_Optimise_Reduce_gbyAgg_key(void) noexcept(fal
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(CardIter* pCI)
+void XF_Optimise_Reduce_gbyAgg_key::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_Reduce_gbyAgg_key* pXF_Reduce_key_gbyAgg = new XF_Optimise_Reduce_gbyAgg_key(pCI);
 
-  pXF_Reduce_key_gbyAgg->vXF_Reduce_gbyAgg_key();
+  pXF_Reduce_key_gbyAgg->bOptimise();
 
   delete pXF_Reduce_key_gbyAgg;
 }
@@ -63,7 +63,7 @@ void XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_gbyAgg_key(void)
+bool XF_Optimise_Reduce_gbyAgg_key::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 
@@ -71,6 +71,7 @@ void XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_gbyAgg_key(void)
 
   vValidate();
 
+  return true;
 }
 
 /*============================================================================*/

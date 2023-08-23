@@ -20,10 +20,10 @@ namespace STORE
     XF_Optimise_Cull_bound(CardIter* pCI);
    ~XF_Optimise_Cull_bound(void) noexcept(false);
 
-    static void vXF_Cull_NonUsed_bound(CardIter* pCI);
+    static void vOptimise(CardIter* pCI);
 
-    void vXF_Cull_NonUsed_bound(void);
-    void vXF_Cull_Used_bound(void);
+    bool bXF_Cull_NonUsed_bound(void);
+    bool bXF_Cull_Used_bound(void);
 
   private:
     Footer* aFooter(void);

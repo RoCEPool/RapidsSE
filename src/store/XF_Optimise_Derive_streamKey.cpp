@@ -40,13 +40,13 @@ XF_Optimise_Derive_streamKey::~XF_Optimise_Derive_streamKey(void) noexcept(false
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Derive_streamKey::vXF_Optimise_Derive_streamKey(CardIter* pCI)
+void XF_Optimise_Derive_streamKey::vOptimise(CardIter* pCI)
 {
   _static_
 
   XF_Optimise_Derive_streamKey* pXF_Derive_projection_key = new XF_Optimise_Derive_streamKey(pCI);
 
-  pXF_Derive_projection_key->vXF_Derive_streamKey();
+  pXF_Derive_projection_key->bOptimise();
 
   delete pXF_Derive_projection_key;
 }
@@ -59,7 +59,7 @@ void XF_Optimise_Derive_streamKey::vXF_Optimise_Derive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Derive_streamKey::vXF_Derive_streamKey(void)
+bool XF_Optimise_Derive_streamKey::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
 
@@ -77,6 +77,8 @@ void XF_Optimise_Derive_streamKey::vXF_Derive_streamKey(void)
     m_pCI->vEndTransform();
 
   vValidate();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

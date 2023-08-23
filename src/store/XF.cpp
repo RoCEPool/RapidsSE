@@ -183,21 +183,16 @@ void XF::vTransform(void)
   m_pCI->vBoardIteration();
   RASSERT(m_pCI->bEachBoard());
 
-  XF_Optimise_from_To_OP::vXF_Optimise_from_By_OP(m_pCI);
 
-  XF_Optimise_scan_To_indexScan::vXF_Optimise_scan_To_indexScan(m_pCI);
+  XF_Optimise_from_To_OP::vOptimise(m_pCI);
+  XF_Optimise_scan_To_indexScan::vOptimise(m_pCI);
+  XF_Optimise_Derive_streamKey::vOptimise(m_pCI);
+  XF_Optimise_Cut_sort::vOptimise(m_pCI);
+  XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);
+  XF_Optimise_Cull_bound::vOptimise(m_pCI);
+  XF_Optimise_Early_projection::vOptimise(m_pCI);
+  XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);
 
-  XF_Optimise_Derive_streamKey::vXF_Optimise_Derive_streamKey(m_pCI);
-
-  XF_Optimise_Cut_sort::vXF_Cut_sort(m_pCI);
-
-  XF_Optimise_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
-
-  XF_Optimise_Cull_bound::vXF_Cull_NonUsed_bound(m_pCI);
-
-  XF_Optimise_Early_projection::vXF_Early_projection(m_pCI);
-
-  XF_Optimise_Reduce_gbyAgg_key::vXF_Reduce_key_gbyAgg(m_pCI);
 
   XF_Optimise_Static_calc::vOptimise(m_pCI);
   XF_Optimise_max_To_top::vOptimise(m_pCI);
