@@ -130,7 +130,7 @@ String_t<AREA>::String_t(i8 iArg)
 
   ASSERT(AREA == nFreeBytes());
 
-  StrLib::wToString(iArg,m_caCharArea);
+  StrLib::vToString(m_caCharArea, AREA, iArg);
 
   _checkInitialisedSize_(AREA);
 }
@@ -226,7 +226,7 @@ void String_t<AREA>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vToString(iArg, m_caCharArea, sizeof(m_caCharArea));
+  StrLib::vToString(m_caCharArea, sizeof(m_caCharArea), iArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

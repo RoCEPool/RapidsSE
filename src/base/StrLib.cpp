@@ -41,7 +41,8 @@
 //     common methodology, interface and semantics, and a common way to handle errors.
 //
 // (7) StrLib should have consistent calling semantics. This includes things like:
-//      (a) The name of the destination buffer should be called psDst.
+//      (a) The name of the destination buffer should be called psDst and in
+//          general it should usually be the first parameter in the function.
 //      (b) The size of the destination buffer should come immediately after the
 //           pointer to the destination buffer in the parameter list.
 //      (c) A writable buffer should be a char* and not a Stz*. Stz should be
@@ -665,7 +666,7 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
   
   char aInt[32];
 
-  vToString(iArg, aInt, sizeof(aInt));  // This should never fail
+  vToString(aInt, sizeof(aInt), iArg);  // This should never fail
   vConcat(psDst, iDstBufSize, aInt, pbResult);
 }
 
@@ -5283,43 +5284,17 @@ char* StrLib::wToString(bool b, char* w)
 void StrLib::vToString(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
-
-  vToString(iArg, psDst, iDstBufSize, pbResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given float into its char/str form                                 */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wToString(d8 d, char* w)
-{
-  _static_
-  
-  char caFloat[32];
-  
-  snprintf(caFloat,sizeof(caFloat),"%g",d);
-  
-  vAppendString(&w,caFloat);
-  
-  return w;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given integer into its char/str form                               */
-/*----------------------------------------------------------------------------*/
-void StrLib::vToString(i8 iArg, char* psDst, i8 iDstBufSize, bool* pbResult)
-{
-  _static_
   ASSERT(iDstBufSize > 1);
 
   i8 iSpaceNeeded = 1; // start with the null terminator
   bool bNegative = false;
-  
+
   if (iArg < 0) {
     iArg = -iArg;
     bNegative = true;
     ++iSpaceNeeded; // Account for the negative now
   }
-  
+
   char *p = psDst, *q = psDst;
   do {
     ++iSpaceNeeded;
@@ -5361,8 +5336,28 @@ void StrLib::vToString(i8 iArg, char* psDst, i8 iDstBufSize, bool* pbResult)
   if (pbResult) {
     *pbResult = true;
   }
+}
 
-  return;
+/*----------------------------------------------------------------------------*/
+/* convert given float into its char/str form                                 */
+/*----------------------------------------------------------------------------*/
+void StrLib::vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult)
+{
+  _static_
+  
+  char caFloat[32];
+  
+  i8 iRet = snprintf(caFloat, sizeof(caFloat), "%g", dArg);
+
+  bool bHasTruncated = !bCheckBufferSpace(__func__, iRet+1, sizeof(caFloat), pbResult);
+
+  if (bHasTruncated && pbResult) {
+    // Caller will handle it
+    return;
+  }
+
+  UNUSED(iDstBufSize);
+  vAppendString(&psDst, caFloat);
 }
 
 /*----------------------------------------------------------------------------*/

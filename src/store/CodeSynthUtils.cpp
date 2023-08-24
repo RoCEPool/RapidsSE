@@ -540,7 +540,7 @@ void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch)
 
   if (StrLib::bContains(sLine->azChar(), "__KEY_KIND__")) {
     s256 sKey;
-    StrLib::vToString((i8) pOpSketch->m_pIndexDef->eKeyKind(), sKey.azChar(), sKey.nAreaBytes());
+    StrLib::vToString(sKey.azChar(), sKey.nAreaBytes(), (i8) pOpSketch->m_pIndexDef->eKeyKind());
     bool bResult = StrLib::bReplace(sLine->azChar(), "__KEY_KIND__", sKey.azChar());
     RASSERT(bResult);
   }
@@ -611,7 +611,7 @@ void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azChar(), "__PAYLOADBYTES__")) {
     //RASSERT( pOpSketch->m_nPayloadBytes );
     s256 sPayLoadBytes;
-    StrLib::vToString(pOpSketch->m_nPayloadBytes, sPayLoadBytes.azChar(), sPayLoadBytes.nAreaBytes());
+    StrLib::vToString(sPayLoadBytes.azChar(), sPayLoadBytes.nAreaBytes(), pOpSketch->m_nPayloadBytes);
     bool bResult = StrLib::bReplace(sLine->azChar(), "__PAYLOADBYTES__", sPayLoadBytes.azChar());
     RASSERT(bResult);
   }
