@@ -756,7 +756,7 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File
   pOperatorFile->vSeekStart();
   bExtracted = CodeSynthUtils::bExtract(pOperatorFile, pOpSketch, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -776,7 +776,7 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Colu
   pOperatorFile->vSeekStart();
   bExtracted = CodeSynthUtils::bExtract(pOperatorFile, pOpSketch, szFunction, sCode, pColumn, C_UNKNOWN);
   RASSERT(bExtracted);
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -795,7 +795,7 @@ void CombinedSrc::vAppendCodeFragmentPL(OpSketch* pOpSketch, Stz* szFunction, Co
   bExtracted = CodeSynthUtils::bExtract(m_pCommonCode, pOpSketch, szFunction, sCode, pColumn,
                                         iIndexColumn);
   RASSERT(bExtracted);
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,7 +834,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 
     bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
     RASSERT(bExtracted);
-    StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
   }
 
 /*
@@ -891,7 +891,7 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
 
     bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
     RASSERT(bExtracted);
-    StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
   }
 
 }
@@ -919,7 +919,7 @@ void CombinedSrc::vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction
 
       bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pColumn, ""_Stz, szFunction, sCode);
       RASSERT(bExtracted);
-      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
     }
   }
 }
@@ -964,14 +964,14 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
       m_pCommonCode->vSeekStart();
 
       vAppendCodeFragmentPL(pOpSketch, "vPopulateVchPL"_Stz, pColumn, iPayLoad);
-      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
     }
     else {
       sCode = ""_Stz;
       m_pCommonCode->vSeekStart();
 
       vAppendCodeFragmentPL(pOpSketch, "vPopulateIntPL"_Stz, pColumn, iPayLoad);
-      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
     }
     iPayLoad++;
   }
@@ -989,13 +989,13 @@ void CombinedSrc::vAppendFileHeaders(void) {
   // zero the string area as reading into it and will not be null terminated
   sCode.vZero();
 
-  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_CLANG");
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), "#define WITH_CLANG");
 
   // read the file header in
   sCode = ""_Stz;
   nFileSize = m_pFileHeader->iSize();
   m_pFileHeader->nReadBytes((void *) sCode.azChar(), nFileSize);
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1037,7 +1037,7 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
   bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, pOpSketch, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
   bHasIndexInflate = false;
 }
 
@@ -1092,7 +1092,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   bResult = StrLib::bReplace(sCode.azChar(), szFunction.azChar(), sFunSignature.azChar());
   RASSERT(bResult);
 
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 
   if (eHandlerKind == HK_EOS || eHandlerKind == HK_STREAMDEF)
     return;
@@ -1104,7 +1104,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pOpSketch, "vSetColumns"_Stz, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 
   // append function continue
 
@@ -1136,7 +1136,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1252,7 +1252,7 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage)
                     pColumn->bIsNullable() ? "true" : "false",
                     pColumn->bIsPtnKey() ? "true" : "false",
                     pColumn->bIsAscending() ? "true" : "false");
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCopy.azChar());
   }
 
 }
@@ -1293,7 +1293,7 @@ void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
                     pColumn->bIsNullable() ? "true" : "false",
                     pColumn->bIsPtnKey() ? "true" : "false",
                     pColumn->bIsAscending() ? "true" : "false");
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCopy.azChar());
   }
 
 }
@@ -1426,7 +1426,7 @@ void CombinedSrc::vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent)
     pTypedCell = pTypedStack->aPeekItem(nExpr--);
     Stz* sExpr = pTypedCell->szStz();
     sCopy.vSprint("\n%s%s"_Stz, sIndent, sExpr->azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCopy.azChar());
   }
 }
 
@@ -1476,6 +1476,16 @@ void CombinedSrc::vOperatorBegin(OpSketch* pOpSketch) {
   vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
   vAppendStencilTo(pOpSketch);
   vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a pointer to the last valid char in the m_caCode char array         */
+/*----------------------------------------------------------------------------*/
+const char* CombinedSrc::azCodeLastChar(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  return m_caCode + sizeof(m_caCode) - 1;
 }
 
 /*============================================================================*/

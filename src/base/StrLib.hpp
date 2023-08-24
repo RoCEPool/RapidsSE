@@ -35,7 +35,8 @@ namespace BASE
     static void  vAppendHex(char** aaz, i8 i);                                                                          // ✕
     static void  vAppendNull(char** aaz);                                                                               // ✕
     static void  vAppendPad(char** aaz, const char* s, i8 nLength);                                                     // ✕
-    static void  vAppendString(char** aaz, const char* s);                                                              // ✕
+    static void  vAppendString(char** aazDstCrs, const char* azDstLastChar,
+                               const char* pSrc, bool* pbResult = nullptr);                                             // yes
     static void  vAppendString(char** aaz, i8 nBufSize, const char* s, i8* piLineNo);                                   // ✕
     static char* azAscii(i8 i_Char);                                                                                    // ✕
     
@@ -284,10 +285,10 @@ namespace BASE
     static char  cToHex(i8 i);                                                                                          // ✕
     static i8    iToI8(const char* s);                                                                                  // ✕
     static i8    iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed);                                          // ✕
-    static char  cToLower(char c);                                                                                      // ✕
-    static void  vToLower(char* s);                                                                                     // ✕
-    static char  cToUpper(char c);                                                                                      // ✕
-    static void  vToUpper(char* s);                                                                                     // ✕
+    static char  cToLower(char c);                                                                                      // yes
+    static void  vToLower(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                       // yes
+    static char  cToUpper(char c);                                                                                      // yes
+    static void  vToUpper(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                       // yes
     static void  vTopTail(char* azArg, char cIntro);                                                                    // ✕
     static void  vToPointer(char* psDst, i8 iDstBufSize, const void* pvArg, bool* pbResult = nullptr);                  // yes
     static void  vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult = nullptr);                           // yes

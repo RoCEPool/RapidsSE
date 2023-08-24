@@ -77,6 +77,8 @@ namespace STORE {
 
     void vOperatorBegin(OpSketch* pOpSketch);
 
+    const char* azCodeLastChar();
+
     Footer *aFooter(void);
   };
 

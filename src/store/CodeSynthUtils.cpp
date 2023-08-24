@@ -383,7 +383,7 @@ void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
   bool bResult;
   s256 sColNm;
   sColNm = pColumn->szColNm();
-  StrLib::vToUpper((char *) sColNm.azChar());
+  StrLib::vToUpper(sColNm.azChar(), sColNm.nAreaBytes());
 
   if (StrLib::bContains(sLine->azChar(), "__UNION_TYPE__")) {
     switch(pColumn->eColumnType()) {

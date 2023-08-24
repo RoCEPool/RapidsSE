@@ -96,7 +96,7 @@ Stz* Record::sz(Row* aRow, bool bNewLine)
   vAddRow(aRow);
 
   if (bNewLine)
-    StrLib::vAppendString(&m_azCursor,"\n");
+    StrLib::vAppendString(&m_azCursor, azRecordLastChar(), "\n");
 
   return (Stz*) &m_caRecord[0];
 }
@@ -180,7 +180,7 @@ void Record::vAddRow(Row* aRow)
 
 
     if (i_Col)
-      StrLib::vAppendString(&m_azCursor,",");
+      StrLib::vAppendString(&m_azCursor, azRecordLastChar(), ",");
 
     if (DM_VCH == eDatum) {
       
@@ -216,71 +216,73 @@ void Record::vAddRow(Row* aRow)
 void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
-  
+
+  const char* azLastChar = azRecordLastChar();
+
   if (C_DATUM_NULL == iVal) {
-    StrLib::vAppendString(&m_azCursor,(char*)C_NULL);
+    StrLib::vAppendString(&m_azCursor, azLastChar, C_NULL->azChar());
     return;
   }
     
   switch (eDatum) {
     case DM_BCD: {
       SP_Bcd spBcd;
-      StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(iVal,iScale));                 // FIX
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spBcd.sz(iVal,iScale));                 // FIX
       break;
     }
       
     case DM_BOL: {
       SP_Bol spBol;
-      StrLib::vAppendString(&m_azCursor,(char*)spBol.sz(iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spBol.sz(iVal));
       break;
     }
       
     case DM_DTE: {
       SP_Dte spDte;
-      StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spDte.sz(iVal));
       break;
     }
       
     case DM_FLT: {
       SP_Flt spFlt;
       d8* pdVal = (d8*) &iVal;
-      StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(*pdVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spFlt.sz(*pdVal));
       break;
     }
       
     case DM_INT: {
       SP_Int spInt;
-      StrLib::vAppendString(&m_azCursor,(char*)spInt.sz(iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spInt.sz(iVal));
       break;
     }
       
     case DM_IVD: {
       SP_Ivd spIvd;
-      StrLib::vAppendString(&m_azCursor,(char*)spIvd.sz(iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spIvd.sz(iVal));
       break;
     }
 
     case DM_IVY: {
       SP_Ivy spIvy;
-      StrLib::vAppendString(&m_azCursor,(char*)spIvy.sz(iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spIvy.sz(iVal));
       break;
     }
 
     case DM_TME: {
       SP_Tme spTme;
-      StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spTme.sz(iVal));
       break;
     }
       
     case DM_TSP: {
       SP_Tsp spTsp;
-      StrLib::vAppendString(&m_azCursor,(char*)spTsp.sz(iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spTsp.sz(iVal));
       break;
     }
       
     case DM_VCH: {
       SP_Vch spVch;
-      StrLib::vAppendString(&m_azCursor,(char*)spVch.sz((char*)iVal));
+      StrLib::vAppendString(&m_azCursor, azLastChar, (char*)spVch.sz((char*)iVal));
       break;
     }
       
@@ -292,7 +294,16 @@ void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
     default:
       NEVER_REACH;
   }
-  
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a pointer to the last valid char in the m_caRecord char array       */
+/*----------------------------------------------------------------------------*/
+const char* Record::azRecordLastChar(void)
+{
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+
+  return m_caRecord + sizeof(m_caRecord) - 1;
 }
 
 /*============================================================================*/

@@ -47,7 +47,6 @@ namespace BASE
     bool  bSame(Stz* szArg);
     i8    nSize(void);
     i8    iToI8(void);
-    void  vToLower(void);
   };
   
   // user defined string literal

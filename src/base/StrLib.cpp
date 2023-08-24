@@ -45,7 +45,10 @@
 //          general it should usually be the first parameter in the function.
 //      (b) The size of the destination buffer should come immediately after the
 //           pointer to the destination buffer in the parameter list.
-//      (c) A writable buffer should be a char* and not a Stz*. Stz should be
+//      (c) When the API is cursor based rather than buffer and size based then
+//          the next parameter after the cursor should be the last valid char
+//          in the buffer. i.e. StrLib *must* know the limit of the buffer.
+//      (d) A writable buffer should be a char* and not a Stz*. Stz should be
 //          considered a read-only data structure.
 //
 //
@@ -262,20 +265,43 @@ void StrLib::vAppendNull(char** aazCrs)
 }
   
 /*----------------------------------------------------------------------------*/
-/* vAppendString: append string to workspace                                  */
+/* vAppendString: append string to current cursor.                            */
+/* azDstLastChar is the last valid char pointer in the buffer.                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendString(char** aazCrs, const char* pString)
+void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar,
+                           const char* pSrc, bool* pbResult)
 {
   _static_
   
-  char *z = *aazCrs;
+  char* z = *aazDstCrs;
+  const char* s = pSrc;
+
+  // Check if we are out of room before even starting
+  if (z >= azDstLastChar) {
+    i8 iReqBufSize = nLength(pSrc) + 1;
+    i8 iDstBufSize = 0;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+    return;
+  }
   
-  while (*pString)
-    *z++ = *pString++;
-  
+  while (*s && z != azDstLastChar) {
+    *z++ = *s++;
+  }
+
+  // Check if we were going to overflow
+  if (*s) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nLength(pSrc) + 1;
+    i8 iDstBufSize = azDstLastChar - *aazDstCrs;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+  }
+
   *z = '\0';
-  
-  *aazCrs = z;
+  *aazDstCrs = z;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -822,6 +848,7 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
   
   char caString[C_STRING_ARRAY];
   char *z = caString;
+  char *pDstLastChar = caString + sizeof(caString) - 1;
   
   for (int i = 0; i < nMax && i < C_16KB - 1; i++)
   {
@@ -850,7 +877,7 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
       break;
   }
   
-  vAppendString(&z,pSuffix);
+  vAppendString(&z, pDstLastChar, pSuffix);
   
   *z = '\0';
   
@@ -5168,7 +5195,7 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert arg to lower case                                                  */
+/* convert ascii arg to lower case                                            */
 /*----------------------------------------------------------------------------*/
 char StrLib::cToLower(char c)
 {
@@ -5184,18 +5211,30 @@ char StrLib::cToLower(char c)
 /*----------------------------------------------------------------------------*/
 /* convert arg to lower case                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToLower(char* s)
+void StrLib::vToLower(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
+
+  // Note: While the iDstBufSize and pbResult parameters seem unnecessary,
+  // they are needed for when we support non-English characters. In that scenario
+  // the uppercase version of a string can be a different size from the
+  // original string with a different number of bytes or a different number
+  // of characters.
   
-  while (*s) {
-    *s = (char)tolower((unsigned char)*s);
-    s++;
+  while (*psDst) {
+    *psDst = (char)tolower((unsigned char)*psDst);
+    psDst++;
+  }
+
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert arg to upper case                                                  */
+/* convert ascii arg to upper case                                            */
 /*----------------------------------------------------------------------------*/
 char StrLib::cToUpper(char c)
 {
@@ -5211,13 +5250,25 @@ char StrLib::cToUpper(char c)
 /*----------------------------------------------------------------------------*/
 /* convert arg to upper case                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToUpper(char* s)
+void StrLib::vToUpper(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
 
-  while (*s) {
-    *s = (char)toupper((unsigned char)*s);
-    s++;
+  // Note: While the iDstBufSize and pbResult parameters seem unnecessary,
+  // they are needed for when we support non-English characters. In that scenario
+  // the uppercase version of a string can be a different size from the
+  // original string with a different number of bytes or a different number
+  // of characters.
+
+  while (*psDst) {
+    *psDst = (char)toupper((unsigned char)*psDst);
+    psDst++;
+  }
+
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
   }
 }
 
@@ -5300,9 +5351,9 @@ void StrLib::vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult)
   UNUSED(pbResult);
 
   if (bArg)
-    vAppendString(&psDst, "true");
+    vCopy(psDst, "true");
   else
-    vAppendString(&psDst, "false");
+    vCopy(psDst, "false");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5384,7 +5435,7 @@ void StrLib::vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult)
   }
 
   UNUSED(iDstBufSize);
-  vAppendString(&psDst, caFloat);
+  vCopy(psDst, caFloat);
 }
 
 /*----------------------------------------------------------------------------*/

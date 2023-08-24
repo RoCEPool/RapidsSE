@@ -299,7 +299,7 @@ void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
   
   // limit???
   
-  StrLib::vAppendString(aazCursor,szArg->azChar());
+  StrLib::vAppendString(aazCursor, m_caCharArea + m_nArea - 1, szArg->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -825,7 +825,7 @@ void String_t<AREA>::vToLower(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vToLower(m_caCharArea);
+  StrLib::vToLower(m_caCharArea, m_nArea);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -838,7 +838,7 @@ void String_t<AREA>::vToUpper(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vToUpper(m_caCharArea);
+  StrLib::vToUpper(m_caCharArea, m_nArea);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

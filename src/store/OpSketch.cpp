@@ -1279,7 +1279,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
 
   // make the column name
   sColumn = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
-  StrLib::vToUpper((char *) sColumn.azChar());
+  StrLib::vToUpper(sColumn.azChar(), sColumn.nAreaBytes());
 
   sStructColumn.vSprint("p%s->%s.m_iAsI8"_Stz,
                         xStencilRow[m_eStencilTo], sColumn.azChar());
@@ -1571,7 +1571,7 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   }
 
   sColumn = pColumn->szColNm();
-  StrLib::vToUpper((char*)sColumn.azChar());
+  StrLib::vToUpper(sColumn.azChar(), sColumn.nAreaBytes());
   sStructColumn.vSprint("p%s->%s.m_iAsI8"_Stz,
                         xStencilRow[m_eStencilTo], sColumn.azChar());
   sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
@@ -1831,7 +1831,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   //vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
 
   sColumn = pColumn->szColNm();
-  StrLib::vToUpper((char*)sColumn.azChar());
+  StrLib::vToUpper(sColumn.azChar(), sColumn.nAreaBytes());
 
   sPush.vSprint("_PSH_COL(p%s->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], sColumn.azChar());
   pExprStack->vPushStz(sPush);
@@ -1934,7 +1934,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
   pColumn = m_pStreamDefOut->pGetColumn(i_Col);
   sColumn = pColumn->szColNm();
-  StrLib::vToUpper((char *) sColumn.azChar());
+  StrLib::vToUpper(sColumn.azChar(), sColumn.nAreaBytes());
 
   switch(m_eSketchKind) {
 
