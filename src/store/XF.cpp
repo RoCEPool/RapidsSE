@@ -264,7 +264,7 @@ void XF::vTransform_passThru(void)
     XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(m_pCI, &m_xSymbol_tableSyn);
     XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
-    m_pCI->vTransform(__func__, XF_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
+    m_pCI->vTransform(__func__, XF_EPILOG_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
     while (m_pCI->G_bEachMain())
       m_pCI->G.p_OP->vConvert_stmColOdn_To_tblColOdn(m_pCI);
     m_pCI->vEndTransform();

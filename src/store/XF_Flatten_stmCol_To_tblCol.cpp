@@ -62,7 +62,7 @@ void XF_Flatten_stmCol_To_tblCol::vXF_stmCol_To_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_TBLCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
 
   while (m_pCI->G_bEachMain())
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
