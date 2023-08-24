@@ -65,6 +65,8 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG, _FOOTER_);
 
+  bool bOptRun = false;
+
   m_pCI->vTransform(__func__, XF_PROMOTE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
 
   m_pCI->vClearRestart();
@@ -78,7 +80,8 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
       case CK_GBYAGG:
         if (m_pCI->G.p_gbyAgg->bReplace_gbyAgg_By_ordAgg(m_pCI))
-          m_pCI->pBoard()->pState()->vInsert(aOT[OT_GBYAGG_TO_ORDAGG]);
+          //m_pCI->pBoard()->pState()->vInsert(aOT[OT_GBYAGG_TO_ORDAGG]);
+          bOptRun = true;
 
         break;
 
@@ -97,7 +100,7 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*============================================================================*/

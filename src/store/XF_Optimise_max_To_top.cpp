@@ -65,17 +65,19 @@ bool XF_Optimise_max_To_top::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_MAX_TO_TOP, _FOOTER_);
 
+  bool bOptRun = false;
+
   m_pCI->vTransform(__func__, XF_OPTIMISE_ONETIME_CALC, "optimise one time calcs"_Stz);
 
   m_pCI->vClearRestart();
 
-  m_pCI->pBoard()->pState()->vInsert(aOT[OT_MAX_TO_TOP]);
+  //m_pCI->pBoard()->pState()->vInsert(aOT[OT_MAX_TO_TOP]);
 
   m_pCI->vEndTransform();
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*============================================================================*/

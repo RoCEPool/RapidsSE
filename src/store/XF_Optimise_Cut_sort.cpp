@@ -65,6 +65,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
 
+  bool bOptRun = false;
+
   m_pCI->vTransform(__func__, XF_CUT_SORT, "Cut sort"_Stz);
 
   m_pCI->vClearRestart();
@@ -78,7 +80,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
       case CK_SORT:
         m_pCI->G.p_sort->vCut_sort(m_pCI);
-        m_pCI->pBoard()->pState()->vInsert(aOT[OT_CUT_SORT]);
+        //m_pCI->pBoard()->pState()->vInsert(aOT[OT_CUT_SORT]);
 
         break;
 
@@ -97,7 +99,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*============================================================================*/

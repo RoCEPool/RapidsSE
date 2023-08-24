@@ -106,6 +106,8 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 
+  bool bOptRun = false;
+
   m_pCI->vTransform(__func__, XF_CULL_USED_BOUND, "cull nused bounds"_Stz);
 
   m_pCI->vPrintBoard(__LINE__);
@@ -187,7 +189,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 

@@ -69,11 +69,13 @@ bool XF_Optimise_Reduce_gbyAgg_key::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
 
-  m_pCI->pBoard()->pState()->vInsert(aOT[OT_REDUCE_GBYAGG_KEY]);
+  bool bOptRun = false;
+
+  ///m_pCI->pBoard()->pState()->vInsert(aOT[OT_REDUCE_GBYAGG_KEY]);
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*============================================================================*/

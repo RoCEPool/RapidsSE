@@ -66,6 +66,8 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN, _FOOTER_);
 
+  bool bOptRun = false;
+
   m_pCI->vTransform(__func__, XF_MORPH_SCAN_TO_INDEXSCAN, "morph scan to indexScan"_Stz);
 
   m_pCI->vClearRestart();
@@ -77,7 +79,8 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 
       m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
 
-      m_pCI->pBoard()->pState()->vInsert(aOT[OT_SCAN_TO_INDEXSCAN]);
+      //m_pCI->pBoard()->pState()->vInsert(aOT[OT_SCAN_TO_INDEXSCAN]);
+      bOptRun = true;
 
       m_pCI->G.p_indexList->vChoose_index_For_indexScan();
     }
@@ -85,10 +88,9 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 
   m_pCI->vEndTransform();
 
-
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*============================================================================*/

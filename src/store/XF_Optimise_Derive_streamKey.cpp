@@ -65,6 +65,8 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
 
+  bool bOptRun = false;
+
   m_pCI->vTransform(__func__, XF_DERIVE_PROJECTION_KEY, "Derive projection keys"_Stz);
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
@@ -72,15 +74,16 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 
   if (bFindStart_streamKey()) {
     vPropagate_streamKey();
-    m_pCI->pBoard()->pState()->vInsert(aOT[OT_DERIVE_STREAM_KEY]);
+    //m_pCI->pBoard()->pState()->vInsert(aOT[OT_DERIVE_STREAM_KEY]);
+    bOptRun = true;
+
   }
 
-
-    m_pCI->vEndTransform();
+  m_pCI->vEndTransform();
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*----------------------------------------------------------------------------*/

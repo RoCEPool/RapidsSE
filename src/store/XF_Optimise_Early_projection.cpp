@@ -69,10 +69,12 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
 
+  bool bOptRun = false;
+
 //  if (! AM::JOB::bHasTag(C_EP_ENABLE))
 //    return;
   if (AM::JOB::bHasTag(C_EP_DISABLE))
-    return false;
+    return bOptRun;
 
   m_pCI->vTransform(__func__, XF_EARLY_PROJECTION, "Early projections"_Stz);
 
@@ -108,7 +110,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     m_pCI->G_vMainResynch(m_pCI->Early.m_pOP_leaf);
   }
 
-  m_pCI->pBoard()->pState()->vInsert(aOT[OT_EARLY_PROJECTION]);
+  //m_pCI->pBoard()->pState()->vInsert(aOT[OT_EARLY_PROJECTION]);
 
 
   m_pCI->vEndTransform();
@@ -116,7 +118,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*============================================================================*/

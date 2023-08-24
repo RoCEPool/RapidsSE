@@ -64,6 +64,8 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
 
+  bool bOptRun = false;
+
   m_pCI->vTransform(__func__, XF_MORPH_TABLE_TO_EEOP, "morph table to EE op"_Stz);
 
   Board::vMorphAll_table_To_EEop(m_pCI);
@@ -72,7 +74,7 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
 
   vValidate();
 
-  return true;
+  return bOptRun;
 }
 
 /*============================================================================*/
