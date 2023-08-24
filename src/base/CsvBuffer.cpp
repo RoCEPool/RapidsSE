@@ -124,7 +124,7 @@ Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
   
   Stz* szAllotted = szAllotRecord(nSize - 1);
   
-  StrLib::vCopy(szAllotted->azChar(),szRecord->azChar());
+  StrLib::vCopy(szAllotted->azChar(), nSize, szRecord->azChar());
 
   return szAllotted;
 }

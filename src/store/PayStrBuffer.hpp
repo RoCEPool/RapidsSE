@@ -27,7 +27,7 @@ namespace STORE
    ~PayStrBuffer(void) noexcept(false);
 
   public:
-    byte* aAllot(Stz* szStz);
+    byte* aAllot(Stz* szStz, i8* piSizeAllocated);
 
     PayStrBuffer* pFrom(void);
     void vFrom(PayStrBuffer* pFrom);

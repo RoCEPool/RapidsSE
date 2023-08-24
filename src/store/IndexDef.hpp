@@ -43,7 +43,7 @@ namespace STORE
    ~IndexDef(void) noexcept(false);
 
     static eEC eSyntax(Stz* szCmd);
-    static eEC eParseTableName(Stz* szCmd, Stz* szTableNm);
+    static eEC eParseTableName(Stz* szCmd, String* psTableNm);
     static void vPostRecv(void* aIndexDef);
 
     void    vAddColumn(Stz* szColumnNm, eCT eColumnType, bool bAscending=true);

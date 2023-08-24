@@ -502,7 +502,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
@@ -586,7 +586,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
@@ -635,7 +635,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
@@ -666,7 +666,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
@@ -710,7 +710,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 //  }
 
   char zFileNm[256];
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
 
   va_list xArgs;
   va_start(xArgs,szFormat);
@@ -754,7 +754,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 //  }
 
   char zFileNm[256];
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
 
   va_list xArgs;
   va_start(xArgs,szFormat);
@@ -785,7 +785,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
@@ -816,7 +816,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
@@ -860,7 +860,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 //  }
   
   char zFileNm[256];
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szFormat);

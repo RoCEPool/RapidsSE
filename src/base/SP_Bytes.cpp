@@ -40,7 +40,7 @@ Stz* SP_Bytes::sz(i8 nBytes)
 
   s32 sBuf;
   MagLib::vByteMag(nBytes,sBuf);
-  StrLib::vCopy(m_caResult, sBuf.azChar());
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), sBuf.azChar());
 
   return (Stz*) &m_caResult[0];
 }

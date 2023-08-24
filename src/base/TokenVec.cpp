@@ -1113,7 +1113,7 @@ void TokenVec::vToTknString(String* psDstStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  StrLib::vCopy(psDstStr->azStr(), "");
+  StrLib::vCopy(psDstStr->azStr(), psDstStr->nArea(), "");
   
   i8 nTokens = this->nTokens();
   
@@ -1184,7 +1184,7 @@ void TokenVec::vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon)
 
   bool bNoQuotes = false;
 
-  StrLib::vCopy(psDstStr->azStr(), "");
+  StrLib::vCopy(psDstStr->azStr(), psDstStr->nArea(), "");
   
   i8 nTokens = this->nTokens();
   

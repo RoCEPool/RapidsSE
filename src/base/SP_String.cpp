@@ -180,7 +180,7 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   StrLib::vCopyLen(caSubStrBefore,szStart->azChar(),nBytes);
   StrLib::vEscape(caEscapedBefore,caSubStrBefore);
   
-  StrLib::vCopy(m_caResult,caEscapedBefore);
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), caEscapedBefore);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

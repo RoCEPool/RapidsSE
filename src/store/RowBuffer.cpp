@@ -331,13 +331,14 @@ Row* RowBuffer::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
     if (DM_VCH == pCol->eDatum()) {
       Stz* szVal = va_arg(xVarArgs,Stz*);
       if (szVal) {
-        szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+        i8 iAllotSize = StrLib::nSize(szVal->azChar());
+        szDst = (Stz*)aAllotHead(iAllotSize);
         
         // return early if no more space for the string
         if ( ! szDst )
           return nullptr;
         
-        StrLib::vCopy((char*)szDst, szVal->azChar());
+        StrLib::vCopy((char*)szDst, iAllotSize, szVal->azChar());
 
         pRow->vColVal_ofs(i_Col,szDst);
       }
@@ -387,13 +388,14 @@ Row* RowBuffer::pAllotRow(Row* pRow)
     if (DM_VCH == xColPix.m_uDatum) {
       Stz* szVal = pRow->szColVal_ofs(i_Col);
       if (szVal) {
-        szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+        i8 iAllotSize = StrLib::nSize(szVal->azChar());
+        szDst = (Stz*)aAllotHead(iAllotSize);
 
         // return early if no more space for the string
         if ( ! szDst )
           return nullptr;
 
-        StrLib::vCopy((char*)szDst, szVal->azChar());
+        StrLib::vCopy((char*)szDst, iAllotSize, szVal->azChar());
 
         pNewRow->vColVal_ofs(i_Col,szDst);
       }
@@ -468,13 +470,14 @@ bool RowBuffer::bDepositColumns(Row* pRow, va_list xVarArgs)
     if (DM_VCH == pColPix->m_uDatum) {
       Stz* szVal = va_arg(xVarArgs,Stz*);
       if (szVal) {
-        Stz* szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+        i8 iAllotSize = StrLib::nSize(szVal->azChar());
+        Stz* szDst = (Stz*)aAllotHead(iAllotSize);
 
         // return early if no more space for the string
         if ( ! szDst )
           return false;
 
-        StrLib::vCopy((char*)szDst, szVal->azChar());
+        StrLib::vCopy((char*)szDst, StrLib::nSize(szVal->azChar()), szVal->azChar());
 
         pRow->vColVal_ofs(i_Col,szDst);
       }

@@ -47,7 +47,7 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec, i8 i_From, i8 i_Till)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  StrLib::vCopy(m_caResult,"");
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), "");
   
   i8 nTokens = pTknVec->nTokens();
   if (C_UNKNOWN == i_Till)

@@ -13,13 +13,14 @@
 /*----------------------------------------------------------------------------*/
 void* PayStr::operator new(size_t, PayStrBuffer* pPayStrBuffer, Stz* szStz)
 {
-  PayStr* aPayStr_allotted = (PayStr*)pPayStrBuffer->aAllot(szStz);
+  i8 iSizeAllocated = 0;
+  PayStr* aPayStr_allotted = (PayStr*)pPayStrBuffer->aAllot(szStz, &iSizeAllocated);
 
   aPayStr_allotted->vSetMagic();
   aPayStr_allotted->vSetClassNo(CN_PAYSTR);
   aPayStr_allotted->aFooter()->vSetFooter();
 
-  StrLib::vCopy(aPayStr_allotted->m_caArea,szStz->azChar());
+  StrLib::vCopy(aPayStr_allotted->m_caArea, iSizeAllocated, szStz->azChar());
 
   return aPayStr_allotted;
 }

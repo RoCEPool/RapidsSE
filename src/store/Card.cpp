@@ -151,7 +151,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   s32 sBearing;
   sBearing.vSprint("((%s new %04lld))"_Stz,aCK[m_eCard],md__SeqNo);
-  StrLib::vCopy(md_Bearing,sBearing.azChar());
+  StrLib::vCopy(md_Bearing, sizeof(md_Bearing), sBearing.azChar());
 //  if (11 == md__SeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();

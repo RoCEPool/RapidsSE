@@ -64,7 +64,7 @@ void SPsmall::vFormat(const Stz* szFormat)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
-  StrLib::vCopy(m_caFormat,(char*)szFormat);
+  StrLib::vCopy(m_caFormat, sizeof(m_caFormat), (char*)szFormat);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ void SPsmall::vResult(Stz* szResult)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
-  StrLib::vCopy(m_caResult,szResult->azChar());
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), szResult->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
