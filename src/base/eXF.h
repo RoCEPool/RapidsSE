@@ -84,6 +84,7 @@ enum eXF // transform
 };
 
 extern Stz* aXF[XF_ENUMS];
+extern Stz* aXF_desc[XF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

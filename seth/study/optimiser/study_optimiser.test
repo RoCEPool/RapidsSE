@@ -68,7 +68,7 @@ INCLUDE '../../tests/tests1N4P/Combined/IndexJoin.test';
 LOG 'operator.test';
 INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
 
-LOG 'End Double Checking:';
+LOG 'End Double Checking';
 
 //------------------------------------------------------------------------------
 

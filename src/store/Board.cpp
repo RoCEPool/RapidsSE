@@ -588,8 +588,9 @@ void Board::vPinTitle(Ribbon* pRibbon,
 //  );
 
   // line 2
-  pRibbon->vSprintOther("%s %s"_Stz,
+  pRibbon->vSprintOther("%s %s %s"_Stz,
                         aXF[m_pBench->eXform()],
+                        aXF_desc[m_pBench->eXform()],
                         m_pBench->szXdesc());
 
   // line 3
