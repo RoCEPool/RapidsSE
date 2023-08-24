@@ -269,7 +269,7 @@ void TypeValueArea::vToStr(String* psDst)
     psDst->vCopy((Stz*) m_caStringArea);
   else
   if (CN_PTRVAL == eType())
-    StrLib::wToPointer(pObj(), psDst->azStr());
+    StrLib::vToPointer(psDst->azStr(), psDst->nArea(), pObj());
   else
     NEVER_REACH;
 

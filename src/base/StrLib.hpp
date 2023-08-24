@@ -289,8 +289,8 @@ namespace BASE
     static char  cToUpper(char c);                                                                                      // ✕
     static void  vToUpper(char* s);                                                                                     // ✕
     static void  vTopTail(char* azArg, char cIntro);                                                                    // ✕
-    static char* wToPointer(void* pArg, char* w);                                                                       // ✕
-    static char* wToString(bool bArg, char* w);                                                                         // ✕
+    static void  vToPointer(char* psDst, i8 iDstBufSize, const void* pvArg, bool* pbResult = nullptr);                  // yes
+    static void  vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult = nullptr);                           // yes
     static void  vToString(char* azDst, i8 iDstBufSize, i8 iArg, bool* pbResult = nullptr);                             // yes
     static void  vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult = nullptr);                             // yes
     static void  vTrim(char* azArg, char cTrim);                                                                        // ✕

@@ -5235,47 +5235,74 @@ void StrLib::vTopTail(char *azArg, char cIntro)
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToPointer(void* pArg, char* wArg)
+void StrLib::vToPointer(char* psDst, i8 iDstBufSize, const void* pvArg, bool* pbResult)
 {
   _static_
-  
-  i8 i = reinterpret_cast<i8>(pArg);
-  
-  *wArg++ = '0';
-  *wArg++ = 'x';
-  
-  char* w = wArg;
-  
-  char *p = w, *q = w;
+  ASSERT(iDstBufSize > 1);
+
+  i8 iArg = reinterpret_cast<i8>(pvArg);
+
+  i8 iSpaceNeeded = 3; // start with the null terminator and the "0x"
+
+  if (iSpaceNeeded <= iDstBufSize) {
+    *psDst++ = '0';
+    *psDst++ = 'x';
+  }
+
+  char *p = psDst, *q = psDst;
   do {
-    *p++ = cToHex(i%16); //(i % 16) + '0';
-    i /= 16ll;
-  } while (i);
-  
-  
+    ++iSpaceNeeded;
+    if (iSpaceNeeded <= iDstBufSize) {
+      *p++ = cToHex(iArg % 16); //(i % 16) + '0';
+    }
+
+    iArg /= 16ll;
+  } while (iArg);
+
+  if (iSpaceNeeded > iDstBufSize) {
+    // Try to put a value into the destination buffer
+    if (iDstBufSize >= 4) {
+      psDst[0] = '0'; psDst[2] = 'x'; psDst[3] = '0'; psDst[4] = 0;
+    } else {
+      psDst[0] = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+    return;
+  }
+
+  // We have enough space. Now reverse the string that was generated.
+
   *p = '\0';
   while (--p > q) {
     char c = *p;
     *p = *q;
     *q++ = c;
   }
-  
-  return w;
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToString(bool b, char* w)
+void StrLib::vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult)
 {
   _static_
 
-  if (b)
-    vAppendString(&w,"true");
-  else
-    vAppendString(&w,"false");
+  UNUSED(iDstBufSize);
+  UNUSED(pbResult);
 
-  return w;
+  if (bArg)
+    vAppendString(&psDst, "true");
+  else
+    vAppendString(&psDst, "false");
 }
 
 /*----------------------------------------------------------------------------*/
