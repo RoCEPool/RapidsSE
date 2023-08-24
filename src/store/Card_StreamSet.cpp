@@ -169,13 +169,13 @@ Card_StreamPer* Card_StreamSet::pLowestCost(void)
 
   Card_StreamPer* pLowest = nullptr;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPER)) {
+  Kid xCI(this);
+  while (xCI.bEach(CK_STREAMPER)) {
     if (! pLowest)
-      pLowest = xCI.G.p_streamPer;
+      pLowest = xCI.p_streamPer();
     else
-    if (xCI.G.p_streamPer->bIsLowerCost(pLowest))
-      pLowest = xCI.G.p_streamPer;
+    if (xCI.p_streamPer()->bIsLowerCost(pLowest))
+      pLowest = xCI.p_streamPer();
   }
 
   return pLowest;

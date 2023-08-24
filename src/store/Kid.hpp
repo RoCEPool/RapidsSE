@@ -71,6 +71,7 @@ namespace STORE
     Card_Map *      p_map(void);
     Card_OP *       p_OP(void);
     Card_Stage *    p_stage(void);
+    Card_StreamPer* p_streamPer(void);
     Card_Table *    p_table(void);
     Card_Term *     p_term(void);
 
