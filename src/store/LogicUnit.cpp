@@ -92,7 +92,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpCombined(this,RF_REPAIR_DELETE,      Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepair,  LR_CRWBUFFER)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,      CrwToRow::vRepair,       LR_CRWTOROW)
-,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepairList,  LR_CSVBUFFER)
+,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepair,  LR_CSVBUFFER)
 
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,    DataBuffer::vRepair,     LR_DATABUFFER)
 ,           m_xpDeck(this,RF_REPAIR_DELETE,          Deck::vRepair,     LR_DATABUFFER)

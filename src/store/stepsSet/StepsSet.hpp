@@ -2067,7 +2067,6 @@ void vJobIdLastJobIdFetch(void);
   // subset
   void vSubsetGet(void);
   void vSubsetNext(void);
-  void vSubsetNextBuffer(void);
   void vSubsetSet(void);
 
   // Supervisor
