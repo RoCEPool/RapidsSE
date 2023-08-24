@@ -62,7 +62,7 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for gbyAgg"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping for gbyAgg"_Stz);
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_GBYAGG)) {
     m_pCI->G.p_gbyAgg->vColumn_Mapping(m_pCI);
@@ -70,7 +70,7 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
   m_pCI->vEndTransform();
 
 
-  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for sort"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping for sort"_Stz);
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SORT)) {
     m_pCI->G.p_sort->vColumn_Mapping(m_pCI);
@@ -78,7 +78,7 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
   m_pCI->vEndTransform();
 
 
-  m_pCI->vTransform(__func__, XF_COLUMN_MAPPING, "column mapping for top"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping for top"_Stz);
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_TOP)) {
     m_pCI->G.p_top->vColumn_Mapping(m_pCI);

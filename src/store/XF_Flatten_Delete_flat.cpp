@@ -12,7 +12,7 @@
 __pCastFunction(STORE, XF_Flatten_Delete_flat, CN_XF_DELETE_FLAT)
 __aNewFunction(XF_Flatten_Delete_flat, CN_XF_DELETE_FLAT)
 __vDeleteFunction(XF_Flatten_Delete_flat, CN_XF_DELETE_FLAT)
-__aFooterFunction(XF_Flatten_Delete_flat)
+__aFooterFunction(XF_Flatten_Delete_flat )
 
 
 /*----------------------------------------------------------------------------*/

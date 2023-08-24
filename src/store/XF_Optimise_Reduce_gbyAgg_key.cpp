@@ -71,7 +71,11 @@ bool XF_Optimise_Reduce_gbyAgg_key::bOptimise(void)
 
   bool bOptRun = false;
 
+  m_pCI->vTransform(__func__, XF_OPTIMISE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
+
   ///m_pCI->pBoard()->pState()->vInsert(aOT[OT_REDUCE_GBYAGG_KEY]);
+
+  m_pCI->vEndTransform();
 
   vValidate();
 

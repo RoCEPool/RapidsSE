@@ -66,7 +66,7 @@ void XF_Epilog_Promote_filter::vXF_Individuate_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_INDIVIDUATE_FILTER, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_PROMOTE_FILTER, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {

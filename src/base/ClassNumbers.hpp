@@ -946,18 +946,18 @@ static Stz* aCN[]
   /* */ "_X__"_Stz,                 // CN__X__
   /* */ "XC"_Stz,                           // CN_XC
   /* */ "XF"_Stz,                           // CN_XF
-  /* */ "XF_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
-  /* */ "XF_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
-  /* */ "XF_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL
-  /* */ "XF_COLUMN_MAPPING"_Stz,            // CN_XF_COLUMN_MAPPING
-  /* */ "XF_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
-  /* */ "XF_DEDUPE_AS"_Stz,                 // CN_XF_DEDUPE_AS
-  /* */ "XF_DELETE_EMPTY_WHERE"_Stz,        // CN_XF_DELETE_EMPTY_WHERE
-  /* */ "XF_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT
-  /* */ "XF_ERASE_CONSTRUCTION"_Stz,           // CN_XF_ERASE_CONSTRUCTION
-  /* */ "XF_DERIVE_BOUNDS"_Stz,             // CN_XF_DERIVE_BOUNDS
-  /* */ "XF_DERIVE_STREAM_KEY"_Stz,         // CN_XF_DERIVE_STREAM_KEY
-  /* */ "XF_FIX_TABLE_POS"_Stz,             // CN_XF_FIX_TABLE_POS
+  /* */ "XF_PROLOG_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
+  /* */ "XF_PROLOG_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
+  /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL
+  /* */ "XF_EPILOG_COLUMN_MAPPING"_Stz,            // CN_XF_COLUMN_MAPPING
+  /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
+  /* */ "XF_EPILOG_DEDUPE_AS"_Stz,                 // CN_XF_DEDUPE_AS
+  /* */ "XF_FLATTEN_DELETE_EMPTY_WHERE"_Stz,        // CN_XF_DELETE_EMPTY_WHERE
+  /* */ "XF_FLATTEN_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT
+  /* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz,           // CN_XF_ERASE_CONSTRUCTION
+  /* */ "XF_FLATTEN_DERIVE_BOUNDS"_Stz,             // CN_XF_DERIVE_BOUNDS
+  /* */ "XF_OPTIMISE_DERIVE_STREAMKEY"_Stz,         // CN_XF_DERIVE_STREAM_KEY
+  /* */ "XF_FLATTEN_FIX_TABLE_POS"_Stz,             // CN_XF_FIX_TABLE_POS
   /* */ "XF_FLATTEN"_Stz,                   // CN_XF_FLATTEN
   /* */ "XF_FLATTEN_10_F"_Stz,              // CN_XF_FLATTEN_10_F,
   /* */ "XF_FLATTEN_24_W_A_C_RO"_Stz,       // CN_XF_FLATTEN_24_W_A_C_RO,
@@ -969,11 +969,11 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN_53_W_L_NC_NI_EXISTS"_Stz,  // CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS,
   /* */ "XF_FLATTEN_53_W_L_NC_NI_JOIN"_Stz, // CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,
   /* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,      // CN_XF_FLATTEN_74_H_A_NC_RO,
-  /* */ "XF_FROM_TO_OP"_Stz,                // CN_XF_FROM_TO_OP
-  /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
-  /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
-  /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
-  /* */ "XF_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
+  /* */ "XF_OPTIMISE_FROM_TO_OP"_Stz,                // CN_XF_FROM_TO_OP
+  /* */ "XF_PROLOG_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
+  /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
+  /* */ "XF_PROLOG_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
+  /* */ "XF_PROLOG_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz, // CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
   /* */ "XF_OPTIMISE_EARLY_FILTER"_Stz,     // CN_XF_OPTIMISE_EARLY_FILTER
   /* */ "XF_OPTIMISE_LATE_PROJECTION"_Stz,  // CN_XF_OPTIMISE_LATE_PROJECTION
@@ -988,24 +988,24 @@ static Stz* aCN[]
   /* */ "XF_OT_REDUCE_GBYAGG_KEY"_Stz,         // CN_XF_OT_REDUCE_GBYAGG_KEY
   /* */ "XF_OT_PREPLACE_GBYAGG_BY_ORDAGG"_Stz, // CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG
   /* */ "XF_OT_REPLACE_SCAN_BY_INDEXSCAN"_Stz, // CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN
-  /* */ "XF_PREDICATE_PULL_UP"_Stz,         // CN_XF_PREDICATE_PULL_UP
-  /* */ "XF_PREDICATE_REPOSITION"_Stz,      // CN_XF_PREDICATE_REPOSITION
-  /* */ "XF_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
-  /* */ "XF_REINSTATE_STAGE"_Stz,           // CN_XF_REINSTATE_STAGE
-  /* */ "XF_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
+  /* */ "XF_FLATTEN_PREDICATE_PULL_UP"_Stz,         // CN_XF_PREDICATE_PULL_UP
+  /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,      // CN_XF_PREDICATE_REPOSITION
+  /* */ "XF_PROLOG_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
+  /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,           // CN_XF_REINSTATE_STAGE
+  /* */ "XF_PROLOG_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
   /* */ "XF_SCAN_TO_FROM"_Stz,              // CN_XF_SCAN_TO_FROM
   /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_SHORTEN_QUERYNM
-  /* */ "XF_SMOOSH"_Stz,                    // CN_XF_SMOOSH
-  /* */ "XF_SMOOTH"_Stz,                    // CN_XF_SMOOTH
-  /* */ "XF_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
-  /* */ "XF_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
-  /* */ "XF_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL
-  /* */ "XF_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
+  /* */ "XF_FLATTEN_SMOOSH"_Stz,                    // CN_XF_SMOOSH
+  /* */ "XF_FLATTEN_SMOOTH"_Stz,                    // CN_XF_SMOOTH
+  /* */ "XF_EPILOG_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
+  /* */ "XF_EPILOG_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
+  /* */ "XF_EPILOG_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL
+  /* */ "XF_PROLOG_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
   /* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
   /* */ "XF_SYNTHESISE_PIPELINEDEF"_Stz,    // CN_XF_SYNTHESISE_PIPELINEDEF
-  /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
-  /* */ "XF_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
-  /* */ "XF_UPDATE_PROJECTION"_Stz,         // CN_XF_UPDATE_PROJECTION
+  /* */ "XF_PROLOG_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
+  /* */ "XF_EPILOG_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
+  /* */ "XF_FLATTEN_UPDATE_PROJECTION"_Stz,         // CN_XF_UPDATE_PROJECTION
 
   /* */ "_Y__"_Stz,                 // CN__Y__
 

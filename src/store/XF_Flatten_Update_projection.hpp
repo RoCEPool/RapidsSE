@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Update_projection.hpp -- Update <projection>                            */
+/* XF_Flatten_Update_projection.hpp -- Update <projection>                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Update_projection : public XF_TRANSFORM
+  class XF_Flatten_Update_projection : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Update_projection(CardIter* pCI);
-   ~XF_Update_projection(void) noexcept(false);
+    XF_Flatten_Update_projection(CardIter* pCI);
+   ~XF_Flatten_Update_projection(void) noexcept(false);
 
     static void vXF_Update_projection(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Update_projection* _pXF_Update_projection(void* aAddr);
+  XF_Flatten_Update_projection* _pXF_Flatten_Update_projection(void* aAddr);
 }
 
 /*============================================================================*/

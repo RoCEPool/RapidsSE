@@ -62,7 +62,7 @@ void XF_Prolog_Add_level::vXF_Add_level(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_ADD_LEVEL, "add level to op"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_ADD_LEVEL, "add level to op"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain())

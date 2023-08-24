@@ -67,7 +67,7 @@ void XF_Prolog_scan_To_from::vXF_scan_To_table(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_FROM, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_SCAN_TO_TABLE, "scan to table"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_SCAN_TO_FROM, "scan to table"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SCAN))

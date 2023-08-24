@@ -63,17 +63,17 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
   // @ mark where predicates wrt. table
-  m_pCI->vTransform(__func__, XF_PREDICATE_PULL_UP, "put a table @c against where pred"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_PREDICATE_PULL_UP, "put a table @c against where pred"_Stz);
   Card_Where::vMarkWherePredWrtTable(m_pCI);
   m_pCI->vEndTransform();
 
   // move @ marked where predicates to table filter
-  m_pCI->vTransform(__func__, XF_PREDICATE_PULL_UP, "move @ marked where predicates to table filter"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_PREDICATE_PULL_UP, "move @ marked where predicates to table filter"_Stz);
   Card_Where::vMoveWherePredsToTableFilter(m_pCI);
   m_pCI->vEndTransform();
 
   // cull @ marked where predicates
-  m_pCI->vTransform(__func__, XF_PREDICATE_PULL_UP, "cull @ marked where predicates"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_PREDICATE_PULL_UP, "cull @ marked where predicates"_Stz);
   Card_Where::vCullMarkedCmpPred(m_pCI);
   m_pCI->vEndTransform();
 

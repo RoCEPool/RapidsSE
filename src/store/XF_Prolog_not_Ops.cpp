@@ -67,7 +67,7 @@ void XF_Prolog_not_Ops::vXF_not_Ops(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NOT_OPS, "not ops"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_NOT_OPS, "not ops"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
