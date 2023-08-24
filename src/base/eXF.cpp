@@ -9,6 +9,8 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_NONE"_Stz,
 
   /* */ "XF_ADD_LEVEL"_Stz,
+  /* */ "XF_ADJUST_SORT"_Stz,
+  /* */ "XF_ADJUST_TOP"_Stz,
   /* */ "XF_AS_REVIEW"_Stz,
   /* */ "XF_COLNM_TO_STMCOL"_Stz,
   /* */ "XF_COLUMN_MAPPING"_Stz,
@@ -61,6 +63,10 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_SYNTHESISE_CODE"_Stz,
   /* */ "XF_TABLE_ANALYSIS"_Stz,
   /* */ "XF_TBLCOL_TO_STMCOL"_Stz,
+  /* */ "XF_TWEAK_INDEXJOIN"_Stz,
+  /* */ "XF_TWEAK_INDEXSCAN"_Stz,
+  /* */ "XF_TWEAK_KEYEXISTS"_Stz,
+  /* */ "XF_TWEAK_KEYNOTEXITS"_Stz,
   /* */ "XF_UPDATE_PROJECTION"_Stz,
 
 //  /* */ "XF_ENUMS"_Stz

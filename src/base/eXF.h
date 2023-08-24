@@ -8,6 +8,8 @@ enum eXF // transform
   /* */ XF_NONE = 0,   // none
 
   /* */ XF_ADD_LEVEL,
+  /* */ XF_ADJUST_SORT,
+  /* */ XF_ADJUST_TOP,
   /* */ XF_AS_REVIEW,
   /* */ XF_COLNM_TO_STMCOL,
   /* */ XF_COLUMN_MAPPING,
@@ -60,6 +62,10 @@ enum eXF // transform
   /* */ XF_SYNTHESISE_CODE,
   /* */ XF_TABLE_ANALYSIS,
   /* */ XF_TBLCOL_TO_STMCOL,
+  /* */ XF_TWEAK_INDEXJOIN,
+  /* */ XF_TWEAK_INDEXSCAN,
+  /* */ XF_TWEAK_KEYEXISTS,
+  /* */ XF_TWEAK_KEYNOTEXISTS,
   /* */ XF_UPDATE_PROJECTION,
 
   /* */ XF_ENUMS
