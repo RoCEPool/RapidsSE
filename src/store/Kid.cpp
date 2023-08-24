@@ -175,7 +175,7 @@ bool Kid::bEach(eCK eCard, eCK eSub1)
 
   while (bEach()) {
     if (eChild() == eCard) {
-      if (! (m_pSub1 = m_pChild->pFindChild(eSub1)) )
+      if (! (m_pSub1 = m_pChild->pFindSubCard(eSub1)) )
         continue;
 
       return true;
@@ -194,9 +194,9 @@ bool Kid::bEach(eCK eCard, eCK eSub1, eCK eSub2)
 
   while (bEach()) {
     if (eChild() == eCard) {
-      if (! (m_pSub1 = m_pChild->pFindChild(eSub1)) )
+      if (! (m_pSub1 = m_pChild->pFindSubCard(eSub1)) )
         continue;
-      if (! (m_pSub2 = m_pChild->pFindChild(eSub2)) )
+      if (! (m_pSub2 = m_pChild->pFindSubCard(eSub2)) )
         continue;
 
       return true;
@@ -215,11 +215,11 @@ bool Kid::bEach(eCK eCard, eCK eSub1, eCK eSub2, eCK eSub3)
 
   while (bEach()) {
     if (eChild() == eCard) {
-      if (! (m_pSub1 = m_pChild->pFindChild(eSub1)) )
+      if (! (m_pSub1 = m_pChild->pFindSubCard(eSub1)) )
         continue;
-      if (! (m_pSub2 = m_pChild->pFindChild(eSub2)) )
+      if (! (m_pSub2 = m_pChild->pFindSubCard(eSub2)) )
         continue;
-      if (! (m_pSub3 = m_pChild->pFindChild(eSub3)) )
+      if (! (m_pSub3 = m_pChild->pFindSubCard(eSub3)) )
         continue;
 
       return true;
