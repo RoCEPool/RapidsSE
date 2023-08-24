@@ -35,7 +35,6 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
   vAddStep("RowBuffer[].setLglPtn"_Stz,      &Step::vRowBufferSetLglPtn);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
-  vAddStep("RowBuffer[].toCsv_OLD"_Stz,      &Step::vRowBufferToCsv_OLD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,21 +305,6 @@ void Step::vRowBufferToCsv(void)
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
   
   pRowBuffer->vToCsv(pTub);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].toCsv -- convert rowBuffer operand to csvBuffer                */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferToCsv_OLD(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-  m_pDataStack->vPushPtr(pRowBuffer->pToCsvBuffer());
-
-  delete pRowBuffer;
 
   EXIT();
 }

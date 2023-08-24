@@ -125,7 +125,7 @@ LogicUnit::LogicUnit(void)
 ,           m_xpList(this,RF_REPAIR_DELETE,     RowSingle::vRepairList,       LR_LIST)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                         LR_MARKER)
-,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepairList,  LR_MEMORYHOG)
+,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_MEMORYHOG)
 ,        m_xpMetaGet(this,RF_REPAIR_DELETE,       MetaGet::vRepair,           LR_META)
 
 ,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,   NamedBuffer::vRepairList,LR_NAMEDBUFFER)
@@ -151,7 +151,7 @@ LogicUnit::LogicUnit(void)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
-,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepairList,  LR_ROWBUFFER)
+,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
 
 ,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                       LR_SENDNODE)

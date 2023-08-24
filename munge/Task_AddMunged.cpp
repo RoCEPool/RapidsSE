@@ -41,7 +41,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  [task].seeFrameStack\n"
     "  \n"
-    "  inject::bloat\n"
+    "  //inject::bloat\n"
     "\n"
     "  PipeIn[].delete\n"
     "  \n"

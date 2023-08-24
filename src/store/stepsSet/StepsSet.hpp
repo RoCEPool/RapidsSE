@@ -769,8 +769,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetTableSet(void);
 
   // inject
-  void vInjectBloat(void);
-  void vInjectBloatCleanup(void);
   void vInjectSigsegv(void);
   void vInjectSigsegv_dbg(void);
   void vInjectThrow(void);
@@ -1712,7 +1710,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferSetDeciderCopies(void);
   void vRowBufferSetLglPtn(void);
   void vRowBufferToCsv(void);
-  void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor
