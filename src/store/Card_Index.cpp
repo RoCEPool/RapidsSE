@@ -50,9 +50,11 @@ Card_Index::~Card_Index(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cull non-used bound                                                        */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vCullNonusedBounds(CardIter* pCI) {
+i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   _static_
+
+  i8 nCulled = 0;
 
   pCI->vSave();
 
@@ -74,12 +76,13 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
     }
 
     pCI->vPrintBoard(__LINE__);
-    pCI->G.p_bounds->vCullBound(MARK_AT);
+    nCulled += pCI->G.p_bounds->nCullBound(MARK_AT);
 
   }
 
   pCI->vRestore();
 
+  return nCulled;
 }
 
 /*----------------------------------------------------------------------------*/

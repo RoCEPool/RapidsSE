@@ -28,7 +28,7 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
 
-    void vCullPred(Stz* szWithMark);
+    i8 nCullPred(Stz* szWithMark);
 
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);

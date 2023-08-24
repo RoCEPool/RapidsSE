@@ -48,9 +48,11 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vCullBound(Stz* szWithMark)
+i8 Card_Bounds::nCullBound(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nCulled = 0;
 
   Kid xCI_bounds(this);
   while (xCI_bounds.bEach()) {
@@ -58,8 +60,11 @@ void Card_Bounds::vCullBound(Stz* szWithMark)
       continue;
 
     vDeleteChild(xCI_bounds.pChild());
+    nCulled++;
     xCI_bounds.vPrev();
   }
+
+  return nCulled;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -212,20 +212,31 @@ void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCullPred(Stz* szWithMark)
+i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  i8 nCulled = 0;
+
   if (! this->nChildCards())
-    return;
+    return 0;
 
   Card_PRED* pCard_pred = this->pRootPred();
 
-  while (pCard_pred &&
-      bCullPred(pCard_pred, szWithMark) &&
-         this->nChildCards()) {
+  while (pCard_pred) {
+
+    if (! bCullPred(pCard_pred, szWithMark))
+      break;
+
+    nCulled++;
+
+    if (! this->nChildCards())
+      break;
+
     pCard_pred = static_cast<Card_PRED*>(this->pGetChild(0));
   }
+
+  return nCulled;
 }
 
 /*----------------------------------------------------------------------------*/

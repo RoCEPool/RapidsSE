@@ -59,7 +59,7 @@ void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
 
   while (pCI->G_bEachMain()) {
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint()))
-      pCI->G.p_constraint->vCullPred(MARK_AT);
+      pCI->G.p_constraint->nCullPred(MARK_AT);
   }
 }
 
@@ -172,13 +172,14 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vCullPred(Stz* szWithMark)
+i8 Card_Constraint::nCullPred(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolCalc* p_boolCalc = pSub_boolCalc();
-  p_boolCalc->vCullPred(szWithMark);
+  i8 nCulled = p_boolCalc->nCullPred(szWithMark);
 
+  return nCulled;
 }
 
 /*----------------------------------------------------------------------------*/

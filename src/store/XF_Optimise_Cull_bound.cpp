@@ -86,11 +86,11 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
       continue;
 
     // have <bounds> & <filter> under <main>
-    Card_Index::vCullNonusedBounds(m_pCI);
+    if (Card_Index::nCullNonusedBounds(m_pCI))
+      bOptRun = true;
 
   }
 
-  bOptRun = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -169,12 +169,16 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   m_pCI->vClearRestart();
 //  Card_Constraint::vCullUsedBounds(m_pCI);
 
+  i8 nCulled = 0;
   while (m_pCI->G_bEachMain()) {
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      m_pCI->G.p_filter->vCullPred(MARK_AT);
+      nCulled += m_pCI->G.p_filter->nCullPred(MARK_AT);
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      m_pCI->G.p_constraint->vCullPred(MARK_AT);
+      nCulled += m_pCI->G.p_constraint->nCullPred(MARK_AT);
   }
+
+  if (nCulled)
+    bOptRun = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any filter if empty
