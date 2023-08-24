@@ -11,6 +11,8 @@
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
+#include "Card_IndexList.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -72,16 +74,17 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
 {
   _static_
 
-  CardIter xCI(p_deck);
-  while (xCI.G_bEachMain(CK_TABLE)) {
-    if ((xCI.G.p_indexList = xCI.G.p_table->pSub_indexList()) &&
-        xCI.G.p_indexList->nChildCards())
+  Kid xCI(p_deck);
+  while (xCI.bEach(CK_TABLE)) {
+    Card_IndexList* p_indexList;
+    if ( (p_indexList = xCI.p_table()->pSub_indexList()) &&
+        p_indexList->nChildCards())
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vSprint("Tables: %s"_Stz,xCI.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
     else
-      pString->vCatSprint(", %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vCatSprint(", %s"_Stz,xCI.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
   }
 
 }
