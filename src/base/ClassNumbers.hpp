@@ -950,7 +950,7 @@ static Stz* aCN[]
   /* */ "XF_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
   /* */ "XF_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL
   /* */ "XF_COLUMN_MAPPING"_Stz,            // CN_XF_COLUMN_MAPPING
-  /* */ "XF_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
+  /* */ "XF_OPTIMISE_CULL_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
   /* */ "XF_DEDUPE_AS"_Stz,                 // CN_XF_DEDUPE_AS
   /* */ "XF_DELETE_EMPTY_WHERE"_Stz,        // CN_XF_DELETE_EMPTY_WHERE
   /* */ "XF_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT

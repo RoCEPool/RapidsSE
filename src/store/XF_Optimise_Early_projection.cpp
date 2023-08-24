@@ -76,7 +76,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
   if (AM::JOB::bHasTag(C_EP_DISABLE))
     return bOptRun;
 
-  m_pCI->vTransform(__func__, XF_EARLY_PROJECTION, "Early projections"_Stz);
+  m_pCI->vTransform(__func__, XF_OPTIMISE_EARLY_PROJECTION, "Early projections"_Stz);
 
   m_pCI->vClearRestart();
 

@@ -68,7 +68,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_CULL_NONUSED_BOUND, "cull non-used bounds"_Stz);
+  m_pCI->vTransform(__func__, XF_OPTIMISE_CULL_BOUND, "cull non-used bounds"_Stz);
 
   m_pCI->vPrintBoard(__LINE__);
 
