@@ -66,6 +66,30 @@ CrwTablePtn::~CrwTablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 
+/*----------------------------------------------------------------------------*/
+/* analyze this buffer chain                                                  */
+/*----------------------------------------------------------------------------*/
+void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  SkipListBlock* pCursor = m_pPdsOfBufferIds->pFirstBlock();
+  if(pCursor == nullptr)
+    return;
+
+  while(pCursor) {
+    CrwBuffer* pCrwBuffer = pGetBuffer(pCursor);
+    nBuffers++;
+
+    pCrwBuffer->vShow();
+    nRows += (pCrwBuffer->nRows());
+    jSumRowBytes += pCrwBuffer->nAllotedBytes();
+
+    pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, 0);
+  }
+
+  return;
+}
 
 /*----------------------------------------------------------------------------*/
 /* append a crw buffer into the CrwTablePtn                                      */
@@ -316,9 +340,14 @@ bool CrwTablePtn::bVerifyTable(void)
 
   if(!pCurrBlock) return bVerify;
 
+  // Verify the integrity of the Pds
+  if(! m_pPdsOfBufferIds->bVerify())
+    return false;
+
+  // Verify the contents of the crwbuffers
   while(pCurrBlock) {
     CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
-    bVerify = pCrwBuffer->bVerify();
+    bVerify = pCrwBuffer->bVerifyRows();
     if (! bVerify )
       break;
 

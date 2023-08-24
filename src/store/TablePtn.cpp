@@ -383,12 +383,9 @@ void TablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  CrwBuffer* pCrwRootBuffer = nullptr;
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
-      pCrwRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
-      if(pCrwRootBuffer)
-        pCrwRootBuffer->vAnalyze(nBuffers, nRows, jSumRowBytes);
+      m_pCrwTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
       break;
     default: NEVER_REACH;
   }

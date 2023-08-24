@@ -27,6 +27,7 @@ namespace STORE
     CrwTablePtn(Table *pTable, LglPtn tLglPtn);
     ~CrwTablePtn(void) noexcept(false);
 
+    void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     i8   nBuffers(void);
     void vCleanup(void);

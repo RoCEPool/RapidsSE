@@ -286,7 +286,6 @@ public:
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
   void vCrwBufferGetBufferIdAsAddr(void);
-  void vCrwBufferGetNextLinkedBufferId(void);
   void vCrwBufferFlatten(void);
   void vCrwBufferInflate(void);
   void vCrwBufferInflateTcc(void);
@@ -296,7 +295,6 @@ public:
   void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
-  void vCrwBufferToCsv_OLD(void);
   void vCrwBufferWriteToFile0(void);
 
   // crw to row
@@ -1702,7 +1700,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetBufferIdAsAddr(void);
-  void vRowBufferGetNextLinkedBufferId(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
