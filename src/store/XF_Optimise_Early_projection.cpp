@@ -82,7 +82,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   m_pCI->vRenumberCards();
 
-  m_pCI->vPrintBoard();
+ // m_pCI->vPrintBoard();
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 

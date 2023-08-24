@@ -65,7 +65,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // F
   // (refer: Q7,8,9)
@@ -80,7 +80,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 
   m_pCI->vTransform(__func__, XF_FLATTEN_10_F, "((vFlatten_10_F))"_Stz);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
@@ -88,7 +88,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward = pFold->pFold_from("From"_Stz,m_pCI);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
@@ -100,7 +100,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
 
   // todo: discuss with Alka
