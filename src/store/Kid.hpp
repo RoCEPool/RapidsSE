@@ -63,15 +63,16 @@ namespace STORE
 
     void vSynch(Card *pChild_with);
 
-    Card_Bound *  p_bound(void);
-    Card_Expr *   p_expr(void);
-    Card_IdxCol * p_idxCol(void);
-    Card_Index *  p_index(void);
-    Card_Map *    p_map(void);
-    Card_OP *     p_OP(void);
-    Card_Stage *  p_stage(void);
-    Card_Table *  p_table(void);
-    Card_Term *   p_term(void);
+    Card_Bound *    p_bound(void);
+    Card_Expr *     p_expr(void);
+    Card_IdxCol *   p_idxCol(void);
+    Card_Index *    p_index(void);
+    Card_JoinOrder* p_joinOrder(void);
+    Card_Map *      p_map(void);
+    Card_OP *       p_OP(void);
+    Card_Stage *    p_stage(void);
+    Card_Table *    p_table(void);
+    Card_Term *     p_term(void);
 
     private:
     void vChildDec(void);
