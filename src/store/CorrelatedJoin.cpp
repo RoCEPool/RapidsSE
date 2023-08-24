@@ -82,12 +82,12 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
    if (bIdentify_Correlation_Key_Predicate(pCI))
      break;
   RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vIdentify_Expr_Of_Correlation_Key_Column(pCI);
   RASSERT(pCI->Sqy.m_pExpr_corr);    // eg $15 (L_PARTKEY)
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enrich SQ:<aggreg> to be SQ:<gbyAgg>/<key=CorrCol>,
@@ -96,7 +96,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_AGGREG));
   vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
   pCI->vRenumberCards();
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // include correlation column SQ:[<project>/<projection>]
@@ -108,7 +108,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   else {
 
   }
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get final SQ:<op>/<projection>
@@ -132,9 +132,9 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     pCI->G.p_from->vSmooth(pCI);
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
   }
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // subQuery subQuery subQuery subQuery subQuery subQuery subQuery subQuery
@@ -158,11 +158,11 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
     if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, p_PRED_corr))
       break;
   RASSERT(p_PRED_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // tidy up empty SQ:<table>/<filter>
   pCI->G.p_from->vDeleteFilterIfEmpty(pCI->G.p_filter);
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
@@ -189,7 +189,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
 
   pCI->G.p_boolCalc->vPush_CrlKeyPred_As_CrlKeyTest(p_PRED_corr);
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
@@ -199,9 +199,9 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               // __subquery0002
 
   vConvert_CrlPrmOdn_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
   vConvert_SubQryCall_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -220,7 +220,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolCalc);
   vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolCalc);
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

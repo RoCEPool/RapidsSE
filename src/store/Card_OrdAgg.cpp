@@ -81,7 +81,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vMainResynch();
 
   pCI->vRenumberCards();
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -92,17 +92,17 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }

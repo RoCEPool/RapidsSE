@@ -206,7 +206,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
@@ -219,17 +219,17 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -276,7 +276,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_BOOLCALC,CK_NONE);
 
   if (iDepth > 2) {
-    pCI->vPrintBoard();
+   // pCI->vPrintBoard();
     vValidationFailed("Filter is at depth %lld"_Stz, iDepth);
   }
 

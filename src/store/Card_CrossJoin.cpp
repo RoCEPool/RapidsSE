@@ -87,20 +87,20 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
   //   we can restore to this save if projection needed get extended
   Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
@@ -108,7 +108,7 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
   pCI->Prior.m_pProjection = pSub_projection();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }

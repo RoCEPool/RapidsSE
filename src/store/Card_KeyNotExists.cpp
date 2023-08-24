@@ -89,7 +89,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Prior.m_pProjection = pSub_projection();
 
-    pCI->vPrintBoard();
+   // pCI->vPrintBoard();
     return;
 
 
@@ -108,19 +108,19 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vMainResynch();
 
   pCI->vRenumberCards();
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
@@ -128,7 +128,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   pCI->Prior.m_pProjection = pSub_projection();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }

@@ -86,13 +86,13 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     if (pCI->G.p_as->pSymbol()->bIs_Sqy_Rsl())
       continue;
 
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
 
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
 
     p_projection_unproject->vAppend(p_expr_simple);
 
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
 
     vDebugPoint();
   }
@@ -230,7 +230,7 @@ void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 
   pCI->Early.m_pOP_leaf = this;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -262,7 +262,7 @@ void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -323,7 +323,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   vAppend(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
   pCI->vRenumberCards();
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -334,17 +334,17 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }

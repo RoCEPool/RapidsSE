@@ -63,7 +63,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     if (pCarryForward->Table.m_bSeen) {
       pCI->G.p_from->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -73,7 +73,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_WHERE) && pCI->G_bEachMain(CK_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
       pCI->G.p_where->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -82,7 +82,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -90,7 +90,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -98,7 +98,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_GBYAGG) && pCI->G_bEachMain(CK_GBYAGG)) {
     if (pCarryForward->GbyAgg.m_bSeen) {
       pCI->G.p_gbyAgg->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
 
     }
     pCI->Prior.m_pProjection = pCI->G.p_gbyAgg->pSub_projection();
@@ -108,7 +108,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_PROJECT) && pCI->G_bEachMain(CK_PROJECT)) {
     if (pCarryForward->Project_postAgg.m_bSeen) {
       pCI->G.p_project->vSmooth_postAgg(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -116,7 +116,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_HAVING) && pCI->G_bEachMain(CK_HAVING)) {
     if (pCarryForward->Having.m_bSeen) {
       pCI->G.p_having->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -124,7 +124,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCI->G_bIsNextMain(CK_SORT) && pCI->G_bEachMain(CK_SORT)) {
     if (pCarryForward->Sort.m_bSeen) {
       pCI->G.p_sort->vSmooth(pCI, pCarryForward);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -135,17 +135,17 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
     pCI->G.p_having->vAcclimate_foldExpr(pCI);
     pCI->G.p_projection = pCI->G.p_project->pSub_projection();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
   }
   else
   if (pCarryForward->Unproject.m_bUnproject_foldExpr) {
     pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
   pCI->vRenumberCards();
 }
 

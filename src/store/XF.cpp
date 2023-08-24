@@ -587,11 +587,9 @@ bool MakeOptimal::bOptimise_RplScanByIndexScan(void) {
 //    if (m_pCI->G.p_bounds->pSub_lBound() || m_pCI->G.p_bounds->pSub_uBound()) {
 //      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
 //
-//      m_pCI->vPrintBoard(__LINE__);
 //
 //      vDerive_Projection_Keys();
 //
-//      m_pCI->vPrintBoard(__LINE__);
 //
 //      return true;
 //    }

@@ -379,7 +379,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (pSymbol()->bSame("exists"_Stz)) {
 
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
 
     SYM(SF_RLN_OP,"=="_Stz);
 
@@ -401,7 +401,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     p_term_one->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
     return;
   }
 
@@ -431,7 +431,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     p_term_head->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 
-    pCI->vPrintBoard(__LINE__);
+   // pCI->vPrintBoard(__LINE__);
 
     return;
   }
@@ -629,7 +629,7 @@ void Card_PRED::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     case CK_ORPRED:  _pCard_OrPred(this)->vValidate(pCI,iDepth+1,this);  break;
 
     default:
-      pCI->vPrintBoard(__LINE__,true);
+     // pCI->vPrintBoard(__LINE__,true);
       vDump(__func__);
       vValidationFailed("<<replace>> %p"_Stz,this);
   }

@@ -218,7 +218,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
       NEVER_REACH
     }
   }
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // 2) push to sq
   if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
@@ -226,7 +226,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
     NEVER_REACH
   }
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   vSubQuery(pCI->pBoard()->pSubQuery());
 
@@ -284,13 +284,13 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +306,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
   RASSERT(pCI->G_bEachMain(CK_CALL));
   vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szSymbol(SF_NONE));
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
 
   pCI->G_vNewMember(CK_FOLD, Symbol(SF_FLD_NM,szFold));
@@ -314,7 +314,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   pCI->G.p_level = new Card_Level(AL_NONE);
   pCI->G.p_fold->vAppend(pCI->G.p_level);
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -328,7 +328,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
   pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^  ^
 
@@ -343,7 +343,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   DELETE_CARD(pCI->G.p_call);
 
   pCI->vRenumberCards();
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // 7) derive the fold (SQ result) expr
   pCI->vClearRestart();
@@ -376,7 +376,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
       NEVER_REACH
     }
   }
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   // 2) push to sq
   if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {
@@ -432,7 +432,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
     Board::vDerive_foldExpr_H_A_NC_ro(pCI);
     pCI->Sqy.m_pExpr_fold = pCI->G.p_expr;
   }
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -460,7 +460,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   }
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   return pCarryForward;
 }
@@ -481,7 +481,7 @@ i8 Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
       NEVER_REACH
     }
   }
-   pCI->vPrintBoard(__LINE__);
+  // pCI->vPrintBoard(__LINE__);
 
   // 2) push to sq
   if (! pCI->G_bPushBoard(pCI->Sqy.m_sSqyNm)) {

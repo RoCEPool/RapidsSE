@@ -104,7 +104,7 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 
    pCI->Prior.m_pProjection = pSub_projection();
 
-   pCI->vPrintBoard();
+  // pCI->vPrintBoard();
 
    vDebugPoint();
 }

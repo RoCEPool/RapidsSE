@@ -83,7 +83,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
         pCI->G_vMainResynch();
-        pCI->vPrintBoard(__LINE__);
+       // pCI->vPrintBoard(__LINE__);
         vDebugPoint();
       }
 
@@ -112,7 +112,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   delete p_streamPtn;
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 }
 
@@ -306,7 +306,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 //      pCI->G.p_table->vRemoveChild(pCI->G.p_projection);
 //      pCI->G.p_from->vAppend(pCI->G.p_projection);
 
-      pCI->vPrintBoard();
+     // pCI->vPrintBoard();
 
       if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
         if (pCI->Prior.m_pProjection) {
@@ -703,14 +703,14 @@ void Card_Deck::vValidate(CardIter* pCI)
   vMark1RecursiveIf(MARK_BLANK, MARK_VALID);
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_UNVALID)) {
-    pCI->vPrintBoard(__LINE__,true);
+   // pCI->vPrintBoard(__LINE__,true);
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH
   }
 
   if (Card* pCard_notValidate = pFindMark1Recursive(MARK_DUPLICATE)) {
-    pCI->vPrintBoard(__LINE__,true);
+   // pCI->vPrintBoard(__LINE__,true);
     pCard_notValidate->vDump(__func__);
     vDebugPoint();
     NEVER_REACH

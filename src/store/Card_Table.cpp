@@ -420,7 +420,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
 {
   _static_
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
 
   // TABLE to:
@@ -446,7 +446,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
   }
 
   pCI->vRenumberCards();
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 
 }

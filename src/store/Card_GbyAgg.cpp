@@ -335,7 +335,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
     pCI->Early.m_pOP_leaf = this;
     pCI->Prior.m_pProjection = pSub_projection();
 
-    pCI->vPrintBoard();
+   // pCI->vPrintBoard();
     return;
   }
 
@@ -354,7 +354,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vMainResynch();
 
   pCI->vRenumberCards();
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -365,17 +365,17 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -458,7 +458,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
   pCI->G.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 
@@ -466,7 +466,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
   }
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 
 
   if (pCarryForward->GbyAgg.m_nBumpBy) {
@@ -476,7 +476,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->vRenumberCards();
 
-  pCI->vPrintBoard(__LINE__);
+ // pCI->vPrintBoard(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -218,7 +218,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
@@ -231,11 +231,11 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vCorrectStmOdn(pCI->Prior.m_pProjection);
 
@@ -243,7 +243,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }

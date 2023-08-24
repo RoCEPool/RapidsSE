@@ -171,11 +171,11 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
       pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       UNUSED(pSubQuery);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
 
       vFlattenByDecisionTree();
 
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -217,11 +217,11 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
       pCI->G_vSetBoard(pOuterBoard_save);
       SubQuery* pSubQuery = pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
       UNUSED(pSubQuery);
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
 
       vFlattenByDecisionTree();
 
-      pCI->vPrintBoard(__LINE__);
+     // pCI->vPrintBoard(__LINE__);
 
       bFound = true;
       return C_TERMINATE_RECURSION;
