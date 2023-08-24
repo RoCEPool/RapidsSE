@@ -40,7 +40,19 @@
 //     This allows for a common place for handling of string operations, a
 //     common methodology, interface and semantics, and a common way to handle errors.
 //
-// Note: This is a work in progress.
+// (7) StrLib should have consistent calling semantics. This includes things like:
+//      (a) The name of the destination buffer should be called psDst and in
+//          general it should usually be the first parameter in the function.
+//      (b) The size of the destination buffer should come immediately after the
+//           pointer to the destination buffer in the parameter list.
+//      (c) When the API is cursor based rather than buffer and size based then
+//          the next parameter after the cursor should be the last valid char
+//          in the buffer. i.e. StrLib *must* know the limit of the buffer.
+//      (d) A writable buffer should be a char* and not a Stz*. Stz should be
+//          considered a read-only data structure.
+//
+//
+// Note: All of the above is a work in progress.
 
 #include "BASE.h"
 
@@ -138,34 +150,6 @@ i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {
 /*----------------------------------------------------------------------------*/
 /* A                                  A                                     A */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allocate a workspace/string of given size                                  */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wAllocate(i8 nBytes)
-{
-  _static_
-  
-  char* w = static_cast<char*>(malloc(nBytes));
-  *w = '\0';
-  return w;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a workspace/string and initialize with given string               */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wAllocate(const char* s)
-{
-  _static_
-  
-  i8 nBytes = nSize(s);
-  
-  char* w = wAllocate(nBytes);
-  
-  vCopy(w,s);
-  
-  return w;
-}
 
 /*----------------------------------------------------------------------------*/
 /* append character to end of workspace                                       */
@@ -281,20 +265,43 @@ void StrLib::vAppendNull(char** aazCrs)
 }
   
 /*----------------------------------------------------------------------------*/
-/* vAppendString: append string to workspace                                  */
+/* vAppendString: append string to current cursor.                            */
+/* azDstLastChar is the last valid char pointer in the buffer.                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendString(char** aazCrs, const char* pString)
+void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar,
+                           const char* pSrc, bool* pbResult)
 {
   _static_
   
-  char *z = *aazCrs;
+  char* z = *aazDstCrs;
+  const char* s = pSrc;
+
+  // Check if we are out of room before even starting
+  if (z >= azDstLastChar) {
+    i8 iReqBufSize = nLength(pSrc) + 1;
+    i8 iDstBufSize = 0;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+    return;
+  }
   
-  while (*pString)
-    *z++ = *pString++;
-  
+  while (*s && z != azDstLastChar) {
+    *z++ = *s++;
+  }
+
+  // Check if we were going to overflow
+  if (*s) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nLength(pSrc) + 1;
+    i8 iDstBufSize = azDstLastChar - *aazDstCrs;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+  }
+
   *z = '\0';
-  
-  *aazCrs = z;
+  *aazDstCrs = z;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,11 +612,11 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate character to workspace                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* pWS, i8 iDstBufSize, const char cChar, bool* pbResult)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char cChar, bool* pbResult)
 {
   _static_
   
-  i8 iDstStrLen = nLength(pWS);     // how much space in the dest buffer (not including null terminator)
+  i8 iDstStrLen = nLength(psDst);     // how much space in the dest buffer (not including null terminator)
   i8 iReqBufSize = iDstStrLen + 2;  // how much space required (including extra char & null terminator)
 
   if (!bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult)) {
@@ -617,8 +624,8 @@ void StrLib::vConcat(char* pWS, i8 iDstBufSize, const char cChar, bool* pbResult
     return;
   }
 
-  pWS[iDstStrLen] = cChar;
-  pWS[iDstStrLen+1] = '\0';
+  psDst[iDstStrLen] = cChar;
+  psDst[iDstStrLen + 1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -685,7 +692,7 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
   
   char aInt[32];
 
-  wToString(iArg, aInt, sizeof(aInt));  // This should never fail
+  vToString(aInt, sizeof(aInt), iArg);  // This should never fail
   vConcat(psDst, iDstBufSize, aInt, pbResult);
 }
 
@@ -841,6 +848,7 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
   
   char caString[C_STRING_ARRAY];
   char *z = caString;
+  char *pDstLastChar = caString + sizeof(caString) - 1;
   
   for (int i = 0; i < nMax && i < C_16KB - 1; i++)
   {
@@ -869,54 +877,11 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
       break;
   }
   
-  vAppendString(&z,pSuffix);
+  vAppendString(&z, pDstLastChar, pSuffix);
   
   *z = '\0';
   
   vTrace("%s"_Stz,caString);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sDupe: duplicate string                                                    */
-/*----------------------------------------------------------------------------*/
-char* StrLib::sDupe(const char* psArg)
-{
-  _static_
-  
-  i8 iSize = StrLib::nSize(psArg);
-
-  char* psString = wAllocate(iSize);
-
-  StrLib::vCopy(psString,psArg);
-
-  return psString;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sDupeStripped: duplicate stripped string                                   */
-/*----------------------------------------------------------------------------*/
-char* StrLib::sDupeStripped(const char* s)
-{
-  _static_
-  
-  if ('"' != *s)
-    return sDupe(s);
-  
-  i8 iSize = StrLib::nSize(s) - 2;
-  
-  char* psString = wAllocate(iSize);
-  
-  char* p = psString;
-  
-  for (s++; '"' != *s; )
-  {
-    if ('\\' == *s)
-      s++;
-    *p++ = *s++;
-  }
-  *p = '\0';
-  
-  return psString;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4010,27 +3975,6 @@ bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sNew: new a string from formatted args                                     */
-/*----------------------------------------------------------------------------*/
-char* StrLib::sNew(const char* sFormat, ...)
-{
-  _static_
-
-  const i8 nBufSize = C_STRING_ARRAY;
-  char w[nBufSize];
-  
-  va_list args;
-  
-  va_start(args,sFormat);
-  vsnprintf(w,nBufSize,sFormat,args);
-  va_end(args);
-  
-  char* s = sDupe(w);
-  
-  return s;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ptr to null terminator                                                 */
 /*----------------------------------------------------------------------------*/
 char* StrLib::azNullTerminator(char* s)
@@ -5251,7 +5195,7 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert arg to lower case                                                  */
+/* convert ascii arg to lower case                                            */
 /*----------------------------------------------------------------------------*/
 char StrLib::cToLower(char c)
 {
@@ -5267,18 +5211,30 @@ char StrLib::cToLower(char c)
 /*----------------------------------------------------------------------------*/
 /* convert arg to lower case                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToLower(char* s)
+void StrLib::vToLower(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
+
+  // Note: While the iDstBufSize and pbResult parameters seem unnecessary,
+  // they are needed for when we support non-English characters. In that scenario
+  // the uppercase version of a string can be a different size from the
+  // original string with a different number of bytes or a different number
+  // of characters.
   
-  while (*s) {
-    *s = (char)tolower((unsigned char)*s);
-    s++;
+  while (*psDst) {
+    *psDst = (char)tolower((unsigned char)*psDst);
+    psDst++;
+  }
+
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert arg to upper case                                                  */
+/* convert ascii arg to upper case                                            */
 /*----------------------------------------------------------------------------*/
 char StrLib::cToUpper(char c)
 {
@@ -5294,13 +5250,25 @@ char StrLib::cToUpper(char c)
 /*----------------------------------------------------------------------------*/
 /* convert arg to upper case                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToUpper(char* s)
+void StrLib::vToUpper(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
 
-  while (*s) {
-    *s = (char)toupper((unsigned char)*s);
-    s++;
+  // Note: While the iDstBufSize and pbResult parameters seem unnecessary,
+  // they are needed for when we support non-English characters. In that scenario
+  // the uppercase version of a string can be a different size from the
+  // original string with a different number of bytes or a different number
+  // of characters.
+
+  while (*psDst) {
+    *psDst = (char)toupper((unsigned char)*psDst);
+    psDst++;
+  }
+
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
   }
 }
 
@@ -5318,47 +5286,74 @@ void StrLib::vTopTail(char *azArg, char cIntro)
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToPointer(void* pArg, char* wArg)
+void StrLib::vToPointer(char* psDst, i8 iDstBufSize, const void* pvArg, bool* pbResult)
 {
   _static_
-  
-  i8 i = reinterpret_cast<i8>(pArg);
-  
-  *wArg++ = '0';
-  *wArg++ = 'x';
-  
-  char* w = wArg;
-  
-  char *p = w, *q = w;
+  ASSERT(iDstBufSize > 1);
+
+  i8 iArg = reinterpret_cast<i8>(pvArg);
+
+  i8 iSpaceNeeded = 3; // start with the null terminator and the "0x"
+
+  if (iSpaceNeeded <= iDstBufSize) {
+    *psDst++ = '0';
+    *psDst++ = 'x';
+  }
+
+  char *p = psDst, *q = psDst;
   do {
-    *p++ = cToHex(i%16); //(i % 16) + '0';
-    i /= 16ll;
-  } while (i);
-  
-  
+    ++iSpaceNeeded;
+    if (iSpaceNeeded <= iDstBufSize) {
+      *p++ = cToHex(iArg % 16); //(i % 16) + '0';
+    }
+
+    iArg /= 16ll;
+  } while (iArg);
+
+  if (iSpaceNeeded > iDstBufSize) {
+    // Try to put a value into the destination buffer
+    if (iDstBufSize >= 4) {
+      psDst[0] = '0'; psDst[2] = 'x'; psDst[3] = '0'; psDst[4] = 0;
+    } else {
+      psDst[0] = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+    return;
+  }
+
+  // We have enough space. Now reverse the string that was generated.
+
   *p = '\0';
   while (--p > q) {
     char c = *p;
     *p = *q;
     *q++ = c;
   }
-  
-  return w;
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToString(bool b, char* w)
+void StrLib::vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult)
 {
   _static_
 
-  if (b)
-    vAppendString(&w,"true");
-  else
-    vAppendString(&w,"false");
+  UNUSED(iDstBufSize);
+  UNUSED(pbResult);
 
-  return w;
+  if (bArg)
+    vCopy(psDst, "true");
+  else
+    vCopy(psDst, "false");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5367,52 +5362,26 @@ char* StrLib::wToString(bool b, char* w)
 void StrLib::vToString(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
-  
-  wToString(iArg, psDst, iDstBufSize, pbResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given float into its char/str form                                 */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wToString(d8 d, char* w)
-{
-  _static_
-  
-  char caFloat[32];
-  
-  snprintf(caFloat,sizeof(caFloat),"%g",d);
-  
-  vAppendString(&w,caFloat);
-  
-  return w;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given integer into its char/str form                               */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
-{
-  _static_
   ASSERT(iDstBufSize > 1);
 
   i8 iSpaceNeeded = 1; // start with the null terminator
   bool bNegative = false;
-  
-  if (i < 0) {
-    i = -i;
+
+  if (iArg < 0) {
+    iArg = -iArg;
     bNegative = true;
     ++iSpaceNeeded; // Account for the negative now
   }
-  
+
   char *p = psDst, *q = psDst;
   do {
     ++iSpaceNeeded;
     if (iSpaceNeeded <= iDstBufSize) {
-      *p++ = (i % 10) + '0';
+      *p++ = (iArg % 10) + '0';
     }
 
-    i /= 10ll;
-  } while (i);
+    iArg /= 10ll;
+  } while (iArg);
 
   if (iSpaceNeeded > iDstBufSize) {
     // Try to put a value into the destination buffer
@@ -5427,7 +5396,7 @@ char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
     } else {
       vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
     }
-    return psDst;
+    return;
   }
 
   // We have enough space. Now reverse the string that was generated.
@@ -5445,8 +5414,28 @@ char* StrLib::wToString(i8 i, char* psDst, i8 iDstBufSize, bool* pbResult)
   if (pbResult) {
     *pbResult = true;
   }
+}
 
-  return psDst;
+/*----------------------------------------------------------------------------*/
+/* convert given float into its char/str form                                 */
+/*----------------------------------------------------------------------------*/
+void StrLib::vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult)
+{
+  _static_
+  
+  char caFloat[32];
+  
+  i8 iRet = snprintf(caFloat, sizeof(caFloat), "%g", dArg);
+
+  bool bHasTruncated = !bCheckBufferSpace(__func__, iRet+1, sizeof(caFloat), pbResult);
+
+  if (bHasTruncated && pbResult) {
+    // Caller will handle it
+    return;
+  }
+
+  UNUSED(iDstBufSize);
+  vCopy(psDst, caFloat);
 }
 
 /*----------------------------------------------------------------------------*/

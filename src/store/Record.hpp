@@ -39,6 +39,7 @@ namespace STORE
   private:
     void vAddRow(Row* aRow);
     void vAppendCsvVal(eDM eDatum, i8 iScale, i8 iColVal);
+    const char* azRecordLastChar(void);
 
     Footer* aFooter(void);
   };

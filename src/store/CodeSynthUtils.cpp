@@ -383,7 +383,7 @@ void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
   bool bResult;
   s256 sColNm;
   sColNm = pColumn->szColNm();
-  StrLib::vToUpper((char *) sColNm.azChar());
+  StrLib::vToUpper(sColNm.azChar(), sColNm.nAreaBytes());
 
   if (StrLib::bContains(sLine->azChar(), "__UNION_TYPE__")) {
     switch(pColumn->eColumnType()) {
@@ -540,7 +540,7 @@ void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch)
 
   if (StrLib::bContains(sLine->azChar(), "__KEY_KIND__")) {
     s256 sKey;
-    StrLib::wToString((i8) pOpSketch->m_pIndexDef->eKeyKind(), sKey.azChar(), sKey.nAreaBytes());
+    StrLib::vToString(sKey.azChar(), sKey.nAreaBytes(), (i8) pOpSketch->m_pIndexDef->eKeyKind());
     bool bResult = StrLib::bReplace(sLine->azChar(), "__KEY_KIND__", sKey.azChar());
     RASSERT(bResult);
   }
@@ -611,7 +611,7 @@ void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azChar(), "__PAYLOADBYTES__")) {
     //RASSERT( pOpSketch->m_nPayloadBytes );
     s256 sPayLoadBytes;
-    StrLib::wToString(pOpSketch->m_nPayloadBytes, sPayLoadBytes.azChar(), sPayLoadBytes.nAreaBytes());
+    StrLib::vToString(sPayLoadBytes.azChar(), sPayLoadBytes.nAreaBytes(), pOpSketch->m_nPayloadBytes);
     bool bResult = StrLib::bReplace(sLine->azChar(), "__PAYLOADBYTES__", sPayLoadBytes.azChar());
     RASSERT(bResult);
   }

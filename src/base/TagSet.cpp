@@ -653,15 +653,14 @@ void TagSet::vNamesString(String* pString)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  char* azStr = pString->azStr();
-  UNUSED(azStr);
   char* azCrs = pString->azStr();
+  const char* azDstLastChar = pString->azStr() + pString->nArea() - 1;
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
     if (i_Tag)
       StrLib::vAppendChar(&azCrs,' ');
     char* azName = szName(i_Tag)->azChar();
-    StrLib::vAppendString(&azCrs,azName);
+    StrLib::vAppendString(&azCrs, azDstLastChar, azName);
   }
 }
 

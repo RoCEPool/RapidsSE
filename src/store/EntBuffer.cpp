@@ -1548,8 +1548,9 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
   
   s256 sHigherBuffer;
   if (pHigherEntBuffer())
-    StrLib::wToString((i8)((EntBuffer*)pHigherEntBuffer())->m_iBufferHeight,
-                      sHigherBuffer.azChar(), sHigherBuffer.nAreaBytes());
+    StrLib::vToString(sHigherBuffer.azChar(),
+                      sHigherBuffer.nAreaBytes(),
+                      (i8) ((EntBuffer*) pHigherEntBuffer())->m_iBufferHeight);
   else
     sHigherBuffer = "..."_Stz;
   

@@ -272,6 +272,11 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
   _static_
 
   String* sPipeline = pBackend->m_sPipeline;
+  s256 sAliasName;
+
+  if (szAliasName) {
+    sAliasName = szAliasName;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
@@ -285,7 +290,13 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
     if (ColumnRef::bIsOfType(pExprNode)) {
       QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
       szAliasName = ColumnRef::szColumn(pColumnRef);
-      StrLib::vToLower(szAliasName->azChar());
+
+      // We cannot modify the szAliasName directly because we don't know the
+      // size of the underlying buffer. We need to modify a copy of it instead.
+      if (szAliasName) {
+        sAliasName = szAliasName;
+        StrLib::vToLower(sAliasName.azChar(), sAliasName.nAreaBytes());
+      }
     }
   }
 
@@ -293,7 +304,7 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
     sPipeline->vCatSprint(
         " as %s"
         ""_Stz,
-        szAliasName);
+        sAliasName.azChar());
   }
 
   // Walk the expr node plan graph
@@ -1248,7 +1259,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     ExtractField::eEF eExtractField = ExtractExpr::eExtractField(_pQueryNode(pOrdinalExpr));
     sExtractType =  ExtractField::szExtractFieldType(eExtractField);
-    StrLib::vToLower(sExtractType.azChar());
+    StrLib::vToLower(sExtractType.azChar(), sExtractType.nAreaBytes());
 
     sPipeline->vCatSprint(" extract_%s "_Stz, sExtractType.azChar());
 

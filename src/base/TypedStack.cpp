@@ -884,7 +884,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopBcd(__func__);
       
       char caValue[32];
-      StrLib::wToString(iInt, caValue, sizeof(caValue));
+      StrLib::vToString(caValue, sizeof(caValue), iInt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -897,7 +897,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopBol(__func__);
       
       char caValue[32];
-      StrLib::wToString((bool)iInt,caValue);
+      StrLib::vToString(caValue, sizeof(caValue), (bool) iInt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -911,7 +911,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       d8 dFlt = dPopFlt(__func__);
       
       char caValue[32];
-      StrLib::wToString(dFlt,caValue);
+      StrLib::vToString(caValue, sizeof(caValue), dFlt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -925,7 +925,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopInt(__func__);
       
       char caValue[32];
-      StrLib::wToString(iInt, caValue, sizeof(caValue));
+      StrLib::vToString(caValue, sizeof(caValue), iInt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -939,7 +939,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       Object* pObject = pPopPtr(__func__);
       
       char caValue[32];
-      StrLib::wToPointer(pObject,caValue);
+      StrLib::vToPointer(caValue, sizeof(caValue), pObject);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;

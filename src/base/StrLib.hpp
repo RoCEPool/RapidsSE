@@ -30,14 +30,13 @@ namespace BASE
     inline static void vReportStringTruncation(const char* azFuncName, i8 iReqBufSize, i8 iDstBufSize);
     
   public:                                                                                                               // SAFE?
-    static char* wAllocate(i8 nBytes);                                                                                  // yes
-    static char* wAllocate(const char* s);                                                                              // yes
     static void  vAppendChar(char** aaz, char c);                                                                       // ✕
     static void  vAppendDecimal(char** aaz, i8 i);                                                                      // ✕
     static void  vAppendHex(char** aaz, i8 i);                                                                          // ✕
     static void  vAppendNull(char** aaz);                                                                               // ✕
     static void  vAppendPad(char** aaz, const char* s, i8 nLength);                                                     // ✕
-    static void  vAppendString(char** aaz, const char* s);                                                              // ✕
+    static void  vAppendString(char** aazDstCrs, const char* azDstLastChar,
+                               const char* pSrc, bool* pbResult = nullptr);                                             // yes
     static void  vAppendString(char** aaz, i8 nBufSize, const char* s, i8* piLineNo);                                   // ✕
     static char* azAscii(i8 i_Char);                                                                                    // ✕
     
@@ -53,11 +52,11 @@ namespace BASE
     static i8    iCompare(const char* pArg1, const char* pArg2);                                                        // yes
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 iCase);                                              // yes
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);                                   // yes
-    static void  vConcat(char* pWS, i8 iDstBufSize, const char cChar, bool* pbResult = nullptr);                        // yes
+    static void  vConcat(char* psDst, i8 iDstBufSize, const char cChar,  bool* pbResult = nullptr);                     // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg, bool* pbResult = nullptr);                     // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg, i8 nCatLen, bool* pbResult=nullptr);           // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg1, const char* psArg2, bool* pbResult=nullptr);  // yes
-    static void  vConcat(char* pWS, i8 iDstBufSize, i8 i, bool* pbResult = nullptr);                                    // yes
+    static void  vConcat(char* psDst, i8 iDstBufSize, i8 i, bool* pbResult = nullptr);                                  // yes
     static bool  bContains(char* s, const char cArg);                                                                   // ✕
     static bool  bContains(char* s, const char* sArg);                                                                  // ✕
     static i8    nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
@@ -68,9 +67,7 @@ namespace BASE
     
     static i8    iDigitToI8(char cDigit);                                                                               // ✕
     static void  vDump(const char* s, i8 nMax, const char* pSuffix);                                                    // ✕
-    static char* sDupe(const char* s);                                                                                  // ✕
-    static char* sDupeStripped(const char* s);                                                                          // ✕
-  
+
     static bool  bEachLine(char** ps, char* caLine);                                                                    // ✕
     static bool  bEqualTo(const char* s1, const char* s2);                                                              // ✕
     static bool  bEqualTo(const char* s1, i8 nLen2, const char* s2);                                                    // ✕
@@ -224,7 +221,6 @@ namespace BASE
     static bool  bMatchHere(char* azStr, char* azRegExp);                                                               // ✕
     static bool  bMatchStar(char* azStr, char* azRegExp, char cChr);                                                    // ✕
 
-    static char* sNew(const char* azFormat, ...);                                                                       // ✕
     static char* azNullTerminator(char* s);                                                                             // ✕
 
     static i8    iOccurrence(char* ps, const char cArg);                                                                // ✕
@@ -289,16 +285,15 @@ namespace BASE
     static char  cToHex(i8 i);                                                                                          // ✕
     static i8    iToI8(const char* s);                                                                                  // ✕
     static i8    iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed);                                          // ✕
-    static char  cToLower(char c);                                                                                      // ✕
-    static void  vToLower(char* s);                                                                                     // ✕
-    static char  cToUpper(char c);                                                                                      // ✕
-    static void  vToUpper(char* s);                                                                                     // ✕
+    static char  cToLower(char c);                                                                                      // yes
+    static void  vToLower(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                       // yes
+    static char  cToUpper(char c);                                                                                      // yes
+    static void  vToUpper(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                       // yes
     static void  vTopTail(char* azArg, char cIntro);                                                                    // ✕
-    static char* wToPointer(void* pArg, char* w);                                                                       // ✕
-    static char* wToString(bool bArg, char* w);                                                                         // ✕
+    static void  vToPointer(char* psDst, i8 iDstBufSize, const void* pvArg, bool* pbResult = nullptr);                  // yes
+    static void  vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult = nullptr);                           // yes
     static void  vToString(char* azDst, i8 iDstBufSize, i8 iArg, bool* pbResult = nullptr);                             // yes
-    static char* wToString(d8 dArg, char* w);                                                                           // ✕
-    static char* wToString(i8 iArg, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                             // yes
+    static void  vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult = nullptr);                             // yes
     static void  vTrim(char* azArg, char cTrim);                                                                        // ✕
 
     static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);                                                          // ✕
