@@ -395,7 +395,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pParent);
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_PROJECTION_ANALYSIS]) ||
-      pCI->G.pBoard->pState()->bHasName(aXF[XF_UPDATE_PROJECTION])) {
+      pCI->G.pBoard->pState()->bHasName(aXF[XF_FLATTEN_UPDATE_PROJECTION])) {
     if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {

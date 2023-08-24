@@ -63,7 +63,7 @@ void XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
   // fix position of table which uses subquery result as pos 0
-  m_pCI->vTransform(__func__, XF_FIX_TABLE_POS, "fix position of table which uses subquery result"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_FIX_TABLE_POS, "fix position of table which uses subquery result"_Stz);
   Card_Table::vFixTablePos(m_pCI);
   m_pCI->vEndTransform();
 

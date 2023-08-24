@@ -16,7 +16,7 @@
 #include "XF_Flatten_Delete_Empty_where.hpp"
 #include "XF_Flatten_Predicate_Pull_Up.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
-#include "XF_Update_projection.hpp"
+#include "XF_Flatten_Update_projection.hpp"
 
 #include "eOT.h"
 
@@ -105,7 +105,7 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // Join Ordering Proper
 
   if (AM::JOB::bHasTag(C_JO_DISABLE)) {
-    XF_Update_projection::vXF_Update_projection(m_pCI);
+    XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
     return;
   }
 

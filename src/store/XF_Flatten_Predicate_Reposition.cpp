@@ -62,7 +62,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PREDICATE_REPOSITION, "predicate repositioning post join ordering"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_PREDICATE_REPOSITION, "predicate repositioning post join ordering"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // At Mark Where Pred Wrt Table
