@@ -76,10 +76,7 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
     if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
         m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
 
-
       m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
-
-      //m_pCI->pBoard()->pState()->vInsert(aOT[OT_SCAN_TO_INDEXSCAN]);
       bOptRun = true;
 
       m_pCI->G.p_indexList->vChoose_index_For_indexScan();

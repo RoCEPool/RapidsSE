@@ -150,19 +150,21 @@ void Card_Sort::vColumn_Mapping(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* test & cut sort                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Sort::vCut_sort(CardIter* pCI)
+bool Card_Sort::bCut_sort(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! pCI->StreamOrder.m_pStreamKey_running)
-    return;
+    return false;
 
   pCI->G.p_key = pSub_key();
 
   if (! pCI->StreamOrder.m_pStreamKey_running->bIsEquivalentTo(pCI->G.p_key))
-    return;
+    return false;
 
   pCI->G.pDeck->vDeleteChild(this);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

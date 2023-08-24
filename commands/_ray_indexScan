@@ -32,7 +32,7 @@ create index Ix_CUSTKEY on Customer(C_CUSTKEY);
 /transliterated
 /pipeline_def
 /weaved
-/OT_DERIVE_STREAM_KEY
+/OT_DERIVE_STREAMKEY
 /OT_SCAN_TO_INDEXSCAN
 /pipelineName = "_ray_indexScan"
 select *

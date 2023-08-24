@@ -80,7 +80,6 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
       case CK_GBYAGG:
         if (m_pCI->G.p_gbyAgg->bReplace_gbyAgg_By_ordAgg(m_pCI))
-          //m_pCI->pBoard()->pState()->vInsert(aOT[OT_GBYAGG_TO_ORDAGG]);
           bOptRun = true;
 
         break;

@@ -79,8 +79,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
     switch (m_pCI->G.e_MainCard) {
 
       case CK_SORT:
-        m_pCI->G.p_sort->vCut_sort(m_pCI);
-        //m_pCI->pBoard()->pState()->vInsert(aOT[OT_CUT_SORT]);
+        if (m_pCI->G.p_sort->bCut_sort(m_pCI))
+          bOptRun = true;
 
         break;
 

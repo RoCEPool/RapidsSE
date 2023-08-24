@@ -19,7 +19,7 @@ namespace STORE
 
     void vColumn_Mapping(CardIter* pCI);
 
-    void vCut_sort(CardIter* pCI);
+    bool bCut_sort(CardIter* pCI);
 
     void vDerive_streamKey(CardIter* pCI);
 

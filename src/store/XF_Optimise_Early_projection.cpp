@@ -107,11 +107,11 @@ bool XF_Optimise_Early_projection::bOptimise(void)
       DELETE_CARD(m_pCI->Early.m_pNeeded_later);
     }
 
+    bOptRun = true;
+
+
     m_pCI->G_vMainResynch(m_pCI->Early.m_pOP_leaf);
   }
-
-  //m_pCI->pBoard()->pState()->vInsert(aOT[OT_EARLY_PROJECTION]);
-
 
   m_pCI->vEndTransform();
   vDebugPoint();

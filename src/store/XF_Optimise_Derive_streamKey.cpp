@@ -20,7 +20,7 @@ __aFooterFunction(XF_Optimise_Derive_streamKey)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Derive_streamKey::XF_Optimise_Derive_streamKey(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_DERIVE_STREAM_KEY, OT_DERIVE_STREAM_KEY, pCI)
+: XF_OPTIMISE(CN_XF_DERIVE_STREAM_KEY, OT_DERIVE_STREAMKEY, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
 
@@ -74,9 +74,7 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 
   if (bFindStart_streamKey()) {
     vPropagate_streamKey();
-    //m_pCI->pBoard()->pState()->vInsert(aOT[OT_DERIVE_STREAM_KEY]);
     bOptRun = true;
-
   }
 
   m_pCI->vEndTransform();

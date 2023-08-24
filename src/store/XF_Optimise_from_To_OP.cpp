@@ -70,6 +70,8 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
 
   Board::vMorphAll_table_To_EEop(m_pCI);
 
+  bOptRun = true;
+
   m_pCI->vEndTransform();
 
   vValidate();
