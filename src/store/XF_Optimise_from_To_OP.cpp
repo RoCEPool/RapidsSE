@@ -66,7 +66,7 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_MORPH_TABLE_TO_EEOP, "morph table to EE op"_Stz);
+  m_pCI->vTransform(__func__, XF_FROM_TO_OP, "morph table to EE op"_Stz);
 
   Board::vMorphAll_table_To_EEop(m_pCI);
 
