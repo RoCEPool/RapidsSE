@@ -38,9 +38,9 @@ Stz* SP_Bol::sz(i8 iBol)
   _precondition_(_MAGIC_,_FOOTER_);
   
   if (iBol)
-    StrLib::vCopy(m_caResult,(char*)"true"_Stz);
+    StrLib::vCopy(m_caResult, sizeof(m_caResult), (char*)"true"_Stz);
   else
-    StrLib::vCopy(m_caResult,(char*)"false"_Stz);
+    StrLib::vCopy(m_caResult, sizeof(m_caResult), (char*)"false"_Stz);
 
   return (Stz*) &m_caResult[0];
 }

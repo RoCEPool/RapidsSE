@@ -80,7 +80,8 @@ void CardImage::vAddLine(Stz* szLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
-  StrLib::vCopy(m_xaCardLines[m_i_Line++].m_zCardLine, szLine->azChar());
+  i8 iBufSize = sizeof(m_xaCardLines[m_i_Line].m_zCardLine);
+  StrLib::vCopy(m_xaCardLines[m_i_Line++].m_zCardLine, iBufSize, szLine->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

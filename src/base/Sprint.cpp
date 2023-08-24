@@ -52,7 +52,7 @@ void Sprint::vFormat(const Stz* szFormat)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopy(m_caFormat,(char*)szFormat);
+  StrLib::vCopy(m_caFormat, sizeof(m_caFormat), (char*)szFormat);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ Stz* Sprint::szNull(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopy(m_caResult,"NULL");
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), "NULL");
   
   return (Stz*) &m_caResult[0];
 }
@@ -84,7 +84,7 @@ void Sprint::vResult(const Stz* szResult)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopy(m_caFormat,(char*)szResult);
+  StrLib::vCopy(m_caFormat,sizeof(m_caFormat), (char*)szResult);
 }
 
 

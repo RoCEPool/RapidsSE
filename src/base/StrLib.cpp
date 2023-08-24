@@ -298,6 +298,9 @@ void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar,
 
     bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
     UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
   }
 
   *z = '\0';
@@ -307,47 +310,62 @@ void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar,
 /*----------------------------------------------------------------------------*/
 /* vAppendString: append string to workspace with line numbers                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendString(char** aazCrs, i8 nBufSize, const char* pString, i8* piLineNumber)
+void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar, const char* pSrc,
+                           i8* piLineNo, bool* pbResult)
 {
   _static_
 
-  char *z = *aazCrs;
-  i8 nOrigBufSize = nBufSize;
+  char* z = *aazDstCrs;
+  const char* s = pSrc;
+
   bool bInQuote = false;
-  i8 iLineNumber = *piLineNumber;
+  i8 iLineNumber = *piLineNo;
 
-  UNUSED(nOrigBufSize);
+  // Check if we are out of room before even starting
+  if (z >= azDstLastChar) {
+    i8 iReqBufSize = nLength(pSrc) + 1; // doesn't account for line numbers
+    i8 iDstBufSize = 0;
 
-  while (*pString) {
-    if (*pString == '"') {
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+    return;
+  }
+
+  while (*s && z != azDstLastChar) {
+    if (*s == '"') {
       if (bInQuote)
         bInQuote = false;
       else
         bInQuote = true;
     }
-    if (*pString == '\n' && !bInQuote ) {
-      //char* x = z;
-      vSprintCat((Stz*)z, nBufSize, "\n/* %04d */ "_Stz, iLineNumber++);
-      z += 12;
-      nBufSize -= 12;
-      if (nBufSize < 0) {
-        nBufSize = 0;
-      }
-      pString++;
-    }
-    else {
-      if (nBufSize > 1) {   // need room for the null terminator
-        *z++ = *pString++;
-        --nBufSize;
-      }
+
+    if (*s == '\n' && !bInQuote ) {
+      s32 sBuf;
+      vSprint(sBuf.azChar(), sBuf.nAreaBytes(), "\n/* %04d */ "_Stz, iLineNumber++);
+      vAppendString(&z, azDstLastChar, sBuf.azChar(), pbResult);
+      s++;
+
+    } else {
+      *z++ = *s++;
     }
   }
 
+  // Check if we were going to overflow
+  if (*s) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nLength(pSrc) + 1; // does not account for line numbers
+    i8 iDstBufSize = azDstLastChar - *aazDstCrs;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
+
   *z = '\0';
-
-  *aazCrs = z;
-
-  *piLineNumber = iLineNumber;
+  *aazDstCrs = z;
+  *piLineNo = iLineNumber;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -733,8 +751,7 @@ i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
 
-  i8 iSrcStrLen = nLength(psSrc);   // length of the argument
-  i8 iReqBufSize = iSrcStrLen + 1;  // how much space required (including extra char & null terminator)
+  i8 iReqBufSize = nLength(psSrc) + 1;  // how much space required (including the null terminator)
 
   bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
   UNUSED(bWillTruncate);
@@ -759,11 +776,12 @@ i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 /*----------------------------------------------------------------------------*/
 /* vCopy: copy src into dst                                                   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopy(char* psDst, const char* psSrc)
+void StrLib::vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
-  
-  strcpy(psDst,psSrc);
+
+  i8 nBytes = nCopy(psDst, iDstBufSize, psSrc, pbResult);
+  UNUSED(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4394,20 +4412,20 @@ NextIteration:
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace tail of string                                                     */
+/* replace tail of string, keeping string length the same                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vReplaceTail(char* azArg, char* azTail)
+void StrLib::vReplaceTail(char* azDst, const char* azTail)
 {
   _static_
   
-  i8 iLen_arg  = StrLib::nLength(azArg);
+  i8 iLen_dst  = StrLib::nLength(azDst);
   i8 iLen_tail = StrLib::nLength(azTail);
   
   //            01234567
   //            abcdefgh
   //                 ...
   //            8 - 3 = 5
-  StrLib::vCopy(azArg + iLen_arg - iLen_tail,azTail);
+  StrLib::vCopy(azDst + iLen_dst - iLen_tail, iLen_dst + 1, azTail);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4919,9 +4937,9 @@ void StrLib::vStrip(char* s, char cTrailing)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the sub-path of src                                                    */
+/* get the sub-path of src (the substr after last '/') and copy it to psDst   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSubPath(char* azDst, char* azSrc)
+void StrLib::vSubPath(char* azDst, i8 iDstBufSize, char* azSrc, bool* pbResult)
 {
   _static_
   
@@ -4930,12 +4948,12 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
   ps = StrLib::acLast(azSrc);
   
   StrLib::bBackward(&ps,azSrc,'/');
-  bool bBackSlash = StrLib::bBackward(&ps,azSrc,'/');
+  bool bSlash = StrLib::bBackward(&ps, azSrc, '/');
   
-  if (bBackSlash)
-    StrLib::vCopy(azDst,ps+1);
+  if (bSlash)
+    StrLib::vCopy(azDst, iDstBufSize, ps+1, pbResult);
   else
-    StrLib::vCopy(azDst,azSrc);
+    StrLib::vCopy(azDst, iDstBufSize, azSrc, pbResult);
 }
 
 
@@ -5347,13 +5365,10 @@ void StrLib::vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult)
 {
   _static_
 
-  UNUSED(iDstBufSize);
-  UNUSED(pbResult);
-
   if (bArg)
-    vCopy(psDst, "true");
+    vCopy(psDst, iDstBufSize, "true", pbResult);
   else
-    vCopy(psDst, "false");
+    vCopy(psDst, iDstBufSize, "false", pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5434,8 +5449,7 @@ void StrLib::vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult)
     return;
   }
 
-  UNUSED(iDstBufSize);
-  vCopy(psDst, caFloat);
+  vCopy(psDst, iDstBufSize, caFloat, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/

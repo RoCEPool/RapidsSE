@@ -533,7 +533,7 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 /* check the syntax of the Create Index command                               */
 /*----------------------------------------------------------------------------*/
-eEC IndexDef::eParseTableName(Stz* szCmd, Stz* szTableNm)
+eEC IndexDef::eParseTableName(Stz* szCmd, String* psTableNm)
 {
   eEC eError = EC_NONE;
   
@@ -586,7 +586,7 @@ eEC IndexDef::eParseTableName(Stz* szCmd, Stz* szTableNm)
     goto L_RETURN;
   }
   
-  StrLib::vCopy((char*)szTableNm,(const char*)pTkn->szChars());
+  StrLib::vCopy(psTableNm->azStr(), psTableNm->nArea(), (const char*)pTkn->szChars());
   
 L_RETURN:
   delete pTknVec;

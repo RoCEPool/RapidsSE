@@ -120,7 +120,7 @@ void SPmedium::vResult(Stz* szResult)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 
-  StrLib::vCopy(m_caResult,szResult->azChar());
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), szResult->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

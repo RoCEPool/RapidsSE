@@ -57,11 +57,13 @@ PayStrBuffer::~PayStrBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a new paystr                                                         */
 /*----------------------------------------------------------------------------*/
-byte* PayStrBuffer::aAllot(Stz* szStz)
+byte* PayStrBuffer::aAllot(Stz* szStz, i8* piSizeAllocated)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PAYSTRBUFFER, _FOOTER_);
+  ASSERT(piSizeAllocated);
 
   i8 jSizeStz = szStz->nSize();
+  *piSizeAllocated = jSizeStz;
 
   byte* ayBytes = m_pFrom->aAllot(jSizeStz);
 

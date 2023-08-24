@@ -565,6 +565,10 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
                                 * ( m_nColumns + (bAddKeyHash ? 1 : 0) );
   pRowPixDst->m_nTotalChars = 0;
 
+  i8 iBufSpaceRemaining = (i8) (sizeof(pRowPixDst->m_xaColPix) +
+                                sizeof(pRowPixDst->m_baPixArea) -
+                                pRowPixDst->m_nNameOffset);
+
   char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
   char* azColNmDst = azNames;
 
@@ -586,9 +590,10 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
     axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
     axColPixDst->m_uSpare    = (u8)0;
-    
-    StrLib::vCopy(azColNmDst,pColumn->szColNm()->azChar());
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, pColumn->szColNm()->azChar());
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;
@@ -620,9 +625,10 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_bNullable = (u8)false;
     axColPixDst->m_bPtnKey   = (u8)false;
     axColPixDst->m_uSpare    = (u8)0;
-    
-    StrLib::vCopy(azColNmDst,"__keyHash");
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;

@@ -746,7 +746,7 @@ void Engine::vErrorHandler(Error* pError)
   if (pError) {
     acEnd = StrLib::acLast(pError->aFileName()->azChar());
     StrLib::bBackward(&acEnd,(char*)pError->aFileName(),'/');
-    StrLib::vCopy(caFileName,acEnd+1);
+    StrLib::vCopy(caFileName,sizeof(caFileName),acEnd+1);
     vTrace("%s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
            pError->iLineNo(),

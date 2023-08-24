@@ -322,7 +322,7 @@ void Step::vInfoSetAddRowVargs(void)
         m_pDataStack->vPopStr(sStr,__func__);
         nSize = sStr.nSize();
         szTail = (Stz*)pInfoSet->aAllotTail(nSize);
-        StrLib::vCopy(szTail->azChar(),sStr.azChar());
+        StrLib::vCopy(szTail->azChar(), nSize, sStr.azChar());
         //aRow->vColVal_ofs(i_Arg,iOfs);
         aRow->vColVal_ofs(i_Arg,szTail);
         // END STRING_DEPOSIT

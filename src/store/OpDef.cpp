@@ -63,7 +63,7 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
 
   MemLib::vZero(md_Bearing,sizeof(md_Bearing),CN_OPDEF);
   if (szBearing)
-    StrLib::vCopy(md_Bearing,szBearing->azChar());
+    StrLib::vCopy(md_Bearing, sizeof(md_Bearing), szBearing->azChar());
 
   m_nCollapses = 0;
   m_bCollapsed = false;
