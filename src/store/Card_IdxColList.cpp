@@ -72,9 +72,9 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_IDXCOL)) {
-    Stz* szColNm = xCI.G.p_idxCol->szSymbol(SF_NONE);
+  Kid xCI(this);
+  while (xCI.bEach(CK_IDXCOL)) {
+    Stz* szColNm = xCI.p_idxCol()->szSymbol(SF_NONE);
 
     CardIter xCI_p(p_projection);
     while (xCI_p.G_bEachMain_reverse(CK_EXPR)) {
@@ -84,8 +84,8 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
         eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
         RASSERT(SF_COL_TC == eSymbol);
 
-        xCI.G.p_idxCol->SYM(SF_COL_TC,szPrjCol);
-        xCI.G.p_idxCol->vMark1(MARK_CHANGED);
+        xCI.p_idxCol()->SYM(SF_COL_TC,szPrjCol);
+        xCI.p_idxCol()->vMark1(MARK_CHANGED);
       }
     }
   }

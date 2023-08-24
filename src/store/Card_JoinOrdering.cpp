@@ -198,10 +198,10 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
     }
   }
 
-  CardIter xCI_joinOrder(this);
-  while (xCI_joinOrder.G_bEachMain(CK_JOINORDER)) {
+  Kid xCI_joinOrder(this);
+  while (xCI_joinOrder.bEach(CK_JOINORDER)) {
 
-    Stz* szTableSyn = xCI_joinOrder.G.p_joinOrder->szSymbol(SF_NONE);
+    Stz* szTableSyn = xCI_joinOrder.p_joinOrder()->szSymbol(SF_NONE);
 
     i8 i_Table = C_UNKNOWN;
     Card_From* p_from =

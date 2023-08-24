@@ -589,10 +589,10 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
     }
     else
     if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
-      CardIter xCI(p_pred);
-      while (xCI.G_bEachMain()) {
-        RASSERT(Card_PRED::bIsPRED(xCI.G.p_PRED));
-        vResolve(xCI.G.p_PRED, vResolve);
+      Kid xCI(p_pred);
+      while (xCI.bEach()) {
+        RASSERT(Card_PRED::bIsPRED(xCI.pChild()));
+        vResolve(static_cast<Card_PRED*>(xCI.pChild()), vResolve);
       }
     }
     else {

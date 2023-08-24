@@ -11,6 +11,8 @@
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
+#include "Card_IndexList.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -55,14 +57,11 @@ Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
 
   Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
 
-  CardIter xCI(p_deck);
-  while (xCI.G_bEachMainWithSub(CK_FROM,CK_TABLE)) {
-    if (! (xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList()) )
-      continue;
-    if (! (xCI.G.p_filter = xCI.G.p_MainCard->pSub_filter()) )
-      continue;
+  Kid xCI(p_deck);
+  while (xCI.bEach(CK_FROM,CK_TABLE,CK_INDEXLIST,CK_FILTER)) {
 
-    p_joinPredList->vBuildList(xCI.G.p_filter,xCI.G.p_indexList);
+    p_joinPredList->vBuildList(_pCard_Filter(xCI.pSub3()),
+                               _pCard_IndexList(xCI.pSub2()));
   }
 
   return p_joinPredList;
@@ -75,16 +74,17 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
 {
   _static_
 
-  CardIter xCI(p_deck);
-  while (xCI.G_bEachMain(CK_TABLE)) {
-    if ((xCI.G.p_indexList = xCI.G.p_table->pSub_indexList()) &&
-        xCI.G.p_indexList->nChildCards())
+  Kid xCI(p_deck);
+  while (xCI.bEach(CK_TABLE)) {
+    Card_IndexList* p_indexList;
+    if ( (p_indexList = xCI.p_table()->pSub_indexList()) &&
+        p_indexList->nChildCards())
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vSprint("Tables: %s"_Stz,xCI.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
     else
-      pString->vCatSprint(", %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vCatSprint(", %s"_Stz,xCI.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
   }
 
 }

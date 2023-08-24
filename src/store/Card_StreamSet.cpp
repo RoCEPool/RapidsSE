@@ -113,9 +113,9 @@ void Card_StreamSet::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain())
-    xCI.G.p_streamPer->vEstStreamCost(p_tableList, p_filtPredList);
+  Kid xCI(this);
+  while (xCI.bEach())
+    xCI.p_streamPer()->vEstStreamCost(p_tableList, p_filtPredList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,13 +127,13 @@ Card_StreamPer* Card_StreamSet::pHighestCost(void)
 
   Card_StreamPer* pHighest = nullptr;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPER)) {
+  Kid xCI(this);
+  while (xCI.bEach(CK_STREAMPER)) {
     if (! pHighest)
-      pHighest = xCI.G.p_streamPer;
+      pHighest = xCI.p_streamPer();
     else
-    if (xCI.G.p_streamPer->bIsHigherCost(pHighest))
-      pHighest = xCI.G.p_streamPer;
+    if (xCI.p_streamPer()->bIsHigherCost(pHighest))
+      pHighest = xCI.p_streamPer();
   }
 
   return pHighest;
@@ -149,9 +149,9 @@ Card_StreamPer* Card_StreamSet::pJoinOrder(i8 iJoinOrder)
   i8 iPermutation;
   Card_StreamPer* p_joinPermSeq = nullptr;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPER)) {
-    p_joinPermSeq = xCI.G.p_streamPer;
+  Kid xCI(this);
+  while (xCI.bEach(CK_STREAMPER)) {
+    p_joinPermSeq = xCI.p_streamPer();
     iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
       return (p_joinPermSeq);
@@ -169,13 +169,13 @@ Card_StreamPer* Card_StreamSet::pLowestCost(void)
 
   Card_StreamPer* pLowest = nullptr;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPER)) {
+  Kid xCI(this);
+  while (xCI.bEach(CK_STREAMPER)) {
     if (! pLowest)
-      pLowest = xCI.G.p_streamPer;
+      pLowest = xCI.p_streamPer();
     else
-    if (xCI.G.p_streamPer->bIsLowerCost(pLowest))
-      pLowest = xCI.G.p_streamPer;
+    if (xCI.p_streamPer()->bIsLowerCost(pLowest))
+      pLowest = xCI.p_streamPer();
   }
 
   return pLowest;

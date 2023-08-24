@@ -1055,22 +1055,24 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
       return;
   }
 
-  CardIter xCI(pCard_bounds);
-  while (xCI.G_bEachMain(CK_BOUND)) {
+  Kid xCI(pCard_bounds);
+  while (xCI.bEach(CK_BOUND)) {
 
-    if (xCI.G.p_bound->bIsLBound() || xCI.G.p_bound->bIsUBound()) {
+    Card_Bound* p_bound = xCI.p_bound();
 
-      if (xCI.G.p_bound->bIsLBound())
+    if (p_bound->bIsLBound() || p_bound->bIsUBound()) {
+
+      if (p_bound->bIsLBound())
         psRpnExpr->vCatSprint(" %s"_Stz, "LBOUND"_Stz);
       else
-      if (xCI.G.p_bound->bIsUBound())
+      if (p_bound->bIsUBound())
         psRpnExpr->vCatSprint(" %s"_Stz, "UBOUND"_Stz);
       else
         psRpnExpr->vCatSprint(" %s"_Stz, "BOUND"_Stz);
 
-      i8 nSubs = xCI.G.p_bound->nChildCards();
+      i8 nSubs = p_bound->nChildCards();
       for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-        Card* pSubCard = xCI.G.p_bound->pGet(i_Sub);
+        Card* pSubCard = p_bound->pGet(i_Sub);
 
         if (! pSubCard->bIsCard(CK_TERM))
           continue;
@@ -1092,7 +1094,7 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
 
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
   }
 }
 
@@ -1116,17 +1118,19 @@ void Card_OP::vRpnKeyExists(String* psRpnExpr, Card_KeyExists* pCard_KeyExists)
       return;
   }
 
-  CardIter xCI(pCard_bounds);
-  while (xCI.G_bEachMain(CK_BOUND)) {
+  Kid xCI(pCard_bounds);
+  while (xCI.bEach(CK_BOUND)) {
 
-    if (! xCI.G.p_bound->bIsEBound())
+    Card_Bound* p_bound = xCI.p_bound();
+
+    if (! p_bound->bIsEBound())
       continue;
 
     psRpnExpr->vCatSprint(" %s"_Stz, "BOUND"_Stz);
 
-    i8 nSubs = xCI.G.p_bound->nChildCards();
+    i8 nSubs = p_bound->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card *pSubCard = xCI.G.p_bound->pGet(i_Sub);
+      Card *pSubCard = p_bound->pGet(i_Sub);
 
       if (!pSubCard->bIsCard(CK_TERM))
         continue;
@@ -1146,7 +1150,7 @@ void Card_OP::vRpnKeyExists(String* psRpnExpr, Card_KeyExists* pCard_KeyExists)
       psRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
 
   }
 }
@@ -1205,17 +1209,19 @@ void Card_OP::vRpnKeyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExi
       return;
   }
 
-  CardIter xCI(pCard_bounds);
-  while (xCI.G_bEachMain(CK_BOUND)) {
+  Kid xCI(pCard_bounds);
+  while (xCI.bEach(CK_BOUND)) {
 
-    if (! xCI.G.p_bound->bIsEBound())
+    Card_Bound* p_bound = xCI.p_bound();
+
+    if (! p_bound->bIsEBound())
       continue;
 
     psRpnExpr->vCatSprint(" %s"_Stz, "BOUND"_Stz);
 
-    i8 nSubs = xCI.G.p_bound->nChildCards();
+    i8 nSubs = p_bound->nChildCards();
     for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card *pSubCard = xCI.G.p_bound->pGet(i_Sub);
+      Card *pSubCard = p_bound->pGet(i_Sub);
 
       if (!pSubCard->bIsCard(CK_TERM))
         continue;
@@ -1235,7 +1241,7 @@ void Card_OP::vRpnKeyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExi
       psRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
   }
 
 }
