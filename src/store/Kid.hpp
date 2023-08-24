@@ -70,7 +70,9 @@ namespace STORE
     Card_JoinOrder* p_joinOrder(void);
     Card_Map *      p_map(void);
     Card_OP *       p_OP(void);
+    Card_RpnCalc *  p_rpnCalc(void);
     Card_Stage *    p_stage(void);
+    Card_StreamKey* p_streamKey(void);
     Card_StreamPer* p_streamPer(void);
     Card_Table *    p_table(void);
     Card_Term *     p_term(void);

@@ -145,14 +145,14 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   Kid xCI_projection(this);
   while (xCI_projection.bEach(CK_EXPR,CK_RPNCALC)) {
 
-    CardIter xCI_rpnCalc(xCI_projection.pSub1());
-    while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+    Kid xCI_rpnCalc(xCI_projection.pSub1());
+    while (xCI_rpnCalc.bEach(CK_TERM)) {
       // only interested in columns
 
-      if (xCI_rpnCalc.G.p_term->bIsKeyOdn()) {
+      if (xCI_rpnCalc.p_term()->bIsKeyOdn()) {
         RASSERT(pCI->G.p_streamKey);
 
-        Card_Expr* p_expr_key = pCI->G.p_streamKey->pDecodeExpr(xCI_rpnCalc.G.p_term->pSymbol());
+        Card_Expr* p_expr_key = pCI->G.p_streamKey->pDecodeExpr(xCI_rpnCalc.p_term()->pSymbol());
         Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
 
         vDebugPoint();
@@ -163,13 +163,13 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
         p_needed->vAppend(p_expr_key->pClone());
       }
       else
-      if (xCI_rpnCalc.G.p_term->bIsValOdn()) {
+      if (xCI_rpnCalc.p_term()->bIsValOdn()) {
 
         // which we haven't already added
-        if (p_needed->pFindExpr(xCI_rpnCalc.G.p_term->pSymbol()))
+        if (p_needed->pFindExpr(xCI_rpnCalc.p_term()->pSymbol()))
           continue;
 
-        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
+        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
           p_needed->vAppend(p_expr_col->pClone());
       }
       else {
@@ -185,18 +185,18 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
     if ((pCI->G.p_key = pSub_key())) {
       // + projection of gbyAgg/ordAgg has a key
 
-      CardIter xCI_key(pCI->G.p_key);
-      while (xCI_key.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
-        CardIter xCI_rpnCalc(xCI_key.G.p_rpnCalc);
-        while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+      Kid xCI_key(pCI->G.p_key);
+      while (xCI_key.bEach(CK_EXPR,CK_RPNCALC)) {
+        Kid xCI_rpnCalc(xCI_key.pSub1());
+        while (xCI_rpnCalc.bEach(CK_TERM)) {
           // only interested in columns
-          if (!xCI_rpnCalc.G.p_term->bIsValOdn())
+          if (!xCI_rpnCalc.p_term()->bIsValOdn())
             continue;
           // which we haven't already added
-          if (p_needed->pFindExpr(xCI_rpnCalc.G.p_term->pSymbol()))
+          if (p_needed->pFindExpr(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
-          if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
+          if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
             p_needed->vAppend(p_expr_col->pClone());
         }
       }
