@@ -64,6 +64,7 @@ namespace STORE
     void vSynch(Card *pChild_with);
 
     Card_Bound *    p_bound(void);
+    Card_CmpPred *  p_cmpPred(void);
     Card_Expr *     p_expr(void);
     Card_IdxCol *   p_idxCol(void);
     Card_Index *    p_index(void);
