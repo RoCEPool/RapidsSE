@@ -67,17 +67,19 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
   Card_FiltPredList* p_filtPredList = new Card_FiltPredList;
 
-  CardIter xCI(p_deck);
-  while (xCI.G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+  Kid xCI(p_deck);
+  while (xCI.bEach(CK_TABLE,CK_FILTER)) {
 
-    xCI.G.p_boolCalc = xCI.G.p_filter->pSub_boolCalc();
+    Card_Filter* p_filter = _pCard_Filter(xCI.pSub1());
+
+    Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
 
     nFilters = 0;
-    xCI.G.p_boolCalc->bApplyRecursive(CK_CMPPRED,bLambda);
+    p_boolCalc->bApplyRecursive(CK_CMPPRED,bLambda);
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;
-      p_filtPred->SYM(SF_TBL_SYN,xCI.G.p_table->szSymbol(SF_NONE));
+      p_filtPred->SYM(SF_TBL_SYN,xCI.p_table()->szSymbol(SF_NONE));
       p_filtPred->pSymbol()->Y_vSet(P_Count,nFilters);
       p_filtPredList->vAppend(p_filtPred);
     }
