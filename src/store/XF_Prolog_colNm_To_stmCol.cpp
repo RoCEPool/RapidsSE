@@ -62,7 +62,7 @@ void XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_COLNM_TO_STMCOL, "transform column-name to stream-column"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_COLNM_TO_STMCOL, "transform column-name to stream-column"_Stz);
 
   for (m_pCI->vClearRestart(); m_pCI->G_bEachMain(); m_pCI->vSnapPriorProjection()) {
     if (! m_pCI->Prior.m_pProjection)
