@@ -970,9 +970,10 @@ void CardIter::vEndTransform(void)
 
   vRenumberCards();
 
-  G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
-
-  vPrintBoard();
+  if (G.pBoard) {
+    G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
+    vPrintBoard();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
