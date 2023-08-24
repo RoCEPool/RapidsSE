@@ -76,27 +76,6 @@ void XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
 
   vValidate();
 }
-/*----------------------------------------------------------------------------*/
-//void XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
-//
-//  m_pCI->vTransform(__func__, XF_COLNM_TO_STMCOL, "transform column-name to stream-column"_Stz);
-//
-//  m_pCI->vClearRestart();
-//  while (m_pCI->G_bEachMain_reverse()) {
-//
-//    m_pCI->Prior.m_pProjection = Card_Projection::pResolvePriorProjection(m_pCI);
-//    if (m_pCI->Prior.m_pProjection) {
-//      m_pCI->Prior.m_pProjection->vDump(__func__);
-//      ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_colNm_To_stmCol(m_pCI);
-//    }
-//  }
-//
-//  m_pCI->vEndTransform();
-//
-//  vValidate();
-//}
 
 /*============================================================================*/
 /* end                                                                        */

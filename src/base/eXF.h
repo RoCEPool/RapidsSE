@@ -8,6 +8,7 @@ enum eXF // transform
   /* */ XF_NONE = 0,   // none
 
   /* */ XF_ADD_LEVEL,
+  /* */ XF_ADD_STAGE_CAST,
   /* */ XF_ADJUST_SORT,
   /* */ XF_ADJUST_TOP,
   /* */ XF_AS_REVIEW,

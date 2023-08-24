@@ -62,7 +62,7 @@ void XF_Epilog_stage_cast::vXF_stage_cast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "add stage casts"_Stz);
+  m_pCI->vTransform(__func__, XF_ADD_STAGE_CAST, "add stage casts"_Stz);
 
   m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 

@@ -9,6 +9,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_NONE"_Stz,
 
   /* */ "XF_ADD_LEVEL"_Stz,
+  /* */ "XF_ADD_STAGE_CAST"_Stz,
   /* */ "XF_ADJUST_SORT"_Stz,
   /* */ "XF_ADJUST_TOP"_Stz,
   /* */ "XF_AS_REVIEW"_Stz,
