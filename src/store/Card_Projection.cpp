@@ -142,10 +142,10 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) append the referenced col's in rpnCalc of this projection into needed projection
 
-  CardIter xCI_projection(this);
-  while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
+  Kid xCI_projection(this);
+  while (xCI_projection.bEach(CK_EXPR,CK_RPNCALC)) {
 
-    CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
+    CardIter xCI_rpnCalc(xCI_projection.pSub1());
     while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
       // only interested in columns
 
