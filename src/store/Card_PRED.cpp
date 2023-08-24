@@ -73,9 +73,9 @@ bool Card_PRED::bContains_callToSubQuery(CardIter* pCI)
 
   //this->vDump();
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM))
-    if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_term->szSymbol(SF_NONE)))
+  Kid xCI(this);
+  while (xCI.bEach(CK_TERM))
+    if (pCI->m_pBench->bIsSubQueryNm(xCI.p_term()->szSymbol(SF_NONE)))
       return true;
 
   return false;
