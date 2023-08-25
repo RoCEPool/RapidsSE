@@ -41,11 +41,11 @@ XF_Prolog_subQuery_Analysis::~XF_Prolog_subQuery_Analysis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(CardIter* m_pCI)
+void XF_Prolog_subQuery_Analysis::vProlog(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_subQuery_Analysis* pXF_subQuery_Analysis = new XF_Prolog_subQuery_Analysis(m_pCI);
+  XF_Prolog_subQuery_Analysis* pXF_subQuery_Analysis = new XF_Prolog_subQuery_Analysis(pCI);
 
   pXF_subQuery_Analysis->vXF_subQuery_Analysis();
 

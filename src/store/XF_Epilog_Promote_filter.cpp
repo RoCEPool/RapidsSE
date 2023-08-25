@@ -43,7 +43,7 @@ XF_Epilog_Promote_filter::~XF_Epilog_Promote_filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Promote_filter::vXF_Individuate_filter(CardIter* pCI)
+void XF_Epilog_Promote_filter::vEpilog(CardIter* pCI)
 {
   _static_
 

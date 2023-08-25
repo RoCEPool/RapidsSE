@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_as_Review(CardIter* pCI);
    ~XF_Prolog_as_Review(void) noexcept(false);
 
-    static void vXF_as_Review(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
 
     void vXF_as_Review(void);
 

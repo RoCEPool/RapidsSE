@@ -39,7 +39,7 @@ XF_Epilog_stage_cast::~XF_Epilog_stage_cast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_stage_cast::vXF_stage_cast(CardIter* pCI)
+void XF_Epilog_stage_cast::vEpilog(CardIter* pCI)
 {
   _static_
 

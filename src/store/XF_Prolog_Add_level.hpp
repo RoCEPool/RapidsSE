@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Add_level(CardIter* pCI);
    ~XF_Prolog_Add_level(void) noexcept(false);
 
-    static void vXF_Add_level(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
 
     void vXF_Add_level(void);
 

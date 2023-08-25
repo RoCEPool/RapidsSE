@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Erase_construction(CardIter* pCI);
    ~XF_Prolog_Erase_construction(void) noexcept(false);
 
-    static void vXF_Delete_Unneeded(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
 
     void vProlog(void);
 

@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Shorten_queryNm(CardIter* pCI);
    ~XF_Prolog_Shorten_queryNm(void) noexcept(false);
 
-    static void vXF_Shorten_queryNm(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
 
     void vXF_Shorten_queryNm(void);
 

@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Promote_filter(CardIter* pCI);
    ~XF_Epilog_Promote_filter(void) noexcept(false);
 
-    static void vXF_Individuate_filter(CardIter* pCI);
+    static void vEpilog(CardIter* pCI);
 
     void vXF_Individuate_filter(void);
 

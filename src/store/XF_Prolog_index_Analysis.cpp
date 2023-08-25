@@ -39,7 +39,7 @@ XF_Prolog_index_Analysis::~XF_Prolog_index_Analysis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_index_Analysis::vXF_index_Analysis(CardIter* pCI)
+void XF_Prolog_index_Analysis::vProlog(CardIter* pCI)
 {
   _static_
 

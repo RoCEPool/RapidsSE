@@ -39,7 +39,7 @@ XF_Prolog_rpnCalc_To_boolCalc::~XF_Prolog_rpnCalc_To_boolCalc(void) noexcept(fal
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(CardIter* pCI)
+void XF_Prolog_rpnCalc_To_boolCalc::vProlog(CardIter* pCI)
 {
   _static_
 
