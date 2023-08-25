@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_rpnCalc_To_boolCalc(CardIter* pCI);
    ~XF_Prolog_rpnCalc_To_boolCalc(void) noexcept(false);
 
-    static void vXF_rpnCalc_To_boolCalc(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
 
     void vXF_rpnCalc_To_boolCalc(void);
 

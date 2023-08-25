@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_projection_Analysis(CardIter* pCI);
    ~XF_Prolog_projection_Analysis(void) noexcept(false);
 
-    static void vXF_projection_Analysis(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
     static void vXF_projection_Analysis_passThru(CardIter* pCI);
 
     void vXF_projection_Analysis(void);

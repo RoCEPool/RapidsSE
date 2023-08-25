@@ -365,47 +365,6 @@ Stz* Card::szBearing(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set bearing                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vBearing(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  s4K sPretty;
-
-  sPretty = aCK[m_eCard];
-
-//  if (m_xSymbol.m_pProperties) {
-//    s4K sProperties;
-//    m_xSymbol.m_pProperties->vToString(sProperties, true);
-//    sPretty.vConcat(": "_Stz);
-//    sPretty.vConcat(sProperties);
-//  }
-
-  strcat(md_Bearing, " ");
-  strcat(md_Bearing, sPretty.azChar());
-
-  //  vTrace("%s\n"_Stz,md_Bearing);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set bearing                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vBearing(Card* pParentCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pParentCard) {
-    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), "%s.%lld"_Stz, pParentCard->md_Bearing, m_i_Child);
-  }
-  else {
-    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), "%lld"_Stz, m_i_Child);
-  }
-
-//  vTrace("%s\n"_Stz,md_Bearing);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card kind                                                              */
 /*----------------------------------------------------------------------------*/
 eCK Card::eCard(void)
@@ -1213,37 +1172,6 @@ void Card::vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  switch (m_eCard) {
-
-    case CK_KEY:
-      _pCard_Key(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    case CK_PROJECTION:
-      _pCard_Projection(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    case CK_TABLE:
-      _pCard_Table(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    case CK_TERM:
-      _pCard_Term(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    default:
-      vPrintCard_bySettings(pRibbon, iDepth);
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card onto given ribbon                                               */
-/*----------------------------------------------------------------------------*/
 void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1266,234 +1194,6 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 
   if (pCardCtl->bPrintSubShort(m_eCard))
     vPrintChildrenShort(pRibbon, iDepth);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print compressed children                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(iDepth);
-
-  i8 nChildren = nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card* pChild = pGetChild(i_Child);
-
-    i8 nSubs = pChild->nChildCards();
-    if (nSubs == 0) {
-      /*none*/;
-    }
-    else
-    if (nSubs == 1) {
-      Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintDataRight("%s"_Stz, pSub_0->szSymbol(SF_NONE));
-    }
-    else {
-      Card *pSub_0 = pChild->pGetChild(0);
-      Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintDataRight("%s == %s"_Stz, pSub_0->szSymbol(SF_NONE), pSub_1->szSymbol(SF_NONE));
-    }
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* put header                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintHeader(Ribbon* pRibbon, eAL eLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  char cLevel = ' ';
-  switch (eLevel) {
-    case AL_PARTITION : cLevel = 'P'; break;
-    case AL_NODE      : cLevel = 'N'; break;
-    case AL_ORIGIN    : cLevel = 'O'; break;
-    default           : cLevel = '?'; break;
-  }
-
-  pRibbon->vSprintData("==%02lld %c--%10p--"_Stz,
-                       m_i_Child,
-                       cLevel,
-                       ((char*)this) - (char*)AM::SYSARGS::aRegionAddr());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
-
-  s32 sHiddenChildren;
-  if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
-    sHiddenChildren = " +"_Stz;
-
-  s32 sName;
-  if (0 == iDepth) {
-    if (szCustomName) {
-      sName.vSprint("%s"_Stz,
-                    szCustomName);
-    }
-    else {
-      sName.vSprint("%s%s *%lld"_Stz,
-                    szCardNm(),
-                    sHiddenChildren.szStz(),
-                    nItems());
-      sName.vToUpper();
-    }
-  }
-  else {
-    if (pCardCtl->bPrintNo(m_eCard))
-      sName.vSprint("%s%lld]"_Stz,
-                    Stz::szDots(iDepth - 1),
-                    m_i_Child);
-    if (szCustomName)
-      sName.vSprintCat("%s"_Stz,
-                    szCustomName);
-    else
-      sName.vSprintCat("%s%s"_Stz,
-                       szCardNm(),
-                       sHiddenChildren.szStz());
-  }
-
-  pRibbon->vSprintData("%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card name and its symbolic value on single line if possible          */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
-
-  s32 sHiddenChildren;
-  if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
-    sHiddenChildren = " +"_Stz;
-
-  s32 sName(szCardNm());
-  if (0 == iDepth)
-    sName.vToUpper();
-
-  s256 sNameSymbol;
-
-  if (0 == iDepth) {
-    if (m_xSymbol.bHasSymbol())
-      sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
-                          sName.szStz(),
-                          sHiddenChildren.szStz(),
-                          szSymbol(SF_NONE),
-                          nItems());
-    else
-      sNameSymbol.vSprint("%s%s *%lld"_Stz,
-                          sName.szStz(),
-                          sHiddenChildren.szStz(),
-                          nItems());
-
-  }
-  else {
-    if (pCardCtl->bPrintNo(m_eCard))
-      sNameSymbol.vSprint("%s%lld]"_Stz,
-                          Stz::szDots(iDepth - 1),
-                          m_i_Child);
-    if (m_xSymbol.bHasSymbol())
-      sNameSymbol.vSprintCat("%s%s %s"_Stz,
-                             sName.szStz(),
-                             sHiddenChildren.szStz(),
-                             szSymbol(SF_NONE));
-    else
-      sNameSymbol.vSprintCat("%s%s"_Stz,
-                             sName.szStz(),
-                             sHiddenChildren.szStz());
-  }
-
-  if (sNameSymbol.nLength() <= 18) {
-    pRibbon->vSprintData("%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
-  }
-  else {
-    vPrintName(pRibbon, iDepth);
-    vPrintSymbol(pRibbon, iDepth);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print card properties                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(iDepth);
-
-  if (! m_xSymbol.bHasProperties())
-    return;
-
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
-
-  bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
-
-  i8 nProperties = pSymbol()->Y_nPpy();
-
-  for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
-
-    eTN eTkn = pSymbol()->Y_ePpyTkn(i_Property);
-
-    switch (eTkn) {
-
-      case TN_INTEGER: {
-        Stz* szName = pSymbol()->Y_szPpyNm(i_Property);
-        i8   iPpy = pSymbol()->Y_iGet(i_Property);
-
-        Stz* szDecode = szDecodeEnum(szName, iPpy);
-        if (szDecode)
-          pRibbon->vSprintDataRight("%s"_Stz,szDecode);
-        else
-        if (bPrintPptName)
-          pRibbon->vSprintDataRight("%s=%lld"_Stz, szName, iPpy);
-        else
-          pRibbon->vSprintDataRight("%lld"_Stz, iPpy);
-        break;
-      }
-
-      case TN_STRING: {
-        Stz* szName  = pSymbol()->Y_szPpyNm(i_Property);
-        Stz* szPpy = pSymbol()->Y_szGet(i_Property);
-        if (bPrintPptName)
-          pRibbon->vSprintDataRight("%s=%s"_Stz, szName, szPpy);
-        else
-          pRibbon->vSprintDataRight("%s"_Stz, szPpy);
-        break;
-      }
-
-      default:
-        break;
-    }
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print symbolic value of card                                               */
-/*----------------------------------------------------------------------------*/
-void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(iDepth);
-
-  if (!m_xSymbol.bHasSymbol())
-    return;
-
-  if (bPrintMarks)
-    pRibbon->vSprintDataRight("%s%s%18s"_Stz,
-                              this->szMark1(),
-                              this->szMark2(),
-                              szSymbol(SF_NONE));
-  else
-    pRibbon->vSprintDataRight("  %s"_Stz, szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1863,9 +1563,51 @@ void Card::vValidationPassed(void)
     vMark1(MARK_VALID);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set bearing                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vBearing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s4K sPretty;
+
+  sPretty = aCK[m_eCard];
+
+//  if (m_xSymbol.m_pProperties) {
+//    s4K sProperties;
+//    m_xSymbol.m_pProperties->vToString(sProperties, true);
+//    sPretty.vConcat(": "_Stz);
+//    sPretty.vConcat(sProperties);
+//  }
+
+  strcat(md_Bearing, " ");
+  strcat(md_Bearing, sPretty.azChar());
+
+  //  vTrace("%s\n"_Stz,md_Bearing);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bearing                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vBearing(Card* pParentCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pParentCard) {
+    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), "%s.%lld"_Stz, pParentCard->md_Bearing, m_i_Child);
+  }
+  else {
+    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), "%lld"_Stz, m_i_Child);
+  }
+
+//  vTrace("%s\n"_Stz,md_Bearing);
+}
 
 /*----------------------------------------------------------------------------*/
 /* decode enum                                                                */
@@ -1880,6 +1622,257 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
   if (szEnum->bSame("eType"_Stz))       return aCT[iEnum];
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  switch (m_eCard) {
+
+    case CK_TABLE:
+      _pCard_Table(this)->vPrint(pRibbon, iDepth);
+      break;
+
+    case CK_TERM:
+      _pCard_Term(this)->vPrint(pRibbon, iDepth);
+      break;
+
+    default:
+      vPrintCard_bySettings(pRibbon, iDepth);
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print compressed children                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
+
+  i8 nChildren = nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card* pChild = pGetChild(i_Child);
+
+    i8 nSubs = pChild->nChildCards();
+    if (nSubs == 0) {
+      /*none*/;
+    }
+    else
+    if (nSubs == 1) {
+      Card *pSub_0 = pChild->pGetChild(0);
+      pRibbon->vSprintSnippet(true,"%s"_Stz, pSub_0->szSymbol(SF_NONE));
+    }
+    else {
+      Card *pSub_0 = pChild->pGetChild(0);
+      Card *pSub_1 = pChild->pGetChild(1);
+      pRibbon->vSprintSnippet(true,"%s == %s"_Stz, pSub_0->szSymbol(SF_NONE), pSub_1->szSymbol(SF_NONE));
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* put header                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintHeader(Ribbon* pRibbon, eAL eLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  char cLevel = ' ';
+  switch (eLevel) {
+    case AL_PARTITION : cLevel = 'P'; break;
+    case AL_NODE      : cLevel = 'N'; break;
+    case AL_ORIGIN    : cLevel = 'O'; break;
+    default           : cLevel = '?'; break;
+  }
+
+  pRibbon->vSprintSnippet(false,"==%02lld %c--%10p--"_Stz,
+                           m_i_Child,
+                           cLevel,
+                           ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
+
+  s32 sHiddenChildren;
+  if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
+    sHiddenChildren = " +"_Stz;
+
+  s32 sName;
+  if (0 == iDepth) {
+    if (szCustomName) {
+      sName.vSprint("%s"_Stz,
+                    szCustomName);
+    }
+    else {
+      sName.vSprint("%s%s *%lld"_Stz,
+                    szCardNm(),
+                    sHiddenChildren.szStz(),
+                    nItems());
+      sName.vToUpper();
+    }
+  }
+  else {
+    if (pCardCtl->bPrintNo(m_eCard))
+      sName.vSprint("%s%lld]"_Stz,
+                    Stz::szDots(iDepth - 1),
+                    m_i_Child);
+    if (szCustomName)
+      sName.vSprintCat("%s"_Stz,
+                       szCustomName);
+    else
+      sName.vSprintCat("%s%s"_Stz,
+                       szCardNm(),
+                       sHiddenChildren.szStz());
+  }
+
+  pRibbon->vSprintSnippet(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card name and its symbolic value on single line if possible          */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
+
+  s32 sHiddenChildren;
+  if (! pCardCtl->bPrintSubCards(m_eCard) && nChildCards())
+    sHiddenChildren = " +"_Stz;
+
+  s32 sName(szCardNm());
+  if (0 == iDepth)
+    sName.vToUpper();
+
+  s256 sNameSymbol;
+
+  if (0 == iDepth) {
+    if (m_xSymbol.bHasSymbol())
+      sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
+                          sName.szStz(),
+                          sHiddenChildren.szStz(),
+                          szSymbol(SF_NONE),
+                          nItems());
+    else
+      sNameSymbol.vSprint("%s%s *%lld"_Stz,
+                          sName.szStz(),
+                          sHiddenChildren.szStz(),
+                          nItems());
+
+  }
+  else {
+    if (pCardCtl->bPrintNo(m_eCard))
+      sNameSymbol.vSprint("%s%lld]"_Stz,
+                          Stz::szDots(iDepth - 1),
+                          m_i_Child);
+    if (m_xSymbol.bHasSymbol())
+      sNameSymbol.vSprintCat("%s%s %s"_Stz,
+                             sName.szStz(),
+                             sHiddenChildren.szStz(),
+                             szSymbol(SF_NONE));
+    else
+      sNameSymbol.vSprintCat("%s%s"_Stz,
+                             sName.szStz(),
+                             sHiddenChildren.szStz());
+  }
+
+  if (sNameSymbol.nLength() <= 18) {
+    pRibbon->vSprintSnippet(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
+  }
+  else {
+    vPrintName(pRibbon, iDepth);
+    vPrintSymbol(pRibbon, iDepth);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print card properties                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(iDepth);
+
+  if (! m_xSymbol.bHasProperties())
+    return;
+
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
+
+  bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
+
+  i8 nProperties = pSymbol()->Y_nPpy();
+
+  for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
+
+    eTN eTkn = pSymbol()->Y_ePpyTkn(i_Property);
+
+    switch (eTkn) {
+
+      case TN_INTEGER: {
+        Stz* szName = pSymbol()->Y_szPpyNm(i_Property);
+        i8   iPpy = pSymbol()->Y_iGet(i_Property);
+
+        Stz* szDecode = szDecodeEnum(szName, iPpy);
+        if (szDecode)
+          pRibbon->vSprintSnippet(true,"%s"_Stz,szDecode);
+        else
+        if (bPrintPptName)
+          pRibbon->vSprintSnippet(true,"%s=%lld"_Stz, szName, iPpy);
+        else
+          pRibbon->vSprintSnippet(true,"%lld"_Stz, iPpy);
+        break;
+      }
+
+      case TN_STRING: {
+        Stz* szName  = pSymbol()->Y_szPpyNm(i_Property);
+        Stz* szPpy = pSymbol()->Y_szGet(i_Property);
+        if (bPrintPptName)
+          pRibbon->vSprintSnippet(true,"%s=%s"_Stz, szName, szPpy);
+        else
+          pRibbon->vSprintSnippet(true,"%s"_Stz, szPpy);
+        break;
+      }
+
+      default:
+        break;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print symbolic value of card                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(iDepth);
+
+  if (!m_xSymbol.bHasSymbol())
+    return;
+
+  if (bPrintMarks)
+    pRibbon->vSprintSnippet(true,"%s%s%18s"_Stz,
+                              this->szMark1(),
+                              this->szMark2(),
+                              szSymbol(SF_NONE));
+  else
+    pRibbon->vSprintSnippet(true,"  %s"_Stz, szSymbol(SF_NONE));
 }
 
 

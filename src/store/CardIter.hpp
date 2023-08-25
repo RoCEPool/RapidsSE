@@ -112,6 +112,7 @@ namespace STORE
     bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
     bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
 
+    void vEndPhase(void);
     void vEndTransform(void);
 
     Card_Expr* pExpr_For_col(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
@@ -141,6 +142,8 @@ namespace STORE
     Card* pNextChildIf(eCK eCard);
     void vNullMembers(bool bNull_OP=true);
 
+    bool bPastPhase(eOH ePhase);
+    void vPhase(eOH ePhase);
     void G_vPopBoard(void);
     void G_vPopIter(void);
     Card* pPrevChild(void);

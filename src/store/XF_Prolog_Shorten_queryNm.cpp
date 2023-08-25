@@ -39,7 +39,7 @@ XF_Prolog_Shorten_queryNm::~XF_Prolog_Shorten_queryNm(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Shorten_queryNm::vXF_Shorten_queryNm(CardIter* pCI)
+void XF_Prolog_Shorten_queryNm::vProlog(CardIter* pCI)
 {
   _static_
 

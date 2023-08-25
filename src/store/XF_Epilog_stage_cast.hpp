@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_stage_cast(CardIter* pCI);
    ~XF_Epilog_stage_cast(void) noexcept(false);
 
-    static void vXF_stage_cast(CardIter* pCI);
+    static void vEpilog(CardIter* pCI);
 
     void vXF_stage_cast(void);
 

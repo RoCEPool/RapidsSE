@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Reinstate_stage(CardIter* pCI);
    ~XF_Epilog_Reinstate_stage(void) noexcept(false);
 
-    static void vXF_Reinstate_stage(CardIter* pCI);
+    static void vEpilog(CardIter* pCI);
 
     void vXF_Reinstate_stage(void);
 

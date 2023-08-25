@@ -39,7 +39,7 @@ XF_Epilog_tblCol_To_stmCol::~XF_Epilog_tblCol_To_stmCol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(CardIter* pCI)
+void XF_Epilog_tblCol_To_stmCol::vEpilog(CardIter* pCI)
 {
   _static_
 

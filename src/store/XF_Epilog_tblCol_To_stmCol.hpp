@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_tblCol_To_stmCol(CardIter* pCI);
    ~XF_Epilog_tblCol_To_stmCol(void) noexcept(false);
 
-    static void vXF_tblCol_To_stmCol(CardIter* pCI);
+    static void vEpilog(CardIter* pCI);
 
     void vXF_tblCol_To_stmCol(void);
 

@@ -19,12 +19,8 @@ namespace BASE
   private:
 
     CardCtl* m_pCardCtl;
-    Object* m_pSurface;
 
     i8 m_nMaxLanesAcross;  // maximum number of lanes across
-
-    i8 m_nTitleLines;      // number of title lines
-    i8 m_jRibbonWidth;     // width of ribbon
 
     i8 m_i_Heat; // current horizontal heat/row
     i8 m_i_Lane; // current vertical lane/column
@@ -42,7 +38,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(CardCtl* pCardCtl, Object* pSurface, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
+    Ribbon(CardCtl* pCardCtl, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
     i8   i_Char(void);
@@ -55,7 +51,6 @@ namespace BASE
     void vHeatSet(void);
     void vHeatNext(void);
 
-    void vInsertCharsV(i8 i_Line, i8 i_Char, char cChar=' ');
     void vInsertCharsV(i8 i_Line, i8 i_Char, Stz* szText="  "_Stz);
 
     void vLaneFirst(void);
@@ -67,14 +62,8 @@ namespace BASE
     void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
 
-    void vSprintData(Stz* szFormat, ...);
-    void vSprintDataList(StzList* pStzList, i8 nWidth);
-    void vSprintDataRight(Stz* szFormat, ...);
-    void vSprintOther(Stz* szFormat, ...);
-    Object* pSurface(void);
+    void vSprintSnippet(bool bRight, Stz* szFormat, ...);
 
-    i8   nTitleLines(void);
-    void vTitleLines(void);
     void vTrim(void);
 
     i8   nRibbonWidth(i8 i_FromLine);
@@ -82,6 +71,10 @@ namespace BASE
   private:
     void vAddLine(void);
     void vInitTabs(i8 i_Start, i8 nEach);
+
+    void vSprintSnippetLeft(va_list args, const char* sFormat);
+    void vSprintSnippetRight(va_list args, const char* sFormat);
+
     void vSufficientLines(i8 i_Line);
 
     Footer* aFooter(void);

@@ -229,56 +229,6 @@ Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)
   return p_expr;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(iDepth);
-
-  Kid xCI(this);
-  while (xCI.bEach(CK_EXPR)) {
-    StzList* pStzList = new StzList;
-
-    pStzList->vAppend(xCI.p_expr()->szSymbol(SF_NONE));
-
-    CardIter xCI_expr(xCI.p_expr());
-    xCI_expr.G.p_as        = nullptr;
-    xCI_expr.G.p_boolCalc  = nullptr;
-    xCI_expr.G.p_rpnCalc   = nullptr;
-
-    while (xCI_expr.G_bEachMain()) {
-
-      if ( ! (
-          xCI_expr.G.p_MainCard->bIsCard(CK_AS)        ||
-          xCI_expr.G.p_MainCard->bIsCard(CK_BOOLCALC)  ||
-          xCI_expr.G.p_MainCard->bIsCard(CK_RPNCALC))) {
-        vTrace("Unexpected %s"_Stz,xCI_expr.G.p_MainCard->szCardNm());
-        NEVER_REACH
-      }
-    }
-
-    if (xCI_expr.G.p_as) {
-      pStzList->vAppend(xCI_expr.G.p_as->szSymbol(SF_NONE));
-    }
-    pRibbon->vSprintDataList(pStzList, 20);
-    pStzList->vRemoveAll();
-
-    if (xCI_expr.G.p_rpnCalc) {
-      xCI_expr.G.p_rpnCalc->vOntoStzList(pStzList);
-      pRibbon->vSprintDataList(pStzList, 20);
-      pStzList->vRemoveAll();
-    }
-
-    delete pStzList;
-  }
-
-
-
-
-  //vPrintCard_bySettings(pRibbon, iDepth);
-}
 
 /*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */

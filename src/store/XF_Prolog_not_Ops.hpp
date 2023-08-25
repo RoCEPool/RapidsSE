@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_not_Ops(CardIter* pCI);
    ~XF_Prolog_not_Ops(void) noexcept(false);
 
-    static void vXF_not_Ops(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
 
     void vXF_not_Ops(void);
 

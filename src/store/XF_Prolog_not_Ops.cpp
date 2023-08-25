@@ -44,7 +44,7 @@ XF_Prolog_not_Ops::~XF_Prolog_not_Ops(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_not_Ops::vXF_not_Ops(CardIter* pCI)
+void XF_Prolog_not_Ops::vProlog(CardIter* pCI)
 {
   _static_
 

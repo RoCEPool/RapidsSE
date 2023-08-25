@@ -39,7 +39,7 @@ XF_Epilog_Reinstate_stage::~XF_Epilog_Reinstate_stage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Reinstate_stage::vXF_Reinstate_stage(CardIter* pCI)
+void XF_Epilog_Reinstate_stage::vEpilog(CardIter* pCI)
 {
   _static_
 

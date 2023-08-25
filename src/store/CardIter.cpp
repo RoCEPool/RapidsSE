@@ -962,6 +962,18 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end of phase                                                               */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEndPhase(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_pBench->vEndPhase();
+
+  Bench::vValidate(this);
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndTransform(void)
@@ -1653,6 +1665,27 @@ void CardIter::vNullMembers(bool bNull_OP)
   if (bNull_OP)
     G.p_OP = nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* past given phase?                                                          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bPastPhase(eOH ePhase)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return m_pBench->bPastPhase(ePhase);
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin and record transformation information                                */
+/*----------------------------------------------------------------------------*/
+void CardIter::vPhase(eOH ePhase)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_pBench->vPhase(ePhase);
+}
+
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/

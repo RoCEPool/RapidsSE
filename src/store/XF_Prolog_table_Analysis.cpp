@@ -39,7 +39,7 @@ XF_Prolog_table_Analysis::~XF_Prolog_table_Analysis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_table_Analysis::vXF_table_Analysis(CardIter* pCI, Symbol* pSymbol_tableSyn)
+void XF_Prolog_table_Analysis::vProlog(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
   _static_
 

@@ -39,7 +39,7 @@ XF_Prolog_Add_level::~XF_Prolog_Add_level(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Add_level::vXF_Add_level(CardIter* pCI)
+void XF_Prolog_Add_level::vProlog(CardIter* pCI)
 {
   _static_
 

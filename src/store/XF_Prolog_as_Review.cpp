@@ -39,7 +39,7 @@ XF_Prolog_as_Review::~XF_Prolog_as_Review(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_as_Review::vXF_as_Review(CardIter* pCI)
+void XF_Prolog_as_Review::vProlog(CardIter* pCI)
 {
   _static_
 
