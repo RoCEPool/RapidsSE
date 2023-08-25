@@ -67,7 +67,7 @@ void XF_Flatten_Derive_bounds::vXF_Derive_bounds(void)
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

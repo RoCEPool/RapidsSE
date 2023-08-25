@@ -88,7 +88,7 @@ void XF_Prolog_as_Review::vXF_as_Review(void)
   }
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

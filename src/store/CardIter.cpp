@@ -968,11 +968,10 @@ void CardIter::vEndTransform(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  vRenumberCards();
+  m_pBench->vRenumberCards();
 
   if (G.pBoard) {
     G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
-    vPrintBoard();
   }
 
   Bench::vValidate(this);

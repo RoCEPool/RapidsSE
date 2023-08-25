@@ -123,7 +123,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   delete pFold;
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

@@ -74,7 +74,7 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
   Card_Where::vCullMarkedCmpPred(m_pCI);
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

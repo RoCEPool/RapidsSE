@@ -93,7 +93,7 @@ void XF_Prolog_Shorten_queryNm::vXF_Shorten_queryNm(void)
 
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

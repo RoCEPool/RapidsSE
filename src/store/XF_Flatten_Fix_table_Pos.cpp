@@ -68,7 +68,7 @@ void XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(void)
   Card_Table::vFixTablePos(m_pCI);
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

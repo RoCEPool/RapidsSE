@@ -69,7 +69,7 @@ void XF_Flatten_Delete_flat::vXF_Delete_flat(void)
     m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_flat);
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

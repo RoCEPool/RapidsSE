@@ -69,7 +69,7 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
     m_pCI->G.p_OP->vConvert_tblColOdn_To_stmColOdn(m_pCI);
   }
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

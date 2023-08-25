@@ -81,7 +81,7 @@ void XF_Prolog_projection_Analysis::vXF_projection_Analysis(void)
   m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ void XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(void)
   m_pCI->G.pDeck->vProjectionAnalysis_passThru(m_pCI);
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*============================================================================*/

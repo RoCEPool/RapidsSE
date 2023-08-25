@@ -115,7 +115,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   }
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 
   delete pSmooth;
   delete pCarryForward;

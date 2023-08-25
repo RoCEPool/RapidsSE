@@ -129,7 +129,7 @@ void XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(void)
 
 
   m_pCI->vEndTransform();
-  vValidateBench();
+//vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/
