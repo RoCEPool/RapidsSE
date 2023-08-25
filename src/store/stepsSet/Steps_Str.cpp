@@ -122,7 +122,7 @@ void Step::vStrClip(void)
   else
     pStart = sString.azChar() + iHasLength - 1 - llabs(iLength);
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,llabs(iLength));
+  StrLib::vCopyLen(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart, llabs(iLength));
   
   m_pDataStack->vPushStr(sSubStr);
   
@@ -277,7 +277,7 @@ void Step::vStrLeft(void)
   
   char* pStart = sString.azChar();
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart, iLength);
   
   m_pDataStack->vPushStr(sSubStr);
   
@@ -523,7 +523,7 @@ void Step::vStrRight(void)
   
   char* pStart = sString.azChar() + iHasLength - iLength;
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
+  StrLib::vCopy(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart);
   
   m_pDataStack->vPushStr(sSubStr);
   
@@ -587,7 +587,7 @@ void Step::vStrSub(void)
   
   char* pStart = sString.azChar() + iStart;
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart, iLength);
   
   m_pDataStack->vPushStr(sSubStr);
   

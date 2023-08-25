@@ -154,7 +154,7 @@ String_t<AREA>::String_t(char* azArg)
 
   ASSERT(AREA == nFreeBytes());
 
-  StrLib::vCopyLen(m_caCharArea,azArg,AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, azArg);
 
   _checkInitialisedSize_(AREA);
 }
@@ -178,7 +178,7 @@ String_t<AREA>::String_t(Stz* szArg)
 
   ASSERT(AREA == nFreeBytes());
 
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
   
   _checkInitialisedSize_(AREA);
 }
@@ -239,7 +239,7 @@ void String_t<AREA>::operator =(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -252,7 +252,7 @@ void String_t<AREA>::operator =(char* asArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vCopyLen(m_caCharArea,asArg,AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, asArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -265,7 +265,7 @@ void String_t<AREA>::operator =(const char* asArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vCopyLen(m_caCharArea,asArg,AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, asArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -505,7 +505,7 @@ void String_t<AREA>::vCopy(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -518,9 +518,7 @@ void String_t<AREA>::vCopy(Stz* szArg, i8 iLen)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  i8 nBytes = (iLen > AREA-1 ? AREA-1 : iLen);
-
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),nBytes);
+  StrLib::vCopyLen(m_caCharArea, AREA, szArg->azChar(), iLen);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -533,7 +531,7 @@ void String_t<AREA>::vCopyTill(Stz* szArg, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(m_caCharArea,szArg->azChar(),cTill);
+  StrLib::vCopyTill(m_caCharArea, AREA, szArg->azChar(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }

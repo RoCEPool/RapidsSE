@@ -96,7 +96,7 @@ void String::vCopy(Stz* szArg)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),m_nArea - 1);
+  StrLib::vCopy(m_caCharArea, m_nArea, szArg->azChar());
 
   aFooter()->vAssertFooter();
 }

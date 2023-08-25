@@ -780,25 +780,67 @@ void StrLib::vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResul
 {
   _static_
 
-  i8 nBytes = nCopy(psDst, iDstBufSize, psSrc, pbResult);
-  UNUSED(nBytes);
+  i8 iReqBufSize = nLength(psSrc) + 1;  // how much space required (including the null terminator)
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+
+  // Note, using strncpy() instead of calling nCopy() above as strncpy() is
+  // likely optimised for more efficient copying than byte by byte.
+  // Note that strncpy() doesn't guarantee that the buffer is null terminated
+  // if length(psSrc) >= iDstBufSize. If length(psSrc) < iDstBufSize then
+  // nulls are written to the remaining bytes.
+  strncpy(psDst, psSrc, iDstBufSize);
+  psDst[iDstBufSize - 1] = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* vCopyLen: copy src into dst uptill nBytes                                  */
+/* vCopyLen: copy psSrc into psDst up till nBytes characters (not including   */
+/* the null terminator) or until the end of psSrc.                            */
+/* NOTE: The semantic on the string truncation warning is slightly different  */
+/* here because it will only warn if the truncation occurs because the buffer */
+/* is exhausted before we hit a null terminator in psSrc or we run nBytes     */
+/* down to zero.                                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopyLen(char* psDst, const char* psSrc, i8 nBytes)
+void StrLib::vCopyLen(char* psDst, i8 iDstBufSize, const char* psSrc, i8 nBytes, bool* pbResult)
 {
   _static_
-  
+  ASSERT(nBytes >= 0);
+
+  // We don't know whether nBytes is larger or smaller than length(psSrc), so
+  // we need to count the number of bytes copied as we copy them.
+
+  i8 iBytesCopied = 0;
+  i8 iBytesLeft = nBytes;
+
   char *d = psDst;
   const char *s = psSrc;
-  
-  i8 n = nBytes;
-  while (*s && n--)
+
+  // Copy bytes, ensuring we leave 1 byte at the end for the null terminator
+  while (*s && iBytesLeft-- > 0 && ++iBytesCopied < iDstBufSize)
     *d++ = *s++;
 
-  *d = '\0';
+  if (iDstBufSize > 0) {
+    // Handle corner case of iDstBufSize == 0
+    *d = '\0';
+  }
+
+  // Check if we were going to overflow. This is a subtly different semantic
+  // than vCopy() because the caller supplied a maximum number of bytes to copy.
+  // If we stopped because of that then we strictly didn't truncate the string
+  // because it is what the caller requested.
+  if (*s && iBytesLeft > 0) {
+    // We report the required and available space from before the append operation
+    i8 iSrcLen = nSize(psSrc);
+    i8 iReqBufSize = iSrcLen < nBytes + 1 ? iSrcLen : nBytes + 1;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -832,17 +874,37 @@ void StrLib::vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit)
 /*----------------------------------------------------------------------------*/
 /* vCopyTill: copy src into dst uptill but not including ccTill               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopyTill(char* psDst, const char* psSrc, char ccTill)
+void StrLib::vCopyTill(char* psDst, i8 iDstBufSize, const char* psSrc, char ccTill, bool* pbResult)
 {
   _static_
-  
+
+  // We cannot tell ahead of time whether a string truncation will occur without
+  // the penalty of walking the psSrc string. So instead we report a truncation
+  // if we detect one.
+  i8 iBytesCopied = 0;
+
   char *d = psDst;
   const char *s = psSrc;
   
-  while (*s && ccTill != *s)
+  while (*s && ccTill != *s && ++iBytesCopied < iDstBufSize)
     *d++ = *s++;
-  
-  *d = '\0';
+
+  if (iDstBufSize > 0) {
+    // Handle corner case of iDstBufSize == 0
+    *d = '\0';
+  }
+
+  // Check if we were going to overflow.
+  if (*s && iBytesCopied == iDstBufSize) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nSize(psSrc);
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

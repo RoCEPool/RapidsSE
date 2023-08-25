@@ -90,7 +90,7 @@ void Step::vCsvBufferCsvAppend(void)
   }
 
   Stz* szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
-  StrLib::vCopyLen(szRecord->azChar(),sCsvRow.azChar(),nBytes - 1);
+  StrLib::vCopy(szRecord->azChar(), nBytes, sCsvRow.azChar());
 
   EXIT();
 }
