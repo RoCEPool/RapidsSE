@@ -74,8 +74,7 @@ bool XF_Optimise_max_To_top::bOptimise(void)
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_MAX_TO_TOP]);
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 
   return bOptRun;
 }

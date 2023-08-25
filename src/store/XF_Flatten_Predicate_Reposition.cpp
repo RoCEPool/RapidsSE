@@ -107,8 +107,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
  // m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

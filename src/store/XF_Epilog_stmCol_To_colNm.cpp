@@ -78,8 +78,7 @@ void XF_Epilog_stmCol_To_colNm::vXF_stmCol_To_colNm(void)
   }
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

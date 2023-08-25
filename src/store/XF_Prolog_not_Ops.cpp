@@ -74,8 +74,7 @@ void XF_Prolog_not_Ops::vXF_not_Ops(void)
     m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

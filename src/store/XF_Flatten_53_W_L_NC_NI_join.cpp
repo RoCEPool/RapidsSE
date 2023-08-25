@@ -117,14 +117,13 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  m_pCI->vEndTransform();
-
   delete pSmoosh;
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
 
-  vValidate();
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

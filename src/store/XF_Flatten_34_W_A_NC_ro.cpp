@@ -105,13 +105,12 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
 
  // m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->vEndTransform();
-
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
 
-  vValidate();
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

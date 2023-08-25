@@ -105,7 +105,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->vRenumberCards();
+ // pCI->vRenumberCards();
  // pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -235,7 +235,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->vRenumberCards();
+ // pCI->vRenumberCards();
  // pCI->vPrintBoard();
 
 

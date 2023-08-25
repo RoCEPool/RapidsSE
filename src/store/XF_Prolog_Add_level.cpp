@@ -69,8 +69,7 @@ void XF_Prolog_Add_level::vXF_Add_level(void)
     ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

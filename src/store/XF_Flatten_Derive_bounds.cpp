@@ -63,10 +63,11 @@ void XF_Flatten_Derive_bounds::vXF_Derive_bounds(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_FLATTEN_DERIVE_BOUNDS, "derive index bounds from table filter"_Stz);
-  Card_Table::vDeriveBoundsFromFilter(m_pCI);
-  m_pCI->vEndTransform();
 
-  vValidate();
+  Card_Table::vDeriveBoundsFromFilter(m_pCI);
+
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

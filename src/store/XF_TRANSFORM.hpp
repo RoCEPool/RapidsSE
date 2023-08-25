@@ -19,9 +19,6 @@ namespace STORE
     XF_TRANSFORM(eCN eClass, CardIter* pCI=nullptr);
    ~XF_TRANSFORM(void) noexcept(false);
 
-  protected:
-    void vValidate(void);
-
   private:
     Footer* aFooter(void);
 

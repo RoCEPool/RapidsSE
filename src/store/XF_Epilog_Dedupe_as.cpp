@@ -71,8 +71,7 @@ void XF_Epilog_Dedupe_as::vXF_Dedupe_as(void)
   }
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

@@ -64,10 +64,11 @@ void XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(void)
 
   // fix position of table which uses subquery result as pos 0
   m_pCI->vTransform(__func__, XF_FLATTEN_FIX_TABLE_POS, "fix position of table which uses subquery result"_Stz);
-  Card_Table::vFixTablePos(m_pCI);
-  m_pCI->vEndTransform();
 
-  vValidate();
+  Card_Table::vFixTablePos(m_pCI);
+
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

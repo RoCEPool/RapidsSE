@@ -79,6 +79,7 @@ void Bench::vValidate(CardIter* pCI)
 
   pCI->vRestore();
 
+
   XC::vXC(pCI);
 }
 

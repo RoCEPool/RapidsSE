@@ -96,8 +96,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
   }
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 
   return bOptRun;
 }

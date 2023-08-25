@@ -214,7 +214,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->Prior.m_pProjection = pSub_projection();
 
-  pCI->vRenumberCards();
+ // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

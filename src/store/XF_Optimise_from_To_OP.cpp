@@ -73,8 +73,7 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
   bOptRun = true;
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 
   return bOptRun;
 }

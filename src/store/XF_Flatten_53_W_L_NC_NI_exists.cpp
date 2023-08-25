@@ -105,13 +105,12 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  m_pCI->vEndTransform();
-
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
 
-  vValidate();
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

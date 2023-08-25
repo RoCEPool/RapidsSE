@@ -74,8 +74,7 @@ void XF_Prolog_scan_To_from::vXF_scan_To_table(void)
     Card_Scan::vScanBecomesTable(m_pCI);
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

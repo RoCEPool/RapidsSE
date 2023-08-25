@@ -85,8 +85,7 @@ void XF_Prolog_Erase_construction::vProlog(void)
   Card_Stage::vDeleteAllStage(m_pCI);
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

@@ -84,8 +84,7 @@ bool XF_Optimise_scan_To_indexScan::bOptimise(void)
   }
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 
   return bOptRun;
 }

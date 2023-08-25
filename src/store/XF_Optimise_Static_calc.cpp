@@ -74,8 +74,7 @@ bool XF_Optimise_Static_calc::bOptimise(void)
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_STATIC_CALC]);
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 
   return bOptRun;
 }

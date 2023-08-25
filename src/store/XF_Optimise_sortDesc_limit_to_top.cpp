@@ -74,8 +74,7 @@ bool XF_Optimise_sortDesc_limit_to_top::bOptimise(void)
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_SORTDESC_LIMIT_TO_TOP]);
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 
   return bOptRun;
 }

@@ -67,8 +67,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   Card_Where::vMove_All_on_To_where(m_pCI);
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/
