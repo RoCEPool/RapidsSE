@@ -15,8 +15,8 @@ namespace Parser
     i8   m_iLine;
     i8   m_iColumn;
     s256 m_sToken;
-    s256 m_sErrorMsg;
-    
+    s2K  m_sErrorMsg;
+
    public:
     ErrorListener();
     virtual ~ErrorListener() noexcept;
