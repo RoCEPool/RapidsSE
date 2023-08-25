@@ -846,29 +846,62 @@ void StrLib::vCopyLen(char* psDst, i8 iDstBufSize, const char* psSrc, i8 nBytes,
 /*----------------------------------------------------------------------------*/
 /* vCopySplit: copy src into w1, then w2 divided at cSplit                    */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit)
+void StrLib::vCopySplit(char* psDst1, i8 iDst1BufSize,
+                        char* psDst2, i8 iDst2BufSize,
+                        const char* psSrc, char cSplit, bool* pbResult)
 {
   _static_
-  
-  const char *s = sSrc;
-  
-  char *d1 = w1;
-  while (*s && *s != cSplit)
-    *d1++ = *s++;
-  *d1 = '\0';
+
+  // We cannot tell ahead of time whether a string truncation will occur without
+  // the penalty of walking the psSrc string. So instead we report a truncation
+  // if we detect one.
+  i8 iBytesCopied = 0;
+  bool bInterimResult1 = true;
+  bool bInterimResult2 = true;
+
+  const char *s = psSrc;
+  char *d1 = psDst1;
+
+  while (*s && *s != cSplit) {
+    if (iBytesCopied < iDst1BufSize - 1) {
+      ++iBytesCopied;
+      *d1++ = *s++;
+    }
+  }
+
+  if (iDst1BufSize > 0) {
+    // Handle corner case of iDstBufSize == 0
+    *d1 = '\0';
+  }
+
+  // Check if we were going to overflow while writing to psDst1
+  if (*s && iBytesCopied == iDst1BufSize) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nSize(psSrc);
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDst1BufSize, &bInterimResult1);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
   
   if ( ! *s ) {
-    *w2 = '\0';
+    if (iDst2BufSize > 0) {
+      // Handle corner case of iDstBufSize == 0
+      *psDst2 = '\0';
+    }
     return;
   }
   
   // skip the split character
   s++;
-  
-  char* d2 = w2;
-  while (*s)
-    *d2++ = *s++;
-  *d2 = '\0';
+  vCopy(psDst2, iDst2BufSize, s, &bInterimResult2);
+
+  // If a truncation occurred on the first copy then alert the caller
+  if (pbResult) {
+    *pbResult = (bInterimResult1 && bInterimResult2);
+  }
 }
   
 /*----------------------------------------------------------------------------*/

@@ -63,7 +63,9 @@ namespace BASE
     static i8    nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
     static void  vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
     static void  vCopyLen(char* psDst, i8 iDstBufSize, const char* psSrc, i8 nBytes, bool* pbResult = nullptr);         // yes
-    static void  vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit);                                         // ✕
+    static void  vCopySplit(char* psDst1, i8 iDst1BufSize,
+                            char* psDst2, i8 iDst2BufSize,
+                            const char* psSrc, char cSplit, bool* bpResult = nullptr);                                   // yes
     static void  vCopyTill(char* psDst, i8 iDstBufSize, const char* psSrc, char ccTill, bool* pbResult = nullptr);      // yes
     
     static i8    iDigitToI8(char cDigit);                                                                               // ✕
