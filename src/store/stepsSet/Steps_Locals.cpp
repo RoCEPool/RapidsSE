@@ -377,11 +377,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("PtnStream[]"_Stz)) {
-    pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("RecvdObject[]"_Stz)) {
     pCurrentWord->vEncodeCall("RecvdObject[].set"_Stz);
     EXIT();

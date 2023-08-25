@@ -88,8 +88,6 @@
 #include "CrwTablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
-#include "PtnStm_cursor.hpp"
-#include "PtnStream.hpp"
 #include "Table.hpp"
 
 #include "Node.hpp"
@@ -588,8 +586,6 @@ SizeHeap gxaSizeHeap[]
   {CN_PSXTHD,               sizeof(PsxThd),                 HT_T_TINY    , FILL },
   {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_MEDIUM  , FILL },
   {CN_PTNID,                sizeof(LglPtn),                 HT_T_TINY    , FILL },
-  {CN_PTNSTMCURSOR,         sizeof(PtnStm_cursor),          HT_T_TINY    , FILL },
-  {CN_PTNSTREAM,            sizeof(PtnStream),              HT_T_TINY    , FILL },
   {CN_PTRVAL,               sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 
   { CN__Q__,                     'Q' - ('A' - 1),                HT_INVALID   , FILL },

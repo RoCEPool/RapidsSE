@@ -3814,10 +3814,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     case CN_GRID: {
      break;
     }
-
-    case CN_PTNSTREAM: {
-      break;
-    }
       
     default: {
       vTrace("vDeleteOperand %ld Error: %s\n"_Stz,eClass, aCN[eClass]->azChar());

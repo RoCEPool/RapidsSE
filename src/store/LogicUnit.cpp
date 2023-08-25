@@ -49,7 +49,6 @@
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 #include "PathIdentifier.hpp"
-#include "PtnStream.hpp"
 #include "PlanOperand.hpp"
 #include "Dynamo.hpp"
 #include "Port.hpp"
@@ -147,7 +146,6 @@ LogicUnit::LogicUnit(void)
 ,            m_xpPot(this,RF_REPAIR_DELETE,           Pot::vRepair,            LR_POT)
 ,    m_xpPreExpStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,    LR_PREEXPSTACK)
 ,         m_xpPtnDef(this,RF_REPAIR_DELETE,        PtnDef::vRepair,         LR_PTNDEF)
-,      m_xpPtnStream(this,RF_REPAIR_DELETE,     PtnStream::vRepair,      LR_PTNSTREAM)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
@@ -343,7 +341,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPort.bIsNull());
   RASSERT(m_xpPot.bIsNull());
-  RASSERT(m_xpPtnStream.bIsNull());
 
   RASSERT(m_xpRecvdObject.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());

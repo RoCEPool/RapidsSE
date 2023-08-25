@@ -1526,18 +1526,6 @@ void vJobIdLastJobIdFetch(void);
   void vPtnMapPtnsInGrid(void);
   void vPtnMapSee(void);
 
-  // ptnStream
-  void vPtnStreamBufferNo(void);
-  void vPtnStreamClose(void);
-  void vPtnStreamDelete(void);
-  void vPtnStreamGet(void);
-  void vPtnStreamIsNull(void);
-  void vPtnStreamNew(void);
-  void vPtnStreamOpen(void);
-  void vPtnStreamRead(void);
-  void vPtnStreamSeek(void);
-  void vPtnStreamSet(void);
-
   // push
   void vPushI(void);
   void vPushJ(void);

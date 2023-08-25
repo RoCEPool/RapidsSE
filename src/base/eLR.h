@@ -75,7 +75,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_POT,
   /*  */ LR_PREEXPSTACK,
   /*  */ LR_PTNDEF,
-  /*  */ LR_PTNSTREAM,
   
   /*  */ LR_RECVDOBJECT,
   /*  */ LR_RECVWL,
@@ -191,7 +190,6 @@ static Stz* aLR[]
   /*  */ "LR_POT"_Stz,
   /*  */ "LR_PREEXPSTACK"_Stz,
   /*  */ "LR_PTNDEF"_Stz,
-  /*  */ "LR_PTNSTREAM"_Stz,
   
   /*  */ "LR_RECVDOBJECT"_Stz,
   /*  */ "LR_RECVWL"_Stz,

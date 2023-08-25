@@ -148,7 +148,6 @@ namespace STORE
     REG<Pot,            CN_POT           > m_xpPot;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
     REG<PtnDef,         CN_PTNDEF        > m_xpPtnDef;
-    REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
