@@ -73,7 +73,6 @@ void XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
   }
 
   m_pCI->vEndTransform();
-
   vValidateBench();
 }
 

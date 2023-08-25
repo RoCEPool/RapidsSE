@@ -88,7 +88,6 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
   Card_From::vProduceTablePtns(m_pCI);
 
   m_pCI->vEndTransform();
-
   vValidateBench();
 }
 
@@ -111,7 +110,6 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(Symbol* pSymbol_table
 //  Card_Table::vProduceTablePtns(m_pCI);
 
   m_pCI->vEndTransform();
-
   vValidateBench();
 }
 
