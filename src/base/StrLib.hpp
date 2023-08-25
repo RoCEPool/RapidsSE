@@ -30,11 +30,11 @@ namespace BASE
     inline static void vReportStringTruncation(const char* azFuncName, i8 iReqBufSize, i8 iDstBufSize);
     
   public:                                                                                                               // SAFE?
-    static void  vAppendChar(char** aaz, char c);                                                                       // ✕
-    static void  vAppendDecimal(char** aaz, i8 i);                                                                      // ✕
-    static void  vAppendHex(char** aaz, i8 i);                                                                          // ✕
-    static void  vAppendNull(char** aaz);                                                                               // ✕
-    static void  vAppendPad(char** aaz, const char* s, i8 nLength);                                                     // ✕
+    static void  vAppendChar(char** aazDstCrs, const char* azDstLastChar, char cChar, bool* pbResult = nullptr);        // yes
+    static void  vAppendDecimal(char** aazDstCrs, const char* azDstLastChar, i8 iDecVal, bool* pbResult = nullptr);     // yes
+    static void  vAppendHex(char** aazDstCrs, const char* azDstLastChar, i8 iDecVal, bool* pbResult = nullptr);         // yes
+    static void  vAppendNull(char** aazDstCrs, const char* azDstLastChar, bool* pbResult = nullptr);                    // yes
+    static void  vAppendPad(char** aazDstCrs, const char* psDst, i8 iDstBufSize, i8 nPadLen, bool* pbResult = nullptr); // yes
     static void  vAppendString(char** aazDstCrs, const char* azDstLastChar,
                                const char* pSrc, bool* pbResult = nullptr);                                             // yes
     static void  vAppendString(char** aazDstCrs, const char* azDstLastChar,

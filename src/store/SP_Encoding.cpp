@@ -82,7 +82,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
   for (i8 i_Col = 0; i_Col < pEncoding->m_nColumns; i_Col++) {
   
     char* szCrs = &caLine[0];
-    
+
     _ColEnc* aColEnc = & pEncoding->xaColEnc[i_Col];
     
     Column* pCol = pEncoding->m_pStreamDef->pGetColumn(i_Col);
@@ -95,48 +95,48 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     METACODE_SPLIT(aColEnc->m_uMetaCode,uHigh,uLow);
     
     StrLib::vAppendString(&szCrs,azBufLastChar,(char*)" "_Stz);
-    StrLib::vAppendPad(&szCrs,caLine,2);
-    StrLib::vAppendChar(&szCrs,'[');
-    StrLib::vAppendDecimal(&szCrs,i_Col);
-    StrLib::vAppendChar(&szCrs,']');
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine),2);
+    StrLib::vAppendChar(&szCrs, azBufLastChar, '[');
+    StrLib::vAppendDecimal(&szCrs, azBufLastChar, i_Col);
+    StrLib::vAppendChar(&szCrs, azBufLastChar, ']');
     
     
-    StrLib::vAppendChar(&szCrs,aColEnc->m_bSplit ? '*' : ' ');
+    StrLib::vAppendChar(&szCrs, azBufLastChar, aColEnc->m_bSplit ? '*' : ' ');
 
-    StrLib::vAppendPad(&szCrs,caLine,7);
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine),7);
     StrLib::vAppendString(&szCrs,azBufLastChar,(char*)pCol->szColNm());
     
-    StrLib::vAppendPad(&szCrs,caLine,25);
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine), 25);
     StrLib::vAppendString(&szCrs,azBufLastChar,(char*)szDatum);
     
-    StrLib::vAppendPad(&szCrs,caLine,30);
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine), 30);
     if (aColEnc->m_uMetaCode < 16)
-      StrLib::vAppendChar(&szCrs,'0');
-    StrLib::vAppendHex(&szCrs,aColEnc->m_uMetaCode);
-    StrLib::vAppendChar(&szCrs,':');
+      StrLib::vAppendChar(&szCrs, azBufLastChar, '0');
+    StrLib::vAppendHex(&szCrs, azBufLastChar, aColEnc->m_uMetaCode);
+    StrLib::vAppendChar(&szCrs, azBufLastChar, ':');
     StrLib::vAppendString(&szCrs,azBufLastChar,(char*)aMC[uHigh]);
-    StrLib::vAppendChar(&szCrs,'.');
-    StrLib::vAppendDecimal(&szCrs,uLow);
+    StrLib::vAppendChar(&szCrs, azBufLastChar, '.');
+    StrLib::vAppendDecimal(&szCrs, azBufLastChar, uLow);
 
-    StrLib::vAppendPad(&szCrs,caLine,50);
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine), 50);
     StrLib::vAppendString(&szCrs,azBufLastChar,(char*)"C_"_Stz);
-    StrLib::vAppendDecimal(&szCrs,aColEnc->m_jDataBytes);
+    StrLib::vAppendDecimal(&szCrs, azBufLastChar, aColEnc->m_jDataBytes);
     StrLib::vAppendString(&szCrs,azBufLastChar,(char*)"B"_Stz);
 
-    StrLib::vAppendPad(&szCrs,caLine,60);
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine), 60);
     
     if (pEncoding->xaColEnc[i_Col].m_o_DataBreak) {
-      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_DataFrom);
+      StrLib::vAppendDecimal(&szCrs, azBufLastChar, aColEnc->m_o_DataFrom);
       StrLib::vAppendString(&szCrs,azBufLastChar,(char*)".."_Stz);
-      StrLib::vAppendDecimal(&szCrs,aColEnc->m_o_DataBreak);
+      StrLib::vAppendDecimal(&szCrs, azBufLastChar, aColEnc->m_o_DataBreak);
     }
     
-    StrLib::vAppendPad(&szCrs,caLine,70);
-    StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Tail);
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine), 70);
+    StrLib::vAppendDecimal(&szCrs, azBufLastChar, aColEnc->m_i_Tail);
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
-    StrLib::vAppendPad(&szCrs,caLine,75);
+    StrLib::vAppendPad(&szCrs,caLine, sizeof(caLine), 75);
     
     if (aColEnc->m_wDataCode.bIsNull()) {
       StrLib::vAppendString(&szCrs,azBufLastChar,C_NULL->azChar());

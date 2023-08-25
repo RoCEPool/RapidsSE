@@ -586,7 +586,7 @@ eEC IndexDef::eParseTableName(Stz* szCmd, String* psTableNm)
     goto L_RETURN;
   }
   
-  StrLib::vCopy(psTableNm->azStr(), psTableNm->nArea(), (const char*)pTkn->szChars());
+  StrLib::vCopy(psTableNm->azStr(), psTableNm->nAreaBytes(), (const char*)pTkn->szChars());
   
 L_RETURN:
   delete pTknVec;

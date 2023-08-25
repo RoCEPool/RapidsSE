@@ -23,7 +23,7 @@ namespace BASE
     String(void);
    ~String(void) noexcept(false);
 
-    i8    nArea(void);
+    i8    nAreaBytes(void);
     void  vCopy(Stz* szArg);
     void  vCatSprint(Stz* szFormat, ...);
     void  vConcat(Stz* szArg);

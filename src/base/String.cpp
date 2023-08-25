@@ -117,7 +117,7 @@ i8 String::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* get size of string                                                         */
 /*----------------------------------------------------------------------------*/
-i8 String::nArea(void)
+i8 String::nAreaBytes(void)
 {
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();

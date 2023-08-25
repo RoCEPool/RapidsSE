@@ -154,40 +154,85 @@ i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {
 /*----------------------------------------------------------------------------*/
 /* append character to end of workspace                                       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendChar(char** aazCrs, char cChar)
+void StrLib::vAppendChar(char** aazDstCrs, const char* azDstLastChar, char cChar, bool* pbResult)
 {
   _static_
-  
-  *(*aazCrs)++ = cChar;
-  
-  *(*aazCrs) = '\0';
+
+  char* d = *aazDstCrs;
+
+  // Check if we are out of room before even starting
+  if (d >= azDstLastChar) {
+    i8 iReqBufSize = 2; // the char + null pointer
+    i8 iDstBufSize = (d == azDstLastChar ? 1 : 0);
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+    return;
+  }
+
+  *(*aazDstCrs)++ = cChar;
+  *(*aazDstCrs) = '\0';
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* append number in decimal to workspace                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendDecimal(char** aazCrs, i8 iNumber)
+void StrLib::vAppendDecimal(char** aazDstCrs, const char* azDstLastChar, i8 iDecVal, bool* pbResult)
 {
   _static_
-  
-  if (iNumber < 0) {
-    *((*aazCrs)++) = '-';
-    
-    iNumber *= -1;
+
+  i8 iSpaceNeeded = 1; // start with the null terminator
+  i8 iDstBufSize = (byte*) azDstLastChar - (byte*) *aazDstCrs;
+
+  if (iDstBufSize < 0) {
+    iDstBufSize = 0;
   }
   
-  char* pBwd = *aazCrs;
-  char* pFwd = *aazCrs;
+  if (iDecVal < 0) {
+    ++iSpaceNeeded;
+    if (*aazDstCrs < azDstLastChar) {
+      *((*aazDstCrs)++) = '-';
+    }
+    
+    iDecVal *= -1;
+  }
   
-  
-  i8 v = iNumber;
+  char* pBwd = *aazDstCrs;
+  char* pFwd = *aazDstCrs;
+
+  i8 v = iDecVal;
   
   do
   {
-    *pBwd++ = (v % 10) + '0';
+    ++iSpaceNeeded;
+    if (pBwd < azDstLastChar) {
+      *pBwd++ = (v % 10) + '0';
+    }
+
     v /= 10;
   } while (v);
-  
+
+  // Did we run out of room?
+  if (iSpaceNeeded > iDstBufSize) {
+    if (pBwd == azDstLastChar) {
+      *pBwd = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+
+    *aazDstCrs = pBwd;
+    return;
+  }
+
+  // We had enough space to write the value backwards. Now reverse it.
   char* pEnd = pBwd;
   
   while (--pBwd > pFwd)
@@ -199,26 +244,54 @@ void StrLib::vAppendDecimal(char** aazCrs, i8 iNumber)
   
   *pEnd = '\0';
   
-  *aazCrs = pEnd;
+  *aazDstCrs = pEnd;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendHex: append number in hexadecimal to workspace                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendHex(char** aazCrs, i8 iNumber)
+void StrLib::vAppendHex(char** aazDstCrs, const char* azDstLastChar, i8 iDecVal, bool* pbResult)
 {
   _static_
+
+  i8 iSpaceNeeded = 1; // start with the null terminator
+  i8 iDstBufSize = (byte*) azDstLastChar - (byte*) *aazDstCrs;
+
+  if (iDstBufSize < 0) {
+    iDstBufSize = 0;
+  }
   
-  char* pBwd = *aazCrs;
-  char* pFwd = *aazCrs;
+  char* pBwd = *aazDstCrs;
+  char* pFwd = *aazDstCrs;
   
-  i8 v = iNumber;
+  i8 v = iDecVal;
   
   do {
-    *pBwd++ = cToHex(v % 16);
+    ++iSpaceNeeded;
+    if (pBwd < azDstLastChar) {
+      *pBwd++ = cToHex(v % 16);
+    }
+
     v /= 16;
   } while (v);
-  
+
+  // Did we run out of room?
+  if (iSpaceNeeded > iDstBufSize) {
+    if (pBwd == azDstLastChar) {
+      *pBwd = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+
+    *aazDstCrs = pBwd;
+    return;
+  }
+
+  // We had enough space to write the value backwards. Now reverse it.
   char* pEnd = pBwd;
   
   while (--pBwd > pFwd)
@@ -230,38 +303,55 @@ void StrLib::vAppendHex(char** aazCrs, i8 iNumber)
 
   *pEnd = '\0';
 
-  *aazCrs = pEnd;
+  *aazDstCrs = pEnd;
 }
 
 /*----------------------------------------------------------------------------*/
-/* vAppendPad: pad to given length                                            */
+/* vAppendPad: pad string with spaces to given length padLen only if the      */
+/* current string is shorter than nPadLen. nPadLen does not include null term.*/
+/* aazDstCrs must be pointing to the null term or the first char to be padded.*/
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendPad(char** aazCrs, const char* pString, i8 nLength)
+void StrLib::vAppendPad(char** aazDstCrs, const char* psDst, i8 iDstBufSize, i8 nPadLen, bool* pbResult)
 {
   _static_
   
-  i8 nCurLen = StrLib::nLength(pString);
-  
-  if (nCurLen >= nLength)
+  i8 nCurLen = StrLib::nLength(psDst);
+  i8 iReqBufSize = (nCurLen > nPadLen ? nCurLen : nPadLen) + 1;
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  if (nCurLen >= nPadLen)
     return;
   
-  char *z = *aazCrs;
+  char *z = *aazDstCrs;
   
-  while (nCurLen++ < nLength)
+  while (nCurLen < nPadLen && nCurLen < iDstBufSize - 1) {
+    ++nCurLen;
     *z++ = ' ';
+  }
+
   *z = '\0';
-  
-  *aazCrs = z;
+  *aazDstCrs = z;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendNull: append null character to end of workspace                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendNull(char** aazCrs)
+void StrLib::vAppendNull(char** aazDstCrs, const char* azDstLastChar, bool* pbResult)
 {
   _static_
+
+  char* d = *aazDstCrs;
+
+  if (d > azDstLastChar) {
+    bool bWillTruncate = !bCheckBufferSpace(__func__, 1, 0, pbResult);
+    UNUSED(bWillTruncate);
+    return;
+  }
   
-  *(*aazCrs)++ = '\0';
+  *(*aazDstCrs)++ = '\0';
 }
   
 /*----------------------------------------------------------------------------*/
@@ -5467,7 +5557,7 @@ void StrLib::vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given float into its char/str form                                 */
+/* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
 void StrLib::vToString(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
@@ -5496,8 +5586,9 @@ void StrLib::vToString(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
   if (iSpaceNeeded > iDstBufSize) {
     // Try to put a value into the destination buffer
     if (iDstBufSize > 1) {
-      psDst[0] = '0'; psDst[1] = 0;
-    } else {
+      psDst[0] = '0';
+      psDst[1] = 0;
+    } else if (iDstBufSize == 1) {
       psDst[0] = 0;
     }
 

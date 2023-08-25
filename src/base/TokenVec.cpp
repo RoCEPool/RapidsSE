@@ -1113,7 +1113,7 @@ void TokenVec::vToTknString(String* psDstStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  StrLib::vCopy(psDstStr->azStr(), psDstStr->nArea(), "");
+  StrLib::vCopy(psDstStr->azStr(), psDstStr->nAreaBytes(), "");
   
   i8 nTokens = this->nTokens();
   
@@ -1123,7 +1123,7 @@ void TokenVec::vToTknString(String* psDstStr)
     Token* pToken = pGet(i_Token);
     
     if (i_Token)
-      StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), ' ');
+      StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ' ');
     
     eTN eToken = pToken->eToken();
     
@@ -1133,38 +1133,38 @@ void TokenVec::vToTknString(String* psDstStr)
         break;
         
       case TN_BOOLEAN:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_DECIMAL:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_FLOAT:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_NULL:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_TAG:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       default:
@@ -1184,7 +1184,7 @@ void TokenVec::vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon)
 
   bool bNoQuotes = false;
 
-  StrLib::vCopy(psDstStr->azStr(), psDstStr->nArea(), "");
+  StrLib::vCopy(psDstStr->azStr(), psDstStr->nAreaBytes(), "");
   
   i8 nTokens = this->nTokens();
   
@@ -1201,61 +1201,61 @@ void TokenVec::vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon)
         break;
         
       case TN_BOOLEAN:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_DECIMAL:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_FLOAT:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
 
       case TN_LITERAL:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), '\'');
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), '\'');
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '\'');
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '\'');
         break;
 
       case TN_NAME:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_NULL:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_STRING:
         if (! bNoQuotes)
-          StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), '"');
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+          StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '"');
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         if (! bNoQuotes)
-          StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), '"');
+          StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '"');
         bNoQuotes = false;
         break;
         
       case TN_TAG:
-        StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       default:
         NEVER_REACH;
     }
     
-    StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), ' ');
+    StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ' ');
   }
   
   // concat a terminating semicolon (needed??)
   if (bAddSemicolon) {
-    StrLib::vConcat(psDstStr->azStr(), psDstStr->nArea(), ';');
+    StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ';');
   }
 }
 
