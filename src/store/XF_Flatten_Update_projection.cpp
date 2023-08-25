@@ -65,7 +65,7 @@ void XF_Flatten_Update_projection::vXF_Update_projection(void)
   m_pCI->vTransform(__func__, XF_FLATTEN_UPDATE_PROJECTION, "Update <projection>"_Stz);
 
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
 
   m_pCI->vEndTransform();
 //vValidateBench();

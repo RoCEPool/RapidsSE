@@ -445,7 +445,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
     Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
   }
 
-  pCI->vRenumberCards();
+ // pCI->vRenumberCards();
  // pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 

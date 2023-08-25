@@ -174,14 +174,14 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->G.p_tableList = Card_TableList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
  // m_pCI->vPrintBoard(__LINE__);
 
   // 2) Extract joinPredList from pipeline
 
   m_pCI->G.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
  // m_pCI->vPrintBoard(__LINE__);
 
   if (! m_pCI->G.p_joinPredList->nChildCards()) {
@@ -196,7 +196,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   m_pCI->G.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_filtPredList);
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
  // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -209,7 +209,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   CardIter xCI(p_streamPrmAll);
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
  // m_pCI->vPrintBoard(__LINE__);
 
   // 5) Remove invalid permutations
@@ -220,7 +220,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   xCI.vBeginEach();
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
  // m_pCI->vPrintBoard(__LINE__);
 
   if (! p_streamPrmAll->nChildCards()) {
@@ -238,7 +238,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   xCI.vBeginEach();
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
  // m_pCI->vPrintBoard(__LINE__);
 
   // get the join permutations strings
@@ -295,7 +295,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
     m_pCI->G.pDeck->vAppend((new Card_Section) ->SYM(SF_NOTE,"Picked Ordering"_Stz));
   m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardRecursive());
-  m_pCI->vRenumberCards();
+ // m_pCI->vRenumberCards();
  // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

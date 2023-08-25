@@ -198,7 +198,7 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 
   pCI->G.p_fold->vAppend(pCI->Prior.m_pProjection->pDupCardRecursive());
 
-  pCI->vRenumberCards();
+ // pCI->vRenumberCards();
 
 }
 
@@ -342,7 +342,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   pCI->G.pDeck->vRemoveChild(pCI->G.p_call);
   DELETE_CARD(pCI->G.p_call);
 
-  pCI->vRenumberCards();
+ // pCI->vRenumberCards();
  // pCI->vPrintBoard(__LINE__);
 
   // 7) derive the fold (SQ result) expr

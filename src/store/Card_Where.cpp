@@ -273,7 +273,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_where->vUpdate_projection(pCI);
 
-  pCI->vRenumberCards();
+ // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
