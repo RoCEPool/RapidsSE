@@ -341,6 +341,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
  // m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
+  m_pCI->m_pBench->vValidate(m_pCI);
 }
 
 /*============================================================================*/

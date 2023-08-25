@@ -78,7 +78,7 @@ void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
 
   _static_
 
-  pCI->vClearRestart();
+  pCI->vBeginEach();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vMarkWrt_table(pCI);
@@ -92,7 +92,7 @@ void Card_Where::vMoveWherePredsToTableFilter(CardIter* pCI) {
 
   _static_
 
-  pCI->vClearRestart();
+  pCI->vBeginEach();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vCopyMarkedPredsToTable(pCI->G.pDeck);
