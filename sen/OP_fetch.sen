@@ -99,7 +99,7 @@
 
       // open ptn stream for the tablePtn
       //ptnStream[] ptnStream.open assert
-      TablePtn[].rootPdsCursor to PdsCursor[]
+      //TablePtn[].rootPdsCursor to PdsCursor[]
 
     endof
 
@@ -198,7 +198,7 @@
     // pipe out the read crw buffer
     DataBuffer[].pipeOut
 
-    PdsCursor[].next
+    //PdsCursor[].next
  
     // call this handler again to process next buffer
     true LogicUnit[].callAgain!
