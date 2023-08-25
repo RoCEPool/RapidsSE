@@ -975,7 +975,7 @@ void CardIter::vEndTransform(void)
     vPrintBoard();
   }
 
-  Bench::vValidate(this);
+  //Bench::vValidate(this);
 }
 
 /*----------------------------------------------------------------------------*/
