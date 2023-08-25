@@ -835,7 +835,7 @@ void CrwBuffer::vToCsv(Tub* pTub)
     }
     
     szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
-    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nSize - 1);
+    StrLib::vCopy(szRecord->azChar(), nSize, hvRecord->sz()->azChar());
   }
   
   if (szRecord)
@@ -880,7 +880,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     }
     
     szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nBytes - 1);
+    StrLib::vCopy(szRecord->azChar(), nBytes, hvRecord->sz()->azChar());
   }
   
   if (szRecord)

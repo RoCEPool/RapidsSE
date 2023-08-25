@@ -32,9 +32,9 @@ InternalError::InternalError(eFK   eFailure,
                      i8    iLineNo) //: LowMemory(eFailure, azFuncNm, azText, azFileNm, iLineNo)
 {
   m_eFailure = eFailure;
-  StrLib::vCopyLen(m_zFuncNm,azFuncNm,sizeof(m_zFuncNm)-1);
-  StrLib::vCopyLen(m_zText,  azText,  sizeof(m_zText)-1);
-  StrLib::vCopyLen(m_zFileNm,azFileNm,sizeof(m_zFileNm)-1);
+  StrLib::vCopy(m_zFuncNm, sizeof(m_zFuncNm), azFuncNm);
+  StrLib::vCopy(m_zText,   sizeof(m_zText),   azText);
+  StrLib::vCopy(m_zFileNm, sizeof(m_zFileNm), azFileNm);
   m_iLineNo = iLineNo;
 
 }

@@ -559,7 +559,7 @@ Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzDeposit(Stz* szValue)
   ASSERT(nSize <= nBufSize);
 
   Stz* szAllottedStz = szStzAllot_begin();
-  StrLib::vCopyLen(szAllottedStz->azChar(), szValue->azChar(), nBufSize);
+  StrLib::vCopy(szAllottedStz->azChar(), nBufSize, szValue->azChar());
   vStzAllot_end(nSize);
   
   // !! !! !! !! !! !! !! !! !!

@@ -24,7 +24,7 @@ Error::Error(void)
 Error::Error(eEC eErrorCode, Stz* aErrorMsg)
 {
   m_eErrorCode = eErrorCode;
-  StrLib::vCopyLen(m_caErrorMsg, aErrorMsg->azChar(), sizeof(m_caErrorMsg));
+  StrLib::vCopy(m_caErrorMsg, sizeof(m_caErrorMsg), aErrorMsg->azChar());
 
   m_caFileName[0] = '\0';
   m_iLineNo = C_UNKNOWN;
@@ -38,7 +38,7 @@ Error::Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo)
   m_eErrorCode = eErrorCode;
   m_caErrorMsg[0] = '\0';
 
-  StrLib::vCopyLen(m_caFileName, aFileName->azChar(), sizeof(m_caFileName));
+  StrLib::vCopy(m_caFileName, sizeof(m_caFileName), aFileName->azChar());
   m_iLineNo = iLineNo;
   
   //_checkInitialisedSize_(sizeof(Error));
@@ -50,9 +50,9 @@ Error::Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo)
 Error::Error(eEC eErrorCode, Stz* aErrorMsg, Stz* aFileName, i8 iLineNo)
 {
   m_eErrorCode = eErrorCode;
-  StrLib::vCopyLen(m_caErrorMsg, aErrorMsg->azChar(), sizeof(m_caErrorMsg));
+  StrLib::vCopy(m_caErrorMsg, sizeof(m_caErrorMsg), aErrorMsg->azChar());
 
-  StrLib::vCopyLen(m_caFileName, aFileName->azChar(), sizeof(m_caFileName));
+  StrLib::vCopy(m_caFileName, sizeof(m_caFileName), aFileName->azChar());
   m_iLineNo = iLineNo;
 
   //_checkInitialisedSize_(sizeof(Error));
@@ -96,9 +96,9 @@ i8 Error::iLineNo(void)
 void Error::vSet(Error& rxError)
 {
   m_eErrorCode = rxError.eErrorCode();
-  StrLib::vCopyLen(m_caErrorMsg, rxError.aErrorMsg()->azChar(), sizeof(m_caErrorMsg));
+  StrLib::vCopy(m_caErrorMsg, sizeof(m_caErrorMsg), rxError.aErrorMsg()->azChar());
 
-  StrLib::vCopyLen(m_caFileName, rxError.aFileName()->azChar(), sizeof(m_caFileName));
+  StrLib::vCopy(m_caFileName, sizeof(m_caFileName), rxError.aFileName()->azChar());
   m_iLineNo = rxError.iLineNo();
 }
 
@@ -108,7 +108,7 @@ void Error::vSet(Error& rxError)
 void Error::vSet(eEC eErrorCode, Stz* aErrorMsg)
 {
   m_eErrorCode = eErrorCode;
-  StrLib::vCopyLen(m_caErrorMsg, aErrorMsg->azChar(), sizeof(m_caErrorMsg));
+  StrLib::vCopy(m_caErrorMsg, sizeof(m_caErrorMsg), aErrorMsg->azChar());
 }
 
 /*============================================================================*/

@@ -83,7 +83,7 @@ Stz* SP_Flt::sz(d8 dFlt)
     i8 iIdx = StrLib::iFind(sTmpStr.azChar(), 'e');
 
     // Don't copy the last digit before the 'e'
-    StrLib::vCopyLen(m_caResult, sTmpStr.azChar(), iIdx - 1);
+    StrLib::vCopyLen(m_caResult, sizeof(m_caResult), sTmpStr.azChar(), iIdx - 1);
 
     // Now copy the 'e' and everything after it
     StrLib::vConcat(m_caResult, sizeof(m_caResult), sTmpStr.azChar() + iIdx);

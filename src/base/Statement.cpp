@@ -71,7 +71,7 @@ Statement::Statement(Stz* szText)
   m_caText[0] = '\0';
 #endif
   
-  StrLib::vCopyLen(m_caText,szText->azChar(),C_TEXT_MEDIUM-1);
+  StrLib::vCopy(m_caText, sizeof(m_caText), szText->azChar());
 
   _checkInitialised_(CN_STATEMENT);
   

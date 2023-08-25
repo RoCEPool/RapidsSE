@@ -177,7 +177,7 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   
   i8 nBytes = nDifference(szStart,szCursor);
   
-  StrLib::vCopyLen(caSubStrBefore,szStart->azChar(),nBytes);
+  StrLib::vCopyLen(caSubStrBefore, sizeof(caSubStrBefore), szStart->azChar(), nBytes);
   StrLib::vEscape(caEscapedBefore,caSubStrBefore);
   
   StrLib::vCopy(m_caResult, sizeof(m_caResult), caEscapedBefore);
@@ -187,7 +187,7 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   char caSubStrAfter[1024];
   char caEscapedAfter[1024];
 
-  StrLib::vCopyLen(caSubStrAfter,szCursor->azChar(),iAfter);
+  StrLib::vCopyLen(caSubStrAfter, sizeof(caSubStrAfter), szCursor->azChar(), iAfter);
   StrLib::vEscape(caEscapedAfter,caSubStrAfter);
   
   StrLib::vConcat(m_caResult, sizeof(m_caResult), caEscapedAfter);
