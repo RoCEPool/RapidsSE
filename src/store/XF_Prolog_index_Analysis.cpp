@@ -92,7 +92,7 @@ void XF_Prolog_index_Analysis::vXF_index_Analysis(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/

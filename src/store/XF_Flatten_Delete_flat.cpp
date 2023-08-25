@@ -66,7 +66,7 @@ void XF_Flatten_Delete_flat::vXF_Delete_flat(void)
   while (m_pCI->G_bEachMain(CK_FLAT))
     m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_flat);
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

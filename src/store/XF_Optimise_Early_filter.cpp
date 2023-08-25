@@ -75,7 +75,7 @@ bool XF_Optimise_Early_filter::bOptimise(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 
   return bOptRun;
 }

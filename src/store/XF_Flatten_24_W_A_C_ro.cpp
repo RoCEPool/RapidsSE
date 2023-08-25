@@ -101,7 +101,7 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
   delete pCorrelatedJoin;
   delete pFold;
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

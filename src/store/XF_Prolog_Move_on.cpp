@@ -68,7 +68,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

@@ -70,7 +70,7 @@ void XF_Prolog_Add_level::vXF_Add_level(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

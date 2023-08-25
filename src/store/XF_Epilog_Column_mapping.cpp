@@ -85,7 +85,7 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
   }
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

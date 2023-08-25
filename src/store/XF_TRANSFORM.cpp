@@ -43,7 +43,7 @@ XF_TRANSFORM::~XF_TRANSFORM(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_TRANSFORM::vValidate(void)
+void XF_TRANSFORM::vValidateBench(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 

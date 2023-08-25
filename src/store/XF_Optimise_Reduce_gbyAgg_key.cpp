@@ -77,7 +77,7 @@ bool XF_Optimise_Reduce_gbyAgg_key::bOptimise(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 
   return bOptRun;
 }

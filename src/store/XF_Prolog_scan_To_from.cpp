@@ -75,7 +75,7 @@ void XF_Prolog_scan_To_from::vXF_scan_To_table(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

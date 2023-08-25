@@ -86,7 +86,7 @@ void XF_Prolog_Erase_construction::vProlog(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

@@ -75,7 +75,7 @@ void XF_Prolog_not_Ops::vXF_not_Ops(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

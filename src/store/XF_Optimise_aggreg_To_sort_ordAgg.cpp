@@ -71,7 +71,7 @@ bool XF_Optimise_aggreg_To_sort_ordAgg::bOptimise(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 
   return true;
 }

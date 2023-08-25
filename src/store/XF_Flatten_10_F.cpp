@@ -123,7 +123,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 
   XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

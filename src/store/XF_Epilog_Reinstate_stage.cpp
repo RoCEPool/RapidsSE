@@ -68,7 +68,7 @@ void XF_Epilog_Reinstate_stage::vXF_Reinstate_stage(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

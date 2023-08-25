@@ -66,7 +66,7 @@ void XF_Flatten_Delete_Empty_where::vXF_Delete_Empty_where(void)
   Card_Where::vDeleteEmpyWhere(m_pCI);
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

@@ -68,7 +68,7 @@ void XF_Epilog_stage_cast::vXF_stage_cast(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

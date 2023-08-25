@@ -90,7 +90,7 @@ void XF_Epilog_Promote_filter::vXF_Individuate_filter(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

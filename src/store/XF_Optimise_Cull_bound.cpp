@@ -98,7 +98,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 
   return bOptRun;
 }
@@ -195,7 +195,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 
   return bOptRun;
 }

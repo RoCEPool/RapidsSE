@@ -69,7 +69,7 @@ void XF_Flatten_Update_projection::vXF_Update_projection(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

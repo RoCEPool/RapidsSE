@@ -89,7 +89,7 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(Symbol* pSymbol_table
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

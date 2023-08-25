@@ -70,7 +70,7 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
   }
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

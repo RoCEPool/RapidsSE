@@ -111,7 +111,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   delete pCarryForward;
   delete pFold;
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

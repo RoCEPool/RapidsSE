@@ -20,7 +20,7 @@ namespace STORE
    ~XF_TRANSFORM(void) noexcept(false);
 
   protected:
-    void vValidate(void);
+    void vValidateBench(void);
 
   private:
     Footer* aFooter(void);

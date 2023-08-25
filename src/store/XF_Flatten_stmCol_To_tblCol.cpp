@@ -69,7 +69,7 @@ void XF_Flatten_stmCol_To_tblCol::vXF_stmCol_To_tblCol(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

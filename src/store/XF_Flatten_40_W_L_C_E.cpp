@@ -95,7 +95,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
   delete pSmoosh;
   delete pFold;
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/

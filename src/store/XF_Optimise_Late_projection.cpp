@@ -75,7 +75,7 @@ bool XF_Optimise_Late_projection::bOptimise(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 
   return bOptRun;
 }

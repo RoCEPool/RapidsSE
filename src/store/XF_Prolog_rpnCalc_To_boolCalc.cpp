@@ -74,7 +74,7 @@ void XF_Prolog_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(void)
 
   m_pCI->vEndTransform();
 
-  vValidate();
+  vValidateBench();
 }
 
 /*============================================================================*/
