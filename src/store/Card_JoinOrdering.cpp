@@ -131,9 +131,9 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   }
 
   // the join sequence
-  CardIter xCI(this);
-  if (xCI.G_bEachMain(CK_JOINORDER)) {
-    char cHeadTable = xCI.G.p_joinOrder->pSymbol()->cSF_char();
+  Kid xCI(this);
+  if (xCI.bEach(CK_JOINORDER)) {
+    char cHeadTable = xCI.p_joinOrder()->pSymbol()->cSF_char();
     s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
 
     if (bNumbers)
@@ -145,25 +145,26 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
       pString->vSprint("%s"_Stz,sHeadTable.szStz());
   }
 
-  while (xCI.G_bEachMain(CK_JOINORDER)) {
-    char cNextTable = xCI.G.p_joinOrder->pSymbol()->cSF_char();
+  while (xCI.bEach(CK_JOINORDER)) {
+    Card_JoinOrder* p_joinOrder = xCI.p_joinOrder();
+    char cNextTable = p_joinOrder->pSymbol()->cSF_char();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
-    xCI.G.p_joinEstimate = xCI.G.p_joinOrder->pSub_joinEstimate();
-    xCI.G.p_joinCast = xCI.G.p_joinEstimate->pSub_locusCast();
-    xCI.G.p_costUnicast = xCI.G.p_joinEstimate->pSub_costUnicast();
-    xCI.G.p_costNetwork = xCI.G.p_joinEstimate->pSub_costNetwork();
-    xCI.G.p_costJoining = xCI.G.p_joinEstimate->pSub_costJoining();
-    s32 sCast = xCI.G.p_joinCast->szSymbol(SF_NONE);
+    Card_JoinEstimate* p_joinEstimate = p_joinOrder->pSub_joinEstimate();
+    Card_JoinCast* p_joinCast = p_joinEstimate->pSub_locusCast();
+    Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
+    Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
+    Card_CostJoining* p_costJoining = p_joinEstimate->pSub_costJoining();
+    s32 sCast = p_joinCast->szSymbol(SF_NONE);
     StrLib::vShuffleLeft(sCast.azChar(),3);
 
     if (bNumbers)
       pString->vCatSprint(" %5s %9s %8s (%5s)"_Stz,
                           sCast.bSame("UNICAST"_Stz)
-                            ? xCI.G.p_costUnicast->szSymbol(SF_NONE)
-                            : xCI.G.p_costNetwork->szSymbol(SF_NONE),
+                            ? p_costUnicast->szSymbol(SF_NONE)
+                            : p_costNetwork->szSymbol(SF_NONE),
                           sCast.szStz(),
                           sNextTable.szStz(),
-                          xCI.G.p_costJoining->szSymbol(SF_NONE));
+                          p_costJoining->szSymbol(SF_NONE));
     else
       pString->vCatSprint(" %s %s"_Stz,sCast.szStz(),
                           sNextTable.szStz());
