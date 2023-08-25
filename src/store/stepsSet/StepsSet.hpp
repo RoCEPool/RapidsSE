@@ -209,6 +209,7 @@ public:
   void vBufferIdDropLock(void);
   void vBufferIdGet(void);
   void vBufferIdGetAndClear(void);
+  void vBufferIdGetDataBuffer(void);
   void vBufferIdIsNotNull(void);
   void vBufferIdIsNull(void);
   void vBufferIdSet(void);

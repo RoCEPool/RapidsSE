@@ -43,7 +43,7 @@ namespace BASE
 
     static DataBuffer *pRefdDataBuffer(Rrf &xRef);
 
-    static void vRepairList(Object *pObject);
+    static void vRepair(Object *pObject);
 
     static DataBuffer *pToDataBuffer(void *aAddr);
 

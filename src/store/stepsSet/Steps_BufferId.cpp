@@ -20,6 +20,7 @@ void Step::vAddSteps_BufferId(void)
   vAddStep("BufferId[].clear"_Stz,           &Step::vBufferIdClear);
   vAddStep("BufferId[].dropLock"_Stz,        &Step::vBufferIdDropLock);
   vAddStep("BufferId[].get"_Stz,            &Step::vBufferIdGet);
+  vAddStep("BufferId[].getDataBuffer"_Stz,   &Step::vBufferIdGetDataBuffer);
   vAddStep("BufferId[].isNotNull"_Stz,      &Step::vBufferIdIsNotNull);
   vAddStep("BufferId[].isNull"_Stz,         &Step::vBufferIdIsNull);
   vAddStep("BufferId[].set"_Stz,            &Step::vBufferIdSet);
@@ -59,6 +60,20 @@ void Step::vBufferIdGet(void)
   ENTRY();
 
   m_pDataStack->vPushPtr((Object*)m_pLogicUnit->m_oBufferId.m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* BufferId[].getDataBuffer -- convert bufferid to databuffer address via hashmap*/
+/*----------------------------------------------------------------------------*/
+void Step::vBufferIdGetDataBuffer(void)
+{
+  ENTRY();
+
+  DataBuffer* pDataBuffer = _pDataBuffer(AM::pHashMap()->pValueAt(m_pLogicUnit->m_oBufferId.m_pvAsAddress));
+  RASSERT(pDataBuffer != nullptr);
+  m_pDataStack->vPushPtr(pDataBuffer);
 
   EXIT();
 }

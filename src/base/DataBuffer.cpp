@@ -126,17 +126,11 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vRepairList(Object* pObject)
+void DataBuffer::vRepair(Object* pObject)
 {
   _static_
   DataBuffer* pDataBuffer = _pDataBuffer(pObject);
-  DataBuffer* pNextDataBuffer;
-
-  while (pDataBuffer) {
-    pNextDataBuffer = _pDataBuffer(pDataBuffer->pNextLinkedBuffer());
-    AM::vDeleteOperand(pDataBuffer,nullptr);
-    pDataBuffer = pNextDataBuffer;
-  }
+  AM::vDeleteOperand(pDataBuffer,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

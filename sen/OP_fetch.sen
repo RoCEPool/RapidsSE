@@ -95,10 +95,11 @@
       "*scan*" .verbose
       // now get excat key rows from index
       TablePtn[].grabRead_yieldLoop
-      TablePtn[] ptnStream::new to ptnStream[]
+      //TablePtn[] ptnStream::new to ptnStream[]
 
       // open ptn stream for the tablePtn
-      ptnStream[] ptnStream.open assert
+      //ptnStream[] ptnStream.open assert
+      TablePtn[].rootPdsCursor to PdsCursor[]
 
     endof
 
@@ -129,7 +130,13 @@
   case
     AT_SCAN of
       // read next buffer from ptn stream
-      ptnStream[] ptnStream.read to DataBuffer[]
+      //ptnStream[] ptnStream.read to DataBuffer[]
+      //PdsCursor[].currIsNotNull if
+      //  PdsCursor[].getItemAddr TablePtn[].extractBufferId to BufferId[]
+      //  BufferId[].getDataBuffer to DataBuffer[]
+      //else
+      nullptr to DataBuffer[]
+      //then
     endof
 
     // all other types of fetches, just fetchNext
@@ -150,11 +157,11 @@
     Counter1[] Counter0[] >= if
       // all done
       // close and delete partition stream
-      ptnStream[].isNull not if
-        ptnStream[] ptnStream.close
-        ptnStream[] ptnStream.delete
-        nullptr to ptnStream[]
-      then
+      //ptnStream[].isNull not if
+      //  ptnStream[] ptnStream.close
+      //  ptnStream[] ptnStream.delete
+      //  nullptr to ptnStream[]
+      //then
  
       // close and delete index stream
       indexStream[].isNull not if
@@ -190,6 +197,8 @@
  
     // pipe out the read crw buffer
     DataBuffer[].pipeOut
+
+    PdsCursor[].next
  
     // call this handler again to process next buffer
     true LogicUnit[].callAgain!
