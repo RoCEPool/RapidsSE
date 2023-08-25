@@ -96,11 +96,11 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
  // m_pCI->vPrintBoard(__LINE__);
-  m_pCI->vEndTransform();
 
   delete pCorrelatedJoin;
   delete pFold;
 
+  m_pCI->vEndTransform();
   vValidateBench();
 }
 

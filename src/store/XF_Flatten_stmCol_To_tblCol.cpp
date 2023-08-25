@@ -68,7 +68,6 @@ void XF_Flatten_stmCol_To_tblCol::vXF_stmCol_To_tblCol(void)
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
 
   m_pCI->vEndTransform();
-
   vValidateBench();
 }
 

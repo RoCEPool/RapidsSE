@@ -115,15 +115,13 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   }
 
   m_pCI->vEndTransform();
+  vValidateBench();
 
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
 
-
   XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
-
-  vValidateBench();
 }
 
 /*============================================================================*/
