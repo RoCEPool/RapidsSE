@@ -96,7 +96,6 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
   }
 
   m_pCI->vEndTransform();
-
   vValidateBench();
 
   return bOptRun;

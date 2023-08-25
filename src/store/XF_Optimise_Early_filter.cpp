@@ -74,7 +74,6 @@ bool XF_Optimise_Early_filter::bOptimise(void)
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_EARLY_FILTER]);
 
   m_pCI->vEndTransform();
-
   vValidateBench();
 
   return bOptRun;

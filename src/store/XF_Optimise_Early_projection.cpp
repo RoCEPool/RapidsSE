@@ -114,8 +114,6 @@ bool XF_Optimise_Early_projection::bOptimise(void)
   }
 
   m_pCI->vEndTransform();
-  vDebugPoint();
-
   vValidateBench();
 
   return bOptRun;
