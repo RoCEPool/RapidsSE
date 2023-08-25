@@ -62,9 +62,10 @@ namespace BASE
     void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText2);
 
+    void vSprintSnippet(bool bRight, Stz* szFormat, ...);
+
     void vSprintDataLeft(bool bRight, Stz* szFormat, ...);
     void vSprintDataRight(bool bRight, Stz* szFormat, ...);
-    void vSprintOther(bool bRight, Stz* szFormat, ...);
 
     void vTrim(void);
 
@@ -73,6 +74,10 @@ namespace BASE
   private:
     void vAddLine(void);
     void vInitTabs(i8 i_Start, i8 nEach);
+
+    void vSprintSnippetLeft(va_list args, const char* sFormat);
+    void vSprintSnippetRight(va_list args, const char* sFormat);
+
     void vSufficientLines(i8 i_Line);
 
     Footer* aFooter(void);

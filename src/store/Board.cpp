@@ -576,7 +576,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vSprintOther(false,"%s : %s : %s"_Stz,
+  pRibbon->vSprintDataLeft(false,"%s : %s : %s"_Stz,
                         aXF[m_pBench->eXform()],
                         aXF_desc[m_pBench->eXform()],
                         m_pBench->szXdesc());

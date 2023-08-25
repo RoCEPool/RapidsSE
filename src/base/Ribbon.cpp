@@ -245,42 +245,53 @@ void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
 /*----------------------------------------------------------------------------*/
 /* sprint at current coord                                                    */
 /*----------------------------------------------------------------------------*/
+void Ribbon::vSprintSnippet(bool bRight, Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_RIBBON, _FOOTER_);
+
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+
+  if (bRight)
+    vSprintSnippetRight(xArgs, (char*)szFormat);
+  else
+    vSprintSnippetLeft(xArgs, (char*)szFormat);
+
+  va_end(xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint at current coord                                                    */
+/*----------------------------------------------------------------------------*/
 void Ribbon::vSprintDataLeft(bool bRight, Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   RASSERT(! bRight);
 
-  const i8 nBufSize = 1024;
-  char zData[nBufSize];
-
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zData, nBufSize, xArgs, (char*)szFormat);
+  vSprintSnippetLeft(xArgs, (char*)szFormat);
   va_end(xArgs);
-
-  vPutData(m_i_Line++,m_i_Char,(Stz*)zData);
 }
-
 /*----------------------------------------------------------------------------*/
-/* sprint at current coord                                                    */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSprintOther(bool bRight, Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  RASSERT(! bRight);
-
-  const i8 nBufSize = 1024;
-  char zOther[nBufSize];
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(zOther, nBufSize, xArgs, (char*)szFormat);
-  va_end(xArgs);
-
-  vPutOther(m_i_Line++,m_i_Char,(Stz*)zOther);
-}
+//void Ribbon::vSprintDataLeft(bool bRight, Stz* szFormat, ...)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+//
+//  RASSERT(! bRight);
+//
+//  const i8 nBufSize = 1024;
+//  char zData[nBufSize];
+//
+//  va_list xArgs;
+//  va_start(xArgs,szFormat);
+//  StrLib::vSprint(zData, nBufSize, xArgs, (char*)szFormat);
+//  va_end(xArgs);
+//
+//  vPutData(m_i_Line++,m_i_Char,(Stz*)zData);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* sprint at current coord                                                    */
@@ -291,20 +302,32 @@ void Ribbon::vSprintDataRight(bool bRight, Stz* szFormat, ...)
 
   RASSERT(bRight);
 
-  const i8 nBufSize = 1024;
-  char zData[nBufSize];
-
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zData, nBufSize, xArgs, (char*)szFormat);
+  vSprintSnippetRight(xArgs, (char*)szFormat);
   va_end(xArgs);
-
-  char zDataRight[nBufSize];
-
-  StrLib::vSprint(zDataRight, nBufSize, m_sRightFormat.szStz(), (Stz*)zData);
-
-  vPutData(m_i_Line++,m_i_Char,(Stz*)zDataRight);
 }
+/*----------------------------------------------------------------------------*/
+//void Ribbon::vSprintDataRight(bool bRight, Stz* szFormat, ...)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+//
+//  RASSERT(bRight);
+//
+//  const i8 nBufSize = 1024;
+//  char zData[nBufSize];
+//
+//  va_list xArgs;
+//  va_start(xArgs,szFormat);
+//  StrLib::vSprint(zData, nBufSize, xArgs, (char*)szFormat);
+//  va_end(xArgs);
+//
+//  char zDataRight[nBufSize];
+//
+//  StrLib::vSprint(zDataRight, nBufSize, m_sRightFormat.szStz(), (Stz*)zData);
+//
+//  vPutData(m_i_Line++,m_i_Char,(Stz*)zDataRight);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* trim all the lines                                                         */
@@ -406,6 +429,41 @@ void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText2)
   RibbonLine* pRibbonLine = pGet(i_Line);
 
   pRibbonLine->vPut(i_Char, szText2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* formatted concatenated sprint                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vSprintSnippetLeft(va_list args, const char* sFormat)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  const i8 nBufSize = 1024;
+  char zData[nBufSize];
+
+  StrLib::vSprint(zData, nBufSize, args, sFormat);
+
+  vPutData(m_i_Line++,m_i_Char,(Stz*)zData);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* formatted concatenated sprint                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vSprintSnippetRight(va_list args, const char* sFormat)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  const i8 nBufSize = 1024;
+  char zData[nBufSize];
+
+  StrLib::vSprint(zData, nBufSize, args, sFormat);
+
+  char zDataRight[nBufSize];
+
+  StrLib::vSprint(zDataRight, nBufSize, m_sRightFormat.szStz(), (Stz*)zData);
+
+  vPutData(m_i_Line++,m_i_Char,(Stz*)zDataRight);
 }
 
 /*----------------------------------------------------------------------------*/
