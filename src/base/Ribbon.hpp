@@ -64,9 +64,6 @@ namespace BASE
 
     void vSprintSnippet(bool bRight, Stz* szFormat, ...);
 
-    void vSprintDataLeft(bool bRight, Stz* szFormat, ...);
-    void vSprintDataRight(bool bRight, Stz* szFormat, ...);
-
     void vTrim(void);
 
     i8   nRibbonWidth(i8 i_FromLine);

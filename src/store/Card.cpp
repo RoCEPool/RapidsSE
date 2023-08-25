@@ -1666,12 +1666,12 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
     else
     if (nSubs == 1) {
       Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintDataRight(true,"%s"_Stz, pSub_0->szSymbol(SF_NONE));
+      pRibbon->vSprintSnippet(true,"%s"_Stz, pSub_0->szSymbol(SF_NONE));
     }
     else {
       Card *pSub_0 = pChild->pGetChild(0);
       Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintDataRight(true,"%s == %s"_Stz, pSub_0->szSymbol(SF_NONE), pSub_1->szSymbol(SF_NONE));
+      pRibbon->vSprintSnippet(true,"%s == %s"_Stz, pSub_0->szSymbol(SF_NONE), pSub_1->szSymbol(SF_NONE));
     }
 
   }
@@ -1692,7 +1692,7 @@ void Card::vPrintHeader(Ribbon* pRibbon, eAL eLevel)
     default           : cLevel = '?'; break;
   }
 
-  pRibbon->vSprintDataLeft(false,"==%02lld %c--%10p--"_Stz,
+  pRibbon->vSprintSnippet(false,"==%02lld %c--%10p--"_Stz,
                            m_i_Child,
                            cLevel,
                            ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
@@ -1739,7 +1739,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
                        sHiddenChildren.szStz());
   }
 
-  pRibbon->vSprintDataLeft(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
+  pRibbon->vSprintSnippet(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sName.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1792,7 +1792,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
   }
 
   if (sNameSymbol.nLength() <= 18) {
-    pRibbon->vSprintDataLeft(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
+    pRibbon->vSprintSnippet(false,"%c%c%-18s"_Stz, this->cMark1(), this->cMark2(), sNameSymbol.szStz());
   }
   else {
     vPrintName(pRibbon, iDepth);
@@ -1829,12 +1829,12 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
         Stz* szDecode = szDecodeEnum(szName, iPpy);
         if (szDecode)
-          pRibbon->vSprintDataRight(true,"%s"_Stz,szDecode);
+          pRibbon->vSprintSnippet(true,"%s"_Stz,szDecode);
         else
         if (bPrintPptName)
-          pRibbon->vSprintDataRight(true,"%s=%lld"_Stz, szName, iPpy);
+          pRibbon->vSprintSnippet(true,"%s=%lld"_Stz, szName, iPpy);
         else
-          pRibbon->vSprintDataRight(true,"%lld"_Stz, iPpy);
+          pRibbon->vSprintSnippet(true,"%lld"_Stz, iPpy);
         break;
       }
 
@@ -1842,9 +1842,9 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
         Stz* szName  = pSymbol()->Y_szPpyNm(i_Property);
         Stz* szPpy = pSymbol()->Y_szGet(i_Property);
         if (bPrintPptName)
-          pRibbon->vSprintDataRight(true,"%s=%s"_Stz, szName, szPpy);
+          pRibbon->vSprintSnippet(true,"%s=%s"_Stz, szName, szPpy);
         else
-          pRibbon->vSprintDataRight(true,"%s"_Stz, szPpy);
+          pRibbon->vSprintSnippet(true,"%s"_Stz, szPpy);
         break;
       }
 
@@ -1867,12 +1867,12 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks)
-    pRibbon->vSprintDataRight(true,"%s%s%18s"_Stz,
+    pRibbon->vSprintSnippet(true,"%s%s%18s"_Stz,
                               this->szMark1(),
                               this->szMark2(),
                               szSymbol(SF_NONE));
   else
-    pRibbon->vSprintDataRight(true,"  %s"_Stz, szSymbol(SF_NONE));
+    pRibbon->vSprintSnippet(true,"  %s"_Stz, szSymbol(SF_NONE));
 }
 
 
