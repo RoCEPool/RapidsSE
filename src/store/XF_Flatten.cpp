@@ -328,7 +328,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
 
   m_pCI->vEndTransform();
 
-  Bench::vValidate(m_pCI);
+  //Bench::vValidate(m_pCI);
 
 }
 

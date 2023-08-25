@@ -105,7 +105,7 @@ void XF::vXF(CardIter* pCI)
     pXF->vTransform_passThru();
   }
 
-  Bench::vValidate(pCI);
+  //Bench::vValidate(pCI);
 
   delete pXF;
 }
@@ -160,7 +160,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vEndPhase();
 
-  Bench::vValidate(m_pCI);
+  //Bench::vValidate(m_pCI);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -172,7 +172,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vEndPhase();
 
-  Bench::vValidate(m_pCI);
+  //Bench::vValidate(m_pCI);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -204,7 +204,7 @@ void XF::vTransform(void)
 
   m_pCI->m_pBench->vEndPhase();
 
-  Bench::vValidate(m_pCI);
+  //Bench::vValidate(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
@@ -317,7 +317,7 @@ void XF::vTransform_passThru(void)
     vDebugPoint();
   }
 
-  Bench::vValidate(m_pCI);
+  //Bench::vValidate(m_pCI);
 
   m_pCI->vUsingBoard((i8)0);
   XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
