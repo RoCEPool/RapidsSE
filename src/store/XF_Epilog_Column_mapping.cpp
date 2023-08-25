@@ -68,6 +68,7 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
     m_pCI->G.p_gbyAgg->vColumn_Mapping(m_pCI);
   }
   m_pCI->vEndTransform();
+  vValidateBench();
 
 
   m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping for sort"_Stz);
@@ -76,6 +77,7 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
     m_pCI->G.p_sort->vColumn_Mapping(m_pCI);
   }
   m_pCI->vEndTransform();
+  vValidateBench();
 
 
   m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping for top"_Stz);
