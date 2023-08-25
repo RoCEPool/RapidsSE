@@ -45,7 +45,7 @@
 #include "XF_Prolog_scan_To_from.hpp"
 #include "XF_Prolog_subQuery_Analysis.hpp"
 #include "XF_Prolog_table_Analysis.hpp"
-#include "XF_Synthesise_Code.hpp"
+#include "XF_Synthesise_code.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
 
 #include "eOT.h"
@@ -135,27 +135,24 @@ void XF::vTransform(void)
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
 
-    //vGroup_InitialAdjustments();
+    // initial adjustments
     XF_Prolog_Move_on::vXF_Move_on(m_pCI);
-
-    //vGroup_CondenseInfo();
     XF_Prolog_Erase_construction::vXF_Delete_Unneeded(m_pCI);
     XF_Prolog_scan_To_from::vXF_scan_To_table(m_pCI);
     XF_Prolog_Add_level::vXF_Add_level(m_pCI);
     XF_Prolog_not_Ops::vXF_not_Ops(m_pCI);
 
-    //vGroup_MetaAnalysis();
+    // meta analysis
     XF_Prolog_table_Analysis::vXF_table_Analysis(m_pCI, &m_xSymbol_tableSyn);
     XF_Prolog_projection_Analysis::vXF_projection_Analysis(m_pCI);
     XF_Prolog_index_Analysis::vXF_index_Analysis(m_pCI);
 
-    //vGroup_PreliminaryConversions();
+    // preliminary conversions
     XF_Prolog_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
     XF_Prolog_as_Review::vXF_as_Review(m_pCI);
-
-    vDebugPoint();
   }
 
+  // sub-query analysis
   XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(m_pCI);
 
   m_pCI->vEndPhase();
@@ -178,7 +175,6 @@ void XF::vTransform(void)
 
   m_pCI->vBoardIteration();
   RASSERT(m_pCI->bEachBoard());
-
 
   XF_Optimise_from_To_OP::vOptimise(m_pCI);
   XF_Optimise_scan_To_indexScan::vOptimise(m_pCI);
@@ -228,7 +224,7 @@ void XF::vTransform(void)
   RASSERT(m_pCI->bEachBoard());
 
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
-  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
+  XF_Synthesise_code::vSynthesise(m_pCI);
 
   m_pCI->vEndPhase();
 }
@@ -316,7 +312,7 @@ void XF::vTransform_passThru(void)
 
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
 
-  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
+  XF_Synthesise_code::vSynthesise(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/
