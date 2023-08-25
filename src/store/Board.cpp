@@ -409,7 +409,7 @@ void Board::vPrintBoard(Stz* szDescription)
 
   Stz* szQueryNm = m_pBench->pOptimiser()->szQueryNm();
 
-  Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
+  Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl());
 
   vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
 
@@ -524,7 +524,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Ribbon* pSubRibbon = new Ribbon(pCardCtl,this);
+  Ribbon* pSubRibbon = new Ribbon(pCardCtl);
 
   Kid xBI(m_pDeck);
 
@@ -576,43 +576,14 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // line 1
-//  pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s %s"_Stz,
-//                        m_pBench->iXform(),
-//                        m_i_Board,
-//                        m_sBoardNm.szStz(),
-//                        this,
-//                        m_pBench->pOptimiser()->szQueryNm(),
-//                        AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU) ?
-//                        "/optimise_passthru" : ""
-//  );
-
-  // line 2
-  pRibbon->vSprintOther("%s : %s : %s"_Stz,
+  pRibbon->vSprintOther(false,"%s : %s : %s"_Stz,
                         aXF[m_pBench->eXform()],
                         aXF_desc[m_pBench->eXform()],
                         m_pBench->szXdesc());
 
-  // line 3
-//  if (0 == m_i_Board)
-//    pRibbon->vSprintOther("%s %s"_Stz,
-//                          "MainQuery"_Stz,
-//                          aQD[m_pSubQuery->eDisposition()]);
-//  else
-//    pRibbon->vSprintOther("%s(%lld params) %s caller: board[%lld] %s %s %s"_Stz,
-//                          "SubQuery"_Stz,
-//                          m_pSubQuery->nCorrCols(),
-//                          aQD[m_pSubQuery->eDisposition()],
-//
-//                          m_pSubQuery->pBoard()->i_Board(),
-//                          aQC[m_pSubQuery->eClause()],
-//                          aQO[m_pSubQuery->eCallOp()],
-//                          aRO[m_pSubQuery->eRelnOp()]
-//    );
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pRibbon->vTitleLines();
+  pRibbon->vHeatSet();
 }
 
 /*============================================================================*/

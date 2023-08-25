@@ -289,8 +289,6 @@ namespace STORE
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
     Stz* szBearing(void);
-    void vBearing(void);
-    void vBearing(Card* pParentCard);
 
     eCK  eCard(void);
     Card* pCard(eCK eCard);
@@ -349,14 +347,7 @@ namespace STORE
                              bool& rbPrune, eAL eLevel,
                              bool bPrintBelow, i8 iXform, Stz* szXfunc);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
-    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
-    void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
-    void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
-    void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
-    void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
-    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
 
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
@@ -380,7 +371,22 @@ namespace STORE
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  private:
+  private:
+    void vBearing(void);
+    void vBearing(Card* pParentCard);
+
+    void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
+    void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
+    void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
+    void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
+    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
+    void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  public:
 
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
