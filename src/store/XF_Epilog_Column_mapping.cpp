@@ -84,7 +84,6 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
     m_pCI->G.p_top->vColumn_Mapping(m_pCI);
   }
   m_pCI->vEndTransform();
-
   vValidateBench();
 }
 

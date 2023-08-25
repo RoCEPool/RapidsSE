@@ -67,7 +67,6 @@ void XF_Epilog_stage_cast::vXF_stage_cast(void)
   m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 
   m_pCI->vEndTransform();
-
   vValidateBench();
 }
 
