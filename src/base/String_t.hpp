@@ -531,7 +531,7 @@ void String_t<AREA>::vCopyTill(Stz* szArg, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(m_caCharArea,szArg->azChar(),cTill);
+  StrLib::vCopyTill(m_caCharArea, AREA, szArg->azChar(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }

@@ -832,7 +832,7 @@ void StrLib::vCopyLen(char* psDst, i8 iDstBufSize, const char* psSrc, i8 nBytes,
   if (*s && iBytesLeft > 0) {
     // We report the required and available space from before the append operation
     i8 iSrcLen = nSize(psSrc);
-    i8 iReqBufSize = iSrcLen < nBytes + 1 ? iSrcLen : nBytes + 1;;
+    i8 iReqBufSize = iSrcLen < nBytes + 1 ? iSrcLen : nBytes + 1;
 
     bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
     UNUSED(bRet);
@@ -874,17 +874,37 @@ void StrLib::vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit)
 /*----------------------------------------------------------------------------*/
 /* vCopyTill: copy src into dst uptill but not including ccTill               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopyTill(char* psDst, const char* psSrc, char ccTill)
+void StrLib::vCopyTill(char* psDst, i8 iDstBufSize, const char* psSrc, char ccTill, bool* pbResult)
 {
   _static_
-  
+
+  // We cannot tell ahead of time whether a string truncation will occur without
+  // the penalty of walking the psSrc string. So instead we report a truncation
+  // if we detect one.
+  i8 iBytesCopied = 0;
+
   char *d = psDst;
   const char *s = psSrc;
   
-  while (*s && ccTill != *s)
+  while (*s && ccTill != *s && ++iBytesCopied < iDstBufSize)
     *d++ = *s++;
-  
-  *d = '\0';
+
+  if (iDstBufSize > 0) {
+    // Handle corner case of iDstBufSize == 0
+    *d = '\0';
+  }
+
+  // Check if we were going to overflow.
+  if (*s && iBytesCopied == iDstBufSize) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nSize(psSrc);
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
