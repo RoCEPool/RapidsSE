@@ -4645,7 +4645,7 @@ void StrLib::vReverse(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
   i8 iReqBufSize = iSrcLen + 1;
   bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
 
-  if (bRet) {
+  if (!bRet) {
     if (iDstBufSize <= 0) {
       return;
     }
