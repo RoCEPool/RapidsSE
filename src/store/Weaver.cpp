@@ -1004,7 +1004,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
   vStageFirst();
 
-  CardIter xCI(m_pDeck);
+  Kid xCI(m_pDeck);
   i8 nStages = m_pPipelineDef->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     StageDef* pStageDef = m_pPipelineDef->pGet(i_Stage);
@@ -1012,34 +1012,34 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
     vStageNext(p_stage);
 
-    xCI.G_vMainResynch(p_stage);
-    while (xCI.G_bEachMain()) {
+    xCI.vChild(p_stage);
+    while (xCI.bEach()) {
 
-      if (CK_STAGE == xCI.G.e_MainCard)
+      if (CK_STAGE == xCI.eChild())
         break;
-      if (CK_CAST == xCI.G.e_MainCard)
+      if (CK_CAST == xCI.eChild())
         break;
-      if (CK_SEND == xCI.G.e_MainCard)
+      if (CK_SEND == xCI.eChild())
         break;
 
       bool bCommented = true;
 //      if (xCI.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
 //                                   CK_LIMIT , CK_SCAN     , CK_TABLE,
 //                                   CK_NONE))
-      if (xCI.G.p_MainCard->bIsOne(CK_SCAN, CK_TABLE, CK_NONE))
+      if (xCI.pChild()->bIsOne(CK_SCAN, CK_TABLE, CK_NONE))
         bCommented = false;
 
-      vOp(xCI.G.p_MainCard,bCommented);
+      vOp(xCI.pChild(),bCommented);
     }
 
     vDynamic(pStageDef);
 
     //RASSERT(xCI.bIsActive());
-    if (CK_CAST == xCI.G.e_MainCard)
-      vOp(xCI.G.p_MainCard);
+    if (CK_CAST == xCI.eChild())
+      vOp(xCI.pChild());
     else
-    if (CK_SEND == xCI.G.e_MainCard)
-      vOp(xCI.G.p_MainCard);
+    if (CK_SEND == xCI.eChild())
+      vOp(xCI.pChild());
 
   }
 
