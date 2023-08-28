@@ -20,6 +20,8 @@ Kid::Kid(void)
   _nonProper_
 
   m_pParent = nullptr;
+  m_bBegun  = false;
+  m_bEnded  = false;
 
   vChildReset();
 
@@ -34,6 +36,8 @@ Kid::Kid(Card* pParent)
   _nonProper_
 
   m_pParent = pParent;
+  m_bBegun  = false;
+  m_bEnded  = false;
 
   vChildReset();
 

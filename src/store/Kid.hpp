@@ -20,6 +20,9 @@ namespace STORE
     Card *m_pSub2;
     Card *m_pSub3;
 
+    b8    m_bBegun;
+    b8    m_bEnded;
+
   public:
     Kid(void);
     Kid(Card *pParent);
