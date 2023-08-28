@@ -53,12 +53,16 @@ namespace STORE
     bool bLess(void);
 
     bool bMore(void);
+    Card *pNext(void);
     void vNext(void);
 
     Card *pParent(void);
     void vParent(Card *pParent);
+    Card *pPrev(void);
     void vPrev(void);
 
+    void vRemove(void);
+    void vRemove(Card *pChild);
     void vReverse(void);
 
     Card *pSub1(void);
