@@ -30,7 +30,7 @@ namespace STORE
   
     i8   m_nRowStringBytes; // string size of current row (discard)
 
-    char m_caModel[32]; // row slab model string
+    char m_caModel[64]; // row slab model string
     i8   m_iSeVersion;  // se version number
     i8   m_iSeFormat;   // se format number
 
