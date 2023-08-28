@@ -475,29 +475,19 @@ char* StrLib::azAscii(i8 i_Char)
 /*----------------------------------------------------------------------------*/
 /* scan backwards to find given character                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bBackward(char** ps, char* pBegin, const char c)
+bool StrLib::bBackward(char** ppsSrc, char* psBegin, const char cUntil)
 {
   _static_
   
-  char *p = *ps;
-  
-//  do
-//  {
-//    if (*p == c)
-//    {
-//      *ps = p;
-//      return true;
-//    }
-//  } while (p-- != pBegin);
-//
+  char *p = *ppsSrc;
 
-  while (*p-- != c)
+  while (*p-- != cUntil)
   {
-    if (p <= pBegin)
+    if (p <= psBegin)
       return false;
   }
   
-  *ps = ++p;
+  *ppsSrc = ++p;
   
   return true;
 }
@@ -505,27 +495,12 @@ bool StrLib::bBackward(char** ps, char* pBegin, const char c)
 /*----------------------------------------------------------------------------*/
 /* bBeginsWith: test if arg is a leading subset of s                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bBeginsWith(const char* s, const char* sArg)
+bool StrLib::bBeginsWith(const char* psSrc, const char* psArg)
 {
   _static_
-  i8 nBytes = nLength(sArg);
-  i8 iResult = iCompare(s, sArg, nBytes, C_NO_CASE);
+  i8 nBytes = nLength(psArg);
+  i8 iResult = iCompare(psSrc, psArg, nBytes, C_NO_CASE);
   return iResult == 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* burst given str into argv                                                  */
-/*----------------------------------------------------------------------------*/
-i8 StrLib::nBurstArgs(Stz* szaArgv[], Stz* szArgStr)
-{
-  _static_
-  UNUSED(szaArgv);
-  UNUSED(szArgStr);
-
-  i8 nArgs = 0;
-  
-  
-  return nArgs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -590,95 +565,108 @@ void StrLib::vCheckIsNot(char cArg, char cIsNot) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* click arg                                                                  */
+/* click arg. Increment the ascii characters by 1 starting from the right     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vClick(char* aArg)
+void StrLib::vClick(char* psDst)
 {
   _static_
   
-  char* aChar = acLast(aArg);
+  char* pChar = acLast(psDst);
   
   for (;;) {
     
-    if ('z' == *aChar) {
-      *aChar = 'a';
-      aChar--;
+    if ('z' == *pChar) {
+      *pChar = 'a';
+      pChar--;
       continue;
     }
-    if ('Z' == *aChar) {
-      *aChar = 'A';
-      aChar--;
+    if ('Z' == *pChar) {
+      *pChar = 'A';
+      pChar--;
       continue;
     }
 
-    *aChar += 1;
+    *pChar += 1;
     break;
   }
   
 }
 
 /*----------------------------------------------------------------------------*/
-/* clip arg to given maxiumum length                                          */
+/* clip arg to given maxiumum length (not including null terminator).         */
+/* Returns true if it is resized smaller                                      */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bClip(char* aArg, i8 iMaxLen)
+bool StrLib::bClip(char* psDst, i8 iMaxLen)
 {
   _static_
   
-  i8 iCurLen = StrLib::nLength(aArg);
+  i8 iCurLen = StrLib::nLength(psDst);
   
   if (iCurLen <= iMaxLen)
     return false;
-  
-  aArg[iMaxLen] = '\0';
+
+  psDst[iMaxLen] = '\0';
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* comma seperate the integer argument                                        */
 /*----------------------------------------------------------------------------*/
-void StrLib::vComma(char* azDst, i8 iArg)
+void StrLib::vComma(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
   
   char caInteger[32];
-  vToString(caInteger, sizeof(caInteger), iArg);
+  vToString(caInteger, sizeof(caInteger), iArg, pbResult);
   
   char caReverse[32];
-  vReverse(caReverse,caInteger);
+  vReverse(caReverse, sizeof(caReverse), caInteger, pbResult);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   char caRevCommas[32];
 
   char* aChar = caRevCommas;
   char* aDigit = caReverse;
+
+  u8 uBytesReq = 0;
   
   i8 nDigit = 0;
   while (*aDigit) {
     if (nDigit == 3) {
-      *aChar++ = C_COMMA;
+      if (uBytesReq < sizeof(caRevCommas) - 1) {
+        *aChar++ = C_COMMA;
+      }
       nDigit = 0;
+      ++uBytesReq;
     }
-    *aChar++ = *aDigit++;
+
+    if (uBytesReq < sizeof(caRevCommas) - 1) {
+      *aChar++ = *aDigit++;
+    }
     nDigit++;
+    ++uBytesReq;
   }
   
-  if (iArg < 0)
+  if (iArg < 0 && uBytesReq < sizeof(caRevCommas) - 1)
     *aChar++ = '-';
   
   *aChar = '\0';
 
+  bool bRet = bCheckBufferSpace(__func__, uBytesReq, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vReverse(azDst,caRevCommas);
+  vReverse(psDst, sizeof(psDst), caRevCommas, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard compare of the two args                                 */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
+i8 StrLib::iCompare(const char* psArg1, const char* psArg2)
 {
   _static_
   
-  i8 iDiff = strcmp(pArg1,pArg2);
+  i8 iDiff = strcmp(psArg1, psArg2);
   
   return iDiff;
 }
@@ -686,16 +674,16 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
+i8 StrLib::iCompare(const char* psArg1, const char* psArg2, i8 iCase)
 {
   _static_
   
   i8 iDiff;
   
   if (C_NO_CASE == iCase)
-    iDiff = strcasecmp(pArg1,pArg2);
+    iDiff = strcasecmp(psArg1, psArg2);
   else
-    iDiff = strcmp(pArg1,pArg2);
+    iDiff = strcmp(psArg1, psArg2);
   
   return iDiff;
 }
@@ -703,16 +691,16 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
+i8 StrLib::iCompare(const char* psArg1, const char* psArg2, i8 nBytes, i8 iCase)
 {
   _static_
   
   i8 iDiff;
   
   if (C_NO_CASE == iCase)
-    iDiff = strncasecmp(pArg1,pArg2,nBytes);
+    iDiff = strncasecmp(psArg1, psArg2, nBytes);
   else
-    iDiff = strncmp(pArg1,pArg2,nBytes);
+    iDiff = strncmp(psArg1, psArg2, nBytes);
   
   return iDiff;
 }
@@ -807,31 +795,25 @@ void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bContains(char* s, const char cArg)
+bool StrLib::bContains(char* psSrc, const char cArg)
 {
   _static_
   
-  char* f = strchr(s,cArg);
-  
-  if (f)
-    return true;
-  else
-    return false;
+  char* f = strchr(psSrc, cArg);
+
+  return (f != nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bContains(char* s, const char* sArg)
+bool StrLib::bContains(char* psSrc, const char* sArg)
 {
   _static_
   
-  char* f = strstr(s,sArg);
-  
-  if (f)
-    return true;
-  else
-    return false;
+  char* f = strstr(psSrc, sArg);
+
+  return (f != nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1031,7 +1013,7 @@ void StrLib::vCopyTill(char* psDst, i8 iDstBufSize, const char* psSrc, char ccTi
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert digit arg to i8                                                    */
+/* convert ascii digit arg to i8                                              */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iDigitToI8(const char cDigit)
 {
@@ -1043,47 +1025,69 @@ i8 StrLib::iDigitToI8(const char cDigit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vDump: dump string                                                         */
+/* vDump: escape and dump string to the log file                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
+void StrLib::vDump(const char* psSrc, i8 nMaxChars, const char* psSuffix, bool* pbResult)
 {
   _static_
-  
-  char caString[C_STRING_ARRAY];
+
+  const i8 iDstBufSize = C_STRING_ARRAY;
+  char caString[iDstBufSize];
   char *z = caString;
-  char *pDstLastChar = caString + sizeof(caString) - 1;
+  char *psDstLastChar = caString + sizeof(caString) - 1;
+
+  i8 iReqBytes = 0;
   
-  for (int i = 0; i < nMax && i < C_16KB - 1; i++)
+  for (int i = 0; i < nMaxChars; i++)
   {
-    if (isprint(s[i]))
-    {
-      *z++ = s[i];
-    }
-    else
-    if ('\n' == s[i])
-    {
-      *z++ = '\\';
-      *z++ = 'n';
-    }
-    else
-    if ('\0' == s[i])
-    {
-      *z++ = '\\';
-      *z++ = '0';
-    }
-    else
-    {
-      *z++ = '.';
+    ++iReqBytes;
+
+    if (isprint(psSrc[i])) {
+      if (z < psDstLastChar) {
+        *z++ = psSrc[i];
+      }
+
+    } else if ('\n' == psSrc[i]) {
+      ++iReqBytes;  // cater for second escaped char
+      if (z < psDstLastChar) {
+        *z++ = '\\';
+        if (z < psDstLastChar) {
+          *z++ = 'n';
+        }
+      }
+
+    } else if ('\0' == psSrc[i]) {
+      ++iReqBytes;  // cater for second escaped char
+      if (z < psDstLastChar) {
+        *z++ = '\\';
+        if (z < psDstLastChar) {
+          *z++ = '0';
+        }
+      }
+
+    } else {
+      // Non-printable character. Replace with a period.
+      if (z < psDstLastChar) {
+        *z++ = '.';
+      }
     }
     
-    if ('\0' == s[i])
+    if ('\0' == psSrc[i])
       break;
   }
-  
-  vAppendString(&z, pDstLastChar, pSuffix);
-  
-  *z = '\0';
-  
+
+  // Check for truncation
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  if (bRet) {
+    // vAppendString will null terminate what has been written
+    vAppendString(&z, psDstLastChar, psSuffix, pbResult);
+
+  } else {
+    *z = '\0';
+  }
+
   vTrace("%s"_Stz,caString);
 }
 
@@ -4630,14 +4634,27 @@ inline void StrLib::vReportStringTruncation(const char* azFuncName, i8 iReqBufSi
 /*----------------------------------------------------------------------------*/
 /* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vReverse(char* azDst, char* azSrc)
+void StrLib::vReverse(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
 {
   _static_
-  
-  char* acSrc = azSrc + strlen(azSrc) - 1;
-  char* acDst = azDst;
 
-  while (acSrc >= azSrc)
+  i8 iSrcLen = nLength(psSrc);
+  char* acSrc = psSrc + iSrcLen - 1;
+  char* acDst = psDst;
+
+  i8 iReqBufSize = iSrcLen + 1;
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+
+  if (bRet) {
+    if (iDstBufSize <= 0) {
+      return;
+    }
+
+    // Truncation will occur unless we adjust the acSrc pointer
+    acSrc = psSrc + iDstBufSize - 1;
+  }
+
+  while (acSrc >= psSrc)
     *acDst++ = *acSrc--;
   
   *acDst = '\0';
