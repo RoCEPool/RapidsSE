@@ -1479,7 +1479,7 @@ bool CardIter::bMore(void)
 
   RASSERT(G.xKid.bInRange());
 
-  if (G.xKid.i_Child() + 1 < G.xKid.pParent()->nChildCards())
+  if (G.xKid.bMore())
     return true;
 
   return false;
@@ -2073,25 +2073,6 @@ void CardIter::vBeginEach(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   G.xKid.vBegin();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::vRewind(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bInRange());
-
-//  if (G.xKid.m_i_Child == 0) {
-//    G.xKid.m_i_Child = C_UNKNOWN;
-//    return;
-//  }
-//
-//  G.xKid.m_i_Child--;
-
-  G.xKid.vPrev();
 }
 
 /*----------------------------------------------------------------------------*/

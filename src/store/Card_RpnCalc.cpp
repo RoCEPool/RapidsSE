@@ -117,20 +117,20 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM)) {
+  Kid xCI(this);
+  while (xCI.bEach(CK_TERM)) {
 
-    Card_Term* p_term = xCI.G.p_term;
+    Card_Term* p_term = xCI.p_term();
 
     if (! xCI.bMore())
       break;
 
-    if (xCI.G.p_term->pSymbol()->bSame("exists"_Stz)) {
+    if (p_term->pSymbol()->bSame("exists"_Stz)) {
 
-      RASSERT(xCI.G_bEachMain(CK_TERM));
-      Card_Term* p_term_next = xCI.G.p_term;
+      RASSERT(xCI.bEach(CK_TERM));
+      Card_Term* p_term_next = xCI.p_term();
       if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-        xCI.vRewind();
+        xCI.vPrev();
         this->vRemoveChild(p_term_next);
         p_term->SYM(SF_SQY_OP,"notExists"_Stz);
         continue;
@@ -138,12 +138,12 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       continue;
     }
 
-    if (xCI.G.p_term->pSymbol()->bSame("in"_Stz)) {
+    if (xCI.p_term()->pSymbol()->bSame("in"_Stz)) {
 
-      RASSERT(xCI.G_bEachMain(CK_TERM));
-      Card_Term* p_term_next = xCI.G.p_term;
+      RASSERT(xCI.bEach(CK_TERM));
+      Card_Term* p_term_next = xCI.p_term();
       if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-        xCI.vRewind();
+        xCI.vPrev();
         this->vRemoveChild(p_term_next);
         p_term->SYM(SF_SQY_OP,"notIn"_Stz);
         DELETE_CARD(p_term_next);

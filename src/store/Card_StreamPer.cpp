@@ -473,30 +473,28 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(cTblSyn_locus);
 
-  CardIter xCI(this);
+  Kid xCI(this);
 
-  while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+  while (xCI.bEach()) {
 
-    if (xCI.G.p_MainCard->pSymbol()->cSF_char() == cTblSyn_prior)
+    if (xCI.pChild()->pSymbol()->cSF_char() == cTblSyn_prior)
       break;
 
-    if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+    if (! xCI.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
  }
 
-  while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+  while (xCI.bEach()) {
 
-    if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+    if (! xCI.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
-    xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-    if (xCI.G.p_joinCast && !xCI.G.p_joinCast->pSymbol()->bSame("XK_UNICAST"_Stz))
+    Card_JoinCast* p_joinCast = xCI.p_streamJoin()->pSub_locusCast();
+    if (p_joinCast && ! p_joinCast->pSymbol()->bSame("XK_UNICAST"_Stz))
       return false;
 
-    if (xCI.G.p_MainCard->pSymbol()->cSF_char() == cTblSyn_prev)
+    if (xCI.pChild()->pSymbol()->cSF_char() == cTblSyn_prev)
       break;
   }
 
