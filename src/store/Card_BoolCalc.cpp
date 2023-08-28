@@ -203,7 +203,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 
   CardIter xCR(this);
   while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
-    p_pred->vDump(__func__);
+    //p_pred->vDump(__func__);
 
     if (! p_pred->bMark1(MARK_AT))
       continue;
