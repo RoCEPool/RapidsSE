@@ -23,7 +23,7 @@ namespace STORE
 
   // - - - - - - - - - - - - -
   public:
-    bool   m_bRecursed;
+    i8     m_i_RecursionDepth;
     bool   m_bDontDescend;
 
     // - - - - - - - - - - - - -

@@ -75,6 +75,7 @@ void CardIter::vInit(void)
 
   m_pBench   = nullptr;
   m_pCardCtl = nullptr;
+  m_i_RecursionDepth = 0;
 
   G.xKid.vParent(nullptr);
 
@@ -1869,6 +1870,19 @@ void CardIter::G_vPushIter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vRecurseBegin(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vSave();
+
+  vChangeCard(pCard);
+  vDontDescend(false);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* CardIter::pRecurseEach(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -1879,7 +1893,7 @@ Card* CardIter::pRecurseEach(void)
   if (G.p_MainCard && (! G.m_bDontDescend) ) {
     if (G.p_MainCard->nChildCards()) {
 
-      G.m_bRecursed = true;
+      G.m_i_RecursionDepth = 1;
       vPushRecurseIter();
       vChangeCard(G.p_MainCard);
       G_bEachMain();
@@ -1916,6 +1930,16 @@ Card* CardIter::pRecurseEach(eCK eCard)
       return p_card;
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vRecurseEnd(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vRestore();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2583,7 +2607,7 @@ bool CardIter::bPopRecurseIter(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   CardIterMembers* pXsentinals2 = pPeek(0);
-  if (! pXsentinals2 || ! pXsentinals2->m_bRecursed)
+  if (! pXsentinals2 || ! pXsentinals2->m_i_RecursionDepth)
     return false;
 
   vRestore();
@@ -2598,7 +2622,7 @@ void CardIter::vPushRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  RASSERT(G.m_bRecursed);
+  RASSERT(G.m_i_RecursionDepth);
 
   vSave();
 }

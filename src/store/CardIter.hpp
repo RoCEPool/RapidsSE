@@ -21,6 +21,7 @@ namespace STORE
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
+    i8          m_i_RecursionDepth;
 
 
     struct {
@@ -156,8 +157,10 @@ namespace STORE
     void G_vPushNewChild(Card* pParent, eCK eChild);
     void G_vPushIter(void);
 
+    void vRecurseBegin(Card* pCard);
     Card* pRecurseEach(void);
     Card* pRecurseEach(eCK eCard);
+    void vRecurseEnd(void);
     void vRemoveChild(Card* pChild);
     void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteChild(Card*& rpChild);

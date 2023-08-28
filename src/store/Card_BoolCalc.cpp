@@ -167,13 +167,12 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 //  Card_Deck* pDeck = pCI->G.pDeck;
 //  Card *pMainCard;
 //
-//  pCI->vSave();
+//  pCI->vRecurseBegin(this);
+//  s32 sTimes;
+//  for (i8 nTimes = 0; Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach(); nTimes++) {
 //
-//  pCI->vChangeCard(this);
-//  pCI->vDontDescend(false);
-//
-//  while (Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach()) {
-//    p_pred->vDump(__func__);
+//    sTimes = nTimes;
+//    p_pred->vDump(__func__,0,sTimes);
 //
 //    if (! p_pred->bMark1(MARK_AT))
 //      continue;
@@ -192,7 +191,9 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 //
 //  }
 //
-//  pCI->vRestore();
+//  pCI->vRecurseEnd();
+//
+//  vDebugPoint();
 //}
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
@@ -203,9 +204,12 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
   Card *pMainCard;
 
   CardIter xCR(this);
-  while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
-    //p_pred->vDump(__func__);
 
+  s32 sTimes;
+  for (i8 nTimes = 0; Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach(); nTimes++) {
+
+    sTimes = nTimes;
+    //p_pred->vDump(__func__,0,sTimes);
     if (! p_pred->bMark1(MARK_AT))
       continue;
 
@@ -222,6 +226,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
     p_filter->vMark2(p_table->cMark2());
 
   }
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
