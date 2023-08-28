@@ -224,6 +224,7 @@ void CardIter::vChangeCard(Card* pCard)
 
   G.xKid.vParent(pCard);
 
+  G.p_MainCard = pCard;
   vMember(pCard);
 
   //vBeginEach();
