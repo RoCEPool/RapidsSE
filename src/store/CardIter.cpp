@@ -28,10 +28,33 @@ CardIter::CardIter(Bench* pBench)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vInit();
-
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
+
+
+  m_i_RecursionDepth = 0;
+
+  G.xKid.vParent(nullptr);
+
+  G.m_bDontDescend = false;
+
+  Sqy.m_pCard_sqCopy   = nullptr;
+
+  Sqy.m_pExpr_fold = nullptr;
+  Sqy.m_pExpr_corr = nullptr;
+
+  Sqy.m_pCorrelation = nullptr;
+  Sqy.m_i_SubQuery = C_UNKNOWN;
+  Sqy.m_pSubQuery = nullptr;
+  Sqy.m_pTerm_sqCall       = nullptr;
+
+  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pBoard    = nullptr;
+  G.pDeck     = nullptr;
+
+  vNullMembers();
+  G_vClearRegisters();
 
   _checkInitialised_(CN_CARDITER);
 
@@ -47,42 +70,6 @@ CardIter::~CardIter(void) noexcept(false)
 
   RASSERT(0 == nItems());
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* initialiser                                                                */
-/*----------------------------------------------------------------------------*/
-void CardIter::vInit(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  m_pBench   = nullptr;
-  m_pCardCtl = nullptr;
-  m_i_RecursionDepth = 0;
-
-  G.xKid.vParent(nullptr);
-
-  G.m_bDontDescend = false;
-
-  Sqy.m_pCard_sqCopy   = nullptr;
-
-  Sqy.m_pExpr_fold = nullptr;
-  Sqy.m_pExpr_corr = nullptr;
-
-  Sqy.m_pCorrelation = nullptr;
-  Sqy.m_i_SubQuery = C_UNKNOWN;
-  Sqy.m_pSubQuery = nullptr;
-
-  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
-
-  G.pBoard    = nullptr;
-  G.pDeck     = nullptr;
-  Sqy.m_pSubQuery = nullptr;
-  Sqy.m_pTerm_sqCall       = nullptr;
-
-
-  vNullMembers();
-  G_vClearRegisters();
 }
 
 
@@ -166,6 +153,16 @@ Board* CardIter::pBoard(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   return G.pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set board                                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBoard(Board* pBoard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  G.pBoard = pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -943,7 +940,7 @@ void CardIter::vEndPhase(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vEndPhase();
+  m_pBench->vEndPhase(this);
 
   Bench::vValidate(this);
 }
@@ -1650,7 +1647,7 @@ bool CardIter::bPastPhase(eOH ePhase)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return m_pBench->bPastPhase(ePhase);
+  return m_pBench->bPastPhase(this,ePhase);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1660,7 +1657,7 @@ void CardIter::vPhase(eOH ePhase)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vPhase(ePhase);
+  m_pBench->vPhase(this,ePhase);
 }
 
 /*----------------------------------------------------------------------------*/

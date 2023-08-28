@@ -64,7 +64,6 @@ namespace STORE
 
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
-    void vInit(void);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
@@ -74,6 +73,7 @@ namespace STORE
 
     void vBeginEach(void);
     Board* pBoard(void);
+    void vBoard(Board* pBoard);
     void vBoardIteration(void);
     void vBurst(Card* pCard);
     void vBurstOP(void);
