@@ -899,6 +899,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     // the eCN enum is implemented as an unsigned type, thus it is always >= 0.
     StrLib::vSprint(zCondition,
                     sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d %s "
                     "object=%p\n"_Stz
@@ -909,6 +910,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   else
     StrLib::vSprint(zCondition,
                     sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d "
                     "object=%p\n"_Stz
@@ -958,6 +960,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     // the eCN enum is implemented as an unsigned type, thus it is always >= 0.
     StrLib::vSprint(zCondition,
                     sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d %s "
                     "object=%p\n"_Stz
@@ -968,6 +971,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   else
     StrLib::vSprint(zCondition,
                     sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d "
                     "object=%p\n"_Stz

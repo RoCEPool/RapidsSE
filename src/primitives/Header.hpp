@@ -92,6 +92,7 @@ namespace PRIMITIVES
   {
     StrLib::vSprint(szHeader,
                     nHeaderSize,
+                    nullptr,
                     "Magic: %c%c%c%c Class %03d %s (%s)"_Stz,
                     m_caMagic[0],
                     m_caMagic[1],

@@ -56,6 +56,7 @@ void BASE::vJot1(char cFlag, Stz* szFormat, ...)
 
   StrLib::vSprint(caBuff,
                   nBufSize,
+                  nullptr,
                   "#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
                   _g_sArea,
                   _g_sDivision,
@@ -67,17 +68,17 @@ void BASE::vJot1(char cFlag, Stz* szFormat, ...)
                   );
   
   if (_g_nDepth)
-    StrLib::vSprintCat((Stz*)caBuff,nBufSize,"%s"_Stz, Stz::szTab(_g_nDepth));
+    StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"%s"_Stz, Stz::szTab(_g_nDepth));
   
   if ('r' == cFlag)
-    StrLib::vSprintCat((Stz*)caBuff,nBufSize,"- "_Stz);
+    StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"- "_Stz);
 
   va_start(xVarArgs,szFormat);
   StrLib::vSprintCat(caBuff,nBufSize,xVarArgs,szFormat->azChar());
   va_end(xVarArgs);
   
   if ('>' == cFlag || '<' == cFlag)
-    StrLib::vSprintCat((Stz*)caBuff,nBufSize,"()"_Stz,szFormat);
+    StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"()"_Stz,szFormat);
 
   if (! _g_sPhrase)
     vTrace("%s\n"_Stz,caBuff);
@@ -108,6 +109,7 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 
   StrLib::vSprint(caBuff,
                   nBufSize,
+                  nullptr,
                   "#%s::%s.%04x.%02x.%03x# %x%c "_Stz,
                   _g_sArea,
                   _g_sDivision,
@@ -120,15 +122,15 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 
   
   if (_g_nDepth)
-    StrLib::vSprintCat((Stz*)caBuff,nBufSize,"%s"_Stz, Stz::szTab(_g_nDepth));
+    StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"%s"_Stz, Stz::szTab(_g_nDepth));
   
   if ('r' == cFlag)
-    StrLib::vSprintCat((Stz*)caBuff,nBufSize,"- "_Stz);
+    StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"- "_Stz);
   
-  StrLib::vSprintCat((Stz*)caBuff,nBufSize,"%s"_Stz,szFun);
+  StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"%s"_Stz,szFun);
   
   if ('>' == cFlag || '<' == cFlag)
-    StrLib::vSprintCat((Stz*)caBuff,nBufSize,"()"_Stz,szFun);
+    StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"()"_Stz,szFun);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -140,7 +142,7 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
 
     *aczCursor = '\0';
   
-    StrLib::vSprintCat((Stz*)caBuff,nBufSize,"+ "_Stz,szFun);
+    StrLib::vSprintCat((Stz*)caBuff,nBufSize,nullptr,"+ "_Stz,szFun);
   
     va_start(xVarArgs,szFormat);
     StrLib::vSprintCat(caBuff,nBufSize,xVarArgs,szFormat->azChar());

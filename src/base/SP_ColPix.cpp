@@ -44,6 +44,7 @@ Stz* SP_ColPix::sz(ColPix* pColPix)
     
   StrLib::vSprint(m_caResult
     ,sizeof(m_caResult)
+    ,nullptr
                   
     ,"%02lld %16s : kind %s type %s datum %s "
      "length %5lld scale %2lld %s %s"_Stz

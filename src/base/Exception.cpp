@@ -110,6 +110,7 @@ void Exception::vSprint(char* azIntoBuf, i8 nBufSize)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
                   nBufSize,
+                  nullptr,
                   
                   "Exception eFK=%lld:%s`%s`; "
                   "%s() "

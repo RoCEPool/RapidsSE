@@ -199,6 +199,7 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
   
   StrLib::vSprint(m_caModel,
                   sizeof(m_caModel),
+                  nullptr,
                   "RapidsSE %s SeFormat %s"_Stz,
                   AM::szVersionString(),
                   AM::szFormatString());

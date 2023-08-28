@@ -431,7 +431,7 @@ void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar, const ch
 
     if (*s == '\n' && !bInQuote ) {
       s32 sBuf;
-      vSprint(sBuf.azChar(), sBuf.nAreaBytes(), "\n/* %04d */ "_Stz, iLineNumber++);
+      vSprint(sBuf.azChar(), sBuf.nAreaBytes(), pbResult, "\n/* %04d */ "_Stz, iLineNumber++);
       vAppendString(&z, azDstLastChar, sBuf.azChar(), pbResult);
       s++;
 
@@ -5036,71 +5036,104 @@ void StrLib::vSplitSeries(char* azStr, char* azInt, char* azSrc)
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, i8 nBufSize, Stz* szFormat, ...)
+void StrLib::vSprint(char* psDst, i8 iDstBufSize, bool* pbResult, Stz* szFormat, ...)
 {
   _static_
   
   va_list args;
-  
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
   va_start(args,szFormat);
-  vsnprintf(sDst, nBufSize, szFormat->azChar(), args);
+  i8 iReqBufSize = 1 + vsnprintf(psDst, iDstBufSize, szFormat->azChar(), args);
   va_end(args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(Stz* sDst, i8 nBufSize, Stz* szFormat, ...)
+void StrLib::vSprint(Stz* psDst, i8 iDstBufSize, bool* pbResult, Stz* szFormat, ...)
 {
   _static_
   
   va_list args;
-  
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
+
   va_start(args,szFormat);
-  vsnprintf(sDst->azChar(), nBufSize, szFormat->azChar(), args);
+  i8 iReqBufSize = 1 + vsnprintf(psDst->azChar(), iDstBufSize, szFormat->azChar(), args);
   va_end(args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, i8 nBufSize, va_list args, const char* sFormat)
+void StrLib::vSprint(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult)
 {
   _static_
-  
-  vsnprintf(sDst, nBufSize, sFormat, args);
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
+  i8 iReqBufSize = 1 + vsnprintf(psDst, iDstBufSize, sFormat, args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprintCat(Stz* sDst, i8 nBufSize, Stz* sFormat, ...)
+void StrLib::vSprintCat(Stz* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...)
 {
   _static_
   
   va_list args;
 
-  i8 nStrLen = nLength(sDst->azChar());
-  char* sEnd = sDst->azChar() + nStrLen;
-  i8 nBufRemaining = nBufSize - nStrLen;
+  i8 nStrLen = nLength(psDst->azChar());
+  char* sEnd = psDst->azChar() + nStrLen;
+  i8 nBufRemaining = iDstBufSize - nStrLen;
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
 
   va_start(args,sFormat);
-  vsnprintf(sEnd, nBufRemaining, sFormat->azChar(), args);
+  i8 iReqBufSize = nStrLen + 1 + vsnprintf(sEnd, nBufRemaining, sFormat->azChar(), args);
   va_end(args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprintCat(char* sDst, i8 nBufSize, va_list args, const char* sFormat)
+void StrLib::vSprintCat(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult)
 {
   _static_
 
-  i8 nStrLen = nLength(sDst);
-  char* sEnd = sDst + nStrLen;
-  i8 nBufRemaining = nBufSize - nStrLen;
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
 
-  vsnprintf(sEnd, nBufRemaining, sFormat, args);
+  i8 nStrLen = nLength(psDst);
+  char* sEnd = psDst + nStrLen;
+  i8 nBufRemaining = iDstBufSize - nStrLen;
+
+  i8 iReqBufSize = nStrLen + 1 + vsnprintf(sEnd, nBufRemaining, sFormat, args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/

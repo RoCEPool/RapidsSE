@@ -75,24 +75,28 @@ Stz* SP_Timer::sz(i8 iNanoseconds)
   if (nSeconds)
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     "%lld.%03llds"_Stz, // units are seconds
                     nSeconds,iThousandths);
   
   else if (iThousandths)
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     "%lld.%03lldms"_Stz, // units are milliseconds
                     iThousandths,iMillionths);
   
   else if (iMillionths || iBillionths)
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     "%lld.%03lldus"_Stz, // units are microseconds
                     iMillionths,iBillionths);
   
   else
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     "0.000s"_Stz);
 
   return (Stz*) &m_caResult[0];

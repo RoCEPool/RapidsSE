@@ -38,7 +38,7 @@ Stz* SP_Gid::sz(i8 iGid)
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   if (C_UNKNOWN == iGid) {
-    StrLib::vSprint(m_caResult,sizeof(m_caResult),"-.---"_Stz);
+    StrLib::vSprint(m_caResult,sizeof(m_caResult),nullptr,"-.---"_Stz);
     return (Stz*) &m_caResult[0];
  }
   
@@ -50,6 +50,7 @@ Stz* SP_Gid::sz(i8 iGid)
   
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "%lld.%03lld"_Stz,
                   
                   xGid.uNodeId(),
@@ -66,7 +67,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   if (C_UNKNOWN == iGid) {
-    StrLib::vSprint(m_caResult,sizeof(m_caResult),"%s-.---"_Stz,aIK_3c[eKind]);
+    StrLib::vSprint(m_caResult,sizeof(m_caResult),nullptr,"%s-.---"_Stz,aIK_3c[eKind]);
     return (Stz*) &m_caResult[0];
   }
   
@@ -78,6 +79,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
 
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "%s%lld.%03lld"_Stz,
                   
                   aIK_3c[eKind],
@@ -95,7 +97,7 @@ Stz* SP_Gid::sz(eLG eKind, i8 iGid)
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
   
   if (C_UNKNOWN == iGid) {
-    StrLib::vSprint(m_caResult,sizeof(m_caResult),"%s-.---"_Stz,aLG[eKind]);
+    StrLib::vSprint(m_caResult,sizeof(m_caResult),nullptr,"%s-.---"_Stz,aLG[eKind]);
     return (Stz*) &m_caResult[0];
   }
   
@@ -107,6 +109,7 @@ Stz* SP_Gid::sz(eLG eKind, i8 iGid)
 
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "%s%lld.%03lld"_Stz,
                   
                   aLG[eKind],

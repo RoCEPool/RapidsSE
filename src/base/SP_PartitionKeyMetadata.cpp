@@ -44,6 +44,7 @@ Stz* SP_PartitionKeyMetadata::sz(PartitionKeyMetadata* pPartitionKeyMetadata)
           
   StrLib::vSprint(m_caResult
     ,sizeof(m_caResult)
+    ,nullptr
 
     ,"%s %s %s %lld %s"_Stz
 

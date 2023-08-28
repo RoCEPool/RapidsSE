@@ -393,7 +393,7 @@ void Ribbon::vSprintSnippetRight(va_list args, const char* sFormat)
 
   char zDataRight[nBufSize];
 
-  StrLib::vSprint(zDataRight, nBufSize, m_sRightFormat.szStz(), (Stz*)zData);
+  StrLib::vSprint(zDataRight, nBufSize, nullptr, m_sRightFormat.szStz(), (Stz*)zData);
 
   vPutData(m_i_Line++,m_i_Char,(Stz*)zDataRight);
 }

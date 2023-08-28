@@ -44,6 +44,7 @@ Stz* SP_TableMetadata::sz(TableMetadata* pTableMeta)
           
   StrLib::vSprint(m_caResult
     ,sizeof(m_caResult)
+    ,nullptr
                   
     ,"%s/%s/%s"_Stz
                   

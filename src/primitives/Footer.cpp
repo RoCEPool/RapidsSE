@@ -76,6 +76,7 @@ void Footer::vSprint(Stz* szHeader, i8 nBufSize)
 {
   StrLib::vSprint(szHeader,
                   nBufSize,
+                  nullptr,
                   "Footer: %c%c%c%c%c%c%c%c (%s)"_Stz,
                   m_caFooter[0],
                   m_caFooter[1],
