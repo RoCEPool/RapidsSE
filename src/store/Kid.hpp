@@ -49,6 +49,9 @@ namespace STORE
 
     bool bInRange(void);
 
+    bool bLess(void);
+
+    bool bMore(void);
     void vNext(void);
 
     Card *pParent(void);

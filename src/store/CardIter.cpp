@@ -1479,7 +1479,7 @@ bool CardIter::bMore(void)
 
   RASSERT(G.xKid.bInRange());
 
-  if (G.xKid.i_Child() + 1 < G.xKid.pParent()->nChildCards())
+  if (G.xKid.bMore())
     return true;
 
   return false;
