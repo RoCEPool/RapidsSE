@@ -39,37 +39,36 @@ namespace BASE
                                const char* pSrc, bool* pbResult = nullptr);                                             // yes
     static void  vAppendString(char** aazDstCrs, const char* azDstLastChar,
                                const char* pSrc, i8* piLineNo, bool* pbResult = nullptr);                               // yes
-    static char* azAscii(i8 i_Char);                                                                                    // ✕
+    static char* azAscii(i8 i_Char);                                                                                    // yes
     
-    static bool  bBackward(char** ps, char* pBegin, const char c);                                                      // ✕
-    static bool  bBeginsWith(const char* s, const char* sArg);                                                          // ✕
-    static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);                                                             // ✕
+    static bool  bBackward(char** ppsSrc, char* psBegin, const char cUntil);                                            // yes
+    static bool  bBeginsWith(const char* psSrc, const char* psArg);                                                     // yes
 
-    static Stz*  szCharToStr(unsigned char cArg);                                                                       // ✕
+    static Stz*  szCharToStr(unsigned char cArg);                                                                       // yes
     static void  vCheckIsNot(char cArg, char cIsNot);                                                                   // yes
-    static void  vClick(char* aArg);                                                                                    // ✕
-    static bool  bClip(char* aArg, i8 iLen);                                                                            // ✕
-    static void  vComma(char* psDst, i8 iArg);                                                                          // ✕
-    static i8    iCompare(const char* pArg1, const char* pArg2);                                                        // yes
-    static i8    iCompare(const char* pArg1, const char* pArg2, i8 iCase);                                              // yes
-    static i8    iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);                                   // yes
+    static void  vClick(char* psDst);                                                                                   // yes
+    static bool  bClip(char* psDst, i8 iMaxLen);                                                                        // yes
+    static void  vComma(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult = nullptr);                                // yes
+    static i8    iCompare(const char* psArg1, const char* psArg2);                                                      // yes
+    static i8    iCompare(const char* psArg1, const char* psArg2, i8 iCase);                                            // yes
+    static i8    iCompare(const char* psArg1, const char* psArg2, i8 nBytes, i8 iCase);                                 // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char cChar,  bool* pbResult = nullptr);                     // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg, bool* pbResult = nullptr);                     // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg, i8 nCatLen, bool* pbResult=nullptr);           // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, const char* psArg1, const char* psArg2, bool* pbResult=nullptr);  // yes
     static void  vConcat(char* psDst, i8 iDstBufSize, i8 i, bool* pbResult = nullptr);                                  // yes
-    static bool  bContains(char* s, const char cArg);                                                                   // ✕
-    static bool  bContains(char* s, const char* sArg);                                                                  // ✕
+    static bool  bContains(char* psSrc, const char cArg);                                                               // yes
+    static bool  bContains(char* psSrc, const char* sArg);                                                              // yes
     static i8    nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
     static void  vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                       // yes
     static void  vCopyLen(char* psDst, i8 iDstBufSize, const char* psSrc, i8 nBytes, bool* pbResult = nullptr);         // yes
     static void  vCopySplit(char* psDst1, i8 iDst1BufSize,
                             char* psDst2, i8 iDst2BufSize,
-                            const char* psSrc, char cSplit, bool* bpResult = nullptr);                                   // yes
+                            const char* psSrc, char cSplit, bool* bpResult = nullptr);                                  // yes
     static void  vCopyTill(char* psDst, i8 iDstBufSize, const char* psSrc, char ccTill, bool* pbResult = nullptr);      // yes
     
-    static i8    iDigitToI8(char cDigit);                                                                               // ✕
-    static void  vDump(const char* s, i8 nMax, const char* pSuffix);                                                    // ✕
+    static i8    iDigitToI8(char cDigit);                                                                               // yes
+    static void  vDump(const char* psSrc, i8 nMaxChars, const char* psSuffix, bool* pbResult = nullptr);                // yes
 
     static bool  bEachLine(char** ps, char* caLine);                                                                    // ✕
     static bool  bEqualTo(const char* s1, const char* s2);                                                              // ✕
@@ -247,7 +246,7 @@ namespace BASE
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);                                                        // ✕
     static void  vReplaceTail(char* azDst, const char* azTail);                                                               // ✕
-    static void  vReverse(char* azDst, char* azSrc);                                                                    // ✕
+    static void  vReverse(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult = nullptr);                          // yes
     static void  vRotate(char* zArg, i8 nby);                                                                           // ✕
     static void  vRuler(char* azDst, i8 iLength);                                                                       // ✕
 
@@ -274,11 +273,11 @@ namespace BASE
     static void  vSplitSeries(char* azStr, char* azInt, char* sSrc);                                                    // ✕
     static void  vSprint(char* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                               // yes
     static void  vSprint(Stz* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                                // yes
-    static void  vSprint(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult =  nullptr);                                   // ✕
-    static void  vSprintCat(Stz*  psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                                                // ✕
-    static void  vSprintCat(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult = nullptr);                                // ✕
+    static void  vSprint(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult =  nullptr);    // yes
+    static void  vSprintCat(Stz*  psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                            // yes
+    static void  vSprintCat(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult = nullptr);  // yes
     static void  vStrip(char* s, char cTrailing);                                                                       // ✕
-    static void  vSubPath(char* azDst, i8 iDstBufSize, char* azSrc, bool* pbResult = nullptr);                                                                    // ✕
+    static void  vSubPath(char* azDst, i8 iDstBufSize, char* azSrc, bool* pbResult = nullptr);                          // yes
 
     static bool  bTailIs(const char* z, char* ss);                                                                      // ✕
     static char* aczTabLoc(char* azArg, i8 i_Tab, char cPad);                                                           // ✕
