@@ -2078,25 +2078,6 @@ void CardIter::vBeginEach(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRewind(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.bInRange());
-
-//  if (G.xKid.m_i_Child == 0) {
-//    G.xKid.m_i_Child = C_UNKNOWN;
-//    return;
-//  }
-//
-//  G.xKid.m_i_Child--;
-
-  G.xKid.vPrev();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card* CardIter::pRewindChild(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
