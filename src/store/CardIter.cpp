@@ -224,7 +224,9 @@ void CardIter::vChangeCard(Card* pCard)
 
   G.xKid.vParent(pCard);
 
-  vBeginEach();
+  vMember(pCard);
+
+  //vBeginEach();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -425,11 +427,11 @@ void CardIter::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vDontDescend(void)
+void CardIter::vDontDescend(bool bDontDescend)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.m_bDontDescend = true;
+  G.m_bDontDescend = bDontDescend;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1332,6 +1334,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COUNT:            G.p_count             = (Card_Count*)         pCard; break;
     case CK_CROSSJOIN:        G.p_crossJoin         = (Card_CrossJoin*)     pCard;
                               G.p_OP                = (Card_OP*)            pCard; break;
+
+    case CK_DECK:             G.pDeck               = (Card_Deck*)          pCard; break;
 
     case CK_DIRECTION:        G.p_direction         = (Card_Direction*)     pCard; break;
 

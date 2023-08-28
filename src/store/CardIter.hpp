@@ -88,7 +88,7 @@ namespace STORE
 
     void G_vDeleteMember(Card* pMember);
     void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
-    void vDontDescend(void);
+    void vDontDescend(bool bDontDescend);
 
     bool   bEachBoard(void);
     Board* pEachBoard(void);

@@ -169,10 +169,11 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 //
 //  pCI->vSave();
 //
-//  //ardIter xCR(this);
 //  pCI->vChangeCard(this);
 //
 //  while (Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach()) {
+//    p_pred->vDump(__func__);
+//
 //    if (! p_pred->bMark1(MARK_AT))
 //      continue;
 //
@@ -202,6 +203,8 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 
   CardIter xCR(this);
   while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
+    p_pred->vDump(__func__);
+
     if (! p_pred->bMark1(MARK_AT))
       continue;
 
@@ -429,11 +432,12 @@ bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
 //  pCI->vSave();
 //
 //  pCI->vChangeCard(this);
+//  pCI->vDontDescend(false);
 //  while (Card* p_card = pCI->pRecurseEach()) {
 //
 //    if (p_card->bIsCard(CK_NOTPRED)) {
 //      p_card->vMark1(MARK_NOT);
-//      pCI->vDontDescend();
+//      pCI->vDontDescend(true);
 //      continue;
 //    }
 //    if (p_card->bIsCard(CK_ANDPRED)) {
@@ -443,7 +447,7 @@ bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
 //
 //    if (p_card->bIsCard(CK_CMPPRED)) {
 //      p_card->vMark1(MARK_COMPARE);
-//      pCI->vDontDescend();
+//      pCI->vDontDescend(true);
 //      if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
 //        continue;
 //      Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
@@ -456,7 +460,7 @@ bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
 //
 //    if (p_card->bIsCard(CK_ORPRED)) {
 //      p_card->vMark1(MARK_OR);
-//      pCI->vDontDescend();
+//      pCI->vDontDescend(true);
 //      continue;
 //    }
 //
@@ -481,7 +485,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 
     if (p_card->bIsCard(CK_NOTPRED)) {
       p_card->vMark1(MARK_NOT);
-      xCR.vDontDescend();
+      xCR.vDontDescend(true);
       continue;
     }
     if (p_card->bIsCard(CK_ANDPRED)) {
@@ -491,7 +495,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 
     if (p_card->bIsCard(CK_CMPPRED)) {
       p_card->vMark1(MARK_COMPARE);
-      xCR.vDontDescend();
+      xCR.vDontDescend(true);
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
         continue;
       Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
@@ -504,7 +508,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 
     if (p_card->bIsCard(CK_ORPRED)) {
       p_card->vMark1(MARK_OR);
-      xCR.vDontDescend();
+      xCR.vDontDescend(true);
       continue;
     }
 
