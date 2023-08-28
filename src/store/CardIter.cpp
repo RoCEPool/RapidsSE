@@ -40,20 +40,6 @@ CardIter::CardIter(Card*  pCard)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardIter::CardIter(CardIter* pCardIter_src)
-    : Object(CN_CARDITER)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vInit();
-
-  m_pBench = pCardIter_src->m_pBench;
-  vSet(pCardIter_src);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 CardIter::CardIter(Bench* pBench)
     : Object(CN_CARDITER)
 {
@@ -75,6 +61,8 @@ CardIter::CardIter(Bench* pBench)
 CardIter::~CardIter(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
+
+  RASSERT(0 == nItems());
 
 }
 

@@ -160,6 +160,39 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
+//void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  Card_Deck* pDeck = pCI->G.pDeck;
+//  Card *pMainCard;
+//
+//  pCI->vSave();
+//
+//  //ardIter xCR(this);
+//  pCI->vChangeCard(this);
+//
+//  while (Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach()) {
+//    if (! p_pred->bMark1(MARK_AT))
+//      continue;
+//
+//    char cTableSyn = p_pred->cMark2();
+//    Card_Table *p_table = pDeck->pFindTableCard(cTableSyn, pMainCard);
+//    if (! p_table)
+//      continue;
+//
+//    ((Card_OP*)pMainCard)->vAdd_Pred_Under_filter((Card_PRED*) p_pred->pDupCardRecursive());
+//
+//    // todo: is this needed?
+//    Card_Filter* p_filter = pMainCard->pSub_filter();
+//    p_filter->vMark1(p_table->cMark1());
+//    p_filter->vMark2(p_table->cMark2());
+//
+//  }
+//
+//  pCI->vRestore();
+//}
+/*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
