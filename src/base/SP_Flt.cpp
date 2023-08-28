@@ -92,6 +92,7 @@ Stz* SP_Flt::sz(d8 dFlt)
   else {
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     (Stz *) m_caFormat,
                     dFlt);
   }

@@ -98,6 +98,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     
     StrLib::vSprint((Stz*)m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     "IntElm0 %s %lld"_Stz,
                     aDM[pCol->eDatum()],
                     *(i8*)aKey);
@@ -111,6 +112,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
 
   StrLib::vSprint((Stz*)m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "Key[%lldB]; "_Stz,
                   aKey->nElmSeqSize());
 
@@ -133,6 +135,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
 
     StrLib::vSprint((Stz*)caElm,
                     sizeof(caElm),
+                    nullptr,
                     "Elm[%lld %s %lldB] %s"_Stz,
                     i_IdxCol,
                     aDM[pCol->eDatum()],

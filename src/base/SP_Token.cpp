@@ -40,6 +40,7 @@ Stz* SP_Token::sz(Token* pToken)
     
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "Token[%02lld] %s %s L%03lld C%02lld"_Stz,
                   
                   pToken->i_Token(),

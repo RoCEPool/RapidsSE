@@ -51,6 +51,7 @@ Stz* SP_Lock::sz_log(Lock* pLock)
   
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "{%s }"_Stz,
 
                   aCN[pLock->eClassLocked()],

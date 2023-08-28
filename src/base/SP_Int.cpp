@@ -42,6 +42,7 @@ Stz* SP_Int::sz(i8 iInt)
   
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   (Stz*)m_caFormat,
                   iInt);
 

@@ -45,6 +45,7 @@ Stz* SP_Dic::sz(Dic* pDic)
     
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "%s (%s)"_Stz,
                   pDic->szDicNm(),
                   pDic->szDicKind());

@@ -39,7 +39,7 @@ Stz* SP_Word::sz(Word* pWord)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   if (! pWord) {
-    StrLib::vSprint(m_caResult,sizeof(m_caResult),"%p"_Stz,pWord);
+    StrLib::vSprint(m_caResult,sizeof(m_caResult),nullptr,"%p"_Stz,pWord);
     return (Stz*) &m_caResult[0];
   }
   
@@ -47,6 +47,7 @@ Stz* SP_Word::sz(Word* pWord)
   
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "%p: %s /%s/%s "
                   "%s"
                   "%s"_Stz
@@ -66,6 +67,7 @@ Stz* SP_Word::sz(Word* pWord)
   if (* pWord->szExitHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
                        sizeof(m_caResult),
+                       nullptr,
                        " exitHook=%s"_Stz,
                        pWord->szExitHook());
   

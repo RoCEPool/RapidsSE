@@ -1600,10 +1600,12 @@ void Card::vBearing(Card* pParentCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pParentCard) {
-    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), "%s.%lld"_Stz, pParentCard->md_Bearing, m_i_Child);
+    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), nullptr,
+                    "%s.%lld"_Stz, pParentCard->md_Bearing, m_i_Child);
   }
   else {
-    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), "%lld"_Stz, m_i_Child);
+    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), nullptr,
+                    "%lld"_Stz, m_i_Child);
   }
 
 //  vTrace("%s\n"_Stz,md_Bearing);

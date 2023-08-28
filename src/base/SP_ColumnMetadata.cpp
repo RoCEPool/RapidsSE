@@ -44,6 +44,7 @@ Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColumnMeta)
           
   StrLib::vSprint(m_caResult
     ,sizeof(m_caResult)
+    ,nullptr
                   
     ,"%s/%s/%s : [%02lld] %16s : type %2lld %7s length %5lld scale %2lld %s %s"_Stz
                   

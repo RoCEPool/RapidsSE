@@ -41,6 +41,7 @@ Stz* SP_Node::sz(Node* pNode)
   
   StrLib::vSprint(m_caResult
                   ,sizeof(m_caResult)
+                  ,nullptr
                   ,"[%lld] %8s %s %lld %8s recv=%p send=%p [%s]"_Stz
                   
                   ,pNode->iNodeId()

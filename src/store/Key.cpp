@@ -418,6 +418,7 @@ void Key::vShow(IndexDef* pIndexDef)
       xwRef = * (Rrf*)ayElm;
       StrLib::vSprint(caLiteral,
                       sizeof(caLiteral),
+                      nullptr,
                       "%lld.%lld"_Stz,
                       xwRef.iBuffer(),
                       xwRef.iItem()
@@ -447,6 +448,7 @@ void Key::vShowIntKey(void)
   i8 iInt = (i8)* (i8*)aElmSeq_dtm();
   StrLib::vSprint(caLiteral,
                   sizeof(caLiteral),
+                  nullptr,
                   "%05lld"_Stz,
                   iInt);
   

@@ -88,6 +88,7 @@ Stz* SP_Tsp::sz(i8 iTsp)
     
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     (Stz*)F_TSP_frac,
 
                     (i8)wTsp.m_wTsp.T.m_uYearDelta + C_YEAR_BASE,
@@ -103,6 +104,7 @@ Stz* SP_Tsp::sz(i8 iTsp)
   else {
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     (Stz*)F_TSP,
 
                     (i8)wTsp.m_wTsp.T.m_uYearDelta + C_YEAR_BASE,

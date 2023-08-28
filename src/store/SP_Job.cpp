@@ -80,6 +80,7 @@ Stz* SP_Job::sz_recv(Job* pJob)
   
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "Header %s ... Footer %s"_Stz,
                   
                   spHeader.sz(pJob),

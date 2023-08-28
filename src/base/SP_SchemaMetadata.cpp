@@ -44,6 +44,7 @@ Stz* SP_SchemaMetadata::sz(SchemaMetadata* pSchemaMeta)
           
   StrLib::vSprint(m_caResult
     ,sizeof(m_caResult)
+    ,nullptr
                   
     ,"%s/%s"_Stz
                   

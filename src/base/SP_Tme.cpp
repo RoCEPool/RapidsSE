@@ -51,6 +51,7 @@ Stz* SP_Tme::sz(i8 iTme)
     
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     (Stz*)F_TME_frac,
 
                     (i8)wTme.m_wTme.m_uHour,
@@ -62,6 +63,7 @@ Stz* SP_Tme::sz(i8 iTme)
   else {
     StrLib::vSprint(m_caResult,
                     sizeof(m_caResult),
+                    nullptr,
                     (Stz*)F_TME,
 
                     (i8)wTme.m_wTme.m_uHour,

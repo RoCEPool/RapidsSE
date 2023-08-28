@@ -45,6 +45,7 @@ Stz* SP_Header::sz(Header* aHeader)
 
   StrLib::vSprint(m_caResult,
                   sizeof(m_caResult),
+                  nullptr,
                   "<cn%03d %s %lldB %s>"_Stz,
                   
                   eClassNo,

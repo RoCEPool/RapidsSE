@@ -272,11 +272,11 @@ namespace BASE
                                char cEnclosedBy_Trailing);                                                              // ✕
     static void  vSkipWhite(char** ps);                                                                                 // ✕
     static void  vSplitSeries(char* azStr, char* azInt, char* sSrc);                                                    // ✕
-    static void  vSprint(Stz* sDst, i8 nBufSize, Stz* sFormat, ...);                                                    // ✕
-    static void  vSprint(char* sDst, i8 nBufSize, Stz* sFormat, ...);                                                   // ✕
-    static void  vSprint(char* sDst, i8 nBufSize, va_list args, const char* sFormat);                                   // ✕
-    static void  vSprintCat(Stz*  sDst, i8 nBufSize, Stz* sFormat, ...);                                                // ✕
-    static void  vSprintCat(char* sDst, i8 nBufSize, va_list args, const char* sFormat);                                // ✕
+    static void  vSprint(char* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                               // yes
+    static void  vSprint(Stz* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                                // yes
+    static void  vSprint(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult =  nullptr);                                   // ✕
+    static void  vSprintCat(Stz*  psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                                                // ✕
+    static void  vSprintCat(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult = nullptr);                                // ✕
     static void  vStrip(char* s, char cTrailing);                                                                       // ✕
     static void  vSubPath(char* azDst, i8 iDstBufSize, char* azSrc, bool* pbResult = nullptr);                                                                    // ✕
 

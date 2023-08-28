@@ -44,6 +44,7 @@ Stz* SP_CatalogMetadata::sz(CatalogMetadata* pCatalogMeta)
           
   StrLib::vSprint(m_caResult
     ,sizeof(m_caResult)
+    ,nullptr
                   
     ,"%s"_Stz
                   

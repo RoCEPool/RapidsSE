@@ -51,6 +51,60 @@ Card_TableList::~Card_TableList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+//Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
+//{
+//  _static_
+//
+//  Card_TableList* p_tableList = new Card_TableList;
+//
+//  Kid xCI(p_deck);
+//
+//  if (! xCI.bEach_reverse(CK_FOLD))
+//    xCI.vBegin();
+//
+//  while (xCI.bEach(CK_FROM,CK_TABLE)) {
+//
+//    Card_Table* p_table = _pCard_Table(xCI.pSub1());
+//
+//    Card* p_table_dup = _pCard_Table(p_table->pDupCard());
+//    p_tableList->vAppend(p_table_dup);
+//
+//    if (Card_TableNm* p_tableNm = p_table->pSub_tableNm()) {
+//      p_tableNm = _pCard_TableNm(p_tableNm->pDupCard());
+//      p_table_dup->vAppend(p_tableNm);
+//    }
+//    if (Card_TablePtn* p_tablePtn = p_table->pSub_tablePtn()) {
+//      p_tablePtn = _pCard_TablePtn(p_tablePtn->pDupCard());
+//      p_table_dup->vAppend(p_tablePtn);
+//    }
+//    if (Card_TableSize* p_tableSize = p_table->pSub_tableSize()) {
+//      p_tableSize = _pCard_TableSize(p_tableSize->pDupCard());
+//      p_table_dup->vAppend(p_tableSize);
+//    }
+//    if (Card_RowSize* p_rowSize = p_table->pSub_rowSize()) {
+//      p_rowSize = _pCard_RowSize(p_rowSize->pDupCard());
+//      p_table_dup->vAppend(p_rowSize);
+//    }
+//    if (Card_RowCount* p_rowCount = p_table->pSub_rowCount()) {
+//      p_rowCount = _pCard_RowCount(p_rowCount->pDupCard());
+//      p_table_dup->vAppend(p_rowCount);
+//    }
+//
+//    if (Card_KeyExists* p_keyExists = p_table->pSub_keyExists()) {
+//      p_keyExists = _pCard_KeyExists(p_keyExists->pDupCard());
+//      p_table_dup->vAppend(p_keyExists);
+//    }
+//    else
+//    if (Card_KeyNotExists* p_keyNotExists = p_table->pSub_keyNotExists()) {
+//      p_keyNotExists = _pCard_KeyNotExists(p_keyNotExists->pDupCard());
+//      p_table_dup->vAppend(p_keyNotExists);
+//    }
+//  }
+//
+//  return p_tableList;
+//}
+
+/*----------------------------------------------------------------------------*/
 Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
 {
   _static_
