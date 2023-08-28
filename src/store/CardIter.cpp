@@ -23,23 +23,6 @@ __aFooterFunction(CardIter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardIter::CardIter(Card*  pCard)
-: Object(CN_CARDITER)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vInit();
-
-  G.xKid.vParent(pCard);
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 CardIter::CardIter(Bench* pBench)
     : Object(CN_CARDITER)
 {
@@ -225,7 +208,7 @@ void CardIter::vChangeCard(Card* pCard)
 
   G.xKid.vParent(pCard);
 
-  G.p_MainCard = pCard;
+  G.p_MainCard = nullptr;
   vMember(pCard);
 
   //vBeginEach();
@@ -1876,8 +1859,12 @@ void CardIter::vRecurseBegin(Card* pCard)
 
   vSave();
 
+  m_i_RecursionDepth++;
+  G.m_i_RecursionDepth = m_i_RecursionDepth;
+
   vChangeCard(pCard);
   vDontDescend(false);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1893,7 +1880,6 @@ Card* CardIter::pRecurseEach(void)
   if (G.p_MainCard && (! G.m_bDontDescend) ) {
     if (G.p_MainCard->nChildCards()) {
 
-      G.m_i_RecursionDepth = 1;
       vPushRecurseIter();
       vChangeCard(G.p_MainCard);
       G_bEachMain();
@@ -1940,6 +1926,10 @@ void CardIter::vRecurseEnd(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   vRestore();
+
+  m_i_RecursionDepth--;
+
+  RASSERT(G.m_i_RecursionDepth == m_i_RecursionDepth);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2606,8 +2596,8 @@ bool CardIter::bPopRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  CardIterMembers* pXsentinals2 = pPeek(0);
-  if (! pXsentinals2 || ! pXsentinals2->m_i_RecursionDepth)
+  CardIterMembers* pPeg = pPeek(0);
+  if (! pPeg || pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
     return false;
 
   vRestore();

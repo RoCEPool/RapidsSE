@@ -160,42 +160,6 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-//void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  Card_Deck* pDeck = pCI->G.pDeck;
-//  Card *pMainCard;
-//
-//  pCI->vRecurseBegin(this);
-//  s32 sTimes;
-//  for (i8 nTimes = 0; Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach(); nTimes++) {
-//
-//    sTimes = nTimes;
-//    p_pred->vDump(__func__,0,sTimes);
-//
-//    if (! p_pred->bMark1(MARK_AT))
-//      continue;
-//
-//    char cTableSyn = p_pred->cMark2();
-//    Card_Table *p_table = pDeck->pFindTableCard(cTableSyn, pMainCard);
-//    if (! p_table)
-//      continue;
-//
-//    ((Card_OP*)pMainCard)->vAdd_Pred_Under_filter((Card_PRED*) p_pred->pDupCardRecursive());
-//
-//    // todo: is this needed?
-//    Card_Filter* p_filter = pMainCard->pSub_filter();
-//    p_filter->vMark1(p_table->cMark1());
-//    p_filter->vMark2(p_table->cMark2());
-//
-//  }
-//
-//  pCI->vRecurseEnd();
-//
-//  vDebugPoint();
-//}
-/*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -203,13 +167,13 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
   Card_Deck* pDeck = pCI->G.pDeck;
   Card *pMainCard;
 
-  CardIter xCR(this);
-
+  pCI->vRecurseBegin(this);
   s32 sTimes;
-  for (i8 nTimes = 0; Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach(); nTimes++) {
+  for (i8 nTimes = 0; Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach(); nTimes++) {
 
     sTimes = nTimes;
     //p_pred->vDump(__func__,0,sTimes);
+
     if (! p_pred->bMark1(MARK_AT))
       continue;
 
@@ -226,6 +190,9 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
     p_filter->vMark2(p_table->cMark2());
 
   }
+
+  pCI->vRecurseEnd();
+
   vDebugPoint();
 }
 
@@ -435,10 +402,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->vSave();
-
-  pCI->vChangeCard(this);
-  pCI->vDontDescend(false);
+  pCI->vRecurseBegin(this);
   while (Card* p_card = pCI->pRecurseEach()) {
 
     //p_card->vDump(__func__);
@@ -479,7 +443,8 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
     NEVER_REACH
   }
 
-  pCI->vRestore();
+  pCI->vRecurseEnd();
+
 }
 
 /*----------------------------------------------------------------------------*/
