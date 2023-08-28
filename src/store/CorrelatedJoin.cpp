@@ -555,19 +555,19 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
       RASSERT(!p_pred->pSymbol()->Y_bHas(P_CrlKeyPred));
 
       p_pred->vCard(CK_CMPPRED);
-      CardIter xCI(p_pred);
-      while (xCI.G_bEachMain()) {
-        if (Card_PRED::bIsPRED(xCI.G.p_MainCard)) {
-          vResolve(static_cast<Card_PRED*>(xCI.G.p_MainCard), vResolve);
+      Kid xCI(p_pred);
+      while (xCI.bEach()) {
+        if (Card_PRED::bIsPRED(xCI.pChild())) {
+          vResolve(static_cast<Card_PRED*>(xCI.pChild()), vResolve);
           continue;
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-        if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_MainCard->szSymbol(SF_NONE))) {
-          Card* p_arg = xCI.pPrevChild();
+        if (pCI->m_pBench->bIsSubQueryNm(xCI.pChild()->szSymbol(SF_NONE))) {
+          Card* p_arg = xCI.pPrev();
 
           Card_Term* p_term_new = (new Card_Term) ->SYM(SF_COL_NO,"$2"_Stz);
-          p_pred->vInsertAfter(p_term_new,xCI.G.p_MainCard);
+          p_pred->vInsertAfter(p_term_new,xCI.pChild());
 
 
           Card_Expr* p_expr_found =
@@ -579,8 +579,9 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
           p_pred->vRemoveChild(p_arg);
           DELETE_CARD(p_arg);
 
-          p_pred->vRemoveChild(xCI.G.p_MainCard);
-          DELETE_CARD(xCI.G.p_MainCard);
+          Card* pChild = xCI.pChild();
+          p_pred->vRemoveChild(pChild);
+          DELETE_CARD(pChild);
 
           p_pred->pSymbol()->Y_vSet(P_CrlRslTest);
         }
