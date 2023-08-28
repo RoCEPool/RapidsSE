@@ -31,7 +31,7 @@ DataBuffer* BASE::_pDataBuffer(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
-: LinkedBuffer(eClassNo)
+: Operand(eClassNo)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);

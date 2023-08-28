@@ -1537,8 +1537,11 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   if (nItems() == 0) {
     
     // unlink this buffer
-    vUnLink();
-    
+    if (pPrevEntBuffer())
+      pPrevEntBuffer()->m_tNextBuffer = m_tNextBuffer;    // (a)
+
+    if (pNextEntBuffer())
+      pNextEntBuffer()->m_tPrevBuffer = m_tPrevBuffer;
     // delete this buffer
     delete this;
     
