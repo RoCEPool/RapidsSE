@@ -53,16 +53,31 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 {
   _static_
 
-  CardIter xCI(pCI);
-  xCI.vSet(pCI->G.i_MainCard);
+  Kid xCI(pCI->G.pDeck);
+  xCI.vChild(pCI->G.i_MainCard);
 
-  while (xCI.G_bEachMain_reverse()) {
-    if (Card_Projection* p_projection = xCI.G.p_MainCard->pSub_projection())
+  while (xCI.bEach_reverse()) {
+    if (Card_Projection* p_projection = xCI.pChild()->pSub_projection())
       return p_projection;
   }
 
   return nullptr;
 }
+/*----------------------------------------------------------------------------*/
+//Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
+//{
+//  _static_
+//
+//  CardIter xCI(pCI);
+//  xCI.vSet(pCI->G.i_MainCard);
+//
+//  while (xCI.G_bEachMain_reverse()) {
+//    if (Card_Projection* p_projection = xCI.G.p_MainCard->pSub_projection())
+//      return p_projection;
+//  }
+//
+//  return nullptr;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

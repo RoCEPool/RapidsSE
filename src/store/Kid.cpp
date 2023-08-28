@@ -138,6 +138,28 @@ void Kid::vChild(i8 i_Child)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vChild(Card* pChild)
+{
+  _nonProper_
+
+  i8 nChildren = m_pParent->nChildCards();
+
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card *pChild_test = m_pParent->pGetChild(i_Child);
+    if (pChild_test == pChild) {
+      m_i_Child = i_Child;
+      m_pChild = pChild;
+      return;
+    }
+  }
+
+  NEVER_REACH
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* next child                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Kid::bEach(void)
@@ -414,24 +436,6 @@ Card* Kid::pSub3(void)
   _nonProper_
 
   return m_pSub3;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vSynch(Card* pChild_with)
-{
-  _nonProper_
-
-  i8 nChildren = m_pParent->nChildCards();
-
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card *pChild_test = m_pParent->pGetChild(i_Child);
-    if (pChild_test == pChild_with) {
-      m_i_Child = i_Child;
-      return;
-    }
-  }
 }
 
 /*----------------------------------------------------------------------------*/

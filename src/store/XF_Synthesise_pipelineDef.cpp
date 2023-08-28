@@ -477,7 +477,7 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(Card_OP* p_OP)
 
   i8 nUpdates = 0;
   Kid xKid(m_pCI->G.pDeck);
-  for (xKid.vSynch(p_OP); xKid.bEach(); /**/) {
+  for (xKid.vChild(p_OP); xKid.bEach(); /**/) {
     Card* p_later = xKid.pChild();
     eCK eCard_later = p_later->eCard();
 

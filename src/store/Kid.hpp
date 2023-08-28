@@ -33,6 +33,7 @@ namespace STORE
     i8   i_Child(void);
     Card *pChild(void);
     void vChild(i8 i_Child);
+    void vChild(Card *pChild);
 
     bool bEach(void);
     bool bEach(eCK eCard);
@@ -64,8 +65,6 @@ namespace STORE
     Card *pSub2(void);
     Card *pSub3(void);
 
-    void vSynch(Card *pChild_with);
-
     Card_Bound*       p_bound(void);
     Card_CmpPred*     p_cmpPred(void);
     Card_Correlation* p_correlation(void);
@@ -90,7 +89,6 @@ namespace STORE
     void vChildInc(void);
     void vChildReset(void);
     void vChildUpdate(void);
-
   };
 }
 /*============================================================================*/
