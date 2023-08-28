@@ -360,6 +360,21 @@ bool Kid::bMore(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* Kid::pNext(void)
+{
+  _nonProper_
+
+  if (! bMore())
+    return nullptr;
+
+  Card* pPrev = m_pParent->pGetChild(m_i_Child + 1);
+
+  return pPrev;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Kid::vNext(void)
 {
   _nonProper_
@@ -395,7 +410,7 @@ Card* Kid::pPrev(void)
 {
   _nonProper_
 
-  if (m_i_Child <= 0)
+  if (! bLess())
     return nullptr;
 
   Card* pPrev = m_pParent->pGetChild(m_i_Child - 1);
