@@ -135,7 +135,6 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
       // have <bounds> & <filter> under <main>
 
       m_pCI->vSave();
-      //CardIter xCR(m_pCI->G.p_filter);
       m_pCI->vChangeCard(m_pCI->G.p_filter);
       while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(m_pCI->pRecurseEach(CK_CMPPRED)))) {
         if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
@@ -152,7 +151,6 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
       // have <bounds> & <filter> under <main>
 
       m_pCI->vSave();
-      //CardIter xCR(m_pCI->G.p_constraint);
       m_pCI->vChangeCard(m_pCI->G.p_constraint);
       while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(m_pCI->pRecurseEach(CK_CMPPRED)))) {
         if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
