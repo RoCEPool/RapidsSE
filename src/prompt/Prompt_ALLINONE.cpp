@@ -2262,7 +2262,7 @@ bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
 
   char caSection[256] = { '\0' };
   
-  StrLib::vPad(caSection,127-iSectNmLen-4,'#');
+  StrLib::vPad(caSection, sizeof(caSection), 127-iSectNmLen-4,'#');
   
   StrLib::vConcat(caSection, sizeof(caSection),' ');
   StrLib::vConcat(caSection, sizeof(caSection),szSectionNm->azChar());

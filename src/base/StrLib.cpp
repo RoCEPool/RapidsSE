@@ -4308,13 +4308,13 @@ bool StrLib::bMatchStar(const char* azStr, const char* azRegExp, char cChr)
 /*----------------------------------------------------------------------------*/
 /* get ptr to null terminator                                                 */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azNullTerminator(char* s)
+char* StrLib::azNullTerminator(char* psSrc)
 {
   _static_
   
-  i8 nLen  = nLength(s);
+  i8 nLen  = nLength(psSrc);
   
-  char* z = s + nLen;
+  char* z = psSrc + nLen;
   
   return z;
 }
@@ -4322,18 +4322,18 @@ char* StrLib::azNullTerminator(char* s)
 /*----------------------------------------------------------------------------*/
 /* iOccurrence: get no of occurrence of given char                            */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iOccurrence(char* ps, const char cArg)
+i8 StrLib::iOccurrence(char* psSrc, const char cArg)
 {
   _static_
   
   i8 iCount = 0;
   
-  while(*ps) {
-    ps = strchr(ps,cArg);
-    if ( ! ps )
+  while(*psSrc) {
+    psSrc = strchr(psSrc, cArg);
+    if ( ! psSrc )
       break;
     iCount++;
-    ps++;
+    psSrc++;
   }
   
   return iCount;
@@ -4342,12 +4342,12 @@ i8 StrLib::iOccurrence(char* ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bOneOf: is given word one of the words in the given set?                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bOneOf(char** asaSet, char* sWord)
+bool StrLib::bOneOf(char** ppsSrcSet, const char* psArg)
 {
   _static_
   
-  for (char** saTest = asaSet; *saTest; saTest++) {
-    if (bSame(*saTest,sWord))
+  for (char** saTest = ppsSrcSet; *saTest; saTest++) {
+    if (bSame(*saTest, psArg))
       return true;
   }
   
@@ -4357,17 +4357,23 @@ bool StrLib::bOneOf(char** asaSet, char* sWord)
 /*----------------------------------------------------------------------------*/
 /* vPad: pad string to given length with char                                 */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
+void StrLib::vPad(char* psDst, i8 iDstBufSize, i8 iToLength, const char cWith, bool* pbResult)
 {
   _static_
   
-  i8 iCurrLength = nLength(azDst);
+  i8 iCurrLength = nLength(psDst);
   
   if (iCurrLength >= iToLength)
     return;
-  
-  char* z = azNullTerminator(azDst);
-  i8 nChars = iToLength - iCurrLength;
+
+  bool bRet = bCheckBufferSpace(__func__, iToLength + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+  // Continue, even if there is truncation
+
+  i8 iMaxChars = iToLength > iDstBufSize - 1 ? iDstBufSize - 1 : iToLength;
+
+  char* z = azNullTerminator(psDst);
+  i8 nChars = iMaxChars - iCurrLength;
   
   for (i8 iChar = 0; iChar < nChars; iChar++)
     *z++ = cWith;
@@ -4376,16 +4382,18 @@ void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put given stz onto dst at offset                                           */
+/* put given cChr into dst at offset                                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPut(char* azDst, i8 iAt, char cChr)
+void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char cChr, bool* pbResult)
 {
   _static_
-  
-  char* acEnd = StrLib::acLast(azDst);
-  UNUSED(acEnd);
 
-  char* acDst = azDst + iAt;
+  bool bRet = bCheckBufferSpace(__func__, iAt + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  ASSERT(iAt < nLength(psDst));
+
+  char* acDst = psDst + iAt;
   
   if (*acDst)
     *acDst = cChr;
@@ -4394,16 +4402,34 @@ void StrLib::vPut(char* azDst, i8 iAt, char cChr)
 /*----------------------------------------------------------------------------*/
 /* put given stz onto dst at offset                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPut(char* azDst, i8 iAt, char* azSrc)
+void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char* psSrc, bool* pbResult)
 {
   _static_
-  
-  char* acEnd = StrLib::acLast(azDst);
-  UNUSED(acEnd);
-  char* acDst = azDst + iAt;
-  
-  while (*azSrc && *acDst)
-    *acDst++ = *azSrc++;
+
+  i8 iSrcLen = nLength(psSrc);
+  bool bRet = bCheckBufferSpace(__func__, iAt + iSrcLen + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  char* psNull = azNullTerminator(psDst);
+  ASSERT(psDst + iAt <= psNull);
+
+  i8 iMaxBytes = iDstBufSize - iAt - 1;
+  if (iMaxBytes > iSrcLen) {
+    iMaxBytes = iSrcLen;
+  }
+
+  char* d = psDst + iAt;
+  char* s = psSrc;
+
+  while (*s && *d)
+    *d++ = *s++;
+
+  // Does it need to be null terminated?
+  // This would occur if the psSrc string overwrote the existing null terminator.
+  if (/* psDst + iAt <= psNull && */
+      psDst + iAt + iSrcLen > psNull) {
+    *d = 0;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

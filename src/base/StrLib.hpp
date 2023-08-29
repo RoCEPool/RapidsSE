@@ -224,14 +224,14 @@ namespace BASE
     static bool  bMatchHere(const char* azStr, const char* azRegExp);                                                   // yes
     static bool  bMatchStar(const char* azStr, const char* azRegExp, char cChr);                                        // yes
 
-    static char* azNullTerminator(char* s);                                                                             // ✕
+    static char* azNullTerminator(char* psSrc);                                                                         // yes
 
-    static i8    iOccurrence(char* ps, const char cArg);                                                                // ✕
-    static bool  bOneOf(char** asaSet, char* sWord);                                                                    // ✕
+    static i8    iOccurrence(char* psSrc, const char cArg);                                                             // yes
+    static bool  bOneOf(char** ppsSrcSet, const char* psArg);                                                           // yes
   
-    static void  vPad(char* azDst, i8 iToLength, const char cWith);                                                     // ✕
-    static void  vPut(char* azDst, i8 iAt, char cChr);                                                                  // ✕
-    static void  vPut(char* azDst, i8 iAt, char* azSrc);                                                                // ✕
+    static void  vPad(char* psDst, i8 iDstBufSize, i8 iToLength, const char cWith, bool* pbResult = nullptr);           // yes
+    static void  vPut(char* psDst, i8 iDstBufSize, i8 iAt, char cChr, bool* pbResult = nullptr);                        // yes
+    static void  vPut(char* psDst, i8 iDstBufSize, i8 iAt, char* psSrc, bool* pbResult = nullptr);                      // yes
   
     static void  vRemove(char* azArg, const char cLeading);                                                             // ✕
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);                                                // ✕
