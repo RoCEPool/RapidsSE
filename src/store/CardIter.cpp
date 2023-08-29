@@ -536,39 +536,64 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.bBegun());
-
-  if (G.xKid.bEnded())
-    return false;
-
+  RASSERT(! G.xKid.bEnded());
   RASSERT(! G.xKid.bExhausted());
 
-  G.xKid.vBeginForward();
+  while (G.xKid.bEach()) {
 
-  for (;;) {
-
-    if (! G.xKid.bInRange()) {
-      G.p_MainCard = nullptr;
-      G_vMember(eOfMainKind, nullptr, __func__);
-      G.xKid.vExhausted(true);
-      return false;
-    }
+    if (G.xKid.pChild()->eCard() != eOfMainKind)
+      continue;
 
     G.p_MainCard = G.xKid.pChild();
-
-    if (CK_NONE == eOfMainKind || eOfMainKind == G.xKid.eChild()) {
-      vFocusOnMain();
-      G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
-      return true;
-    }
-
-    if (! G.xKid.bEach()) {
-      G.xKid.vExhausted(true);
-      return false;
-    }
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
   }
 
-  NEVER_REACH
+  G.p_MainCard = nullptr;
+  G.xKid.vEnd();
+  G.xKid.vExhausted(true);
+  return false;
 }
+/*----------------------------------------------------------------------------*/
+//bool CardIter::G_bEachMain(eCK eOfMainKind)
+//{
+//  _precondition_( _MAGIC_, _FOOTER_);
+//
+//  RASSERT(G.xKid.bBegun());
+//
+//  if (G.xKid.bEnded())
+//    return false;
+//
+//  RASSERT(! G.xKid.bExhausted());
+//
+//  G.xKid.vBeginForward();
+//
+//  for (;;) {
+//
+//    if (! G.xKid.bInRange()) {
+//      G.p_MainCard = nullptr;
+//      G_vMember(eOfMainKind, nullptr, __func__);
+//      G.xKid.vExhausted(true);
+//      return false;
+//    }
+//
+//    G.p_MainCard = G.xKid.pChild();
+//
+//    if (CK_NONE == eOfMainKind || eOfMainKind == G.xKid.eChild()) {
+//      vFocusOnMain();
+//      G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+//      return true;
+//    }
+//
+//    if (! G.xKid.bEach()) {
+//      G.xKid.vExhausted(true);
+//      return false;
+//    }
+//  }
+//
+//  NEVER_REACH
+//}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -1145,15 +1170,11 @@ void CardIter::vFocusOnMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vForward(void)
+void CardIter::vForward(bool bForward)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.bInRange());
-
-  Card* pChild = pNextChild();
-
-  UNUSED(pChild);
+  G.xKid.vForward(bForward);
 }
 
 /*----------------------------------------------------------------------------*/

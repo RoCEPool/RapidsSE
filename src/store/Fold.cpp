@@ -232,6 +232,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
 
   i8 i_dup_from = 0;
+  pCI->vBeginEach();
   if (pCI->G_bEachMain(CK_CORRELATION)) {
     pCI->Sqy.m_pCorrelation = pCI->G.pDeck->pSub_correlation();
     i_dup_from = 1;
