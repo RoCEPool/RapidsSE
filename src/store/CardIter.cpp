@@ -732,20 +732,17 @@ bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
-    vFocusOnMain();
-
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
     return true;
   }
 
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
-  G_vMember(eOfMainKind, nullptr, __func__);
+  RASSERT(G.xKid.bEnded());
+
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
   G_vMember(eAndSubKind, nullptr, __func__);
+
   return false;
 }
 
