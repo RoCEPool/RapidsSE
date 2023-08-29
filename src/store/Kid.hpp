@@ -25,6 +25,9 @@ namespace STORE
     bool  m_bForward;
     bool  m_bEnded;
 
+    bool  m_bExhausted;
+
+
   public:
     Kid(void);
     Kid(Card *pParent);
@@ -51,6 +54,8 @@ namespace STORE
     bool bEach_reverse(eCK eCard);
     void vEnd(void);
     bool bEnded(void);
+    bool bExhausted(void);
+    void vExhausted(bool bExhausted);
 
     void vForward(bool bForward);
 

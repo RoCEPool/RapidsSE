@@ -25,6 +25,8 @@ Kid::Kid(void)
   m_bEnded   = false;
   m_nVisited = 0;
 
+  m_bExhausted = false;
+
   vChildReset();
 
   _checkInitialised_(CN_KID);
@@ -38,6 +40,8 @@ Kid::Kid(Card* pParent)
   _nonProper_
 
   m_pParent  = pParent;
+
+  m_bExhausted = false;
 
   vBeginEach_forward();
 
@@ -345,6 +349,26 @@ bool Kid::bEnded(void)
   _nonProper_
 
   return m_bEnded;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Kid::bExhausted(void)
+{
+  _nonProper_
+
+  return m_bExhausted;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vExhausted(bool bExhausted)
+{
+  _nonProper_
+
+  m_bExhausted = bExhausted;
 }
 
 /*----------------------------------------------------------------------------*/
