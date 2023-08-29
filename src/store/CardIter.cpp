@@ -23,70 +23,16 @@ __aFooterFunction(CardIter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardIter::CardIter(Card*  pCard)
-: Object(CN_CARDITER)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vInit();
-
-  G.xKid.vParent(pCard);
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-CardIter::CardIter(CardIter* pCardIter_src)
-    : Object(CN_CARDITER)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vInit();
-
-  m_pBench = pCardIter_src->m_pBench;
-  vSet(pCardIter_src);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 CardIter::CardIter(Bench* pBench)
     : Object(CN_CARDITER)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vInit();
-
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
 
-  _checkInitialised_(CN_CARDITER);
 
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-CardIter::~CardIter(void) noexcept(false)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* initialiser                                                                */
-/*----------------------------------------------------------------------------*/
-void CardIter::vInit(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  m_pBench   = nullptr;
-  m_pCardCtl = nullptr;
+  m_i_RecursionDepth = 0;
 
   G.xKid.vParent(nullptr);
 
@@ -100,17 +46,30 @@ void CardIter::vInit(void)
   Sqy.m_pCorrelation = nullptr;
   Sqy.m_i_SubQuery = C_UNKNOWN;
   Sqy.m_pSubQuery = nullptr;
+  Sqy.m_pTerm_sqCall       = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
-  Sqy.m_pSubQuery = nullptr;
-  Sqy.m_pTerm_sqCall       = nullptr;
-
 
   vNullMembers();
   G_vClearRegisters();
+
+  _checkInitialised_(CN_CARDITER);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+CardIter::~CardIter(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  RASSERT(0 == nItems());
+
 }
 
 
@@ -197,6 +156,16 @@ Board* CardIter::pBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set board                                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBoard(Board* pBoard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  G.pBoard = pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* setup board iteration                                                      */
 /*----------------------------------------------------------------------------*/
 void CardIter::vBoardIteration(void)
@@ -236,7 +205,10 @@ void CardIter::vChangeCard(Card* pCard)
 
   G.xKid.vParent(pCard);
 
-  vBeginEach();
+  G.p_MainCard = nullptr;
+  vMember(pCard);
+
+  //vBeginEach();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -437,11 +409,11 @@ void CardIter::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vDontDescend(void)
+void CardIter::vDontDescend(bool bDontDescend)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.m_bDontDescend = true;
+  G.m_bDontDescend = bDontDescend;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -968,7 +940,7 @@ void CardIter::vEndPhase(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vEndPhase();
+  m_pBench->vEndPhase(this);
 
   Bench::vValidate(this);
 }
@@ -1345,6 +1317,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CROSSJOIN:        G.p_crossJoin         = (Card_CrossJoin*)     pCard;
                               G.p_OP                = (Card_OP*)            pCard; break;
 
+    case CK_DECK:             G.pDeck               = (Card_Deck*)          pCard; break;
+
     case CK_DIRECTION:        G.p_direction         = (Card_Direction*)     pCard; break;
 
     case CK_EXPR:             G.p_expr              = (Card_Expr*)          pCard; break;
@@ -1673,7 +1647,7 @@ bool CardIter::bPastPhase(eOH ePhase)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return m_pBench->bPastPhase(ePhase);
+  return m_pBench->bPastPhase(this,ePhase);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1683,7 +1657,7 @@ void CardIter::vPhase(eOH ePhase)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vPhase(ePhase);
+  m_pBench->vPhase(this,ePhase);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1876,6 +1850,23 @@ void CardIter::G_vPushIter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vRecurseBegin(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vSave();
+
+  m_i_RecursionDepth++;
+  G.m_i_RecursionDepth = m_i_RecursionDepth;
+
+  vChangeCard(pCard);
+  vDontDescend(false);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* CardIter::pRecurseEach(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -1886,7 +1877,6 @@ Card* CardIter::pRecurseEach(void)
   if (G.p_MainCard && (! G.m_bDontDescend) ) {
     if (G.p_MainCard->nChildCards()) {
 
-      G.m_bRecursed = true;
       vPushRecurseIter();
       vChangeCard(G.p_MainCard);
       G_bEachMain();
@@ -1923,6 +1913,20 @@ Card* CardIter::pRecurseEach(eCK eCard)
       return p_card;
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vRecurseEnd(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vRestore();
+
+  m_i_RecursionDepth--;
+
+  RASSERT(G.m_i_RecursionDepth == m_i_RecursionDepth);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2589,8 +2593,8 @@ bool CardIter::bPopRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  CardIterMembers* pXsentinals2 = pPeek(0);
-  if (! pXsentinals2 || ! pXsentinals2->m_bRecursed)
+  CardIterMembers* pPeg = pPeek(0);
+  if (! pPeg || pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
     return false;
 
   vRestore();
@@ -2605,7 +2609,7 @@ void CardIter::vPushRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  RASSERT(G.m_bRecursed);
+  RASSERT(G.m_i_RecursionDepth);
 
   vSave();
 }

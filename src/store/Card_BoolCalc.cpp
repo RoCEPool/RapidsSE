@@ -160,19 +160,25 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
+void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  Card_Deck* pDeck = pCI->G.pDeck;
   Card *pMainCard;
 
-  CardIter xCR(this);
-  while (Card_PRED* p_pred = (Card_PRED*)xCR.pRecurseEach()) {
+  pCI->vRecurseBegin(this);
+  s32 sTimes;
+  for (i8 nTimes = 0; Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach(); nTimes++) {
+
+    sTimes = nTimes;
+    //p_pred->vDump(__func__,0,sTimes);
+
     if (! p_pred->bMark1(MARK_AT))
       continue;
 
     char cTableSyn = p_pred->cMark2();
-    Card_Table *p_table = p_deck->pFindTableCard(cTableSyn, pMainCard);
+    Card_Table *p_table = pDeck->pFindTableCard(cTableSyn, pMainCard);
     if (! p_table)
       continue;
 
@@ -184,6 +190,10 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
     p_filter->vMark2(p_table->cMark2());
 
   }
+
+  pCI->vRecurseEnd();
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -392,14 +402,14 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  Card_Deck* p_deck = pCI->G.pDeck;
+  pCI->vRecurseBegin(this);
+  while (Card* p_card = pCI->pRecurseEach()) {
 
-  CardIter xCR(this);
-  while (Card* p_card = xCR.pRecurseEach()) {
+    //p_card->vDump(__func__);
 
     if (p_card->bIsCard(CK_NOTPRED)) {
       p_card->vMark1(MARK_NOT);
-      xCR.vDontDescend();
+      pCI->vDontDescend(true);
       continue;
     }
     if (p_card->bIsCard(CK_ANDPRED)) {
@@ -409,7 +419,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 
     if (p_card->bIsCard(CK_CMPPRED)) {
       p_card->vMark1(MARK_COMPARE);
-      xCR.vDontDescend();
+      pCI->vDontDescend(true);
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
         continue;
       Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
@@ -422,7 +432,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 
     if (p_card->bIsCard(CK_ORPRED)) {
       p_card->vMark1(MARK_OR);
-      xCR.vDontDescend();
+      pCI->vDontDescend(true);
       continue;
     }
 
@@ -432,6 +442,9 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 
     NEVER_REACH
   }
+
+  pCI->vRecurseEnd();
+
 }
 
 /*----------------------------------------------------------------------------*/

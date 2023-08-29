@@ -28,7 +28,6 @@ namespace STORE
 
 
   public:
-    CardIter*    m_pCI;
 
     // must be last
     Footer m_xFooter;
@@ -48,7 +47,7 @@ namespace STORE
     void vAddBoard(Board* pBoard);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
-    void vEndPhase(void);
+    void vEndPhase(CardIter* pCI);
 
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
@@ -56,9 +55,9 @@ namespace STORE
     bool bIsSubQueryNm(Stz* szSubQueryNm);
     Optimiser* pOptimiser(void);
 
-    bool bPastPhase(eOH ePhase);
+    bool bPastPhase(CardIter* pCI, eOH ePhase);
 
-    void vPhase(eOH ePhase);
+    void vPhase(CardIter* pCI, eOH ePhase);
 
     void vRenumberCards(void);
 

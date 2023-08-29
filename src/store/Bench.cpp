@@ -34,8 +34,6 @@ Bench::Bench(Optimiser* pOptimiser)
   m_eXform        = XF_NONE;
   m_iPrint        = 0;
 
-  m_pCI = new CardIter(this);
-
   _checkInitialised_(CN_BENCH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
@@ -47,8 +45,7 @@ Bench::Bench(Optimiser* pOptimiser)
 Bench::~Bench(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-  delete m_pCI;
-  vDeleteAll();
+   vDeleteAll();
 
 }
 
@@ -74,6 +71,8 @@ void Bench::vValidate(CardIter* pCI)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board *pBoard = pBench->pGet(i_Board);
     pCI->vUsingBoard(pBoard);
+    RASSERT(pCI->G.pBoard);
+
     pBoard->vValidate(pCI);
   }
 
@@ -124,13 +123,13 @@ CardCtl* Bench::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
-void Bench::vEndPhase(void)
+void Bench::vEndPhase(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard())
-    m_pCI->pBoard()->vEndPhase();
+  pCI->vBoardIteration();
+  while (pCI->bEachBoard())
+    pCI->pBoard()->vEndPhase();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,14 +212,18 @@ Optimiser* Bench::pOptimiser(void)
 /*----------------------------------------------------------------------------*/
 /* past given phase?                                                          */
 /*----------------------------------------------------------------------------*/
-bool Bench::bPastPhase(eOH ePhase)
+bool Bench::bPastPhase(CardIter* pCI, eOH ePhase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard())
-    if (! m_pCI->pBoard()->bPastPhase(ePhase))
+  Board* pBoard = pCI->pBoard();
+
+  pCI->vBoardIteration();
+  while (pCI->bEachBoard())
+    if (! pCI->pBoard()->bPastPhase(ePhase))
       return false;
+
+  pCI->vBoard(pBoard);
 
   return true;
 }
@@ -228,13 +231,18 @@ bool Bench::bPastPhase(eOH ePhase)
 /*----------------------------------------------------------------------------*/
 /* begin phase                                                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vPhase(eOH ePhase)
+void Bench::vPhase(CardIter* pCI, eOH ePhase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard())
-    m_pCI->pBoard()->vPhase(ePhase);
+  Board* pBoard = pCI->pBoard();
+
+  pCI->vBoardIteration();
+  while (pCI->bEachBoard())
+    pCI->pBoard()->vPhase(ePhase);
+
+  pCI->vBoard(pBoard);
+
 }
 
 /*----------------------------------------------------------------------------*/

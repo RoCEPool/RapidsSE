@@ -188,10 +188,13 @@ void Card_StreamSet::vRemoveInvalid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
-    if (xCI.G.p_streamPer->pSymbol()->Y_bHas(P_Invalid))
-      xCI.G_vRemoveDeleteMain(CK_STREAMPER);
+  Kid xCI(this);
+  while (xCI.bEach()) {
+    if (xCI.p_streamPer()->pSymbol()->Y_bHas(P_Invalid)) {
+      Card_StreamPer* p_streamPer = xCI.p_streamPer();
+      xCI.vRemove();
+      DELETE_CARD(p_streamPer);
+    }
   }
 }
 

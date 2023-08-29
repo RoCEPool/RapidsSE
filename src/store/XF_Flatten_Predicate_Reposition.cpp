@@ -81,7 +81,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vClearRestart();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_FROM, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredsToTable(m_pCI->G.pDeck);
+    m_pCI->G.p_boolCalc->vCopyMarkedPredsToTable(m_pCI);
   }
 
  // m_pCI->vPrintBoard(__LINE__);

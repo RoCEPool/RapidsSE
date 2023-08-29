@@ -134,16 +134,14 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
       // have <bounds> & <filter> under <main>
 
-      m_pCI->vSave();
-      //CardIter xCR(m_pCI->G.p_filter);
-      m_pCI->vChangeCard(m_pCI->G.p_filter);
+      m_pCI->vRecurseBegin(m_pCI->G.p_filter);
       while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(m_pCI->pRecurseEach(CK_CMPPRED)))) {
         if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
           //RASSERT(m_pCI->G.p_cmpPred->bIsJoinPred());
           m_pCI->G.p_cmpPred->vMark1(MARK_AT);
         }
       }
-      m_pCI->vRestore();
+      m_pCI->vRecurseEnd();
       continue;
     }
 
@@ -151,9 +149,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 
       // have <bounds> & <filter> under <main>
 
-      m_pCI->vSave();
-      //CardIter xCR(m_pCI->G.p_constraint);
-      m_pCI->vChangeCard(m_pCI->G.p_constraint);
+       m_pCI->vRecurseBegin(m_pCI->G.p_constraint);
       while ((m_pCI->G.p_cmpPred = _pCard_CmpPred(m_pCI->pRecurseEach(CK_CMPPRED)))) {
         if (m_pCI->G.p_cmpPred->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
           //RASSERT(m_pCI->G.p_cmpPred->bIsJoinPred());
@@ -161,7 +157,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
         }
       }
 
-      m_pCI->vRestore();
+      m_pCI->vRecurseEnd();
       continue;
     }
 

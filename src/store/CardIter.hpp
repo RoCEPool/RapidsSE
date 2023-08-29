@@ -21,6 +21,7 @@ namespace STORE
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
+    i8          m_i_RecursionDepth;
 
 
     struct {
@@ -61,11 +62,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CardIter(Card* pCard);
-    CardIter(CardIter* pCardIter_src);
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
-    void vInit(void);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
@@ -75,6 +73,7 @@ namespace STORE
 
     void vBeginEach(void);
     Board* pBoard(void);
+    void vBoard(Board* pBoard);
     void vBoardIteration(void);
     void vBurst(Card* pCard);
     void vBurstOP(void);
@@ -89,7 +88,7 @@ namespace STORE
 
     void G_vDeleteMember(Card* pMember);
     void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
-    void vDontDescend(void);
+    void vDontDescend(bool bDontDescend);
 
     bool   bEachBoard(void);
     Board* pEachBoard(void);
@@ -157,8 +156,10 @@ namespace STORE
     void G_vPushNewChild(Card* pParent, eCK eChild);
     void G_vPushIter(void);
 
+    void vRecurseBegin(Card* pCard);
     Card* pRecurseEach(void);
     Card* pRecurseEach(eCK eCard);
+    void vRecurseEnd(void);
     void vRemoveChild(Card* pChild);
     void vRemoveCurr(eCK eCrossCheck);
     void vRemoveDeleteChild(Card*& rpChild);

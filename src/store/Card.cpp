@@ -455,10 +455,12 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
   s4K sProperties;
   m_xSymbol.vPpy_To_String(sProperties);
 
-  vTrace("  %p %s%s : %s {%s} %s\n"_Stz
+  vTrace("  %p %s%s : %s%s %s {%s} %s\n"_Stz
         , this
         , Stz::szTab(iDepth)
         , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
+        , m_xMark1.szChrSeq()
+        , m_xMark2.szChrSeq()
         , *szSymbol(SF_NONE)->azChar() ? szSymbol(SF_NONE) : "??Symbol"_Stz
         , sProperties.szStz()
         , pSymbol()->szWhatIs()

@@ -21,7 +21,7 @@ namespace STORE
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
-    void vCopyMarkedPredsToTable(Card_Deck* p_deck);
+    void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     i8 nCullPred(Stz* szWithMark);
     bool bCullPred(Card_PRED* p_pred, Stz* szWithMark);
