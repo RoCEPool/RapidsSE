@@ -3005,6 +3005,62 @@ void StrLib::vInsertChar(char* psDst, i8 iDstBufSize, char cArg, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert str at start of given str, shifting remaining chars down and        */
+/* truncating them if they don't fit                                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vInsertStrTrimRight(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
+{
+  _static_
+
+  i8 iDstLen = nLength(psDst);
+  i8 iSrcLen = nLength(psSrc);
+
+  if (iDstLen + iSrcLen + 1 <= iDstBufSize) {
+    // There is enough space and no truncation will occur.
+    // We can just move the existing psDst contents down by iSrcLen bytes
+    // and then write psSrc at the beginning.
+    char* psMoveDst = psDst + iSrcLen;
+    MemLib::vMove(psMoveDst, psDst, iDstLen + 1, CN_STRLIB);
+
+    const char* s = psSrc;
+    char* d = psDst;
+
+    for ( ; *s; s++, d++) {
+      *d = *s;
+    }
+
+    return;
+  }
+
+  // We will need to truncate the right edge of the existing string since it
+  // won't fit. This isn't a string truncation error to be reported because
+  // it is the semantics of this function, _unless_ psSrc is too big for
+  // the buffer in the first place (then we don't know what to trim).
+
+  if (iSrcLen + 1 > iDstBufSize) {
+    bCheckBufferSpace(__func__, iSrcLen + 1, iDstBufSize, pbResult);
+    // We cannot continue here
+    return;
+  }
+
+  // Calculate how many bytes of the original string we can keep
+  i8 iExcessBytes = (iDstLen + iSrcLen + 1) - iDstBufSize;
+  ASSERT (iExcessBytes > 0);
+
+  char* psMoveDst = psDst + iSrcLen;
+  i8 iBytesToMove = iDstLen + 1 - iExcessBytes;
+  MemLib::vMove(psMoveDst, psDst, iBytesToMove, CN_STRLIB);
+  psDst[iDstBufSize - 1] = 0;
+
+  const char* s = psSrc;
+  char* d = psDst;
+
+  for ( ; *s; s++, d++) {
+    *d = *s;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsAlpha: is char an alphabetic character?                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsAlpha(const char c)

@@ -706,6 +706,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STREAMMETRICS,            sizeof(StreamMetrics),      HT_T_TINY    ,FILL },
   { CN_STREAMSET,                sizeof(StreamSet),          HT_T_LARGE   ,FILL },
   { CN_STRING_T,                 sizeof(s32),                HT_INVALID   ,FILL },
+  { CN_STRLIB,                   0,/*yes*/                   HT_INVALID   ,FILL },
   { CN_STZLIST,                  sizeof(StzList),            HT_T_TINY    ,FILL },
   { CN_STZVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_SUBCALL,                  sizeof(SubCall),            HT_T_TINY    ,FILL },

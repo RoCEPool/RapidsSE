@@ -149,6 +149,7 @@ namespace BASE
     static i8    iHexToInw(const char c);                                                                               // ✕
 
     static void  vInsertChar(char* psDst, i8 iDstBufSize, char cArg, bool* pbResult = nullptr);                         // yes
+    static void  vInsertStrTrimRight(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                         // yes
     static bool  bIsAlpha(const char c);                                                                                // yes
     static bool  bIsAlphaDigit(const char c);                                                                           // yes
     static bool  bIsAmpersand(const char c);                                                                            // yes
