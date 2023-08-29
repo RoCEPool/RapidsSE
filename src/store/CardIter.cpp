@@ -481,10 +481,7 @@ bool CardIter::G_bEachMain_NONE(void)
   _precondition_( _MAGIC_, _FOOTER_);
 
   RASSERT(G.xKid.bBegun());
-
-  if (G.xKid.bEnded())
-    return false;
-
+  RASSERT(! G.xKid.bEnded());
   RASSERT(! G.xKid.bExhausted());
 
   while (G.xKid.bEach()) {
@@ -495,6 +492,7 @@ bool CardIter::G_bEachMain_NONE(void)
   }
 
   G.p_MainCard = nullptr;
+  G.xKid.vEnd();
   G.xKid.vExhausted(true);
   return false;
 }
