@@ -49,9 +49,6 @@ namespace STORE
     void vEnd(void);
     bool bEnded(void);
 
-    void vForward(void);
-
-    Card *pGetCard(i8 i_Card);
     i8 iGetOdn(void);
 
     bool bInRange(void);

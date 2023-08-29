@@ -503,7 +503,8 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
       return true;
     }
 
-    G.xKid.vForward();
+    if (! G.xKid.bEach())
+      return false;
   }
 
   NEVER_REACH
@@ -546,7 +547,8 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
       return true;
     }
 
-    G.xKid.vForward();
+    if (! G.xKid.bEach())
+      return false;
   }
 
   NEVER_REACH
