@@ -586,7 +586,8 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
       return G.xKid.pChild();
     }
 
-    G.xKid.vReverse();
+    if (! G.xKid.bEach_reverse())
+      return false;
   }
 
   NEVER_REACH
@@ -628,7 +629,8 @@ bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
       return true;
     }
 
-    G.xKid.vReverse();
+    if (! G.xKid.bEach_reverse())
+      return false;
  }
 
   NEVER_REACH

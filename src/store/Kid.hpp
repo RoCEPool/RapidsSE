@@ -57,7 +57,6 @@ namespace STORE
 
     bool bMore(void);
     Card *pNext(void);
-    void vNext(void);
 
     Card *pParent(void);
     void vParent(Card *pParent);
@@ -66,7 +65,6 @@ namespace STORE
 
     void vRemove(void);
     void vRemove(Card *pChild);
-    void vReverse(void);
 
     Card *pSub1(void);
     Card *pSub2(void);
