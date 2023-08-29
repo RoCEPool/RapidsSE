@@ -104,19 +104,20 @@ namespace BASE
     static bool  bExtractItem(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, char cDelimiter, bool* pbResult = nullptr);// yes
     static bool  bExtractMonth(char** ppsSrcCrs, i8& iMonth);                                                           // yes
     static bool  bExtractName(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                 // yes
-    static bool  bExtractPath(char** ppsSrcCrs, char* pPath);                                                           // ✕
-    static bool  bExtractPort(char** ppsSrcCrs, u2* pPort);                                                             // ✕
-    static bool  bExtractString(char** ppsSrcCrs, char* pString);                                                       // ✕
-    static bool  bExtractTime(char** ppsSrcCrs, i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);                       // ✕
+    static bool  bExtractPath(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                 // yes
+    static bool  bExtractPort(char** ppsSrcCrs, u2* pPort);                                                             // yes
+    static bool  bExtractQuotedString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);         // yes
+    static bool  bExtractTime(char** ppsSrcCrs, i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);                       // yes
     static bool  bExtractTimestamp(char** ppsSrcCrs, i8& iYear, i8& iMonth, i8& iDay,
-                                   i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);                                    // ✕
+                                   i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro);                                    // yes
     static bool  bExtractTimestamp2(char** ppsSrcCrs, i8& iYear, i8& iMonth, i8& iDay,
                                     i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
-                                    eDC* pDateComponents, char cDateSeparator);                                         // ✕
-    static bool  bExtractU8(char** ppsSrcCrs, u8* u);                                                                   // ✕
-    static bool  bExtractU8(char** ppsSrcCrs, u8* u, i8 iDigits);                                                       // ✕
+                                    eDC* pDateComponents, char cDateSeparator);                                         // yes
+    static bool  bExtractU8(char** ppsSrcCrs, u8* u);                                                                   // yes
+    static bool  bExtractU8(char** ppsSrcCrs, u8* u, i8 iDigits);                                                       // yes
     static bool  bExtractVarchar(char** ppsSrcCrs,
-                                 char* aVarchar,
+                                 char* psDst,
+                                 i8 iDstBufLen,
                                  i8 iMaxLength,
                                  bool bIsEnclosed,
                                  char cEnclosedBy_Leading,
@@ -125,11 +126,14 @@ namespace BASE
                                  char cFieldSeparator,
                                  char cRecordTerminator,
                                  bool bAllowNonPrintable,
-                                 i8& nChars);                                                                           // ✕
+                                 i8& nChars,
+                                 bool* pbResult = nullptr);                                                             // yes
     static bool  bExtractVarcharDefault(char** ppsSrcCrs,
-                                        char* aVarchar,
+                                        char* psDst,
+                                        i8 iDstBufLen,
                                         i8 iMaxLength,
-                                        i8& nChars);                                                                    // ✕
+                                        i8& nChars,
+                                        bool* pbResult = nullptr);                                                      // yes
     static bool  bExtractWord(char** ppsSrcCrs, char* pWord);                                                           // ✕
     static bool  bExtractWordString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);           // yes
     static bool  bExtractYear(char** ppsSrcCrs, i8& iYear);                                                             // ✕
