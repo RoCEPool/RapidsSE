@@ -370,6 +370,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAMMETRICS,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
+  /* */ CN_STRLIB,
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
@@ -873,6 +874,7 @@ static Stz* aCN[]
   /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T
+  /* */ "STRLIB"_Stz,               // CN_STRLIB
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
