@@ -95,6 +95,9 @@ namespace STORE
     Card_Term*        p_term(void);
 
     private:
+    void vChildBackward(void);
+    void vChildForward(void);
+
     void vChildDec(void);
     void vChildInc(void);
     void vChildReset(void);
