@@ -65,6 +65,7 @@ void Kid::vBegin(void)
   _nonProper_
 
   vChildReset();
+  m_bBegun = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,6 +302,8 @@ void Kid::vEnd(void)
   _nonProper_
 
   vChildReset();
+
+  m_bEnded = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -767,14 +770,11 @@ void Kid::vChildUpdate(void)
 
   i8 nChildren = m_pParent->nChildCards();
 
-  //RASSERT(! m_bEnded);
-
   if (m_i_Child >= 0 && m_i_Child < nChildren) {
     m_pChild = m_pParent->pGetChild(m_i_Child);
   }
   else {
     m_pChild = nullptr;
-    m_bEnded = true;
   }
 }
 

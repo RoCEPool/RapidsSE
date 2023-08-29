@@ -480,6 +480,11 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  RASSERT(G.xKid.bBegun());
+
+  if (G.xKid.bEnded())
+    return false;
+
   G.xKid.vBeginForward();
 
   for (;;) {
@@ -510,6 +515,9 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  if (G.xKid.bEnded())
+    return false;
 
   G.xKid.vBeginForward();
 
@@ -551,6 +559,9 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  if (G.xKid.bEnded())
+    return false;
+
   G.xKid.vBeginReverse();
 
   for (;;) {
@@ -585,6 +596,9 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  if (G.xKid.bEnded())
+    return false;
 
   G.xKid.vBeginReverse();
 
@@ -970,6 +984,9 @@ void CardIter::vEndTransform(void)
   }
 
   Bench::vValidate(this);
+
+  G.xKid.vEnd();
+
 }
 
 /*----------------------------------------------------------------------------*/
