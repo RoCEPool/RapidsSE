@@ -51,7 +51,9 @@ void RibbonLine::vInsert(i8 i_Char, char cChar)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
 
-  StrLib::vInsertChar(&m_caText[i_Char],cChar);
+  char* psAddr = &m_caText[i_Char];
+  i8 iBufRemaining = (i8) sizeof(m_caText) - i_Char;
+  StrLib::vInsertChar(psAddr, iBufRemaining, cChar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +67,11 @@ void RibbonLine::vInsert(i8 i_Char, Stz* szStz)
 
   for (i8 i_Stz = 0; i_Stz < nChars; i_Stz++) {
     char cChar = szStz->azChar()[i_Stz];
-    StrLib::vInsertChar(&m_caText[i_Char+i_Stz],cChar);
+
+    char* psAddr = &m_caText[i_Char + i_Stz];
+    i8 iBufRemaining = (i8) sizeof(m_caText) - i_Char - i_Stz;
+
+    StrLib::vInsertChar(psAddr, iBufRemaining, cChar);
   }
 }
 

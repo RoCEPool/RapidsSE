@@ -187,7 +187,7 @@ void Step::vStrEscape(void)
   // get the arguments
   m_pDataStack->vPopStr(xArg,__func__);
   
-  StrLib::vEscapeDblQuote(xArg.azChar(),xEscaped.azChar());
+  StrLib::vEscapeDblQuote(xEscaped.azChar(), xEscaped.nAreaBytes(), xArg.azChar());
   
   m_pDataStack->vPushStr(xEscaped);
   
@@ -208,7 +208,7 @@ void Step::vStrFirstCsv(void)
   
   char* aValue = sStr.azChar();
   
-  if (! StrLib::bExtractItem(&aValue,sFirstValue.azChar(), ','))
+  if (! StrLib::bExtractItem(&aValue,sFirstValue.azChar(), sFirstValue.nAreaBytes(), ','))
     sFirstValue = ""_Stz;
   
   m_pDataStack->vPushStr(sFirstValue);
@@ -670,7 +670,7 @@ void Step::vStrToStrVec(void)
   
   for (;; nStrings++) {
     
-    if (! StrLib::bExtractName(&azPath,azDicNm))
+    if (! StrLib::bExtractName(&azPath, azDicNm, sDicNm.nAreaBytes()))
       break;
     
      m_pAuxStack->vPushStr(sDicNm);
