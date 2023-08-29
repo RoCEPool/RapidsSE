@@ -80,8 +80,8 @@ void ExtendedText::vConcat(Stz* szStr)
   i8 nLines_group;
   bool b;
 
-  char* azEnd_group;
-  char* azBegin_group = szStr->azChar();
+  const char* azEnd_group;
+  const char* azBegin_group = szStr->azChar();
 
   for (i8 i_Loop=0; ; i_Loop++) {
     UNUSED(i_Loop);

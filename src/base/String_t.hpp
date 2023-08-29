@@ -22,7 +22,7 @@ namespace BASE
   public:    
     String_t(void);
     String_t(i8 iArg);
-    String_t(char* azArg);
+    String_t(const char* azArg);
     String_t(Stz* szArg);
    ~String_t(void) noexcept(false);
   
@@ -139,7 +139,7 @@ String_t<AREA>::String_t(i8 iArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-String_t<AREA>::String_t(char* azArg)
+String_t<AREA>::String_t(const char* azArg)
         : Object(CN_STRING_T)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
