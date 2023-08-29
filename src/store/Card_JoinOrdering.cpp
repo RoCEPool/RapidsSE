@@ -193,6 +193,7 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
       pAfter = xCI_deck.p_fold();
 
     if (! pAfter) {
+      xCI_deck.vEnd();
       xCI_deck.vBegin();
       if (xCI_deck.bEach(CK_CORRELATION))
         pAfter = xCI_deck.p_correlation();

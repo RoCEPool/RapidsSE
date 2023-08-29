@@ -217,6 +217,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   p_streamPrmAll->vRemoveInvalid();
   m_pCI->G.pDeck->vAppend((new Card_Section) ->SYM(SF_NOTE,"Valid Permutations"_Stz));
 
+  xCI.vEnd();
   xCI.vBegin();
   while (xCI.bEach())
     m_pCI->G.pDeck->vAppend(xCI.p_streamPer()->pDupCardRecursive());
@@ -235,6 +236,8 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   p_streamPrmAll->vEstCostsForAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_filtPredList);
   m_pCI->G.pDeck->vAppend((new Card_Section) ->SYM(SF_NOTE,"Join Cost Est."_Stz));
+
+  xCI.vEnd();
   xCI.vBegin();
   while (xCI.bEach())
     m_pCI->G.pDeck->vAppend(xCI.p_streamPer()->pDupCardRecursive());
@@ -242,6 +245,8 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
  // m_pCI->vPrintBoard(__LINE__);
 
   // get the join permutations strings
+
+  xCI.vEnd();
   xCI.vBegin();
   i8 iJoinPermutations = 0;
   while (xCI.bEach(CK_STREAMPER)) {
