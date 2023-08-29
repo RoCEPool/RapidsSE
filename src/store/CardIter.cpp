@@ -1286,10 +1286,7 @@ void CardIter::G_vMainResynch(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  for (G.xKid.vChild(-1); G.xKid.bEach(); /**/)
-    if (G.p_MainCard == G.xKid.pChild())
-      break;
-
+  G.xKid.vResynch(G.p_MainCard);
   RASSERT(G.p_MainCard == G.xKid.pChild());
 
 }
@@ -1306,7 +1303,7 @@ void CardIter::G_vMainResynch(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set member card                                                         */
+/* set member card                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 {

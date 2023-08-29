@@ -65,6 +65,9 @@ namespace STORE
 
     void vRemove(void);
     void vRemove(Card *pChild);
+
+    void vResynch(Card* pCard);
+
     void vRewind(void);
 
     Card *pSub1(void);

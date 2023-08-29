@@ -21,7 +21,7 @@ Kid::Kid(void)
 
   m_pParent  = nullptr;
   m_bBegun   = false;
-  m_bForward = false;
+  m_bForward = true;
   m_bEnded   = false;
 
   vChildReset();
@@ -38,7 +38,7 @@ Kid::Kid(Card* pParent)
 
   m_pParent  = pParent;
   m_bBegun   = false;
-  m_bForward = false;
+  m_bForward = true;
   m_bEnded   = false;
 
   vChildReset();
@@ -184,6 +184,8 @@ void Kid::vChild(Card* pChild)
 bool Kid::bEach(void)
 {
   _nonProper_
+
+  //RASSERT(m_bForward);
 
   vChildInc();
   if (bInRange())
@@ -454,11 +456,31 @@ void Kid::vRemove(Card *pChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Kid::vResynch(Card* pCard)
+{
+  _nonProper_
+
+  vChildReset();
+
+  while (bEach())
+    if (pCard == m_pChild)
+      break;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Kid::vRewind(void)
 {
   _nonProper_
 
-  vChildDec();
+  //RASSERT(m_bForward);
+
+  if (m_bForward)
+    vChildDec();
+  else
+    vChildUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
