@@ -72,6 +72,8 @@ void Kid::vBeginEach_forward(void)
   m_bBegun   = true;
   m_bForward = true;
   m_bEnded   = false;
+
+  m_bExhausted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +87,8 @@ void Kid::vBeginEach_reverse(void)
   m_bBegun   = true;
   m_bForward = false;
   m_bEnded   = false;
+
+  m_bExhausted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,6 +97,8 @@ void Kid::vBeginEach_reverse(void)
 void Kid::vBeginForward(void)
 {
   _nonProper_
+
+  RASSERT(m_bBegun);
 
   m_bForward = true;
   if (C_UNKNOWN == m_i_Child)
@@ -109,6 +115,8 @@ void Kid::vBeginForward(void)
 void Kid::vBeginReverse(void)
 {
   _nonProper_
+
+  RASSERT(m_bBegun);
 
   m_bForward = false;
   if (C_UNKNOWN == m_i_Child)

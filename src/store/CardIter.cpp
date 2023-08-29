@@ -476,6 +476,40 @@ Board* CardIter::pEachBoard(i8& ri_Board)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_NONE(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.xKid.bBegun());
+
+  if (G.xKid.bEnded())
+    return false;
+
+  RASSERT(! G.xKid.bExhausted());
+
+  G.xKid.vBeginForward();
+
+  for (;;) {
+
+    if (! G.xKid.bInRange()) {
+      G.p_MainCard = nullptr;
+      G.xKid.vExhausted(true);
+      return false;
+    }
+
+    G.p_MainCard = G.xKid.pChild();
+
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -485,6 +519,8 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
   if (G.xKid.bEnded())
     return false;
 
+  RASSERT(! G.xKid.bExhausted());
+
   G.xKid.vBeginForward();
 
   for (;;) {
@@ -492,6 +528,7 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
     if (! G.xKid.bInRange()) {
       G.p_MainCard = nullptr;
       G_vMember(eOfMainKind, nullptr, __func__);
+      G.xKid.vExhausted(true);
       return false;
     }
 
@@ -503,8 +540,10 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
       return true;
     }
 
-    if (! G.xKid.bEach())
+    if (! G.xKid.bEach()) {
+      G.xKid.vExhausted(true);
       return false;
+    }
   }
 
   NEVER_REACH
