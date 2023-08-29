@@ -2105,7 +2105,7 @@ bool StrLib::bExtractName(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* p
 /*----------------------------------------------------------------------------*/
 /* bExtractPath: extract a path from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractPath(char** ppsSrcCrs, char* pPath)
+bool StrLib::bExtractPath(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult )
 {
   _static_
   
@@ -2115,11 +2115,28 @@ bool StrLib::bExtractPath(char** ppsSrcCrs, char* pPath)
   bool bOnce = false;
   if (**ppsSrcCrs && ' ' != **ppsSrcCrs)
     bOnce = true;
-  
-  char *a = pPath;
-  while (**ppsSrcCrs && ' ' != **ppsSrcCrs)
-    *a++ = *(*ppsSrcCrs++);
-  *a = '\0';
+
+  i8 iReqBytes = 0;
+
+  char* s = *ppsSrcCrs;
+  char* d = psDst;
+  while (*s && ' ' != *s) {
+
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = *s;
+    }
+    s++;
+  }
+
+  *ppsSrcCrs = s;
+  ++iReqBytes;
+  if (iDstBufSize > 0) {
+    *d = '\0';
+  }
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return bOnce;
 }
@@ -2155,9 +2172,9 @@ bool StrLib::bExtractPort(char** ppsSrcCrs, u2* pPort)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractString: extract a quoted string from substr                        */
+/* bExtractQuotedString: extract a double quoted string from substr           */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractString(char** ppsSrcCrs, char* pString)
+bool StrLib::bExtractQuotedString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
   
@@ -2166,20 +2183,33 @@ bool StrLib::bExtractString(char** ppsSrcCrs, char* pString)
   
   if ('"' != **ppsSrcCrs)
     return false;
-  
-  char *a = pString;
-  //*a++ = *((*ps)++);
-  
-  (*ppsSrcCrs)++;
-  for ( ; **ppsSrcCrs; (*ppsSrcCrs)++) {
-    if ('"' == **ppsSrcCrs) {
-      (*ppsSrcCrs)++;
+
+  i8 iReqBytes = 0;
+
+  char* s = *ppsSrcCrs;
+  char* d = psDst;
+
+  s++;
+  for ( ; *s; s++) {
+
+    ++iReqBytes;
+    if ('"' == *s) {
+      s++;
       break;
     }
-    *a++ = **ppsSrcCrs;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = *s;
+    }
   }
-  
-  *a = '\0';
+
+  *ppsSrcCrs = s;
+  ++iReqBytes;
+  if (iDstBufSize > 0) {
+    *d = '\0';
+  }
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return true;
 }
@@ -2353,7 +2383,7 @@ bool StrLib::bExtractU8(char** ppsSrcCrs, u8* aU8)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractU8: extract an unsigned integer from substr                        */
+/* bExtractU8: extract an unsigned integer from substr up to iDigits          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractU8(char** ppsSrcCrs, u8* aU8, i8 iDigits)
 {
@@ -2394,7 +2424,8 @@ bool StrLib::bExtractU8(char** ppsSrcCrs, u8* aU8, i8 iDigits)
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarchar(char** ppsSrcCrs,
-                             char* aVarChar,
+                             char* psDst,
+                             i8 iDstBufLen,
                              i8 iMaxLength,
                              bool bSawLeadingEnclosed,
                              char cEnclosedBy_Leading,
@@ -2403,17 +2434,22 @@ bool StrLib::bExtractVarchar(char** ppsSrcCrs,
                              char cFieldSeparator,
                              char cRecordTerminator,
                              bool bAllowNonPrintable,
-                             i8& nChars)
+                             i8& nChars,
+                             bool* pbResult)
 {
   _static_
-  
+
   i8 iLength = 0;
-  char *aDst = (char*)aVarChar;
-  
+  char *aDst = (char*)psDst;
   bool bSawTrailingEnclosed = false;
-  
+
+  if (iMaxLength >= iDstBufLen) {
+    // Report the potential truncation, limit iMaxLength and carry on
+    bCheckBufferSpace(__func__, iMaxLength, iDstBufLen, pbResult);
+    iMaxLength = iDstBufLen - 1;
+  }
+
   char cSrc = **ppsSrcCrs;
-  
   while (cSrc) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2430,9 +2466,7 @@ bool StrLib::bExtractVarchar(char** ppsSrcCrs,
           *aDst++ = cSrc;
       
         (*ppsSrcCrs)++;
-
         cSrc = **ppsSrcCrs;
-        
         continue;
       }
       //falls thru if not the case of double enclosedBy
@@ -2518,10 +2552,14 @@ bool StrLib::bExtractVarchar(char** ppsSrcCrs,
   *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
-  if (iLength < iMaxLength)
+  if (iLength < iMaxLength) {
     nChars = iLength;
-  else
+
+  } else {
     nChars = iMaxLength;
+    bool bRet = bCheckBufferSpace(__func__, iLength + 1 /* null term*/, iDstBufLen, pbResult);
+    UNUSED(bRet);
+  }
   
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
@@ -2535,9 +2573,11 @@ bool StrLib::bExtractVarchar(char** ppsSrcCrs,
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarcharDefault(char** ppsSrcCrs,
-                                    char* aVarChar,
+                                    char* psDst,
+                                    i8 iDstBufLen,
                                     i8 iMaxLength,
-                                    i8& nChars)
+                                    i8& nChars,
+                                    bool* pbResult)
 {
   _static_
   
@@ -2549,9 +2589,14 @@ bool StrLib::bExtractVarcharDefault(char** ppsSrcCrs,
   char cEscapeChar = D_ESCAPE_CHAR;
   char cFieldDelimiter = D_FIELD_DELIMITER;
 
-  char *aDst = (char*)aVarChar;
-  
+  char *aDst = (char*)psDst;
   char cSrc = **ppsSrcCrs;
+
+  if (iMaxLength >= iDstBufLen) {
+    // Report the potential truncation, limit iMaxLength and carry on
+    bCheckBufferSpace(__func__, iMaxLength, iDstBufLen, pbResult);
+    iMaxLength = iDstBufLen - 1;
+  }
   
   while (cSrc) {
     
@@ -2622,10 +2667,15 @@ bool StrLib::bExtractVarcharDefault(char** ppsSrcCrs,
   *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
-  if (iLength < iMaxLength)
+  if (iLength < iMaxLength) {
     nChars = iLength;
-  else
+
+  } else {
     nChars = iMaxLength;
+    bool bRet = bCheckBufferSpace(__func__, iLength + 1 /* null term*/, iDstBufLen, pbResult);
+    UNUSED(bRet);
+  }
+
   return true;
 }
 
@@ -2668,7 +2718,7 @@ bool StrLib::bExtractWordString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, b
     return false;
 
   if ('"' == **ppsSrcCrs)
-    return bExtractString(ppsSrcCrs, psDst);
+    return bExtractQuotedString(ppsSrcCrs, psDst, iDstBufSize, pbResult);
 
   if (!isalnum(**ppsSrcCrs) && '_' != **ppsSrcCrs)
     return bExtractItem(ppsSrcCrs, psDst, iDstBufSize, pbResult);
