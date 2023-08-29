@@ -37,11 +37,8 @@ Kid::Kid(Card* pParent)
   _nonProper_
 
   m_pParent  = pParent;
-  m_bBegun   = false;
-  m_bForward = true;
-  m_bEnded   = false;
 
-  vChildReset();
+  vBeginEach_forward();
 
   _checkInitialised_(CN_KID);
 }
@@ -200,6 +197,7 @@ bool Kid::bEach(void)
 {
   _nonProper_
 
+  RASSERT(m_bBegun);
   RASSERT(m_bForward);
 
   vChildInc();
@@ -294,6 +292,7 @@ bool Kid::bEach_reverse(void)
 {
   _nonProper_
 
+  RASSERT(m_bBegun);
   RASSERT(! m_bForward);
 
   vChildDec();
