@@ -103,29 +103,6 @@ Pds::~Pds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Append to the end of the skip list. Uses it's own internal synthetic key   */
-/*----------------------------------------------------------------------------*/
-//SkipListBlock* Pds::pAppendWithSynthKey(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-//
-//  i8 iNewKey = m_iSyntheticKey + 1;
-//
-//  SkipListBlock* pNewSLBlock = pInsert((void*) &iNewKey);
-//  if(pNewSLBlock == nullptr)
-//    return nullptr;
-//
-//  *(i8*)(pNewSLBlock->aItem()) = iNewKey;
-//
-//  // Assert the new block was added to the end
-//  RASSERT(pNewSLBlock->m_xNode.uNext(0) == 0);
-//
-//  // Update the main key
-//  m_iSyntheticKey++;
-//
-//  return pNewSLBlock;
-//}
-/*----------------------------------------------------------------------------*/
 /* remove key from in use skip list and move to free list                     */
 /*----------------------------------------------------------------------------*/
 bool Pds::bDelete(void* pKey)

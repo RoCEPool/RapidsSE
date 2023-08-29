@@ -7,6 +7,7 @@ namespace BASE
 {
   class DataBuffer : public Operand
   {
+    // TODO: Arjun - Remove this padding
     PadWord m__PadToCacheLineLinkedBuffer[8];
   protected:
     Lock         m_okLock;        // lock
