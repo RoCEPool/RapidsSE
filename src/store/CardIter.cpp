@@ -476,6 +476,40 @@ Board* CardIter::pEachBoard(i8& ri_Board)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_NONE(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.xKid.bBegun());
+
+  if (G.xKid.bEnded())
+    return false;
+
+  RASSERT(! G.xKid.bExhausted());
+
+  G.xKid.vBeginForward();
+
+  for (;;) {
+
+    if (! G.xKid.bInRange()) {
+      G.p_MainCard = nullptr;
+      G.xKid.vExhausted(true);
+      return false;
+    }
+
+    G.p_MainCard = G.xKid.pChild();
+
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -485,6 +519,8 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
   if (G.xKid.bEnded())
     return false;
 
+  RASSERT(! G.xKid.bExhausted());
+
   G.xKid.vBeginForward();
 
   for (;;) {
@@ -492,6 +528,7 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
     if (! G.xKid.bInRange()) {
       G.p_MainCard = nullptr;
       G_vMember(eOfMainKind, nullptr, __func__);
+      G.xKid.vExhausted(true);
       return false;
     }
 
@@ -503,8 +540,10 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
       return true;
     }
 
-    if (! G.xKid.bEach())
+    if (! G.xKid.bEach()) {
+      G.xKid.vExhausted(true);
       return false;
+    }
   }
 
   NEVER_REACH
@@ -825,7 +864,7 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
 
@@ -880,7 +919,7 @@ bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -915,7 +954,7 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1907,7 +1946,7 @@ Card* CardIter::pRecurseEach(void)
 
       vPushRecurseIter();
       vChangeCard(G.p_MainCard);
-      G_bEachMain();
+      G_bEachMain_NONE();
 
       return G.p_MainCard;
     }
@@ -1918,11 +1957,11 @@ Card* CardIter::pRecurseEach(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // visit next child
 
-  if (G_bEachMain())
+  if (G_bEachMain_NONE())
     return G.p_MainCard;
 
   while (bPopRecurseIter()) {
-    if (G_bEachMain())
+    if (G_bEachMain_NONE())
       return G.p_MainCard;
   }
 
@@ -2106,6 +2145,17 @@ void CardIter::vBeginEach(void)
 
   G.xKid.vBeginEach_forward();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBeginEachReverse(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G.xKid.vBeginEach_reverse();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

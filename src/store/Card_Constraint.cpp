@@ -57,7 +57,7 @@ void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint()))
       pCI->G.p_constraint->nCullPred(MARK_AT);
   }

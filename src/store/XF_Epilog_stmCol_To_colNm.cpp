@@ -66,7 +66,7 @@ void XF_Epilog_stmCol_To_colNm::vXF_stmCol_To_colNm(void)
 
   m_pCI->vBeginEach();
 
-  while (m_pCI->G_bEachMain()) {
+  while (m_pCI->G_bEachMain_NONE()) {
 
     if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
               || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))

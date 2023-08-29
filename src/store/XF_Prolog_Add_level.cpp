@@ -65,7 +65,7 @@ void XF_Prolog_Add_level::vXF_Add_level(void)
   m_pCI->vTransform(__func__, XF_PROLOG_ADD_LEVEL, "add level to op"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain())
+  while (m_pCI->G_bEachMain_NONE())
     ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
 
   m_pCI->vEndTransform();

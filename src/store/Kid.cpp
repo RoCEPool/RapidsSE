@@ -23,6 +23,9 @@ Kid::Kid(void)
   m_bBegun   = false;
   m_bForward = true;
   m_bEnded   = false;
+  m_nVisited = 0;
+
+  m_bExhausted = false;
 
   vChildReset();
 
@@ -37,11 +40,10 @@ Kid::Kid(Card* pParent)
   _nonProper_
 
   m_pParent  = pParent;
-  m_bBegun   = false;
-  m_bForward = true;
-  m_bEnded   = false;
 
-  vChildReset();
+  m_bExhausted = false;
+
+  vBeginEach_forward();
 
   _checkInitialised_(CN_KID);
 }
@@ -70,6 +72,8 @@ void Kid::vBeginEach_forward(void)
   m_bBegun   = true;
   m_bForward = true;
   m_bEnded   = false;
+
+  m_bExhausted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +87,8 @@ void Kid::vBeginEach_reverse(void)
   m_bBegun   = true;
   m_bForward = false;
   m_bEnded   = false;
+
+  m_bExhausted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +97,8 @@ void Kid::vBeginEach_reverse(void)
 void Kid::vBeginForward(void)
 {
   _nonProper_
+
+  RASSERT(m_bBegun);
 
   m_bForward = true;
   if (C_UNKNOWN == m_i_Child)
@@ -107,6 +115,8 @@ void Kid::vBeginForward(void)
 void Kid::vBeginReverse(void)
 {
   _nonProper_
+
+  RASSERT(m_bBegun);
 
   m_bForward = false;
   if (C_UNKNOWN == m_i_Child)
@@ -200,11 +210,16 @@ bool Kid::bEach(void)
 {
   _nonProper_
 
-  //RASSERT(m_bForward);
+  RASSERT(m_bBegun);
+  RASSERT(m_bForward);
 
   vChildInc();
-  if (bInRange())
+  if (bInRange()) {
+    m_nVisited++;
     return true;
+  }
+
+  //RASSERT(m_nVisited == m_pParent->nChildCards());
 
   return false;
 }
@@ -294,9 +309,16 @@ bool Kid::bEach_reverse(void)
 {
   _nonProper_
 
+  RASSERT(m_bBegun);
+  RASSERT(! m_bForward);
+
   vChildDec();
-  if (bInRange())
+  if (bInRange()) {
+    m_nVisited++;
     return true;
+  }
+
+  //RASSERT(m_nVisited == m_pParent->nChildCards());
 
   return false;
 }
@@ -335,6 +357,36 @@ bool Kid::bEnded(void)
   _nonProper_
 
   return m_bEnded;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Kid::bExhausted(void)
+{
+  _nonProper_
+
+  return m_bExhausted;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vExhausted(bool bExhausted)
+{
+  _nonProper_
+
+  m_bExhausted = bExhausted;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vForward(bool bForward)
+{
+  _nonProper_
+
+  m_bForward = bForward;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,9 +529,17 @@ void Kid::vResynch(Card* pCard)
 
   vChildReset();
 
-  while (bEach())
-    if (pCard == m_pChild)
-      break;
+  if (m_bForward) {
+    while (bEach())
+      if (pCard == m_pChild)
+        break;
+  }
+  else {
+    vBeginReverse();
+    while (bEach_reverse())
+      if (pCard == m_pChild)
+        break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -758,12 +818,15 @@ void Kid::vChildInc(void)
 /*----------------------------------------------------------------------------*/
 /* reset child                                                                */
 /*----------------------------------------------------------------------------*/
-void Kid::vChildReset(void)
+void Kid::vChildReset(bool bResetVisited)
 {
   _nonProper_
 
   m_i_Child = C_UNKNOWN;
   m_pChild  = nullptr;
+
+  if (bResetVisited)
+    m_nVisited = 0;
 
   m_pSub1 = nullptr;
   m_pSub2 = nullptr;

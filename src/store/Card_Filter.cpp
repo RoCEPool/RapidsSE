@@ -55,7 +55,7 @@ void Card_Filter::vCullUsedBounds(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
     if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
       pCI->G.p_filter->nCullPred(MARK_AT);
   }
@@ -68,7 +68,7 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
     if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
       pCI->G.p_OP->vDeleteFilterIfEmpty(pCI->G.p_filter);
   }

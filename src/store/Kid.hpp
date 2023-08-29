@@ -13,8 +13,9 @@ namespace STORE
   private:
     Card *m_pParent;
 
-    i8 m_i_Child;
+    i8   m_i_Child;
     Card *m_pChild;
+    i8   m_nVisited;
 
     Card *m_pSub1;
     Card *m_pSub2;
@@ -23,6 +24,9 @@ namespace STORE
     bool  m_bBegun;
     bool  m_bForward;
     bool  m_bEnded;
+
+    bool  m_bExhausted;
+
 
   public:
     Kid(void);
@@ -50,6 +54,10 @@ namespace STORE
     bool bEach_reverse(eCK eCard);
     void vEnd(void);
     bool bEnded(void);
+    bool bExhausted(void);
+    void vExhausted(bool bExhausted);
+
+    void vForward(bool bForward);
 
     i8 iGetOdn(void);
 
@@ -99,7 +107,7 @@ namespace STORE
 
     void vChildDec(void);
     void vChildInc(void);
-    void vChildReset(void);
+    void vChildReset(bool bResetVisited=true);
     void vChildUpdate(void);
   };
 }

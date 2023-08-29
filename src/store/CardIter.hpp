@@ -72,6 +72,7 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
 
     void vBeginEach(void);
+    void vBeginEachReverse(void);
     Board* pBoard(void);
     void vBoard(Board* pBoard);
     void vBoardIteration(void);
@@ -94,7 +95,8 @@ namespace STORE
     Board* pEachBoard(void);
     Board* pEachBoard(i8& ri_Board);
 
-    bool G_bEachMain(eCK eOfMainKind=CK_NONE);
+    bool G_bEachMain_NONE(void);
+    bool G_bEachMain(eCK eOfMainKind);
     bool G_bEachMain_foldBreak(eCK eOfMainKind=CK_NONE);
     bool G_bEachMain_reverse(eCK eOfMainKind=CK_NONE);
     bool G_bEachMain_reverse_foldBreak(eCK eOfMainKind=CK_NONE);
