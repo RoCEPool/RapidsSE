@@ -185,7 +185,7 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 
   pCI->vBeginEach();
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
 
     if (CK_FOLD == pCI->G.e_MainCard)
       break;
@@ -264,7 +264,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vClearRestart();
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
 
     if (pCI->G.p_MainCard->pSub_projection())
       pCI->Prior.m_pProjection =
@@ -412,7 +412,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->vClearRestart();
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
 
     if (pCI->G.p_MainCard->pSub_projection())
       pCI->Prior.m_pProjection =

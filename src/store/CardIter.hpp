@@ -96,7 +96,7 @@ namespace STORE
     Board* pEachBoard(i8& ri_Board);
 
     bool G_bEachMain_NONE(void);
-    bool G_bEachMain(eCK eOfMainKind=CK_NONE);
+    bool G_bEachMain(eCK eOfMainKind);
     bool G_bEachMain_foldBreak(eCK eOfMainKind=CK_NONE);
     bool G_bEachMain_reverse(eCK eOfMainKind=CK_NONE);
     bool G_bEachMain_reverse_foldBreak(eCK eOfMainKind=CK_NONE);

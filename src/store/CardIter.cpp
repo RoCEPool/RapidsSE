@@ -864,7 +864,7 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
 
@@ -919,7 +919,7 @@ bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -954,7 +954,7 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1946,7 +1946,7 @@ Card* CardIter::pRecurseEach(void)
 
       vPushRecurseIter();
       vChangeCard(G.p_MainCard);
-      G_bEachMain();
+      G_bEachMain_NONE();
 
       return G.p_MainCard;
     }
@@ -1957,11 +1957,11 @@ Card* CardIter::pRecurseEach(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // visit next child
 
-  if (G_bEachMain())
+  if (G_bEachMain_NONE())
     return G.p_MainCard;
 
   while (bPopRecurseIter()) {
-    if (G_bEachMain())
+    if (G_bEachMain_NONE())
       return G.p_MainCard;
   }
 

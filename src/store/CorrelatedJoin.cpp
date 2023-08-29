@@ -370,7 +370,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     pCI->G.p_key->vRenumberAll_expr();
     pCI->G.p_projection->vRenumberAll_expr();
 
-    if (pCI->G_bEachMain()) {
+    if (pCI->G_bEachMain_NONE()) {
       if (! pCI->G.p_MainCard->bIsCard(CK_AGGREG)) {
         bool b = pCI->G_bRewindMain();
         RASSERT(b);

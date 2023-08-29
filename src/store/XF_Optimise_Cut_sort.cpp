@@ -74,7 +74,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey_running);
 
-  while (m_pCI->G_bEachMain()) {
+  while (m_pCI->G_bEachMain_NONE()) {
 
     switch (m_pCI->G.e_MainCard) {
 
