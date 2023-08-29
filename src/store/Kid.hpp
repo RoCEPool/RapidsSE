@@ -45,6 +45,7 @@ namespace STORE
     bool bEach(eCK eCard, eCK eSub1, eCK eSub2, eCK eSub3);
     bool bEach_reverse(void);
     bool bEach_reverse(eCK eCard);
+    void vEnd(void);
 
     void vForward(void);
 
