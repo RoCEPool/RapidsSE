@@ -294,6 +294,8 @@ bool Kid::bEach_reverse(void)
 {
   _nonProper_
 
+  RASSERT(! m_bForward);
+
   vChildDec();
   if (bInRange())
     return true;

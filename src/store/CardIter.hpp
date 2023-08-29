@@ -72,6 +72,7 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
 
     void vBeginEach(void);
+    void vBeginEachReverse(void);
     Board* pBoard(void);
     void vBoard(Board* pBoard);
     void vBoardIteration(void);
