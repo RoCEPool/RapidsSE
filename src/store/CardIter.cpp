@@ -889,40 +889,66 @@ bool CardIter::G_bEachMainWith3Sub(eCK eOfMainKind,
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain(eOfMainKind)) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
-      continue;
-    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
-      continue;
+  while (G_bEachMainWith2Sub(eOfMainKind,eAndSubKind1,eAndSubKind2)) {
     if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eAndSubKind3)))
       continue;
 
-    vFocusOnMain();
-
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-    G.e_SubOfMain = G.p_SubOfMain->eCard();
-    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
-    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
-    G_vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
     G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
     G_vMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
     return true;
   }
 
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
-  G_vMember(eOfMainKind, nullptr, __func__);
-  G.p_SubOfMain = nullptr;
-  G.e_SubOfMain = CK_NONE;
-  G_vMember(eAndSubKind1, nullptr, __func__);
-  G.p_Sub2OfMain = nullptr;
-  G.e_Sub2OfMain = CK_NONE;
-  G_vMember(eAndSubKind2, nullptr, __func__);
+  RASSERT(G.xKid.bEnded());
+
   G.p_Sub3OfMain = nullptr;
   G.e_Sub3OfMain = CK_NONE;
   G_vMember(eAndSubKind3, nullptr, __func__);
+
   return false;
+
 }
+/*----------------------------------------------------------------------------*/
+//bool CardIter::G_bEachMainWith3Sub(eCK eOfMainKind,
+//                                   eCK eAndSubKind1,
+//                                   eCK eAndSubKind2,
+//                                   eCK eAndSubKind3)
+//{
+//  _precondition_( _MAGIC_, _FOOTER_);
+//
+//  while (G_bEachMain(eOfMainKind)) {
+//    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
+//      continue;
+//    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
+//      continue;
+//    if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eAndSubKind3)))
+//      continue;
+//
+//    vFocusOnMain();
+//
+//    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
+//    G.e_SubOfMain = G.p_SubOfMain->eCard();
+//    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+//    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
+//    G_vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+//    G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
+//    G_vMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
+//    return true;
+//  }
+//
+//  G.p_MainCard  = nullptr;
+//  G.e_MainCard  = CK_NONE;
+//  G_vMember(eOfMainKind, nullptr, __func__);
+//  G.p_SubOfMain = nullptr;
+//  G.e_SubOfMain = CK_NONE;
+//  G_vMember(eAndSubKind1, nullptr, __func__);
+//  G.p_Sub2OfMain = nullptr;
+//  G.e_Sub2OfMain = CK_NONE;
+//  G_vMember(eAndSubKind2, nullptr, __func__);
+//  G.p_Sub3OfMain = nullptr;
+//  G.e_Sub3OfMain = CK_NONE;
+//  G_vMember(eAndSubKind3, nullptr, __func__);
+//  return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
