@@ -487,25 +487,48 @@ bool CardIter::G_bEachMain_NONE(void)
 
   RASSERT(! G.xKid.bExhausted());
 
-  G.xKid.vBeginForward();
-
-  for (;;) {
-
-    if (! G.xKid.bInRange()) {
-      G.p_MainCard = nullptr;
-      G.xKid.vExhausted(true);
-      return false;
-    }
-
+  while (G.xKid.bEach()) {
     G.p_MainCard = G.xKid.pChild();
-
     vFocusOnMain();
     G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
     return true;
   }
 
-  NEVER_REACH
+  G.p_MainCard = nullptr;
+  G.xKid.vExhausted(true);
+  return false;
 }
+/*----------------------------------------------------------------------------*/
+//bool CardIter::G_bEachMain_NONE(void)
+//{
+//  _precondition_( _MAGIC_, _FOOTER_);
+//
+//  RASSERT(G.xKid.bBegun());
+//
+//  if (G.xKid.bEnded())
+//    return false;
+//
+//  RASSERT(! G.xKid.bExhausted());
+//
+//  G.xKid.vBeginForward();
+//
+//  for (;;) {
+//
+//    if (! G.xKid.bInRange()) {
+//      G.p_MainCard = nullptr;
+//      G.xKid.vExhausted(true);
+//      return false;
+//    }
+//
+//    G.p_MainCard = G.xKid.pChild();
+//
+//    vFocusOnMain();
+//    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+//    return true;
+//  }
+//
+//  NEVER_REACH
+//}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
@@ -1928,6 +1951,8 @@ void CardIter::vRecurseBegin(Card* pCard)
 
   vChangeCard(pCard);
   vDontDescend(false);
+
+  G.xKid.vForward(true);
 
 }
 
