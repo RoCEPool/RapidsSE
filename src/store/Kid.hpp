@@ -29,7 +29,8 @@ namespace STORE
     Kid(Card *pParent);
     ~Kid(void) noexcept(false);
 
-    void vBegin(void);
+    void vBeginEach_forward(void);
+    void vBeginEach_reverse(void);
     void vBeginForward(void);
     void vBeginReverse(void);
     bool bBegun(void);
@@ -57,6 +58,7 @@ namespace STORE
     bool bLess(void);
 
     bool bMore(void);
+
     Card *pNext(void);
 
     Card *pParent(void);
@@ -65,9 +67,7 @@ namespace STORE
 
     void vRemove(void);
     void vRemove(Card *pChild);
-
     void vResynch(Card* pCard);
-
     void vRewind(void);
 
     Card *pSub1(void);

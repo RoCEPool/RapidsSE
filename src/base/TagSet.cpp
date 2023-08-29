@@ -708,7 +708,7 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
 //  bool bWasCopied = false;
 //
 //  xTagSet.vCopy(this);
-//  vBegin();
+//  vBeginEach_forward();
 //
 //  for (i8 i_Tag = 0; i_Tag < xTagSet.nEnames(); i_Tag++) {
 //
@@ -808,7 +808,7 @@ void TagSet::vReplace(Stz* szName, Stz* szValue)
 //  bool bWasCopied = false;
 //
 //  xTagSet.vCopy(this);
-//  vBegin();
+//  vBeginEach_forward();
 //
 //  for (i8 i_Tag = 0; i_Tag < xTagSet.nEnames(); i_Tag++) {
 //

@@ -62,12 +62,27 @@ Kid::~Kid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Kid::vBegin(void)
+void Kid::vBeginEach_forward(void)
 {
   _nonProper_
 
   vChildReset();
-  m_bBegun = true;
+  m_bBegun   = true;
+  m_bForward = true;
+  m_bEnded   = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vBeginEach_reverse(void)
+{
+  _nonProper_
+
+  vChildReset();
+  m_bBegun   = true;
+  m_bForward = false;
+  m_bEnded   = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,7 +480,6 @@ void Kid::vResynch(Card* pCard)
   while (bEach())
     if (pCard == m_pChild)
       break;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,8 +488,6 @@ void Kid::vResynch(Card* pCard)
 void Kid::vRewind(void)
 {
   _nonProper_
-
-  //RASSERT(m_bForward);
 
   if (m_bForward)
     vChildDec();

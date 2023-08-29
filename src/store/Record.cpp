@@ -167,7 +167,7 @@ void Record::vAddRow(Row* aRow)
 
   Bcd xBcd;
 
-  //vBegin();
+  //vBeginEach_forward();
   m_caRecord[0] = '\0';
   m_azCursor = & m_caRecord[0];
   

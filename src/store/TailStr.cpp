@@ -121,7 +121,7 @@ void TailStr::vAssign(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 void TailStr::vSet(Stz* szStz)
 {
-//  vBegin();
+//  vBeginEach_forward();
   MemLib::vZero(m_yaByte, sizeof(m_yaByte), CN_ROWCOMPACTOR);
 
 

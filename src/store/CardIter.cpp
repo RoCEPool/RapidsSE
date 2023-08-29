@@ -208,7 +208,7 @@ void CardIter::vChangeCard(Card* pCard)
   G.p_MainCard = nullptr;
   vMember(pCard);
 
-  //vBeginEach();
+  //vBeginEach_forward();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2104,7 +2104,7 @@ void CardIter::vBeginEach(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.vBegin();
+  G.xKid.vBeginEach_forward();
 }
 
 /*----------------------------------------------------------------------------*/
