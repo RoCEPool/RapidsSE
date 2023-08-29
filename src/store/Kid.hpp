@@ -31,6 +31,7 @@ namespace STORE
     void vBegin(void);
     void vBeginForward(void);
     void vBeginReverse(void);
+    bool bBegun(void);
 
     eCK  eChild(void);
     i8   i_Child(void);
@@ -46,6 +47,7 @@ namespace STORE
     bool bEach_reverse(void);
     bool bEach_reverse(eCK eCard);
     void vEnd(void);
+    bool bEnded(void);
 
     void vForward(void);
 

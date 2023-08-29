@@ -100,6 +100,16 @@ void Kid::vBeginReverse(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Kid::bBegun(void)
+{
+  _nonProper_
+
+  return m_bBegun;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 eCK Kid::eChild(void)
 {
   _nonProper_
@@ -291,6 +301,16 @@ void Kid::vEnd(void)
   _nonProper_
 
   vChildReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Kid::bEnded(void)
+{
+  _nonProper_
+
+  return m_bEnded;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -734,6 +754,8 @@ void Kid::vChildReset(void)
   m_pSub1 = nullptr;
   m_pSub2 = nullptr;
   m_pSub3 = nullptr;
+
+  m_bEnded = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -745,11 +767,14 @@ void Kid::vChildUpdate(void)
 
   i8 nChildren = m_pParent->nChildCards();
 
+  //RASSERT(! m_bEnded);
+
   if (m_i_Child >= 0 && m_i_Child < nChildren) {
     m_pChild = m_pParent->pGetChild(m_i_Child);
   }
   else {
     m_pChild = nullptr;
+    m_bEnded = true;
   }
 }
 
