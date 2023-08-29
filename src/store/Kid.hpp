@@ -51,6 +51,8 @@ namespace STORE
     void vEnd(void);
     bool bEnded(void);
 
+    void vForward(bool bForward);
+
     i8 iGetOdn(void);
 
     bool bInRange(void);

@@ -200,7 +200,7 @@ bool Kid::bEach(void)
 {
   _nonProper_
 
-  //RASSERT(m_bForward);
+  RASSERT(m_bForward);
 
   vChildInc();
   if (bInRange())
@@ -337,6 +337,16 @@ bool Kid::bEnded(void)
   _nonProper_
 
   return m_bEnded;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vForward(bool bForward)
+{
+  _nonProper_
+
+  m_bForward = bForward;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -479,9 +489,17 @@ void Kid::vResynch(Card* pCard)
 
   vChildReset();
 
-  while (bEach())
-    if (pCard == m_pChild)
-      break;
+  if (m_bForward) {
+    while (bEach())
+      if (pCard == m_pChild)
+        break;
+  }
+  else {
+    vBeginReverse();
+    while (bEach_reverse())
+      if (pCard == m_pChild)
+        break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
