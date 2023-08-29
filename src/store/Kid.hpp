@@ -20,8 +20,9 @@ namespace STORE
     Card *m_pSub2;
     Card *m_pSub3;
 
-    b8    m_bBegun;
-    b8    m_bEnded;
+    bool  m_bBegun;
+    bool  m_bForward;
+    bool  m_bEnded;
 
   public:
     Kid(void);
@@ -61,10 +62,10 @@ namespace STORE
     Card *pParent(void);
     void vParent(Card *pParent);
     Card *pPrev(void);
-    void vPrev(void);
 
     void vRemove(void);
     void vRemove(Card *pChild);
+    void vRewind(void);
 
     Card *pSub1(void);
     Card *pSub2(void);

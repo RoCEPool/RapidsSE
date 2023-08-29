@@ -130,7 +130,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       RASSERT(xCI.bEach(CK_TERM));
       Card_Term* p_term_next = xCI.p_term();
       if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-        xCI.vPrev();
+        xCI.vRewind();
         this->vRemoveChild(p_term_next);
         p_term->SYM(SF_SQY_OP,"notExists"_Stz);
         continue;
@@ -143,7 +143,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       RASSERT(xCI.bEach(CK_TERM));
       Card_Term* p_term_next = xCI.p_term();
       if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-        xCI.vPrev();
+        xCI.vRewind();
         this->vRemoveChild(p_term_next);
         p_term->SYM(SF_SQY_OP,"notIn"_Stz);
         DELETE_CARD(p_term_next);

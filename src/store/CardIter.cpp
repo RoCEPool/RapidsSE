@@ -2006,7 +2006,7 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 
   G.xKid.pParent()->vRemoveChild(pChild);
 
-  G.xKid.vPrev();
+  G.xKid.vRewind();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2026,7 +2026,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 
   delete pChild;
 
-  G.xKid.vPrev();
+  G.xKid.vRewind();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2124,7 +2124,7 @@ Card* CardIter::pRewindChild(void)
 //
 //  G.xKid.m_i_Child--;
 
-  G.xKid.vPrev();
+  G.xKid.vRewind();
 
   return G.xKid.pChild();
 }

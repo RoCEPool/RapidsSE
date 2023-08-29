@@ -19,9 +19,10 @@ Kid::Kid(void)
 {
   _nonProper_
 
-  m_pParent = nullptr;
-  m_bBegun  = false;
-  m_bEnded  = false;
+  m_pParent  = nullptr;
+  m_bBegun   = false;
+  m_bForward = false;
+  m_bEnded   = false;
 
   vChildReset();
 
@@ -35,9 +36,10 @@ Kid::Kid(Card* pParent)
 {
   _nonProper_
 
-  m_pParent = pParent;
-  m_bBegun  = false;
-  m_bEnded  = false;
+  m_pParent  = pParent;
+  m_bBegun   = false;
+  m_bForward = false;
+  m_bEnded   = false;
 
   vChildReset();
 
@@ -75,6 +77,7 @@ void Kid::vBeginForward(void)
 {
   _nonProper_
 
+  m_bForward = true;
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = 0;
   else
@@ -90,6 +93,7 @@ void Kid::vBeginReverse(void)
 {
   _nonProper_
 
+  m_bForward = false;
   if (C_UNKNOWN == m_i_Child)
     m_i_Child = m_pParent->nChildCards() - 1;
   else
@@ -419,16 +423,6 @@ Card* Kid::pPrev(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Kid::vPrev(void)
-{
-  _nonProper_
-
-  vChildDec();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Kid::vRemove(void)
 {
   _nonProper_
@@ -436,7 +430,7 @@ void Kid::vRemove(void)
   m_pParent->vRemove(m_pChild);
   m_pChild = nullptr;
 
-  vPrev();
+  vRewind();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -449,12 +443,22 @@ void Kid::vRemove(Card *pChild)
   if (pChild == m_pChild) {
     m_pChild = nullptr;
     m_pParent->vRemove(pChild);
-    vPrev();
+    vRewind();
   }
   else {
     m_pParent->vRemove(pChild);
     vChild(m_pChild);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vRewind(void)
+{
+  _nonProper_
+
+  vChildDec();
 }
 
 /*----------------------------------------------------------------------------*/
