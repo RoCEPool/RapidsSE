@@ -23,6 +23,7 @@ Kid::Kid(void)
   m_bBegun   = false;
   m_bForward = true;
   m_bEnded   = false;
+  m_nVisited = 0;
 
   vChildReset();
 
@@ -201,8 +202,12 @@ bool Kid::bEach(void)
   RASSERT(m_bForward);
 
   vChildInc();
-  if (bInRange())
+  if (bInRange()) {
+    m_nVisited++;
     return true;
+  }
+
+  //RASSERT(m_nVisited == m_pParent->nChildCards());
 
   return false;
 }
@@ -296,8 +301,12 @@ bool Kid::bEach_reverse(void)
   RASSERT(! m_bForward);
 
   vChildDec();
-  if (bInRange())
+  if (bInRange()) {
+    m_nVisited++;
     return true;
+  }
+
+  //RASSERT(m_nVisited == m_pParent->nChildCards());
 
   return false;
 }
@@ -777,12 +786,15 @@ void Kid::vChildInc(void)
 /*----------------------------------------------------------------------------*/
 /* reset child                                                                */
 /*----------------------------------------------------------------------------*/
-void Kid::vChildReset(void)
+void Kid::vChildReset(bool bResetVisited)
 {
   _nonProper_
 
   m_i_Child = C_UNKNOWN;
   m_pChild  = nullptr;
+
+  if (bResetVisited)
+    m_nVisited = 0;
 
   m_pSub1 = nullptr;
   m_pSub2 = nullptr;

@@ -13,8 +13,9 @@ namespace STORE
   private:
     Card *m_pParent;
 
-    i8 m_i_Child;
+    i8   m_i_Child;
     Card *m_pChild;
+    i8   m_nVisited;
 
     Card *m_pSub1;
     Card *m_pSub2;
@@ -101,7 +102,7 @@ namespace STORE
 
     void vChildDec(void);
     void vChildInc(void);
-    void vChildReset(void);
+    void vChildReset(bool bResetVisited=true);
     void vChildUpdate(void);
   };
 }
