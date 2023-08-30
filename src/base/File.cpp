@@ -1050,7 +1050,7 @@ void File::vReset(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   //if (m_aFile && ! bIsStdin() && ! bIsStdout())
-  //  vTrace("File::vBegin: previous file not closed: %s\n"_Stz,m_sPath.azChar());
+  //  vTrace("File::vBeginEach_forward: previous file not closed: %s\n"_Stz,m_sPath.azChar());
 
   m_oSysCall.vClear();
   

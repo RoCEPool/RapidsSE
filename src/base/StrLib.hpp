@@ -134,23 +134,22 @@ namespace BASE
                                         i8 iMaxLength,
                                         i8& nChars,
                                         bool* pbResult = nullptr);                                                      // yes
-    static bool  bExtractWord(char** ppsSrcCrs, char* pWord);                                                           // ✕
+    static bool  bExtractWord(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                 // yes
     static bool  bExtractWordString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);           // yes
-    static bool  bExtractYear(char** ppsSrcCrs, i8& iYear);                                                             // ✕
+    static bool  bExtractYear(char** ppsSrcCrs, i8& iYear);                                                             // yes
 
-    static i8    iFind(char* ps, const char cArg);                                                                      // ✕
-    static bool  bFind(char** ps, const char cArg);                                                                     // ✕
-    static bool  bFind(char** ps, const char cArg, i8 iOccurence);                                                      // ✕
-    static bool  bFind(char** ps, const char* sArg);                                                                    // ✕
-    static bool  bFind(char** ps, const char* sArg, i8 iLenArg);                                                        // ✕
-    static void  vFormatFraction(char* sDst, i8 nBufSize, u8 uFraction, i8 iDigits);                                    // ✕
-    static void  vFree(char** ps);                                                                                      // ✕
-    
-    static i8    iGleanInt(char* azArg);                                                                                // ✕
-    static char* azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
-                            i8& rnBytesInGroup, i8& rnLinesInGroup);                                                    // ✕
+    static i8    iFind(char*  psSrc,  const char cArg);                                                                 // yes
+    static bool  bFind(char** ppsSrc, const char cArg);                                                                 // yes
+    static bool  bFind(char** ppsSrc, const char cArg, i8 iOccurence);                                                  // yes
+    static bool  bFind(char** ppsSrc, const char* psArg);                                                               // yes
+    static bool  bFind(char** ppsSrc, const char* psArg, i8 iLenArg);                                                   // yes
+    static void  vFormatFraction(char* psDst, i8 iDstBufSize, u8 uFraction, i8 iDigits, bool* pbResult = nullptr);      // yes
 
-    static i8    iHexToInw(const char c);                                                                               // ✕
+    static i8    iGleanInt(const char* psSrc);                                                                          // yes
+    static const char* azGroupEnd(const char* psSrc, char cItemSep, i8 nAvailBytes,
+                                  i8& rnBytesInGroup, i8& rnLinesInGroup);                                              // yes
+
+    static i8    iHexToInw(const char c);                                                                               // yes
 
     static void  vInsertChar(char* psDst, i8 iDstBufSize, char cArg, bool* pbResult = nullptr);                         // yes
     static void  vInsertStrTrimRight(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                         // yes
@@ -214,26 +213,25 @@ namespace BASE
     static bool  bIsWhiteSpaces(const char* psArg);                                                                     // yes
     static bool  bIsX(const char c);                                                                                    // yes
 
-    static char* acLast(const char* s);                                                                                 // ✕
-    //static i8    nLength(const char* s);
-    static i8    nLength(const char* s, const char cTerm, i8 iMax);                                                     // ✕
-    static i8    nLengthNonBlank(const char* s, const char cTerm, i8 iMax);                                             // ✕
+    static char* acLast(const char* psSrc);                                                                             // yes
+    static i8    nLength(const char* psSrc, const char cTerm, i8 iMax);                                                 // yes
+    static i8    nLengthNonBlank(const char* psSrc, const char cTerm, i8 iMax);                                         // yes
 
-    static i8    iLike2(char* azStr, char* azRegExp);                                                                   // ✕
-    static i8    iLike3(char* azStr, char* azRegExp, char cEscape);                                                     // ✕
+    static i8    iLike2(const char* psSrc, const char* psRegExp, bool* pbResult = nullptr);                             // yes
+    static i8    iLike3(const char* psSrc, const char* psRegExp, char cEscape, bool* pbResult = nullptr);               // yes
 
-    static bool  bMatch(char* azStr, char* azRegExp);                                                                   // ✕
-    static bool  bMatchHere(char* azStr, char* azRegExp);                                                               // ✕
-    static bool  bMatchStar(char* azStr, char* azRegExp, char cChr);                                                    // ✕
+    static bool  bMatch(const char* psSrc, const char* psRegExp);                                                       // yes
+    static bool  bMatchHere(const char* azStr, const char* azRegExp);                                                   // yes
+    static bool  bMatchStar(const char* azStr, const char* azRegExp, char cChr);                                        // yes
 
-    static char* azNullTerminator(char* s);                                                                             // ✕
+    static char* azNullTerminator(char* psSrc);                                                                         // yes
 
-    static i8    iOccurrence(char* ps, const char cArg);                                                                // ✕
-    static bool  bOneOf(char** asaSet, char* sWord);                                                                    // ✕
+    static i8    iOccurrence(char* psSrc, const char cArg);                                                             // yes
+    static bool  bOneOf(char** ppsSrcSet, const char* psArg);                                                           // yes
   
-    static void  vPad(char* azDst, i8 iToLength, const char cWith);                                                     // ✕
-    static void  vPut(char* azDst, i8 iAt, char cChr);                                                                  // ✕
-    static void  vPut(char* azDst, i8 iAt, char* azSrc);                                                                // ✕
+    static void  vPad(char* psDst, i8 iDstBufSize, i8 iToLength, const char cWith, bool* pbResult = nullptr);           // yes
+    static void  vPut(char* psDst, i8 iDstBufSize, i8 iAt, char cChr, bool* pbResult = nullptr);                        // yes
+    static void  vPut(char* psDst, i8 iDstBufSize, i8 iAt, char* psSrc, bool* pbResult = nullptr);                      // yes
   
     static void  vRemove(char* azArg, const char cLeading);                                                             // ✕
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);                                                // ✕

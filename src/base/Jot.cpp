@@ -136,7 +136,7 @@ void BASE::vJot2(char cFlag, Stz* szFun, Stz* szFormat, ...)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (*szFormat->azChar()) {
-    StrLib::vPad(caBuff,C_JOT_BUFF-1,' ');
+    StrLib::vPad(caBuff, sizeof(caBuff), C_JOT_BUFF-1,' ');
   
     char* aczCursor = StrLib::aczTabLoc(caBuff,C_JOT_TAB,' ');
 

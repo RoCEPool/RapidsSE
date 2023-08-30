@@ -71,20 +71,15 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   bool bOptRun = false;
 
-//  if (! AM::JOB::bHasTag(C_EP_ENABLE))
-//    return;
   if (AM::JOB::bHasTag(C_EP_DISABLE))
     return bOptRun;
 
   m_pCI->vTransform(__func__, XF_OPTIMISE_EARLY_PROJECTION, "Early projections"_Stz);
 
-  m_pCI->vClearRestart();
-
- // m_pCI->vRenumberCards();
-
- // m_pCI->vPrintBoard();
-
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
+
+  m_pCI->vForward(false);
+  m_pCI->vBeginEachReverse();
 
   for (;;) {
 
@@ -92,7 +87,8 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     m_pCI->Early.m_pOP_leaf = nullptr;
 
     bool bEarlyRoot = false;
-    while (m_pCI->G_bEachMain_reverse()) {
+
+    while (m_pCI->G_bEachMain_reverse_NONE()) {
       if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot()) {
         bEarlyRoot = true;
         break;

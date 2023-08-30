@@ -2682,7 +2682,7 @@ bool StrLib::bExtractVarcharDefault(char** ppsSrcCrs,
 /*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractWord(char** ppsSrcCrs, char* pWord)
+bool StrLib::bExtractWord(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
   
@@ -2692,17 +2692,25 @@ bool StrLib::bExtractWord(char** ppsSrcCrs, char* pWord)
   bool bOnce = false;
   if (**ppsSrcCrs && isalnum(**ppsSrcCrs))
     bOnce = true;
-  
-  char *a = pWord;
+
+  i8 iReqBytes = 0;
+  char *d = psDst;
   for ( ; **ppsSrcCrs; (*ppsSrcCrs)++)
   {
     if ( ! isalnum(**ppsSrcCrs) )
       break;
-    
-    *a++ = **ppsSrcCrs;
+
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = **ppsSrcCrs;
+    }
   }
 
-  *a = '\0';
+  ++iReqBytes;
+  *d = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 
   return bOnce;
 }
@@ -2757,18 +2765,6 @@ bool StrLib::bExtractWordString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, b
 bool StrLib::bExtractYear(char** ppsSrcCrs, i8& iYear)
 {
   _static_
-  
-  /*
-  u8 uSubField;
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
-    return false;
-
-  iYear = uSubField;
-
-  return true;
-  */
 
   i8 nDigits;
   
@@ -2791,14 +2787,14 @@ bool StrLib::bExtractYear(char** ppsSrcCrs, i8& iYear)
 /* iFind: find the index position of first occurrence of cArg in ps, otherwise*/
 /*        -1 is returned.                                                     */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iFind(char* ps, const char cArg)
+i8 StrLib::iFind(char* psSrc, const char cArg)
 {
   _static_
 
-  char* f = strchr(ps, cArg);
+  char* f = strchr(psSrc, cArg);
 
   if (f) {
-   i8 iPos = f - ps;
+   i8 iPos = f - psSrc;
    return iPos;
 
   } else {
@@ -2809,15 +2805,15 @@ i8 StrLib::iFind(char* ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of ScanChar in substr                                    */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char cArg)
+bool StrLib::bFind(char** ppsSrc, const char cArg)
 {
   _static_
   
-  char* f = strchr(*ps,cArg);
+  char* f = strchr(*ppsSrc, cArg);
   
   if (f)
   {
-    *ps = f;
+    *ppsSrc = f;
     return true;
   }
   else
@@ -2827,17 +2823,17 @@ bool StrLib::bFind(char** ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find nth ScanChar in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char cArg, i8 iOccurence)
+bool StrLib::bFind(char** ppsSrc, const char cArg, i8 iOccurence)
 {
   _static_
   
   bool b;
   
   for (i8 i_Count = 0; i_Count < iOccurence; i_Count++) {
-    b = bFind(ps,cArg);
+    b = bFind(ppsSrc, cArg);
     if (! b)
       return false;
-    (*ps)++;
+    (*ppsSrc)++;
   }
   
   return true;
@@ -2846,15 +2842,15 @@ bool StrLib::bFind(char** ps, const char cArg, i8 iOccurence)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of arg in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char* sArg)
+bool StrLib::bFind(char** ppsSrc, const char* psArg)
 {
   _static_
   
-  char* f = strstr(*ps,sArg);
+  char* f = strstr(*ppsSrc, psArg);
   
   if (f)
   {
-    *ps = f;
+    *ppsSrc = f;
     return true;
   }
   else
@@ -2864,24 +2860,24 @@ bool StrLib::bFind(char** ps, const char* sArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of arg in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
+bool StrLib::bFind(char** ppsSrc, const char* psArg, i8 iLenArg)
 {
   _static_
   
-  char *s = *ps;
+  char *s = *ppsSrc;
   
   for (;;)
   {
-    s = strchr(s,*sArg);
+    s = strchr(s,*psArg);
     
     // end of substr?
     if (nullptr == s)
       return false;
     
     // match?
-    if (0 == strncmp(s,sArg,iLenArg))
+    if (0 == strncmp(s, psArg, iLenArg))
     {
-      *ps = s;
+      *ppsSrc = s;
       return true;
     }
     
@@ -2893,7 +2889,7 @@ bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
 /*----------------------------------------------------------------------------*/
 /* vFormatFraction: format a fraction                                         */
 /*----------------------------------------------------------------------------*/
-void StrLib::vFormatFraction(char* sDst, i8 nBufSize, u8 uFraction, i8 iDigits)
+void StrLib::vFormatFraction(char* psDst, i8 iDstBufSize, u8 uFraction, i8 iDigits, bool* pbResult)
 {
   _static_
 
@@ -2901,43 +2897,22 @@ void StrLib::vFormatFraction(char* sDst, i8 nBufSize, u8 uFraction, i8 iDigits)
   char caFormat[nFormatSize];
   
   // create the format
-  snprintf(caFormat, nFormatSize, "%%0%lldlld", iDigits);
-  
-  // sprint the number as an integer
-  snprintf(sDst, nBufSize, caFormat, uFraction);
-  
-  // strip off trailing zero's
-//  char *z = sDst;
-//  while (*z)
-//    z++;
-//  z--;
-//  
-//  while ('0' == *z)
-//    *z-- = '\0';
-}
+  vSprint(caFormat, nFormatSize, pbResult, "%%0%lldlld"_Stz, iDigits);
 
-/*----------------------------------------------------------------------------*/
-/* vFree: free a dynamic string                                               */
-/*----------------------------------------------------------------------------*/
-void StrLib::vFree(char** ps)
-{
-  _static_
-  
-  free(*ps);
-  
-  *ps = nullptr;
+  // sprint the number as an integer
+  vSprint(psDst, iDstBufSize, pbResult, (Stz*) caFormat, uFraction);
 }
 
 /*----------------------------------------------------------------------------*/
 /* glean an integer from given string (skip leading non-digits)               */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iGleanInt(char* azArg)
+i8 StrLib::iGleanInt(const char* psSrc)
 {
   _static_
   
   i8 iVal = 0;
   
-  char* aSrc = azArg;
+  const char* aSrc = psSrc;
 
   // skip leading non-digits
   while (*aSrc && ! bIsDigit(*aSrc))
@@ -2953,20 +2928,20 @@ i8 StrLib::iGleanInt(char* azArg)
 /*----------------------------------------------------------------------------*/
 /* find end of next line group given line separator and max bytes             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
-                         i8& rnBytesInGroup, i8& rnLinesInGroup)
+const char* StrLib::azGroupEnd(const char* psSrc, char cItemSep, i8 nAvailBytes,
+                               i8& rnBytesInGroup, i8& rnLinesInGroup)
 {
   _static_
 
-  ASSERT(*azArg);
+  ASSERT(*psSrc);
   ASSERT(nAvailBytes);
 
-  char* szGroupEnd = azArg;
+  const char* szGroupEnd = psSrc;
   rnLinesInGroup   = 0;
   rnBytesInGroup   = 0;
   i8 nCrs_bytes    = 0;
 
-  for (char* azCrs_arg = azArg; nCrs_bytes < nAvailBytes; azCrs_arg++) {
+  for (const char* azCrs_arg = psSrc; nCrs_bytes < nAvailBytes; azCrs_arg++) {
 
     // increment length of potential group
     nCrs_bytes++;
@@ -2995,7 +2970,7 @@ char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
     ASSERT(*szGroupEnd == cItemSep || !*szGroupEnd);
 
     // byte length of group is (chars of group) plus (cItemSep or \0)
-    ASSERT(szGroupEnd - azArg + 1 == rnBytesInGroup);
+    ASSERT(szGroupEnd - psSrc + 1 == rnBytesInGroup);
 
     // group will not be longer than nAvailBytes
     ASSERT(rnBytesInGroup <= nAvailBytes);
@@ -3005,7 +2980,7 @@ char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
 
     ASSERT(! rnLinesInGroup);
 
-    ASSERT(szGroupEnd == azArg);
+    ASSERT(szGroupEnd == psSrc);
   }
 
   return szGroupEnd;
@@ -4041,52 +4016,30 @@ bool StrLib::bIsX(const char c)
 /*----------------------------------------------------------------------------*/
 /* sLast: return address of last char in arg                                  */
 /*----------------------------------------------------------------------------*/
-char* StrLib::acLast(const char* s)
+char* StrLib::acLast(const char* psSrc)
 {
   _static_
   
-  i8 nLen  = nLength(s);
+  i8 nLen  = nLength(psSrc);
   
-  const char* z = s + nLen - 1;
+  const char* z = psSrc + nLen - 1;
   
   return (char*)z;
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSkipLeading: skip leading sequence                                        */
+/* iLength: get length in bytes of psSrc (not including terminating null)     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
+i8 StrLib::nLength(const char* psSrc, const char cTerm, i8 iMax)
 {
   _static_
   
-  // skip leading spaces first
-  while (' ' == **ps)
-    (*ps)++;
-  
-  // do we see the leading enclose character?
-  if (cEnclosedBy_Leading == **ps) {
-    // skip the leading enclose character
-    (*ps)++;
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* iLength: get length in bytes of arg (not including terminating null)       */
-/*----------------------------------------------------------------------------*/
-i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
-{
-  _static_
-  
-  if (! *s)
+  if (! *psSrc)
     return 0;
   
   i8 iLen = 1;
   
-  for (const char* p = s; iLen < iMax; iLen++)
+  for (const char* p = psSrc; iLen < iMax; iLen++)
     if (! *p || *p++ == cTerm)
       break;
   
@@ -4094,20 +4047,20 @@ i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iLength: get length in bytes of arg (not including terminating null)       */
+/* iLength: get length in bytes of psSrc (not including terminating null)     */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
+i8 StrLib::nLengthNonBlank(const char* psSrc, const char cTerm, i8 iMax)
 {
   _static_
   
-  if (! *s)
+  if (! *psSrc)
     return 0;
   
   i8 iLen = 1;
   
-  const char* acNonBlank = s;
+  const char* acNonBlank = psSrc;
   
-  for (const char* p = s; iLen < iMax; iLen++) {
+  for (const char* p = psSrc; iLen < iMax; iLen++) {
     if (*p && ' ' != *p)
       acNonBlank = p;
     
@@ -4115,7 +4068,7 @@ i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
       break;
   }
   
-  i8 iLenNonBlank = (acNonBlank == s) ? 0 : acNonBlank - s + 1;
+  i8 iLenNonBlank = (acNonBlank == psSrc) ? 0 : acNonBlank - psSrc + 1;
   
   return iLenNonBlank;
 }
@@ -4123,7 +4076,7 @@ i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iLike2(char* azStr, char* azRegExp)
+i8 StrLib::iLike2(const char* psSrc, const char* psRegExp, bool* pbResult)
 {
   /*
 
@@ -4135,20 +4088,16 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
 
    */
 
-  s256 sEscapedRegExp = azRegExp;
-  StrLib::vInsertChar(sEscapedRegExp.azChar(), sEscapedRegExp.nAreaBytes(), '^');
-  StrLib::vEscapeInsert(sEscapedRegExp.azChar(), sEscapedRegExp.nAreaBytes(), '*', '\\');
+  s256 sEscapedRegExp = psRegExp;
+  StrLib::vInsertChar(sEscapedRegExp.azChar(), sEscapedRegExp.nAreaBytes(), '^', pbResult);
+  StrLib::vEscapeInsert(sEscapedRegExp.azChar(), sEscapedRegExp.nAreaBytes(), '*', '\\', pbResult);
 
   s256 sMatchRegExp;
   char *r = sEscapedRegExp.azChar();
   char *R = sMatchRegExp.azChar();
 
-//  s256 sMatchRegExp;
-//  char *r = azRegExp;
-//  char *R = sMatchRegExp.azChar();
-
   // handle empty string and empty regular expression
-  if (*azStr == '\0' && *r == '\0') {
+  if (*psSrc == '\0' && *r == '\0') {
     return true;
   }
 
@@ -4157,29 +4106,48 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
     return false;
   }
 
+  i8 iReqBytes = 0;
+  i8 iDstBufSize = sMatchRegExp.nAreaBytes();
+
   // iterate the regular expression
+  // Need to be careful - because '%' is translated to '.*' the output
+  // buffer may get overwritten or truncated.
   while (*r) {
 
     if (*r == '%') {
       // replace '%' with '.*'
-      *R++ = '.';
-      *R++ = '*';
+      iReqBytes+=2;
+
+      if (iReqBytes < iDstBufSize - 1) {
+        *R++ = '.';
+        *R++ = '*';
+      }
     }
     else if (*r == '_') {
       // replace '_' with '.'
-      *R++ = '.';
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = '.';
+      }
     }
     else {
-      *R++ = *r;
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = *r;
+      }
     }
 
     r++;
   }
 
   // null terminate the new regular expression
+  ++iReqBytes;
   *R++ = '\0';
 
-  bool bDidMatch = bMatch(azStr, sMatchRegExp.azChar());
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  bool bDidMatch = bMatch(psSrc, sMatchRegExp.azChar());
 
   return bDidMatch;
 }
@@ -4188,7 +4156,7 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string (with escape character)   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iLike3(char* azStr, char* azRegExp, char cEsc)
+i8 StrLib::iLike3(const char* psSrc, const char* psRegExp, char cEsc, bool* pbResult)
 {
   /*
 
@@ -4202,11 +4170,11 @@ i8 StrLib::iLike3(char* azStr, char* azRegExp, char cEsc)
 
   s256 sMatchRegExp;
 
-  char *r = azRegExp;
+  const char *r = psRegExp;
   char *R = sMatchRegExp.azChar();
 
   // handle empty string and empty regular expression
-  if (*azStr == '\0' && *r == '\0') {
+  if (*psSrc == '\0' && *r == '\0') {
     return true;
   }
 
@@ -4215,41 +4183,62 @@ i8 StrLib::iLike3(char* azStr, char* azRegExp, char cEsc)
     return false;
   }
 
+  i8 iReqBytes = 0;
+  i8 iDstBufSize = sMatchRegExp.nAreaBytes();
+
   // iterate the regular expression
   while (*r) {
 
     // escape character
     if (*r == cEsc) {
       r++;
-     *R++ = *r;
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = *r;
+      }
     }
 
     // replace '%' with '.*'
     else if (*r == '%') {
-      *R++ = '.';
-      *R++ = '*';
+      iReqBytes+=2;
+
+      if (iReqBytes < iDstBufSize - 1) {
+        *R++ = '.';
+        *R++ = '*';
+      }
     }
 
     // replace '_' with '.'
     else if (*r == '_') {
-      *R++ = '.';
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = '.';
+      }
     }
-    else
-      *R++ = *r;
+    else {
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = *r;
+      }
+    }
 
     r++;
   }
 
   // null terminate the new regular expression
+  ++iReqBytes;
   *R++ = '\0';
 
-  return bMatch(azStr, sMatchRegExp.azChar());
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  return bMatch(psSrc, sMatchRegExp.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
 /* match: search for regexp anywhere in given string                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatch(char* azStr, char* azRegExp)
+bool StrLib::bMatch(const char* psSrc, const char* psRegExp)
 {
   /*
   
@@ -4263,15 +4252,15 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 
    */
   
-  if (azRegExp[0] == '^')
-    return bMatchHere(azStr,azRegExp+1);
+  if (psRegExp[0] == '^')
+    return bMatchHere(psSrc, psRegExp + 1);
   
   do { /* must look even if string is empty */
     
-    if (bMatchHere(azStr,azRegExp))
+    if (bMatchHere(psSrc, psRegExp))
       return true;
     
-  } while (*azStr++ != '\0');
+  } while (*psSrc++ != '\0');
   
   return false;
 }
@@ -4279,7 +4268,7 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 /* bMatchHere: search for regexp at beginning of string                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatchHere(char* azStr, char* azRegExp) {
+bool StrLib::bMatchHere(const char* azStr, const char* azRegExp) {
   //vTrace("bMatchHere: %s : %s\n"_Stz,azStr,azRegExp);
 
   if (azRegExp[0] == '\0' && *azStr == '\0')
@@ -4304,7 +4293,7 @@ bool StrLib::bMatchHere(char* azStr, char* azRegExp) {
 /*----------------------------------------------------------------------------*/
 /* bMatchStar: search for c*regexp at beginning of string                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
+bool StrLib::bMatchStar(const char* azStr, const char* azRegExp, char cChr)
 {
   do { /* a * matches zero or more instances */
     
@@ -4319,13 +4308,13 @@ bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
 /*----------------------------------------------------------------------------*/
 /* get ptr to null terminator                                                 */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azNullTerminator(char* s)
+char* StrLib::azNullTerminator(char* psSrc)
 {
   _static_
   
-  i8 nLen  = nLength(s);
+  i8 nLen  = nLength(psSrc);
   
-  char* z = s + nLen;
+  char* z = psSrc + nLen;
   
   return z;
 }
@@ -4333,18 +4322,18 @@ char* StrLib::azNullTerminator(char* s)
 /*----------------------------------------------------------------------------*/
 /* iOccurrence: get no of occurrence of given char                            */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iOccurrence(char* ps, const char cArg)
+i8 StrLib::iOccurrence(char* psSrc, const char cArg)
 {
   _static_
   
   i8 iCount = 0;
   
-  while(*ps) {
-    ps = strchr(ps,cArg);
-    if ( ! ps )
+  while(*psSrc) {
+    psSrc = strchr(psSrc, cArg);
+    if ( ! psSrc )
       break;
     iCount++;
-    ps++;
+    psSrc++;
   }
   
   return iCount;
@@ -4353,12 +4342,12 @@ i8 StrLib::iOccurrence(char* ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bOneOf: is given word one of the words in the given set?                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bOneOf(char** asaSet, char* sWord)
+bool StrLib::bOneOf(char** ppsSrcSet, const char* psArg)
 {
   _static_
   
-  for (char** saTest = asaSet; *saTest; saTest++) {
-    if (bSame(*saTest,sWord))
+  for (char** saTest = ppsSrcSet; *saTest; saTest++) {
+    if (bSame(*saTest, psArg))
       return true;
   }
   
@@ -4368,17 +4357,23 @@ bool StrLib::bOneOf(char** asaSet, char* sWord)
 /*----------------------------------------------------------------------------*/
 /* vPad: pad string to given length with char                                 */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
+void StrLib::vPad(char* psDst, i8 iDstBufSize, i8 iToLength, const char cWith, bool* pbResult)
 {
   _static_
   
-  i8 iCurrLength = nLength(azDst);
+  i8 iCurrLength = nLength(psDst);
   
   if (iCurrLength >= iToLength)
     return;
-  
-  char* z = azNullTerminator(azDst);
-  i8 nChars = iToLength - iCurrLength;
+
+  bool bRet = bCheckBufferSpace(__func__, iToLength + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+  // Continue, even if there is truncation
+
+  i8 iMaxChars = iToLength > iDstBufSize - 1 ? iDstBufSize - 1 : iToLength;
+
+  char* z = azNullTerminator(psDst);
+  i8 nChars = iMaxChars - iCurrLength;
   
   for (i8 iChar = 0; iChar < nChars; iChar++)
     *z++ = cWith;
@@ -4387,16 +4382,18 @@ void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put given stz onto dst at offset                                           */
+/* put given cChr into dst at offset                                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPut(char* azDst, i8 iAt, char cChr)
+void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char cChr, bool* pbResult)
 {
   _static_
-  
-  char* acEnd = StrLib::acLast(azDst);
-  UNUSED(acEnd);
 
-  char* acDst = azDst + iAt;
+  bool bRet = bCheckBufferSpace(__func__, iAt + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  ASSERT(iAt < nLength(psDst));
+
+  char* acDst = psDst + iAt;
   
   if (*acDst)
     *acDst = cChr;
@@ -4405,16 +4402,34 @@ void StrLib::vPut(char* azDst, i8 iAt, char cChr)
 /*----------------------------------------------------------------------------*/
 /* put given stz onto dst at offset                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPut(char* azDst, i8 iAt, char* azSrc)
+void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char* psSrc, bool* pbResult)
 {
   _static_
-  
-  char* acEnd = StrLib::acLast(azDst);
-  UNUSED(acEnd);
-  char* acDst = azDst + iAt;
-  
-  while (*azSrc && *acDst)
-    *acDst++ = *azSrc++;
+
+  i8 iSrcLen = nLength(psSrc);
+  bool bRet = bCheckBufferSpace(__func__, iAt + iSrcLen + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  char* psNull = azNullTerminator(psDst);
+  ASSERT(psDst + iAt <= psNull);
+
+  i8 iMaxBytes = iDstBufSize - iAt - 1;
+  if (iMaxBytes > iSrcLen) {
+    iMaxBytes = iSrcLen;
+  }
+
+  char* d = psDst + iAt;
+  char* s = psSrc;
+
+  while (*s && *d)
+    *d++ = *s++;
+
+  // Does it need to be null terminated?
+  // This would occur if the psSrc string overwrote the existing null terminator.
+  if (/* psDst + iAt <= psNull && */
+      psDst + iAt + iSrcLen > psNull) {
+    *d = 0;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5069,6 +5084,28 @@ bool StrLib::bSkipEOL(char** ps)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSkipLeading: skip leading sequence                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
+{
+  _static_
+
+  // skip leading spaces first
+  while (' ' == **ps)
+    (*ps)++;
+
+  // do we see the leading enclose character?
+  if (cEnclosedBy_Leading == **ps) {
+    // skip the leading enclose character
+    (*ps)++;
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

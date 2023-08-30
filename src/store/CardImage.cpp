@@ -48,12 +48,12 @@ CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform, Stz* szXfunc)
 
   sXinfo.vSprint("%s"_Stz, szXfunc);
   StrLib::vRemoveTill(sXinfo.azChar(), '_', true);
-  StrLib::vPut(sXinfo.azChar(), 20, '\0');
+  StrLib::vPut(sXinfo.azChar(), sXinfo.nAreaBytes(), 20, '\0');
   sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
   vAddLine(sXinfo_padded);
 
   sXinfo.vSprint("%s"_Stz, "<note>"_Stz);
-  StrLib::vPut(sXinfo.azChar(), 20, '\0');
+  StrLib::vPut(sXinfo.azChar(), sXinfo.nAreaBytes(), 20, '\0');
   sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
   vAddLine(sXinfo_padded);
 

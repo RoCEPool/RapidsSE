@@ -984,7 +984,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       continue;
     
     i8 nPad = nWidth - nDiff;
-    StrLib::vPad(acDst,nPad,' ');
+    StrLib::vPad(acDst, sString.nAreaBytes(), nPad,' ');
     acDst += nPad;
   }
   

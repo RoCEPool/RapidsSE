@@ -66,7 +66,7 @@ void XF_Prolog_as_Review::vXF_as_Review(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->G_bEachMain()) {
+  while (m_pCI->G_bEachMain_NONE()) {
 
     switch (m_pCI->G.e_MainCard) {
 

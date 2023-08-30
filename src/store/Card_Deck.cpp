@@ -61,7 +61,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
 
     if (CK_INDEXJOIN    == pCI->G.e_MainCard ||
         CK_INDEXSCAN    == pCI->G.e_MainCard ||
@@ -287,7 +287,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
   pCI->vBeginEach();
   pCI->Prior.m_pProjection = pCI->G.p_projection = nullptr;
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
 
 //    if (pCI->Prior.m_pProjection) {
 //      pCI->Prior.m_pProjection->vDump(__func__);
@@ -396,7 +396,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
   pCI->vBeginEach();
   pCI->Prior.m_pProjection = pCI->G.p_projection = nullptr;
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -497,7 +497,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   pCI->vBeginEach();
   pCI->Prior.m_pProjection = pCI->G.p_projection = nullptr;
 
-  while (pCI->G_bEachMain()) {
+  while (pCI->G_bEachMain_NONE()) {
 
     if (CK_FOLD == pCI->G.e_MainCard) {
       continue;

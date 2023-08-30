@@ -75,7 +75,7 @@ void XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain()) {
+    while (m_pCI->G_bEachMain_NONE()) {
       if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
           m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
         pOuterQuery->vDisposition(QD_AGGREGATION);
