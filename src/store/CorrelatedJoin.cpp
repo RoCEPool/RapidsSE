@@ -122,8 +122,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  pCI->vBeginEach();
-  RASSERT(pCI->G_bEachMain_reverse(CK_FOLD));
+  pCI->vBeginEachReverse();
+  RASSERT(pCI->G_bEachMain_reverse_b(CK_FOLD));
 
   // Now processing OQ (outer-query)
 

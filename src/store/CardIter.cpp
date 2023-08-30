@@ -621,6 +621,32 @@ bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
 
   NEVER_REACH
 }
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! bForward());
+
+  RASSERT(G.xKid.bBegun());
+  RASSERT(! G.xKid.bEnded());
+  RASSERT(! G.xKid.bExhausted());
+
+  while (G.xKid.bEach_reverse()) {
+    if (G.xKid.pChild()->eCard() != eOfMainKind)
+      continue;
+
+    G.p_MainCard = G.xKid.pChild();
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.p_MainCard = nullptr;
+  G.xKid.vEnd();
+  G.xKid.vExhausted(true);
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
