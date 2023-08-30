@@ -646,6 +646,7 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  RASSERT(! bForward());
   if (G.xKid.bEnded())
     return false;
 
@@ -1242,6 +1243,16 @@ void CardIter::vFocusOnMain(void)
 
   G.e_MainCard = G.p_MainCard->eCard();
   G.i_MainCard = this->i_Child();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bForward(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return G.xKid.bForward();
 }
 
 /*----------------------------------------------------------------------------*/

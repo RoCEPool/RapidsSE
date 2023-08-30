@@ -123,6 +123,7 @@ namespace STORE
     Card_Expr* pExpr_For_colNm(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
 
     void vFocusOnMain(void);
+    bool bForward(void);
     void vForward(bool bForward);
 
     Card* pGetChild(i8 i_Child);
