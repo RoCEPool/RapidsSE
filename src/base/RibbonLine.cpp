@@ -25,7 +25,7 @@ RibbonLine::RibbonLine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBONLINE);
   
   m_caText[0] = '\0';
-  StrLib::vPad(m_caText, C_RIBBON_MAX_TEXT - 1, ' ');
+  StrLib::vPad(m_caText, sizeof(m_caText), C_RIBBON_MAX_TEXT - 1, ' ');
 
   _checkInitialised_(CN_RIBBONLINE);
   
@@ -86,7 +86,7 @@ void RibbonLine::vPut(i8 i_Char, char cChr)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
-  StrLib::vPut(m_caText,i_Char,cChr);
+  StrLib::vPut(m_caText,sizeof(m_caText),i_Char,cChr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ void RibbonLine::vPut(i8 i_Char, Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
-  StrLib::vPut(m_caText,i_Char,(char*)szStz);
+  StrLib::vPut(m_caText,sizeof(m_caText),i_Char,(char*)szStz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ void RibbonLine::vPut(i8 i_Char, char cChr, i8 nTimes)
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
   while (nTimes--)
-    StrLib::vPut(m_caText,i_Char++,cChr);
+    StrLib::vPut(m_caText,sizeof(m_caText),i_Char++,cChr);
 }
 
 /*----------------------------------------------------------------------------*/

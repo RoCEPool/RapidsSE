@@ -149,7 +149,7 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
 
   if (pFile) {
     s256 sBar;
-    StrLib::vPad(sBar.azChar(),120,'-');
+    StrLib::vPad(sBar.azChar(), sBar.nAreaBytes(), 120,'-');
     pFile->vPrint("%s\n"_Stz,sBar.azChar());
     pFile->vPrint("Query %s"_Stz,pOptimiser->szQueryNm());
     pFile->vPrint(" (Ec %.2f Fc %.2f Jc %.2f Jl%.2f)"_Stz,
