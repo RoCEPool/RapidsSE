@@ -320,6 +320,7 @@
 #include "CardImage.hpp"
 #include "CardHistory.hpp"
 #include "SketchTkn.hpp"
+#include "ColHsh.hpp"
 
 
 #include "graph/PlanConstants.hpp"
@@ -393,6 +394,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,FILL },
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
+  { CN_COLHSH,                   sizeof(ColHsh),             HT_T_MEDIUM  , FILL },
   { CN_COLMAP,                   sizeof(ColMap),             HT_T_MEDIUM  , FILL },
   { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },

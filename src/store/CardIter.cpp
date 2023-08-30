@@ -1100,6 +1100,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_GBYAGG:           return G.p_gbyAgg;
 
     case CK_HASH:             return G.p_hash;
+    case CK_HASHING:          return G.p_hashing;
     case CK_HAVING:           return G.p_having;
     case CK_HSHCOL:           return G.p_hshCol;
 
@@ -1312,6 +1313,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_HASH:             G.p_hash              = (Card_Hash*)          pCard;
                               G.p_OP                = (Card_OP*)            pCard; break;
+    case CK_HASHING:          G.p_hashing           = (Card_Hashing*)       pCard; break;
     case CK_HAVING:           G.p_having            = (Card_Having*)        pCard;
                               G.p_OP                = (Card_OP*)            pCard; break;
     case CK_HSHCOL:           G.p_hshCol            = (Card_HshCol*)        pCard; break;
@@ -1532,6 +1534,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_gbyAgg           = nullptr;
 
   G.p_hash             = nullptr;
+  G.p_hashing          = nullptr;
   G.p_having           = nullptr;
   G.p_hshCol           = nullptr;
 
@@ -2327,6 +2330,9 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 
       case CK_HASH:
         G.p_hash->vValidate(this, iDepth, pCard);
+        break;
+      case CK_HASHING:
+        G.p_hashing->vValidate(this, iDepth, pCard);
         break;
       case CK_HAVING:
         G.p_having->vValidate(this, iDepth, pCard);

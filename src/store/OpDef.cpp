@@ -18,41 +18,6 @@ __aFooterFunction(OpDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//OpDef::OpDef(void)
-//    : Object(CN_OPDEF)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
-//
-//  m_i_Op = C_UNKNOWN;
-//  m_nCollapses = 0;
-//  m_bCollapsed = false;
-//
-//  m_pStreamDef_arriving = nullptr;
-//  m_pStreamDef_emitted  = nullptr;
-//
-//  m_pIndex_indexScan    = nullptr;
-//  m_pIndex_indexJoin    = nullptr;
-//  m_pIndex_indexSemi    = nullptr;
-//
-//  m_pIndexDef_gbyAgg    = nullptr;
-//  m_pColMap_gbyAgg      = nullptr;
-//
-//  m_pIndexDef_sort      = nullptr;
-//  m_pColMap_sort        = nullptr;
-//
-//  m_pIndexDef_top       = nullptr;
-//  m_pColMap_top         = nullptr;
-//
-//  m_pColsReq            = nullptr;
-//
-//  _checkInitialised_(CN_OPDEF);
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
     : Object(CN_OPDEF)
 {
@@ -86,6 +51,8 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
 
   m_pColsReq            = nullptr;
 
+  m_pColHsh             = nullptr;
+
   _checkInitialised_(CN_OPDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
@@ -112,8 +79,8 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pColMap_top;
 
   delete m_pColsReq;
+  delete m_pColHsh;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- static ------------------------------------------------------------------*/

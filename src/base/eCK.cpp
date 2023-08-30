@@ -49,6 +49,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
+  /* */ "CK_HASHING"_Stz,      // CK_HASHING
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
   /* */ "CK_HSHCOL"_Stz,       // CK_HSHCOL
 
@@ -174,6 +175,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "gbyAgg"_Stz,          // CK_GBYAGG
 
   /* */ "hash"_Stz,            // CK_HASH
+  /* */ "hashing"_Stz,         // CK_HASHING
   /* */ "having"_Stz,          // CK_HAVING
   /* */ "hshCol"_Stz,          // CK_HSHCOL
 

@@ -2136,6 +2136,19 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Hashing.hpp"
+Card_Hashing* Card::pSub_hashing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Hashing* p_hashing =
+      _pCard_Hashing(pFindSubCard(CK_HASHING));
+  return p_hashing;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_HshCol.hpp"
 Card_HshCol* Card::pSub_hshCol(void)
 {

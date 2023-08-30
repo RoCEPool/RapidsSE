@@ -57,6 +57,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
+  /* */ CN_COLHSH,
   /* */ CN_COLMAP,
   /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
@@ -561,6 +562,7 @@ static Stz* aCN[]
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
+  /* */ "COLHSH"_Stz,               // CN_COLHSH
   /* */ "COLMAP"_Stz,               // CN_COLMAP
   /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN

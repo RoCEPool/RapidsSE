@@ -63,6 +63,7 @@ namespace STORE
   class Card_GbyAgg;
 
   class Card_Hash;
+  class Card_Hashing;
   class Card_Having;
   class Card_HshCol;
 
@@ -409,6 +410,7 @@ namespace STORE
     Card_FoldElist*     pSub_foldElist(void);
     Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
+    Card_Hashing*       pSub_hashing(void);
     Card_HshCol*        pSub_hshCol(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_Index*         pSub_index(void);

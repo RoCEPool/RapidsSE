@@ -55,6 +55,7 @@
 #include "Card_GbyAgg.hpp"
 
 #include "Card_Hash.hpp"
+#include "Card_Hashing.hpp"
 #include "Card_Having.hpp"
 #include "Card_HshCol.hpp"
 
