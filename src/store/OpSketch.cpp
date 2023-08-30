@@ -84,7 +84,8 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pIndexDef     = nullptr;
 
   m_pColsReq      = nullptr;
-  m_pColsMap      = nullptr;
+  m_pColMap       = nullptr;
+	m_pColHsh       = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
@@ -148,7 +149,8 @@ OpSketch::~OpSketch(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   delete m_pColsReq;
-  delete m_pColsMap;
+  delete m_pColMap;
+	delete m_pColHsh;
   delete m_pConstraintStack;
   delete m_pExprStack;
   delete m_pInitStack;
@@ -170,23 +172,40 @@ OpSketch::~OpSketch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* copy columns map (for gbyAgg, sort, top and ordAgg)                        */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vCopyColsMap(ColMap* pColsMap)
+void OpSketch::vCopyColMap(ColMap* pColsMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   i8 nCols = 0;
 
-  m_pColsMap = new ColMap;
+  m_pColMap = new ColMap;
 
-  m_pColsMap->m_nCols = pColsMap->m_nCols;
+  m_pColMap->m_nCols = pColsMap->m_nCols;
   for (i8 i_Col = 0; nCols < pColsMap->m_nCols; i_Col++) {
     if (pColsMap->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
       nCols++;
-      m_pColsMap->m_axCols[i_Col].m_i_EmittedCol = pColsMap->m_axCols[i_Col].m_i_EmittedCol;
-      m_pColsMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
-      m_pColsMap->m_axCols[i_Col].m_i_Cell = pColsMap->m_axCols[i_Col].m_i_Cell;
+      m_pColMap->m_axCols[i_Col].m_i_EmittedCol = pColsMap->m_axCols[i_Col].m_i_EmittedCol;
+      m_pColMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
+      m_pColMap->m_axCols[i_Col].m_i_Cell = pColsMap->m_axCols[i_Col].m_i_Cell;
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy columns hash (for hash)                                               */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyColHsh(ColHsh* pColHsh)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	m_pColHsh = new ColHsh;
+
+	m_pColHsh->m_nCols = pColHsh->m_nCols;
+	for (i8 i_Col = 0; i_Col < pColHsh->m_nCols; i_Col++) {
+		m_pColHsh->m_axCols[i_Col].m_i_Col = pColHsh->m_axCols[i_Col].m_i_Col;
+		m_pColHsh->m_axCols[i_Col].m_eColumnType = pColHsh->m_axCols[i_Col].m_eColumnType;
+		m_pColHsh->m_axCols[i_Col].m_sHashOf = pColHsh->m_axCols[i_Col].m_sHashOf;
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,7 +262,7 @@ bool OpSketch::bIsPayload(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  return m_pColsMap->m_axCols[i_Col].m_bPayload ? true : false;
+  return m_pColMap->m_axCols[i_Col].m_bPayload ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

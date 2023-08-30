@@ -60,7 +60,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchLimit     (StageDef* pStageDef, OpDef* pOpDefp);
     OpSketch* pSketchOrdAgg    (StageDef* pStageDef, OpDef* pOpDef);
-    OpSketch* pSketchPotTub    (OpSketch* pLastOp, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr);
+    OpSketch* pSketchPotTub    (OpSketch* pLastOp, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr);
     OpSketch* pSketchProject   (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchSemiJoin  (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchSort      (StageDef* pStageDef, OpDef* pOpDef);
