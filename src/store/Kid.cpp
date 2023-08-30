@@ -23,9 +23,6 @@ Kid::Kid(void)
   m_bBegun   = false;
   m_bForward = true;
   m_bEnded   = false;
-  m_nVisited = 0;
-
-  m_bExhausted = false;
 
   vChildReset();
 
@@ -40,8 +37,6 @@ Kid::Kid(Card* pParent)
   _nonProper_
 
   m_pParent  = pParent;
-
-  m_bExhausted = false;
 
   vBeginEach_forward();
 
@@ -72,8 +67,6 @@ void Kid::vBeginEach_forward(void)
   m_bBegun   = true;
   m_bForward = true;
   m_bEnded   = false;
-
-  m_bExhausted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,8 +83,6 @@ void Kid::vBeginEach_reverse(void)
   m_bBegun   = true;
   m_bForward = false;
   m_bEnded   = false;
-
-  m_bExhausted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +209,6 @@ bool Kid::bEach(void)
 
   vChildInc();
   if (bInRange()) {
-    m_nVisited++;
     return true;
   }
 
@@ -317,7 +307,6 @@ bool Kid::bEach_reverse(void)
 
   vChildDec();
   if (bInRange()) {
-    m_nVisited++;
     return true;
   }
 
@@ -362,25 +351,6 @@ bool Kid::bEnded(void)
   return m_bEnded;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bExhausted(void)
-{
-  _nonProper_
-
-  return m_bExhausted;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vExhausted(bool bExhausted)
-{
-  _nonProper_
-
-  m_bExhausted = bExhausted;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -831,15 +801,12 @@ void Kid::vChildInc(void)
 /*----------------------------------------------------------------------------*/
 /* reset child                                                                */
 /*----------------------------------------------------------------------------*/
-void Kid::vChildReset(bool bResetVisited)
+void Kid::vChildReset(void)
 {
   _nonProper_
 
   m_i_Child = C_UNKNOWN;
   m_pChild  = nullptr;
-
-  if (bResetVisited)
-    m_nVisited = 0;
 
   m_pSub1 = nullptr;
   m_pSub2 = nullptr;

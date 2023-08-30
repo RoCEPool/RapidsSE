@@ -482,7 +482,6 @@ bool CardIter::G_bEachMain_NONE(void)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-  RASSERT(! G.xKid.bExhausted());
 
   while (G.xKid.bEach()) {
     G.p_MainCard = G.xKid.pChild();
@@ -493,7 +492,6 @@ bool CardIter::G_bEachMain_NONE(void)
 
   G.p_MainCard = nullptr;
   G.xKid.vEnd();
-  G.xKid.vExhausted(true);
   return false;
 }
 
@@ -506,7 +504,6 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-  RASSERT(! G.xKid.bExhausted());
 
   while (G.xKid.bEach()) {
 
@@ -521,7 +518,6 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
 
   G.p_MainCard = nullptr;
   G.xKid.vEnd();
-  G.xKid.vExhausted(true);
   return false;
 }
 
@@ -534,7 +530,6 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-  RASSERT(! G.xKid.bExhausted());
 
   while (G.xKid.bEach()) {
 
@@ -552,7 +547,6 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 
   G.p_MainCard = nullptr;
   G.xKid.vEnd();
-  G.xKid.vExhausted(true);
   return false;
 
 }
@@ -664,7 +658,6 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-  RASSERT(! G.xKid.bExhausted());
 
   while (G.xKid.bEach_reverse()) {
     G.p_MainCard = G.xKid.pChild();
@@ -675,7 +668,6 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
 
   G.p_MainCard = nullptr;
   G.xKid.vEnd();
-  G.xKid.vExhausted(true);
   return false;
 }
 
@@ -690,7 +682,6 @@ bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-  RASSERT(! G.xKid.bExhausted());
 
   while (G.xKid.bEach_reverse()) {
     if (G.xKid.pChild()->eCard() != eOfMainKind)
@@ -704,7 +695,6 @@ bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
 
   G.p_MainCard = nullptr;
   G.xKid.vEnd();
-  G.xKid.vExhausted(true);
   return false;
 }
 
@@ -719,7 +709,6 @@ bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
-  RASSERT(! G.xKid.bExhausted());
 
   while (G.xKid.bEach_reverse()) {
 
@@ -737,7 +726,6 @@ bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
 
   G.p_MainCard = nullptr;
   G.xKid.vEnd();
-  G.xKid.vExhausted(true);
   return false;
 }
 
