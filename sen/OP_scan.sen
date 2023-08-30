@@ -50,92 +50,33 @@
   // set counter0 to true to indicate lock held
   true to counter0[]
 
-  // get the root BufferId from this TablePtn
-  TablePtn[].rootBufferId to BufferId[]
+  // get the root BufferId pds cursor from this TablePtn
 
-  BufferId[].isNotNull if
+  TablePtn[].rootPdsCursor to PdsCursor[]
+  begin
+    PdsCursor[].currIsNotNull
+  while
+    PdsCursor[].getItemAddr TablePtn[].extractBufferId to BufferId[]
 
-    // pipe BufferId back in, to resolve its address
-    // it will be converted to CrwBuffer after pop
-    BufferId[].pipeBackin
+    BufferId[].pipeOut
 
-  else
-    // Table is empty
-    // drop table ptn lock
-    TablePtn[].dropRead
+    PdsCursor[].next
+  repeat
 
-    // set counter0 to 0 to indicate lock released
-    false to counter0[]
 
-    // send an eos marker (there was no data)
-    Marker[].newEosMarker
-    Marker[].pipeOut
+  // Finished sending all bufferIds to the next op
+  // drop table ptn lock
+  TablePtn[].dropRead
 
-    Marker[].newEndMarker
-    Marker[].pipeOut
+  // set counter0 to 0 to indicate lock released
+  false to counter0[]
 
-  then
+  // send an eos marker (there was no data)
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_CRWBUFFER...                                              */
-/*----------------------------------------------------------------------------*/
-: scan_CrwBuffer \handler
-
-  0 locals| xNextBufferId |
-
-  PipeIn[]\clear to CrwBuffer[]
-
-// Use Pds cursor instead here?
-  CrwBuffer[].nextBufferId to xNextBufferId
-
-  // this overwrite the bufferid in the logic unit
-  // hence, store next buffer id in a local variable
-  CrwBuffer[].pipeOut
-
-  xNextBufferId to BufferId[]
-
-  BufferId[].isNotNull if
-    // pipe BufferId back in, to resolve its address
-    // it will be converted to CrwBuffer after pop
-    BufferId[].pipeBackin
-
-  else
-    // there are no more buffers
-
-    // drop partition lock
-    TablePtn[].dropRead
-
-    // set counter0 to false to indicate lock released
-    false to counter0[]
-
-    // pipe out an eos marker
-    Marker[].newEosMarker
-    Marker[].pipeOut
-
-    Marker[].newEndMarker
-    Marker[].pipeOut
-
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // check for rate metering
-
-  0 locals| rateSecs |
-
-  // "<rateSecs>" [job].tagSet@ tagSet.hasName if
-  "<rateSecs>" [op].tagSet@ tagSet.hasName if
-    <rateSecs> >int to rateSecs
-  then
-
-  rateSecs if
-    rateSecs "Scan Pausing for %v secs" str.format .
-    rateSecs [task].sleepSsec
-    "Scan awake" .
-  then
+  Marker[].newEndMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -195,7 +136,6 @@
   find: scan_CancellingMarker  EV_M_CANCELLING [op].handler!
   find: scan_Cleaning          EV_M_CLEANING   [op].handler!
   find: scan_DataPulse         EV_M_DATAPULSE  [op].handler!
-  find: scan_CrwBuffer         EV_D_CRWBUFFER  [op].handler!
   find: scan_StartMarker       EV_M_START      [op].handler!
   find: scan_EndMarker         EV_M_END        [op].handler!
 

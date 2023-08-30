@@ -88,8 +88,6 @@
 #include "CrwTablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
-#include "PtnStm_cursor.hpp"
-#include "PtnStream.hpp"
 #include "Table.hpp"
 
 #include "Node.hpp"
@@ -145,7 +143,6 @@
 #include "Weaver.hpp"
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
-#include "RowTablePtn.hpp"
 #include "Optimiser.hpp"
 
 #include "Card.hpp"
@@ -561,7 +558,9 @@ SizeHeap gxaSizeHeap[]
   { CN_PATHVEC,                  sizeof(PathVec),            HT_T_MEDIUM  ,FILL },
   { CN_PAYSTR,                   sizeof(PayStr),             HT_INVALID   ,FILL },
   { CN_PAYSTRBUFFER,             sizeof(PayStrBuffer),       HT_T_LARGE   ,FILL },
-  {CN_PDS,                       sizeof(Pds),                HT_T_LARGE   , FILL },
+  { CN_PDS,                      sizeof(Pds),                HT_T_LARGE   , FILL },
+  { CN_PDSBUFFERIDQUEUE,         sizeof(PdsBufferIdQueue),   HT_T_TINY    , FILL },
+  { CN_PDSCURSOR,                sizeof(PdsCursor),          HT_T_TINY    , FILL },
   { CN_PERMGEN,                  sizeof(PermGen),            HT_T_LARGE   ,FILL },
   { CN_PERMIT,                   sizeof(Permit),             HT_T_TINY    ,FILL },
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },
@@ -587,8 +586,6 @@ SizeHeap gxaSizeHeap[]
   {CN_PSXTHD,               sizeof(PsxThd),                 HT_T_TINY    , FILL },
   {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_MEDIUM  , FILL },
   {CN_PTNID,                sizeof(LglPtn),                 HT_T_TINY    , FILL },
-  {CN_PTNSTMCURSOR,         sizeof(PtnStm_cursor),          HT_T_TINY    , FILL },
-  {CN_PTNSTREAM,            sizeof(PtnStream),              HT_T_TINY    , FILL },
   {CN_PTRVAL,               sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 
   { CN__Q__,                     'Q' - ('A' - 1),                HT_INVALID   , FILL },
@@ -620,7 +617,6 @@ SizeHeap gxaSizeHeap[]
   { CN_ROWPIX,                   sizeof(RowPix),             HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLE,                sizeof(RowSingle),          HT_T_MEDIUM  ,FILL },
   { CN_ROWSINGLELIST,            sizeof(RowSingleList),      HT_T_TINY    ,FILL },
-  { CN_ROWTABLEPTN,              sizeof(RowTablePtn),        HT_T_TINY    ,FILL },
   { CN_ROWTRAY,                  sizeof(RowTray),            HT_T_LARGE   ,FILL },
   { CN_RUCPU,                    sizeof(RU_Cpu),             HT_INVALID   ,FILL },
   { CN_RUDIR,                    0,/*sizeof(RU_Dir)*/        HT_INVALID   ,FILL },

@@ -11,10 +11,7 @@ namespace STORE
   class Tub : public Object
   {
   private:
-    DataBuffer*  m_pBufferChain;
-  
-    CrwBuffer*   m_pInCrwBuffer;
-    RowBuffer*   m_pInRowBuffer;
+    PdsBufferIdQueue* m_pBufferIdQueue;
 
     RowPix*      m_pRowPix;
 

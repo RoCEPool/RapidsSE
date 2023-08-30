@@ -1,45 +1,38 @@
 /*============================================================================*/
-/* PtnStream.hpp -- Partition Stream                                          */
+/* PdsBufferIdQueue.hpp -- Pds of BufferIds used as a queue                   */
 /*============================================================================*/
 #pragma once
 
-//#include "PtnStm_cursor.hpp"
-namespace STORE { class PtnStm_cursor;}
-
-namespace STORE
+namespace BASE
 {
-  class PtnStream : public Object
+  class PdsBufferIdQueue : public Object
   {
   private:
-    TablePtn*  m_pTablePtn;
-    DataBuffer* m_pNextBuffer;
-    i8         m_iLglBufferNo;
+    i8                        m_iSynthKey;     // Synthetic key for the Pds
+    Pds_t<PdsItem_BufferId>*  m_pPdsOfBufferIds;
 
-    PtnStm_cursor*  m_pPtnStm_cursor;
     // must be last
     Footer m_xFooter;
-    
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
-    PtnStream(TablePtn* pTablePtn);
-   ~PtnStream(void) noexcept(false);
+
+    PdsBufferIdQueue(void);
+    ~PdsBufferIdQueue(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
-    i8   iBufferNo(void);
-    void vClose(void);
-    bool bOpen(void);
-    DataBuffer* pRead(void);
-    void vReset(void);
-    bool bSeek(i8 iBufferNo);
+    void        vAddBuffer(DataBuffer* pNewBuffer);
+    DataBuffer* pCompletedBuffer(void);
+    DataBuffer* pDanglingBuffer(void);
+    DataBuffer* pDataBuffer(void);
+    bool        bIsEmpty(void);
 
-  private:
     Footer* aFooter(void);
   };
-  
-  PtnStream* _pPtnStream(void* aAddr);
+
+  PdsBufferIdQueue* _pPdsBufferIdQueue(void* aAddr);
 }
 
 /*============================================================================*/
