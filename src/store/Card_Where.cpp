@@ -48,9 +48,9 @@ void Card_Where::vCullMarkedCmpPred(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->nCullPred(MARK_AT);
   }
 }
@@ -62,9 +62,9 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     if (0 == pCI->G.p_boolCalc->nChildCards()) {
       pCI->G_vRemoveDeleteMain(CK_WHERE);
     }
@@ -78,9 +78,9 @@ void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vMarkWrt_table(pCI);
   }
 }
@@ -92,9 +92,9 @@ void Card_Where::vMoveWherePredsToTableFilter(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vCopyMarkedPredsToTable(pCI);
   }
 }

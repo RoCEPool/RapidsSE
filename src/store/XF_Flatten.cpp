@@ -146,9 +146,9 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   bool bFound;
 
   do {
-    m_pCI->vBeginEach();
+    m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC))
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC))
       break;
 
     CardIter* pCI = m_pCI;
@@ -192,9 +192,9 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   do {
-    m_pCI->vBeginEach();
+    m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_HAVING, CK_BOOLCALC))
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_HAVING, CK_BOOLCALC))
       break;
 
     CardIter* pCI = m_pCI;
