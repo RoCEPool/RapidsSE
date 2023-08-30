@@ -99,7 +99,7 @@ void ColHsh::vUpdate(Card_Hashing* p_hashing)
   Card_Term* p_term = p_hashing->pSub_term();
   if (! p_term)
     return;
-  
+
   Symbol* pSymbol = p_term->pSymbol();
 
   vAdd(p_term->iGetOdn() - 1,

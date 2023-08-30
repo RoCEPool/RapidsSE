@@ -910,7 +910,7 @@ void CardIter::vEndPhase(void)
 
   m_pBench->vEndPhase(this);
 
-  Bench::vValidate(this);
+  vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -927,7 +927,7 @@ void CardIter::vEndTransform(void)
     vPrintBoard();
   }
 
-  Bench::vValidate(this);
+  vValidateBench();
 
   G.xKid.vEnded();
 
@@ -2214,6 +2214,16 @@ void CardIter::vUsingBoard(Board* pBoard)
   G.pDeck  = G.pBoard->pDeck();
 
   this->vChangeCard(G.pBoard->pDeck());
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate children                                                          */
+/*----------------------------------------------------------------------------*/
+void CardIter::vValidateBench(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  m_pBench->vValidate(this);
 }
 
 /*----------------------------------------------------------------------------*/

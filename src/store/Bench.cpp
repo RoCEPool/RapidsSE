@@ -8,6 +8,7 @@
 #include "CardIter.hpp"
 
 #include "XC.hpp"
+#include "eOH.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -65,15 +66,22 @@ void Bench::vValidate(CardIter* pCI)
 
   pCI->vSave();
 
-  Bench* pBench = pCI->m_pBench;
-
-  i8 nBoards = pBench->nBoards();
+  i8 nBoards = this->nBoards();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = pBench->pGet(i_Board);
+    Board *pBoard = this->pGet(i_Board);
     pCI->vUsingBoard(pBoard);
     RASSERT(pCI->G.pBoard);
 
+    pBoard->pState()->vDumpSet();
+
+    RASSERT(pBoard->i_Board() == i_Board);
+
+    vTrace("Validate board [%lld] : %p\n"_Stz,i_Board,pBoard);
+
     pBoard->vValidate(pCI);
+
+    if (pBoard->pState()->bHasName(aOH[OH_FLATTEN]))
+      break;
   }
 
   pCI->vRestore();
@@ -216,16 +224,17 @@ bool Bench::bPastPhase(CardIter* pCI, eOH ePhase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  Board* pBoard = pCI->pBoard();
+  bool bPast = true;
+  pCI->vSave();
 
   pCI->vBoardIteration();
   while (pCI->bEachBoard())
     if (! pCI->pBoard()->bPastPhase(ePhase))
-      return false;
+      bPast = false;
 
-  pCI->vBoard(pBoard);
+  pCI->vRestore();
 
-  return true;
+  return bPast;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -106,7 +106,7 @@ void XF::vXF(CardIter* pCI)
     pXF->vTransform_passThru();
   }
 
-  Bench::vValidate(pCI);
+  pCI->vValidateBench();
 
   delete pXF;
 }
@@ -301,7 +301,7 @@ void XF::vTransform_passThru(void)
     vDebugPoint();
   }
 
-  Bench::vValidate(m_pCI);
+  m_pCI->vValidateBench();
 
   m_pCI->vUsingBoard((i8)0);
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);
