@@ -2657,6 +2657,7 @@ void AM::STR::vReplaceTags(String* psDst, Stz* szSrc, TagSet* pTags)
     Stz* szValue = pTags->szValue(i_Tag);
 
     IGNORE_RETURN( StrLib::bReplace(psDst->azStr(),
+                                    psDst->nAreaBytes(),
                                     szName->azChar(),
                                     szValue->azChar()) );
   }

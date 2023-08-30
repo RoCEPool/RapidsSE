@@ -664,7 +664,7 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     if      (szCompiler->bContains("g++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
       // We actually need to compile with gcc, so fix this in the compiler path
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "g++", "gcc");
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), pLibInfo->m_sCompilerPath.nAreaBytes(), "g++", "gcc");
 
     } else if (szCompiler->bContains("gcc"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
@@ -673,7 +673,7 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     } else if (szCompiler->bContains("clang++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;
       // We actually need to compile with clang, so fix this in the compiler path
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "clang++", "clang");
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), pLibInfo->m_sCompilerPath.nAreaBytes(), "clang++", "clang");
 
     } else if (szCompiler->bContains("clang"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;

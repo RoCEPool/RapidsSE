@@ -450,7 +450,8 @@ void Step::vStrReplace(void)
   
   s48K sReplaced;
   
-  StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
+  StrLib::bReplace(sReplaced.azChar(), sReplaced.nAreaBytes(),
+                   sString.azChar(), sThis.azChar(), sThat.azChar());
   
   m_pDataStack->vPushStr(sReplaced);
   
@@ -485,6 +486,7 @@ void Step::vStrReplaceTags(void)
     Stz* szValue = pTags->szValue(i_Tag);
     
     IGNORE_RETURN( StrLib::bReplace(sAfter.azChar(),
+                                    sAfter.nAreaBytes(),
                                     szName->azChar(),
                                     szValue->azChar()) );
   }

@@ -1089,7 +1089,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   RASSERT(bExtracted);
 
   sFunSignature.vConcat(szStageNm);
-  bResult = StrLib::bReplace(sCode.azChar(), szFunction.azChar(), sFunSignature.azChar());
+  bResult = StrLib::bReplace(sCode.azChar(), sCode.nAreaBytes(), szFunction.azChar(), sFunSignature.azChar());
   RASSERT(bResult);
 
   StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());

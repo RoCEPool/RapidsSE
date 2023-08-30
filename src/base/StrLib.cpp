@@ -4669,9 +4669,10 @@ void StrLib::vRemoveToken(char* psDst, i8 iDstBufSize, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace sub-string                                                         */
+/* replace first occurrence of psThis with psThat in pDst                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
+bool StrLib::bReplace(char *psDst, i8 iDstBufSize, const char *psThis,
+                      const char *psThat, bool* pbResult)
 {
   _static_
   
@@ -4679,43 +4680,62 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
   //      therefore it must be large enough to handle expansion
   
   // is this in tbe string?
-  char* pSubstr = pString;
-  if ( ! bFind(&pSubstr,pThis) )
+  char* pSubstr = psDst;
+  if ( ! bFind(&pSubstr, psThis) ) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return false;
+  }
   
   // compute lengths and difference
-  i8 iLenThis = nLength(pThis);
-  i8 iLenThat = nLength(pThat);
+  i8 iLenDst  = nLength(psDst);
+  i8 iLenThis = nLength(psThis);
+  i8 iLenThat = nLength(psThat);
   i8 iLenDiff = abs((int)iLenThis - (int)iLenThat);
   
   // which of 3 variants is it?
   if (iLenThis == iLenThat)
   {
-    // (1) replacing same length
+    // (1) replacing same length. No overflow can occur
+    if (pbResult) {
+      *pbResult = true;
+    }
     
-    // simply copy this into string at that substr
-    while (*pThat)
-      *pSubstr++ = *pThat++;
+    // simply copy pThat into string at that pSubstr
+    while (*psThat)
+      *pSubstr++ = *psThat++;
   }
   else
   if (iLenThis < iLenThat)
   {
     // (2) replacing with longer
-    
+
+    // Check for buffer overflow/truncation
+    i8 iReqBytes = iLenDst + 1 + iLenDiff;
+    bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+
+    if (!bRet) {
+      return false;
+    }
+
     // shuffle to the right to make space
-  char* pFrom  = pSubstr + nLength(pSubstr) ;//- 1;
+    char* pFrom  = pSubstr + nLength(pSubstr) ;
     char* pTo    = pFrom   + iLenDiff;
     char* pLimit = pSubstr + iLenThis;
     while (pFrom >= pLimit)
       *pTo-- = *pFrom--;
 
-    // copy this into string at that substr
-    while (*pThat)
-      *pSubstr++ = *pThat++;
+    // copy pThat into string at pSubstr
+    while (*psThat)
+      *pSubstr++ = *psThat++;
   }
   else
   {
-    // (3) replacing with shorter
+    // (3) replacing with shorter. No overflow can occur.
+    if (pbResult) {
+      *pbResult = true;
+    }
     
     // shuffle to the left to close space
     char* pFrom = pSubstr + iLenThis;
@@ -4725,65 +4745,80 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
     *pTo = '\0';
     
     // copy this into string at that substr
-    while (*pThat)
-      *pSubstr++ = *pThat++;
+    while (*psThat)
+      *pSubstr++ = *psThat++;
   }
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace sub-string                                                         */
+/* replace all occurrences in psSrc of psThis with psThat and write to psDst  */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bReplace(char *pDst, const char* pSrc,
-                      const char *pThis, const char *pThat)
+bool StrLib::bReplace(char *pDst, i8 iDstBufSize, const char* psSrc,
+                      const char *psThis, const char *psThat, bool* pbResult)
 {
   _static_
   
   bool bReplaced = false;
+  i8 iReqBytes = 0;
   
 NextIteration:
   
   // scan source string looking for matches
-  while (*pSrc) {
+  while (*psSrc) {
   
     // non-matching case
-    if (*pSrc != *pThis) {
+    if (*psSrc != *psThis) {
       // just copy one src char to dst
-      *pDst++ = *pSrc++;
+      if (++iReqBytes < iDstBufSize) {
+        *pDst++ = *psSrc;
+      }
+      psSrc++;
       continue;
     }
     
     // mark start of possible match & replace
-    const char* pMatch   = pSrc;
-    const char* pReplace = pThis;
+    const char* pMatch   = psSrc;
+    const char* pReplace = psThis;
     
     // attempt to collect matching chars from src
     while (*pReplace) {
       
       // false match?
-      if (*pSrc != *pReplace) {
+      if (*psSrc != *pReplace) {
         // false match, therefore copy the unmatching chars
         do {
-          *pDst++ = *pMatch++;
-        } while (pMatch < pSrc);
+          if (++iReqBytes < iDstBufSize) {
+            *pDst++ = *pMatch;
+          }
+          pMatch++;
+        } while (pMatch < psSrc);
         goto NextIteration;
       }
       
       // matching so far...
-      pSrc++;
+      psSrc++;
       pReplace++;
     }
     
     // copy the replacement substring
-    for (const char* pCopy = pThat; *pCopy; )
-      *pDst++ = *pCopy++;
+    for (const char* pCopy = psThat; *pCopy; ) {
+      if (++iReqBytes < iDstBufSize) {
+        *pDst++ = *pCopy;
+      }
+      pCopy++;
+    }
     
     // a replacement has been made
     bReplaced = true;
   }
-  
+
+  ++iReqBytes;
   *pDst = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return bReplaced;
 }

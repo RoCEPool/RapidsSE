@@ -123,9 +123,10 @@ void StatementMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Query
 
     Stz* szQueryText = pQueryTextProp->szValue();
     ASSERT(szQueryText);
+    i8 iBufSize = pQueryTextProp->iSzBufSize();
 
     // Remove new lines from the query text as it messes with the EXPLAIN output
-    while (StrLib::bReplace(szQueryText->azChar(), "\n", " "));
+    while (StrLib::bReplace(szQueryText->azChar(), iBufSize, "\n", " "));
 
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);

@@ -242,10 +242,10 @@ namespace BASE
     static void  vRemoveTill(char* psDst, i8 iDstBufSize, const char cTill,
                              bool bRemoveTheTill = false, bool* pbResult = nullptr);                                    // yes
     static void  vRemoveToken(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                   // yes
-    static bool  bReplace(char* pString, const char* pThis, const char* pThat);                                         // ✕
-    static bool  bReplace(char* pDst, const char* pSrc,
-                          const char* pThis, const char* pThat);                                                        // ✕
-    static void  vReplaceTail(char* azDst, const char* azTail);                                                               // ✕
+    static bool  bReplace(char* psDst, i8 iDstBufSize, const char* psThis, const char* psThat, bool* pbResult = nullptr); // yes
+    static bool  bReplace(char* pDst, i8 iDstBufSize, const char* psSrc,
+                          const char* psThis, const char* psThat, bool* pbResult = nullptr);                            // yes
+    static void  vReplaceTail(char* azDst, const char* azTail);                                                         // ✕
     static void  vReverse(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult = nullptr);                          // yes
     static void  vRotate(char* zArg, i8 nby);                                                                           // ✕
     static void  vRuler(char* azDst, i8 iLength);                                                                       // ✕
