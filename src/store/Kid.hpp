@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Kid.hpp --                                                                 */
+/* Kid.hpp -- kid iterator                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -37,8 +37,6 @@ namespace STORE
     eCK  eChild(void);
     i8   i_Child(void);
     Card *pChild(void);
-    void vChild(i8 i_Child);
-    void vChild(Card *pChild);
 
     bool bEach(void);
     bool bEach(eCK eCard);
@@ -47,15 +45,13 @@ namespace STORE
     bool bEach(eCK eCard, eCK eSub1, eCK eSub2, eCK eSub3);
     bool bEach_reverse(void);
     bool bEach_reverse(eCK eCard);
-    void vEnd(void);
     bool bEnded(void);
+    void vEnded(void);
 
     bool bForwards(void);
     void vForwards(bool bForwards);
 
-    i8 iGetOdn(void);
-
-    bool bInRange(void);
+    i8   iGetOdn(void);
 
     bool bLess(void);
 
@@ -69,12 +65,15 @@ namespace STORE
 
     void vRemove(void);
     void vRemove(Card *pChild);
+    void vResynch(i8 i_Child);
     void vResynch(Card* pCard);
     void vRewind(void);
 
     Card *pSub1(void);
     Card *pSub2(void);
     Card *pSub3(void);
+
+    bool bWithinRange(void);
 
     Card_Bound*       p_bound(void);
     Card_CmpPred*     p_cmpPred(void);
