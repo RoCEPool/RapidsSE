@@ -4,6 +4,8 @@
 
 #include "ColHsh.hpp"
 
+#include "Card_Term.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -23,9 +25,9 @@ ColHsh::ColHsh(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < C_COLMAP; i_Col++) {
-    m_axCols[i_Col].m_i_EmittedCol = C_UNKNOWN;
-    m_axCols[i_Col].m_bPayload     = false;
-    m_axCols[i_Col].m_i_Cell       = C_UNKNOWN;
+    m_axCols[i_Col].m_i_Col       = C_UNKNOWN;
+    m_axCols[i_Col].m_eColumnType = CT_NONE;
+    m_axCols[i_Col].m_sHashOf     = "?"_Stz;
   }
   m_nCols = 0;
 
@@ -54,13 +56,13 @@ ColHsh::~ColHsh(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add column mapping                                                         */
 /*----------------------------------------------------------------------------*/
-void ColHsh::vAdd(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
+void ColHsh::vAdd(i8 i_Col, eCT eColumnType, Stz* szHashOf)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
 
-  m_axCols[m_nCols].m_i_EmittedCol = i_EmittedCol;
-  m_axCols[m_nCols].m_bPayload     = bPayLoad;
-  m_axCols[m_nCols].m_i_Cell       = i_Cell;
+  m_axCols[m_nCols].m_i_Col       = i_Col;
+  m_axCols[m_nCols].m_eColumnType = eColumnType;
+  m_axCols[m_nCols].m_sHashOf     = szHashOf;
 
   m_nCols++;
 
@@ -76,13 +78,33 @@ void ColHsh::vDump(i8 i_Tab)
   UNUSED(i_Tab);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("               [%lld] %s %lld -> $%lld\n"_Stz,
+    vTrace("               [%lld] %lld %s %s\n"_Stz,
            i_Col,
-           m_axCols[i_Col].m_bPayload ? "payload cell" : "key cell",
-           m_axCols[i_Col].m_i_Cell,
-           m_axCols[i_Col].m_i_EmittedCol
+           m_axCols[i_Col].m_i_Col,
+           aCT[m_axCols[i_Col].m_eColumnType],
+           m_axCols[i_Col].m_sHashOf.szStz()
            );
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate                                                                   */
+/*----------------------------------------------------------------------------*/
+void ColHsh::vUpdate(Card_Hashing* p_hashing)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
+
+  UNUSED(p_hashing);
+
+  Card_Term* p_term = p_hashing->pSub_term();
+  if (! p_term)
+    return;
+  
+  Symbol* pSymbol = p_term->pSymbol();
+
+  vAdd(p_term->iGetOdn() - 1,
+       Symbol::eTo_eCT_char(pSymbol->Y_szColType()),
+       pSymbol->Y_szGet(P_HashOf));
 }
 
 /*----------------------------------------------------------------------------*/

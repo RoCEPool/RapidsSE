@@ -288,6 +288,12 @@ void OpDef::vDump(i8 i_Tab)
     m_pColsReq->vDump(i_Tab + 1);
   }
 
+  if (m_pColHsh) {
+    vTrace("%s%s : ColHsh         %p\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq);
+    m_pColHsh->vDump(i_Tab + 1);
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nArgs = nItems();

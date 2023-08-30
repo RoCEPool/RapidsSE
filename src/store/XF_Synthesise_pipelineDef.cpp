@@ -275,9 +275,10 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(Card_OP* p_OP)
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_HASH: {
+    case CK_HASH:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
-    }
+      m_pOpDef->m_pColHsh = new ColHsh;
+      m_pOpDef->m_pColHsh->vUpdate(_pCard_Hash(p_OP)->pSub_hashing());
       break;
 
     case CK_HAVING:

@@ -8,6 +8,7 @@ Stz* aXF[XF_ENUMS]
 {
   /* */ "XF_NONE"_Stz,
 
+  /* */ "XF_EPILOG_COLUMN_HASHING"_Stz,
   /* */ "XF_EPILOG_COLUMN_MAPPING"_Stz,
   /* */ "XF_EPILOG_DEDUPE_AS"_Stz,
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,
