@@ -6,10 +6,11 @@
 
 __TPCH_SCHEMA_LOAD_SF0001
 
+/optimiser_trace
 /weaved
 /pipeline_def
 /optimise_passthru
-pipeline Query10
+pipeline Query119
 begin
 
   stage S00 on origin :
