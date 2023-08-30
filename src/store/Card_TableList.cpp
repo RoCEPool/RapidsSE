@@ -59,10 +59,10 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
 
   Kid xCI(p_deck);
   xCI.vEnd();
-  xCI.vBeginReverse();
+  xCI.vBeginEach_reverse();
 
   if (xCI.bEach_reverse(CK_FOLD)) {
-    xCI.vForward(true);
+    xCI.vForwards(true);
   }
   else {
     xCI.vEnd();

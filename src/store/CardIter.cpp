@@ -1029,7 +1029,7 @@ bool CardIter::bForward(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return G.xKid.bForward();
+  return G.xKid.bForwards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1039,7 +1039,7 @@ void CardIter::vForward(bool bForward)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.xKid.vForward(bForward);
+  G.xKid.vForwards(bForward);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1836,7 +1836,7 @@ void CardIter::vRecurseBegin(Card* pCard)
   vChangeCard(pCard);
   vDontDescend(false);
 
-  G.xKid.vForward(true);
+  G.xKid.vForwards(true);
 
 }
 

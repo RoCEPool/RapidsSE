@@ -21,7 +21,7 @@ namespace STORE
     Card *m_pSub3;
 
     bool  m_bBegun;
-    bool  m_bForward;
+    bool  m_bForwards;
     bool  m_bEnded;
 
 
@@ -32,8 +32,6 @@ namespace STORE
 
     void vBeginEach_forward(void);
     void vBeginEach_reverse(void);
-    void vBeginForward(void);
-    void vBeginReverse(void);
     bool bBegun(void);
 
     eCK  eChild(void);
@@ -52,8 +50,8 @@ namespace STORE
     void vEnd(void);
     bool bEnded(void);
 
-    bool bForward(void);
-    void vForward(bool bForward);
+    bool bForwards(void);
+    void vForwards(bool bForwards);
 
     i8 iGetOdn(void);
 
@@ -98,11 +96,6 @@ namespace STORE
     Card_Term*        p_term(void);
 
     private:
-    void vChildBackward(void);
-    void vChildForward(void);
-
-    void vChildDec(void);
-    void vChildInc(void);
     void vChildReset(void);
     void vChildUpdate(void);
   };
