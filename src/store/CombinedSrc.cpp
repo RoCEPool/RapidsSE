@@ -1230,7 +1230,7 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage)
     Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
 
     if (bLastStage)
-      StrLib::vRemoveHead(pColumn->szColNm()->azChar(), '_');
+      StrLib::vRemovePrefix(pColumn->szColNm()->azChar(), pColumn->iColNmBufSize(), '_');
 
     if (i_Col == nColumns - 1)
       sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s}\n };\n"_Stz,

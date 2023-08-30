@@ -2785,13 +2785,13 @@ bool StrLib::bExtractYear(char** ppsSrcCrs, i8& iYear)
 
 /*----------------------------------------------------------------------------*/
 /* iFind: find the index position of first occurrence of cArg in ps, otherwise*/
-/*        -1 is returned.                                                     */
+/*        -1 (C_UNKNOWN) is returned.                                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iFind(char* psSrc, const char cArg)
+i8 StrLib::iFind(const char* psSrc, const char cArg)
 {
   _static_
 
-  char* f = strchr(psSrc, cArg);
+  const char* f = strchr(psSrc, cArg);
 
   if (f) {
    i8 iPos = f - psSrc;
@@ -4437,17 +4437,25 @@ void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char* psSrc, bool* pbResu
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* remove any leading character                                               */
+/* remove any leading occurrences of a given character                        */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemove(char *w, const char cLeading)
+void StrLib::vRemove(char* psDst, i8 iDstBufSize, const char cLeading, bool* pbResult)
 {
   _static_
+
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  if (*w != cLeading || cLeading == '\0')
+  if (*psDst != cLeading || cLeading == '\0')
     return;
   
-  char* pTo = w;
-  char* pFrom = w;
+  char* pTo = psDst;
+  char* pFrom = psDst;
   while (*pFrom == cLeading)
     pFrom++;
   
@@ -4459,93 +4467,99 @@ void StrLib::vRemove(char *w, const char cLeading)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove any occurance of given character                                    */
+/* remove any occurrence of given character                                   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveChar(char* azDst, char* azSrc, const char cChr)
+void StrLib::vRemoveChar(char* psDst, i8 iDstBufSize, char* psSrc, const char cChr, bool* pbResult)
 {
   _static_
   
-  char* azTo = azDst;
-  char* azFrom = azSrc;
+  char* azTo = psDst;
+  char* azFrom = psSrc;
+  i8 iReqBytes = 0;
   
   while (*azFrom) {
-    if (cChr == *azFrom)
+    if (cChr == *azFrom) {
       azFrom++;
-    else
-      *azTo++ = *azFrom++;
+
+    } else {
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *azTo++ = *azFrom;
+      }
+      azFrom++;
+    }
   }
 
+  ++iReqBytes;
   *azTo = '\0';
-}
 
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+}
+  
 /*----------------------------------------------------------------------------*/
-/* remove any occurance of given character                                    */
+/* remove all characters from the start of the string up to & including cSep  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveHead(char* azArg, const char cSep)
+void StrLib::vRemovePrefix(char* psDst, i8 iDstBufSize, char cSep, bool* pbResult)
 {
   _static_
 
-  i8 i_Sep = iFind(azArg,cSep);
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
+
+  i8 i_Sep = iFind(psDst, cSep);
   if (C_UNKNOWN == i_Sep)
     return;
 
-  vShuffleLeft(azArg,i_Sep+1);
-}
-  
-/*----------------------------------------------------------------------------*/
-/* remove prefix from arg (where prefix is introduced by given char)          */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRemovePrefix(char *azArg, char cIntro)
-{
-  _static_
-  
-  char* azPrefixEnds = azArg;
-  
-  // find the byte where the prefix ends
-  if (! bFind(&azPrefixEnds,cIntro))
-    return;
-  
-  // copy latter portion to the beginning of the string
-  strcpy(azArg,azPrefixEnds + 1);
+  vShuffleLeft(psDst, i_Sep + 1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove suffix from arg (where suffix is introduced by given char)          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveSuffix(char *azArg, char cIntro)
+void StrLib::vRemoveSuffix(char* psDst, i8 iDstBufSize, char cSep, bool* pbResult)
 {
   _static_
+
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  char* azSuffix = azArg + nLength(azArg) - 1;
+  char* psSuffix = psDst + nLength(psDst) - 1;
   
   // find the byte where the suffix is introduced
-  if (! bBackward(&azSuffix,azArg,cIntro))
+  if (! bBackward(&psSuffix, psDst, cSep))
     return;
   
   // terminate azArg at the suffix introduction
-  *azSuffix = '\0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove tail from arg                                                       */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTail(char* azArg, const char* pTail)
-{
-  _static_
-
-  i8 nChars = nLength(pTail);
-
-  vRemoveTailBy(azArg,nChars);
+  *psSuffix = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove tail by nChars                                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTailBy(char* azArg, i8 nChars)
+void StrLib::vRemoveTailBy(char* psDst, i8 iDstBufSize, i8 nChars, bool* pbResult)
 {
   _static_
+  UNUSED(iDstBufSize);
 
-  char* z = azNullTerminator(azArg);
+  // Check for string underflow
+  i8 iDstSize = nLength(psDst) + 1;
+
+  bool bRet = bCheckBufferSpace(__func__, nChars, iDstSize, pbResult);
+  if (!bRet) {
+    // We cannot continue otherwise we will underflow the string.
+    return;
+  }
+
+  char* z = azNullTerminator(psDst);
   char* y = z - nChars;
 
   *y = '\0';
@@ -4553,46 +4567,62 @@ void StrLib::vRemoveTailBy(char* azArg, i8 nChars)
 
 
 /*----------------------------------------------------------------------------*/
-/* remove tail int digits from arg                                            */
+/* remove integer digits from the tail of psDst                               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTailInt(char *azArg)
+void StrLib::vRemoveTailInt(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
+
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  char* azTail = azArg + nLength(azArg) - 1;
+  char* azTail = psDst + nLength(psDst) - 1;
   
-  while (StrLib::bIsDigit(*azTail))
+  while (azTail >= psDst && StrLib::bIsDigit(*azTail))
     *azTail-- = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove till given char                                                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+void StrLib::vRemoveTill(char* psDst, i8 iDstBufSize, const char cTill,
+                         bool bRemoveTheTill, bool* pbResult)
 {
   _static_
 
-  char* azSrc = azArg;
+  UNUSED(iDstBufSize);
+
+  char* azSrc = psDst;
   while (*azSrc && *azSrc != cTill)
     azSrc++;
 
-  if (! *azSrc)
+  if (! *azSrc) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
 
   if (bRemoveTheTill)
     azSrc++;
 
-  vShuffleLeft(azArg,azSrc);
+  vShuffleLeft(psDst, azSrc);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove leading token                                                       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveToken(char* azArg)
+void StrLib::vRemoveToken(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
 
-  char* azRight = azArg;
+  UNUSED(iDstBufSize);
+
+  char* azRight = psDst;
 
   // skip leading whitespace
   while (*azRight) {
@@ -4604,8 +4634,12 @@ void StrLib::vRemoveToken(char* azArg)
   }
 
   // something still to process?
-  if (! *azRight)
+  if (! *azRight) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
 
   // skip token
   while (*azRight) {
@@ -4624,10 +4658,14 @@ void StrLib::vRemoveToken(char* azArg)
   }
 
   // something still to process?
-  if (! *azRight)
+  if (! *azRight) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
 
-  vShuffleLeft(azArg,azRight);
+  vShuffleLeft(psDst, azRight);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5700,12 +5738,12 @@ void StrLib::vToUpper(char* psDst, i8 iDstBufSize, bool* pbResult)
 /*----------------------------------------------------------------------------*/
 /* remove prefix / suffix from arg (where suffix is introduced by given char) */
 /*----------------------------------------------------------------------------*/
-void StrLib::vTopTail(char *azArg, char cIntro)
+void StrLib::vTopTail(char *psDst, i8 iDstBufSize, char cIntro, bool* pbResult)
 {
   _static_
   
-  vRemovePrefix(azArg,cIntro);
-  vRemoveSuffix(azArg,cIntro);
+  vRemovePrefix(psDst, iDstBufSize, cIntro, pbResult);
+  vRemoveSuffix(psDst, iDstBufSize, cIntro, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/

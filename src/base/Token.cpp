@@ -1035,8 +1035,9 @@ void Token::vStripSingleQuotes(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  StrLib::vRemove(m_szChars->azChar(),'\'');
-  StrLib::vStrip(m_szChars->azChar(),'\'');
+  i8 iBufSize = m_szChars->nSize();
+  StrLib::vRemove(m_szChars->azChar(), iBufSize, '\'');
+  StrLib::vStrip(m_szChars->azChar(), '\'');
 }
 
 /*----------------------------------------------------------------------------*/

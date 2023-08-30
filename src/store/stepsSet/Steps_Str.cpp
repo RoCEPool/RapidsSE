@@ -387,7 +387,7 @@ void Step::vStrRemovePrefix(void)
   s32 sIntro;
   m_pDataStack->vPopStr(sIntro,__func__);
   
-  StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
+  StrLib::vRemovePrefix(sString.azChar(), sString.nAreaBytes(), * sIntro.azChar());
   
   m_pDataStack->vPushStr(sString);
   
@@ -407,7 +407,7 @@ void Step::vStrRemoveSuffix(void)
   s32 sIntro;
   m_pDataStack->vPopStr(sIntro,__func__);
   
-  StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
+  StrLib::vRemoveSuffix(sString.azChar(), sString.nAreaBytes(), * sIntro.azChar());
   
   m_pDataStack->vPushStr(sString);
 
@@ -424,7 +424,7 @@ void Step::vStrRemoveTailInt(void)
   s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
   
-  StrLib::vRemoveTailInt(sString.azChar());
+  StrLib::vRemoveTailInt(sString.azChar(), sString.nAreaBytes());
   
   m_pDataStack->vPushStr(sString);
 

@@ -138,7 +138,7 @@ namespace BASE
     static bool  bExtractWordString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);           // yes
     static bool  bExtractYear(char** ppsSrcCrs, i8& iYear);                                                             // yes
 
-    static i8    iFind(char*  psSrc,  const char cArg);                                                                 // yes
+    static i8    iFind(const char*  psSrc,  const char cArg);                                                                 // yes
     static bool  bFind(char** ppsSrc, const char cArg);                                                                 // yes
     static bool  bFind(char** ppsSrc, const char cArg, i8 iOccurence);                                                  // yes
     static bool  bFind(char** ppsSrc, const char* psArg);                                                               // yes
@@ -233,16 +233,15 @@ namespace BASE
     static void  vPut(char* psDst, i8 iDstBufSize, i8 iAt, char cChr, bool* pbResult = nullptr);                        // yes
     static void  vPut(char* psDst, i8 iDstBufSize, i8 iAt, char* psSrc, bool* pbResult = nullptr);                      // yes
   
-    static void  vRemove(char* azArg, const char cLeading);                                                             // ✕
-    static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);                                                // ✕
-    static void  vRemoveHead(char* azArg, const char cSep);                                                             // ✕
-    static void  vRemovePrefix(char* azArg, char cIntro);                                                               // ✕
-    static void  vRemoveSuffix(char* azArg, char cIntro);                                                               // ✕
-    static void  vRemoveTail(char* azArg, const char* pTail);                                                           // ✕
-    static void  vRemoveTailBy(char* azArg, i8 nChars);                                                                 // ✕
-    static void  vRemoveTailInt(char* azArg);                                                                           // ✕
-    static void  vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill=false);                                 // ✕
-    static void  vRemoveToken(char* azArg);                                                                             // ✕
+    static void  vRemove(char* psDst, i8 iDstBufSize, const char cLeading, bool* pbResult = nullptr);                   // yes
+    static void  vRemoveChar(char* psDst, i8 iDstBufSize, char* psSrc, const char cChr, bool* pbResult = nullptr);      // yes
+    static void  vRemovePrefix(char* psDst, i8 iDstBufSize, char cSep, bool* pbResult = nullptr);                       // yes
+    static void  vRemoveSuffix(char* psDst, i8 iDstBufSize, char cSep, bool* pbResult = nullptr);                       // yes
+    static void  vRemoveTailBy(char* psDst, i8 iDstBufSize, i8 nChars, bool* pbResult = nullptr);                       // yes
+    static void  vRemoveTailInt(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                 // yes
+    static void  vRemoveTill(char* psDst, i8 iDstBufSize, const char cTill,
+                             bool bRemoveTheTill = false, bool* pbResult = nullptr);                                    // yes
+    static void  vRemoveToken(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                   // yes
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);                                         // ✕
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);                                                        // ✕
@@ -292,7 +291,7 @@ namespace BASE
     static void  vToLower(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                       // yes
     static char  cToUpper(char c);                                                                                      // yes
     static void  vToUpper(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                       // yes
-    static void  vTopTail(char* azArg, char cIntro);                                                                    // ✕
+    static void  vTopTail(char* psDst, i8 iDstBufSize, char cIntro, bool* pbResult = nullptr);                          // yes
     static void  vToPointer(char* psDst, i8 iDstBufSize, const void* pvArg, bool* pbResult = nullptr);                  // yes
     static void  vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult = nullptr);                           // yes
     static void  vToString(char* azDst, i8 iDstBufSize, i8 iArg, bool* pbResult = nullptr);                             // yes
