@@ -176,11 +176,12 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
+  pCI->vForward(false);
   while (! pCI->G.p_MainCard->pSub_projection())
-    pCI->G_bEachMain_reverse();
+    pCI->G_bEachMain_reverse_NONE();
+  pCI->vForward(true);
 
   pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
-  pCI->vForward(true);
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));

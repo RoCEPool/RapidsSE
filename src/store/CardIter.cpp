@@ -646,21 +646,27 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.bBegun());
-  RASSERT(! G.xKid.bEnded());
-  RASSERT(! G.xKid.bExhausted());
+  if (G.xKid.bEnded())
+    return false;
 
-  while (G.xKid.bEach_reverse()) {
+  G.xKid.vBeginReverse();
+
+  for (;;) {
+
+    if (! G.xKid.bInRange()) {
+      return false;
+    }
+
     G.p_MainCard = G.xKid.pChild();
+
     vFocusOnMain();
-    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
+
     return true;
+
   }
 
-  G.p_MainCard = nullptr;
-  G.xKid.vEnd();
-  G.xKid.vExhausted(true);
-  return false;
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1008,7 +1014,7 @@ bool CardIter::G_bEachSubOfMain_reverse(eCK eSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain_reverse()) {
+  while (G_bEachMain_reverse(CK_NONE)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
 
