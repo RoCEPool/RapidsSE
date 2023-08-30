@@ -212,7 +212,8 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   vOuterQuery(pCI->pBoard()->pSubQuery());
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
-  if (pCI->G_bEachMainWithSub_reverse_foldBreak(eCardWithSQ, CK_BOOLCALC)) {
+  pCI->vBeginEachReverse();
+  if (pCI->G_bEachMainWithSub_reverse_foldBreak_b(eCardWithSQ, CK_BOOLCALC)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
       NEVER_REACH

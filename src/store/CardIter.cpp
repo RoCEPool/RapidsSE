@@ -711,46 +711,6 @@ bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (G.xKid.bEnded())
-    return false;
-
-  G.xKid.vBeginReverse();
-
-  for (;;) {
-
-    if (! G.xKid.bInRange()) {
-      return false;
-    }
-
-    G.p_MainCard = G.xKid.pChild();
-
-    if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
-      //G.xKid.m_i_Child = C_UNKNOWN;
-      return false;
-    }
-
-    if (CK_NONE == eOfMainKind) {
-      return true;
-    }
-
-    vFocusOnMain();
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-
-    if (G.e_MainCard == eOfMainKind) {
-      return true;
-    }
-
-    if (! G.xKid.bEach_reverse())
-      return false;
- }
-
-  NEVER_REACH
-}
-/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -811,32 +771,6 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update G   */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  while (G_bEachMain_reverse_foldBreak(eOfMainKind)) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
-      continue;
-
-    vFocusOnMain();
-
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-    G.e_SubOfMain = G.p_SubOfMain->eCard();
-    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
-    return true;
-  }
-
-  // did not find card
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
-  G_vMember(eOfMainKind, nullptr, __func__);
-  G.p_SubOfMain = nullptr;
-  G.e_SubOfMain = CK_NONE;
-  G_vMember(eAndSubKind, nullptr, __func__);
-  return false;
-}
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndSubKind)
 {
