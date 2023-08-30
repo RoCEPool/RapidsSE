@@ -1089,7 +1089,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   RASSERT(bExtracted);
 
   sFunSignature.vConcat(szStageNm);
-  bResult = StrLib::bReplace(sCode.azChar(), szFunction.azChar(), sFunSignature.azChar());
+  bResult = StrLib::bReplace(sCode.azChar(), sCode.nAreaBytes(), szFunction.azChar(), sFunSignature.azChar());
   RASSERT(bResult);
 
   StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
@@ -1230,7 +1230,7 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage)
     Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
 
     if (bLastStage)
-      StrLib::vRemoveHead(pColumn->szColNm()->azChar(), '_');
+      StrLib::vRemovePrefix(pColumn->szColNm()->azChar(), pColumn->iColNmBufSize(), '_');
 
     if (i_Col == nColumns - 1)
       sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s}\n };\n"_Stz,

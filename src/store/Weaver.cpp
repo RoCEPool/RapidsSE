@@ -357,7 +357,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
   else                             sOpNm = aCK_short[eCard];
 
   if (bCommented)
-    while (StrLib::bReplace(sOpArgs.azChar(),"\n    ","\n  //"))
+    while (StrLib::bReplace(sOpArgs.azChar(), sOpArgs.nAreaBytes(), "\n    ","\n  //"))
       {;}
 
   vTabOp(bCommented);

@@ -258,6 +258,16 @@ void Column::vColumnNm(Stz* aColumnName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column name                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Column::iColNmBufSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+  return m_sColumnNm.nAreaBytes();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
 eCT Column::eColumnType(void)

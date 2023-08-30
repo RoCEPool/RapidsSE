@@ -4171,11 +4171,11 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
 
   while ('/' == *sTrimmed.azChar()) {
     //StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);
-    StrLib::vRemoveToken(sTrimmed.azChar());
+    StrLib::vRemoveToken(sTrimmed.azChar(), sTrimmed.nAreaBytes());
 
     if ('=' == *sTrimmed.azChar()) {
-      StrLib::vRemoveToken(sTrimmed.azChar());
-      StrLib::vRemoveToken(sTrimmed.azChar());
+      StrLib::vRemoveToken(sTrimmed.azChar(), sTrimmed.nAreaBytes());
+      StrLib::vRemoveToken(sTrimmed.azChar(), sTrimmed.nAreaBytes());
     }
   }
 
