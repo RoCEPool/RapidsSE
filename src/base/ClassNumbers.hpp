@@ -448,6 +448,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_ADD_LEVEL,
   /* */ CN_XF_AS_REVIEW,
   /* */ CN_XF_COLNM_TO_STMCOL,
+  /* */ CN_XF_COLUMN_HASHING,
   /* */ CN_XF_COLUMN_MAPPING,
   /* */ CN_XF_CULL_NONUSED_BOUND,
   /* */ CN_XF_DEDUPE_AS,
@@ -953,6 +954,7 @@ static Stz* aCN[]
   /* */ "XF_PROLOG_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
   /* */ "XF_PROLOG_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
   /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL
+  /* */ "XF_EPILOG_COLUMN_HASHING"_Stz,            // CN_XF_COLUMN_HASHING
   /* */ "XF_EPILOG_COLUMN_MAPPING"_Stz,            // CN_XF_COLUMN_MAPPING
   /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
   /* */ "XF_EPILOG_DEDUPE_AS"_Stz,                 // CN_XF_DEDUPE_AS

@@ -302,6 +302,7 @@
 #include "XF_Optimise_Early_filter.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Duplicate_filter.hpp"
+#include "XF_Epilog_Column_hashing.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -785,6 +786,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_ADD_LEVEL,                  sizeof(XF_Prolog_Add_level),           HT_T_TINY    , FILL },
   {CN_XF_AS_REVIEW,                  sizeof(XF_Prolog_as_Review),           HT_T_TINY    , FILL },
   {CN_XF_COLNM_TO_STMCOL,            sizeof(XF_Prolog_colNm_To_stmCol),     HT_T_TINY    , FILL },
+  {CN_XF_COLUMN_HASHING,             sizeof(XF_Epilog_Column_hashing),      HT_T_TINY    , FILL },
   {CN_XF_COLUMN_MAPPING,             sizeof(XF_Epilog_Column_mapping),      HT_T_TINY    , FILL },
   {CN_XF_CULL_NONUSED_BOUND,         sizeof(XF_Optimise_Cull_bound),        HT_T_TINY    , FILL },
   {CN_XF_DEDUPE_AS,                  sizeof(XF_Epilog_Dedupe_as),           HT_T_TINY    , FILL },
