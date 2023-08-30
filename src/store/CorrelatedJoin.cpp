@@ -178,7 +178,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   pCI->vForward(false);
   while (! pCI->G.p_MainCard->pSub_projection())
-    pCI->G_bEachMain_reverse_NONE();
+    pCI->G_bEachMain_reverse_NONE_b();
   pCI->vForward(true);
 
   pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
