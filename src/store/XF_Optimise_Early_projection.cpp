@@ -79,6 +79,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
   m_pCI->vForward(false);
+  m_pCI->vBeginEachReverse();
 
   for (;;) {
 

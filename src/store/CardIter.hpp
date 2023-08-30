@@ -99,7 +99,6 @@ namespace STORE
     bool G_bEachMain(eCK eOfMainKind);
     bool G_bEachMain_foldBreak(eCK eOfMainKind=CK_NONE);
 
-    bool G_bEachMain_reverse_NONE_b(void);
     bool G_bEachMain_reverse_NONE(void);
     bool G_bEachMain_reverse(eCK eOfMainKind);
     bool G_bEachMain_reverse_foldBreak(eCK eOfMainKind=CK_NONE);
