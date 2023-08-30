@@ -247,9 +247,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
-        // stencil to
-        vAppendStencilTo(pOpSketch);
-
         // create indexDef and indexTree
         vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz, pOperatorFile);
         vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);

@@ -19,7 +19,6 @@ Stz* aSK[SK_ENUMS]
   /*   */ "INFLATE_CRW"_Stz,
   /*   */ "INFLATE_ROW"_Stz,
   /*   */ "LIMIT"_Stz,
-  /*   */ "ORDAGG"_Stz,
   /*   */ "POT"_Stz,
   /*   */ "PROJECT"_Stz,
   /*   */ "SEMIJOIN"_Stz,

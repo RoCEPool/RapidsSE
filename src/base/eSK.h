@@ -6,8 +6,7 @@
 enum eSK // sketch kind
 {
    /*  */ SK_NONE=0,
-  /*   */ SK_AGGORD,      // ordered aggregate with group by
-  /*   */ SK_AGGREG,      // projection with aggreagte
+  /*   */ SK_AGGREG,      // projection with aggregate
   /*   */ SK_ANTIJOIN,    // anti-join
   /*   */ SK_EOS,         // eos
   /*   */ SK_FILTER,      // filter
@@ -17,7 +16,7 @@ enum eSK // sketch kind
   /*   */ SK_INFLATE_CRW, // inflate CRW
   /*   */ SK_INFLATE_ROW, // inflate ROW
   /*   */ SK_LIMIT,       // limit
-  /*   */ SK_ORDAGG,      // ordered aggregate
+  /*   */ SK_ORDAGG,      // ordered aggregate with group by
   /*   */ SK_POT,         // pot
   /*   */ SK_PROJECT,     // projection
   /*   */ SK_SEMIJOIN,    // semi-join

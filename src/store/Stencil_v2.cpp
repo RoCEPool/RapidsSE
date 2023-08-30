@@ -896,7 +896,7 @@ OpSketch* Stencil_v2::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch ordered aggregate                                                   */
+/* sketch ordered aggregatewith group by                                      */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 
@@ -1095,7 +1095,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_AT, II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_NONE, II_PL);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1146,7 +1146,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, m_ePreviousStencil,  II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, SR_NONE,  II_PL);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1222,7 +1222,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
   ColMap* pColsMap = pOpDef->m_pColMap_top;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, m_ePreviousStencil,  II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, SR_NONE,  II_PL);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
