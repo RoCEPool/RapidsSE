@@ -164,6 +164,7 @@ extern Stz* P_DisamCol;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedPos;
+extern Stz* P_HashOf;
 extern Stz* P_HideHeat;
 extern Stz* P_Injected;
 extern Stz* P_InjCrlKey;

@@ -45,6 +45,7 @@ Stz* P_DisamCol     = "bDisamCol"_Stz;
 Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
 Stz* P_FixedPos     = "bFixedPos"_Stz;
+Stz* P_HashOf       = "szHashOf"_Stz;
 Stz* P_HideHeat     = "bHideHeat"_Stz;
 Stz* P_Injected     = "bInjected"_Stz;
 Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
