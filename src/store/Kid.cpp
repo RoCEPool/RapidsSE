@@ -84,6 +84,9 @@ void Kid::vBeginEach_reverse(void)
   _nonProper_
 
   vChildReset();
+  m_i_Child = m_pParent->nChildCards() - 1;
+
+
   m_bBegun   = true;
   m_bForward = false;
   m_bEnded   = false;
@@ -377,6 +380,16 @@ void Kid::vExhausted(bool bExhausted)
   _nonProper_
 
   m_bExhausted = bExhausted;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Kid::bForward(void)
+{
+  _nonProper_
+
+  return m_bForward;
 }
 
 /*----------------------------------------------------------------------------*/

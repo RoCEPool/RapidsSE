@@ -48,9 +48,9 @@ void Card_Where::vCullMarkedCmpPred(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->nCullPred(MARK_AT);
   }
 }
@@ -62,9 +62,9 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     if (0 == pCI->G.p_boolCalc->nChildCards()) {
       pCI->G_vRemoveDeleteMain(CK_WHERE);
     }
@@ -78,9 +78,9 @@ void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vMarkWrt_table(pCI);
   }
 }
@@ -92,9 +92,9 @@ void Card_Where::vMoveWherePredsToTableFilter(CardIter* pCI) {
 
   _static_
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
 
-  while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
+  while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vCopyMarkedPredsToTable(pCI);
   }
 }
@@ -119,7 +119,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
 
   Card_Table* p_table = nullptr;
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
   while (pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
 
     // ignore
@@ -131,7 +131,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
       pCI->G_vPushIter();
-      if (pCI->G_bEachMain_reverse(CK_SCAN)) {
+      if (pCI->G_bEachMain_reverse_b(CK_SCAN)) {
         p_table = pCI->G.p_table = pCI->G.p_scan->pSub_table();
         pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
         pCI->G.p_table->vAppend(pCI->G.p_outerJoin);

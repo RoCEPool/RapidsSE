@@ -370,7 +370,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 //    return;
 //  }
 
-  while (pCI->G_bEachMain_reverse()) {
+  while (pCI->G_bEachMain_reverse_NONE()) {
 
     // which card did we arrive at?
     switch (pCI->G.e_MainCard) {

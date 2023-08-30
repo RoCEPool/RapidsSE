@@ -97,19 +97,19 @@ namespace STORE
 
     bool G_bEachMain_NONE(void);
     bool G_bEachMain(eCK eOfMainKind);
-    bool G_bEachMain_foldBreak(eCK eOfMainKind=CK_NONE);
-    bool G_bEachMain_reverse(eCK eOfMainKind=CK_NONE);
-    bool G_bEachMain_reverse_foldBreak(eCK eOfMainKind=CK_NONE);
-
+    bool G_bEachMain_foldBreak(eCK eOfMainKind);
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind);
-    bool G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
-    bool G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind);
     bool G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue);
     bool G_bEachMainWith2Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2);
     bool G_bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
 
+    bool G_bEachMain_reverse_NONE(void);
+    bool G_bEachMain_reverse_b(eCK eOfMainKind);
+    bool G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind);
+    bool G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind);
+    bool G_bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndSubKind);
+
     bool G_bEachSubOfMain(eCK eSubKind);
-    bool G_bEachSubOfMain_reverse(eCK eSubKind);
     bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
     bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
 
@@ -121,7 +121,8 @@ namespace STORE
     Card_Expr* pExpr_For_colNm(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
 
     void vFocusOnMain(void);
-    void vForward(void);
+    bool bForward(void);
+    void vForward(bool bForward);
 
     Card* pGetChild(i8 i_Child);
     Card* G_pGetMember(eCK eMember);

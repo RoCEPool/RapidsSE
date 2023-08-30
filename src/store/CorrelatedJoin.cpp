@@ -122,14 +122,14 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  pCI->vBeginEach();
-  RASSERT(pCI->G_bEachMain_reverse(CK_FOLD));
+  pCI->vBeginEachReverse();
+  RASSERT(pCI->G_bEachMain_reverse_b(CK_FOLD));
 
   // Now processing OQ (outer-query)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // re-project the leading OQ:<table>* sequence
-
+  pCI->vForward(true);
   while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     pCI->G.p_from->vSmooth(pCI);
    // pCI->vPrintBoard(__LINE__);
@@ -176,8 +176,10 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
+  pCI->vForward(false);
   while (! pCI->G.p_MainCard->pSub_projection())
-    pCI->G_bEachMain_reverse();
+    pCI->G_bEachMain_reverse_NONE();
+  pCI->vForward(true);
 
   pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
   RASSERT(pCI->G_bEachMain(CK_FOLD));

@@ -57,6 +57,7 @@ namespace STORE
     bool bExhausted(void);
     void vExhausted(bool bExhausted);
 
+    bool bForward(void);
     void vForward(bool bForward);
 
     i8 iGetOdn(void);
