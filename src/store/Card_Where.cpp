@@ -119,7 +119,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
 
   Card_Table* p_table = nullptr;
 
-  pCI->vBeginEach();
+  pCI->vBeginEachReverse();
   while (pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
 
     // ignore

@@ -682,42 +682,6 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (G.xKid.bEnded())
-    return false;
-
-  G.xKid.vBeginReverse();
-
-  for (;;) {
-
-    if (! G.xKid.bInRange()) {
-      return false;
-    }
-
-    G.p_MainCard = G.xKid.pChild();
-
-    vFocusOnMain();
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-
-    if (CK_NONE == eOfMainKind) {
-      return true;
-    }
-
-    eCK eCardMain = G.xKid.eChild();
-    if (eCardMain == eOfMainKind) {
-      return G.xKid.pChild();
-    }
-
-    if (! G.xKid.bEach_reverse())
-      return false;
-  }
-
-  NEVER_REACH
-}
-/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -824,7 +788,7 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain_reverse(eOfMainKind)) {
+  while (G_bEachMain_reverse_b(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
