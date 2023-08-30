@@ -75,6 +75,9 @@
   Marker[].newEosMarker
   Marker[].pipeOut
 
+  Marker[].newEndMarker
+  Marker[].pipeOut
+
   true
 ;
 
