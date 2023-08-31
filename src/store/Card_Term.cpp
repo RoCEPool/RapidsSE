@@ -41,6 +41,51 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vItemise_colNm(CardIter* pCI)
+{
+  _static_
+
+  auto bfItemise_colNm = [pCI](Card_Term* p_term)
+  {
+    UNUSED(pCI);
+
+    if (! p_term->pSymbol()->bIs_Col_Nm())
+      return C_CONTINUE_RECURSION;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.pDeck->bApplyRecursive_term(bfItemise_colNm);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vItemStrip_colNm(CardIter* pCI)
+{
+  _static_
+
+  auto bfItemStrip_colNm = [pCI](Card_Term* p_term)
+  {
+    UNUSED(pCI);
+
+    if (! p_term->pSymbol()->bIs_Col_Nm())
+      return C_CONTINUE_RECURSION;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.pDeck->bApplyRecursive_term(bfItemStrip_colNm);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
