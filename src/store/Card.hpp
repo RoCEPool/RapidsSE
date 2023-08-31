@@ -246,7 +246,7 @@ namespace STORE
   protected:
     static i8 m__iSeqGen;
 
-    char    md_Bearing[256];
+    char    md_Coord[256];
 
     eCK     m_eCard;
     i8      m_i_Child;
@@ -290,16 +290,14 @@ namespace STORE
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
-    Stz* szBearing(void);
-
     eCK  eCard(void);
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
-
     void vColType(Card* pCard_arg);
+    Stz* szCoord(void);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCard(void);
@@ -375,8 +373,8 @@ namespace STORE
 
   private:
   private:
-    void vBearing(void);
-    void vBearing(Card* pParentCard);
+    void vCoord(void);
+    void vCoord(Card* pParentCard);
 
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
