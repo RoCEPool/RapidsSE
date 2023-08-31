@@ -39,13 +39,13 @@ XF_Prolog_table_Analysis::~XF_Prolog_table_Analysis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_table_Analysis::vProlog(CardIter* pCI, Symbol* pSymbol_tableSyn)
+void XF_Prolog_table_Analysis::vProlog(CardIter* pCI)
 {
   _static_
 
   XF_Prolog_table_Analysis* pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
 
-  pXF_table_Analysis->vXF_table_Analysis(pSymbol_tableSyn);
+  pXF_table_Analysis->vXF_table_Analysis(&pCI->m_xSymbol_tableSyn);
 
   delete pXF_table_Analysis;
 }
@@ -53,13 +53,13 @@ void XF_Prolog_table_Analysis::vProlog(CardIter* pCI, Symbol* pSymbol_tableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn)
+void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI)
 {
   _static_
 
   XF_Prolog_table_Analysis* pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
 
-  pXF_table_Analysis->vXF_table_Analysis_passThru(pSymbol_tableSyn);
+  pXF_table_Analysis->vXF_table_Analysis_passThru(&pCI->m_xSymbol_tableSyn);
 
   delete pXF_table_Analysis;
 }

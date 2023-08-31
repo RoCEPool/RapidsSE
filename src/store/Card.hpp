@@ -195,27 +195,20 @@ extern Stz* P_Unproject;
 extern Stz* P_WasKeyCol;
 extern Stz* P_WasStmCol;
 
-extern Stz* C_GLEAN_CUE_FROM;
-extern Stz* C_OPTIMISER_TRACE;
-extern Stz* C_GLEAN_TRACE;
-extern Stz* C_GLEAN_XFORM;
-extern Stz* C_GLEAN_XHAND;
-extern Stz* C_NA;
-
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;
-extern Stz* C_EP_DISABLE;
-extern Stz* C_EP_ENABLE;
 extern Stz* C_FILTERPRED;
-extern Stz* C_JOINORDER;
-extern Stz* C_JOINPERMUTATIONS;
+extern Stz* C_GLEAN_CUE_FROM;
+extern Stz* C_JOWRITE;
 extern Stz* C_JO_DISABLE;
 extern Stz* C_JO_PICK;
-extern Stz* C_JOWRITE;
+extern Stz* C_NA;
+extern Stz* C_NOCODESYNTHESIS;
+extern Stz* C_OPTIMISER_EP_DISABLE;
+extern Stz* C_OPTIMISER_TRACE;
 extern Stz* C_OPTIMISE_PASSTHRU;
 extern Stz* C_PIPELINE_DEF;
 extern Stz* C_WEAVED;
-extern Stz* C_NOCODESYNTHESIS;
 
 extern d8 C_EXPANSION_COEFF;  // crw -> row buffer
 extern d8 C_FILTER_COEFF;

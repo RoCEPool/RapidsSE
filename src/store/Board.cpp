@@ -446,33 +446,14 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 
   if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
     return;
-  RASSERT(pCI->G.pBoard);
 
   pCI->vSave();
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
-  RASSERT(pCI->G.pBoard);
   pCI->vNullMembers();
-
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
-  RASSERT(pCI->G.pBoard);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // main cards
-
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
-
-  RASSERT(pCI->m_pBench);
-
-  Card_Deck* pDeck = pCI->G.pDeck;
-
-  RASSERT(pCI->G.pBoard);
-
-  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
-
-  pDeck->vValidate(pCI);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  pCI->G.pDeck->vValidate(pCI);
   pCI->vRestore();
+
+  RASSERT(pCI->G.pBoard);
+  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
 }
 
 

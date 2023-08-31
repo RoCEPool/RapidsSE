@@ -14,8 +14,6 @@ namespace STORE
 
     CardIter* m_pCI;
 
-    Symbol m_xSymbol_tableSyn;
-
   protected:
     // must be last
     Footer m_xFooter;

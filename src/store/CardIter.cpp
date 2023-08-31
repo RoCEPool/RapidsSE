@@ -30,7 +30,7 @@ CardIter::CardIter(Bench* pBench)
 
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
-
+  m_xSymbol_tableSyn.vInit_Tbl_Syn('a');
 
   m_i_RecursionDepth = 0;
 

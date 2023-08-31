@@ -71,7 +71,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   bool bOptRun = false;
 
-  if (AM::JOB::bHasTag(C_EP_DISABLE))
+  if (AM::JOB::bHasTag(C_OPTIMISER_EP_DISABLE))
     return bOptRun;
 
   m_pCI->vTransform(__func__, XF_OPTIMISE_EARLY_PROJECTION, "Early projections"_Stz);

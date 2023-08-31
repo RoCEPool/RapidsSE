@@ -55,42 +55,6 @@ Bench::~Bench(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vValidate(CardIter* pCI)
-{
-  _static_
-
-  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    return;
-
-  pCI->vSave();
-
-  i8 nBoards = this->nBoards();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-    pCI->vUsingBoard(pBoard);
-    RASSERT(pCI->G.pBoard);
-
-    pBoard->pState()->vDumpSet();
-
-    RASSERT(pBoard->i_Board() == i_Board);
-
-    vTrace("Validate board [%lld] : %p\n"_Stz,i_Board,pBoard);
-
-    pBoard->vValidate(pCI);
-
-    if (pBoard->pState()->bHasName(aOH[OH_FLATTEN]))
-      break;
-  }
-
-  pCI->vRestore();
-
-
-  XC::vXC(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -401,6 +365,42 @@ i8 Bench::iBenchNo(void)
   return m_iBenchNo;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vValidate(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    return;
+
+  pCI->vSave();
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+    pCI->vUsingBoard(pBoard);
+    RASSERT(pCI->G.pBoard);
+
+    pBoard->pState()->vDumpSet();
+
+    RASSERT(pBoard->i_Board() == i_Board);
+
+    vTrace("Validate board [%lld] : %p\n"_Stz,i_Board,pBoard);
+
+    pBoard->vValidate(pCI);
+
+    if (pBoard->pState()->bHasName(aOH[OH_FLATTEN]))
+      break;
+  }
+
+  pCI->vRestore();
+
+
+  XC::vXC(pCI);
+}
 
 
 /*----------------------------------------------------------------------------*/

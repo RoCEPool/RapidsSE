@@ -40,7 +40,6 @@ namespace STORE
    ~Bench(void) noexcept(false);
 
 
-   void vValidate(CardIter* pCI);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -76,6 +75,8 @@ namespace STORE
     void vXhand(const char* asXhand);
     i8   iPrint_inc(void);
     i8   iBenchNo(void);
+
+    void vValidate(CardIter* pCI);
 
   private:
     Footer* aFooter(void);

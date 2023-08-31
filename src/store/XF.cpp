@@ -73,8 +73,6 @@ XF::XF(CardIter* pCI)
 
   m_pCI = pCI;
 
-  m_xSymbol_tableSyn.vInit_Tbl_Syn('a');
-
   _checkInitialised_(CN_XF);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
@@ -127,76 +125,75 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1/5) prolog
 
-  m_pCI->vPhase(OH_PROLOG);
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard())
-    XF_Prolog_Shorten_queryNm::vProlog(m_pCI);
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-
-    // initial adjustments
-    XF_Prolog_Move_on::vProlog(m_pCI);
-    XF_Prolog_Erase_construction::vProlog(m_pCI);
-    XF_Prolog_scan_To_from::vProlog(m_pCI);
-    XF_Prolog_Add_level::vProlog(m_pCI);
-    XF_Prolog_not_Ops::vProlog(m_pCI);
-
-    // meta analysis
-    XF_Prolog_table_Analysis::vProlog(m_pCI, &m_xSymbol_tableSyn);
-    XF_Prolog_projection_Analysis::vProlog(m_pCI);
-    XF_Prolog_index_Analysis::vProlog(m_pCI);
-
-    // preliminary conversions
-    XF_Prolog_rpnCalc_To_boolCalc::vProlog(m_pCI);
-    XF_Prolog_as_Review::vProlog(m_pCI);
-  }
-
-  // sub-query analysis
-  XF_Prolog_subQuery_Analysis::vProlog(m_pCI);
-
-  m_pCI->vEndPhase();
-
+  m_pCI->vPhase(OH_PROLOG);                        //
+                                                   //
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard())                      //
+    XF_Prolog_Shorten_queryNm::vProlog(m_pCI);     //
+                                                   //
+  m_pCI->vBoardIteration();                        //
+  while (m_pCI->bEachBoard()) {                    //
+                                                   //
+    // initial adjustments                         //
+    XF_Prolog_Move_on::vProlog(m_pCI);             //
+    XF_Prolog_Erase_construction::vProlog(m_pCI);  //
+    XF_Prolog_scan_To_from::vProlog(m_pCI);        //
+    XF_Prolog_Add_level::vProlog(m_pCI);           //
+    XF_Prolog_not_Ops::vProlog(m_pCI);             //
+                                                   //
+    // meta analysis                               //
+    XF_Prolog_table_Analysis::vProlog(m_pCI);      //
+    XF_Prolog_projection_Analysis::vProlog(m_pCI); //
+    XF_Prolog_index_Analysis::vProlog(m_pCI);      //
+                                                   //
+    // preliminary conversions                     //
+    XF_Prolog_rpnCalc_To_boolCalc::vProlog(m_pCI); //
+    XF_Prolog_as_Review::vProlog(m_pCI);           //
+  }                                                //
+                                                   //
+  // sub-query analysis                            //
+  XF_Prolog_subQuery_Analysis::vProlog(m_pCI);     //
+                                                   //
+  m_pCI->vEndPhase();                              //
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2/5) flatten
 
-  m_pCI->vPhase(OH_FLATTEN);
-
-  XF_Flatten::vFlatten(m_pCI);
-
-  m_pCI->vEndPhase();
+  m_pCI->vPhase(OH_FLATTEN);                       //
+                                                   //
+  XF_Flatten::vFlatten(m_pCI);                     //
+                                                   // 
+  m_pCI->vEndPhase();                              //
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3/5) optimisw
 
-  m_pCI->vPhase(OH_OPTIMISE);
-
-  m_pCI->vBoardIteration();
-  RASSERT(m_pCI->bEachBoard());
-
-  XF_Optimise_from_To_OP::vOptimise(m_pCI);
-  XF_Optimise_scan_To_indexScan::vOptimise(m_pCI);
-  XF_Optimise_Derive_streamKey::vOptimise(m_pCI);
-  XF_Optimise_Cut_sort::vOptimise(m_pCI);
-  XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);
-  XF_Optimise_Cull_bound::vOptimise(m_pCI);
-  XF_Optimise_Early_projection::vOptimise(m_pCI);
-
-  XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);
-  XF_Optimise_Static_calc::vOptimise(m_pCI);
-  XF_Optimise_max_To_top::vOptimise(m_pCI);
-  XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(m_pCI);
-  XF_Optimise_sortDesc_limit_to_top::vOptimise(m_pCI);
-  XF_Optimise_sort_limit_All_Levels::vOptimise(m_pCI);
-  XF_Optimise_Early_filter::vOptimise(m_pCI);
-  XF_Optimise_Late_projection::vOptimise(m_pCI);
-  XF_Optimise_Duplicate_filter::vOptimise(m_pCI);
-
-  m_pCI->vEndPhase();
-
+  m_pCI->vPhase(OH_OPTIMISE);                          //
+                                                       //
+  m_pCI->vBoardIteration();                            //
+  RASSERT(m_pCI->bEachBoard());                        //
+                                                       //
+  XF_Optimise_from_To_OP::vOptimise(m_pCI);            //
+  XF_Optimise_scan_To_indexScan::vOptimise(m_pCI);     //
+  XF_Optimise_Derive_streamKey::vOptimise(m_pCI);      //
+  XF_Optimise_Cut_sort::vOptimise(m_pCI);              //
+  XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);      //
+  XF_Optimise_Cull_bound::vOptimise(m_pCI);            //
+  XF_Optimise_Early_projection::vOptimise(m_pCI);      //
+                                                       //
+  XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
+  XF_Optimise_Static_calc::vOptimise(m_pCI);           //
+  XF_Optimise_max_To_top::vOptimise(m_pCI);            //
+  XF_Optimise_aggreg_To_sort_ordAgg::vOptimise(m_pCI); //
+  XF_Optimise_sortDesc_limit_to_top::vOptimise(m_pCI); //
+  XF_Optimise_sort_limit_All_Levels::vOptimise(m_pCI); //
+  XF_Optimise_Early_filter::vOptimise(m_pCI);          //
+  XF_Optimise_Late_projection::vOptimise(m_pCI);       //
+  XF_Optimise_Duplicate_filter::vOptimise(m_pCI);      //
+                                                       //
+  m_pCI->vEndPhase();                                  //
+                                                       //
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
 
@@ -245,7 +242,7 @@ void XF::vTransform_passThru(void)
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
 
-    XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(m_pCI, &m_xSymbol_tableSyn);
+    XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(m_pCI);
     XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
     m_pCI->vTransform(__func__, XF_EPILOG_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
