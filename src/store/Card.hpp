@@ -169,6 +169,7 @@ extern Stz* P_HideHeat;
 extern Stz* P_Injected;
 extern Stz* P_InjCrlKey;
 extern Stz* P_Invalid;
+extern Stz* P_Itemised;
 extern Stz* P_JoinedBuff;
 extern Stz* P_Key;
 extern Stz* P_Level;

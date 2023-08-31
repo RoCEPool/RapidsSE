@@ -1144,6 +1144,25 @@ bool Symbol::bIs_As_Nm(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bIs_As_Nm_itm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_AS_NM_itm != m_eSymbol)
+    return false;
+
+  if (! Y_bHas(P_Itemised))
+    return false;
+
+  if (bIs_As_Nm(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_As_Nm_syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -2650,6 +2669,22 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
   Y_vCut(P_Synthetic);
 
   RASSERT(bIs_As_Nm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given synthetic-as no                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_As_Nm_itm(i8 iAsNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  vSymSprint("C%lld_"_Stz, iAsNo);
+  m_eSymbol = SF_AS_NM_itm;
+  Y_vSet(P_Itemised);
+
+  RASSERT(bIs_As_Nm_itm());
 }
 
 /*----------------------------------------------------------------------------*/

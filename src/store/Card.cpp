@@ -50,6 +50,7 @@ Stz* P_HideHeat     = "bHideHeat"_Stz;
 Stz* P_Injected     = "bInjected"_Stz;
 Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
 Stz* P_Invalid      = "bInvalid"_Stz;
+Stz* P_Itemised     = "bItemised"_Stz;
 Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 Stz* P_Key          = "bKey"_Stz;
 Stz* P_Level        = "eLevel"_Stz;
