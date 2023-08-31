@@ -11,6 +11,7 @@
 #include "XF_Epilog_Column_hashing.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
 #include "XF_Epilog_Itemise_colNm.hpp"
+#include "XF_Epilog_ItemStrip_colNm.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Epilog_stage_cast.hpp"
@@ -197,35 +198,37 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4/5) epilog
 
-  m_pCI->vPhase(OH_EPILOG);
-
-  m_pCI->vBoardIteration();
-  RASSERT(m_pCI->bEachBoard());
-
-  XF_Epilog_Promote_filter::vEpilog(m_pCI);
-  XF_Epilog_Reinstate_stage::vEpilog(m_pCI);
-  XF_Epilog_stage_cast::vEpilog(m_pCI);
-  XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);
-  XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);
-  XF_Epilog_Column_mapping::vEpilog(m_pCI);
-  XF_Epilog_Column_hashing::vEpilog(m_pCI);
-
-  m_pCI->vEndPhase();
-
-  vCrosscheck_Optimisations();
+  m_pCI->vPhase(OH_EPILOG);                            //
+                                                       //
+  m_pCI->vBoardIteration();                            //
+  RASSERT(m_pCI->bEachBoard());                        //
+                                                       //
+  XF_Epilog_Promote_filter::vEpilog(m_pCI);            //
+  XF_Epilog_Reinstate_stage::vEpilog(m_pCI);           //
+  XF_Epilog_stage_cast::vEpilog(m_pCI);                //
+  XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);          //
+  XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);           //
+  XF_Epilog_Column_mapping::vEpilog(m_pCI);            //
+  XF_Epilog_Column_hashing::vEpilog(m_pCI);            //
+                                                       //
+  XF_Epilog_ItemStrip_colNm::vEpilog(m_pCI);           //
+                                                       //
+  m_pCI->vEndPhase();                                  //
+                                                       //
+  vCrosscheck_Optimisations();                         //
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5/5) synthesise
 
-  m_pCI->vPhase(OH_SYNTHESISE);
-
-  m_pCI->vBoardIteration();
-  RASSERT(m_pCI->bEachBoard());
-
-  XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
-  XF_Synthesise_code::vSynthesise(m_pCI);
-
-  m_pCI->vEndPhase();
+  m_pCI->vPhase(OH_SYNTHESISE);                        //
+                                                       //
+  m_pCI->vBoardIteration();                            //
+  RASSERT(m_pCI->bEachBoard());                        //
+                                                       //
+  XF_Synthesise_pipelineDef::vSynthesise(m_pCI);       //
+  XF_Synthesise_code::vSynthesise(m_pCI);              //
+                                                       //
+  m_pCI->vEndPhase();                                  //
 }
 
 /*----------------------------------------------------------------------------*/

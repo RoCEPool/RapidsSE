@@ -11,6 +11,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_COLUMN_HASHING"_Stz,
   /* */ "XF_EPILOG_COLUMN_MAPPING"_Stz,
   /* */ "XF_EPILOG_ITEMISE_COLNM"_Stz,
+  /* */ "XF_EPILOG_ITEMSTRIP_COLNM"_Stz,
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,
   /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,
   /* */ "XF_EPILOG_STAGE_CAST"_Stz,
@@ -91,6 +92,7 @@ Stz* aXF_desc[XF_ENUMS]
 
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_COLUMN_MAPPING
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMISE_COLNM
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMSTRIP_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_PROMOTE_FILTER
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_REINSTATE_STAGE
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_STAGE_CAST
