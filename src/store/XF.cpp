@@ -10,7 +10,7 @@
 
 #include "XF_Epilog_Column_hashing.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
-#include "XF_Epilog_Itemise_as.hpp"
+#include "XF_Epilog_Itemise_colNm.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Epilog_stage_cast.hpp"
@@ -306,7 +306,7 @@ void XF::vTransform_passThru(void)
   XF_Epilog_Column_mapping::vEpilog(m_pCI);
   XF_Epilog_Column_hashing::vEpilog(m_pCI);
 
-  XF_Epilog_Itemise_as::vEpilog(m_pCI);
+  XF_Epilog_Itemise_colNm::vEpilog(m_pCI);
 
   vCrosscheck_Optimisations();
 

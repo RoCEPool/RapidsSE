@@ -445,7 +445,7 @@ enum eCN : u2 // Class Number
   /* */ CN__X__,
   /* */ CN_XC,
   /* */ CN_XF,
-  /* */ CN_XF_EPILOG_ITEMISE_AS,
+  /* */ CN_XF_EPILOG_ITEMISE_COLNM,
   /* */ CN_XF_ADD_LEVEL,
   /* */ CN_XF_AS_REVIEW,
   /* */ CN_XF_COLNM_TO_STMCOL,
@@ -951,7 +951,7 @@ static Stz* aCN[]
   /* */ "_X__"_Stz,                 // CN__X__
   /* */ "XC"_Stz,                           // CN_XC
   /* */ "XF"_Stz,                           // CN_XF
-  /* */ "XF_EPILOG_ITEMISE_AS"_Stz,                 // CN_XF_EPILOG_ITEMISE_AS
+  /* */ "XF_EPILOG_ITEMISE_COLNM"_Stz,                 // CN_XF_EPILOG_ITEMISE_COLNM
   /* */ "XF_PROLOG_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
   /* */ "XF_PROLOG_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
   /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL

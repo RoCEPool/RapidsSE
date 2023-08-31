@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Itemise_as.hpp -- De-Duplicate As (column name)                          */
+/* XF_Epilog_Itemise_colNm.hpp -- Itemise column names Cn_Abc                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_Itemise_as : public XF_EPILOG
+  class XF_Epilog_Itemise_colNm : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_Itemise_as(CardIter* pCI);
-   ~XF_Epilog_Itemise_as(void) noexcept(false);
+    XF_Epilog_Itemise_colNm(CardIter* pCI);
+   ~XF_Epilog_Itemise_colNm(void) noexcept(false);
 
     static void vEpilog(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Epilog_Itemise_as* _pXF_Epilog_Itemise_as(void* aAddr);
+  XF_Epilog_Itemise_colNm* _pXF_Epilog_Itemise_colNm(void* aAddr);
 }
 
 /*============================================================================*/
