@@ -650,14 +650,14 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           if (pOpSketch->m_eStencilFrom == SR_PL) {
 
-						// generate code for the hash value
-						if (pOpSketch->eSketchKind() == SK_POT)
-							vAppendCodePLToHashCols(pOpSketch);
-
             if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
               vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
+
+						// generate code for the hash value
+						if (pOpSketch->eSketchKind() == SK_POT)
+							vAppendCodePLToHashCols(pOpSketch);
 
             if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
               vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
@@ -1231,6 +1231,8 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 
 	s16KB sCode;
 
+	vAppendCodeFragment(pOpSketch, "vPLToHashBegin"_Stz);
+
 	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColHsh->m_nCols; i_Col++) {
 
 		m_pCommonCode->vSeekStart();
@@ -1241,7 +1243,7 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// is column in the payload ?
-		bool bIsPayload = pOpSketch->bIsPayload(i_StreamCol);
+		bool bIsPayload = pOpSketch->bIsPayload(i_StreamCol+1);
 
 		if (bIsPayload) {
 
@@ -1263,18 +1265,51 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 			sCode = ""_Stz;
 			m_pCommonCode->vSeekStart();
 
-			RASSERT(pOpSketch->m_pIndexDef->eKeyKind() == KE_INT);
-			switch (pColumn->eColumnType()) {
+			if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+				switch (pColumn->eColumnType()) {
 
-				case CT_VARCHAR:
-				case CT_CHAR:
-					RASSERT(0);
-					break;
+					case CT_VARCHAR:
+					case CT_CHAR:
+						RASSERT(0);
+						break;
 
-				default:
-					vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
-					break;
+					default:
+						vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
+						break;
+				}
 			}
+			else {
+				RASSERT(pOpSketch->m_pIndexDef->eKeyKind() == KE_GENERAL);
+
+				i8 nColumns = pOpSketch->m_pColMap->m_nCols;
+
+				for (i8 i_ColMap = 0; i_ColMap < nColumns; i_ColMap++) {
+
+					// skip payloads
+					if ( pOpSketch->m_pColMap->m_axCols[i_ColMap].m_bPayload )
+						continue;
+
+					if (pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1 == i_StreamCol) {
+						switch (pColumn->eColumnType()) {
+
+							case CT_VARCHAR:
+							case CT_CHAR:
+								RASSERT(0);
+								break;
+
+							default:
+								vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
+								break;
+						}
+						break;
+					}
+					else {
+						// skip the key column
+						vAppendCodeFragment(pOpSketch, "vPLSkipKey"_Stz, pColumn);
+					}
+				}
+			}
+
 		}
 
 	}
