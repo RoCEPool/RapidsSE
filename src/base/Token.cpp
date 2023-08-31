@@ -1037,7 +1037,7 @@ void Token::vStripSingleQuotes(void)
 
   i8 iBufSize = m_szChars->nSize();
   StrLib::vRemove(m_szChars->azChar(), iBufSize, '\'');
-  StrLib::vStrip(m_szChars->azChar(), '\'');
+  StrLib::vStrip(m_szChars->azChar(), iBufSize, '\'');
 }
 
 /*----------------------------------------------------------------------------*/

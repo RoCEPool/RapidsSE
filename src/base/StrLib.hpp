@@ -245,48 +245,47 @@ namespace BASE
     static bool  bReplace(char* psDst, i8 iDstBufSize, const char* psThis, const char* psThat, bool* pbResult = nullptr); // yes
     static bool  bReplace(char* pDst, i8 iDstBufSize, const char* psSrc,
                           const char* psThis, const char* psThat, bool* pbResult = nullptr);                            // yes
-    static void  vReplaceTail(char* azDst, const char* azTail);                                                         // ✕
+    static void  vReplaceTail(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                // yes
     static void  vReverse(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult = nullptr);                          // yes
-    static void  vRotate(char* zArg, i8 nby);                                                                           // ✕
-    static void  vRuler(char* azDst, i8 iLength);                                                                       // ✕
+    static void  vRuler(char* psDst, i8 iDstBufSize, i8 iLength, bool* pbResult = nullptr);                             // yes
 
-    static bool  bSame(const char c1, const char c2);                                                                   // ✕
-    static bool  bSame(const char* s1, const char* s2);                                                                 // ✕
-    static void  vShortHand(char* azDst, const char* azSrc);                                                            // ✕
-    static void  vShuffleLeft(char* azDst, const char* azSrc);                                                          // ✕
-    static void  vShuffleLeft(char* azDst, i8 i_Right);                                                                 // ✕
-    static bool  bSimilar(const char* azArg1, const char* azArg2, const char* sSep);                                    // ✕
-    static i8    nSize(const char* s);                                                                                  // ✕
-    static void  vSkipCommentBlock(char** ps);                                                                          // ✕
-    static void  vSkipCommentLine(char** ps);                                                                           // ✕
-    static void  vSkipCommentsEtc(char** aazCrs);                                                                       // ✕
-    static void  vSkipDigits(char** ps);                                                                                // ✕
-    static bool  bSkipEOL(char** ps);                                                                                   // ✕
-    static bool  bSkipLeading(char** ps, char cEnclosedBy_Leading);                                                     // ✕
-    static bool  bSkipNonAlnum(char** ps);                                                                              // ✕
-    static bool  bSkipNonDigit(char** ps);                                                                              // ✕
-    static void  vSkipSpaces(char** ps);                                                                                // ✕
-    static bool  bSkipTrailing(char** ps,
+    static bool  bSame(const char cArg1, const char cArg2);                                                             // yes
+    static bool  bSame(const char* psArg1, const char* psArg2);                                                         // yes
+    static void  vShortHand(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                  // yes
+    static void  vShuffleLeft(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult = nullptr);                // yes
+    static void  vShuffleLeft(char* psDst, i8 iDstBufSize, i8 i_Right, bool* pbResult = nullptr);                       // yes
+    static i8    nSize(const char* psArg);                                                                              // yes
+    static void  vSkipCommentLine(char** ppsCrs);                                                                       // yes
+    static void  vSkipCommentsEtc(char** ppsCrs);                                                                       // yes
+    static void  vSkipDigits(char** ppsCrs);                                                                            // yes
+    static bool  bSkipEOL(char** ppsCrs);                                                                               // yes
+    static bool  bSkipLeading(char** ppsCrs, char cEnclosedBy_Leading);                                                 // yes
+    static bool  bSkipNonAlnum(char** ppsCrs);                                                                          // yes
+    static bool  bSkipNonDigit(char** ppsCrs);                                                                          // yes
+    static void  vSkipSpaces(char** ppsCrs);                                                                            // yes
+    static bool  bSkipTrailing(char** ppsCrs,
                                bool bSawEnclosedBy_Leading,
-                               char cEnclosedBy_Trailing);                                                              // ✕
-    static void  vSkipWhite(char** ps);                                                                                 // ✕
-    static void  vSplitSeries(char* azStr, char* azInt, char* sSrc);                                                    // ✕
+                               char cEnclosedBy_Trailing);                                                              // yes
+    static void  vSkipWhite(char** ppsCrs);                                                                             // yes
+    static void  vSplitSeries(char* psDstStr, i8 iDstStrSize,
+                              char* psDstInt, i8 iDstIntSize,
+                              const char* psSrc, bool* pbResult = nullptr);                                             // yes
     static void  vSprint(char* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                               // yes
     static void  vSprint(Stz* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                                // yes
     static void  vSprint(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult =  nullptr);    // yes
     static void  vSprintCat(Stz*  psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...);                            // yes
     static void  vSprintCat(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult = nullptr);  // yes
-    static void  vStrip(char* s, char cTrailing);                                                                       // ✕
+    static void  vStrip(char* psDst, i8 iDstBufSize, char cTrailing, bool* pbResult = nullptr);                         // yes
     static void  vSubPath(char* azDst, i8 iDstBufSize, char* azSrc, bool* pbResult = nullptr);                          // yes
 
-    static bool  bTailIs(const char* z, char* ss);                                                                      // ✕
-    static char* aczTabLoc(char* azArg, i8 i_Tab, char cPad);                                                           // ✕
-    static i8    iToBcd(const char* s);                                                                                 // ✕
-    static bool  bToBool(const char* s);                                                                                // ✕
-    static d8    dToFlt(const char* s);                                                                                 // ✕
-    static char  cToHex(i8 i);                                                                                          // ✕
-    static i8    iToI8(const char* s);                                                                                  // ✕
-    static i8    iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed);                                          // ✕
+    static bool  bTailIs(const char* psArg, char* psTail);                                                              // yes
+    static char* aczTabLoc(char* psArg, i8 i_Tab, char cPad);                                                           // yes
+    static i8    iToBcd(const char* psArg);                                                                             // yes
+    static bool  bToBool(const char* psArg);                                                                            // yes
+    static d8    dToFlt(const char* psArg, bool* pbResult = nullptr);                                                   // yes
+    static char  cToHex(i8 i);                                                                                          // yes
+    static i8    iToI8(const char* psArg);                                                                              // yes
+    static i8    iToI8(const char* psArg, bool* bInvalidValue, bool* bOverflowed);                                      // yes
     static char  cToLower(char c);                                                                                      // yes
     static void  vToLower(char* psDst, i8 iDstBufSize, bool* pbResult = nullptr);                                       // yes
     static char  cToUpper(char c);                                                                                      // yes
@@ -296,12 +295,12 @@ namespace BASE
     static void  vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult = nullptr);                           // yes
     static void  vToString(char* azDst, i8 iDstBufSize, i8 iArg, bool* pbResult = nullptr);                             // yes
     static void  vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult = nullptr);                             // yes
-    static void  vTrim(char* azArg, char cTrim);                                                                        // ✕
+    static void  vTrim(char* psDst, i8 iDstBufSize, char cTrim, bool* pbResult = nullptr);                              // yes
 
-    static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);                                                          // ✕
+    static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);                                                          // yes
 
-    static i8    iWordFlip(char* aDst, char* aSrc);                                                                     // ✕
-    static i8    iWordFlipBack(char* aDst, char* aSrc);                                                                 // ✕
+    static i8    iWordFlip(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult = nullptr);                         // yes
+    static i8    iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult = nullptr);                     // yes
   
   /*----------------------------------------------------------------------------*/
   /* iLength: get length in bytes of arg (not including terminating null)       */
@@ -318,9 +317,9 @@ namespace BASE
 
   };
 
-  i8 StrLib_iLike2(char* azStr, char* azRegExp);
-  i8 StrLib_iLike3(char* azStr, char* azRegExp, char cEsc);
-  i8 StrLib_iWordFlipBack(char* aDst, char* aSrc);
+  i8 StrLib_iLike2(char* psSrc, char* azRegExp);
+  i8 StrLib_iLike3(char* psSrc, char* azRegExp, char cEsc);
+  i8 StrLib_iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc);
 
 }
 

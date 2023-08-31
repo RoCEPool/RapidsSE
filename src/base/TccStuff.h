@@ -153,9 +153,9 @@ void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 void  vTub_RowPix(void* pTub, void* pRowPix);
 
-i8    StrLib_iLike2(char* azStr, char* azRegExp);
-i8    StrLib_iLike3(char* azStr, char* azRegExp, char cEsc);
-i8    StrLib_iWordFlipBack(char* aDst, char* aSrc);
+i8    StrLib_iLike2(char* psSrc, char* azRegExp);
+i8    StrLib_iLike3(char* psSrc, char* azRegExp, char cEsc);
+i8    StrLib_iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc);
 
 void* aRowPix_new(i8 nColumns, void* pColumnInfo);
 

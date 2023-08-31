@@ -35,10 +35,11 @@ void KeyBuilder::vAddElement_gen(EntWrk* pEntWrk, Column* pCol,
   i8 nElmSize;
   
   char* azSrc = (char*)szElementSrc;
-  char* azDst = (char*)pEntWrk->ayElmNext_dtm();
+  i8 iBufRemaining;
+  char* azDst = (char*)pEntWrk->ayElmNext_dtm(&iBufRemaining);
   
   if (DM_VCH == pCol->eDatum()) {
-    nElmSize = StrLib::iWordFlip(azDst,azSrc);
+    nElmSize = StrLib::iWordFlip(azDst, iBufRemaining, azSrc);
     pEntWrk->vIncElmSeqSize(nElmSize);
     return;
   }

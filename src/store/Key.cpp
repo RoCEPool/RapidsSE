@@ -299,7 +299,7 @@ i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 /*----------------------------------------------------------------------------*/
 /* get element as str (assuming str)                                         */
 /*----------------------------------------------------------------------------*/
-i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue)
+i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue, i8 iKeyBufSize)
 {
   i8 nBytes = 0;
   Dtm* ayCursor = aElmSeq_dtm();
@@ -315,7 +315,7 @@ i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue)
     ayElm = EntWrk::ayEachElm(pCol,nBytes,(byte**)&ayCursor);
 
     if (i_Element == i_Col) {
-      nSize = StrLib::iWordFlipBack(sKeyValue, (char*)ayElm);
+      nSize = StrLib::iWordFlipBack(sKeyValue, iKeyBufSize, (char*)ayElm);
       break;
     }
   }
@@ -426,7 +426,7 @@ void Key::vShow(IndexDef* pIndexDef)
     }
     else
     if (eDatum == DM_VCH) {
-      nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
+      nBytes = StrLib::iWordFlipBack(caLiteral, sizeof(caLiteral), (char*)ayElm);
     }
     else {
       Literal::vSprint(caLiteral, sizeof(caLiteral), (Dtm*)ayElm,pCol);

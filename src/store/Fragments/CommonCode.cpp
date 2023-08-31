@@ -744,7 +744,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     szDstStz = aDynamicT->m_xRowInfoTO.m_acStrArea;
 
 #ifdef WITH_CLANG
-    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz,szSrcStz);
+    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, sizeof(aDynamicT->m_xRowInfoTO.m_cStringArea), szSrcStz); // CM: ????
 //    for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
 //      printf("%c ", szDstStz[i_Byte]);
 //    printf("\n");

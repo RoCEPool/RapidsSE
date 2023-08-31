@@ -155,7 +155,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
     Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
     Card_CostJoining* p_costJoining = p_joinEstimate->pSub_costJoining();
     s32 sCast = p_joinCast->szSymbol(SF_NONE);
-    StrLib::vShuffleLeft(sCast.azChar(),3);
+    StrLib::vShuffleLeft(sCast.azChar(), sCast.nAreaBytes(), 3);
 
     if (bNumbers)
       pString->vCatSprint(" %5s %9s %8s (%5s)"_Stz,

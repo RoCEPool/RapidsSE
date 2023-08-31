@@ -145,7 +145,7 @@ void RibbonLine::vTrim(void)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
-  StrLib::vTrim(m_caText,' ');
+  StrLib::vTrim(m_caText, sizeof(m_caText), ' ');
 }
 
 /*============================================================================*/
