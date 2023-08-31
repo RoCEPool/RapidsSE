@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+
+//#define Z_ITEMISED_NAMES
+
 #include "BASE.h"
 
 #include "eAL.h"

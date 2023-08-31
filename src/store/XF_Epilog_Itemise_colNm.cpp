@@ -68,8 +68,10 @@ void XF_Epilog_Itemise_colNm::vEpilog(void)
     m_pCI->G.p_constraint->vDisambiguate(m_pCI);
   }
 
+#ifdef Z_ITEMISED_NAMES
   Card_As::vItemise_colNm(m_pCI);
   Card_Term::vItemise_colNm(m_pCI);
+#endif
 
   m_pCI->vEndTransform();
 }
