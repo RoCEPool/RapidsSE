@@ -697,10 +697,24 @@ void vPayLoadKeyToTub(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vPLToHashBegin ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPLToHashBegin
+void vPLToHashBegin(Dynamic_T* aDynamicT) {
+
+	// marker-start
+	i8 iKeySize = 0;
+	// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vPLIntKeyToHash ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPLIntKeyToHash
 void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
+
+	i8 iMixIn;
+	i8 iKeySize;
 
 	struct __STRUCT_FROM__ {
 			union Vch_T __COLUMN_FROM__;
@@ -713,11 +727,52 @@ void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 	};
 
 	struct __STRUCT_TO__* p__STRUCT_TO__;
-	i8 iMixIn;
 
 	// marker-start
-	iMixIn = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8);
+	iMixIn = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iKeySize);
 
+	// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPLSkipKey --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPLSkipKey
+void vPLSkipKey(Dynamic_T* aDynamicT) {
+
+	struct __STRUCT_FROM__ {
+			union Vch_T __COLUMN_FROM__;
+	};
+
+	struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+	struct __STRUCT_TO__ {
+			union Vch_T __COLUMN_TO__;
+	};
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+
+	char* szSrcStz;
+
+	i8 iKeySize;
+	i8 nSrcSize;
+
+	// marker-start
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// skippink key column __COLUMN_NO__
+	szSrcStz = ((char*)(&(((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0)) + 8 + iKeySize);
+
+	if (*(i8*)szSrcStz == C_DATUM_NULL) {
+		iKeySize += 8;
+	}
+	else {
+
+#ifdef WITH_CLANG
+		nSrcSize = iExtern_StrLibWordFlipBack(szDstStz,szSrcStz);
+#endif
+
+		iKeySize += nSrcSize;
+	}
 	// marker-end
 }
 
