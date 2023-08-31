@@ -73,6 +73,8 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
   // cull @ marked where predicates
   Card_Where::vCullMarkedCmpPred(m_pCI);
 
+  m_pCI->G.pDeck->vMarksClearRecursive();
+
   m_pCI->vEndTransform();
 //vValidateBench();
 }

@@ -1079,6 +1079,25 @@ void Card::vMarksClearRecursive(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear all marks                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vMarksTestRecursive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(szMark1()->bSame(MARK_BLANK));
+  RASSERT(szMark2()->bSame(MARK_BLANK));
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vMarksTestRecursive();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,

@@ -342,6 +342,7 @@ namespace STORE
     void vMark2RecursiveIf(Stz* szMark2, Stz* szIf);
 
     void vMarksClearRecursive(void);
+    void vMarksTestRecursive(void);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,
