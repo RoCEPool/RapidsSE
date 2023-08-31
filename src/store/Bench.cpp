@@ -244,14 +244,13 @@ void Bench::vPhase(CardIter* pCI, eOH ePhase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  Board* pBoard = pCI->pBoard();
+  pCI->vSave();
 
   pCI->vBoardIteration();
   while (pCI->bEachBoard())
     pCI->pBoard()->vPhase(ePhase);
 
-  pCI->vBoard(pBoard);
-
+  pCI->vRestore();
 }
 
 /*----------------------------------------------------------------------------*/
