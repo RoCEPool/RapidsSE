@@ -12,6 +12,8 @@
 
 namespace STORE
 {
+  const i8 C_CARD_ANCESTRY = 16;
+
   class CardIter : public Object
                  , public ListExo2_t<CardIterMembers>
  {
@@ -55,6 +57,9 @@ namespace STORE
       Card_Projection * m_pProjection_running;
     } StreamOrder;
 
+    i8 m_nAncestors;
+    Card* m_apAncestry[C_CARD_ANCESTRY];
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -71,6 +76,11 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
+
+    Card* pAncestor(i8 i_Ancestor);
+    void  vAncestorPop(void);
+    void  vAncestorPush(Card* pCard);
+    i8    nAncestors(void);
 
     void vBeginEach(void);
     void vBeginEachReverse(void);

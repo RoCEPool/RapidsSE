@@ -53,6 +53,9 @@ CardIter::CardIter(Bench* pBench)
   G.pBoard    = nullptr;
   G.pDeck     = nullptr;
 
+  m_nAncestors = 0;
+  MemLib::vZero(m_apAncestry,sizeof(m_apAncestry),CN_CARDITER);
+
   vNullMembers();
   G_vClearRegisters();
 
@@ -143,6 +146,54 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 
   pParent->vAppend(pChild);
   G_vMember(eChild, pChild, __func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ancestor                                                               */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAncestor(i8 i_Ancestor)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  if (i_Ancestor < 0 || i_Ancestor > m_nAncestors)
+    return nullptr;
+
+  return m_apAncestry[i_Ancestor];
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop ancestor                                                               */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorPop(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  if (m_nAncestors <= 0)
+    return;
+
+  m_nAncestors--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push ancestor                                                              */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorPush(Card* pCard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+   RASSERT(m_nAncestors < C_CARD_ANCESTRY);
+
+  m_apAncestry[m_nAncestors++] = pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop ancestor                                                               */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::nAncestors(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_nAncestors;
 }
 
 /*----------------------------------------------------------------------------*/
