@@ -306,8 +306,8 @@ void XF::vTransform_passThru(void)
   m_pCI->vUsingBoard((i8)0);
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);
 
-  XF_Epilog_Column_hashing::vEpilog(m_pCI);
   XF_Epilog_Column_mapping::vEpilog(m_pCI);
+  XF_Epilog_Column_hashing::vEpilog(m_pCI);
 
   XF_Epilog_Dedupe_as::vXF_Dedupe_as(m_pCI);
 

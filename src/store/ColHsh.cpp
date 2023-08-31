@@ -97,8 +97,6 @@ void ColHsh::vUpdate(Card_Hashing* p_hashing)
   UNUSED(p_hashing);
 
   Card_Term* p_term = p_hashing->pSub_term();
-  if (! p_term)
-    return;
 
   Symbol* pSymbol = p_term->pSymbol();
 

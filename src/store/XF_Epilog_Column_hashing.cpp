@@ -103,6 +103,13 @@ void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
         m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"TOP"_Stz);
         m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
       }
+      else {
+        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
+        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"other"_Stz);
+        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+      }
       continue;
     }
 
