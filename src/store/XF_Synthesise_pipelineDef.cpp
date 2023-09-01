@@ -183,15 +183,15 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(Card_OP* p_OP)
     return;
 
        if (p_OP->bIsCard(CK_HAVING))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz,p_OP->szBearing());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz, p_OP->szCoord());
   else if (p_OP->bIsCard(CK_HASH))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz,p_OP->szBearing());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz, p_OP->szCoord());
   else if (p_OP->bIsCard(CK_FROM))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz,p_OP->szBearing());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz, p_OP->szCoord());
   else if (p_OP->bIsCard(CK_WHERE))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz,p_OP->szBearing());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz, p_OP->szCoord());
   else
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm(),p_OP->szBearing());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm(), p_OP->szCoord());
 
   m_pStageDef->vAppend(m_pOpDef);
 
@@ -275,9 +275,10 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(Card_OP* p_OP)
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
-    case CK_HASH: {
+    case CK_HASH:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
-    }
+      m_pOpDef->m_pColHsh = new ColHsh;
+      m_pOpDef->m_pColHsh->vUpdate(_pCard_Hash(p_OP)->pSub_hashing());
       break;
 
     case CK_HAVING:
@@ -477,7 +478,7 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(Card_OP* p_OP)
 
   i8 nUpdates = 0;
   Kid xKid(m_pCI->G.pDeck);
-  for (xKid.vChild(p_OP); xKid.bEach(); /**/) {
+  for (xKid.vResynch(p_OP); xKid.bEach(); /**/) {
     Card* p_later = xKid.pChild();
     eCK eCard_later = p_later->eCard();
 

@@ -21,8 +21,9 @@ namespace STORE
 
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
-    i8          m_i_RecursionDepth;
+    Symbol      m_xSymbol_tableSyn;
 
+    i8          m_i_RecursionDepth;
 
     struct {
       Card_OP*      m_pOP_root;
@@ -188,6 +189,7 @@ namespace STORE
     void vUsingBoard(i8 i_Board);
     void vUsingBoard(Board* pBoard);
 
+    void vValidateBench(void);
     void vValidateChildren(Card* pCard, i8 iDepth);
 
     Stz* szXdesc(void);

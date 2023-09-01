@@ -45,10 +45,12 @@ Stz* P_DisamCol     = "bDisamCol"_Stz;
 Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
 Stz* P_FixedPos     = "bFixedPos"_Stz;
+Stz* P_HashOf       = "szHashOf"_Stz;
 Stz* P_HideHeat     = "bHideHeat"_Stz;
 Stz* P_Injected     = "bInjected"_Stz;
 Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
 Stz* P_Invalid      = "bInvalid"_Stz;
+Stz* P_Itemised     = "bItemised"_Stz;
 Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 Stz* P_Key          = "bKey"_Stz;
 Stz* P_Level        = "eLevel"_Stz;
@@ -75,27 +77,20 @@ Stz* P_Unproject    = "bUnproject"_Stz;
 Stz* P_WasKeyCol    = "bWasKeyCol"_Stz;
 Stz* P_WasStmCol    = "szWasStmCol"_Stz;
 
-Stz* C_GLEAN_CUE_FROM    = "<glean_cue_from>"_Stz;
-Stz* C_OPTIMISER_TRACE = "<optimiser_trace>"_Stz;
-Stz* C_GLEAN_TRACE       = "<glean_trace>"_Stz;
-Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
-Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
-Stz* C_NA                = "n/a"_Stz;
-
 Stz* C_CARD_HISTORY = "<card_history>"_Stz;
-Stz* C_CODE_BLOCK = "<code_block>"_Stz;
-Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
-Stz* C_EP_ENABLE  = "<ep_enable>"_Stz;
-Stz* C_FILTERPRED = "<filterPred>"_Stz;
-Stz* C_JOINORDER    = "<joinOrder>"_Stz;
-Stz* C_JOINPERMUTATIONS = "<joinPermutations>"_Stz;
-Stz* C_JO_DISABLE = "<jo_disable>"_Stz;
-Stz* C_JO_PICK    = "<jo_pick>"_Stz;
-Stz* C_JOWRITE    = "<joWrite>"_Stz;
+Stz* C_CODE_BLOCK   = "<code_block>"_Stz;
+Stz* C_FILTERPRED   = "<filterPred>"_Stz;
+Stz* C_GLEAN_CUE_FROM = "<glean_cue_from>"_Stz;
+Stz* C_JOWRITE      = "<joWrite>"_Stz;
+Stz* C_JO_DISABLE   = "<jo_disable>"_Stz;
+Stz* C_JO_PICK      = "<jo_pick>"_Stz;
+Stz* C_NA                = "n/a"_Stz;
+Stz* C_NOCODESYNTHESIS = "<noCodeSynthesis>"_Stz;
+Stz* C_OPTIMISER_EP_DISABLE = "<<optimiser_ep_disable>"_Stz;
+Stz* C_OPTIMISER_TRACE = "<optimiser_trace>"_Stz;
 Stz* C_OPTIMISE_PASSTHRU = "<optimise_passThru>"_Stz;
 Stz* C_PIPELINE_DEF = "<pipeline_def>"_Stz;
-Stz* C_WEAVED     = "<weaved>"_Stz;
-Stz* C_NOCODESYNTHESIS = "<noCodeSynthesis>"_Stz;
+Stz* C_WEAVED       = "<weaved>"_Stz;
 
 d8 C_EXPANSION_COEFF = 1.60;  // crw -> row buffer
 d8 C_FILTER_COEFF    = 0.30;
@@ -129,7 +124,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   if (CK_BOUNDS == eCard)
     vDebugPoint();
 
-  MemLib::vZero(md_Bearing, sizeof(md_Bearing), CN_CARD);
+  MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
   if (CK_BOUNDS == eCard)
     vDebugPoint();
@@ -149,9 +144,9 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   vMark1(MARK_BLANK);
   vMark2(MARK_BLANK);
 
-  s32 sBearing;
-  sBearing.vSprint("((%s new %04lld))"_Stz,aCK[m_eCard],md__SeqNo);
-  StrLib::vCopy(md_Bearing, sizeof(md_Bearing), sBearing.azChar());
+  s32 sCoord;
+  sCoord.vSprint("((%s new %04lld))"_Stz, aCK[m_eCard], md__SeqNo);
+  StrLib::vCopy(md_Coord, sizeof(md_Coord), sCoord.azChar());
 //  if (11 == md__SeqNo) {
 //    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();
@@ -170,7 +165,7 @@ Card::~Card(void) noexcept(false)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sChrSeq.szStz(),md_Bearing);
+//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sChrSeq.szStz(),md_Coord);
 //
 //  if (this == pPriorCard)
 //    vDebugPoint();
@@ -355,16 +350,6 @@ bool Card::bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaF
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bearing                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szBearing(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  return (Stz*)md_Bearing;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card kind                                                              */
 /*----------------------------------------------------------------------------*/
 eCK Card::eCard(void)
@@ -439,6 +424,16 @@ void Card::vColType(Card* pCard_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get coord                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szCoord(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return (Stz*)md_Coord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
@@ -458,7 +453,7 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
   vTrace("  %p %s%s : %s%s %s {%s} %s\n"_Stz
         , this
         , Stz::szTab(iDepth)
-        , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
+        , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
         , m_xMark1.szChrSeq()
         , m_xMark2.szChrSeq()
         , *szSymbol(SF_NONE)->azChar() ? szSymbol(SF_NONE) : "??Symbol"_Stz
@@ -1078,6 +1073,25 @@ void Card::vMarksClearRecursive(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear all marks                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vMarksTestRecursive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(szMark1()->bSame(MARK_BLANK));
+  RASSERT(szMark2()->bSame(MARK_BLANK));
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vMarksTestRecursive();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
@@ -1209,7 +1223,7 @@ void Card::vRenumberRoot(i8 i_Board)
 
   m_i_Child = i_Board;
 
-  vBearing(nullptr);
+  vCoord(nullptr);
 
   i8 iSubCardNo = 0;
   while (pSubCard_I->bHasNext()) {
@@ -1221,7 +1235,7 @@ void Card::vRenumberRoot(i8 i_Board)
 
   delete pSubCard_I;
 
-  vBearing();
+  vCoord();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1234,7 +1248,7 @@ void Card::vRenumberRecursive(Card* pParent)
   RASSERT(pParent);
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
-  vBearing(pParent);
+  vCoord(pParent);
 
   i8 iSubCardNo = 0;
   while (pSubCard_I->bHasNext()) {
@@ -1246,7 +1260,7 @@ void Card::vRenumberRecursive(Card* pParent)
 
   delete pSubCard_I;
 
-  vBearing();
+  vCoord();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1573,7 +1587,7 @@ void Card::vValidationPassed(void)
 /*----------------------------------------------------------------------------*/
 /* set bearing                                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vBearing(void)
+void Card::vCoord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1588,29 +1602,29 @@ void Card::vBearing(void)
 //    sPretty.vConcat(sProperties);
 //  }
 
-  strcat(md_Bearing, " ");
-  strcat(md_Bearing, sPretty.azChar());
+  strcat(md_Coord, " ");
+  strcat(md_Coord, sPretty.azChar());
 
-  //  vTrace("%s\n"_Stz,md_Bearing);
+  //  vTrace("%s\n"_Stz,md_Coord);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set bearing                                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vBearing(Card* pParentCard)
+void Card::vCoord(Card* pParentCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pParentCard) {
-    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), nullptr,
-                    "%s.%lld"_Stz, pParentCard->md_Bearing, m_i_Child);
+    StrLib::vSprint(md_Coord, sizeof(md_Coord), nullptr,
+                    "%s.%lld"_Stz, pParentCard->md_Coord, m_i_Child);
   }
   else {
-    StrLib::vSprint(md_Bearing, sizeof(md_Bearing), nullptr,
+    StrLib::vSprint(md_Coord, sizeof(md_Coord), nullptr,
                     "%lld"_Stz, m_i_Child);
   }
 
-//  vTrace("%s\n"_Stz,md_Bearing);
+//  vTrace("%s\n"_Stz,md_Coord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2131,6 +2145,19 @@ Card_GbyAgg* Card::pSub_gbyAgg(void)
   Card_GbyAgg* p_gbyAgg =
       _pCard_GbyAgg(pFindSubCard(CK_GBYAGG));
   return p_gbyAgg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Hashing.hpp"
+Card_Hashing* Card::pSub_hashing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Hashing* p_hashing =
+      _pCard_Hashing(pFindSubCard(CK_HASHING));
+  return p_hashing;
 }
 
 /*----------------------------------------------------------------------------*/

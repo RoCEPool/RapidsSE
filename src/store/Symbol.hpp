@@ -107,6 +107,7 @@ namespace STORE
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
     bool bIs_As(void);              // AS
     bool bIs_As_Nm(void);           //
+    bool bIs_As_Nm_itm(void);       // Cn_<nm>
     bool bIs_As_Nm_syn(void);       // __COLn
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
     bool bIs_Bol_Lit(void);         // FALSE, TRUE
@@ -214,6 +215,7 @@ namespace STORE
     void vSet_Agg_Fn(Stz* szAggFn);
     void vSet_As(Stz* szAs);
     void vSet_As_Nm(Stz* szAsNm);
+    void vSet_As_Nm_itm(i8 iAsNo);
     void vSet_As_Nm_syn(i8 iAsNo);
     void vSet_Bol_Fn(Stz* szBolFn);
     void vSet_Bol_Lit(Stz* szBolLit);

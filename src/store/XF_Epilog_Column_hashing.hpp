@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Dedupe_as.hpp -- De-Duplicate As (column name)                          */
+/* XF_Epilog_Column_hashing.hpp -- Column Mapping                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_Dedupe_as : public XF_EPILOG
+  class XF_Epilog_Column_hashing : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_Dedupe_as(CardIter* pCI);
-   ~XF_Epilog_Dedupe_as(void) noexcept(false);
+    XF_Epilog_Column_hashing(CardIter* pCI);
+   ~XF_Epilog_Column_hashing(void) noexcept(false);
 
-    static void vXF_Dedupe_as(CardIter* pCI);
+    static void vEpilog(CardIter* pCI);
 
-    void vXF_Dedupe_as(void);
+    void vXF_Column_Hashing(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Epilog_Dedupe_as* _pXF_Epilog_Dedupe_as(void* aAddr);
+  XF_Epilog_Column_hashing* _pXF_Epilog_Column_hashing(void* aAddr);
 }
 
 /*============================================================================*/

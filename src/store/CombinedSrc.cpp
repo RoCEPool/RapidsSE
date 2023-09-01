@@ -247,9 +247,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
-        // stencil to
-        vAppendStencilTo(pOpSketch);
-
         // create indexDef and indexTree
         vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz, pOperatorFile);
         vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
@@ -646,6 +643,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         vAppendCodePixCols(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
 
+
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
@@ -656,6 +655,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
             else
               vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
 
+						// generate code for the hash value
+						if (pOpSketch->eSketchKind() == SK_POT)
+							vAppendCodePLToHashCols(pOpSketch);
+
             if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
               vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
             }
@@ -665,6 +668,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
+						// generate code for the hash value
+						if (pOpSketch->eSketchKind() == SK_POT)
+							vAppendCodeHashCols(pOpSketch);
+
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
@@ -678,7 +685,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
           // generate code for the hash value
           if (pOpSketch->eSketchKind() == SK_POT)
-            vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+						vAppendCodeHashCols(pOpSketch);
+
+          //vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
 
           vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
@@ -935,11 +944,11 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
   i8 iPayLoad = 0;
 
   i8 nColumns = pOpSketch->m_pStreamDefLft->nColumns();
-  RASSERT(nColumns == pOpSketch->m_pColsMap->m_nCols);
+  RASSERT(nColumns == pOpSketch->m_pColMap->m_nCols);
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
-    i8 i_EmittedCol = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_EmittedCol;
+    i8 i_EmittedCol = pOpSketch->m_pColMap->m_axCols[i_Col].m_i_EmittedCol;
     Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_EmittedCol-1);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1214,6 +1223,129 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append code fragment for hash columns                                      */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+	s16KB sCode;
+
+	vAppendCodeFragment(pOpSketch, "vPLToHashBegin"_Stz);
+
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColHsh->m_nCols; i_Col++) {
+
+		m_pCommonCode->vSeekStart();
+
+		i8 i_StreamCol = pOpSketch->m_pColHsh->m_axCols[i_Col].m_i_Col;
+
+		Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_StreamCol);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// is column in the payload ?
+		bool bIsPayload = pOpSketch->bIsPayload(i_StreamCol+1);
+
+		if (bIsPayload) {
+
+			switch (pColumn->eColumnType()) {
+
+				case CT_VARCHAR:
+				case CT_CHAR:
+					RASSERT(0);
+					break;
+
+				default:
+					vAppendCodeFragmentPL(pOpSketch, "vPayLoadToHash"_Stz, pColumn,
+																pOpSketch->m_pColMap->m_axCols[i_Col].m_i_Cell-1);
+					break;
+			}
+		}
+
+		else {
+			sCode = ""_Stz;
+			m_pCommonCode->vSeekStart();
+
+			if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+				switch (pColumn->eColumnType()) {
+
+					case CT_VARCHAR:
+					case CT_CHAR:
+						RASSERT(0);
+						break;
+
+					default:
+						vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
+						break;
+				}
+			}
+			else {
+				RASSERT(pOpSketch->m_pIndexDef->eKeyKind() == KE_GENERAL);
+
+				i8 nColumns = pOpSketch->m_pColMap->m_nCols;
+
+				for (i8 i_ColMap = 0; i_ColMap < nColumns; i_ColMap++) {
+
+					// skip payloads
+					if ( pOpSketch->m_pColMap->m_axCols[i_ColMap].m_bPayload )
+						continue;
+
+					if (pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1 == i_StreamCol) {
+						switch (pColumn->eColumnType()) {
+
+							case CT_VARCHAR:
+							case CT_CHAR:
+								RASSERT(0);
+								break;
+
+							default:
+								vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
+								break;
+						}
+						break;
+					}
+					else {
+						// skip the key column
+						vAppendCodeFragment(pOpSketch, "vPLSkipKey"_Stz, pColumn);
+					}
+				}
+			}
+
+		}
+
+	}
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment for hash columns                                      */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeHashCols(OpSketch* pOpSketch)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColHsh->m_nCols; i_Col++) {
+
+		m_pCommonCode->vSeekStart();
+
+		i8 i_StreamCol = pOpSketch->m_pColHsh->m_axCols[i_Col].m_i_Col;
+
+		Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_StreamCol);
+
+		switch (pColumn->eColumnType()) {
+
+			case CT_VARCHAR:
+				RASSERT(0);
+				break;
+
+			default:
+				vAppendCodeFragment(pOpSketch, "vAssignHash"_Stz, pColumn);
+				break;
+		}
+	}
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* append code fragment for copying columns                                   */
 /*----------------------------------------------------------------------------*/
 void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage)
@@ -1329,12 +1461,12 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
   s256 sColNm;
   i8 nColumns = pStreamDefOut->nColumns();
 
-  RASSERT(nColumns == pOpSketch->m_pColsMap->m_nCols);
+  RASSERT(nColumns == pOpSketch->m_pColMap->m_nCols);
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
-    i8 i_Cell = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Cell;
-    i8 i_EmittedCol = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_EmittedCol;
+    i8 i_Cell = pOpSketch->m_pColMap->m_axCols[i_Col].m_i_Cell;
+    i8 i_EmittedCol = pOpSketch->m_pColMap->m_axCols[i_Col].m_i_EmittedCol;
     Column *pColumn = pStreamDefOut->pGetColumn(i_EmittedCol-1);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1346,18 +1478,18 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
       // make the column name
       //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_Cell);
 
-    switch (pColumn->eColumnType()) {
+			switch (pColumn->eColumnType()) {
 
-      case CT_VARCHAR:
-      case CT_CHAR:
-        vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubVchCol"_Stz, pColumn, i_Cell-1);
-        break;
+				case CT_VARCHAR:
+				case CT_CHAR:
+					vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubVchCol"_Stz, pColumn, i_Cell-1);
+					break;
 
-      default:
-        vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubCol"_Stz, pColumn, i_Cell-1);
-        break;
-    }
-  }
+				default:
+					vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubCol"_Stz, pColumn, i_Cell-1);
+					break;
+			}
+		}
 
     else {
       sCode = ""_Stz;

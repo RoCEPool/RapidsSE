@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+
+//#define Z_ITEMISED_NAMES
+
 #include "BASE.h"
 
 #include "eAL.h"
@@ -63,6 +66,7 @@ namespace STORE
   class Card_GbyAgg;
 
   class Card_Hash;
+  class Card_Hashing;
   class Card_Having;
   class Card_HshCol;
 
@@ -163,10 +167,12 @@ extern Stz* P_DisamCol;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedPos;
+extern Stz* P_HashOf;
 extern Stz* P_HideHeat;
 extern Stz* P_Injected;
 extern Stz* P_InjCrlKey;
 extern Stz* P_Invalid;
+extern Stz* P_Itemised;
 extern Stz* P_JoinedBuff;
 extern Stz* P_Key;
 extern Stz* P_Level;
@@ -193,27 +199,20 @@ extern Stz* P_Unproject;
 extern Stz* P_WasKeyCol;
 extern Stz* P_WasStmCol;
 
-extern Stz* C_GLEAN_CUE_FROM;
-extern Stz* C_OPTIMISER_TRACE;
-extern Stz* C_GLEAN_TRACE;
-extern Stz* C_GLEAN_XFORM;
-extern Stz* C_GLEAN_XHAND;
-extern Stz* C_NA;
-
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;
-extern Stz* C_EP_DISABLE;
-extern Stz* C_EP_ENABLE;
 extern Stz* C_FILTERPRED;
-extern Stz* C_JOINORDER;
-extern Stz* C_JOINPERMUTATIONS;
+extern Stz* C_GLEAN_CUE_FROM;
+extern Stz* C_JOWRITE;
 extern Stz* C_JO_DISABLE;
 extern Stz* C_JO_PICK;
-extern Stz* C_JOWRITE;
+extern Stz* C_NA;
+extern Stz* C_NOCODESYNTHESIS;
+extern Stz* C_OPTIMISER_EP_DISABLE;
+extern Stz* C_OPTIMISER_TRACE;
 extern Stz* C_OPTIMISE_PASSTHRU;
 extern Stz* C_PIPELINE_DEF;
 extern Stz* C_WEAVED;
-extern Stz* C_NOCODESYNTHESIS;
 
 extern d8 C_EXPANSION_COEFF;  // crw -> row buffer
 extern d8 C_FILTER_COEFF;
@@ -244,7 +243,7 @@ namespace STORE
   protected:
     static i8 m__iSeqGen;
 
-    char    md_Bearing[256];
+    char    md_Coord[256];
 
     eCK     m_eCard;
     i8      m_i_Child;
@@ -288,16 +287,14 @@ namespace STORE
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
-    Stz* szBearing(void);
-
     eCK  eCard(void);
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
-
     void vColType(Card* pCard_arg);
+    Stz* szCoord(void);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCard(void);
@@ -342,6 +339,7 @@ namespace STORE
     void vMark2RecursiveIf(Stz* szMark2, Stz* szIf);
 
     void vMarksClearRecursive(void);
+    void vMarksTestRecursive(void);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,
@@ -373,8 +371,8 @@ namespace STORE
 
   private:
   private:
-    void vBearing(void);
-    void vBearing(Card* pParentCard);
+    void vCoord(void);
+    void vCoord(Card* pParentCard);
 
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
@@ -409,6 +407,7 @@ namespace STORE
     Card_FoldElist*     pSub_foldElist(void);
     Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
+    Card_Hashing*       pSub_hashing(void);
     Card_HshCol*        pSub_hshCol(void);
     Card_IdxColList*    pSub_idxColList(void);
     Card_Index*         pSub_index(void);

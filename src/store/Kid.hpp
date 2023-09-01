@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Kid.hpp --                                                                 */
+/* Kid.hpp -- kid iterator                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -15,17 +15,14 @@ namespace STORE
 
     i8   m_i_Child;
     Card *m_pChild;
-    i8   m_nVisited;
 
     Card *m_pSub1;
     Card *m_pSub2;
     Card *m_pSub3;
 
     bool  m_bBegun;
-    bool  m_bForward;
+    bool  m_bForwards;
     bool  m_bEnded;
-
-    bool  m_bExhausted;
 
 
   public:
@@ -35,15 +32,11 @@ namespace STORE
 
     void vBeginEach_forward(void);
     void vBeginEach_reverse(void);
-    void vBeginForward(void);
-    void vBeginReverse(void);
     bool bBegun(void);
 
     eCK  eChild(void);
     i8   i_Child(void);
     Card *pChild(void);
-    void vChild(i8 i_Child);
-    void vChild(Card *pChild);
 
     bool bEach(void);
     bool bEach(eCK eCard);
@@ -52,17 +45,13 @@ namespace STORE
     bool bEach(eCK eCard, eCK eSub1, eCK eSub2, eCK eSub3);
     bool bEach_reverse(void);
     bool bEach_reverse(eCK eCard);
-    void vEnd(void);
     bool bEnded(void);
-    bool bExhausted(void);
-    void vExhausted(bool bExhausted);
+    void vEnded(void);
 
-    bool bForward(void);
-    void vForward(bool bForward);
+    bool bForwards(void);
+    void vForwards(bool bForwards);
 
-    i8 iGetOdn(void);
-
-    bool bInRange(void);
+    i8   iGetOdn(void);
 
     bool bLess(void);
 
@@ -76,12 +65,15 @@ namespace STORE
 
     void vRemove(void);
     void vRemove(Card *pChild);
+    void vResynch(i8 i_Child);
     void vResynch(Card* pCard);
     void vRewind(void);
 
     Card *pSub1(void);
     Card *pSub2(void);
     Card *pSub3(void);
+
+    bool bWithinRange(void);
 
     Card_Bound*       p_bound(void);
     Card_CmpPred*     p_cmpPred(void);
@@ -103,12 +95,7 @@ namespace STORE
     Card_Term*        p_term(void);
 
     private:
-    void vChildBackward(void);
-    void vChildForward(void);
-
-    void vChildDec(void);
-    void vChildInc(void);
-    void vChildReset(bool bResetVisited=true);
+    void vChildReset(void);
     void vChildUpdate(void);
   };
 }

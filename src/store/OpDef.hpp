@@ -5,6 +5,7 @@
 
 #include "ArgDef.hpp"
 #include "IndexDef.hpp"
+#include "ColHsh.hpp"
 #include "ColMap.hpp"
 #include "ColsReq.hpp"
 #include "StreamDef.hpp"
@@ -42,6 +43,8 @@ namespace STORE
 
     ColsReq*   m_pColsReq;
 
+    ColHsh*    m_pColHsh;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -50,8 +53,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    //OpDef(void);
-    OpDef(i8 i_Op, Stz* szOpNm, Stz* zzBearing=nullptr);
+     OpDef(i8 i_Op, Stz* szOpNm, Stz* zzBearing=nullptr);
     ~OpDef(void) noexcept(false);
 
     i8      nArgs(void);

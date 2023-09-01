@@ -1012,7 +1012,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
     vStageNext(p_stage);
 
-    xCI.vChild(p_stage);
+    xCI.vResynch(p_stage);
     while (xCI.bEach()) {
 
       if (CK_STAGE == xCI.eChild())

@@ -20,6 +20,9 @@ namespace STORE
     Card_Term(void);
    ~Card_Term(void) noexcept(false);
 
+    static void vItemise_colNm(CardIter* pCI);
+    static void vItemStrip_colNm(CardIter* pCI);
+
     void vBumpKeyOdn(i8 nBy=1);
     void vBump_stmOdn(i8 nBy= 1);
     Card_Term* pClone(void);

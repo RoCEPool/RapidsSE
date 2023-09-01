@@ -7,8 +7,10 @@ enum eXF // transform
 {
   /* */ XF_NONE = 0,   // none
 
+  /* */ XF_EPILOG_COLUMN_HASHING,
   /* */ XF_EPILOG_COLUMN_MAPPING,
-  /* */ XF_EPILOG_DEDUPE_AS,
+  /* */ XF_EPILOG_ITEMISE_COLNM,
+  /* */ XF_EPILOG_ITEMSTRIP_COLNM,
   /* */ XF_EPILOG_PROMOTE_FILTER,
   /* */ XF_EPILOG_REINSTATE_STAGE,
   /* */ XF_EPILOG_STAGE_CAST,

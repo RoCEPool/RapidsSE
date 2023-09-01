@@ -77,6 +77,7 @@ namespace STORE
     Card_GbyAgg *        p_gbyAgg;
 
     Card_Hash *          p_hash;
+    Card_Hashing *       p_hashing;
     Card_Having *        p_having;
     Card_HshCol *        p_hshCol;
 

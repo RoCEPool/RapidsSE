@@ -210,55 +210,6 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
  // pCI->vPrintBoard(__LINE__);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vValidate(CardIter* pCI)
-{
-  _static_
-
-  //pCI->vUsingBoard((i8)0);
-
-  RASSERT(pCI->G.pBoard);
-
-  if (pCI->G.pBoard->eBoard() == BK_SUBQUERY)
-    vValidate_SubQuery(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vValidate_SubQuery(CardIter *pCI)
-{
-  _static_
-
-  RASSERT(pCI->G.pBoard);
-
-  if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
-    return;
-  RASSERT(pCI->G.pBoard);
-
-  pCI->vSave();
-  RASSERT(pCI->G.pBoard);
-  pCI->vNullMembers();
-
-  RASSERT(pCI->G.pBoard);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // main cards
-
-  RASSERT(pCI->m_pBench);
-
-  Card_Deck* pDeck = pCI->G.pDeck;
-
-  RASSERT(pCI->G.pBoard);
-
-  pDeck->vValidate(pCI);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->vRestore();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -468,6 +419,43 @@ SubQuery* Board::pSubQuery(void)
 
   return m_pSubQuery;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vValidate(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  RASSERT(pCI->G.pBoard);
+
+  if (pCI->G.pBoard->eBoard() == BK_SUBQUERY) {
+    vValidate_SubQuery(pCI);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vValidate_SubQuery(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  RASSERT(pCI->G.pBoard);
+  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
+
+  if (! pCI->m_pBench->bPastPhase(pCI, OH_PROLOG))
+    return;
+
+  pCI->vSave();
+  pCI->vNullMembers();
+  pCI->G.pDeck->vValidate(pCI);
+  pCI->vRestore();
+
+  RASSERT(pCI->G.pBoard);
+  RASSERT(pCI->G.pBoard->pDeck() == pCI->G.pDeck);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

@@ -138,7 +138,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   s256 sLimitExpr = ""_Stz;
 
   OpSketch *pOpSketch = nullptr;
-//  OpDef* pOpDefScan = nullptr;
+  OpDef* pHashOpDef = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the stage name of stage being synthesised
@@ -156,8 +156,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // generate pot
       bGeneratePot = true;
 
-      // get hash expr from OpDef
-      sHashExpr = pOpDef->pArgDef_expr()->szArgVal();
+      // get hash opDef
+      pHashOpDef = pOpDef;
     }
 
     if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
@@ -238,7 +238,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pAggOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -272,7 +272,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pGbyAggOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pGbyAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -334,7 +334,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pOrdAggOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pOrdAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -393,7 +393,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -418,7 +418,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -436,7 +436,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sketch pot/tub
-    pOpSketch = pSketchPotTub(pLastOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
+    pOpSketch = pSketchPotTub(pLastOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
     vAppend(pOpSketch);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -896,7 +896,7 @@ OpSketch* Stencil_v2::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch ordered aggregate                                                   */
+/* sketch ordered aggregatewith group by                                      */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 
@@ -1095,7 +1095,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_AT, II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_NONE, II_PL);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1114,7 +1114,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the colsMap (payload information)
-  pOpSketch->vCopyColsMap(pColsMap);
+  pOpSketch->vCopyColMap(pColsMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sGbyAggExpr);
@@ -1146,7 +1146,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, m_ePreviousStencil,  II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, SR_NONE,  II_PL);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1165,7 +1165,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the colsMap (payload information)
-  pOpSketch->vCopyColsMap(pColsMap);
+  pOpSketch->vCopyColMap(pColsMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sSortExpr);
@@ -1222,7 +1222,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
   ColMap* pColsMap = pOpDef->m_pColMap_top;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, m_ePreviousStencil,  II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, SR_NONE,  II_PL);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -1241,7 +1241,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the colsMap (payload information)
-  pOpSketch->vCopyColsMap(pColsMap);
+  pOpSketch->vCopyColMap(pColsMap);
 
   // set the top count
   pOpSketch->vLimitExpr(szTopCount);
@@ -1255,7 +1255,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr) {
+OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1269,7 +1269,7 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* s
 
   // create a new opSketch
   if (bGeneratePot) {
-    pOpSketch = new OpSketch(nullptr, C_UNKNOWN, sHashExpr, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
+    pOpSketch = new OpSketch(nullptr, C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
   }
   else {
@@ -1282,7 +1282,11 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* s
 
   if (bGeneratePot) {
     // generate the expression stack
-    pOpSketch->vGenerateExprStacks(sHashExpr);
+    //pOpSketch->vGenerateExprStacks("type INTEGER $2"_Stz);
+
+		// copy the colHsh
+		RASSERT(pHashOpDef);
+		pOpSketch->vCopyColHsh(pHashOpDef->m_pColHsh);
   }
 
   if (pLastOp->eSketchKind() == SK_GBYAGG ||
@@ -1292,8 +1296,8 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* s
     // set the indexDef
     pOpSketch->vIndexDef(pLastOp->m_pIndexDef);
 
-    // copy the colsMap
-    pOpSketch->vCopyColsMap(pLastOp->m_pColsMap);
+    // copy the colMap
+    pOpSketch->vCopyColMap(pLastOp->m_pColMap);
   }
 
   // set the labels in the opSketch

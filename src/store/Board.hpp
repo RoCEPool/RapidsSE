@@ -55,6 +55,7 @@
 #include "Card_GbyAgg.hpp"
 
 #include "Card_Hash.hpp"
+#include "Card_Hashing.hpp"
 #include "Card_Having.hpp"
 #include "Card_HshCol.hpp"
 
@@ -185,8 +186,6 @@ namespace STORE
 
     static void vMorphAll_table_To_EEop(CardIter* pCI);
 
-    static void vValidate(CardIter* pCI);
-    static void vValidate_SubQuery(CardIter* pCI);
 
     Bench* pBench(void);
     i8   i_Board(void);
@@ -215,6 +214,9 @@ namespace STORE
 
     TagSet* pState(void);
     SubQuery* pSubQuery(void);
+
+    void vValidate(CardIter* pCI);
+    void vValidate_SubQuery(CardIter* pCI);
 
   private:
     void vPinMargin(Ribbon* pRibbon);

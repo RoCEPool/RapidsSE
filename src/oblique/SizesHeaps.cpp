@@ -261,7 +261,7 @@
 #include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
-#include "XF_Epilog_Dedupe_as.hpp"
+#include "XF_Epilog_Itemise_colNm.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Flatten_Delete_flat.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
@@ -302,6 +302,8 @@
 #include "XF_Optimise_Early_filter.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Duplicate_filter.hpp"
+#include "XF_Epilog_Column_hashing.hpp"
+#include "XF_Epilog_ItemStrip_colNm.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -320,6 +322,7 @@
 #include "CardImage.hpp"
 #include "CardHistory.hpp"
 #include "SketchTkn.hpp"
+#include "ColHsh.hpp"
 
 
 #include "graph/PlanConstants.hpp"
@@ -393,6 +396,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,FILL },
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
+  { CN_COLHSH,                   sizeof(ColHsh),             HT_T_MEDIUM  , FILL },
   { CN_COLMAP,                   sizeof(ColMap),             HT_T_MEDIUM  , FILL },
   { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
@@ -770,32 +774,34 @@ SizeHeap gxaSizeHeap[]
   {CN_VERTEX,                   sizeof(Vertex),             HT_T_SMALL   , FILL },
   {CN_VERTEXSPEC,               sizeof(VertexSpec),         HT_T_TINY    , FILL },
 
-  {CN__W__,                     'W' - ('A' - 1),                            HT_INVALID   , FILL },
-  {CN_WAKEUP,                   sizeof(Wakeup),                             HT_INVALID   , FILL },
-  {CN_WEAVER,                   sizeof(Weaver),                             HT_T_LARGE   , FILL },
-  {CN_WILDERNESS,               sizeof(Wilderness),                         HT_INVALID   , FILL },
-  {CN_WORD,                     sizeof(Word),                               HT_T_TINY    , FILL },
-  {CN_WSPCONVERGENT_t,          0,                                           HT_INVALID   , FILL },
+  {CN__W__,                     'W' - ('A' - 1),                       HT_INVALID   , FILL },
+  {CN_WAKEUP,                   sizeof(Wakeup),                        HT_INVALID   , FILL },
+  {CN_WEAVER,                   sizeof(Weaver),                        HT_T_LARGE   , FILL },
+  {CN_WILDERNESS,               sizeof(Wilderness),                    HT_INVALID   , FILL },
+  {CN_WORD,                     sizeof(Word),                          HT_T_TINY    , FILL },
+  {CN_WSPCONVERGENT_t,          0,                                     HT_INVALID   , FILL },
 
-  {CN__X__,                    'X' - ('A' - 1),                              HT_INVALID   , FILL },
-  {CN_XC,                            sizeof(XC),                            HT_T_TINY    , FILL },
-  {CN_XF,                            sizeof(XF),                            HT_T_TINY    , FILL },
-  {CN_XF_ADD_LEVEL,                  sizeof(XF_Prolog_Add_level),           HT_T_TINY    , FILL },
-  {CN_XF_AS_REVIEW,                  sizeof(XF_Prolog_as_Review),           HT_T_TINY    , FILL },
-  {CN_XF_COLNM_TO_STMCOL,            sizeof(XF_Prolog_colNm_To_stmCol),     HT_T_TINY    , FILL },
-  {CN_XF_COLUMN_MAPPING,             sizeof(XF_Epilog_Column_mapping),      HT_T_TINY    , FILL },
-  {CN_XF_CULL_NONUSED_BOUND,         sizeof(XF_Optimise_Cull_bound),        HT_T_TINY    , FILL },
-  {CN_XF_DEDUPE_AS,                  sizeof(XF_Epilog_Dedupe_as),           HT_T_TINY    , FILL },
-  {CN_XF_DELETE_EMPTY_WHERE,         sizeof(XF_Flatten_Delete_Empty_where), HT_T_TINY    , FILL },
-  {CN_XF_DELETE_FLAT,                sizeof(XF_Flatten_Delete_flat),        HT_T_TINY    , FILL },
-  {CN_XF_ERASE_CONSTRUCTION,         sizeof(XF_Prolog_Erase_construction),  HT_T_TINY    , FILL },
-  {CN_XF_DERIVE_BOUNDS,              sizeof(XF_Flatten_Derive_bounds),      HT_T_TINY    , FILL },
-  {CN_XF_DERIVE_STREAM_KEY,          sizeof(XF_Optimise_Derive_streamKey),  HT_T_TINY    , FILL },
-  {CN_XF_FIX_TABLE_POS,              sizeof(XF_Flatten_Fix_table_Pos),      HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN,                    sizeof(XF_Flatten),                    HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_10_F,               sizeof(XF_Flatten_10_F),               HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_24_W_A_C_RO,        sizeof(XF_Flatten_24_W_A_C_ro),        HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_32_W_A_NC_I,        sizeof(XF_Flatten_32_W_A_NC_I),        HT_T_TINY    , FILL },
+  {CN__X__,                    'X' - ('A' - 1),                        HT_INVALID   , FILL },
+  {CN_XC,                       sizeof(XC),                            HT_T_TINY    , FILL },
+  {CN_XF,                       sizeof(XF),                            HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_ITEMISE_COLNM,  sizeof(XF_Epilog_Itemise_colNm),       HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_ITEMSTRIP_COLNM,sizeof(XF_Epilog_ItemStrip_colNm),     HT_T_TINY    , FILL },
+  {CN_XF_ADD_LEVEL,             sizeof(XF_Prolog_Add_level),           HT_T_TINY    , FILL },
+  {CN_XF_AS_REVIEW,             sizeof(XF_Prolog_as_Review),           HT_T_TINY    , FILL },
+  {CN_XF_COLNM_TO_STMCOL,       sizeof(XF_Prolog_colNm_To_stmCol),     HT_T_TINY    , FILL },
+  {CN_XF_COLUMN_HASHING,        sizeof(XF_Epilog_Column_hashing),      HT_T_TINY    , FILL },
+  {CN_XF_COLUMN_MAPPING,        sizeof(XF_Epilog_Column_mapping),      HT_T_TINY    , FILL },
+  {CN_XF_CULL_NONUSED_BOUND,    sizeof(XF_Optimise_Cull_bound),        HT_T_TINY    , FILL },
+  {CN_XF_DELETE_EMPTY_WHERE,    sizeof(XF_Flatten_Delete_Empty_where), HT_T_TINY    , FILL },
+  {CN_XF_DELETE_FLAT,           sizeof(XF_Flatten_Delete_flat),        HT_T_TINY    , FILL },
+  {CN_XF_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),  HT_T_TINY    , FILL },
+  {CN_XF_DERIVE_BOUNDS,         sizeof(XF_Flatten_Derive_bounds),      HT_T_TINY    , FILL },
+  {CN_XF_DERIVE_STREAM_KEY,    sizeof(XF_Optimise_Derive_streamKey),  HT_T_TINY    , FILL },
+  {CN_XF_FIX_TABLE_POS,        sizeof(XF_Flatten_Fix_table_Pos),      HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN,              sizeof(XF_Flatten),                    HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_10_F,         sizeof(XF_Flatten_10_F),               HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_24_W_A_C_RO,  sizeof(XF_Flatten_24_W_A_C_ro),        HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_32_W_A_NC_I,  sizeof(XF_Flatten_32_W_A_NC_I),        HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_34_W_A_NC_RO,       sizeof(XF_Flatten_34_W_A_NC_ro),       HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_40_W_L_C_E,         sizeof(XF_Flatten_40_W_L_C_E),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, sizeof(XF_Flatten_52_W_L_NC_I_exists), HT_T_TINY    , FILL },

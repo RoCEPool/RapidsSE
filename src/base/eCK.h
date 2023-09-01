@@ -46,6 +46,7 @@ enum eCK : i8 // card kind
   /* */ CK_GBYAGG,
 
   /* */ CK_HASH,
+  /* */ CK_HASHING,
   /* */ CK_HAVING,
   /* */ CK_HSHCOL,
 

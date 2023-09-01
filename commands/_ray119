@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _ray119                                                                    */
+/*============================================================================*/
+
+// NOTE: HASHCAST with project
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/optimiser_trace
+/weaved
+/pipeline_def
+/optimise_passthru
+pipeline Query119
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan Orders
+    | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | hash expr type INTEGER O_ORDERKEY
+    | combined 0
+    | next hashcast
+
+  stage S08 on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

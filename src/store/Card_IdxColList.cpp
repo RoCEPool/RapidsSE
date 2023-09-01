@@ -77,8 +77,8 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
     Stz* szColNm = xCI.p_idxCol()->szSymbol(SF_NONE);
 
     Kid xCI_p(p_projection);
-    xCI_p.vEnd();
-    xCI_p.vBeginReverse();
+    xCI_p.vEnded();
+    xCI_p.vBeginEach_reverse();
     while (xCI_p.bEach_reverse(CK_EXPR)) {
       if (xCI_p.p_expr()->pSub_as()->pSymbol()->bSame(szColNm)) {
         Stz* szPrjCol = xCI_p.p_expr()->pGetTerm(0)->szSymbol(SF_NONE);

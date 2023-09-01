@@ -41,6 +41,51 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vItemise_colNm(CardIter* pCI)
+{
+  _static_
+
+  auto bfItemise_colNm = [pCI](Card_Term* p_term)
+  {
+    UNUSED(pCI);
+
+    if (! p_term->pSymbol()->bIs_Col_Nm())
+      return C_CONTINUE_RECURSION;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.pDeck->bApplyRecursive_term(bfItemise_colNm);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vItemStrip_colNm(CardIter* pCI)
+{
+  _static_
+
+  auto bfItemStrip_colNm = [pCI](Card_Term* p_term)
+  {
+    UNUSED(pCI);
+
+    if (! p_term->pSymbol()->bIs_Col_Nm())
+      return C_CONTINUE_RECURSION;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.pDeck->bApplyRecursive_term(bfItemStrip_colNm);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -394,8 +439,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_PROJECTION_ANALYSIS]) ||
-      pCI->G.pBoard->pState()->bHasName(aXF[XF_FLATTEN_UPDATE_PROJECTION])) {
+  if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
     if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {
@@ -404,12 +448,24 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
       }
     }
   }
+  else
+  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_PROJECTION_ANALYSIS]) ) {
+    if ( m_xSymbol.bIs_Col_Tc()) {
+      if (! m_xSymbol.Y_bHas(P_Type)) {
+        if (! pCI->G.p_call) {
+          vValidationFailed("Type Missing : %p"_Stz,this);
+        }
+      }
+    }
+  }
+
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TBLCOL_TO_STMCOL])) {
-    if (m_xSymbol.bIs_Col_Tc()) {
+    if (m_xSymbol.bIs_Col_Tc() ) {
       vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_TBLCOL_TO_STMCOL], this);
     }
   }
+
   vValidationPassed();
 }
 
