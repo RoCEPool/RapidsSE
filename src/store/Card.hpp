@@ -257,6 +257,8 @@ namespace STORE
 
     i8      m_iFixedDepth;
 
+    i8      m_iItemise;
+
     i8 md__SeqNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
@@ -317,6 +319,9 @@ namespace STORE
 
     bool bIsCard(eCK eCard);
     bool bIsOne(i8 /*eCK*/ iCard, ...);
+
+    i8   iItemise(void);
+    void vItemise(i8 iItemise);
 
     bool bMark1(Stz* szArg);
     char cMark1(void);

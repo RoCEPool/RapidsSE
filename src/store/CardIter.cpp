@@ -81,6 +81,35 @@ CardIter::~CardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* visit all sub-cards of given eToSubs and apply lambda function             */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bApplyRecursive(Card* pCard, eCK eToSubs,
+                               std::function<bool(Card* pCard)> bfLambdaFn)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (CK_NONE == eToSubs || eToSubs == pCard->eCard()) {
+    bool bContinue = bfLambdaFn(pCard);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
+  }
+
+  vAncestorPush(pCard);
+  Kid xKid(pCard);
+  while (xKid.bEach()) {
+    xKid.pChild()->vItemise(xKid.i_Child());
+    bool bContinue = bApplyRecursive(xKid.pChild(),eToSubs, bfLambdaFn);
+    if (! bContinue) {
+      vAncestorPop();
+      return C_TERMINATE_RECURSION;
+    }
+  }
+
+  vAncestorPop();
+  return C_CONTINUE_RECURSION;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vAppendChild(eCK eParent, eCK eChild)
@@ -159,6 +188,35 @@ Card* CardIter::pAncestor(i8 i_Ancestor)
     return nullptr;
 
   return m_apAncestry[i_Ancestor];
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump ancestry                                                             */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorDump(Card* pCard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vTrace("^^ Ancestor Dump\n"_Stz);
+
+  for (i8 i_Ancestor = 0; i_Ancestor < m_nAncestors; i_Ancestor++) {
+    Card* pCard_ancestor = m_apAncestry[i_Ancestor];
+    vTrace("  [%lld] %p %s /%lld\n"_Stz,
+           i_Ancestor,
+           pCard_ancestor,
+           aCK[pCard_ancestor->eCard()],
+           pCard->iItemise());
+  }
+
+  vTrace("$$ Ancestor Dump"_Stz);
+  if (pCard)
+    vTrace(" %p %s /%lld\n"_Stz,
+           pCard,
+           aCK[pCard->eCard()],
+           pCard->iItemise());
+  else
+    vTrace("\n"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/

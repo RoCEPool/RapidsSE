@@ -71,6 +71,8 @@ namespace STORE
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
+    bool bApplyRecursive(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
+
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild);
@@ -78,6 +80,7 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
 
     Card* pAncestor(i8 i_Ancestor);
+    void  vAncestorDump(Card* pCard = nullptr);
     void  vAncestorPop(void);
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);

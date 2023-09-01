@@ -48,11 +48,16 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 {
   _static_
 
-  auto bfItemise_colNm = [pCI](Card_Term* p_term)
+  auto bfItemise_colNm = [pCI](Card* pCard)
   {
     UNUSED(pCI);
 
-    if (! p_term->pSymbol()->bIs_Col_Nm())
+    if (! pCard->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    pCI->vAncestorDump(pCard);
+
+    if (! pCard->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;
 
     return C_CONTINUE_RECURSION;
@@ -60,7 +65,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.pDeck->bApplyRecursive_term(bfItemise_colNm);
+  pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
 
 }
 
@@ -71,11 +76,16 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 {
   _static_
 
-  auto bfItemStrip_colNm = [pCI](Card_Term* p_term)
+  auto bfItemStrip_colNm = [pCI](Card* pCard)
   {
     UNUSED(pCI);
 
-    if (! p_term->pSymbol()->bIs_Col_Nm())
+    if (! pCard->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    pCI->vAncestorDump(pCard);
+
+    if (! pCard->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;
 
     return C_CONTINUE_RECURSION;
@@ -83,7 +93,7 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.pDeck->bApplyRecursive_term(bfItemStrip_colNm);
+  pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemStrip_colNm);
 }
 
 

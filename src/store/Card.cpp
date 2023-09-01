@@ -141,6 +141,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_iFixedDepth = iFixedDepth;
 
+  m_iItemise = C_UNKNOWN;
+
   vMark1(MARK_BLANK);
   vMark2(MARK_BLANK);
 
@@ -801,6 +803,26 @@ bool Card::bIsOne(i8 /*eCK*/ iCard, ...)
   va_end(xArgs);
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get itemise                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Card::iItemise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_iItemise;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set itemise                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vItemise(i8 iItemise)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_iItemise = iItemise;
 }
 
 /*----------------------------------------------------------------------------*/
