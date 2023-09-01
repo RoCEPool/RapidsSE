@@ -57,6 +57,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoIT.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoIT.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoIT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoIT.m_iCell[0];
   m_xDynamicT.m_xRowInfoIT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
@@ -71,6 +72,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoIJ.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoIJ.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoIJ.m_iCell[0];
   m_xDynamicT.m_xRowInfoIJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
@@ -85,6 +87,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoPL.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoPL.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoPL.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPL.m_iCell[0];
   m_xDynamicT.m_xRowInfoPL.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
@@ -99,6 +102,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoPT.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoPT.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoPT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPT.m_iCell[0];
   m_xDynamicT.m_xRowInfoPT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPT.m_cStringArea[0];
@@ -114,6 +118,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoTJ.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoTJ.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoTJ.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoTJ.m_iCell[0];
   m_xDynamicT.m_xRowInfoTJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoTJ.m_cStringArea[0];
@@ -129,6 +134,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoAT.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoAT.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoAT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoAT.m_iCell[0];
   m_xDynamicT.m_xRowInfoAT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoAT.m_cStringArea[0];
@@ -144,6 +150,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoTO.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoTO.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoTO.m_iCell[0];
   m_xDynamicT.m_xRowInfoTO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
@@ -160,6 +167,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 #else
   m_xDynamicT.m_xRowInfoPO.m_cStringArea[0] = '\0';
 #endif
+	m_xDynamicT.m_xRowInfoPO.m_nStringAreaSize = _C_16KB;
 
   m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPO.m_iCell[0];
   m_xDynamicT.m_xRowInfoPO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPO.m_cStringArea[0];

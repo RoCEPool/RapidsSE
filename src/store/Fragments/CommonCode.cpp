@@ -455,6 +455,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
   // allocate a row from the tub
 #ifdef WITH_CLANG
   __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
   // check for error
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
@@ -524,6 +525,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
   // allocate a row from the tub
 #ifdef WITH_CLANG
   aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
@@ -551,8 +553,8 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  //__ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
   __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
     // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
@@ -854,6 +856,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
   struct __STRUCT_TO__ {
     union Vch_T __COLUMN_TO__;
 		char* m_acStrArea;
+		i8    m_nStringAreaSize;
   };
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
@@ -882,8 +885,11 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
   else {
     szDstStz = __ROW_INFO_TO__.m_acStrArea;
 
+		i8 iDstBufLen = __ROW_INFO_TO__.m_nStringAreaSize;
+
 #ifdef WITH_CLANG
-    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, _C_16KB, szSrcStz); // Note: Alka to fix the C_16KB size
+    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, iDstBufLen, szSrcStz);
+
 //    for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
 //      printf("%c ", szDstStz[i_Byte]);
 //    printf("\n");
@@ -895,6 +901,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
     // update the tub string size
     i8 iDstLen = strlen(szDstStz) + 1;
+		__ROW_INFO_TO__.m_nStringAreaSize -= nSrcSize;
 		__ROW_INFO_TO__.m_acStrArea += iDstLen;
 #ifdef WITH_CLANG
     //vExtern_TubRowStrSize(aDynamicT->m_pTub,iDstLen);

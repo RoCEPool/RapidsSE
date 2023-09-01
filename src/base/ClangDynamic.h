@@ -18,6 +18,7 @@ struct RowInfo {
   bool m_bInitialize;
   i8   m_iCell[256];
   char m_cStringArea[16384]; // _C_16KB;
+	i8   m_nStringAreaSize;
   void* m_aRowCellArray;
   char* m_acStrArea;
   char* m_acStrAreaSav;
