@@ -52,13 +52,29 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
   {
     UNUSED(pCI);
 
+    pCI->vAncestorDump(pCard);
+
     if (! pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
     pCI->vAncestorDump(pCard);
 
+    Card_Term* p_term = _pCard_Term(pCard);
+
     if (! pCard->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;
+
+    if (Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pCI->pAncestorFind(CK_BOOLCALC))) {
+      i8 iItemise = p_boolCalc->iItemise();
+      p_term->pSymbol()->vSym(SF_COL_NM_dis, iItemise);
+      return C_CONTINUE_RECURSION;
+    }
+    else
+    if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
+      i8 iItemise = p_rpnCalc->iItemise();
+      p_term->pSymbol()->vSym(SF_COL_NM_dis, iItemise);
+      return C_CONTINUE_RECURSION;
+    }
 
     return C_CONTINUE_RECURSION;
   };

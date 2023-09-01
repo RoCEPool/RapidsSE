@@ -2024,15 +2024,17 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
   switch (eSymbol) {
 
-    case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
-    case SF_COL_NO:    vSet_Col_No(iInt);    break;
-    case SF_IDX_COL:   vSet_Idx_Col(iInt);   break;
-    case SF_INT_LIT:   vSet_Int_Lit(iInt);   break;
-    case SF_KEY_COL:   vSet_Key_Col(iInt);   break;
-    case SF_SQY_NO:    vSet_Sqy_No(iInt);    break;
-    case SF_STG_NO:    vSet_Stg_Nm(iInt);    break;
-    case SF_PRM_COL:   vSet_Prm_Col(iInt);   break;
-    case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
+    case SF_AS_NM_itm:  vSet_As_Nm_itm(iInt);  break;
+    case SF_AS_NM_syn:  vSet_As_Nm_syn(iInt);  break;
+    case SF_COL_NO:     vSet_Col_No(iInt);     break;
+    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt); break;
+    case SF_IDX_COL:    vSet_Idx_Col(iInt);    break;
+    case SF_INT_LIT:    vSet_Int_Lit(iInt);    break;
+    case SF_KEY_COL:    vSet_Key_Col(iInt);    break;
+    case SF_SQY_NO:     vSet_Sqy_No(iInt);     break;
+    case SF_STG_NO:     vSet_Stg_Nm(iInt);     break;
+    case SF_PRM_COL:    vSet_Prm_Col(iInt);    break;
+    case SF_XRF_NO:     vSet_Xrf_No(iInt);     break;
 
     default: NEVER_REACH;
   }
@@ -2678,9 +2680,9 @@ void Symbol::vSet_As_Nm_itm(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == m_eSymbol);
+  RASSERT(SF_NONE == m_eSymbol || SF_AS_NM == m_eSymbol);
 
-  vSymSprint("C%lld_"_Stz, iAsNo);
+  vSymSprint("C%lld_%s"_Stz, iAsNo, m_sChrSeq.szStz());
   m_eSymbol = SF_AS_NM_itm;
   Y_vSet(P_Itemised);
 
@@ -2794,6 +2796,23 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
 
   RASSERT(bIs_Col_Nm());
   RASSERT(! bIs_Col_Nm_dis());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given disambiguated-column-name                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Col_Nm_dis(i8 i_Child)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol || SF_COL_NM == m_eSymbol);
+
+  vSymSprint("C%lld_%s"_Stz, i_Child, m_sChrSeq.szStz());
+  m_eSymbol = SF_COL_NM;
+
+  Y_vSet(P_DisamCol);
+
+  RASSERT(bIs_Col_Nm_dis());
 }
 
 /*----------------------------------------------------------------------------*/

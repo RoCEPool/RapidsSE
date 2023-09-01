@@ -61,7 +61,8 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   _checkInitialised_(CN_OPTIMISER);
 
-  //MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
+//  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
+//  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }

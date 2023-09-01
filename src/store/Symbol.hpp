@@ -223,6 +223,7 @@ namespace STORE
     void vSet_Bound(Stz* szBound);
     void vSet_Brace(Stz* szBrace);
     void vSet_Col_Nm(Stz* szColNm);
+    void vSet_Col_Nm_dis(i8 i_Child);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
     void vSet_Col_Nm_syn(Stz* szColNm_syn);
     void vSet_Col_No(Stz* szColNo);

@@ -103,6 +103,8 @@ bool CardIter::bApplyRecursive(Card* pCard, eCK eToSubs,
       vAncestorPop();
       return C_TERMINATE_RECURSION;
     }
+    else
+      vDebugPoint();
   }
 
   vAncestorPop();
@@ -205,7 +207,7 @@ void CardIter::vAncestorDump(Card* pCard)
            i_Ancestor,
            pCard_ancestor,
            aCK[pCard_ancestor->eCard()],
-           pCard->iItemise());
+           pCard_ancestor->iItemise());
   }
 
   vTrace("$$ Ancestor Dump"_Stz);
@@ -217,6 +219,23 @@ void CardIter::vAncestorDump(Card* pCard)
   else
     vTrace("\n"_Stz);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* find ancestor                                                             */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAncestorFind(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (i8 i_Ancestor = m_nAncestors-1; i_Ancestor >= 0; i_Ancestor--) {
+    Card *pCard_ancestor = m_apAncestry[i_Ancestor];
+
+    if (pCard_ancestor->bIsCard(eCard))
+      return pCard_ancestor;
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

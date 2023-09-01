@@ -822,6 +822,8 @@ void Card::vItemise(i8 iItemise)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(CK_DECK != m_eCard);
+
   m_iItemise = iItemise;
 }
 

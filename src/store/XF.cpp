@@ -211,7 +211,7 @@ void XF::vTransform(void)
   XF_Epilog_Column_mapping::vEpilog(m_pCI);            //
   XF_Epilog_Column_hashing::vEpilog(m_pCI);            //
                                                        //
-  XF_Epilog_ItemStrip_colNm::vEpilog(m_pCI);           //
+  XF_Epilog_Itemise_colNm::vEpilog(m_pCI);             //
                                                        //
   m_pCI->vEndPhase();                                  //
                                                        //
@@ -227,6 +227,8 @@ void XF::vTransform(void)
                                                        //
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);       //
   XF_Synthesise_code::vSynthesise(m_pCI);              //
+                                                       //
+//XF_Epilog_ItemStrip_colNm::vEpilog(m_pCI);
                                                        //
   m_pCI->vEndPhase();                                  //
 }

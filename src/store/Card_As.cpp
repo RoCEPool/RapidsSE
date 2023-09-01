@@ -51,15 +51,22 @@ void Card_As::vItemise_colNm(CardIter* pCI)
   {
     UNUSED(pCI);
 
+    pCI->vAncestorDump(pCard);
+
     if (! pCard->bIsCard(CK_AS))
       return C_CONTINUE_RECURSION;
 
-    pCI->vAncestorDump(pCard);
-
     Card_As* p_as = _pCard_As(pCard);
 
-    if (! p_as->pSymbol()->bIs_Col_Nm())
+    if (! p_as->pSymbol()->bIs_As_Nm())
       return C_CONTINUE_RECURSION;
+
+    Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
+    if (! p_expr)
+      return C_CONTINUE_RECURSION;
+
+    i8 iItemise = p_expr->iItemise();
+    p_as->pSymbol()->vSym(SF_AS_NM_itm,iItemise);
 
     return C_CONTINUE_RECURSION;
   };
@@ -91,7 +98,7 @@ void Card_As::vItemStrip_colNm(CardIter* pCI)
 
     Card_As* p_as = _pCard_As(pCard);
 
-    if (! p_as->pSymbol()->bIs_Col_Nm())
+    if (! p_as->pSymbol()->bIs_As_Nm_itm())
       return C_CONTINUE_RECURSION;
 
     return C_CONTINUE_RECURSION;
