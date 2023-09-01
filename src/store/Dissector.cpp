@@ -163,7 +163,7 @@ void Dissector::vStage(i8 i_StageSpec)
       Card_Correlation* p_paramList = new Card_Correlation;
       m_pBoard->pDeck()->vAppend(p_paramList);
       Card_OuterColNm* p_param = new Card_OuterColNm;
-      StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
+      StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(), pParamsSpec->pGet(0)->iParamNmBufSize(), ' ');
       p_param->SYM(SF_COL_NM,pParamsSpec->pGet(0)->szParamNm());
       p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppend(p_param);
@@ -319,7 +319,7 @@ Card* Dissector::pOp_Call(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipeline
 
-  StrLib::vStrip(szSubPipeNm->azChar(),' ');
+  StrLib::vStrip(szSubPipeNm->azChar(), szSubPipeNm->nSize(), ' ');
 
   Card_Call* pCard_Call = new Card_Call;
   pCard_Call->SYM(SF_PPE_NM,szSubPipeNm);

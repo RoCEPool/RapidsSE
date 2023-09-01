@@ -52,6 +52,15 @@ Stz* ParamSpec::szParamNm(void)
 
   return m_sParamNm;
 }
+/*----------------------------------------------------------------------------*/
+/* get the size of the parameter name buffer                                  */
+/*----------------------------------------------------------------------------*/
+i8 ParamSpec::iParamNmBufSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARAMSPEC,_FOOTER_);
+
+  return m_sParamNm.nAreaBytes();
+}
 
 /*============================================================================*/
 /* end                                                                        */

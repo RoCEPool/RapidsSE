@@ -139,7 +139,7 @@ bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAc
 
   while (xCI.bEach()) {
     s256 sShort = ""_Stz;
-    StrLib::vShortHand(sShort.azChar(), xCI.pChild()->szCardNm()->azChar());
+    StrLib::vShortHand(sShort.azChar(), sShort.nAreaBytes(), xCI.pChild()->szCardNm()->azChar());
     vTrace("%s "_Stz, sShort.azChar());
 
     Card_TableNm* pCard_TableNm = xCI.pChild()->pSub_tableNm();

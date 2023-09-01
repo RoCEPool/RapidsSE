@@ -83,10 +83,10 @@ extern "C" i8 iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) {
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-extern "C" i8 iExtern_StrLibWordFlipBack(char* aDst, char* aSrc) {
+extern "C" i8 iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc) {
   _static_
 
-  return StrLib::iWordFlipBack(aDst, aSrc);
+  return StrLib::iWordFlipBack(psDst, iDstBufSize, psSrc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,30 +120,30 @@ static Stz* szaAscii[128] = {
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-i8 StrLib_iLike2(char* azStr, char* azRegExp) {
+i8 StrLib_iLike2(char* psSrc, char* azRegExp) {
   _static_
 
-  i8 i = StrLib::iLike2(azStr, azRegExp);
+  i8 i = StrLib::iLike2(psSrc, azRegExp);
   return i;
 }
 
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-i8 StrLib_iLike3(char* azStr, char* azRegExp, char cEsc) {
+i8 StrLib_iLike3(char* psSrc, char* azRegExp, char cEsc) {
   _static_
 
-  i8 i = StrLib::iLike3(azStr, azRegExp, cEsc);
+  i8 i = StrLib::iLike3(psSrc, azRegExp, cEsc);
   return i;
 }
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {
+i8 StrLib_iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc) {
   _static_
 
-  return StrLib::iWordFlipBack(aDst, aSrc);
+  return StrLib::iWordFlipBack(psDst, iDstBufSize, psSrc);
 }
 
 
@@ -4515,7 +4515,7 @@ void StrLib::vRemovePrefix(char* psDst, i8 iDstBufSize, char cSep, bool* pbResul
   if (C_UNKNOWN == i_Sep)
     return;
 
-  vShuffleLeft(psDst, i_Sep + 1);
+  vShuffleLeft(psDst, iDstBufSize, i_Sep + 1, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4610,7 +4610,7 @@ void StrLib::vRemoveTill(char* psDst, i8 iDstBufSize, const char cTill,
   if (bRemoveTheTill)
     azSrc++;
 
-  vShuffleLeft(psDst, azSrc);
+  vShuffleLeft(psDst, iDstBufSize, azSrc, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4665,7 +4665,7 @@ void StrLib::vRemoveToken(char* psDst, i8 iDstBufSize, bool* pbResult)
     return;
   }
 
-  vShuffleLeft(psDst, azRight);
+  vShuffleLeft(psDst, iDstBufSize, azRight, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4826,18 +4826,27 @@ NextIteration:
 /*----------------------------------------------------------------------------*/
 /* replace tail of string, keeping string length the same                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vReplaceTail(char* azDst, const char* azTail)
+void StrLib::vReplaceTail(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
   
-  i8 iLen_dst  = StrLib::nLength(azDst);
-  i8 iLen_tail = StrLib::nLength(azTail);
+  i8 iLen_dst  = StrLib::nLength(psDst);
+  i8 iLen_tail = StrLib::nLength(psSrc);
+
+  // Check for underflow.
+  // We use iLen_dst here because we are trying to keep the string length the
+  // same, so it may underflow and write before the start of the string.
+  UNUSED(iDstBufSize);
+  bool bRet = bCheckBufferSpace(__func__, iLen_tail + 1, iLen_dst + 1, pbResult);
+  if (!bRet) {
+    return;
+  }
   
   //            01234567
   //            abcdefgh
   //                 ...
   //            8 - 3 = 5
-  StrLib::vCopy(azDst + iLen_dst - iLen_tail, iLen_dst + 1, azTail);
+  StrLib::vCopy(psDst + iLen_dst - iLen_tail, iLen_tail + 1, psSrc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4884,32 +4893,19 @@ void StrLib::vReverse(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rotate a string by given number of characters                              */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRotate(char* zArg, i8 nBy)
-{
-  _static_
-  
-  i8 nLen = nLength(zArg);
-  ASSERT(nBy < nLen);
-  
-  char caFront[nBy];
-  
-  MemLib::vCopy(caFront,zArg,nBy,CN_NONE);
-  
-  MemLib::vMove(zArg,zArg+nBy,nBy,CN_NONE);
-  
-  MemLib::vCopy(zArg + nLen - nBy,caFront,nBy,CN_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
 /* ruler                                                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRuler(char* azDst, i8 iLength)
+void StrLib::vRuler(char* psDst, i8 iDstBufSize, i8 iLength, bool* pbResult)
 {
   _static_
-  
-  char* azPut = azDst;
+
+  bool bRet = bCheckBufferSpace(__func__, iLength + 1, iDstBufSize, pbResult);
+  if (!bRet) {
+    // continue but truncate
+    iLength = iDstBufSize - 1;
+  }
+
+  char* azPut = psDst;
   char  cDigit;
   
   for (i8 i_Char = 0; i_Char < iLength; i_Char++) {
@@ -4927,12 +4923,12 @@ void StrLib::vRuler(char* azDst, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* are two arguments equal (no case)                                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSame(const char c1, const char c2)
+bool StrLib::bSame(const char cArg1, const char cArg2)
 {
   _static_
 
-  char c1_lower = cToLower(c1);
-  char c2_lower = cToLower(c2);
+  char c1_lower = cToLower(cArg1);
+  char c2_lower = cToLower(cArg2);
 
   if (c1_lower == c2_lower)
     return true;
@@ -4943,11 +4939,11 @@ bool StrLib::bSame(const char c1, const char c2)
 /*----------------------------------------------------------------------------*/
 /* are two arguments equal (no case)                                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSame(const char* pArg1, const char* pArg2)
+bool StrLib::bSame(const char* psArg1, const char* psArg2)
 {
   _static_
   
-  i8 iDiff = strcasecmp(pArg1,pArg2);
+  i8 iDiff = strcasecmp(psArg1, psArg2);
   
   if (0 == iDiff)
     return true;
@@ -4958,128 +4954,126 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* Given a word, convert it to a short hand notation                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vShortHand(char *azDst, const char *azSrc)
+void StrLib::vShortHand(char *psDst, i8 iDstBufSize, const char *psSrc, bool* pbResult)
 {
   _static_
 
-  char cStart = *azSrc;
-  if(cStart >= 97 && cStart <= 122)
+  i8 iReqBytes = 0;
+
+  char cStart = *psSrc;
+  if(cStart >= 97 && cStart <= 122) // 'a' and 'z'
   {
     // indexJoin -> iJ
-    *azDst = cStart;
+    if (++iReqBytes < iDstBufSize) {
+      *psDst = cStart;
+    }
 
-    azSrc++;
+    psSrc++;
 
-    while(*azSrc != '\0')
+    while(*psSrc != '\0')
     {
-      if(*azSrc >= 65 && *azSrc <= 90)
+      if(*psSrc >= 65 && *psSrc <= 90) // 'A' and 'Z'
       {
-        azDst++;
-        *azDst = *azSrc;
-        azDst++;
-        *azDst = '\0';
+        if (++iReqBytes < iDstBufSize) {
+          psDst++;
+          *psDst = *psSrc;
+        }
+
+        ++iReqBytes;
+        psDst++;
+        *psDst = '\0';
+
+        bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+        UNUSED(bRet);
         return;
       }
-      azSrc++;
+      psSrc++;
     }
-  } else if(cStart >= 65 && cStart <= 90)
+  } else if(cStart >= 65 && cStart <= 90) // 'A' and 'Z'
   {
     // if the first char is caps
     // IndexJoin -> IJ
     // INDEXJOIN -> I
-    *azDst = cStart;
+    if (++iReqBytes < iDstBufSize) {
+      *psDst = cStart;
+    }
 
-    azSrc++;
+    psSrc++;
 
     // search for the next caps letter
     bool bSmall = 0;
-    while(*azSrc >= 97 && *azSrc <= 122 && *azSrc != '\0')
+    while(*psSrc >= 97 && *psSrc <= 122 && *psSrc != '\0')
     {
-      azSrc++;
+      psSrc++;
       bSmall = 1;
     }
 
     // Add the next caps char if we found at lease one small char before
-    if(*azSrc != '\0' && bSmall == 1)
+    if(*psSrc != '\0' && bSmall == 1 && ++iReqBytes < iDstBufSize)
     {
-      azDst++;
-      *azDst = *azSrc;
+      psDst++;
+      *psDst = *psSrc;
     }
-    azDst++;
-    *azDst = '\0';
+
+    ++iReqBytes;
+    psDst++;
+    *psDst = '\0';
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+    UNUSED(bRet);
     return;
+
   } else
   {
-    *azDst = '\0';
+    ++iReqBytes;
+    *psDst = '\0';
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+    UNUSED(bRet);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* shuffle substring left                                                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vShuffleLeft(char* azDst, const char* azSrc)
+void StrLib::vShuffleLeft(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
+
+  i8 iReqBytes = 0;
 
   for (;;) {
-    char cCopied = (*azDst++ = *azSrc++);
+    char cCopied = *psSrc;
+    if (++iReqBytes < iDstBufSize) {
+      *psDst++ = *psSrc++;
+    }
+
     if (! cCopied)
-      return;
+      break;
   }
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* shuffle substring left                                                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
+void StrLib::vShuffleLeft(char* psDst, i8 iDstBufSize, i8 i_Right, bool* pbResult)
 {
   _static_
 
-  vShuffleLeft(azDst, azDst + i_Right);
-}
-
-/*----------------------------------------------------------------------------*/
-/* do the two arguments have similar leading sequences (no case)              */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bSimilar(const char* azArg1, const char* azArg2, const char* azSep)
-{
-  _static_
-
-  const char* azCrs_Arg1 = azArg1;
-  const char* azCrs_Arg2 = azArg2;
-
-  while (true) {
-
-    vTrace("%s : %s : %s\n"_Stz,azCrs_Arg1,azCrs_Arg2,azSep);
-
-    if ((! bSame(*azCrs_Arg1,*azCrs_Arg2)) ||
-        (! *azCrs_Arg1 && ! *azCrs_Arg2))
-      break;
-
-    if (bBeginsWith(azCrs_Arg1,azSep) && bBeginsWith(azCrs_Arg2,azSep))
-      return true;
-
-    azCrs_Arg1++;
-    azCrs_Arg2++;
-  }
-
-  if (! *azCrs_Arg1 && ! *azCrs_Arg2)
-    return true;
-
-  if (bBeginsWith(azCrs_Arg1,azSep) || bBeginsWith(azCrs_Arg2,azSep))
-    return true;
-
-  return false;
+  vShuffleLeft(psDst, iDstBufSize, psDst + i_Right, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of arg                                                   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::nSize(const char* s)
+i8 StrLib::nSize(const char* psArg)
 {
   _static_
   
-  i8 nBytes = strlen(s) + 1;
+  i8 nBytes = strlen(psArg) + 1;
 
   return nBytes;
 }
@@ -5087,38 +5081,38 @@ i8 StrLib::nSize(const char* s)
 /*----------------------------------------------------------------------------*/
 /* skip line comment                                                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipCommentLine(char** aaCrs)
+void StrLib::vSkipCommentLine(char** ppsCrs)
 {
   _static_
   
-  RASSERT(bIsSlash(**aaCrs));
-  (*aaCrs)++;
-  RASSERT(bIsSlash(**aaCrs));
-  (*aaCrs)++;
+  RASSERT(bIsSlash(**ppsCrs));
+  (*ppsCrs)++;
+  RASSERT(bIsSlash(**ppsCrs));
+  (*ppsCrs)++;
 
-  while (! bIsNull(**aaCrs)) {
-    if (bIsNewLine(**aaCrs)) {
-      (*aaCrs)++;
+  while (! bIsNull(**ppsCrs)) {
+    if (bIsNewLine(**ppsCrs)) {
+      (*ppsCrs)++;
       break;
     }
-    (*aaCrs)++;
+    (*ppsCrs)++;
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* skip white space and comments                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipCommentsEtc(char **aazCrs)
+void StrLib::vSkipCommentsEtc(char **ppsCrs)
 {
   _static_
   
   for (;;) {
-    StrLib::vSkipWhite(aazCrs);
-    if (! **aazCrs)
+    StrLib::vSkipWhite(ppsCrs);
+    if (! **ppsCrs)
       return;
 
-    if (StrLib::bIsCommentLine(*aazCrs)) {
-      StrLib::vSkipCommentLine(aazCrs);
+    if (StrLib::bIsCommentLine(*ppsCrs)) {
+      StrLib::vSkipCommentLine(ppsCrs);
       continue;
     }
   
@@ -5127,33 +5121,33 @@ void StrLib::vSkipCommentsEtc(char **aazCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip non digit sequence in substr                                          */
+/* skip over digit sequence in substr                                         */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipDigits(char** aaSrc)
+void StrLib::vSkipDigits(char** ppsCrs)
 {
   _static_
   
-  char *aSrc = *aaSrc;
+  char *aSrc = *ppsCrs;
   
   for ( ; *aSrc; aSrc++)
     if ( ! isdigit(*aSrc) )
       break;
 
-  *aaSrc = aSrc;
+  *ppsCrs = aSrc;
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip till end of line                                                      */
+/* skip till end of line. Return false if we hit a null terminator            */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipEOL(char** ps)
+bool StrLib::bSkipEOL(char** ppsCrs)
 {
   _static_
   
-  while (**ps && '\n' != **ps)
-    (*ps)++;
-  (*ps)++;
+  while (**ppsCrs && '\n' != **ppsCrs)
+    (*ppsCrs)++;
+  (*ppsCrs)++;
   
-  if (**ps)
+  if (**ppsCrs)
     return true;
   else
     return false;
@@ -5162,18 +5156,18 @@ bool StrLib::bSkipEOL(char** ps)
 /*----------------------------------------------------------------------------*/
 /* vSkipLeading: skip leading sequence                                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
+bool StrLib::bSkipLeading(char** ppsCrs, char cEnclosedBy_Leading)
 {
   _static_
 
   // skip leading spaces first
-  while (' ' == **ps)
-    (*ps)++;
+  while (' ' == **ppsCrs)
+    (*ppsCrs)++;
 
   // do we see the leading enclose character?
-  if (cEnclosedBy_Leading == **ps) {
+  if (cEnclosedBy_Leading == **ppsCrs) {
     // skip the leading enclose character
-    (*ps)++;
+    (*ppsCrs)++;
     return true;
   }
   else {
@@ -5184,34 +5178,34 @@ bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
 /*----------------------------------------------------------------------------*/
 /* skip non-alphanumeric sequence in substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipNonAlnum(char** ps)
+bool StrLib::bSkipNonAlnum(char** ppsCrs)
 {
   _static_
   
-  for ( ; **ps; (*ps)++)
-    if (isalnum(**ps))
+  for ( ; **ppsCrs; (*ppsCrs)++)
+    if (isalnum(**ppsCrs))
       break;
   
-  if (**ps)
+  if (**ppsCrs)
     return true;
   else
     return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip digit sequence in substr                                              */
+/* skip non digit sequence in substr                                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipNonDigit(char** ps)
+bool StrLib::bSkipNonDigit(char** ppsCrs)
 {
   _static_
   
-  char *s = *ps;
+  char *s = *ppsCrs;
   
   for ( ; *s; s++)
     if (isdigit(*s))
       break;
   
-  *ps = s;
+  *ppsCrs = s;
   
   if (*s)
     return true;
@@ -5222,37 +5216,37 @@ bool StrLib::bSkipNonDigit(char** ps)
 /*----------------------------------------------------------------------------*/
 /* skip spaces                                                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipSpaces(char** ps)
+void StrLib::vSkipSpaces(char** ppsCrs)
 {
   _static_
   
-  while (' ' == **ps)
-    (*ps)++;
+  while (' ' == **ppsCrs)
+    (*ppsCrs)++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* skip trailing sequence                                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading,
+bool StrLib::bSkipTrailing(char** ppsCrs, bool bSawEnclosedBy_Leading,
                            char cEnclosedBy_Trailing)
 {
   _static_
   
   // skip any blanks
-  while (' ' == **ps)
-    (*ps)++;
+  while (' ' == **ppsCrs)
+    (*ppsCrs)++;
   
   // if no leading enclosed then we have a valid end of the field
   if (! bSawEnclosedBy_Leading)
     return true;
   
   // test we see the trailing enclosed
-  if (cEnclosedBy_Trailing == **ps) {
+  if (cEnclosedBy_Trailing == **ppsCrs) {
     // skip trailing enclosed
-    (*ps)++;
+    (*ppsCrs)++;
     //skip any blanks
-    while (' ' == **ps)
-      (*ps)++;
+    while (' ' == **ppsCrs)
+      (*ppsCrs)++;
     return true;
   }
 
@@ -5263,36 +5257,68 @@ bool StrLib::bSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading,
 /*----------------------------------------------------------------------------*/
 /* skip whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipWhite(char** ps)
+void StrLib::vSkipWhite(char** ppsCrs)
 {
   _static_
   
-  for ( ; **ps; (*ps)++)
-    if (!bIsWhite(**ps))
+  for ( ; **ppsCrs; (*ppsCrs)++)
+    if (!bIsWhite(**ppsCrs))
       break;
 }
 
 /*----------------------------------------------------------------------------*/
 /* split src into string and integer components                               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSplitSeries(char* azStr, char* azInt, char* azSrc)
+void StrLib::vSplitSeries(char* psDstStr, i8 iDstStrSize,
+                          char* psDstInt, i8 iDstIntSize,
+                          const char* psSrc, bool* pbResult)
 {
   _static_
+
+  if (iDstStrSize > 0) {
+    *psDstStr = '\0';
+  }
+
+  if (iDstIntSize > 0) {
+    *psDstInt = '\0';
+  }
+
+  i8 iReqStrBytes = 0;
+  i8 iReqIntBytes = 0;
+
+  const char* aSrc = psSrc;
+  char* aStr = psDstStr;
+  char* aInt = psDstInt;
   
-  *azStr = '\0';
-  *azInt = '\0';
-  
-  char* aSrc = azSrc;
-  char* aStr = azStr;
-  char* aInt = azInt;
-  
-  while (*aSrc && ! isdigit(*aSrc))
-    *aStr++ = *aSrc++;
+  while (*aSrc && ! isdigit(*aSrc)) {
+    if (++iReqStrBytes < iDstStrSize) {
+      *aStr++ = *aSrc;
+    }
+    aSrc++;
+  }
+  ++iReqStrBytes;
   *aStr = '\0';
   
-  while (*aSrc && isdigit(*aSrc))
-    *aInt++ = *aSrc++;
+  while (*aSrc && isdigit(*aSrc)) {
+    if (++iReqIntBytes < iDstIntSize) {
+      *aInt++ = *aSrc;
+    }
+    aSrc++;
+  }
+  ++iReqIntBytes;
   *aInt = '\0';
+
+  bool bRes1 = true;
+  bool bRes2 = true;
+
+  bool bRet;
+  bRet = bCheckBufferSpace(__func__, iReqStrBytes, iDstStrSize, &bRes1);
+  bRet = bCheckBufferSpace(__func__, iReqIntBytes, iDstIntSize, &bRes2);
+  UNUSED(bRet);
+
+  if (pbResult) {
+    *pbResult = (bRes1 && bRes2);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5401,19 +5427,30 @@ void StrLib::vSprintCat(char* psDst, i8 iDstBufSize, va_list args, const char* s
 /*----------------------------------------------------------------------------*/
 /* test last char and remove                                                 */
 /*----------------------------------------------------------------------------*/
-void StrLib::vStrip(char* s, char cTrailing)
+void StrLib::vStrip(char* psDst, i8 iDstBufSize, char cTrailing, bool* pbResult)
 {
   _static_
+
+  // This will never overflow
+  UNUSED(iDstBufSize);
+
+  i8 nBytes = nLength(psDst);
   
-  i8 nBytes = strlen(s);
-  
-  if ( ! nBytes )
+  if ( ! nBytes ) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
   
   i8 iOffset = nBytes - 1;
   
-  if (s[iOffset] == cTrailing)
-    s[iOffset] = '\0';
+  if (psDst[iOffset] == cTrailing)
+    psDst[iOffset] = '\0';
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5444,17 +5481,20 @@ void StrLib::vSubPath(char* azDst, i8 iDstBufSize, char* azSrc, bool* pbResult)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bTailIs(const char *z, char *ss)
+bool StrLib::bTailIs(const char *psArg, char *psTail)
 {
   _static_
 
-  i8 nSS_len  = nLength(ss);
+  i8 nTail_len  = nLength(psTail);
 
-  const char* y = z - nSS_len;
+  const char* y = psArg - nTail_len;
 
-  //vTrace("%s %lld ]%s[\n"_Stz,ss,nSS_len,y);
+  if (y < psArg) {
+    // underflow psDst string
+    return false;
+  }
 
-  if (bEqualTo(y,nSS_len,ss))
+  if (bEqualTo(y, nTail_len, psTail))
     return true;
 
   return false;
@@ -5463,15 +5503,15 @@ bool StrLib::bTailIs(const char *z, char *ss)
 /*----------------------------------------------------------------------------*/
 /* find tab location in given arg                                             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
+char* StrLib::aczTabLoc(char* psArg, i8 i_Tab, char cPad)
 {
   _static_
 
-  char* aczLoc = acLast(azArg);
+  char* aczLoc = acLast(psArg);
 
-  i8 nTab = nDifference(azArg,aczLoc);
+  i8 nTab = nDifference(psArg, aczLoc);
   
-  while (aczLoc > azArg && nTab > i_Tab) {
+  while (aczLoc > psArg && nTab > i_Tab) {
     if (cPad != *aczLoc) {
       aczLoc++;
       aczLoc++;
@@ -5487,42 +5527,38 @@ char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
 /*----------------------------------------------------------------------------*/
 /* convert arg to bcd                                                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iToBcd(const char* s)
+i8 StrLib::iToBcd(const char* psArg)
 {
   _static_
-  
-  //i8 i = atoll(s);
-
-  //return i;
   
   i8 i = 0;
   bool bNegative = false;
   
-  if (*s && '-' == *s) {
+  if ('-' == *psArg) {
     bNegative = true;
-    s++;
+    psArg++;
   }
   
   // skip leading 0's
-  while (*s && '0' == *s)
-    s++;
+  while ('0' == *psArg)
+    psArg++;
   
-  if (*s && ('x' == *s || 'X' == *s)) {
-    s++;
-    while (*s && bIsHex(*s)) {
-      i8 j = iHexToInw(*s++);
+  if ('x' == *psArg || 'X' == *psArg) {
+    psArg++;
+    while (*psArg && bIsHex(*psArg)) {
+      i8 j = iHexToInw(*psArg++);
       i = i * 16 + j;
     }
   }
   else {
-    while (*s && bIsDigit(*s)) {
-      i8 j = (*s++ - '0');
+    while (bIsDigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
       i = i * 10 + j;
     }
-    if (*s && '.' == *s) {
-      s++;
-      while (*s && bIsDigit(*s)) {
-        i8 j = (*s++ - '0');
+    if ('.' == *psArg) {
+      psArg++;
+      while (bIsDigit(*psArg)) {
+        i8 j = (*psArg++ - '0');
         i = i * 10 + j;
       }
     }
@@ -5537,15 +5573,15 @@ i8 StrLib::iToBcd(const char* s)
 /*----------------------------------------------------------------------------*/
 /* convert arg to boolean                                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bToBool(const char* s)
+bool StrLib::bToBool(const char* psArg)
 {
   _static_
   
-  if (StrLib::bEqualTo(s,"true" ,C_NO_CASE)) return true;
-  if (StrLib::bEqualTo(s,"1"    ,C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(psArg, "true" , C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(psArg, "1"    , C_NO_CASE)) return true;
   
-  if (StrLib::bEqualTo(s,"false",C_NO_CASE)) return false;
-  if (StrLib::bEqualTo(s,"0"    ,C_NO_CASE)) return false;
+  if (StrLib::bEqualTo(psArg, "false", C_NO_CASE)) return false;
+  if (StrLib::bEqualTo(psArg, "0"    , C_NO_CASE)) return false;
   
   return false;
 }
@@ -5553,12 +5589,19 @@ bool StrLib::bToBool(const char* s)
 /*----------------------------------------------------------------------------*/
 /* convert arg to flt                                                         */
 /*----------------------------------------------------------------------------*/
-d8 StrLib::dToFlt(const char* s)
+d8 StrLib::dToFlt(const char* psArg, bool* pbResult)
 {
   _static_
   
-  d8 d = atof(s);
-  
+//  d8 d = atof(psArg);
+
+  char* psEndPtr = nullptr;
+  d8 d = strtod(psArg, &psEndPtr);
+
+  if (pbResult) {
+    *pbResult = !(d == 0 && psEndPtr == psArg);
+  }
+
   return d;
 }
 
@@ -5582,36 +5625,32 @@ char StrLib::cToHex(i8 i)
 /*----------------------------------------------------------------------------*/
 /* convert arg to i8                                                          */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iToI8(const char* s)
+i8 StrLib::iToI8(const char* psArg)
 {
   _static_
-  
-  //i8 i = atoll(s);
-
-  //return i;
   
   i8 i = 0;
   bool bNegative = false;
   
-  if (*s && '-' == *s) {
+  if ('-' == *psArg) {
     bNegative = true;
-    s++;
+    psArg++;
   }
   
   // skip leading 0's
-  while (*s && '0' == *s)
-    s++;
+  while ('0' == *psArg)
+    psArg++;
   
-  if (*s && ('x' == *s || 'X' == *s)) {
-    s++;
-    while (*s && bIsHex(*s)) {
-      i8 j = iHexToInw(*s++);
+  if ('x' == *psArg || 'X' == *psArg) {
+    psArg++;
+    while (bIsHex(*psArg)) {
+      i8 j = iHexToInw(*psArg++);
       i = i * 16 + j;
     }
   }
   else {
-    while (*s && bIsDigit(*s)) {
-      i8 j = (*s++ - '0');
+    while (bIsDigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
       i = i * 10 + j;
     }
   }
@@ -5625,7 +5664,7 @@ i8 StrLib::iToI8(const char* s)
 /*----------------------------------------------------------------------------*/
 /* convert arg to i8 with overflow checking                                   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
+i8 StrLib::iToI8(const char* psArg, bool* bInvalidValue, bool* bOverflowed)
 {
   _static_
 
@@ -5635,32 +5674,32 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
   *bInvalidValue = false;
   *bOverflowed = false;
 
-  if (!*s) {
+  if (!*psArg) {
     *bInvalidValue = true;
     return -1;
   }
 
-  if (*s && '-' == *s) {
+  if ('-' == *psArg) {
     bNegative = true;
-    s++;
+    psArg++;
   }
 
-  if (!*s || (!bIsDigit(*s) && *s != 'x' && *s != 'X')) {
+  if (!*psArg || (!bIsDigit(*psArg) && *psArg != 'x' && *psArg != 'X')) {
     *bInvalidValue = true;
     return -1;
   }
 
   // skip leading 0's
-  while (*s && '0' == *s)
-    s++;
+  while ('0' == *psArg)
+    psArg++;
 
-  if (*s && ('x' == *s || 'X' == *s)) {
+  if ('x' == *psArg || 'X' == *psArg) {
     const i8 iLimit = C_I8_MAX / 16;
     const i8 iModulus = bNegative ? -(C_I8_MIN % 16) : C_I8_MAX % 16;
 
-    s++;
-    while (*s && bIsHex(*s)) {
-      i8 j = iHexToInw(*s++);
+    psArg++;
+    while (bIsHex(*psArg)) {
+      i8 j = iHexToInw(*psArg++);
 
       if (i > iLimit || (i == iLimit && j > iModulus) ) {
         *bOverflowed = true;
@@ -5674,8 +5713,8 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
     const i8 iLimit = C_I8_MAX / 10;
     const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
 
-    while (*s && bIsDigit(*s)) {
-      i8 j = (*s++ - '0');
+    while (bIsDigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
 
       if (i > iLimit || (i == iLimit && j > iModulus) ) {
         *bOverflowed = true;
@@ -5936,13 +5975,19 @@ void StrLib::vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult)
 /*----------------------------------------------------------------------------*/
 /* trim trailing char's                                                       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vTrim(char* azArg, char cTrim)
+void StrLib::vTrim(char* psDst, i8 iDstBufSize, char cTrim, bool* pbResult)
 {
   _static_
+
+  // This will never overflow or underflow
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  char* acEnd = StrLib::acLast(azArg);
+  char* acEnd = StrLib::acLast(psDst);
   
-  while (acEnd >= azArg) {
+  while (acEnd >= psDst) {
     if (cTrim == *acEnd)
       *acEnd-- = '\0';
     else
@@ -5989,46 +6034,51 @@ bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iWordFlip(char* aDst, char* aSrc)
+i8 StrLib::iWordFlip(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
 {
   _static_
   
-  i8 iLenSrc  = nLength(aSrc);
-  //vTrace("Flipping %s\n"_Stz, aSrc);
-  
+  i8 iSrcLen  = nLength(psSrc);
+
   i8 iRoundUp = 0;
-  i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
+  i8 iRemainder = iSrcLen % C_BYTES_PER_WORD;
   if (iRemainder)
     iRoundUp = C_BYTES_PER_WORD - iRemainder;
   
-  i8 iDstSize = iLenSrc + iRoundUp;
-  ASSERT(0 == iDstSize % C_BYTES_PER_WORD);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 iSrcLen = StrLib::nSize(aSrc);
-  MemLib::vZero(aDst,iDstSize,CN_KEY);
-  MemLib::vCopy(aDst, aSrc, iSrcLen, CN_KEY);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  w8* aWrd = (w8*)aDst;
-  for (i8 nWords = iDstSize / C_BYTES_PER_WORD; nWords; nWords--)
-    MemLib::vWordFlip(aWrd++);
-  
-  if (iLenSrc == iDstSize) {
-     MemLib::vZero(aWrd,8,CN_KEY);
-    iDstSize += C_BYTES_PER_WORD;
+  i8 iReqDstSize = iSrcLen + iRoundUp;
+  ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+  if (!bRet) {
+    return iReqDstSize;
   }
   
-  //MemLib::vDumpWords(aDst, iDstSize);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  return iDstSize;
+  i8 iSrcSize = StrLib::nSize(psSrc);
+  MemLib::vZero(psDst, iReqDstSize, CN_KEY);
+  MemLib::vCopy(psDst, psSrc, iSrcSize, CN_KEY);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  w8* aWrd = (w8*)psDst;
+  for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--)
+    MemLib::vWordFlip(aWrd++);
+  
+  if (iSrcLen == iReqDstSize) {
+    iReqDstSize += C_BYTES_PER_WORD;
+    bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+    if (bRet) {
+      MemLib::vZero(aWrd, 8, CN_KEY);
+    }
+  }
+
+  return iReqDstSize;
 }
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
+i8 StrLib::iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
 {
   _static_
   
@@ -6036,29 +6086,34 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
   //vTrace("WORDFLIPBACK\n"_Stz);
   //MemLib::vDumpWords(aSrc, 16);
   
-  i8 iLenSrc = StrLib::nSize(aSrc);
+  i8 iSrcSize = StrLib::nSize(psSrc);
   
   i8 iRoundUp = 0;
-  i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
+  i8 iRemainder = iSrcSize % C_BYTES_PER_WORD;
   if (iRemainder)
     iRoundUp = C_BYTES_PER_WORD - iRemainder;
   
-  i8 iDstSize = iLenSrc + iRoundUp;
-  ASSERT(0 == iDstSize % C_BYTES_PER_WORD);
+  i8 iReqDstSize = iSrcSize + iRoundUp;
+  ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+  if (!bRet) {
+    return iReqDstSize;
+  }
   
-  MemLib::vZero(aDst,iDstSize,CN_KEY);
-  MemLib::vCopy(aDst, aSrc, iDstSize, CN_KEY);
+  MemLib::vZero(psDst, iReqDstSize, CN_KEY);
+  MemLib::vCopy(psDst, psSrc, iReqDstSize, CN_KEY);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  w8* aWrd = (w8*)aDst;
-  for (i8 nWords = iDstSize / C_BYTES_PER_WORD; nWords; nWords--)
+  w8* aWrd = (w8*)psDst;
+  for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--)
     MemLib::vWordFlip(aWrd++);
   
   
   //vTrace("\nAFTER BACK : %s\n"_Stz, aDst);
   //MemLib::vDumpWords(aSrc, iDstSize);
   
-  return iDstSize;
+  return iReqDstSize;
 }
 
 /*============================================================================*/

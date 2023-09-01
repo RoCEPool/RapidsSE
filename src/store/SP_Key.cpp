@@ -126,7 +126,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     eDM eDatum = pCol->eDatum();
     
     if (eDatum == DM_VCH)
-      nElmBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
+      nElmBytes = StrLib::iWordFlipBack(caLiteral, sizeof(caLiteral), (char*)ayElm);
     else
       Literal::vSprint(caLiteral, sizeof(caLiteral),ayElm,pCol);
  

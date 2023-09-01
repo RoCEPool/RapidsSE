@@ -930,7 +930,9 @@ void Step::vSenSeriesName(void)
     s32 sStr;
     s32 sInt;
     
-    StrLib::vSplitSeries(sStr.azChar(),sInt.azChar(),pWord->szWordNm()->azChar());
+    StrLib::vSplitSeries(sStr.azChar(), sStr.nAreaBytes(),
+                         sInt.azChar(), sInt.nAreaBytes(),
+                         pWord->szWordNm()->azChar());
     
     // vTrace("  %s - %lld\n"_Stz,sStr.azChar(),sInt.iToI8());
     

@@ -4224,7 +4224,7 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
       giTraceFileSize = giTraceFileSize + nWritten;
   }
   
-  StrLib::vStrip(caFormatted,'\n');
+  StrLib::vStrip(caFormatted, sizeof(caFormatted),'\n');
     
   if (bUseLock)
     gpAttachMap->vTraceLockDrop();

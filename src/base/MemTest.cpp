@@ -58,10 +58,10 @@ MemTest::MemTest(void)
   StrLib::vCopy(m_caCharC, sizeof(m_caCharC), "aBc");
 
   StrLib::vCopy(m_caCharUpper, sizeof(m_caCharUpper), "AbCdEfGhIjKlMnO");
-  StrLib::iWordFlip(m_caCharUpperFlipped, m_caCharUpper);
+  StrLib::iWordFlip(m_caCharUpperFlipped, sizeof(m_caCharUpperFlipped), m_caCharUpper);
   
   StrLib::vCopy(m_caCharLower, sizeof(m_caCharLower), "aBcDeFgHiJkLmNo");
-  StrLib::iWordFlip(m_caCharLowerFlipped, m_caCharLower);
+  StrLib::iWordFlip(m_caCharLowerFlipped, sizeof(m_caCharLowerFlipped), m_caCharLower);
  
   _checkInitialised_(CN_MEMTEST);
 

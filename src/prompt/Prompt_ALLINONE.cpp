@@ -4167,7 +4167,7 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
          '\r' == *sTrimmed.azChar() ||
          '\n' == *sTrimmed.azChar() ||
          '\t' == *sTrimmed.azChar())
-    StrLib::vShuffleLeft(sTrimmed.azChar(),1);
+    StrLib::vShuffleLeft(sTrimmed.azChar(), sTrimmed.nAreaBytes(), 1);
 
   while ('/' == *sTrimmed.azChar()) {
     //StrLib::vRemoveTill(sTrimmed.azChar(),' ', true);

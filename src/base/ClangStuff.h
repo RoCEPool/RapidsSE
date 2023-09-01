@@ -43,7 +43,7 @@ extern void* aExtern_StreamDefNew(i8 nNumCols, void* pColumnInfo) __attribute__(
 
 extern i8    iExtern_StrLibLike2(char* azStr, char* azRegExp) __attribute__((weak_import));
 extern i8    iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) __attribute__((weak_import));
-extern i8    iExtern_StrLibWordFlipBack(char* aDst, char* aSrc) __attribute__((weak_import));
+extern i8    iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc) __attribute__((weak_import));
 
 extern void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
