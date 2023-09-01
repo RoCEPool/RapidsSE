@@ -351,7 +351,7 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
 
     // Remove the trailing newline and save the function name
     //vTrace("Line: %s"_Stz, sBuf.azChar());
-    StrLib::vStrip(sBuf.azChar(), '\n');
+    StrLib::vStrip(sBuf.azChar(), sBuf.nAreaBytes(), '\n');
     psFuncNames[i].vCopy(sBuf);
 
     // Get the second line - the file name and line number
