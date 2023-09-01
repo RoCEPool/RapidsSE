@@ -491,12 +491,12 @@ Stz* Stencil_v2::szOpSource(void)
   
   char* azCode = m_pOpSource->azCode();
 
-  if (! StrLib::bIsTypical(azCode)) {
-    vTrace("~~~~\n"_Stz);
-    vTrace("%s\n"_Stz, azCode);
-    vTrace("~~~~\n"_Stz);
-    vDebugPoint();
-  }
+//  if (! StrLib::bIsTypical(azCode)) {
+//    vTrace("~~~~\n"_Stz);
+//    vTrace("%s\n"_Stz, azCode);
+//    vTrace("~~~~\n"_Stz);
+//    vDebugPoint();
+//  }
 
   return (Stz*)azCode;
 }

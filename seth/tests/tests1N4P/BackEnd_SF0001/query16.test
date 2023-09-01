@@ -618,6 +618,7 @@ rows:
  ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
  ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
 
+/*
 // JOIN ORDER : part -> partsupp
 /optimise_passthru 
 pipeline unamed
@@ -767,7 +768,7 @@ rows:
  ('Brand#54','ECONOMY ANODIZED BRASS'  , 9 ,1)
  ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
  ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
-
+*/
 
 // moved filters and added projections early
 //sf10 : 7.8s
@@ -781,8 +782,8 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public part
-    | filter " type BOOLEAN  P_BRAND 'Brand#45' != !f
-              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not !f and
+    | filter " type BOOLEAN  P_BRAND 'Brand#45' !=
+              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not  and
               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type VARCHAR as P_BRAND P_BRAND ,

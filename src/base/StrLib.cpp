@@ -90,6 +90,16 @@ extern "C" i8 iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSr
 }
 
 /*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string and get the size                 */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibWordFlipSize(char* psSrc) {
+	_static_
+
+	s16KB sDst;
+	return StrLib::iWordFlipBack(sDst.azChar(), sizeof(sDst), psSrc);
+}
+
+/*----------------------------------------------------------------------------*/
 
 static i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};

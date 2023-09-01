@@ -298,13 +298,15 @@ void vCloseBraces(Dynamic_T* aDynamicT) {
 // function-iSortBegin
 i8 iSortBegin(Dynamic_T* aDynamicT) {
 
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  char* szStrArea;
-
-  __L_LABEL_LOOP__:
+	char* szStrArea;
+	struct __STRUCT_FROM__* p__STRUCT_FROM__;
+	RowInfo __ROW_INFO_FROM__;
 
   // marker-start
   __L_LABEL__:
+
+	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
+	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
   // marker-end
 
@@ -735,10 +737,10 @@ void vPLIntKeyToHash(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vPLSkipKey --------------------------------------------------------------*/
+/*-- vPLSkipVchKey -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vPLSkipKey
-void vPLSkipKey(Dynamic_T* aDynamicT) {
+// function-vPLSkipVchKey
+void vPLSkipVchKey(Dynamic_T* aDynamicT) {
 
 	struct __STRUCT_FROM__ {
 			union Vch_T __COLUMN_FROM__;
@@ -759,20 +761,51 @@ void vPLSkipKey(Dynamic_T* aDynamicT) {
 
 	// marker-start
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	// skippink key column __COLUMN_NO__
-	szSrcStz = ((char*)(&(((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0)) + 8 + iKeySize);
+		// skipping key column __COLUMN_NO__
+		szSrcStz = ((char*)(&(((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0)) + 8 + iKeySize);
 
-	if (*(i8*)szSrcStz == C_DATUM_NULL) {
-		iKeySize += 8;
-	}
-	else {
+		if (*(i8*)szSrcStz == C_DATUM_NULL) {
+			iKeySize += 8;
+		}
+		else {
 
 #ifdef WITH_CLANG
-		nSrcSize = iExtern_StrLibWordFlipBack(szDstStz,szSrcStz);
+		nSrcSize = iExtern_StrLibWordFlipSize(szSrcStz);
 #endif
 
 		iKeySize += nSrcSize;
 	}
+	// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPLSkipIntKey -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPLSkipIntKey
+void vPLSkipIntKey(Dynamic_T* aDynamicT) {
+
+	struct __STRUCT_FROM__ {
+			union Vch_T __COLUMN_FROM__;
+	};
+
+	struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+	struct __STRUCT_TO__ {
+			union Vch_T __COLUMN_TO__;
+	};
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+
+	char* szSrcStz;
+
+	i8 iKeySize;
+	i8 nSrcSize;
+
+	// marker-start
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// skipping key column __COLUMN_NO__
+		iKeySize += 8;
+
 	// marker-end
 }
 
@@ -820,9 +853,12 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__ {
     union Vch_T __COLUMN_TO__;
+		char* m_acStrArea;
   };
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
+
+	RowInfo __ROW_INFO_TO__;
 
   char* szSrcStz;
   char* szDstStz;
@@ -844,7 +880,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     iElemSize += 8;
   }
   else {
-    szDstStz = aDynamicT->m_xRowInfoTO.m_acStrArea;
+    szDstStz = __ROW_INFO_TO__.m_acStrArea;
 
 #ifdef WITH_CLANG
     nSrcSize = iExtern_StrLibWordFlipBack(szDstStz, _C_16KB, szSrcStz); // Note: Alka to fix the C_16KB size
@@ -854,12 +890,12 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 #endif
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 
-    iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_acStrArea,amCellAddress);
+    iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
     // update the tub string size
     i8 iDstLen = strlen(szDstStz) + 1;
-    aDynamicT->m_xRowInfoTO.m_acStrArea += iDstLen;
+		__ROW_INFO_TO__.m_acStrArea += iDstLen;
 #ifdef WITH_CLANG
     //vExtern_TubRowStrSize(aDynamicT->m_pTub,iDstLen);
     __EXTERN_ROWSTRSIZE__;

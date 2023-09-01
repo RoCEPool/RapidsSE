@@ -554,7 +554,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz, pOperatorFile);
         vAppendCodeInflateRowCols(pOpSketch, "vInflateRowCol"_Stz, pOperatorFile);
-        vAppendCodeFragment(pOpSketch, "vInflateRowReturn"_Stz, pOperatorFile);
+        //vAppendCodeFragment(pOpSketch, "vInflateRowReturn"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the inflateRow code fragments file
@@ -1304,8 +1304,19 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 						break;
 					}
 					else {
-						// skip the key column
-						vAppendCodeFragment(pOpSketch, "vPLSkipKey"_Stz, pColumn);
+
+						Column* pMapColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1);
+
+						switch (pMapColumn->eColumnType()) {
+							// skip the key column
+							case CT_VARCHAR:
+							case CT_CHAR:
+								vAppendCodeFragment(pOpSketch, "vPLSkipVchKey"_Stz, pMapColumn);
+								break;
+
+							default:
+								vAppendCodeFragment(pOpSketch, "vPLSkipIntKey"_Stz, pMapColumn);
+						}
 					}
 				}
 			}

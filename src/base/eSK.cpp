@@ -8,7 +8,6 @@
 Stz* aSK[SK_ENUMS]
 {
   /*   */ "NONE"_Stz,
-  /*   */ "AGGORD"_Stz,
   /*   */ "AGGREG"_Stz,
   /*   */ "ANTIJOIN"_Stz,
   /*   */ "EOS"_Stz,
@@ -19,6 +18,7 @@ Stz* aSK[SK_ENUMS]
   /*   */ "INFLATE_CRW"_Stz,
   /*   */ "INFLATE_ROW"_Stz,
   /*   */ "LIMIT"_Stz,
+	/*   */ "ORDAGG"_Stz,
   /*   */ "POT"_Stz,
   /*   */ "PROJECT"_Stz,
   /*   */ "SEMIJOIN"_Stz,

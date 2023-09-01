@@ -24,11 +24,15 @@ void vFilterBegin(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
+	RowInfo __ROW_INFO_FROM__;
 
   __L_LABEL_LOOP__:
 
   // marker-start
 __L_LABEL__:
+
+	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
+	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
