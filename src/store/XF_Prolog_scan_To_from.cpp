@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_scan_To_from.cpp -- Scan Becomes Table                            */
+/* XF_Prolog_scan_To_from.cpp -- Scan Becomes Table                           */
 /*============================================================================*/
 
 #include "XF_Prolog_scan_To_from.hpp"
@@ -71,10 +71,10 @@ void XF_Prolog_scan_To_from::vXF_scan_To_table(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SCAN))
-    Card_Scan::vScanBecomesTable(m_pCI);
+    m_pCI->G.p_scan->vCard(CK_FROM);
 
   m_pCI->vEndTransform();
-//vValidateBench();
+
 }
 
 /*============================================================================*/
