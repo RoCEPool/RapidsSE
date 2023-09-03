@@ -20,7 +20,6 @@ namespace STORE
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_RpnCalc* pClone(void);
-    void vConvert_sqyOp_not_To_notSqyOp(void);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
