@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "XF_Prolog_table_Analysis.hpp"
+#include "Table.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -79,16 +80,37 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
   m_pCI->vTransform(__func__, XF_PROLOG_TABLE_ANALYSIS, "add a <tableSyn> to all <table>'s"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Affix Table Syntax To All Table
-  Card_Table::vAffixTableSyn(m_pCI, pSymbol_tableSyn);
+  // Affix Table synonyms To All Table
+  while (m_pCI->G_bEachMainWith2Sub(CK_FROM, CK_TABLE, CK_TABLENM))  {
+    m_pCI->G.p_table->vSet_Syn(m_pCI, pSymbol_tableSyn);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table
   m_pCI->vClearRestart();
-  Card_From::vProduceTablePtns(m_pCI);
+  while (m_pCI->G_bEachMainWith2Sub(CK_FROM, CK_TABLE, CK_TABLENM)) {
+
+    Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+    Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+    m_pCI->G.p_from->pSymbol()->Y_vSet(P_Pointer,pTable);
+
+    i8 jTableSize;
+    i8 jRowSize;
+    i8 nRowCount;
+    Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
+
+    m_pCI->G.p_tablePtn  = Card_TablePtn::pDerive(m_pCI->G.p_table);
+    m_pCI->G.p_tableSize = (new Card_TableSize) ->SYM(SF_INT_LIT,jTableSize);
+    m_pCI->G.p_rowSize   = (new Card_RowSize)   ->SYM(SF_INT_LIT,jRowSize);
+    m_pCI->G.p_rowCount  = (new Card_RowCount)  ->SYM(SF_INT_LIT,nRowCount);
+
+    m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
+    m_pCI->G.p_table->vAppend(m_pCI->G.p_tableSize);
+    m_pCI->G.p_table->vAppend(m_pCI->G.p_rowSize);
+    m_pCI->G.p_table->vAppend(m_pCI->G.p_rowCount);
+  }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/

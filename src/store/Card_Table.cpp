@@ -103,19 +103,6 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAffixTableSyn(CardIter* pCI, Symbol* pSymbol_tableSyn)
-{
-
-_static_
-
-  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_TABLE, CK_TABLENM))  {
-    pCI->G.p_table->vSet_Syn(pCI, pSymbol_tableSyn);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* affix table syntax to all tables                                           */
-/*----------------------------------------------------------------------------*/
 void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
 
