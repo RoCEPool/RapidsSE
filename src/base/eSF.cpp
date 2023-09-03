@@ -47,6 +47,8 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_IDX_COL"_Stz,
   /* */ "SF_IDX_NM"_Stz,
   /* */ "SF_INT_LIT"_Stz,
+  /* */ "SF_INTERVAL_DT"_Stz,
+  /* */ "SF_INTERVAL_YM"_Stz,
   /* */ "SF_IVL_FN"_Stz,
 
   /* */ "SF_KEY_COL"_Stz,

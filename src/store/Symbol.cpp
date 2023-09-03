@@ -148,6 +148,8 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_GroupBy(szChrSeq))      return SF_GROUPBY;
   if (bIs_Idx_Col(szChrSeq))      return SF_IDX_COL;
   if (bIs_Int_Lit(szChrSeq))      return SF_INT_LIT;
+  if (bIs_Interval_DT(szChrSeq))  return SF_INTERVAL_DT;
+  if (bIs_Interval_YM(szChrSeq))  return SF_INTERVAL_YM;
   if (bIs_Ivl_Fn(szChrSeq))       return SF_IVL_FN;
   if (bIs_Key_Col(szChrSeq))      return SF_KEY_COL;
   if (bIs_Mth_Op(szChrSeq))       return SF_MTH_OP;
@@ -345,28 +347,30 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (! bPossibleNm(szArg))
     return false;
 
-  if (bIs_As(szArg))        return false;
-  if (bIs_Bol_Fn(szArg))    return false;
-  if (bIs_Bol_Lit(szArg))   return false;
-  if (bIs_Bol_Op(szArg))    return false;
-  if (bIs_Bound(szArg))     return false;
-  if (bIs_Case(szArg))      return false;
-  if (bIs_Cast(szArg))      return false;
-  if (bIs_CastType(szArg))  return false;
-  if (bIs_Col_Type(szArg))  return false;
-  if (bIs_Cross(szArg))     return false;
-  if (bIs_Direction(szArg)) return false;
-  if (bIs_Else(szArg))      return false;
-  if (bIs_EndIf(szArg))     return false;
-  if (bIs_GroupBy(szArg))   return false;
-  if (bIs_Ivl_Fn(szArg))    return false;
-  if (bIs_Negate(szArg))    return false;
-  if (bIs_Null(szArg))      return false;
-  if (bIs_Sqy_Op(szArg))    return false;
-  if (bIs_Stg_Cast(szArg))  return false;
-  if (bIs_Then(szArg))      return false;
-  if (bIs_Type(szArg))      return false;
-  if (bIs_When(szArg))      return false;
+  if (bIs_As(szArg))          return false;
+  if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
+  if (bIs_Bol_Op(szArg))      return false;
+  if (bIs_Bound(szArg))       return false;
+  if (bIs_Case(szArg))        return false;
+  if (bIs_Cast(szArg))        return false;
+  if (bIs_CastType(szArg))    return false;
+  if (bIs_Col_Type(szArg))    return false;
+  if (bIs_Cross(szArg))       return false;
+  if (bIs_Direction(szArg))   return false;
+  if (bIs_Else(szArg))        return false;
+  if (bIs_EndIf(szArg))       return false;
+  if (bIs_GroupBy(szArg))     return false;
+  if (bIs_Interval_DT(szArg)) return false;
+  if (bIs_Interval_YM(szArg)) return false;
+  if (bIs_Ivl_Fn(szArg))      return false;
+  if (bIs_Negate(szArg))      return false;
+  if (bIs_Null(szArg))        return false;
+  if (bIs_Sqy_Op(szArg))      return false;
+  if (bIs_Stg_Cast(szArg))    return false;
+  if (bIs_Then(szArg))        return false;
+  if (bIs_Type(szArg))        return false;
+  if (bIs_When(szArg))        return false;
 
   return true;
 }
@@ -531,7 +535,7 @@ bool Symbol::bIs_Flt_Lit(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
+/* is this symbol GROUPBY ?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_GroupBy(Stz* szArg)
 {
@@ -584,6 +588,30 @@ bool Symbol::bIs_Int_Lit(Stz* szArg)
   _static_
 
   if (StrLib::bIsInteger(szArg->azChar()))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol INTERVAL_DT ?                                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Interval_DT(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("INTERVAL_DT"_Stz))   return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol INTERVAL_YM ?                                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Interval_YM(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("INTERVAL_YM"_Stz))   return true;
 
   return false;
 }
@@ -1664,7 +1692,7 @@ bool Symbol::bIs_Flt_Lit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a sort direction?                                           */
+/* is this symbol GROUPBY ?                                                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_GroupBy(void)
 {
@@ -1725,6 +1753,38 @@ bool Symbol::bIs_Int_Lit(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol INTERVAL_DT ?                                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Interval_DT(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_INTERVAL_DT != m_eSymbol)
+    return false;
+
+  if (bIs_Interval_DT(m_sChrSeq))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol INTERVAL_YM ?                                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Interval_YM(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_INTERVAL_YM != m_eSymbol)
+    return false;
+
+  if (bIs_Interval_YM(m_sChrSeq))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2373,6 +2433,8 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_IDX_NM:      vSet_Idx_Nm(szChrSeq);      break;
     case SF_INT_LIT:     vSet_Int_Lit(szChrSeq);     break;
     case SF_IVL_FN:      vSet_Ivl_Fn(szChrSeq);      break;
+    case SF_INTERVAL_DT: vSet_Interval_DT(szChrSeq); break;
+    case SF_INTERVAL_YM: vSet_Interval_YM(szChrSeq); break;
     case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
     case SF_NEGATE:      vSet_Negate(szChrSeq);      break;
     case SF_NOTE:        vSet_Note(szChrSeq);        break;
@@ -2506,6 +2568,8 @@ bool Symbol::bValidate(void)
     case SF_IDX_COL:     b = bIs_Idx_Col();     break;
     case SF_IDX_NM:      b = bIs_Idx_Nm();      break;
     case SF_INT_LIT:     b = bIs_Int_Lit();     break;
+    case SF_INTERVAL_DT: b = bIs_Interval_DT(); break;
+    case SF_INTERVAL_YM: b = bIs_Interval_YM(); break;
     case SF_IVL_FN:      b = bIs_Ivl_Fn();      break;
     case SF_KEY_COL:     b = bIs_Key_Col();     break;
     case SF_NOTE:        b = bIs_Note();        break;
@@ -3488,6 +3552,36 @@ void Symbol::vSet_Int_Lit(Stz* szIntLit)
   m_eSymbol = SF_INT_LIT;
 
   RASSERT(bIs_Int_Lit());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given INTERVAL_DT                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Interval_DT(Stz* szInterval_DT)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szInterval_DT;
+  m_eSymbol = SF_INTERVAL_DT;
+
+  RASSERT(bIs_Interval_DT());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given INTERVAL_YM                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Interval_YM(Stz* szInterval_YM)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szInterval_YM;
+  m_eSymbol = SF_INTERVAL_YM;
+
+  RASSERT(bIs_Interval_YM());
 }
 
 /*----------------------------------------------------------------------------*/

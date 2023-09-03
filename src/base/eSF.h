@@ -45,6 +45,8 @@ enum eSF // symbol form
   /* */ SF_IDX_COL,     // Index Column no     : $In
   /* */ SF_IDX_NM,      // Index Name          : bIsName
   /* */ SF_INT_LIT,     // Integer Literal     : StrLib::bIsInteger()
+  /* */ SF_INTERVAL_DT, // INTERVAL_DT         : INTERVAL_DT
+  /* */ SF_INTERVAL_YM, // INTERVAL_YM         : INTERVAL_YM
   /* */ SF_IVL_FN,      // Interval Function   : extract_year etc
 
   /* */ SF_KEY_COL,     // Key Column no       : $Kn

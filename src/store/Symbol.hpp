@@ -64,6 +64,8 @@ namespace STORE
     static bool bIs_Idx_Col(Stz* szChrSeq);         // $In
     static bool bIs_Idx_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Int_Lit(Stz* szChrSeq);         // StrLib::bIsInteger()
+    static bool bIs_Interval_DT(Stz* szChrSeq);     // INTERVAL_DT
+    static bool bIs_Interval_YM(Stz* szChrSeq);     // INTERVAL_YM
     static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
@@ -143,6 +145,8 @@ namespace STORE
     bool bIs_Idx_Col(void);         // $In
     bool bIs_Idx_Nm(void);          // Sn
     bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
+    bool bIs_Interval_DT(void);     // INTERVAL_DT
+    bool bIs_Interval_YM(void);     // INTERVAL_YM
     bool bIs_Ivl_Fn(void);          // extract_year etc
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
@@ -265,6 +269,8 @@ namespace STORE
     void vSet_Idx_Nm(Stz* szIdxNm);
     void vSet_Int_Lit(i8 iIIntLIt);
     void vSet_Int_Lit(Stz* szIntLit);
+    void vSet_Interval_DT(Stz* szInterval_DT);
+    void vSet_Interval_YM(Stz* szInterval_YM);
     void vSet_Ivl_Fn(Stz* szIvlFn);
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Key_Col(Stz* szKeyCol);
