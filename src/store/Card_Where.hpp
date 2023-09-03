@@ -23,7 +23,6 @@ namespace STORE
     static void vDeleteEmpyWhere(CardIter* pCI);
     static void vMarkWherePredWrtTable(CardIter* pCI);
     static void vMoveWherePredsToTableFilter(CardIter* pCI);
-    static void vMove_All_on_To_where(CardIter* pCI);
 
     static Card_Where* pNewWhereAssembly(void);
 

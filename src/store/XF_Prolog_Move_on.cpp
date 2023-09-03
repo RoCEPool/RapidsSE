@@ -18,8 +18,8 @@ __aFooterFunction(XF_Prolog_Move_on)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* pCI)
-: XF_PROLOG(CN_XF_MOVE_ON, pCI)
+XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* m_pCI)
+: XF_PROLOG(CN_XF_MOVE_ON, m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 
@@ -39,11 +39,11 @@ XF_Prolog_Move_on::~XF_Prolog_Move_on(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Move_on::vProlog(CardIter* pCI)
+void XF_Prolog_Move_on::vProlog(CardIter* m_pCI)
 {
   _static_
 
-  XF_Prolog_Move_on* pXF_Move_on = new XF_Prolog_Move_on(pCI);
+  XF_Prolog_Move_on* pXF_Move_on = new XF_Prolog_Move_on(m_pCI);
 
   pXF_Move_on->vXF_Move_on();
 
@@ -64,7 +64,64 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_MOVE_ON, "move <on> in <absJoin>'s to <where>"_Stz);
 
-  Card_Where::vMove_All_on_To_where(m_pCI);
+  m_pCI->vBeginEach();
+  if (m_pCI->G_bEachMain(CK_WHERE))
+    m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each <absJoin>/<on>/<rpnCalc>
+  //   move/append to <where>/<rpnCalc>
+
+  Card_Table* p_table = nullptr;
+
+  m_pCI->vBeginEachReverse();
+  while (m_pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
+
+    // ignore
+    Card_RpnCalc *p_rpnCalc_on = m_pCI->G.p_on->pSub_rpnCalc();
+    if (! p_rpnCalc_on->nChildCards())
+      continue;
+
+    // move LEFT_OUTER to scan
+    if (p_rpnCalc_on->bPopDeleteChildIf(CK_TERM,
+                                        Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
+      m_pCI->G_vPushIter();
+      if (m_pCI->G_bEachMain_reverse_b(CK_SCAN)) {
+        p_table = m_pCI->G.p_table = m_pCI->G.p_scan->pSub_table();
+        m_pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
+        m_pCI->G.p_table->vAppend(m_pCI->G.p_outerJoin);
+      }
+      m_pCI->G_vPopIter();
+    }
+
+    Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
+    if (p_term_0->pSymbol()->bSame("CROSS"_Stz))
+      continue;
+
+    if (! m_pCI->G.p_where) {
+      // create a new <where>/...
+      m_pCI->G.p_where = Card_Where::pNewWhereAssembly();
+      m_pCI->G.pDeck->vInsertAfter(m_pCI->G.p_where,m_pCI->G.p_absJoin);
+
+      m_pCI->G.p_rpnCalc = m_pCI->G.p_where->pSub_rpnCalc();
+    }
+
+    // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
+    m_pCI->G.p_rpnCalc->vTransfer(p_rpnCalc_on,SF_RLN_OP);
+
+    if (p_rpnCalc_on->nChildCards()) {
+      delete p_rpnCalc_on->pPlopChild();
+      m_pCI->G_vAppendNewChild(p_table,CK_CONSTRAINT);
+      m_pCI->G_vAppendNewChild(m_pCI->G.p_constraint,CK_RPNCALC);
+      m_pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
+      m_pCI->G.p_where->vConvert_rpnCalc_To_boolCalc(m_pCI);
+    }
+
+    // remove and delete <absJoin>/<on>
+    m_pCI->G.p_absJoin->vRemoveChild(m_pCI->G.p_on);
+    DELETE_CARD(m_pCI->G.p_on);
+  }
+
 
   m_pCI->vEndTransform();
 //vValidateBench();
