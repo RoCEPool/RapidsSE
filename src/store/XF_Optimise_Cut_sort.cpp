@@ -91,12 +91,9 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
         }
         break;
     }
-
-   // m_pCI->vPrintBoard(__LINE__);
   }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 
   return bOptRun;
 }
