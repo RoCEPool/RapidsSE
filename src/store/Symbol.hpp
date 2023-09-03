@@ -69,6 +69,7 @@ namespace STORE
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
     static bool bIs_None(Stz* szChrSeq);            // <none>
     static bool bIs_Note(Stz* szChrSeq);            // ...any...
+    static bool bIs_Null(Stz* szChrSeq);            // NULL
     static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
     static bool bIs_Ppe_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Prm_Col(Stz* szChrSeq);         // %n
@@ -146,6 +147,7 @@ namespace STORE
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_None(void);            //
     bool bIs_Note(void);            // ...any...
+    bool bIs_Null(void);            // NULL
     bool bIs_Parenthesis(void);     // ( or )
     bool bIs_Ppe_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Prm_Col(void);         // %n
@@ -266,6 +268,7 @@ namespace STORE
     void vSet_Key_Col(Stz* szKeyCol);
     void vSet_Mth_Op(Stz* szMthOp);
     void vSet_Note(Stz* szNote);
+    void vSet_Null(Stz* szNull);
     void vSet_Parenthesis(Stz* szParenthesis);
     void vSet_Ppe_Nm(Stz* szPpeNm);
     void vSet_Prm_Col(i8 iOrdinal);

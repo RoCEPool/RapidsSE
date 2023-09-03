@@ -151,6 +151,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Ivl_Fn(szChrSeq))       return SF_IVL_FN;
   if (bIs_Key_Col(szChrSeq))      return SF_KEY_COL;
   if (bIs_Mth_Op(szChrSeq))       return SF_MTH_OP;
+  if (bIs_Null(szChrSeq))         return SF_NULL;
   if (bIs_Parenthesis(szChrSeq))  return SF_PARENTHESIS;
   if (bIs_Prm_Col(szChrSeq))      return SF_PRM_COL;
   if (bIs_Rln_Op(szChrSeq))       return SF_RLN_OP;
@@ -358,6 +359,7 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (bIs_EndIf(szArg))     return false;
   if (bIs_GroupBy(szArg))   return false;
   if (bIs_Ivl_Fn(szArg))    return false;
+  if (bIs_Null(szArg))      return false;
   if (bIs_Sqy_Op(szArg))    return false;
   if (bIs_Stg_Cast(szArg))  return false;
   if (bIs_Then(szArg))      return false;
@@ -649,7 +651,7 @@ bool Symbol::bIs_None(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a math operator ?                                           */
+/* is this symbol a note ?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Note(Stz* szArg)
 {
@@ -657,6 +659,19 @@ bool Symbol::bIs_Note(Stz* szArg)
   UNUSED(szArg);
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol NULL ?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Null(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("NULL"_Stz))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1762,7 +1777,7 @@ bool Symbol::bIs_None(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a number?                                                          */
+/* is this a note                                                             */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Note(void)
 {
@@ -1777,6 +1792,21 @@ bool Symbol::bIs_Note(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this symbol NULL ?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Null(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_NULL != m_eSymbol)
+    return false;
+
+  if (bIs_Null(m_sChrSeq))
+    return true;
+
+  return false;
+}
 /*----------------------------------------------------------------------------*/
 /* is this symbol a parenthesis?                                              */
 /*----------------------------------------------------------------------------*/
@@ -2314,6 +2344,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_IVL_FN:      vSet_Ivl_Fn(szChrSeq);      break;
     case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
     case SF_NOTE:        vSet_Note(szChrSeq);        break;
+    case SF_NULL:        vSet_Null(szChrSeq);        break;
     case SF_MTH_OP:      vSet_Mth_Op(szChrSeq);      break;
     case SF_PARENTHESIS: vSet_Parenthesis(szChrSeq); break;
     case SF_PPE_NM:      vSet_Ppe_Nm(szChrSeq);      break;
@@ -2446,6 +2477,7 @@ bool Symbol::bValidate(void)
     case SF_IVL_FN:      b = bIs_Ivl_Fn();      break;
     case SF_KEY_COL:     b = bIs_Key_Col();     break;
     case SF_NOTE:        b = bIs_Note();        break;
+    case SF_NULL:        b = bIs_Null();        break;
     case SF_MTH_OP:      b = bIs_Mth_Op();      break;
     case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
     case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
@@ -3499,6 +3531,21 @@ void Symbol::vSet_Note(Stz* szNote)
   m_eSymbol = SF_NOTE;
 
   RASSERT(bIs_Note());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to NULL                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Null(Stz* szNull)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szNull;
+  m_eSymbol = SF_NULL;
+
+  RASSERT(bIs_Null());
 }
 
 /*----------------------------------------------------------------------------*/

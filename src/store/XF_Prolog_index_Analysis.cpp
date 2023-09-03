@@ -138,7 +138,6 @@ void XF_Prolog_index_Analysis::vXF_index_Analysis_passThru(void)
   }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 /*============================================================================*/

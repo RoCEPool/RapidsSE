@@ -54,6 +54,7 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_MTH_OP"_Stz,
 
   /* */ "SF_NOTE"_Stz,
+  /* */ "SF_NULL"_Stz,
 
   /* */ "SF_PARENTHESIS"_Stz,
   /* */ "SF_PPE_NM"_Stz,

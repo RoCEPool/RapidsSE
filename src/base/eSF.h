@@ -52,6 +52,7 @@ enum eSF // symbol form
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
 
   /* */ SF_NOTE,        // Note Literal        : ...any...
+  /* */ SF_NULL,        // Null                : NULL
 
   /* */ SF_PARENTHESIS, // Parenthesis         : (, )
   /* */ SF_PPE_NM,      // PipeName            : bIsName
