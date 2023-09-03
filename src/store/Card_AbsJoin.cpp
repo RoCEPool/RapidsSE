@@ -40,20 +40,6 @@ Card_AbsJoin::~Card_AbsJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete the <absJoin>                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_AbsJoin::vDeleteAllAbsJoin(CardIter* pCI) {
-
-  _static_
-
-  pCI->vBeginEach();
-
-  while (pCI->G_bEachMain(CK_ABSJOIN)) {
-    pCI->G_vRemoveDeleteMain(CK_ABSJOIN);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_AbsJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

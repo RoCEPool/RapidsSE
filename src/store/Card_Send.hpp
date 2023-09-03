@@ -13,8 +13,6 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    static void vDeleteAllSend(CardIter* pCI);
-
     Card_Send(void);
    ~Card_Send(void) noexcept(false);
 

@@ -43,18 +43,6 @@ Card_Combined::~Card_Combined(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete the <absJoin>                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_Combined::vDeleteAllCombined(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMain(CK_COMBINED)) {
-    pCI->G_vRemoveDeleteMain(CK_COMBINED);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Combined::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
