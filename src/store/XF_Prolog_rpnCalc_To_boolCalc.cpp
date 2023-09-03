@@ -65,15 +65,20 @@ void XF_Prolog_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(void)
   m_pCI->vTransform(__func__, XF_PROLOG_RPNCALC_TO_BOOLCALC, "all $n become $c.n"_Stz);
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))
-    m_pCI->G.p_where->vConvert_rpnCalc_To_boolCalc(m_pCI);
+  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC)) {
+    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc(m_pCI);
+    m_pCI->G.p_where->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
+    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+  }
 
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC))
-    m_pCI->G.p_having->vConvert_rpnCalc_To_boolCalc(m_pCI);
+  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC)) {
+    m_pCI->G.p_boolCalc = m_pCI->G.p_rpnCalc->pToBoolCalc(m_pCI);
+    m_pCI->G.p_having->vReplaceSubCard(m_pCI->G.p_rpnCalc,m_pCI->G.p_boolCalc);
+    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
+  }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 /*============================================================================*/

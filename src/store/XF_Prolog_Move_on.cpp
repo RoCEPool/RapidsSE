@@ -114,7 +114,6 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       m_pCI->G_vAppendNewChild(p_table,CK_CONSTRAINT);
       m_pCI->G_vAppendNewChild(m_pCI->G.p_constraint,CK_RPNCALC);
       m_pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
-      m_pCI->G.p_where->vConvert_rpnCalc_To_boolCalc(m_pCI);
     }
 
     // remove and delete <absJoin>/<on>
