@@ -51,7 +51,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
   {
     UNUSED(pCI);
 
-    pCI->vAncestorDump(pCard);
+    //pCI->vAncestorDump(pCard);
 
     if (! pCard->bIsCard(CK_AS))
       return C_CONTINUE_RECURSION;
@@ -94,7 +94,7 @@ void Card_As::vItemStrip_colNm(CardIter* pCI)
     if (! pCard->bIsCard(CK_AS))
       return C_CONTINUE_RECURSION;
 
-    pCI->vAncestorDump(pCard);
+    //pCI->vAncestorDump(pCard);
 
     Card_As* p_as = _pCard_As(pCard);
 

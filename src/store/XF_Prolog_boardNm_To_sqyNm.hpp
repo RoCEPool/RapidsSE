@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_Shorten_queryNm.hpp -- Shorten Query Names                           */
+/* XF_Prolog_boardNm_To_sqyNm.hpp -- Change boardNm to sqyNm                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_Shorten_queryNm : public XF_PROLOG
+  class XF_Prolog_boardNm_To_sqyNm : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_Shorten_queryNm(CardIter* pCI);
-   ~XF_Prolog_Shorten_queryNm(void) noexcept(false);
+    XF_Prolog_boardNm_To_sqyNm(CardIter* pCI);
+   ~XF_Prolog_boardNm_To_sqyNm(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
 
-    void vXF_Shorten_queryNm(void);
+    void vProlog(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Prolog_Shorten_queryNm* _pXF_Prolog_Shorten_queryNm(void* aAddr);
+  XF_Prolog_boardNm_To_sqyNm* _pXF_Prolog_boardNm_To_sqyNm(void* aAddr);
 }
 
 /*============================================================================*/

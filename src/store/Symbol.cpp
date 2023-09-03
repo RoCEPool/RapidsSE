@@ -156,7 +156,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Rln_Op(szChrSeq))       return SF_RLN_OP;
   if (bIs_Sqy_Prm(szChrSeq))      return SF_PRM_COL;
   if (bIs_Sqy_Op(szChrSeq))       return SF_SQY_OP;
-  if (bIs_Sqy_Rsl(szChrSeq))      return SF_SQY_NO;
+  if (bIs_Sqy_Rsl(szChrSeq))      return SF_SQY_NM;
   if (bIs_Stg_Cast(szChrSeq))     return SF_STG_CAST;
   if (bIs_String(szChrSeq))       return SF_STRING;
   if (bIs_Then(szChrSeq))         return SF_THEN;
@@ -732,20 +732,6 @@ bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szChrSeq)
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Nm(BASE::Stz *szChrSeq)
-{
-  _static_
-
-  if (StrLib::bBeginsWith(szChrSeq->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szChrSeq->azChar(), "__sq"))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_No(BASE::Stz *szChrSeq)
 {
   _static_
 
@@ -1871,14 +1857,14 @@ bool Symbol::bIs_Sqy_Prm(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a subQuery-operator?                                  */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_No(void)
+bool Symbol::bIs_Sqy_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_SQY_NO != m_eSymbol)
+  if (SF_SQY_NM != m_eSymbol)
     return false;
 
-  if (bIs_Sqy_No(m_sChrSeq))
+  if (bIs_Sqy_Nm(m_sChrSeq))
     return true;
 
   return false;
@@ -2261,7 +2247,8 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
     case SF_IDX_COL:    vSet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vSet_Int_Lit(iInt);    break;
     case SF_KEY_COL:    vSet_Key_Col(iInt);    break;
-    case SF_SQY_NO:     vSet_Sqy_No(iInt);     break;
+    case SF_SQY_NM:
+      vSet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vSet_Stg_Nm(iInt);     break;
     case SF_PRM_COL:    vSet_Prm_Col(iInt);    break;
     case SF_XRF_NO:     vSet_Xrf_No(iInt);     break;
@@ -3592,16 +3579,16 @@ void Symbol::vSet_Rln_Op(Stz* szRlnOp)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given subquery-number                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Sqy_No(i8 iSqNo)
+void Symbol::vSet_Sqy_Nm(i8 iSqyNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  vSymSprint("__sq%02lld"_Stz, iSqNo);
-  m_eSymbol = SF_SQY_NO;
+  vSymSprint("__sq%02lld"_Stz, iSqyNo);
+  m_eSymbol = SF_SQY_NM;
 
-  RASSERT(bIs_Sqy_No());
+  RASSERT(bIs_Sqy_Nm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3637,13 +3624,13 @@ void Symbol::vSet_Stg_Cast(Stz* szStgCast)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to iven stage name                                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Stg_Nm(i8 iStageNo)
+void Symbol::vSet_Stg_Nm(i8 iStgNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == m_eSymbol);
 
-  vSymSprint("S%02lld"_Stz, iStageNo);
+  vSymSprint("S%02lld"_Stz, iStgNo);
   m_eSymbol = SF_STG_NO;
 
   RASSERT(bIs_Stg_Nm());

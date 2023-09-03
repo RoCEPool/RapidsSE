@@ -103,7 +103,7 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
     if (! pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    pCI->vAncestorDump(pCard);
+    //pCI->vAncestorDump(pCard);
 
     if (! pCard->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;

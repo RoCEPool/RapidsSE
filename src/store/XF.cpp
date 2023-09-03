@@ -37,7 +37,7 @@
 #include "XF_Prolog_Add_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
-#include "XF_Prolog_Shorten_queryNm.hpp"
+#include "XF_Prolog_boardNm_To_sqyNm.hpp"
 #include "XF_Prolog_as_Review.hpp"
 #include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Prolog_index_Analysis.hpp"
@@ -130,7 +130,7 @@ void XF::vTransform(void)
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard())                      //
-    XF_Prolog_Shorten_queryNm::vProlog(m_pCI);     //
+    XF_Prolog_boardNm_To_sqyNm::vProlog(m_pCI);    //
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
@@ -242,7 +242,7 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
-    XF_Prolog_Shorten_queryNm::vProlog(m_pCI);
+    XF_Prolog_boardNm_To_sqyNm::vProlog(m_pCI);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {

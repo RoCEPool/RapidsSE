@@ -59,7 +59,7 @@ enum eSF // symbol form
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
-  /* */ SF_SQY_NO,      // SubQuery No         :
+  /* */ SF_SQY_NM,      // SubQuery Nm         : __sq<n>
   /* */ SF_SQY_OP,      // SubQuery Op         :
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
