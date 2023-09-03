@@ -18,8 +18,8 @@ __aFooterFunction(XF_Prolog_Move_on)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* m_pCI)
-: XF_PROLOG(CN_XF_MOVE_ON, m_pCI)
+XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* pCI)
+: XF_PROLOG(CN_XF_MOVE_ON, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 
@@ -39,11 +39,11 @@ XF_Prolog_Move_on::~XF_Prolog_Move_on(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Move_on::vProlog(CardIter* m_pCI)
+void XF_Prolog_Move_on::vProlog(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_Move_on* pXF_Move_on = new XF_Prolog_Move_on(m_pCI);
+  XF_Prolog_Move_on* pXF_Move_on = new XF_Prolog_Move_on(pCI);
 
   pXF_Move_on->vXF_Move_on();
 
@@ -122,9 +122,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     DELETE_CARD(m_pCI->G.p_on);
   }
 
-
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 /*============================================================================*/
