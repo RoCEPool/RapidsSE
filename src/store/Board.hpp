@@ -184,9 +184,6 @@ namespace STORE
 
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
 
-    static void vMorphAll_table_To_EEop(CardIter* pCI);
-
-
     Bench* pBench(void);
     i8   i_Board(void);
     void vBoardNo(i8 i_Board);

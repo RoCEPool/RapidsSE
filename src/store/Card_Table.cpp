@@ -420,9 +420,6 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
 {
   _static_
 
- // pCI->vPrintBoard(__LINE__);
-
-
   // TABLE to:
   // a) SCAN
   if (0 == pCI->G.i_MainCard)  {
@@ -444,11 +441,6 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
   else {
     Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
   }
-
- // pCI->vRenumberCards();
- // pCI->vPrintBoard(__LINE__);
-  vDebugPoint();
-
 }
 
 /*----------------------------------------------------------------------------*/

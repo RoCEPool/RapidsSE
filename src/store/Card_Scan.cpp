@@ -48,8 +48,6 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
   _static_
 
     pCI->G.p_from->vCard(CK_SCAN);
-//  pCI->G_vNewMember(CK_SCAN);
-//  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_scan);
 }
 
 

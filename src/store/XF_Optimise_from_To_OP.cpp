@@ -68,12 +68,14 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
 
   m_pCI->vTransform(__func__, XF_OPTIMISE_FROM_TO_OP, "morph table to EE op"_Stz);
 
-  Board::vMorphAll_table_To_EEop(m_pCI);
+  m_pCI->vBeginEach();
+  while (m_pCI->G_bEachMainWithSub(CK_FROM,CK_TABLE)) {
+    m_pCI->G.p_table->vMorph_table_To_EEop(m_pCI);
+  }
 
   bOptRun = true;
 
   m_pCI->vEndTransform();
-//vValidateBench();
 
   return bOptRun;
 }
