@@ -70,11 +70,6 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   m_pCI->vTransform(__func__, XF_OPTIMISE_CULL_NONUSED_BOUND, "cull non-used bounds"_Stz);
 
- // m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
   m_pCI->vClearRestart();
 
   while (m_pCI->G_bEachMain_NONE()) {
@@ -91,13 +86,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   }
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
- // m_pCI->vPrintBoard();
-
   m_pCI->vEndTransform();
-//vValidateBench();
 
   return bOptRun;
 }
@@ -112,8 +101,6 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   bool bOptRun = false;
 
   m_pCI->vTransform(__func__, XF_OPTIMISE_CULL_USED_BOUND, "cull nused bounds"_Stz);
-
- // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark any cmpPred that are a bound in bounds
@@ -167,7 +154,6 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   // cull marked cmpPred from filter
 
   m_pCI->vClearRestart();
-//  Card_Constraint::vCullUsedBounds(m_pCI);
 
   i8 nCulled = 0;
   while (m_pCI->G_bEachMain_NONE()) {
@@ -186,15 +172,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   m_pCI->vClearRestart();
   Card_Filter::vDeleteEmptyFilters(m_pCI);
 
-//  while (m_pCI->G_bEachMain()) {
-//    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-//      m_pCI->G.p_MainCard->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
-//  }
-
- // m_pCI->vPrintBoard();
-
   m_pCI->vEndTransform();
-//vValidateBench();
 
   return bOptRun;
 }
