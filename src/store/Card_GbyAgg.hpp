@@ -18,8 +18,6 @@ namespace STORE
     Card_GbyAgg(void);
    ~Card_GbyAgg(void) noexcept(false);
 
-    void vAs_Review(CardIter* pCI);
-
     void vBump_Rightwards(i8 nBumpBy);
 
     void vColumn_Mapping(CardIter* pCI);

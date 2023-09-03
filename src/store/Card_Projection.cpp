@@ -371,7 +371,7 @@ Card_Projection* Card_Projection::pReducedCopy(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* as review                                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vReviewAs(CardIter* pCI)
+void Card_Projection::vAs_Review(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

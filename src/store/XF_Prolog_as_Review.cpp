@@ -71,7 +71,10 @@ void XF_Prolog_as_Review::vXF_as_Review(void)
     switch (m_pCI->G.e_MainCard) {
 
       case CK_GBYAGG:
-        m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
+        //m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
+        m_pCI->G.p_key = m_pCI->G.p_gbyAgg->pSub_key();
+        m_pCI->G.p_projection = m_pCI->G.p_gbyAgg->pSub_projection();
+        m_pCI->G.p_projection->vAs_Review(m_pCI);
         break;
 
       case CK_INDEXJOIN:  break;

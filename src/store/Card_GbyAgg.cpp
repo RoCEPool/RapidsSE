@@ -41,19 +41,6 @@ Card_GbyAgg::~Card_GbyAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* as review                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vAs_Review(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
-
-  pCI->G.p_projection->vReviewAs(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* bump key & projection of this gbyAgg rightwards by given amount            */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vBump_Rightwards(i8 nBumpBy)
