@@ -53,6 +53,7 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_MTH_OP"_Stz,
 
+  /* */ "SF_NEGATE"_Stz,
   /* */ "SF_NOTE"_Stz,
   /* */ "SF_NULL"_Stz,
 

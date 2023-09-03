@@ -51,6 +51,7 @@ enum eSF // symbol form
 
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
 
+  /* */ SF_NEGATE,      // Negate              : NEGATE
   /* */ SF_NOTE,        // Note Literal        : ...any...
   /* */ SF_NULL,        // Null                : NULL
 

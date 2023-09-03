@@ -151,6 +151,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Ivl_Fn(szChrSeq))       return SF_IVL_FN;
   if (bIs_Key_Col(szChrSeq))      return SF_KEY_COL;
   if (bIs_Mth_Op(szChrSeq))       return SF_MTH_OP;
+  if (bIs_Negate(szChrSeq))       return SF_NEGATE;
   if (bIs_Null(szChrSeq))         return SF_NULL;
   if (bIs_Parenthesis(szChrSeq))  return SF_PARENTHESIS;
   if (bIs_Prm_Col(szChrSeq))      return SF_PRM_COL;
@@ -359,6 +360,7 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (bIs_EndIf(szArg))     return false;
   if (bIs_GroupBy(szArg))   return false;
   if (bIs_Ivl_Fn(szArg))    return false;
+  if (bIs_Negate(szArg))    return false;
   if (bIs_Null(szArg))      return false;
   if (bIs_Sqy_Op(szArg))    return false;
   if (bIs_Stg_Cast(szArg))  return false;
@@ -631,6 +633,19 @@ bool Symbol::bIs_Mth_Op(Stz* szArg)
   if (szArg->bSame("*"_Stz))     return true;
   if (szArg->bSame("/"_Stz))     return true;
   if (szArg->bSame("%"_Stz))     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol NEGATE ?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Negate(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("NEGATE"_Stz))
+    return true;
 
   return false;
 }
@@ -1761,6 +1776,22 @@ bool Symbol::bIs_Mth_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol NEGATE ?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Negate(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_NEGATE != m_eSymbol)
+    return false;
+
+  if (bIs_Negate(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a math operator ?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_None(void)
@@ -1807,6 +1838,7 @@ bool Symbol::bIs_Null(void)
 
   return false;
 }
+
 /*----------------------------------------------------------------------------*/
 /* is this symbol a parenthesis?                                              */
 /*----------------------------------------------------------------------------*/
@@ -2277,8 +2309,7 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
     case SF_IDX_COL:    vSet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vSet_Int_Lit(iInt);    break;
     case SF_KEY_COL:    vSet_Key_Col(iInt);    break;
-    case SF_SQY_NM:
-      vSet_Sqy_Nm(iInt);     break;
+    case SF_SQY_NM:     vSet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vSet_Stg_Nm(iInt);     break;
     case SF_PRM_COL:    vSet_Prm_Col(iInt);    break;
     case SF_XRF_NO:     vSet_Xrf_No(iInt);     break;
@@ -2343,6 +2374,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_INT_LIT:     vSet_Int_Lit(szChrSeq);     break;
     case SF_IVL_FN:      vSet_Ivl_Fn(szChrSeq);      break;
     case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
+    case SF_NEGATE:      vSet_Negate(szChrSeq);      break;
     case SF_NOTE:        vSet_Note(szChrSeq);        break;
     case SF_NULL:        vSet_Null(szChrSeq);        break;
     case SF_MTH_OP:      vSet_Mth_Op(szChrSeq);      break;
@@ -3516,6 +3548,21 @@ void Symbol::vSet_Mth_Op(Stz* szMthOp)
   m_eSymbol = SF_MTH_OP;
 
   RASSERT(bIs_Mth_Op());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to NEGATE                                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Negate(Stz* szNull)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szNull;
+  m_eSymbol = SF_NEGATE;
+
+  RASSERT(bIs_Negate());
 }
 
 /*----------------------------------------------------------------------------*/

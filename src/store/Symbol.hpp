@@ -67,6 +67,7 @@ namespace STORE
     static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
+    static bool bIs_Negate(Stz* szChrSeq);          // NULL
     static bool bIs_None(Stz* szChrSeq);            // <none>
     static bool bIs_Note(Stz* szChrSeq);            // ...any...
     static bool bIs_Null(Stz* szChrSeq);            // NULL
@@ -145,6 +146,7 @@ namespace STORE
     bool bIs_Ivl_Fn(void);          // extract_year etc
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
+    bool bIs_Negate(void);          // NEGATE
     bool bIs_None(void);            //
     bool bIs_Note(void);            // ...any...
     bool bIs_Null(void);            // NULL
@@ -267,6 +269,7 @@ namespace STORE
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Key_Col(Stz* szKeyCol);
     void vSet_Mth_Op(Stz* szMthOp);
+    void vSet_Negate(Stz* szNull);
     void vSet_Note(Stz* szNote);
     void vSet_Null(Stz* szNull);
     void vSet_Parenthesis(Stz* szParenthesis);
