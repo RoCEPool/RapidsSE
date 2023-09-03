@@ -64,6 +64,7 @@ void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_HASHING, "column hashing"_Stz);
 
+  m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

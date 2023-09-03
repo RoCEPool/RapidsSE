@@ -1058,7 +1058,6 @@ void CardIter::vEndTransform(void)
   vValidateBench();
 
   G.xKid.vEnded();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2316,7 +2315,7 @@ void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
 
   m_pBench->vTransform(azFunc, eXform, szXdesc);
 
-  this->vBeginEach();
+  //this->vBeginEach();
 }
 
 /*----------------------------------------------------------------------------*/

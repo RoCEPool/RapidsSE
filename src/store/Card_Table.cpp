@@ -108,6 +108,7 @@ void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn
 
   _static_
 
+  pCI->vBeginEach();
   while (pCI->G_bEachSubOfMain(CK_TABLE))  {
     pCI->G.p_table->vSet_Syn(pCI, pSymbol_tableSyn);
   }
@@ -120,6 +121,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
 
   _static_
 
+  pCI->vBeginEach();
   while (pCI->G_bEachMainWithSub(CK_FROM, CK_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol(SF_NONE));

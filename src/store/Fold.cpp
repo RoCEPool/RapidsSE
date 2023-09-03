@@ -371,6 +371,8 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   vOuterQuery(pCI->pBoard()->pSubQuery());
 
+  pCI->vBeginEach();
+
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {

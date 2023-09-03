@@ -61,6 +61,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
+  pCI->vBeginEach();
   while (pCI->G_bEachMain_NONE()) {
 
     if (CK_INDEXJOIN    == pCI->G.e_MainCard ||

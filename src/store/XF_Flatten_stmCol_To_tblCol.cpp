@@ -64,11 +64,11 @@ void XF_Flatten_stmCol_To_tblCol::vXF_stmCol_To_tblCol(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
 
+  m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE())
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
 
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 /*============================================================================*/
