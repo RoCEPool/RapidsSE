@@ -45,6 +45,9 @@ namespace STORE
     static bool bIs_Bol_Op(Stz* szChrSeq);          // and, not, or
     static bool bIs_Bound(Stz* szChrSeq);           // BOUND, LBOUND, UBOUND
     static bool bIs_Brace(Stz* szChrSeq);           // {
+    static bool bIs_Case(Stz* szChrSeq);            // CASE
+    static bool bIs_Cast(Stz* szChrSeq);            // CAST
+    static bool bIs_CastType(Stz* szChrSeq);        // CASTTYPE
     static bool bIs_Col_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Col_No(Stz* szChrSeq);          // $n
     static bool bIs_Col_Tc(Stz* szChrSeq);          // $c.n
@@ -53,12 +56,15 @@ namespace STORE
     static bool bIs_Cross(Stz* szChrSeq);           // CROSS
     static bool bIs_Dcm_Lit(Stz* szChrSeq);         // StrLib::bIsDecimal()
     static bool bIs_Direction(Stz* szChrSeq);       // asc, desc
+    static bool bIs_Else(Stz* szChrSeq);            // ELSE
+    static bool bIs_EndIf(Stz* szChrSeq);           // ENDIF
     static bool bIs_Fld_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Flt_Lit(Stz* szChrSeq);         // StrLib::bIsFloat()
     static bool bIs_GroupBy(Stz* szChrSeq);         // GROUPBY
     static bool bIs_Idx_Col(Stz* szChrSeq);         // $In
     static bool bIs_Idx_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Int_Lit(Stz* szChrSeq);         // StrLib::bIsInteger()
+    static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
     static bool bIs_None(Stz* szChrSeq);            // <none>
@@ -79,6 +85,7 @@ namespace STORE
     static bool bIs_Tbl_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szChrSeq);         // $c
     static bool bIs_Tbl_Syn_rep(Stz* szChrSeq);     // $C
+    static bool bIs_Then(Stz* szChrSeq);            // THEN
     static bool bIs_Type(Stz* szChrSeq);            // TYPE
     static bool bIs_When(Stz* szChrSeq);            // WHEN
     static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
@@ -114,6 +121,9 @@ namespace STORE
     bool bIs_Bol_Op(void);          // and, not, or
     bool bIs_Bound(void);           // BOUND, LBOUND, UBOUND
     bool bIs_Brace(void);           // BRACE
+    bool bIs_Case(void);            // CASE
+    bool bIs_Cast(void);            // CAST
+    bool bIs_CastType(void);        // CASTTYPE
     bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Col_Nm_dis(void);      // C_n
     bool bIs_Col_Nm_syn(void);      // C_n
@@ -124,12 +134,15 @@ namespace STORE
     bool bIs_Cross(void);           // CROSS
     bool bIs_Dcm_Lit(void);         // StrLib::bIsDecimal()
     bool bIs_Direction(void);       // asc, desc
+    bool bIs_Else(void);            // ELSE
+    bool bIs_EndIf(void);           // ENDIF
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
     bool bIs_GroupBy(void);         // GROUPBY
     bool bIs_Idx_Col(void);         // $In
     bool bIs_Idx_Nm(void);          // Sn
     bool bIs_Int_Lit(void);         // StrLib::bIsInteger()
+    bool bIs_Ivl_Fn(void);          // extract_year etc
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_None(void);            //
@@ -148,6 +161,7 @@ namespace STORE
     bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Tbl_Syn_rep(void);     // c
+    bool bIs_Then(void);            // THEN
     bool bIs_Type(void);            // TYPE
     bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
@@ -222,6 +236,9 @@ namespace STORE
     void vSet_Bol_Op(Stz* szBolOp);
     void vSet_Bound(Stz* szBound);
     void vSet_Brace(Stz* szBrace);
+    void vSet_Case(Stz* szCase);
+    void vSet_Cast(Stz* szCast);
+    void vSet_CastType(Stz* szCastType);
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
@@ -235,6 +252,8 @@ namespace STORE
     void vSet_Cross(Stz* szCross);
     void vSet_Dcm_Lit(Stz* szDcmLit);
     void vSet_Direction(Stz* szColNm);
+    void vSet_Else(Stz* szElse);
+    void vSet_EndIf(Stz* szEndIf);
     void vSet_Fld_Nm(Stz* szFldNm);
     void vSet_Flt_Lit(Stz* szFltLit);
     void vSet_GroupBy(Stz* szGroupBy);
@@ -243,6 +262,7 @@ namespace STORE
     void vSet_Idx_Nm(Stz* szIdxNm);
     void vSet_Int_Lit(i8 iIIntLIt);
     void vSet_Int_Lit(Stz* szIntLit);
+    void vSet_Ivl_Fn(Stz* szIvlFn);
     void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Key_Col(Stz* szKeyCol);
     void vSet_Mth_Op(Stz* szMthOp);
@@ -261,6 +281,7 @@ namespace STORE
     void vSet_Tbl_Syn(char cTblSyn);
     void vSet_Tbl_Syn(Stz* szTblSyn);
     void vSet_Tbl_Syn_rep(void);
+    void vSet_Then(Stz* szThen);
     void vSet_Type(Stz* szType);
     void vSet_When(Stz* szWhen);
     void vSet_Xk_Cast(Stz* szXkCast);

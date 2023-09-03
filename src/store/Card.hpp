@@ -4,7 +4,7 @@
 #pragma once
 
 
-//#define Z_ITEMISED_NAMES
+#define Z_ITEMISED_NAMES
 
 #include "BASE.h"
 

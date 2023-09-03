@@ -52,14 +52,18 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
   {
     UNUSED(pCI);
 
-    pCI->vAncestorDump(pCard);
-
     if (! pCard->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    pCI->vAncestorDump(pCard);
+    if (pCI->pAncestorFind(CK_KEYEXISTS) || pCI->pAncestorFind(CK_KEYNOTEXISTS))
+      return C_CONTINUE_RECURSION;
+//    if (pCI->pAncestorFind(CK_CONSTRAINT))
+//      return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(pCard);
+
+    if (p_term->pSymbol()->szSF_symbol(SF_NONE)->bSame("casttype"_Stz))
+      vDebugPoint();
 
     if (! pCard->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;

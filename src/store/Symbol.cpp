@@ -132,6 +132,9 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Bol_Op(szChrSeq))       return SF_BOL_OP;
   if (bIs_Bound(szChrSeq))        return SF_BOUND;
   if (bIs_Brace(szChrSeq))        return SF_BRACE;
+  if (bIs_Case(szChrSeq))         return SF_CASE;
+  if (bIs_Cast(szChrSeq))         return SF_CAST;
+  if (bIs_CastType(szChrSeq))     return SF_CASTTYPE;
   if (bIs_Col_No(szChrSeq))       return SF_COL_NO;
   if (bIs_Col_Tc(szChrSeq))       return SF_COL_TC;
   if (bIs_Col_Type(szChrSeq))     return SF_COL_TYPE;
@@ -139,10 +142,13 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Cross(szChrSeq))        return SF_CROSS;
   if (bIs_Dcm_Lit(szChrSeq))      return SF_DCM_LIT;
   if (bIs_Direction(szChrSeq))    return SF_DIRECTION;
+  if (bIs_Else(szChrSeq))         return SF_ELSE;
+  if (bIs_EndIf(szChrSeq))        return SF_ENDIF;
   if (bIs_Flt_Lit(szChrSeq))      return SF_FLT_LIT;
   if (bIs_GroupBy(szChrSeq))      return SF_GROUPBY;
   if (bIs_Idx_Col(szChrSeq))      return SF_IDX_COL;
   if (bIs_Int_Lit(szChrSeq))      return SF_INT_LIT;
+  if (bIs_Ivl_Fn(szChrSeq))       return SF_IVL_FN;
   if (bIs_Key_Col(szChrSeq))      return SF_KEY_COL;
   if (bIs_Mth_Op(szChrSeq))       return SF_MTH_OP;
   if (bIs_Parenthesis(szChrSeq))  return SF_PARENTHESIS;
@@ -153,6 +159,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Sqy_Rsl(szChrSeq))      return SF_SQY_NO;
   if (bIs_Stg_Cast(szChrSeq))     return SF_STG_CAST;
   if (bIs_String(szChrSeq))       return SF_STRING;
+  if (bIs_Then(szChrSeq))         return SF_THEN;
   if (bIs_Type(szChrSeq))         return SF_TYPE;
   if (bIs_When(szChrSeq))         return SF_WHEN;
   if (bIs_Xrf_No(szChrSeq))       return SF_XRF_NO;
@@ -174,7 +181,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol an aggregate op?                                            */
+/* is this symbol an aggregate function?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Agg_Fn(Stz* szArg)
 {
@@ -192,7 +199,7 @@ bool Symbol::bIs_Agg_Fn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol an aggregate op?                                            */
+/* is this symbol AS?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_As(Stz* szArg)
 {
@@ -291,6 +298,42 @@ bool Symbol::bIs_Brace(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol CASE?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Case(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("CASE"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol CAST?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Cast(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("CAST"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol CASTTYPE?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_CastType(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("CASTTYPE"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a column name?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Nm(Stz* szArg)
@@ -299,6 +342,27 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 
   if (! bPossibleNm(szArg))
     return false;
+
+  if (bIs_As(szArg))        return false;
+  if (bIs_Bol_Fn(szArg))    return false;
+  if (bIs_Bol_Lit(szArg))   return false;
+  if (bIs_Bol_Op(szArg))    return false;
+  if (bIs_Bound(szArg))     return false;
+  if (bIs_Case(szArg))      return false;
+  if (bIs_Cast(szArg))      return false;
+  if (bIs_CastType(szArg))  return false;
+  if (bIs_Col_Type(szArg))  return false;
+  if (bIs_Cross(szArg))     return false;
+  if (bIs_Direction(szArg)) return false;
+  if (bIs_Else(szArg))      return false;
+  if (bIs_EndIf(szArg))     return false;
+  if (bIs_GroupBy(szArg))   return false;
+  if (bIs_Ivl_Fn(szArg))    return false;
+  if (bIs_Sqy_Op(szArg))    return false;
+  if (bIs_Stg_Cast(szArg))  return false;
+  if (bIs_Then(szArg))      return false;
+  if (bIs_Type(szArg))      return false;
+  if (bIs_When(szArg))      return false;
 
   return true;
 }
@@ -350,8 +414,11 @@ bool Symbol::bIs_Col_Type(Stz* szArg)
 
        if (szArg->bSame("BOOLEAN"_Stz))      return true;
   else if (szArg->bSame("DATE"_Stz))         return true;
+  else if (szArg->bSame("DECIMAL"_Stz))      return true;
   else if (szArg->bSame("INTEGER"_Stz))      return true;
+  else if (szArg->bSame("INTERVAL"_Stz))     return true;
   else if (szArg->bSame("FLOAT"_Stz))        return true;
+  else if (szArg->bSame("TIME"_Stz))         return true;
   else if (szArg->bSame("TIMESTAMP"_Stz))    return true;
   else if (szArg->bSame("VARCHAR"_Stz))      return true;
 
@@ -408,6 +475,32 @@ bool Symbol::bIs_Direction(Stz* szArg)
   else if (szArg->bSame("DESC"_Stz))  return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol ELSE?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Else(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("ELSE"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol ENDIF                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_EndIf(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("ENDIF"_Stz))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -487,6 +580,18 @@ bool Symbol::bIs_Int_Lit(Stz* szArg)
   _static_
 
   if (StrLib::bIsInteger(szArg->azChar()))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol an interval function?                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Ivl_Fn(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("extract_year"_Stz))         return true;
 
   return false;
 }
@@ -805,7 +910,20 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
+/* is this symbol THEN?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Then(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("THEN"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol TYPE?                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Type(Stz* szArg)
 {
@@ -1257,6 +1375,54 @@ bool Symbol::bIs_Brace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for CASE?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Case(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_CASE != m_eSymbol)
+    return false;
+
+  if (bIs_Case(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for CAST?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Cast(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_CAST != m_eSymbol)
+    return false;
+
+  if (bIs_Cast(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for CASTTYPE?                                             */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_CastType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_CASTTYPE != m_eSymbol)
+    return false;
+
+  if (bIs_CastType(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a column name?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Nm(void)
@@ -1418,6 +1584,38 @@ bool Symbol::bIs_Direction(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol ELSE?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Else(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_ELSE != m_eSymbol)
+    return false;
+
+  if (bIs_Else(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol ENDIF?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_EndIf(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_ENDIF != m_eSymbol)
+    return false;
+
+  if (bIs_EndIf(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Fld_Nm(void)
@@ -1508,6 +1706,22 @@ bool Symbol::bIs_Int_Lit(void)
     return false;
 
   if (bIs_Int_Lit(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol an interval function?                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Ivl_Fn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_IVL_FN != m_eSymbol)
+    return false;
+
+  if (bIs_Ivl_Fn(m_sChrSeq))
     return true;
 
   return false;
@@ -1799,7 +2013,23 @@ bool Symbol::bIs_Tbl_Syn_rep(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a parenthesis?                                              */
+/* is this symbol THEN?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Then(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_THEN != m_eSymbol)
+    return false;
+
+  if (bIs_Then(m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol TYPE?                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Type(void)
 {
@@ -2074,6 +2304,9 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_BOL_OP:      vSet_Bol_Op(szChrSeq);      break;
     case SF_BOUND:       vSet_Bound(szChrSeq);       break;
     case SF_BRACE:       vSet_Brace(szChrSeq);       break;
+    case SF_CASE:        vSet_Case(szChrSeq);        break;
+    case SF_CAST:        vSet_Cast(szChrSeq);        break;
+    case SF_CASTTYPE:    vSet_CastType(szChrSeq);    break;
     case SF_COL_NM:      vSet_Col_Nm(szChrSeq);      break;
     case SF_COL_NM_syn:  vSet_Col_Nm_syn(szChrSeq);  break;
     case SF_COL_NO:      vSet_Col_No(szChrSeq);      break;
@@ -2083,12 +2316,15 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_CROSS:       vSet_Cross(szChrSeq);       break;
     case SF_DCM_LIT:     vSet_Dcm_Lit(szChrSeq);     break;
     case SF_DIRECTION:   vSet_Direction(szChrSeq);   break;
+    case SF_ELSE:        vSet_Else(szChrSeq);        break;
+    case SF_ENDIF:       vSet_EndIf(szChrSeq);       break;
     case SF_FLD_NM:      vSet_Fld_Nm(szChrSeq);      break;
     case SF_FLT_LIT:     vSet_Flt_Lit(szChrSeq);     break;
     case SF_GROUPBY:     vSet_GroupBy(szChrSeq);     break;
     case SF_IDX_COL:     vSet_Idx_Col(szChrSeq);     break;
     case SF_IDX_NM:      vSet_Idx_Nm(szChrSeq);      break;
     case SF_INT_LIT:     vSet_Int_Lit(szChrSeq);     break;
+    case SF_IVL_FN:      vSet_Ivl_Fn(szChrSeq);      break;
     case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
     case SF_NOTE:        vSet_Note(szChrSeq);        break;
     case SF_MTH_OP:      vSet_Mth_Op(szChrSeq);      break;
@@ -2101,6 +2337,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_STRING:      vSet_String(szChrSeq);      break;
     case SF_TBL_NM:      vSet_Tbl_Nm(szChrSeq);      break;
     case SF_TBL_SYN:     vSet_Tbl_Syn(szChrSeq);     break;
+    case SF_THEN:        vSet_Then(szChrSeq);        break;
     case SF_TYPE:        vSet_Type(szChrSeq);        break;
     case SF_WHEN:        vSet_When(szChrSeq);        break;
     case SF_XK_CAST:     vSet_Xk_Cast(szChrSeq);     break;
@@ -2202,6 +2439,8 @@ bool Symbol::bValidate(void)
     case SF_BOL_OP:      b = bIs_Bol_Op();      break;
     case SF_BOUND:       b = bIs_Bound();       break;
     case SF_BRACE:       b = bIs_Brace();       break;
+    case SF_CAST:        b = bIs_Cast();        break;
+    case SF_CASTTYPE:    b = bIs_CastType();    break;
     case SF_COL_NM:      b = bIs_Col_Nm();      break;
     case SF_COL_NM_syn:  b = bIs_Col_Nm_syn();  break;
     case SF_COL_NO:      b = bIs_Col_No();      break;
@@ -2217,6 +2456,7 @@ bool Symbol::bValidate(void)
     case SF_IDX_COL:     b = bIs_Idx_Col();     break;
     case SF_IDX_NM:      b = bIs_Idx_Nm();      break;
     case SF_INT_LIT:     b = bIs_Int_Lit();     break;
+    case SF_IVL_FN:      b = bIs_Ivl_Fn();      break;
     case SF_KEY_COL:     b = bIs_Key_Col();     break;
     case SF_NOTE:        b = bIs_Note();        break;
     case SF_MTH_OP:      b = bIs_Mth_Op();      break;
@@ -2781,6 +3021,51 @@ void Symbol::vSet_Brace(Stz* szBrace)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol CASE                                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Case(Stz* szCase)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szCase;
+  m_eSymbol = SF_CASE;
+
+  RASSERT(bIs_Case());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Cast(Stz* szCast)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szCast;
+  m_eSymbol = SF_CAST;
+
+  RASSERT(bIs_Cast());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given as                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_CastType(Stz* szCastType)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szCastType;
+  m_eSymbol = SF_CASTTYPE;
+
+  RASSERT(bIs_CastType());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given column-name                                       */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Col_Nm(Stz* szColNm)
@@ -3005,6 +3290,36 @@ void Symbol::vSet_Direction(Stz* szColNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to ELSE                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Else(Stz* szElse)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szElse;
+  m_eSymbol = SF_ELSE;
+
+  RASSERT(bIs_Else());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to ENDIF                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_EndIf(Stz* szEndIf)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szEndIf;
+  m_eSymbol = SF_ENDIF;
+
+  RASSERT(bIs_EndIf());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given fold name                                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Fld_Nm(Stz* szFldNm)
@@ -3122,6 +3437,21 @@ void Symbol::vSet_Int_Lit(Stz* szIntLit)
   m_eSymbol = SF_INT_LIT;
 
   RASSERT(bIs_Int_Lit());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given interval fn                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Ivl_Fn(Stz* szIvlFn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szIvlFn;
+  m_eSymbol = SF_IVL_FN;
+
+  RASSERT(bIs_Ivl_Fn());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3398,7 +3728,22 @@ void Symbol::vSet_Tbl_Syn_rep(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given type                                              */
+/* set this symbol to THEN                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Then(Stz* szThen)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szThen;
+  m_eSymbol = SF_THEN;
+
+  RASSERT(bIs_Then());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to TYPE                                                    */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_Type(Stz* szType)
 {

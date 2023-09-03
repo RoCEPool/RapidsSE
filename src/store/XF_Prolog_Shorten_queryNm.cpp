@@ -73,7 +73,6 @@ void XF_Prolog_Shorten_queryNm::vXF_Shorten_queryNm(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
   auto bLambdaFn = [](Card* p_card) {
     if (!Symbol::bIs_Sqy_Nm(p_card->szSymbol(SF_NONE)))
       return C_CONTINUE_RECURSION;
