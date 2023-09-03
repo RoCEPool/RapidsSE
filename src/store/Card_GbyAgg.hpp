@@ -30,7 +30,7 @@ namespace STORE
 
     void vInject_foldExpr(CardIter* pCI);
 
-    bool bReplace_gbyAgg_By_ordAgg(CardIter* pCI);
+    bool bMorph_gbyAgg_To_ordAgg(CardIter* pCI);
 
     void vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);

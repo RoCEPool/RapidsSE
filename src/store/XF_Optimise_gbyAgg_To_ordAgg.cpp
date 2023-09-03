@@ -79,7 +79,7 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
     switch (m_pCI->G.e_MainCard) {
 
       case CK_GBYAGG:
-        if (m_pCI->G.p_gbyAgg->bReplace_gbyAgg_By_ordAgg(m_pCI))
+        if (m_pCI->G.p_gbyAgg->bMorph_gbyAgg_To_ordAgg(m_pCI))
           bOptRun = true;
 
         break;
@@ -91,12 +91,9 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
         }
         break;
     }
-
-   // m_pCI->vPrintBoard(__LINE__);
   }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 
   return bOptRun;
 }

@@ -391,7 +391,7 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* replace gbyAgg by ordAgg                                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_GbyAgg::bReplace_gbyAgg_By_ordAgg(CardIter* pCI)
+bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
