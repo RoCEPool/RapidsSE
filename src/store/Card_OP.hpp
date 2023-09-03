@@ -18,7 +18,6 @@ namespace STORE
 
     static bool bIsOp(Card* pCard);
 
-    void vAddLevel(void);
     void vAdd_Pred_Under_filter(Card_PRED *p_PRED);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);

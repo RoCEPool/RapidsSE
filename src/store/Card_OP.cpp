@@ -81,21 +81,6 @@ bool Card_OP::bIsOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add missing level                                                          */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vAddLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Level* p_level = pSub_level();
-  if (p_level)
-    return;
-
-  p_level = new Card_Level(AL_PARTITION);
-  vPush(p_level);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vAdd_Pred_Under_filter(Card_PRED *p_PRED)
