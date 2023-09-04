@@ -46,8 +46,6 @@ namespace STORE
   };
 
   Pot* _pPot(void* aAddr);
-  void* aPot_AllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode);
-  void  vPot_RowStrSize(void* pPot, i8 iPtn, i8 nRowStrSize);
 }
 
 /*============================================================================*/
