@@ -341,6 +341,8 @@ void XF::vCrosscheck_Optimisations(void)
   //MY::pJob()->pJobTags()->vDumpSet();
 
   s32 sOT;
+  m_pCI->vBoardIteration();                            //
+  RASSERT(m_pCI->bEachBoard());                        //
 
   for (i8 i_OT = 0; i_OT < OT_ENUMS; i_OT++) {
     Stz *szOptimisation = aOT[i_OT];
