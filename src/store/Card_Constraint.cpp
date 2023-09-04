@@ -93,18 +93,6 @@ void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert terms which are stmCol to tblCol                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ((pCI->G.p_expr = pSub_expr()))
-    pCI->G.p_expr->vConvertAll_stmOdn_To_colOdn(pCI);
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)

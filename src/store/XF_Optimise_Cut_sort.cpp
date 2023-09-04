@@ -79,9 +79,24 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
     switch (m_pCI->G.e_MainCard) {
 
       case CK_SORT:
-        if (m_pCI->G.p_sort->bCut_sort(m_pCI))
-          bOptRun = true;
+        if (! m_pCI->StreamOrder.m_pStreamKey_running)
+         break;
 
+        m_pCI->G.p_key = m_pCI->G.p_sort->pSub_key();
+        if (! m_pCI->StreamOrder.m_pStreamKey_running->bIsEquivalentTo(m_pCI->G.p_key))
+          break;
+
+        m_pCI->vRemoveDeleteCurr(CK_SORT);
+        if (m_pCI->G_bIsNextMain(CK_SORT)) {
+          m_pCI->G_bEachMain_NONE();
+          m_pCI->vRemoveDeleteCurr(CK_SORT);
+          if (m_pCI->G_bIsNextMain(CK_SORT)) {
+            m_pCI->G_bEachMain_NONE();
+            m_pCI->vRemoveDeleteCurr(CK_SORT);
+          }
+        }
+
+        bOptRun = true;
         break;
 
       default:

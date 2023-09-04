@@ -24,6 +24,8 @@ INCLUDE 'create_supplier.test';
 LOG ' ';
 INCLUDE 'case_sort1.test';
 INCLUDE 'case_indexScan1.test';
+INCLUDE 'case_cut_sort1.test';
+
 
 //------------------------------------------------------------------------------
 

@@ -19,8 +19,6 @@ namespace STORE
 
     void vColumn_Mapping(CardIter* pCI);
 
-    bool bCut_sort(CardIter* pCI);
-
     void vDerive_streamKey(CardIter* pCI);
 
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);

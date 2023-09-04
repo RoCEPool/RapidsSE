@@ -268,20 +268,6 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* convert terms which are stmCol to tblCol                                   */
-/*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ((pCI->G.p_projection = pSub_projection()))
-    pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
-
-  if ((pCI->G.p_key = pSub_key()))
-    pCI->G.p_key->vConvertAll_stmOdn_To_colOdn(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new <gbyAgg>/<projection>/<key> by copying <gbyAgg>/<key>         */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
