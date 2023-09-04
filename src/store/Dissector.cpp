@@ -1390,19 +1390,21 @@ Card_HshCol* Dissector::pPopHshCol(Card_RpnTerms* pCard_RpnTerms)
   if (! pCard_Term_head)
     return nullptr;
 
-  if (pCard_Term_head->pSymbol()->szSF_symbol(SF_NONE)->bSame(","_Stz))
+  if (pCard_Term_head->pSymbol()->szSF_symbol(SF_NONE)->bSame(","_Stz)) {
     pCard_Term_head = pCard_RpnTerms->pPop();
+    delete pCard_Term_head;
+  }
 
   Card_HshCol* p_hshCol = new Card_HshCol;
 
   Card* p_card_type = pCard_RpnTerms->pPop();
-  UNUSED(p_card_type);
+  delete p_card_type;
 
   Card_Term* p_term1 = _pCard_Term(pCard_RpnTerms->pPop());
   eCT eColumnType = Symbol::eTo_eCT_str(p_term1->szSymbol(SF_NONE));
+  delete p_term1;
 
-  Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pPop());
-  Card_Term* p_term_hsh = p_term2->pClone();
+  Card_Term* p_term_hsh = _pCard_Term(pCard_RpnTerms->pPop());
   p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   p_hshCol->vAppend(p_term_hsh);
 

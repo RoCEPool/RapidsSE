@@ -604,7 +604,10 @@ void vHashBegin(Dynamic_T* aDynamicT) {
 	i8 iKeyHash;
 
 	// marker-start
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// Calculate the Partition Key Hash
 	iKeyHash = 0;
+
 	// marker-end
 }
 

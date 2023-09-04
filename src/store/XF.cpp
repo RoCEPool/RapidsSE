@@ -96,18 +96,29 @@ void XF::vXF(CardIter* pCI)
 {
   _static_
 
-  XF* pXF = new XF(pCI);
+	XF *pXF;
 
-  if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
-    pXF->vTransform();
-  }
-  else {
-    pXF->vTransform_passThru();
-  }
+	try {
+		pXF = new XF(pCI);
 
-  pCI->vValidateBench();
+		if (!AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
+			pXF->vTransform();
+		} else {
+			pXF->vTransform_passThru();
+		}
 
-  delete pXF;
+		pCI->vValidateBench();
+
+		delete pXF;
+	}
+	catch (Exception xException) {
+		delete pXF;
+		throw xException;
+	}
+	catch (Error xError) {
+		delete pXF;
+		throw xError;
+	}
 }
 
 
