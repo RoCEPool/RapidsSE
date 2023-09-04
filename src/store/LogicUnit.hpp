@@ -14,7 +14,7 @@
 
 #include "Pot.hpp"
 #include "Tub.hpp"
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "Dynamic.hpp"
 
 #include "EntWrk.hpp"
@@ -28,7 +28,6 @@
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
-#include "InflateSet.h"
 #include "InfoSet.hpp"
 #include "VertexSpec.hpp"
 #include "NamedBuffer.hpp"

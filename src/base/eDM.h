@@ -2,7 +2,7 @@
 /* eDM.h -- Dtm Kind                                                          */
 /*============================================================================*/
 #pragma once
-// when not being included by the tcc compiler
+
 enum eDM : u1 // Dtm Kind
 
 {

@@ -2104,9 +2104,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       break;
 
     case SK_POT:
-      // assign to iMixIn
-      sPush.vSprint("_ASSIGN(iMixIn)\n"_Stz);
-      pExprStack->vPushStz(sPush);
+			RASSERT(0);
       break;
 
     case SK_PROJECT:
@@ -2391,7 +2389,6 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
 
     case SK_FILTER:
     case SK_INDEXSCAN:
-    case SK_POT:
     case SK_PROJECT:
     case SK_SORT:
     case SK_TOP:

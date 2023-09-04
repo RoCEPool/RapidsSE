@@ -108,7 +108,7 @@
 
 #include "Exemplar.hpp"
 
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
@@ -400,7 +400,6 @@ SizeHeap gxaSizeHeap[]
   { CN_COLMAP,                   sizeof(ColMap),             HT_T_MEDIUM  , FILL },
   { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
-  { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
   { CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
   { CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },

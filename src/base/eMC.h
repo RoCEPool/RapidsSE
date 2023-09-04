@@ -4,7 +4,6 @@
 #pragma once
 
 #include "CodeSynthCommon.h"
-//#include "TccStuff.h"
 
 //enum eMC // : u1 // meta code
 //{
