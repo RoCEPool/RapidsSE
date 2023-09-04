@@ -22,7 +22,6 @@ namespace STORE
 
     void vColumn_Mapping(CardIter* pCI);
 
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vDerive_streamKey(CardIter* pCI);
 

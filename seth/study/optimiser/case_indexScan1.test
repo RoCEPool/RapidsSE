@@ -14,7 +14,7 @@ success
 /weaved
 /OT_DERIVE_STREAMKEY
 /OT_SCAN_TO_INDEXSCAN
-/pipelineName = "case_indexScan1"
+/pipelineName = "OT_indexScan1"
 select *
   from Customer
  where C_CUSTKEY >= 1

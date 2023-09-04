@@ -172,6 +172,7 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
           || pCI->G.p_MainCard->bIsCard(CK_FILTER)
           || pCI->G.p_MainCard->bIsCard(CK_GBYAGG)
           || pCI->G.p_MainCard->bIsCard(CK_PROJECT)
+          || pCI->G.p_MainCard->bIsCard(CK_SORT)
           || pCI->G.p_MainCard->bIsCard(CK_WHERE));
 
   if (CK_AGGREG  == pCI->G.e_MainCard ||

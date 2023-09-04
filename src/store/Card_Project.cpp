@@ -127,17 +127,6 @@ void Card_Project::vComputeProjection(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert terms which are stmCol to tblCol                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ((pCI->G.p_projection = pSub_projection()))
-    pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* craft projection for early project                                         */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)

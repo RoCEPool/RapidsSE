@@ -148,23 +148,6 @@ void Card_Filter::vComputeProjection(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert terms which are stmCol to tblCol                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ((pCI->G.p_projection = pSub_projection()))
-    pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
-
-//  if ((pCI->G.p_constraint = pSub_constraint()))
-//    pCI->G.p_constraint->vConvertAll_stmOdn_To_colOdn(pCI);
-  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vCorrectStmOdn(Card_Projection* p_projection_prior)
