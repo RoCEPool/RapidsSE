@@ -96,7 +96,7 @@ void XF::vXF(CardIter* pCI)
 {
   _static_
 
-	XF *pXF;
+	XF *pXF = nullptr;
 
 	try {
 		pXF = new XF(pCI);
