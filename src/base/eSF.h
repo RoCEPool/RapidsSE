@@ -68,6 +68,7 @@ enum eSF // symbol form
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NO,      // Stage No            : Sn
+  /* */ SF_STR_FN,      // String Function     : SUBSTRING2 ... SUBSTRING3
   /* */ SF_STRING,      // String              : 'abc'
 
   /* */ SF_TBL_NM,      // Table Name          : bIsName

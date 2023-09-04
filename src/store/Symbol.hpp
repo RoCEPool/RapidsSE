@@ -84,6 +84,7 @@ namespace STORE
     static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
     static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szChrSeq);          // Sn
+    static bool bIs_Str_Fn(Stz* szChrSeq);          // SUBSTRING2 ... SUBSTRING3
     static bool bIs_String(Stz* szChrSeq);          // 'abc'
     static bool bIs_Tbl_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szChrSeq);         // $c
@@ -163,6 +164,7 @@ namespace STORE
     bool bIs_Sqy_Prm(void);         // %n
     bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
     bool bIs_Sqy_Rsl(void);         // __n
+    bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
     bool bIs_Stg_Nm(void);          // Sn
     bool bIs_String(void);          // 'abc''
     bool bIs_Tbl_Nm(void);          // Sn
@@ -287,6 +289,7 @@ namespace STORE
     void vSet_Sqy_Op(Stz* szSqyOp);
     void vSet_Stg_Cast(Stz* szStgCast);
     void vSet_Stg_Nm(i8 iStgNo);
+    void vSet_Str_Fn(Stz* szStrFn);
     void vSet_String(Stz* szString);
     void vSet_Tbl_Nm(Stz* szTblNm);
     void vSet_Tbl_Syn(char cTblSyn);

@@ -162,6 +162,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Sqy_Op(szChrSeq))       return SF_SQY_OP;
   if (bIs_Sqy_Rsl(szChrSeq))      return SF_SQY_NM;
   if (bIs_Stg_Cast(szChrSeq))     return SF_STG_CAST;
+  if (bIs_Str_Fn(szChrSeq))       return SF_STR_FN;
   if (bIs_String(szChrSeq))       return SF_STRING;
   if (bIs_Then(szChrSeq))         return SF_THEN;
   if (bIs_Type(szChrSeq))         return SF_TYPE;
@@ -243,8 +244,6 @@ bool Symbol::bIs_Bol_Fn(Stz* szArg)
   else if (szArg->bSame("MATCHMIDDLE"_Stz))     return true;
   else if (szArg->bSame("MATCHMIDDLE1"_Stz))    return true;
   else if (szArg->bSame("MATCHTRAILING"_Stz))   return true;
-  else if (szArg->bSame("SUBSTRING2"_Stz))      return true;
-  else if (szArg->bSame("SUBSTRING3"_Stz))      return true;
 
   return false;
 }
@@ -370,6 +369,7 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
   if (bIs_Null(szArg))        return false;
   if (bIs_Sqy_Op(szArg))      return false;
   if (bIs_Stg_Cast(szArg))    return false;
+  if (bIs_Str_Fn(szArg))      return false;
   if (bIs_Then(szArg))        return false;
   if (bIs_Type(szArg))        return false;
   if (bIs_When(szArg))        return false;
@@ -889,6 +889,19 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szChrSeq)
   if ('S' == acFirst
       && StrLib::bIsDigit(acSecond))
     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a string function?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Str_Fn(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("SUBSTRING2"_Stz))      return true;
+  else if (szArg->bSame("SUBSTRING3"_Stz))      return true;
 
   return false;
 }
@@ -2059,6 +2072,21 @@ bool Symbol::bIs_Stg_Nm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a string function?                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Str_Fn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_STR_FN != m_eSymbol)
+    return false;
+
+  if (bIs_Str_Fn(m_sChrSeq))
+    return true;
+
+  return false;
+}
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a subQuery-column?  (i.e. __n)                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_String(void)
@@ -2216,6 +2244,8 @@ bool Symbol::bNeedsBrace(void)
   else if (m_sChrSeq.bSame("matchMiddle"_Stz))    return true;
   else if (m_sChrSeq.bSame("matchMiddle1"_Stz))   return true;
   else if (m_sChrSeq.bSame("matchTrailing"_Stz))  return true;
+//  else if (m_sChrSeq.bSame("SUBSTRING2"_Stz))     return true;
+//  else if (m_sChrSeq.bSame("SUBSTRING3"_Stz))     return true;
 
   return false;
 }
@@ -2448,6 +2478,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_RLN_OP:      vSet_Rln_Op(szChrSeq);      break;
     case SF_SQY_OP:      vSet_Sqy_Op(szChrSeq);      break;
     case SF_STG_CAST:    vSet_Stg_Cast(szChrSeq);    break;
+    case SF_STR_FN:      vSet_Str_Fn(szChrSeq);      break;
     case SF_STRING:      vSet_String(szChrSeq);      break;
     case SF_TBL_NM:      vSet_Tbl_Nm(szChrSeq);      break;
     case SF_TBL_SYN:     vSet_Tbl_Syn(szChrSeq);     break;
@@ -2584,6 +2615,7 @@ bool Symbol::bValidate(void)
     case SF_SQY_OP:      b = bIs_Sqy_Op();      break;
     case SF_STG_NO:      b = bIs_Stg_Nm();      break;
     case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
+    case SF_STR_FN:      b = bIs_Str_Fn();      break;
     case SF_STRING:      b = bIs_String();      break;
     case SF_TBL_NM:      b = bIs_Tbl_Nm();      break;
     case SF_TBL_SYN:     b = bIs_Tbl_Syn();     break;
@@ -3824,6 +3856,21 @@ void Symbol::vSet_Stg_Nm(i8 iStgNo)
   m_eSymbol = SF_STG_NO;
 
   RASSERT(bIs_Stg_Nm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given string fn                                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_Str_Fn(Stz* szBolFn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == m_eSymbol);
+
+  m_sChrSeq = szBolFn;
+  m_eSymbol = SF_STR_FN;
+
+  RASSERT(bIs_Str_Fn());
 }
 
 /*----------------------------------------------------------------------------*/
