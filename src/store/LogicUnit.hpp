@@ -28,7 +28,6 @@
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
-#include "InflateSet.h"
 #include "InfoSet.hpp"
 #include "VertexSpec.hpp"
 #include "NamedBuffer.hpp"
