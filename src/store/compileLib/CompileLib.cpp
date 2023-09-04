@@ -499,7 +499,7 @@ void CompileLib::vTest(Stz* szCompiler)
 {
   static Stz* szSrc =
 "#include <stdio.h>\n"
-"#include \"primitives/BaseTypes_tcc.h\"\n"
+"#include \"primitives/BaseTypes_general.h\"\n"
 "\n"
 "// Declaration of a function inside SE\n"
 "// We either need to supply a basic implementation, or we need\n"

@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../src/primitives/BaseTypes_tcc.h"
+#include "../src/primitives/BaseTypes_general.h"
 #include "../src/base/CodeSynthCommon.h"
 #include "../src/base/ClangDynamic.h"
 
