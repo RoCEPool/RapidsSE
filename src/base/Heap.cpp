@@ -183,6 +183,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
     // other buffers
     if (! bExtendHeap()) {
+      PoolHelper::vPoolAnalyze();
       // error: we have run out of space
       vTrace("NODE%lld: HEAP RUNNING OUT OF MEMORY!!!\n"_Stz, AM::NODE::iThisNodeId());
       //vTrace("************************************************\n"_Stz);
