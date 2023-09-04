@@ -4,6 +4,7 @@
 
 #include "XF_Prolog_table_Analysis.hpp"
 #include "Table.hpp"
+#include "Error.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -44,11 +45,21 @@ void XF_Prolog_table_Analysis::vProlog(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_table_Analysis* pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
+	XF_Prolog_table_Analysis* pXF_table_Analysis;
 
-  pXF_table_Analysis->vXF_table_Analysis(&pCI->m_xSymbol_tableSyn);
+	try {
+		pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
 
-  delete pXF_table_Analysis;
+		pXF_table_Analysis->vXF_table_Analysis(&pCI->m_xSymbol_tableSyn);
+
+		delete pXF_table_Analysis;
+	}
+	catch (Exception xException) {
+		delete pXF_table_Analysis;
+	}
+	catch (Error xError) {
+		delete pXF_table_Analysis;
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,11 +69,23 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_table_Analysis* pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
+	XF_Prolog_table_Analysis* pXF_table_Analysis;
 
-  pXF_table_Analysis->vXF_table_Analysis_passThru(&pCI->m_xSymbol_tableSyn);
+	try {
+    pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
 
-  delete pXF_table_Analysis;
+    pXF_table_Analysis->vXF_table_Analysis_passThru(&pCI->m_xSymbol_tableSyn);
+
+    delete pXF_table_Analysis;
+	}
+	catch (Exception xException) {
+		delete pXF_table_Analysis;
+		throw xException;
+	}
+	catch (Error xError) {
+		delete pXF_table_Analysis;
+		throw xError;
+	}
 }
 
 

@@ -190,7 +190,11 @@ then
 /* org_ ovr */      // - didnt optimise (errorCode on stack)
 /* org_ org */      [job].error!
 /* org_ org */      [ddlLock].testDrop
+/* org_ org */
 /* org_ org */      Dynamo[].delete
+/* org_ org */      Optimiser[].delete
+/* org_ org */      PipeSpec[].delete
+/* org_ org */
 /* org_ org */      [job].removeOriginator
 /* org_ org */      ListedJob[].assertNoRef
 /* org_ org */      Path[].discardAll
