@@ -320,10 +320,10 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vTubBegin ---------------------------------------------------------------*/
+/*-- iPotTubBegin ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iTubBegin
-i8 iTubBegin(Dynamic_T* aDynamicT) {
+// function-iPotTubBegin
+i8 iPotTubBegin(Dynamic_T* aDynamicT) {
 
   RowInfo __ROW_INFO_TO__;
   i8*   paW;
@@ -332,7 +332,7 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the RowPix
+  // Initialize
   if (__ROW_INFO_TO__.m_bInitialize) {
 
     struct ColumnInfo xColumnInfo[] = {
@@ -410,10 +410,10 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vTubRowPix --------------------------------------------------------------*/
+/*-- vPotTubRowPix --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vTubRowPix
-void vTubRowPix(Dynamic_T* aDynamicT) {
+// function-vPotTubRowPix
+void vPotTubRowPix(Dynamic_T* aDynamicT) {
 
   RowInfo __ROW_INFO_TO__;
   i8 __POT__;
@@ -423,7 +423,6 @@ void vTubRowPix(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
     void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-    //vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
     __EXTERN_ROWPIX__(__TUB_POT__, aRowPix);
 #endif
     __ROW_INFO_TO__.m_bInitialize = false;
@@ -434,10 +433,10 @@ void vTubRowPix(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iTubContinue ------------------------------------------------------------*/
+/*-- iPotTubContinue ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iTubContinue
-i8 iTubContinue(Dynamic_T* aDynamicT) {
+// function-iPotTubContinue
+i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   ColumnInfo xColumnInfo;
@@ -462,6 +461,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
   __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
 	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
+
   // check for error
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
@@ -475,10 +475,10 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iEosTubBegin ------------------------------------------------------------*/
+/*-- iEosPotTubBegin ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iEosTubBegin
-i8 iEosTubBegin(Dynamic_T* aDynamicT) {
+// function-iEosPotTubBegin
+i8 iEosPotTubBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__ {
     i8 iDummy;
@@ -503,10 +503,10 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iEosTubBody -------------------------------------------------------------*/
+/*-- iEosPotTubBody ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iEosTubBody
-i8 iEosTubBody(Dynamic_T* aDynamicT) {
+// function-iEosPotTubBody
+i8 iEosPotTubBody(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
   RowInfo __ROW_INFO_TO__;
@@ -553,13 +553,11 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
   RowInfo __ROW_INFO_TO__;
 
   // marker-start
-    if (!aDynamicT->m_iRowsProcessed)
-      goto L_Return;
-
-  // allocate a row from the tub
+	  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // allocate a row from the tub/pot
 #ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
-	__ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
+    __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
+	  __ROW_INFO_TO__.m_nStringAreaSize = sizeof(__ROW_INFO_TO__.m_cStringArea);
 #endif
     // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
@@ -615,7 +613,7 @@ void vHashBegin(Dynamic_T* aDynamicT) {
 /*-- vEosPLIntKeyTraversal ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vEosPLIntKeyTraversal
-i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
+void vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
 
   i8 iElemSize = 0;
 
@@ -630,6 +628,9 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
   aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)
       aExtern_IndexTreeBegin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 #endif
+
+	if (!aDynamicT->m_iRowsProcessed)
+		goto L_Return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // traverse the index
@@ -647,8 +648,8 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
     // marker-end
   }
 
-  return 0; // ray-alka
-
+	L_Return:
+	  return;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -731,8 +732,11 @@ void vPLToHashBegin(Dynamic_T* aDynamicT) {
 	i8 iKeyHash;
 
 	// marker-start
-	iKeySize = 0;
-	iKeyHash = 0;
+	  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	  // Calculate the Partition Key Hash
+	  iKeySize = 0;
+	  iKeyHash = 0;
+
 	// marker-end
 }
 
@@ -991,10 +995,10 @@ void vCopyNulls(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vTubVchCol --------------------------------------------------------------*/
+/*-- vPotTubVchCol -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vTubVchCol
-void vTubVchCol(Dynamic_T* aDynamicT) {
+// function-vPotTubVchCol
+void vPotTubVchCol(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
@@ -1130,12 +1134,12 @@ void vPayLoadToHash(Dynamic_T* aDynamicT) {
 	i8 iKeyHash;
 
 	// marker-start
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-	// column __COLUMN_NO__
+	  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	  // column __COLUMN_NO__
 
-	iMixVal = aDynamicT->m_aiPayload[__INDEX_COLUMN__];
+	  iMixVal = aDynamicT->m_aiPayload[__INDEX_COLUMN__];
 #ifdef WITH_CLANG
-	vExtern_RunningHash(&iKeyHash, iMixVal);
+	  vExtern_RunningHash(&iKeyHash, iMixVal);
 #endif
 
 	// marker-end
