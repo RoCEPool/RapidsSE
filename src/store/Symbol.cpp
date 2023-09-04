@@ -234,15 +234,17 @@ bool Symbol::bIs_Bol_Fn(Stz* szArg)
 {
   _static_
 
-       if (szArg->bSame("between"_Stz))         return true;
-  else if (szArg->bSame("inList"_Stz))          return true;
-  else if (szArg->bSame("isNull"_Stz))          return true;
-  else if (szArg->bSame("like2"_Stz))           return true;
-  else if (szArg->bSame("like3"_Stz))           return true;
-  else if (szArg->bSame("matchLeading"_Stz))    return true;
-  else if (szArg->bSame("matchMiddle"_Stz))     return true;
-  else if (szArg->bSame("matchMiddle1"_Stz))    return true;
-  else if (szArg->bSame("matchTrailing"_Stz))   return true;
+       if (szArg->bSame("BETWEEN"_Stz))         return true;
+  else if (szArg->bSame("INLIST"_Stz))          return true;
+  else if (szArg->bSame("ISNULL"_Stz))          return true;
+  else if (szArg->bSame("LIKE2"_Stz))           return true;
+  else if (szArg->bSame("LIKE3"_Stz))           return true;
+  else if (szArg->bSame("MATCHLEADING"_Stz))    return true;
+  else if (szArg->bSame("MATCHMIDDLE"_Stz))     return true;
+  else if (szArg->bSame("MATCHMIDDLE1"_Stz))    return true;
+  else if (szArg->bSame("MATCHTRAILING"_Stz))   return true;
+  else if (szArg->bSame("SUBSTRING2"_Stz))      return true;
+  else if (szArg->bSame("SUBSTRING3"_Stz))      return true;
 
   return false;
 }
