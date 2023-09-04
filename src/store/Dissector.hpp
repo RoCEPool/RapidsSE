@@ -66,7 +66,6 @@ namespace STORE
     Card* pOp_Start       (void);
     Card* pOp_Top         (void);
 
-    Card_From*       pFormFrom(Stz* szTableNm, Table* pTable);
     Card_IndexList*  pFormIndex(Stz* szIndexNm, Table* pTable);
     Card_Table*      pFormTable(Stz* szTableNm, Table* pTable);
 
@@ -78,7 +77,10 @@ namespace STORE
     Card_Expr*       pPopExpr       (Card_RpnTerms* pCard_RpnTerms,
                                      bool bIsKeyExpr, i8& ri_Expr,
                                      bool bEnsureDirection);
-    Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirection);
+    Card_HshCol*     pPopHshCol     (Card_RpnTerms* pCard_RpnTerms);
+    Card_HshColList* pPopHshColList (Card_RpnTerms* pCard_RpnTerms);
+    Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms,
+                                     bool bEnsureDirection);
     Card_Projection* pPopProjection (Card_RpnTerms* pCard_RpnTerms);
     Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
     Stz*             szPopType_char (Card_RpnTerms* pCard_RpnTerms);

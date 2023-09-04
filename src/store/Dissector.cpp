@@ -507,22 +507,23 @@ Card* Dissector::pOp_Hash(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calcExpr : calculation expression list
 
-  Card_HshCol* p_hshCol = new Card_HshCol;
+//  Card_HshCol* p_hshCol = new Card_HshCol;
+//
+//  Card_Term* p_term = _pCard_Term(pCard_RpnTerms->pGet(1));
+//
+//  Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
+//
+//  p_hshCol->pSymbol()->vSym(p_term2->pSymbol());
+//  eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol(SF_NONE));
+//  p_hshCol->pSymbol()->Y_vColType(szCT_char[eColumnType]);
+//
+//  Card_Term* p_term_hsh = p_term2->pClone();
+//  p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
+//  p_hshCol->vAppend(p_term_hsh);
+//  p_hshCol->pSymbol()->Y_vSet(P_BreakPt);
 
-  Card_Term* p_term = _pCard_Term(pCard_RpnTerms->pGet(1));
-
-  Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
-
-  p_hshCol->pSymbol()->vSym(p_term2->pSymbol());
-  eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol(SF_NONE));
-  p_hshCol->pSymbol()->Y_vColType(szCT_char[eColumnType]);
-
-  Card_Term* p_term_hsh = p_term2->pClone();
-  p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
-  p_hshCol->vAppend(p_term_hsh);
-  p_hshCol->pSymbol()->Y_vSet(P_BreakPt);
-
-  pCard_Hash->vAppend(p_hshCol);
+  Card_HshColList* p_hshColList = pPopHshColList(pCard_RpnTerms);
+  pCard_Hash->vAppend(p_hshColList);
 
   delete pCard_RpnTerms;
 
@@ -1130,23 +1131,6 @@ Card* Dissector::pOp_Top(void)
 /*----------------------------------------------------------------------------*/
 /* form table                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_From* Dissector::pFormFrom(Stz* szTableNm, Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_From* pCard_From = new Card_From;
-  pCard_From->pSymbol()->Y_vSet(P_Pointer,pTable);
-
-  UNUSED(szTableNm);
-//  Card_TableNm* pCard_TableNm = (new Card_TableNm) ->SYM(SF_TBL_NM,szTableNm);
-//  pCard_From->vAppend(pCard_TableNm);
-
-  return pCard_From;
-}
-
-/*----------------------------------------------------------------------------*/
-/* form table                                                                 */
-/*----------------------------------------------------------------------------*/
 Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm, Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
@@ -1393,6 +1377,52 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
 
   ri_Expr++;
   return pCard_Expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop hshCol                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_HshCol* Dissector::pPopHshCol(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card* pCard_Term_head = pCard_RpnTerms->pHead();
+  if (! pCard_Term_head)
+    return nullptr;
+
+  if (pCard_Term_head->pSymbol()->szSF_symbol(SF_NONE)->bSame(","_Stz))
+    pCard_Term_head = pCard_RpnTerms->pPop();
+
+  Card_HshCol* p_hshCol = new Card_HshCol;
+
+  Card* p_card_type = pCard_RpnTerms->pPop();
+  UNUSED(p_card_type);
+
+  Card_Term* p_term1 = _pCard_Term(pCard_RpnTerms->pPop());
+  eCT eColumnType = Symbol::eTo_eCT_str(p_term1->szSymbol(SF_NONE));
+
+  Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pPop());
+  Card_Term* p_term_hsh = p_term2->pClone();
+  p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
+  p_hshCol->vAppend(p_term_hsh);
+
+  return p_hshCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop hshColList                                                             */
+/*----------------------------------------------------------------------------*/
+Card_HshColList* Dissector::pPopHshColList(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_HshColList* pCard_HshColList = new Card_HshColList;
+
+  while (Card_HshCol* pCard_HshCol = pPopHshCol(pCard_RpnTerms)) {
+    pCard_HshColList->vAppend(pCard_HshCol);
+  }
+
+  return pCard_HshColList;
 }
 
 /*----------------------------------------------------------------------------*/
