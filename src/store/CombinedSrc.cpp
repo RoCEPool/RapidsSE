@@ -1334,6 +1334,8 @@ void CombinedSrc::vAppendCodeHashCols(OpSketch* pOpSketch)
 {
 	_precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
+	vAppendCodeFragment(pOpSketch, "vHashBegin"_Stz);
+
 	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColHsh->m_nCols; i_Col++) {
 
 		m_pCommonCode->vSeekStart();

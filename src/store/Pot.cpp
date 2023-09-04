@@ -26,15 +26,15 @@ __aFooterFunction(Pot)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {
-  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea, piErrorCode);
+extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
+  return Pot::aAllotRow((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iMixIn, i8 nRowStrSize) {
-  Pot::vRowStrSize((Pot*)pPot, iMixIn, nRowStrSize);
+extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
+  Pot::vRowStrSize((Pot*)pPot, iKeyHash, nRowStrSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,15 +46,15 @@ extern "C" void vExtern_PotRowPix(void* pPot, void* pRowPix) {
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {
-  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea, piErrorCode);
+void* aPot_AllotRow(void* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode) {
+  return Pot::aAllotRow((Pot*)pPot, iKeyHash, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-void vPot_RowStrSize(void* pPot, i8 iMixIn, i8 nRowStrSize) {
-  Pot::vRowStrSize((Pot*)pPot, iMixIn, nRowStrSize);
+void vPot_RowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
+  Pot::vRowStrSize((Pot*)pPot, iKeyHash, nRowStrSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ Pot::~Pot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create new destination row (possible new row slab)                         */
 /*----------------------------------------------------------------------------*/
-void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode)
+void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
 {
   _static_;
 
@@ -100,8 +100,8 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode)
     Row* aDstRow;
 
     LglPtnMap* pPtnMap = AM::pLglPtnMap();
-    i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHsh);
+    //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
 
     // get row buffer for given partition (new a first buffer if ncessary)
     RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[tLglPtn]);
@@ -139,14 +139,14 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode)
 /*----------------------------------------------------------------------------*/
 /* set row string                                                             */
 /*----------------------------------------------------------------------------*/
-void Pot::vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize)
+void Pot::vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize)
 {
   _static_
 
   RASSERT(CN_POT == pPot->eGetClassNo());
 
   LglPtnMap* pPtnMap = AM::pLglPtnMap();
-  i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+  //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
   LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHsh);
 
   RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
