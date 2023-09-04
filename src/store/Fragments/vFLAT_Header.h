@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "../src/primitives/BaseTypes_tcc.h"
+#include "../src/primitives/BaseTypes_general.h"
 #include "../src/base/CodeSynthCommon.h"
 #include "../src/base/ClangStuff.h"
 #include "../src/base/ClangDynamic.h"
@@ -62,7 +62,7 @@ static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
 #include "../src/base/LogicalMacros.h"
 #include "../src/base/RelationalMacros.h"
 #include "../src/base/MathMacros.h"
-#include "../src/base/TccMacros.h"
+#include "../src/base/FunctionMacros.h"
 
 /*============================================================================*/
 /* end                                                                        */

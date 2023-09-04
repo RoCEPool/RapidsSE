@@ -279,7 +279,6 @@ public:
   void vCrwBufferGetBufferIdAsAddr(void);
   void vCrwBufferGetNextLinkedBufferId(void);
   void vCrwBufferInflate(void);
-  void vCrwBufferInflateTcc(void);
   void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
