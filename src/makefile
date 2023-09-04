@@ -300,7 +300,7 @@ $(TCC_LIB) :
 # Rule for building Thrift
 thrift : $(THRIFT_LIB)
 $(THRIFT_LIB) :
-	+@cd ../thirdparty/thrift && env -u CPPFLAGS -u LDFLAGS $(MAKE)
+	+@cd ../thirdparty/thrift && env -u CPPFLAGS -u LDFLAGS -u WARNINGS -u CFLAGS CXXFLAGS="-Wno-unused-but-set-variable" $(MAKE)
 
 # Necessary to make some of the above rules run every time.
 FORCE : 
