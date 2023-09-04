@@ -2200,6 +2200,19 @@ Card_HshCol* Card::pSub_hshCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_HshColList.hpp"
+Card_HshColList* Card::pSub_hshColList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_HshColList* p_hshColList =
+      _pCard_HshColList(pFindSubCard(CK_HSHCOLLIST));
+  return p_hshColList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_IdxColList.hpp"
 Card_IdxColList* Card::pSub_idxColList(void)
 {

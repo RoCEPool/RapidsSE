@@ -52,6 +52,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_HASHING"_Stz,      // CK_HASHING
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
   /* */ "CK_HSHCOL"_Stz,       // CK_HSHCOL
+  /* */ "CK_HSHCOLLIST"_Stz,   // CK_HSHCOLLIST
 
   /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
   /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
@@ -178,6 +179,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "hashing"_Stz,         // CK_HASHING
   /* */ "having"_Stz,          // CK_HAVING
   /* */ "hshCol"_Stz,          // CK_HSHCOL
+  /* */ "hshColList"_Stz,      // CK_HSHCOLLIST
 
   /* */ "idxCol"_Stz,          // CK_IDXCOL
   /* */ "idxColList"_Stz,      // CK_IDXCOLLIST

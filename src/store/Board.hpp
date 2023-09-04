@@ -58,6 +58,7 @@
 #include "Card_Hashing.hpp"
 #include "Card_Having.hpp"
 #include "Card_HshCol.hpp"
+#include "Card_HshColList.hpp"
 
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
