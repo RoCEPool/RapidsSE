@@ -60,23 +60,17 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   p_hash->vAppend(p_level);
 
+  Card_HshColList* p_hshColList = new Card_HshColList;
+  p_hash->vAppend(p_hshColList);
 
   Card_HshCol* p_hshCol = new Card_HshCol;
-  p_hshCol->pSymbol()->vSym(p_expr->pGetTerm(0)->pSymbol());
+  p_hshColList->vAppend(p_hshCol);
 
-  RASSERT(p_expr->szP_Type());
-  p_hshCol->pSymbol()->Y_vColType(p_expr->szP_Type());
+  Card_Term* p_card_term = p_expr->pGetTerm(0)->pClone();
+  p_hshCol->vAppend(p_card_term);
 
-  p_hshCol->vAppend(p_expr->pGetTerm(0)->pClone());
-
-  p_hshCol->pSymbol()->Y_vSet(P_BreakPt);
-
-  p_hash->vAppend(p_hshCol);
-
-  p_hash->vAppend(p_projection_prev->pDupCardRecursive());
-
-//  if (p_projection_prev)
-//    p_hash->vAppend(p_projection_prev->pClone());
+  if (p_projection_prev)
+    p_hash->vAppend(p_projection_prev->pClone());
 
   return p_hash;
 }

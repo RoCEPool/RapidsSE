@@ -5,6 +5,7 @@
 #include "ColHsh.hpp"
 
 #include "Card_Term.hpp"
+#include "Kid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -24,7 +25,7 @@ ColHsh::ColHsh(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
 
-  for (i8 i_Col = 0; i_Col < C_COLMAP; i_Col++) {
+  for (i8 i_Col = 0; i_Col < C_COLHSH; i_Col++) {
     m_axCols[i_Col].m_i_Col       = C_UNKNOWN;
     m_axCols[i_Col].m_eColumnType = CT_NONE;
     m_axCols[i_Col].m_sHashOf     = "?"_Stz;
@@ -94,16 +95,33 @@ void ColHsh::vUpdate(Card_Hashing* p_hashing)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
 
-  UNUSED(p_hashing);
+  Kid xHashing(p_hashing);
+  while (xHashing.bEach()) {
+    Card_Term* p_term = xHashing.p_term();
 
-  Card_Term* p_term = p_hashing->pSub_term();
+    Symbol* pSymbol = p_term->pSymbol();
 
-  Symbol* pSymbol = p_term->pSymbol();
+    vAdd(p_term->iGetOdn() - 1,
+         Symbol::eTo_eCT_char(pSymbol->Y_szColType()),
+         pSymbol->Y_szGet(P_HashOf));
 
-  vAdd(p_term->iGetOdn() - 1,
-       Symbol::eTo_eCT_char(pSymbol->Y_szColType()),
-       pSymbol->Y_szGet(P_HashOf));
+  }
 }
+/*----------------------------------------------------------------------------*/
+//void ColHsh::vUpdate(Card_Hashing* p_hashing)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
+//
+//  UNUSED(p_hashing);
+//
+//  Card_Term* p_term = p_hashing->pSub_term();
+//
+//  Symbol* pSymbol = p_term->pSymbol();
+//
+//  vAdd(p_term->iGetOdn() - 1,
+//       Symbol::eTo_eCT_char(pSymbol->Y_szColType()),
+//       pSymbol->Y_szGet(P_HashOf));
+//}
 
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */

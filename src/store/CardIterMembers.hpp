@@ -80,6 +80,7 @@ namespace STORE
     Card_Hashing *       p_hashing;
     Card_Having *        p_having;
     Card_HshCol *        p_hshCol;
+    Card_HshColList *    p_hshColList;
 
     Card_IdxCol *        p_idxCol;
     Card_IdxColList *    p_idxColList;

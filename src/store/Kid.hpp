@@ -80,6 +80,7 @@ namespace STORE
     Card_Correlation* p_correlation(void);
     Card_Expr*        p_expr(void);
     Card_Fold*        p_fold(void);
+    Card_HshCol*      p_hshCol(void);
     Card_IdxCol*      p_idxCol(void);
     Card_Index*       p_index(void);
     Card_JoinOrder*   p_joinOrder(void);

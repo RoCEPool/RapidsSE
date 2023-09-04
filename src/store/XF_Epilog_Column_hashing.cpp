@@ -89,28 +89,53 @@ void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
     if (CK_HASH == m_pCI->G.e_MainCard) {
       m_pCI->G_vAppendNewChild(m_pCI->G.p_hash,CK_HASHING);
 
-      if (m_pCI->G.p_project) {
-        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
-        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
-        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
-        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"PROJECT"_Stz);
-        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+      Kid xHshColList(m_pCI->G.p_hash->pSub_hshColList());
+      while (xHshColList.bEach()) {
+        m_pCI->G.p_hshCol = xHshColList.p_hshCol();
+        if (m_pCI->G.p_project) {
+          m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+          m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+          m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"PROJECT"_Stz);
+          m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+        }
+        else
+        if (m_pCI->G.p_top) {
+          m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+          m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+          m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"TOP"_Stz);
+          m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+        }
+        else {
+          m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+          m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+          m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"other"_Stz);
+          m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+        }
+
       }
-      else
-      if (m_pCI->G.p_top) {
-        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
-        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
-        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
-        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"TOP"_Stz);
-        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
-      }
-      else {
-        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
-        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
-        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
-        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"other"_Stz);
-        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
-      }
+
+//      if (m_pCI->G.p_project) {
+//        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
+//        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+//        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+//        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"PROJECT"_Stz);
+//        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+//      }
+//      else
+//      if (m_pCI->G.p_top) {
+//        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
+//        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+//        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+//        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"TOP"_Stz);
+//        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+//      }
+//      else {
+//        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
+//        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+//        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+//        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"other"_Stz);
+//        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+//      }
       continue;
     }
 
@@ -118,6 +143,67 @@ void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
 
   m_pCI->vEndTransform();
 }
+/*----------------------------------------------------------------------------*/
+//void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_HASHING, _FOOTER_);
+//
+//  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_HASHING, "column hashing"_Stz);
+//
+//  m_pCI->vBeginEach();
+//  while (m_pCI->G_bEachMain_NONE()) {
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    if (CK_STAGE == m_pCI->G.e_MainCard) {
+//      m_pCI->vNullMembers();
+//      continue;
+//    }
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    if (CK_PROJECT == m_pCI->G.e_MainCard) {
+//      m_pCI->G.p_top = nullptr;
+//      continue;
+//    }
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    if (CK_TOP == m_pCI->G.e_MainCard) {
+//      m_pCI->G.p_project = nullptr;
+//      continue;
+//    }
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    if (CK_HASH == m_pCI->G.e_MainCard) {
+//      m_pCI->G_vAppendNewChild(m_pCI->G.p_hash,CK_HASHING);
+//
+//      if (m_pCI->G.p_project) {
+//        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
+//        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+//        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+//        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"PROJECT"_Stz);
+//        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+//      }
+//      else
+//      if (m_pCI->G.p_top) {
+//        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
+//        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+//        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+//        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"TOP"_Stz);
+//        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+//      }
+//      else {
+//        m_pCI->G.p_hshCol = m_pCI->G.p_hash->pSub_hshCol();
+//        m_pCI->G.p_term = m_pCI->G.p_hshCol->pSub_term();
+//        m_pCI->G.p_term = _pCard_Term(m_pCI->G.p_term->pDupCardRecursive());
+//        m_pCI->G.p_term->pSymbol()->Y_vSet(P_HashOf,"other"_Stz);
+//        m_pCI->G.p_hashing->vAppend(m_pCI->G.p_term);
+//      }
+//      continue;
+//    }
+//
+//  }
+//
+//  m_pCI->vEndTransform();
+//}
 
 /*============================================================================*/
 /* end                                                                        */

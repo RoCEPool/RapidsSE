@@ -22,7 +22,7 @@ __vDeleteFunction(Card_HshColList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_HshColList::Card_HshColList(void)
-    : Card_symbol(CK_HSHCOLLIST, 5)
+    : Card_symbol(CK_HSHCOLLIST, 2)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

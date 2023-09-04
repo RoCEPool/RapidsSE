@@ -10,7 +10,7 @@ namespace STORE
 {
   class ColHsh : public Object
   {
-    static const i8 C_COLMAP = 128;
+    static const i8 C_COLHSH = 128;
 
   public:
 
@@ -22,7 +22,7 @@ namespace STORE
 
       s32  m_sHashOf;
 
-    } m_axCols[C_COLMAP];
+    } m_axCols[C_COLHSH];
 
   protected:
     // must be last
