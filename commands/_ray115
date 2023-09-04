@@ -6,6 +6,8 @@
 
 _lineitem;
 
+trackMemory;
+
 /optimiser_trace
 /optimise_passthru
 pipeline is
@@ -21,6 +23,8 @@ begin
   stage stageC on origin :
     output | sink | stageA
 end ;
+
+MemoryLeaks;
 
 // failure contains: 'no such index'
 /*============================================================================*/
