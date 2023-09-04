@@ -3,6 +3,8 @@
 readonly DIR="$(dirname "$0")"
 readonly BOOSTDIR="$(realpath "${DIR}/boost_1_80_0")"
 
+MACOS_OPENSSL_BASE_DIR="/usr/local/opt/openssl"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Print an error message to stderr and exit,
 ## Params:
@@ -82,12 +84,26 @@ function checkDependenciesMacOs() {
   fi
 
   # 3. Check for OpenSSL headers and library
-  if [ ! -d /usr/local/opt/openssl/include ]; then
-    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed."
+  if [ -d /usr/local/opt/openssl ]; then
+    MACOS_OPENSSL_BASE_DIR="/usr/local/opt/openssl"
+
+  elif [ -d /opt/homebrew/opt/openssl ]; then
+    MACOS_OPENSSL_BASE_DIR="/opt/homebrew/opt/openssl"
+
+  else
+    errorExit "The Thrift pre-requisite OpenSSL does not appear to be installed.\n"\
+              "It can be installed with the command:\n"\
+              "  brew install openssl\n"
   fi
 
-  if [ ! -d /usr/local/opt/openssl/lib ]; then
-    errorExit "The Thrift pre-requisite OpenSSL libraries do not appear to be installed."
+  if [ ! -d "${MACOS_OPENSSL_BASE_DIR}/include/openssl" ]; then
+    errorExit "The Thrift pre-requisite OpenSSL headers could not be found. They were \n"\
+              "expecting to be found at: ${MACOS_OPENSSL_BASE_DIR}/include/openssl"
+  fi
+
+  if [ ! -d "${MACOS_OPENSSL_BASE_DIR}/lib" ]; then
+    errorExit "The Thrift pre-requisite OpenSSL libraries could not be found. They were \n"\
+              "expecting to be found at: ${MACOS_OPENSSL_BASE_DIR}/lib"
   fi
 }
 
@@ -168,8 +184,8 @@ function runConfigure() {
 
   if   [ "${IS_MACOS}" -eq 1 ]; then
     command=("env"
-             "LD_FLAGS=-L/usr/local/opt/openssl/lib"
-             "CPPFLAGS=-I/usr/local/opt/openssl/include"
+             "LD_FLAGS=-L${MACOS_OPENSSL_BASE_DIR}/lib"
+             "CPPFLAGS=-I${MACOS_OPENSSL_BASE_DIR}/include"
              "./configure"
              "${commonOptions[@]}" )
 
