@@ -658,20 +658,14 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 							vAppendCodePLToHashCols(pOpSketch);
 
             if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
-              vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
+              vAppendCodeFragment(pOpSketch, "vEosPotTubLimit"_Stz);
             }
 
-            vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPLPotTub"_Stz);
             vAppendCodeToTubCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
+            vAppendCodeFragment(pOpSketch, "vEosPLPotTubEnd"_Stz);
           }
           else {
-						// generate code for the hash value
-						if (pOpSketch->eSketchKind() == SK_POT) {
-							vAppendCodeHashCols(pOpSketch);
-							RASSERT(0);
-						}
-
             vAppendCodeFragment(pOpSketch, "iEosPotTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosPotTubBody"_Stz);

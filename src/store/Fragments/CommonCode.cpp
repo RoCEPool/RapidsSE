@@ -544,10 +544,10 @@ i8 iEosPotTubBody(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iEosPayLoadTub ----------------------------------------------------------*/
+/*-- iEosPLPotTub ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iEosPayLoadTub
-i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
+// function-iEosPLPotTub
+i8 iEosPLPotTub(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
   RowInfo __ROW_INFO_TO__;
@@ -574,10 +574,10 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 // NOTE: con be combined with iEosPayLoadTub
 
 /*----------------------------------------------------------------------------*/
-/*-- vEosPayLoadTubEnd -------------------------------------------------------*/
+/*-- vEosPLPotTubEnd ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vEosPayLoadTubEnd
-void vEosPayLoadTubEnd(Dynamic_T* aDynamicT) {
+// function-vEosPLPotTubEnd
+void vEosPLPotTubEnd(Dynamic_T* aDynamicT) {
 
   {
 
@@ -1353,10 +1353,10 @@ i8 iResetPLKey(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vEosLimit ---------------------------------------------------------------*/
+/*-- vEosPotTubLimit ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vEosLimit
-void vEosLimit(Dynamic_T* aDynamicT) {
+// function-vEosPotTubLimit
+void vEosPotTubLimit(Dynamic_T* aDynamicT) {
 
   i8 __LIMIT_ROWS__ = 0;
   i8*   paW;
