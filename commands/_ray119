@@ -22,7 +22,8 @@ begin
     scan Orders
     | project "type INTEGER as O_CUSTKEY  O_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY"
-    | hash expr type INTEGER O_ORDERKEY
+    | hash expr type INTEGER O_CUSTKEY ,
+                type INTEGER O_ORDERKEY
     | combined 0
     | next hashcast
 
