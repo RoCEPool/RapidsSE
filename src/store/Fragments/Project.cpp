@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "IndexDef.hpp"
 #include "CodeSynthCommon.h"
 #include "ClangDynamic.h"

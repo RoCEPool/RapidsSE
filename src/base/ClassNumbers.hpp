@@ -61,7 +61,6 @@ enum eCN : u2 // Class Number
   /* */ CN_COLMAP,
   /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
-  /* */ CN_COMBINED,
   /* */ CN_COMBINEDSRC,
   /* */ CN_CONDITIONALQUERYNODEITER,
   /* */ CN_CORRELATEDJOIN,
@@ -568,7 +567,6 @@ static Stz* aCN[]
   /* */ "COLMAP"_Stz,               // CN_COLMAP
   /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN
-  /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
   /* */ "CORRELATEDJOIN"_Stz,       // CN_CORRELATEDJOIN
