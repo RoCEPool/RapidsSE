@@ -57,7 +57,6 @@ void CardHistory::vAddImage(Card* pCard, i8 iXform, Stz* szFunc)
 //      aAdd<CardImage*>(m_pHistoryPds->pAppendWithSynthKey(),sizeof(SkipListBlock));
 
   SkipListBlock* pSLB = m_pHistoryPds->pAppendWithSynthKey();
-
   _CardHistory* aCardHistory = static_cast<_CardHistory*>(pSLB->aItemKey());
 
   CardImage* pCardImage = new CardImage(pCard,pSLB->iKey(),iXform,szFunc);

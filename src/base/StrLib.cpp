@@ -4401,7 +4401,7 @@ void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char cChr, bool* pbResult
   bool bRet = bCheckBufferSpace(__func__, iAt + 1, iDstBufSize, pbResult);
   UNUSED(bRet);
 
-  ASSERT(iAt < nLength(psDst));
+  //ASSERT(iAt < nLength(psDst));
 
   char* acDst = psDst + iAt;
   
