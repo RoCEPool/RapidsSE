@@ -366,6 +366,8 @@ void CardIter::G_vClearRegisters(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  MemLib::vZero(G.md_Coord,sizeof(G.md_Coord),CN_CARDITER);
+
   G.p_MainCard         = nullptr;
   G.e_MainCard         = CK_NONE;
   G.i_MainCard         = C_UNKNOWN;
@@ -1146,6 +1148,9 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
 void CardIter::vFocusOnMain(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  MemLib::vZero(G.md_Coord, sizeof(G.md_Coord), CN_CARDITER);
+  StrLib::vCopy(G.md_Coord, sizeof(G.md_Coord),G.p_MainCard->szCoord()->azChar());
 
   G.e_MainCard = G.p_MainCard->eCard();
   G.i_MainCard = this->i_Child();
