@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+//#define Z_REJIG_STREAMDEFS
 
 #define Z_ITEMISED_NAMES
 

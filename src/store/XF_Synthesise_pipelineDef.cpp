@@ -55,6 +55,7 @@ XF_Synthesise_pipelineDef::~XF_Synthesise_pipelineDef(void) noexcept(false)
 
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -77,9 +78,6 @@ void XF_Synthesise_pipelineDef::vSynthesise(CardIter* pCI)
 
   delete pXF_Synthesise_pipelineDef;
 }
-
-
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +103,6 @@ void XF_Synthesise_pipelineDef::vPipelineDef(PipelineDef* pPipelineDef)
 
   m_pPipelineDef = pPipelineDef;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* call synthesiser                                                           */
@@ -410,7 +407,7 @@ void XF_Synthesise_pipelineDef::vCraftIndexDefs(Card_OP* p_OP)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft stream def's                                                         */
+/* craft stream def's for operator                                            */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftStreamDefs(Card_OP* p_OP)
 {
@@ -418,6 +415,15 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(Card_OP* p_OP)
 
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
+#ifdef Z_REJIG_STREAMDEFS
+  else
+  if (p_OP->bIsCard(CK_SCAN)) {
+    Card_Projection* p_projection = p_OP->pSub_projection();
+    m_pOpDef->m_pStreamDef_arriving =
+        p_projection->pToStreamDef(nullptr, nullptr, p_OP);
+  }
+#endif
+
 
   ColMap** ppColMap = nullptr;
   if (p_OP->bIsCard(CK_GBYAGG))

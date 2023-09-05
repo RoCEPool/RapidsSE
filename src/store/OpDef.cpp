@@ -478,7 +478,7 @@ void OpDef::vValidate(void)
     RASSERT(1 == nArgs());
     RASSERT(pArgDef("tableNm"_Stz));
 
-    RASSERT(! m_pStreamDef_arriving);
+    //RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pColsReq);
   }

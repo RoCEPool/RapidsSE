@@ -325,6 +325,8 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vValidateBench();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pCI->vUsingBoard((i8)0);
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);
 
@@ -334,6 +336,9 @@ void XF::vTransform_passThru(void)
   XF_Epilog_Itemise_colNm::vEpilog(m_pCI);
 
   vCrosscheck_Optimisations();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
 
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
 
