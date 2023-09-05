@@ -61,6 +61,7 @@ namespace STORE
     void    vDump(i8 i_Tab=0);
 
     Column* pFindColumn(Stz* sColumnNm);
+    Column* pFindColumn_stripItemise(Stz* sColumnNm);
 
     Column* pGetColumn(i8 i_Col);
     Column* pGetOrder(i8 i_Order);

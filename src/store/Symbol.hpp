@@ -97,7 +97,7 @@ namespace STORE
 
     static bool bPossibleNm(Stz* szChrSeq);
 
-    static void vStripDisamb(String* psArg);
+    static void vStripSuffix_itemise(String* psArg);
 
     static eCT  eTo_eCT_str(Stz* szType);
     static eCT  eTo_eCT_char(Stz* szType);

@@ -1062,7 +1062,7 @@ bool Symbol::bPossibleNm(Stz* szChrSeq)
 /*----------------------------------------------------------------------------*/
 /* strip disambiguation                                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vStripDisamb(String* psArg)
+void Symbol::vStripSuffix_itemise(String* psArg)
 {
   _static_
 
