@@ -69,7 +69,7 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI)
 {
   _static_
 
-	XF_Prolog_table_Analysis* pXF_table_Analysis;
+	XF_Prolog_table_Analysis* pXF_table_Analysis = nullptr;
 
 	try {
     pXF_table_Analysis = new XF_Prolog_table_Analysis(pCI);
