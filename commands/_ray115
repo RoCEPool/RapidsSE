@@ -10,6 +10,7 @@ trackMemory;
 
 /optimiser_trace
 /optimise_passthru
+/pipelineName = "_ray115"
 pipeline is
 begin
   stage stageA on origin :

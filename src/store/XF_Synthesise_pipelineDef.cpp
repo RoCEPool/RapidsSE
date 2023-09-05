@@ -53,6 +53,10 @@ XF_Synthesise_pipelineDef::~XF_Synthesise_pipelineDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
+  delete m_pPipelineDef;
+  //RASSERT(! m_pStageDef);
+  //RASSERT(! m_pOpDef);
+
 }
 
 
@@ -69,14 +73,28 @@ void XF_Synthesise_pipelineDef::vSynthesise(CardIter* pCI)
 
   UNUSED(pCI);
 
-  XF_Synthesise_pipelineDef* pXF_Synthesise_pipelineDef = new XF_Synthesise_pipelineDef(pCI);
-  pXF_Synthesise_pipelineDef->vSynthesise();
+  XF_Synthesise_pipelineDef *pXF_Synthesise_pipelineDef = nullptr;
 
-  PipelineDef* pPipelineDef = pXF_Synthesise_pipelineDef->pPipelineDef();
-  pXF_Synthesise_pipelineDef->vPipelineDef(nullptr);
-  pCI->m_pBench->pOptimiser()->vPipelineDef(pPipelineDef);
+  try {
+    pXF_Synthesise_pipelineDef = new XF_Synthesise_pipelineDef(pCI);
+    pXF_Synthesise_pipelineDef->vSynthesise();
 
-  delete pXF_Synthesise_pipelineDef;
+    PipelineDef *pPipelineDef = pXF_Synthesise_pipelineDef->pPipelineDef();
+    pXF_Synthesise_pipelineDef->vPipelineDef(nullptr);
+    pCI->m_pBench->pOptimiser()->vPipelineDef(pPipelineDef);
+
+    delete pXF_Synthesise_pipelineDef;
+  }
+
+  catch (Exception xException) {
+    delete pXF_Synthesise_pipelineDef;
+    throw xException;
+  }
+  catch (Error xError) {
+    delete pXF_Synthesise_pipelineDef;
+    throw xError;
+  }
+
 }
 
 
