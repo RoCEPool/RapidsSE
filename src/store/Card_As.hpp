@@ -21,6 +21,8 @@ namespace STORE
 
     Card_As* pClone(void);
 
+    bool bIs_SQCRLKEY(void);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

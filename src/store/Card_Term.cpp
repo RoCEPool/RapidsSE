@@ -170,7 +170,9 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
 
   ASSERT (   pCI->G.p_MainCard->bIsCard(CK_AGGREG)
           || pCI->G.p_MainCard->bIsCard(CK_FILTER)
+          || pCI->G.p_MainCard->bIsCard(CK_FROM)
           || pCI->G.p_MainCard->bIsCard(CK_GBYAGG)
+          || pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)
           || pCI->G.p_MainCard->bIsCard(CK_PROJECT)
           || pCI->G.p_MainCard->bIsCard(CK_SORT)
           || pCI->G.p_MainCard->bIsCard(CK_WHERE));
@@ -457,6 +459,7 @@ void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
   Symbol* pSym = pSymbol();
   if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
     pSym->vSym(p_expr->pSymbol());
+    vMark1(MARK_CHANGED);
   }
 }
 
