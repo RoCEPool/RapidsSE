@@ -6,42 +6,11 @@
 Interfaces
 ==========
 
-.. only:: html
+.. toctree::
+   :maxdepth: 1
 
-  .. contents:: Contents of this section:
-     :depth: 3
-     :backlinks: none
+   shell
+   jdbcDriver
+   wireline/index
 
-
-.. index::
-   single: interfaces; SE Shell
-   single: SE Shell; interface
-
-.. _seShellInterface:
-
-SE Shell
---------
-Detailed information on this will be coming soon.
-
-
-.. index::
-   single: interfaces; JDBC driver
-   single: JDBC driver; interface
-
-.. _jdbcDriverInterface:
-
-JDBC Driver
------------
-The JDBC Driver will be documented further once it is released.
-
-
-.. index::
-   single: interfaces; wireline protocol
-   single: wireline protocol; interface
-
-.. _wirelineProtocolInterface:
-
-Wireline Protocol
------------------
-Detailed information on this will be coming soon.
 
