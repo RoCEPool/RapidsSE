@@ -638,15 +638,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
 
+        vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
         vAppendCodePixCols(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
-
-
+        vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // TUB in EOS handler
+        // POT/TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           if (pOpSketch->m_eStencilFrom == SR_PL) {
 
@@ -660,37 +658,31 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 							vAppendCodePLToHashCols(pOpSketch);
 
             if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
-              vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
+              vAppendCodeFragment(pOpSketch, "vEosPotTubLimit"_Stz);
             }
 
-            vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPLPotTub"_Stz);
             vAppendCodeToTubCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
+            vAppendCodeFragment(pOpSketch, "vEosPLPotTubEnd"_Stz);
           }
           else {
-						// generate code for the hash value
-						if (pOpSketch->eSketchKind() == SK_POT)
-							vAppendCodeHashCols(pOpSketch);
-
-            vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPotTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-            vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
-            vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPotTubBody"_Stz);
+            vAppendCodeCopyCols(pOpSketch, "vPotTubVchCol"_Stz);
           }
 
         }
         else {
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // TUB in CRW/ROW/INDEX handler
+          // POT/TUB in CRW/ROW/INDEX handler
 
           // generate code for the hash value
           if (pOpSketch->eSketchKind() == SK_POT)
 						vAppendCodeHashCols(pOpSketch);
 
-          //vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-
-          vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
-          vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
+          vAppendCodeFragment(pOpSketch, "iPotTubContinue"_Stz);
+          vAppendCodeCopyCols(pOpSketch, "vPotTubVchCol"_Stz);
         }
         break;
 
@@ -1209,7 +1201,7 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
       case CT_VARCHAR:
 
         if (pOpSketch->m_eStencilTo == SR_TO)
-          vAppendCodeFragment(pOpSketch, "vTubVchCol"_Stz, pColumn);
+          vAppendCodeFragment(pOpSketch, "vPotTubVchCol"_Stz, pColumn);
         else
           vAppendCodeFragment(pOpSketch, szFunction, pColumn);
         break;
