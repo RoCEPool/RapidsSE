@@ -63,6 +63,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
 //  MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
 //  MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
+//  MY::pJob()->pJobTags()->vAppend(C_WEAVED);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
@@ -73,6 +74,8 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 Optimiser::~Optimiser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  RASSERT(0 == m_pCI->nItems());
 
   if (m_pCardCtl->pCardHistory())
     m_pCardCtl->pCardHistory()->vPrintImages(CK_GBYAGG,AL_PARTITION);

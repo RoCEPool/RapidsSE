@@ -158,24 +158,29 @@ void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (      CK_AGGREG  == pCI->G.e_MainCard
-            || CK_FILTER  == pCI->G.e_MainCard
-            || CK_GBYAGG  == pCI->G.e_MainCard
-            || CK_PROJECT == pCI->G.e_MainCard
-            || CK_SORT    == pCI->G.e_MainCard
-            || CK_WHERE   == pCI->G.e_MainCard))
+  if (! (      CK_AGGREG    == pCI->G.e_MainCard
+            || CK_FILTER    == pCI->G.e_MainCard
+            || CK_FROM      == pCI->G.e_MainCard
+            || CK_GBYAGG    == pCI->G.e_MainCard
+            || CK_INDEXJOIN == pCI->G.e_MainCard
+            || CK_PROJECT   == pCI->G.e_MainCard
+            || CK_SORT      == pCI->G.e_MainCard
+            || CK_WHERE     == pCI->G.e_MainCard))
     return;
 
-  if (CK_AGGREG  == pCI->G.e_MainCard ||
-      CK_FILTER  == pCI->G.e_MainCard ||
-      CK_GBYAGG  == pCI->G.e_MainCard ||
-      CK_PROJECT == pCI->G.e_MainCard) {
+  if (CK_AGGREG    == pCI->G.e_MainCard ||
+      CK_FILTER    == pCI->G.e_MainCard ||
+      CK_FROM      == pCI->G.e_MainCard ||
+      CK_INDEXJOIN == pCI->G.e_MainCard ||
+      CK_GBYAGG    == pCI->G.e_MainCard ||
+      CK_PROJECT   == pCI->G.e_MainCard) {
     pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
     if (pCI->G.p_level && AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
       return;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if ((pCI->G.p_key = pSub_key()))
     pCI->G.p_key->vConvertAll_stmOdn_To_colOdn(pCI);
 
@@ -184,6 +189,14 @@ void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   if ((pCI->G.p_boolCalc = pCI->G.p_MainCard->pSub_boolCalc()))
     pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
+
+  // todo:
+
+  if (CK_WHERE   == pCI->G.e_MainCard) {
+    if ((pCI->G.p_rpnCalc = pSub_rpnCalc())) {
+      pCI->G.p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
+    }
+  }
 
 }
 
@@ -669,11 +682,14 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol(SF_NONE));
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  if (pCI->Prior.m_pProjection)
+  if (pCI->Prior.m_pProjection) {
 //    p_projection = pCI->Prior.m_pProjection->pClone();
     p_projection = pCI->Prior.m_pProjection->pReducedCopy(pCI);
-  else
+    //p_projection->vDump(__func__ );
+  }
+  else {
     p_projection = new Card_Projection(pCI->iXform());
+  }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 

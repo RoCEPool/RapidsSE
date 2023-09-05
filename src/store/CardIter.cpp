@@ -1039,6 +1039,8 @@ void CardIter::vEndPhase(void)
   m_pBench->vEndPhase(this);
 
   vValidateBench();
+
+  RASSERT(0 == nItems());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2153,7 +2155,8 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   if (! p_projection_prior)
     return nullptr;
 
-   if (p_term->pSymbol()->bIs_Col_No()) {
+  if (p_term->pSymbol()->bIs_Col_No()) {
+    //p_projection_prior->vDump(__func__);
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term->pSymbol());
     return p_expr_prior;
   }

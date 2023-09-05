@@ -575,10 +575,16 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   p_expr_reduced->pSymbol()->vSym(&xExprNo);
   p_expr_reduced->vColType(this);
 
-  if (Card_As* p_as = pSub_as())
+  bool bIs_SQCRLKEY = false;
+  if (Card_As* p_as = pSub_as()) {
     p_expr_reduced->vAppend(p_as->pClone());
-
-  Card_RpnCalc* p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy(i_Expr);
+    bIs_SQCRLKEY = p_as->bIs_SQCRLKEY();
+  }
+  Card_RpnCalc* p_rpnCalc_reduced;
+  if (bIsScalarKey())
+    p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy_key();
+  else
+    p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy(i_Expr,bIs_SQCRLKEY);
 
   p_expr_reduced->vAppend(p_rpnCalc_reduced);
 

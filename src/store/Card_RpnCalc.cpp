@@ -349,11 +349,12 @@ void Card_RpnCalc::vOntoStzList(StzList* pStzList)
 /*----------------------------------------------------------------------------*/
 /* return a reduced copy of this rpnCalc                                      */
 /*----------------------------------------------------------------------------*/
-Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
+Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (1 == nChildCards()) {
+  if (bIsScalarCol() &&
+      (bIs_SQCRLKEY || pGetTerm(0)->pSymbol()->bIs_Col_Tc())) {
     Card_RpnCalc* p_rpnCalc_reduced = pClone();
     return p_rpnCalc_reduced;
   }
@@ -366,6 +367,19 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
 
   p_rpnCalc_reduced->vAppend(p_term);
 
+  return p_rpnCalc_reduced;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a reduced copy of this rpnCalc                                      */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc * Card_RpnCalc::pReducedCopy_key(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(1 == nChildCards());
+
+  Card_RpnCalc* p_rpnCalc_reduced = pClone();
   return p_rpnCalc_reduced;
 }
 

@@ -263,8 +263,10 @@ void XF::vTransform_passThru(void)
 
     m_pCI->vTransform(__func__, XF_EPILOG_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
     m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain_NONE())
+    while (m_pCI->G_bEachMain_NONE()) {
       m_pCI->G.p_OP->vConvert_stmColOdn_To_tblColOdn(m_pCI);
+      //m_pCI->vPrintBoard(__LINE__);
+    }
     m_pCI->vEndTransform();
 
     // todo: needs discussion with Alka re constraint

@@ -35,7 +35,8 @@ namespace STORE
     bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
     Card_RpnCalc* pPropagate(Card_Expr* p_expr_encasing);
-    Card_RpnCalc *pReducedCopy(i8 i_Expr);
+    Card_RpnCalc *pReducedCopy(i8 i_Expr,  bool bIs_SQCRLKEY);
+    Card_RpnCalc *pReducedCopy_key(void);
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
