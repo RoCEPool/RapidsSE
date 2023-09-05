@@ -577,9 +577,9 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
       }
     }
 
-    Kid xCI(p_test);
-    while (xCI.bEach()) {
-      if (bYank(p_boolCalc,szWithMark,xCI.pChild(),p_pred_yanked,bYank)) {
+    Kid xKid(p_test);
+    while (xKid.bEach()) {
+      if (bYank(p_boolCalc,szWithMark,xKid.pChild(),p_pred_yanked,bYank)) {
         RASSERT(p_pred_yanked);
         return true;
       }
@@ -592,9 +592,9 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Kid xCI(this);
-  while (xCI.bEach()) {
-    if (bYank(this,szWithMark,xCI.pChild(),p_pred_yanked,bYank)) {
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    if (bYank(this,szWithMark,xKid.pChild(),p_pred_yanked,bYank)) {
       RASSERT(p_pred_yanked);
       return true;
     }
@@ -621,9 +621,9 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card* p_test,
     }
   }
 
-  Kid xCI(this);
-  while (xCI.bEach()) {
-    if (this->bYank_PRED(szWithMark, xCI.pChild(), p_pred_yanked)) {
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    if (this->bYank_PRED(szWithMark, xKid.pChild(), p_pred_yanked)) {
       RASSERT(p_pred_yanked);
       return true;
     }

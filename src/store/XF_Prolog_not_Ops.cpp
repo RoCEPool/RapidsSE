@@ -67,20 +67,20 @@ void XF_Prolog_not_Ops::vXF_not_Ops(void)
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC)) {
 
-    Kid xCI(m_pCI->G.p_rpnCalc);
-    while (xCI.bEach(CK_TERM)) {
+    Kid xKid(m_pCI->G.p_rpnCalc);
+    while (xKid.bEach(CK_TERM)) {
 
-      Card_Term* p_term = xCI.p_term();
+      Card_Term* p_term = xKid.p_term();
 
-      if (! xCI.bMore())
+      if (! xKid.bMore())
         break;
 
       if (p_term->pSymbol()->bSame("exists"_Stz)) {
 
-        RASSERT(xCI.bEach(CK_TERM));
-        Card_Term* p_term_next = xCI.p_term();
+        RASSERT(xKid.bEach(CK_TERM));
+        Card_Term* p_term_next = xKid.p_term();
         if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-          xCI.vRewind();
+          xKid.vRewind();
           m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notExists"_Stz);
           continue;
@@ -88,12 +88,12 @@ void XF_Prolog_not_Ops::vXF_not_Ops(void)
         continue;
       }
 
-      if (xCI.p_term()->pSymbol()->bSame("in"_Stz)) {
+      if (xKid.p_term()->pSymbol()->bSame("in"_Stz)) {
 
-        RASSERT(xCI.bEach(CK_TERM));
-        Card_Term* p_term_next = xCI.p_term();
+        RASSERT(xKid.bEach(CK_TERM));
+        Card_Term* p_term_next = xKid.p_term();
         if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-          xCI.vRewind();
+          xKid.vRewind();
           m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notIn"_Stz);
           DELETE_CARD(p_term_next);

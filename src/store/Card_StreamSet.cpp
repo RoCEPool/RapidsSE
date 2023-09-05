@@ -113,9 +113,9 @@ void Card_StreamSet::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach())
-    xCI.p_streamPer()->vEstStreamCost(p_tableList, p_filtPredList);
+  Kid xKid(this);
+  while (xKid.bEach())
+    xKid.p_streamPer()->vEstStreamCost(p_tableList, p_filtPredList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,13 +127,13 @@ Card_StreamPer* Card_StreamSet::pHighestCost(void)
 
   Card_StreamPer* pHighest = nullptr;
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_STREAMPER)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_STREAMPER)) {
     if (! pHighest)
-      pHighest = xCI.p_streamPer();
+      pHighest = xKid.p_streamPer();
     else
-    if (xCI.p_streamPer()->bIsHigherCost(pHighest))
-      pHighest = xCI.p_streamPer();
+    if (xKid.p_streamPer()->bIsHigherCost(pHighest))
+      pHighest = xKid.p_streamPer();
   }
 
   return pHighest;
@@ -149,9 +149,9 @@ Card_StreamPer* Card_StreamSet::pJoinOrder(i8 iJoinOrder)
   i8 iPermutation;
   Card_StreamPer* p_joinPermSeq = nullptr;
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_STREAMPER)) {
-    p_joinPermSeq = xCI.p_streamPer();
+  Kid xKid(this);
+  while (xKid.bEach(CK_STREAMPER)) {
+    p_joinPermSeq = xKid.p_streamPer();
     iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
       return (p_joinPermSeq);
@@ -169,13 +169,13 @@ Card_StreamPer* Card_StreamSet::pLowestCost(void)
 
   Card_StreamPer* pLowest = nullptr;
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_STREAMPER)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_STREAMPER)) {
     if (! pLowest)
-      pLowest = xCI.p_streamPer();
+      pLowest = xKid.p_streamPer();
     else
-    if (xCI.p_streamPer()->bIsLowerCost(pLowest))
-      pLowest = xCI.p_streamPer();
+    if (xKid.p_streamPer()->bIsLowerCost(pLowest))
+      pLowest = xKid.p_streamPer();
   }
 
   return pLowest;
@@ -188,11 +188,11 @@ void Card_StreamSet::vRemoveInvalid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach()) {
-    if (xCI.p_streamPer()->pSymbol()->Y_bHas(P_Invalid)) {
-      Card_StreamPer* p_streamPer = xCI.p_streamPer();
-      xCI.vRemove();
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    if (xKid.p_streamPer()->pSymbol()->Y_bHas(P_Invalid)) {
+      Card_StreamPer* p_streamPer = xKid.p_streamPer();
+      xKid.vRemove();
       DELETE_CARD(p_streamPer);
     }
   }

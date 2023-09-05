@@ -72,9 +72,9 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_IDXCOL)) {
-    Stz* szColNm = xCI.p_idxCol()->szSymbol(SF_NONE);
+  Kid xKid(this);
+  while (xKid.bEach(CK_IDXCOL)) {
+    Stz* szColNm = xKid.p_idxCol()->szSymbol(SF_NONE);
 
     Kid xCI_p(p_projection);
     xCI_p.vEnded();
@@ -86,8 +86,8 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
         eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
         RASSERT(SF_COL_TC == eSymbol);
 
-        xCI.p_idxCol()->SYM(SF_COL_TC,szPrjCol);
-        xCI.p_idxCol()->vMark1(MARK_CHANGED);
+        xKid.p_idxCol()->SYM(SF_COL_TC,szPrjCol);
+        xKid.p_idxCol()->vMark1(MARK_CHANGED);
       }
     }
   }

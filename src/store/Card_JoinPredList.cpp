@@ -57,11 +57,11 @@ Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
 
   Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
 
-  Kid xCI(p_deck);
-  while (xCI.bEach(CK_FROM,CK_TABLE,CK_INDEXLIST,CK_FILTER)) {
+  Kid xKid(p_deck);
+  while (xKid.bEach(CK_FROM,CK_TABLE,CK_INDEXLIST,CK_FILTER)) {
 
-    p_joinPredList->vBuildList(_pCard_Filter(xCI.pSub3()),
-                               _pCard_IndexList(xCI.pSub2()));
+    p_joinPredList->vBuildList(_pCard_Filter(xKid.pSub3()),
+                               _pCard_IndexList(xKid.pSub2()));
   }
 
   return p_joinPredList;
@@ -74,17 +74,17 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
 {
   _static_
 
-  Kid xCI(p_deck);
-  while (xCI.bEach(CK_TABLE)) {
+  Kid xKid(p_deck);
+  while (xKid.bEach(CK_TABLE)) {
     Card_IndexList* p_indexList;
-    if ( (p_indexList = xCI.p_table()->pSub_indexList()) &&
+    if ( (p_indexList = xKid.p_table()->pSub_indexList()) &&
         p_indexList->nChildCards())
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz,xCI.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vSprint("Tables: %s"_Stz,xKid.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
     else
-      pString->vCatSprint(", %s"_Stz,xCI.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vCatSprint(", %s"_Stz,xKid.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
   }
 
 }

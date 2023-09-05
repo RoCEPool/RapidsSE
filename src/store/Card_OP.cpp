@@ -1057,10 +1057,10 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
       return;
   }
 
-  Kid xCI(pCard_bounds);
-  while (xCI.bEach(CK_BOUND)) {
+  Kid xKid(pCard_bounds);
+  while (xKid.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xCI.p_bound();
+    Card_Bound* p_bound = xKid.p_bound();
 
     if (p_bound->bIsLBound() || p_bound->bIsUBound()) {
 
@@ -1120,10 +1120,10 @@ void Card_OP::vRpnKeyExists(String* psRpnExpr, Card_KeyExists* pCard_KeyExists)
       return;
   }
 
-  Kid xCI(pCard_bounds);
-  while (xCI.bEach(CK_BOUND)) {
+  Kid xKid(pCard_bounds);
+  while (xKid.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xCI.p_bound();
+    Card_Bound* p_bound = xKid.p_bound();
 
     if (! p_bound->bIsEBound())
       continue;
@@ -1211,10 +1211,10 @@ void Card_OP::vRpnKeyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExi
       return;
   }
 
-  Kid xCI(pCard_bounds);
-  while (xCI.bEach(CK_BOUND)) {
+  Kid xKid(pCard_bounds);
+  while (xKid.bEach(CK_BOUND)) {
 
-    Card_Bound* p_bound = xCI.p_bound();
+    Card_Bound* p_bound = xKid.p_bound();
 
     if (! p_bound->bIsEBound())
       continue;

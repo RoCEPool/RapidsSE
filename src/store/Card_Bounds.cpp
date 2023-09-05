@@ -74,10 +74,10 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_BOUND)) {
-    if (xCI.pChild()->pSymbol()->Y_bHas(P_ChosenBound))
-      return _pCard_Bound(xCI.pChild());
+  Kid xKid(this);
+  while (xKid.bEach(CK_BOUND)) {
+    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound))
+      return _pCard_Bound(xKid.pChild());
   }
 
   return nullptr;

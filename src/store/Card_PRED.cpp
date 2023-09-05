@@ -73,9 +73,9 @@ bool Card_PRED::bContains_callToSubQuery(CardIter* pCI)
 
   //this->vDump();
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM))
-    if (pCI->m_pBench->bIsSubQueryNm(xCI.p_term()->szSymbol(SF_NONE)))
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM))
+    if (pCI->m_pBench->bIsSubQueryNm(xKid.p_term()->szSymbol(SF_NONE)))
       return true;
 
   return false;
@@ -88,12 +88,12 @@ bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach()) {
-    if (! Card_PRED::bIsPRED(xCI.pChild()))
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    if (! Card_PRED::bIsPRED(xKid.pChild()))
       continue;
 
-    bool bContinue = ((Card_PRED*)xCI.pChild())->bDescend(bfLambdaFn);
+    bool bContinue = ((Card_PRED*)xKid.pChild())->bDescend(bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -144,10 +144,10 @@ Card_Term* Card_PRED::pGetFirstTerm_tblColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM))
-    if (xCI.p_term()->bIsColOdn())
-      return xCI.p_term();
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM))
+    if (xKid.p_term()->bIsColOdn())
+      return xKid.p_term();
 
   return nullptr;
 }
@@ -175,12 +175,12 @@ Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
 
-    Stz* szValue_term = xCI.p_term()->szSymbol(SF_NONE);
+    Stz* szValue_term = xKid.p_term()->szSymbol(SF_NONE);
     if (pCI->G_bIsBoardNm(szValue_term))
-      return xCI.p_term();
+      return xKid.p_term();
   }
 
   return nullptr;
