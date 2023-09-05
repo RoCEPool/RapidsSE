@@ -185,9 +185,14 @@ function runConfigure() {
                        "--without-qt5")
 
   if   [ "${IS_MACOS}" -eq 1 ]; then
+    local arch=""
+    if [ "${ARCH_FLAG_FORCE:-}" != "-" ]; then
+      arch="-arch ${ARCH_FLAG_FORCE}"
+      echo "Compiling thrift for x86_64 on Arm Mac"
+    fi
     command=("env"
-             "LD_FLAGS=-L${MACOS_OPENSSL_BASE_DIR}/lib"
-             "CPPFLAGS=-I${MACOS_OPENSSL_BASE_DIR}/include"
+             "LDFLAGS=-L${MACOS_OPENSSL_BASE_DIR}/lib ${arch}"
+             "CPPFLAGS=-I${MACOS_OPENSSL_BASE_DIR}/include ${arch}"
              "./configure"
              "${commonOptions[@]}" )
 
