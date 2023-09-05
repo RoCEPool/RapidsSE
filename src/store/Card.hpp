@@ -234,6 +234,8 @@ extern Stz* MARK_UP;
 extern Stz* MARK_UNVALID;
 extern Stz* MARK_VALID;
 
+extern Stz* C_SQCRLKEY;
+
 namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;

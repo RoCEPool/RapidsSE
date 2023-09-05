@@ -103,7 +103,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   if (pCI->G_bIsNextMain(CK_PROJECT)) {
     RASSERT(pCI->G_bEachMain(CK_PROJECT));
-    vEnhance_sq_project_To_Include_Correlation_Key(pCI, "_SQCRLKEY_"_Stz);
+    vEnhance_sq_project_To_Include_Correlation_Key(pCI, C_SQCRLKEY);
   }
   else {
 
@@ -341,7 +341,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     // projection
 
     if (AL_PARTITION == e_Level) {
-      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,"_SQCRLKEY_"_Stz);
+      pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,C_SQCRLKEY);
     }
     else {
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
@@ -350,7 +350,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       Symbol xSymbol_keyOdn(SF_KEY_COL,1);
 
       pCI->G_vNewMember(CK_EXPR);
-      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, "_SQCRLKEY_"_Stz));
+      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, C_SQCRLKEY));
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_keyOdn);
 
