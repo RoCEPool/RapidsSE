@@ -1233,10 +1233,10 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 
 		Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_StreamCol);
 
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// is column in the payload ?
 		bool bIsPayload = pOpSketch->bIsPayload(i_StreamCol+1);
 
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// payload column
 		if (bIsPayload) {
 
 			switch (pColumn->eColumnType()) {
@@ -1251,13 +1251,47 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 																pOpSketch->m_pColMap->m_axCols[i_Col].m_i_Cell-1);
 					break;
 			}
+			continue;
 		}
 
-		else {
-			sCode = ""_Stz;
-			m_pCommonCode->vSeekStart();
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// key column
+		sCode = ""_Stz;
+		m_pCommonCode->vSeekStart();
 
-			if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// KE_INT
+		if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+			switch (pColumn->eColumnType()) {
+
+				case CT_VARCHAR:
+				case CT_CHAR:
+					RASSERT(0);
+					break;
+
+				default:
+					vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
+					break;
+			}
+
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// KE_GENERAL
+		RASSERT(pOpSketch->m_pIndexDef->eKeyKind() == KE_GENERAL);
+
+		// get colMap columns
+		i8 nColumns = pOpSketch->m_pColMap->m_nCols;
+
+		for (i8 i_ColMap = 0; i_ColMap < nColumns; i_ColMap++) {
+
+			// skip payloads
+			if ( pOpSketch->m_pColMap->m_axCols[i_ColMap].m_bPayload )
+				continue;
+
+			// found the key column
+			if (pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1 == i_StreamCol) {
 				switch (pColumn->eColumnType()) {
 
 					case CT_VARCHAR:
@@ -1269,50 +1303,22 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 						vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
 						break;
 				}
-			}
-			else {
-				RASSERT(pOpSketch->m_pIndexDef->eKeyKind() == KE_GENERAL);
-
-				i8 nColumns = pOpSketch->m_pColMap->m_nCols;
-
-				for (i8 i_ColMap = 0; i_ColMap < nColumns; i_ColMap++) {
-
-					// skip payloads
-					if ( pOpSketch->m_pColMap->m_axCols[i_ColMap].m_bPayload )
-						continue;
-
-					if (pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1 == i_StreamCol) {
-						switch (pColumn->eColumnType()) {
-
-							case CT_VARCHAR:
-							case CT_CHAR:
-								RASSERT(0);
-								break;
-
-							default:
-								vAppendCodeFragment(pOpSketch, "vPLIntKeyToHash"_Stz, pColumn);
-								break;
-						}
-						break;
-					}
-					else {
-
-						Column* pMapColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1);
-
-						switch (pMapColumn->eColumnType()) {
-							// skip the key column
-							case CT_VARCHAR:
-							case CT_CHAR:
-								vAppendCodeFragment(pOpSketch, "vPLSkipVchKey"_Stz, pMapColumn);
-								break;
-
-							default:
-								vAppendCodeFragment(pOpSketch, "vPLSkipIntKey"_Stz, pMapColumn);
-						}
-					}
-				}
+				break;
 			}
 
+			// skip the key column
+			Column* pMapColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColMap->m_axCols[i_ColMap].m_i_EmittedCol-1);
+
+			switch (pMapColumn->eColumnType()) {
+				// skip the key column
+				case CT_VARCHAR:
+				case CT_CHAR:
+					vAppendCodeFragment(pOpSketch, "vPLSkipVchKey"_Stz, pMapColumn);
+					break;
+
+				default:
+					vAppendCodeFragment(pOpSketch, "vPLSkipIntKey"_Stz, pMapColumn);
+			}
 		}
 
 	}
