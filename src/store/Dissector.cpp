@@ -1371,7 +1371,19 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
 
 
   if (! pCard_Expr->pSub_as()) {
-    Card_As* pCard_As = (new Card_As) ->SYM(SF_AS_NM_syn,ri_Expr);
+    Card_As *pCard_As;
+    if (pCard_Expr->pSub_rpnCalc()->nChildCards() == 1) {
+      Stz* AsNm = pCard_Expr->pGetTerm(0)->szSymbol(SF_NONE);
+      if (Symbol::bIs_Col_Nm(AsNm)) {
+        pCard_As = (new Card_As)->SYM(SF_AS_NM, AsNm);
+      }
+      else {
+        pCard_As = (new Card_As)->SYM(SF_AS_NM_syn, ri_Expr);
+      }
+    }
+    else {
+      pCard_As = (new Card_As)->SYM(SF_AS_NM_syn, ri_Expr);
+    }
     pCard_Expr->vInsert(pCard_As);
   }
 

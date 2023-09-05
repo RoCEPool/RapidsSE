@@ -418,7 +418,7 @@ void OpDef::vValidate(void)
     RASSERT(pArgDef("indexNm"_Stz));
     RASSERT(pArgDef("expr"_Stz));
 
-    RASSERT(! m_pStreamDef_arriving);
+    //RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexScan);
     RASSERT(m_pColsReq);

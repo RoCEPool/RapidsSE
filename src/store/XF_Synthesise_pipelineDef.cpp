@@ -417,7 +417,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(Card_OP* p_OP)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
 #ifdef Z_REJIG_STREAMDEFS
   else
-  if (p_OP->bIsCard(CK_SCAN)) {
+  if (p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
     Card_Projection* p_projection = p_OP->pSub_projection();
     m_pOpDef->m_pStreamDef_arriving =
         p_projection->pToStreamDef(nullptr, nullptr, p_OP);

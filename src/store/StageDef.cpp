@@ -184,6 +184,22 @@ void StageDef::vCollapseOps(void)
       pOpDef_next->m_bCollapsed = true;
       pOpDef_curr->m_nCollapses++;
     }
+    else
+    if (pOpDef_curr->m_sOpNm.bSame("indexScan"_Stz) &&
+        pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
+
+#ifdef Z_REJIG_STREAMDEFS
+      delete pOpDef_curr->m_pStreamDef_emitted;
+      pOpDef_curr->m_pStreamDef_emitted = nullptr;
+
+      pOpDef_curr->m_pStreamDef_emitted = pOpDef_next->m_pStreamDef_emitted->pDup();
+
+      vCollapseColsReq_scan(pOpDef_curr);
+#endif
+
+      pOpDef_next->m_bCollapsed = true;
+      pOpDef_curr->m_nCollapses++;
+    }
 
   }
 }
