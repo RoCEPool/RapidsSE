@@ -1,0 +1,86 @@
+/*============================================================================*/
+/* _ray118                                                                    */
+/*============================================================================*/
+
+// NOTE: The constraint in S02 is :
+//         constraint  type BOOLEAN } C0_O_COMMENT '%special%requests%' 7 8 matchMiddle1 not
+
+// I think it should be :
+//         constraint  type BOOLEAN } O_COMMENT '%special%requests%' 7 8 matchMiddle1 not
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/optimise_passthru
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+                                 "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    gbyAgg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER )  $9 count  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    gbyAgg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    gbyAgg " groupBy    type INTEGER as c_custkey $1
+             aggregates type INTEGER $K1 ,
+                        type INTEGER as c_count )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    gbyAgg " groupBy    type INTEGER as c_count $2
+             aggregates type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type INTEGER $1  ,
+           type INTEGER as c_count $2  "
+    | combined 0
+    | next
+
+ stage S08 on origin :
+   output
+   | sink
+   | first
+ end ;
+
+/*
+rows:
+  (0,1)
+  (8,2)
+  (9,11)
+  (10,135)
+  (20,1)
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
