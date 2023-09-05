@@ -635,6 +635,8 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
+
   while (G.xKid.bEach()) {
 
     if (G.xKid.pChild()->eCard() != eOfMainKind)
@@ -660,6 +662,8 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
+
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
 
   while (G.xKid.bEach()) {
 
@@ -687,6 +691,8 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind));
 
   while (G_bEachMain(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
@@ -730,6 +736,8 @@ bool CardIter::G_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind2));
+
   while (G_bEachMainWithSub(eOfMainKind,eAndSubKind1)) {
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
       continue;
@@ -757,6 +765,8 @@ bool CardIter::G_bEachMainWith3Sub(eCK eOfMainKind,
                                    eCK eAndSubKind3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind3));
 
   while (G_bEachMainWith2Sub(eOfMainKind,eAndSubKind1,eAndSubKind2)) {
     if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eAndSubKind3)))
@@ -813,6 +823,8 @@ bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
+
   while (G.xKid.bEach_reverse()) {
     if (G.xKid.pChild()->eCard() != eOfMainKind)
       continue;
@@ -866,6 +878,8 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind));
+
   while (G_bEachMain_reverse_b(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
@@ -893,6 +907,8 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 bool CardIter::G_bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind));
 
   while (G_bEachMain_reverse_foldBreak_b(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
@@ -923,6 +939,8 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  RASSERT(! Card_MAIN::bIsMain(eSubKind));
+
   while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
@@ -949,6 +967,9 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! Card_MAIN::bIsMain(eSubKind1));
+  RASSERT(! Card_MAIN::bIsMain(eSubKind2));
 
   while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
@@ -984,6 +1005,10 @@ bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! Card_MAIN::bIsMain(eSubKind1));
+  RASSERT(! Card_MAIN::bIsMain(eSubKind2));
+  RASSERT(! Card_MAIN::bIsMain(eSubKind3));
 
   while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))

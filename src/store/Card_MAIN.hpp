@@ -13,6 +13,7 @@ namespace STORE
     Card_MAIN(eCK eCard, i8 iFixedDepth);
    ~Card_MAIN(void) noexcept(false);
 
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

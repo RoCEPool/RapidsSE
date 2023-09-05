@@ -283,6 +283,8 @@ namespace STORE
 
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
 
+    static bool bIsMain(eCK eCard);
+
     static eYG  e_aggLevel_To_stageTopo(eAL eLevel);
 
     static eAL  e_stageTopo_To_aggLevel(eYG eStageTopo);

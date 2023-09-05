@@ -54,19 +54,26 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   _static_
 
+//  UNUSED(pCI);
+//
+//  return 0;
+//
+//  // todo: ...
+
   i8 nCulled = 0;
 
-  pCI->vSave();
+  //pCI->vSave();
 
-  pCI->vChangeCard(pCI->G.p_indexList);
+  //pCI->vChangeCard(pCI->G.p_indexList);
 
-  while (pCI->G_bEachMain(CK_INDEX)) {
+  Kid xKid(pCI->G.p_indexList);
+  while (xKid.bEach(CK_INDEX)) {
 
-    pCI->G.p_bounds = pCI->G.p_index->pSub_bounds();
-    if (! pCI->G.p_bounds)
+    Card_Bounds* p_bounds = xKid.p_index()->pSub_bounds();
+    if (! p_bounds)
       continue;
 
-    Kid xCI_bounds(pCI->G.p_bounds);
+    Kid xCI_bounds(p_bounds);
     while (xCI_bounds.bEach(CK_BOUND)) {
       if (xCI_bounds.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
         continue;
@@ -76,11 +83,11 @@ i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
     }
 
    // pCI->vPrintBoard(__LINE__);
-    nCulled += pCI->G.p_bounds->nCullBound(MARK_AT);
+    nCulled += p_bounds->nCullBound(MARK_AT);
 
   }
 
-  pCI->vRestore();
+  //pCI->vRestore();
 
   return nCulled;
 }
