@@ -2,7 +2,7 @@
 /* _ray121                                                                    */
 /*============================================================================*/
 
-// NOTE: PROJECT
+// NOTE: COLUMN MAPPING PROJECT
 
 __TPCH_SCHEMA_LOAD_SF0001
 
@@ -11,9 +11,7 @@ __TPCH_SCHEMA_LOAD_SF0001
 /keepCodeFile
 /optimise_passthru
 /optimiser_trace
-/pipelineName = "Query13"
-
-pipeline Query13
+pipeline colMap
 begin
   stage S00 on origin :
     start
@@ -22,54 +20,42 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public customer
+    | project " type INTEGER as C_CUSTKEY $1 ,
+                type INTEGER as C_NATIONKEY $4"
+    | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
-                                 "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    project " type INTEGER as C_CUSTKEY $1"
     | combined 0
     | next
 
-  stage S03 on all partitions :
-    gbyAgg " groupBy    type INTEGER as c_custkey $1
-             aggregates type INTEGER $K1 ,
-                        type INTEGER )  $9 count  "
-    | combined 0
-    | next
-
-  stage S04 on all nodes :
-    gbyAgg " groupBy    type INTEGER as c_custkey $1
-             aggregates type INTEGER $K1 ,
-                        type INTEGER )  $2 sum  "
-    | combined 0
-    | next
-
-  stage S05 on origin :
-    gbyAgg " groupBy    type INTEGER as c_custkey $1
-             aggregates type INTEGER $K1 ,
-                        type INTEGER as c_count )  $2 sum  "
-    | combined 0
-    | next
-
-  stage S06 on origin :
-    gbyAgg " groupBy    type INTEGER as c_count $2
-             aggregates type INTEGER $K1 ,
-                        type INTEGER as custdist )  countAll  "
-    | combined 0
-    | next
-
-  stage S07 on origin :
-    sort " type INTEGER $1  ,
-           type INTEGER as c_count $2  "
-    | combined 0
-    | next
-
- stage S08 on origin :
+ stage S03 on origin :
    output
    | sink
    | first
  end ;
 
+
+/*
+
+scan:
+
+StreamDef_arriving  0x204878800040
+            Col [0] : $1 C0_C_CUSTKEY (INTEGER)
+            Col [1] : $2 C1_C_NAME (VARCHAR)
+            Col [2] : $3 C2_C_ADDRESS (VARCHAR)
+            Col [3] : $4 C3_C_NATIONKEY (INTEGER)
+            Col [4] : $5 C4_C_PHONE (VARCHAR)
+            Col [5] : $6 C5_C_ACCTBAL (DECIMAL)
+            Col [6] : $7 C6_C_MKTSEGMENT (VARCHAR)
+            Col [7] : $8 C7_C_COMMENT (VARCHAR)
+
+StreamDef_emitted  0x204878800040
+            Col [0] : $1 C0_C_CUSTKEY (INTEGER)
+            Col [1] : $2 C1_C_NATIONKEY (INTEGER)
+
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
