@@ -13,8 +13,6 @@
 Wireline Protocol
 =================
 
-Detailed information on this will be coming soon.
-
 .. Overview
 ..   Purpose, latest version
 .. Wireline Protocol v5
@@ -28,6 +26,6 @@ Detailed information on this will be coming soon.
 .. toctree::
    :maxdepth: 1
 
-   overview
+   introduction
    v5/index
    changeHistory
