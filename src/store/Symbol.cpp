@@ -782,7 +782,7 @@ bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szChrSeq)
 {
   _static_
 
-  if (StrLib::bBeginsWith(szChrSeq->azChar(), "_SQCRLKEY_"))
+  if (StrLib::bBeginsWith(szChrSeq->azChar(), C_SQCRLKEY->azChar()))
     return true;
 
   return false;

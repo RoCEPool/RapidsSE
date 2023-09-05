@@ -200,11 +200,11 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
 
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
-  Kid xCI(p_idxColList);
-  while (xCI.bEach(CK_IDXCOL)) {
+  Kid xKid(p_idxColList);
+  while (xKid.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xCI.pChild()->pSymbol()->bSame(szTblColOdn))
+    if (xKid.pChild()->pSymbol()->bSame(szTblColOdn))
       return true;
   }
 

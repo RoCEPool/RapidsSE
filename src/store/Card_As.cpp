@@ -127,7 +127,7 @@ bool Card_As::bIs_SQCRLKEY(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bSame("_SQCRLKEY_"_Stz))
+  if (pSymbol()->bSame(C_SQCRLKEY))
     return true;
 
   return false;

@@ -269,10 +269,10 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM))
-    if (xCI.p_term()->pSymbol()->bIs_Idx_Col())
-      return xCI.p_term();
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM))
+    if (xKid.p_term()->pSymbol()->bIs_Idx_Col())
+      return xKid.p_term();
 
   return nullptr;
 }

@@ -41,10 +41,10 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_EXPR)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xCI.p_expr()->pSub_rpnCalc();
+    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc();
 
     if (! p_rpnCalc)
       continue;
@@ -68,10 +68,10 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_EXPR)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR)) {
 
-    Card_RpnCalc* p_rpnCalc = xCI.p_expr()->pSub_rpnCalc();
+    Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc();
 
     if (! p_rpnCalc)
       continue;
@@ -97,9 +97,9 @@ void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_EXPR))
-    xCI.p_expr()->vBump_stmOdn(nBumpBy);
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vBump_stmOdn(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,9 +125,9 @@ void Card_ELIST::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_EXPR))
-    xCI.p_expr()->vConvertAll_stmOdn_To_colOdn(pCI);
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vConvertAll_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,11 +240,11 @@ void Card_ELIST::vRenumberAll_expr(void)
   bool bIsKeyExpr = bIsCard(CK_KEY);
 
   i8 i_Expr = 1;
-  for (Kid xCI(this); xCI.bEach(CK_EXPR); /**/) {
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     if (bIsKeyExpr)
-      xCI.p_expr()->vRenumberForm_keyOdn(i_Expr++);
+      xKid.p_expr()->vRenumberForm_keyOdn(i_Expr++);
     else
-      xCI.p_expr()->vRenumberForm_stmOdn(i_Expr++);
+      xKid.p_expr()->vRenumberForm_stmOdn(i_Expr++);
   }
 }
 

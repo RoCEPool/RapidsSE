@@ -78,12 +78,12 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(bSkipFoldExpr);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
 
-    if (xCI.p_term()->pSymbol()->bIs_Col_No()) {
-      xCI.p_term()->vBump_stmOdn(nBumpBy);
-      xCI.p_term()->vMark1(MARK_CHANGED);
+    if (xKid.p_term()->pSymbol()->bIs_Col_No()) {
+      xKid.p_term()->vBump_stmOdn(nBumpBy);
+      xKid.p_term()->vMark1(MARK_CHANGED);
     }
   }
 }
@@ -117,9 +117,9 @@ void Card_RpnCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM)) {
-    xCI.p_term()->vConvertIf_stmOdn_To_colOdn(pCI);
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    xKid.p_term()->vConvertIf_stmOdn_To_colOdn(pCI);
   }
 }
 
@@ -258,9 +258,9 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM)) {
-    if (xCI.p_term()->bSameSymbol(pSymbol))
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    if (xKid.p_term()->bSameSymbol(pSymbol))
       return true;
   }
 
@@ -325,9 +325,9 @@ bool Card_RpnCalc::bNeedsBrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xCI(this);
-  while (xCI.bEach(CK_TERM)) {
-    if (xCI.p_term()->pSymbol()->bNeedsBrace())
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    if (xKid.p_term()->pSymbol()->bNeedsBrace())
       return true;
   }
 
