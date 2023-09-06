@@ -184,8 +184,10 @@ void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   if ((pCI->G.p_key = pSub_key()))
     pCI->G.p_key->vConvertAll_stmOdn_To_colOdn(pCI);
 
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
     pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
+    pCI->Prior.m_pProjection = pCI->G.p_projection;
+  }
 
   if ((pCI->G.p_boolCalc = pCI->G.p_MainCard->pSub_boolCalc()))
     pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);

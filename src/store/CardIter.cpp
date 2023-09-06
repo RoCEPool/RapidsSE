@@ -1434,7 +1434,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
     case CK_BOUNDS:           G.p_bounds           = _pCard_Bounds(pCard); break;
 
-    case CK_CALL:             G.p_call              = _pCard_Call(pCard); break;
+    case CK_CALL:             G.p_call              = _pCard_Call(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
     case CK_CAST:             G.p_cast              = _pCard_Cast(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_CMPPRED:          G.p_cmpPred           = _pCard_CmpPred(pCard);
@@ -2189,6 +2190,20 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   //RASSERT(p_projection_prior == this->Prior.m_pProjection);
 
   Card_Expr* p_expr_resolved = p_projection_prior->pResolve_expr(p_term);
+  return p_expr_resolved;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve prior expr of given term (find right-to-left)                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* CardIter::pResolvePrior_expr_prior(Card_Term* p_term)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (! this->Prior.m_pProjection)
+    return nullptr;
+
+  Card_Expr* p_expr_resolved = this->Prior.m_pProjection->pResolve_expr(p_term);
   return p_expr_resolved;
 }
 
