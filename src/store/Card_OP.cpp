@@ -151,24 +151,24 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert any stmCol in this op to table columns                             */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!(CK_AGGREG == pCI->G.e_MainCard
-        || CK_FILTER == pCI->G.e_MainCard
-        || CK_FROM == pCI->G.e_MainCard
-        || CK_GBYAGG == pCI->G.e_MainCard
-        || CK_INDEXJOIN == pCI->G.e_MainCard
-        || CK_PROJECT == pCI->G.e_MainCard
-        || CK_SORT == pCI->G.e_MainCard
-        || CK_WHERE == pCI->G.e_MainCard)) {
-    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
-      pCI->Prior.m_pProjection = pCI->G.p_projection;
-    return;
-  }
+//  if (!(CK_AGGREG == pCI->G.e_MainCard
+//        || CK_FILTER == pCI->G.e_MainCard
+//        || CK_FROM == pCI->G.e_MainCard
+//        || CK_GBYAGG == pCI->G.e_MainCard
+//        || CK_INDEXJOIN == pCI->G.e_MainCard
+//        || CK_PROJECT == pCI->G.e_MainCard
+//        || CK_SORT == pCI->G.e_MainCard
+//        || CK_WHERE == pCI->G.e_MainCard)) {
+//    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
+//      pCI->Prior.m_pProjection = pCI->G.p_projection;
+//    return;
+//  }
 
   if (CK_AGGREG == pCI->G.e_MainCard ||
       CK_FILTER == pCI->G.e_MainCard ||
