@@ -209,7 +209,7 @@ extern Stz* C_JOWRITE;
 extern Stz* C_JO_DISABLE;
 extern Stz* C_JO_PICK;
 extern Stz* C_NA;
-extern Stz* C_NOCODESYNTHESIS;
+extern Stz* C_HASCODEFILE;
 extern Stz* C_OPTIMISER_EP_DISABLE;
 extern Stz* C_OPTIMISER_TRACE;
 extern Stz* C_OPTIMISE_PASSTHRU;
