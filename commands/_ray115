@@ -4,7 +4,7 @@
 
 //NOTE: Optimiser should detect index does not exist
 
-_lineitem;
+//_lineitem;
 
 trackMemory;
 
