@@ -145,5 +145,207 @@ version and the client can be gracefully told that it is not compatible.
 This protocol compability is described in the Connection Dialog.
 
 
-Subheading 2
+
+Message Dialogs
+---------------
+
+Flow Control of Message Dialogs
+```````````````````````````````
+
+Flow control within a dialog is currently the responsibility of the underlying
+transport mechanism and not a feature of the messages or dialogs. In the
+current implementation it is TCP that provides flow control of messages sent
+within a dialog. Flow control can stop either the client or server from sending
+further messages until the other side has read the prior message that have been
+sent. Thus, both the client and server must be well behaved and read from the
+transport mechanism when a message is waiting.
+
+Generally this happens naturally due to the synchronous and serial nature of
+the wireline protocol design - after the client sends a request it will typically
+wait for 1 or more responses from the server, and only when the current request
+dialog is complete can it expect the server to read the next request.
+
+However one example where flow control can be used by the client is in processing
+large data sets that are sent as a result of a query. When RapidsSE sends rows
+of data it does not do so in one huge chunk. If the result data is large enough,
+RapidsSE will split the data into multiple ``RowDataResponse`` messages and send
+them individually. The size of each ``RowDataResponse`` message might be limited
+by the number of rows (e.g. 10,000) or by size (e.g. 1MB). A client may not wish to
+buffer in memory all of the result data that a query generates. So instead of reading
+all the result data and then processing it, a client could potentially read it
+in a piecemeal and sequential fashion, only reading the next ``RowDataResponse``
+message when it has finished processing the previous one. If the server was
+sending these ``RowDataResponse`` messages faster than the client is reading them
+off the transport then the server will eventually get blocked from sending any
+more of them. This would allow the client to process the messages with a minimal
+memory requirement.
+
+Connection Dialog
+`````````````````
+
+The Connection Dialog is shown in the diagram below. It describes the sequence
+of messages that are exchanged between the client and server before the server
+will accept any other dialogs from the client.
+
+.. figure:: /interfaces/wireline/v5/dialogs/ConnectionDialog.*
+   :align: center
+
+   The Connection Dialog
+
+In the Connection Dialog the concepts of protocol compatibility, tunnel
+establishment, user authentication, and session startup are clearly
+separated out.
+
+The first interactions in this dialog involves checking to see if the client
+and server are both talking with a compatible protocol version that they both
+understand. A ``ProtocolIncompatibleResponse`` message is sent in the case of
+an incompatibility and the socket is then disconnected. Please note that we use
+a specific message to indicate protocol incompatibility rather than the generic
+``ErrorResponse`` message because we want to protect the format of the messages
+involved in the compatibility check as much as possible. i.e., this allows the
+generic ``ErrorResponse`` message to be changed without it affecting the
+protocol compatibility check.
+
+It is expected that this preliminary protocol compatibility interaction will
+remain largely unchanged for some significant period of time. This would allow
+the rest of the protocol to be updatable but still allow a client to easily
+determine if it is compatible with the protocol or not.
+
+After ensuring that both the client and server are talking a compatible protocol
+version, the client negotiates the confidentiality of the connection it wants.
+At this point in time RapidsSE only supports clear text tunnels (i.e., no
+encryption) however part of the dialog caters for allowing SSL tunnels or other
+encryption mechanisms to provide confidentiality on the connection at some
+point in the future.
+
+The client sends the server a ``ClearTextTunnelRequest`` and the server duly
+acknowledges this by replying with a ``TunnelSupportedResponse``, or an
+``ErrorResponse`` if something has gone wrong or the given tunnel type could
+not be established. The server may also send zero or more warning messages
+(as ``WarningResponse`` message types) before sending the ``TunnelSupportedResponse``
+or ``ErrorResponse``. A ``WarningResponse`` is a non-error condition that the
+client may want to know about. These warnings do not need to be handled, but
+the end used may want to know that they occurred somehow (e.g. by printing
+or logging them perhaps).
+
+At this point the client and server are both talking a compatible protocol
+version over an appropriate tunnel. Now the connection needs to be authenticated.
+Currently RapidsSE does not have an authentication mechanism, but the protocol
+has been designed to at least accommodate the fact that this will happen at a
+later stage. Having defined the basis for an authentication dialog will allow
+for greater backwards compatibility with clients that use an older version of
+the wireline protocol.
+
+Since RapidsSE doesn’t do any actual authentication the credentials provided in
+the ``PlainAuthenticationRequest`` message are ignored and the server responds
+with an ``AuthenticationOkResponse`` acknowledging to the client that
+authentication is successful.
+
+After authenticating the connection, the client then needs to start a session
+with RapidsSE and provide it with any starting session values (like a default
+catalog or schema to use). This is done by the client sending a
+``SessionChangeRequest`` message. RapidsSE may not support or use these properties
+just yet, but this support will grow over time.
+
+Once RapidsSE responds to this ``SessionChangeRequest`` message with a
+``SessionChangeResponse`` then the Connection Dialog is complete. The client
+is then able to start executing another dialog such as the Query Dialog in
+order to execute SQL commands in the system.
+
+The implementation of this Connection Dialog in a client can be shown with the
+following state transition diagram. This shows an alternate view on what
+messages can be sent or received at different times and how the client should
+respond.
+
+.. only:: html
+
+  .. figure:: /interfaces/wireline/v5/dialogs/ConnectionDialogStateDiagram.*
+     :align: center
+     :alt: Client state transitions during the Connection Dialog
+     :target: ../../../_images/ConnectionDialogStateDiagram.png
+
+     Client state transitions during the Connection Dialog
+
+.. only:: latex
+
+  .. raw:: latex
+
+      \begin{landscape}
+
+  .. figure:: /interfaces/wireline/v5/dialogs/ConnectionDialogStateDiagram.*
+     :align: center
+
+     Client state transitions during the Connection Dialog
+
+  .. raw:: latex
+
+      \end{landscape}
+
+
+
+Query Dialog
+````````````
+
+
+Single Statement Queries
+::::::::::::::::::::::::
+
+Multiple Statement Queries
+::::::::::::::::::::::::::
+
+
+Query Cancellation Dialog
+`````````````````````````
+
+.. note::
+  Please note that this dialog is not yet supported in RapidsSE. It is included
+  here for reference and education purposes and it is always possible that it
+  may change in its final implementation.
+
+
+Termination Dialog
+``````````````````
+
+.. note::
+  Please note that this dialog is not yet supported in RapidsSE. It is included
+  here for reference and education purposes and it is always possible that it
+  may change in its final implementation.
+
+Asynchronous Dialogs
+````````````````````
+
+Server Shutdown Notification
+::::::::::::::::::::::::::::
+
+.. note::
+  Please note that this dialog is not yet supported in RapidsSE. It is included
+  here for reference and education purposes and it is always possible that it
+  may change in its final implementation.
+
+Client Disconnection Notification
+:::::::::::::::::::::::::::::::::
+
+.. note::
+  Please note that this dialog is not yet supported in RapidsSE. It is included
+  here for reference and education purposes and it is always possible that it
+  may change in its final implementation.
+
+
+Messages
+--------
+
+String Encoding
 ```````````````
+
+All strings being sent across the wireline protocol are assumed to be in UTF-8
+encoding. If the interfacing client or library require strings to be in a
+different encoding then they should convert the string after receiving it
+from the server. Similarly, all strings being sent to RapidsSE should be
+converted into UTF-8 format before being sent to the server.
+
+Message Header
+``````````````
+
+
+Message Definitions
+```````````````````
