@@ -121,13 +121,13 @@ Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
+void Card_ELIST::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vConvertAll_stmOdn_To_colOdn(pCI);
+    xKid.p_expr()->vConvert_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

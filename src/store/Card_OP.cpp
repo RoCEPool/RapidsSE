@@ -186,11 +186,11 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   if ((pCI->G.p_key = pSub_key())) {
     if (pCI->Prior.m_pProjection)
-      pCI->G.p_key->vConvertAll_stmOdn_To_colOdn(pCI);
+      pCI->G.p_key->vConvert_stmOdn_To_colOdn(pCI);
   }
 
   if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter())) {
-    pCI->G.p_filter->vConvertAll_stmOdn_To_colOdn(pCI);
+    pCI->G.p_filter->vConvert_stmOdn_To_colOdn(pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -198,7 +198,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
     if (pCI->Prior.m_pProjection)
-      pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
+      pCI->G.p_projection->vConvert_stmOdn_To_colOdn(pCI);
     pCI->Prior.m_pProjection = pCI->G.p_projection;
   }
 
@@ -207,7 +207,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
 //    if (pCI->Prior.m_pProjection)
-//      pCI->G.p_constraint->vConvertAll_stmOdn_To_colOdn(pCI);
+//      pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(pCI);
   }
 }
 

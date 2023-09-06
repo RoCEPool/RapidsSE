@@ -27,7 +27,7 @@ namespace STORE
     void vBump_stmOdn(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
-    void vConvertIf_stmOdn_To_colOdn(CardIter* pCI);
+    void vConvert_stmOdn_To_colOdn(CardIter* pCI);
     void vEnsureTypeFor_stmOdn(CardIter* pCI);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     ePB  eEvalBound(void);

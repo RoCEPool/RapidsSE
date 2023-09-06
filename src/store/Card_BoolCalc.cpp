@@ -129,7 +129,7 @@ eCT Card_BoolCalc::eColumnType(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
+void Card_BoolCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -150,7 +150,7 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
     if (!pSymbol->bIs_Col_No())
       return C_CONTINUE_RECURSION;
 
-    p_term->vConvertIf_stmOdn_To_colOdn(pCI);
+    p_term->vConvert_stmOdn_To_colOdn(pCI);
 
     return C_CONTINUE_RECURSION;
   };

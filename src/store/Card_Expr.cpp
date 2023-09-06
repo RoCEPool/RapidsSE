@@ -227,15 +227,15 @@ Card_Expr* Card_Expr::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
+void Card_Expr::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
+    p_boolCalc->vConvert_stmOdn_To_colOdn(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
+    p_rpnCalc->vConvert_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

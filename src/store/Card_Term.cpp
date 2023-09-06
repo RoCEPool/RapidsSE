@@ -164,7 +164,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
+void Card_Term::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

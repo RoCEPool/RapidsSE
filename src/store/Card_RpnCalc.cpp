@@ -103,6 +103,9 @@ eCT Card_RpnCalc::eColumnType(void)
   return CT_NONE;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_RpnCalc* Card_RpnCalc::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -113,17 +116,16 @@ Card_RpnCalc* Card_RpnCalc::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
+void Card_RpnCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    Symbol* pSymbol = xKid.p_term()->pSymbol();
-    if (! pSymbol->bIs_Col_No())
+    if (! xKid.p_term()->pSymbol()->bIs_Col_No())
       continue;
 
-    xKid.p_term()->vConvertIf_stmOdn_To_colOdn(pCI);
+    xKid.p_term()->vConvert_stmOdn_To_colOdn(pCI);
   }
 }
 
