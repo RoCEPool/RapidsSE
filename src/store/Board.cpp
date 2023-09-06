@@ -345,7 +345,7 @@ void Board::vPhase(eOH ePhase)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szDescription)
+void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -355,7 +355,7 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
 
-  vPinCards(pRibbon);
+  vPinCards(pCI, pRibbon);
 
   pRibbon->vDrawH('-',0);
   pRibbon->vDrawH('-',2);
@@ -490,9 +490,11 @@ void Board::vPinMargin(Ribbon* pRibbon)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinCards(Ribbon* pRibbon)
+void Board::vPinCards(CardIter* pCI, Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  UNUSED(pCI);
 
   CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
 
@@ -525,14 +527,15 @@ void Board::vPinCards(Ribbon* pRibbon)
     Card_Level* p_level = xBI.pChild()->pSub_level();
     if (p_level)
       eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
-    xBI.pChild()->vPrintCardRecursive(pSubRibbon,
-                                          0,
-                                          m_pDeck,
-                                          bPrune,
-                                          eLevel,
-                                          false,
-                                          m_pBench->iXform(),
-                                          m_pBench->szXfunc());
+    xBI.pChild()->vPrintCardRecursive(pCI,
+                                      pSubRibbon,
+                                      0,
+                                      m_pDeck,
+                                      bPrune,
+                                      eLevel,
+                                      false,
+                                      m_pBench->iXform(),
+                                      m_pBench->szXfunc());
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);

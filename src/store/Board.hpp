@@ -201,7 +201,7 @@ namespace STORE
 
     Mark* pMark(void);
 
-    void vPrintBoard(Stz* szDescription=nullptr);
+    void vPrintBoard(CardIter* pCI, Stz* szDescription=nullptr);
 
     bool bPastPhase(eOH ePhase);
 
@@ -218,7 +218,7 @@ namespace STORE
 
   private:
     void vPinMargin(Ribbon* pRibbon);
-    void vPinCards(Ribbon* pRibbon);
+    void vPinCards(CardIter* pCI, Ribbon* pRibbon);
     void vPinTitle(Ribbon* pRibbon,
                    i8 iTransformNo,
                    Stz* szExplain=nullptr);

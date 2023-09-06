@@ -1855,7 +1855,7 @@ void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
   if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE) && ! bForce)
     return;
 
-  G.pBoard->vPrintBoard(szXdesc());
+  G.pBoard->vPrintBoard(this,szXdesc());
 
 
   s32 sOT;

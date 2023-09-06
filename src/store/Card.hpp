@@ -247,8 +247,6 @@ namespace STORE
   protected:
     static i8 m__iSeqGen;
 
-    char    md_Coord[256];
-
     eCK     m_eCard;
     i8      m_i_Child;
 
@@ -266,6 +264,11 @@ namespace STORE
     i8 md__SeqNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
+
+    char    md_Coord[256];
+    i8      m_iFirstPrint;
+    eCK     m_eFirst;
+    i8      m_iLastPrint;
 
   protected:
     // must be last
@@ -352,7 +355,8 @@ namespace STORE
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 
-    void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
+    void vPrintCardRecursive(CardIter* pCI,
+                             Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,
                              bool bPrintBelow, i8 iXform, Stz* szXfunc);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);

@@ -7,6 +7,10 @@ LOG 'TPC-H Q17...';
 trackMemory;
 success
 
+/transliterated
+/weaved
+/pipeline_def
+/optimiser_trace
 /pipelineName = "OptQ17"
 select
   sum(l_extendedprice) / 7.0 as avg_yearly

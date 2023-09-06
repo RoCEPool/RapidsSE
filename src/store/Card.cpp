@@ -143,6 +143,10 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_iFixedDepth = iFixedDepth;
 
+  m_iFirstPrint = C_UNKNOWN;
+  m_iLastPrint  = C_UNKNOWN;
+  m_eFirst = CK_NONE;
+
   m_iItemise = C_UNKNOWN;
 
   vMark1(MARK_BLANK);
@@ -155,7 +159,6 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 //    vTrace("Card [%02lld] %p\n"_Stz, md__SeqNo, this);
 //    vDebugPoint();
 //  }
-
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -1120,7 +1123,8 @@ void Card::vMarksTestRecursive(void)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
+void Card::vPrintCardRecursive(CardIter* pCI,
+                               Ribbon* pRibbon, i8 iDepth, Card* pParent,
                                bool& rbPrune, eAL eLevel,
                                bool bPrintBelow, i8 iXform, Stz* szXfunc)
 {
@@ -1128,6 +1132,12 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
 
   if (CK_RPNCALC == m_eCard)
     vDebugPoint();
+
+  if (C_UNKNOWN == m_iFirstPrint) {
+    m_iFirstPrint = pCI->m_pBench->iPrint();
+    m_eFirst = m_eCard;
+  }
+  m_iLastPrint = pCI->m_pBench->iPrint();
 
   if (0 == iDepth) {
     if (   bIsCard(CK_AGGREG)
@@ -1177,7 +1187,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCardRecursive(pRibbon,
+    pSubCard->vPrintCardRecursive(pCI,
+                                  pRibbon,
                                   iDepth + 1,
                                   this,
                                   rbPrune,

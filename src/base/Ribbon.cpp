@@ -230,7 +230,7 @@ void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
     Stz* szText_ribbon = pRibbonLine->szText();
     if (C_UNKNOWN != iPrintNo)
 
-      vTrace("%llx %s %2llx %s %2llx %s\n"_Stz,
+      vTrace("%lld %s %2lld %s %2lld %s\n"_Stz,
              iBenchNo,
              szQueryNm,
              iPrintNo,

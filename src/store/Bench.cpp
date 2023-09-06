@@ -346,7 +346,17 @@ void Bench::vXhand(const char* asXhand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation number                                                  */
+/* get print number                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iPrint;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment and get print number                                             */
 /*----------------------------------------------------------------------------*/
 i8 Bench::iPrint_inc(void)
 {

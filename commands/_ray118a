@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray118                                                                    */
+/* _ray118a                                                                   */
 /*============================================================================*/
 
 // NOTE: Optimiser to generate a constraint with the left outer indexJoin
@@ -11,6 +11,7 @@ __TPCH_SCHEMA_LOAD_SF0001
 /transliterated
 /weaved
 /pipeline_def
+/pipelineName = "_ray118a"
 select
     c_count,
     count(*) as custdist

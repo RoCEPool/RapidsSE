@@ -73,6 +73,7 @@ namespace STORE
     void vXfunc(Stz* szXfunc);
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
+    i8   iPrint(void);
     i8   iPrint_inc(void);
     i8   iBenchNo(void);
 
