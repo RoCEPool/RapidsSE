@@ -191,6 +191,7 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this)) {
+
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
     if (pSymbol_term0->bIs_Col_Tc()) {

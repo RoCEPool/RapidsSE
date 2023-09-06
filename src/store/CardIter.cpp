@@ -1443,7 +1443,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COMBINED:         G.p_combined          = _pCard_Combined(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_CONSTRAINT:       G.p_constraint        = _pCard_Constraint(pCard); break;
-    case CK_CORRELATION:      G.p_correlation       = _pCard_Correlation(pCard); break;
+    case CK_CORRELATION:      G.p_correlation       = _pCard_Correlation(pCard); ;
+                              G.p_OP                = (Card_OP*)pCard; break;
     case CK_COSTJOINING:      G.p_costJoining       = _pCard_CostJoining(pCard); break;
     case CK_COSTNETWORK:      G.p_costNetwork       = _pCard_CostNetwork(pCard); break;
     case CK_COSTSTREAM:       G.p_costQuery         = _pCard_CostStream(pCard); break;
@@ -2184,6 +2185,9 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   Card_Projection* p_projection_prior = pResolvePrior_projection();
   if (! p_projection_prior)
     return nullptr;
+
+  //RASSERT(p_projection_prior == this->Prior.m_pProjection);
+
 
   if (p_term->pSymbol()->bIs_Col_No()) {
     //p_projection_prior->vDump(__func__);
