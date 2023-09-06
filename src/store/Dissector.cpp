@@ -410,29 +410,82 @@ Card* Dissector::pOp_Filter(void)
   
   if (m_bSawAggOp || m_bSawProjectOp) {
     Card_Having* pCard_Having = new Card_Having;
-    pCard_Having->vTransferChildren(pCard_Filter);
-    delete pCard_Filter;
-    delete pCard_RpnTerms;
 
     eAL eAggLevel = m_pStageSpec->eAggegLevel();
     Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
-    pCard_Having->vPush(pCard_AggLevel);
+    pCard_Having->vAppend(pCard_AggLevel);
 
+    pCard_Having->vAppend(pCard_Filter);
+
+    delete pCard_RpnTerms;
     return pCard_Having;
   }
   else {
-    delete pCard_RpnTerms;
-
-    pCard_Filter->vCard(CK_WHERE);
-    Card_Where* p_where = _pCard_Where(pCard_Filter);
+    Card_Where* pCard_Where = new Card_Where;
 
     eAL eAggLevel = m_pStageSpec->eAggegLevel();
     Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
-    p_where->vPush(pCard_AggLevel);
+    pCard_Where->vAppend(pCard_AggLevel);
 
-    return p_where;
+    pCard_Where->vAppend(pCard_Filter);
+
+    delete pCard_RpnTerms;
+    return pCard_Where;
   }
 }
+/*----------------------------------------------------------------------------*/
+//Card* Dissector::pOp_Filter(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // op arguments
+//
+//  vCheckArgs(1);
+//
+//  Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+//  Card_Filter* pCard_Filter = new Card_Filter;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // filtElist : filter expression list
+//
+//  i8 i_Expr = 1;
+//  Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr, false);
+//
+//  Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
+//  pCard_Expr->vRemoveSub(pCard_RpnCalc);
+//  DELETE_CARD(pCard_Expr);
+//
+//  pCard_Filter->vAppend(pCard_RpnCalc);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // is it filter or having?
+//
+//  if (m_bSawAggOp || m_bSawProjectOp) {
+//    Card_Having* pCard_Having = new Card_Having;
+//    pCard_Having->vTransferChildren(pCard_Filter);
+//    delete pCard_Filter;
+//    delete pCard_RpnTerms;
+//
+//    eAL eAggLevel = m_pStageSpec->eAggegLevel();
+//    Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+//    pCard_Having->vPush(pCard_AggLevel);
+//
+//    return pCard_Having;
+//  }
+//  else {
+//    delete pCard_RpnTerms;
+//
+//    pCard_Filter->vCard(CK_WHERE);
+//    Card_Where* p_where = _pCard_Where(pCard_Filter);
+//
+//    eAL eAggLevel = m_pStageSpec->eAggegLevel();
+//    Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+//    p_where->vPush(pCard_AggLevel);
+//
+//    return p_where;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* dissect : gbyAgg <szRpnExpr : 0) aggElist ; 1) gbyElist>                   */
