@@ -109,7 +109,7 @@
   iArg1 = *(--paW);                                                         \
   vExtern_EntWrkAppendElementInt(iArgTo,iArg1);
 
-#define _ASSIGN_TO_ENTSTZ(iArgTo)                                           \
+#define _ASSIGN_TO_ENTSTZ(iArgTo) \
   szArg1 = (char*)*(--paW);                                                 \
   vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
 

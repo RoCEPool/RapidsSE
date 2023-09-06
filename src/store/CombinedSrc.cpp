@@ -200,7 +200,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator begin
-        vOperatorBegin(pOpSketch);
+        //vOperatorBegin(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilTo(pOpSketch);
+				vAppendCodeFragment(pOpSketch, "vAggregBegin"_Stz, pOperatorFile);
 
         vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz, pOperatorFile);
         vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
