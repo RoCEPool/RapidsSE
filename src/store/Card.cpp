@@ -474,6 +474,8 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
 
   if (0 == iDepth)
     vTrace("$$\n"_Stz);
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

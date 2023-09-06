@@ -477,6 +477,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {
+          vDump(__func__);
           vValidationFailed("Type Missing : %p"_Stz,this);
         }
       }
@@ -487,6 +488,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     if ( m_xSymbol.bIs_Col_Tc()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {
+          vDump(__func__);
           vValidationFailed("Type Missing : %p"_Stz,this);
         }
       }
@@ -496,6 +498,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TBLCOL_TO_STMCOL])) {
     if (m_xSymbol.bIs_Col_Tc() ) {
+      vDump(__func__);
       vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_TBLCOL_TO_STMCOL], this);
     }
   }
