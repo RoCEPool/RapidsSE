@@ -146,6 +146,10 @@ void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
+    Symbol* pSymbol = p_term->pSymbol();
+    if (!pSymbol->bIs_Col_No())
+      return C_CONTINUE_RECURSION;
+
     p_term->vConvertIf_stmOdn_To_colOdn(pCI);
 
     return C_CONTINUE_RECURSION;

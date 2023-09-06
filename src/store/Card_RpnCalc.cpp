@@ -119,6 +119,10 @@ void Card_RpnCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
+    Symbol* pSymbol = xKid.p_term()->pSymbol();
+    if (! pSymbol->bIs_Col_No())
+      continue;
+
     xKid.p_term()->vConvertIf_stmOdn_To_colOdn(pCI);
   }
 }

@@ -168,26 +168,10 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  ASSERT (   pCI->G.p_MainCard->bIsCard(CK_AGGREG)
-//          || pCI->G.p_MainCard->bIsCard(CK_FILTER)
-//          || pCI->G.p_MainCard->bIsCard(CK_FROM)
-//          || pCI->G.p_MainCard->bIsCard(CK_GBYAGG)
-//          || pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)
-//          || pCI->G.p_MainCard->bIsCard(CK_PROJECT)
-//          || pCI->G.p_MainCard->bIsCard(CK_SORT)
-//          || pCI->G.p_MainCard->bIsCard(CK_WHERE));
-
-//  if (CK_AGGREG  == pCI->G.e_MainCard ||
-//      CK_FILTER  == pCI->G.e_MainCard ||
-//      CK_GBYAGG  == pCI->G.e_MainCard ||
-//      CK_PROJECT == pCI->G.e_MainCard) {
-//    pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
-//    ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
-//  }
-
   Symbol* pSymbol = this->pSymbol();
-  if (!pSymbol->bIs_Col_No())
-    return;
+//  if (!pSymbol->bIs_Col_No())
+//    return;
+  RASSERT(pSymbol->bIs_Col_No());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
