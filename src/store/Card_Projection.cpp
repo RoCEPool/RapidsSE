@@ -376,7 +376,6 @@ Card_Expr* Card_Projection::pResolve_expr(Card_Term* p_term)
   _precondition_( _MAGIC_, _FOOTER_);
 
   if (p_term->pSymbol()->bIs_Col_No()) {
-    //p_projection_prior->vDump(__func__);
     Card_Expr *p_expr_prior = this->pDecodeExpr(p_term->pSymbol());
     return p_expr_prior;
   }

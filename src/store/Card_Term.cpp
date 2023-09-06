@@ -185,17 +185,20 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
     ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
   }
 
-  if (!pSymbol()->bIs_Col_No())
+  Symbol* pSymbol = this->pSymbol();
+  if (!pSymbol->bIs_Col_No())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this)) {
+//  if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this)) {
+//  if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr_prior(this)) {
+  if (Card_Expr* p_expr_prior = pCI->Prior.m_pProjection->pDecodeExpr(pSymbol)) {
 
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
     if (pSymbol_term0->bIs_Col_Tc()) {
-      pSymbol()->vSym(pSymbol_term0);
+      pSymbol->vSym(pSymbol_term0);
       vMark1(MARK_CHANGED);
     }
   }

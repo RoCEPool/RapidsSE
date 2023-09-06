@@ -154,7 +154,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -165,8 +165,11 @@ void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
             || CK_INDEXJOIN == pCI->G.e_MainCard
             || CK_PROJECT   == pCI->G.e_MainCard
             || CK_SORT      == pCI->G.e_MainCard
-            || CK_WHERE     == pCI->G.e_MainCard))
+            || CK_WHERE     == pCI->G.e_MainCard)) {
+    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
+       pCI->Prior.m_pProjection = pCI->G.p_projection;
     return;
+  }
 
   if (CK_AGGREG    == pCI->G.e_MainCard ||
       CK_FILTER    == pCI->G.e_MainCard ||
@@ -181,13 +184,20 @@ void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((pCI->G.p_key = pSub_key()))
-    pCI->G.p_key->vConvertAll_stmOdn_To_colOdn(pCI);
+  if ((pCI->G.p_key = pSub_key())) {
+    if (pCI->Prior.m_pProjection)
+      pCI->G.p_key->vConvertAll_stmOdn_To_colOdn(pCI);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
-    pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
+    if (pCI->Prior.m_pProjection)
+      pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
     pCI->Prior.m_pProjection = pCI->G.p_projection;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((pCI->G.p_boolCalc = pCI->G.p_MainCard->pSub_boolCalc()))
     pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
@@ -195,9 +205,8 @@ void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   // todo:
 
   if (CK_WHERE   == pCI->G.e_MainCard) {
-    if ((pCI->G.p_rpnCalc = pSub_rpnCalc())) {
+    if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
       pCI->G.p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
-    }
   }
 
 }
