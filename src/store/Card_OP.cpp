@@ -65,7 +65,6 @@ bool Card_OP::bIsOp(Card* pCard)
     case CK_WHERE:
     case CK_SCAN:
     case CK_SORT:
-    case CK_TABLE:
     case CK_TOP:
       return true;
 
@@ -191,10 +190,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   }
 
   if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter())) {
-    if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-      pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
-    else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-      pCI->G.p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
+    pCI->G.p_filter->vConvertAll_stmOdn_To_colOdn(pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -15,6 +15,9 @@ namespace STORE
    ~Card_COND(void) noexcept(false);
 
    void vAddTransients(CardIter* pCI);
+   void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
+
+
   };
 
   Card_COND* _pCard_COND(void* aAddr);

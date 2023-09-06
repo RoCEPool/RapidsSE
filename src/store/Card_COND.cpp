@@ -36,7 +36,7 @@ Card_COND::~Card_COND(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add transients to needed                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_COND::vAddTransients(CardIter* pCI)
 {
@@ -65,6 +65,19 @@ void Card_COND::vAddTransients(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pSub_boolCalc()->bApplyRecursive_term(bLambda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert all stmOdn to colOdn                                               */
+/*----------------------------------------------------------------------------*/
+void Card_COND::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_boolCalc = pSub_boolCalc()))
+    pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
+  else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
+    pCI->G.p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
 }
 
 /*============================================================================*/
