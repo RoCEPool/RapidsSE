@@ -193,8 +193,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter())) {
     if ((pCI->G.p_boolCalc = pSub_boolCalc()))
       pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
-    else
-    if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
+    else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
       pCI->G.p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
   }
 
@@ -210,27 +209,11 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // post-projection
 
-  /*
-  if ((pCI->G.p_boolCalc = pCI->G.p_MainCard->pSub_boolCalc()))
-    pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
-
-  // todo:
-
-  if (CK_WHERE   == pCI->G.e_MainCard) {
-    if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-      pCI->G.p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
+  if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
+//    if (pCI->Prior.m_pProjection)
+//      pCI->G.p_constraint->vConvertAll_stmOdn_To_colOdn(pCI);
   }
-  */
-
-//  if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter())) {
-//    if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-//      pCI->G.p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
-//    else
-//    if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-//      pCI->G.p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
-//  }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* convert tblColOdn to stmColOdn                                             */
