@@ -104,6 +104,8 @@ namespace STORE
 
     // - - - - - -
 
+    eSF  eSymbol(void);
+
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 

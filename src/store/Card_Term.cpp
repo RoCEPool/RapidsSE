@@ -169,21 +169,26 @@ void Card_Term::vConvert_stmOdn_To_colOdn(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol = this->pSymbol();
-//  if (!pSymbol->bIs_Col_No())
-//    return;
   RASSERT(pSymbol->bIs_Col_No());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this)) {
-//  if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr_prior(this)) {
   if (Card_Expr* p_expr_prior = pCI->Prior.m_pProjection->pDecodeExpr(pSymbol)) {
-
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
     if (pSymbol_term0->bIs_Col_Tc()) {
       pSymbol->vSym(pSymbol_term0);
       vMark1(MARK_CHANGED);
+    }
+    else {
+      eSF eSymbol = pSymbol->eSymbol();
+      switch (eSymbol) {
+        case SF_COL_NO:
+          break;
+
+        default:
+          vDebugPoint();
+      }
     }
   }
 }

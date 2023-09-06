@@ -206,8 +206,8 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   // post-projection
 
   if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
-//    if (pCI->Prior.m_pProjection)
-//      pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(pCI);
+    if (pCI->Prior.m_pProjection)
+      pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(pCI);
   }
 }
 
