@@ -83,7 +83,7 @@ void XF_Synthesise_code::vSynthesise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
-  if (AM::JOB::bHasTag(C_NOCODESYNTHESIS))
+  if (AM::JOB::bHasTag(C_HASCODEFILE))
     return;
 
   PipelineDef* pPipelineDef = m_pCI->m_pBench->pOptimiser()->pPipelineDef();

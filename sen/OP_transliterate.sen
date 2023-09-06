@@ -124,8 +124,7 @@
 
   [Op] [job].responseOp!
 
-  "<noCodeSynthesis>" [job].tagSet@ tagSet.hasName if
-
+  "<UseCodeFile>" [job].tagSet@ tagSet.hasName if
      STD_NORMALFORK_OPT_NOCODE_TAG Text[] nullptr api::forkChild not if
        //"****Error Code %v" .printf
        nullptr [job].responseOp!

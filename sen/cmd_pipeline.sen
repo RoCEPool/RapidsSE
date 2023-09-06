@@ -172,6 +172,9 @@ then
 "<optimise_passThru>" [job].tagSet@ tagSet.hasName if
    "<optimise_passThru>" .
 then
+"<hasCodeFile>" [job].tagSet@ tagSet.hasName if
+  "<hasCodeFile>" .
+then
 */
 
 /* org_ org */ "<optimise>" [job].tagSet@ tagSet.hasName
@@ -182,9 +185,9 @@ then
 /* org_ org */
 /* org_ org */    Optimiser[].transform if
 /* org_ org */      // replace original cmd with weaved statement
-
-/* ray      */      Optimiser[].weave
-
+/* org_ org */
+/* org_ org */      Optimiser[].weave
+/* org_ org */
 /* org_ org */      Optimiser[].delete
 /* org_ org */    else
 /* org_ ovr */      // - didnt optimise (errorCode on stack)
@@ -536,9 +539,12 @@ then
 /* _ptp bgn */        "_ptp bgn" "pipeline has codeFile"             [job].trace
 /* _ptp bgn */    then
 /* _ptp beg */
+/* _ptp beg */     "<UseCodeFile>" [job].tagSet@ tagSet.getStr "COMPILING CODE FILE /UseCodeFile = '%v'" str.format .
+/* _ptp beg */
 /* _ptp beg */    LibInfo[].new
 /* _ptp beg */
-/* _ptp beg */    Dynamo[].fileName@ LibInfo[].compileFile not if
+/* _ptp beg */    "<UseCodeFile>" [job].tagSet@ tagSet.getStr
+/* _ptp beg */     LibInfo[].compileFile not if
 /* _ptp beg */      LibInfo[].error .
 /* _ptp beg */      EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
 /* _ptp beg */      job.sendRejectJob
@@ -559,7 +565,6 @@ then
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
 /* _ptp beg */
 /* _ptp beg */  [job].hasCodeBlock if
-/* _ptp beg */
 /* _ptp bgn */    [args].distJob if
 /* _ptp bgn */      "pipeline" "ptpBegin"
 /* _ptp bgn */        "_ptp bgn" "pipeline has code"             [job].trace
