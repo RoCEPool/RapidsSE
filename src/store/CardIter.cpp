@@ -2188,19 +2188,8 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
 
   //RASSERT(p_projection_prior == this->Prior.m_pProjection);
 
-
-  if (p_term->pSymbol()->bIs_Col_No()) {
-    //p_projection_prior->vDump(__func__);
-    Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term->pSymbol());
-    return p_expr_prior;
-  }
-  else
-  if (p_term->pSymbol()->bIs_Col_Tc()) {
-    Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(p_term->pSymbol());
-    return p_expr_prior;
-  }
-
-  return nullptr;
+  Card_Expr* p_expr_resolved = p_projection_prior->pResolve_expr(p_term);
+  return p_expr_resolved;
 }
 
 /*----------------------------------------------------------------------------*/

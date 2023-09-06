@@ -369,6 +369,26 @@ Card_Projection* Card_Projection::pReducedCopy(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* resolve prior expr of given term (find right-to-left)                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pResolve_expr(Card_Term* p_term)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (p_term->pSymbol()->bIs_Col_No()) {
+    //p_projection_prior->vDump(__func__);
+    Card_Expr *p_expr_prior = this->pDecodeExpr(p_term->pSymbol());
+    return p_expr_prior;
+  }
+  else
+  if (p_term->pSymbol()->bIs_Col_Tc()) {
+    Card_Expr *p_expr_prior = this->pFindExpr(p_term->pSymbol());
+    return p_expr_prior;
+  }
+
+  return nullptr;
+}
+/*----------------------------------------------------------------------------*/
 /* as review                                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vAs_Review(CardIter* pCI)

@@ -33,6 +33,8 @@ namespace STORE
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     bool bHasTerm(Symbol* pSymbol);
     Card_Projection* pReducedCopy(CardIter* pCI);
+    Card_Expr* pResolve_expr(Card_Term* p_term);
+
     void vAs_Review(CardIter* pCI);
 
     StreamDef* pToStreamDef(ColMap* pColMap,
