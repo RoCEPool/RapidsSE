@@ -83,7 +83,7 @@ DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
   oSearchKey.iLglPtn = tLglPtn.iAsI8() + 1;
   oSearchKey.iSynthKey = C_INT_MAX;
 
-  // Find the first block that is less than LglPtn,Max key
+  // Find the last block that is less than LglPtn,Max key
   SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
@@ -116,37 +116,50 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
   // b) [Root-Block]-->[Non-Full-Buffer]-->NULL
   // c) [Root-Block]-->NULL
 
-  LglBufSetItem oSearchKey;
   // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
-  oSearchKey.iLglPtn = tLglPtn.iAsI8() + 1;
+  i8 iLglPtnKey = tLglPtn.iAsI8() + 1;
+
+  LglBufSetItem oSearchKey;
+  oSearchKey.iLglPtn = iLglPtnKey;
   oSearchKey.iSynthKey = C_INT_MIN;
 
   // Get the first block that is greater than LglPtn,Min
   SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
-    // Check if the next block in this chain exists for this LglPtn
+    // If the block is not null, extract the keys and values
+    LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
+
+    // If this block doesn't match our LglPtn key, return nullptr
+    if(pItem != nullptr && pItem->iLglPtn != iLglPtnKey) {
+      return nullptr;
+    }
+
+    // Now figure out whether this is a completed buffer or not by checking the next buffer
+    // in the chain
     SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
     if(pNextBlock != nullptr) {
       // Next block exists, check if the key is the same as this LglPtn
       LglBufSetItem* pNextItem = (LglBufSetItem*) pNextBlock->aItem();
       RASSERT(pNextItem != nullptr);
-      if(pNextItem->iLglPtn == (tLglPtn.iAsI8() + 1))
-        return nullptr;
-    }
 
-    // If the block is not null, extract the keys and values
-    LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
+      if(pNextItem->iLglPtn == iLglPtnKey) {
+        // Next block exists for this LglPtn chain
+        // Which means our current buffer is a completed buffer
 
-    // If the LglPtn value matches, we found a completed buffer part of this LglPtn chain
-    // Delete it from the Pds and return the DataBuffer associated with it's bufferId
-    if(pItem != nullptr && pItem->iLglPtn == (tLglPtn.iAsI8() + 1)) {
-      BufferId oBufferId = pItem->oBufferId;
-      RASSERT(oBufferId.m_bIdFlag == 1);
-      bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
-      RASSERT(bResult);
-      return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+        // Extract the buffer id
+        BufferId oBufferId = pItem->oBufferId;
+        RASSERT(oBufferId.m_bIdFlag == 1);
+
+        // Remove this block from the pds
+        bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+        RASSERT(bResult);
+
+        // Get the address from the hashmap
+        return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+      }
     }
+    // Next block does not exist or does not match the LglPtn, hence our current buffer is incomplete
   }
 
   return nullptr;
@@ -162,19 +175,11 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
   LglBufSetItem oSearchKey;
   oSearchKey.iLglPtn = tLglPtn.iAsI8() + 1;
   oSearchKey.iSynthKey = C_INT_MIN;
+
+  // Get the first block that is greater than LglPtn,Min
   SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
 
   if(pHead != nullptr) {
-    // Assert that there are no more buffers associated with this LglPtn
-    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
-
-    // Assert that the next block (if it exists) does not have the same LglPtn number
-    if(pNextBlock != nullptr) {
-      LglBufSetItem* pNextItem = (LglBufSetItem*) pNextBlock->aItem();
-      RASSERT(pNextItem != nullptr);
-      RASSERT(pNextItem->iLglPtn != (tLglPtn.iAsI8() + 1));
-    }
-
     // Get the current head block of this LglPtn and extract the values
     LglBufSetItem* pItem = (LglBufSetItem*) pHead->aItem();
 
@@ -188,7 +193,6 @@ DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
       return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
     }
   }
-
   return nullptr;
 }
 

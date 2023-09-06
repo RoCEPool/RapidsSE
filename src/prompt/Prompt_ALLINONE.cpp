@@ -3062,17 +3062,21 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT(pPrompt);
   typedef Pds_t<i8> Pds_i8;
   Pds_i8* PDS_i8;
+  bool bResult = false;
+  SkipListBlock* pResultBlock = nullptr;
+  SkipListBlock* pSearchBlock = nullptr;
+  i8 iTest = 0;
 
 /*----------------------------------------------------------------------------*/
   // Test Case - Basic single element tests
 /*----------------------------------------------------------------------------*/
 
-  bool bResult = false;
+  bResult = false;
   PDS_i8 = new Pds_i8(nullptr);
-  SkipListBlock* pResultBlock = nullptr;
+  pResultBlock = nullptr;
 
   // Insert single element
-  i8 iTest = 1;
+  iTest = 1;
   pResultBlock = PDS_i8->pInsert((void*) &iTest);
   RASSERT(pResultBlock);
 
@@ -3086,7 +3090,7 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 
 
   // Find existing element
-  SkipListBlock* pSearchBlock = PDS_i8->pFind((void*) &iTest);
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 1);
 
@@ -3211,7 +3215,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 2);
 
-
+  PDS_i8->vDumpInUseList();
+  PDS_i8->vDumpFreeList();
   // Delete 5 existing elements
   iTest = 1;
   bResult = PDS_i8->bDelete((void*) &iTest);

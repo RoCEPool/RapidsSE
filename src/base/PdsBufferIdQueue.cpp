@@ -169,6 +169,7 @@ DataBuffer* PdsBufferIdQueue::pDataBuffer(void)
     return pDataBuffer;
   }
 
+  RASSERT(0);
   return nullptr;
 }
 

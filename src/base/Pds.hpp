@@ -54,6 +54,7 @@ namespace BASE
     SkipListBlock*  pFindGreaterThan(void* pKey);
     SkipListBlock*  pFirstBlock(void);
     i8              iNumEntries(i8 iLevel);
+    void            vValidate(void);
     bool            bVerify(void);
 
     // private:

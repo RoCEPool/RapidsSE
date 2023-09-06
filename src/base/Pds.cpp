@@ -154,9 +154,11 @@ bool Pds::bDelete(void* pKey)
     RASSERT(uOffsetToDelete != m_uInUseRootOffset);
 
     vMoveToFreeList(pDeleteEntry);
+//    vValidate();
     return true;
   }
 
+//  vValidate();
   return false;
 }
 
@@ -259,6 +261,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
   // try to allocate a block as mini-Heap may be full
   SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
   if(pNewSLBlock == nullptr) {
+//    RASSERT(0);
     return nullptr;
   }
 
@@ -275,6 +278,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
     // Got duplicate key, error
     vMoveToFreeList(pNewSLBlock);
     vTrace("Pds Skip List attempting to insert a duplicate key\nAborting insert...\n"_Stz);
+//    vValidate();
     return nullptr;
   }
 
@@ -304,6 +308,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
     m_iNumEntries[i_Level]++;
   }
 
+//  vValidate();
   return pNewSLBlock;
 }
 
@@ -359,6 +364,8 @@ SkipListBlock* Pds::pFindLessThan(void* pKey)
     SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
 
     SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
+    if(pNext == nullptr)
+      RASSERT(0);
     while(pNext != nullptr) {
       i8 iCompareRes = m_fpCompare(pNext->aItem(), pKey);
 
@@ -477,6 +484,44 @@ i8 Pds::iNumEntries(i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Validate this Skip List                                                    */
+/*----------------------------------------------------------------------------*/
+void Pds::vValidate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  // Validate free list
+  u2 uOffset = m_uInUseRootOffset;
+  for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
+
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
+
+    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
+    i8 iCount = 0;
+
+    while(pNext != nullptr) {
+      iCount++;
+      pNext = pNextSLBlock(pNext, i_Level);
+    }
+    RASSERT(iCount == m_iNumEntries[i_Level]);
+  }
+
+  // Validate free list
+  uOffset = m_uFreeListRootOffset;
+
+  SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
+
+  SkipListBlock* pNext = pNextSLBlock(pCursor, 0);
+  i8 iCount = 0;
+
+  while(pNext != nullptr) {
+    iCount++;
+    pNext = pNextSLBlock(pNext, 0);
+  }
+    RASSERT(iCount == m_iFreeListEntries);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Verify the integrity of this Skip List                                     */
 /*----------------------------------------------------------------------------*/
 bool Pds::bVerify(void)
@@ -572,12 +617,12 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLBlock)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  // Clear its values
-//  pSLBlock->vSetKey(0);
   // Clear the offset values for all the levels for this block
   for(i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     pSLBlock->m_xNode.vNext(i_Level, 0);
   }
+
+//  MemLib::vZero(pSLBlock,m_nBlockSize,  CN_NONE);
 
   SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 

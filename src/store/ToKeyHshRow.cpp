@@ -47,7 +47,7 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   m_nErrors = 0;
   m_i_Rec   = -1;
   m_bFirst  = true;
-
+  m_pCurrRowBuffer = nullptr;
   m_pBufferIdQueue = new PdsBufferIdQueue();
 
   //--
@@ -91,6 +91,7 @@ ToKeyHshRow::~ToKeyHshRow(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   delete m_pBufferIdQueue;
+  m_pCurrRowBuffer = nullptr; // Assert this was deleted when the pds was deleted?
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +122,12 @@ void ToKeyHshRow::vRepairList(Object* pObject)
 RowBuffer* ToKeyHshRow::pDanglingRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
-  return _pRowBuffer(m_pBufferIdQueue->pDanglingBuffer());
+
+  RowBuffer* m_pDanglingRowBuffer = _pRowBuffer(m_pBufferIdQueue->pDanglingBuffer());
+  RASSERT(m_pCurrRowBuffer == m_pDanglingRowBuffer);
+  RASSERT(m_pBufferIdQueue->bIsEmpty());
+  m_pCurrRowBuffer = nullptr;
+  return m_pDanglingRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +147,9 @@ RowBuffer* ToKeyHshRow::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  return _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
+  RASSERT(m_pCurrRowBuffer == pRowBuffer);
+  return m_pCurrRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,6 +201,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
 
   m_pBufferIdQueue->vAddBuffer(pNewRowBuffer);
 
+  m_pCurrRowBuffer = pNewRowBuffer;
   return;
 }
 
