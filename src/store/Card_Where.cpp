@@ -108,8 +108,11 @@ Card_Where* Card_Where::pNewWhereAssembly(void)
 
   Card_Where* p_where = new Card_Where;
 
+  Card_Filter* p_filter = new Card_Filter;
+  p_where->vAppend(p_filter);
+
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_where->vAppend(p_rpnCalc);
+  p_filter->vAppend(p_rpnCalc);
 
   return p_where;
 }

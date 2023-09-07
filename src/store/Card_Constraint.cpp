@@ -208,8 +208,10 @@ void Card_Constraint::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 
   if ((pCI->G.p_boolCalc = pSub_boolCalc()))
     pCI->G.p_boolCalc->vEnsureTypesFor_stmOdn(pCI);
+  else
+  if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
+    pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -218,6 +220,8 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
+
+  RASSERT(CK_TABLE != pParent->eCard());
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

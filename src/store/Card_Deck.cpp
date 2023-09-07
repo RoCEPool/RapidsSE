@@ -302,7 +302,10 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
       pCI->G.p_from->vUpdate_projection(pCI);
 
-      // todo: fix...
+      if (pCI->G.p_MainCard->pSub_projection())
+        pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
+
+        // todo: fix...
 //      pCI->G.p_projection = pCI->G.p_table->pSub_projection();
 //      pCI->G.p_table->vRemoveChild(pCI->G.p_projection);
 //      pCI->G.p_from->vAppend(pCI->G.p_projection);

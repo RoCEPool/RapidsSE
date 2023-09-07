@@ -55,7 +55,7 @@ Board::Board(Stz* szBoardNm, eBK eBoard, i8 i_Board, Bench* pBench)
   if (BK_JOINORDERING == eBoard)
     m_pMark->vChrSeq("JO"_Stz);
   else
-    m_pMark->vSprint("Y%lld"_Stz,i_Board);
+    m_pMark->vSprint("SQ%lld"_Stz,i_Board);
 
   pBench->vAddBoard(this);
   

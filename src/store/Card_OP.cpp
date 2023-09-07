@@ -157,32 +157,13 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  if (!(CK_AGGREG == pCI->G.e_MainCard
-//        || CK_FILTER == pCI->G.e_MainCard
-//        || CK_FROM == pCI->G.e_MainCard
-//        || CK_GBYAGG == pCI->G.e_MainCard
-//        || CK_INDEXJOIN == pCI->G.e_MainCard
-//        || CK_PROJECT == pCI->G.e_MainCard
-//        || CK_SORT == pCI->G.e_MainCard
-//        || CK_WHERE == pCI->G.e_MainCard)) {
-//    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
-//      pCI->Prior.m_pProjection = pCI->G.p_projection;
-//    return;
-//  }
-
-  if (CK_AGGREG == pCI->G.e_MainCard ||
-      CK_FILTER == pCI->G.e_MainCard ||
-      CK_FROM == pCI->G.e_MainCard ||
-      CK_INDEXJOIN == pCI->G.e_MainCard ||
-      CK_GBYAGG == pCI->G.e_MainCard ||
-      CK_PROJECT == pCI->G.e_MainCard) {
-    pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
-    if (pCI->G.p_level && AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
+  if ((pCI->G.p_level = pCI->G.p_MainCard->pSub_level())) {
+    if (AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
       return;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pre-projection
+  // conversions prior to projection
 
   if ((pCI->G.p_key = pSub_key())) {
     if (pCI->Prior.m_pProjection)
@@ -203,11 +184,11 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // post-projection
+  // conversions after projection
 
   if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
-//    if (pCI->Prior.m_pProjection)
-//      pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(pCI);
+    if (pCI->Prior.m_pProjection)
+      pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(pCI);
   }
 }
 
