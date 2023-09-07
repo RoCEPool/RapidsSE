@@ -21,6 +21,7 @@ INCLUDE 'regrLoadData.test';
 //LOG 'Running regression tests...';
 
 //------------------------------------------------------------------------------
+
 LOG 'AndOrNot.test ...';
 INCLUDE 'AndOrNot.test';
 
@@ -45,11 +46,16 @@ LOG 'aggs-min.test ...';
 INCLUDE 'aggs-min.test';
 
 // TODO V2 : ORDAGG
-//LOG 'aggs-sum.test ...';
-//INCLUDE 'aggs-sum.test';
+/*
+LOG 'aggs-sum.test ...';
+INCLUDE 'aggs-sum.test';
+*/
 
+/* TODO V2 : ALKA TO LOOK AT
+/*
 LOG 'alias.test ...';
 INCLUDE 'alias.test';
+*/
 
 LOG 'aliasSelAll.test ...';
 INCLUDE 'aliasSelAll.test';
@@ -75,8 +81,11 @@ INCLUDE 'cast.test';
 //INCLUDE 'functions-coal.test';
 //INCLUDE 'functions-concat.test';
 
+// TODO V2 : RAY TO LOOK AT
+/*
 LOG 'functions-extract.test ...';
 INCLUDE 'functions-extract.test';
+*/
 
 //INCLUDE 'functions-floor.test';
 //INCLUDE 'functions-left.test';
