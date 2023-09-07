@@ -25,6 +25,9 @@ namespace STORE
     void vXF_tblCol_To_stmCol(void);
 
   private:
+
+    void vConvert_tblColOdn_To_stmColOdn(void);
+
     Footer* aFooter(void);
   };
 

@@ -440,7 +440,7 @@ bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
-Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
+Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

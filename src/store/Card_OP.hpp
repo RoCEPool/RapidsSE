@@ -24,7 +24,6 @@ namespace STORE
 
     void vConvert_colNm_To_stmCol(CardIter* pCI);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
-    void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
 

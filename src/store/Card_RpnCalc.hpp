@@ -39,7 +39,7 @@ namespace STORE
     Card_RpnCalc *pReducedCopy_key(void);
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
-    Card_BoolCalc* pToBoolCalc(CardIter* pCI);
+    Card_BoolCalc* pTo_boolCalc(CardIter* pCI);
     Stz* szP_Type(void);
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
