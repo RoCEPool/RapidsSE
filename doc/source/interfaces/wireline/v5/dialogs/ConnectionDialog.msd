@@ -25,10 +25,8 @@ end note
 
 alt [protocol version is not compatible]
   s->c: ProtocolIncompatibleResponse
+  s-->c: Close socket connection
   destroy c
-  note right of s
-    "Client socket is closed"
-  end note
 else [protocol version is compatible]
   activate c
   s->c: ProtocolCompatibleResponse
@@ -52,10 +50,8 @@ end
 
 alt [has error?]
   s->c: ErrorResponse
+  s-->c: Close socket connection
   destroy c
-  note right of s
-    "Client socket is closed"
-  end note
  else [request is valid]
   activate c
   s->c: TunnelSupportedResponse
@@ -75,10 +71,8 @@ end
 
 alt [authentication fails?]
   s->c: ErrorResponse
+  s-->c: Close socket connection
   destroy c
-  note right of s
-    "Client socket is closed"
-  end note
  else [authentication is valid]
   activate c
   s->c: AuthenticationOkResponse
@@ -98,10 +92,8 @@ end
 
 alt [session property error?]
   s->c: ErrorResponse
+  s-->c: Close socket connection
   destroy c
-  note right of s
-    "Client socket is closed"
-  end note
  else [request is valid]
   activate c
   s->c: SessionChangeResponse

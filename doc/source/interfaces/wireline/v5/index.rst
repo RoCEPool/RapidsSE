@@ -253,9 +253,13 @@ is then able to start executing another dialog such as the Query Dialog in
 order to execute SQL commands in the system.
 
 The implementation of this Connection Dialog in a client can be shown with the
-following state transition diagram. This shows an alternate view on what
+following state transition diagram (:numref:`connectionDialogStateDiagram`).
+This shows an alternate view on what
 messages can be sent or received at different times and how the client should
-respond.
+respond. Clients and libraries do not need to be represented in this way, it
+is purely for understanding purposes.
+
+.. _connectionDialogStateDiagram:
 
 .. only:: html
 
@@ -286,12 +290,186 @@ respond.
 Query Dialog
 ````````````
 
+The Query Dialog is an exchange of messages by which a client can execute a
+query in the system. The query being executed may return a result set with rows
+of data, or it may make a change in the system and return no result set at all.
+
+To clarify some terminology used in this dialog, a *Query* is a single request
+from the client to the server. That request may contain one or more *Statements*
+that are executed. A query with a single statement will contain a command string
+with a single logical statement such as ``"SELECT * FROM t1;"``. However a
+query with multiple statements will contain a command string with multiple
+commands separated by semicolons, such as
+``"SELECT * FROM t1; TRUNCATE t1; DROP TABLE t1;"``. This can also be referred
+to as a batched statement because the client has asked the server to execute
+multiple commands and return a set of results.
+
+RapidsSE supports both single statement queries and multiple statement queries.
+This Query Dialog will handle both cases. We will examine both cases separately.
+
 
 Single Statement Queries
 ::::::::::::::::::::::::
 
+The Query Dialog for single statements is shown below in figure
+:numref:`queryDialog-SingleStatement`. This dialog can be run
+after a client has successfully completed the Connection Dialog. It starts with
+the client sending a ``QueryExecuteRequest`` message, which contains the command
+to be executed along with some other optional flags to control how results and
+errors are handled.
+
+.. _queryDialog-SingleStatement:
+
+.. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-SingleStatement.*
+   :align: center
+
+   The Query Dialog for a single statement
+
+When the server receives this message it extracts out the command string and
+parses it to ensure it contains one or more valid statements. If this command
+string has a syntax error then the server will return an ``ErrorResponse``
+message and the dialog is complete at that point. No statement could be
+executed.
+
+If the command string is successfully parsed then the server will send the
+client a ``QueryReceiptResponse`` message. This message is an acknowledgement
+of the statements that were parsed out of the command string in the
+``QueryExecuteRequest``. It contains a unique ID and a secret key for each
+separate statement that will be executed in this query. This information is
+critical for cancelling long running statements, and the client should hold
+on to this information until the statements have completed.
+
+At this point the RapidsSE server is ready to begin executing each of statements
+that were parsed out of the ``QueryExecuteRequest``. Let us assume that there
+is only one logical statement to be executed.
+
+While the statement is being executed, RapidsSE might generate some warnings.
+These are non-fatal conditions that might affect or might help describe what
+any abnormal conditions that RapidsSE encounters during the execution of this
+statement. There may be more than one warning generated, and these warnings
+can be sent back to the client as ``WarningResponse`` messages at at time
+up until the statement has finished executing.
+
+From here there are three alternate scenarios for the result of the statement:
+
+#. The statement encounters an error.
+
+#. The statement generates a result set with zero or more rows.
+
+#. The statement is successful but the nature of the statement does not generate
+   a result set.
+
+If an error is encountered after the server has previously sent a
+``QueryReceiptResponse`` message (case 1) then that ``ErrorResponse`` indicates that
+the execution of the current statement has now ended. No further data or results
+for the current statement will be returned.
+
+If the nature of the statement is such that it generates a result set (case 2, e.g.
+it is a ``SELECT`` statement), then the server will first send a ``RowMetadataResponse``
+message that describes the column names and types of the result data that
+will follow. After that the server will send zero or more ``RowDataResponse``
+messages that contain the actual row data for the result set. The
+``RowMetadataResponse`` message will always be sent, even if there are no
+rows being returned in the result set. This indicates to the client that it has
+received an empty result set.
+
+If there are rows to be returned then the server will group them into a number
+of ``RowDataResponse`` messages. The server wants to strike a balance between
+not having too few rows in a single ``RowDataResponse`` message and not having
+the ``RowDataResponse`` message being too large. These messages will typically
+not exceed 1MB each and by default will usually contain no more than 10,000 rows
+each.
+
+While ``RowDataResponse`` messages are being sent back to the client, it is still
+possible for an error to be encountered. e.g. the values in a row may cause a
+divide-by-zero error to be detected. Like case (1), if an ``ErrorResponse`` is
+received by the client at this point then the execution of that statement is
+considered finished.
+
+Once all ``RowDataResponse`` messages have been sent back to the client, a
+``StatementResponse`` message is sent to indicate that the statement
+completed its execution and no errors were encountered. This is not the end
+of the dialog however, as a query may contain multiple statements to be
+executed.
+
+Similarly, if the statement being executed did not generate a result set (case 3) then
+a ``StatementResponse`` is sent back to the client to indicate that the
+statement has finished executing and it was successful.
+
+Finally, the server indicates that there are no more statements to be executed
+and that the dialog is complete by sending a ``QueryExecuteResponse`` message.
+When the client receives this it is then able to start a new dialog with the
+server.
+
+A fictitious example of a client executing a query that contains a single
+statements is show in figure :numref:`queryDialog-Example-SingleStatement`.
+In this example we can see the statement returns a result set with
+row data sent over multiple ``RowDataResponse`` messages. The statement
+execution is concluded by a ``StatementResponse`` message being sent and the
+dialog is concluded by a ``QueryResponse`` message being sent by the server.
+
+.. _queryDialog-Example-SingleStatement:
+
+.. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-Example-SingleStatement.*
+   :align: center
+
+   A fictitious example of the Query Dialog for a query that contains
+   a single statements
+
+
+
 Multiple Statement Queries
 ::::::::::::::::::::::::::
+
+RapidsSE supports the ability to execute batched statements. That is, a single
+``QueryExecuteRequest`` is sent to the server that contains a command string
+that is parsed into more than one individual statements to be executed. Each of
+these statements may generate an error, a result set or no results at all.
+
+The general message sequence for the Query Dialog when there are batched
+statements is shown in figure :numref:`queryDialog-MultipleStatements`.
+
+.. _queryDialog-MultipleStatements:
+
+.. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-MultipleStatements.*
+   :align: center
+
+   The Query Dialog for a query that contains multiple (batched) statements
+
+In this sequence, each statement is executed sequentially. The next statement
+is not started until the previous one has completed. Let us assuming that the
+command string in the ``QueryExecuteRequest`` was parsed successfully and the
+server returned a ``QueryReceiptResponse`` message to the client. The server
+immediately starts executing the first statement in the batch. The end of each
+statement is marked by the client either receiving an ``ErrorResponse`` or a
+``StatementResponse`` message. Any messages received after this then pertain
+to the next statement in the batch being executed. If it is important for the
+client to know what results correlate to which statement then it is up to the
+client to track this. RapidsSE will always execute the statements in the order
+that they were parsed from the original command string in the ``QueryExecuteRequest``,
+and this is also reflected in the number and order of receipts that is sent
+back to the client in the ``QueryReceiptResponse`` message.
+
+After the last statement has been executed the server will send a
+``QueryExecuteResponse`` message back to the client to indicate that the
+dialog is now complete. The client can now initiate another dialog if it
+chooses to.
+
+A fictitious example of a client executing a query that contains four
+batched statements is show in figure :numref:`queryDialog-Example-MultipleStatements`.
+In this example we can see the first statement returns a result set with
+row data sent over multiple ``RowDataResponse`` messages. The second batched
+statement completes execution successfully without generating a result set.
+The third batched statement returns an empty result set with no rows and
+the fourth batched statement generates an error.
+
+.. _queryDialog-Example-MultipleStatements:
+
+.. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-Example-MultipleStatements.*
+   :align: center
+
+   A fictitious example of the Query Dialog for a query that contains
+   multiple (batched) statements
 
 
 Query Cancellation Dialog
