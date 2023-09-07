@@ -20,7 +20,7 @@ namespace STORE
     XF_Flatten_stmCol_To_tblCol(CardIter* pCI);
    ~XF_Flatten_stmCol_To_tblCol(void) noexcept(false);
 
-    static void vXF_stmCol_To_tblCol(CardIter* pCI);
+    static void vFlatten(CardIter* pCI);
 
     void vXF_stmCol_To_tblCol(void);
 

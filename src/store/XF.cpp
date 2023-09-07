@@ -18,6 +18,7 @@
 #include "XF_Epilog_stmCol_To_colNm.hpp"
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Flatten.hpp"
+#include "XF_Flatten_stmCol_To_tblCol.hpp"
 #include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
@@ -263,18 +264,11 @@ void XF::vTransform_passThru(void)
     XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(m_pCI);
     XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
-    m_pCI->vTransform(__func__, XF_EPILOG_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
-    m_pCI->vBeginEach();
-    while (m_pCI->G_bEachMain_NONE()) {
-      m_pCI->G.p_OP->vConvert_stmColOdn_To_tblColOdn(m_pCI);
-      //m_pCI->vPrintBoard(__LINE__);
-    }
-    m_pCI->vEndTransform();
+    XF_Flatten_stmCol_To_tblCol::vFlatten(m_pCI);
 
     // todo: needs discussion with Alka re constraint
     XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
-
-
+    
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWith2Sub(CK_SORT,CK_KEY,CK_PROJECTION)) {

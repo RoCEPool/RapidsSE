@@ -39,7 +39,7 @@ XF_Flatten_stmCol_To_tblCol::~XF_Flatten_stmCol_To_tblCol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_stmCol_To_tblCol::vXF_stmCol_To_tblCol(CardIter* pCI)
+void XF_Flatten_stmCol_To_tblCol::vFlatten(CardIter* pCI)
 {
   _static_
 

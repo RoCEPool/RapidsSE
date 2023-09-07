@@ -110,7 +110,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // things before sub-queries
 
 
-  XF_Flatten_stmCol_To_tblCol::vXF_stmCol_To_tblCol(m_pCI);
+  XF_Flatten_stmCol_To_tblCol::vFlatten(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // flatten the sub-queries of this outer query
