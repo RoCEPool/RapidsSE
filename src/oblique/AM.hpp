@@ -928,6 +928,7 @@ namespace OBLIQUE
                              DicStack* pDicStack, CodeCell* aInxPtr=nullptr);
     static void vWriteLog(void);
     static void vWriteTrace_vargs(Stz* szFormat, va_list xArgs);
+    static void vWriteTrace1_vargs(Stz1<char> aFormat, va_list xArgs);
     static void vWriteTrace(Stz* szFormat, ...);
 
   

@@ -12,6 +12,7 @@
 #include "Engine.hpp"
 #include "Mersenne.hpp"
 #include "EnumValidator.hpp"
+#include <signal.h>
 
 // Since trace file is opened before the attach map is ready
 // we use globals instead of saving it to the attach map
@@ -49,12 +50,138 @@ extern i8   giProgressPoint;
 #include "TagConstants.h"
 #include "RowBuffer.hpp"
 
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
+using namespace std::string_view_literals;
+
+Stz* stzStrLit()
+{
+  return "abcdef"_Stz;
+}
+
+Stz1<char> stz1StrLit() {
+  // cloning c++ std string_view but mimic SE _Stz
+  return "abcdef"_Stz1;
+}
+
+string_view svStrLit() {
+  // using string_view std c++
+  return "abcdef"sv;
+}
+
+
+int g_iExitStatus = 1;  // bad
+
+
+void atexit_handler_1()
+{
+  std::cout << "At exit #1\n";
+}
+
+void atexit_handler_2()
+{
+  std::cout << "At exit #2\n";
+  if (g_iExitStatus == 1) {
+    std::cout << "Bad Exit\n";
+  }
+
+}
+
+void term_handler()
+{
+  std::cout << "term_handler\n";
+  if (g_iExitStatus == 1) {
+    std::cout << "Bad Exit\n";
+  }
+  std::abort();
+}
+
+void vSignalHandler(int nSignalNumber)
+{
+  printf("\n\nSIGTERM %d\n", nSignalNumber);
+}
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
+  // LIFO
+  const int result_1 = std::atexit(atexit_handler_1);
+  const int result_2 = std::atexit(atexit_handler_2);
 
+  //std::set_terminate(term_handler);
+
+  //std::terminate();
+  //abort(); // can catch by signal handler
+  //return EXIT_FAILURE;
+
+  struct sigaction SignalAction;
+  memset(&SignalAction, 0, sizeof(SignalAction));
+  SignalAction.sa_handler = vSignalHandler;
+  sigaction(SIGTERM, &SignalAction, NULL);
+
+  const int iMax = 100000;
+
+
+  Stz1 <char> s1 = "SE"_Stz1;
+  printf("%s\n", s1.azChar());
+
+  printf("%s\n", "svw"_Stz1.azChar());
+
+
+
+  vTrace1("Printed abc from Stz1\n"_Stz1);
+
+  vTrace1("Here it is %s \n"_Stz1, s1.azChar());
+
+  if (s1.iCompare("SE"_Stz1) == 0)
+    vTrace1("1 Equal Stz1\n"_Stz1);
+
+  if (s1.iCompare("SE1"_Stz1) != 0)
+    vTrace1("2 NOT Equal Stz1\n"_Stz1);
+
+
+  if (s1.iCompare(s1) == 0)
+    vTrace1("3 Equal Stz1\n"_Stz1);
+
+  if ("SE"_Stz1.iCompare(s1) == 0)
+    vTrace1("4 Equal Stz1\n"_Stz1);
+
+///////////////////////////////////////////////////////////
+  auto start = high_resolution_clock::now();
+  for (auto i=0; i<iMax; i++)
+  {
+    Stz* p = stzStrLit();
+  }
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<nanoseconds>(stop - start);
+
+  printf ("Time taken by _Stz function (called %d times): %lld nanoseconds\n", iMax, duration.count());
+
+///////////////////////////////////////////////////////////
+  auto start1 = high_resolution_clock::now();
+  for (auto i=0; i<iMax; i++)
+  {
+    Stz1<char> p = stz1StrLit();
+  }
+  auto stop1 = high_resolution_clock::now();
+  auto duration1 = duration_cast<nanoseconds>(stop1 - start1);
+
+  printf ("Time taken by _Stz1 function (called %d times): %lld nanoseconds\n", iMax, duration1.count());
+
+///////////////////////////////////////////////////////////
+  auto start2 = high_resolution_clock::now();
+  for (auto i=0; i<iMax; i++)
+  {
+    string_view svVal = svStrLit();
+  }
+  auto stop2= high_resolution_clock::now();
+  auto duration2 = duration_cast<nanoseconds>(stop2 - start2);
+
+  printf ("Time taken by string_view function (called %d times): %lld nanoseconds\n", iMax, duration2.count());
   // ********************************************************************************
   // NOTE: Till initial command line options are parsed and trace file is
   // initialised, we log to the trace file via piping out to stdout. We only do this

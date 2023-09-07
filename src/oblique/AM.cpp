@@ -4229,6 +4229,65 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
     gpAttachMap->vTraceLockDrop();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* write to trace file etc                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vWriteTrace1_vargs(Stz1<char> aFormat, va_list xArgs)
+{
+  static char caFormatted[C_1MB] = {'\0'};
+
+  bool bUseLock = (gpAttachMap ? true : false);
+  bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
+
+  if (bUseLock)
+    gpAttachMap->vTraceLockGrab();
+  //else
+  //  printf("NOT LOCKING TRACE\n");
+
+  // produce formatted line
+  StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat.azChar());
+
+  // print formatted line
+  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+  fflush(stdout);
+
+  if (gpTraceFile) {
+    static i8 iBootOptions = 0;
+
+    if( ! iBootOptions )
+      iBootOptions = Engine::eDecodeCommandLine();
+
+    Now spNow;
+
+    // Roll over trace file only if we are SE main
+    if(iBootOptions == BO_START || iBootOptions == BO_START_PROMPT) {
+      // Calculate length of message
+      // Note: the 15 bits at the end is for low memory message that may be added
+      // Save the size of the file instead of syscall for size
+      i8 iMaxLen = giTraceFileSize + strlen(spNow.sz()->azChar()) + strlen(caFormatted) + 15;
+
+      // If the message exceeds the max length of the trace file, roll over
+      if( iMaxLen > C_MAX_LOG_ENTRIES ) {
+        Engine::vRollTrace();
+      }
+    }
+
+    gpTraceFile->vSeekEnd();
+    // Note: If this msg format is updated, ensure the max len of the msg is updated in the above
+    // Where we calculate the max msg length
+    i8 nWritten = gpTraceFile->iPrint("[%s] %s%s"_Stz,spNow.sz(),bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+    gpTraceFile->vFlush();
+
+    if(nWritten > 0)
+      giTraceFileSize = giTraceFileSize + nWritten;
+  }
+
+  StrLib::vStrip(caFormatted,'\n');
+
+  if (bUseLock)
+    gpAttachMap->vTraceLockDrop();
+}
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -5069,7 +5128,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
              
     case EG_BO: return aBO[i_Enum];
       
-    case EG_CC: return aCC[i_Enum];
+    //case EG_CC: return aCC[i_Enum];
     case EG_CM: return aCM[i_Enum];
     case EG_CN: return aCN[i_Enum];
     //case EG_CS: return aCS[i_Enum];
@@ -5169,6 +5228,8 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
       return nullptr;
   }
 }
+
+
 
 
 /*----------------------------------------------------------------------------*/

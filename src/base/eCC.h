@@ -13,7 +13,11 @@ enum eCC // meta class
   /*    */ CC_ENUMS
 };
 
+#ifdef USE_STZ
 extern Stz* aCC[CC_ENUMS];
+#else
+extern Stz1<char> aCC[CC_ENUMS];
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

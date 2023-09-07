@@ -552,7 +552,8 @@ i8 IntLib::iTenToPow(i8 iPower)
 /*----------------------------------------------------------------------------*/
 /* convert vlq (varying length quantity) to i8                                */
 /*----------------------------------------------------------------------------*/
-i8 IntLib::iVlqToInt(byte yVlqVec[])
+
+i8 IntLib::iVlqToInt(byte yVlqVec[16])
 {
   _static_
 

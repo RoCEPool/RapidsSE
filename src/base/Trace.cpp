@@ -19,6 +19,18 @@ void BASE::vTrace(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* report a trace message                                                     */
+/*----------------------------------------------------------------------------*/
+void BASE::vTrace1(Stz1<char> aFormat, ...)
+{
+  va_list xVarArgs;
+
+  va_start(xVarArgs,aFormat);
+  AM::vWriteTrace1_vargs(aFormat,xVarArgs);
+  va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
 /* report a trace message (with margin)                                       */
 /*----------------------------------------------------------------------------*/
 void BASE::vTraceM(Stz* aFormat, ...)

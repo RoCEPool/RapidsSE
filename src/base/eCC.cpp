@@ -4,6 +4,7 @@
 #include "BASE.h"
 #include "eCC.h"
 
+#ifdef USE_STZ
 Stz* aCC[CC_ENUMS]
 {
   /*  0 */ "NONE"_Stz,
@@ -13,7 +14,19 @@ Stz* aCC[CC_ENUMS]
   
 //  /*    */ "ENUMS"_Stz
 };
+#else
 
+Stz1<char> aCC[CC_ENUMS]
+    {
+        /*  0 */ "NONE"_Stz1,
+
+        /*    */ "CC_CLASS"_Stz1,
+        /*    */ "CC_TEMPLATE"_Stz1,
+
+//  /*    */ "ENUMS"_Stz
+    };
+
+#endif
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
