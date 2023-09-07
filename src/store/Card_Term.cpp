@@ -168,7 +168,46 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pCI);
+  Symbol* pSymbol = this->pSymbol();
+  RASSERT(pSymbol->bIs_Col_Tc());
+
+  if (pCI->Prior.m_pProjection) {
+    if (Card_Expr* p_expr_col = pCI->Prior.m_pProjection->pFindExpr(pSymbol)) {
+      pSymbol->vSym(SF_COL_NO,p_expr_col->szSymbol(SF_NONE));
+      vMark1(MARK_CHANGED);
+      return;
+    }
+  }
+
+  // arrives here as col_tc is not in prior projection
+  // probably introduced into this stream by the operator
+
+  i8 nCols_injectedByThisCard;
+  pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+  if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
+      pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
+    nCols_injectedByThisCard = 0;
+  }
+  else
+  if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
+      pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
+      pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
+      pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
+    nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
+  }
+  else {
+    return;
+  }
+
+  // is introduced
+
+  i8 i_Col = this->iGetOdn();
+  i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
+
+  Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
+  this->pSymbol()->vSym(&xSymbol_stmColOdn);
+
+  this->vMark1(MARK_CHANGED);
 }
 
 

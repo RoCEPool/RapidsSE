@@ -129,7 +129,6 @@ void Card_ELIST::vConvert_colOdn_To_stmOdn(CardIter* pCI)
     xKid.p_expr()->vConvert_colOdn_To_stmOdn(pCI);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/

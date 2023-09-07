@@ -96,118 +96,20 @@ void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn2(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // conversions prior to projection
 
   if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
     if (m_pCI->Prior.m_pProjection)
-      m_pCI->G.p_key->vConvert_stmOdn_To_colOdn(m_pCI);
+      m_pCI->G.p_key->vConvert_colOdn_To_stmOdn(m_pCI);
   }
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
-    m_pCI->G.p_filter->vConvert_stmOdn_To_colOdn(m_pCI);
+    m_pCI->G.p_filter->vConvert_colOdn_To_stmOdn(m_pCI);
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projection
-
-//  if ((m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection())) {
-//    if (m_pCI->Prior.m_pProjection)
-//      m_pCI->G.p_projection->vConvert_stmOdn_To_colOdn(m_pCI);
-//    m_pCI->Prior.m_pProjection = m_pCI->G.p_projection;
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversions after projection
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     if (m_pCI->Prior.m_pProjection)
-      m_pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(m_pCI);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  CardIter* pCI = m_pCI;
-
-  auto bf_tblColOdn_To_stmColOdn = [pCI](Card* pCard)
-  {
-    Card_Term* p_term = _pCard_Term(pCard);
-
-    if (pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
-      pCI->G.p_OP->vDump(__func__);
-      vDebugPoint();
-    }
-
-    if (!p_term->pSymbol()->bIs_Col_Tc())
-      return C_CONTINUE_RECURSION;
-
-    if (pCI->Prior.m_pProjection) {
-      if (Card_Expr* p_expr_col = pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
-        // record what $c.n it was
-        //p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
-        p_term->pSymbol()->vSym(SF_COL_NO,p_expr_col->szSymbol(SF_NONE));
-        p_term->vMark1(MARK_CHANGED);
-
-        return C_CONTINUE_RECURSION;
-      }
-    }
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-    i8 nCols_injectedByThisCard = 0;
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-    if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
-        pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-        pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
-        pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
-      nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
-    }
-    else
-    if (! (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
-           pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN))) {
-      return C_CONTINUE_RECURSION;
-    }
-
-    i8 i_Col = p_term->iGetOdn();
-    i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
-
-    Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
-    p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
-
-    p_term->vMark1(MARK_CHANGED);
-
-    //vDump(__func__);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.p_OP->vApply_lambdaFn_ToAll_term(pCI, bf_tblColOdn_To_stmColOdn);
-
-  if (pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
-    //vDump();
-    vDebugPoint();
+      m_pCI->G.p_constraint->vConvert_colOdn_To_stmOdn(m_pCI);
   }
 }
 /*----------------------------------------------------------------------------*/
