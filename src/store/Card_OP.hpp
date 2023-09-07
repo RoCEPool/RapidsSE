@@ -45,6 +45,7 @@ namespace STORE
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
+    void vUpdate_constraint(CardIter* pCI);
     void vUpdate_projection(CardIter* pCI);
 
     void vRpnAggreg      (String* psRpnExpr, Card_Aggreg*    pCard_Aggreg);

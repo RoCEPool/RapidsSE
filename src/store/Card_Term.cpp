@@ -466,6 +466,18 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
+  RASSERT(
+          pParent->eCard() == CK_HSHCOL   || // todo: NO!
+
+          pParent->eCard() == CK_ANDPRED  ||
+          pParent->eCard() == CK_BOUND    || // todo: is a bound a boolCalc?
+          pParent->eCard() == CK_BOOLCALC ||
+          pParent->eCard() == CK_CMPPRED  ||
+          pParent->eCard() == CK_HASHING  ||
+          pParent->eCard() == CK_NOTPRED  ||
+          pParent->eCard() == CK_ORPRED   ||
+          pParent->eCard() == CK_RPNCALC);
+
   if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
     if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {

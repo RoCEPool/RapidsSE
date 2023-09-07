@@ -634,7 +634,23 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table projection analysis                                                  */
+/* update constraint analysis                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vUpdate_constraint(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pCI);
+
+  Card_Constraint* p_constraint;
+
+  if ((p_constraint = pSub_constraint())) {
+    vDebugPoint();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* update projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vUpdate_projection(CardIter* pCI)
 {
