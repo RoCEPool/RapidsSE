@@ -69,11 +69,60 @@ void XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
       continue;
 
     //m_pCI->Prior.m_pProjection->vDump(__func__);
-    m_pCI->G.p_OP->vConvert_colNm_To_stmCol(m_pCI);
+    vConvert_colNm_To_stmCol();
   }
 
   m_pCI->vEndTransform();
 //vValidateBench();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- private ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert colNm to stmCol                                                    */
+/*----------------------------------------------------------------------------*/
+void XF_Prolog_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
+
+  if (m_pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt))
+    vDebugPoint();
+
+  RASSERT(m_pCI->Prior.m_pProjection);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  CardIter* pCI = m_pCI;
+
+  auto b_colNm_To_stmCol = [pCI](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+    if (!p_term->pSymbol()->bIs_Col_Nm())
+      return C_CONTINUE_RECURSION;
+
+    //p_term->vDump(__func__);
+
+//    // todo: delete
+//    if (Card_Expr* p_expr_col =
+//        pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
+//      //p_expr_col->vDump();
+//      p_term->pSymbol()->vSym(p_expr_col->pSymbol());
+//    }
+//    else
+    if (Card_Expr* p_expr_col =
+        pCI->Prior.m_pProjection->pFind_expr_By_as(p_term->pSymbol())) {
+//      p_expr_col->vDump(__func__);
+      p_term->pSymbol()->vSymPpy(p_expr_col->pSymbol());
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.p_OP->vApply_lambdaFn_ToAll_term(pCI, b_colNm_To_stmCol);
 }
 
 /*============================================================================*/

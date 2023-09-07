@@ -108,49 +108,6 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colNm to stmCol                                                    */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->Y_bHas(P_BreakPt))
-    vDebugPoint();
-
-  RASSERT(pCI->Prior.m_pProjection);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto b_colNm_To_stmCol = [pCI](Card* pCard)
-  {
-    Card_Term* p_term = _pCard_Term(pCard);
-    if (!p_term->pSymbol()->bIs_Col_Nm())
-      return C_CONTINUE_RECURSION;
-
-    //p_term->vDump(__func__);
-
-//    // todo: delete
-//    if (Card_Expr* p_expr_col =
-//        pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
-//      //p_expr_col->vDump();
-//      p_term->pSymbol()->vSym(p_expr_col->pSymbol());
-//    }
-//    else
-    if (Card_Expr* p_expr_col =
-        pCI->Prior.m_pProjection->pFind_expr_By_as(p_term->pSymbol())) {
-//      p_expr_col->vDump(__func__);
-      p_term->pSymbol()->vSymPpy(p_expr_col->pSymbol());
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vApply_lambdaFn_ToAll_term(pCI, b_colNm_To_stmCol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert any stmCol in this op to table columns                             */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
