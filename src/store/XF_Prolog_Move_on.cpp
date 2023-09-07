@@ -72,7 +72,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
   // for each <absJoin>/<on>/<rpnCalc>
   //   move/append to <where>/<rpnCalc>
 
-  Card_Table* p_table = nullptr;
+  Card_Scan* p_scan_over = nullptr;
 
   m_pCI->vBeginEachReverse();
   while (m_pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
@@ -87,9 +87,9 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
                                         Symbol(SF_CROSS,"LEFT_OUTER"_Stz))) {
       m_pCI->G_vPushIter();
       if (m_pCI->G_bEachMain_reverse_b(CK_SCAN)) {
-        p_table = m_pCI->G.p_table = m_pCI->G.p_scan->pSub_table();
+        p_scan_over = m_pCI->G.p_scan;
         m_pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
-        m_pCI->G.p_table->vAppend(m_pCI->G.p_outerJoin);
+        m_pCI->G.p_scan->vAppend(m_pCI->G.p_outerJoin);
       }
       m_pCI->G_vPopIter();
     }
@@ -111,7 +111,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
 
     if (p_rpnCalc_on->nChildCards()) {
       delete p_rpnCalc_on->pPlopChild();
-      m_pCI->G_vAppendNewChild(p_table,CK_CONSTRAINT);
+      m_pCI->G_vAppendNewChild(p_scan_over,CK_CONSTRAINT);
       m_pCI->G_vAppendNewChild(m_pCI->G.p_constraint,CK_RPNCALC);
       m_pCI->G.p_rpnCalc->vTransferChildren(p_rpnCalc_on);
     }
