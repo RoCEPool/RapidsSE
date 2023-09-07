@@ -127,6 +127,41 @@ eCT Card_BoolCalc::eColumnType(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_PRED* p_pred_ROOT = this->pRootPred();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfTo_stmOdn = [pCI](Card_PRED* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    Symbol* pSymbol = p_term->pSymbol();
+    if (!pSymbol->bIs_Col_No())
+      return C_CONTINUE_RECURSION;
+
+    p_term->vConvert_colOdn_To_stmOdn(pCI);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bfTo_stmOdn);
+  UNUSED(bIgnore);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)

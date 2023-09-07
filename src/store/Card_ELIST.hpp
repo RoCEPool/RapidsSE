@@ -17,6 +17,7 @@ namespace STORE
     void vBump_stmOdn_In_rpnCalc(CardIter* pCI);
     void vBump_Rightwards(i8 nBumpBy);
     Card_Expr* pContains(Card_Expr* p_expr_arg);
+    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
     void vConvert_stmOdn_To_colOdn(CardIter* pCI);
     Card_Expr* pDecodeExpr(Symbol* pSymbol);
     i8 nExpr(void);

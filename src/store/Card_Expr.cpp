@@ -225,7 +225,21 @@ Card_Expr* Card_Expr::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vConvert_colOdn_To_stmOdn(pCI);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    p_rpnCalc->vConvert_colOdn_To_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {

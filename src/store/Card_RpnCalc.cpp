@@ -114,7 +114,23 @@ Card_RpnCalc* Card_RpnCalc::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    if (! xKid.p_term()->pSymbol()->bIs_Col_Tc())
+      continue;
+
+    xKid.p_term()->vConvert_colOdn_To_stmOdn(pCI);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {

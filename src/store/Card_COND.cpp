@@ -68,6 +68,19 @@ void Card_COND::vAddTransients(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert all colOdn to stmOdn                                               */
+/*----------------------------------------------------------------------------*/
+void Card_COND::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_boolCalc = pSub_boolCalc()))
+    pCI->G.p_boolCalc->vConvert_colOdn_To_stmOdn(pCI);
+  else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
+    pCI->G.p_rpnCalc->vConvert_colOdn_To_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert all stmOdn to colOdn                                               */
 /*----------------------------------------------------------------------------*/
 void Card_COND::vConvert_stmOdn_To_colOdn(CardIter* pCI)

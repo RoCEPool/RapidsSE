@@ -117,9 +117,21 @@ Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_ELIST::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vConvert_colOdn_To_stmOdn(pCI);
+}
+
 
 /*----------------------------------------------------------------------------*/
-/* apply stream                                                               */
+/* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_ELIST::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
