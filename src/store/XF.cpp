@@ -268,7 +268,7 @@ void XF::vTransform_passThru(void)
 
     // todo: needs discussion with Alka re constraint
     XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
-    
+
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWith2Sub(CK_SORT,CK_KEY,CK_PROJECTION)) {

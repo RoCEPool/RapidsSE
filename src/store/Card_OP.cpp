@@ -108,49 +108,6 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert any stmCol in this op to table columns                             */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if ((pCI->G.p_level = pCI->G.p_MainCard->pSub_level())) {
-    if (AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
-      return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversions prior to projection
-
-  if ((pCI->G.p_key = pSub_key())) {
-    if (pCI->Prior.m_pProjection)
-      pCI->G.p_key->vConvert_stmOdn_To_colOdn(pCI);
-  }
-
-  if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter())) {
-    pCI->G.p_filter->vConvert_stmOdn_To_colOdn(pCI);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projection
-
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
-    if (pCI->Prior.m_pProjection)
-      pCI->G.p_projection->vConvert_stmOdn_To_colOdn(pCI);
-    pCI->Prior.m_pProjection = pCI->G.p_projection;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversions after projection
-
-  if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
-    if (pCI->Prior.m_pProjection)
-      pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(pCI);
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)

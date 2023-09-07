@@ -18,8 +18,8 @@ __aFooterFunction(XF_Flatten_stmCol_To_tblCol)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Flatten_stmCol_To_tblCol::XF_Flatten_stmCol_To_tblCol(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_STMCOL_TO_TBLCOL, pCI)
+XF_Flatten_stmCol_To_tblCol::XF_Flatten_stmCol_To_tblCol(CardIter* m_pCI)
+: XF_TRANSFORM(CN_XF_STMCOL_TO_TBLCOL, m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_TBLCOL, _FOOTER_);
 
@@ -39,11 +39,11 @@ XF_Flatten_stmCol_To_tblCol::~XF_Flatten_stmCol_To_tblCol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_stmCol_To_tblCol::vFlatten(CardIter* pCI)
+void XF_Flatten_stmCol_To_tblCol::vFlatten(CardIter* m_pCI)
 {
   _static_
 
-  XF_Flatten_stmCol_To_tblCol* pXF_stmCol_To_tblCol = new XF_Flatten_stmCol_To_tblCol(pCI);
+  XF_Flatten_stmCol_To_tblCol* pXF_stmCol_To_tblCol = new XF_Flatten_stmCol_To_tblCol(m_pCI);
 
   pXF_stmCol_To_tblCol->vXF_stmCol_To_tblCol();
 
@@ -68,10 +68,58 @@ void XF_Flatten_stmCol_To_tblCol::vXF_stmCol_To_tblCol(void)
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE())
-    m_pCI->G.p_OP->vConvert_stmColOdn_To_tblColOdn(m_pCI);
+    vConvert_stmColOdn_To_tblColOdn();
 
   m_pCI->vEndTransform();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert any stmCol in this op to table columns                             */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_stmCol_To_tblCol::vConvert_stmColOdn_To_tblColOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_TBLCOL, _FOOTER_);
+
+  if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
+    if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
+      return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // conversions prior to projection
+
+  if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
+    if (m_pCI->Prior.m_pProjection)
+      m_pCI->G.p_key->vConvert_stmOdn_To_colOdn(m_pCI);
+  }
+
+  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+    m_pCI->G.p_filter->vConvert_stmOdn_To_colOdn(m_pCI);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // projection
+
+  if ((m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection())) {
+    if (m_pCI->Prior.m_pProjection)
+      m_pCI->G.p_projection->vConvert_stmOdn_To_colOdn(m_pCI);
+    m_pCI->Prior.m_pProjection = m_pCI->G.p_projection;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // conversions after projection
+
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    if (m_pCI->Prior.m_pProjection)
+      m_pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(m_pCI);
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
