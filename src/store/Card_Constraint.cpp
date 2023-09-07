@@ -208,8 +208,10 @@ void Card_Constraint::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 
   if ((pCI->G.p_boolCalc = pSub_boolCalc()))
     pCI->G.p_boolCalc->vEnsureTypesFor_stmOdn(pCI);
+  else
+  if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
+    pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
