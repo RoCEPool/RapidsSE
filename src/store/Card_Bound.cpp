@@ -155,6 +155,27 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
     return false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Bound::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    if (! xKid.p_term()->pSymbol()->bIs_Col_Tc())
+      continue;
+
+    xKid.p_term()->vConvert_colOdn_To_stmOdn(pCI);
+  }
+}
+
 /*----------------------------------------------------------------------------*/
 /* is this bound logically equivalent to given compare?                       */
 /*----------------------------------------------------------------------------*/

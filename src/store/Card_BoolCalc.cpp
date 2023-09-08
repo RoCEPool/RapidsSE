@@ -147,7 +147,7 @@ void Card_BoolCalc::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 
     Card_Term* p_term = _pCard_Term(p_pred);
     Symbol* pSymbol = p_term->pSymbol();
-    if (!pSymbol->bIs_Col_No())
+    if (!pSymbol->bIs_Col_Tc())
       return C_CONTINUE_RECURSION;
 
     p_term->vConvert_colOdn_To_stmOdn(pCI);

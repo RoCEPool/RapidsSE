@@ -98,14 +98,27 @@ void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn2(void)
     vDebugPoint();
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (CK_FILTER == m_pCI->G.p_OP->eCard()) {
+    m_pCI->G.p_OP->vDump(__func__);
+    vDebugPoint();
+  }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // conversions prior to projection
+
+  if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
+    m_pCI->G.p_indexList->vConvert_colOdn_To_stmOdn(m_pCI);
+  }
 
   if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
     if (m_pCI->Prior.m_pProjection)
       m_pCI->G.p_key->vConvert_colOdn_To_stmOdn(m_pCI);
   }
 
+  if (CK_FILTER == m_pCI->G.p_OP->eCard()) {
+    m_pCI->G.p_filter->vConvert_colOdn_To_stmOdn(m_pCI);
+  }
+  else
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
     m_pCI->G.p_filter->vConvert_colOdn_To_stmOdn(m_pCI);
   }
