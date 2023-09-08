@@ -166,20 +166,15 @@ i8 Card_ELIST::nExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_ELIST::pFind_expr_Of_symbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nExpr = nChildCards();
-  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
-    if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
-      break;
-
-    Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bExpressionOfSymbol(pSymbol))
-      return p_expr;
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->bExpressionOfSymbol(pSymbol))
+      return xKid.p_expr();
   }
 
   return nullptr;
@@ -194,7 +189,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_Ordinal(Symbol* pSymbol)
 
   RASSERT(pSymbol->bIs_Col_No());
 
-  for (Kid xKid(this); xKid.bEach(); /**/) {
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     if (xKid.p_expr()->pSymbol()->bSame(pSymbol))
       return xKid.p_expr();
   }
@@ -209,37 +204,11 @@ Card_Expr* Card_ELIST::pFind_expr_By_as(STORE::Symbol *pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nExpr = nChildCards();
-  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
-    if (! pGetChild(i_Expr)->bIsCard(CK_EXPR))
-      break;
-
-    Card_Expr* p_expr = pGetExpr(i_Expr);
-
-    Card_As* p_as = p_expr->pSub_as();
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_As* p_as = xKid.p_expr()->pSub_as();
     if (p_as && p_as->bSameSymbol(pSymbol))
-      return p_expr;
-  }
+      return xKid.p_expr();
 
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find expr of term                                                          */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_Of_term(STORE::Symbol *pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nExpr = nChildCards();
-  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
-    if (! pGetChild(i_Expr)->bIsCard(CK_EXPR))
-      break;
-
-    Card_Expr* p_expr = pGetExpr(i_Expr);
-
-    if (p_expr->bExpressionOfSymbol(pSymbol))
-      return p_expr;
   }
 
   return nullptr;
