@@ -71,7 +71,7 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
         continue;
     }
 
-    vConvert_tblColOdn_To_stmColOdn();
+    vConvert_tblColOdn_To_stmColOdn2();
 
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
@@ -131,6 +131,20 @@ void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn2(void)
     if (m_pCI->Prior.m_pProjection)
       m_pCI->G.p_constraint->vConvert_colOdn_To_stmOdn(m_pCI);
   }
+
+  if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
+    if (m_pCI->Prior.m_pProjection)
+      m_pCI->G.p_hshColList->vConvert_colOdn_To_stmOdn(m_pCI);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ((m_pCI->G.p_streamKey = m_pCI->G.p_MainCard->pSub_streamKey())) {
+    if ((m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_projection()))
+      m_pCI->G.p_streamKey->vConvert_colOdn_To_stmOdn(m_pCI);
+  }
+
+
 }
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn(void)

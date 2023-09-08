@@ -168,14 +168,27 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol = this->pSymbol();
-  RASSERT(pSymbol->bIs_Col_Tc());
+  Symbol* pSymbol_term = this->pSymbol();
+  RASSERT(pSymbol_term->bIs_Col_Tc());
 
   if (pCI->Prior.m_pProjection) {
-    if (Card_Expr* p_expr_col = pCI->Prior.m_pProjection->pFindExpr(pSymbol)) {
-      pSymbol->vSym(SF_COL_NO,p_expr_col->szSymbol(SF_NONE));
+    if (Card_Expr *p_expr_col = pCI->Prior.m_pProjection->pFindExpr(pSymbol_term)) {
+      pSymbol_term->vSym(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
       vMark1(MARK_CHANGED);
       return;
+    }
+
+    if (pCI->G.p_key) {
+      if (Card_Expr *p_expr_col_key = pCI->G.p_key->pFindExpr(pSymbol_term)) {
+        Symbol *pSymbol_key = p_expr_col_key->pSymbol();
+        RASSERT(pSymbol_key->bIs_Key_Col());
+
+        if (Card_Expr *p_expr_col_ind = pCI->Prior.m_pProjection->pFindExpr(pSymbol_key)) {
+          pSymbol_term->vSym(SF_COL_NO, p_expr_col_ind->szSymbol(SF_NONE));
+          vMark1(MARK_CHANGED);
+          return;
+        }
+      }
     }
   }
 

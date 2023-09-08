@@ -44,6 +44,19 @@ Card_HshColList::~Card_HshColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_HshColList::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_HSHCOL)) {
+     xKid.p_hshCol()->vConvert_colOdn_To_stmOdn(pCI);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_HshColList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
