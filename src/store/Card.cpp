@@ -1132,7 +1132,7 @@ void Card::vPrintCardRecursive(CardIter* pCI,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (CK_RPNCALC == m_eCard)
+  if (CK_TERM == m_eCard)
     vDebugPoint();
 
   if (C_UNKNOWN == m_iFirstPrint) {

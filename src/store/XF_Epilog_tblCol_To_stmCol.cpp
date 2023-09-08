@@ -72,6 +72,9 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
     }
 
     vConvert_tblColOdn_To_stmColOdn();
+
+    m_pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
   }
 
   m_pCI->vEndTransform();
@@ -105,6 +108,10 @@ void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn2(void)
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
     m_pCI->G.p_filter->vConvert_colOdn_To_stmOdn(m_pCI);
+  }
+
+  if ((m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection())) {
+    m_pCI->G.p_projection->vConvert_colOdn_To_stmOdn(m_pCI);
   }
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
