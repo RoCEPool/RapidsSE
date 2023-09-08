@@ -18,6 +18,8 @@ Wireline Protocol Version 5
 ..   Supported messages
 
 
+.. _wlpOverview:
+
 Overview, Concepts & Semantics
 ------------------------------
 
@@ -84,6 +86,8 @@ follows as well as its length (in bytes). This allow a client or server to
 read the header first, then read the entire payload and then decode the
 payload appropriately.
 
+.. _wlpConstraints:
+
 Constraints, Limitations & Dependencies
 ---------------------------------------
 
@@ -121,6 +125,7 @@ used by RapidsSE. This dependency would not be needed if the client or library
 was able to construct a byte-compatible representation of each message
 independently.
 
+.. _wlpCompatibility:
 
 Protocol Compatibility
 ----------------------
@@ -145,9 +150,12 @@ version and the client can be gracefully told that it is not compatible.
 This protocol compability is described in the Connection Dialog.
 
 
+.. _messageDialogs:
 
 Message Dialogs
 ---------------
+
+.. _wlpFlowControl:
 
 Flow Control of Message Dialogs
 ```````````````````````````````
@@ -179,6 +187,9 @@ sending these ``RowDataResponse`` messages faster than the client is reading the
 off the transport then the server will eventually get blocked from sending any
 more of them. This would allow the client to process the messages with a minimal
 memory requirement.
+
+
+.. _wlpConnectionDialog:
 
 Connection Dialog
 `````````````````
@@ -294,6 +305,7 @@ order to execute SQL commands in the system.
       \end{landscape}
 
 
+.. _wlpQueryDialog:
 
 Query Dialog
 ````````````
@@ -319,7 +331,7 @@ This Query Dialog will handle both cases. We will examine both cases separately.
 Single Statement Queries
 ::::::::::::::::::::::::
 
-The Query Dialog for single statements is shown below in figure
+The Query Dialog for single statements is shown below in
 :numref:`queryDialog-SingleStatement`. This dialog can be run
 after a client has successfully completed the Connection Dialog. It starts with
 the client sending a ``QueryExecuteRequest`` message, which contains the command
@@ -410,7 +422,7 @@ When the client receives this it is then able to start a new dialog with the
 server.
 
 A fictitious example of a client executing a query that contains a single
-statements is show in figure :numref:`queryDialog-Example-SingleStatement`.
+statements is show in :numref:`queryDialog-Example-SingleStatement`.
 In this example we can see the statement returns a result set with
 row data sent over multiple ``RowDataResponse`` messages. The statement
 execution is concluded by a ``StatementResponse`` message being sent and the
@@ -435,7 +447,7 @@ that is parsed into more than one individual statements to be executed. Each of
 these statements may generate an error, a result set or no results at all.
 
 The general message sequence for the Query Dialog when there are batched
-statements is shown in figure :numref:`queryDialog-MultipleStatements`.
+statements is shown in :numref:`queryDialog-MultipleStatements`.
 
 .. _queryDialog-MultipleStatements:
 
@@ -464,7 +476,7 @@ dialog is now complete. The client can now initiate another dialog if it
 chooses to.
 
 A fictitious example of a client executing a query that contains four
-batched statements is show in figure :numref:`queryDialog-Example-MultipleStatements`.
+batched statements is show in :numref:`queryDialog-Example-MultipleStatements`.
 In this example we can see the first statement returns a result set with
 row data sent over multiple ``RowDataResponse`` messages. The second batched
 statement completes execution successfully without generating a result set.
@@ -525,14 +537,99 @@ Client State Transitions
       \end{landscape}
 
 
+.. _wlpQueryCancellationDialog:
 
 Query Cancellation Dialog
 `````````````````````````
-
 .. note::
   Please note that this dialog is not yet supported in RapidsSE. It is included
   here for reference and education purposes and it is always possible that it
   may change in its final implementation.
+
+The query cancellation dialog allows a client to cancel a *statement* that is
+currently running. This is useful when a statement may be running for longer
+than anticipated, or if the statement contains an error and is processing too
+much data.
+
+.. note::
+  While this dialog is named *query* cancellation, it really is about cancelling
+  *statements* instead. A ``QueryExecuteRequest`` may contain a command string
+  that is parsed into multiple separate statements that are executed (a batched
+  statement string). A cancellation request operates on these individual statements
+  rather than on the original query request as a whole.
+
+The wireline protocol prioritises the simplicity of the more common
+dialogs (such as the :ref:`Query Dialog <wlpQueryDialog>`) rather than having
+a singular, highly complex approach that fits all operations. As a result the
+query cancellation dialog is a bit more complicated to implement. The wireline
+protocol is designed to be largely synchronous and serial, so cancelling a
+statement that a client is currently waiting on cannot happen on the same
+connection. Instead a new connection is required.
+
+If the request to cancel a statement is occurring on a new connection then there
+are a few issues that need to be dealt with. Namely:
+
+#. How does the client specify the statement(s) to be cancelled on this new connection?
+
+#. How does the server validate that the client on this new connection has the
+   authority to cancel this statement? After all, the server cannot tell that
+   the two separate connections are from the same logical client.
+
+This is achieved with the information that is returned by the server to the
+client in the ``QueryReceiptResponse`` message. When a client starts the
+:ref:`Query Dialog <wlpQueryDialog>` it sends the server a ``QueryExecuteRequest``.
+The server parses the command string that is contained in that request and
+it returns a ``QueryReceiptResponse`` message. This message contains the
+following information for each statement in the command string that will be
+executed:
+
+#. A unique ID that identifies the statement.
+
+#. A secret key for this statement.
+
+#. The subset of the command string that pertains to the parsed statement.
+
+The unique ID and secret key of the statement is only known by the server and
+the client that submitted the request. The client can now establish a second,
+independent connection to RapidsSE and use this information to uniquely
+identify the statement to be cancelled (the unique ID) and prove that it has
+the authority to do so (by knowing the secret key). The server will look up
+the statement by its ID and if it is still active and the secret key provided
+by the client matches what the server has on record, then the server will
+begin cancelling the query.
+
+In the time for all of this to occur, a number of things can happen:
+
+- The credentials of the statement ID and secret key do not match;
+
+- The statement could have already finished executing;
+
+- The statement is actively running and the cancellation is acknowledged.
+
+It should be noted that the query cancellation is a best-effort endeavour.
+When the cancellation request is acknowledged this does not mean that the
+cancellation has completed. This may take some time to do so.
+
+We can see this interaction happening in :numref:`queryCancellationDialog`.
+The client remembers the statement ID and secret key that was provided to it
+in the ``QueryReceiptResponse`` message and later establishes a new connection
+on which to send the ``QueryCancellationRequest`` message with these details.
+The server may respond with an ``ErrorResponse`` indicating that the
+cancellation failed (e.g. the credentials did not authenticate) or a
+``QueryCancellationResponse`` message indicating that the cancellation was
+accepted.
+
+After this, the client no longer needs the second connection it created, so it
+can safely disconnect it. The long running query on the first client connection
+will then receive an ``ErrorResponse`` message indicating that it has been
+cancelled.
+
+.. _queryCancellationDialog:
+
+.. figure:: /interfaces/wireline/v5/dialogs/QueryCancellationDialog.*
+   :align: center
+
+   The Query Cancellation Dialog
 
 
 Termination Dialog
