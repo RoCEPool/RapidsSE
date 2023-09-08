@@ -126,14 +126,14 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 
     Card_Expr* p_expr_col;
 
-//    Symbol* pSymbol = p_term->pSymbol();
-//    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-//    p_expr_col = pCI->G.p_projection->pDecodeExpr(pSymbol);
-//
-//    RASSERT(p_expr_col);
+    Symbol* pSymbol = p_term->pSymbol();
+    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+    p_expr_col = pCI->G.p_projection->pFind_expr_By_Ordinal(pSymbol);
 
 
-    p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
+
+    UNUSED(i_Main);
+    //p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
     if (p_expr_col) {
       Card_As* p_as = p_expr_col->pSub_as();
       szColNm = p_as->szSymbol(SF_NONE);
