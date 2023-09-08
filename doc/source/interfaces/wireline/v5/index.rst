@@ -252,16 +252,16 @@ Once RapidsSE responds to this ``SessionChangeRequest`` message with a
 is then able to start executing another dialog such as the Query Dialog in
 order to execute SQL commands in the system.
 
-The implementation of this Connection Dialog in a client can be shown with the
-following state transition diagram (:numref:`connectionDialogStateDiagram`).
-This shows an alternate view on what
-messages can be sent or received at different times and how the client should
-respond. Clients and libraries do not need to be represented in this way, it
-is purely for understanding purposes.
-
-.. _connectionDialogStateDiagram:
 
 .. only:: html
+
+  The implementation of this Connection Dialog in a client can be shown with the
+  following state transition diagram (:numref:`connectionDialogStateDiagramHtml`).
+  This shows an alternate view on what messages can be sent or received at
+  different times and how the client should respond. Clients and libraries do not
+  need to be represented in this way, it is purely for understanding purposes.
+
+  .. _connectionDialogStateDiagramHtml:
 
   .. figure:: /interfaces/wireline/v5/dialogs/ConnectionDialogStateDiagram.*
      :align: center
@@ -272,9 +272,17 @@ is purely for understanding purposes.
 
 .. only:: latex
 
+  The implementation of this Connection Dialog in a client can be shown with the
+  following state transition diagram (:numref:`connectionDialogStateDiagramLatex`).
+  This shows an alternate view on what messages can be sent or received at
+  different times and how the client should respond. Clients and libraries do not
+  need to be represented in this way, it is purely for understanding purposes.
+
   .. raw:: latex
 
       \begin{landscape}
+
+  .. _connectionDialogStateDiagramLatex:
 
   .. figure:: /interfaces/wireline/v5/dialogs/ConnectionDialogStateDiagram.*
      :align: center
@@ -470,6 +478,52 @@ the fourth batched statement generates an error.
 
    A fictitious example of the Query Dialog for a query that contains
    multiple (batched) statements
+
+
+Client State Transitions
+::::::::::::::::::::::::
+
+.. only:: html
+
+  The implementation of the Query Dialog in a client can be shown with the
+  following state transition diagram (:numref:`queryDialogStateDiagramHtml`).
+  This shows an alternate view on what messages can be sent or received at
+  different times and how the client should respond. Clients and libraries do not
+  need to be represented in this way, it is purely for understanding purposes.
+
+  .. _queryDialogStateDiagramHtml:
+
+  .. figure:: /interfaces/wireline/v5/dialogs/QueryDialogStateDiagram.*
+     :align: center
+     :alt: Client state transitions during the Query Dialog
+     :target: ../../../_images/QueryDialogStateDiagram.png
+
+     Client state transitions during the Query Dialog
+
+
+.. only:: latex
+
+  The implementation of the Query Dialog in a client can be shown with the
+  following state transition diagram (:numref:`queryDialogStateDiagramLatex`).
+  This shows an alternate view on what messages can be sent or received at
+  different times and how the client should respond. Clients and libraries do not
+  need to be represented in this way, it is purely for understanding purposes.
+
+  .. raw:: latex
+
+      \begin{landscape}
+
+  .. _queryDialogStateDiagramLatex:
+
+  .. figure:: /interfaces/wireline/v5/dialogs/QueryDialogStateDiagram.*
+     :align: center
+
+     Client state transitions during the Query Dialog
+
+  .. raw:: latex
+
+      \end{landscape}
+
 
 
 Query Cancellation Dialog
