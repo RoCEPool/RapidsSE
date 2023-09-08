@@ -202,6 +202,9 @@ from (
  end ;
 */
 
+/*
+SOMETHING WRONG
+
 //customer->nation
 /optimise_passthru 
 pipeline Query7
@@ -307,6 +310,7 @@ begin
 rows:
  ('IRAN','GERMANY',1995,-7157.99)
  ('IRAN','GERMANY',1996,-14234.13)
+*/
 
 /*
 JUST AN EXPERIMENT
@@ -381,6 +385,146 @@ begin
     | stageStart
 end ;
 */
+
+/optimise_passthru
+pipeline Query7
+begin
+
+  stage S00 on origin :
+    start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan      Orders
+    | project   "   type INTEGER as C0_O_CUSTKEY $2
+                  , type INTEGER as C1_O_ORDERKEY $1 "
+    | hash      "type INTEGER $2"
+    | combined 0
+    | next      hashcast
+
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $2 == "
+    | filter    " type BOOLEAN } DATE '1995-01-01' DATE '1996-12-31' $13 between "
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    project   "   type DATE as C0_L_SHIPDATE $13
+                , type DECIMAL as C1_L_EXTENDEDPRICE $8
+                , type DECIMAL as C2_L_DISCOUNT $9
+                , type INTEGER as C3_L_SUPPKEY $5
+                , type INTEGER as C4_O_CUSTKEY $1 "
+    | hash      "type INTEGER $5"
+    | combined 0
+    | next      hashcast
+
+  stage S04 on all partitions :
+    indexJoin Customer IxC_CUSTKEY " BOUND $I1 $5 == "
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    project   "   type DATE as C0_L_SHIPDATE $1
+              , type DECIMAL as C1_L_EXTENDEDPRICE $2
+              , type DECIMAL as C2_L_DISCOUNT $3
+              , type INTEGER as C3_C_NATIONKEY $9
+              , type INTEGER as C4_L_SUPPKEY $4 "
+    | hash      "type INTEGER $5"
+    | combined 0
+    | next      hashcast
+
+  stage S06 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY " BOUND $I1 $5 == "
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+     project   "   type DATE as C0_L_SHIPDATE $1
+                 , type DECIMAL as C1_L_EXTENDEDPRICE $2
+                 , type DECIMAL as C2_L_DISCOUNT $3
+                 , type INTEGER as C3_C_NATIONKEY $4
+                 , type INTEGER as C4_S_NATIONKEY $9 "
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexJoin nation IxN_NATIONKEY " BOUND $I1 $5 == "
+    | combined 0
+    | next
+
+  stage S09 on all partitions :
+    project   "   type VARCHAR as C0_N_NAME $7
+                , type DATE as C1_L_SHIPDATE $1
+                , type DECIMAL as C2_L_EXTENDEDPRICE $2
+                , type DECIMAL as C3_L_DISCOUNT $3
+                , type INTEGER as C4_C_NATIONKEY $4 "
+    | combined 0
+    | next
+
+  stage S10 on all partitions :
+    indexJoin nation IxN_NATIONKEY " BOUND $I1 $5 == "
+    | combined 0
+    | next
+
+  stage S11 on all partitions :
+    filter    " type BOOLEAN $1 'IRAN' == $7 'GERMANY' == and $1 'GERMANY' == $7 'IRAN' == and or "
+    | project   "   type VARCHAR as C0_supp_nation $1
+                  , type VARCHAR as C1_cust_nation $7
+                  , type INTEGER as C2_l_year $2 extract_year
+                  , type DECIMAL as C3_volume $3 1.00 $4 - * "
+    | combined 0
+    | next
+
+  stage S12 on all partitions :
+    gbyAgg    " groupBy
+                 type VARCHAR as C0_supp_nation $1
+               , type VARCHAR as C1_cust_nation $2
+               , type INTEGER as C2_l_year $3
+               aggregates
+                 type VARCHAR as C0_supp_nation $K1
+               , type VARCHAR as C1_cust_nation $K2
+               , type INTEGER as C2_l_year $K3
+               , type DECIMAL as C3_COL4 ) $4 sum "
+     | combined 0
+    | next
+
+  stage S13 on all nodes :
+   gbyAgg    " groupBy
+                 type VARCHAR as C0_supp_nation $1
+               , type VARCHAR as C1_cust_nation $2
+               , type INTEGER as C2_l_year $3
+               aggregates
+                 type VARCHAR as C0_supp_nation $K1
+               , type VARCHAR as C1_cust_nation $K2
+               , type INTEGER as C2_l_year $K3
+               , type DECIMAL as C3_COL4 ) $4 sum "
+    | combined 0
+    | next
+
+  stage S14 on origin :
+    gbyAgg    " groupBy
+                  type VARCHAR as C0_supp_nation $1
+                , type VARCHAR as C1_cust_nation $2
+                , type INTEGER as C2_l_year $3
+                aggregates
+                  type VARCHAR as C0_supp_nation $K1
+                , type VARCHAR as C1_cust_nation $K2
+                , type INTEGER as C2_l_year $K3
+                , type DECIMAL as C3_revenue ) $4 sum "
+    | combined 0
+    | next
+
+  stage S15 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+rows:
+ ('IRAN','GERMANY',1995,-7157.99)
+ ('IRAN','GERMANY',1996,-14234.13)
 
 CLEANUP {
   bye;
