@@ -24,6 +24,14 @@ namespace STORE
 
     i8   nChildCards(void);
 
+    void vDeleteAllChildren(void);
+    void vDeleteChild(Card* pChild);
+
+//    void vEnsureAfter(eCK eChild, eCK eChild_after);
+//    void vEnsureBefore(eCK eChild, eCK eChild_before);
+    void vEnsureFirst(eCK eChild);
+    void vEnsureLast(eCK eChild);
+
     i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
@@ -41,14 +49,13 @@ namespace STORE
     void vOntoStzList(StzList* pStzList);
 
     Card* pPeekChild(void);
+    Card* pPeekChild_last(void);
     Card* pPopChild(void);
     Card* pPopChildIf(Symbol xSymbol);
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
     Card* pPlopChild(void);
 
     void vRemoveChild(Card* pChild);
-    void vDeleteAllChildren(void);
-    void vDeleteChild(Card* pChild);
     void vRemoveSub(Card* pSubCard);
     void vReplaceChildWithItsSubs(Card* pChild);
     void vReplaceChild(Card* pChild, Card* pWith);

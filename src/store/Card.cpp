@@ -1668,7 +1668,7 @@ void Card::vCoord(Card* pParentCard)
     MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
 
     StrLib::vSprint(md_Coord, sizeof(md_Coord), nullptr,
-                    "%lld"_Stz, m_i_Child);
+                    "SQ%lld"_Stz, m_i_Child);
   }
 
 //  vTrace("%s\n"_Stz,md_Coord);

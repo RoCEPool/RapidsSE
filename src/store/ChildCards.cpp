@@ -39,6 +39,43 @@ ChildCards::~ChildCards(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* ensure card is first                                                       */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vEnsureFirst(eCK eChild)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Child;
+  Card* pChild = pFindChild(eChild,i_Child);
+  if ((! pChild) || 0 == i_Child)
+    return;
+
+  vRemoveChild(pChild);
+  vPush(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure card is first                                                       */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vEnsureLast(eCK eChild)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pChild_last = pPeekChild_last();
+  if (! pChild_last)
+    return;
+  if (eChild == pChild_last->eCard())
+    return;
+
+  Card* pChild = pFindChild(eChild);
+  if (! pChild)
+    return;
+
+  vRemoveChild(pChild);
+  vAppend(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of child cards                                                  */
 /*----------------------------------------------------------------------------*/
 i8 ChildCards::nChildCards(void)
@@ -311,6 +348,22 @@ Card* ChildCards::pPeekChild(void)
 
   return pChild;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pPeekChild_last(void)
+{
+
+  i8 i_Last = nChildCards() - 1;
+  if (i_Last < 0)
+    return nullptr;
+
+  Card* pChild = pPeek(i_Last);
+
+  return pChild;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

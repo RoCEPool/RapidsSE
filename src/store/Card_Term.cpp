@@ -70,6 +70,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
          (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
+      pCI->G.p_indexJoin->vDump(__func__);
       vDebugPoint();
     }
     else
