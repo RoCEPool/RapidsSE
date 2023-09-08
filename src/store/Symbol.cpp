@@ -1039,7 +1039,7 @@ bool Symbol::bIs_Xrf_No(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this an itemised stz?                                                   */
+/* is this an itemised column name?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsItemised(Stz* szArg)
 {

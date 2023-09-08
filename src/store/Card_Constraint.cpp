@@ -299,7 +299,8 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   eCK eParent = pParent->eCard();
 
-  RASSERT(CK_INDEXJOIN    == eParent ||
+  RASSERT(CK_FROM         == eParent ||
+          CK_INDEXJOIN    == eParent ||
           CK_KEYEXISTS    == eParent ||
           CK_KEYNOTEXISTS == eParent );
 
