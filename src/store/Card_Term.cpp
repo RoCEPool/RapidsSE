@@ -57,17 +57,22 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     if (pCI->pAncestorFind(CK_KEYEXISTS) || pCI->pAncestorFind(CK_KEYNOTEXISTS))
       return C_CONTINUE_RECURSION;
-//    if (pCI->pAncestorFind(CK_CONSTRAINT))
+//    if (pCI->pAncestorFind(CK_CONSTRAINT))ø
 //      return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(pCard);
 
-    if (p_term->pSymbol()->szSF_symbol(SF_NONE)->bSame("casttype"_Stz))
+    if (p_term->pSymbol()->szSF_symbol(SF_NONE)->bSame("O_COMMENT"_Stz))
       vDebugPoint();
 
     if (! pCard->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;
 
+    if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
+         (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
+      vDebugPoint();
+    }
+    else
     if (Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pCI->pAncestorFind(CK_BOOLCALC))) {
       i8 iItemise = p_boolCalc->iItemise();
       p_term->pSymbol()->vSym(SF_COL_NM_dis, iItemise);
