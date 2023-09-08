@@ -247,6 +247,8 @@ namespace STORE
   protected:
     static i8 m__iSeqGen;
 
+    char    md_Coord[256];
+
     eCK     m_eCard;
     i8      m_i_Child;
 
@@ -265,7 +267,6 @@ namespace STORE
     i8 md__FirstDetected;
     i8 md__LeakDetected;
 
-    char    md_Coord[256];
     i8      m_iFirstPrint;
     eCK     m_eFirst;
     i8      m_iLastPrint;

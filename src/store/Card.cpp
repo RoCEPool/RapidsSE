@@ -1630,9 +1630,9 @@ void Card::vCoord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  s4K sPretty;
-
-  sPretty = aCK[m_eCard];
+//  s4K sPretty;
+//
+//  sPretty = aCK[m_eCard];
 
 //  if (m_xSymbol.m_pProperties) {
 //    s4K sProperties;
@@ -1641,8 +1641,14 @@ void Card::vCoord(void)
 //    sPretty.vConcat(sProperties);
 //  }
 
-  strcat(md_Coord, " ");
-  strcat(md_Coord, sPretty.azChar());
+//  strcat(md_Coord, " ");
+//  strcat(md_Coord, aCK[m_eCard]->azChar());
+
+  StrLib::vConcat(md_Coord,sizeof(md_Coord), "] ");
+  StrLib::vConcat(md_Coord,sizeof(md_Coord), szSymbol(SF_NONE)->azChar());
+
+  StrLib::vConcat(md_Coord,sizeof(md_Coord), " ");
+  StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eSymbol()]->azChar());
 
   //  vTrace("%s\n"_Stz,md_Coord);
 }
@@ -1659,6 +1665,8 @@ void Card::vCoord(Card* pParentCard)
                     "%s.%lld"_Stz, pParentCard->md_Coord, m_i_Child);
   }
   else {
+    MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
+
     StrLib::vSprint(md_Coord, sizeof(md_Coord), nullptr,
                     "%lld"_Stz, m_i_Child);
   }

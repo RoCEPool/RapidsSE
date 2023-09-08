@@ -120,9 +120,20 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     if (!p_term->pSymbol()->bIs_Col_No())
       return C_CONTINUE_RECURSION;
 
+
     Stz* szColNm = nullptr;
 
-    Card_Expr* p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
+
+    Card_Expr* p_expr_col;
+
+//    Symbol* pSymbol = p_term->pSymbol();
+//    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+//    p_expr_col = pCI->G.p_projection->pDecodeExpr(pSymbol);
+//
+//    RASSERT(p_expr_col);
+
+
+    p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
     if (p_expr_col) {
       Card_As* p_as = p_expr_col->pSub_as();
       szColNm = p_as->szSymbol(SF_NONE);
@@ -146,6 +157,9 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
       p_term->SYM(SF_COL_NM,szColNm);
       p_term->vMark1(MARK_CHANGED);
     }
+    else {
+      vDebugPoint();
+    }
 
     return C_CONTINUE_RECURSION;
   };
@@ -156,6 +170,68 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
   UNUSED(bIgnore);
 
 }
+/*----------------------------------------------------------------------------*/
+//void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+//
+//  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+//  RASSERT(1 == p_boolCalc->nChildCards());
+//
+//  Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(p_boolCalc->pGetChild(0));
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bLambdaFn = [pCI,i_Main](Card_PRED* p_pred, bool bUpwards)
+//  {
+//    if (bUpwards)
+//      return C_CONTINUE_RECURSION;
+//
+//    if (! p_pred->bIsCard(CK_TERM))
+//      return C_CONTINUE_RECURSION;
+//
+//    Card_Term* p_term = _pCard_Term(p_pred);
+//    if (!p_term->pSymbol()->bIs_Col_No())
+//      return C_CONTINUE_RECURSION;
+//
+//    Stz* szColNm = nullptr;
+//
+//    Card_Expr* p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
+//    if (p_expr_col) {
+//      Card_As* p_as = p_expr_col->pSub_as();
+//      szColNm = p_as->szSymbol(SF_NONE);
+//    }
+//    else {
+//
+//      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+//      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+//      i8 nExprs = pCI->G.p_projection->nChildCards();
+//      i8 i_Odn = p_term->iGetOdn();
+//      i8 i_Col_base0 = i_Odn - nExprs - 1;
+//
+//      if (i_Col_base0 >= 0)
+//        szColNm = pCI->G.p_table->szColNm(i_Col_base0);
+//
+//      vDebugPoint();
+//
+//    }
+//
+//    if (szColNm) {
+//      p_term->SYM(SF_COL_NM,szColNm);
+//      p_term->vMark1(MARK_CHANGED);
+//    }
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+//  UNUSED(bIgnore);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

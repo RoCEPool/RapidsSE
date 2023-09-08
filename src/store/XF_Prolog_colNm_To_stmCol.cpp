@@ -106,7 +106,7 @@ void XF_Prolog_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
 
 //    // todo: delete
 //    if (Card_Expr* p_expr_col =
-//        pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
+//        pCI->Prior.m_pProjection->pFind_expr_Of_symbol(p_term->pSymbol())) {
 //      //p_expr_col->vDump();
 //      p_term->pSymbol()->vSym(p_expr_col->pSymbol());
 //    }

@@ -168,7 +168,7 @@ i8 Card_ELIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
+Card_Expr* Card_ELIST::pFind_expr_Of_symbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -180,6 +180,23 @@ Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
     Card_Expr* p_expr = pGetExpr(i_Expr);
     if (p_expr->bExpressionOfSymbol(pSymbol))
       return p_expr;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find expression which matches given $n ordinal                             */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFind_expr_By_Ordinal(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(pSymbol->bIs_Col_No());
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (xKid.p_expr()->pSymbol()->bSame(pSymbol))
+      return xKid.p_expr();
   }
 
   return nullptr;

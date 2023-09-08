@@ -68,17 +68,15 @@ void XF_Epilog_stmCol_To_colNm::vXF_stmCol_To_colNm(void)
 
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
-              || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))
-      continue;
+//    if (! (   CK_KEYEXISTS    == m_pCI->G.e_MainCard
+//              || CK_KEYNOTEXISTS == m_pCI->G.e_MainCard))
+//      continue;
 
-    m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint();
-
-    m_pCI->G.p_constraint->vConvert_stmColOdn_To_stmColNm(m_pCI);
+    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
+      m_pCI->G.p_constraint->vConvert_stmColOdn_To_stmColNm(m_pCI);
   }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 /*============================================================================*/

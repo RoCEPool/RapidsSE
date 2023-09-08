@@ -88,7 +88,7 @@ void Card_Projection::vAdjust_Wrt_key(Card_Key* p_key)
 
     Symbol* pSymbol_expr_sole = xKid.p_expr()->pGetSymbol(0);
 
-    Card_Expr* p_expr_sole_key = p_key->pFindExpr(pSymbol_expr_sole);
+    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Of_symbol(pSymbol_expr_sole);
     if (! p_expr_sole_key)
       continue;
 
@@ -159,7 +159,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 
         vDebugPoint();
 
-        if (p_needed->pFindExpr(pSymbol_tblCol))
+        if (p_needed->pFind_expr_Of_symbol(pSymbol_tblCol))
           continue;
 
         p_needed->vAppend(p_expr_key->pClone());
@@ -168,7 +168,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->bIsValOdn()) {
 
         // which we haven't already added
-        if (p_needed->pFindExpr(xCI_rpnCalc.p_term()->pSymbol()))
+        if (p_needed->pFind_expr_Of_symbol(xCI_rpnCalc.p_term()->pSymbol()))
           continue;
 
         if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
@@ -195,7 +195,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
           if (!xCI_rpnCalc.p_term()->bIsValOdn())
             continue;
           // which we haven't already added
-          if (p_needed->pFindExpr(xCI_rpnCalc.p_term()->pSymbol()))
+          if (p_needed->pFind_expr_Of_symbol(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
@@ -258,7 +258,7 @@ void Card_Projection::vDerive_streamKey(CardIter *pCI)
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey_running->pGetExpr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGetTerm(0);
-    Card_Expr* p_expr_prjCol = pFindExpr(p_term_runkey->pSymbol());
+    Card_Expr* p_expr_prjCol = pFind_expr_Of_symbol(p_term_runkey->pSymbol());
 
     if (p_expr_prjCol) {
 
@@ -381,7 +381,7 @@ Card_Expr* Card_Projection::pResolve_expr(Card_Term* p_term)
   }
   else
   if (p_term->pSymbol()->bIs_Col_Tc()) {
-    Card_Expr *p_expr_prior = this->pFindExpr(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pFind_expr_Of_symbol(p_term->pSymbol());
     return p_expr_prior;
   }
 
