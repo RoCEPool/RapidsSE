@@ -32,7 +32,10 @@ readonly DEBUG=0
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
 # Defaulting to 45 minutes.
-readonly SETH_TIMEOUT="2700"
+//readonly SETH_TIMEOUT="2700"
+
+// ALKA: increased timeout as added new tests
+readonly SETH_TIMEOUT="3600"
 
 # Maximum disk space utilisation % that we will accept on the current partition
 # before we forcibly stop the tests. This is trying to catch situations where
