@@ -67,20 +67,20 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
   // @ mark where predicates wrt. table
   Card_Where::vMarkWherePredWrtTable(m_pCI);
 
-  m_pCI->vRenumberCards();
-  m_pCI->vPrintBoard(__LINE__);
+//  m_pCI->vRenumberCards();
+//  m_pCI->vPrintBoard(__LINE__);
 
   // move @ marked where predicates to table filter
   Card_Where::vMoveWherePredsToTableFilter(m_pCI);
 
-  m_pCI->vRenumberCards();
-  m_pCI->vPrintBoard(__LINE__);
+//  m_pCI->vRenumberCards();
+//  m_pCI->vPrintBoard(__LINE__);
 
   // cull @ marked where predicates
   Card_Where::vCullMarkedCmpPred(m_pCI);
 
-  m_pCI->vRenumberCards();
-  m_pCI->vPrintBoard(__LINE__);
+//  m_pCI->vRenumberCards();
+//  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

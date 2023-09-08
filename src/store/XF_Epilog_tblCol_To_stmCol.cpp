@@ -74,7 +74,7 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 
     vConvert_tblColOdn_To_stmColOdn();
 
-    m_pCI->vPrintBoard(__LINE__);
+//    m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 

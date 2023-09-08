@@ -112,15 +112,15 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  pCI->vRenumberCards();
-  pCI->vPrintBoard();
+//  pCI->vRenumberCards();
+//  pCI->vPrintBoard();
 
   pCI->G.p_table = pSub_table();
   vUpdate_projection(pCI);
   vUpdate_constraint(pCI);
 
-  pCI->vRenumberCards();
-  pCI->vPrintBoard();
+//  pCI->vRenumberCards();
+//  pCI->vPrintBoard();
 
   //pCI->Prior.m_pProjection->vDump(__func__);
   vCorrectStmOdn(pCI->Prior.m_pProjection);
