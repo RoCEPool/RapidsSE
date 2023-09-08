@@ -95,6 +95,8 @@ namespace STORE
     static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
     static bool bIs_Xrf_No(Stz* szChrSeq);          // #n
 
+    static bool bIsItemised(Stz* szArg);
+
     static bool bPossibleNm(Stz* szChrSeq);
 
     static void vStripSuffix_itemise(String* psArg);

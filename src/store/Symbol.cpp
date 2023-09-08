@@ -1039,6 +1039,30 @@ bool Symbol::bIs_Xrf_No(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this an itemised stz?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsItemised(Stz* szArg)
+{
+  _static_
+
+  char* azCrs = szArg->azChar();
+
+  if ('C' != *azCrs++)
+    return false;
+
+  if (!StrLib::bIsDigit(*azCrs))
+    return false;
+
+  while(StrLib::bIsDigit(*azCrs))
+    azCrs++;
+
+  if ('_' != *azCrs)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* strip disambiguation                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bPossibleNm(Stz* szChrSeq)
