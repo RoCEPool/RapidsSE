@@ -39,43 +39,6 @@ ChildCards::~ChildCards(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* ensure card is first                                                       */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vEnsureFirst(eCK eChild)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 i_Child;
-  Card* pChild = pFindChild(eChild,i_Child);
-  if ((! pChild) || 0 == i_Child)
-    return;
-
-  vRemoveChild(pChild);
-  vPush(pChild);
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure card is first                                                       */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vEnsureLast(eCK eChild)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pChild_last = pPeekChild_last();
-  if (! pChild_last)
-    return;
-  if (eChild == pChild_last->eCard())
-    return;
-
-  Card* pChild = pFindChild(eChild);
-  if (! pChild)
-    return;
-
-  vRemoveChild(pChild);
-  vAppend(pChild);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of child cards                                                  */
 /*----------------------------------------------------------------------------*/
 i8 ChildCards::nChildCards(void)
@@ -109,6 +72,41 @@ void ChildCards::vDeleteChild(Card* pChild)
   vRemove(pChild);
 
   delete pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure card is first                                                       */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vEnsureFirst(eCK eChild)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Child;
+  Card* pChild = pFindChild(eChild,i_Child);
+  if ((! pChild) || 0 == i_Child)
+    return;
+
+  vRotateFirst(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure card is first                                                       */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vEnsureLast(eCK eChild)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pChild_last = pPeekChild_last();
+  if (! pChild_last)
+    return;
+  if (eChild == pChild_last->eCard())
+    return;
+
+  Card* pChild = pFindChild(eChild);
+  if (! pChild)
+    return;
+
+  vRotateLast(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -479,15 +477,25 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace immediate child with given card                                    */
+/* remove and push child card                                                 */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vRotateChild(Card* pChild)
+void ChildCards::vRotateFirst(Card* pChild)
 {
-  //_precondition_(_ADDRESS_,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vRemoveChild(pChild);
-
   vPush(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and append child card                                               */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vRotateLast(Card* pChild)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vRemoveChild(pChild);
+  vAppend(pChild);
 }
 
 /*----------------------------------------------------------------------------*/

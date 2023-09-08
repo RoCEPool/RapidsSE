@@ -59,7 +59,8 @@ namespace STORE
     void vRemoveSub(Card* pSubCard);
     void vReplaceChildWithItsSubs(Card* pChild);
     void vReplaceChild(Card* pChild, Card* pWith);
-    void vRotateChild(Card* pChild);
+    void vRotateFirst(Card* pChild);
+    void vRotateLast(Card* pChild);
 
     void vTransferChildren(Card* pFrom);
     void vTransferChildren(Card* pFrom, eSF eSymbol_limit);
