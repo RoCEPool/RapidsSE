@@ -64,21 +64,21 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_TBLCOL_TO_STMCOL, "transform table-columns to stream-columns"_Stz);
 
-  for (m_pCI->vClearRestart(); m_pCI->G_bEachMain_NONE(); m_pCI->vSnapPriorProjection()) {
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain_NONE()) {
 
     if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
       if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
         continue;
     }
 
-    vConvert_tblColOdn_To_stmColOdn2();
+    vConvert_tblColOdn_To_stmColOdn();
 
     m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
   }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 
@@ -89,7 +89,7 @@ void XF_Epilog_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 /*----------------------------------------------------------------------------*/
 /* convert tblColOdn to stmColOdn                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn2(void)
+void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
 
@@ -98,13 +98,7 @@ void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn2(void)
     vDebugPoint();
   }
 
-  if (CK_FILTER == m_pCI->G.p_OP->eCard()) {
-    m_pCI->G.p_OP->vDump(__func__);
-    vDebugPoint();
-  }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversions prior to projection
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {
     m_pCI->G.p_indexList->vConvert_colOdn_To_stmOdn(m_pCI);
@@ -139,88 +133,14 @@ void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pCI->vSnapPriorProjection();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if ((m_pCI->G.p_streamKey = m_pCI->G.p_MainCard->pSub_streamKey())) {
-    if ((m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_projection()))
-      m_pCI->G.p_streamKey->vConvert_colOdn_To_stmOdn(m_pCI);
-  }
-
-
-}
-/*----------------------------------------------------------------------------*/
-void XF_Epilog_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
-
-  if (m_pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
-    //vDump();
-    vDebugPoint();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  CardIter* pCI = m_pCI;
-
-  auto bf_tblColOdn_To_stmColOdn = [pCI](Card* pCard)
-  {
-    Card_Term* p_term = _pCard_Term(pCard);
-
-    if (pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
-      pCI->G.p_OP->vDump(__func__);
-      vDebugPoint();
-    }
-
-    if (!p_term->pSymbol()->bIs_Col_Tc())
-      return C_CONTINUE_RECURSION;
-
-    if (pCI->Prior.m_pProjection) {
-      if (Card_Expr* p_expr_col = pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
-        // record what $c.n it was
-        //p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol(SF_NONE));
-        p_term->pSymbol()->vSym(SF_COL_NO,p_expr_col->szSymbol(SF_NONE));
-        p_term->vMark1(MARK_CHANGED);
-
-        return C_CONTINUE_RECURSION;
-      }
-    }
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-    i8 nCols_injectedByThisCard = 0;
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-    if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
-        pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-        pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
-        pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
-      nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
-    }
-    else
-    if (! (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
-           pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN))) {
-      return C_CONTINUE_RECURSION;
-    }
-
-    i8 i_Col = p_term->iGetOdn();
-    i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
-
-    Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
-    p_term->pSymbol()->vSym(&xSymbol_stmColOdn);
-
-    p_term->vMark1(MARK_CHANGED);
-
-    //vDump(__func__);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.p_OP->vApply_lambdaFn_ToAll_term(pCI, bf_tblColOdn_To_stmColOdn);
-
-  if (pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
-    //vDump();
-    vDebugPoint();
+    m_pCI->G.p_streamKey->vConvert_colOdn_To_stmOdn(m_pCI);
   }
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
