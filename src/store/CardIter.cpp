@@ -1320,13 +1320,14 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SEND:             return G.p_send;
     case CK_SPARE:            return G.p_spare;
     case CK_SORT:             return G.p_sort;
+    case CK_STAGE:            return G.p_stage;
+    case CK_STREAM:           return G.p_stream;
     case CK_STREAMHEAD:       return G.p_streamHead;
     case CK_STREAMJOIN:       return G.p_streamJoin;
     case CK_STREAMKEY:        return G.p_streamKey;
     case CK_STREAMPER:        return G.p_streamPer;
     case CK_STREAMPTN:        return G.p_streamPtn;
     case CK_STREAMSET:        return G.p_streamSet;
-    case CK_STAGE:            return G.p_stage;
     case CK_SUBSET:           return G.p_subSet;
 
     case CK_TABLE:            return G.p_table;
@@ -1553,6 +1554,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_STAGE:            G.p_stage             = _pCard_Stage(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
+    case CK_STREAM:           G.p_stream            = _pCard_Stream(pCard); break;
     case CK_STREAMHEAD:       G.p_streamHead        = _pCard_StreamHead(pCard); break;
     case CK_STREAMJOIN:       G.p_streamJoin        = _pCard_StreamJoin(pCard); break;
     case CK_STREAMKEY:        G.p_streamKey         = _pCard_StreamKey(pCard); break;
@@ -1761,6 +1763,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_send             = nullptr;
   G.p_spare            = nullptr;
   G.p_sort             = nullptr;
+  G.p_stream           = nullptr;
   G.p_streamKey        = nullptr;
   G.p_streamPer        = nullptr;
   G.p_streamPtn        = nullptr;
@@ -2523,6 +2526,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_SPARE:      G.p_spare->vValidate(this, iDepth, pCard);  break;
       case CK_SORT:       G.p_sort->vValidate(this, iDepth, pCard);  break;
       case CK_STAGE:      G.p_stage->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAM:     G.p_stream->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMHEAD: G.p_streamHead->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMJOIN: G.p_streamJoin->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMKEY: G.p_streamKey->vValidate(this, iDepth, pCard);  break;

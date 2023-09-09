@@ -103,6 +103,7 @@ enum eCK : i8 // card kind
   /* */ CK_SORT,
   /* */ CK_SPARE,
   /* */ CK_STAGE,
+  /* */ CK_STREAM,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
   /* */ CK_STREAMKEY,

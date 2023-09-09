@@ -133,6 +133,7 @@ namespace STORE
     Card_Sort *          p_sort;
     Card_Spare *         p_spare;
     Card_Stage *         p_stage;
+    Card_Stream *        p_stream;
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;
     Card_StreamKey *     p_streamKey;

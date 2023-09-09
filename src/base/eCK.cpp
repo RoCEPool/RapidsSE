@@ -106,6 +106,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_SPARET"_Stz,       // CK_SPARE
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
+  /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
   /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
   /* */ "CK_STREAMKEY"_Stz,    // CK_STREAMKEY
@@ -235,6 +236,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "spare"_Stz,           // CK_SPARE
   /* */ "stage"_Stz,           // CK_STAGE
+  /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
   /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
   /* */ "streamKey"_Stz,       // CK_STREAMKEY

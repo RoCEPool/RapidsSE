@@ -127,6 +127,7 @@ namespace STORE
   class Card_Sort;
   class Card_Spare;
   class Card_Stage;
+  class Card_Stream;
   class Card_StreamJoin;
   class Card_StreamKey;
   class Card_StreamPtn;
@@ -460,7 +461,8 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
     Card_Spare*         pSub_spare(void);
-    Card_StreamHead*    pSub_dataStart(void);
+    Card_Stream*        pSub_stream(void);
+    Card_StreamHead*    pSub_streamHead(void);
     Card_StreamJoin*    pSub_streamJoin(void);
     Card_StreamKey*     pSub_streamKey(void);
     Card_StreamPer*     pSub_streamPer(void);

@@ -113,6 +113,7 @@
 #include "Card_Sort.hpp"
 #include "Card_Spare.hpp"
 #include "Card_Stage.hpp"
+#include "Card_Stream.hpp"
 #include "Card_StreamHead.hpp"
 #include "Card_StreamJoin.hpp"
 #include "Card_StreamKey.hpp"
