@@ -190,13 +190,17 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
     if (CK_FOLD == pCI->G.e_MainCard)
       break;
 
-    if (Card_Projection* p_projection = pCI->G.p_MainCard->pSub_projection())
+    if (Card_Projection* p_projection = pCI->G.p_MainCard->pSub_projection()) {
+      pCI->vPrintBoard(__LINE__);
       pCI->Prior.m_pProjection = p_projection;
+    }
   }
 
   RASSERT(CK_FOLD == pCI->G.e_MainCard);
 
-  pCI->G.p_fold->vAppend(pCI->Prior.m_pProjection->pDupCardRecursive());
+  pCI->G.p_stream = new Card_Stream;
+
+  pCI->G.p_stream->vAppend(pCI->Prior.m_pProjection->pDupCardRecursive());
 
  // pCI->vRenumberCards();
 

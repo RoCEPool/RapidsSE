@@ -167,8 +167,8 @@ void Card_Index::vDeleteBounds(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pSymbol()->Y_vCut(P_ChosenIndex);
-  Card_Bounds* p_Bounds = pSub_bounds();
-  vDeleteChild(p_Bounds);
+  if (Card_Bounds* p_Bounds = pSub_bounds())
+    vDeleteChild(p_Bounds);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,7 +23,7 @@ __vDeleteFunction(Card_StreamKey,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamKey::Card_StreamKey(void)
-: Card_Key(CK_STREAMKEY,3)
+: Card_Key(CK_STREAMKEY,4)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -55,7 +55,7 @@ Card_StreamKey* Card_StreamKey::pTo_streamKey(Card_Key* p_key)
 
   Card_StreamKey* p_streamKey = _pCard_StreamKey(p_key_dupe->pCard(CK_STREAMKEY));
 
-  p_streamKey->vFixedDepth(3);
+  p_streamKey->vFixedDepth(4);
   return p_streamKey;
 }
 

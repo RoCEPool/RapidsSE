@@ -50,7 +50,6 @@ namespace STORE
     void  operator delete(void*);
   
     Optimiser(TagSet* p_JobTags);
-  
    ~Optimiser(void) noexcept(false);
 
     static void vRepair(Object* pObject);

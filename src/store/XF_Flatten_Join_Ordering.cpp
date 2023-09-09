@@ -86,20 +86,26 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Predicate Pull Up : move suitable where predicates to table filter
 
+  m_pCI->vValidateBench();
+
   XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
+  m_pCI->vValidateBench();
 
   // delete empty where
   XF_Flatten_Delete_Empty_where::vXF_Delete_Empty_where(m_pCI);
+  m_pCI->vValidateBench();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Index Bounds : move table filter predicates to table index bounds
 
   // derive index bounds from table filter
   XF_Flatten_Derive_bounds::vXF_Derive_bounds(m_pCI);
+  m_pCI->vValidateBench();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix position of table which uses subquery result as pos 0
   XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(m_pCI);
+  m_pCI->vValidateBench();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
@@ -114,13 +120,17 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
 
   // reorder the tables
   vReorderTables();
+  m_pCI->vValidateBench();
 
   XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
+  m_pCI->vValidateBench();
 
   XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
+  m_pCI->vValidateBench();
 
   // re-derive bounds from filter after join ordering
   XF_Flatten_Derive_bounds::vXF_Derive_bounds(m_pCI);
+  m_pCI->vValidateBench();
 }
 
 
@@ -331,14 +341,20 @@ void XF_Flatten_Join_Ordering::vReorderTables(void)
   m_pCI->m_pBench->vRemove(pBoard);
   delete pBoard;
 
+  m_pCI->vValidateBench();
+
  // m_pCI->vPrintBoard(__LINE__);
   p_joinOrdering->vReorder(m_pCI->G.pDeck);
  // m_pCI->vPrintBoard(__LINE__);
+
 
   DELETE_CARD(p_joinOrdering);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pCI->vValidateBench();
+
+   m_pCI->vPrintBoard(__LINE__);
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->pBoard()->pState()->vInsert(aOT[OT_JOIN_ORDERING]);

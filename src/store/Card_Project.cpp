@@ -66,8 +66,11 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   p_project_unproject->vAppend(p_level);
   //pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
 
+  Card_Stream* p_stream = new Card_Stream;
+  p_project_unproject->vAppend(p_stream);
+
   Card_Projection* p_projection_unproject = new Card_Projection(pCI->iXform());
-  p_project_unproject->vAppend(p_projection_unproject);
+  p_stream->vAppend(p_projection_unproject);
 
   i8 i_Col = 0;
   i8 nChildren_projection = pCI->G.p_projection->nChildCards();
@@ -245,9 +248,13 @@ void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
 
+  vEnsure_stream(pCI);
+
   pCI->G.p_projection = pCraft_projection_early(pCI);
 
-  vInsertBefore(pCI->G.p_projection,pCI->G.p_needed);
+  pCI->G.p_stream->vAppend(pCI->G.p_projection);
+
+  //vInsertBefore(pCI->G.p_projection,pCI->G.p_needed);
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
@@ -381,7 +388,7 @@ void Card_Project::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
+  vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   Card_OP::vValidate(pCI,iDepth,pParent);

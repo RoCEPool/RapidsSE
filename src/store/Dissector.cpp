@@ -292,8 +292,11 @@ Card* Dissector::pOp_Aggreg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
+  Card_Stream* p_stream = new Card_Stream;
+  pCard_Aggreg->vAppend(p_stream);
+
   Card_Projection* pCard_Projection = pPopProjection(pCard_RpnTerms);
-  pCard_Aggreg->vAppend(pCard_Projection);
+  p_stream->vAppend(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -524,14 +527,16 @@ Card* Dissector::pOp_GbyAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
+  Card_Stream* p_stream = new Card_Stream;
+  pCard_Aggreg->vAppend(p_stream);
+
   Card_Projection* pCard_Projection = pPopProjection(pCard_RpnTerms);
-  pCard_Aggreg->vAppend(pCard_Projection);
+  p_stream->vAppend(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCard_RpnTerms;
 
-  //pCard_Aggreg->vDump(__func__ );
   return pCard_Aggreg;
 }
 
@@ -987,19 +992,25 @@ Card* Dissector::pOp_Project(void)
 
   m_bSawProjectOp = true;
   Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projElist : project expression list
-
-  Card_Projection* pCard_Projection = pPopProjection(pCard_RpnTerms);
-  pCard_Project->vAppend(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
   Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
-  pCard_Project->vPush(pCard_AggLevel);
+  pCard_Project->vAppend(pCard_AggLevel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Stream* pCard_Stream = new Card_Stream;
+  pCard_Project->vAppend(pCard_Stream);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // projElist : project expression list
+
+  Card_Projection* pCard_Projection = pPopProjection(pCard_RpnTerms);
+  pCard_Stream->vAppend(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

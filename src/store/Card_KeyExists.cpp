@@ -192,12 +192,13 @@ void Card_KeyExists::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ( (pCI->G.p_projection = pSub_projection()) ) {
-    vDeleteChild(pCI->G.p_projection);
+    vDeleteSub(pCI->G.p_projection);
   }
 
   if (pCI->Prior.m_pProjection) {
+    vEnsure_stream(pCI);
     pCI->G.p_projection = pCI->Prior.m_pProjection->pClone();
-    vAppend(pCI->G.p_projection);
+    pCI->G.p_stream->vAppend(pCI->G.p_projection);
   }
 }
 

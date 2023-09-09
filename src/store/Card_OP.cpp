@@ -136,7 +136,6 @@ void Card_OP::vDeleteFilterIfEmpty(Card_Filter* p_filter)
 
   this->vRemoveChild(p_filter);
   DELETE_CARD(p_filter);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +180,6 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
     default:
       NEVER_REACH;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,6 +285,20 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
   }
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vEnsure_stream(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! (pCI->G.p_stream = pSub_stream()) ) {
+    pCI->G_vAppendNewChild(this,CK_STREAM);
+  }
+
+  RASSERT(pCI->G.p_stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,19 +502,22 @@ void Card_OP::vUpdate_constraint(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* update projection analysis                                                  */
+/* update projection                                                          */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vUpdate_projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (!bNeedsProjectionAnalysis() )
+  if (! bNeedsProjectionAnalysis())
     return;
+
+  vEnsure_stream(pCI);
 
   Card_Projection* p_projection;
 
   if ((p_projection = pSub_projection()))
-    vDeleteChild(p_projection);
+    pCI->G.p_stream->vDeleteChild(p_projection);
+
 
   Card_Projection* p_projection_needed;
   if ((p_projection_needed = pSub_projection()))
@@ -510,7 +525,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
     p_projection = _pCard_Projection(pCI->Prior.m_pProjection->pDupCardRecursive());
-    vAppend(p_projection);
+    pCI->G.p_stream->vAppend(p_projection);
     pCI->Prior.m_pProjection = p_projection;
     if (p_projection_needed)
       vAppend(p_projection_needed);
@@ -540,6 +555,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 
+  // todo: [ray A 145]
   char cTblSyn = bIsCard(CK_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
 
   i8 i_Expr = p_projection->nExpr() + 1;
@@ -571,7 +587,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_term->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   }
 
-  vAppend(p_projection);
+  pCI->G.p_stream->vAppend(p_projection);
 
   pCI->Prior.m_pProjection = p_projection;
 
@@ -1682,7 +1698,7 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   Card_MAIN::vValidate(pCI, iDepth, pParent);
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
+    vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
 }
 
 /*============================================================================*/

@@ -25,7 +25,9 @@ namespace STORE
     i8   nChildCards(void);
 
     void vDeleteAllChildren(void);
+    bool bDeleteChild(Card* pChild);
     void vDeleteChild(Card* pChild);
+    void vDeleteSub(Card* pSub);
 
 //    void vEnsureAfter(eCK eChild, eCK eChild_after);
 //    void vEnsureBefore(eCK eChild, eCK eChild_before);
@@ -55,6 +57,7 @@ namespace STORE
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
     Card* pPlopChild(void);
 
+    bool bRemoveChild(Card* pChild);
     void vRemoveChild(Card* pChild);
     void vRemoveSub(Card* pSubCard);
     void vReplaceChildWithItsSubs(Card* pChild);

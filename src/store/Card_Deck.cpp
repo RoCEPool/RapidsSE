@@ -290,6 +290,9 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
   while (pCI->G_bEachMain_NONE()) {
 
+    if (CK_PROJECT == pCI->G.e_MainCard)
+      vDebugPoint();
+
 //    if (pCI->Prior.m_pProjection) {
 //      pCI->Prior.m_pProjection->vDump(__func__);
 //      vDebugPoint();
@@ -297,6 +300,8 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
     if (pCI->G.p_MainCard->bIsCard(CK_TOP))
       vDebugPoint();
+
+    // todo [Ray A 146]
 
     if (CK_FROM == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
@@ -325,9 +330,10 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
 
-      Card_Projection* p_clone = pCI->Prior.m_pProjection->pClone();
-      //p_clone->vDump(__func__ );
-      pCI->G.p_MainCard->vAppend(p_clone);
+      pCI->G.p_OP->vEnsure_stream(pCI);
+      Card_Projection* p_projection_clone = pCI->Prior.m_pProjection->pClone();
+      //p_projection_clone->vDump(__func__ );
+      pCI->G.p_stream->vAppend(p_projection_clone);
 
       //continue;
     }
@@ -344,15 +350,19 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 //    }
 
     if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_TOP,CK_NONE)) {
-      pCI->G.p_MainCard->vAppend(pCI->Prior.m_pProjection->pClone());
+      pCI->G.p_OP->vEnsure_stream(pCI);
+      pCI->G.p_stream->vAppend(pCI->Prior.m_pProjection->pClone());
     }
     else
     if (CK_SORT == pCI->G.e_MainCard) {
+
+      pCI->G.p_OP->vEnsure_stream(pCI);
+
       Card_Projection* p_projection_propagated =
           pCI->Prior.m_pProjection->pPropagate(pCI);
       p_projection_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
-      pCI->G.p_MainCard->vAppend(p_projection_propagated);
+      pCI->G.p_stream->vAppend(p_projection_propagated);
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
@@ -494,8 +504,8 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWithSub(CK_FROM,CK_PROJECTION))
-    pCI->G.p_from->vDeleteChild(pCI->G.p_projection);
+  while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_STREAM,CK_PROJECTION))
+    pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
 
 
   pCI->vBeginEach();
@@ -530,14 +540,15 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 
       case CK_FROM:
         pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+        pCI->vPrintBoard(__LINE__);
         pCI->G.p_from->vUpdate_projection(pCI);
 
         if ((pCI->G.p_filter = pCI->G.p_from->pSub_filter())) {
-          if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
-
-            pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
-            pCI->G.p_filter->vAppend(pCI->G.p_from->pSub_projection()->pClone());
-
+          if ((pCI->G.p_stream = pCI->G.p_filter->pSub_stream())) {
+            if ((pCI->G.p_projection = pCI->G.p_stream->pSub_projection())) {
+              pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
+              pCI->G.p_stream->vAppend(pCI->G.p_from->pSub_projection()->pClone());
+            }
           }
         }
 
@@ -562,7 +573,10 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
     }
 
+    pCI->vPrintBoard(__LINE__);
   }
+
+  pCI->vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/

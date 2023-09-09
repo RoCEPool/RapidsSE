@@ -310,11 +310,12 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     pCI->G.p_level = pCI->G.p_gbyAgg->pSub_level();
     eAL e_Level = (eAL) pCI->G.p_level->pSymbol()->Y_iGet(P_Level);
 
-    pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
+    pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream();
+    pCI->G.p_projection = pCI->G.p_stream->pSub_projection();
 
     pCI->G.p_key = new Card_Key;
     pCI->G.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
-    pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_projection);
+    pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_stream);
 
 
     // key

@@ -47,10 +47,8 @@ void Card_KeyNotExists::vMorph_table_To_keyNotExists(STORE::CardIter *pCI)
 {
   _static_
 
-  pCI->G.p_keyNotExists = pCI->G.p_table->pSub_keyNotExists();
-
- // pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyNotExists);
-  pCI->G.p_from->vDeleteChild(pCI->G.p_keyNotExists);
+  if ((pCI->G.p_keyNotExists = pCI->G.p_table->pSub_keyNotExists()))
+    pCI->G.p_from->vDeleteChild(pCI->G.p_keyNotExists);
 
   pCI->G.p_keyNotExists = _pCard_KeyNotExists(pCI->G.p_from->pCard(CK_KEYNOTEXISTS));
 
@@ -186,12 +184,13 @@ void Card_KeyNotExists::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ( (pCI->G.p_projection = pSub_projection()) ) {
-    vDeleteChild(pCI->G.p_projection);
+    vDeleteSub(pCI->G.p_projection);
   }
 
   if (pCI->Prior.m_pProjection) {
+    vEnsure_stream(pCI);
     pCI->G.p_projection = pCI->Prior.m_pProjection->pClone();
-    vAppend(pCI->G.p_projection);
+    pCI->G.p_stream->vAppend(pCI->G.p_projection);
   }
 }
 

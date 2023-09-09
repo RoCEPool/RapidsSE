@@ -10,7 +10,7 @@ namespace STORE
 {
   class CarryForward;
 
-  class Card_Where : public Card_COND
+  class Card_Where : public Card_COND // todo [Ray A 147]
   {
   public:
     void* operator new(size_t);

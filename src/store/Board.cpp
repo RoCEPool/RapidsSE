@@ -122,6 +122,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
 {
   _static_
 
+
   pCI->G.p_projection = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
@@ -131,7 +132,9 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   if (! pCI->G.p_projection)
     return;
 
-  pCI->G.p_fold->vAppend(pCI->G.p_projection->pDupCardRecursive());
+  pCI->G.p_stream = new Card_Stream;
+  pCI->G.p_fold->vAppend(pCI->G.p_stream);
+  pCI->G.p_stream->vAppend(pCI->G.p_projection->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/

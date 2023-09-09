@@ -4,6 +4,7 @@
 #pragma once
 
 //#define Z_REJIG_STREAMDEFS
+#define Z_CARD_STREAM
 
 #define Z_ITEMISED_NAMES
 

@@ -69,10 +69,22 @@ void ChildCards::vDeleteAllChildren(void)
 void ChildCards::vDeleteChild(Card* pChild)
 {
 
-  vRemove(pChild);
+  RASSERT(bRemoveChild(pChild));
 
   delete pChild;
 }
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete given immediate child card (non-recursive)               */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vDeleteSub(Card* pSub)
+{
+
+  vRemoveSub(pSub);
+
+  delete pSub;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* ensure card is first                                                       */
@@ -421,8 +433,21 @@ Card* ChildCards::pPlopChild(void)
 /*----------------------------------------------------------------------------*/
 /* remove given immediate child card (non-recursive)                          */
 /*----------------------------------------------------------------------------*/
+bool ChildCards::bRemoveChild(Card* pChild)
+{
+  if (C_UNKNOWN == iFindChild(pChild))
+    return false;
+
+  vRemove(pChild);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given immediate child card (non-recursive)                          */
+/*----------------------------------------------------------------------------*/
 void ChildCards::vRemoveChild(Card* pChild)
 {
+  //RASSERT(C_UNKNOWN != iFindChild(pChild));
 
   vRemove(pChild);
 }
@@ -440,7 +465,7 @@ void ChildCards::vRemoveSub(Card* pSubCard)
     Card* pTestCard = pSubCard_I->pNext();
 
     if (pTestCard == pSubCard) {
-      vRemove(pTestCard);
+      RASSERT(bRemoveChild(pTestCard));
       break;
     }
     pTestCard->vRemoveSub(pSubCard);

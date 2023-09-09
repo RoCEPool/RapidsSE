@@ -177,8 +177,10 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_key = pCI->G.p_sort->pSub_key();
 
+  vEnsure_stream(pCI);
+
   if ((pCI->G.p_projection = pCI->G.p_sort->pSub_projection()))
-    pCI->G.p_sort->vDeleteChild(pCI->G.p_projection);
+    pCI->G.p_sort->vDeleteSub(pCI->G.p_projection);
 
   Card_Projection* p_projection_sort =  pCI->Prior.m_pProjection->pPropagate(pCI);
   for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
@@ -190,7 +192,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     p_expr_prj->pGetTerm(0)->pSymbol()->vSym(p_expr_key->pSymbol());
   }
 
-  pCI->G.p_sort->vAppend(p_projection_sort);
+  pCI->G.p_stream->vAppend(p_projection_sort);
 
   pCI->Prior.m_pProjection = pSub_projection();
 
@@ -205,7 +207,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_KEY,CK_PROJECTION,CK_NONE);
+  vValidate_mustHave(CK_LEVEL,CK_KEY,CK_STREAM,CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);
