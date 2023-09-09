@@ -1065,6 +1065,27 @@ bool Symbol::bIsItemised(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* strip disambiguation                                                       */
 /*----------------------------------------------------------------------------*/
+void Symbol::vItemStrip(String* psArg)
+{
+  _static_
+
+  char* azCrs = psArg->azStr();
+
+  RASSERT(*azCrs++ == 'C');
+
+  RASSERT(StrLib::bIsDigit(*azCrs));
+
+  while(StrLib::bIsDigit(*azCrs))
+    azCrs++;
+
+  RASSERT(*azCrs++ == '_');
+
+  psArg->vCopy((Stz*)azCrs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* strip disambiguation                                                       */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bPossibleNm(Stz* szChrSeq)
 {
   _static_
@@ -1081,27 +1102,6 @@ bool Symbol::bPossibleNm(Stz* szChrSeq)
   if (bIs_Sqy_Rsl(szChrSeq))  return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* strip disambiguation                                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::vStripSuffix_itemise(String* psArg)
-{
-  _static_
-
-  char* azCrs = psArg->azStr();
-
-  RASSERT(*azCrs++ == 'C');
-
-  RASSERT(StrLib::bIsDigit(*azCrs));
-
-  while(StrLib::bIsDigit(*azCrs))
-    azCrs++;
-
-  RASSERT(*azCrs++ == '_');
-
-  psArg->vCopy((Stz*)azCrs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2262,6 +2262,19 @@ bool Symbol::bIs_Xrf_No(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* strip itemisation                                                          */
+/*----------------------------------------------------------------------------*/
+void Symbol::vItemStrip(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! bIsItemised(m_sChrSeq))
+    return;
+
+  vItemStrip(m_sChrSeq);
 }
 
 /*----------------------------------------------------------------------------*/

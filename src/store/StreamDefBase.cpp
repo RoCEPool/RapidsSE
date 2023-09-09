@@ -350,7 +350,7 @@ Column* StreamDefBase::pFindColumn_stripItemise(Stz* szColumnNm)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   s32 szColNm_arg = szColumnNm;
-  Symbol::vStripSuffix_itemise(szColNm_arg);
+  Symbol::vItemStrip(szColNm_arg);
 
   s32 szColNm_tst;
   for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
@@ -358,7 +358,7 @@ Column* StreamDefBase::pFindColumn_stripItemise(Stz* szColumnNm)
     Column* pColumn = & m_xaColumn[i_Column];
 
     szColNm_tst = pColumn->szColNm();
-    Symbol::vStripSuffix_itemise(szColNm_tst);
+    Symbol::vItemStrip(szColNm_tst);
 
     if (szColNm_tst.bSame(szColNm_arg))
       return pColumn;

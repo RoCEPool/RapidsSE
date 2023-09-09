@@ -200,7 +200,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_Ordinal(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_By_as(STORE::Symbol *pSymbol)
+Card_Expr* Card_ELIST::pFind_expr_By_as(Symbol *pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -209,6 +209,34 @@ Card_Expr* Card_ELIST::pFind_expr_By_as(STORE::Symbol *pSymbol)
     if (p_as && p_as->bSameSymbol(pSymbol))
       return xKid.p_expr();
 
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find expr of term                                                          */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Symbol xSymbol_arg_stripped;
+  Symbol xSymbol_as_stripped;
+
+  xSymbol_arg_stripped.vSym(pSymbol);
+  xSymbol_arg_stripped.vItemStrip();
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_As* p_as = xKid.p_expr()->pSub_as();
+    if (! p_as)
+      continue;
+
+    xSymbol_as_stripped.vSym(p_as->pSymbol());
+    xSymbol_as_stripped.vItemStrip();
+
+    if (xSymbol_as_stripped.bSame(&xSymbol_arg_stripped))
+      return xKid.p_expr();
   }
 
   return nullptr;

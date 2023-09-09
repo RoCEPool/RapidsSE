@@ -96,10 +96,9 @@ namespace STORE
     static bool bIs_Xrf_No(Stz* szChrSeq);          // #n
 
     static bool bIsItemised(Stz* szArg);
+    static void vItemStrip(String* psArg);
 
     static bool bPossibleNm(Stz* szChrSeq);
-
-    static void vStripSuffix_itemise(String* psArg);
 
     static eCT  eTo_eCT_str(Stz* szType);
     static eCT  eTo_eCT_char(Stz* szType);
@@ -179,6 +178,8 @@ namespace STORE
     bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
     bool bIs_Xrf_No(void);          // #n
+
+    void vItemStrip(void);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 

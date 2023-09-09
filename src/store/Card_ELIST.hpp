@@ -23,6 +23,7 @@ namespace STORE
     i8 nExpr(void);
     Card_Expr* pFind_expr_Of_symbol(Symbol* pSymbol);
     Card_Expr* pFind_expr_By_as(Symbol* pSymbol);
+    Card_Expr* pFind_expr_By_as_stripItem(Symbol* pSymbol);
     Card_Expr* pFind_expr_By_Ordinal(Symbol* pSymbol);
 
     Card_Expr* pGetExpr(i8 i_Expr);

@@ -70,8 +70,14 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
          (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
-      pCI->G.p_indexJoin->vDump(__func__);
-      vDebugPoint();
+      //pCI->G.p_indexJoin->vDump(__func__);
+
+      pCI->G.p_projection  = pCI->G.p_indexJoin->pSub_projection();
+      if ((pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_as_stripItem(p_term->pSymbol()))) {
+        pCI->G.p_as = pCI->G.p_expr->pSub_as();
+        p_term->pSymbol()->vSym(pCI->G.p_as->pSymbol());
+      }
+      return C_CONTINUE_RECURSION;
     }
     else
     if (Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pCI->pAncestorFind(CK_BOOLCALC))) {
