@@ -1330,6 +1330,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SUBSET:           return G.p_subSet;
 
     case CK_TABLE:            return G.p_table;
+    case CK_TABLEINFO:        return G.p_tableInfo;
     case CK_TABLELIST:        return G.p_tableList;
     case CK_TABLENM:          return G.p_tableNm;
     case CK_TABLEPTN:         return G.p_tablePtn;
@@ -1559,9 +1560,10 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STREAMPTN:        G.p_streamPtn         = _pCard_StreamPtn(pCard); break;
     case CK_STREAMSET:        G.p_streamSet         = _pCard_StreamSet(pCard); break;
     case CK_SUBSET:           G.p_subSet            = _pCard_SubSet(pCard); break;
+
     case CK_TABLE:            G.p_table             = _pCard_Table(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-
+    case CK_TABLEINFO:        G.p_tableInfo         = _pCard_TableInfo(pCard); break;
     case CK_TABLELIST:        G.p_tableList         = _pCard_TableList(pCard); break;
     case CK_TABLENM:          G.p_tableNm           = _pCard_TableNm(pCard); break;
     case CK_TABLEPTN:         G.p_tablePtn          = _pCard_TablePtn(pCard); break;
@@ -1769,6 +1771,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_subSet           = nullptr;
 
   G.p_table            = nullptr;
+  G.p_tableInfo        = nullptr;
   G.p_tableList        = nullptr;
   G.p_tableNm          = nullptr;
   G.p_tablePtn         = nullptr;
@@ -2685,10 +2688,13 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_SUBSET:
         G.p_subSet->vValidate(this, iDepth, pCard);
         break;
+
       case CK_TABLE:
         G.p_table->vValidate(this, iDepth, pCard);
         break;
-
+      case CK_TABLEINFO:
+        G.p_tableInfo->vValidate(this, iDepth, pCard);
+        break;
       case CK_TABLELIST:
         G.p_tableList->vValidate(this, iDepth, pCard);
         break;
@@ -2718,6 +2724,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_WHERE:
         G.p_where->vValidate(this, iDepth, pCard);
         break;
+
       default:
         NEVER_REACH
     }

@@ -112,6 +112,7 @@ enum eCK : i8 // card kind
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
+  /* */ CK_TABLEINFO,
   /* */ CK_TABLELIST,
   /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,

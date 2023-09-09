@@ -2719,19 +2719,6 @@ Card_StreamPtn* Card::pSub_streamPtn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_TableSize.hpp"
-Card_TableSize* Card::pSub_tableSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_TableSize* p_size =
-      _pCard_TableSize(pFindSubCard(CK_TABLESIZE));
-  return p_size;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Table.hpp"
 Card_Table* Card::pSub_table(void)
 {
@@ -2740,6 +2727,19 @@ Card_Table* Card::pSub_table(void)
   Card_Table* p_table =
       _pCard_Table(pFindSubCard(CK_TABLE));
   return p_table;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_TableInfo.hpp"
+Card_TableInfo* Card::pSub_tableInfo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TableInfo* p_tableInfo =
+      _pCard_TableInfo(pFindSubCard(CK_TABLEINFO));
+  return p_tableInfo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2766,6 +2766,19 @@ Card_TablePtn* Card::pSub_tablePtn(void)
   Card_TablePtn* p_tablePtn =
       _pCard_TablePtn(pFindSubCard(CK_TABLEPTN));
   return p_tablePtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_TableSize.hpp"
+Card_TableSize* Card::pSub_tableSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_TableSize* p_size =
+      _pCard_TableSize(pFindSubCard(CK_TABLESIZE));
+  return p_size;
 }
 
 /*----------------------------------------------------------------------------*/

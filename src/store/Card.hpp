@@ -133,6 +133,7 @@ namespace STORE
   class Card_SubSet;
 
   class Card_Table;
+  class Card_TableInfo;
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
@@ -466,6 +467,7 @@ namespace STORE
     Card_StreamPtn*     pSub_streamPtn(void);
     Card_StreamSet*     pSub_streamSet(void);
     Card_Table*         pSub_table(void);
+    Card_TableInfo*     pSub_tableInfo(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
     Card_TableSize*     pSub_tableSize(void);

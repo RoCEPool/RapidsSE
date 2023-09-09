@@ -122,6 +122,7 @@
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
+#include "Card_TableInfo.hpp"
 #include "Card_TableList.hpp"
 #include "Card_TableNm.hpp"
 #include "Card_TablePtn.hpp"

@@ -115,6 +115,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
+  /* */ "CK_TABLEINFO"_Stz,    // CK_TABLEINFO
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
@@ -243,6 +244,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
+  /* */ "tableInfo"_Stz,       // CK_TABLEINFO
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tableNm"_Stz,         // CK_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
