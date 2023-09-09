@@ -577,6 +577,8 @@ void Card_Deck::vValidate(CardIter* pCI)
   vMarksClearRecursive();
   vMark1Recursive(MARK_UNVALID);
 
+  RASSERT(0 == pCI->nAncestors());
+
   for (Kid xKid(this); xKid.bEach(); /**/) {
 
     Card* pChild = xKid.pChild();
@@ -703,6 +705,8 @@ void Card_Deck::vValidate(CardIter* pCI)
     }
 
   }
+
+  RASSERT(0 == pCI->nAncestors());
 
   vValidationPassed();
 
