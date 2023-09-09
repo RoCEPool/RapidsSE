@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_RowSize.cpp -- Size (of table)                                           */
+/* Card_RowSize.cpp -- Size (of row)                                          */
 /*============================================================================*/
 
 #include "Card_RowSize.hpp"
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_RowSize,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RowSize::Card_RowSize(void)
-: Card_symbol(CK_ROWSIZE, 3)
+: Card_symbol(CK_ROWSIZE, 4)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

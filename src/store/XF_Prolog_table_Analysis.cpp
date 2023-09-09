@@ -110,7 +110,7 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Table Partition Under All Table
+  // Produce Table Info Under All Table
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWith2Sub(CK_FROM, CK_TABLE, CK_TABLENM)) {
 
@@ -128,10 +128,14 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
     m_pCI->G.p_rowSize   = (new Card_RowSize)   ->SYM(SF_INT_LIT,jRowSize);
     m_pCI->G.p_rowCount  = (new Card_RowCount)  ->SYM(SF_INT_LIT,nRowCount);
 
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_tablePtn);
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_tableSize);
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_rowSize);
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_rowCount);
+    m_pCI->G.p_tableInfo = new Card_TableInfo;
+
+    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_tablePtn);
+    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_tableSize);
+    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_rowSize);
+    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_rowCount);
+
+    m_pCI->G.p_table->vAppend(m_pCI->G.p_tableInfo);
   }
 
   m_pCI->vEndTransform();

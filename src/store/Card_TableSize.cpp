@@ -22,7 +22,7 @@ __vDeleteFunction(Card_TableSize,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableSize::Card_TableSize(void)
-: Card_symbol(CK_TABLESIZE, 3)
+: Card_symbol(CK_TABLESIZE, 4)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
