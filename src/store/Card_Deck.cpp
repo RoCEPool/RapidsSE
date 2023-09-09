@@ -540,7 +540,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 
       case CK_FROM:
         pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-        pCI->vPrintBoard(__LINE__);
+        //pCI->vPrintBoard(__LINE__);
         pCI->G.p_from->vUpdate_projection(pCI);
 
         if ((pCI->G.p_filter = pCI->G.p_from->pSub_filter())) {

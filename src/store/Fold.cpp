@@ -199,7 +199,7 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
   RASSERT(CK_FOLD == pCI->G.e_MainCard);
 
   pCI->G.p_stream = new Card_Stream;
-
+  pCI->G.p_fold->vAppend(pCI->G.p_stream);
   pCI->G.p_stream->vAppend(pCI->Prior.m_pProjection->pDupCardRecursive());
 
  // pCI->vRenumberCards();
