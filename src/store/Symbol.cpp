@@ -625,7 +625,14 @@ bool Symbol::bIs_Ivl_Fn(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("extract_year"_Stz))         return true;
+  if ( szArg->bSame("extract_year"_Stz)   ||
+			 szArg->bSame("extract_month"_Stz)  ||
+			 szArg->bSame("extract_day"_Stz)    ||
+			 szArg->bSame("extract_hour"_Stz)   ||
+			 szArg->bSame("extract_minute"_Stz) ||
+			 szArg->bSame("extract_second"_Stz)
+		)
+	return true;
 
   return false;
 }
