@@ -1082,9 +1082,10 @@ void CardIter::vEndTransform(void)
   if (G.pBoard) {
     G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
-    for (Kid xMain(G.pDeck); xMain.bEach(); /**/) {
-      xMain.pChild()->vEnsureFirst(CK_LEVEL);
-      xMain.pChild()->vEnsureLast(CK_CONSTRAINT);
+    for (Kid xDeck(G.pDeck); xDeck.bEach(); /**/) {
+      xDeck.pChild()->vEnsureFirst(CK_LEVEL);
+      xDeck.pChild()->vEnsureLast(CK_CONSTRAINT);
+      xDeck.pChild()->vEnsureLast(CK_NEEDED);
     }
 
     vPrintBoard();
