@@ -827,7 +827,7 @@ O_ORDERPRIORITY   CHAR(15) NOT NULL,
 O_CLERK           CHAR(15) NOT NULL,
 O_SHIPPRIORITY    INTEGER NOT NULL,
 O_COMMENT         VARCHAR(79) NOT NULL
-) partition by (O_CUSTKEY) ;
+) ;
 success
 
 create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
@@ -842,8 +842,6 @@ success
 load orders "../TPCH/SF_0001/orders.csv";
 success
 
-// TODO V2 : ALKA TO LOOK AT (4P)
-/*
 /optimise_passthru
 pipeline unnamed
 begin
@@ -874,7 +872,6 @@ begin
 end ;
 
 rows: 5996
-*/
 
 //------------------------------------------------------------------------------
 // drop the tables

@@ -81,11 +81,8 @@ INCLUDE 'cast.test';
 //INCLUDE 'functions-coal.test';
 //INCLUDE 'functions-concat.test';
 
-// TODO V2 : RAY TO LOOK AT
-/*
 LOG 'functions-extract.test ...';
 INCLUDE 'functions-extract.test';
-*/
 
 //INCLUDE 'functions-floor.test';
 //INCLUDE 'functions-left.test';

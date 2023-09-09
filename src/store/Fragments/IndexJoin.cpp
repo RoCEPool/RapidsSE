@@ -112,7 +112,7 @@ void vIndexJoinContinueLO1(Dynamic_T* aDynamicT) {
 
     aDynamicT->m_iProcessRow = 1;
     bLeftOuterRow = true;
-    printf("leftOuter = 1\n");
+    //printf("leftOuter = 1\n");
 
   // marker-end
 
@@ -362,7 +362,7 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
 
   // check if last row was a leftOuter
   if ( bLeftOuterRow ) {
-    printf("got leftOuter \n");
+    //printf("got leftOuter \n");
     bLeftOuterRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
@@ -437,7 +437,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 
   // check if last row was a leftOuter
   if ( bLeftOuterRow ) {
-    printf("got leftOuter \n");
+    //printf("got leftOuter \n");
     bLeftOuterRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
