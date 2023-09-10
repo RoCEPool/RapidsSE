@@ -43,6 +43,8 @@ ChildCards::~ChildCards(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ChildCards::vAppendChild(Card* pChild)
 {
+  RASSERT(pChild);
+
   vAppend(pChild);
 
   pChild->vAddedCorrectly();
@@ -67,8 +69,7 @@ void ChildCards::vDeleteAllChildren(void)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  while(Card* pChild = pPopChild()) {
-    //vDeleteChild(pChild);
+  while (Card* pChild = pPopChild()) {
     delete pChild;
   }
 }
@@ -78,6 +79,7 @@ void ChildCards::vDeleteAllChildren(void)
 /*----------------------------------------------------------------------------*/
 void ChildCards::vDeleteChild(Card* pChild)
 {
+  RASSERT(pChild);
 
   RASSERT(bRemoveChild(pChild));
 
@@ -89,6 +91,7 @@ void ChildCards::vDeleteChild(Card* pChild)
 /*----------------------------------------------------------------------------*/
 void ChildCards::vDeleteSub(Card* pSub)
 {
+  RASSERT(pSub);
 
   vRemoveSub(pSub);
 
@@ -374,7 +377,6 @@ Card* ChildCards::pPeekChild(void)
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pPeekChild_last(void)
 {
-
   i8 i_Last = nChildCards() - 1;
   if (i_Last < 0)
     return nullptr;
@@ -389,12 +391,12 @@ Card* ChildCards::pPeekChild_last(void)
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pPlopChild(void)
 {
-
   i8 nChildren = nChildCards();
   if (! nChildren)
     return nullptr;
 
   Card* pChild = pGetChild(nChildren-1);
+  RASSERT(pChild);
   vRemoveChild(pChild);
 
   return pChild;
@@ -405,10 +407,13 @@ Card* ChildCards::pPlopChild(void)
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pPopChild(void)
 {
-  Card* pChild = pPop();
+  i8 nChildren = nChildCards();
+  if (! nChildren)
+    return nullptr;
 
-  if (pChild)
-    pChild->vRemovedCorrectly();
+  Card* pChild = pPop();
+  RASSERT(pChild);
+  pChild->vRemovedCorrectly();
 
   return pChild;
 }
@@ -419,6 +424,8 @@ Card* ChildCards::pPopChild(void)
 Card* ChildCards::pPopChildIf(Symbol xSymbol)
 {
   Card* pChild = pPeekChild();
+  if (! pChild)
+    return nullptr;
 
   if (! pChild->bSameSymbol(&xSymbol))
     return nullptr;
@@ -432,9 +439,12 @@ Card* ChildCards::pPopChildIf(Symbol xSymbol)
 bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
 {
   Card* pChild = pPeekChild();
+  if (! pChild)
+    return false;
 
-  if (pChild && pChild->bIsCard(eCard) && pChild->bSameSymbol(&xSymbol)) {
+  if (pChild->bIsCard(eCard) && pChild->bSameSymbol(&xSymbol)) {
     pChild = pPop();
+    RASSERT(pChild);
     delete pChild;
     return true;
   }
@@ -447,6 +457,8 @@ bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
 /*----------------------------------------------------------------------------*/
 void ChildCards::vPushChild(Card* pChild)
 {
+  RASSERT(pChild);
+
   vPush(pChild);
 
   pChild->vAddedCorrectly();
@@ -457,10 +469,15 @@ void ChildCards::vPushChild(Card* pChild)
 /*----------------------------------------------------------------------------*/
 bool ChildCards::bRemoveChild(Card* pChild)
 {
+  RASSERT(pChild);
+
   if (C_UNKNOWN == iFindChild(pChild))
     return false;
 
   vRemove(pChild);
+
+  pChild->vRemovedCorrectly();
+
   return true;
 }
 
@@ -470,6 +487,8 @@ bool ChildCards::bRemoveChild(Card* pChild)
 void ChildCards::vRemoveChild(Card* pChild)
 {
   //RASSERT(C_UNKNOWN != iFindChild(pChild));
+
+  RASSERT(pChild);
 
   vRemove(pChild);
 
@@ -483,6 +502,8 @@ void ChildCards::vRemoveSub(Card* pSubCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
+  RASSERT(pSubCard);
+
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
   while (pSubCard_I->bHasNext()) {
@@ -491,7 +512,6 @@ void ChildCards::vRemoveSub(Card* pSubCard)
     if (pSub_test == pSubCard) {
       RASSERT(bRemoveChild(pSub_test));
       pSub_test->vRemovedCorrectly();
-
       break;
     }
     pSub_test->vRemoveSub(pSubCard);
@@ -536,7 +556,7 @@ void ChildCards::vRotateFirst(Card* pChild)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vRemoveChild(pChild);
-  vPush(pChild);
+  vPushChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/

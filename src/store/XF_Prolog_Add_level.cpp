@@ -71,7 +71,7 @@ void XF_Prolog_Add_level::vXF_Add_level(void)
       continue;
 
     p_level = new Card_Level(AL_PARTITION);
-    m_pCI->G.p_MainCard->vPush(p_level);
+    m_pCI->G.p_MainCard->vPushChild(p_level);
   }
 
   m_pCI->vEndTransform();
