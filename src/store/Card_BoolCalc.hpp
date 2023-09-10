@@ -4,11 +4,12 @@
 #pragma once
 
 #include "Card_PRED.hpp"
+#include "Card_TLIST.hpp"
 #include "Card_Correlation.hpp"
 
 namespace STORE
 {
-  class Card_BoolCalc : public Card_symbol<Card_BoolCalc>
+  class Card_BoolCalc : public Card_TLIST
   {  
   public:
     void* operator new(size_t);
