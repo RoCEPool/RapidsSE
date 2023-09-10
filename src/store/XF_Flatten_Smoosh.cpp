@@ -68,7 +68,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 //  pCI->G.p_where->vRemoveSub(pCI->G.p_constraint);
 //
 //  //pCI->G.p_filter = Card_Filter::pNew(p_constraint);
-//  pCI->G.p_table->vAppend(pCI->G.p_constraint);
+//  pCI->G.p_table->vAppendChild(pCI->G.p_constraint);
 
   Card_From* p_from_exists = pCI->G.p_from;
   pCI->G.pDeck->vRemove(p_from_exists);
@@ -103,11 +103,11 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   if (pCI->G.p_cmpPred->pSymbol()->bSame("in"_Stz) ||
       pCI->G.p_cmpPred->pSymbol()->bSame("exists"_Stz))
-    p_from_exists->vAppend(new Card_KeyExists);
+    p_from_exists->vAppendChild(new Card_KeyExists);
   else
   if (pCI->G.p_cmpPred->pSymbol()->bSame("notIn"_Stz) ||
       pCI->G.p_cmpPred->pSymbol()->bSame("notExists"_Stz))
-    p_from_exists->vAppend(new Card_KeyNotExists);
+    p_from_exists->vAppendChild(new Card_KeyNotExists);
 
   pCI->Prior.m_pProjection = p_projection_table;
   pCI->G.p_cmpPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);

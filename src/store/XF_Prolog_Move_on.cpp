@@ -89,7 +89,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
       if (m_pCI->G_bEachMain_reverse_b(CK_SCAN)) {
         p_scan_over = m_pCI->G.p_scan;
         m_pCI->G_vNewMember(CK_OUTERJOIN, Symbol(SF_CROSS,"LEFT_OUTER"_Stz));
-        m_pCI->G.p_scan->vAppend(m_pCI->G.p_outerJoin);
+        m_pCI->G.p_scan->vAppendChild(m_pCI->G.p_outerJoin);
       }
       m_pCI->G_vPopIter();
     }

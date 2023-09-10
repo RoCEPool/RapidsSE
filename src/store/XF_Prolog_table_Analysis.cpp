@@ -130,12 +130,12 @@ void XF_Prolog_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 
     m_pCI->G.p_tableInfo = new Card_TableInfo;
 
-    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_tablePtn);
-    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_tableSize);
-    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_rowSize);
-    m_pCI->G.p_tableInfo->vAppend(m_pCI->G.p_rowCount);
+    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_tablePtn);
+    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_tableSize);
+    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_rowSize);
+    m_pCI->G.p_tableInfo->vAppendChild(m_pCI->G.p_rowCount);
 
-    m_pCI->G.p_table->vAppend(m_pCI->G.p_tableInfo);
+    m_pCI->G.p_table->vAppendChild(m_pCI->G.p_tableInfo);
   }
 
   m_pCI->vEndTransform();
