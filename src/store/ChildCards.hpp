@@ -22,6 +22,8 @@ namespace STORE
     ChildCards(void);
    ~ChildCards(void) noexcept(false);
 
+    void vAppendChild(Card* pChild);
+
     i8   nChildCards(void);
 
     void vDeleteAllChildren(void);
