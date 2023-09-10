@@ -147,7 +147,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iLastPrint  = C_UNKNOWN;
   m_eFirst = CK_NONE;
 
-  m_bAddedCorrectly = true;
+  m_bAddedCorrectly   = true;
   m_bRemovedCorrectly = true;
 
   m_iItemise = C_UNKNOWN;
@@ -1426,6 +1426,8 @@ void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
   UNUSED(pParent);
+
+  RASSERT(m_bAddedCorrectly);
 
   RASSERT(bFixedDepth(iDepth));
 
