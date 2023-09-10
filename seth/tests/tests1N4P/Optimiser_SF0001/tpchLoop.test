@@ -105,9 +105,9 @@ INCLUDE 'OptQ12.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 13...';
-//INCLUDE 'OptQ13.test';
-//INCLUDE 'sleep.test';
+LOG 'Running tpch query 13...';
+INCLUDE 'OptQ13.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 14...';

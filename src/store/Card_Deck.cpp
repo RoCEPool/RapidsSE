@@ -572,7 +572,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
     }
 
-    pCI->vPrintBoard(__LINE__);
+    //pCI->vPrintBoard(__LINE__);
   }
 
   pCI->vValidateBench();

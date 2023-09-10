@@ -68,7 +68,7 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax18.sql
 // Result file: ../queries/aggs/max/results/max18.res
-// TODO V2 : RAY TO LOOK AT
+// TODO V2 : RAY TO LOOK AT (_ray124)
 /*
 select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
 rows:
@@ -77,12 +77,9 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax20.sql
 // Result file: ../queries/aggs/max/results/max20.res
-// TODO V2 : ALKA TO LOOK AT
-/*
 select max(ucolvc), max(colb1) from table1;
 rows:
   ('zzz', 'yellow')
-*/
 
 // Source file: ../queries/aggs/max/rmax17.sql
 // Result file: ../queries/aggs/max/results/max17.res

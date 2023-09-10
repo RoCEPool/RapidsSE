@@ -112,12 +112,9 @@ INCLUDE 'query12.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2 : ALKA TO LOOK AT
-/*
 LOG 'Running tpch query 13...';
 INCLUDE 'query13.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 14...';
