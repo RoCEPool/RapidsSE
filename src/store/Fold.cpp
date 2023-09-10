@@ -314,17 +314,10 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szSymbol(SF_NONE));
  // pCI->vPrintBoard(__LINE__);
 
-  pCI->G.pDeck->vCheckCorrectness();
-
   pCI->G_vNewMember(CK_FOLD, Symbol(SF_FLD_NM,szFold));
-  pCI->G.pDeck->vCheckCorrectness();
   pCI->G.pDeck->vPushChild(pCI->G.p_fold);
   pCI->G.p_level = new Card_Level(AL_NONE);
-  pCI->G.pDeck->vCheckCorrectness();pCI->G.p_fold->vAppendChild(pCI->G.p_level);
-  pCI->G.pDeck->vCheckCorrectness();
-
- // pCI->vPrintBoard(__LINE__);
-
+  pCI->G.p_fold->vAppendChild(pCI->G.p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get copy of sq and push before mq
@@ -334,8 +327,6 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
     vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szSymbol(SF_NONE));
     NEVER_REACH
   }
-
-  pCI->G.pDeck->vCheckCorrectness();
 
   pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
@@ -347,28 +338,17 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   pCI->G_vPopIter();
 
   pCI->G.pDeck->vPushChild(pCI->Sqy.m_pCard_sqCopy);
-  pCI->G.pDeck->vCheckCorrectness();
-
   pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->Sqy.m_pCard_sqCopy);
   DELETE_CARD(pCI->Sqy.m_pCard_sqCopy);
 
-  pCI->G.pDeck->vCheckCorrectness();
-
   pCI->G.pDeck->vRemoveChild(pCI->G.p_call);
   DELETE_CARD(pCI->G.p_call);
-
-  pCI->G.pDeck->vCheckCorrectness();
-
-  // pCI->vRenumberCards();
- // pCI->vPrintBoard(__LINE__);
 
   // 7) derive the fold (SQ result) expr
   pCI->vClearRestart();
   if (pCI->G_bEachMain(CK_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldProjection_F(pCI);
-    pCI->G.pDeck->vCheckCorrectness();
-
   }
 
   return pCarryForward;

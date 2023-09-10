@@ -88,10 +88,6 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward = pFold->pFold_from("From"_Stz,m_pCI);
 
-  m_pCI->G.pDeck->vCheckCorrectness();
-
- // m_pCI->vPrintBoard(__LINE__);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
@@ -99,12 +95,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vCheckCorrectness();
-
   m_pCI->G.pDeck->vMarksClearRecursive();
-
- // m_pCI->vPrintBoard(__LINE__);
-
 
   // todo: discuss with Alka
   m_pCI->vClearRestart();
@@ -118,7 +109,6 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   }
 
   m_pCI->vEndTransform();
-//vValidateBench();
 
   delete pSmooth;
   delete pCarryForward;
