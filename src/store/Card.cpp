@@ -306,11 +306,11 @@ eAL Card::e_stageTopo_To_aggLevel(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /* card has been appended correctly                                           */
 /*----------------------------------------------------------------------------*/
-void Card::vAppendedCorrectly(void)
+void Card::vAppendedCorrectly(bool bAppended)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_bAppendedCorrectly = true;
+  m_bAppendedCorrectly = bAppended;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1270,11 +1270,11 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* card has been removed correctly                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vRemovedCorrectly(void)
+void Card::vRemovedCorrectly(bool bRemoved)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_bRemovedCorrectly = true;
+  m_bRemovedCorrectly = bRemoved;
 }
 
 /*----------------------------------------------------------------------------*/

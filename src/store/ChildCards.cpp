@@ -44,6 +44,8 @@ ChildCards::~ChildCards(void) noexcept(false)
 void ChildCards::vAppendChild(Card* pChild)
 {
   vAppend(pChild);
+
+  pChild->vAppendedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,6 +392,9 @@ Card* ChildCards::pPopChild(void)
 {
   Card* pChild = pPop();
 
+  if (pChild)
+    pChild->vRemovedCorrectly();
+
   return pChild;
 }
 
@@ -458,6 +463,8 @@ void ChildCards::vRemoveChild(Card* pChild)
   //RASSERT(C_UNKNOWN != iFindChild(pChild));
 
   vRemove(pChild);
+
+  pChild->vRemovedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -470,13 +477,15 @@ void ChildCards::vRemoveSub(Card* pSubCard)
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
   while (pSubCard_I->bHasNext()) {
-    Card* pTestCard = pSubCard_I->pNext();
+    Card* pSub_test = pSubCard_I->pNext();
 
-    if (pTestCard == pSubCard) {
-      RASSERT(bRemoveChild(pTestCard));
+    if (pSub_test == pSubCard) {
+      RASSERT(bRemoveChild(pSub_test));
+      pSub_test->vRemovedCorrectly();
+
       break;
     }
-    pTestCard->vRemoveSub(pSubCard);
+    pSub_test->vRemoveSub(pSubCard);
   }
 
   delete pSubCard_I;
@@ -491,7 +500,7 @@ void ChildCards::vReplaceChildWithItsSubs(Card* pChild)
 
   Card* pAfter = pChild;
 
-  while (Card* pSub = pChild->pPop()) {
+  while (Card* pSub = pChild->pPopChild()) {
     vInsertAfter(pSub, pAfter);
     pAfter = pSub;
   }
@@ -507,6 +516,7 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   vReplace(pChild, pWith);
+  pChild->vRemovedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -528,7 +538,7 @@ void ChildCards::vRotateLast(Card* pChild)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vRemoveChild(pChild);
-  vAppend(pChild);
+  vAppendChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,7 +549,7 @@ void ChildCards::vTransferChildren(Card* pFrom)
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   while (Card* pPoppedChild = pFrom->pPop())
-    vAppend(pPoppedChild);
+    vAppendChild(pPoppedChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -549,8 +559,8 @@ void ChildCards::vTransferChildren(Card* pFrom, eSF eSymbol_limit)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  while (Card *pPoppedChild = pFrom->pPop()) {
-    vAppend(pPoppedChild);
+  while (Card *pPoppedChild = pFrom->pPopChild()) {
+    vAppendChild(pPoppedChild);
 
     if (pPoppedChild->pSymbol()->bFormIs(eSymbol_limit))
       break;

@@ -301,7 +301,7 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vAppendedCorrectly(void);
+    void vAppendedCorrectly(bool bAppended=true);
     Card* pAppendNewCard(eCK eCard);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
@@ -370,7 +370,7 @@ namespace STORE
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
 
-    void vRemovedCorrectly(void);
+    void vRemovedCorrectly(bool bRemoved=true);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
