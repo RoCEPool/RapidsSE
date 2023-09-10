@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _ray123                                                                    */
+/*============================================================================*/
+
+//NOTE: select from subqry
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_pcol9 on table9(pcol9);
+Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+
+/transliterated
+/weaved
+/pipeline_def
+select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
