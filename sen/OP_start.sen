@@ -147,6 +147,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR ...                                         */
+/*----------------------------------------------------------------------------*/
+: start_InternalError \handler
+
+  "Operand:- start_InternalError EV_M_INTERNALERROR" .verbose
+  PipeIn[].delete
+
+  // toggle to default abnormal handlers for all data operands
+  "default_abnormalHandlers" FIND execute
+
+  // mark pipeline as being cancelled
+  true [pipeline].cancelled!
+
+  Marker[].newCancelling
+  Marker[].pipeOut
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_LOWMEMORY ...                                             */
 /*----------------------------------------------------------------------------*/
 : start_LowMemory \handler
@@ -223,6 +244,7 @@
   find: start_EndedMarker       EV_M_ENDED       [op].handler!
   find: start_ErroredMarker     EV_M_ERRORED     [op].handler!
   find: start_ExitedMarker      EV_M_EXITED      [op].handler!
+  find: start_InternalError     EV_M_INTERNALERROR   [op].handler!
   find: start_LeavingMarker     EV_M_LEAVING     [op].handler!
   find: start_LeftMarker        EV_M_LEFT        [op].handler!
   find: start_LowMemory         EV_M_LOWMEMORY   [op].handler!

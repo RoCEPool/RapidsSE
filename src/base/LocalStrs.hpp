@@ -7,14 +7,14 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_STRS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(LocalStr);
 
   class LocalVars;
 
   class LocalStrs : public Object
   {
+    static const i8 C_LOCAL_STRS = 16;
+
   public:
-    LocalVars* m_pLocalVars;
     i8         m_i_FirstFree;  // C_UNKNOWN indicates end
     LocalStr   m_xaLocalStr[C_LOCAL_STRS];
 
@@ -25,9 +25,11 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    LocalStrs(LocalVars* pLocalVars);
+    LocalStrs(void);
    ~LocalStrs(void) noexcept(false);
-      
+
+    static void vRepair(Object* pObject);
+
     LocalStr* axAllot(void);
     void     vRevert(LocalStr* axLocalStr);
 

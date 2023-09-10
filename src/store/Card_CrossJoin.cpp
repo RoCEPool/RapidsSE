@@ -41,24 +41,14 @@ Card_CrossJoin::~Card_CrossJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_CrossJoin::vIndividuateFilter(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    Board::vIndividuate_crossJoin_filter(pCI);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* table morphs to crossJoin                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 {
   _static_
     //Board::vChoose_index_For_crossJoin(pCI);
+
+  pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
 
   pCI->G_vNewMember(CK_CROSSJOIN);
   pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
@@ -77,6 +67,8 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 
   pCI->G_vNewMember(CK_TERM,xSymbol_idxColOdn);
   pCI->G.p_bound->vAppend(pCI->G.p_term);
+
+  pCI->G.p_indexList->vChoose_index_For_crossJoin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,9 +95,12 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+
   pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 
@@ -118,6 +113,18 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
   pCI->vPrintBoard();
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_CrossJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

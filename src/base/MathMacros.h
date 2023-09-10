@@ -205,14 +205,14 @@
 
 #define _NEG_BCD(eErrorCode)                                               \
   {                                                                        \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
     if (eErrorCode != EC_NONE ||                                           \
        bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                  \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      bcdArg2.m_iMantissa = - bcdArg2.m_iMantissa;                         \
-      *paW++ = bcdArg2.m_iAsI8;                                            \
+      bcdArg1.m_iMantissa = - bcdArg1.m_iMantissa;                         \
+      *paW++ = bcdArg1.m_iAsI8;                                            \
     }                                                                      \
   }
 
@@ -329,10 +329,10 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                           \
+                                                                           \
     if (ivlArg2.m_xIvl.m_bIsNeg)                                           \
-      iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                  \
-    else                                                                   \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      iArg2 = (-1) * iArg2;                                                \
                                                                            \
     struct tm xDateTime = {0} ;                                            \
                                                                            \
@@ -420,10 +420,10 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
+    iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                           \
+                                                                           \
     if (ivlArg1.m_xIvl.m_bIsNeg)                                           \
-      iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                  \
-    else                                                                   \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      iArg1 = (-1) * iArg1;                                                \
                                                                            \
     struct tm xDateTime = {0} ;                                            \
                                                                            \
@@ -561,10 +561,10 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
+    iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                           \
+                                                                           \
     if (ivlArg2.m_xIvl.m_bIsNeg)                                           \
-      iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                  \
-    else                                                                   \
-      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      iArg2 = (-1) * iArg2;                                                \
                                                                            \
     struct tm xDateTime = {0} ;                                            \
                                                                            \
@@ -925,10 +925,10 @@
       iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
                                                                            \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+        iArg1 = (-1) * iArg1;                                              \
                                                                            \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+        iArg2 = (-1) * iArg2;                                              \
                                                                            \
       i8 iMicros = iArg1 + iArg2;                                          \
                                                                            \
@@ -972,10 +972,10 @@
       iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
                                                                            \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+        iArg1 = (-1) * iArg1;                                              \
                                                                            \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
+        iArg2 = (-1) * iArg2;                                              \
                                                                            \
       i8 iMonths = iArg1 + iArg2;                                          \
       eErrorCode = _OUT_OF_RANGE_IVY;                                      \
@@ -1546,10 +1546,10 @@
               (xTme1.m_uSecond*_C_1M) +                                    \
               xTme1.m_uMicro;                                              \
                                                                            \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
-      else                                                                 \
-        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+        iArg2 = (-1) * iArg2;                                              \
                                                                            \
      iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                    \
      i8 iMicros = iArg1 + iArg2;                                           \
@@ -1575,10 +1575,11 @@
               (xTme2.m_uSecond*_C_1M) +                                    \
               xTme2.m_uMicro;                                              \
                                                                            \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+        iArg1 = (-1) * iArg1;                                              \
       else                                                                 \
-        iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
      iArg1 %= _C_SECS_PER_DAY  * _C_1M;                                    \
      i8 iMicros = iArg1 + iArg2;                                           \
@@ -1604,10 +1605,11 @@
               (xTme1.m_uSecond*_C_1M) +                                    \
               xTme1.m_uMicro;                                              \
                                                                            \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+        iArg2 = (-1) * iArg2;                                              \
       else                                                                 \
-        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
       iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                   \
                                                                            \
@@ -1683,10 +1685,10 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
-      else                                                                 \
-        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+        iArg2 = (-1) * iArg2;                                              \
                                                                            \
       struct tm xDateTime = {0} ;                                          \
                                                                            \
@@ -1731,10 +1733,10 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                \
-      else                                                                 \
-        iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+        iArg1 = (-1) * iArg1;                                              \
                                                                            \
       struct tm xDateTime = {0} ;                                          \
                                                                            \
@@ -1880,10 +1882,9 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
-      else                                                                 \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+      if ( ! ivlArg2.m_xIvl.m_bIsNeg )                                     \
+        iArg2 = (-1) * iArg2;                                              \
                                                                            \
       struct tm xDateTime = {0} ;                                          \
                                                                            \

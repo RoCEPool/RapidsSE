@@ -19,7 +19,6 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "CrwTablePtn.hpp"
-#include "RowTablePtn.hpp"
 #include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +71,7 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 }
-// TODO: Remove CN_ROWTABLEPTN from this file
+
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -83,9 +82,6 @@ TablePtn::~TablePtn(void) noexcept(false)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       delete m_pCrwTablePtn;
-      break;
-    case CN_ROWTABLEPTN:
-      delete m_pRowTablePtn;
       break;
     default:
       NEVER_REACH;
@@ -110,10 +106,6 @@ void TablePtn::vCleanup(void)
     case CN_CRWTABLEPTN:
       m_pCrwTablePtn->vDropAllPagingLocks();
       m_pCrwTablePtn->vCleanup();
-      break;
-    case CN_ROWTABLEPTN:
-      m_pRowTablePtn->vDropAllPagingLocks();
-      m_pRowTablePtn->vCleanup();
       break;
     default:
       NEVER_REACH;
@@ -241,18 +233,6 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
       break;
     }
 
-    case CN_ROWTABLEPTN: {
-      RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
-      if (pRowBuffer->nRows() == 0) {
-        delete pRowBuffer;
-        return;
-      }
-      m_pRowTablePtn->vAppendBuffer(pRowBuffer);
-      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
-      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
-      break;
-    }
-
     default: NEVER_REACH;
   }
 }
@@ -269,9 +249,6 @@ i8 TablePtn::nBuffers(void)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       nBufferCount = m_pCrwTablePtn->nBuffers();
-      break;
-    case CN_ROWTABLEPTN:
-      nBufferCount = m_pRowTablePtn->nBuffers();
       break;
     default:
       NEVER_REACH;
@@ -291,8 +268,21 @@ void TablePtn::vDump(void)
     case CN_CRWTABLEPTN:
       m_pCrwTablePtn->vDump();
       break;
-    case CN_ROWTABLEPTN:
-      m_pRowTablePtn->vDump();
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the table                                                             */
+/*----------------------------------------------------------------------------*/
+BufferId TablePtn::oExtractBufferId(void* pItemAddr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return m_pCrwTablePtn->oExtractBufferId(pItemAddr);
       break;
     default:
       NEVER_REACH;
@@ -352,6 +342,22 @@ void TablePtn::vInsertIndexEntries(CrwBuffer *pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
+void* TablePtn::pPdsCrwTablePtn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return m_pCrwTablePtn->pPds();
+    default:
+      NEVER_REACH;
+      return nullptr;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert entries into given index for all rows in this partition             */
+/*----------------------------------------------------------------------------*/
 bool TablePtn::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
@@ -362,9 +368,6 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       b = m_pCrwTablePtn->bPopulateIndexTree(pIndexTree);
-      break;
-    case CN_ROWTABLEPTN:
-      NEVER_REACH;
       break;
     default:
       NEVER_REACH;
@@ -380,15 +383,9 @@ void TablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  CrwBuffer* pCrwRootBuffer = nullptr;
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
-      pCrwRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
-      if(pCrwRootBuffer)
-        pCrwRootBuffer->vAnalyze(nBuffers, nRows, jSumRowBytes);
-      break;
-    case CN_ROWTABLEPTN:
-      NEVER_REACH
+      m_pCrwTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
       break;
     default: NEVER_REACH;
   }
@@ -416,8 +413,6 @@ DataBuffer* TablePtn::pRootBuffer(void)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       return m_pCrwTablePtn->pRootCrwBuffer();
-    case CN_ROWTABLEPTN:
-      return m_pRowTablePtn->pRootRowBuffer();
     default: NEVER_REACH;
   }
 }
@@ -431,8 +426,6 @@ BufferId TablePtn::oRootBufferId(void)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       return m_pCrwTablePtn->oRootCrwBufferId();
-    case CN_ROWTABLEPTN:
-      return m_pRowTablePtn->oRootRowBufferId();
     default: NEVER_REACH;
   }
 }
@@ -445,16 +438,6 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   return m_pCrwTablePtn->pRootCrwBuffer();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get root row buffer                                                        */
-/*----------------------------------------------------------------------------*/
-RowBuffer* TablePtn::pRootRowBuffer(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
-  return m_pRowTablePtn->pRootRowBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,9 +460,6 @@ void TablePtn::vTruncate(void)
         }
       }
       break;
-    case CN_ROWTABLEPTN:
-      // Row buffer doesn't have index
-      break;
     default:
       NEVER_REACH;
   }
@@ -490,9 +470,6 @@ void TablePtn::vTruncate(void)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       m_pCrwTablePtn->vTruncate();
-      break;
-    case CN_ROWTABLEPTN:
-      m_pRowTablePtn->vTruncate();
       break;
     default: NEVER_REACH;
   }
@@ -538,9 +515,6 @@ bool TablePtn::bVerifyTable(void)
     case CN_CRWTABLEPTN:
       bVerify = m_pCrwTablePtn->bVerifyTable();
       break;
-    case CN_ROWTABLEPTN:
-      bVerify = m_pRowTablePtn->bVerifyTable();
-      break;
     default:
       NEVER_REACH;
   }
@@ -558,10 +532,6 @@ void TablePtn::vVisualizeTable(void)
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       m_pCrwTablePtn->vVisualizeTable();
-      break;
-    case CN_ROWTABLEPTN:
-      m_pRowTablePtn->vVisualizeTable();
-
       break;
     default: NEVER_REACH;
   }

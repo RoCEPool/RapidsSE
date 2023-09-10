@@ -19,7 +19,7 @@ __vDeleteFunction(Card_OrdAgg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::Card_OrdAgg(void)
-: Card_Project(CK_ORDAGG)
+: Card_AGG(CK_ORDAGG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -81,7 +81,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
 
@@ -90,6 +90,8 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 
@@ -130,6 +132,18 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+  pSub_projection()->vValidate(pCI,iDepth+1,this);
+}
 
 /*============================================================================*/
 /* end                                                                        */

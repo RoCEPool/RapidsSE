@@ -101,6 +101,9 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll, bool 
   else
     p_joinPermSeq_picked = p_joinPermAll->pHighestCost();
 
+  if (! p_joinPermSeq_picked)
+    return nullptr;
+
   Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq_picked);
 
   return p_joinOrdering;

@@ -30,7 +30,7 @@ select s_suppkey, s_name, s_address, s_phone, total_revenue
   */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -142,6 +142,7 @@ begin
 end ;
 */
 
+/optimise_passthru 
 pipeline Query15
  begin
    stage S01 on origin :

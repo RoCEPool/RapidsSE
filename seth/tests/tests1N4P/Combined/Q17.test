@@ -47,6 +47,7 @@ success
 load part "../TPCH/SF_0001/part.csv";
 success
 
+/optimise_passthru 
 pipeline Q17
 begin
 

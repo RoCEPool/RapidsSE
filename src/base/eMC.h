@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
+//#include "TccStuff.h"
 
 //enum eMC // : u1 // meta code
 //{

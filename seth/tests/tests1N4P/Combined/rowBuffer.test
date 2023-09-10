@@ -29,6 +29,7 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -59,6 +60,7 @@ pipeline unnamed
  (3,22.00,DATE '1994-01-16','SHIP')
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -86,6 +88,7 @@ rows:
  (3,49.00,DATE '1993-11-09','RAIL')
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -116,6 +119,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :

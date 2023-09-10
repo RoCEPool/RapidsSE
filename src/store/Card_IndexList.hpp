@@ -18,15 +18,22 @@ namespace STORE
 
     static Card_IndexList* pDerive(Table* pTable);
 
-    void vDeleteAll_bounds(void);
-
-    Card_Index* pFindChosenIndex(void);
+    void vChoose_index_For_crossJoin(void);
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
 
+    void vDeleteAll_bounds(void);
+
+    Card_Index* pFindChosenIndex(void);
 
     bool bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred);
 
+    void vTypes_For_stmColOdn(CardIter* pCI);
+
+    bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
+    bool bUsesSqyRsl(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_IndexList* _pCard_IndexList(void* aAddr);

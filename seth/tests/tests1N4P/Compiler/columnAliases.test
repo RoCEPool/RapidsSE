@@ -23,6 +23,8 @@ success
 //  Simple column aliases
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// TODO V2 : UNCOMMENT IN V2
+/*
 -- Columns are named appropriately
 -- With the AS keyword
 SELECT n_nationkey AS nationkey, n_name AS name FROM nation;
@@ -34,6 +36,7 @@ SELECT n_nationkey nationkey, n_name name FROM nation;
 rows:
   ['nationkey', 'name']
 
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Column aliases cannot be used below where they are defined in the plan

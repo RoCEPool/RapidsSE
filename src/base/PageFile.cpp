@@ -4,7 +4,11 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "CmdLineArgs.hpp"
+
 extern AttachMap* gpAttachMap;
+extern CmdLineArgs  gxCmdLineArgs;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -52,10 +56,14 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
   m_uPFIndex = uIndex;
   m_szPFilePath = sPath;
   m_pFile = new File(this);
-  m_uPFSize = C_SIZE_PAGE_FILE;
-  m_uFirstUsableByte = sizeof(C_MAGIC);
+//  m_uPFSize = C_SIZE_PAGE_FILE;
+  m_uPFSize = (u8) gxCmdLineArgs.m_xSysArgs.m_iRegionSize * 10;
+  m_uFirstUsableByte = 0;
   m_uWilderness = 0;
   m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
+  MemLib::vZero(m_caBufferHeader, sizeof(m_caBufferHeader), CN_NONE);
+  m_aHeader = (Header*) & m_caBufferHeader[0];
+  m_pObject = reinterpret_cast<Object*>(m_aHeader);
 
   vInitialise();
 
@@ -91,7 +99,7 @@ void PageFile::vInitFooter(void)
   if (uFooter != C_FOOTER) {
     uFooter = C_FOOTER;
     m_pFile->vSeek(iSeekOffset);
-    bool bResult = m_pFile->bWriteBytes((void*)&uFooter,sizeof(C_FOOTER));
+    bool bResult = m_pFile->bWriteBytes((void*)&uFooter, sizeof(C_FOOTER));
     ASSERT(bResult);
   }
 
@@ -102,15 +110,21 @@ void PageFile::vInitFooter(void)
 /*----------------------------------------------------------------------------*/
 void PageFile::vInitMagic(void)
 {
-
   u8 uMagic = 0;
+  if(m_pFile->iSize() == 0) {
+    uMagic = C_MAGIC;
+    bool bResult = m_pFile->bWriteBytes(&uMagic, sizeof(C_MAGIC));
+    ASSERT(bResult);
+    return;
+  }
+
   m_pFile->vSeekStart();
   m_pFile->nReadBytes(&uMagic, sizeof(C_MAGIC));
 
   if(uMagic != C_MAGIC) {
     uMagic = C_MAGIC;
     m_pFile->vSeekStart();
-    bool bResult = m_pFile->bWriteBytes(&uMagic,sizeof(C_MAGIC));
+    bool bResult = m_pFile->bWriteBytes(&uMagic, sizeof(C_MAGIC));
     ASSERT(bResult);
   }
 
@@ -149,11 +163,9 @@ void PageFile::vInitialise(void)
   // Check if magic header and footer are written to file
   // If not, initialize file
 
-  vInitMagic();
+//  vInitMagic();
 
-  vInitFooter();
-
-  m_pFile->vFlush();
+//  vInitFooter();
 
 //  m_uFirstUsableByte = sizeof(C_MAGIC);
 //
@@ -163,7 +175,7 @@ void PageFile::vInitialise(void)
 
 }
 
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
 /*----------------------------------------------------------------------------*/
 /* get the next available address of the free disk chunk in this page file    */
 /*----------------------------------------------------------------------------*/
@@ -190,7 +202,7 @@ BufferId PageFile::oNextFreeBufferId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the next free subset in this page file                                 */
+/* get the next free subset in this page file and increment the index         */
 /*----------------------------------------------------------------------------*/
 u8 PageFile::uNextFreeSubset(void)
 {
@@ -207,54 +219,44 @@ u8 PageFile::uNextFreeSubset(void)
     return C_DATUM_NULL; // TODO Arjun: this is i8, what u8 value can we send?
   }
 
-  return m_uWilderness;
+  return m_uWilderness++;
 }
 /*----------------------------------------------------------------------------*/
 /* write data buffer to disk                                                  */
 /*----------------------------------------------------------------------------*/
-void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
+void PageFile::vWriteDataBufferToPFile(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Timer oTimer;
+  //Calculate offset withing this pagefile to start reading from
+  BufferId oBufferId = pDataBuffer->oGetBufferId();
 
-  BufferId oBufferId = pRowBuffer->oGetBufferId();
-
-  // Temporary till BufferId subset has correct values
-//  i8 iSeekOffset = m_uFirstUsableByte + (AM::pFileMap()->m_uPageFileSubset * C_SIZE_POOL_BUFFER);
-   i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uSeekOffset * C_SIZE_POOL_BUFFER);
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
   {
     vTrace("Error: writing buffer at %lld may exceed page file size %llu\n"_Stz, iSeekOffset, m_uPFSize);
     return;
   }
-//lock
+
   m_pFile->vSeek(iSeekOffset);
 
-  oTimer.vStart();
+  bool bResult = m_pFile->bWriteBytes((void*)pDataBuffer, sizeof(CrwBuffer));
+  RASSERT(bResult);
 
-  bool bResult = m_pFile->bWriteBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
-  ASSERT(bResult);
-  oTimer.vUpdate();
-//unlock
-  vTrace("Writing data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
-
+#ifdef WITH_PAGING_DEBUG
+  vTrace("Successfully wrote data buffer %p with BufferId %p type %s\n"_Stz, pDataBuffer, oBufferId.m_pvAsAddress, aCN[pDataBuffer->eGetClassNo()]);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* read data buffer from disk                                                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
+DataBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  Timer oTimer;
-
-  // Temporary till BufferId subset has correct values
-//  i8 iSeekOffset = m_uFirstUsableByte + (0 * C_SIZE_POOL_BUFFER);
-
-  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);//TODO Arjun: Check i8 and u8 overflows
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uSeekOffset * C_SIZE_POOL_BUFFER);//TODO Arjun: Check i8 and u8 overflows
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
   {
@@ -262,23 +264,66 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
     return nullptr;
   }
 
-  RowBuffer* pRowBuffer = new RowBuffer;
+  i8 nSizeHeader = sizeof(Object);
 
-//lock
   m_pFile->vSeek(iSeekOffset);
 
-  oTimer.vStart();
+  // Read header information to get the persistent bit
+  bool bResult = m_pFile->nReadBytes((void*)m_aHeader, nSizeHeader);
+  RASSERT(bResult);
+  RASSERT(m_pObject->eGetClassNo() == CN_ROWBUFFER ||
+          m_pObject->eGetClassNo() == CN_CRWBUFFER);
 
-  bool bResult = m_pFile->nReadBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
-// BufferNo and other members of RowBuffer are overwritten
-// Need to update those values
+  // Allocate a Buffer from the Transient or Persistent Large Heap
+  // Depending on the persistent bit
+  void* pPageInBuffer = nullptr;
 
+  if(m_pObject->bGetPersistent()) {
+    pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER, true);
+  } else {
+    pPageInBuffer = Heaps::pAllocate(CN_PAGEINBUFFER, false);
+  }
+  // Note: Allocation metrics will get dirty due to this
+  // When freeing, we will be freeing a Crw or Row buffer instead of CN_PAGEINBUFFER
+
+  // Copy the header into the allocated buffer
+  MemLib::vCopy(pPageInBuffer, m_pObject, nSizeHeader, m_pObject->eGetClassNo());
+
+  // Calculate body address
+  void* pBody = aAdd<void *>(pPageInBuffer, nSizeHeader);
+
+  // Read body
+  i8 nSizeBody = ((i8) sizeof(CrwBuffer)) - nSizeHeader;
+  bResult = m_pFile->nReadBytes((void*)pBody, nSizeBody);
   ASSERT(bResult);
-  oTimer.vUpdate();
-//unlock
-  vTrace("Reading data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
 
-  return pRowBuffer;
+  DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(pPageInBuffer);
+
+  RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
+          pDataBuffer->eGetClassNo() == CN_CRWBUFFER);
+
+  // Re-calculate the BufferNo and set it after it has been overwritten
+  i8 iPoolBufferNo = pDataBuffer->iBufferNo();
+  pDataBuffer->vSetBufferNo(iPoolBufferNo);
+
+  // Reset the bufferId in case it was set to zero during a pageout
+  // TODO: Arjun - Hack remove
+  if(pDataBuffer->oGetBufferId().m_iAsI8 != 0) {
+    RASSERT(pDataBuffer->oGetBufferId().m_pvAsAddress == oBufferId.m_pvAsAddress);
+  } else {
+    pDataBuffer->vSetBufferId(oBufferId.m_pvAsAddress);
+  }
+
+  if(pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+    pCrwBuffer->vRestoreNub();
+//    pCrwBuffer->vDump();
+  }
+
+#ifdef WITH_PAGING_DEBUG
+  vTrace("Successfully read data buffer %p with BufferId %p type %s\n"_Stz, pDataBuffer, oBufferId.m_pvAsAddress, aCN[pDataBuffer->eGetClassNo()]);
+#endif
+  return pDataBuffer;
 
 }
 #endif

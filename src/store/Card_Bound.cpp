@@ -150,6 +150,73 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if relnOp is valid for bound                                          */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
+{
+  _static_
+
+  if (pBound->bSameAs("BOUND"_Stz))
+    if (pRelnOp->bSameAs("="_Stz) || pRelnOp->bSameAs("=="_Stz))
+      return true;
+    else
+      return false;
+  else
+  if (pBound->bSameAs("LBOUND"_Stz))
+    if (pRelnOp->bSameAs(">"_Stz) || pRelnOp->bSameAs(">="_Stz))
+      return true;
+    else
+      return false;
+  else
+  if (pBound->bSameAs("UBOUND"_Stz))
+    if (pRelnOp->bSameAs("<="_Stz) || pRelnOp->bSameAs("<"_Stz))
+      return true;
+    else
+      return false;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this bound logically equivalent to given compare?                       */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bEquivalent(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pBnd_rlnOpr = pSymbol();
+  Symbol* pBnd_idxOdn = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxOdn);
+  Symbol* pBnd_stmOdn = pGetChild(1)->pSymbol();
+
+  Symbol* pCmp_rlnOpr = p_cmpPred->pSymbol();
+  Symbol* pCmp_arg_0  = p_cmpPred->pGetChild(0)->pSymbol();
+  Symbol* pCmp_arg_1  = p_cmpPred->pGetChild(1)->pSymbol();
+
+  if (! pCmp_rlnOpr->bSameAs(pBnd_rlnOpr))
+    return false;
+
+  if (pBnd_stmOdn->bSameAs(pCmp_arg_0) ||
+      pBnd_stmOdn->bSameAs(pCmp_arg_1))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bound::vEnsureTypes_For_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+    xKid.p_term()->vEnsureTypeFor_stmOdn(pCI);
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Bound::pGetTerm(i8 i_Term)
@@ -160,6 +227,23 @@ Card_Term* Card_Bound::pGetTerm(i8 i_Term)
 
   return p_term;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Bound::pGetTerm_last(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Term = nChildCards() - 1;
+  if (i_Term < 0)
+    return nullptr;
+
+  Card_Term* p_term = _pCard_Term(pGetChild((i_Term)));
+
+  return p_term;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -260,6 +344,21 @@ Card_Term* Card_Bound::pGet_tblColOdn(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bUsesSqyRsl(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+    if (xKid.p_term()->bIsStmOdn() && 1 == xKid.p_term()->iGetOdn())
+      return true;
+  }
+
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get $t.c of ebound                                                         */
@@ -274,6 +373,20 @@ Stz* Card_Bound::szGet_tblColOdn(void)
       return xCI.G.p_term->szSymbol();
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(pSymbol()->bIsRelnOp());
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+    xKid.p_term()->vValidate(pCI, iDepth + 1, pParent);
+  }
 }
 
 /*============================================================================*/

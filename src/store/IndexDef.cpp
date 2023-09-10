@@ -23,6 +23,25 @@
 extern EnvFlags gxEnvFlags;
 
 /*----------------------------------------------------------------------------*/
+/* new an indexDef                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_IndexDefNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
+
+  IndexDef* pIndexDef = new IndexDef;
+
+  for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
+    pIndexDef->vAddColumn((Stz*)&pColumnInfo[i_Col].m_cColumnNm[0],
+                           (eCT)pColumnInfo[i_Col].m_iColumnType,
+                           pColumnInfo[i_Col].m_bIsAscending);
+
+    if (pColumnInfo[i_Col].m_bIsAscending == 0)
+      pIndexDef->vHasDescending(true);
+  }
+
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -159,7 +178,7 @@ void IndexDef::vPostRecv(void* aIndexDef)
 /*----------------------------------------------------------------------------*/
 /* add a column to the indexDef                                               */
 /*----------------------------------------------------------------------------*/
-void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
+void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType, bool bAscending)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
@@ -167,7 +186,8 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
   m_xaColumn[m_nColumns].vColumnNm(szColumnNm);
   m_xaColumn[m_nColumns].vColumnType(eColumnType);
   m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
-  
+  m_xaColumn[m_nColumns].vIsAscending(bAscending);
+
   m_iaColSet[m_nColumns] = m_nColumns;
   m_iaColSet[m_nColumns+1] = -1;
 
@@ -236,6 +256,16 @@ void IndexDef::vDetermineKeyKind(void)
   }
 
   m_eKeyKind = KE_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vDump(i8 i_Tab)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INDEXDEF, _FOOTER_);
+
+  vListContents(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,7 +346,10 @@ void IndexDef::vListContents(i8 i_Depth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
-  vTrace("%sIndexDef %s\n"_Stz,Stz::szTab(i_Depth),m_sIndexNm.szStz());
+  vTrace("%sIndexDef %s %s\n"_Stz,
+         Stz::szTab(i_Depth),
+         m_sIndexNm.szStz(),
+         m_bHasDescending ? "HasDescending" : "NoDescending");
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     Column* pColumn = pGetColumn(i_Col);
@@ -839,6 +872,15 @@ L_RETURN:
 }
 
 #undef dPT
+
+/*----------------------------------------------------------------------------*/
+/* validate                                                                   */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vValidate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+}
 
 
 /*----------------------------------------------------------------------------*/

@@ -6,6 +6,7 @@
 #include "RootNode.hpp"
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
+#include "ExtendedText.hpp"
 
 namespace STORE
 {
@@ -29,9 +30,6 @@ namespace STORE
 
     ParamsSpec*  m_pParamsSpec;      // set of parameters
 
-    bool         m_bHasCode;
-    s48K         m_sCode;
-    
     // must be last
     Footer m_xFooter;
 
@@ -46,7 +44,8 @@ namespace STORE
     static VertexSpec* pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
     VertexSpec* pCompile(Stz* szPipelineStmt);
-    Stz* szCode(void);
+
+     Stz* szName(void);
 
   private:
     Footer* aFooter(void);
@@ -69,7 +68,6 @@ namespace STORE
     bool bCollectTag(void);
     bool bCollectParams(void);
     bool bCollectBeginEnd(void);
-    bool bCollectCode(void);
     bool bCollectSubPipeline(void);
     bool bCollectStage(void);
     bool bCollectTopology(StageSpec* p_StageSpec);
@@ -139,10 +137,6 @@ namespace STORE
 
 
 
-    bool bHasCode(void);
-    void vHasCode(bool bHasCode);
-
-    void vCode(Stz* szCode);
 
 
   };

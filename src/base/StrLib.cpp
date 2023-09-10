@@ -5,6 +5,39 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibLike2(char* azStr, char* azRegExp) {
+  _static_
+
+  i8 i = StrLib::iLike2(azStr, azRegExp);
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) {
+  _static_
+
+  i8 i = StrLib::iLike3(azStr, azRegExp, cEsc);
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibWordFlipBack(char* aDst, char* aSrc) {
+  _static_
+
+  return StrLib::iWordFlipBack(aDst, aSrc);
+}
+
+/*----------------------------------------------------------------------------*/
 
 static i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
@@ -307,7 +340,7 @@ bool StrLib::bBackward(char** ps, char* pBegin, const char c)
 /*----------------------------------------------------------------------------*/
 /* bBeginsWith: test if arg is a leading subset of s                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bBeginsWith(char* s, const char* sArg)
+bool StrLib::bBeginsWith(const char* s, const char* sArg)
 {
   _static_
   i8 nBytes = nLength(sArg);
@@ -504,6 +537,17 @@ void StrLib::vConcat(char* psDst, const char* psArg)
   _static_
   
   strcat(psDst,psArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* vConcat: concatenate arg onto dst string                                   */
+/*----------------------------------------------------------------------------*/
+void StrLib::vConcat(char* psDst, const char* psArg, i8 nLen)
+{
+  _static_
+
+  strncat(psDst,psArg,nLen);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2582,6 +2626,67 @@ i8 StrLib::iGleanInt(char* azArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find end of next line group given line separator and max bytes             */
+/*----------------------------------------------------------------------------*/
+char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
+                         i8& rnBytesInGroup, i8& rnLinesInGroup)
+{
+  _static_
+
+  ASSERT(*azArg);
+  ASSERT(nAvailBytes);
+
+  char* szGroupEnd = azArg;
+  rnLinesInGroup   = 0;
+  rnBytesInGroup   = 0;
+  i8 nCrs_bytes    = 0;
+
+  for (char* azCrs_arg = azArg; nCrs_bytes < nAvailBytes; azCrs_arg++) {
+
+    // increment length of potential group
+    nCrs_bytes++;
+
+    if (*azCrs_arg == cItemSep || ! *azCrs_arg) {
+      // + line separator (or \0 end)
+      // add line to group
+      szGroupEnd     = azCrs_arg;
+      rnBytesInGroup = nCrs_bytes;
+      rnLinesInGroup++;
+
+      if (! *azCrs_arg)
+        break;
+    }
+
+  }
+
+  // nb. may have exited because last potential line didn't fit within max bytes
+
+  if (rnBytesInGroup) {
+    // + subset of items which fit
+
+    ASSERT(rnLinesInGroup);
+
+    // *szGroupEnd will be cItemSep or \0
+    ASSERT(*szGroupEnd == cItemSep || !*szGroupEnd);
+
+    // byte length of group is (chars of group) plus (cItemSep or \0)
+    ASSERT(szGroupEnd - azArg + 1 == rnBytesInGroup);
+
+    // group will not be longer than nAvailBytes
+    ASSERT(rnBytesInGroup <= nAvailBytes);
+  }
+  else {
+    // - no subset of lines fits into max bytes
+
+    ASSERT(! rnLinesInGroup);
+
+    ASSERT(szGroupEnd == azArg);
+  }
+
+  return szGroupEnd;
+}
+
+/*----------------------------------------------------------------------------*/
 /* iHexToInw: convert hex character to i8 (-1 on error)                       */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iHexToInw(const char c)
@@ -3341,6 +3446,7 @@ bool StrLib::bIsPlus(const char c)
     return false;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* bIsQuestion: is char a question?                                           */
 /*----------------------------------------------------------------------------*/
@@ -3394,6 +3500,20 @@ bool StrLib::bIsSlash(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is string all whitespace                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsWhiteSpaces(char* ps)
+{
+  _static_
+
+  for (char* azCrs = ps; *azCrs; azCrs++)
+    if (! bIsWhite(*azCrs))
+      return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsSignleQuote: is char a single quote?                                    */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsSingleQuote(const char c)
@@ -3407,6 +3527,30 @@ bool StrLib::bIsSingleQuote(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is argument a valid sql name?                                              */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSqlName(char* ps)
+{
+  _static_
+
+  char* az = ps;
+
+  // must start with a alpha or underscore
+  char c = *az++;
+  if (! (isalpha(c) || '_' == c))
+    return false;
+
+  // followed by zero or more: alpha, digit or underscore
+  while ((c = *az++)) {
+    if (! (bIsAlphaDigit(c) || '_' == c))
+      return false;
+  }
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* bIsTilde: is char a tilde?                                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsTilde(const char c)
@@ -3417,6 +3561,37 @@ bool StrLib::bIsTilde(const char c)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsTypical: is char a typical char?                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTypical(const char c)
+{
+  _static_
+
+  if ('\n' == c)
+    return true;
+
+  if (c >= ' ' && c <= '~')
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsTypical: is char a typical string?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTypical(char* azArg)
+{
+  _static_
+
+  for (char* azTest = azArg; *azTest; azTest++)
+    if (! StrLib::bIsTypical(*azTest))
+      return false;
+
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3916,6 +4091,20 @@ void StrLib::vRemoveChar(char* azDst, char* azSrc, const char cChr)
 
   *azTo = '\0';
 }
+
+/*----------------------------------------------------------------------------*/
+/* remove any occurance of given character                                    */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveHead(char* azArg, const char cSep)
+{
+  _static_
+
+  i8 i_Sep = iFind(azArg,cSep);
+  if (C_UNKNOWN == i_Sep)
+    return;
+
+  vShuffleLeft(azArg,i_Sep+1);
+}
   
 /*----------------------------------------------------------------------------*/
 /* remove prefix from arg (where prefix is introduced by given char)          */
@@ -3998,7 +4187,7 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
   _static_
   
   //note: this function does the replacement within the given string
-  //      therefore it must be large enough to handle expancesion
+  //      therefore it must be large enough to handle expansion
   
   // is this in tbe string?
   char* pSubstr = pString;
@@ -4265,6 +4454,22 @@ void StrLib::vRuler(char* azDst, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* are two arguments equal (no case)                                          */
 /*----------------------------------------------------------------------------*/
+bool StrLib::bSame(const char c1, const char c2)
+{
+  _static_
+
+  char c1_lower = cToLower(c1);
+  char c2_lower = cToLower(c2);
+
+  if (c1_lower == c2_lower)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are two arguments equal (no case)                                          */
+/*----------------------------------------------------------------------------*/
 bool StrLib::bSame(const char* pArg1, const char* pArg2)
 {
   _static_
@@ -4358,6 +4563,40 @@ void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
   _static_
 
   vShuffleLeft(azDst, azDst + i_Right);
+}
+
+/*----------------------------------------------------------------------------*/
+/* do the two arguments have similar leading sequences (no case)              */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bSimilar(const char* azArg1, const char* azArg2, const char* azSep)
+{
+  _static_
+
+  const char* azCrs_Arg1 = azArg1;
+  const char* azCrs_Arg2 = azArg2;
+
+  for (i8 i_Loop = 0; ; i_Loop++) {
+
+    vTrace("%s : %s : %s\n"_Stz,azCrs_Arg1,azCrs_Arg2,azSep);
+
+    if ((! bSame(*azCrs_Arg1,*azCrs_Arg2)) ||
+        (! *azCrs_Arg1 && ! *azCrs_Arg2))
+      break;
+
+    if (bBeginsWith(azCrs_Arg1,azSep) && bBeginsWith(azCrs_Arg2,azSep))
+      return true;
+
+    azCrs_Arg1++;
+    azCrs_Arg2++;
+  }
+
+  if (! *azCrs_Arg1 && ! *azCrs_Arg2)
+    return true;
+
+  if (bBeginsWith(azCrs_Arg1,azSep) || bBeginsWith(azCrs_Arg2,azSep))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

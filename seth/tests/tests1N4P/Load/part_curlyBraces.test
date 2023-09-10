@@ -24,7 +24,7 @@ load part "../DATA/Load/part_curlyBraces.csv"
   <record_ends> = "\n";
 success
 
-tableScan part;
+select * from part;
 rows: 16
 
 CLEANUP {

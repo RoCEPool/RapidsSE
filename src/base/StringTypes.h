@@ -4,7 +4,7 @@
 #pragma once
 
 static const i8 C_MAX_RECORD    = C_16KB;       // max length of record
-static const i8 C_MAX_STATEMENT = C_32KB - 64;  // max length of statement
+static const i8 C_MAX_STATEMENT = C_512K;       // max length of statement
 static const i8 C_MAX_VCH       = C_4K;         // max length of vch value
 
 namespace BASE
@@ -17,7 +17,9 @@ namespace BASE
   typedef String_t<C_16KB> s16KB; // note: this is 16KB
   typedef String_t<C_24KB> s24KB; // note: this is 24KB
   typedef String_t<C_32KB> s32KB; // note: this is 32KB
-  typedef String_t<C_48K>  s48K;  // note: 48K not 24KB
+  typedef String_t<C_48K>  s48K;  // note: 48K not 48KB
+  typedef String_t<C_256K> s256K; // note: 256K not 256KB
+  typedef String_t<C_512K> s512K; // note: 512K not 512KB
   typedef String_t<C_1M>   s1M;   // note: 1M not 1MB
 
   typedef String_t<C_MAX_STATEMENT> sSTMT;

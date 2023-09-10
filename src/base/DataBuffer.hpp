@@ -5,15 +5,15 @@
 
 namespace BASE
 {
-  class DataBuffer : public LinkedBuffer
+  class DataBuffer : public Operand
   {
+    // TODO: Arjun - Remove this padding
+    PadWord m__PadToCacheLineLinkedBuffer[8];
   protected:
     Lock         m_okLock;        // lock
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
-#ifdef WITH_BUFFER_ID
     BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
-#endif
 
     LglPtn m_tLglPtn;
 
@@ -24,13 +24,14 @@ namespace BASE
     Table*     m_pTable_dbuff;
     StreamDef* m_pStreamDef_dbuff;
 
+    // TODO: Arjun - Hack till we figure out a better way to handle the lock problem
+    // during output operator
+    b8    m_bOutputQueue; // is this Buffer in the Output queue?
+    // Refer: Output::vPipeToThis() for an explanation
+
     tXN m_tTxnNo; // transaction number
 
-#ifdef WITH_BUFFER_ID
-    PadWord m__PadToCacheLine[18];
-#else
-    PadWord m__PadToCacheLine[19];
-#endif
+    PadWord m__PadToCacheLine[17];
 
 
   public:
@@ -44,7 +45,7 @@ namespace BASE
 
     static DataBuffer *pRefdDataBuffer(Rrf &xRef);
 
-    static void vRepairList(Object *pObject);
+    static void vRepair(Object *pObject);
 
     static DataBuffer *pToDataBuffer(void *aAddr);
 
@@ -66,7 +67,11 @@ namespace BASE
 
     void vBufferHeight(i8 iBufferHeight);
 
+    void vDropRead(void);
+
     void vDropWrite(void);
+
+    void vGrabRead(void);
 
     void vGrabWrite(void);
 
@@ -78,17 +83,23 @@ namespace BASE
 
     Birth &oWhenNewed(void);
     // - - - - - - - - - - - - - -
+    bool bIsLocked(void);
+
     bool bIsPermanent(void);
 
     void vIsPermanent(bool bIsPermanent);
 
     i8   iBufferNo(void);
 
+    bool bOutputQueued(void);
+
+    void vOutputQueued(bool bOutputQueued);
+
     void     vSetBufferNo(i8 iBufferNo);
-#ifdef WITH_BUFFER_ID
+
+    // For Paging
     BufferId oGetBufferId(void);
-    void vSetBufferId(BufferId oBufferId);
-#endif
+    void vSetBufferId(void* pIdAsAddr);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

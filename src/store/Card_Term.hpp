@@ -26,6 +26,8 @@ namespace STORE
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
     void vConvertIf_stmOdn_To_colOdn(CardIter* pCI);
+    void vEnsureTypeFor_stmOdn(CardIter* pCI);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
@@ -38,6 +40,8 @@ namespace STORE
     bool bIsValOdn(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     bool bSameAs(Card_Term* p_term_arg);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Term* _pCard_Term(void* aAddr);

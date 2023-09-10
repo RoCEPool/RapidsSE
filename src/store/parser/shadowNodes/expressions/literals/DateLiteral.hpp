@@ -21,6 +21,7 @@ namespace Parser
     static QueryNode* pCreate(Dte xVal);
     static QueryNode* pCreateNull();
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
+    static void vDescribeValueOnly(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
     static Dte        xValue(PlanNode* pNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **

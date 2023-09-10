@@ -37,6 +37,7 @@ namespace STORE
   
     static void vAddSteps_Bp(void);
     static void vAddSteps_Build(void);
+    static void vAddSteps_BufferId(void);
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
@@ -99,6 +100,7 @@ namespace STORE
     static void vAddSteps_JobReport(void);
     static void vAddSteps_Jobs(void);
 
+    static void vAddSteps_LibInfo(void);
     static void vAddSteps_List(void);
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
@@ -133,6 +135,7 @@ namespace STORE
     static void vAddSteps_PageOut(void);
     static void vAddSteps_Parcel(void);
     static void vAddSteps_PayloadObj(void);
+    static void vAddSteps_PdsCursor(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PipelineOfOp(void);
@@ -147,7 +150,6 @@ namespace STORE
     static void vAddSteps_Profile(void);
     static void vAddSteps_PtnDef(void);
     static void vAddSteps_PtnMap(void);
-    static void vAddSteps_PtnStream(void);
     static void vAddSteps_Push(void);
   
     static void vAddSteps_RecvdObject(void);
@@ -231,7 +233,7 @@ namespace STORE
     static void vAddSteps_Zero(void);
   
     /*------------------------------------------------------------------------*/
-  
+
     #include "StepsSet.hpp"
   };
 }

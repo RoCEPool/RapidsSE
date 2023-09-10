@@ -36,6 +36,7 @@ enum eOM // operator markers
 
   /*    */ OM_HARDABORT,
 
+  /*    */ OM_INTERNALERROR,
   /*    */ OM_INVOKEMARKER,
   
   /*    */ OM_LEAVEMARKER,
@@ -93,6 +94,7 @@ static Stz* aOM[]
   /*    */ "FLUSH"_Stz,
 
   /*    */ "HARDABORT"_Stz,
+  /*    */ "INTERNALERROR"_Stz,
   /*    */ "INVOKEMARKER"_Stz,
   
   /*    */ "LEAVEMARKER"_Stz,

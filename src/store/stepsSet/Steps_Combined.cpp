@@ -19,7 +19,6 @@ void Step::vAddSteps_Combined(void)
   vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
   vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
   vAddStep("Combined[].execute"_Stz,       &Step::vCombinedExecute);
-  vAddStep("Combined[].execute_v2"_Stz,    &Step::vCombinedExecute_v2);
   vAddStep("Combined[].hashRows@"_Stz,     &Step::vCombinedHashRowsFetch);
   vAddStep("Combined[].indexT"_Stz,        &Step::vCombinedIndexT);
   vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
@@ -84,11 +83,9 @@ void Step::vCombinedExecute(void)
   //aCombinedT->m_iProcessRow = 1;
 
   if (pDataBuffer) {
-
     if (pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
       // CRWBUFFER
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-
       aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
       aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aCombinedT->m_nRows      = pCrwBuffer->nRows();
@@ -101,105 +98,6 @@ void Step::vCombinedExecute(void)
 
       aCombinedT->m_aRowBuffer  = pRowBuffer;
       aCombinedT->m_racStrAreaT = (char*)pRowBuffer->szStzAllot_begin();
-      aCombinedT->m_nRows       = pRowBuffer->nRows();
-    }
-  }
-  else {
-    //EOSMARKER
-    // nothing to do
-  }
-  //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreePL;
-  //pIndexTree->vDump(false);
-
-  aCombinedT->m_eStrInflateRule = SI_STRAREA_ADR;
-  aCombinedT->m_bTrace     = iTrace;
-
-  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
-    // invoke with null databuffer (ordAgg)
-    if (aCombinedT->m_iHasOrdAggRow) {
-      aCombinedT->m_iOrdAggDone = 1;
-      if (aCombinedT->m_iIndexScan)
-        iResult = m_pLogicUnit->m_afFun2(aCombinedT);
-      else
-        iResult = m_pLogicUnit->m_afFun1(aCombinedT);
-    }
-  }
-
-  iResult = afFun(aCombinedT);
-
-  //pTub->vInCrwBuffer(nullptr);
-
-  // EOS marker handler done ?
-  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
-    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
-    delete pIndexTree;
-    aCombinedT->m_aIndexTreePL = nullptr;
-
-    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefPL);
-    delete pIndexDef;
-    aCombinedT->m_aIndexDefPL = nullptr;
-
-  }
-
-  // push error
-  if ( !iResult )
-    m_pDataStack->vPushInt(aCombinedT->m_iErrorCode);
-
-  m_pDataStack->vPushInt(iResult);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Combined[].Execute_v2 -- execute combined code                             */
-/*----------------------------------------------------------------------------*/
-void Step::vCombinedExecute_v2(void)
-{
-  ENTRY();
-
-  i8 iResult;
-
-  Combined* pCombined = * m_pLogicUnit->m_xpCombined;
-  Combined_T* aCombinedT = pCombined->aCombinedT();
-
-  i8 iTrace = m_pDataStack->iPopInt(__func__);
-
-  bool (*afFun)(void*);
-  afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
-
-  //Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
-
-  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
-
-  aCombinedT->m_iErrorCode = (i8)EC_NONE;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //pTub->vInCrwBuffer(pCrwBuffer);
-
-  //RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
-  //pTub->vRowPix(pRowPix);
-
-  //aCombinedT->m_iProcessRow = 1;
-
-  if (pDataBuffer) {
-
-    if (pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
-      // CRWBUFFER
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-
-      aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
-      aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
-      aCombinedT->m_nRows      = pCrwBuffer->nRows();
-      //aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
-    }
-    else {
-      // ROWBUFFER
-      RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER);
-      RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
-
-      aCombinedT->m_aRowBuffer  = pRowBuffer;
-      aCombinedT->m_xRowInfoT.m_racStrArea = (char*)pRowBuffer->szStzAllot_begin();
       aCombinedT->m_nRows       = pRowBuffer->nRows();
     }
   }

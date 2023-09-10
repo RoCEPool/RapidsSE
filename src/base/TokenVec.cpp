@@ -1222,8 +1222,6 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
 
       case TN_NAME:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
-        if (pToken->bSame("__cpp_code__"_Stz))
-          bNoQuotes = true;
         break;
         
       case TN_NULL:

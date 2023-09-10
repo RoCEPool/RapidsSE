@@ -25,7 +25,7 @@ select s_name, s_address
 
 */
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -51,7 +51,7 @@ select s_name, s_address
      and n_name = 'IRAQ'
      order by s_name;
 
-pipeline unamed
+/optimise_passthru 
 begin
   pipeline __subquery0003
   begin
@@ -154,6 +154,7 @@ end ;
 */
 
 // NOTE CHANGED 'CANADA' to 'IRAQ' for SF0001
+/optimise_passthru 
 pipeline unamed
 begin
 

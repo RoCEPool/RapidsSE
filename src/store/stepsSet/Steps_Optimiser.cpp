@@ -12,6 +12,7 @@
 #include "Job.hpp"
 
 #include "LogicUnit.hpp"
+#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -100,10 +101,10 @@ void Step::vOptimiserNew(void)
 /*----------------------------------------------------------------------------*/
 /* Optimiser[].transform -- transform a pipeline                              */
 /*----------------------------------------------------------------------------*/
-void Step::vOptimiserTransform(void) {
+void Step::vOptimiserTransform(void)
+{
   ENTRY();
 
-  eEC eErrorCode;
   b8 bResult;
   InfoSet *pInfoSet = nullptr;
 
@@ -117,11 +118,14 @@ void Step::vOptimiserTransform(void) {
     pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
   }
 
-  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(&eErrorCode, pInfoSet);
+  Error xError;
+  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(xError, pInfoSet);
 
   // push error code
-  if (!bResult)
-    m_pDataStack->vPushInt((i8)eErrorCode);
+  if (! bResult) {
+    m_pDataStack->vPushStz(xError.aErrorMsg());
+    m_pDataStack->vPushInt((i8) xError.eErrorCode());
+  }
 
   m_pDataStack->vPushBol(bResult);
 
@@ -135,10 +139,25 @@ void Step::vOptimiserWeave(void)
 {
   ENTRY();
     
-  Stz* szOptPlineStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
+  Stz* szOptStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
 
-  m_pDataStack->vPushStz(szOptPlineStmt);
-  
+  //m_pJob->vCmdText(szOptStmt);
+
+  // CAREFUL RAY
+  ExtendedText* pCmdText = m_pJob->pCmdText();
+  m_pJob->vCmdText((ExtendedText*)nullptr);
+  delete pCmdText;
+
+  m_pJob->vCmdText(m_pLogicUnit->m_xpOptimiser->pOptStmt());
+  m_pLogicUnit->m_xpOptimiser->vOptStmt((ExtendedText*)nullptr);
+
+  ExtendedText* pCodeBlock = m_pLogicUnit->m_xpOptimiser->pCodeBlock();
+  if (pCodeBlock) {
+    m_pLogicUnit->m_xpOptimiser->vCodeBlock(nullptr);
+  }
+
+  m_pJob->vCodeBlock(pCodeBlock);
+
   EXIT();
 }
 

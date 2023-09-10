@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Aggreg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::Card_Aggreg(void)
-: Card_Project(CK_AGGREG)
+: Card_AGG(CK_AGGREG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -111,7 +111,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
 
@@ -120,6 +120,8 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 
@@ -161,6 +163,21 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
     }
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Aggreg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+
+  if (pCI->m_pBench->bMadeFlat())
+    pSub_projection()->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

@@ -5,36 +5,13 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-TextTiny* BASE::_pTextTiny(void* aAddr)
-{
-  TextTiny* pText = reinterpret_cast<TextTiny*>(aAddr);
-  
-  RASSERT_TYPE(pText,CN_TEXTTINY);
-  
-  return pText;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new a Text from the heap                                                   */
-/*----------------------------------------------------------------------------*/
-void* TextTiny::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_TEXTTINY);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void TextTiny::operator delete(void* pTextAddress)
-{
-  TextTiny* pTextTiny = reinterpret_cast<TextTiny*>(pTextAddress);
-  
-  Heaps::vFree(pTextTiny);
-}
+__pCastFunction(BASE,TextTiny,CN_TEXTTINY)
+__aNewFunction(TextTiny,CN_TEXTTINY)
+__vDeleteFunction(TextTiny,CN_TEXTTINY)
+__aFooterFunction(TextTiny)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -71,19 +48,6 @@ Stz* TextTiny::szArea(void)
   return (Stz*)&m_caText[0];
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* TextTiny::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
-
-  return &m_xFooter;
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

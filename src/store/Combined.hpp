@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "TccStuff.h"
 #include "CrwBuffer.hpp"
 #include "RowBuffer.hpp"
 

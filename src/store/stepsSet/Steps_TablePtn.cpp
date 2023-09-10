@@ -23,6 +23,10 @@
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
+#include "Pds.hpp"
+#include "PdsCursor.hpp"
+
+extern pthread_key_t giTLS_PDSCrwTablePtn;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -37,9 +41,11 @@ void Step::vAddSteps_TablePtn(void)
   vAddStep("TablePtn[].cleanup"_Stz,          &Step::vTablePtnCleanup);
   vAddStep("TablePtn[].dropRead"_Stz,         &Step::vTablePtnDropRead);
   vAddStep("TablePtn[].dropWrite"_Stz,        &Step::vTablePtnDropWrite);
+  vAddStep("TablePtn[].extractBufferId"_Stz,  &Step::vTablePtnExtractBufferId);
   vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
   vAddStep("TablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
   vAddStep("TablePtn[].rootBufferId"_Stz ,    &Step::vTablePtnRootBufferId);
+  vAddStep("TablePtn[].rootPdsCursor"_Stz ,   &Step::vTablePtnRootPdsCursor);
   vAddStep("TablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
   vAddStep("TablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
   vAddStep("TablePtn[].truncateIndex"_Stz,    &Step::vTablePtnTruncateIndex);
@@ -92,6 +98,11 @@ void Step::vTablePtnAttemptGrabRead(void)
 
   // attempt to grab the read lock
   bool bSuccess = pTablePtn->bGrabRead();
+  // Save the pds address for each table partition in the thread TLS here
+
+  if(bSuccess) {
+    MY::vPdsCrwTablePtn(pTablePtn->pPdsCrwTablePtn());
+  }
   
   m_pDataStack->vPushInt(bSuccess);
   
@@ -110,6 +121,9 @@ void Step::vTablePtnAttemptGrabWrite(void)
 
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
+  if(bSuccess) {
+    MY::vPdsCrwTablePtn(pTablePtn->pPdsCrwTablePtn());
+  }
   
   m_pDataStack->vPushInt(bSuccess);
   
@@ -131,7 +145,6 @@ void Step::vTablePtnCleanup(void)
   EXIT();
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* TablePtn[].dropRead -- drop a read lock on the partition of a table        */
 /*----------------------------------------------------------------------------*/
@@ -142,6 +155,7 @@ void Step::vTablePtnDropRead(void)
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
+  MY::vPdsCrwTablePtn(nullptr);
     
   // drop the read lock
   pTablePtn->vDropRead();
@@ -159,9 +173,31 @@ void Step::vTablePtnDropWrite(void)
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
+  MY::vPdsCrwTablePtn(nullptr);
+
   // drop the write lock
   pTablePtn->vDropWrite();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].extractBufferId -- extract bufferId from SkipListBlock          */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnExtractBufferId(void)
+{
+  ENTRY();
+
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+
+  // Pop the SkipList Item address
+  void* pItemAddr = (void*)m_pDataStack->pPopPtr(__func__);
+
+  BufferId oBufferId = pTablePtn->oExtractBufferId(pItemAddr);
+
+  m_pDataStack->vPushPtr((Object*)oBufferId.m_pvAsAddress);
+
   EXIT();
 }
 
@@ -220,8 +256,26 @@ void Step::vTablePtnRoot(void)
 void Step::vTablePtnRootBufferId(void)
 {
   ENTRY();
+
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   m_pDataStack->vPushPtr((Object*)pTablePtn->oRootBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].rootPdsCursor -- get the root block of the BufferId pds of the CrwTablePtn*/
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnRootPdsCursor(void)
+{
+  ENTRY();
+
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+  Pds* pPds = (Pds*)pTablePtn->pPdsCrwTablePtn();
+  PdsCursor* pCursor = new PdsCursor(pPds);
+
+  m_pDataStack->vPushPtr((Object*)pCursor);
+
   EXIT();
 }
 

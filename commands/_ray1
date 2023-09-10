@@ -1,32 +1,88 @@
 /*============================================================================*/
-/* _ray1 :                                                                    */
+/* _ray1                                                                      */
 /*============================================================================*/
 
+// NOTE: the expr in S02 for gbyAgg has $1 $1 :
+/*
+ArgDef: [0] expr  groupBy
+                    type INTEGER as COL2 $2
+                  aggregates
+                    type INTEGER as COL1 $1 $1 sum
+                  , type INTEGER as COL2 $2
+*/
 
-_lineitem
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
 
-load lineitem "../tpch/SF_0001/lineitem.csv" ;
+load datums "../DATA/Transliterate/groupBy.csv" ;
 
-/translisterated select
-  l_returnflag,
-  l_linestatus,
-  sum(l_quantity)                                     as sum_qty,
-  sum(l_extendedprice)                                as sum_base_price,
-  sum(l_extendedprice * (1-l_discount))               as sum_disc_price,
-  sum(l_extendedprice * (1-l_discount) * (1 + l_tax)) as sum_charge,
-  avg(l_quantity)                                     as avg_qty,
-  avg(l_extendedprice)                                as avg_price,
-  avg(l_discount)                                     as avg_disc,
-  count(*)                                            as count_order
+/optimise_passthru
+/pipeline_def
+pipeline _unnamed_
+ begin
 
-  from LineItem
+   stage S00 on origin :
+       start
+     | pulse     once
+     | next
 
-  where l_shipdate <= DATE '1998-12-01'
+   stage S01 on all partitions :
+       scan      datums
+     | project   "   type INTEGER as C0_int_col0 $1
+                  , type INTEGER as C1_int_col1 $2 "
+     | combined 0
+     | next
 
-  group by l_returnflag, l_linestatus
-;
+   stage S02 on all partitions :
+     gbyAgg    " groupBy
+                   type INTEGER as COL2 $2
+                 aggregates
+                   type INTEGER as COL1 ) $1 sum
+                 , type INTEGER as COL2 $K1 "
+     | combined 0
+     | next
 
-drop table lineitem;
+   stage S03 on all nodes :
+     gbyAgg    " groupBy
+                   type INTEGER as COL2 $2
+                 aggregates
+                   type INTEGER as COL1 ) $1 sum
+                 , type INTEGER as COL2 $K1 "
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     gbyAgg    " groupBy
+                   type INTEGER as COL2 $2
+                 aggregates
+                   type INTEGER as COL1 ) $1 sum
+                 , type INTEGER as COL2 $K1 "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+       output
+     | sink
+     | first
+
+ end ;
+
 
 /*============================================================================*/
 /* end                                                                        */

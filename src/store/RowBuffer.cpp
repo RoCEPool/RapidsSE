@@ -19,6 +19,14 @@ __pCastFunction(STORE, RowBuffer, CN_ROWBUFFER);
 /*----------------------------------------------------------------------------*/
 /* get address of cell array of row                                           */
 /*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_RowBufferCellArray(void* pRowBuffer, i8 iRow)
+{
+  return RowBuffer::aGetCellArray((RowBuffer*)pRowBuffer, iRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of cell array of row                                           */
+/*----------------------------------------------------------------------------*/
 void* aRowBuffer_GetCellArray(void* pRowBuffer, i8 iRow)
 {
   return RowBuffer::aGetCellArray((RowBuffer*)pRowBuffer, iRow);
@@ -92,7 +100,9 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(m_bDeletable);
+  // RowBuffers are pageable, hence we need to comment this out
+  // We delete the buffer after it has been paged out
+//  RASSERT(m_bDeletable);
   
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if(pLogicUnit)
@@ -135,17 +145,12 @@ void* RowBuffer::aGetCellArray(RowBuffer* pRowBuffer, i8 iRow)
 /*----------------------------------------------------------------------------*/
 /* repair                                                                     */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vRepairList(Object* pObject)
+void RowBuffer::vRepair(Object* pObject)
 {
   _static_
   RowBuffer* pRowBuffer = _pRowBuffer(pObject);
-  RowBuffer* pNextRowBuffer;
 
-  while (pRowBuffer) {
-    pNextRowBuffer = pRowBuffer->pNextRowBuffer();
-    AM::vDeleteOperand(pRowBuffer,nullptr);
-    pRowBuffer = pNextRowBuffer;
-  }
+  AM::vDeleteOperand(pRowBuffer,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -505,46 +510,6 @@ void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pNextRowBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return _pRowBuffer(this->pNextLinkedBuffer());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vNextRowBuffer(RowBuffer* pNextBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  LinkedBuffer::vNextLinkedBuffer(pNextBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pPrevRowBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return _pRowBuffer(this->pPrevLinkedBuffer());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vPrevRowBuffer(RowBuffer* pPrevBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  vPrevLinkedBuffer(pPrevBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(File* pFilePtr, Stz* szLabel)
@@ -619,9 +584,6 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   vTrace("RowBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
          this,m_iBufferNo,nRows);
-  
-  vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
-         pPrevLinkedBuffer(),pNextLinkedBuffer());
 
   vTrace("  partition: %lld \n"_Stz, m_tLglPtn.iAsI8());
   
@@ -695,47 +657,6 @@ void RowBuffer::vToCsv(Tub* pTub)
 
   //vTrace("End: %s\n"_Stz,pCsvBuffer->szRecords());
   //vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert this row buffer into one or more csv buffers                       */
-/*----------------------------------------------------------------------------*/
-CsvBuffer* RowBuffer::pToCsvBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  HV_Record hvRecord(pRowPix());
-  
-  CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
-  CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
-  
-  Stz* szRecord = nullptr;
-  i8 nSize = 1;
-  
-  i8 nRows = this->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    Row* aRow = pRowAddress(i_Row);
-    
-    Stz* szRow = hvRecord->sz(aRow,true);
-
-    nSize = szRow->nSize();
-    
-    if (pCsvBuffer->nFreeBytes() < nSize + 1) {
-      CsvBuffer* pNewCsvBuffer = new CsvBuffer;
-      pCsvBuffer->vNextLinkedBuffer(pNewCsvBuffer);
-      pCsvBuffer = pNewCsvBuffer;
-    }
-
-    szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
-
-    StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
-  }
-  
-  if (szRecord)
-    ((char*)szRecord)[nSize-1] = '\0';
-  
-  return pFirstCsvBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

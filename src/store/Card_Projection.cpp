@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Projection.cpp -- Stream                                                  */
+/* Card_Projection.cpp -- Projection                                          */
 /*============================================================================*/
 
 #include "Card_Projection.hpp"
@@ -7,6 +7,7 @@
 #include "Card_RpnCalc.hpp"
 
 #include "CardIter.hpp"
+#include "Card_GbyAgg.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -80,6 +81,32 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* adjust this projection given key                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vAdjust(Card_Key* p_key)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //p_key->vDump();
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    //xKid.p_expr()->vDump();
+
+    if (! xKid.p_expr()->bIsSoleCol())
+      continue;
+
+    Symbol* pSymbol_expr_sole = xKid.p_expr()->pGetSymbol(0);
+
+    Card_Expr* p_expr_sole_key = p_key->pFindExpr(pSymbol_expr_sole);
+    if (! p_expr_sole_key)
+      continue;
+
+    pSymbol_expr_sole->vSet(p_expr_sole_key->pSymbol());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pClone(void)
@@ -87,6 +114,24 @@ Card_Projection* Card_Projection::pClone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return _pCard_Projection(pDupCardRecursive());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    if (Card_BoolCalc* p_boolCalc = xKid.p_expr()->pSub_boolCalc())
+      p_boolCalc->vCorrectStmOdn(p_projection_prior);
+    else
+    if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
+      p_rpnCalc->vCorrectStmOdn(p_projection_prior);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,6 +190,49 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Projection::vDedupe_as(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+    Card_As* p_as = xProjection.p_expr()->pSub_as();
+
+    Symbol xDeduped;
+    xDeduped.vSprint("C%lld_%s"_Stz,
+                     xProjection.i_Child(),
+                     p_as->pSymbol()->szSymbol());
+    p_as->pSymbol()->vSet(&xDeduped);
+
+
+    //StrLib::vRemoveHead(xDeduped.szSymbol()->azChar(),'_');
+    //vTrace("%s\n"_Stz,xDeduped.szSymbol());
+
+  }
+
+  vDebugPoint();
+}
+/*----------------------------------------------------------------------------*/
+//void Card_Projection::vDedupe_as(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+//    Card_As* p_as = xProjection.p_expr()->pSub_as();
+//
+//    i8 nBefore = nAsBefore(p_as);
+//
+//    if (! nBefore)
+//      continue;
+//
+//    Symbol xDeduped;
+//    xDeduped.vSprint("%s__%lld"_Stz,p_as->pSymbol()->szSymbol(),nBefore+1);
+//    p_as->pSymbol()->vSet(&xDeduped);
+//  }
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Projection::vDeletePrjKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -199,6 +287,69 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* propagate this projection                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pPropagate(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Projection *p_projection_propagated = new Card_Projection;
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    Card_Expr *p_expr_propagated = xKid.p_expr()->pPropagate();
+    p_projection_propagated->vAppend(p_expr_propagated);
+  }
+
+  return p_projection_propagated;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFindExprOfSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bHasTerm(pSymbol))
+      return xKid.p_expr();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Projection::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bHasTerm(pSymbol))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a reduced copy of this projection                                   */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pReducedCopy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Projection* p_projection_reduced = new Card_Projection;
+
+  i8 i_Expr = 0;
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_Expr* p_expr_copy = xKid.p_expr()->pReducedCopy(i_Expr++);
+    p_projection_reduced->vAppend(p_expr_copy);
+  }
+
+  return p_projection_reduced;
+}
+
+/*----------------------------------------------------------------------------*/
 /* as review                                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vReviewAs(CardIter* pCI)
@@ -243,6 +394,200 @@ void Card_Projection::vReviewAs(CardIter* pCI)
     vDebugPoint();
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to streamDef                                                       */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
+                                         Card_Key* p_key,
+                                         eCK eOP)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  StreamDef* pStreamDef = new StreamDef;
+
+  i8 i_DstCol = 1;
+  s32 sColNm;
+  s32 sColNm_mapped;
+  eCT eColType;
+  Symbol* pSymbol;
+
+  i8 i_SrcCol = C_UNKNOWN;
+
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_DstCol++) {
+    Card_Expr *p_expr = xProjection.p_expr();
+    i_SrcCol = C_UNKNOWN;
+
+    if (CK_PROJECT == eOP) {
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      sColNm_mapped = sColNm;
+
+    }
+    else
+    if (CK_GBYAGG == eOP) {
+
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      p_key->vX();
+
+      vDebugPoint();
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
+
+      //p_expr->vDump();
+
+      if ((pSymbol = p_expr->pFirstKeyCol())) {
+        //vTrace("%s\n"_Stz, pSymbol->szSymbol());
+
+        i8 i_Child;
+        Card_Expr* p_expr_key =
+          _pCard_Expr(p_key->pFindChild(CK_EXPR,pSymbol->szSymbol(),i_Child));
+
+        Symbol* pSymbol_stm = p_expr_key->pFirstStmCol();
+
+        i_SrcCol = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
+        if (i_SrcCol) {
+          //vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_SrcCol);
+
+
+          sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                               xProjection.i_Child(),
+                               i_SrcCol);
+          sColNm_mapped = sNm_modified;
+        }
+      }
+      else
+      if ((pSymbol = p_expr->pSymbol())) {
+        //vTrace("%s\n"_Stz, pSymbol->szSymbol());
+        i_SrcCol = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
+        if (i_SrcCol) {
+          //vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_SrcCol);
+
+
+          sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                               xProjection.i_Child(),
+                               i_SrcCol);
+          sColNm_mapped = sNm_modified;
+        }
+      }
+      else {
+        i_SrcCol = i_DstCol;
+      }
+
+      vDebugPoint();
+
+    }
+    else
+    if (CK_SORT == eOP) {
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
+
+      i_SrcCol = i_DstCol;
+    }
+    else {
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
+    }
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // stream def column
+
+    eColType = p_expr->eColumnType();
+
+    //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColType]);
+
+    pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // col map (gbyagg) column
+
+    if (pColMap) {
+      RASSERT(p_key);
+
+      bool bPayload = false;
+      if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
+        bPayload = true;
+
+      pColMap->vAddCol(i_DstCol, i_SrcCol, sColNm_mapped, bPayload);
+    }
+  }
+
+  return pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_EXPR,CK_NONE);
+
+  pSub_expr()->vValidate(pCI,iDepth+1,this);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* number of similar as's befor given as (by symbol)                          */
+/*----------------------------------------------------------------------------*/
+i8 Card_Projection::nAsBefore(Card_As* p_as)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szSep = "__"_Stz;
+  i8 nBefore = 0;
+
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+    Card_As *p_as_test = xProjection.p_expr()->pSub_as();
+
+    if (p_as_test == p_as)
+      return nBefore;
+
+    Stz* szArg  = p_as->szSymbol();
+    Stz* szTest = p_as_test->szSymbol();
+
+    if (StrLib::bSimilar(szArg->azChar(),szTest->azChar(),szSep->azChar()))
+      nBefore++;
+  }
+
+  NEVER_REACH
 }
 
 /*============================================================================*/

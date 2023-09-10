@@ -86,6 +86,59 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vEnsureTypes_For_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
+    xKid.p_bound()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this bounds have a bound logically equivalent to given compare?       */
+/*----------------------------------------------------------------------------*/
+bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xBounds(this);
+  while (xBounds.bEach(CK_BOUND)) {
+    if (xBounds.p_bound()->bEquivalent(p_cmpPred))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Bounds::bUsesSqyRsl(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/) {
+    if (xKid.p_bound()->bUsesSqyRsl())
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xCI(this); xCI.bEach(CK_BOUND); /**/) {
+    xCI.p_bound()->vValidate(pCI, iDepth + 1, this);
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */

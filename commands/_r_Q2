@@ -2,13 +2,12 @@
 /* _r_Q2 -- TCPH query 2 test                                                 */
 /*============================================================================*/
 
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
 
-// /jo_disable
-/ep_disable
+__TPCH_SCHEMA_LOAD_SF0001
+
 /glean_interactive
-/filterPred
-/jobMetrics
-/joWrite
 /transliterated
 /weaved
 /pipelineName = "_r_Q2"

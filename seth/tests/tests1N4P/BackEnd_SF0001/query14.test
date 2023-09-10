@@ -13,7 +13,7 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -63,6 +63,7 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
 
 */
 
+/optimise_passthru 
 pipeline Query14
 begin
   stage S00 on origin :
@@ -112,6 +113,7 @@ end ;
 rows:
   (19.25)
 
+/optimise_passthru 
 pipeline Query14
 begin
   stage S00 on origin :

@@ -108,6 +108,7 @@ namespace PROMPT
   bool bPrompt_opdq(SePrompt* pPrompt);
   bool bPrompt_opsys(SePrompt* pPrompt);
 
+  bool bPrompt_pdsTest(SePrompt* pPrompt);
   bool bPrompt_plist(SePrompt* pPrompt);
   bool bPrompt_pmc(SePrompt* pPrompt);
   bool bPrompt_pow2(SePrompt* pPrompt);

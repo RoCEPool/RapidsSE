@@ -16,6 +16,7 @@
 #include "SP_Word.hpp"
 #include "LogicUnit.hpp"
 #include "LocalVars.hpp"
+#include "LocalStrs.hpp"
 
 #include "MY.hpp"
 #include "HeadsUp.hpp"
@@ -190,6 +191,9 @@ void Task::vTask(void)
   m_pOpLowMemWord  = nullptr;
   m_pJobLowMemWord = nullptr;
 
+  m_pOpInternalErrorWord  = nullptr;
+  m_pJobInternalErrorWord = nullptr;
+
   // m_oDicStack
   // m_oSaveDicStack
   m_pSearchWord = new(nullptr) Word(""_Stz);
@@ -200,17 +204,21 @@ void Task::vTask(void)
   m_pDataStack   = new TypedStack(KK_DATA_STACK);
   m_pReturnStack = new TypedStack(KK_RETURN_STACK);
 
-  m_pLocalFrame = nullptr;
-  m_pLocalVars   = new LocalVars;
 
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
   
   m_pLogicUnit = nullptr;
-  
+  m_pLocalFrame = nullptr;
+
+  m_pLocalStrs = new LocalStrs;
+
+  m_pLocalVars = new LocalVars(m_pLocalStrs);
+
   _checkInitialised_(CN_TASK);
   
   m_pLogicUnit = new LogicUnit;
+
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -244,6 +252,7 @@ Task::~Task(void) noexcept(false)
     delete pLocalsFrame;
   }
   delete m_pLocalVars;
+  delete m_pLocalStrs;
 
   delete m_pSenCompiler;
   while (m_pInput) {
@@ -311,9 +320,16 @@ void Task::vTaskLoop(void)
       //
     }
 
-      // catch lowMemory exception
+    // catch lowMemory exception
     catch (LowMemory xLowMemory) {
+      //vTrace("Got xLowMemory\n"_Stz);
       vLowMemoryHandler();
+    }
+
+    // catch internal error exception
+    catch (InternalError xInternalError) {
+      //vTrace("Got INTERNAL ERROR\n"_Stz);
+      vInternalErrorHandler();
     }
 
     // catch exception
@@ -426,6 +442,17 @@ void Task::vLowMemoryHandler(void)
   _noPreconditions_
 
   vSetSenLowMemContext();
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* caught an internal error exception in vTaskLoop catch(InternalError...)    */
+/*----------------------------------------------------------------------------*/
+void Task::vInternalErrorHandler(void)
+{
+  _noPreconditions_
+
+  vSetSenInternalErrorContext();
 
 }
 
@@ -1255,6 +1282,52 @@ void Task::vSetSenRecoverContext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset sen execution context for internal error                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSetSenInternalErrorContext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+
+  //Task::vSeeFrameStack();
+  //WHY: why > 2
+  while (m_pReturnStack->nValues() > 2) {
+
+#ifdef WITH_LOCALS_OOM
+
+    if (m_pLocalVars) {
+      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
+        m_pLocalVars->vFramePop(aDiscardPoint_return);
+      }
+    }
+
+#else
+
+    if (m_pLocalFrame
+        && m_pLocalFrame->aDiscardPoint() ==
+           (TypeValueArea*)m_pReturnStack->aTopVal())
+      vLocalsPop();
+
+#endif
+
+    m_pReturnStack->vDiscardTop();
+  }
+
+  //Task::vSeeFrameStack();
+
+
+  if (MY::pOp())
+    m_aInxPtr = m_pOpInternalErrorWord->aFirstCell();
+  else
+    m_aInxPtr = m_pJobInternalErrorWord->aFirstCell();
+
+  //Task::vSeeFrameStack();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset sen execution context for low memory                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vSetSenLowMemContext(void)
@@ -1503,6 +1576,19 @@ void Task::vSetInxPtr(Word* pEntryWord)
   if (pJobLowMemWord) {
     m_pJobLowMemWord = pJobLowMemWord;
   }
+
+  Word* pOpInternalErrorWord = pDicRoot->pFindWord("OpInternalError_recoveryWord"_Stz);
+  if (pOpInternalErrorWord) {
+    //vTrace(" found OpInternalError_recoveryWord\n"_Stz);
+    m_pOpInternalErrorWord = pOpInternalErrorWord;
+  }
+
+
+  Word* pJobInternalErrorWord = pDicRoot->pFindWord("JobInternalError_recoveryWord"_Stz);
+  if (pJobInternalErrorWord) {
+    //vTrace(" found JobInternalError_recoveryWord\n"_Stz);
+    m_pJobInternalErrorWord = pJobInternalErrorWord;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1668,12 +1754,25 @@ void Task::vTraceStep(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 /* schedule bide                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vScheduleBide(void)
+void Task::vScheduleBideForOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
   RASSERT(bIsLocked());
   m_eTransition = TR_BIDE_FOR_OPERAND;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule bide                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleBidePageIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  vTrace("Schedule Bide Page In\n"_Stz);
+
+  RASSERT(bIsLocked());
+  m_eTransition = TR_BIDE_FOR_PAGEIN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1742,7 +1841,7 @@ void Task::vScheduleYield(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get acheduler action                                                       */
+/* get scheduler action                                                       */
 /*----------------------------------------------------------------------------*/
 eTR Task::eTransition(void)
 {

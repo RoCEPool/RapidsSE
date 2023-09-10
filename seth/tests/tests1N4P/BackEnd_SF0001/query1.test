@@ -18,7 +18,7 @@
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 /*
 
@@ -38,6 +38,7 @@ select
   group by l_returnflag, l_linestatus
   order by l_returnflag, l_linestatus;
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -79,6 +80,7 @@ success
 // Need multiple threads per partition to improve performance
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline Query1
 begin
   stage S00 on origin :

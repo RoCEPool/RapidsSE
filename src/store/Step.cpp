@@ -56,6 +56,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Bp();
   Step::vAddSteps_Build();
+  Step::vAddSteps_BufferId();
 
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
@@ -116,6 +117,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobReport();
   Step::vAddSteps_Jobs();
 
+  Step::vAddSteps_LibInfo();
   Step::vAddSteps_List();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
@@ -150,6 +152,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PageOut();
   Step::vAddSteps_Parcel();
   Step::vAddSteps_PayloadObj();
+  Step::vAddSteps_PdsCursor();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
@@ -165,7 +168,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Profile();
   Step::vAddSteps_PtnDef();
   Step::vAddSteps_PtnMap();
-  Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
 
   Step::vAddSteps_RecvdObject();

@@ -18,6 +18,7 @@ namespace STORE
 
     void vComputeProjection(CardIter* pCI); // prototype
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Top* _pCard_Top(void* aAddr);

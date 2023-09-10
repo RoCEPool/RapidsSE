@@ -5,22 +5,22 @@ trackMemory;
 success
 
 // scan + aggeg
-/weaved select min(n_regionkey), max(n_name) from nation;
+select min(n_regionkey), max(n_name) from nation;
 rows:
  (0,'VIETNAM')
 
 // scan + filter + gbyAgg
-/weaved select min(n_name) , max(n_nationkey) from nation;
+select min(n_name) , max(n_nationkey) from nation;
 rows:
  ('ALGERIA',24)
 
 // scan + filter + gbyAgg
-/weaved select count(*) from nation where n_name < 'E';
+select count(*) from nation where n_name < 'E';
 rows:
   (5)
 
 // indexscan + filter + gbyAgg
-/weaved select count(*) from nation where n_nationkey < 22;
+select count(*) from nation where n_nationkey < 22;
 rows:
   (22)
 

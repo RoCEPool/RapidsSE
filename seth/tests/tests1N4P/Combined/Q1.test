@@ -29,6 +29,7 @@ load lineitem "../TPCH/SF_0001/lineitem.csv";
 //load lineitem "../DATA/TPCH/lineitem100.csv";
 success
 
+/optimise_passthru 
 pipeline Q1
 begin
 
@@ -52,6 +53,7 @@ begin
 
 rows: 5908
 
+/optimise_passthru 
 pipeline Q1
 begin
 

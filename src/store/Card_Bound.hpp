@@ -21,7 +21,15 @@ namespace STORE
                                            char cTblSyn_boundedTo);
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 
+    static bool bValidBoundForRelnOp(Symbol* pBound, Symbol* pRelnOp);
+
+    void vEnsureTypes_For_stmOdn(CardIter *pCI);
+    bool bEquivalent(Card_CmpPred* p_cmpPred);
+
     Card_Term* pGetTerm(i8 i_Term);
+    Card_Term* pGetTerm_last(void);
+
+    bool bUsesSqyRsl(void);
 
     bool bIsEBound(void);
     bool bIsLBound(void);
@@ -34,6 +42,7 @@ namespace STORE
     Card_Term* pGet_tblColOdn(void);
     Stz* szGet_tblColOdn(void);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Bound* _pCard_Bound(void* aAddr);

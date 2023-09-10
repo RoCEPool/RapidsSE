@@ -99,6 +99,13 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
               (pSelfTask == pThread->pTask() &&
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
+
+    case TR_BIDE_FOR_PAGEIN: // bide / wait for Operand to be pagedin
+      vTaskSelf_BideForPageIn(pSelfTask,pThread);
+      RASSERT(! pThread->pTask() ||
+              (pSelfTask == pThread->pTask() &&
+               pThread == pSelfTask->pvThread_DONT_DEREF()));
+      break;
       
     case TR_HIBERNATE_THIS_TASK: // task is hibernating itself
       vTaskSelf_HibernateThisTask(pSelfTask,pThread);
@@ -156,11 +163,39 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // queued case: operator task bides for operand
 
-  pSelfTask->vState(TS_BIDING);
-  pSchedule->vAddBidingSet(pSelfTask);
+  pSelfTask->vState(TS_BIDING_OPERAND);
+  pSchedule->vAddBidingOperandSet(pSelfTask);
   
   pSelfTask->vDropTaskLock((Stz*)__func__);
   
+  /** do not touch task **/
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator task bides for operand                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskSelf_BideForPageIn(Task* pSelfTask, Thread* pThread)
+{
+  _static_
+
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(TR_BIDE_FOR_PAGEIN == pSelfTask->eTransition());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+  UNUSED(pThread);
+
+  Schedule* pSchedule = AM::pSchedule();
+
+  pSelfTask->vTranstionClear();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // queued case: operator task bides for operand to be pagedin
+
+  pSelfTask->vState(TS_BIDING_PAGEIN);
+  pSchedule->vAddBidingPageInSet(pSelfTask);
+
+  pSelfTask->vDropTaskLock((Stz*)__func__);
+
   /** do not touch task **/
 }
 
@@ -515,7 +550,7 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
 /*----------------------------------------------------------------------------*/
 /* trigger op-task that operand has arrived while it is biding                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
+void Scheduler::vTaskCross_TriggerBidingOperand(Task* pTaskBidingOperand, Task* pTriggeringTask)
 {
   _static_
   
@@ -525,22 +560,54 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
   // called from Op::vAppendOperand()
   //
   
-  RASSERT(pTaskBiding->bIsLocked());
-  RASSERT(TS_BIDING == pTaskBiding->eState());
-  RASSERT(QK_BIDING_SET == pTaskBiding->eQueue());
-  RASSERT(TR_NONE == pTaskBiding->eTransition());
+  RASSERT(pTaskBidingOperand->bIsLocked());
+  RASSERT(TS_BIDING_OPERAND == pTaskBidingOperand->eState());
+  RASSERT(QK_BIDING_OPERAND_SET == pTaskBidingOperand->eQueue());
+  RASSERT(TR_NONE == pTaskBidingOperand->eTransition());
 
   Schedule* pSchedule = AM::pSchedule();
+
+  pSchedule->vRemoveBidingOperandSet(pTaskBidingOperand);
+
+  pTaskBidingOperand->vDropTaskLock((Stz*)__func__);
   
-  pSchedule->vRemoveBidingSet(pTaskBiding);
+  RASSERT(TS_DESISTED == pTaskBidingOperand->eState());
+  RASSERT(QK_NONE == pTaskBidingOperand->eQueue());
+  RASSERT(TR_NONE == pTaskBidingOperand->eTransition());
   
-  pTaskBiding->vDropTaskLock((Stz*)__func__);
-  
-  RASSERT(TS_DESISTED == pTaskBiding->eState());
-  RASSERT(QK_NONE == pTaskBiding->eQueue());
-  RASSERT(TR_NONE == pTaskBiding->eTransition());
-  
-  vScheduleTask(pTaskBiding);
+  vScheduleTask(pTaskBidingOperand);
+  // **do not touch task**
+}
+
+/*----------------------------------------------------------------------------*/
+/* trigger op-task that operand has been paged in while it is biding          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskCross_TriggerBidingPageIn(Task* pTaskBidingPageIn, Task* pTriggeringTask)
+{
+  _static_
+
+  UNUSED(pTriggeringTask);
+
+  //
+  // called from Op::vAppendOperand()
+  //
+
+  RASSERT(pTaskBidingPageIn->bIsLocked());
+  RASSERT(TS_BIDING_PAGEIN == pTaskBidingPageIn->eState());
+  RASSERT(QK_BIDING_PAGEIN_SET == pTaskBidingPageIn->eQueue());
+  RASSERT(TR_NONE == pTaskBidingPageIn->eTransition());
+
+  Schedule* pSchedule = AM::pSchedule();
+
+  pSchedule->vRemoveBidingPageInSet(pTaskBidingPageIn);
+
+  pTaskBidingPageIn->vDropTaskLock((Stz*)__func__);
+
+  RASSERT(TS_DESISTED == pTaskBidingPageIn->eState());
+  RASSERT(QK_NONE == pTaskBidingPageIn->eQueue());
+  RASSERT(TR_NONE == pTaskBidingPageIn->eTransition());
+
+  vScheduleTask(pTaskBidingPageIn);
   // **do not touch task**
 }
 

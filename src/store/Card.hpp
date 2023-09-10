@@ -18,6 +18,8 @@
 
 #include "Ribbon.hpp"
 
+#include "Symbol.hpp"
+
 namespace STORE
 {
   class Card_AbsJoin;
@@ -29,7 +31,6 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_JoinCast;
   class Card_CmpPred;
   class Card_Combined;
   class Card_Constraint;
@@ -39,6 +40,7 @@ namespace STORE
   class Card_CostNetwork;
   class Card_CostStream;
   class Card_CostUnicast;
+  class Card_Count;
   class Card_CrossJoin;
 
   class Card_StreamHead;
@@ -71,7 +73,7 @@ namespace STORE
   class Card_IndexNm;
   class Card_IndexScan;
 
-  class Card_StreamJoin;
+  class Card_JoinCast;
   class Card_JoinOrder;
   class Card_JoinOrdering;
   class Card_StreamSet;
@@ -112,6 +114,7 @@ namespace STORE
   class Card_Send;
   class Card_Sort;
   class Card_Stage;
+  class Card_StreamJoin;
   class Card_StreamPtn;
   class Card_SubSet;
 
@@ -146,6 +149,7 @@ static Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
 static Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Early        = "bEarly"_Stz;
+static Stz* P_FixedPos     = "bFixedPos"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Injected     = "bInjected"_Stz;
 static Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
@@ -155,9 +159,11 @@ static Stz* P_Level        = "eLevel"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_ParamOdn     = "szParamOdn"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
+static Stz* P_Pointer      = "pProinter"_Stz;
 static Stz* P_ProjBump     = "nProjBump"_Stz;
 static Stz* P_ProjBumped   = "nProjBumped"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
+static Stz* P_ReqCol       = "bReqCol"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_Smoothed     = "bSmoothed"_Stz;
@@ -176,12 +182,19 @@ static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
 static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
 static Stz* C_NA                = "n/a"_Stz;
 
+static Stz* C_CODE_BLOCK = "<code_block>"_Stz;
 static Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
 static Stz* C_EP_ENABLE  = "<ep_enable>"_Stz;
 static Stz* C_FILTERPRED = "<filterPred>"_Stz;
+static Stz* C_JOINORDER    = "<joinOrder>"_Stz;
+static Stz* C_JOINPERMUTATIONS = "<joinPermutations>"_Stz;
 static Stz* C_JO_DISABLE = "<jo_disable>"_Stz;
 static Stz* C_JO_PICK    = "<jo_pick>"_Stz;
 static Stz* C_JOWRITE    = "<joWrite>"_Stz;
+static Stz* C_OPTIMISE_PASSTHRU = "<optimise_passThru>"_Stz;
+static Stz* C_PIPELINE_DEF = "<pipeline_def>"_Stz;
+static Stz* C_WEAVED     = "<weaved>"_Stz;
+static Stz* C_WEAVER1    = "<weaver1>"_Stz;
 
 static d8 C_EXPANSION_COEFF = 1.60;  // crw -> row buffer
 static d8 C_FILTER_COEFF    = 0.30;
@@ -197,82 +210,6 @@ namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_TERMINATE_RECURSION = false;
-
-  class Symbol {
-  public:
-    s256    m_sSymbol;
-    TagSet* m_pProperties;
-
-  public:
-    Symbol(void);
-    Symbol(Stz* szSymbol);
-
-    void operator =(Stz* szArg);
-    void operator =(Symbol* pSymbol);
-    void operator =(Symbol& rxSymbol);
-
-    // auto conversion
-    operator Stz*(void);
-
-    static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
-
-    eRO  eEvalRelnOp(void);
-    eQO  eEvalSubQryOp(void);
-
-    i8   iExtractOrdinal(void);
-    char cExtractTableSynonym(void);
-
-    bool bIsAggOp(void);          // avg, count, ... sum
-    bool bIsBoolFn(void);         // between, case ... matchTrailing
-    bool bIsComma(void);          // ,
-    bool bIsIndexColumn(void);    // $In
-    bool bIsKeyOrdinal(void);            // $Kn
-    bool bIsParameterOrdinal(void);      // %n
-    bool bIsRelnOp(void);         // <, <=, ... >
-    bool bIsStreamOrdinal(void);   // $n
-    bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
-    bool bIsSubQueryColumn(void); // __n
-    bool bIsColumnOrdinal(void);    // $c.n
-    bool bIsValueOrdinal(void);         // $n or $c.n
-
-    bool bNeedsBrace(void);       // between, case, ... matchTrailing
-
-    bool bSameAs(char cArg);
-    bool bSameAs(Stz* szArg);
-    bool bSameAs(Symbol* pArg);
-
-    void vSet(Symbol* pSymbol);
-    void vSetIndexColOrdinal(i8 iIdxColOdn);
-    void vSetKeyOrdinal(i8 iKeyOdn);
-    void vSetStreamOrdinal(i8 iStmColOdn);
-    void vSetSubQueryOrdinal(i8 iSqNo);
-    void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
-    void vSetTableColSyn(char cTblSyn);
-    void vSprint(Stz* szFormat, ...);
-
-    Stz* szType(void);
-    void vType(Stz* szType);
-
-    Stz* szSymbol(void);
-
-    void Y_vAll(Card* pCard_arg);
-    void Y_vAll(TagSet* pProperties);
-    void Y_vCut(Stz* szPpyNm);
-//    char Y_cGet(i8 i_Ppy);
-//    char Y_cGet(Stz* szPptNm);
-    i8   Y_iGet(i8 i_Ppy);
-    i8   Y_iGet(Stz* szPpyNm);
-    Stz* Y_szGet(i8 i_Ppy);
-    Stz* Y_szGet(Stz* szPptNm);
-    bool Y_bHas(Stz* szPpyNm);
-    i8   Y_nPpy(void);
-    Stz* Y_szPpyNm(i8 i_Ppy);
-    eTN  Y_ePpyTkn(i8 i_Ppy);
-    void Y_vSet(Stz* szPpyNm);
-    void Y_vSet(Stz* szPpyNm, i8 iPpy);
-    void Y_vSet(Stz* szPpyNm, Stz* szPpy);
-    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
-  };
 
   class Card : public Object
              , public ChildCards
@@ -312,8 +249,6 @@ namespace STORE
 
    ~Card(void) noexcept(false);
 
-    static Stz* szBound(Stz* szRelnOp);
-
     static void vCardLeaks(void);
 
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
@@ -324,9 +259,6 @@ namespace STORE
 
 
     static eCK  eTo_eCK(Stz* szCardNm);
-
-    static eCT  eTo_eCT(Stz* szType);
-    static eCT  eTo_eCT_char(Stz* szType);
 
     static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
 
@@ -349,6 +281,7 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     void vClearMarksRecursive(void);
+    eCT  eColType(void);
 
     void  vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCard(void);
@@ -362,6 +295,7 @@ namespace STORE
     Card* pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
+    eAL  eGetLevel(void);
     Stz* szGetType(void);
 
     bool bHasSubRecursive(Card* pSubCard);
@@ -370,8 +304,10 @@ namespace STORE
     bool bHasType(void);
 
     bool bIsCard(eCK eCard);
+    bool bIsOne(eCK eCard, ...);
     bool bIsSymbol(char cSymbol);
     bool bIsSymbol(Stz* szSymbol);
+
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -391,14 +327,18 @@ namespace STORE
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
     void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
 
-    void vRenumberRecursive(Card* pParent=nullptr);
+    void vRenumberRoot(i8 i_Parent);
+    void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSameSymbol(Card* pArg);
     bool bSameSymbolRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     bool bSameSymbolPpyRecursive(Card* pCard_OTHER); // not needed??
 
+    bool bSameTopology(Card* p_arg);
+
     void vSetType(Card* p_card_arg);
+    void vSetType(Ppy xPpy_type);
     void vSetType(Stz* szType_arg);
 
     Symbol* pSymbol(void);
@@ -406,6 +346,7 @@ namespace STORE
     char cSymbol(void);
     i8   iSymbol(void);
     Stz* szSymbol(void);
+    void vSymbol(Card* pCard);
     void vSymbol(char cSymbol);
     void vSymbol(i8 iSymbol);
     void vSymbol(Stz* szSymbol);
@@ -415,6 +356,10 @@ namespace STORE
 
     bool bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with);
 
+    void vValidate_mayHave(eCK eCard_first, ...);
+    eCK  eValidate_mustEither(eCK eCard_first, ...);
+    void vValidate_mustHave(eCK eCard_first, ...);
+    void vValidate_notHave(eCK eCard, ...);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -423,12 +368,12 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_JoinCast*      pSub_locusCast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
+    Card_Count*         pSub_count(void);
     Card_CrossJoin*     pSub_crossJoin(void);
-    Card_StreamHead*     pSub_dataStart(void);
+    Card_StreamHead*    pSub_dataStart(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
@@ -445,6 +390,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
+    Card_JoinCast*      pSub_locusCast(void);
     Card_StreamJoin*     pSub_joinLocus(void);
     Card_StreamSet*   pSub_joinPermAll(void);
     Card_StreamPer*   pSub_joinPermList(void);

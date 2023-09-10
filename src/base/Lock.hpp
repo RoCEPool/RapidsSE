@@ -30,7 +30,8 @@ namespace BASE
   public:
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
-    
+
+    Lock(void);
     Lock(Object* pObjectLocked, bool m_bLockSet=true);
    ~Lock(void) noexcept(false);
   
@@ -42,6 +43,7 @@ namespace BASE
     static u8 iLockIsLocked(u8*);
 
   public:
+    void vInit(Object* pObjectLocked);
     void vOutline(s4K& sOutline);
   
     bool bIsLocked(void);

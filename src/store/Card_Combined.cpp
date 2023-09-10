@@ -19,7 +19,7 @@ __vDeleteFunction(Card_Combined, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Combined::Card_Combined(void)
-: Card(CK_COMBINED)
+: Card_OP(CK_COMBINED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -53,6 +53,15 @@ void Card_Combined::vDeleteAllCombined(CardIter* pCI) {
     pCI->G_vRemoveDeleteMain(CK_COMBINED);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Combined::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -83,6 +83,7 @@ begin
 end ;
 */
 
+/optimise_passthru 
 pipeline Query4
 begin
 
@@ -143,6 +144,7 @@ rows:
 //ORDERS PARTITIONED ON O_ORDERKEY
 //SF10:
 /*
+/optimise_passthru 
 pipeline Query4
 begin
 

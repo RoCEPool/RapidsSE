@@ -26,6 +26,8 @@ CardIter::CardIter(Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  vInit();
+
   G.xKid.vParent(pCard);
 
   G.xKid.m_bActive = true;
@@ -43,6 +45,9 @@ CardIter::CardIter(CardIter* pCardIter_src)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  vInit();
+
+  m_pBench = pCardIter_src->m_pBench;
   vSet(pCardIter_src);
 }
 
@@ -54,8 +59,34 @@ CardIter::CardIter(Bench* pBench)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  vInit();
+
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
+
+  _checkInitialised_(CN_CARDITER);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+CardIter::~CardIter(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* initialiser                                                                */
+/*----------------------------------------------------------------------------*/
+void CardIter::vInit(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  m_pBench   = nullptr;
+  m_pCardCtl = nullptr;
 
   G.xKid.vParent(nullptr);
 
@@ -86,20 +117,6 @@ CardIter::CardIter(Bench* pBench)
 
   G_vClearMembers();
   G_vClearRegisters();
-
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-CardIter::~CardIter(void) noexcept(false)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
 }
 
 
@@ -248,6 +265,7 @@ void CardIter::G_vClearMembers(void)
   G.p_costNetwork      = nullptr;
   G.p_costQuery        = nullptr;
   G.p_costUnicast      = nullptr;
+  G.p_count            = nullptr;
   G.p_crossJoin        = nullptr;
   G.p_direction        = nullptr;
   G.p_expr             = nullptr;
@@ -517,8 +535,10 @@ bool CardIter::bEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (pEachBoard())
+  if (pEachBoard()) {
+    vUsingBoard(G.i_Board);
     return true;
+  }
 
   return false;
 }
@@ -925,6 +945,34 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 /*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
 /*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachSubOfMain_reverse(eCK eSubKind)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  while (G_bEachMain_reverse()) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vMember(eSubKind, nullptr, __func__);
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* step main register to next main which has sub and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -1007,7 +1055,7 @@ void CardIter::vEndTransform(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.pDeck->vRenumberRecursive();
+  vRenumberCards();
 
   //m_pCardCtl->vUseXform();
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
@@ -1159,6 +1207,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COSTNETWORK:      return G.p_costNetwork;
     case CK_COSTSTREAM:       return G.p_costQuery;
     case CK_COSTUNICAST:      return G.p_costUnicast;
+    case CK_COUNT:            return G.p_count;
     case CK_CROSSJOIN:        return G.p_crossJoin;
     case CK_DIRECTION:        return G.p_direction;
     case CK_EXPR:             return G.p_expr;
@@ -1300,6 +1349,8 @@ void CardIter::G_vMainResynch(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  G.xKid.m_bActive = true;
+
   for (G.xKid.vChild(-1); G.xKid.bEach(); /**/)
     if (G.p_MainCard == G.xKid.pChild())
       break;
@@ -1353,6 +1404,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COSTNETWORK:      *((Card**)&G.p_costNetwork)      = pCard; break;
     case CK_COSTSTREAM:       *((Card**)&G.p_costQuery)        = pCard; break;
     case CK_COSTUNICAST:      *((Card**)&G.p_costUnicast)      = pCard; break;
+    case CK_COUNT:            *((Card**)&G.p_count)            = pCard; break;
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
@@ -1471,6 +1523,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COSTSTREAM:       return "G.p_costQuery"_Stz;
     case CK_COSTUNICAST:      return "G.p_costUnicast"_Stz;
     case CK_CORRELATION:      return "G.p_correlation"_Stz;
+    case CK_COUNT:            return "G.p_count"_Stz;
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
     case CK_DIRECTION:        return "G.p_direction"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;
@@ -1720,83 +1773,55 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print all boards of bench                                                   */
-/*----------------------------------------------------------------------------*/
-void CardIter::vPrintBench(eBK eBoard, i8 i_Board)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (! m_pCardCtl->bBenchPrint())
-    return;
-
-  char cPrefix = m_pBench->cPrefix();
-
-  s256 sPrompt;
-
-  i8 nBoards = m_pBench->nItems();
-
-  for (;;) {
-    if (C_UNKNOWN != i_Board) {
-      Board *pBoard = m_pBench->pGetBoard(eBoard, i_Board);
-      pBoard->vPrintBoard(szXhand());
-    }
-    else {
-      for (i8 i_Each = 0; m_pBench->bBoardExists(eBoard, i_Each); i_Each++) {
-        Board *pBoard = m_pBench->pGetBoard(eBoard, i_Each);
-        pBoard->vPrintBoard(szXhand());
-      }
-    }
-
-    if (! m_pCardCtl->bCueUser(szXhand(), C_NA)) {
-      m_pCardCtl->vFormPrompt(sPrompt,
-                              cPrefix, szXhand(), C_NA,
-                              i_Board, nBoards, C_UNKNOWN);
-      printf("%s\n", sPrompt.azChar());
-      break;
-    }
-
-    m_pCardCtl->vFormPrompt(sPrompt,
-                            cPrefix, szXhand(), C_NA,
-                            i_Board, nBoards, C_UNKNOWN);
-    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vPrintBoard(i8 iLineNo)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
-  if (! m_pCardCtl->bBoardPrint())
+  if (!m_pCardCtl->bBoardPrint())
     return;
 
-  char cPrefix = m_pBench->cPrefix();
+  G.pBoard->vPrintBoard(szXdesc());
 
-  s256 sPrompt;
+  s256 sWhere;
+  sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXform());
 
-  i8 nBoards = m_pBench->nItems();
-
-  for (;;) {
-    G.pBoard->vPrintBoard(szXdesc());
-
-    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-      m_pCardCtl->vFormPrompt(sPrompt,
-                              cPrefix, szXhand(), szXform(),
-                              G.pBoard->i_Board(), nBoards, iLineNo);
-      printf("%s\n", sPrompt.azChar());
-      break;
-    }
-
-    m_pCardCtl->vFormPrompt(sPrompt,
-                            cPrefix, szXhand(), szXform(),
-                            G.pBoard->i_Board(), nBoards, iLineNo);
-    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
-      break;
-  }
+  vTrace("%s\n"_Stz, sWhere.azChar());
 }
+/*----------------------------------------------------------------------------*/
+//void CardIter::vPrintBoard(i8 iLineNo)
+//{
+//  _precondition_(_MAGIC_,_FOOTER_);
+//
+//  if (! m_pCardCtl->bBoardPrint())
+//    return;
+//
+//  char cPrefix = m_pBench->cPrefix();
+//
+//  s256 sPrompt;
+//
+//  i8 nBoards = m_pBench->nItems();
+//
+//  for (;;) {
+//    G.pBoard->vPrintBoard(szXdesc());
+//
+//    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
+//      m_pCardCtl->vFormPrompt(sPrompt,
+//                              cPrefix, szXhand(), szXform(),
+//                              G.pBoard->i_Board(), nBoards, iLineNo);
+//      printf("%s\n", sPrompt.azChar());
+//      break;
+//    }
+//
+//    m_pCardCtl->vFormPrompt(sPrompt,
+//                            cPrefix, szXhand(), szXform(),
+//                            G.pBoard->i_Board(), nBoards, iLineNo);
+//    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
+//      break;
+//  }
+//}
+
 
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
@@ -2051,6 +2076,16 @@ void CardIter::G_vRemoveMain(eCK eCrossCheck)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove main card from deck (do not clear M members or registers)           */
+/*----------------------------------------------------------------------------*/
+void CardIter::vRenumberCards(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_pBench->vRenumberCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* resolve prior expr of given term (find right-to-left)                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
@@ -2276,6 +2311,16 @@ void CardIter::vSubQueryIteration(void)
   Sqy.m_i_SubQuery = C_UNKNOWN;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is tracing enabled?                                                        */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bIsActive(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return G.xKid.m_bActive;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* is tracing enabled?                                                        */
@@ -2310,7 +2355,7 @@ void CardIter::vTracer(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vTransform(const char* azFunc, Stz* szXdesc)
+void CardIter::vTransform(const char* azFunc, eXF eTransform, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -2320,6 +2365,7 @@ void CardIter::vTransform(const char* azFunc, Stz* szXdesc)
 
   m_iXform++;
   G.pBoard->vXform(m_iXform);
+  G.pBoard->vTransform(eTransform);
 
   //m_pCardCtl->vUseXform();
 
@@ -2343,11 +2389,23 @@ i8 CardIter::iTransformDepth(void)
 /*----------------------------------------------------------------------------*/
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
-void CardIter::vUsingBoard(eBK eBoard, i8 i_Board)
+void CardIter::vUsingBoard(i8 i_Board)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.pBoard = m_pBench->pGetBoard(eBoard, i_Board);
+  Board* pBoard = m_pBench->pGetBoard(i_Board);
+
+  vUsingBoard(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up which board to use                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vUsingBoard(Board* pBoard)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.pBoard = pBoard;
   G.pDeck  = G.pBoard->pDeck();
 
   this->vChangeCard(G.pBoard->pDeck());
@@ -2594,9 +2652,57 @@ i8 Kid::i_Child(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Bound* Kid::p_bound(void)
+{
+  return _pCard_Bound(pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Kid::p_expr(void)
 {
   return _pCard_Expr(pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_IdxCol* Kid::p_idxCol(void)
+{
+  return _pCard_IdxCol(pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Index* Kid::p_index(void)
+{
+  return _pCard_Index(pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_OP* Kid::p_OP(void)
+{
+  return (Card_OP*)pChild();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Stage* Kid::p_stage(void)
+{
+  return _pCard_Stage(pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Table* Kid::p_table(void)
+{
+  return _pCard_Table(pChild());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2807,6 +2913,22 @@ void Kid::vReset(void)
   m_i_Child = C_UNKNOWN;
 
   m_bActive = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vSynch(Card* pChild_with)
+{
+  i8 nChildren = m_pParent->nChildCards();
+
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card *pChild_test = m_pParent->pGetChild(i_Child);
+    if (pChild_test == pChild_with) {
+      m_i_Child = i_Child;
+      return;
+    }
+  }
 }
 
 /*============================================================================*/

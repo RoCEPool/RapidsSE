@@ -590,7 +590,7 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
   // Work out how many rows from this CrwBuffer to serialise
   i8 iStartingRow = 0;
   d8 dScalingFactor = 1.0;  // if the serialised form doesn't fit in a single payload buffer
-  i8 iRowsInBuf = pCrwBuffer->nHeads();
+  i8 iRowsInBuf = pCrwBuffer->nRows();
   i8 iMaxRowsThatFit = 0; // how many did we sucessfully fit in a RowDataResponse?
 
   // We might need to send multiple RowDataResponses for this CrwBuffer.

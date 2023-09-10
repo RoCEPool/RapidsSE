@@ -450,15 +450,19 @@ EOF
   echo
   pushd "$(pwd)"
   cd /opt
-  JMETER_VER="5.4.3"
+  JMETER_VER="5.6"
   JMETER_NAME="apache-jmeter-${JMETER_VER}"
   JMETER_FILE="${JMETER_NAME}.tgz"
-  curl "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" -o "${JMETER_FILE}"
-  tar xvzf "${JMETER_FILE}"
-  rm -f "$JMETER_FILE"
-  ln -s "${JMETER_NAME}" jmeter
-  chown -R ec2-user:ec2-user "${JMETER_NAME}"
-  chown ec2-user:ec2-user jmeter
+  if ! curl --fail "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" -o "${JMETER_FILE}"; then
+    echo "ERROR: Could not download JMeter - the version might be old and may need to be updated."
+  else
+    tar xvzf "${JMETER_FILE}"
+    rm -f "$JMETER_FILE"
+    ln -s "${JMETER_NAME}" jmeter
+    chown -R ec2-user:ec2-user "${JMETER_NAME}"
+    chown ec2-user:ec2-user jmeter
+  fi
+
   popd
 
   # Add this JMeter installation to the PATH for the ec2-user

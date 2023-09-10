@@ -80,7 +80,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
+  if (pCI->pPrevChild()->bIsCard(CK_GBYAGG) ||
+      pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Analysis.m_pProjection_prior = pSub_projection();
@@ -103,7 +104,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -114,6 +115,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   vUpdate_projection(pCI);
 
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+
   pCI->vPrintBoard();
 
   // restore needed
@@ -121,6 +124,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->Early.m_pNeeded_later = p_needed_save;
 
   pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+
 
   pCI->vPrintBoard();
 
@@ -192,7 +197,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     return C_CONTINUE_RECURSION;
   };
 
-  pCI->G.p_filter = pSub_filter();
+  if (! (pCI->G.p_filter = pSub_filter()))
+    return;
 
   CardIter xCI_filter(pCI->G.p_filter);
   while (xCI_filter.G_bEachMain(CK_BOOLCALC)) {
@@ -202,13 +208,61 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   }
 
 }
+//void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//
+//  pCI->G.p_indexList = pSub_indexList();
+//  pCI->G.p_index     = pCI->G.p_indexList->pFindChosenIndex();
+//  pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
+//  pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
+//  //pCI->G.p_bound->vDump();
+//  pCI->G.p_term      = pCI->G.p_bound->pGet_colOdn();
+//
+//  RASSERT(pCI->G.p_term);
+//  //pCI->G.p_term->vDump();
+//
+//
+//  if (!pCI->Early.m_pNeeded_later->pFindExpr(pCI->G.p_term->pSymbol())) {
+//
+//    if (pCI->G.p_term->bIsStmOdn()) {
+//      Card_Expr* p_expr_stmCol = new Card_Expr;
+//      Card_As* p_as = new Card_As(pCI->Early.m_pNeeded_later->nChildCards());
+//      p_expr_stmCol->vAppend(p_as);
+//      Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+//      p_rpnCalc->vSetType(pCI->G.p_term);
+//      p_expr_stmCol->vAppend(p_rpnCalc);
+//      p_expr_stmCol->vSetType(p_rpnCalc);
+//      p_rpnCalc->vAppend(pCI->G.p_term->pDupCardRecursive());
+//      pCI->Early.m_pNeeded_later->vAppend(p_expr_stmCol);
+//      pCI->Early.m_pNeeded_later->vRenumberAll_expr();
+//    }
+//    else
+//    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->G.p_term)) {
+//      //p_expr_defn->vDump();
+//      Card_Expr* p_expr_clone = p_expr_defn->pClone();
+//      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
+//      pCI->Early.m_pNeeded_later->vRenumberAll_expr();
+//    }
+//
+//    //pCI->Early.m_pNeeded_later->vDump();
+//
+//    vDebugPoint();
+//  }
+//
+//  vDebugPoint();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -234,7 +288,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
 
@@ -243,6 +297,8 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 
@@ -257,18 +313,6 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   pCI->vPrintBoard();
 
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vIndividuateFilter(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    Board::vIndividuate_indexJoin_filter_b(pCI);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -302,6 +346,21 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+
+  pSub_indexList()->vValidate(pCI,iDepth+1,this);
+
+  RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -582,8 +582,6 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
   return nullptr;
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* Convert an integer literal to a varchar literal. May return null.          */
 /*----------------------------------------------------------------------------*/
@@ -597,7 +595,19 @@ QueryNode* LiteralExpr::pLiteralToVarchar(QueryNode* pExpr, PlanNode* pRootNode)
     return nullptr;
   }
 
-  LiteralExpr::vDescribe(pExpr, sBuf, pRootNode);
+  if (TimestampLiteral::bIsOfType(pExpr)) {
+    TimestampLiteral::vDescribeValueOnly(pExpr, sBuf, pRootNode);
+
+  } else if (DateLiteral::bIsOfType(pExpr)) {
+    DateLiteral::vDescribeValueOnly(pExpr, sBuf, pRootNode);
+
+  } else if (TimeLiteral::bIsOfType(pExpr)) {
+    TimeLiteral::vDescribeValueOnly(pExpr, sBuf, pRootNode);
+
+  } else {
+    LiteralExpr::vDescribe(pExpr, sBuf, pRootNode);
+  }
+
   return StringLiteral::pCreate(new Text(sBuf.szStz()));
 }
 
@@ -867,12 +877,39 @@ QueryNode* LiteralExpr::pTimestampToTime(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pVarcharToDate(QueryNode* pExpr, PlanNode* pRootNode)
 {
+//  Stz* szStr = StringLiteral::szValue(pExpr);
+//  b1 bParseResult;
+//
+//  Dte xDte = DateLiteral::xParseStr(szStr, bParseResult);
+//  if (!bParseResult) {
+//    return nullptr;
+//  }
+//
+//  QueryNode* pCoercedLiteral = DateLiteral::pCreate(xDte);
+//  return pCoercedLiteral;
+
   Stz* szStr = StringLiteral::szValue(pExpr);
   b1 bParseResult;
 
-  QueryNode* pCoercedLiteral = DateLiteral::pCreate(DateLiteral::xParseStr(szStr, bParseResult));
-  ASSERT(bParseResult);
-  return pCoercedLiteral;
+  if (DateLiteral::bIsDateStr(szStr)) {
+    Dte xDte = DateLiteral::xParseStr(szStr, bParseResult);
+    ASSERT(bParseResult);
+    QueryNode* pCoercedLiteral = DateLiteral::pCreate(xDte);
+    return pCoercedLiteral;
+
+  } else if (TimestampLiteral::bIsTimestampStr(szStr)) {
+    Tsp xTsp = TimestampLiteral::xParseStr(szStr, bParseResult);
+    ASSERT(bParseResult);
+
+    Dte xDte{};
+    xDte.vSet(xTsp.iYear(), xTsp.iMonth(), xTsp.iDay());
+
+    QueryNode* pCoercedLiteral = DateLiteral::pCreate(xDte);
+    return pCoercedLiteral;
+
+  } else {
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -970,9 +1007,25 @@ QueryNode* LiteralExpr::pVarcharToTime(QueryNode* pExpr, PlanNode* pRootNode)
   Stz* szStr = StringLiteral::szValue(pExpr);
   b1 bParseResult;
 
-  QueryNode* pCoercedLiteral = TimeLiteral::pCreate(TimeLiteral::xParseStr(szStr, bParseResult));
-  ASSERT(bParseResult);
-  return pCoercedLiteral;
+  if (TimeLiteral::bIsTimeStr(szStr)) {
+    Tme xTme = TimeLiteral::xParseStr(szStr, bParseResult);
+    ASSERT(bParseResult);
+    QueryNode* pCoercedLiteral = TimeLiteral::pCreate(xTme);
+    return pCoercedLiteral;
+
+  } else if (TimestampLiteral::bIsTimestampStr(szStr)) {
+    Tsp xTsp = TimestampLiteral::xParseStr(szStr, bParseResult);
+    ASSERT(bParseResult);
+
+    Tme xTme{};
+    xTme.vSet(xTsp.iHour(), xTsp.iMin(), xTsp.iSec(), xTsp.iMicro());
+
+    QueryNode* pCoercedLiteral = TimeLiteral::pCreate(xTme);
+    return pCoercedLiteral;
+
+  } else {
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

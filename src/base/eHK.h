@@ -11,6 +11,7 @@ enum eHK // Handler kind
   /*    */ HK_EOS,
   /*    */ HK_INDEXBUFFER,
   /*    */ HK_ROWBUFFER,
+  /*    */ HK_STREAMDEF,
 
   /*    */ HK_ENUMS,
 };
@@ -23,6 +24,7 @@ static Stz* aHK[]
   /*    */ "HK_EOS"_Stz,
   /*    */ "HK_INDEXBUFFER"_Stz,
   /*    */ "HK_ROWBUFFER"_Stz,
+  /*    */ "HK_STREAMDEF"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

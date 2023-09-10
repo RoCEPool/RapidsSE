@@ -74,6 +74,7 @@ void ToLglPtnRow::vRepairHashSet(Object* pObject)
       pRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
     }
 
+    // Delete whole list
     // delete dangling buffer
     pRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
     if (pRowBuffer)

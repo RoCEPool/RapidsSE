@@ -3,7 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
+#include "ClangDynamic.h"
+//#include "TccStuff.h"
 
 typedef i8 tXN; // opaque type for transaction number
 

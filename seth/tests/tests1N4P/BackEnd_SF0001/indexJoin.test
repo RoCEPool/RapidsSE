@@ -17,6 +17,7 @@ success;
 // INDEX JOIN
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -47,6 +48,7 @@ rows: 1500
 // INDEX JOIN
 // select * from orders join customer on orders.o_custkey = customer.c_custkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -75,6 +77,7 @@ rows: 1500
 //------------------------------------------------------------------------------
 // LEFT OUTER INDEX JOIN
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -104,6 +107,7 @@ rows: 1501
 // LEFT OUTER INDEX JOIN
 // select * from orders left_outer join customer on customer.c_custkey = orders.o_custkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -134,6 +138,7 @@ rows: 1500
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -165,6 +170,7 @@ rows: 1220
 // select * from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -196,6 +202,7 @@ rows: 1497
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -228,6 +235,7 @@ rows: 1221
 // select * from orders left_outer join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -259,6 +267,7 @@ rows: 1497
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -289,6 +298,7 @@ rows: 1497
 // select * from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -319,6 +329,7 @@ rows: 1220
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -349,6 +360,7 @@ rows: 1497
 // select * from orders left_outer join customer on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -379,6 +391,7 @@ rows: 1220
 // select * from customer join orders on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -409,6 +422,7 @@ rows: 1218
 // select * from orders join customer on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -439,6 +453,7 @@ rows: 1218
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -469,6 +484,7 @@ rows: 1218
 // select * from orders left outer join customer on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -499,6 +515,7 @@ rows: 1218
 // select c_custkey, c_nationkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -541,6 +558,7 @@ contains rows :
 // select o_orderkey, o_custkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -573,6 +591,7 @@ rows : 1497
 // select c_custkey, c_nationkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -605,6 +624,7 @@ rows : 1221
 // select o_orderkey, o_custkey from orders left_outer join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -636,6 +656,7 @@ rows : 1497
 // LEFT FILTER & PROJECT & POST PROJECT
 // select c_custkey, c_nationkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -670,6 +691,7 @@ contains rows :
 // LEFT FILTER & PROJECT & POST PROJECT
 // select o_custkey, c_custkey, c_nationkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -704,6 +726,7 @@ contains rows :
 // LEFT OUTER WITH LEFT FILTER & PROJECT & POST PROJECT
 // select c_custkey, c_nationkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -736,6 +759,7 @@ rows : 1221
 // LEFT OUTER WITH LEFT FILTER & PROJECT & POST PROJECT
 // select o_custkey, c_custkey, c_nationkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -771,6 +795,7 @@ contains rows :
 // select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -812,6 +837,7 @@ contains rows:
 // select c_custkey, o_orderkey, o_custkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -843,6 +869,7 @@ rows: 1497
 // select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //      where c_nationkey >= 4 and o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -875,6 +902,7 @@ rows: 1218
 // select c_custkey, o_orderkey, o_custkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //      where c_nationkey >= 4 and o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -902,6 +930,7 @@ end ;
 
 rows: 1218
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :

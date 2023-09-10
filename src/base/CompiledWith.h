@@ -36,6 +36,8 @@
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
 
+//#define WITH_WEAVER2 EndDefine               // weaver2
+#define WITH_WEAVER1 EndDefine                 // weaver1
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -57,6 +59,9 @@
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine     // trace logic unit
+
+//#define WITH_WEAVER2 EndDefine               // weaver2
+#define WITH_WEAVER1 EndDefine                 // weaver1
 
 #endif
 
@@ -84,12 +89,8 @@
 
 #define WITH_STAGESET EndDefine       //
 
-//#define WITH_HASHMAP EndDefine             // code for hashmap compiled in
-//#define WITH_HASHMAP_DEBUG EndDefine       // enable debug for hashmap
-
-//#define WITH_BUFFER_ID EndDefine
-
-//#define WITH_PAGE_FILE EndDefine
+//#define WITH_PAGING_DEBUG EndDefine
+//#define WITH_PAGING EndDefine
 
 //#define WITH_PAGING EndDefine
 

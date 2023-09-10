@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Having,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(void)
-: Card(CK_HAVING)
+: Card_COND(CK_HAVING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,7 +65,7 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
   bool bBump = ! bSawProject;
 
   vCorrect_After_Inject(pCI, bBump);
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->Analysis.m_pProjection_prior = pSub_projection();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,6 +141,37 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_ro);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vUpdate_projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_projection = pCI->G.p_having->pSub_projection())) {
+
+    pCI->G.p_having->vDeleteChild(pCI->G.p_projection);
+    pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_NONE);
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+
+  if (CK_BOOLCALC == eValidate_mustEither(CK_BOOLCALC,CK_RPNCALC,CK_NONE))
+    pSub_boolCalc()->vValidate(pCI,iDepth+1,this);
+  else
+    pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card_ELIST.hpp"
+#include "ColsReq.hpp"
 
 namespace STORE
 {
@@ -17,15 +18,31 @@ namespace STORE
     Card_Projection(eCK eCard);
    ~Card_Projection(void) noexcept(false);
 
-
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
+    void vAdjust(Card_Key* p_key);
     Card_Projection* pClone(void);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
+    void vDedupe_as(void);
     void vDeletePrjKey(CardIter* pCI);
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
+    Card_Projection* pPropagate(void);
+    Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
+    bool bHasTerm(Symbol* pSymbol);
+    Card_Projection* pReducedCopy(void);
     void vReviewAs(CardIter* pCI);
+
+    StreamDef* pToStreamDef(ColsReq* pColMap,
+                            Card_Key* p_key,
+                            eCK eOP);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
+  private:
+    i8 nAsBefore(Card_As* p_as);
+
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

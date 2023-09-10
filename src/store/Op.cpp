@@ -121,7 +121,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
+  // TODO: Arjun - If Operand is a bufferId, don't dereference it
   bool bAssert = false;
   if (m_pPipeIn->pQueueLeft()->nItems() != 0) {
     //vTrace("Operand Queue not empty\n"_Stz)
@@ -282,21 +282,34 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  if (AM::OPERAND::bIsOoO(pOperand)) {
-    vAppendOoO(pOperand,pTriggeringTask);
-    return;
-  }
-  
-  AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
+  // TODO: Arjun remove tmp BufferId check...
+  if( ! BufferId::bIsBufferId(pOperand)) {
+    if (AM::OPERAND::bIsOoO(pOperand)) {
+      vAppendOoO(pOperand, pTriggeringTask);
+      return;
+    }
 
-#ifdef WITH_BUFFER_ID
-  if(1 == DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
-    // Replace RowBuffer address with BufferId and append to queue
-    DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-    BufferId oBufferId = pDataBuffer->oGetBufferId();
-    pOperand = (Operand*) oBufferId.m_pvAsAddress;
+    AM::METRICS::vDerefMetrics((i8) pOperand, pOperand->eGetClassNo(), DR_ENQUEUE);
+
+    // TODO: Arjun - Hack to convert Buffer address to BufferId before appending to queue
+    if (DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())) {
+      //vTrace("vAppendLeft() converting Operator to bufferId\n"_Stz);
+      // Replace RowBuffer address with BufferId and append to queue
+      DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
+      // Assert Prev and Next pointers are null
+      BufferId oBufferId = pDataBuffer->oGetBufferId();
+      pOperand = (Operand *) oBufferId.m_pvAsAddress;
+      AM::pHashMap()->vDropKeyLock(pOperand);
+    }
   }
-#endif
+//  else
+//  {
+//    // We are done with this buffer, release its lock so it is allowed to be paged out
+//    // TODO: Arjun - Change to BufferId function
+//    vTrace("vAppendLeft() got bufferId\n"_Stz);
+//
+//    AM::pHashMap()->vDropKeyLock(pOperand);
+//  }
 
   vGrabTaskLock();
   RASSERT(bIsLocked());
@@ -315,8 +328,8 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   // test for biding op/task
   
   eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
-  if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
+  if (TS_BIDING_OPERAND == eTaskState) {
+    AM::TASK::vTriggerBidingOperand(m_pTask, pTriggeringTask);
     return;
   }
   else {
@@ -356,8 +369,8 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   // test for biding op/task
   
   eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
-  if (TS_BIDING == eTaskState) {
-    AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
+  if (TS_BIDING_OPERAND == eTaskState) {
+    AM::TASK::vTriggerBidingOperand(m_pTask, pTriggeringTask);
     return;
   }
   else {
@@ -616,13 +629,11 @@ bool Op::bIsEventValid(i8 i_OperandKind)
   switch(i_OperandKind) {
 
     case EV_M_CANCELLING:
-      
       // should not have received a EV_M_CANCELLING already
       if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple EV_M_CANCELLING arrived\n"_Stz, szOpNm());
         return false;
       }
-      
       // should not have received a EV_M_CANCELLED
       if ( m_pEvMgr->m_naEventCount[EV_M_CANCELLED]) {
         vTrace("%s: %s  arrived after EV_M_CANCELLED\n"_Stz,
@@ -630,29 +641,30 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
+
     case EV_M_CANCELLED:
       // Only StartOP receives an EV_M_CANCELLED
-      if ( ! szOpNm()->bSame("start"_Stz) ) {
+      if ( ! szOpNm()->bSame("start"_Stz)) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should have received a EV_M_CANCEL
       if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&
+           ! m_pEvMgr->m_naEventCount[EV_M_INTERNALERROR] &&
            ! m_pEvMgr->m_naEventCount[EV_M_LOWMEMORY]) {
-        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_LOWMEMORY\n"_Stz,
+        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_INTERNALERROR / EV_M_LOWMEMORY\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should not have received a EV_M_CANCELLED already
       if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("multiple EV_M_CANCELLED arrived\n"_Stz);
         return false;
       }
-      
+
       break;
 
     case EV_D_CSVBUFFER:
@@ -674,17 +686,20 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
 
       // should have received a EV_M_DATAPULSE
-      if ( ! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+      if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior EV_M_DATAPULSE\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should have received a EV_D_STREAMDEF
-      if ( ! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
-        vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
-               szOpNm(), aEV[i_OperandKind]);
-        return false;
+      // scanOP does not receive a STREAMDEF and can reeive a CRWBUFFER piped back to itself
+      if (!szOpNm()->bSame("scan"_Stz)) {
+        if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
+          vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
+                 szOpNm(), aEV[i_OperandKind]);
+          return false;
+        }
       }
       
       // should not have received EV_M_EOS's > EV_M_DATAPULSE's
@@ -1118,13 +1133,23 @@ void Op::vOpTrace(Operand* pOperand
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+  s256 sOperand;
+
   if (AM::TRACE::bVBlong())
     goto L_Long_Form;
 
   
   if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
-  
+
+  if (pOperand) {
+    if (BufferId::bIsBufferId(pOperand))
+      sOperand = "BUFFERID"_Stz;
+    else
+      sOperand = AM::pOperandName(pOperand);
+  } else
+    sOperand = "NULL"_Stz;
+
 
   vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
          "%18s %-15s %p %s\n"_Stz,
@@ -1136,7 +1161,7 @@ void Op::vOpTrace(Operand* pOperand
          pOuterJobOfOp(),
 
          szFunNm,
-         pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
+         sOperand.azChar(),
          pOperand,
          szSupplemental);
 
@@ -1348,10 +1373,13 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   vOpTrace(pOperand,(Stz*)__func__);
-  
-  if (pOperand->bIsBuffer()) {
-    LogicUnit* pLogicUnit = this->pOpLogicUnit();
-    pLogicUnit->m_xpStats->m_nBuffOut++;
+
+  // TODO: Arjun remove tmp BufferId check...
+  if( ! BufferId::bIsBufferId(pOperand) ) {
+    if (pOperand->bIsBuffer()) {
+      LogicUnit *pLogicUnit = this->pOpLogicUnit();
+      pLogicUnit->m_xpStats->m_nBuffOut++;
+    }
   }
 
   Op* pDstOp = pPipeDstOp();
@@ -1368,38 +1396,26 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 
   vOpTrace(pOperand,(Stz*)__func__);
 
-  eCN eClassNo = pOperand->eGetClassNo();
-  if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pCrwBuffer->nRows()
-           ,this->pStage()->szStageNm()
-           ,this->szOpNm()
-           );
-  }
-  else
-  if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
-    CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-    UNUSED(pCsvBuffer);
-    vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,this->pStage()->szStageNm()
-           ,this->szOpNm()
-           );
-  }
-  else
-  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pRowBuffer->nRows()
-           ,this->pStage()->szStageNm()
-           ,this->szOpNm()
-           );
+  // TODO: Arjun remove tmp BufferId check...
+  if( ! BufferId::bIsBufferId(pOperand)) {
+    eCN eClassNo = pOperand->eGetClassNo();
+    if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
+      CrwBuffer *pCrwBuffer = _pCrwBuffer(pOperand);
+      vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pCrwBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
+      );
+    } else if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
+      CsvBuffer *pCsvBuffer = _pCsvBuffer(pOperand);
+      UNUSED(pCsvBuffer);
+      vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             this->pStage()->szStageNm(), this->szOpNm()
+      );
+    } else if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+      RowBuffer *pRowBuffer = _pRowBuffer(pOperand);
+      vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz, pStage()->szStageNm(), szOpNm(),
+             pRowBuffer->nRows(), this->pStage()->szStageNm(), this->szOpNm()
+      );
+    }
   }
 
   vAppendLeft(pOperand,pTriggeringTask);
@@ -1485,7 +1501,7 @@ Operand* Op::pPopOoO(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand first off OoO queue, if null then Left queue                   */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOoOLeft(void)
+Operand* Op::pPopOoOLeft(bool* pbPageIn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1493,14 +1509,62 @@ Operand* Op::pPopOoOLeft(void)
   RASSERT(bIsLocked());
   
   //Operand* pOperand = m_pQueueLeft->pPopQueue();
+
+  *pbPageIn = false;
   
   bool bLeft = false;
 
-
   Operand* pOperand = m_pPipeIn->pQueueOoO()->pPopOoO();
   if (! pOperand) {
-    pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
-    bLeft = true;
+    // Peek at the Operand on the queue
+    // If it is a bufferId that is not in memory,
+    // do a page in request and return.
+    // Do NOT pop the operand off the queue.
+    // We want this operator to re-run this function
+    // once the operand is in memory.
+    Operand* pPeekOperand = m_pPipeIn->pQueueLeft()->pPeekQueue();
+    if (pPeekOperand)
+    {
+      // Operand is not null
+      // Check if it is a BufferId
+
+      BufferId oBufferId;
+      oBufferId.m_pvAsAddress = (void*)pPeekOperand;
+      if(1 == oBufferId.m_bIdFlag)
+      {
+        // Operand is a BufferId
+        // Attempt to get its address
+        pPeekOperand = (Operand*) BufferId::aAddressFromId(oBufferId);
+        if(pPeekOperand == nullptr)
+        {
+          vTrace("Pop: %p\n"_Stz, oBufferId.m_pvAsAddress);
+#ifndef WITH_PAGING
+          // If paging is not enabled, address should always be accessable via hashmap
+          NEVER_REACH;
+#endif
+          // Operand is not in memory.
+          // Queue a request to the PageIn Demon and return (Will perform pagein bide)
+          // Queue request -> PageIn Demon(BufferId + m_pTask)
+          InfoSet* pInfoSet = AM::PAGING::pToPageIn(m_pTask, oBufferId);
+          vTrace("Queuing request with TaskPtr %p and BufferId %p\n"_Stz, m_pTask, oBufferId.m_pvAsAddress);
+
+          Operand* pRequestOperand = _pOperand(pInfoSet);
+          eEC eError = AM::JLIST::ePipeToOp0(AM::DEMON::tPageInDemonJobId(), pRequestOperand, m_pTask);
+          //Handle error case
+          RASSERT(eError == EC_NONE);
+          *pbPageIn = true;
+          return nullptr;
+        }
+        // Operand is present in memory, so proceed as normal
+      }
+
+      // Assign pOperand the peeked operand. It may or may not have been converted from a BufferId
+      pOperand = pPeekOperand;
+
+      // Pop and discard the operand from the queue, as we are sure it is in memory.
+      Operand* pPopOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
+      bLeft=true;
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1512,18 +1576,6 @@ Operand* Op::pPopOoOLeft(void)
   
   vDropTaskLock();
   AM::vOperandsDec();
-
-#ifdef WITH_BUFFER_ID
-  BufferId oBufferId;
-  oBufferId.m_pvAsAddress = (void*)pOperand;
-  if(1 == oBufferId.m_bIdFlag)
-  {
-    pOperand = (Operand*)BufferId::vAddressFromId(oBufferId);
-#ifdef WITH_HASHMAP
-    ASSERT(pOperand == (Operand*)AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress));
-#endif
-  }
-#endif
 
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
 
@@ -1749,6 +1801,9 @@ void Op::vSpawnTask(void)
   Task* pTask = this->pTask();
 
 
+  if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
+    pTask->m_pLogicUnit->m_xpLibInfo = pJob->pTask()->m_pLogicUnit->m_xpLibInfo;
+  }
 /*
  //---------------------------------------------------------
  // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)

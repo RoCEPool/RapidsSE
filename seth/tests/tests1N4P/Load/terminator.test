@@ -28,7 +28,7 @@ load terminator "../seth/tests/load/terminator.csv"
   record_terminator "|";
 success
 
-tableScan terminator;
+select * from terminator;
 rows: 11
 
 // fetch
@@ -62,7 +62,7 @@ success
 load terminator "../DATA/Load/terminator.csv"  field_delimiter "|";
 success
 
-tableScan terminator;
+select * from terminator;
 rows: 11
 
 // fetch

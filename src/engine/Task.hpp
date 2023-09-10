@@ -77,6 +77,9 @@ namespace ENGINE
     Word*        m_pOpLowMemWord;   // sen word called to recover from low memory in OP
     Word*        m_pJobLowMemWord;  // sen word called to recover from low memory in JOB
 
+    Word*        m_pOpInternalErrorWord;   // sen word called to recover from Internal Error in OP
+    Word*        m_pJobInternalErrorWord;  // sen word called to recover from Internal Error in JOB
+
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
     Word*        m_pSearchWord;   // word used for searching for a word
@@ -89,7 +92,8 @@ namespace ENGINE
 
     LocalFrame*  m_pLocalFrame;   // locals| | register frame chain
     LocalVars*   m_pLocalVars;
-  
+    LocalStrs*   m_pLocalStrs;
+
     SenCompiler* m_pSenCompiler;  // sen word compiler
     Input*       m_pInput;        // input stream
 
@@ -115,6 +119,7 @@ namespace ENGINE
     void vExceptionHandler(void);
     void vExceptionTrace(void);
     void vLowMemoryHandler(void);
+    void vInternalErrorHandler(void);
     void vDumpOnException(void);
 
     // - - - - - - - - - - - - - -  - - - - - -
@@ -175,7 +180,8 @@ namespace ENGINE
     void vRetire(void);
 
     DicStack* pSaveDicStack(void);
-    void vScheduleBide(void);
+    void vScheduleBideForOperand(void);
+    void vScheduleBidePageIn(void);
     void vScheduleHibernate(void);
     void vScheduleRetire(void);
     void vScheduleSleep(void);
@@ -186,6 +192,7 @@ namespace ENGINE
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
     SenCompiler* pSenCompiler(void);
+    void vSetSenInternalErrorContext(void);
     void vSetSenLowMemContext(void);
     void vSetSenRecoverContext(void);
     void vSetInxPtr(Stz* szEntry);

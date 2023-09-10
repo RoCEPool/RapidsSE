@@ -36,6 +36,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].flatten"_Stz,     &Step::vCrwBufferFlatten);
   vAddStep("CrwBuffer[]"_Stz,             &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[]\\clear"_Stz,      &Step::vCrwBufferGetAndClear);
+  vAddStep("CrwBuffer[].bufferId"_Stz,    &Step::vCrwBufferGetBufferIdAsAddr);
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
   vAddStep("CrwBuffer[].get"_Stz,         &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[].inflate"_Stz,     &Step::vCrwBufferInflate);
@@ -46,7 +47,6 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].isReport"_Stz,    &Step::vCrwBufferIsReport);
   vAddStep("CrwBuffer[].set"_Stz,         &Step::vCrwBufferSet);
   vAddStep("CrwBuffer[].toCsv"_Stz,       &Step::vCrwBufferToCsv);
-  vAddStep("CrwBuffer[].toCsv_OLD"_Stz,   &Step::vCrwBufferToCsv_OLD);
   vAddStep("CrwBuffer[].upsertIntoTable"_Stz,&Step::vCrwBufferUpsertIntoTable);
   vAddStep("CrwBuffer[].writeToFile0"_Stz, &Step::vCrwBufferWriteToFile0);
   
@@ -162,6 +162,20 @@ void Step::vCrwBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
 
   m_pLogicUnit->m_xpCrwBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].bufferId -- fetch buffer id as address                         */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferGetBufferIdAsAddr(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
+
+  m_pDataStack->vPushPtr((Object*)pCrwBuffer->oGetBufferId().m_pvAsAddress);
 
   EXIT();
 }
@@ -301,19 +315,6 @@ void Step::vCrwBufferToCsv(void)
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
   
   pCrwBuffer->vToCsv(pTub);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* CrwBuffer[].toCsv -- convert CrwBuffer to Csv                              */
-/*----------------------------------------------------------------------------*/
-void Step::vCrwBufferToCsv_OLD(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
-  m_pDataStack->vPushPtr(pCrwBuffer->pToCsvBuffer());
 
   EXIT();
 }

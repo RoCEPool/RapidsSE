@@ -6,6 +6,7 @@
 
 #include "eYX.h"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
@@ -24,6 +25,7 @@
 
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
+extern CmdLineArgs   gxCmdLineArgs;
 
 extern pthread_key_t giTLS_ThreadKey;
 extern pthread_key_t giTLS_TaskKey;
@@ -128,9 +130,10 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
   p2PCJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
 
   TagSet* pJobTagSet = p2PCJob->pJobTags();
+  pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
 
-  p2PCJob->vCmd(sCmd);
+  p2PCJob->vCmdText(sCmd);
 
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   p2PCJob->vEntryPoint(szEntry);
@@ -154,12 +157,15 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
 /*----------------------------------------------------------------------------*/
 eEC Api::eForkJobChild(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                        ExtendedText* pCodeBlock,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*  pParentJob,
                         bool  bUpdateParent,
                         bool& bIsPipeline)
 {
   _static_
+
+  RASSERT(! pCodeBlock);
 
   if ( AM::pGrid() &&
       ! AM::pGrid()->bHealthy()) {
@@ -270,7 +276,26 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // copy CmdTagSet to the child job tags
 
   TagSet* pJobTagSet = pChildJob->pJobTags();
+  pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
+
+#ifdef WITH_WEAVER2
+  if ( ! pJobTagSet->bHasName(C_TAG_WEAVER1) ) {
+    pJobTagSet->vInsert(C_TAG_WEAVER2);
+  }
+
+#endif
+
+#ifdef WITH_WEAVER1
+  if ( ! pJobTagSet->bHasName(C_TAG_WEAVER2) ) {
+    pJobTagSet->vInsert(C_TAG_WEAVER1);
+  }
+#endif
+
+  if (pJobTagSet->bHasName(C_SHOW_CMD_TAGS)) {
+    pJobTagSet->vDumpSet();
+    vDebugPoint();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // setup the child job
@@ -278,7 +303,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // sCmd
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
-  pChildJob->vCmd(sCmd);
+  pChildJob->vCmdText(sCmd);
 
   // szEntry
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
@@ -410,11 +435,12 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
   rtChildJobId = pChildJob->tJobId();
 
   TagSet* pJobTagSet = pChildJob->pJobTags();
+  pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
 
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
-  pChildJob->vCmd(sCmd);
+  pChildJob->vCmdText(sCmd);
 
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   pChildJob->vEntryPoint(szEntry);

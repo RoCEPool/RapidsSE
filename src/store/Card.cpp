@@ -103,6 +103,13 @@ Card::Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, Stz* szPpy)
 /*----------------------------------------------------------------------------*/
 void Card::vInit(eCK eCard)
 {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (CK_CROSSJOIN == eCard)
+    vDebugPoint();
+
+  if (CK_BOUNDS == eCard)
+    vDebugPoint();
 
   MemLib::vZero(md_Bearing, sizeof(md_Bearing), CN_CARD);
 
@@ -166,22 +173,6 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get bound for relational op                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szBound(Stz* szRelnOp)
-{
-  _static_
-
-  if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz))
-    return "LBOUND"_Stz;
-
-  if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz))
-    return "UBOUND"_Stz;
-
-  return "BOUND"_Stz;
-}
 
 /*----------------------------------------------------------------------------*/
 /* check for leaks                                                            */
@@ -288,34 +279,6 @@ eCK Card::eTo_eCK(Stz* szCardNm)
       return (eCK)i_Card;
   
   return CK_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
-/*----------------------------------------------------------------------------*/
-eCT Card::eTo_eCT(Stz* szType)
-{
-  _static_
-
-  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (aCT[i_Type]->bSame(szType))
-      return (eCT)i_Type;
-
-  return CT_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
-/*----------------------------------------------------------------------------*/
-eCT Card::eTo_eCT_char(Stz* szType)
-{
-  _static_
-
-  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (szCT_char[i_Type]->bSame(szType))
-      return (eCT)i_Type;
-
-  return CT_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -566,6 +529,19 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column type                                                            */
+/*----------------------------------------------------------------------------*/
+eCT Card::eColType(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCT eColumnType = pSymbol()->eColType();
+
+  return eColumnType;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(i8 iDepth, Stz* szTitle)
@@ -577,6 +553,9 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 
   if (szTitle)
     vTrace("%s %p:\n"_Stz,szTitle,this);
+  else
+  if (! iDepth)
+    vTrace("~~Card Dump\n"_Stz);
 
   s48K sProperties;
   
@@ -821,6 +800,18 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eAL Card::eGetLevel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eAL eLevel = (eAL) pSymbol()->Y_iGet(P_Level);
+
+  return eLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* Card::szGetType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -909,6 +900,30 @@ bool Card::bIsCard(eCK eCard)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOne(eCK eCard, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  va_list xArgs;
+
+  va_start(xArgs, eCard);
+  eCK eCard_mayBe = eCard;
+  while (CK_NONE != eCard_mayBe) {
+
+    if (this->bIsCard(eCard_mayBe))
+      return true;
+
+    eCard_mayBe = (eCK) va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1347,10 +1362,37 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 /*----------------------------------------------------------------------------*/
 /* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
+void Card::vRenumberRoot(i8 i_Board)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  m_i_Child = i_Board;
+
+  vBearing(nullptr);
+
+  i8 iSubCardNo = 0;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+
+    pSubCard->v_Child(iSubCardNo++);
+    pSubCard->vRenumberRecursive(this);
+  }
+
+  delete pSubCard_I;
+
+  vBearing();
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber subCard's                                                         */
+/*----------------------------------------------------------------------------*/
 void Card::vRenumberRecursive(Card* pParent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pParent);
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
   vBearing(pParent);
@@ -1481,13 +1523,41 @@ bool Card::bSameSymbolPpyRecursive(Card* pCard_OTHER)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameTopology(Card *p_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eAL eLevel_this = this->eGetLevel();
+  eAL eLevel_arg  = p_arg->eGetLevel();
+
+  if (eLevel_arg == eLevel_this)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vSetType(Card* p_card_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.Y_vSet(P_Type,p_card_arg->m_xSymbol.Y_szGet(P_Type));
+//  Ppy xPpy_type( p_card_arg->m_xSymbol.Y_xGet(P_Type).szPpy() );
+
+  vSetType(p_card_arg->m_xSymbol.Y_xGet(P_Type));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vSetType(Ppy xPpy_type)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.Y_vSet(P_Type, xPpy_type.szPpy());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1542,6 +1612,16 @@ Stz* Card::szSymbol(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return m_xSymbol.m_sSymbol.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card symbol                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSymbol(Card* pCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.m_sSymbol = pCard->m_xSymbol.szSymbol();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1643,6 +1723,167 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_wit
 
   return bReplaced;
 }
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_mayHave(eCK eCard_first, ...)
+{
+  va_list xArgs;
+
+//  va_start(xArgs,eCard_first);
+//
+//  while (CK_NONE != eCard_first) {
+//    eCard_first = va_arg(xArgs, eCK);
+//  }
+//
+//  va_end(xArgs);
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  while (pSubCard_I->bHasNext()) {
+    Card* pTestCard = pSubCard_I->pNext();
+    eCK eCard_test = pTestCard->eCard();
+
+    bool bMayHave = false;
+
+    va_start(xArgs, eCard_first);
+    eCK eCard_mayHave = eCard_first;
+    while (CK_NONE != eCard_mayHave) {
+      eCard_mayHave = (eCK)va_arg(xArgs, i8);
+      if (eCard_test == eCard_mayHave) {
+        bMayHave = true;
+        break;
+      }
+    }
+    va_end(xArgs);
+
+    if (! bMayHave)
+      vDump();
+    RASSERT(bMayHave);
+  }
+
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_mustHave(eCK eCard_first, ...)
+{
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  va_start(xArgs, eCard_first);
+  eCK eCard_mustHave = eCard_first;
+  while (CK_NONE != eCard_mustHave) {
+
+    bool bMustHave = false;
+
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
+      if (eCard_test == eCard_mustHave) {
+        bMustHave = true;
+        break;
+      }
+    }
+
+    if (! bMustHave) {
+      vTrace("vValidate_mustHave: missing %lld %lls\n"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
+      vDump();
+      RASSERT(bMustHave);
+    }
+
+    eCard_mustHave = (eCK)va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+eCK Card::eValidate_mustEither(eCK eCard_first, ...)
+{
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  i8 nHas = 0;
+  eCK eFound = CK_NONE;
+
+  va_start(xArgs, eCard_first);
+  eCK eCard_mustHave = eCard_first;
+  while (CK_NONE != eCard_mustHave) {
+
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
+      if (eCard_test == eCard_mustHave) {
+        nHas++;
+        eFound = eCard_test;
+      }
+    }
+
+
+    eCard_mustHave = (eCK)va_arg(xArgs, i8);
+  }
+
+  if (1 != nHas)
+    vDump();
+  RASSERT(1 == nHas);
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+
+  return eFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_notHave(eCK eCard, ...)
+{
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  va_start(xArgs, eCard);
+  eCK eCard_mustHave = eCard;
+  while (CK_NONE != eCard_mustHave) {
+
+    bool bNotHave = false;
+
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
+      if (eCard_test == eCard_mustHave) {
+        bNotHave = true;
+        break;
+      }
+    }
+
+    if (bNotHave)
+      vDump();
+    RASSERT(! bNotHave);
+
+    eCard_mustHave = (eCK)va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+}
+
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -2235,6 +2476,19 @@ Card_Correlation* Card::pSub_correlation(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Count.hpp"
+Card_Count* Card::pSub_count(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Count* p_count =
+      _pCard_Count(pFindSubCard(CK_COUNT));
+  return p_count;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Projection.hpp"
 Card_Projection* Card::pSub_projection(void)
 {
@@ -2461,733 +2715,3 @@ Card_Where* Card::pSub_where(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
-/*============================================================================*/
-/* Symbol.cpp -- Symbolic Value                                               */
-/*============================================================================*/
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Symbol::Symbol(void)
-{
-  m_pProperties = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Symbol::Symbol(Stz* szArg)
-{
-  m_sSymbol = szArg;
-  m_pProperties = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::operator =(Stz* szArg)
-{
-  m_sSymbol = szArg;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::operator =(Symbol* pSymbol)
-{
-  m_sSymbol = pSymbol->m_sSymbol;
-
-  if (pSymbol->m_pProperties) {
-    if (! m_pProperties)
-      m_pProperties = new TagSet;
-    m_pProperties->vCopy(pSymbol->m_pProperties);
-  }
-  else
-  if (m_pProperties) {
-    delete m_pProperties;
-    m_pProperties = nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::operator =(Symbol& rxSymbol)
-{
-  m_sSymbol = rxSymbol.m_sSymbol;
-
-  if (rxSymbol.m_pProperties) {
-    if (! m_pProperties)
-      m_pProperties = new TagSet;
-    m_pProperties->vCopy(rxSymbol.m_pProperties);
-  }
-  else
-  if (m_pProperties) {
-    delete m_pProperties;
-    m_pProperties = nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* auto conversion operator : as Stz*                                         */
-/*----------------------------------------------------------------------------*/
-Symbol::operator Stz*(void)
-{
-
-  return m_sSymbol.szStz();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsSubQueryName(BASE::Stz *szStz)
-{
-  _static_
-
-  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Symbol::eEvalRelnOp(void)
-{
-       if (m_sSymbol.bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (m_sSymbol.bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (m_sSymbol.bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (m_sSymbol.bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (m_sSymbol.bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (m_sSymbol.bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (m_sSymbol.bSame(">"_Stz))   return RO_GREATER_THAN;
-
-  else return RO_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate sub-query op                                                      */
-/*----------------------------------------------------------------------------*/
-eQO Symbol::eEvalSubQryOp(void)
-{
-       if (m_sSymbol.bSame("exists"_Stz))    return QO_EXISTS_OP;
-  else if (m_sSymbol.bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
-  else if (m_sSymbol.bSame("in"_Stz))        return QO_IN_OP;
-  else if (m_sSymbol.bSame("notIn"_Stz))     return QO_NOT_IN_OP;
-
-  else return QO_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::iExtractOrdinal(void)
-{
-  i8 i_Col = StrLib::iGleanInt(m_sSymbol.azChar());
-
-  return i_Col;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table synonym from $c.n                                                */
-/*----------------------------------------------------------------------------*/
-char Symbol::cExtractTableSynonym(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  RASSERT('$' == acFirst);
-  RASSERT(StrLib::bIsAlpha(acSecond));
-  RASSERT('.' == acThird);
-  RASSERT(StrLib::bIsDigit(acFourth));
-
-  return acSecond;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol an aggregate op?                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsAggOp(void)
-{
-
-       if (m_sSymbol.bSame("avg"_Stz))      return true;
-  else if (m_sSymbol.bSame("count"_Stz))    return true;
-  else if (m_sSymbol.bSame("countAll"_Stz)) return true;
-  else if (m_sSymbol.bSame("max"_Stz))      return true;
-  else if (m_sSymbol.bSame("min"_Stz))      return true;
-//else if (m_sSymbol.bSame("stddev"_Stz))   return true;
-  else if (m_sSymbol.bSame("sum"_Stz))      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a boolean function?                                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsBoolFn(void)
-{
-       if (m_sSymbol.bSame("between"_Stz))         return true;
-  else if (m_sSymbol.bSame("inList"_Stz))          return true;
-  else if (m_sSymbol.bSame("isNull"_Stz))          return true;
-  else if (m_sSymbol.bSame("like2"_Stz))           return true;
-  else if (m_sSymbol.bSame("like3"_Stz))           return true;
-  else if (m_sSymbol.bSame("matchLeading"_Stz))    return true;
-  else if (m_sSymbol.bSame("matchMiddle"_Stz))     return true;
-  else if (m_sSymbol.bSame("matchMiddle1"_Stz))    return true;
-  else if (m_sSymbol.bSame("matchTrailing"_Stz))   return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsComma(void)
-{
-  if (m_sSymbol.bSame(","_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for an index-column?  (i.e. $In)                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsIndexColumn(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('$' == acFirst
-      && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird)
-      && ! acFourth)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a key symbol? (i.e. $Kn)                              */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsKeyOrdinal(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('$' == acFirst
-      && ('K' == acSecond || 'k' == acSecond)
-      && StrLib::bIsDigit(acThird)
-      && ! acFourth)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsParameterOrdinal(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-
-  if ('%' == acFirst
-      && StrLib::bIsDigit(acSecond)
-      && ! acThird)
-    return true;
-  else
-    return false;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a relational-operator?                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsRelnOp(void)
-{
-  if (RO_NONE != eEvalRelnOp())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a stream-column?  (i.e. $n)                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsStreamOrdinal(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-
-  if ('$' == acFirst &&
-      StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-operator?                                  */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryOp(void)
-{
-       if (m_sSymbol.bSame("exists"_Stz))    return true;
-  else if (m_sSymbol.bSame("in"_Stz))        return true;
-  else if (m_sSymbol.bSame("notExists"_Stz)) return true;
-  else if (m_sSymbol.bSame("notIn"_Stz))     return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryColumn(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && StrLib::bIsDigit(acThird))
-    return true;
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && 'S' == acThird
-      && 'Q' == acFourth)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsColumnOrdinal(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '.' == acThird
-      && StrLib::bIsDigit(acFourth))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsValueOrdinal(void)
-{
-  if (bIsStreamOrdinal() || bIsColumnOrdinal())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bNeedsBrace(void)
-{
-       if (m_sSymbol.bSame("between"_Stz))        return true;
-  else if (m_sSymbol.bSame("case"_Stz))           return true;
-  else if (m_sSymbol.bSame("in"_Stz))             return true;
-  else if (m_sSymbol.bSame("matchLeading"_Stz))   return true;
-  else if (m_sSymbol.bSame("matchMiddle"_Stz))    return true;
-  else if (m_sSymbol.bSame("matchMiddle1"_Stz))   return true;
-  else if (m_sSymbol.bSame("matchTrailing"_Stz))  return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bSameAs(char cArg)
-{
-  if (*this->szSymbol()->azChar() == cArg)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bSameAs(Stz* szArg)
-{
-  if (this->szSymbol()->bSame(szArg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bSameAs(Symbol* pArg)
-{
-  if (this->szSymbol()->bSame(pArg->szSymbol()))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet(Symbol* pSymbol)
-{
-
-  m_sSymbol = pSymbol->m_sSymbol;
-
-  if (pSymbol->m_pProperties) {
-    if (! m_pProperties)
-      m_pProperties = new TagSet;
-    m_pProperties->vCopy(pSymbol->m_pProperties);
-  }
-  else
-  if (m_pProperties) {
-    delete m_pProperties;
-    m_pProperties = nullptr;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint symbol                                                              */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSprint(Stz* szFormat, ...)
-{
-  s256 sSymbol;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
-  va_end(xArgs);
-
-  m_sSymbol = sSymbol;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
-{
-  vSprint("$I%lld"_Stz, iIdxColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
-{
-  vSprint("$K%lld"_Stz, iKeyOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
-{
-  vSprint("$%lld"_Stz, iStmColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
-{
-  vSprint("__sq%02lld"_Stz, iSqNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetTableColSyn(char cTblSyn)
-{
-  //((char*) m_sSymbol.azChar())[1] = cTblSyn;
-
-  vSprint("%c"_Stz, cTblSyn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
-{
-  vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szType(void)
-{
-  Stz* sz = Y_szGet(P_Type);
-
-  return sz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol:: vType(Stz* szType)
-{
-  Y_vSet(P_Type,szType);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get symbol                                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szSymbol(void)
-{
-  return m_sSymbol.szStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vAll(Card* pCard_arg)
-{
-
-  if (!pCard_arg->pSymbol()->m_pProperties) {
-    if (m_pProperties) {
-      delete m_pProperties;
-      m_pProperties = nullptr;
-    }
-    return;
-  }
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vCopy(pCard_arg->pSymbol()->m_pProperties);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vAll(TagSet* pProperties)
-{
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vCopy(pProperties);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given property                                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vCut(Stz* szPpyNm)
-{
-
-  if (! m_pProperties)
-    return;
-
-  m_pProperties->vDelete(szPpyNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::Y_iGet(Stz* szPpyNm)
-{
-
-  if (! m_pProperties)
-    return C_UNKNOWN;
-
-  i8 iPpy = m_pProperties->iValue(szPpyNm);
-
-  return iPpy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::Y_iGet(i8 i_Ppy)
-{
-
-  if (! m_pProperties)
-    return C_UNKNOWN;
-
-  i8 iPpy = m_pProperties->iValue(i_Ppy);
-
-  return iPpy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::Y_szGet(Stz* szPptNm)
-{
-
-  if (! m_pProperties)
-    return nullptr;
-
-  Stz* szPpy = m_pProperties->szValue(szPptNm);
-
-  return szPpy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::Y_szGet(i8 i_Ppy)
-{
-
-  if (! m_pProperties)
-    return nullptr;
-
-  Stz* szPpy = m_pProperties->szValue(i_Ppy);
-
-  return szPpy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* has given property ?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Symbol::Y_bHas(Stz* szPpyNm)
-{
-
-  if (! m_pProperties)
-    return false;
-
-  return m_pProperties->bHasName(szPpyNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of properties                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::Y_nPpy(void)
-{
-
-  if (! m_pProperties)
-    return 0;
-
-  i8 nProperties = m_pProperties->nItems();
-
-  return nProperties;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property name                                                    */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::Y_szPpyNm(i8 i_Ppy)
-{
-
-  if (! m_pProperties)
-    return nullptr;
-
-  Stz* szName = m_pProperties->szName(i_Ppy);
-
-  return szName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type of property                                                       */
-/*----------------------------------------------------------------------------*/
-eTN Symbol::Y_ePpyTkn(i8 i_Ppy)
-{
-
-  if (! m_pProperties)
-    return TN_NONE;
-
-  eTN eToken = m_pProperties->eToken(i_Ppy);
-
-  return eToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vSet(Stz* szPpyNm)
-{
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vReplace(szPpyNm, "y"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
-{
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vReplace(szPpyNm, iPpy);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint card property                                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
-{
-
-  s256 sPpy;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sPpy.azChar(), xArgs, (char*)szFormat);
-  va_end(xArgs);
-
-  Y_vSet(szPpyNm, sPpy);
-
-
-  if (szPpyNm->bSame(P_Type))
-    RASSERT(! sPpy.bSame("!"_Stz));
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
-{
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vReplace(szPpyNm, szPpy);
-
-  if (szPpyNm->bSame(P_Type)) {
-    RASSERT(!szPpy->bSame(""_Stz));
-    RASSERT(!szPpy->bSame("!"_Stz));
-  }
-}
-

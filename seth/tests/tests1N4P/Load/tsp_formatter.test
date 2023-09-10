@@ -141,7 +141,7 @@ success
 end insert;
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";
@@ -196,7 +196,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";
@@ -251,7 +251,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";
@@ -305,7 +305,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";
@@ -359,7 +359,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";
@@ -413,7 +413,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";
@@ -468,7 +468,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";
@@ -522,7 +522,7 @@ success
 create index idx on tsp (tsp_key);
 success
 
-tableScan tsp;
+select * from tsp;
 rows: 26
 
 predicateFetch tsp "tsp_key 8 =";

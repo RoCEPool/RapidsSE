@@ -82,6 +82,7 @@ extern d8 C_D8_MID;
 #include "eFK.h"
 #include "Exception.hpp"
 #include "LowMemory.hpp"
+#include "InternalError.hpp"
 
 #include "Footer.hpp"
 #include "Header.hpp"
@@ -268,11 +269,14 @@ extern d8 C_D8_MID;
 #include "ListNL_t.hpp"
 #include "Location.hpp"
 
+#include "Paging.hpp"
+
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
 
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
+#include "SkipListNode.hpp"
 #include "StackNL_t.hpp"
 
 #include "TextAbstract.hpp"
@@ -289,9 +293,19 @@ extern d8 C_D8_MID;
 
 // -- -- -- -- -- -- -- --
 
+#include "InternalHeap_t.hpp"
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
 
+// -- -- -- -- -- -- -- --
+
+#include "Pds.hpp"
+#include "Pds.hpp"
+#include "Pds_t.hpp"
+#include "Pds_t.hpp"
+#include "PdsCursor.hpp"
+#include "PdsItem_BufferId.h"
+#include "PdsBufferIdQueue.hpp"
 // -- -- -- -- -- -- -- --
 
 #include "Dir.hpp"
@@ -372,7 +386,6 @@ extern d8 C_D8_MID;
 #include "OperandQueue.hpp"
 
 #include "BufferNo.hpp"
-#include "LinkedBuffer.hpp"
 
 
 #include "FileMap.hpp"

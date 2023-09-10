@@ -13,6 +13,7 @@
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
@@ -54,6 +55,9 @@ void Step::vApiForkChild(void)
 {
   ENTRY();
 
+  ExtendedText* pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
+  RASSERT(! pCodeBlock);
+
   s48K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
@@ -84,7 +88,31 @@ void Step::vApiForkChild(void)
     pCmdTagSet->vInsert(C_TAG_JOBMETRICS);
 
   if (pJobTags->bHasName(C_TAG_PIPELINENAME))
-    pCmdTagSet->vInsert(C_TAG_PIPELINENAME);
+    pCmdTagSet->vInsert(C_TAG_PIPELINENAME, pJobTags->szValue(C_TAG_PIPELINENAME));
+
+  if (pJobTags->bHasName(C_TAG_GLEAN_INTERACTIVE))
+    pCmdTagSet->vInsert(C_TAG_GLEAN_INTERACTIVE);
+
+  if (pJobTags->bHasName(C_TAG_TRANSLITERATED))
+    pCmdTagSet->vInsert(C_TAG_TRANSLITERATED);
+
+  if (pJobTags->bHasName(C_TAG_WEAVED))
+    pCmdTagSet->vInsert(C_TAG_WEAVED);
+
+  if (pJobTags->bHasName(C_CODE_BLOCK))
+    pCmdTagSet->vInsert(C_CODE_BLOCK);
+
+  if (pJobTags->bHasName(C_PIPELINE_DEF))
+    pCmdTagSet->vInsert(C_PIPELINE_DEF);
+
+//  if (pJobTags->bHasName(C_JOINORDER))
+//    pCmdTagSet->vInsert(C_JOINORDER);
+//
+//  if (pJobTags->bHasName(C_JOINPERMUTATIONS))
+//    pCmdTagSet->vInsert(C_JOINPERMUTATIONS);
+
+  if (pJobTags->bHasName(C_SHOW_CMD_TAGS))
+    pCmdTagSet->vInsert(C_SHOW_CMD_TAGS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
@@ -116,6 +144,7 @@ void Step::vApiForkChild(void)
 
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
+                                   pCodeBlock,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
                                    true,
@@ -192,6 +221,7 @@ void Step::vApiForkDemon(void)
   bool bIsPipeline;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
+                                  nullptr,
                                   tParentId,tOriginId,tDistId,
                                   pOuterJob,
                                   false,

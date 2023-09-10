@@ -9,7 +9,18 @@ namespace STORE
 {
   class ColsReq : public Object
   {
-  protected:
+    static const i8 C_COLSREQ = 128;
+
+  public:
+
+    i8 m_nCols;
+
+    struct {
+      i8   m_i_Col_base1;
+      i8   m_i_Col2_base1;
+      s32  m_sColNm;
+      bool m_bPayload;
+    } m_axCols[C_COLSREQ];
 
   protected:
     // must be last
@@ -21,8 +32,13 @@ namespace STORE
 
     ColsReq(void);
 
-    ~ColsReq(void) noexcept(false);
+   ~ColsReq(void) noexcept(false);
 
+    void vAddCol(i8 i_Col_base1, i8 i_Col2_base1, Stz* szColNm, bool bPayLoad=false);
+
+    void vDump(i8 i_Tab=0);
+
+    void vValidate(void);
 
   protected:
     Footer* aFooter(void);

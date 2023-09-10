@@ -78,6 +78,7 @@ bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
   
   while ('/' == * pTkn0->azChars() ) {
     
+
     Token* pTkn1 = pSrcCmdTknVec->pGet(1,true);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
 
@@ -96,6 +97,9 @@ bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
     }
     else {
       pDstCmdTagSet->vInsert(sTag,1);
+
+      if (sTag.bSame("<pipeline_def>"_Stz))
+        pDstCmdTagSet->vDumpSet();
 
       pSrcCmdTknVec->vRemoveToken(0);
       pSrcCmdTknVec->vRemoveToken(0);

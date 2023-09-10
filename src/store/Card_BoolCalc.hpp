@@ -19,12 +19,16 @@ namespace STORE
 
     Card_CmpPred* pCmpPred_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    eCT  eColumnType(void);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     void vCopyMarkedPredsToTable(Card_Deck* p_deck);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
     void vCullPred(char cWithMark);
     bool bCullPred(Card_PRED* p_pred, char cWithMark);
     Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
+    bool bIsSoleCol(void);
+    bool bHasTerm(Symbol* pSymbol);
     void vMarkWrt_table(CardIter* pCI);
     void vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED* p_PRED);
     void vPushPred(Card_PRED* p_pred_toBeAdded);
@@ -37,6 +41,8 @@ namespace STORE
     bool bIsBraced(void);
 
     Stz* szP_Type(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
   };
 

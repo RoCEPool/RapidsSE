@@ -115,6 +115,16 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eCT Card_BoolCalc::eColumnType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return CT_BOOLEAN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -169,6 +179,29 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
     p_filter->vMark2(p_table->cMark2());
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [p_projection_prior](Card* p_card)
+  {
+    if (p_card->pSymbol()->bIsStreamOrdinal())
+      _pCard_Term(p_card)->vCorrectStmOdn(p_projection_prior);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,6 +301,50 @@ Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
   vRemovePred(p_pred_corr);
 
   return p_pred_corr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bIsSoleCol(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return false;
+
+  Card *p_card_0 = pGetChild(0);
+  if (!p_card_0->bIsCard(CK_TERM))
+    return false;
+
+  Card_Term *p_term_0 = _pCard_Term(p_card_0);
+  if (!p_term_0->bIsColOdn())
+    return false;
+
+  return true;
+}
+
+bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bHas = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pSymbol, &bHas](Card* p_card)
+  {
+    if (p_card->pSymbol()->bSameAs(pSymbol)) {
+      bHas = true;
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -518,6 +595,15 @@ Stz* Card_BoolCalc::szP_Type(void)
 
   return szCT_char[CT_BOOLEAN];
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

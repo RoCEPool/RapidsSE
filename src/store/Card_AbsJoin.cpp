@@ -46,6 +46,8 @@ void Card_AbsJoin::vDeleteAllAbsJoin(CardIter* pCI) {
 
   _static_
 
+  pCI->vRestart();
+
   while (pCI->G_bEachMain(CK_ABSJOIN)) {
     pCI->G_vRemoveDeleteMain(CK_ABSJOIN);
   }

@@ -19,7 +19,7 @@ __vDeleteFunction(Card_KeyNotExists,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyNotExists::Card_KeyNotExists(void)
-: Card_OP(CK_KEYNOTEXISTS)
+: Card_COND(CK_KEYNOTEXISTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -103,7 +103,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -113,6 +113,8 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 
@@ -189,6 +191,19 @@ void Card_KeyNotExists::vUpdate_projection(CardIter* pCI)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_KeyNotExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+
+  RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+}
 
 /*============================================================================*/
 /* end                                                                        */

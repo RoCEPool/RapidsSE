@@ -97,6 +97,40 @@ bool OperandQueue::bPeekOoO(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* peek at operands and return Operand without popping it off the queue       */
+/*----------------------------------------------------------------------------*/
+Operand* OperandQueue::pPeekQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+
+  Operand* pOperand = _pOperand(Queue::pPeek());
+
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek at operands and return any OoO Operand without popping it off the queue*/
+/*----------------------------------------------------------------------------*/
+Operand* OperandQueue::pPeekOoO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+
+  Operand* pOperand = _pOperand(Queue::pPeek());
+
+  while (pOperand) {
+
+    // is it an Out-of-Order Operand ?
+    if (AM::OPERAND::bIsOoO(pOperand)) {
+      return pOperand;
+    }
+
+    pOperand = pOperand->pNextItem();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop first operand from top of queue                                        */
 /*----------------------------------------------------------------------------*/
 Operand* OperandQueue::pPopQueue(void)

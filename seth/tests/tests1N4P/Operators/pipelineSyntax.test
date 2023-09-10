@@ -7,6 +7,7 @@ trackMemory;
 success
 
 // missing pipeline name
+/optimise_passthru
 pipeline
 begin
 
@@ -24,6 +25,7 @@ end
 failure contains: 'invalid command'
 
 // missing begin
+/optimise_passthru
 pipeline testPipeline
 
   stage stageA on origin :
@@ -40,6 +42,7 @@ pipeline testPipeline
 failure contains: 'invalid command'
 
 // missing stage
+/optimise_passthru
 pipeline testPipeline
 begin
   stageA on origin :
@@ -56,6 +59,7 @@ end
 failure contains: 'invalid command'
 
 // missing on
+/optimise_passthru
 pipeline testPipeline
 begin
   stage stageA origin :
@@ -72,6 +76,7 @@ end
 failure contains: 'invalid command'
 
 // missing origin/all partitions
+/optimise_passthru
 pipeline testPipeline
 begin
   stage stageA on:

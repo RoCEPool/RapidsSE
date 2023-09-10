@@ -146,6 +146,8 @@ Ent* IndexTree::aFindEntry_hint(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_rece
 //    return aEnt;
 //  else
 //    return nullptr;
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,0 +1,33 @@
+/*============================================================================*/
+/* _jo1_L_O_missing -- join order: Orders, Lineitem                           */
+/*============================================================================*/
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+drop index Lineitem IxL_ORDERKEY    ;
+drop index Lineitem IxL_SHIPDATE    ;
+drop index Lineitem IxL_SUPPKEY     ;
+drop index Lineitem IxL_PARTKEY     ;
+drop index Lineitem IxL_RECEIPTDATE ;
+
+drop index Orders IxO_CUSTKEY     ;
+drop index Orders IxO_ORDERKEY    ;
+drop index Orders IxO_ORDERDATE   ;
+
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo1_L_O_missing"
+select
+       count(*)
+  from
+       Lineitem, // 630
+       Orders    // 181
+ where
+       L_ORDERKEY = O_ORDERKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
