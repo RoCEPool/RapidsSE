@@ -478,7 +478,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
   Card_RpnTerms*  p_TermSeries = new Card_RpnTerms;
 
   while (this->nChildCards()) {
-    Card_Term* p_term_next = _pCard_Term(this->pPop());
+    Card_Term* p_term_next = _pCard_Term(this->pPopChild());
 
     eTE eTerm_next = p_term_next->eEvalTerm();
 

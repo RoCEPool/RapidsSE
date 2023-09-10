@@ -132,7 +132,7 @@ void Card_Filter::vAddPred(Card_CONJUNCTION *p_PRED)
     return;
   }
 
-  Card* p_top = p_calcBool->pPop();
+  Card* p_top = p_calcBool->pPopChild();
 
   Card_AndPred* pCard_predAnd = new Card_AndPred;
   pCard_predAnd->vAppendChild(p_top);

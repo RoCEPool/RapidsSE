@@ -511,7 +511,7 @@ void Card_BoolCalc::vPushPred(Card_CONJUNCTION* p_pred_toBeAdded)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* p_pred_oldTop = static_cast<Card_CONJUNCTION*>(this->pPop());
+  Card_CONJUNCTION* p_pred_oldTop = static_cast<Card_CONJUNCTION*>(this->pPopChild());
   RASSERT(! this->nChildCards());
 
   Card_AndPred* p_andPred_new = new Card_AndPred;
