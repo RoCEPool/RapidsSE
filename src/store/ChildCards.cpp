@@ -45,7 +45,7 @@ void ChildCards::vAppendChild(Card* pChild)
 {
   vAppend(pChild);
 
-  pChild->vAppendedCorrectly();
+  pChild->vAddedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,6 +384,21 @@ Card* ChildCards::pPeekChild_last(void)
   return pChild;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pPlopChild(void)
+{
+
+  i8 nChildren = nChildCards();
+  if (! nChildren)
+    return nullptr;
+
+  Card* pChild = pGetChild(nChildren-1);
+  vRemoveChild(pChild);
+
+  return pChild;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -430,17 +445,11 @@ bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pPlopChild(void)
+void ChildCards::vPushChild(Card* pChild)
 {
+  vPush(pChild);
 
-  i8 nChildren = nChildCards();
-  if (! nChildren)
-    return nullptr;
-
-  Card* pChild = pGetChild(nChildren-1);
-  vRemoveChild(pChild);
-
-  return pChild;
+  pChild->vAddedCorrectly();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -147,7 +147,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iLastPrint  = C_UNKNOWN;
   m_eFirst = CK_NONE;
 
-  m_bAppendedCorrectly = true;
+  m_bAddedCorrectly = true;
   m_bRemovedCorrectly = true;
 
   m_iItemise = C_UNKNOWN;
@@ -191,7 +191,7 @@ Card::~Card(void) noexcept(false)
 
   vMark1(MARK_DELETED);
 
-  RASSERT(m_bAppendedCorrectly);
+  RASSERT(m_bAddedCorrectly);
   RASSERT(m_bRemovedCorrectly);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
@@ -306,11 +306,11 @@ eAL Card::e_stageTopo_To_aggLevel(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /* card has been appended correctly                                           */
 /*----------------------------------------------------------------------------*/
-void Card::vAppendedCorrectly(bool bAppended)
+void Card::vAddedCorrectly(bool bAppended)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_bAppendedCorrectly = bAppended;
+  m_bAddedCorrectly = bAppended;
 }
 
 /*----------------------------------------------------------------------------*/

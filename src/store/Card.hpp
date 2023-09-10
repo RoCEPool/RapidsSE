@@ -274,7 +274,7 @@ namespace STORE
     eCK     m_eFirst;
     i8      m_iLastPrint;
 
-    bool    m_bAppendedCorrectly;
+    bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
 
   protected:
@@ -301,7 +301,7 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vAppendedCorrectly(bool bAppended=true);
+    void vAddedCorrectly(bool bAppended=true);
     Card* pAppendNewCard(eCK eCard);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);

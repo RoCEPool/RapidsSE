@@ -54,10 +54,11 @@ namespace STORE
 
     Card* pPeekChild(void);
     Card* pPeekChild_last(void);
+    Card* pPlopChild(void);
     Card* pPopChild(void);
     Card* pPopChildIf(Symbol xSymbol);
     bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
-    Card* pPlopChild(void);
+    void  vPushChild(Card* pChild);
 
     bool bRemoveChild(Card* pChild);
     void vRemoveChild(Card* pChild);
