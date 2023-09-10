@@ -486,8 +486,8 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
 
       case TE_AND:
         // <boolCalc> = <and>/<boolCalc>
-        p_childB = p_boolCalc->pPlopChild();
-        p_childA = p_boolCalc->pPlopChild();
+        p_childB = p_boolCalc->pPopChild_tail();
+        p_childA = p_boolCalc->pPopChild_tail();
 
         p_andPred = new Card_AndPred;
         p_andPred->vAppendChild(p_childA);
@@ -503,8 +503,8 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
 
       case TE_OR:
         // <boolCalc> = <or>/<boolCalc>
-        p_childB = p_boolCalc->pPlopChild();
-        p_childA = p_boolCalc->pPlopChild();
+        p_childB = p_boolCalc->pPopChild_tail();
+        p_childA = p_boolCalc->pPopChild_tail();
 
         p_orPred = new Card_OrPred;
         p_orPred->vAppendChild(p_childA);
@@ -519,7 +519,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         break;
 
       case TE_NOT:
-        p_childA = p_boolCalc->pPlopChild();
+        p_childA = p_boolCalc->pPopChild_tail();
 
         p_notPred = new Card_NotPred;
         p_notPred->vAppendChild(p_childA);
@@ -611,7 +611,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);
 
-          p_childA = p_boolCalc->pPlopChild();
+          p_childA = p_boolCalc->pPopChild_tail();
           p_notPred = new Card_NotPred;
           p_notPred->vAppendChild(p_childA);
           p_boolCalc->vAppendChild(p_notPred);

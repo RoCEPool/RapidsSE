@@ -47,7 +47,6 @@ void XF_Optimise_Cull_bound::vOptimise(CardIter* pCI)
   XF_Optimise_Cull_bound* pXF_Cull_NonUsed_bound = new XF_Optimise_Cull_bound(pCI);
 
   bool b1 = pXF_Cull_NonUsed_bound->bXF_Cull_NonUsed_bound();
-  pCI->vPrintBoard(__LINE__);
   bool b2 = pXF_Cull_NonUsed_bound->bXF_Cull_Used_bound();
 
   pXF_Cull_NonUsed_bound->vOptimised(b1 | b2);

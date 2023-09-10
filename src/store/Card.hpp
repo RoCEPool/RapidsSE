@@ -364,6 +364,11 @@ namespace STORE
     void vMarksClearRecursive(void);
     void vMarksTestRecursive(void);
 
+    void vOnAdd_child(Card* pParent=nullptr);
+    void vOnAdd_parent(Card* pChild=nullptr);
+    void vOnRemove_child(Card* pParent=nullptr);
+    void vOnRemove_parent(Card* pChild=nullptr);
+
     void vPrintCardRecursive(CardIter* pCI,
                              Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,

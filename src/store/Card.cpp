@@ -323,9 +323,7 @@ Card* Card::pAppendNewCard(eCK eCard)
 
   Card* pCard = new Card(eCard,C_UNKNOWN);
 
-  vPushTail(pCard);
-
-  pCard->vAddedCorrectly();
+  vAppendChild(pCard);
 
   return pCard;
 }
@@ -1153,6 +1151,46 @@ void Card::vMarksTestRecursive(void)
     pSubCard->vMarksTestRecursive();
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* this child has just been added to given parent                             */
+/*----------------------------------------------------------------------------*/
+void Card::vOnAdd_child(Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+}
+
+/*----------------------------------------------------------------------------*/
+/* this parent has just had given child added to it                           */
+/*----------------------------------------------------------------------------*/
+void Card::vOnAdd_parent(Card* pChild)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* this child has just been removed from given parent                         */
+/*----------------------------------------------------------------------------*/
+void Card::vOnRemove_child(Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+}
+
+/*----------------------------------------------------------------------------*/
+/* this parent has just had given child fremoved from it                      */
+/*----------------------------------------------------------------------------*/
+void Card::vOnRemove_parent(Card* pChild)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pChild);
 }
 
 /*----------------------------------------------------------------------------*/

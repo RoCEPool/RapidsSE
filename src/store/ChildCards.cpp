@@ -48,6 +48,8 @@ void ChildCards::vAppendChild(Card* pChild)
   vAppend(pChild);
 
   pChild->vAddedCorrectly();
+
+  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,6 +346,7 @@ void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
   vInsertAfter(pChild,pAfter);
 
   pChild->vAddedCorrectly();
+  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,6 +360,7 @@ void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
   vInsertBefore(pChild,pBefore);
 
   pChild->vAddedCorrectly();
+  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,22 +419,6 @@ Card* ChildCards::pPeekChild_last(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pPlopChild(void)
-{
-  i8 nChildren = nChildCards();
-  if (! nChildren)
-    return nullptr;
-
-  Card* pChild = pGetChild(nChildren-1);
-  RASSERT(pChild);
-  vRemoveChild(pChild);
-
-  return pChild;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card* ChildCards::pPopChild(void)
 {
   i8 nChildren = nChildCards();
@@ -439,7 +427,25 @@ Card* ChildCards::pPopChild(void)
 
   Card* pChild = pPop();
   RASSERT(pChild);
+
   pChild->vRemovedCorrectly();
+  pChild->vOnRemove_child();
+
+  return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pPopChild_tail(void)
+{
+  i8 nChildren = nChildCards();
+  if (! nChildren)
+    return nullptr;
+
+  Card* pChild = pGetChild(nChildren-1);
+  RASSERT(pChild);
+  vRemoveChild(pChild);
 
   return pChild;
 }
@@ -488,6 +494,7 @@ void ChildCards::vPushChild(Card* pChild)
   vPush(pChild);
 
   pChild->vAddedCorrectly();
+  pChild->vOnAdd_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,6 +510,7 @@ bool ChildCards::bRemoveChild(Card* pChild)
   vRemove(pChild);
 
   pChild->vRemovedCorrectly();
+  pChild->vOnRemove_child();
 
   return true;
 }
@@ -519,6 +527,7 @@ void ChildCards::vRemoveChild(Card* pChild)
   vRemove(pChild);
 
   pChild->vRemovedCorrectly();
+  pChild->vOnRemove_child();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -538,6 +547,7 @@ void ChildCards::vRemoveSub(Card* pSubCard)
     if (pSub_test == pSubCard) {
       RASSERT(bRemoveChild(pSub_test));
       pSub_test->vRemovedCorrectly();
+      pSub_test->vOnRemove_child();
       break;
     }
     pSub_test->vRemoveSub(pSubCard);
@@ -571,8 +581,12 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   vReplace(pChild, pWith);
+
   pWith->vAddedCorrectly();
+  pWith->vOnAdd_child();
+
   pChild->vRemovedCorrectly();
+  pChild->vOnRemove_child();
 }
 
 /*----------------------------------------------------------------------------*/
