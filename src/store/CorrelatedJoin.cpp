@@ -84,10 +84,14 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
  // pCI->vPrintBoard(__LINE__);
 
+  pCI->G.pDeck->vCheckCorrectness();
+
   // find SQ:<op>/<projection>/<expr> which describes the correlation column
   vIdentify_Expr_Of_Correlation_Key_Column(pCI);
   RASSERT(pCI->Sqy.m_pExpr_corr);    // eg $15 (L_PARTKEY)
  // pCI->vPrintBoard(__LINE__);
+
+  pCI->G.pDeck->vCheckCorrectness();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enrich SQ:<aggreg> to be SQ:<gbyAgg>/<key=CorrCol>,
@@ -97,6 +101,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(pCI);
  // pCI->vRenumberCards();
  // pCI->vPrintBoard(__LINE__);
+
+  pCI->G.pDeck->vCheckCorrectness();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // include correlation column SQ:[<project>/<projection>]
@@ -110,6 +116,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   }
  // pCI->vPrintBoard(__LINE__);
 
+  pCI->G.pDeck->vCheckCorrectness();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get final SQ:<op>/<projection>
 
@@ -117,6 +125,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
   else
     NEVER_REACH
+
+  pCI->G.pDeck->vCheckCorrectness();
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
@@ -132,7 +142,9 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->vForward(true);
   while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     pCI->G.p_from->vSmooth(pCI);
-   // pCI->vPrintBoard(__LINE__);
+    pCI->G.pDeck->vCheckCorrectness();
+
+    // pCI->vPrintBoard(__LINE__);
   }
  // pCI->vPrintBoard(__LINE__);
 
@@ -160,6 +172,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(p_PRED_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
  // pCI->vPrintBoard(__LINE__);
 
+  pCI->G.pDeck->vCheckCorrectness();
+
   // tidy up empty SQ:<table>/<filter>
   pCI->G.p_from->vDeleteFilterIfEmpty(pCI->G.p_filter);
  // pCI->vPrintBoard(__LINE__);
@@ -174,6 +188,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // fold fold fold fold fold fold fold fold fold fold fold fold fold fold fold
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
+  pCI->G.pDeck->vCheckCorrectness();
+
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   pCI->vForward(false);
@@ -181,11 +197,17 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
     pCI->G_bEachMain_reverse_NONE();
   pCI->vForward(true);
 
+  pCI->G.pDeck->vCheckCorrectness();
+
   pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
+  pCI->G.pDeck->vCheckCorrectness();
+
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   pCI->G.p_boolCalc->vBump_stmOdn(2);
+
+  pCI->G.pDeck->vCheckCorrectness();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
@@ -202,8 +224,14 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   vConvert_CrlPrmOdn_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
  // pCI->vPrintBoard(__LINE__);
+
+  pCI->G.pDeck->vCheckCorrectness();
+
   vConvert_SubQryCall_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
- // pCI->vPrintBoard(__LINE__);
+
+  pCI->G.pDeck->vCheckCorrectness();
+
+  // pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -222,7 +250,10 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolCalc);
   vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolCalc);
- // pCI->vPrintBoard(__LINE__);
+
+  pCI->G.pDeck->vCheckCorrectness();
+
+  // pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -315,21 +346,21 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
 
     pCI->G.p_key = new Card_Key;
     pCI->G.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
-    pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_stream);
+    pCI->G.p_gbyAgg->vInsertChildBefore(pCI->G.p_key,pCI->G.p_stream);
 
 
     // key
 
     if (AL_PARTITION == e_Level) {
       pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_pExpr_corr);
-      pCI->G.p_key->vAppend(pCI->G.p_expr);
+      pCI->G.p_key->vAppendChild(pCI->G.p_expr);
     }
     else {
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
       pCI->G.p_term->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
-      pCI->G.p_key->vAppend(pCI->G.p_expr);
+      pCI->G.p_key->vAppendChild(pCI->G.p_expr);
 
       pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
       pCI->G.p_term->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
@@ -361,7 +392,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     }
 
     pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
-    pCI->G.p_projection->vPush(pCI->G.p_expr);
+    pCI->G.p_projection->vPushChild(pCI->G.p_expr);
 
 
     if (AL_PARTITION != e_Level) {
@@ -393,6 +424,8 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-fold sq <project>
 
+  pCI->G.pDeck->vCheckCorrectness();
+
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
 
   RASSERT(pCI->G.p_key->szP_Type());
@@ -402,18 +435,28 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 
   pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
 
+  pCI->G.pDeck->vCheckCorrectness();
 
 
   // push <project>/_SQCRLKEY_
   pCI->G_vPushNewChild(pCI->G.p_projection, CK_EXPR);
+  pCI->G.pDeck->vCheckCorrectness();
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, szAs));
+  pCI->G.pDeck->vCheckCorrectness();
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
+  pCI->G.pDeck->vCheckCorrectness();
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
+  pCI->G.pDeck->vCheckCorrectness();
   Symbol x_Symbol_stmCol1(SF_COL_NO,1);
+
+  pCI->G.pDeck->vCheckCorrectness();
+
 
   pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
   pCI->G.p_term->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
   pCI->G.p_expr->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
+
+  pCI->G.pDeck->vCheckCorrectness();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added
@@ -424,7 +467,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 //  DELETE_CARD(pCI->G.p_stream);
 //
 //  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
-//  pCI->G.p_project->vAppend(pCI->G.p_stream);
+//  pCI->G.p_project->vAppendChild(pCI->G.p_stream);
 
 //  pCI->G.p_projection->Y_vCut(P_Restream);
 //  pCI->G.p_projection->Y_vSet(P_Restreamed);
@@ -497,6 +540,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           RASSERT(Symbol::bIs_Col_Tc(szProjectedCol));
           xKid.pChild()->pSymbol()->vSym(SF_COL_TC,szProjectedCol);  // TODO: hack!!
 
+          p_term->vAddedCorrectly();
           DELETE_CARD(p_term);
         }
         else {
@@ -570,7 +614,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
           Card* p_arg = xKid.pPrev();
 
           Card_Term* p_term_new = (new Card_Term) ->SYM(SF_COL_NO,"$2"_Stz);
-          p_pred->vInsertAfter(p_term_new,xKid.pChild());
+          p_pred->vInsertChildAfter(p_term_new,xKid.pChild());
 
 
           Card_Expr* p_expr_found =

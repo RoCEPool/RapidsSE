@@ -147,7 +147,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iLastPrint  = C_UNKNOWN;
   m_eFirst = CK_NONE;
 
-  m_bAddedCorrectly   = true;
+  m_bAddedCorrectly   = false;
   m_bRemovedCorrectly = true;
 
   m_iItemise = C_UNKNOWN;
@@ -324,6 +324,8 @@ Card* Card::pAppendNewCard(eCK eCard)
 
   vPushTail(pCard);
 
+  pCard->vAddedCorrectly();
+
   return pCard;
 }
 
@@ -402,6 +404,20 @@ void Card::vCard(eCK eCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_eCard = eCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit all sub-cards and check correctness                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vCheckCorrectness(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(m_bAddedCorrectly);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    xKid.pChild()->vCheckCorrectness();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -522,7 +538,7 @@ Card* Card::pDupCardRecursive(void)
     Card* pSubCard = pGetChild(i_Child);
     
     Card* pSubCard_dup = pSubCard->pDupCardRecursive();
-    pCard_dup->vAppend(pSubCard_dup);
+    pCard_dup->vAppendChild(pSubCard_dup);
   }
   
   return pCard_dup;
@@ -550,7 +566,7 @@ Card_SubSet* Card::pDupSubCardsRecursive(i8 i_From, i8 i_Till)
     Card* pChild = pGetChild(i_Child);
 
     Card* pChild_dup = pChild->pDupCardRecursive();
-    pCard_SubSet->vAppend(pChild_dup);
+    pCard_SubSet->vAppendChild(pChild_dup);
   }
 
   return pCard_SubSet;

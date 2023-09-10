@@ -121,7 +121,7 @@ void CardIter::G_vAppendChild(eCK eParent, eCK eChild)
   Card* pParent = G_pGetMember(eParent);
   Card* pChild  = G_pGetMember(eChild);
 
-  pParent->vAppend(pChild);
+  pParent->vAppendChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +133,7 @@ void CardIter::G_vAppendChild(eCK eParent, Card* pChild)
 
   Card* pParent = G_pGetMember(eParent);
 
-  pParent->vAppend(pChild);
+  pParent->vAppendChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +145,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild)
 
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pParent->vAppend(pChild);
+  pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
 }
 
@@ -160,7 +160,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol)
 
   pChild->pSymbol()->vSymPpy(pSymbol);
 
-  pParent->vAppend(pChild);
+  pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
 }
 
@@ -175,7 +175,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 
   pChild->pSymbol()->vSym(&xSymbol);
 
-  pParent->vAppend(pChild);
+  pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
 }
 
@@ -1080,6 +1080,9 @@ void CardIter::vEndTransform(void)
   m_pBench->vRenumberCards();
 
   if (G.pBoard) {
+
+    G.pDeck->vCheckCorrectness();
+
     G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
     for (Kid xDeck(G.pDeck); xDeck.bEach(); /**/) {
@@ -1356,7 +1359,7 @@ void CardIter::G_vInsertAfter(Card* pCard, Card* pAfter)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.pDeck->vInsertAfter(pCard,pAfter);
+  G.pDeck->vInsertChildAfter(pCard,pAfter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1366,7 +1369,7 @@ void CardIter::G_vInsertBefore(Card* pCard, Card* pBefore)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.pDeck->vInsertBefore(pCard,pBefore);
+  G.pDeck->vInsertChildBefore(pCard,pBefore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1981,7 +1984,7 @@ void CardIter::G_vPushNewChild(Card* pParent, eCK eChild)
 
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pParent->vPush(pChild);
+  pParent->vPushChild(pChild);
   G_vMember(eChild, pChild, __func__);
 }
 

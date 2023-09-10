@@ -88,6 +88,8 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward = pFold->pFold_from("From"_Stz,m_pCI);
 
+  m_pCI->G.pDeck->vCheckCorrectness();
+
  // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,6 +99,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
+  m_pCI->G.pDeck->vCheckCorrectness();
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 

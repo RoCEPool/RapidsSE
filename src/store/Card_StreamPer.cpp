@@ -145,7 +145,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
   p_costQuery->vAppendChild(p_costNetwork);
   p_costQuery->vAppendChild(p_costUnicast);
 
-  vInsert(p_costQuery);
+  vPushChild(p_costQuery);
 
   delete p_streamPtn;
 }

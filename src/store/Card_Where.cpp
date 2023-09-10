@@ -161,6 +161,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
   vCorrectStmOdn(pCI->Prior.m_pProjection);
 
   // restore needed
+  pCI->Early.m_pNeeded_later->vAddedCorrectly();
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 

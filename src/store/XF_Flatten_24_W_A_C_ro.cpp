@@ -86,16 +86,25 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"24_W_A_C_ro"_Stz,CK_WHERE);
  // m_pCI->vPrintBoard(__LINE__);
+//vValidateBench();
+
+  m_pCI->G.pDeck->vCheckCorrectness();
 
   CorrelatedJoin* pCorrelatedJoin = new CorrelatedJoin;
   pCorrelatedJoin->vVia_gbyAgg_Promotion(m_pCI);
  // m_pCI->vPrintBoard(__LINE__);
 
+  m_pCI->G.pDeck->vCheckCorrectness();
+
   pFold->vDerive_Correleted_fold_projection(m_pCI);
  // m_pCI->vPrintBoard(__LINE__);
 
+  m_pCI->G.pDeck->vCheckCorrectness();
+
   m_pCI->G.pDeck->vMarksClearRecursive();
  // m_pCI->vPrintBoard(__LINE__);
+
+  m_pCI->G.pDeck->vCheckCorrectness();
 
   delete pCorrelatedJoin;
   delete pFold;

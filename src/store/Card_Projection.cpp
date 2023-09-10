@@ -137,7 +137,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   pCI->G.p_streamKey = pSub_streamKey();
 
   Card_Needed* p_needed = new Card_Needed;
-
+  p_needed->vAddedCorrectly();
 
 
 

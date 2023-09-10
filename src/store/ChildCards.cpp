@@ -556,7 +556,7 @@ void ChildCards::vReplaceChildWithItsSubs(Card* pChild)
   Card* pAfter = pChild;
 
   while (Card* pSub = pChild->pPopChild()) {
-    vInsertAfter(pSub, pAfter);
+    vInsertChildAfter(pSub, pAfter);
     pAfter = pSub;
   }
 
@@ -571,6 +571,7 @@ void ChildCards::vReplaceChild(Card* pChild, Card* pWith)
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   vReplace(pChild, pWith);
+  pWith->vAddedCorrectly();
   pChild->vRemovedCorrectly();
 }
 

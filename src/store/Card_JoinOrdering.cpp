@@ -32,6 +32,8 @@ Card_JoinOrdering::Card_JoinOrdering(void)
 
   _checkInitialised_(CN_CARD);
 
+  vAddedCorrectly();
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -60,6 +62,7 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_StreamPer* p_streamPer)
       _pCard_StreamPer(p_streamPer->pDupCardRecursive());
 
   p_joinPermSeq_dup->vCard(CK_JOINORDERING);
+  p_joinPermSeq_dup->vAddedCorrectly();
 
   Card_JoinOrdering* p_joinOrdering = _pCard_JoinOrdering(p_joinPermSeq_dup);
 

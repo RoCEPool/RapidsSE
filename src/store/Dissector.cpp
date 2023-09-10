@@ -404,6 +404,8 @@ Card* Dissector::pOp_Filter(void)
 
   Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
   pCard_Expr->vRemoveSub(pCard_RpnCalc);
+
+  pCard_Expr->vAddedCorrectly();
   DELETE_CARD(pCard_Expr);
 
   pCard_Filter->vAppendChild(pCard_RpnCalc);

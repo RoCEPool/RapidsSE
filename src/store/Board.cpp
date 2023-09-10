@@ -133,8 +133,8 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
     return;
 
   pCI->G.p_stream = new Card_Stream;
-  pCI->G.p_fold->vAppend(pCI->G.p_stream);
-  pCI->G.p_stream->vAppend(pCI->G.p_projection->pDupCardRecursive());
+  pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
+  pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
