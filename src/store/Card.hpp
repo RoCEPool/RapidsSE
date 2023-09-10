@@ -274,6 +274,9 @@ namespace STORE
     eCK     m_eFirst;
     i8      m_iLastPrint;
 
+    bool    m_bAppendedCorrectly;
+    bool    m_bRemovedCorrectly;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -298,6 +301,7 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+    void vAppendedCorrectly(void);
     Card* pAppendNewCard(eCK eCard);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
@@ -366,6 +370,7 @@ namespace STORE
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);
 
+    void vRemovedCorrectly(void);
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);

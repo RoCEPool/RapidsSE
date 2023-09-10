@@ -147,6 +147,9 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_iLastPrint  = C_UNKNOWN;
   m_eFirst = CK_NONE;
 
+  m_bAppendedCorrectly = true;
+  m_bRemovedCorrectly = true;
+
   m_iItemise = C_UNKNOWN;
 
   vMark1(MARK_BLANK);
@@ -187,6 +190,9 @@ Card::~Card(void) noexcept(false)
   RASSERT(! bMark1(MARK_DELETED));
 
   vMark1(MARK_DELETED);
+
+  RASSERT(m_bAppendedCorrectly);
+  RASSERT(m_bRemovedCorrectly);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -296,6 +302,16 @@ eAL Card::e_stageTopo_To_aggLevel(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* card has been appended correctly                                           */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendedCorrectly(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_bAppendedCorrectly = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
@@ -1249,6 +1265,16 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
 
   if (pCardCtl->bPrintSubShort(m_eCard))
     vPrintChildrenShort(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* card has been removed correctly                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vRemovedCorrectly(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_bRemovedCorrectly = true;
 }
 
 /*----------------------------------------------------------------------------*/
