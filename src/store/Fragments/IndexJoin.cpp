@@ -393,6 +393,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
   void* aHeadLine;
   void* aHeadLineSav;
   bool bFilterResult;
+	char* szStrArea;
 
   IndexInfo __INDEX_INFO__;
   RowInfo __ROW_INFO_TO__;
@@ -414,6 +415,8 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // join constraint
+	szStrArea = __ROW_INFO_TO__.m_acStrArea;
+
   __CONSTRAINTSTACK__;
 
   // check for error
@@ -460,7 +463,7 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iIndexAntiJoinConstraint --------------------------------------------*/
+/*-- iIndexAntiJoinConstraint ------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iIndexAntiJoinConstraint
 i8 iIndexAntiJoinConstraint(Dynamic_T* aDynamicT) {
@@ -521,7 +524,7 @@ i8 iIndexAntiJoinConstraint(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iIndexSemiJoinConstraint --------------------------------------------*/
+/*-- iIndexSemiJoinConstraint ------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iIndexSemiJoinConstraint
 i8 iIndexSemiJoinConstraint(Dynamic_T* aDynamicT) {
