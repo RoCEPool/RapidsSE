@@ -120,6 +120,7 @@
 #include "Card_StreamPer.hpp"  //
 #include "Card_StreamPtn.hpp"
 #include "Card_StreamSet.hpp"  //
+#include "Card_SubQuery.hpp"
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"

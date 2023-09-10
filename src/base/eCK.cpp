@@ -113,6 +113,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_STREAMPER"_Stz,    // CK_STREAMPER
   /* */ "CK_STREAMPTN"_Stz,    // CK_STREAMPTN
   /* */ "CK_STREAMSET"_Stz,    // CK_STREAMSET
+  /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -243,6 +244,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "streamPer"_Stz,       // CK_STREAMPER
   /* */ "streamPtn"_Stz,       // CK_STREAMPTN
   /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
+  /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE

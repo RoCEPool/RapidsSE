@@ -110,6 +110,7 @@ enum eCK : i8 // card kind
   /* */ CK_STREAMPER,
   /* */ CK_STREAMPTN,
   /* */ CK_STREAMSET,
+  /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
