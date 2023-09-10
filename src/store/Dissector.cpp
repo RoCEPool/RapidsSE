@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Dissector.cpp -- Dissector                                                     */
+/* Dissector.cpp -- Dissector                                                 */
 /*============================================================================*/
 
 #include "Dissector.hpp"
@@ -124,7 +124,11 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
     szQueryNm = "_unnamed_"_Stz;
 
   m_pOptimiser->vQueryNm(szQueryNm);
-  
+
+
+//  Card_SubQuery* p_subQuery = new Card_SubQuery;
+//  m_pBoard->pDeck()->vAppendChild(p_subQuery);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   i8 nStageSpecs = m_pPipeSpec->nStageSpecs();

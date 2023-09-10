@@ -698,6 +698,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_STREAMPER:    pCI->G.p_streamPer->vValidate(pCI, 1, this); break;
       case CK_STREAMPTN:    pCI->G.p_streamPtn->vValidate(pCI, 1, this); break;
       case CK_STREAMSET:    pCI->G.p_streamSet->vValidate(pCI, 1, this); break;
+      case CK_SUBQUERY:     pCI->G.p_subQuery->vValidate(pCI, 1, this); break;
       case CK_SUBSET:       pCI->G.p_subSet->vValidate(pCI, 1, this); break;
 
       case CK_TABLE:        pCI->G.p_table->vValidate(pCI, 1, this); break;

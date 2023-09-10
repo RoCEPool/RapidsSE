@@ -613,6 +613,8 @@ bool CardIter::G_bEachMain_NONE(void)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
+  G.p_OP = nullptr;
+
   while (G.xKid.bEach()) {
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
@@ -636,6 +638,8 @@ bool CardIter::G_bEachMain(eCK eOfMainKind)
   RASSERT(! G.xKid.bEnded());
 
   RASSERT(Card_MAIN::bIsMain(eOfMainKind));
+
+  G.p_OP = nullptr;
 
   while (G.xKid.bEach()) {
 
@@ -664,6 +668,8 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
   RASSERT(! G.xKid.bEnded());
 
   RASSERT(Card_MAIN::bIsMain(eOfMainKind));
+
+  G.p_OP = nullptr;
 
   while (G.xKid.bEach()) {
 
@@ -799,6 +805,8 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
 
+  G.p_OP = nullptr;
+
   while (G.xKid.bEach_reverse()) {
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
@@ -824,6 +832,8 @@ bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
   RASSERT(! G.xKid.bEnded());
 
   RASSERT(Card_MAIN::bIsMain(eOfMainKind));
+
+  G.p_OP = nullptr;
 
   while (G.xKid.bEach_reverse()) {
     if (G.xKid.pChild()->eCard() != eOfMainKind)
@@ -851,6 +861,8 @@ bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
+
+  G.p_OP = nullptr;
 
   while (G.xKid.bEach_reverse()) {
 
