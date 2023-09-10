@@ -65,7 +65,7 @@ ordered rows:
 
 // Source file: ../queries/functions/substr/rsubstr3.sql
 // Result file: ../queries/functions/substr/results/substr3.res
-// TODO V2 : RAY TO LOOK AT (sort)
+// TODO V2 : ALKA TO LOOK AT (sort)
 /*
 select substring(colb9,2,2), colb9 from table9 where pcol9 >= 220 and pcol9 <= 245 order by colb9;
 ordered rows:
