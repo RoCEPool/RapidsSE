@@ -149,7 +149,6 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   Symbol xSymbol_prmOdn(SF_PRM_COL,1);
   p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmOdn, p_term_sqarg->pSymbol());
 
-  p_term_sqarg->vAddedCorrectly();
   delete p_term_sqarg;
 
  // pCI->vPrintBoard();

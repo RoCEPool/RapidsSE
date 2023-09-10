@@ -405,7 +405,6 @@ Card* Dissector::pOp_Filter(void)
   Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
   pCard_Expr->vRemoveSub(pCard_RpnCalc);
 
-  pCard_Expr->vAddedCorrectly();
   DELETE_CARD(pCard_Expr);
 
   pCard_Filter->vAppendChild(pCard_RpnCalc);
@@ -1244,13 +1243,13 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* pCard_RpnTerms)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   // AS
-  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
   RASSERT(pCard_Term->pSymbol()->bSame("AS"_Stz));
   delete pCard_Term;
   pCard_Term = nullptr;
 
   // <name>
-  pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
+  pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
   Stz* szAsNm = pCard_Term->szSymbol(SF_NONE);
 
   Card_As* pCard_As = (new Card_As) ->SYM(SF_AS_NM,szAsNm);
@@ -1357,7 +1356,7 @@ Card_Direction* Dissector::pPopDirection(Card_RpnTerms* pCard_RpnTerms)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   // AS
-  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
   Stz* szDirn = pCard_Term->szSymbol(SF_NONE);
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
@@ -1469,20 +1468,20 @@ Card_HshCol* Dissector::pPopHshCol(Card_RpnTerms* pCard_RpnTerms)
     return nullptr;
 
   if (pCard_Term_head->pSymbol()->szSF_symbol(SF_NONE)->bSame(","_Stz)) {
-    pCard_Term_head = pCard_RpnTerms->pPop();
+    pCard_Term_head = pCard_RpnTerms->pPopChild();
     delete pCard_Term_head;
   }
 
   Card_HshCol* p_hshCol = new Card_HshCol;
 
-  Card* p_card_type = pCard_RpnTerms->pPop();
+  Card* p_card_type = pCard_RpnTerms->pPopChild();
   delete p_card_type;
 
-  Card_Term* p_term1 = _pCard_Term(pCard_RpnTerms->pPop());
+  Card_Term* p_term1 = _pCard_Term(pCard_RpnTerms->pPopChild());
   eCT eColumnType = Symbol::eTo_eCT_str(p_term1->szSymbol(SF_NONE));
   delete p_term1;
 
-  Card_Term* p_term_hsh = _pCard_Term(pCard_RpnTerms->pPop());
+  Card_Term* p_term_hsh = _pCard_Term(pCard_RpnTerms->pPopChild());
   p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   p_hshCol->vAppendChild(p_term_hsh);
 
@@ -1517,7 +1516,7 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirectio
   // GROUPBY
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
   if (pCard_Term_head->pSymbol()->bSame("GROUPBY"_Stz)) {
-    pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
+    pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPopChild());
     delete pCard_Term_head;
     pCard_Term_head = nullptr;
   }
@@ -1533,7 +1532,7 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirectio
 
     // SEPARATOR
     if (pCard_Term_head->pSymbol()->bIs_Comma()) {
-      delete pCard_RpnTerms->pPop();
+      delete pCard_RpnTerms->pPopChild();
       continue;
     }
 
@@ -1565,7 +1564,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
 
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
   if (pCard_Term_head->pSymbol()->bSame("AGGREGATES"_Stz)) {
-    pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
+    pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPopChild());
     delete pCard_Term_head;
 
   }
@@ -1581,7 +1580,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
 
     // SEPARATOR
     if (pCard_Term_head->pSymbol()->bIs_Comma()) {
-      delete pCard_RpnTerms->pPop();
+      delete pCard_RpnTerms->pPopChild();
       continue;
     }
 
@@ -1606,7 +1605,7 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
   Card_RpnCalc* pCard_RpnCalc = new Card_RpnCalc;
 
   Card_Term* pCard_Term_popped = nullptr;
-  while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
+  while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPopChild())) ) {
 
     if (
         pCard_Term_popped->pSymbol()->bSame("AGGREGATES"_Stz)
@@ -1637,7 +1636,7 @@ Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   // TYPE
-  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
   Stz* szTerm = pCard_Term->szSymbol(SF_NONE);
   RASSERT(szTerm->bSame("TYPE"_Stz));
 
@@ -1645,7 +1644,7 @@ Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
   pCard_Term = nullptr;
 
   // column type (e.g. BOOLEAN)
-  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
+  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPopChild());
 
   Stz* szType = szCT_char[Symbol::eTo_eCT_str(pCard_Term_type->szSymbol(SF_NONE))];
 

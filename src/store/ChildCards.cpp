@@ -29,7 +29,7 @@ ChildCards::~ChildCards(void) noexcept(false)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  for (Card* pCard = pPop(); pCard; pCard = pPop())
+  for (Card* pCard = pPopChild(); pCard; pCard = pPopChild())
     delete pCard;
 }
 
@@ -456,7 +456,7 @@ Card* ChildCards::pPopChildIf(Symbol xSymbol)
   if (! pChild->bSameSymbol(&xSymbol))
     return nullptr;
 
-  return pPop();
+  return pPopChild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,7 +469,7 @@ bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
     return false;
 
   if (pChild->bIsCard(eCard) && pChild->bSameSymbol(&xSymbol)) {
-    pChild = pPop();
+    pChild = pPopChild();
     RASSERT(pChild);
     delete pChild;
     return true;
@@ -604,7 +604,7 @@ void ChildCards::vTransferChildren(Card* pFrom)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  while (Card* pPoppedChild = pFrom->pPop())
+  while (Card* pPoppedChild = pFrom->pPopChild())
     vAppendChild(pPoppedChild);
 }
 

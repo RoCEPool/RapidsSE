@@ -137,9 +137,6 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   pCI->G.p_streamKey = pSub_streamKey();
 
   Card_Needed* p_needed = new Card_Needed;
-  p_needed->vAddedCorrectly();
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) append the referenced col's in rpnCalc of this projection into needed projection

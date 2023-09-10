@@ -24,8 +24,6 @@ Card_StreamPtn::Card_StreamPtn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
-
-  vAddedCorrectly();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

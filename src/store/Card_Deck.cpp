@@ -26,9 +26,6 @@ Card_Deck::Card_Deck(void)
 
   _checkInitialised_(CN_CARD);
 
-  vAddedCorrectly();
-  vRemovedCorrectly();
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 

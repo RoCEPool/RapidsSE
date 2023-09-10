@@ -100,7 +100,6 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     m_pCI->G.p_OP->vEarlyProject_root(m_pCI);
 
     if (m_pCI->Early.m_pNeeded_later) {
-      m_pCI->Early.m_pNeeded_later->vAddedCorrectly();
       DELETE_CARD(m_pCI->Early.m_pNeeded_later);
     }
 

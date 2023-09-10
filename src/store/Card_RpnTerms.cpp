@@ -25,9 +25,6 @@ Card_RpnTerms::Card_RpnTerms(void)
 
   _checkInitialised_(CN_CARD);
 
-  vAddedCorrectly();
-  vRemovedCorrectly();
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -72,7 +69,7 @@ Card_Term* Card_RpnTerms::pPop_term(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return _pCard_Term(pPop());
+  return _pCard_Term(pPopChild());
 }
 
 

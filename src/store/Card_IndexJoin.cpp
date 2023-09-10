@@ -128,7 +128,6 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
  // pCI->vPrintBoard();
 
   // restore needed
-  pCI->Early.m_pNeeded_later->vAddedCorrectly();
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 

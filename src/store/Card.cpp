@@ -148,7 +148,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_eFirst = CK_NONE;
 
   m_bAddedCorrectly   = false;
-  m_bRemovedCorrectly = true;
+  m_bRemovedCorrectly = false;
 
   m_iItemise = C_UNKNOWN;
 
@@ -191,10 +191,10 @@ Card::~Card(void) noexcept(false)
 
   vMark1(MARK_DELETED);
 
-  RASSERT(m_bAddedCorrectly);
-  RASSERT(m_bRemovedCorrectly);
+  RASSERT( (m_bAddedCorrectly && m_bRemovedCorrectly) ||
+           (! m_bAddedCorrectly && ! m_bRemovedCorrectly));
 
-  for (Card* pCard = pPop(); pCard; pCard = pPop())
+  for (Card* pCard = pPopChild(); pCard; pCard = pPopChild())
     delete pCard;
 }
 
@@ -310,6 +310,7 @@ void Card::vAddedCorrectly(bool bAppended)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(CK_DECK != eCard());
   m_bAddedCorrectly = bAppended;
 }
 
@@ -413,7 +414,7 @@ void Card::vCheckCorrectness(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(m_bAddedCorrectly);
+  RASSERT(CK_DECK == eCard() || m_bAddedCorrectly);
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     xKid.pChild()->vCheckCorrectness();
