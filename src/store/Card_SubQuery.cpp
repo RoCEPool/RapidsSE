@@ -18,7 +18,7 @@ __vDeleteFunction(Card_SubQuery,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_SubQuery::Card_SubQuery(void)
-: Card_symbol(CK_SUBQUERY, C_UNKNOWN)
+: Card_CONSTRUCTION(CK_SUBQUERY, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
