@@ -616,6 +616,9 @@ bool CardIter::G_bEachMain_NONE(void)
   G.p_OP = nullptr;
 
   while (G.xKid.bEach()) {
+    if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
+      continue;
+
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
     G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
@@ -698,7 +701,7 @@ bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_MAIN::bIsMain(eAndSubKind));
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind) || CK_FILTER == eAndSubKind);
 
   while (G_bEachMain(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
@@ -742,7 +745,7 @@ bool CardIter::G_bEachMainWith2Sub(eCK eOfMainKind,
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_MAIN::bIsMain(eAndSubKind2));
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind2) || CK_FILTER == eAndSubKind2);
 
   while (G_bEachMainWithSub(eOfMainKind,eAndSubKind1)) {
     if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
@@ -808,6 +811,9 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
   G.p_OP = nullptr;
 
   while (G.xKid.bEach_reverse()) {
+    if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
+      continue;
+
     G.p_MainCard = G.xKid.pChild();
     vFocusOnMain();
     G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
@@ -861,6 +867,8 @@ bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
+
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
 
   G.p_OP = nullptr;
 
@@ -920,7 +928,7 @@ bool CardIter::G_bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndS
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! Card_MAIN::bIsMain(eAndSubKind));
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind) || CK_FILTER == eAndSubKind);
 
   while (G_bEachMain_reverse_foldBreak_b(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
@@ -1195,6 +1203,11 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
 void CardIter::vFocusOnMain(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+//  if (! G.p_MainCard->bIsMain())
+//    return;
+//
+//  RASSERT(G.p_MainCard->bIsMain());
 
   MemLib::vZero(G.md_Coord, sizeof(G.md_Coord), CN_CARDITER);
   StrLib::vCopy(G.md_Coord, sizeof(G.md_Coord),G.p_MainCard->szCoord()->azChar());

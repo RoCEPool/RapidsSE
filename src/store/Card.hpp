@@ -337,6 +337,7 @@ namespace STORE
     bool bHasSubRecursive(Card* pSubCard);
 
     bool bIsCard(eCK eCard);
+    bool bIsMain(void);
     bool bIsOne(i8 /*eCK*/ iCard, ...);
 
     i8   iItemise(void);

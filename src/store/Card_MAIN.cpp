@@ -55,6 +55,7 @@ bool Card::bIsMain(eCK eCard)
     case CK_COMBINED:
     case CK_CORRELATION:
     case CK_CROSSJOIN:
+    case CK_FILTER:
     case CK_FLAT:
     case CK_FOLD:
     case CK_FROM:

@@ -61,6 +61,7 @@ namespace STORE
 
     Card *pParent(void);
     void vParent(Card *pParent);
+    bool bParentIs(eCK eParent);
     Card *pPrev(void);
 
     void vRemove(void);
