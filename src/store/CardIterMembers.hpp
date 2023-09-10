@@ -140,6 +140,7 @@ namespace STORE
     Card_StreamPer *     p_streamPer;
     Card_StreamPtn *     p_streamPtn;
     Card_StreamSet *     p_streamSet;
+    Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
 
     Card_Table *         p_table;

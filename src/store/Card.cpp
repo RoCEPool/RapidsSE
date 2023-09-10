@@ -2137,6 +2137,19 @@ Card_Constraint* Card::pSub_constraint(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Count.hpp"
+Card_Count* Card::pSub_count(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Count* p_count =
+      _pCard_Count(pFindSubCard(CK_COUNT));
+  return p_count;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_CrossJoin.hpp"
 Card_CrossJoin* Card::pSub_crossJoin(void)
 {
@@ -2603,7 +2616,6 @@ Card_NotPred* Card::pSub_notPred(void)
   return p_notPred;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -2667,19 +2679,6 @@ Card_Correlation* Card::pSub_correlation(void)
   Card_Correlation* p_paramList =
       _pCard_Correlation(pFindSubCard(CK_CORRELATION));
   return p_paramList;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Count.hpp"
-Card_Count* Card::pSub_count(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Count* p_count =
-      _pCard_Count(pFindSubCard(CK_COUNT));
-  return p_count;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2810,6 +2809,19 @@ Card_StreamPtn* Card::pSub_streamPtn(void)
   Card_StreamPtn* p_streamPtn =
       _pCard_StreamPtn(pFindSubCard(CK_STREAMPTN));
   return p_streamPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_SubQuery.hpp"
+Card_SubQuery* Card::pSub_subQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SubQuery* p_subQuery =
+      _pCard_SubQuery(pFindSubCard(CK_SUBQUERY));
+  return p_subQuery;
 }
 
 /*----------------------------------------------------------------------------*/

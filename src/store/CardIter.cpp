@@ -1331,6 +1331,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STREAMPER:        return G.p_streamPer;
     case CK_STREAMPTN:        return G.p_streamPtn;
     case CK_STREAMSET:        return G.p_streamSet;
+    case CK_SUBQUERY:         return G.p_subQuery;
     case CK_SUBSET:           return G.p_subSet;
 
     case CK_TABLE:            return G.p_table;
@@ -1564,6 +1565,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STREAMPER:        G.p_streamPer         = _pCard_StreamPer(pCard); break;
     case CK_STREAMPTN:        G.p_streamPtn         = _pCard_StreamPtn(pCard); break;
     case CK_STREAMSET:        G.p_streamSet         = _pCard_StreamSet(pCard); break;
+    case CK_SUBQUERY:         G.p_subQuery          = _pCard_SubQuery(pCard); break;
     case CK_SUBSET:           G.p_subSet            = _pCard_SubSet(pCard); break;
 
     case CK_TABLE:            G.p_table             = _pCard_Table(pCard);
@@ -1774,6 +1776,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_stage            = nullptr;
   G.p_streamHead       = nullptr;
   G.p_streamJoin       = nullptr;
+  G.p_subQuery         = nullptr;
   G.p_subSet           = nullptr;
 
   G.p_table            = nullptr;
@@ -2536,6 +2539,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_STREAMPER: G.p_streamPer->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMPTN: G.p_streamPtn->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMSET: G.p_streamSet->vValidate(this, iDepth, pCard);  break;
+      case CK_SUBQUERY:  G.p_subQuery->vValidate(this, iDepth, pCard);  break;
       case CK_SUBSET:    G.p_subSet->vValidate(this, iDepth, pCard);  break;
 
       case CK_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;

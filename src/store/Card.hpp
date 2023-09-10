@@ -132,6 +132,7 @@ namespace STORE
   class Card_StreamJoin;
   class Card_StreamKey;
   class Card_StreamPtn;
+  class Card_SubQuery;
   class Card_SubSet;
 
   class Card_Table;
@@ -480,6 +481,7 @@ namespace STORE
     Card_StreamPer*     pSub_streamPer(void);
     Card_StreamPtn*     pSub_streamPtn(void);
     Card_StreamSet*     pSub_streamSet(void);
+    Card_SubQuery*      pSub_subQuery(void);
     Card_Table*         pSub_table(void);
     Card_TableInfo*     pSub_tableInfo(void);
     Card_TableNm*       pSub_tableNm(void);
