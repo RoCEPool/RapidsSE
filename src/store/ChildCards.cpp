@@ -334,6 +334,32 @@ Card* ChildCards::pGetChild_bySym(STORE::Symbol *pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert child card after given card                                         */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
+{
+  RASSERT(pChild);
+  RASSERT(pAfter);
+
+  vInsertAfter(pChild,pAfter);
+
+  pChild->vAddedCorrectly();
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert child card before given card                                        */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vInsertChildBefore(Card* pChild, Card* pBefore)
+{
+  RASSERT(pChild);
+  RASSERT(pBefore);
+
+  vInsertBefore(pChild,pBefore);
+
+  pChild->vAddedCorrectly();
+}
+
+/*----------------------------------------------------------------------------*/
 /* morph all children of eFrom to be eTo                                      */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vMorphChildrenTo(eCK eFrom, eCK eTo)

@@ -48,6 +48,9 @@ namespace STORE
     Card* pGetChild(i8 i_Child, eCK& reCard);
     Card* pGetChild_bySym(Symbol* pSymbol);
 
+    void  vInsertChildAfter(Card* pChild, Card* pAfter);
+    void  vInsertChildBefore(Card* pChild, Card* pBefore);
+
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
 
     void vOntoStzList(StzList* pStzList);
