@@ -552,7 +552,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred->vCard(CK_CMPPRED);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
-        //p_boolCalc->vPush(p_cmpPred);
+        //p_boolCalc->vPushChild(p_cmpPred);
         p_boolCalc->vAppendChild(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);

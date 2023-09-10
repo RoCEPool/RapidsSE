@@ -287,7 +287,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_projection = pSub_projection();
 
-  pCI->G.p_projection->vPush(pCI->G.p_expr);
+  pCI->G.p_projection->vPushChild(pCI->G.p_expr);
   pCI->G.p_projection->vRenumberAll_expr();
 
 }

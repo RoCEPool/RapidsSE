@@ -53,7 +53,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI, Card_Expr* p_
   pCI->G.p_expr->vAppendChild(p_expr_fold->pSub_rpnCalc()->pDupCardRecursive());
   pCI->G.p_expr->vColType(p_expr_fold->pSub_rpnCalc());
 
-  pCI->G.p_key->vPush(pCI->G.p_expr);
+  pCI->G.p_key->vPushChild(pCI->G.p_expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
   p_rpnCalc_new->vAppendChild(p_term_new);
   p_expr_new->vColType(p_rpnCalc_new);
 
-  pCI->G.p_projection->vPush(p_expr_new);
+  pCI->G.p_projection->vPushChild(p_expr_new);
 }
 
 /*----------------------------------------------------------------------------*/

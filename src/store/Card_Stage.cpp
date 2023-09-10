@@ -56,7 +56,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   p_stage->SYM(SF_STG_NO,++nStages);
   Card_Topology* p_topology = new Card_Topology(YG_ALL_PARTITIONS);
   p_stage->vAppendChild(p_topology);
-  pCI->G.pDeck->vPush(p_stage);
+  pCI->G.pDeck->vPushChild(p_stage);
 
   eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 

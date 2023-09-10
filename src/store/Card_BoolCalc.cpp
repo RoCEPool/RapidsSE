@@ -518,7 +518,7 @@ void Card_BoolCalc::vPushPred(Card_PRED* p_pred_toBeAdded)
   p_andPred_new->vAppendChild(p_pred_oldTop);
   p_andPred_new->vAppendChild(p_pred_toBeAdded);
 
-  this->vPush(p_andPred_new);
+  this->vPushChild(p_andPred_new);
 }
 
 /*----------------------------------------------------------------------------*/
