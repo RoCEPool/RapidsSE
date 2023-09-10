@@ -118,7 +118,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
       return C_CONTINUE_RECURSION;
 
     Card_CmpPred* p_cmpPred_new = p_cmpPred_tst->pClone();
-    this->vAppend(p_cmpPred_new);
+    this->vAppendChild(p_cmpPred_new);
 
     return C_CONTINUE_RECURSION;
   };

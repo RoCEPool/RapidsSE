@@ -284,7 +284,7 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
   else
   if (p_PRED->bIsCard(CK_CMPPRED)) {
     p_bound = Card_Bound::pCreateFrom_PRED(p_PRED, cTblSyn);
-    p_bounds->vAppend(p_bound);
+    p_bounds->vAppendChild(p_bound);
   }
   else {
     NEVER_REACH
@@ -351,12 +351,12 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       Card_Bounds *p_bounds = p_index->pSub_bounds();
       if (! p_bounds) {
         p_bounds = new Card_Bounds;
-        p_index->vAppend(p_bounds);
+        p_index->vAppendChild(p_bounds);
       }
 
       char cTblSyn = this->pSymbol()->cSF_char();
       Card_Bound *p_bound = Card_Bound::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
-      p_bounds->vAppend(p_bound);
+      p_bounds->vAppendChild(p_bound);
 
       p_pred_Of_filter->vMark1(MARK_UP);
 

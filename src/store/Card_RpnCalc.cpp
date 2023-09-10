@@ -43,7 +43,7 @@ Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term = (new Card_Term) ->SYMPPY(pSymbol);
-  vAppend(p_term);
+  vAppendChild(p_term);
 
   vColType(p_term);
 
@@ -210,7 +210,7 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
     Card_Expr* p_expr_valOdn = new Card_Expr(p_term_valOdn->pSymbol());
     p_expr_valOdn->pSymbol()->Y_vColType(p_term_valOdn->pSymbol()->Y_szColType());
 
-    p_subSet->vAppend(p_expr_valOdn);
+    p_subSet->vAppendChild(p_expr_valOdn);
   }
 
   pCI->G.p_subSet = p_subSet;
@@ -357,18 +357,6 @@ bool Card_RpnCalc::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vOntoStzList(StzList* pStzList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pStzList->vAppend(":"_Stz);
-
-  ChildCards::vOntoStzList(pStzList);
-}
-
-/*----------------------------------------------------------------------------*/
 /* return a reduced copy of this rpnCalc                                      */
 /*----------------------------------------------------------------------------*/
 Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
@@ -387,7 +375,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
   Card_Term* p_term =(new Card_Term) -> SYM(SF_COL_NO,i_Expr + 1);
   p_term->vColType(this);
 
-  p_rpnCalc_reduced->vAppend(p_term);
+  p_rpnCalc_reduced->vAppendChild(p_term);
 
   return p_rpnCalc_reduced;
 }
@@ -421,7 +409,7 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
   Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_COL_NO,p_expr_encasing->szSymbol(SF_NONE));
   p_term_propagated->vColType(this);
 
-  p_rpnCalc_propagated->vAppend(p_term_propagated);
+  p_rpnCalc_propagated->vAppendChild(p_term_propagated);
 
   return p_rpnCalc_propagated;
 }
@@ -472,7 +460,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
     Card_CmpPred* p_cmpPred = new Card_CmpPred;
     p_cmpPred->vTransferChildren(this);
 
-    p_boolCalc->vAppend(p_cmpPred);
+    p_boolCalc->vAppendChild(p_cmpPred);
 
     return p_boolCalc;
   }
@@ -502,10 +490,10 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_childA = p_boolCalc->pPlopChild();
 
         p_andPred = new Card_AndPred;
-        p_andPred->vAppend(p_childA);
-        p_andPred->vAppend(p_childB);
+        p_andPred->vAppendChild(p_childA);
+        p_andPred->vAppendChild(p_childB);
 
-        p_boolCalc->vAppend(p_andPred);
+        p_boolCalc->vAppendChild(p_andPred);
         p_andPred = nullptr;
         p_childA  = nullptr;
         p_childB  = nullptr;
@@ -519,10 +507,10 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_childA = p_boolCalc->pPlopChild();
 
         p_orPred = new Card_OrPred;
-        p_orPred->vAppend(p_childA);
-        p_orPred->vAppend(p_childB);
+        p_orPred->vAppendChild(p_childA);
+        p_orPred->vAppendChild(p_childB);
 
-        p_boolCalc->vAppend(p_orPred);
+        p_boolCalc->vAppendChild(p_orPred);
         p_orPred = nullptr;
         p_childA = nullptr;
         p_childB = nullptr;
@@ -534,9 +522,9 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_childA = p_boolCalc->pPlopChild();
 
         p_notPred = new Card_NotPred;
-        p_notPred->vAppend(p_childA);
+        p_notPred->vAppendChild(p_childA);
 
-        p_boolCalc->vAppend(p_notPred);
+        p_boolCalc->vAppendChild(p_notPred);
         p_notPred = nullptr;
         p_childA  = nullptr;
         DELETE_CARD(p_term_next);
@@ -565,7 +553,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         //p_boolCalc->vPush(p_cmpPred);
-        p_boolCalc->vAppend(p_cmpPred);
+        p_boolCalc->vAppendChild(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);
         //p_boolCalc->vDump(0,"COMPARE"_Stz);
@@ -582,7 +570,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsSubQueryOp())
-        p_boolCalc->vAppend(p_cmpPred);
+        p_boolCalc->vAppendChild(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);
         //p_boolCalc->vDump(0,"EXISTS"_Stz);
@@ -594,7 +582,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred = new Card_CmpPred;
           p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
           p_cmpPred->vTransferChildren(p_TermSeries);
-          p_boolCalc->vAppend(p_cmpPred);
+          p_boolCalc->vAppendChild(p_cmpPred);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);
@@ -605,7 +593,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred->SYM(SF_SQY_OP,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
-          p_boolCalc->vAppend(p_cmpPred);
+          p_boolCalc->vAppendChild(p_cmpPred);
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);
           //p_boolCalc->vDump(0,"IN"_Stz);
@@ -619,14 +607,14 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred->SYM(SF_SQY_OP,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsBoolFn())
-          p_boolCalc->vAppend(p_cmpPred);
+          p_boolCalc->vAppendChild(p_cmpPred);
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);
 
           p_childA = p_boolCalc->pPlopChild();
           p_notPred = new Card_NotPred;
-          p_notPred->vAppend(p_childA);
-          p_boolCalc->vAppend(p_notPred);
+          p_notPred->vAppendChild(p_childA);
+          p_boolCalc->vAppendChild(p_notPred);
           p_notPred = nullptr;
           p_childA  = nullptr;
           //p_boolCalc->vDump(0,"BOOLFN/NOTIN"_Stz);
@@ -636,7 +624,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
-          p_boolCalc->vAppend(p_cmpPred);
+          p_boolCalc->vAppendChild(p_cmpPred);
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);
           //p_boolCalc->vDump(0,"NOTIN"_Stz);
@@ -648,7 +636,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_cmpPred->SYM(SF_BOL_FN,p_term_next->szSymbol(SF_NONE));
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
-        p_boolCalc->vAppend(p_cmpPred);
+        p_boolCalc->vAppendChild(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);
         //p_boolCalc->vDump(0,"BOOLFN"_Stz);
@@ -662,7 +650,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         break;
 
       case TE_OTHER:
-        p_TermSeries->vAppend(p_term_next);
+        p_TermSeries->vAppendChild(p_term_next);
         //p_TermSeries->vDump(0,"TERM_SERIES"_Stz);
         break;
 
@@ -680,7 +668,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
     p_cmpPred = new Card_CmpPred;
     p_cmpPred->vTransferChildren(p_TermSeries);
 
-    p_boolCalc->vAppend(p_cmpPred);
+    p_boolCalc->vAppendChild(p_cmpPred);
   }
 
   RASSERT(0 == p_TermSeries->nChildCards());
@@ -706,7 +694,7 @@ void Card_RpnCalc::vTransfer(STORE::Card_RpnCalc *p_rpnCalc, eSF eSymbol_limit)
 
   if (bAppendAnd) {
     Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
-    vAppend(p_term_and);
+    vAppendChild(p_term_and);
   }
 }
 

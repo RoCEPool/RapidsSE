@@ -109,10 +109,10 @@ Card_Where* Card_Where::pNewWhereAssembly(void)
   Card_Where* p_where = new Card_Where;
 
   Card_Filter* p_filter = new Card_Filter;
-  p_where->vAppend(p_filter);
+  p_where->vAppendChild(p_filter);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_filter->vAppend(p_rpnCalc);
+  p_filter->vAppendChild(p_rpnCalc);
 
   return p_where;
 }
@@ -207,7 +207,7 @@ void Card_Where::vUpdate_projection(CardIter* pCI)
   if ((pCI->G.p_stream = pCI->G.p_where->pSub_stream())) {
     if ((pCI->G.p_projection = pCI->G.p_stream->pSub_projection())) {
       pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
-      pCI->G.p_stream->vAppend(pCI->Prior.m_pProjection->pClone());
+      pCI->G.p_stream->vAppendChild(pCI->Prior.m_pProjection->pClone());
     }
   }
 }

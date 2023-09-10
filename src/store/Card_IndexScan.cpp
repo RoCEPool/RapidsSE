@@ -61,7 +61,7 @@ void Card_IndexScan::vDerive_streamKey(CardIter* pCI)
   pCI->G.p_streamKey = new Card_StreamKey;
   pCI->G.p_index->vAdd_streamKey_exprs(pCI);
 
-  pCI->G.p_projection->vAppend(pCI->G.p_streamKey);
+  pCI->G.p_projection->vAppendChild(pCI->G.p_streamKey);
 
   // set running projection for use by next op
   pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;

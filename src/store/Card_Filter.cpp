@@ -92,7 +92,7 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 
   pCI->G.p_filter->vEnsure_stream(pCI);
 
-  pCI->G.p_stream->vAppend(pCI->G.p_MainCard->pSub_projection()->pClone());
+  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_projection()->pClone());
 
   pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_MainCard);
 
@@ -110,7 +110,7 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 
   Card_Filter* p_filter = new Card_Filter;
 
-  p_filter->vAppend(p_constraint);
+  p_filter->vAppendChild(p_constraint);
   return p_filter;
 }
 
@@ -128,17 +128,17 @@ void Card_Filter::vAddPred(Card_PRED *p_PRED)
   Card_BoolCalc* p_calcBool = this->pSub_boolCalc();
 
   if (0 == p_calcBool->nChildCards()) {
-    p_calcBool->vAppend(p_PRED);
+    p_calcBool->vAppendChild(p_PRED);
     return;
   }
 
   Card* p_top = p_calcBool->pPop();
 
   Card_AndPred* pCard_predAnd = new Card_AndPred;
-  pCard_predAnd->vAppend(p_top);
-  pCard_predAnd->vAppend(p_PRED);
+  pCard_predAnd->vAppendChild(p_top);
+  pCard_predAnd->vAppendChild(p_PRED);
 
-  p_calcBool->vAppend(pCard_predAnd);
+  p_calcBool->vAppendChild(pCard_predAnd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,7 +246,7 @@ void Card_Filter::vUpdate_projection(CardIter* pCI)
   if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
 
     pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
-    pCI->G.p_filter->vAppend(pCI->Prior.m_pProjection->pClone());
+    pCI->G.p_filter->vAppendChild(pCI->Prior.m_pProjection->pClone());
 
   }
 }

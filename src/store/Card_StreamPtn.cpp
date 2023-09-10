@@ -51,7 +51,7 @@ void Card_StreamPtn::vAddKey(Symbol* p_Y_tblCol)
 
   p_streamKey->pSymbol()->vSym(p_Y_tblCol);
 
-  vAppend(p_streamKey);
+  vAppendChild(p_streamKey);
 }
 
 /*----------------------------------------------------------------------------*/

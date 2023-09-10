@@ -40,7 +40,7 @@ Card_Expr::Card_Expr(Symbol* pSymbol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(pSymbol);
-  vAppend(p_rpnCalc);
+  vAppendChild(p_rpnCalc);
 
   _checkInitialised_(CN_CARD);
 
@@ -61,11 +61,11 @@ Card_Expr::Card_Expr(Card_As*      p_as_arg,
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 
-  vAppend(p_as);
+  vAppendChild(p_as);
 
 
-  vAppend(p_rpnCalc);
-  p_rpnCalc->vAppend(p_term);
+  vAppendChild(p_rpnCalc);
+  p_rpnCalc->vAppendChild(p_term);
 }
 
 
@@ -94,8 +94,8 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
 
-  p_expr_gby->vAppend(p_rpnCalc);
-  p_rpnCalc->vAppend(p_term);
+  p_expr_gby->vAppendChild(p_rpnCalc);
+  p_rpnCalc->vAppendChild(p_term);
 
   p_rpnCalc->pSymbol()->Y_vColType(pExpr_corr->szP_Type());
   p_term->pSymbol()->Y_vColType(pExpr_corr->szP_Type());
@@ -121,9 +121,9 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
   if (p_as)
-    p_expr->vAppend(p_as);
-  p_expr->vAppend(p_rpnCalc);
-  p_rpnCalc->vAppend(p_term);
+    p_expr->vAppendChild(p_as);
+  p_expr->vAppendChild(p_rpnCalc);
+  p_rpnCalc->vAppendChild(p_term);
 
   p_rpnCalc->pSymbol()->Y_vColType(p_expr_gby->szP_Type());
   p_term->pSymbol()->Y_vColType(p_expr_gby->szP_Type());
@@ -155,13 +155,13 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_term->pSymbol()->Y_vColType(p_expr->szP_Type());
   //p_term->vDump();
 
-  p_rpnCalc->vAppend(p_term);
+  p_rpnCalc->vAppendChild(p_term);
 
 
-  p_expr_simple->vAppend(p_rpnCalc);
+  p_expr_simple->vAppendChild(p_rpnCalc);
   p_expr_simple->vColType(p_rpnCalc);
 
-  p_expr_simple->vAppend(p_expr->pSub_as()->pDupCardRecursive());
+  p_expr_simple->vAppendChild(p_expr->pSub_as()->pDupCardRecursive());
 
   return p_expr_simple;
 }
@@ -275,14 +275,14 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   Card_Expr* p_expr_early = new Card_Expr;
 
   if (p_as)
-    p_expr_early->vAppend(p_as->pClone());
+    p_expr_early->vAppendChild(p_as->pClone());
   else {
     Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM_syn,i_Expr);
-    p_expr_early->vAppend(p_as_new);
+    p_expr_early->vAppendChild(p_as_new);
   }
 
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
-  p_expr_early->vAppend(p_rpnCalc_early);
+  p_expr_early->vAppendChild(p_rpnCalc_early);
 
   p_expr_early->vColType(p_rpnCalc_early);
   return p_expr_early;
@@ -539,21 +539,21 @@ Card_Expr* Card_Expr::pPropagate(void)
   p_expr_propagation->vColType(this);
 
   if (p_as)
-    p_expr_propagation->vAppend(p_as->pClone());
+    p_expr_propagation->vAppendChild(p_as->pClone());
   else {
     Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,this->szSymbol(SF_NONE));
-    p_expr_propagation->vAppend(p_as_new);
+    p_expr_propagation->vAppendChild(p_as_new);
   }
 
 
 
 //  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
-//  p_expr_propagation->vAppend(p_rpnCalc_early);
+//  p_expr_propagation->vAppendChild(p_rpnCalc_early);
 //  p_expr_propagation->vSetType(p_rpnCalc_early);
 
   Card_RpnCalc* p_rpnCalc_propagated = p_rpnCalc->pPropagate(this);
 
-  p_expr_propagation->vAppend(p_rpnCalc_propagated);
+  p_expr_propagation->vAppendChild(p_rpnCalc_propagated);
 
   return p_expr_propagation;
 }
@@ -571,9 +571,9 @@ void Card_Expr::vReconstruct(Card_As*    p_as_arg,
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 
-  vAppend(p_as_arg);
-  vAppend(p_rpnCalc);
-  p_rpnCalc->vAppend(p_term);
+  vAppendChild(p_as_arg);
+  vAppendChild(p_rpnCalc);
+  p_rpnCalc->vAppendChild(p_term);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,7 +591,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
 
   bool bIs_SQCRLKEY = false;
   if (Card_As* p_as = pSub_as()) {
-    p_expr_reduced->vAppend(p_as->pClone());
+    p_expr_reduced->vAppendChild(p_as->pClone());
     bIs_SQCRLKEY = p_as->bIs_SQCRLKEY();
   }
   Card_RpnCalc* p_rpnCalc_reduced;
@@ -600,7 +600,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   else
     p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy(i_Expr,bIs_SQCRLKEY);
 
-  p_expr_reduced->vAppend(p_rpnCalc_reduced);
+  p_expr_reduced->vAppendChild(p_rpnCalc_reduced);
 
   return p_expr_reduced;
 }

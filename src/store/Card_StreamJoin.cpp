@@ -222,12 +222,12 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
 
   Card_JoinEstimate* p_joinEstimate = new Card_JoinEstimate;
 
-  p_joinEstimate->vAppend(p_joinCast);
-  p_joinEstimate->vAppend(p_costNetwork);
-  p_joinEstimate->vAppend(p_costUnicast);
-  p_joinEstimate->vAppend(p_costJoining);
+  p_joinEstimate->vAppendChild(p_joinCast);
+  p_joinEstimate->vAppendChild(p_costNetwork);
+  p_joinEstimate->vAppendChild(p_costUnicast);
+  p_joinEstimate->vAppendChild(p_costJoining);
 
-  vAppend(p_joinEstimate);
+  vAppendChild(p_joinEstimate);
 
   return nUnfiltBuff_produced_by_join;
 }

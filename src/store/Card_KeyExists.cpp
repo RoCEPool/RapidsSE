@@ -171,7 +171,7 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->G.p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
-      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
 
@@ -198,7 +198,7 @@ void Card_KeyExists::vUpdate_projection(CardIter* pCI)
   if (pCI->Prior.m_pProjection) {
     vEnsure_stream(pCI);
     pCI->G.p_projection = pCI->Prior.m_pProjection->pClone();
-    pCI->G.p_stream->vAppend(pCI->G.p_projection);
+    pCI->G.p_stream->vAppendChild(pCI->G.p_projection);
   }
 }
 

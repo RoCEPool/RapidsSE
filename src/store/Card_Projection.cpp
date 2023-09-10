@@ -162,7 +162,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
         if (p_needed->pFind_expr_Of_symbol(pSymbol_tblCol))
           continue;
 
-        p_needed->vAppend(p_expr_key->pClone());
+        p_needed->vAppendChild(p_expr_key->pClone());
       }
       else
       if (xCI_rpnCalc.p_term()->bIsValOdn()) {
@@ -172,7 +172,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
           continue;
 
         if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
-          p_needed->vAppend(p_expr_col->pClone());
+          p_needed->vAppendChild(p_expr_col->pClone());
       }
       else {
 
@@ -199,7 +199,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
             continue;
 
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
-            p_needed->vAppend(p_expr_col->pClone());
+            p_needed->vAppendChild(p_expr_col->pClone());
         }
       }
     }
@@ -264,7 +264,7 @@ void Card_Projection::vDerive_streamKey(CardIter *pCI)
 
       // annotation or direction in passing
       if (p_expr_runkey->pSub_direction() && ! p_expr_prjCol->pSub_direction()) {
-        p_expr_prjCol->vAppend(p_expr_runkey->pSub_direction()->pDupCardRecursive());
+        p_expr_prjCol->vAppendChild(p_expr_runkey->pSub_direction()->pDupCardRecursive());
       }
 
       pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);
@@ -295,7 +295,7 @@ Card_Projection* Card_Projection::pPropagate(CardIter* pCI) {
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     Card_Expr *p_expr_propagated = xKid.p_expr()->pPropagate();
-    p_projection_propagated->vAppend(p_expr_propagated);
+    p_projection_propagated->vAppendChild(p_expr_propagated);
   }
 
   p_projection_propagated->vRenumberAll_expr();
@@ -362,7 +362,7 @@ Card_Projection* Card_Projection::pReducedCopy(CardIter* pCI)
   i8 i_Expr = 0;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_copy = xKid.p_expr()->pReducedCopy(i_Expr++);
-    p_projection_reduced->vAppend(p_expr_copy);
+    p_projection_reduced->vAppendChild(p_expr_copy);
   }
 
   return p_projection_reduced;

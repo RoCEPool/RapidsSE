@@ -104,15 +104,15 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_indexNm->SYM(SF_IDX_NM,pIndex->szIndexNm());
-  p_index->vAppend(p_indexNm);
+  p_index->vAppendChild(p_indexNm);
 
   if (pIndexDef->bIsUnique()) {
     Card_Unique* p_unique = new Card_Unique;
-    p_index->vAppend(p_unique);
+    p_index->vAppendChild(p_unique);
   }
 
   Card_IdxColList* p_idxColList = new Card_IdxColList;
-  p_index->vAppend(p_idxColList);
+  p_index->vAppendChild(p_idxColList);
 
   i8 nColumns = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -121,11 +121,11 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
     Card_IdxCol* p_idxCol = new Card_IdxCol;
     p_idxCol->SYM(SF_COL_NM, pColumn->szColNm());
 
-    p_idxColList->vAppend(p_idxCol);
+    p_idxColList->vAppendChild(p_idxCol);
 
 //    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
 //    p_idxColNm->vSymbol(pColumn->szColNm());
-//    p_idxCol->vAppend(p_idxColNm);
+//    p_idxCol->vAppendChild(p_idxColNm);
   }
 
   return p_index;

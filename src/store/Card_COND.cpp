@@ -55,7 +55,7 @@ void Card_COND::vAddTransients(CardIter* pCI)
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
-      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
 

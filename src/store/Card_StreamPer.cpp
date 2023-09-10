@@ -142,8 +142,8 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
   p_costUnicast->SYM(SF_INT_LIT,nSumUnicastCost);
 
   Card_CostStream* p_costQuery = new Card_CostStream;
-  p_costQuery->vAppend(p_costNetwork);
-  p_costQuery->vAppend(p_costUnicast);
+  p_costQuery->vAppendChild(p_costNetwork);
+  p_costQuery->vAppendChild(p_costUnicast);
 
   vInsert(p_costQuery);
 
@@ -228,12 +228,12 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
       Card_StreamHead *p_streamHead = new Card_StreamHead;
       p_streamHead->SYM(SF_TBL_SYN,cTblSyn_ith);
-      vAppend(p_streamHead);
+      vAppendChild(p_streamHead);
 
-      p_streamHead->vAppend((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
+      p_streamHead->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
 
       if (p_table_ith->pSub_keyExists() || p_table_ith->pSub_keyNotExists()) {
-        p_streamHead->vAppend((new Card_Note) ->SYM(SF_NOTE,"**CAN'T BE FIRST**"_Stz));
+        p_streamHead->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**CAN'T BE FIRST**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         i_InvalidAtJoin = i_Elm;
         break;
@@ -241,7 +241,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
       if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
         if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
-          p_streamHead->vAppend((new Card_Note) ->SYM(SF_NOTE,"**BAD POS**"_Stz));
+          p_streamHead->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**BAD POS**"_Stz));
           pSymbol()->Y_vSet(P_Invalid);
           i_InvalidAtJoin = i_Elm;
           break;
@@ -257,13 +257,13 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
     Card_StreamJoin *p_streamJoin = new Card_StreamJoin;
     p_streamJoin->SYM(SF_TBL_SYN,cTblSyn_ith);
-    vAppend(p_streamJoin);
+    vAppendChild(p_streamJoin);
 
-    p_streamJoin->vAppend((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
+    p_streamJoin->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
 
     if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
       if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
-        p_streamJoin->vAppend((new Card_Note) ->SYM(SF_NOTE,"**BAD POS**"_Stz));
+        p_streamJoin->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**BAD POS**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         i_InvalidAtJoin = i_Elm;
         break;
@@ -287,7 +287,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
-        p_streamJoin->vAppend(xKid.p_cmpPred()->pDupCardRecursive());
+        p_streamJoin->vAppendChild(xKid.p_cmpPred()->pDupCardRecursive());
         break;
       }
     }
@@ -297,7 +297,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       continue;
 
     // join of ith table is not possible at this point
-    p_streamJoin->vAppend((new Card_Note) ->SYM(SF_NOTE,"**DOESN'T FOLLOW**"_Stz));
+    p_streamJoin->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**DOESN'T FOLLOW**"_Stz));
     pSymbol()->Y_vSet(P_Invalid);
 
     i_InvalidAtJoin = i_Elm;
@@ -380,15 +380,15 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     if (0 == i_Item) {
       Card_StreamHead *p_dataStart = new Card_StreamHead;
       p_dataStart->SYM(SF_TBL_SYN,cTblSyn_ith);
-      vAppend(p_dataStart);
+      vAppendChild(p_dataStart);
     }
     else {
       Card_StreamJoin *p_joinLocus = new Card_StreamJoin;
       p_joinLocus->SYM(SF_TBL_SYN,cTblSyn_ith);
-      vAppend(p_joinLocus);
+      vAppendChild(p_joinLocus);
 
       if (i_NotValid == i_Item) {
-        p_joinLocus->vAppend((new Card_Note) ->SYM(SF_NOTE,"**DOESN'T FOLLOW**"_Stz));
+        p_joinLocus->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**DOESN'T FOLLOW**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         break;
       }
@@ -404,7 +404,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
         char cTblSyn_other = xKid.p_cmpPred()->cOtherTable(cTblSyn_ith);
 
         if (bHasKnownJoin(cTblSyn_other)) {
-          p_joinLocus->vAppend(xKid.p_cmpPred()->pDupCardRecursive());
+          p_joinLocus->vAppendChild(xKid.p_cmpPred()->pDupCardRecursive());
           break;
         }
       }

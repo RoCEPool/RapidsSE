@@ -525,10 +525,10 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
     p_projection = _pCard_Projection(pCI->Prior.m_pProjection->pDupCardRecursive());
-    pCI->G.p_stream->vAppend(p_projection);
+    pCI->G.p_stream->vAppendChild(p_projection);
     pCI->Prior.m_pProjection = p_projection;
     if (p_projection_needed)
-      vAppend(p_projection_needed);
+      vAppendChild(p_projection_needed);
     return;
   }
 
@@ -567,32 +567,32 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol(SF_COL_NO,i_Expr++);
     p_expr->pSymbol()->vSym(&xSymbol);
-    p_projection->vAppend(p_expr);
+    p_projection->vAppendChild(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();
 
     Card_As *p_as = (new Card_As) ->SYM(SF_AS_NM,pColumn->szColNm());
-    p_expr->vAppend(p_as);
+    p_expr->vAppendChild(p_as);
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
-    p_expr->vAppend(p_rpnCalc);
+    p_expr->vAppendChild(p_rpnCalc);
     p_rpnCalc->pSymbol()->Y_vColType(szCT_char[eColumnType]);
     p_expr->pSymbol()->Y_vColType(szCT_char[eColumnType]);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_COL_TC,cTblSyn, i_Col + 1);
-    p_rpnCalc->vAppend(p_term);
+    p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
     p_term->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   }
 
-  pCI->G.p_stream->vAppend(p_projection);
+  pCI->G.p_stream->vAppendChild(p_projection);
 
   pCI->Prior.m_pProjection = p_projection;
 
   if (p_projection_needed)
-    vAppend(p_projection_needed);
+    vAppendChild(p_projection_needed);
 }
 
 /*----------------------------------------------------------------------------*/

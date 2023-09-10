@@ -279,7 +279,7 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
   pCI->G.p_projection->vDelete_streamKey(pCI);
 
   pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
-  pCI->G.p_projection->vAppend(pCI->StreamOrder.m_pStreamKey_running);
+  pCI->G.p_projection->vAppendChild(pCI->StreamOrder.m_pStreamKey_running);
 
 
   // set running projection for use by next op

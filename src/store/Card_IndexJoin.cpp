@@ -64,7 +64,7 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   pCI->G.p_index->vAdd_streamKey_exprs(pCI);
 
-  pCI->G.p_projection->vAppend(pCI->G.p_streamKey);
+  pCI->G.p_projection->vAppendChild(pCI->G.p_streamKey);
 
 
   // set running projection for use by next op
@@ -165,16 +165,16 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
       Card_Expr* p_expr_stmCol = new Card_Expr;
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
       p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_term->pSymbol()->Y_szColType());
-      p_expr_stmCol->vAppend(p_rpnCalc);
-      p_rpnCalc->vAppend(pCI->G.p_term->pDupCardRecursive());
-      pCI->Early.m_pNeeded_later->vAppend(p_expr_stmCol);
+      p_expr_stmCol->vAppendChild(p_rpnCalc);
+      p_rpnCalc->vAppendChild(pCI->G.p_term->pDupCardRecursive());
+      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_stmCol);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
     else
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->G.p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
-      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
 
@@ -198,7 +198,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
-      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
 

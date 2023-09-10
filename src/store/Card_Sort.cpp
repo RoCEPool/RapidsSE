@@ -160,7 +160,7 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 
 
   pCI->G.p_streamKey = pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
-  pCI->G.p_projection->vAppend(pCI->StreamOrder.m_pStreamKey_running);
+  pCI->G.p_projection->vAppendChild(pCI->StreamOrder.m_pStreamKey_running);
 
 
   // set running projection for use by next op
@@ -192,7 +192,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     p_expr_prj->pGetTerm(0)->pSymbol()->vSym(p_expr_key->pSymbol());
   }
 
-  pCI->G.p_stream->vAppend(p_projection_sort);
+  pCI->G.p_stream->vAppendChild(p_projection_sort);
 
   pCI->Prior.m_pProjection = pSub_projection();
 

@@ -75,7 +75,7 @@ Card_StreamSet* Card_StreamSet::pComputeAllPermutations(Card_TableList* p_tableL
     i8 i_InvalidAtJoin = p_streamPer->iCreatePerSeq(p_tableList,
                                                     p_joinPredList,
                                                     pPermGen);
-    p_streamPrmAll->vAppend(p_streamPer);
+    p_streamPrmAll->vAppendChild(p_streamPer);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // valid permutation

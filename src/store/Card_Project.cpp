@@ -59,18 +59,18 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   RASSERT(pCarryForward->Unproject.m_bUnproject_foldExpr);
 
   Card_Project* p_project_unproject = new Card_Project(CK_PROJECT);
-  pCI->G.pDeck->vAppend(p_project_unproject);
+  pCI->G.pDeck->vAppendChild(p_project_unproject);
   p_project_unproject->pSymbol()->Y_vSet(P_Unproject);
 
   Card_Level* p_level = new Card_Level(AL_ORIGIN);
-  p_project_unproject->vAppend(p_level);
+  p_project_unproject->vAppendChild(p_level);
   //pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
 
   Card_Stream* p_stream = new Card_Stream;
-  p_project_unproject->vAppend(p_stream);
+  p_project_unproject->vAppendChild(p_stream);
 
   Card_Projection* p_projection_unproject = new Card_Projection(pCI->iXform());
-  p_stream->vAppend(p_projection_unproject);
+  p_stream->vAppendChild(p_projection_unproject);
 
   i8 i_Col = 0;
   i8 nChildren_projection = pCI->G.p_projection->nChildCards();
@@ -93,7 +93,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
 
-    p_projection_unproject->vAppend(p_expr_simple);
+    p_projection_unproject->vAppendChild(p_expr_simple);
 
    // pCI->vPrintBoard(__LINE__);
 
@@ -158,10 +158,10 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 
     if (! p_expr_clone->pSub_as()) {
       Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM_syn,p_projection_early->nChildCards());
-      p_expr_clone->vAppend(p_as_new);
+      p_expr_clone->vAppendChild(p_as_new);
     }
 
-    p_projection_early->vAppend(p_expr_clone);
+    p_projection_early->vAppendChild(p_expr_clone);
   }
 
 
@@ -203,7 +203,7 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
     pCI->G.p_streamKey = nullptr;
     return;
   }
-  pCI->G.p_projection->vAppend(pCI->G.p_streamKey);
+  pCI->G.p_projection->vAppendChild(pCI->G.p_streamKey);
 
 
   // set running projection for use by next op
@@ -252,7 +252,7 @@ void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 
   pCI->G.p_projection = pCraft_projection_early(pCI);
 
-  pCI->G.p_stream->vAppend(pCI->G.p_projection);
+  pCI->G.p_stream->vAppendChild(pCI->G.p_projection);
 
   //vInsertBefore(pCI->G.p_projection,pCI->G.p_needed);
 
@@ -274,16 +274,16 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->vAppend(pCI->Sqy.m_pExpr_fold->pSub_as()->pDupCardRecursive());
+  pCI->G.p_expr->vAppendChild(pCI->Sqy.m_pExpr_fold->pSub_as()->pDupCardRecursive());
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
-  pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);
+  pCI->G.p_expr->vAppendChild(pCI->G.p_rpnCalc);
   pCI->G.p_expr->vColType(pCI->G.p_rpnCalc);
 
   Symbol x_Symbol_stmCol1(SF_COL_NO,1);
   pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_stmCol1);
 
-  pCI->G.p_rpnCalc->vAppend(pCI->G.p_term);
+  pCI->G.p_rpnCalc->vAppendChild(pCI->G.p_term);
 
   pCI->G.p_projection = pSub_projection();
 
@@ -316,7 +316,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 //  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
 //  pCI->G_vInsertBefore(p_project_early, this);
 //  pCI->G_vMainResynch();
-  vAppend(pCI->Early.m_pNeeded_later->pDupCardRecursive());
+  vAppendChild(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
  // pCI->vRenumberCards();
  // pCI->vPrintBoard();

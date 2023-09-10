@@ -72,27 +72,27 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   p_expr_new->vRenumberForm_keyOdn(i_Key);
 
   if (Card_As* p_as = p_expr->pSub_as())
-    p_expr_new->vAppend(p_as->pDupCardRecursive());
+    p_expr_new->vAppendChild(p_as->pDupCardRecursive());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_rpnCalc())
-    p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
-  p_expr_new->vAppend(p_rpnCalc);
+    p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
+  p_expr_new->vAppendChild(p_rpnCalc);
 
   p_rpnCalc->pSymbol()->Y_vColType(p_expr->szP_Type());
   p_expr_new->pSymbol()->Y_vColType(p_expr->szP_Type());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol(SF_NONE));
-    p_expr_new->vAppend(p_direction);
+    p_expr_new->vAppendChild(p_direction);
   }
   else
   if (bAsc) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
-    p_expr_new->vAppend(p_direction);
+    p_expr_new->vAppendChild(p_direction);
   }
 
-  vAppend(p_expr_new);
+  vAppendChild(p_expr_new);
 }
 
 /*----------------------------------------------------------------------------*/

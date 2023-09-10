@@ -63,7 +63,7 @@ Card_IndexList* Card_IndexList::pDerive(Table* pTable)
     Index* pIndex = pIdxVec->pGet(i_Index);
 
     Card_Index* p_index = Card_Index::pDerive(pIndex);
-    p_indexList->vAppend(p_index);
+    p_indexList->vAppendChild(p_index);
   }
 
   return p_indexList;

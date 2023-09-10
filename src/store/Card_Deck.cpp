@@ -313,7 +313,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
         // todo: fix...
 //      pCI->G.p_projection = pCI->G.p_table->pSub_projection();
 //      pCI->G.p_table->vRemoveChild(pCI->G.p_projection);
-//      pCI->G.p_from->vAppend(pCI->G.p_projection);
+//      pCI->G.p_from->vAppendChild(pCI->G.p_projection);
 
      // pCI->vPrintBoard();
 
@@ -333,25 +333,25 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       pCI->G.p_OP->vEnsure_stream(pCI);
       Card_Projection* p_projection_clone = pCI->Prior.m_pProjection->pClone();
       //p_projection_clone->vDump(__func__ );
-      pCI->G.p_stream->vAppend(p_projection_clone);
+      pCI->G.p_stream->vAppendChild(p_projection_clone);
 
       //continue;
     }
 
 //    if (CK_LIMIT == pCI->G.e_MainCard || CK_SORT == pCI->G.e_MainCard) {
-//      pCI->G.p_MainCard->vAppend(pCI->Prior.m_pProjection->pClone());
+//      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pProjection->pClone());
 //    }
 //    if (CK_SORT == pCI->G.e_MainCard) {
 //      Card_Projection* p_projection_propagated =
 //          pCI->Prior.m_pProjection->pPropagate();
 //      p_projection_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 //
-//      pCI->G.p_MainCard->vAppend(p_projection_propagated);
+//      pCI->G.p_MainCard->vAppendChild(p_projection_propagated);
 //    }
 
     if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_TOP,CK_NONE)) {
       pCI->G.p_OP->vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppend(pCI->Prior.m_pProjection->pClone());
+      pCI->G.p_stream->vAppendChild(pCI->Prior.m_pProjection->pClone());
     }
     else
     if (CK_SORT == pCI->G.e_MainCard) {
@@ -362,7 +362,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
           pCI->Prior.m_pProjection->pPropagate(pCI);
       p_projection_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
-      pCI->G.p_stream->vAppend(p_projection_propagated);
+      pCI->G.p_stream->vAppendChild(p_projection_propagated);
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
@@ -417,7 +417,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
     if (CK_KEYEXISTS == pCI->G.e_MainCard ||
         CK_KEYNOTEXISTS == pCI->G.e_MainCard) {
 
-      pCI->G.p_MainCard->vAppend(pCI->Prior.m_pProjection->pPropagate(pCI));
+      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pProjection->pPropagate(pCI));
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Prior.m_pProjection) {
@@ -458,13 +458,13 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
 
-      pCI->G.p_MainCard->vAppend(pCI->Prior.m_pProjection->pClone());
+      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pProjection->pClone());
 
       //continue;
     }
 
     if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_NONE)) {
-      pCI->G.p_MainCard->vAppend(pCI->Prior.m_pProjection->pClone());
+      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pProjection->pClone());
     }
     else
     if (CK_SORT == pCI->G.e_MainCard || CK_TOP == pCI->G.e_MainCard) {
@@ -472,7 +472,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
           pCI->Prior.m_pProjection->pPropagate(pCI);
       p_projection_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
-      pCI->G.p_MainCard->vAppend(p_projection_propagated);
+      pCI->G.p_MainCard->vAppendChild(p_projection_propagated);
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
@@ -547,7 +547,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
           if ((pCI->G.p_stream = pCI->G.p_filter->pSub_stream())) {
             if ((pCI->G.p_projection = pCI->G.p_stream->pSub_projection())) {
               pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
-              pCI->G.p_stream->vAppend(pCI->G.p_from->pSub_projection()->pClone());
+              pCI->G.p_stream->vAppendChild(pCI->G.p_from->pSub_projection()->pClone());
             }
           }
         }

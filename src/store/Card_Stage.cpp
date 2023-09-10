@@ -55,7 +55,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   Card_Stage* p_stage = new Card_Stage;
   p_stage->SYM(SF_STG_NO,++nStages);
   Card_Topology* p_topology = new Card_Topology(YG_ALL_PARTITIONS);
-  p_stage->vAppend(p_topology);
+  p_stage->vAppendChild(p_topology);
   pCI->G.pDeck->vPush(p_stage);
 
   eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
@@ -312,7 +312,7 @@ void Card_Stage::vAddCombined(CardIter* pCI, Card* p_main, i8& ri_main)
   _static_
   Card_Combined* p_combined = new Card_Combined;
   if (C_UNKNOWN == ri_main) {
-    pCI->G.pDeck->vAppend(p_combined);
+    pCI->G.pDeck->vAppendChild(p_combined);
     return;
   }
   pCI->G.pDeck->vInsertBefore(p_combined, p_main);
@@ -335,7 +335,7 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
     p_next->SYM(SF_STG_CAST, szNextValue);
   }
   if (C_UNKNOWN == ri_main) {
-    pCI->G.pDeck->vAppend(p_next);
+    pCI->G.pDeck->vAppendChild(p_next);
     return;
   }
   pCI->G.pDeck->vInsertBefore(p_next, p_main);
@@ -355,7 +355,7 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
   p_stage->SYM(SF_STG_NO,++nStages);
   eYG eStageTopo = Card::e_aggLevel_To_stageTopo(e_level_running);
   Card_Topology *p_topology = new Card_Topology(eStageTopo);
-  p_stage->vAppend(p_topology);
+  p_stage->vAppendChild(p_topology);
   pCI->G.pDeck->vInsertBefore(p_stage, p_main);
   ri_main++;
   RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);

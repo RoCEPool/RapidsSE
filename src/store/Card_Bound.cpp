@@ -63,18 +63,18 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
-      p_bound->vAppend(p_term);
+      p_bound->vAppendChild(p_term);
       p_term = pTerm_1->pClone();
-      p_bound->vAppend(p_term);
+      p_bound->vAppendChild(p_term);
     }
     else
     if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
       char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
-        p_bound->vAppend(p_term);
+        p_bound->vAppendChild(p_term);
         p_term = pTerm_0->pClone();
-        p_bound->vAppend(p_term);
+        p_bound->vAppendChild(p_term);
       } else {
         NEVER_REACH
       }
@@ -85,9 +85,9 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
-      p_bound->vAppend(p_term);
+      p_bound->vAppendChild(p_term);
       p_term = pTerm_0->pClone();
-      p_bound->vAppend(p_term);
+      p_bound->vAppendChild(p_term);
     }
     else {
       NEVER_REACH

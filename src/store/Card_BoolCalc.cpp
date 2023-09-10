@@ -500,7 +500,7 @@ void Card_BoolCalc::vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED *p_PRED)
     this->vPushPred(p_PRED);
   }
   else {
-    this->vAppend(p_PRED);
+    this->vAppendChild(p_PRED);
   }
 }
 
@@ -515,8 +515,8 @@ void Card_BoolCalc::vPushPred(Card_PRED* p_pred_toBeAdded)
   RASSERT(! this->nChildCards());
 
   Card_AndPred* p_andPred_new = new Card_AndPred;
-  p_andPred_new->vAppend(p_pred_oldTop);
-  p_andPred_new->vAppend(p_pred_toBeAdded);
+  p_andPred_new->vAppendChild(p_pred_oldTop);
+  p_andPred_new->vAppendChild(p_pred_toBeAdded);
 
   this->vPush(p_andPred_new);
 }
