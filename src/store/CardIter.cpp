@@ -1439,7 +1439,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AGGREG:           G.p_aggreg           = _pCard_Aggreg(pCard);
                               G.p_OP               = (Card_OP*)pCard; break;
     case CK_ANDPRED:          G.p_andPred          = _pCard_AndPred(pCard);
-                              G.p_PRED             = (Card_PRED*)pCard; break;
+                              G.p_PRED             = (Card_CONJUNCTION*)pCard; break;
     case CK_AS:               G.p_as               = _pCard_As(pCard); break;
 
     case CK_BOOLCALC:         G.p_boolCalc         = _pCard_BoolCalc(pCard); break;
@@ -1451,7 +1451,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CAST:             G.p_cast              = _pCard_Cast(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_CMPPRED:          G.p_cmpPred           = _pCard_CmpPred(pCard);
-                              G.p_PRED              = (Card_PRED*)pCard; break;
+                              G.p_PRED              = (Card_CONJUNCTION*)pCard; break;
 
     case CK_COMBINED:         G.p_combined          = _pCard_Combined(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1527,13 +1527,13 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
     case CK_NOTPRED:          G.p_notPred           = _pCard_NotPred(pCard);
-                              G.p_PRED              = (Card_PRED*)pCard; break;
+                              G.p_PRED              = (Card_CONJUNCTION*)pCard; break;
 
     case CK_ON:               G.p_on                = _pCard_On(pCard); break;
     case CK_ORDAGG:           G.p_ordAgg            = _pCard_OrdAgg(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_ORPRED:           G.p_orPred            = _pCard_OrPred(pCard);
-                              G.p_PRED              = (Card_PRED*)pCard; break;
+                              G.p_PRED              = (Card_CONJUNCTION*)pCard; break;
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 

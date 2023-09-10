@@ -158,7 +158,7 @@ namespace STORE
 
     Card*                p_NEW;
     Card_OP *            p_OP;
-    Card_PRED *          p_PRED;
+    Card_CONJUNCTION *          p_PRED;
 
   private:
     // must be last

@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_PRED.hpp"
+#include "Card_CONJUNCTION.hpp"
 
 #include "eRO.h"
 
 namespace STORE
 {
-  class Card_CmpPred : public Card_PRED
+  class Card_CmpPred : public Card_CONJUNCTION
   {  
   public:
     void* operator new(size_t);

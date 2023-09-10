@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_PRED.hpp"
+#include "Card_CONJUNCTION.hpp"
 #include "Card_TLIST.hpp"
 #include "Card_Correlation.hpp"
 
@@ -26,19 +26,19 @@ namespace STORE
     void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     i8 nCullPred(Stz* szWithMark);
-    bool bCullPred(Card_PRED* p_pred, Stz* szWithMark);
+    bool bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
-    Card_PRED* pFindRemove_CorrPred(void);
+    Card_CONJUNCTION* pFindRemove_CorrPred(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bHasTerm(Symbol* pSymbol);
     void vMarkWrt_table(CardIter* pCI);
-    void vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED* p_PRED);
-    void vPushPred(Card_PRED* p_pred_toBeAdded);
-    void vRemovePred(Card_PRED* p_pred);
-    Card_PRED* pRootPred(void);
-    bool bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked);
-    bool bYank_PRED(Stz* szWithMark, Card* p_test, Card_PRED*& p_pred_yanked);
+    void vPush_CrlKeyPred_As_CrlKeyTest(Card_CONJUNCTION* p_PRED);
+    void vPushPred(Card_CONJUNCTION* p_pred_toBeAdded);
+    void vRemovePred(Card_CONJUNCTION* p_pred);
+    Card_CONJUNCTION* pRootPred(void);
+    bool bYank_PRED(Stz* szWithMark, Card_CONJUNCTION*& p_pred_yanked);
+    bool bYank_PRED(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_pred_yanked);
 
 
     bool bIsBraced(void);

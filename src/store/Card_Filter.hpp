@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card_COND.hpp"
-#include "Card_PRED.hpp"
+#include "Card_CONJUNCTION.hpp"
 
 namespace STORE
 {
@@ -22,7 +22,7 @@ namespace STORE
     static void vIndividuate_filter(CardIter* pCI);
     static Card_Filter* pNew(Card_Constraint* p_constraint);
 
-    void vAddPred(Card_PRED *p_PRED);
+    void vAddPred(Card_CONJUNCTION *p_PRED);
 
     void vComputeProjection(CardIter* pCI); // prototype
     void vCorrectStmOdn(Card_Projection* p_projection_prior);

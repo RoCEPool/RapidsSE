@@ -247,7 +247,7 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_PRED* p_PRED)
+void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_PRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -266,19 +266,19 @@ void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_PRED* p_PRED)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vBounds_AddPred(Card_Index* p_index,
-                                Card_Bounds* p_bounds,
-                                Card_PRED *p_PRED)
+                                 Card_Bounds* p_bounds,
+                                 Card_CONJUNCTION *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   char cTblSyn = this->pSymbol()->cSF_char();
 
   Card_Bound* p_bound;
-  Card_PRED* p_childPRED;
+  Card_CONJUNCTION* p_childPRED;
   if (p_PRED->bIsCard(CK_ANDPRED)) {
-    p_childPRED = (Card_PRED*)p_PRED->pGetChild(0);
+    p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(0);
     this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
-    p_childPRED = (Card_PRED*)p_PRED->pGetChild(1);
+    p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(1);
     this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
   }
   else
@@ -324,7 +324,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
   Card_BoolCalc* p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
   RASSERT(1 == p_boolCalc->nChildCards());
-  Card_PRED* p_pred_root = p_boolCalc->pRootPred();
+  Card_CONJUNCTION* p_pred_root = p_boolCalc->pRootPred();
 
   Kid xKid(pCI->G.p_indexList);
   while (xKid.bEach(CK_INDEX)) {
@@ -335,7 +335,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
     //p_index->vDump(__func__);
 
-    auto bLambdaFn = [this, p_index](Card_PRED *p_pred_Of_filter, bool bUpwards)
+    auto bLambdaFn = [this, p_index](Card_CONJUNCTION *p_pred_Of_filter, bool bUpwards)
     {
       if (bUpwards)
         return C_CONTINUE_RECURSION;
@@ -454,8 +454,8 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Table::bScopeContains_Pred(Card_PRED* p_pred,
-                                        Scope* pScope)
+bool Card_Table::bScopeContains_Pred(Card_CONJUNCTION* p_pred,
+                                     Scope* pScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

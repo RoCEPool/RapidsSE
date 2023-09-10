@@ -4,7 +4,7 @@
 
 #include "Card_BoolCalc.hpp"
 
-#include "Card_PRED.hpp"
+#include "Card_CONJUNCTION.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
@@ -57,7 +57,7 @@ Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 
   Card_CmpPred* pCmpPred = nullptr;
 
-  auto bLambdaFn = [&pCmpPred,pCI](Card_PRED* p_pred, bool bUpwards)
+  auto bLambdaFn = [&pCmpPred,pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
   {
     UNUSED(bUpwards);
 
@@ -71,7 +71,7 @@ Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_PRED* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
 
   bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
   UNUSED(bIgnore);
@@ -86,11 +86,11 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PRED* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [nBumpBy,bSkipFoldExpr](Card_PRED* p_pred, bool bUpwards)
+  auto bLambdaFn = [nBumpBy,bSkipFoldExpr](Card_CONJUNCTION* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -133,11 +133,11 @@ void Card_BoolCalc::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_PRED* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfTo_stmOdn = [pCI](Card_PRED* p_pred, bool bUpwards)
+  auto bfTo_stmOdn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -168,11 +168,11 @@ void Card_BoolCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_PRED* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card_PRED* p_pred, bool bUpwards)
+  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -208,7 +208,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 
   pCI->vRecurseBegin(this);
   s32 sTimes;
-  for (i8 nTimes = 0; Card_PRED* p_pred = (Card_PRED*)pCI->pRecurseEach(); nTimes++) {
+  for (i8 nTimes = 0; Card_CONJUNCTION* p_pred = (Card_CONJUNCTION*)pCI->pRecurseEach(); nTimes++) {
 
     sTimes = nTimes;
     //p_pred->vDump(__func__,0,sTimes);
@@ -221,7 +221,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
     if (! p_table)
       continue;
 
-    ((Card_OP*)pMainCard)->vAdd_Pred_Under_filter((Card_PRED*) p_pred->pDupCardRecursive());
+    ((Card_OP*)pMainCard)->vAdd_Pred_Under_filter((Card_CONJUNCTION*) p_pred->pDupCardRecursive());
 
     // todo: is this needed?
     Card_Filter* p_filter = pMainCard->pSub_filter();
@@ -270,7 +270,7 @@ i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
   if (! this->nChildCards())
     return 0;
 
-  Card_PRED* pCard_pred = this->pRootPred();
+  Card_CONJUNCTION* pCard_pred = this->pRootPred();
 
   while (pCard_pred) {
 
@@ -282,7 +282,7 @@ i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
     if (! this->nChildCards())
       break;
 
-    pCard_pred = static_cast<Card_PRED*>(this->pGetChild(0));
+    pCard_pred = static_cast<Card_CONJUNCTION*>(this->pGetChild(0));
   }
 
   return nCulled;
@@ -291,7 +291,7 @@ i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, Stz* szWithMark)
+bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -326,7 +326,7 @@ bool Card_BoolCalc::bCullPred(Card_PRED* p_pred, Stz* szWithMark)
 
   i8 nChildren = p_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_PRED* pCard_pred_child = static_cast<Card_PRED*>(p_pred->pGetChild(i_Child));
+    Card_CONJUNCTION* pCard_pred_child = static_cast<Card_CONJUNCTION*>(p_pred->pGetChild(i_Child));
     if (this->bCullPred(pCard_pred_child, szWithMark))
       return true;
   }
@@ -341,7 +341,7 @@ void Card_BoolCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_PRED* p_PRED = static_cast<Card_PRED*>(pGetChild(0));
+  Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(pGetChild(0));
 
   if (p_PRED)
     p_PRED->vEnsureTypesFor_stmOdn(pCI);
@@ -350,12 +350,12 @@ void Card_BoolCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <pred> which could be moved               */
 /*----------------------------------------------------------------------------*/
-Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
+Card_CONJUNCTION* Card_BoolCalc::pFindRemove_CorrPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_PRED* p_pred_corr =
-      static_cast<Card_PRED*>(pFindPpyRecursive(P_CrlRslTest, CK_CMPPRED));
+  Card_CONJUNCTION* p_pred_corr =
+      static_cast<Card_CONJUNCTION*>(pFindPpyRecursive(P_CrlRslTest, CK_CMPPRED));
 
   if (! p_pred_corr)
     return nullptr;
@@ -459,9 +459,9 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
     if (p_card->bIsCard(CK_CMPPRED)) {
       p_card->vMark1(MARK_COMPARE);
       pCI->vDontDescend(true);
-      if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
+      if (((Card_CONJUNCTION *)p_card)->bContains_callToSubQuery(pCI))
         continue;
-      Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
+      Symbol* pWhichTable = ((Card_CONJUNCTION *)p_card)->pTable_WhichTableFor_Pred(pCI);
       if (pWhichTable) {
         p_card->vMark1(MARK_AT);
         p_card->vMark2(pWhichTable->cSF_char());
@@ -489,7 +489,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED *p_PRED)
+void Card_BoolCalc::vPush_CrlKeyPred_As_CrlKeyTest(Card_CONJUNCTION *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -507,11 +507,11 @@ void Card_BoolCalc::vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED *p_PRED)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vPushPred(Card_PRED* p_pred_toBeAdded)
+void Card_BoolCalc::vPushPred(Card_CONJUNCTION* p_pred_toBeAdded)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_PRED* p_pred_oldTop = static_cast<Card_PRED*>(this->pPop());
+  Card_CONJUNCTION* p_pred_oldTop = static_cast<Card_CONJUNCTION*>(this->pPop());
   RASSERT(! this->nChildCards());
 
   Card_AndPred* p_andPred_new = new Card_AndPred;
@@ -524,7 +524,7 @@ void Card_BoolCalc::vPushPred(Card_PRED* p_pred_toBeAdded)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
+void Card_BoolCalc::vRemovePred(Card_CONJUNCTION* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -551,11 +551,11 @@ void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PRED* Card_BoolCalc::pRootPred(void)
+Card_CONJUNCTION* Card_BoolCalc::pRootPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_PRED* p_PRED = static_cast<Card_PRED*>(pGetChild(0));
+  Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(pGetChild(0));
 
   return p_PRED;
 }
@@ -586,7 +586,7 @@ bool Card_BoolCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
+bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_CONJUNCTION*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -602,14 +602,14 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
   auto bYank = [](Card_BoolCalc* p_boolCalc,
                   Stz* szWithMark,
                   Card* p_test,
-                  Card_PRED*& p_pred_yanked,
+                  Card_CONJUNCTION*& p_pred_yanked,
                   auto&& bYank /*oddity permits recursive lambda*/)
   {
     //p_test->vDump();
 
-    if (Card_PRED::bIsPRED(p_test)) {
+    if (Card_CONJUNCTION::bIsPRED(p_test)) {
       if (p_test->bMark1(szWithMark)) {
-        p_pred_yanked = static_cast<Card_PRED*>(p_test);
+        p_pred_yanked = static_cast<Card_CONJUNCTION*>(p_test);
         p_boolCalc->vRemovePred(p_pred_yanked);
         RASSERT(p_pred_yanked);
         return true;
@@ -647,13 +647,13 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card_PRED*& p_pred_yanked)
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card* p_test,
-                               Card_PRED*& p_pred_yanked)
+                               Card_CONJUNCTION*& p_pred_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_PRED::bIsPRED(p_test)) {
+  if (Card_CONJUNCTION::bIsPRED(p_test)) {
     if (p_test->bMark1(szWithMark)) {
-      p_pred_yanked = static_cast<Card_PRED*>(p_test);
+      p_pred_yanked = static_cast<Card_CONJUNCTION*>(p_test);
       this->vRemovePred(p_pred_yanked);
       RASSERT(p_pred_yanked);
       return true;

@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_PRED.hpp"
+#include "Card_CONJUNCTION.hpp"
 
 namespace STORE
 {
-  class Card_NotPred : public Card_PRED
+  class Card_NotPred : public Card_CONJUNCTION
   {  
   public:
     void* operator new(size_t);

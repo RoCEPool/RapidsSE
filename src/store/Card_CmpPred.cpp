@@ -23,7 +23,7 @@ __vDeleteFunction(Card_CmpPred,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred::Card_CmpPred(void)
-: Card_PRED(CK_CMPPRED,C_UNKNOWN)
+: Card_CONJUNCTION(CK_CMPPRED, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

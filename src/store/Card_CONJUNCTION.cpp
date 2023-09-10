@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_PRED.cpp -- Abstract Predicate                                        */
+/* Card_CONJUNCTION.cpp -- Abstract Conjunction                               */
 /*============================================================================*/
 
-#include "Card_PRED.hpp"
+#include "Card_CONJUNCTION.hpp"
 #include "Card_Term.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_AndPred.hpp"
@@ -18,7 +18,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_PRED::Card_PRED(eCK eCard, i8 iFixedDepth)
+Card_CONJUNCTION::Card_CONJUNCTION(eCK eCard, i8 iFixedDepth)
 : Card_symbol(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -31,7 +31,7 @@ Card_PRED::Card_PRED(eCK eCard, i8 iFixedDepth)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_PRED::~Card_PRED(void) noexcept(false)
+Card_CONJUNCTION::~Card_CONJUNCTION(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,7 +43,7 @@ Card_PRED::~Card_PRED(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is card a PRED ?                                                           */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bIsPRED(Card* p_card)
+bool Card_CONJUNCTION::bIsPRED(Card* p_card)
 {
   _static_;
 
@@ -67,7 +67,7 @@ bool Card_PRED::bIsPRED(Card* p_card)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bContains_callToSubQuery(CardIter* pCI)
+bool Card_CONJUNCTION::bContains_callToSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -84,16 +84,16 @@ bool Card_PRED::bContains_callToSubQuery(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
+bool Card_CONJUNCTION::bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach()) {
-    if (! Card_PRED::bIsPRED(xKid.pChild()))
+    if (! Card_CONJUNCTION::bIsPRED(xKid.pChild()))
       continue;
 
-    bool bContinue = ((Card_PRED*)xKid.pChild())->bDescend(bfLambdaFn);
+    bool bContinue = ((Card_CONJUNCTION*)xKid.pChild())->bDescend(bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -104,7 +104,7 @@ bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_PRED::vEnsureTypesFor_stmOdn(CardIter *pCI)
+void Card_CONJUNCTION::vEnsureTypesFor_stmOdn(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -127,7 +127,7 @@ void Card_PRED::vEnsureTypesFor_stmOdn(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* attempt to get board name from one of the terms of this predicate          */
 /*----------------------------------------------------------------------------*/
-Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)
+Stz* Card_CONJUNCTION::szGetBoardNmInTerm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -140,7 +140,7 @@ Stz* Card_PRED::szGetBoardNmInTerm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_PRED::pGetFirstTerm_tblColOdn(void)
+Card_Term* Card_CONJUNCTION::pGetFirstTerm_tblColOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -155,7 +155,7 @@ Card_Term* Card_PRED::pGetFirstTerm_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_PRED::pGetTerm(i8 i_Term)
+Card_Term* Card_CONJUNCTION::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -171,7 +171,7 @@ Card_Term* Card_PRED::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /* attempt to get term which is a board name from this predicate              */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
+Card_Term* Card_CONJUNCTION::pGetTerm_boardNm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -189,7 +189,7 @@ Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a bool fn?                                               */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bIsBoolFn(void)
+bool Card_CONJUNCTION::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -202,7 +202,7 @@ bool Card_PRED::bIsBoolFn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a correlation predicate? (a predicate in a sub-query)              */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bIsCorrPred(void)
+bool Card_CONJUNCTION::bIsCorrPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -226,7 +226,7 @@ bool Card_PRED::bIsCorrPred(void)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a bounds for given index                                 */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
+bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -281,7 +281,7 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
 /*----------------------------------------------------------------------------*/
 /* is this a ootential join predicate?                                        */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bIsJoinPred(void)
+bool Card_CONJUNCTION::bIsJoinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -305,7 +305,7 @@ bool Card_PRED::bIsJoinPred(void)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a relational operator?                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bIsRelnOp(void)
+bool Card_CONJUNCTION::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -318,7 +318,7 @@ bool Card_PRED::bIsRelnOp(void)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a subquery operator?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bIsSubQueryOp(void)
+bool Card_CONJUNCTION::bIsSubQueryOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -331,7 +331,7 @@ bool Card_PRED::bIsSubQueryOp(void)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a possible join predicate                                */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
+bool Card_CONJUNCTION::bMaybeFilterPred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -347,7 +347,7 @@ bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a possible join predicate                                */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bMaybeJoinPred(void)
+bool Card_CONJUNCTION::bMaybeJoinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -373,7 +373,7 @@ bool Card_PRED::bMaybeJoinPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
+void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -460,7 +460,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_PRED::pPredFindBound(Index* pIndex, ePB eBound)
+Card_CmpPred* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -491,7 +491,7 @@ Card_CmpPred* Card_PRED::pPredFindBound(Index* pIndex, ePB eBound)
 /*----------------------------------------------------------------------------*/
 /* does predicate have some bound wrt given index?                            */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bPredHasBounds(Index* pIndex)
+bool Card_CONJUNCTION::bPredHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -522,7 +522,7 @@ bool Card_PRED::bPredHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of pred and apply lambda function                      */
 /*----------------------------------------------------------------------------*/
-bool Card_PRED::bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply)
+bool Card_CONJUNCTION::bPredRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -549,7 +549,7 @@ bool Card_PRED::bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwar
   i8 nSubCards = nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = pGetChild(i_Child);
-    bContinue = static_cast<Card_PRED *>(pSubCard)->bPredRecursive(bfApply);
+    bContinue = static_cast<Card_CONJUNCTION *>(pSubCard)->bPredRecursive(bfApply);
     if (! bContinue)
       return false;
   }
@@ -562,7 +562,7 @@ bool Card_PRED::bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwar
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_PRED::pTable_WhichTableFor_Pred(CardIter* pCI)
+Symbol* Card_CONJUNCTION::pTable_WhichTableFor_Pred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -612,7 +612,7 @@ Symbol* Card_PRED::pTable_WhichTableFor_Pred(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_PRED::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_CONJUNCTION::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);

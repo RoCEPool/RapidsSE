@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_NotPred.hpp"
-#include "Card_PRED.hpp"
+#include "Card_CONJUNCTION.hpp"
 
 #include "Kid.hpp"
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_NotPred, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_NotPred::Card_NotPred(void)
-: Card_PRED(CK_NOTPRED,C_UNKNOWN)
+: Card_CONJUNCTION(CK_NOTPRED, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

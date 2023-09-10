@@ -113,7 +113,7 @@ namespace STORE
   class Card_OuterJoin;
 
   class Card_PayloadCells;
-  class Card_PRED;
+  class Card_CONJUNCTION;
   class Card_Project;
   class Card_Projection;
 

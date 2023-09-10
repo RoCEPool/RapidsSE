@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_PRED.hpp -- Abstract Predicate                                        */
+/* Card_CONJUNCTION.hpp -- Abstract Conjunction                                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,16 +7,16 @@
 
 namespace STORE
 {
-  class Card_PRED : public Card_symbol<Card_PRED>
+  class Card_CONJUNCTION : public Card_symbol<Card_CONJUNCTION>
   {  
   public:
-    Card_PRED(eCK eCard, i8 iFixedDepth);
-   ~Card_PRED(void) noexcept(false);
+    Card_CONJUNCTION(eCK eCard, i8 iFixedDepth);
+   ~Card_CONJUNCTION(void) noexcept(false);
 
     static bool bIsPRED(Card* p_card);
 
     bool bContains_callToSubQuery(CardIter* pCI);
-    bool bDescend(std::function<bool(Card_PRED* )> bfLambdaFn);
+    bool bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblColOdn(void);
@@ -33,7 +33,7 @@ namespace STORE
     void vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term=nullptr);
     Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);
     bool bPredHasBounds (Index* pIndex);
-    bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
+    bool bPredRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
     Symbol* pTable_WhichTableFor_Pred(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
