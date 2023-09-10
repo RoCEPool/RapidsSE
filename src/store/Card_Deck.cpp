@@ -289,6 +289,9 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
   while (pCI->G_bEachMain_NONE()) {
 
+//    if (pCI->Prior.m_pProjection)
+//      pCI->Prior.m_pProjection->vDump(__func__);
+
     if (CK_PROJECT == pCI->G.e_MainCard)
       vDebugPoint();
 
@@ -350,7 +353,9 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
     if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_TOP,CK_NONE)) {
       pCI->G.p_OP->vEnsure_stream(pCI);
-      pCI->G.p_stream->vAppendChild(pCI->Prior.m_pProjection->pClone());
+      pCI->G.p_projection = pCI->Prior.m_pProjection->pPropagate(pCI);
+
+      pCI->G.p_stream->vAppendChild(pCI->G.p_projection);
     }
     else
     if (CK_SORT == pCI->G.e_MainCard) {
