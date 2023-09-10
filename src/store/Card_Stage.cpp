@@ -315,7 +315,7 @@ void Card_Stage::vAddCombined(CardIter* pCI, Card* p_main, i8& ri_main)
     pCI->G.pDeck->vAppendChild(p_combined);
     return;
   }
-  pCI->G.pDeck->vInsertBefore(p_combined, p_main);
+  pCI->G.pDeck->vInsertChildBefore(p_combined, p_main);
   ri_main++;
   RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
 
@@ -338,7 +338,7 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
     pCI->G.pDeck->vAppendChild(p_next);
     return;
   }
-  pCI->G.pDeck->vInsertBefore(p_next, p_main);
+  pCI->G.pDeck->vInsertChildBefore(p_next, p_main);
   ri_main++;
   RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
 
@@ -356,7 +356,7 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
   eYG eStageTopo = Card::e_aggLevel_To_stageTopo(e_level_running);
   Card_Topology *p_topology = new Card_Topology(eStageTopo);
   p_stage->vAppendChild(p_topology);
-  pCI->G.pDeck->vInsertBefore(p_stage, p_main);
+  pCI->G.pDeck->vInsertChildBefore(p_stage, p_main);
   ri_main++;
   RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
 

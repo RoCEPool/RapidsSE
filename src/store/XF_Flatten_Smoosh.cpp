@@ -96,7 +96,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
 
 
-  pCI->G.pDeck->vInsertBefore(p_from_exists,pCI->G.p_where);
+  pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
 
   pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
   pCI->G.p_cmpPred = pCI->G.p_boolCalc->pCmpPred_whichCallsSubQuery(pCI);

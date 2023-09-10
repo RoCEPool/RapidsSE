@@ -212,7 +212,7 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
     pDeck->vRemoveChild(p_from);
 
     if (pAfter)
-      pDeck->vInsertAfter(p_from,pAfter);
+      pDeck->vInsertChildAfter(p_from,pAfter);
     else
       pDeck->vPushChild(p_from);
 

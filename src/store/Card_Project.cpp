@@ -254,7 +254,7 @@ void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 
   pCI->G.p_stream->vAppendChild(pCI->G.p_projection);
 
-  //vInsertBefore(pCI->G.p_projection,pCI->G.p_needed);
+  //vInsertChildBefore(pCI->G.p_projection,pCI->G.p_needed);
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
