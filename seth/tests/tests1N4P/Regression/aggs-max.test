@@ -68,12 +68,9 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax18.sql
 // Result file: ../queries/aggs/max/results/max18.res
-// TODO V2 : RAY TO LOOK AT (_ray124)
-/*
 select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
 rows:
   (2.484500000e+02, 149.23, 15)
-*/
 
 // Source file: ../queries/aggs/max/rmax20.sql
 // Result file: ../queries/aggs/max/results/max20.res
