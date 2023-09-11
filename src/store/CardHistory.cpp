@@ -22,7 +22,8 @@ CardHistory::CardHistory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
 
-  m_pHistoryPds = new BASE::Pds(sizeof(_CardHistory));
+	// RAY TO LOOK AT
+  //m_pHistoryPds = new BASE::Pds(sizeof(_CardHistory));
 
   m_pImage_curr = nullptr;
 
@@ -53,9 +54,15 @@ void CardHistory::vAddImage(Card* pCard, i8 iXform, Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
 
+	UNUSED(pCard);
+	UNUSED(iXform);
+	UNUSED(szFunc);
+
 //  CardImage* pImage =
 //      aAdd<CardImage*>(m_pHistoryPds->pAppendWithSynthKey(),sizeof(SkipListBlock));
 
+  // RAY TO LOOK AT
+	/*
   SkipListBlock* pSLB = m_pHistoryPds->pAppendWithSynthKey();
   _CardHistory* aCardHistory = static_cast<_CardHistory*>(pSLB->aItemKey());
 
@@ -67,6 +74,7 @@ void CardHistory::vAddImage(Card* pCard, i8 iXform, Stz* szFunc)
   CardImage* pTest = pImage(aCardHistory->m_iKey);
 
   RASSERT(pTest == pCardImage);
+	*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,6 +114,10 @@ CardImage* CardHistory::pImage(i8 i_Image)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
 
+	UNUSED(i_Image);
+
+	// RAY TO LOOK AT
+	/*
   SkipListBlock* pSLB = m_pHistoryPds->pFind(i_Image);
 
   if (! pSLB)
@@ -116,6 +128,10 @@ CardImage* CardHistory::pImage(i8 i_Image)
   CardImage* pImage = aCardHistory->m_pImage;
 
   return pImage;
+	*/
+
+	return nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
