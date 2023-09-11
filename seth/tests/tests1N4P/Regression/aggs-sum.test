@@ -111,13 +111,10 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum22.sql
 // Result file: ../queries/aggs/sum/results/rsum22.res
-// TODO V2 : RAY TO LOOK AT (may be same as _ray124)
-/*
 select x, y from (select sum(colf1) as x, sum(colg9) as y from table1 join table9 using (ucol)) as TwoTbs;
 rows:
   (379,393)
  // (NULL, NULL)
-*/
 
 // Source file: ../queries/aggs/sum/rnsum1.sql
 // Result file: ../queries/aggs/sum/results/nsum1.res
