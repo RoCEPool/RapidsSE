@@ -110,8 +110,6 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax16.sql
 // Result file: ../queries/aggs/max/results/max16.res
-// TODO V2 : ALKA TO LOOK AT
-/*
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   (396,'BLACK',-2.230500000e+02,'GREEN')
@@ -123,7 +121,6 @@ ordered rows:
   (485,'BLACK',-1.213000000e+01,'yellow')
   (194,'BLUE',-4.056000000e+01,'WHITE')
   (353,'BLUE',-2.171000000e+01,'maroon')
-*/
 
 // Source file: ../queries/aggs/max/rmax14.sql
 // Result file: none

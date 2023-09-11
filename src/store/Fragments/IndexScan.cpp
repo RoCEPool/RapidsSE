@@ -28,6 +28,9 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
   char* __INDEXNAME__;
   IndexInfo __INDEX_INFO__;
+	RowInfo __ROW_INFO_TO__;
+
+	char* szStrArea;
 
   __L_LABEL_LOOP__:
 
@@ -36,7 +39,9 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+	__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+	szStrArea = __ROW_INFO_TO__.m_acStrArea;
 
   paW = &aDynamicT->m_aW[0];
 
