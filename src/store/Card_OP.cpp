@@ -191,97 +191,93 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pNeeded_later);
 
-  Card_OP* p_OP_leaf_maybe = pCI->G.p_OP;
+  //Card_OP* p_OP_leaf_maybe = pCI->G.p_OP;
 
-//  if (bIsEarlyLeaf(pCI)) {
-//    pCI->Early.m_pOP_leaf = pCI->G.p_OP;
-//    return;
-//  }
+  if (! pCI->G_bEachMain_reverse_NONE())
+    return;
 
-  while (pCI->G_bEachMain_reverse_NONE()) {
+  // which card did we arrive at?
+  switch (pCI->G.e_MainCard) {
 
-    // which card did we arrive at?
-    switch (pCI->G.e_MainCard) {
+    // -- -- -- -- -- -- --
+    // don't go any further
 
-      // -- -- -- -- -- -- --
-      // don't go any further
+    case CK_GBYAGG:
+      pCI->Early.m_pOP_leaf = pCI->G.p_OP;
+      break;
 
-      case CK_GBYAGG:
-        pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
-        return;
+    case CK_ORDAGG:
+      pCI->Early.m_pOP_leaf = pCI->G.p_OP;
+      break;
 
+    // -- -- -- -- -- -- --
+    // recurse into...
 
-      case CK_ORDAGG:
-        pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
-        return;
+    case CK_CROSSJOIN:
+      pCI->vSave();
+      pCI->G.p_crossJoin->vEarlyProject_recurse_update(pCI);
+      pCI->vRestore();
+      break;
 
-      // -- -- -- -- -- -- --
-      // recurse into...
+    case CK_FILTER:
+      pCI->vSave();
+      pCI->G.p_filter->vEarlyProject_recurse_update(pCI);
+      pCI->vRestore();
+      break;
 
-      case CK_CROSSJOIN:
+    case CK_INDEXJOIN:
+      pCI->vSave();
+      pCI->G.p_indexJoin->vEarlyProject_recurse_add(pCI);
+      pCI->vRestore();
+      break;
+
+    case CK_INDEXSCAN:
+      pCI->vSave();
+      pCI->G.p_indexScan->vEarlyProject_leaf(pCI);
+      pCI->vRestore();
+      break;
+
+    case CK_KEYEXISTS:
+      pCI->vSave();
+      pCI->G.p_keyExists->vEarlyProject_recurse_add(pCI);
+      pCI->vRestore();
+      break;
+
+    case CK_KEYNOTEXISTS:
+      pCI->vSave();
+      pCI->G.p_keyNotExists->vEarlyProject_recurse_add(pCI);
+      pCI->vRestore();
+      break;
+
+    case CK_PROJECT:
+      if (pCI->G.p_project->pSub_needed()) {
         pCI->vSave();
-        pCI->G.p_crossJoin->vEarlyProject_recurse_update(pCI);
+        pCI->G.p_project->vEarlyProject_recurse_needed(pCI);
         pCI->vRestore();
-        return;
+      }
+      else {
+        pCI->G.p_project->vEarlyProject_given_leaf(pCI);
+      }
+      break;
 
-      case CK_FILTER:
-        pCI->vSave();
-        pCI->G.p_filter->vEarlyProject_recurse_update(pCI);
-        pCI->vRestore();
-        return;
+    case CK_SCAN:
+      pCI->vSave();
+      pCI->G.p_scan->vEarlyProject_leaf(pCI);
+      pCI->vRestore();
+      break;
 
-      case CK_INDEXJOIN:
-        pCI->vSave();
-        pCI->G.p_indexJoin->vEarlyProject_recurse_add(pCI);
-        pCI->vRestore();
-        return;
+    case CK_WHERE:
+      pCI->vSave();
+      pCI->G.p_where->vEarlyProject_recurse_update(pCI);
+      pCI->vRestore();
+      break;
 
-      case CK_INDEXSCAN:
-        pCI->vSave();
-        pCI->G.p_indexScan->vEarlyProject_leaf(pCI);
-        pCI->vRestore();
-        return;
+    // -- -- -- -- -- -- --
+    // missing??
 
-      case CK_KEYEXISTS:
-        pCI->vSave();
-        pCI->G.p_keyExists->vEarlyProject_recurse_add(pCI);
-        pCI->vRestore();
-        return;
-
-      case CK_KEYNOTEXISTS:
-        pCI->vSave();
-        pCI->G.p_keyNotExists->vEarlyProject_recurse_add(pCI);
-        pCI->vRestore();
-        return;
-
-      case CK_PROJECT:
-        if (pCI->G.p_project->pSub_needed()) {
-          pCI->vSave();
-          pCI->G.p_project->vEarlyProject_needed_recurse(pCI);
-          pCI->vRestore();
-        }
-        else {
-          pCI->G.p_project->vEarlyProject_given_leaf(pCI);
-        }
-        return;
-
-      case CK_SCAN:
-        pCI->vSave();
-        pCI->G.p_scan->vEarlyProject_leaf(pCI);
-        pCI->vRestore();
-        return;
-
-      case CK_WHERE:
-        pCI->G.p_where->vEarlyProject_recurse_update(pCI);
-        return;
-
-      // -- -- -- -- -- -- --
-      // missing??
-
-      default:
-        pCI->G.p_MainCard->vDump(__func__);
-        NEVER_REACH
-    }
+    default:
+      pCI->G.p_MainCard->vDump(__func__);
+      NEVER_REACH
   }
 
   vDebugPoint();
