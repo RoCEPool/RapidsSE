@@ -243,6 +243,7 @@
 #include "XF_Flatten_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
+#include "XF_Flatten_Left_subQuery.hpp"
 
 #include "ArgDef.hpp"
 #include "ColsReq.hpp"
@@ -779,6 +780,7 @@ SizeHeap gxaSizeHeap[]
   {CN__X__,                    'X' - ('A' - 1),                        HT_INVALID   , FILL },
   {CN_XC,                       sizeof(XC),                            HT_T_TINY    , FILL },
   {CN_XF,                       sizeof(XF),                            HT_T_TINY    , FILL },
+  {CN_XF_LEFT_SUBQUERY,         sizeof(XF_Flatten_Left_subQuery),      HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMISE_COLNM,  sizeof(XF_Epilog_Itemise_colNm),       HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMSTRIP_COLNM,sizeof(XF_Epilog_ItemStrip_colNm),     HT_T_TINY    , FILL },
   {CN_XF_ADD_LEVEL,             sizeof(XF_Prolog_Add_level),           HT_T_TINY    , FILL },

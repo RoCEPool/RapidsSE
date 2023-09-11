@@ -1,0 +1,73 @@
+/*============================================================================*/
+/* XF_Flatten_Left_subQuery.cpp -- Left SubQuery                              */
+/*============================================================================*/
+
+#include "XF_Flatten_Left_subQuery.hpp"
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE, XF_Flatten_Left_subQuery, CN_XF_LEFT_SUBQUERY)
+__aNewFunction(XF_Flatten_Left_subQuery, CN_XF_LEFT_SUBQUERY)
+__vDeleteFunction(XF_Flatten_Left_subQuery, CN_XF_LEFT_SUBQUERY)
+__aFooterFunction(XF_Flatten_Left_subQuery )
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+XF_Flatten_Left_subQuery::XF_Flatten_Left_subQuery(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_LEFT_SUBQUERY, pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+
+  _checkInitialised_(CN_XF_LEFT_SUBQUERY);
+  
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+XF_Flatten_Left_subQuery::~XF_Flatten_Left_subQuery(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Left_subQuery::vFlatten(CardIter* pCI)
+{
+  _static_
+
+  XF_Flatten_Left_subQuery* pXF_Delete_flat = new XF_Flatten_Left_subQuery(pCI);
+
+  pXF_Delete_flat->vFlatten();
+
+  delete pXF_Delete_flat;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Flatten_Left_subQuery::vFlatten(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+
+  m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_FLAT, "left subQuery"_Stz);
+
+
+  m_pCI->vEndTransform();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

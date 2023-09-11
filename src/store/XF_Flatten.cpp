@@ -21,6 +21,7 @@
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
 #include "XF_Flatten_Delete_flat.hpp"
+#include "XF_Flatten_Left_subQuery.hpp"
 
 #include "XF_Flatten_stmCol_To_tblCol.hpp"
 
@@ -223,6 +224,8 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
      // pCI->vPrintBoard(__LINE__);
 
+      XF_Flatten_Left_subQuery::vFlatten(pCI);
+
       bFound = true;
       return C_TERMINATE_RECURSION;
     };
@@ -244,7 +247,9 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
   Card_Fold::vMorph_to_flat(m_pCI);
 
- // m_pCI->vPrintBoard(__LINE__);
+  XF_Flatten_Left_subQuery::vFlatten(m_pCI);
+
+  // m_pCI->vPrintBoard(__LINE__);
 
   vDebugPoint();
 }
