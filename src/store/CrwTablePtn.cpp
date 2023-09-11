@@ -81,7 +81,7 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
     CrwBuffer* pCrwBuffer = pGetBuffer(pCursor);
     nBuffers++;
 
-    pCrwBuffer->vShow();
+    //pCrwBuffer->vShow();
     nRows += (pCrwBuffer->nRows());
     jSumRowBytes += pCrwBuffer->nAllotedBytes();
 
