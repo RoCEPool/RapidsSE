@@ -43,8 +43,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_FILTPREDLIST"_Stz, // CK_FILTPREDLIST
   /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
-  /* */ "CK_FOLDELIST"_Stz,    // CK_FOLDELIST
-  /* */ "CK_FROM"_Stz,         // CK_FROM
+   /* */ "CK_FROM"_Stz,         // CK_FROM
 
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
 
@@ -173,7 +172,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "filtPredList"_Stz,    // CK_FILTPREDLIST
   /* */ "flat"_Stz,            // CK_FLAT
   /* */ "fold"_Stz,            // CK_FOLD
-  /* */ "foldElist"_Stz,       // CK_FOLDELIST
   /* */ "from"_Stz,            // CK_FROM
 
   /* */ "gbyAgg"_Stz,          // CK_GBYAGG

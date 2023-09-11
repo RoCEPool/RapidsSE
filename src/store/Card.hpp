@@ -62,7 +62,6 @@ namespace STORE
   class Card_FiltPredList;
   class Card_Flat;
   class Card_Fold;
-  class Card_FoldElist;
   class Card_From;
 
   class Card_GbyAgg;
@@ -440,7 +439,6 @@ namespace STORE
     Card_Filter*        pSub_filter(void);
     Card_Flat*          pSub_flat(void);
     Card_Fold*          pSub_fold(void);
-    Card_FoldElist*     pSub_foldElist(void);
     Card_From*          pSub_from(void);
     Card_GbyAgg*        pSub_gbyAgg(void);
     Card_Hashing*       pSub_hashing(void);

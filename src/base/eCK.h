@@ -40,7 +40,6 @@ enum eCK : i8 // card kind
   /* */ CK_FILTPREDLIST,
   /* */ CK_FLAT,
   /* */ CK_FOLD,
-  /* */ CK_FOLDELIST,
   /* */ CK_FROM,
 
   /* */ CK_GBYAGG,

@@ -72,7 +72,6 @@ namespace STORE
     Card_FiltPredList *  p_filtPredList;
     Card_Flat *          p_flat;
     Card_Fold *          p_fold;
-    Card_FoldElist *     p_foldElist;
     Card_From *          p_from;
 
     Card_GbyAgg *        p_gbyAgg;

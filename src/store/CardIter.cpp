@@ -1288,7 +1288,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_FILTPREDLIST:     return G.p_filtPredList;
     case CK_FLAT:             return G.p_flat;
     case CK_FOLD:             return G.p_fold;
-    case CK_FOLDELIST:        return G.p_foldElist;
     case CK_FROM:             return G.p_from;
 
     case CK_GBYAGG:           return G.p_gbyAgg;
@@ -1504,7 +1503,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_FILTPREDLIST:     G.p_filtPredList      = _pCard_FiltPredList(pCard); break;
     case CK_FLAT:             G.p_flat              = _pCard_Flat(pCard); break;
     case CK_FOLD:             G.p_fold              = _pCard_Fold(pCard); break;
-    case CK_FOLDELIST:        G.p_foldElist         = _pCard_FoldElist(pCard); break;
     case CK_FROM:             G.p_from              = _pCard_From(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
@@ -1732,7 +1730,6 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_filtPredList     = nullptr;
   G.p_flat             = nullptr;
   G.p_fold             = nullptr;
-  G.p_foldElist        = nullptr;
   G.p_from             = nullptr;
 
   G.p_gbyAgg           = nullptr;
@@ -2496,8 +2493,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_FILTPREDLIST: G.p_filtPredList->vValidate(this, iDepth, pCard);  break;
       case CK_FLAT:         G.p_flat->vValidate(this, iDepth, pCard);  break;
       case CK_FOLD:         G.p_fold->vValidate(this, iDepth, pCard);  break;
-      case CK_FOLDELIST:    G.p_foldElist->vValidate(this, iDepth, pCard);  break;
-      case CK_FROM:         G.p_from->vValidate(this, iDepth, pCard);  break;
+       case CK_FROM:         G.p_from->vValidate(this, iDepth, pCard);  break;
 
       case CK_GBYAGG:       G.p_gbyAgg->vValidate(this, iDepth, pCard);  break;
 
