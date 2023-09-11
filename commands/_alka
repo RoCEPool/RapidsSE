@@ -4,36 +4,137 @@
 
 __TPCH_SCHEMA
 
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_def
-select * from customer join orders on customer.c_custkey = orders.o_custkey where c_nationkey >=4;
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+//create index TABLE1_PCOL1 on table1(pcol1);
+//create index TABLE1_COLA1 on table1(cola1);
+//create index TABLE1_COLB1 on table1(colb1);
+//create index TABLE1_UCOL on table1(ucol);
+//create index TABLE1_UCOLVC on table1(ucolvc);
+
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_pcol9 on table9(pcol9);
+
+
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 
 /*
-/optimise_passthru
-pipeline indexJoinTest
+/pipeline_def
+/weaved
+/KeepCodeFile
+///UseCodeFile = 'CompilationFailed'
+select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
+*/
+/pipeline_def
+/weaved
+/KeepCodeFile
+select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
+
+/*
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
 begin
-  stage stageA on origin :
-    start
-    | pulse once
-    | stageB
 
-  stage stageB on all partitions :
-    scan customer
-    | filter "type boolean $4 4 >= "
-    | combined 0
-    | stageC
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
 
-  stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
-    | combined 0
-    | stageD
+  stage S01 on all partitions :
+      scan      TABLE1
+  //| filter    " type BOOLEAN $4 'GRE' < "
+    | dynamic
+    | next
 
-  stage stageD on origin :
-    output
+  stage S02 on all partitions :
+  //  project   "   type INTEGER as C0_cola1 $3
+  //              , type VARCHAR as C1_colb1 $4
+  //              , type INTEGER as C2_pcol1 $1 "
+      dynamic
+    | next
+
+  stage S03 on all partitions :
+  //  indexJoin TABLE9 table9_pcol9 " BOUND $I1 $3 == "
+      dynamic
+    | next
+
+  stage S04 on all partitions :
+  //  project   "   type INTEGER as C0_cola1 $1
+  //              , type VARCHAR as C1_colb1 $2
+  //              , type FLOAT as C2_cold9 $8
+  //              , type VARCHAR as C3_colb9 $7 "
+      dynamic
+    | next
+
+  stage S05 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_colb1 $2
+  //              , type VARCHAR as C1_colb9 $4
+  //              aggregates
+  //                type INTEGER as C0_COL1 ) $1 max
+  //              , type VARCHAR as C1_colb1 $K1
+  //              , type FLOAT as C2_COL3 ) $3 max
+  //              , type VARCHAR as C3_colb9 $K2 "
+      dynamic
+    | next
+
+  stage S06 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_colb1 $2
+  //              , type VARCHAR as C1_colb9 $4
+  //              aggregates
+  //                type INTEGER as C0_COL1 ) $1 max
+  //              , type VARCHAR as C1_colb1 $K1
+  //              , type FLOAT as C2_COL3 ) $3 max
+  //              , type VARCHAR as C3_colb9 $K2 "
+      dynamic
+    | next
+
+  stage S07 on origin :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_colb1 $2
+  //              , type VARCHAR as C1_colb9 $4
+  //              aggregates
+  //                type INTEGER as C0_COL1 ) $1 max
+  //              , type VARCHAR as C1_colb1 $K1
+  //              , type FLOAT as C2_COL3 ) $3 max
+  //              , type VARCHAR as C3_colb9 $K2 "
+      dynamic
+    | next
+
+  stage S08 on origin :
+      output
     | sink
-    | stageA
+    | first
+
 end ;
 */
-//rows: 1220
