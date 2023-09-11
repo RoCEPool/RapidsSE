@@ -64,6 +64,12 @@ void XF_Epilog_Reinstate_stage::vXF_Reinstate_stage(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_REINSTATE_STAGE, "reinstate stages"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All SubQuery
+//  for (Kid xKid(m_pCI->G.pDeck); xKid.bEach(CK_SUBQUERY); /**/) {
+//    xKid.vDelete();
+//  }
+
   Card_Stage::vReinstate_stages(m_pCI);
 
   m_pCI->vEndTransform();

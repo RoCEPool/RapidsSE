@@ -38,6 +38,8 @@ namespace STORE
     i8   i_Child(void);
     Card *pChild(void);
 
+    void vDelete(void);
+
     bool bEach(void);
     bool bEach(eCK eCard);
     bool bEach(eCK eCard, eCK eSub1);
