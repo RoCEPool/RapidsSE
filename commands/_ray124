@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray123                                                                    */
+/* _ray124                                                                    */
 /*============================================================================*/
 
 //NOTE: select from subqry
@@ -22,10 +22,16 @@ create index table9_ucolvc on table9(ucolvc);
 create index table9_pcol9 on table9(pcol9);
 Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 
+/optimiser_trace
 /transliterated
-/weaved
 /pipeline_def
-select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
+/weaved
+/pipelineName = "_ray124"
+select x, y, z
+  from (select max(cold9) as x,
+               max(cole9) as y,
+               max(colf9) as z
+               from table9) as TbX;
 
 /*============================================================================*/
 /* end                                                                        */

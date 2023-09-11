@@ -429,13 +429,14 @@ bool Card_OP::bNeedsProjectionAnalysis(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (bIsCard(CK_FROM)         ||
-      bIsCard(CK_SCAN)         ||
-      bIsCard(CK_SORT)         ||
       bIsCard(CK_KEYEXISTS)    ||
       bIsCard(CK_KEYNOTEXISTS) ||
       bIsCard(CK_INDEXSCAN)    ||
-      bIsCard(CK_INDEXJOIN))
-    return true;
+      bIsCard(CK_INDEXJOIN)    ||
+//    bIsCard(CK_PROJECT)      ||
+      bIsCard(CK_SCAN)         ||
+      bIsCard(CK_SORT)         )
+  return true;
 
   return false;
 }
