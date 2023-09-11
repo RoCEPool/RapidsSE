@@ -142,8 +142,9 @@ void Step::vBufferIdDeRefSet(void)
 
   RASSERT(pBufferId != nullptr);
   m_pLogicUnit->m_oBufferId.m_pvAsAddress = pBufferId->m_pvAsAddress;
-  if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr)
-      ASSERT(m_pLogicUnit->m_oBufferId.m_bIdFlag == 1);
+  if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr) {
+		ASSERT(m_pLogicUnit->m_oBufferId.m_bIdFlag == 1);
+	}
 
   EXIT();
 }
