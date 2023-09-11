@@ -111,15 +111,11 @@ select colb9,  min(cold9) as MinFloat from table9 where MinFloat > 0 group by co
 failure contains: 'EC_SEMANTIC_ERROR'
 //failure: 'Reference to undefined column MINFLOAT'
 
-
-//TODO V2 : ALKA TO LOOK AT
-/*
 // Source file: ../queries/aggs/min/rmin20.sql
 // Result file: ../queries/aggs/min/results/min20.res
 select min(ucolvc), min(colb1) from table1;
 rows:
   ('aaa', 'BLACK')
-*/
 
 // Source file: ../queries/aggs/min/rmin6.sql
 // Result file: ../queries/aggs/min/results/min6.res
@@ -130,8 +126,6 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin16.sql
 // Result file: ../queries/aggs/min/results/min16.res
-// TODO V2 : ALKA TO LOOK AT
-/*
 select min(a.cola1), a.colb1, min(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   (396,'BLACK',-2.230500000e+02,'GREEN')
@@ -143,7 +137,6 @@ ordered rows:
   (485,'BLACK',-1.213000000e+01,'yellow')
   (194,'BLUE',-4.056000000e+01,'WHITE')
   (353,'BLUE',-2.171000000e+01,'maroon')
-*/
 
 // Source file: ../queries/aggs/min/rmin1.sql
 // Result file: ../queries/aggs/min/results/min1.res
