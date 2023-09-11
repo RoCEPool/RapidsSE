@@ -22,7 +22,6 @@ failure contains: 'Nested aggregate expressions are not permitted'
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
-// TODO V2 : ALKA TO LOOK AT
 select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 2270.38)
