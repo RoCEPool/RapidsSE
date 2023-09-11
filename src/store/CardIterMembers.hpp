@@ -52,7 +52,7 @@ namespace STORE
 
     Card_Call *          p_call;
     Card_Cast *          p_cast;
-    Card_CmpConj *       p_cmpPred;
+    Card_CmpConj *       p_cmpConj;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
     Card_Correlation *   p_correlation;
@@ -110,11 +110,11 @@ namespace STORE
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
     Card_Note *          p_note;
-    Card_NotConj *       p_notPred;
+    Card_NotConj *       p_notConj;
 
     Card_On *            p_on;
     Card_OrdAgg *        p_ordAgg;
-    Card_OrConj *        p_orPred;
+    Card_OrConj *        p_orConj;
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 
@@ -158,7 +158,7 @@ namespace STORE
 
     Card*                p_NEW;
     Card_OP *            p_OP;
-    Card_CONJUNCTION *          p_PRED;
+    Card_CONJUNCTION *   p_CONJ;
 
   private:
     // must be last

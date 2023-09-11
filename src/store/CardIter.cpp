@@ -1268,7 +1268,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
-    case CK_CMPCONJ:          return G.p_cmpPred;
+    case CK_CMPCONJ:          return G.p_cmpConj;
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
     case CK_CORRELATION:      return G.p_correlation;
@@ -1326,11 +1326,11 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
     case CK_NOTE:             return G.p_note;
-    case CK_NOTCONJ:          return G.p_notPred;
+    case CK_NOTCONJ:          return G.p_notConj;
 
     case CK_ON:               return G.p_on;
     case CK_ORDAGG:           return G.p_ordAgg;
-    case CK_ORCONJ:           return G.p_orPred;
+    case CK_ORCONJ:           return G.p_orConj;
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
 
@@ -1464,7 +1464,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_AGGREG:           G.p_aggreg           = _pCard_Aggreg(pCard);
                               G.p_OP               = (Card_OP*)pCard; break;
     case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);
-                              G.p_PRED             = (Card_CONJUNCTION*)pCard; break;
+                              G.p_CONJ             = (Card_CONJUNCTION*)pCard; break;
     case CK_AS:               G.p_as               = _pCard_As(pCard); break;
 
     case CK_BOOLCALC:         G.p_boolCalc         = _pCard_BoolCalc(pCard); break;
@@ -1475,8 +1475,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_CAST:             G.p_cast              = _pCard_Cast(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_CMPCONJ: G.p_cmpPred           = _pCard_CmpConj(pCard);
-                              G.p_PRED              = (Card_CONJUNCTION*)pCard; break;
+    case CK_CMPCONJ: G.p_cmpConj           = _pCard_CmpConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
 
     case CK_COMBINED:         G.p_combined          = _pCard_Combined(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1550,14 +1550,14 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NCORRCOLS:        G.p_nCorrCols         = _pCard_NCorrCols(pCard); break;
     case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
-    case CK_NOTCONJ: G.p_notPred           = _pCard_NotConj(pCard);
-                              G.p_PRED              = (Card_CONJUNCTION*)pCard; break;
+    case CK_NOTCONJ: G.p_notConj           = _pCard_NotConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
 
     case CK_ON:               G.p_on                = _pCard_On(pCard); break;
     case CK_ORDAGG:           G.p_ordAgg            = _pCard_OrdAgg(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_ORCONJ: G.p_orPred            = _pCard_OrConj(pCard);
-                              G.p_PRED              = (Card_CONJUNCTION*)pCard; break;
+    case CK_ORCONJ: G.p_orConj            = _pCard_OrConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
@@ -1710,7 +1710,7 @@ void CardIter::vNullMembers(bool bNull_OP)
 
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
-  G.p_cmpPred          = nullptr;
+  G.p_cmpConj          = nullptr;
   G.p_combined         = nullptr;
   G.p_constraint       = nullptr;
   G.p_correlation      = nullptr;
@@ -1769,11 +1769,11 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_nCorrCols        = nullptr;
   G.p_needed           = nullptr;
   G.p_note             = nullptr;
-  G.p_notPred          = nullptr;
+  G.p_notConj          = nullptr;
 
   G.p_on               = nullptr;
   G.p_ordAgg           = nullptr;
-  G.p_orPred           = nullptr;
+  G.p_orConj           = nullptr;
   G.p_outerColNm       = nullptr;
   G.p_outerJoin        = nullptr;
 
@@ -1816,7 +1816,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_where            = nullptr;
 
   G.p_NEW              = nullptr;
-  G.p_PRED             = nullptr;
+  G.p_CONJ             = nullptr;
 
   if (bNull_OP)
     G.p_OP = nullptr;
@@ -2472,7 +2472,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 
       case CK_CALL:         G.p_call->vValidate(this, iDepth, pCard);  break;
       case CK_CAST:         G.p_cast->vValidate(this, iDepth, pCard);  break;
-      case CK_CMPCONJ:      G.p_cmpPred->vValidate(this, iDepth, pCard);  break;
+      case CK_CMPCONJ:      G.p_cmpConj->vValidate(this, iDepth, pCard);  break;
 
       case CK_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
       case CK_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
@@ -2531,11 +2531,11 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_NCORRCOLS:    G.p_nCorrCols->vValidate(this, iDepth, pCard);  break;
       case CK_NEEDED:       G.p_needed->vValidate(this, iDepth, pCard);  break;
       case CK_NOTE:         G.p_note->vValidate(this, iDepth, pCard);  break;
-      case CK_NOTCONJ:      G.p_notPred->vValidate(this, iDepth, pCard);  break;
+      case CK_NOTCONJ:      G.p_notConj->vValidate(this, iDepth, pCard);  break;
 
       case CK_ON:           G.p_on->vValidate(this, iDepth, pCard);  break;
       case CK_ORDAGG:       G.p_ordAgg->vValidate(this, iDepth, pCard);  break;
-      case CK_ORCONJ:       G.p_orPred->vValidate(this, iDepth, pCard);  break;
+      case CK_ORCONJ:       G.p_orConj->vValidate(this, iDepth, pCard);  break;
       case CK_OUTERCOLNM:   G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
       case CK_OUTERJOIN:    G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
 

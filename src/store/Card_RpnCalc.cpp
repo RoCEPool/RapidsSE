@@ -542,7 +542,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_cmpPred->SYM(SF_RLN_OP,p_term_next->szSymbol(SF_NONE));
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsRelnOp())
-        //p_cmpPred->vDump();
+        //p_cmpConj->vDump();
         if (p_cmpPred->bContains_callToSubQuery(pCI)) {
           p_cmpPred->vCard(CK_CMPCONJ);
           RASSERT(p_cmpPred->bIsRelnOp())
@@ -552,7 +552,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred->vCard(CK_CMPCONJ);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
-        //p_boolCalc->vPushChild(p_cmpPred);
+        //p_boolCalc->vPushChild(p_cmpConj);
         p_boolCalc->vAppendChild(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);

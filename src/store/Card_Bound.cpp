@@ -48,7 +48,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
 {
   _static_
 
-  //p_PRED->vDump();
+  //p_CONJ->vDump();
 
   Card_Term* p_term;
 
