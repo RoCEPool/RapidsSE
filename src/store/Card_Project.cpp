@@ -231,7 +231,7 @@ void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
+void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 {
   //vDump(0,(Stz*)__func__);
 
