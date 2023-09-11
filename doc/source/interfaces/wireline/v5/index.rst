@@ -544,7 +544,8 @@ Query Cancellation Dialog
 .. note::
   Please note that this dialog is not yet supported in RapidsSE. It is included
   here for reference and education purposes and it is always possible that it
-  may change in its final implementation.
+  may change in its final implementation. Clients may wish to structure their
+  code to prepare for this dialog being available in the future.
 
 The query cancellation dialog allows a client to cancel a *statement* that is
 currently running. This is useful when a statement may be running for longer
@@ -635,29 +636,93 @@ cancelled.
 Termination Dialog
 ``````````````````
 
-.. note::
-  Please note that this dialog is not yet supported in RapidsSE. It is included
-  here for reference and education purposes and it is always possible that it
-  may change in its final implementation.
+The termination dialog specifies how a client can close the connection between
+itself and the server. Clients can disconnect from their socket connection to
+the server at any time, however if they wish they can also inform the server
+that they are disconnecting too, as shown in :numref:`terminationDialog`.
+Like other dialogs, this dialog cannot occur unless other dialogs are complete.
+
+.. _terminationDialog:
+
+.. figure:: /interfaces/wireline/v5/dialogs/TerminationDialog.*
+   :align: center
+
+   The Termination Dialog
+
+When the server receives a ``DisconnectRequest`` message it never responds.
+Instead it cleans up the resources allocated by the client and closes the
+socket connection. The client is free to close its socket after sending the
+request.
+
 
 Asynchronous Dialogs
 ````````````````````
 
-Server Shutdown Notification
-::::::::::::::::::::::::::::
+All the previous dialogs were synchronous - that is, one side issues a request
+and then does not send any more messages until the closing response is received.
+Asynchronous dialogs are those that can happen at any time. They are typically
+implemented as messages that are sent from the server to the client, so the
+client must be prepared to receive them at any point during any other dialog.
+
+Server Shutdown Dialog
+::::::::::::::::::::::
 
 .. note::
   Please note that this dialog is not yet supported in RapidsSE. It is included
   here for reference and education purposes and it is always possible that it
-  may change in its final implementation.
+  may change in its final implementation. Clients may wish to structure their
+  code to prepare for this dialog being available in the future.
 
-Client Disconnection Notification
-:::::::::::::::::::::::::::::::::
+The server shutdown dialog is a future dialog that tells the client that the
+server intends to shutdown soon. This gives the client the ability to handle it
+as they deem necessary. This dialog is implemented as the server sending a
+``ShutdownNotification`` message to the client and can be see in
+:numref:`serverShutdownDialog`.
+
+.. _serverShutdownDialog:
+
+.. figure:: /interfaces/wireline/v5/dialogs/ServerShutdownDialog.*
+   :align: center
+
+   The Server Shutdown Dialog
+
+
+Client Disconnection Dialog
+:::::::::::::::::::::::::::
 
 .. note::
   Please note that this dialog is not yet supported in RapidsSE. It is included
   here for reference and education purposes and it is always possible that it
-  may change in its final implementation.
+  may change in its final implementation. Clients may wish to structure their
+  code to prepare for this dialog being available in the future.
+
+The client disconnection dialog is a future dialog where the server is telling
+the client that they specifically are being disconnected. This could be for a
+number of possible reasons, including but not limited to:
+
+- an administrator is disconnecting a session;
+
+- a node is being taken offline;
+
+- lack of resources.
+
+The server will send the client a ``DisconnectNotification`` message at any time
+during any dialog. This is a courtesy message from the server so that the client
+knows that a specific action is leading to their connection being terminated,
+and not some other cause or failure. The ``DisconnectNotification`` may optionally
+include a reason as to why it was being disconnected, which the client may use
+to provide useful feedback to the user.
+
+After sending the client the ``DisconnectNotification`` the server closes the
+connection to the client. This can be seen in :numref:`clientDisconnectionDialog`.
+
+.. _clientDisconnectionDialog:
+
+.. figure:: /interfaces/wireline/v5/dialogs/ClientDisconnectionDialog.*
+   :align: center
+
+   The Client Disconnection Dialog
+
 
 
 Messages
