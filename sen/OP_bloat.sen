@@ -24,7 +24,7 @@
 
   [task].seeFrameStack
   
-  inject::bloat
+  //inject::bloat
 
   PipeIn[].delete
   

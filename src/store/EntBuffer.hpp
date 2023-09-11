@@ -54,11 +54,9 @@
     aNextBuffer = nullptr; \
   } \
   else { \
-    aNextBuffer = _pEntBuffer(BufferNo::pToLinkedBuffer(pEntBuffer->m_tNextBuffer.m_iBufferNo)); \
+    aNextBuffer = _pEntBuffer(BufferNo::pToDataBuffer(pEntBuffer->m_tNextBuffer.m_iBufferNo)); \
   } \
 }
-
-//aNextBuffer = _pEntBuffer(pEntBuffer->m_tNextBuffer.pGetLinkedBuffer());
 
 
 namespace STORE
@@ -70,6 +68,13 @@ namespace STORE
                     public MiniHeap_t<Ent>
   {
   friend class IndexTree;
+
+  public:
+    BufferNo m_tNextBuffer;   // next buffer
+    BufferNo m_tPrevBuffer;   // previous buffer
+
+    BufferNo m_tHigherBuffer; // higher buffer
+    BufferNo m_tLowerBuffer;  // lower buffer
 
   protected:
     eKE        m_eEntKind;          // what kind of entries are in this buffer?

@@ -3056,302 +3056,601 @@ PromptFun __Prompt_pdsTest (
 bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  typedef Pds_t<i16> Pds_i16;
-  Pds_i16* PDS_i16;
-
-/*----------------------------------------------------------------------------*/
-                  // Test Case - Basic single element tests
-/*----------------------------------------------------------------------------*/
-
+  typedef Pds_t<i8> Pds_i8;
+  Pds_i8* PDS_i8;
   bool bResult = false;
-  PDS_i16 = new Pds_i16();
   SkipListBlock* pResultBlock = nullptr;
+  SkipListBlock* pSearchBlock = nullptr;
+  i8 iTest = 0;
+
+/*----------------------------------------------------------------------------*/
+  // Test Case - Basic single element tests
+/*----------------------------------------------------------------------------*/
+
+  bResult = false;
+  PDS_i8 = new Pds_i8(nullptr);
+  pResultBlock = nullptr;
 
   // Insert single element
-  pResultBlock = PDS_i16->pInsert(1);
+  iTest = 1;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
   RASSERT(pResultBlock);
 
-//  PDS_i16->vDumpInUseList();
-//  PDS_i16->vDumpFreeList();
+  *(i8*)(pResultBlock->aItem()) = iTest;
 
-  RASSERT(PDS_i16->m_iNumEntries[0] == 1);
-  RASSERT(PDS_i16->m_iFreeListEntries == 0);
+//  PDS_i8->vDumpInUseList();
+//  PDS_i8->vDumpFreeList();
+
+  RASSERT(PDS_i8->m_iNumEntries[0] == 1);
+  RASSERT(PDS_i8->m_iFreeListEntries == 0);
 
 
   // Find existing element
-  SkipListBlock* pSearchBlock = PDS_i16->pFind(1);
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 1);
 
 
+  iTest = 2;
   // Find non-existent element
-  pSearchBlock = PDS_i16->pFind(2);
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock == nullptr);
 
 
+  iTest = 1;
   // Delete single existing element
-  bResult = PDS_i16->bDelete(1);
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT(bResult);
 
-//  PDS_i16->vDumpInUseList();
-//  PDS_i16->vDumpFreeList();
+//  PDS_i8->vDumpInUseList();
+//  PDS_i8->vDumpFreeList();
 
-  RASSERT(PDS_i16->m_iNumEntries[0] == 0);
-  RASSERT(PDS_i16->m_iFreeListEntries == 1);
+  RASSERT(PDS_i8->m_iNumEntries[0] == 0);
+  RASSERT(PDS_i8->m_iFreeListEntries == 1);
 
 
   // Find deleted element
-  pSearchBlock = PDS_i16->pFind(1);
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock == nullptr);
 
 
   // Delete non-existent element
-  bResult = PDS_i16->bDelete(1);
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT( ! bResult);
-  RASSERT(PDS_i16->m_iNumEntries[0] == 0);
-  RASSERT(PDS_i16->m_iFreeListEntries == 1);
+  RASSERT(PDS_i8->m_iNumEntries[0] == 0);
+  RASSERT(PDS_i8->m_iFreeListEntries == 1);
 
-  delete PDS_i16;
+  delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
   // Test Case - 10 element tests
 /*----------------------------------------------------------------------------*/
 
-  PDS_i16 = new Pds_i16();
+  PDS_i8 = new Pds_i8(nullptr);
 
   // Insert 10 elements out of order
-  pResultBlock = PDS_i16->pInsert(10);
+  iTest = 10;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
   RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(3);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(1);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(7);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(6);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(9);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(4);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(8);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(2);
-  RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(5);
-  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
 
-  RASSERT(PDS_i16->m_iNumEntries[0] == 10);
-  RASSERT(PDS_i16->m_iFreeListEntries == 0);
+  iTest = 3;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
 
+  iTest = 1;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
 
-  // Ensure elements are stored in order at each level
-  for(i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++)
-  {
-    SkipListBlock* pCursor = (SkipListBlock*) PDS_i16->pGetAddrFromOffset(PDS_i16->m_uInUseRootOffset);
-    i8 iPrevKey = 0;
+  iTest = 7;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
 
-    while(pCursor) {
-      RASSERT(pCursor->iKey() >= iPrevKey);
-      iPrevKey = pCursor->iKey();
-      pCursor = PDS_i16->pNextSLBlock(pCursor, i_Level);
-    }
-  }
+  iTest = 6;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
 
+  iTest = 9;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 4;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 8;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 2;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  iTest = 5;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  RASSERT(pResultBlock);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  RASSERT(PDS_i8->m_iNumEntries[0] == 10);
+  RASSERT(PDS_i8->m_iFreeListEntries == 0);
+
+//  PDS_i8->vDumpInUseList();
+//  PDS_i8->vDumpFreeList();
 
   // Find 5 existing elements
-  pSearchBlock = PDS_i16->pFind(1);
+  iTest = 1;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 1);
 
-  pSearchBlock = PDS_i16->pFind(8);
+  iTest = 8;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 8);
 
-  pSearchBlock = PDS_i16->pFind(10);
+  iTest = 10;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 10);
 
-  pSearchBlock = PDS_i16->pFind(3);
+  iTest = 3;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 3);
 
-  pSearchBlock = PDS_i16->pFind(2);
+  iTest = 2;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 2);
 
-
+  PDS_i8->vDumpInUseList();
+  PDS_i8->vDumpFreeList();
   // Delete 5 existing elements
-  bResult = PDS_i16->bDelete(1);
+  iTest = 1;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT(bResult);
-  bResult = PDS_i16->bDelete(8);
+  iTest = 8;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT(bResult);
-  bResult = PDS_i16->bDelete(10);
+  iTest = 10;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT(bResult);
-  bResult = PDS_i16->bDelete(3);
+  iTest = 3;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT(bResult);
-  bResult = PDS_i16->bDelete(2);
+  iTest = 2;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT(bResult);
 
-//  PDS_i16->vDumpInUseList();
-//  PDS_i16->vDumpFreeList();
+//  PDS_i8->vDumpInUseList();
+//  PDS_i8->vDumpFreeList();
 
-  RASSERT(PDS_i16->m_iNumEntries[0] == 5);
-  RASSERT(PDS_i16->m_iFreeListEntries == 5);
+  RASSERT(PDS_i8->m_iNumEntries[0] == 5);
+  RASSERT(PDS_i8->m_iFreeListEntries == 5);
 
   // Delete same 5 elements again
-  bResult = PDS_i16->bDelete(1);
+  iTest = 1;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT( ! bResult);
-  bResult = PDS_i16->bDelete(8);
+  iTest = 8;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT( ! bResult);
-  bResult = PDS_i16->bDelete(10);
+  iTest = 10;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT( ! bResult);
-  bResult = PDS_i16->bDelete(3);
+  iTest = 3;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT( ! bResult);
-  bResult = PDS_i16->bDelete(2);
+  iTest = 2;
+  bResult = PDS_i8->bDelete((void*) &iTest);
   RASSERT( ! bResult);
 
 
   // Find 5 deleted elements
-  pSearchBlock = PDS_i16->pFind(1);
+  iTest = 1;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock == nullptr);
 
-  pSearchBlock = PDS_i16->pFind(8);
+  iTest = 8;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock == nullptr);
 
-  pSearchBlock = PDS_i16->pFind(10);
+  iTest = 10;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock == nullptr);
 
-  pSearchBlock = PDS_i16->pFind(3);
+  iTest = 3;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock == nullptr);
 
-  pSearchBlock = PDS_i16->pFind(2);
+  iTest = 2;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock == nullptr);
 
 
   // Find existing element
-  pSearchBlock = PDS_i16->pFind(9);
+  iTest = 9;
+  pSearchBlock = PDS_i8->pFind((void*) &iTest);
   RASSERT(pSearchBlock != nullptr);
   RASSERT(pSearchBlock->iKey() == 9);
 
+  delete PDS_i8;
 
-  delete PDS_i16;
-
-/*----------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
   // Test Case - Insert till buffer is full
 /*----------------------------------------------------------------------------*/
-  PDS_i16 = new Pds_i16();
+  PDS_i8 = new Pds_i8(nullptr);
 
-  i8 iFreeBytes = PDS_i16->nFreeBytes();
+  i8 iFreeBytes = PDS_i8->nFreeBytes();
 
   i8 iInsert = 0;
 
   for(; iInsert < C_I8_MAX; iInsert++)
   {
-    pResultBlock = PDS_i16->pInsert(rand());
+    iTest = rand();
+    pResultBlock = PDS_i8->pInsert((void*) &iTest);
     if(pResultBlock == nullptr) {
      break;
     }
+    *(i8*)(pResultBlock->aItem()) = iTest;
   }
 
-  i8 iBlockSize = PDS_i16->m_nBlockSize;
+  i8 iBlockSize = PDS_i8->m_nBlockSize;
   i8 iMaxElements = iFreeBytes/iBlockSize;
 
   RASSERT(iInsert == iMaxElements);
-  delete PDS_i16;
+  delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
                   // Test Case - Insert duplicate key
 /*----------------------------------------------------------------------------*/
-  PDS_i16 = new Pds_i16();
-  pResultBlock = PDS_i16->pInsert(10);
+  PDS_i8 = new Pds_i8(nullptr);
+  iTest = 10;
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
   RASSERT(pResultBlock);
-  pResultBlock = PDS_i16->pInsert(10);
+  *(i8*)(pResultBlock->aItem()) = iTest;
+
+  pResultBlock = PDS_i8->pInsert((void*) &iTest);
   RASSERT(pResultBlock == nullptr);
 
-//  PDS_i16->vDumpInUseList();
-//  PDS_i16->vDumpFreeList();
+//  PDS_i8->vDumpInUseList();
+//  PDS_i8->vDumpFreeList();
 
-  RASSERT(PDS_i16->m_iNumEntries[0] == 1);
-  RASSERT(PDS_i16->m_iFreeListEntries == 1);
+  RASSERT(PDS_i8->m_iNumEntries[0] == 1);
+  RASSERT(PDS_i8->m_iFreeListEntries == 1);
 
-  delete PDS_i16;
+  delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
-                  // Test Case - PDS for Char array
+                  // Test Case - PDS with two keys
 /*----------------------------------------------------------------------------*/
 
   struct xTest {
-    i8 iKey;
-    char cArr[23];
-  }typedef TestStruct;
+    i8 iKey_1;
+    i8 iKey_2;
+  }typedef DoubleKey;
 
-  Pds_t<TestStruct>* PDS_CharArr;
-  PDS_CharArr = new Pds_t<TestStruct>();
-  iFreeBytes = PDS_CharArr->nFreeBytes();
+  Pds_t<DoubleKey>* PDS_doubleKey;
+  PDS_doubleKey = new Pds_t<DoubleKey>(BASE::iDoubleKeyCompare);
 
   // Insert single element
-  pResultBlock = PDS_CharArr->pInsert(1);
+  DoubleKey oDKey;
+  oDKey.iKey_1 = 1;
+  oDKey.iKey_2 = 2;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
   RASSERT(pResultBlock);
 
-//  PDS_CharArr->vDumpInUseList();
-//  PDS_CharArr->vDumpFreeList();
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+  // fill in the value here
 
-  RASSERT(PDS_CharArr->m_iNumEntries[0] == 1);
-  RASSERT(PDS_CharArr->m_iFreeListEntries == 0);
+  PDS_doubleKey->vDumpInUseList();
+  PDS_doubleKey->vDumpFreeList();
+
+  RASSERT(PDS_doubleKey->m_iNumEntries[0] == 1);
+  RASSERT(PDS_doubleKey->m_iFreeListEntries == 0);
 
 
   // Find existing element
-  pSearchBlock = PDS_CharArr->pFind(1);
+  pSearchBlock = PDS_doubleKey->pFind((void*) &oDKey);
   RASSERT(pSearchBlock != nullptr);
-  RASSERT(pSearchBlock->iKey() == 1);
+
+  DoubleKey* oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == oDKey.iKey_1);
+  RASSERT(oSearchKey->iKey_2 == oDKey.iKey_2);
 
 
+  oDKey.iKey_1 = 1;
+  oDKey.iKey_2 = 3;
   // Find non-existent element
-  pSearchBlock = PDS_CharArr->pFind(2);
+  pSearchBlock = PDS_doubleKey->pFind((void*) &oDKey);
+  RASSERT(pSearchBlock == nullptr);
+
+  oDKey.iKey_1 = 2;
+  oDKey.iKey_2 = 1;
+  // Find non-existent element
+  pSearchBlock = PDS_doubleKey->pFind((void*) &oDKey);
   RASSERT(pSearchBlock == nullptr);
 
 
+  oDKey.iKey_1 = 1;
+  oDKey.iKey_2 = 2;
   // Delete single existing element
-  bResult = PDS_CharArr->bDelete(1);
+  bResult = PDS_doubleKey->bDelete((void*) &oDKey);
   RASSERT(bResult);
 
-//  PDS_CharArr->vDumpInUseList();
-//  PDS_CharArr->vDumpFreeList();
+  PDS_doubleKey->vDumpInUseList();
+  PDS_doubleKey->vDumpFreeList();
 
-  RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
-  RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
+  RASSERT(PDS_doubleKey->m_iNumEntries[0] == 0);
+  RASSERT(PDS_doubleKey->m_iFreeListEntries == 1);
 
 
   // Find deleted element
-  pSearchBlock = PDS_CharArr->pFind(1);
+  pSearchBlock = PDS_doubleKey->pFind((void*) &oDKey);
   RASSERT(pSearchBlock == nullptr);
 
 
   // Delete non-existent element
-  bResult = PDS_CharArr->bDelete(1);
+  bResult = PDS_doubleKey->bDelete((void*) &oDKey);
   RASSERT( ! bResult);
-  RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
-  RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
+  RASSERT(PDS_doubleKey->m_iNumEntries[0] == 0);
+  RASSERT(PDS_doubleKey->m_iFreeListEntries == 1);
 
-  // Insert till buffer is full
+  delete PDS_doubleKey;
 
-  iInsert = 0;
+/*----------------------------------------------------------------------------*/
+  // Test Case - 5 element double key tests
+/*----------------------------------------------------------------------------*/
 
-  for(; iInsert < C_I8_MAX; iInsert++)
-  {
-    pResultBlock = PDS_CharArr->pInsert(rand());
-    if(pResultBlock == nullptr) {
-      break;
-    }
-  }
+  PDS_doubleKey = new Pds_t<DoubleKey>(BASE::iDoubleKeyCompare);
 
-  iBlockSize = PDS_CharArr->m_nBlockSize;
-  iMaxElements = iFreeBytes/iBlockSize;
+  // Insert 5 elements out of order
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = 2;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
-  RASSERT(iInsert == iMaxElements);
-  delete PDS_CharArr;
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = 3;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = 4;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = 2;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = 5;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = 3;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = 1;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = 8;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 14;
+  oDKey.iKey_2 = 2;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  oDKey.iKey_1 = 14;
+  oDKey.iKey_2 = 5;
+  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  RASSERT(pResultBlock);
+  *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
+
+  RASSERT(PDS_doubleKey->m_iNumEntries[0] == 10);
+  RASSERT(PDS_doubleKey->m_iFreeListEntries == 0);
+
+  PDS_doubleKey->vDumpInUseList();
+  PDS_doubleKey->vDumpFreeList();
+
+  // Find lowest block where iKey_1 == 12
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 12);
+  RASSERT(oSearchKey->iKey_2 == 1);
+
+
+  // Find lowest block where iKey_1 == 10
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 10);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+  // Find lowest block where iKey_1 == 14
+  oDKey.iKey_1 = 14;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 14);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+  // Find lowest block (first block greater than given key)
+  oDKey.iKey_1 = C_INT_MIN;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 10);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+  // Find lowest block where iKey_1 == 13 which does not exist
+  // So return first block greater than iKey_1 == 13
+  oDKey.iKey_1 = 13;
+  oDKey.iKey_2 = C_INT_MIN;
+  pSearchBlock = PDS_doubleKey->pFindGreaterThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 14);
+  RASSERT(oSearchKey->iKey_2 == 2);
+
+
+  // Find highest block where iKey_1 == 12
+  // i.e Find first block less than 12,max
+  oDKey.iKey_1 = 12;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 12);
+  RASSERT(oSearchKey->iKey_2 == 8);
+
+  // Find highest block where iKey_1 == 10
+  oDKey.iKey_1 = 10;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 10);
+  RASSERT(oSearchKey->iKey_2 == 4);
+
+  // Find highest block (Last block less than given key)
+  oDKey.iKey_1 = C_INT_MAX;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 14);
+  RASSERT(oSearchKey->iKey_2 == 5);
+
+  // Find highest block where iKey_1 == 13 which does not exist
+  // So find the last block less than the given key
+  oDKey.iKey_1 = 13;
+  oDKey.iKey_2 = C_INT_MAX;
+  pSearchBlock = PDS_doubleKey->pFindLessThan((void *) &oDKey);
+  RASSERT(pSearchBlock != nullptr);
+
+  oSearchKey = (DoubleKey*)(pSearchBlock->aItem());
+  RASSERT(oSearchKey->iKey_1 == 12);
+  RASSERT(oSearchKey->iKey_2 == 8);
+
+
+  delete PDS_doubleKey;
+
+///*----------------------------------------------------------------------------*/
+//                  // Test Case - PDS for Char array
+///*----------------------------------------------------------------------------*/
+//
+//  struct xTest {
+//    i8 iKey;
+//    char cArr[23];
+//  }typedef TestStruct;
+//
+//  Pds_t<TestStruct>* PDS_CharArr;
+//  PDS_CharArr = new Pds_t<TestStruct>();
+//  iFreeBytes = PDS_CharArr->nFreeBytes();
+//
+//  // Insert single element
+//  pResultBlock = PDS_CharArr->pInsert(1);
+//  RASSERT(pResultBlock);
+//
+////  PDS_CharArr->vDumpInUseList();
+////  PDS_CharArr->vDumpFreeList();
+//
+//  RASSERT(PDS_CharArr->m_iNumEntries[0] == 1);
+//  RASSERT(PDS_CharArr->m_iFreeListEntries == 0);
+//
+//
+//  // Find existing element
+//  pSearchBlock = PDS_CharArr->pFind(1);
+//  RASSERT(pSearchBlock != nullptr);
+//  RASSERT(pSearchBlock->iKey() == 1);
+//
+//
+//  // Find non-existent element
+//  pSearchBlock = PDS_CharArr->pFind(2);
+//  RASSERT(pSearchBlock == nullptr);
+//
+//
+//  // Delete single existing element
+//  bResult = PDS_CharArr->bDelete(1);
+//  RASSERT(bResult);
+//
+////  PDS_CharArr->vDumpInUseList();
+////  PDS_CharArr->vDumpFreeList();
+//
+//  RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
+//  RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
+//
+//
+//  // Find deleted element
+//  pSearchBlock = PDS_CharArr->pFind(1);
+//  RASSERT(pSearchBlock == nullptr);
+//
+//
+//  // Delete non-existent element
+//  bResult = PDS_CharArr->bDelete(1);
+//  RASSERT( ! bResult);
+//  RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
+//  RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
+//
+//  // Insert till buffer is full
+//
+//  iInsert = 0;
+//
+//  for(; iInsert < C_I8_MAX; iInsert++)
+//  {
+//    pResultBlock = PDS_CharArr->pInsert(rand());
+//    if(pResultBlock == nullptr) {
+//      break;
+//    }
+//  }
+//
+//  iBlockSize = PDS_CharArr->m_nBlockSize;
+//  iMaxElements = iFreeBytes/iBlockSize;
+//
+//  RASSERT(iInsert == iMaxElements);
+//  delete PDS_CharArr;
 
   vTrace("Success!\n"_Stz);
   return true;

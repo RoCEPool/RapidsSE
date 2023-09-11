@@ -67,9 +67,9 @@ Pot::Pot(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
   m_pRowPix = nullptr;
-  
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_LGLPTNS; i_Ptn++)
-    m_paBufferChain[i_Ptn] = nullptr;
+
+  m_iSynthKey = 0;
+  m_pPdsOfBuffers = new Pds_t<PotPdsItem>(STORE::iPotPdsItemKeyCompare);
   
   _checkInitialised_(CN_LGLBUFSET);
   
@@ -84,6 +84,7 @@ Pot::~Pot(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
   delete m_pRowPix;
+  delete m_pPdsOfBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +96,7 @@ Pot::~Pot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
 {
-  _static_;
+  _static_
 
   try {
     Row* aDstRow;
@@ -105,7 +106,7 @@ void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
     LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
 
     // get row buffer for given partition (new a first buffer if ncessary)
-    RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[tLglPtn]);
+    RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
     if (! pDstRowBuffer) {
 
       pDstRowBuffer = new RowBuffer;
@@ -189,10 +190,27 @@ void Pot::vSetRowPix(Pot* pPot, RowPix* pRowPix)
 DataBuffer* Pot::pBuffer(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-  
-  //ASSERT(0 == i_Ptn);
-  
-  return m_paBufferChain[i_Ptn];
+
+  PotPdsItem oSearchKey;
+  oSearchKey.iLglPtn = i_Ptn + 1;
+  oSearchKey.iSynthKey = C_INT_MAX;
+
+  // Find the last block that is less than LglPtn,Max key
+  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+
+  if(pHead != nullptr) {
+    // If the block is not null, extract the keys and values
+    PotPdsItem* pItem = (PotPdsItem*) pHead->aItem();
+
+    // If the LglPtn value matches, we found a buffer part of this LglPtn chain
+    // Delete it from the Pds and return the DataBuffer associated with it's bufferId
+    if(pItem != nullptr && pItem->iLglPtn == (i_Ptn + 1)) {
+      RASSERT(pItem->oBufferId.m_bIdFlag == 1);
+      return _pDataBuffer(BufferId::aAddressFromId(pItem->oBufferId));
+    }
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,28 +219,54 @@ DataBuffer* Pot::pBuffer(i8 i_Ptn)
 DataBuffer* Pot::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-  
-  //ASSERT(0 == i_Ptn);
-  
-  DataBuffer* pCompletedBuffer = nullptr;
-  
-  DataBuffer* pNextBuffer =
-    (DataBuffer*)
-      (m_paBufferChain[i_Ptn]
-        ? m_paBufferChain[i_Ptn]->pNextLinkedBuffer()
-        : nullptr);
-  
-  while (pNextBuffer) {
-    pCompletedBuffer = pNextBuffer;
-    pNextBuffer = (DataBuffer*)pNextBuffer->pNextLinkedBuffer();
+
+  // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
+  i8 iLglPtnKey = i_Ptn + 1;
+
+  PotPdsItem oSearchKey;
+  // We increment the LglPtn number since index 0 is used for the Root Block in the Pds
+  oSearchKey.iLglPtn = iLglPtnKey;
+  oSearchKey.iSynthKey = C_INT_MIN;
+
+  // Get the first block that is greater than LglPtn,Min
+  SkipListBlock* pHead = m_pPdsOfBuffers->pFindGreaterThan((void*) &oSearchKey);
+
+  if(pHead != nullptr) {
+    // If the block is not null, extract the keys and values
+    PotPdsItem* pItem = (PotPdsItem*) pHead->aItem();
+
+    // If this block doesn't match our LglPtn key, return nullptr
+    if(pItem != nullptr && pItem->iLglPtn != iLglPtnKey) {
+      return nullptr;
+    }
+
+    // Now figure out whether this is a completed buffer or not by checking the next buffer
+    // in the chain
+    SkipListBlock* pNextBlock = m_pPdsOfBuffers->pNextSLBlock(pHead, 0);
+    if(pNextBlock != nullptr) {
+      // Next block exists, check if the key is the same as this LglPtn
+      PotPdsItem* pNextItem = (PotPdsItem*) pNextBlock->aItem();
+      RASSERT(pNextItem != nullptr);
+
+      if(pNextItem->iLglPtn == iLglPtnKey) {
+        // Next block exists for this LglPtn chain
+        // Which means our current buffer is a completed buffer
+
+        // Extract the buffer id
+        BufferId oBufferId = pItem->oBufferId;
+        RASSERT(oBufferId.m_bIdFlag == 1);
+
+        // Remove this block from the pds
+        bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+        RASSERT(bResult);
+
+        // Get the address from the hashmap
+        return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+      }
+    }
+    // Next block does not exist or does not match the LglPtn, hence our current buffer is incomplete
   }
-  
-  if (pCompletedBuffer) {
-    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevLinkedBuffer();
-    pPrevBuffer->vNextLinkedBuffer(BufferNo::tUNKNOWN());
-  }
-  
-  return pCompletedBuffer;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,20 +275,35 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
 DataBuffer* Pot::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
-  
-  //ASSERT(0 == i_Ptn);
-  
-  DataBuffer* pDanglingBuffer = m_paBufferChain[i_Ptn];
-  
-  m_paBufferChain[i_Ptn] =
-    pDanglingBuffer
-      ? (DataBuffer*)pDanglingBuffer->pNextLinkedBuffer()
-      : nullptr;
-  
-  if (pDanglingBuffer)
-    pDanglingBuffer->vNextLinkedBuffer(BufferNo::tUNKNOWN());
-  
-  return pDanglingBuffer;
+
+  PotPdsItem oSearchKey;
+  oSearchKey.iLglPtn = i_Ptn + 1;
+  oSearchKey.iSynthKey = C_INT_MAX;
+  // Find the buffer part of this LglPtn at the front of the queue.
+  // There may be more than one.
+  // Pop the head and return it.
+  // Note: This function is slightly different than the implementation in
+  // LglBufSet as there can be more than one dangling buffer in the queue
+
+  // Find last buffer less than the Key,MAX (i.e front of queue)
+  SkipListBlock* pHead = m_pPdsOfBuffers->pFindLessThan((void*) &oSearchKey);
+
+  if(pHead != nullptr) {
+    // Get the current head block of this LglPtn and extract the values
+    PotPdsItem* pItem = (PotPdsItem*) pHead->aItem();
+
+    // Delete it from the Pds and return the DataBuffer associated with it's bufferId
+    // if the LglPtn matches.
+    if(pItem != nullptr && pItem->iLglPtn == (i_Ptn + 1)) {
+      BufferId oBufferId = pItem->oBufferId;
+      RASSERT(oBufferId.m_bIdFlag == 1);
+      bool bResult = m_pPdsOfBuffers->bDelete((void*)pItem);
+      RASSERT(bResult);
+      return _pDataBuffer(BufferId::aAddressFromId(oBufferId));
+    }
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,7 +323,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
 
   // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
+  RowBuffer* pDstRowBuffer = _pRowBuffer(pBuffer(i_Ptn));
   if (! pDstRowBuffer) {
 
     pDstRowBuffer = new RowBuffer;
@@ -319,13 +378,7 @@ i8 Pot::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
   
-  i8 nBuff = 0;
-  
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_LGLPTNS; i_Ptn++)
-    if (m_paBufferChain[i_Ptn])
-      nBuff++;
-  
-  return nBuff;
+  return m_pPdsOfBuffers->iNumEntries(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,22 +392,54 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 
-  //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
-
   LglPtn tLglPtn;
   tLglPtn = i_Ptn;
   pAddBuffer->vLglPtn(tLglPtn);
 
-  // link the old with this
-  pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
-  
-  
-  if (m_paBufferChain[i_Ptn])
-    m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pAddBuffer);
-  
-  m_paBufferChain[i_Ptn] = pAddBuffer;
+  // Append a buffer to this pds
+  // Use a synthetic key to ensure the buffers are added in ascending order
+  PotPdsItem oItem;
+  oItem.iLglPtn = i_Ptn + 1;
+  oItem.iSynthKey = ++m_iSynthKey;
+  oItem.oBufferId = pAddBuffer->oGetBufferId();
+
+  RASSERT(oItem.oBufferId.m_iAsI8 != 0);
+  RASSERT(oItem.oBufferId.m_bIdFlag == 1);
+
+  SkipListBlock* pResultBlock = m_pPdsOfBuffers->pInsert((void*) &oItem);
+  RASSERT(pResultBlock != nullptr);
+
+  *(PotPdsItem*)(pResultBlock->aItem()) = oItem;
 }
 
+/*----------------------------------------------------------------------------*/
+/* compare two nodes                                                          */
+/*----------------------------------------------------------------------------*/
+i8 STORE::iPotPdsItemKeyCompare(void* aItem_l, void* aItem_r)
+{
+  _static_
+
+  PotPdsItem* pKey_l = (PotPdsItem*) aItem_l;
+  PotPdsItem* pKey_r = (PotPdsItem*) aItem_r;
+
+  // do the node names match?
+  if (pKey_l->iLglPtn == pKey_r->iLglPtn) {
+    if (pKey_l->iSynthKey == pKey_r->iSynthKey) {
+      return 0;
+    }
+    else {
+      if (pKey_l->iSynthKey >= pKey_r->iSynthKey)
+        return 1;
+      else
+        return -1;
+    }
+  } else {
+    if (pKey_l->iLglPtn >= pKey_r->iLglPtn)
+      return 1;
+    else
+      return -1;
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -5,22 +5,14 @@
 
 namespace STORE
 {
-  struct xBufferId {
-    i8 iKey;
-    BufferId oBufferId;
-  };
-
   class CrwTablePtn : public Object
   {
   private:
     Table* m_pTable;        // table this partition belongs to
     LglPtn    m_tLglPtn;        // partition number (in grid)
+    i8     m_iSynthKey;     // Synthetic key for the Pds
 
-    // TODO: Arjun - m_pRootBuffer needs to be removed
-    CrwBuffer* m_pRootBuffer;    // the data root buffer
-    CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
-
-    Pds_t<xBufferId>* m_pPdsOfBufferIds;
+    Pds_t<PdsItem_BufferId>* m_pPdsOfBufferIds;
 
     // Note that the IndexTreeVec gets moved upto TablePtn
     //IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
@@ -35,11 +27,13 @@ namespace STORE
     CrwTablePtn(Table *pTable, LglPtn tLglPtn);
     ~CrwTablePtn(void) noexcept(false);
 
+    void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     i8   nBuffers(void);
     void vCleanup(void);
     void vDropAllPagingLocks(void);
     void vDump(void);
+    BufferId oExtractBufferId(void* pItemAddr);
     CrwBuffer* pGetBuffer(SkipListBlock* pSLBlock);
     void* pPds(void);
 
@@ -53,7 +47,6 @@ namespace STORE
     Table* pTable(void);
     void vTruncate(void);
 
-    void vVerifyPds(void);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
 

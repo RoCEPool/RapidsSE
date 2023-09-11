@@ -183,8 +183,6 @@ namespace STORE {
   class Pipeline;
   class PipelineNotation;
   class LglPtnMap;
-  class PtnStm_cursor;
-  class PtnStream;
 
   class RejectJob;
   class Row;

@@ -1,79 +1,55 @@
 /*============================================================================*/
-/* _alka                                                                      */
+/* _alka1                                                                     */
 /*============================================================================*/
 
-create table T1 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
 );
 
-create table T2 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-);
+create index TABLE1_PCOL1 on table1(pcol1);
 
-create index T1_a on T1(a);
-create index T2_a on T2(a);
+create index TABLE1_COLA1 on table1(cola1);
 
-load T1 "../DATA/Joins/T1.csv" ;
+create index TABLE1_COLB1 on table1(colb1);
 
-load T2 "../DATA/Joins/T2.csv" ;
+create index TABLE1_UCOL on table1(ucol);
 
-/*
+create index TABLE1_UCOLVC on table1(ucolvc);
 
-//WORKS!!!
+select colc1, extract(year from colc1) from table1 where ucol / 5 between 50 and 100;
 
-/optimiser_trace
-/transliterated
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+/keepCodeFile
 /weaved
 /pipeline_def
-select * from T1;
-
+select colb1, colc1, extract(day from colc1) from table1 where
+  colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1);
+/*
+unordered rows:
+  ('green',  TIMESTAMP '2015-02-01 00:00:00.0', 1)
+  ('indigo', TIMESTAMP '2015-03-03 00:00:00.0', 3)
+  ('green',  TIMESTAMP '2015-02-12 00:00:00.0', 12)
+  ('indigo', TIMESTAMP '2015-05-14 00:00:00.0', 14)
+  ('indigo', TIMESTAMP '2015-07-14 00:00:00.0', 14)
+  ('violet', TIMESTAMP '2015-12-15 00:00:00.0', 15)
+  ('violet', TIMESTAMP '2015-01-16 00:00:00.0', 16)
+  ('green',  TIMESTAMP '2015-01-19 00:00:00.0', 19)
+  ('yellow', TIMESTAMP '2015-10-19 00:00:00.0', 19)
+  ('pink',   TIMESTAMP '2015-03-19 00:00:00.0', 19)
+  ('green',  TIMESTAMP '2015-10-21 00:00:00.0', 21)
+  ('violet', TIMESTAMP '2015-09-22 00:00:00.0', 22)
+  ('violet', TIMESTAMP '2015-09-23 00:00:00.0', 23)
+  ('green',  TIMESTAMP '2015-07-26 00:00:00.0', 26)
+  ('indigo', TIMESTAMP '2015-03-26 00:00:00.0', 26)
 */
-
-
-/optimiser_trace
-/transliterated
-/weaved
-/pipeline_def
-select * from T1, T2 where t1.a = t2.a;
-
-
-/*
-/optimiser_trace
-/optimise_passthru
-/transliterated
-/weaved
-/pipeline_def
-pipeline indexJoinTest
-begin
-  stage stageA on origin :
-    start
-    | pulse once
-    | stageB
-
-  stage stageB on all partitions :
-    scan T1
-    | indexJoin T2 T2_a "BOUND $I1 a =="
-    | combined 0
-    | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-
-end ;
-*/
-
-/*
-rows:
- (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
- (3,303,33993,'T-ROW3',3,337,3339,'J-ROW3b')
- (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
- (4,null,4344,'T-ROW4',4,464,444,'J-ROW4')
- (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
- (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
- */

@@ -1,19 +1,22 @@
 /*============================================================================*/
-/* PtnStm_cursor.hpp -- Partition Stream cursor                               */
+/* PdsCursor.hpp -- Cursor for Primary Data Structure (PDS)                   */
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+#include "BASE.h"
+#include "Pds.hpp"
+
+namespace BASE
 {
-  class PtnStm_cursor : public Object
+  class PdsCursor : public Object
   {
-  private:
-    TablePtn*  m_pTablePtn;
 
-    i8         m_iLglBufferNo;
+  public:
+    Pds* m_pPds;
 
-    DataBuffer* m_pCurBuffer;
-    LglPtn      m_tCurPtnNo;
+    SkipListBlock* m_pCurrentBlock;
+
+    // Save the last usable offset for asserts
 
     // must be last
     Footer m_xFooter;
@@ -22,24 +25,25 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    PtnStm_cursor(TablePtn* pTablePtn);
-    ~PtnStm_cursor(void) noexcept(false);
+    PdsCursor(Pds* pPds);
+    ~PdsCursor(void) noexcept(false);
 
-    static void vRepair(Object* pObject, eRF eRepair);
+    static void vRepair(Object *pObject);
 
-    i8   iBufferNo(void);
-    void vClose(void);
-    bool bOpen(void);
-    DataBuffer* pRead(void);
+    bool bIsCurrNull(void);
+    void vNext(void);
     void vReset(void);
-    bool bSeek(i8 iBufferNo);
+
+
 
   private:
     Footer* aFooter(void);
   };
 
-  PtnStm_cursor* _pPtnStm_cursor(void* aAddr);
+  PdsCursor* _pPdsCursor(void* aAddr);
+
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

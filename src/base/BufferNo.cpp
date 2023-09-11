@@ -58,6 +58,19 @@ i8 BufferNo::iToBufferNo(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert buffer no to address of linked buffer                              */
 /*----------------------------------------------------------------------------*/
+DataBuffer* BufferNo::pToDataBuffer(i8 iBufferNo)
+{
+  Object* pAllocatedObject = pToAllocatedObject(iBufferNo);
+
+  DataBuffer* pDataBuffer =
+      reinterpret_cast<DataBuffer*>(pAllocatedObject);
+
+  return pDataBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert buffer no to address of linked buffer                              */
+/*----------------------------------------------------------------------------*/
 HeapBuffer* BufferNo::pToHeapBuffer(i8 iBufferNo)
 {
   PoolBuffer* pPoolBuffer = FileMap::pToPoolBuffer(iBufferNo);
@@ -65,19 +78,6 @@ HeapBuffer* BufferNo::pToHeapBuffer(i8 iBufferNo)
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBuffer);
 
   return pHeapBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert buffer no to address of linked buffer                              */
-/*----------------------------------------------------------------------------*/
-LinkedBuffer* BufferNo::pToLinkedBuffer(i8 iBufferNo)
-{
-  Object* pAllocatedObject = pToAllocatedObject(iBufferNo);
-
-  LinkedBuffer* pLinkedBuffer =
-    reinterpret_cast<LinkedBuffer*>(pAllocatedObject);
-
-  return pLinkedBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,14 +138,14 @@ i8 BufferNo::iGetBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer address                                                         */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* BufferNo::pGetLinkedBuffer(void)
+DataBuffer* BufferNo::pGetDataBuffer(void)
 {
   if (C_UNKNOWN == m_iBufferNo)
     return nullptr;
-  
-  LinkedBuffer* pLinkedBuffer = BufferNo::pToLinkedBuffer(m_iBufferNo);
-  
-  return pLinkedBuffer;
+
+  DataBuffer* pDataBuffer = BufferNo::pToDataBuffer(m_iBufferNo);
+
+  return pDataBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

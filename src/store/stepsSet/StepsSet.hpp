@@ -209,9 +209,11 @@ public:
   void vBufferIdDropLock(void);
   void vBufferIdGet(void);
   void vBufferIdGetAndClear(void);
+  void vBufferIdGetDataBuffer(void);
   void vBufferIdIsNotNull(void);
   void vBufferIdIsNull(void);
   void vBufferIdSet(void);
+  void vBufferIdDeRefSet(void);
 
   // build
   void vBuildBranch(void);
@@ -277,7 +279,6 @@ public:
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
   void vCrwBufferGetBufferIdAsAddr(void);
-  void vCrwBufferGetNextLinkedBufferId(void);
   void vCrwBufferInflate(void);
   void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
@@ -285,7 +286,6 @@ public:
   void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
-  void vCrwBufferToCsv_OLD(void);
   void vCrwBufferWriteToFile0(void);
 
   // crw to row
@@ -761,8 +761,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetTableSet(void);
 
   // inject
-  void vInjectBloat(void);
-  void vInjectBloatCleanup(void);
   void vInjectSigsegv(void);
   void vInjectSigsegv_dbg(void);
   void vInjectThrow(void);
@@ -1520,18 +1518,6 @@ void vJobIdLastJobIdFetch(void);
   void vPtnMapPtnsInGrid(void);
   void vPtnMapSee(void);
 
-  // ptnStream
-  void vPtnStreamBufferNo(void);
-  void vPtnStreamClose(void);
-  void vPtnStreamDelete(void);
-  void vPtnStreamGet(void);
-  void vPtnStreamIsNull(void);
-  void vPtnStreamNew(void);
-  void vPtnStreamOpen(void);
-  void vPtnStreamRead(void);
-  void vPtnStreamSeek(void);
-  void vPtnStreamSet(void);
-
   // push
   void vPushI(void);
   void vPushJ(void);
@@ -1644,6 +1630,13 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSendOut(void);
   void vParcelSet(void);
 
+  // pds Cursor
+  void vPdsCursorGet(void);
+  void vPdsCursorItemAddr(void);
+  void vPdsCursorCurrIsNotNull(void);
+  void vPdsCursorNext(void);
+  void vPdsCursorSet(void);
+
   // reg Pipein
   void vPipeinBide(void);
   void vPipeinBideNext(void);
@@ -1686,7 +1679,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetBufferIdAsAddr(void);
-  void vRowBufferGetNextLinkedBufferId(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
@@ -1699,7 +1691,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferSetDeciderCopies(void);
   void vRowBufferSetLglPtn(void);
   void vRowBufferToCsv(void);
-  void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);
 
   // rowCursor
@@ -2045,7 +2036,6 @@ void vJobIdLastJobIdFetch(void);
   // subset
   void vSubsetGet(void);
   void vSubsetNext(void);
-  void vSubsetNextBuffer(void);
   void vSubsetSet(void);
 
   // Supervisor
@@ -2138,9 +2128,11 @@ void vJobIdLastJobIdFetch(void);
   // table partition
   void vTablePtnAppendBuffer(void);
   void vTablePtnGet(void);
+  void vTablePtnExtractBufferId(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnRoot(void);
   void vTablePtnRootBufferId(void);
+  void vTablePtnRootPdsCursor(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
   void vTablePtnTruncateIndex(void);

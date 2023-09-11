@@ -337,6 +337,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("PdsCursor[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PdsCursor[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PipeIn[]"_Stz)) {
     pCurrentWord->vEncodeCall("PipeIn[].set"_Stz);
     EXIT();
@@ -369,11 +374,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Pot[]"_Stz)) {
     pCurrentWord->vEncodeCall("Pot[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("PtnStream[]"_Stz)) {
-    pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
     EXIT();
     return;
   }

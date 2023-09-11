@@ -44,7 +44,7 @@ void HashMapSlot::operator delete(void* pHashMapSlotAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 HashMapSlot::HashMapSlot(void)
-    : Object(CN_HASHMAPSLOT)
+: Object(CN_HASHMAPSLOT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
 
@@ -52,7 +52,10 @@ HashMapSlot::HashMapSlot(void)
 
   for(u8 i =0; i < m_uNoOfSlots; i++)
   {
-    m_pEntry[i] = nullptr;
+    HashMapEntry* pDummyEntry = new HashMapEntry(nullptr, nullptr);
+    pDummyEntry->m_pNext = nullptr;
+    m_pEntry[i] = pDummyEntry;
+    m_okSlotLock[i].vInit(m_pEntry[i]);
   }
 
   _checkInitialised_(CN_HASHMAPSLOT);

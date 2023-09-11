@@ -68,11 +68,8 @@ Tub::Tub(void)
 : Object(CN_TUB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-  
-  m_pBufferChain = nullptr;
-  
-  m_pInCrwBuffer = nullptr;
-  m_pInRowBuffer = nullptr;
+
+  m_pBufferIdQueue = new PdsBufferIdQueue();
 
   m_pRowPix      = nullptr;
   
@@ -90,8 +87,7 @@ Tub::~Tub(void) noexcept(false)
 
   delete m_pRowPix;
 
-  // assert we don't have any dangling buffers
-  RASSERT(! m_pBufferChain);
+  delete m_pBufferIdQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,13 +181,9 @@ void Tub::vAddBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  // link the old with this
-  pDataBuffer->vNextLinkedBuffer(m_pBufferChain);
+  m_pBufferIdQueue->vAddBuffer(pDataBuffer);
 
-  if (m_pBufferChain)
-    m_pBufferChain->vPrevLinkedBuffer(pDataBuffer);
-
-  m_pBufferChain = pDataBuffer;
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,23 +193,7 @@ DataBuffer* Tub::pCompletedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  DataBuffer* pCompletedBuffer = nullptr;
-  
-  DataBuffer* pDataBuffer = (DataBuffer*)
-                              (m_pBufferChain
-                                 ? m_pBufferChain->pNextLinkedBuffer()
-                                 : nullptr);
-  while (pDataBuffer) {
-    pCompletedBuffer = pDataBuffer;
-    pDataBuffer = (DataBuffer*)pDataBuffer->pNextLinkedBuffer();
-  }
-  
-  if (pCompletedBuffer) {
-    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevLinkedBuffer();
-    pPrevBuffer->vNextLinkedBuffer(nullptr);
-  }
-  
-  return pCompletedBuffer;
+  return m_pBufferIdQueue->pCompletedBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,52 +202,8 @@ DataBuffer* Tub::pCompletedBuffer(void)
 DataBuffer* Tub::pDanglingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-  
-  DataBuffer* pDataBuffer = m_pBufferChain;
-  
-  m_pBufferChain = nullptr;
-  
-  return pDataBuffer;
-}
 
-/*----------------------------------------------------------------------------*/
-/* get input crw buffer                                                       */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* Tub::pInCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-    
-  return m_pInCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set input crw buffer                                                       */
-/*----------------------------------------------------------------------------*/
-void Tub::vInCrwBuffer(CrwBuffer* pInCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-    
-  m_pInCrwBuffer = pInCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get input row buffer                                                       */
-/*----------------------------------------------------------------------------*/
-RowBuffer* Tub::pInRowBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-    
-  return m_pInRowBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set input row buffer                                                       */
-/*----------------------------------------------------------------------------*/
-void Tub::vInRowBuffer(RowBuffer* pInRowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-    
-  m_pInRowBuffer = pInRowBuffer;
+  return m_pBufferIdQueue->pDanglingBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,9 +213,7 @@ bool Tub::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
   
-  bool bEmpty = m_pBufferChain ? false : true;
-    
-  return bEmpty;
+  return m_pBufferIdQueue->bIsEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,15 +237,13 @@ void Tub::vRowPix(RowPix* pRowPix)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return first/working buffer                                                */
+/* return working buffer (tail)                                               */
 /*----------------------------------------------------------------------------*/
 DataBuffer* Tub::pWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
-  DataBuffer* pBuffer = m_pBufferChain;
-
-  return pBuffer;
+  return m_pBufferIdQueue->pDataBuffer();
 }
 
 /*============================================================================*/
