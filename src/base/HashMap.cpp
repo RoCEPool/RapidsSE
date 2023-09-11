@@ -327,6 +327,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
   HashMapEntry* pEntry = new HashMapEntry(pKey, pValue);
   pEntry->m_pNext = pDummyEntry->m_pNext;
   pDummyEntry->m_pNext = pEntry;
+  m_uNoOfEntries++;
   m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
 
 //  vInsertEntryAtIndex(pTmpEntry, uIndex);
