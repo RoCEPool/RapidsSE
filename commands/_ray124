@@ -12,7 +12,7 @@ create table TABLE9 (
   cold9   FLOAT,
   cole9   DECIMAL,
   colf9   INTEGER,
-  colg9  if INTEGER,
+  colg9   INTEGER,
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );

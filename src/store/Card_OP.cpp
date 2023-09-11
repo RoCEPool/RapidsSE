@@ -505,12 +505,19 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Card_Projection* p_projection;
+
+  if (CK_PROJECT == eCard() && pCI->Prior.m_pProjection) {
+    p_projection = pSub_projection();
+    p_projection->vEnsureTypes_For_stmColOdn(pCI);
+    return;
+  }
+
   if (! bNeedsProjectionAnalysis())
     return;
 
   vEnsure_stream(pCI);
 
-  Card_Projection* p_projection;
 
   if ((p_projection = pSub_projection()))
     pCI->G.p_stream->vDeleteChild(p_projection);
