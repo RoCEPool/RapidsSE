@@ -67,7 +67,6 @@ namespace STORE
     Card *pPrev(void);
 
     void vRemove(void);
-    void vRemove(Card *pChild);
     void vResynch(i8 i_Child);
     void vResynch(Card* pCard);
     void vRewind(void);

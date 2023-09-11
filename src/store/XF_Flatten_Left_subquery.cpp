@@ -37,7 +37,7 @@ XF_Flatten_Left_subQuery::~XF_Flatten_Left_subQuery(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* remove left-most subquery and rotate next sub-query to be first card       */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Left_subQuery::vFlatten(CardIter* pCI)
 {
@@ -56,7 +56,7 @@ void XF_Flatten_Left_subQuery::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* remove left-most subquery and rotate next sub-query to be first card       */
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Left_subQuery::vFlatten(void)
 {
@@ -64,6 +64,15 @@ void XF_Flatten_Left_subQuery::vFlatten(void)
 
   m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_FLAT, "left subQuery"_Stz);
 
+  Kid xDeck(m_pCI->G.pDeck);
+  if (xDeck.bEach()) {
+    if (CK_SUBQUERY == xDeck.eChild()) {
+      xDeck.vDelete();
+      if (xDeck.bEach(CK_SUBQUERY)) {
+        m_pCI->G.pDeck->vRotateFirst(xDeck.pChild());
+      }
+    }
+  }
 
   m_pCI->vEndTransform();
 }

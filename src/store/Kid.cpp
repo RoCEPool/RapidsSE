@@ -426,24 +426,6 @@ void Kid::vRemove(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Kid::vRemove(Card *pChild)
-{
-  _nonProper_
-
-  if (pChild == m_pChild) {
-    m_pChild = nullptr;
-    m_pParent->vRemoveChild(pChild);
-    vRewind();
-  }
-  else {
-    m_pParent->vRemoveChild(pChild);
-    vResynch(m_pChild);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Kid::vResynch(i8 i_Child)
 {
   _nonProper_
