@@ -35,7 +35,7 @@ void BASE::vCheckAssumptions(void)
   ALWAYS(CacheLine::bMultipleCacheLines(C_SIZE_MEDIUM_OBJECT));
   ALWAYS(CacheLine::bMultipleCacheLines(C_SIZE_LARGE_OBJECT));
 
-  ASSERT(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
+//  ASSERT(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
 
   PoolHelper::vValidateEnums();
   

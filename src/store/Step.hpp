@@ -133,6 +133,7 @@ namespace STORE
     static void vAddSteps_PageIn(void);
     static void vAddSteps_PageOut(void);
     static void vAddSteps_Parcel(void);
+    static void vAddSteps_PdsCursor(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PipelineOfOp(void);
@@ -147,7 +148,6 @@ namespace STORE
     static void vAddSteps_Profile(void);
     static void vAddSteps_PtnDef(void);
     static void vAddSteps_PtnMap(void);
-    static void vAddSteps_PtnStream(void);
     static void vAddSteps_Push(void);
   
     static void vAddSteps_RecvdObject(void);

@@ -95,11 +95,6 @@
       "*scan*" .verbose
       // now get excat key rows from index
       TablePtn[].grabRead_yieldLoop
-      TablePtn[] ptnStream::new to ptnStream[]
-
-      // open ptn stream for the tablePtn
-      ptnStream[] ptnStream.open assert
-
     endof
 
   endcase
@@ -128,8 +123,7 @@
   Counter1[] PathIdentifier[].fetchTech@
   case
     AT_SCAN of
-      // read next buffer from ptn stream
-      ptnStream[] ptnStream.read to DataBuffer[]
+
     endof
 
     // all other types of fetches, just fetchNext
@@ -149,13 +143,6 @@
     Counter1[] 1 + to Counter1[]
     Counter1[] Counter0[] >= if
       // all done
-      // close and delete partition stream
-      ptnStream[].isNull not if
-        ptnStream[] ptnStream.close
-        ptnStream[] ptnStream.delete
-        nullptr to ptnStream[]
-      then
- 
       // close and delete index stream
       indexStream[].isNull not if
         indexStream[].close

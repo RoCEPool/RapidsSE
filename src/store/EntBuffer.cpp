@@ -907,7 +907,7 @@ EntBuffer* EntBuffer::pHigherEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pHigherLinkedBuffer());
+  return _pEntBuffer(m_tHigherBuffer.pGetDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -916,8 +916,9 @@ EntBuffer* EntBuffer::pHigherEntBuffer(void)
 void EntBuffer::vHigherEntBuffer(EntBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  LinkedBuffer::vHigherLinkedBuffer(pHigherBuffer);
+
+  m_tHigherBuffer = pHigherBuffer;
+  RASSERT(m_tHigherBuffer.pGetDataBuffer() == pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1244,7 +1245,7 @@ EntBuffer* EntBuffer::pNextEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pNextLinkedBuffer());
+  return _pEntBuffer(m_tNextBuffer.pGetDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1253,8 +1254,10 @@ EntBuffer* EntBuffer::pNextEntBuffer(void)
 void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  LinkedBuffer::vNextLinkedBuffer(pNextBuffer);
+
+  m_tNextBuffer = pNextBuffer;
+
+  RASSERT(m_tNextBuffer.pGetDataBuffer() == pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1349,7 +1352,7 @@ EntBuffer* EntBuffer::pPrevEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pPrevLinkedBuffer());
+  return _pEntBuffer(m_tPrevBuffer.pGetDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1358,8 +1361,9 @@ EntBuffer* EntBuffer::pPrevEntBuffer(void)
 void EntBuffer::vPrevEntBuffer(EntBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  LinkedBuffer::vPrevLinkedBuffer(pPrevBuffer);
+
+  m_tPrevBuffer = pPrevBuffer;
+  RASSERT(m_tPrevBuffer.pGetDataBuffer() == pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

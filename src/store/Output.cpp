@@ -208,8 +208,7 @@ void Output::vPipeToThis(Operand* pOperand)
   // to lock them in the hashmap. Unfortunately, the Task can quickly reach the max locks
   // it can hold. Hence, we use a flag called m_bOutputQueue saved as a member
   // in DataBuffer to prevent paging out, when queuing to the output.
-  if(pOperand->eGetClassNo() == BASE::CN_CRWBUFFER ||
-      pOperand->eGetClassNo() == BASE::CN_ROWBUFFER){
+  if(DataBuffer::bIsDataBuffer(pOperand->eGetClassNo())){
     DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
     pDataBuffer->vOutputQueued(true);
     AM::pHashMap()->vDropKeyLock(pDataBuffer->oGetBufferId().m_pvAsAddress);

@@ -19,59 +19,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Inject(void)
 {
-  vAddStep("inject::bloat"_Stz,        &Step::vInjectBloat);
-  vAddStep("inject::bloatCleanup"_Stz, &Step::vInjectBloatCleanup);
   vAddStep("inject::sigsegv"_Stz,      &Step::vInjectSigsegv);
   vAddStep("inject::sigsegv_dbg"_Stz,  &Step::vInjectSigsegv_dbg);
   vAddStep("inject::throw"_Stz,        &Step::vInjectThrow);
   vAddStep("inject::segV"_Stz,         &Step::vInjectSegViolation);
   vAddStep("inject::sigfpe"_Stz,       &Step::vInjectFPE);
   vAddStep("inject::sigill"_Stz,       &Step::vInjectILL);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inject::bloat -- hog memory and bloat                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vInjectBloat(void)
-{
-  ENTRY();
-  
-  //AM::SE::vWhereAmI();
-
-  RowBuffer* pRowBuffer = new RowBuffer();
-  m_pLogicUnit->m_xpMemoryHog = pRowBuffer;
-  i8 i = 0;
-
-  while (true) {
-    RowBuffer* pNewRowBuffer = new RowBuffer();
-    i++;
-    pRowBuffer->vNextRowBuffer(pNewRowBuffer);
-    pRowBuffer = pNewRowBuffer;
-  }
-
-  vTrace("HOGGED %lld\n"_Stz, i);
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inject::bloatCleanup -- cleanup the bloat                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vInjectBloatCleanup(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpMemoryHog);
-  RowBuffer* pNextRowBuffer;
-
-  while (pRowBuffer) {
-    pNextRowBuffer = pRowBuffer->pNextRowBuffer();
-    delete pRowBuffer;
-    pRowBuffer = pNextRowBuffer;
-  }
-
-  m_pLogicUnit->m_xpMemoryHog = nullptr;
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

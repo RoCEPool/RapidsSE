@@ -5,8 +5,10 @@
 
 namespace BASE
 {
-  class DataBuffer : public LinkedBuffer
+  class DataBuffer : public Operand
   {
+    // TODO: Arjun - Remove this padding
+    PadWord m__PadToCacheLineLinkedBuffer[8];
   protected:
     Lock         m_okLock;        // lock
     i8           m_iBufferNo;     // this DataBuffer's buffer number
@@ -43,7 +45,7 @@ namespace BASE
 
     static DataBuffer *pRefdDataBuffer(Rrf &xRef);
 
-    static void vRepairList(Object *pObject);
+    static void vRepair(Object *pObject);
 
     static DataBuffer *pToDataBuffer(void *aAddr);
 

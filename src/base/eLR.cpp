@@ -67,6 +67,7 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_OPTIMISER"_Stz,
   
   /*  */ "LR_PARCEL"_Stz,
+	/*  */ "LR_PDSCURSOR"_Stz,
   /*  */ "LR_PATHIDENTIFIER"_Stz,
   /*  */ "LR_PIPEIN"_Stz,
   /*  */ "LR_PIPELINE"_Stz,
@@ -75,7 +76,6 @@ Stz* aLR[LR_ENUMS]
   /*  */ "LR_POT"_Stz,
   /*  */ "LR_PREEXPSTACK"_Stz,
   /*  */ "LR_PTNDEF"_Stz,
-  /*  */ "LR_PTNSTREAM"_Stz,
   
   /*  */ "LR_RECVDOBJECT"_Stz,
   /*  */ "LR_RECVWL"_Stz,

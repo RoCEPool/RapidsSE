@@ -5,23 +5,30 @@
 
 namespace STORE
 {
+  typedef struct {
+    i8 iLglPtn;
+    i8 iSynthKey;
+    BufferId oBufferId;
+  } LglBufSetItem;
+
   class LglBufSet : public Object
   {
   public:
-    DataBuffer*  m_paBufferChain[C_MAX_LGLPTNS];
-    
+    i8                      m_iSynthKey;     // Synthetic key used to append buffers to the Pds structure
+    Pds_t<LglBufSetItem>*   m_pPdsOfBuffers; // Pds of buffers
+
     // must be last
     Footer m_xFooter;
-    
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
     LglBufSet(void);
-   ~LglBufSet(void) noexcept(false);
-    
+    ~LglBufSet(void) noexcept(false);
+
   public:
-  
+
     void vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer);
     DataBuffer* pBuffer(LglPtn tLglPtn);
     DataBuffer* pCompletedBuffer(LglPtn tLglPtn);
@@ -29,7 +36,7 @@ namespace STORE
 
     Footer* aFooter(void);
   };
-  
+  static i8 iLglBufSetKeyCompare(void* aItem_l, void* aItem_r);
   LglBufSet* _pLglBufSet(void* aAddr);
 }
 

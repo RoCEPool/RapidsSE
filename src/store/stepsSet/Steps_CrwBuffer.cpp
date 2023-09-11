@@ -34,7 +34,6 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[]"_Stz,             &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[]\\clear"_Stz,      &Step::vCrwBufferGetAndClear);
   vAddStep("CrwBuffer[].bufferId"_Stz,    &Step::vCrwBufferGetBufferIdAsAddr);
-  vAddStep("CrwBuffer[].nextBufferId"_Stz, &Step::vCrwBufferGetNextLinkedBufferId);
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
   vAddStep("CrwBuffer[].get"_Stz,         &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[].inflate"_Stz,     &Step::vCrwBufferInflate);
@@ -44,7 +43,6 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].isReport"_Stz,    &Step::vCrwBufferIsReport);
   vAddStep("CrwBuffer[].set"_Stz,         &Step::vCrwBufferSet);
   vAddStep("CrwBuffer[].toCsv"_Stz,       &Step::vCrwBufferToCsv);
-  vAddStep("CrwBuffer[].toCsv_OLD"_Stz,   &Step::vCrwBufferToCsv_OLD);
   vAddStep("CrwBuffer[].upsertIntoTable"_Stz,&Step::vCrwBufferUpsertIntoTable);
   vAddStep("CrwBuffer[].writeToFile0"_Stz, &Step::vCrwBufferWriteToFile0);
   
@@ -179,30 +177,6 @@ void Step::vCrwBufferGetBufferIdAsAddr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* CrwBuffer[].nextBufferId -- fetch next linked buffer id as address         */
-/*----------------------------------------------------------------------------*/
-void Step::vCrwBufferGetNextLinkedBufferId(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
-  CrwBuffer* pNextBuffer = pCrwBuffer->pNextCrwBuffer();
-
-//  Pds* pPdsCrwTablePtn = (Pds*)MY::pPdsCrwTablePtn();
-
-      // Try to make the Key in Pds the bufferId instead of making the cursor
-      // Use find() to get the next bufferId
-      // Remove crwBuffer from linkedBuffer
-
-  if(pNextBuffer)
-    m_pDataStack->vPushPtr((Object*)pNextBuffer->oGetBufferId().m_pvAsAddress);
-  else
-    m_pDataStack->vPushPtr(nullptr);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* CrwBuffer[].inflate -- inflate the crwbuffer                               */
 /*----------------------------------------------------------------------------*/
 void Step::vCrwBufferInflate(void)
@@ -304,19 +278,6 @@ void Step::vCrwBufferToCsv(void)
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
   
   pCrwBuffer->vToCsv(pTub);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* CrwBuffer[].toCsv -- convert CrwBuffer to Csv                              */
-/*----------------------------------------------------------------------------*/
-void Step::vCrwBufferToCsv_OLD(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
-  m_pDataStack->vPushPtr(pCrwBuffer->pToCsvBuffer());
 
   EXIT();
 }

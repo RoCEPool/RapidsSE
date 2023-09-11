@@ -20,7 +20,6 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
   vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
   vAddStep("RowBuffer[].bufferId"_Stz,       &Step::vRowBufferGetBufferIdAsAddr);
-  vAddStep("RowBuffer[].nextBufferId"_Stz,    &Step::vRowBufferGetNextLinkedBufferId);
   vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
   vAddStep("RowBuffer[].decile"_Stz,         &Step::vRowBufferDecile);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
@@ -36,7 +35,6 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].setDeciderCopies"_Stz, &Step::vRowBufferSetDeciderCopies);
   vAddStep("RowBuffer[].setLglPtn"_Stz,      &Step::vRowBufferSetLglPtn);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
-  vAddStep("RowBuffer[].toCsv_OLD"_Stz,      &Step::vRowBufferToCsv_OLD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,23 +145,6 @@ void Step::vRowBufferGetBufferIdAsAddr(void)
 
   m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].nextBufferId -- fetch next linked buffer id as address         */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferGetNextLinkedBufferId(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBuffer;
-  RowBuffer* pNextBuffer = pRowBuffer->pNextRowBuffer();
-
-  if(pNextBuffer)
-    m_pDataStack->vPushPtr((Object*)pNextBuffer->oGetBufferId().m_pvAsAddress);
-  else
-    m_pDataStack->vPushPtr(nullptr);
   EXIT();
 }
 
@@ -324,21 +305,6 @@ void Step::vRowBufferToCsv(void)
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
   
   pRowBuffer->vToCsv(pTub);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* RowBuffer[].toCsv -- convert rowBuffer operand to csvBuffer                */
-/*----------------------------------------------------------------------------*/
-void Step::vRowBufferToCsv_OLD(void)
-{
-  ENTRY();
-
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
-  m_pDataStack->vPushPtr(pRowBuffer->pToCsvBuffer());
-
-  delete pRowBuffer;
 
   EXIT();
 }

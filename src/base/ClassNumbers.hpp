@@ -237,6 +237,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
   /* */ CN_PDS,
+  /* */ CN_PDSBUFFERIDQUEUE,
+  /* */ CN_PDSCURSOR,
   /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
@@ -262,8 +264,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PSXTHD,
   /* */ CN_PTNDEF,
   /* */ CN_PTNID,
-  /* */ CN_PTNSTMCURSOR,
-  /* */ CN_PTNSTREAM,
   /* */ CN_PTRVAL,
 
   /* */ CN__Q__,
@@ -295,7 +295,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWPIX,
   /* */ CN_ROWSINGLE,
   /* */ CN_ROWSINGLELIST,
-  /* */ CN_ROWTABLEPTN,
   /* */ CN_ROWTRAY,
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
@@ -743,6 +742,8 @@ static Stz* aCN[]
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PDS"_Stz,                  // CN_PDS
+        "PDSBUFFERIDQUEUE"_Stz,     // CN_PDSBUFFERIDQUEUE
+  /* */ "PDSCURSOR"_Stz,            // CN_PDSCURSOR
   /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
@@ -768,8 +769,6 @@ static Stz* aCN[]
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNDEF"_Stz,               // CN_PTNDEF
   /* */ "PTNID"_Stz,                // CN_PTNID
-  /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
-  /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 
   /* */ "_Q__"_Stz,                 // CN__Q__
@@ -801,7 +800,6 @@ static Stz* aCN[]
   /* */ "ROWPIX"_Stz,               // CN_ROWPIX
   /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
   /* */ "ROWSINGLELIST"_Stz,        // CN_ROWSINGLELIST
-  /* */ "ROWTABLEPTN"_Stz,          // CN_ROWTABLEPTN
   /* */ "ROWTRAY"_Stz,              // CN_ROWTRAY
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR

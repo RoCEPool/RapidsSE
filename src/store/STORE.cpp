@@ -37,7 +37,7 @@
 void STORE::vCheckAssumptions(void)
 {
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(Operand)));
-  ALWAYS(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
+//  ALWAYS(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
 
   ALWAYS(sizeof(CodeCell)   == 8);
   
@@ -50,7 +50,7 @@ void STORE::vCheckAssumptions(void)
   
   
   ALWAYS(sizeof(Operand)      == sizeof(CacheLine));
-  ALWAYS(sizeof(LinkedBuffer) == 2 * sizeof(CacheLine));
+//  ALWAYS(sizeof(LinkedBuffer) == 2 * sizeof(CacheLine));
   
   ALWAYS(sizeof(StreamDef)    < C_SIZE_LARGE_OBJECT);
   
