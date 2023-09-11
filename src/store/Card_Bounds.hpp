@@ -23,7 +23,7 @@ namespace STORE
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
 
-    bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
+    bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
     bool bUsesSqyRsl(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

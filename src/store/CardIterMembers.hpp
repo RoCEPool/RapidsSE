@@ -43,7 +43,7 @@ namespace STORE
 
     Card_AbsJoin *       p_absJoin;
     Card_Aggreg *        p_aggreg;
-    Card_AndPred *       p_andPred;
+    Card_AndConj *       p_andConj;
     Card_As *            p_as;
 
     Card_BoolCalc *      p_boolCalc;
@@ -52,7 +52,7 @@ namespace STORE
 
     Card_Call *          p_call;
     Card_Cast *          p_cast;
-    Card_CmpPred *       p_cmpPred;
+    Card_CmpConj *       p_cmpPred;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
     Card_Correlation *   p_correlation;
@@ -110,11 +110,11 @@ namespace STORE
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
     Card_Note *          p_note;
-    Card_NotPred *       p_notPred;
+    Card_NotConj *       p_notPred;
 
     Card_On *            p_on;
     Card_OrdAgg *        p_ordAgg;
-    Card_OrPred *        p_orPred;
+    Card_OrConj *        p_orPred;
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 

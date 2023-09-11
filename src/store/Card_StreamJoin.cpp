@@ -6,7 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_JoinCast.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_JoinEstimate.hpp"
 #include "Card_CostJoining.hpp"
 #include "Card_CostNetwork.hpp"

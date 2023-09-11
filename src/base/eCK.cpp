@@ -12,7 +12,7 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
-  /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
+  /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
   /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
@@ -21,7 +21,7 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CAST"_Stz,         // CK_CAST
-  /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
+  /* */ "CK_CMPCONJ"_Stz,      // CK_CMPCONJ
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
@@ -81,11 +81,11 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
-  /* */ "CK_NOTPRED"_Stz,      // CK_NOTPRED
+  /* */ "CK_NOTCONJ"_Stz,      // CK_NOTCONJ
 
   /* */ "CK_ON"_Stz,           // CK_ON
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
-  /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
+  /* */ "CK_ORCONJ"_Stz,       // CK_ORCONJ
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
   /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
 
@@ -141,7 +141,7 @@ Stz* aCK_short[CK_ENUMS]
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
   /* */ "aggreg"_Stz,          // CK_AGGREG
-  /* */ "andPred"_Stz,         // CK_ANDPRED
+  /* */ "andConj"_Stz,         // CK_ANDCONJ
   /* */ "as"_Stz,              // CK_AS
 
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
@@ -150,7 +150,7 @@ Stz* aCK_short[CK_ENUMS]
 
   /* */ "call"_Stz,            // CK_CALL
   /* */ "cast"_Stz,            // CK_CAST
-  /* */ "cmpPred"_Stz,         // CK_CMPPRED
+  /* */ "cmpPred"_Stz,         // CK_CMPCONJ
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "correlation"_Stz,     // CK_CORRELATION
@@ -210,11 +210,11 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED
   /* */ "note"_Stz,            // CK_NOTE
-  /* */ "notPred"_Stz,         // CK_NOTPRED
+  /* */ "notPred"_Stz,         // CK_NOTCONJ
 
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
-  /* */ "orPred"_Stz,          // CK_ORPRED
+  /* */ "orPred"_Stz,          // CK_ORCONJ
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 

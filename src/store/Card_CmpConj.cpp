@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_CmpPred.cpp -- Compare Predicate                                      */
+/* Card_CmpConj.cpp -- Compare Predicate                                      */
 /*============================================================================*/
 
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 #include "Card_Table.hpp"
@@ -14,16 +14,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_CmpPred, CK_CMPPRED)
-__aNewFunction(Card_CmpPred,CN_CARD)
-__vDeleteFunction(Card_CmpPred,CN_CARD)
+__pCastFunction_Card(STORE, Card_CmpConj, CK_CMPCONJ)
+__aNewFunction(Card_CmpConj, CN_CARD)
+__vDeleteFunction(Card_CmpConj, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred::Card_CmpPred(void)
-: Card_CONJUNCTION(CK_CMPPRED, C_UNKNOWN)
+Card_CmpConj::Card_CmpConj(void)
+: Card_CONJUNCTION(CK_CMPCONJ, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -36,7 +36,7 @@ Card_CmpPred::Card_CmpPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred::~Card_CmpPred(void) noexcept(false)
+Card_CmpConj::~Card_CmpConj(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -48,7 +48,7 @@ Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate cast kind of this cmpPred given the l & r table partitions       */
 /*----------------------------------------------------------------------------*/
-eXK Card_CmpPred::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
+eXK Card_CmpConj::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
                             char cTblSyn_r, Card_TablePtn* p_tablePtn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -73,17 +73,17 @@ eXK Card_CmpPred::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
 /*----------------------------------------------------------------------------*/
 /* clone this compare predicate                                               */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CmpPred::pClone(void)
+Card_CmpConj* Card_CmpConj::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return _pCard_CmpPred(pDupCardRecursive());
+  return _pCard_CmpConj(pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)
+Card_CmpConj* Card_CmpConj::pCmpPredFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -97,13 +97,13 @@ Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)
   if (! pCol0->szColNm()->bSame(szTerm0))
     return nullptr;
 
-  return _pCard_CmpPred(this);
+  return _pCard_CmpConj(this);
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCmpPredHasBounds(Index* pIndex)
+bool Card_CmpConj::bCmpPredHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -125,7 +125,7 @@ bool Card_CmpPred::bCmpPredHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bCoPtnWith(Card_CmpPred* p_cmpPred_arg)
+bool Card_CmpConj::bCoPtnWith(Card_CmpConj* p_cmpPred_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -159,7 +159,7 @@ bool Card_CmpPred::bCoPtnWith(Card_CmpPred* p_cmpPred_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CmpPred::pGetCorrCol(void)
+Card_Term* Card_CmpConj::pGetCorrCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -186,7 +186,7 @@ Card_Term* Card_CmpPred::pGetCorrCol(void)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_CmpPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
+void Card_CmpConj::vEnsureTypesFor_stmOdn(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -197,10 +197,13 @@ void Card_CmpPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
 
     switch (eCard) {
 
-      case CK_ANDPRED: _pCard_AndPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_CMPPRED: _pCard_CmpPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_NOTPRED: _pCard_NotPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_ORPRED:  _pCard_OrPred(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
+      case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_CMPCONJ:
+        _pCard_CmpConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
 
       case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmOdn(pCI);     break;
 
@@ -213,7 +216,7 @@ void Card_CmpPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CmpPred::pExtractParamTerm(void)
+Card_Term* Card_CmpConj::pExtractParamTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -238,7 +241,7 @@ Card_Term* Card_CmpPred::pExtractParamTerm(void)
 /*----------------------------------------------------------------------------*/
 /* get the first table                                                        */
 /*----------------------------------------------------------------------------*/
-char Card_CmpPred::cGetTable_a(void)
+char Card_CmpConj::cGetTable_a(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -251,7 +254,7 @@ char Card_CmpPred::cGetTable_a(void)
 /*----------------------------------------------------------------------------*/
 /* get the second table                                                       */
 /*----------------------------------------------------------------------------*/
-char Card_CmpPred::cGetTable_b(void)
+char Card_CmpConj::cGetTable_b(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -264,7 +267,7 @@ char Card_CmpPred::cGetTable_b(void)
 /*----------------------------------------------------------------------------*/
 /* get both tables                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CmpPred::vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b)
+void Card_CmpConj::vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -275,7 +278,7 @@ void Card_CmpPred::vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b)
 /*----------------------------------------------------------------------------*/
 /* get the first term                                                         */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CmpPred::pGetTerm_0(void)
+Card_Term* Card_CmpConj::pGetTerm_0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -287,7 +290,7 @@ Card_Term* Card_CmpPred::pGetTerm_0(void)
 /*----------------------------------------------------------------------------*/
 /* get the second term                                                        */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CmpPred::pGetTerm_1(void)
+Card_Term* Card_CmpConj::pGetTerm_1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -299,7 +302,7 @@ Card_Term* Card_CmpPred::pGetTerm_1(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
+bool Card_CmpConj::bIsEq(Card_CmpConj* p_cmpPred_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -323,7 +326,7 @@ bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bIsEqOp(void)
+bool Card_CmpConj::bIsEqOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -336,7 +339,7 @@ bool Card_CmpPred::bIsEqOp(void)
 /*----------------------------------------------------------------------------*/
 /* get the other table referenced by this join/cmpPred given a first table    */
 /*----------------------------------------------------------------------------*/
-char Card_CmpPred::cOtherTable(char cTblSyn)
+char Card_CmpConj::cOtherTable(char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -354,7 +357,7 @@ char Card_CmpPred::cOtherTable(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
+bool Card_CmpConj::bOverlapsWith(Card_CmpConj* p_PredCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -381,7 +384,7 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
 /*----------------------------------------------------------------------------*/
 /* is given cmpPred a subset of bounds?                                       */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
+bool Card_CmpConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -416,7 +419,7 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
 /*----------------------------------------------------------------------------*/
 /* does this cmpPred reference given table?                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bUsesTable(char cTblSyn)
+bool Card_CmpConj::bUsesTable(char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -434,7 +437,7 @@ bool Card_CmpPred::bUsesTable(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* does this cmpPred reference given both tables?                             */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bUsesTables(char cTblSyn_a, char cTblSyn_b)
+bool Card_CmpConj::bUsesTables(char cTblSyn_a, char cTblSyn_b)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -447,7 +450,7 @@ bool Card_CmpPred::bUsesTables(char cTblSyn_a, char cTblSyn_b)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_CmpPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_CmpConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
@@ -461,10 +464,13 @@ void Card_CmpPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
     switch (eCard) {
 
-      case CK_ANDPRED: _pCard_AndPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_CMPPRED: _pCard_CmpPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_NOTPRED: _pCard_NotPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_ORPRED:  _pCard_OrPred(pCard)->vValidate(pCI,iDepth+1,this);  break;
+      case CK_ANDCONJ: _pCard_AndConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_CMPCONJ:
+        _pCard_CmpConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pCard)->vValidate(pCI, iDepth + 1, this);  break;
 
       case CK_TERM:    _pCard_Term(pCard)->vValidate(pCI,iDepth+1,this);    break;
 

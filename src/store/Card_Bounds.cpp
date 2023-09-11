@@ -5,7 +5,7 @@
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 #include "CardIter.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -109,7 +109,7 @@ void Card_Bounds::vEnsureTypes_For_stmOdn(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* does this bounds have a bound logically equivalent to given compare?       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+bool Card_Bounds::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

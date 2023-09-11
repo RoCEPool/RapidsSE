@@ -228,7 +228,7 @@ void XF_Prolog_subQuery_Analysis::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    RASSERT(p_pred->bIsCard(CK_CMPPRED));
+    RASSERT(p_pred->bIsCard(CK_CMPCONJ));
 
     p_pred->pSymbol()->Y_vSet(P_SubQryCall);
 

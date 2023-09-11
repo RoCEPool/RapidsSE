@@ -174,7 +174,7 @@ void Card_Index::vDeleteBounds(void)
 /*----------------------------------------------------------------------------*/
 /* does this index have a bound logically equivalent to given compare?        */
 /*----------------------------------------------------------------------------*/
-bool Card_Index::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+bool Card_Index::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

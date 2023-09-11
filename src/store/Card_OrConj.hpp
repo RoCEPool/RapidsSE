@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_OrPred.hpp -- Or Predicate                                            */
+/* Card_OrConj.hpp -- Or Predicate                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,16 +7,16 @@
 
 namespace STORE
 {
-  class Card_OrPred : public Card_CONJUNCTION
+  class Card_OrConj : public Card_CONJUNCTION
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_OrPred(void);
-   ~Card_OrPred(void) noexcept(false);
+    Card_OrConj(void);
+   ~Card_OrConj(void) noexcept(false);
 
-    Card_CmpPred* pOrPredFindBound(Index* pIndex, ePB eBound);
+    Card_CmpConj* pOrPredFindBound(Index* pIndex, ePB eBound);
     bool bOrPredHasBounds(Index* pIndex);
 
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
@@ -24,7 +24,7 @@ namespace STORE
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_OrPred* _pCard_OrPred(void* aAddr);
+  Card_OrConj* _pCard_OrConj(void* aAddr);
 }
 
 /*============================================================================*/

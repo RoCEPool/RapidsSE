@@ -7,11 +7,11 @@
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
-#include "Card_AndPred.hpp"
-#include "Card_OrPred.hpp"
+#include "Card_AndConj.hpp"
+#include "Card_OrConj.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ void Card_Filter::vAddPred(Card_CONJUNCTION *p_PRED)
 
   Card* p_top = p_calcBool->pPopChild();
 
-  Card_AndPred* pCard_predAnd = new Card_AndPred;
+  Card_AndConj* pCard_predAnd = new Card_AndConj;
   pCard_predAnd->vAppendChild(p_top);
   pCard_predAnd->vAppendChild(p_PRED);
 

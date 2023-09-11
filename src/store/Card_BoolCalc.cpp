@@ -5,10 +5,10 @@
 #include "Card_BoolCalc.hpp"
 
 #include "Card_CONJUNCTION.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
-#include "Card_AndPred.hpp"
+#include "Card_AndConj.hpp"
 #include "Card_OuterColNm.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Table.hpp"
@@ -51,18 +51,18 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
+Card_CmpConj* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpPred* pCmpPred = nullptr;
+  Card_CmpConj* pCmpPred = nullptr;
 
   auto bLambdaFn = [&pCmpPred,pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
   {
     UNUSED(bUpwards);
 
     if (p_pred->bContains_callToSubQuery(pCI)) {
-      pCmpPred = _pCard_CmpPred(p_pred);
+      pCmpPred = _pCard_CmpConj(p_pred);
       return C_TERMINATE_RECURSION;
     }
 
@@ -297,7 +297,7 @@ bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark)
 
   eCK eCard_pred = p_pred->eCard();
 
-  if (CK_ANDPRED == eCard_pred) {
+  if (CK_ANDCONJ == eCard_pred) {
     if (p_pred->bMark1(szWithMark)) {
       this->vRemovePred(p_pred);
       delete p_pred;
@@ -305,7 +305,7 @@ bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark)
     }
   }
   else
-  if (CK_ORPRED == eCard_pred) {
+  if (CK_ORCONJ == eCard_pred) {
     if (p_pred->bMark1(szWithMark)) {
       this->vRemovePred(p_pred);
       delete p_pred;
@@ -313,7 +313,7 @@ bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark)
     }
   }
   else
-  if (CK_CMPPRED == eCard_pred) {
+  if (CK_CMPCONJ == eCard_pred) {
     if (p_pred->bMark1(szWithMark)) {
       this->vRemovePred(p_pred);
       delete p_pred;
@@ -322,7 +322,7 @@ bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark)
     return false;
   }
 
-  RASSERT (CK_ANDPRED == eCard_pred || CK_ORPRED == eCard_pred || CK_NOTPRED == eCard_pred);
+  RASSERT (CK_ANDCONJ == eCard_pred || CK_ORCONJ == eCard_pred || CK_NOTCONJ == eCard_pred);
 
   i8 nChildren = p_pred->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
@@ -355,7 +355,7 @@ Card_CONJUNCTION* Card_BoolCalc::pFindRemove_CorrPred(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CONJUNCTION* p_pred_corr =
-      static_cast<Card_CONJUNCTION*>(pFindPpyRecursive(P_CrlRslTest, CK_CMPPRED));
+      static_cast<Card_CONJUNCTION*>(pFindPpyRecursive(P_CrlRslTest, CK_CMPCONJ));
 
   if (! p_pred_corr)
     return nullptr;
@@ -446,17 +446,17 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 
     //p_card->vDump(__func__);
 
-    if (p_card->bIsCard(CK_NOTPRED)) {
+    if (p_card->bIsCard(CK_NOTCONJ)) {
       p_card->vMark1(MARK_NOT);
       pCI->vDontDescend(true);
       continue;
     }
-    if (p_card->bIsCard(CK_ANDPRED)) {
+    if (p_card->bIsCard(CK_ANDCONJ)) {
       p_card->vMark1(MARK_AND);
       continue;
     }
 
-    if (p_card->bIsCard(CK_CMPPRED)) {
+    if (p_card->bIsCard(CK_CMPCONJ)) {
       p_card->vMark1(MARK_COMPARE);
       pCI->vDontDescend(true);
       if (((Card_CONJUNCTION *)p_card)->bContains_callToSubQuery(pCI))
@@ -469,7 +469,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       continue;
     }
 
-    if (p_card->bIsCard(CK_ORPRED)) {
+    if (p_card->bIsCard(CK_ORCONJ)) {
       p_card->vMark1(MARK_OR);
       pCI->vDontDescend(true);
       continue;
@@ -514,7 +514,7 @@ void Card_BoolCalc::vPushPred(Card_CONJUNCTION* p_pred_toBeAdded)
   Card_CONJUNCTION* p_pred_oldTop = static_cast<Card_CONJUNCTION*>(this->pPopChild());
   RASSERT(! this->nChildCards());
 
-  Card_AndPred* p_andPred_new = new Card_AndPred;
+  Card_AndConj* p_andPred_new = new Card_AndConj;
   p_andPred_new->vAppendChild(p_pred_oldTop);
   p_andPred_new->vAppendChild(p_pred_toBeAdded);
 
@@ -532,7 +532,7 @@ void Card_BoolCalc::vRemovePred(Card_CONJUNCTION* p_pred)
 
   pParentCard->vRemoveSub(p_pred);
 
-  if (CK_ANDPRED == pParentCard->eCard() || CK_ORPRED == pParentCard->eCard()) {
+  if (CK_ANDCONJ == pParentCard->eCard() || CK_ORCONJ == pParentCard->eCard()) {
 
     if (0 == pParentCard->nChildCards()) {
       this->vRemoveSub(pParentCard);

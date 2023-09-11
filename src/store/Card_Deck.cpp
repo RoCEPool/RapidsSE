@@ -595,7 +595,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_ABSJOIN:      pCI->G.p_absJoin->vValidate(pCI, 1, this); break;
       case CK_AGGREG:       pCI->G.p_aggreg->vValidate(pCI, 1, this); break;
-      case CK_ANDPRED:      pCI->G.p_andPred->vValidate(pCI, 1, this); break;
+      case CK_ANDCONJ:      pCI->G.p_andConj->vValidate(pCI, 1, this); break;
       case CK_AS:           pCI->G.p_as->vValidate(pCI, 1, this); break;
 
       case CK_BOOLCALC:     pCI->G.p_boolCalc->vValidate(pCI, 1, this); break;
@@ -604,7 +604,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_CALL:         pCI->G.p_call->vValidate(pCI, 1, this); break;
       case CK_CAST:         pCI->G.p_cast->vValidate(pCI, 1, this); break;
-      case CK_CMPPRED:      pCI->G.p_cmpPred->vValidate(pCI, 1, this); break;
+      case CK_CMPCONJ:      pCI->G.p_cmpPred->vValidate(pCI, 1, this); break;
 
       case CK_COMBINED:     pCI->G.p_combined->vValidate(pCI, 1, this); break;
       case CK_CONSTRAINT:   pCI->G.p_constraint->vValidate(pCI, 1, this); break;
@@ -661,11 +661,11 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_NCORRCOLS:    pCI->G.p_nCorrCols->vValidate(pCI, 1, this); break;
       case CK_NEEDED:       pCI->G.p_needed->vValidate(pCI, 1, this); break;
       case CK_NOTE:         pCI->G.p_note->vValidate(pCI, 1, this); break;
-      case CK_NOTPRED:      pCI->G.p_notPred->vValidate(pCI, 1, this); break;
+      case CK_NOTCONJ:      pCI->G.p_notPred->vValidate(pCI, 1, this); break;
 
       case CK_ON:           pCI->G.p_on->vValidate(pCI, 1, this); break;
       case CK_ORDAGG:       pCI->G.p_ordAgg->vValidate(pCI, 1, this); break;
-      case CK_ORPRED:       pCI->G.p_orPred->vValidate(pCI, 1, this); break;
+      case CK_ORCONJ:       pCI->G.p_orPred->vValidate(pCI, 1, this); break;
       case CK_OUTERCOLNM:   pCI->G.p_outerColNm->vValidate(pCI, 1, this); break;
       case CK_OUTERJOIN:    pCI->G.p_outerJoin->vValidate(pCI, 1, this); break;
 

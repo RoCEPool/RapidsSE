@@ -4,9 +4,9 @@
 
 #include "Card_CONJUNCTION.hpp"
 #include "Card_Term.hpp"
-#include "Card_OrPred.hpp"
-#include "Card_AndPred.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_OrConj.hpp"
+#include "Card_AndConj.hpp"
+#include "Card_CmpConj.hpp"
 #include "CardIter.hpp"
 #include "Card_Table.hpp"
 #include "Card_Deck.hpp"
@@ -48,10 +48,10 @@ bool Card_CONJUNCTION::bIsPRED(Card* p_card)
   _static_;
 
   switch (p_card->eCard()){
-    case CK_ANDPRED:
-    case CK_CMPPRED:
-    case CK_NOTPRED:
-    case CK_ORPRED :
+    case CK_ANDCONJ:
+    case CK_CMPCONJ:
+    case CK_NOTCONJ:
+    case CK_ORCONJ :
       return true;
     default:
       return false;
@@ -112,10 +112,13 @@ void Card_CONJUNCTION::vEnsureTypesFor_stmOdn(CardIter *pCI)
 
   switch (eCard) {
 
-    case CK_ANDPRED: _pCard_AndPred(this)->vEnsureTypesFor_stmOdn(pCI); break;
-    case CK_CMPPRED: _pCard_CmpPred(this)->vEnsureTypesFor_stmOdn(pCI); break;
-    case CK_NOTPRED: _pCard_NotPred(this)->vEnsureTypesFor_stmOdn(pCI); break;
-    case CK_ORPRED:  _pCard_OrPred(this)->vEnsureTypesFor_stmOdn(pCI);  break;
+    case CK_ANDCONJ: _pCard_AndConj(this)->vEnsureTypesFor_stmOdn(pCI); break;
+    case CK_CMPCONJ:
+      _pCard_CmpConj(this)->vEnsureTypesFor_stmOdn(pCI); break;
+    case CK_NOTCONJ:
+      _pCard_NotConj(this)->vEnsureTypesFor_stmOdn(pCI); break;
+    case CK_ORCONJ:
+      _pCard_OrConj(this)->vEnsureTypesFor_stmOdn(pCI);  break;
 
     case CK_TERM:    _pCard_Term(this)->vEnsureTypeFor_stmOdn(pCI);     break;
 
@@ -460,7 +463,7 @@ void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
+Card_CmpConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -468,14 +471,14 @@ Card_CmpPred* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
 
   switch (eCard) {
 
-    case CK_ORPRED:
-      return _pCard_OrPred(this)->pOrPredFindBound(pIndex, eBound);
+    case CK_ORCONJ:
+      return _pCard_OrConj(this)->pOrPredFindBound(pIndex, eBound);
 
-    case CK_ANDPRED:
-      return _pCard_AndPred(this)->pAndPredFindBound(pIndex, eBound);
+    case CK_ANDCONJ:
+      return _pCard_AndConj(this)->pAndPredFindBound(pIndex, eBound);
 
-    case CK_CMPPRED:
-      return _pCard_CmpPred(this)->pCmpPredFindBound(pIndex, eBound);
+    case CK_CMPCONJ:
+      return _pCard_CmpConj(this)->pCmpPredFindBound(pIndex, eBound);
 
     default:
       vTrace("pPredFindBound: unexpected eCard %lld %s\n"_Stz
@@ -499,14 +502,14 @@ bool Card_CONJUNCTION::bPredHasBounds(Index* pIndex)
 
   switch (eCard) {
 
-    case CK_ORPRED:
-      return _pCard_OrPred(this)->bOrPredHasBounds(pIndex);
+    case CK_ORCONJ:
+      return _pCard_OrConj(this)->bOrPredHasBounds(pIndex);
 
-    case CK_ANDPRED:
-      return _pCard_AndPred(this)->bAndPredHasBounds(pIndex);
+    case CK_ANDCONJ:
+      return _pCard_AndConj(this)->bAndPredHasBounds(pIndex);
 
-    case CK_CMPPRED:
-      return _pCard_CmpPred(this)->bCmpPredHasBounds(pIndex);
+    case CK_CMPCONJ:
+      return _pCard_CmpConj(this)->bCmpPredHasBounds(pIndex);
 
     default:
       vTrace("bPredHasBounds: unexpected eCard %lld %s\n"_Stz
@@ -623,10 +626,13 @@ void Card_CONJUNCTION::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   switch (eCard) {
 
-    case CK_ANDPRED: _pCard_AndPred(this)->vValidate(pCI,iDepth+1,this); break;
-    case CK_CMPPRED: _pCard_CmpPred(this)->vValidate(pCI,iDepth+1,this); break;
-    case CK_NOTPRED: _pCard_NotPred(this)->vValidate(pCI,iDepth+1,this); break;
-    case CK_ORPRED:  _pCard_OrPred(this)->vValidate(pCI,iDepth+1,this);  break;
+    case CK_ANDCONJ: _pCard_AndConj(this)->vValidate(pCI, iDepth + 1, this); break;
+    case CK_CMPCONJ:
+      _pCard_CmpConj(this)->vValidate(pCI, iDepth + 1, this); break;
+    case CK_NOTCONJ:
+      _pCard_NotConj(this)->vValidate(pCI, iDepth + 1, this); break;
+    case CK_ORCONJ:
+      _pCard_OrConj(this)->vValidate(pCI, iDepth + 1, this);  break;
 
     default:
      // pCI->vPrintBoard(__LINE__,true);

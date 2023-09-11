@@ -1374,20 +1374,20 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
     eCK eSubCard = pSubCard->eCard();
 
     switch (eSubCard) {
-      case CK_ANDPRED:
-        vBoolPart(psRpnExpr, _pCard_AndPred(pSubCard), 0);
+      case CK_ANDCONJ:
+        vBoolPart(psRpnExpr, _pCard_AndConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" and"_Stz);
         break;
-      case CK_CMPPRED:
-        vBoolPart(psRpnExpr, _pCard_CmpPred(pSubCard), 0);
+      case CK_CMPCONJ:
+        vBoolPart(psRpnExpr, _pCard_CmpConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol(SF_NONE));
         break;
-      case CK_NOTPRED:
-        vBoolPart(psRpnExpr, _pCard_NotPred(pSubCard), 0);
+      case CK_NOTCONJ:
+        vBoolPart(psRpnExpr, _pCard_NotConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" not"_Stz);
         break;
-      case CK_ORPRED:
-        vBoolPart(psRpnExpr, _pCard_OrPred(pSubCard), 0);
+      case CK_ORCONJ:
+        vBoolPart(psRpnExpr, _pCard_OrConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_TERM:

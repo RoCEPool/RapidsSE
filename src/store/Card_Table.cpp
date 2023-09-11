@@ -11,7 +11,7 @@
 #include "Card_BoolCalc.hpp"
 #include "CardIter.hpp"
 #include "Card_Index.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Bounds.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Term.hpp"
@@ -275,14 +275,14 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 
   Card_Bound* p_bound;
   Card_CONJUNCTION* p_childPRED;
-  if (p_PRED->bIsCard(CK_ANDPRED)) {
+  if (p_PRED->bIsCard(CK_ANDCONJ)) {
     p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(0);
     this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
     p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(1);
     this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
   }
   else
-  if (p_PRED->bIsCard(CK_CMPPRED)) {
+  if (p_PRED->bIsCard(CK_CMPCONJ)) {
     p_bound = Card_Bound::pCreateFrom_PRED(p_PRED, cTblSyn);
     p_bounds->vAppendChild(p_bound);
   }
@@ -340,7 +340,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       if (bUpwards)
         return C_CONTINUE_RECURSION;
 
-      if (! p_pred_Of_filter->bIsCard(CK_CMPPRED))
+      if (! p_pred_Of_filter->bIsCard(CK_CMPCONJ))
         return C_CONTINUE_RECURSION;
 
       if (!p_pred_Of_filter->bIsIndexBounds_v3(p_index))

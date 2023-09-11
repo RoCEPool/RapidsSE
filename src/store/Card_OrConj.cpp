@@ -1,38 +1,38 @@
 /*============================================================================*/
-/* Card_AndPred.cpp -- And Predicate                                          */
+/* Card_OrConj.cpp -- Or Predicate                                            */
 /*============================================================================*/
 
-#include "Card_AndPred.hpp"
+#include "Card_OrConj.hpp"
 #include "Card_CONJUNCTION.hpp"
-#include "Card_CmpPred.hpp"
 
 #include "Kid.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_AndPred, CK_ANDPRED)
-__aNewFunction(Card_AndPred, CN_CARD)
-__vDeleteFunction(Card_AndPred, CN_CARD)
+__pCastFunction_Card(STORE, Card_OrConj, CK_ORCONJ)
+__aNewFunction(Card_OrConj, CN_CARD)
+__vDeleteFunction(Card_OrConj, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AndPred::Card_AndPred(void)
-: Card_CONJUNCTION(CK_ANDPRED, C_UNKNOWN)
+Card_OrConj::Card_OrConj(void)
+: Card_CONJUNCTION(CK_ORCONJ, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_AndPred::~Card_AndPred(void) noexcept(false)
+Card_OrConj::~Card_OrConj(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -42,27 +42,57 @@ Card_AndPred::~Card_AndPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the E_eTerm_Bound of given index                 */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_AndPred::pAndPredFindBound(Index* pIndex, ePB eBound)
+void Card_OrConj::vEnsureTypesFor_stmOdn(CardIter *pCI)
 {
-_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-Card_CONJUNCTION* pSubPred0 = (Card_CONJUNCTION*)this->pGet(0);
-if (Card_CmpPred* pFound = pSubPred0->pPredFindBound(pIndex, eBound))
-return pFound;
+  Kid xOrPred(this);
+  while (xOrPred.bEach()) {
+    Card* pCard = xOrPred.pChild();
+    eCK eCard = pCard->eCard();
 
-Card_CONJUNCTION* pSubPred1 = (Card_CONJUNCTION*)this->pGet(1);
-if (Card_CmpPred* pFound = pSubPred1->pPredFindBound(pIndex, eBound))
-return pFound;
+    switch (eCard) {
 
-return nullptr;
+      case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_CMPCONJ:
+        _pCard_CmpConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
+
+      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmOdn(pCI);     break;
+
+      default:
+        NEVER_REACH
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this andPred have some bound on index?                                */
+/* find a comparePred which is the E_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-bool Card_AndPred::bAndPredHasBounds(Index* pIndex)
+Card_CmpConj* Card_OrConj::pOrPredFindBound(Index* pIndex, ePB eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CONJUNCTION* pSubPred0 = (Card_CONJUNCTION*)this->pGet(0);
+  if (Card_CmpConj* pFound = pSubPred0->pPredFindBound(pIndex, eBound))
+    return pFound;
+
+  Card_CONJUNCTION* pSubPred1 = (Card_CONJUNCTION*)this->pGet(1);
+  if (Card_CmpConj* pFound = pSubPred1->pPredFindBound(pIndex, eBound))
+    return pFound;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does orPred have some bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card_OrConj::bOrPredHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -80,34 +110,7 @@ bool Card_AndPred::bAndPredHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_AndPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Kid xAndPred(this);
-  while (xAndPred.bEach()) {
-    Card* pCard = xAndPred.pChild();
-    eCK eCard = pCard->eCard();
-
-    switch (eCard) {
-
-      case CK_ANDPRED: _pCard_AndPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_CMPPRED: _pCard_CmpPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_NOTPRED: _pCard_NotPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_ORPRED:  _pCard_OrPred(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
-
-      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmOdn(pCI);     break;
-
-      default:
-        NEVER_REACH
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate                                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_AndPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_OrConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
@@ -121,10 +124,13 @@ void Card_AndPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
     switch (eCard) {
 
-      case CK_ANDPRED: _pCard_AndPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_CMPPRED: _pCard_CmpPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_NOTPRED: _pCard_NotPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_ORPRED:  _pCard_OrPred(pCard)->vValidate(pCI,iDepth+1,this);  break;
+      case CK_ANDCONJ: _pCard_AndConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_CMPCONJ:
+        _pCard_CmpConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pCard)->vValidate(pCI, iDepth + 1, this);  break;
 
       case CK_TERM:    _pCard_Term(pCard)->vValidate(pCI,iDepth+1,this);    break;
 

@@ -79,7 +79,7 @@ namespace STORE
     bool bWithinRange(void);
 
     Card_Bound*       p_bound(void);
-    Card_CmpPred*     p_cmpPred(void);
+    Card_CmpConj*     p_cmpPred(void);
     Card_Correlation* p_correlation(void);
     Card_Expr*        p_expr(void);
     Card_Fold*        p_fold(void);

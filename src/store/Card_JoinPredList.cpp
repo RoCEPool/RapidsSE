@@ -7,7 +7,7 @@
 #include "CardIter.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
@@ -104,7 +104,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   auto bfConcat = [this, p_indexList](Card *pCard_cmpPred) {
-    Card_CmpPred* p_cmpPred_tst = _pCard_CmpPred(pCard_cmpPred);
+    Card_CmpConj* p_cmpPred_tst = _pCard_CmpConj(pCard_cmpPred);
 
     if (! p_cmpPred_tst->bIsEqOp())
       return C_CONTINUE_RECURSION;
@@ -117,7 +117,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
     if (!p_indexList->bHasEquivalentBound(p_cmpPred_tst))
       return C_CONTINUE_RECURSION;
 
-    Card_CmpPred* p_cmpPred_new = p_cmpPred_tst->pClone();
+    Card_CmpConj* p_cmpPred_new = p_cmpPred_tst->pClone();
     this->vAppendChild(p_cmpPred_new);
 
     return C_CONTINUE_RECURSION;
@@ -126,7 +126,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  p_boolCalc->bApplyRecursive(CK_CMPPRED, bfConcat);
+  p_boolCalc->bApplyRecursive(CK_CMPCONJ, bfConcat);
 }
 
 /*----------------------------------------------------------------------------*/

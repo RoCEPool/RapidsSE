@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Bound.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 
@@ -179,7 +179,7 @@ void Card_Bound::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this bound logically equivalent to given compare?                       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bound::bEquivalent(Card_CmpPred* p_cmpPred)
+bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

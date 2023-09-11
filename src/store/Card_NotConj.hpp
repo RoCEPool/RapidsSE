@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_NotPred.hpp -- Not Predicate                                          */
+/* Card_NotConj.hpp -- Not Predicate                                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,21 +7,21 @@
 
 namespace STORE
 {
-  class Card_NotPred : public Card_CONJUNCTION
+  class Card_NotConj : public Card_CONJUNCTION
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_NotPred(void);
-   ~Card_NotPred(void) noexcept(false);
+    Card_NotConj(void);
+   ~Card_NotConj(void) noexcept(false);
 
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_NotPred* _pCard_NotPred(void* aAddr);
+  Card_NotConj* _pCard_NotConj(void* aAddr);
 }
 
 /*============================================================================*/

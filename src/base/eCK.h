@@ -9,7 +9,7 @@ enum eCK : i8 // card kind
 
   /* */ CK_ABSJOIN,
   /* */ CK_AGGREG,
-  /* */ CK_ANDPRED,
+  /* */ CK_ANDCONJ,
   /* */ CK_AS,
 
   /* */ CK_BOOLCALC,
@@ -18,7 +18,7 @@ enum eCK : i8 // card kind
 
   /* */ CK_CALL,
   /* */ CK_CAST,
-  /* */ CK_CMPPRED,
+  /* */ CK_CMPCONJ,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
   /* */ CK_CORRELATION,
@@ -78,11 +78,11 @@ enum eCK : i8 // card kind
   /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
   /* */ CK_NOTE,
-  /* */ CK_NOTPRED,
+  /* */ CK_NOTCONJ,
 
   /* */ CK_ON,
   /* */ CK_ORDAGG,
-  /* */ CK_ORPRED,
+  /* */ CK_ORCONJ,
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
 

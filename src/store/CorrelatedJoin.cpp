@@ -247,7 +247,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     //p_pred->vDump();
     bIsCorrPred = true;
 
-    Card_Term* pTerm_corrCol = static_cast<Card_CmpPred *>(p_pred)->pGetCorrCol();
+    Card_Term* pTerm_corrCol = static_cast<Card_CmpConj *>(p_pred)->pGetCorrCol();
     pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
 
     p_pred->vMark1(MARK_AT);
@@ -445,7 +445,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
     if (! Card_CONJUNCTION::bIsPRED(p_pred))
       return; /* this effectively declares resolve as void */
 
-    if (p_pred->bIsCard(CK_CMPPRED)) {
+    if (p_pred->bIsCard(CK_CMPCONJ)) {
 
       if (!p_pred->pSymbol()->Y_bHas(P_CrlKeyTest))
         return;
@@ -491,7 +491,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
       return;
     }
     else
-    if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
+    if (p_pred->bIsCard(CK_ANDCONJ) || p_pred->bIsCard(CK_ORCONJ)) {
       Kid xKid(p_pred);
       while (xKid.bEach()) {
         RASSERT(Card_CONJUNCTION::bIsPRED(xKid.pChild()));
@@ -527,11 +527,11 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
     if (! Card_CONJUNCTION::bIsPRED(p_pred))
       return; /* this effectively declares resolve as void */
 
-//    if (p_pred->bIsCard(CK_CMPPRED)) {
+//    if (p_pred->bIsCard(CK_CMPCONJ)) {
 //      return;
 //    }
 //    else
-    if (p_pred->bIsCard(CK_CMPPRED)) {
+    if (p_pred->bIsCard(CK_CMPCONJ)) {
 
       if (! p_pred->bContains_callToSubQuery(pCI))
         return;
@@ -542,7 +542,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
 
       RASSERT(!p_pred->pSymbol()->Y_bHas(P_CrlKeyPred));
 
-      p_pred->vCard(CK_CMPPRED);
+      p_pred->vCard(CK_CMPCONJ);
       Kid xKid(p_pred);
       while (xKid.bEach()) {
         if (Card_CONJUNCTION::bIsPRED(xKid.pChild())) {
@@ -577,7 +577,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
       return;
     }
     else
-    if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
+    if (p_pred->bIsCard(CK_ANDCONJ) || p_pred->bIsCard(CK_ORCONJ)) {
       Kid xKid(p_pred);
       while (xKid.bEach()) {
         RASSERT(Card_CONJUNCTION::bIsPRED(xKid.pChild()));

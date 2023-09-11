@@ -5,8 +5,8 @@
 #include "Card_StreamPer.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_FiltPred.hpp"
 #include "Card_FiltPredList.hpp"
 #include "Card_StreamSet.hpp"
@@ -159,7 +159,7 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpPred* p_cmpPred = p_streamJoin->pSub_cmpPred();
+  Card_CmpConj* p_cmpPred = p_streamJoin->pSub_cmpPred();
   Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
   Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 
@@ -276,7 +276,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // test each join predicate which uses the ith table to see if a join
     // can be supported at this point in the sequence
     Kid xKid(p_joinPredList);
-    while (xKid.bEach(CK_CMPPRED)) {
+    while (xKid.bEach(CK_CMPCONJ)) {
       if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
         continue;
 
@@ -346,7 +346,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     // test each join predicate which uses the ith table to see if a join
     // can be supported at this point in the sequence
     Kid xKid(p_joinPredList);
-    while (xKid.bEach(CK_CMPPRED)) {
+    while (xKid.bEach(CK_CMPCONJ)) {
       if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
         continue;
 
@@ -394,7 +394,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
       }
 
       Kid xKid(p_joinPredList);
-      while (xKid.bEach(CK_CMPPRED)) {
+      while (xKid.bEach(CK_CMPCONJ)) {
         if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
           continue;
 

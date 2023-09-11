@@ -190,7 +190,7 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /* does this index-list have a bound logically equivalent to given compare?   */
 /*----------------------------------------------------------------------------*/
-bool Card_IndexList::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+bool Card_IndexList::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

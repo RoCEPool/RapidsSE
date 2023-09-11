@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AndPred.hpp -- And Predicate                                          */
+/* Card_AndConj.hpp -- And Predicate                                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,23 +7,23 @@
 
 namespace STORE
 {
-  class Card_AndPred : public Card_CONJUNCTION
+  class Card_AndConj : public Card_CONJUNCTION
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AndPred(void);
-   ~Card_AndPred(void) noexcept(false);
+    Card_AndConj(void);
+   ~Card_AndConj(void) noexcept(false);
 
-    Card_CmpPred* pAndPredFindBound(Index* pIndex, ePB eBound);
+    Card_CmpConj* pAndPredFindBound(Index* pIndex, ePB eBound);
     bool bAndPredHasBounds(Index* pIndex);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_AndPred* _pCard_AndPred(void* aAddr);
+  Card_AndConj* _pCard_AndConj(void* aAddr);
 }
 
 /*============================================================================*/

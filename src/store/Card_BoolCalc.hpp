@@ -18,7 +18,7 @@ namespace STORE
     Card_BoolCalc(void);
    ~Card_BoolCalc(void) noexcept(false);
 
-    Card_CmpPred* pCmpPred_whichCallsSubQuery(CardIter* pCI);
+    Card_CmpConj* pCmpPred_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     void vConvert_colOdn_To_stmOdn(CardIter* pCI);

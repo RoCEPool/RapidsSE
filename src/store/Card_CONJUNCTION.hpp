@@ -31,7 +31,7 @@ namespace STORE
     bool bMaybeFilterPred(CardIter* pCI);
     bool bMaybeJoinPred(void);
     void vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term=nullptr);
-    Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);
+    Card_CmpConj* pPredFindBound(Index* pIndex, ePB eBound);
     bool bPredHasBounds (Index* pIndex);
     bool bPredRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
     Symbol* pTable_WhichTableFor_Pred(CardIter* pCI);

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_NotPred.cpp -- Or Predicate                                            */
+/* Card_NotConj.cpp -- Or Predicate                                            */
 /*============================================================================*/
 
-#include "Card_NotPred.hpp"
+#include "Card_NotConj.hpp"
 #include "Card_CONJUNCTION.hpp"
 
 #include "Kid.hpp"
@@ -11,16 +11,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_NotPred, CK_NOTPRED)
-__aNewFunction(Card_NotPred, CN_CARD)
-__vDeleteFunction(Card_NotPred, CN_CARD)
+__pCastFunction_Card(STORE, Card_NotConj, CK_NOTCONJ)
+__aNewFunction(Card_NotConj, CN_CARD)
+__vDeleteFunction(Card_NotConj, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NotPred::Card_NotPred(void)
-: Card_CONJUNCTION(CK_NOTPRED, C_UNKNOWN)
+Card_NotConj::Card_NotConj(void)
+: Card_CONJUNCTION(CK_NOTCONJ, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -32,7 +32,7 @@ Card_NotPred::Card_NotPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_NotPred::~Card_NotPred(void) noexcept(false)
+Card_NotConj::~Card_NotConj(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -40,7 +40,7 @@ Card_NotPred::~Card_NotPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_NotPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
+void Card_NotConj::vEnsureTypesFor_stmOdn(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -51,10 +51,13 @@ void Card_NotPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
 
     switch (eCard) {
 
-      case CK_ANDPRED: _pCard_AndPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_CMPPRED: _pCard_CmpPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_NOTPRED: _pCard_NotPred(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_ORPRED:  _pCard_OrPred(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
+      case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_CMPCONJ:
+        _pCard_CmpConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
 
       case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmOdn(pCI);     break;
 
@@ -67,7 +70,7 @@ void Card_NotPred::vEnsureTypesFor_stmOdn(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_NotPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_NotConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
@@ -81,10 +84,13 @@ void Card_NotPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
     switch (eCard) {
 
-      case CK_ANDPRED: _pCard_AndPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_CMPPRED: _pCard_CmpPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_NOTPRED: _pCard_NotPred(pCard)->vValidate(pCI,iDepth+1,this); break;
-      case CK_ORPRED:  _pCard_OrPred(pCard)->vValidate(pCI,iDepth+1,this);  break;
+      case CK_ANDCONJ: _pCard_AndConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_CMPCONJ:
+        _pCard_CmpConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pCard)->vValidate(pCI, iDepth + 1, this);  break;
 
       case CK_TERM:    _pCard_Term(pCard)->vValidate(pCI,iDepth+1,this);    break;
 

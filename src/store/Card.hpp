@@ -30,14 +30,14 @@ namespace STORE
 {
   class Card_AbsJoin;
   class Card_Aggreg;
-  class Card_AndPred;
+  class Card_AndConj;
   class Card_As;
 
   class Card_BoolCalc;
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_CmpPred;
+  class Card_CmpConj;
   class Card_Combined;
   class Card_Constraint;
   class Card_Correlation;
@@ -102,12 +102,12 @@ namespace STORE
   class Card_Needed;
   class Card_Cast;
   class Card_Note;
-  class Card_NotPred;
+  class Card_NotConj;
 
   class Card_On;
   class Card_OP;
   class Card_OrdAgg;
-  class Card_OrPred;
+  class Card_OrConj;
   class Card_OuterColNm;
   class Card_OuterJoin;
 
@@ -423,7 +423,7 @@ namespace STORE
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
     Card_Cast*          pSub_next(void);
-    Card_CmpPred*       pSub_cmpPred(void);
+    Card_CmpConj*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
     Card_CostJoining*   pSub_costJoining(void);
@@ -460,7 +460,7 @@ namespace STORE
     Card_Mapping*       pSub_mapping(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);
-    Card_NotPred*       pSub_notPred(void);
+    Card_NotConj*       pSub_notPred(void);
     Card_Note*          pSub_note(void);
     Card_On*            pSub_on(void);
     Card_OuterColNm*    pSub_outerColNm(void);

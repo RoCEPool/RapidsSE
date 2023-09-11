@@ -25,7 +25,7 @@ namespace STORE
     void vConvert_colOdn_To_stmOdn(CardIter* pCI);
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
-    bool bEquivalent(Card_CmpPred* p_cmpPred);
+    bool bEquivalent(Card_CmpConj* p_cmpPred);
 
     Card_Term* pGetTerm(i8 i_Term);
     Card_Term* pGetTerm_last(void);

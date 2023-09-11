@@ -17,7 +17,7 @@
 #include "Card_AbsJoin.hpp"
 #include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
-#include "Card_AndPred.hpp"
+#include "Card_AndConj.hpp"
 #include "Card_As.hpp"
 
 #include "Card_BoolCalc.hpp"
@@ -25,7 +25,7 @@
 #include "Card_Bounds.hpp"
 
 #include "Card_Call.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_COLUMN.hpp"
 #include "Card_Combined.hpp"
 #include "Card_CONDITION.hpp"
@@ -89,11 +89,11 @@
 #include "Card_Needed.hpp"
 #include "Card_Cast.hpp"
 #include "Card_Note.hpp"
-#include "Card_NotPred.hpp"
+#include "Card_NotConj.hpp"
 
 #include "Card_On.hpp"
 #include "Card_OrdAgg.hpp"
-#include "Card_OrPred.hpp"
+#include "Card_OrConj.hpp"
 #include "Card_OuterColNm.hpp"
 #include "Card_OuterJoin.hpp"
 

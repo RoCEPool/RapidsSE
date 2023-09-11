@@ -2125,13 +2125,13 @@ Card_JoinCast* Card::pSub_locusCast(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CmpPred.hpp"
-Card_CmpPred* Card::pSub_cmpPred(void)
+#include "Card_CmpConj.hpp"
+Card_CmpConj* Card::pSub_cmpPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CmpPred* p_predCmp =
-      _pCard_CmpPred(pFindSubCard(CK_CMPPRED));
+  Card_CmpConj* p_predCmp =
+      _pCard_CmpConj(pFindSubCard(CK_CMPCONJ));
   return p_predCmp;
 }
 
@@ -2607,13 +2607,13 @@ Card_Note* Card::pSub_note(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_NotPred.hpp"
-Card_NotPred* Card::pSub_notPred(void)
+#include "Card_NotConj.hpp"
+Card_NotConj* Card::pSub_notPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_NotPred* p_notPred =
-      _pCard_NotPred(pFindSubCard(CK_NOTPRED));
+  Card_NotConj* p_notPred =
+      _pCard_NotConj(pFindSubCard(CK_NOTCONJ));
   return p_notPred;
 }
 

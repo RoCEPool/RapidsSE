@@ -578,10 +578,10 @@ void CardCtl::vReset(void)
     m_xaCardCtl[i_Card].m_bPrune     = false;
   }
 
-  vPrintValue(CK_ANDPRED, false);
-  vPrintProperties(CK_ANDPRED, false);
+  vPrintValue(CK_ANDCONJ, false);
+  vPrintProperties(CK_ANDCONJ, false);
 
-  //vPrintProperties(CK_CMPPRED, false);
+  //vPrintProperties(CK_CMPCONJ, false);
 
 
 //  vPrintByKind(CK_KEY,true);
@@ -590,8 +590,8 @@ void CardCtl::vReset(void)
   vPrintName(CK_NOTE,false);
   vPrintProperties(CK_NOTE,false);
 
-  vPrintValue(CK_ORPRED, false);
-  vPrintProperties(CK_ORPRED, false);
+  vPrintValue(CK_ORCONJ, false);
+  vPrintProperties(CK_ORCONJ, false);
 
 //  vPrintByKind(CK_PROJECTION,true);
 //  vPrintSubCards(CK_PROJECTION, false);

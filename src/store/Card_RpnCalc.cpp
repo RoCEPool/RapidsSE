@@ -7,10 +7,10 @@
 #include "Card_BoolCalc.hpp"
 #include "CardIter.hpp"
 #include "Card_RpnTerms.hpp"
-#include "Card_AndPred.hpp"
-#include "Card_OrPred.hpp"
-#include "Card_CmpPred.hpp"
-#include "Card_NotPred.hpp"
+#include "Card_AndConj.hpp"
+#include "Card_OrConj.hpp"
+#include "Card_CmpConj.hpp"
+#include "Card_NotConj.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -457,7 +457,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
 
   if (this->bHasTerm(&xWhen)) {
 
-    Card_CmpPred* p_cmpPred = new Card_CmpPred;
+    Card_CmpConj* p_cmpPred = new Card_CmpConj;
     p_cmpPred->vTransferChildren(this);
 
     p_boolCalc->vAppendChild(p_cmpPred);
@@ -467,10 +467,10 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_AndPred* p_andPred = nullptr;
-  Card_CmpPred* p_cmpPred = nullptr;
-  Card_NotPred* p_notPred = nullptr;
-  Card_OrPred*  p_orPred  = nullptr;
+  Card_AndConj* p_andPred = nullptr;
+  Card_CmpConj* p_cmpPred = nullptr;
+  Card_NotConj* p_notPred = nullptr;
+  Card_OrConj*  p_orPred  = nullptr;
 
   Card*  p_childA  = nullptr;
   Card*  p_childB  = nullptr;
@@ -489,7 +489,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_childB = p_boolCalc->pPopChild_tail();
         p_childA = p_boolCalc->pPopChild_tail();
 
-        p_andPred = new Card_AndPred;
+        p_andPred = new Card_AndConj;
         p_andPred->vAppendChild(p_childA);
         p_andPred->vAppendChild(p_childB);
 
@@ -506,7 +506,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_childB = p_boolCalc->pPopChild_tail();
         p_childA = p_boolCalc->pPopChild_tail();
 
-        p_orPred = new Card_OrPred;
+        p_orPred = new Card_OrConj;
         p_orPred->vAppendChild(p_childA);
         p_orPred->vAppendChild(p_childB);
 
@@ -521,7 +521,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
       case TE_NOT:
         p_childA = p_boolCalc->pPopChild_tail();
 
-        p_notPred = new Card_NotPred;
+        p_notPred = new Card_NotConj;
         p_notPred->vAppendChild(p_childA);
 
         p_boolCalc->vAppendChild(p_notPred);
@@ -534,7 +534,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
       case TE_RELNOP:
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
-        p_cmpPred = new Card_CmpPred;
+        p_cmpPred = new Card_CmpConj;
         {
           eSF eSymbol = Symbol::eEvalSymbol(p_term_next->szSymbol(SF_NONE));
           RASSERT(SF_RLN_OP == eSymbol);
@@ -544,12 +544,12 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
         if (p_cmpPred->bContains_callToSubQuery(pCI)) {
-          p_cmpPred->vCard(CK_CMPPRED);
+          p_cmpPred->vCard(CK_CMPCONJ);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         else
         if (!p_cmpPred->pSymbol()->bSame("=="_Stz)) { // todo: more work
-          p_cmpPred->vCard(CK_CMPPRED);
+          p_cmpPred->vCard(CK_CMPCONJ);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         //p_boolCalc->vPushChild(p_cmpPred);
@@ -562,7 +562,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
       case TE_EXISTS:
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
-        p_cmpPred = new Card_CmpPred;
+        p_cmpPred = new Card_CmpConj;
         {
           eSF eSymbol = Symbol::eEvalSymbol(p_term_next->szSymbol(SF_NONE));
           RASSERT(SF_SQY_OP == eSymbol);
@@ -579,7 +579,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
       case TE_IN:
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
-          p_cmpPred = new Card_CmpPred;
+          p_cmpPred = new Card_CmpConj;
           p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppendChild(p_cmpPred);
@@ -589,7 +589,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           //p_boolCalc->vDump(0,"BOOLFN/IN"_Stz);
         }
         else {
-          p_cmpPred = new Card_CmpPred;
+          p_cmpPred = new Card_CmpConj;
           p_cmpPred->SYM(SF_SQY_OP,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -603,7 +603,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
       case TE_NOTIN:
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
-          p_cmpPred = new Card_CmpPred;
+          p_cmpPred = new Card_CmpConj;
           p_cmpPred->SYM(SF_SQY_OP,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsBoolFn())
@@ -612,7 +612,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           DELETE_CARD(p_term_next);
 
           p_childA = p_boolCalc->pPopChild_tail();
-          p_notPred = new Card_NotPred;
+          p_notPred = new Card_NotConj;
           p_notPred->vAppendChild(p_childA);
           p_boolCalc->vAppendChild(p_notPred);
           p_notPred = nullptr;
@@ -620,7 +620,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           //p_boolCalc->vDump(0,"BOOLFN/NOTIN"_Stz);
         }
         else {
-          p_cmpPred = new Card_CmpPred;
+          p_cmpPred = new Card_CmpConj;
           p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -632,7 +632,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         break;
 
       case TE_BOOLFN:
-        p_cmpPred = new Card_CmpPred;
+        p_cmpPred = new Card_CmpConj;
         p_cmpPred->SYM(SF_BOL_FN,p_term_next->szSymbol(SF_NONE));
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
@@ -665,7 +665,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
     //p_boolCalc->vDump(0,"boolCalc"_Stz);
     //p_TermSeries->vDump(0,"termSeries"_Stz);
 
-    p_cmpPred = new Card_CmpPred;
+    p_cmpPred = new Card_CmpConj;
     p_cmpPred->vTransferChildren(p_TermSeries);
 
     p_boolCalc->vAppendChild(p_cmpPred);
