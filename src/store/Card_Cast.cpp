@@ -5,7 +5,7 @@
 #include "Card_Cast.hpp"
 
 #include "Card_Bound.hpp"
-#include "Card_COL.hpp"
+#include "Card_COLUMN.hpp"
 #include "Card_Index.hpp"
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
@@ -69,7 +69,7 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
 
   // -- -- -- -- -- -- -- -- -- --
   // ? stream joining to a replicated table
-  if (Card_COL::bIsReplicated(p_Y_idxCol_join)) {
+  if (Card_COLUMN::bIsReplicated(p_Y_idxCol_join)) {
     // + join table is replicated
     //     stream is unicast mapping to partitions of join table
     eCast = XK_UNICAST;
@@ -106,7 +106,7 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
   // -- -- -- -- -- -- -- -- -- --
   // not joining to table partition
   else {
-    if (Card_COL::bIsReplicated(p_Y_tblCol_prior))
+    if (Card_COLUMN::bIsReplicated(p_Y_tblCol_prior))
       eCast = XK_UNICAST;
     else
     // stream requires a broadcast mapping to table partitions

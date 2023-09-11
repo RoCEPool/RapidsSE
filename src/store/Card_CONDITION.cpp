@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* Card_COND.cpp -- Abstract Condition                                        */
+/* Card_CONDITION.cpp -- Abstract Condition                                        */
 /*============================================================================*/
 
-#include "Card_COND.hpp"
+#include "Card_CONDITION.hpp"
 
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_COND::Card_COND(eCK eCard, i8 iFixedDepth)
+Card_CONDITION::Card_CONDITION(eCK eCard, i8 iFixedDepth)
 : Card_OP(eCard,iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -22,7 +22,7 @@ Card_COND::Card_COND(eCK eCard, i8 iFixedDepth)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_COND::~Card_COND(void) noexcept(false)
+Card_CONDITION::~Card_CONDITION(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -38,7 +38,7 @@ Card_COND::~Card_COND(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add transients to needed                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_COND::vAddTransients(CardIter* pCI)
+void Card_CONDITION::vAddTransients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -70,7 +70,7 @@ void Card_COND::vAddTransients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert all colOdn to stmOdn                                               */
 /*----------------------------------------------------------------------------*/
-void Card_COND::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_CONDITION::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -83,7 +83,7 @@ void Card_COND::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert all stmOdn to colOdn                                               */
 /*----------------------------------------------------------------------------*/
-void Card_COND::vConvert_stmOdn_To_colOdn(CardIter* pCI)
+void Card_CONDITION::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

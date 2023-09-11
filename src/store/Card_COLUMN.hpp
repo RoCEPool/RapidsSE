@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_COL.hpp -- Abstract Column                                            */
+/* Card_COLUMN.hpp -- Abstract Column                                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,18 +7,18 @@
 
 namespace STORE
 {
-  class Card_COL : public Card_symbol<Card_COL>
+  class Card_COLUMN : public Card_symbol<Card_COLUMN>
   {  
   public:
-    Card_COL(eCK eCard, i8 iFixedDepth);
-   ~Card_COL(void) noexcept(false);
+    Card_COLUMN(eCK eCard, i8 iFixedDepth);
+   ~Card_COLUMN(void) noexcept(false);
 
     static bool bIsReplicated (Symbol* aCol);
     static bool bMatchingTblSyn(Symbol* pArg_a, Symbol* pArg_b);
 
   };
 
-  Card_COL* _pCard_COL(void* aAddr);
+  Card_COLUMN* _pCard_COLUMN(void* aAddr);
 }
 
 /*============================================================================*/

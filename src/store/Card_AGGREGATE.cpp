@@ -1,69 +1,35 @@
 /*============================================================================*/
-/* Card_COL.cpp -- Abstract Expression List                                 */
+/* Card_AGGREGATE.cpp -- Abstract Aggregate                                         */
 /*============================================================================*/
 
-#include "Card_COL.hpp"
+#include "Card_AGGREGATE.hpp"
 
-/*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_COL::Card_COL(eCK eCard, i8 iFixedDepth)
-: Card_symbol(eCard, iFixedDepth)
+Card_AGGREGATE::Card_AGGREGATE(eCK eCard, i8 iFixedDepth)
+: Card_OP(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  _checkInitialised_(CN_CARD);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_COL::~Card_COL(void) noexcept(false)
+Card_AGGREGATE::~Card_AGGREGATE(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- static ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a replicated $c.n ?                                         */
-/*----------------------------------------------------------------------------*/
-bool Card_COL::bIsReplicated(Symbol* aCol)
-{
-  if (! aCol)
-    return false;
-
-  if (!aCol->bIs_Col_Tc())
-    return false;
-
-  char cTblSyn = aCol->cSF_tblSyn();
-  if (cTblSyn >= 'A' && cTblSyn <= 'Z')
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_COL::bMatchingTblSyn(Symbol *pArg_a, Symbol *pArg_b)
-{
-  _static_
-
-  if (pArg_a->cSF_tblSyn() == pArg_b->cSF_tblSyn())
-    return true;
-
-  return false;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

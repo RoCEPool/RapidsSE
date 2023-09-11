@@ -15,7 +15,7 @@
 #include "CardCtl.hpp"
 
 #include "Card_AbsJoin.hpp"
-#include "Card_AGG.hpp"
+#include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
@@ -26,9 +26,9 @@
 
 #include "Card_Call.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_COL.hpp"
+#include "Card_COLUMN.hpp"
 #include "Card_Combined.hpp"
-#include "Card_COND.hpp"
+#include "Card_CONDITION.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_Correlation.hpp"
 #include "Card_CostJoining.hpp"  //

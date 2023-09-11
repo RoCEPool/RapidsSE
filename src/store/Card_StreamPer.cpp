@@ -178,7 +178,7 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
   Symbol* p_Y_tblCol_prior = nullptr;
   Symbol* p_Y_idxCol_join  = nullptr;
 
-  if (Card_COL::bMatchingTblSyn(p_Y_tablePtn_prior, p_Y_term_0_cmp)) {
+  if (Card_COLUMN::bMatchingTblSyn(p_Y_tablePtn_prior, p_Y_term_0_cmp)) {
     p_Y_tblCol_prior = p_Y_term_0_cmp;
     p_Y_idxCol_join  = p_Y_term_1_cmp;
   }

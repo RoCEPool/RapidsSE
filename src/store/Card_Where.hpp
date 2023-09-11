@@ -4,13 +4,13 @@
 #pragma once
 
 #include "Card_symbol.hpp"
-#include "Card_COND.hpp"
+#include "Card_CONDITION.hpp"
 
 namespace STORE
 {
   class CarryForward;
 
-  class Card_Where : public Card_COND // todo [Ray A 147]
+  class Card_Where : public Card_CONDITION // todo [Ray A 147]
   {
   public:
     void* operator new(size_t);

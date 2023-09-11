@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_COND.hpp -- Abstract Condition                                        */
+/* Card_CONDITION.hpp -- Abstract Condition                                        */
 /*============================================================================*/
 #pragma once
 
@@ -8,11 +8,11 @@
 
 namespace STORE
 {
-  class Card_COND : public Card_OP
+  class Card_CONDITION : public Card_OP
   {
   public:
-    Card_COND(eCK eCard, i8 iFixedDepth);
-   ~Card_COND(void) noexcept(false);
+    Card_CONDITION(eCK eCard, i8 iFixedDepth);
+   ~Card_CONDITION(void) noexcept(false);
 
    void vAddTransients(CardIter* pCI);
    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
@@ -21,7 +21,7 @@ namespace STORE
 
   };
 
-  Card_COND* _pCard_COND(void* aAddr);
+  Card_CONDITION* _pCard_CONDITION(void* aAddr);
 }
 
 /*============================================================================*/

@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Where,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Where::Card_Where(void)
-: Card_COND(CK_WHERE,1)
+: Card_CONDITION(CK_WHERE, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

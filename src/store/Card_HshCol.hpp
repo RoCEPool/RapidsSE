@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_COL.hpp"
+#include "Card_COLUMN.hpp"
 
 namespace STORE
 {
-  class Card_HshCol : public Card_COL
+  class Card_HshCol : public Card_COLUMN
   {
   public:
     void* operator new(size_t);

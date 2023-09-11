@@ -28,7 +28,7 @@ __vDeleteFunction(Card_Constraint,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Constraint::Card_Constraint(void)
-: Card_COND(CK_CONSTRAINT, 2)
+: Card_CONDITION(CK_CONSTRAINT, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

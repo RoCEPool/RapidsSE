@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_AGG.hpp"
+#include "Card_AGGREGATE.hpp"
 
 namespace STORE
 {
-  class Card_Aggreg : public Card_AGG
+  class Card_Aggreg : public Card_AGGREGATE
   {  
   public:
     void* operator new(size_t);
