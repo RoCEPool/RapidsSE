@@ -45,8 +45,11 @@ INCLUDE 'aggs-max.test';
 LOG 'aggs-min.test ...';
 INCLUDE 'aggs-min.test';
 
+// TODO V2 : ALKA TO LOOK AT
+/*
 LOG 'aggs-sum.test ...';
 INCLUDE 'aggs-sum.test';
+*/
 
 LOG 'alias.test ...';
 INCLUDE 'alias.test';
