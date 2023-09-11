@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_ELIST.hpp"
+#include "Card_EXPRLIST.hpp"
 #include "ColsReq.hpp"
 #include "ColMap.hpp"
 
 namespace STORE
 {
-  class Card_Projection : public Card_ELIST
+  class Card_Projection : public Card_EXPRLIST
   {
   public:
     void* operator new(size_t);

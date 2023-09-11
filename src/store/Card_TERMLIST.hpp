@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_TLIST.hpp -- Abstract Term List                                       */
+/* Card_TERMLIST.hpp -- Abstract Term List                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,15 +7,15 @@
 
 namespace STORE
 {
-  class Card_TLIST : public Card_LIST
+  class Card_TERMLIST : public Card_LIST
   {  
   public:
-    Card_TLIST(eCK eCard, i8 iFixedDepth);
-   ~Card_TLIST(void) noexcept(false);
+    Card_TERMLIST(eCK eCard, i8 iFixedDepth);
+   ~Card_TERMLIST(void) noexcept(false);
 
   };
 
-  Card_TLIST* _pCard_TLIST(void* aAddr);
+  Card_TERMLIST* _pCard_TERMLIST(void* aAddr);
 }
 
 /*============================================================================*/

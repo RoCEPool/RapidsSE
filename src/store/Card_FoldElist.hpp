@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_ELIST.hpp"
+#include "Card_EXPRLIST.hpp"
 
 namespace STORE
 {
-  class Card_FoldElist : public Card_ELIST
+  class Card_FoldElist : public Card_EXPRLIST
   {  
   public:
     void* operator new(size_t);

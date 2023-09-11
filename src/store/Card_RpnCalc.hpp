@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_TLIST.hpp"
+#include "Card_TERMLIST.hpp"
 
 namespace STORE
 {
-  class Card_RpnCalc : public Card_TLIST
+  class Card_RpnCalc : public Card_TERMLIST
   {  
   public:
     void* operator new(size_t);

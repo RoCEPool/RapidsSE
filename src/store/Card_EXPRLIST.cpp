@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_ELIST.cpp -- Abstract Expression List                                 */
+/* Card_EXPRLIST.cpp -- Abstract Expression List                                */
 /*============================================================================*/
 
-#include "Card_ELIST.hpp"
+#include "Card_EXPRLIST.hpp"
 #include "CardIter.hpp"
 
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ELIST::Card_ELIST(eCK eCard, i8 iFixedDepth)
+Card_EXPRLIST::Card_EXPRLIST(eCK eCard, i8 iFixedDepth)
 : Card_LIST(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -24,7 +24,7 @@ Card_ELIST::Card_ELIST(eCK eCard, i8 iFixedDepth)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ELIST::~Card_ELIST(void) noexcept(false)
+Card_EXPRLIST::~Card_EXPRLIST(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -36,7 +36,7 @@ Card_ELIST::~Card_ELIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
+void Card_EXPRLIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
@@ -64,7 +64,7 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
+void Card_EXPRLIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -93,7 +93,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
+void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -105,7 +105,7 @@ void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
+Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -120,7 +120,7 @@ Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_EXPRLIST::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -132,7 +132,7 @@ void Card_ELIST::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vConvert_stmOdn_To_colOdn(CardIter* pCI)
+void Card_EXPRLIST::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -144,7 +144,7 @@ void Card_ELIST::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get expr relating to term                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pDecodeExpr(Symbol* pSymbol)
+Card_Expr* Card_EXPRLIST::pDecodeExpr(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -156,7 +156,7 @@ Card_Expr* Card_ELIST::pDecodeExpr(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* get number of expr in this projection                                      */
 /*----------------------------------------------------------------------------*/
-i8 Card_ELIST::nExpr(void)
+i8 Card_EXPRLIST::nExpr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -168,7 +168,7 @@ i8 Card_ELIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_Of_symbol(Symbol* pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_Of_symbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -183,7 +183,7 @@ Card_Expr* Card_ELIST::pFind_expr_Of_symbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expression which matches given $n ordinal                             */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_By_Ordinal(Symbol* pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_By_Ordinal(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -200,7 +200,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_Ordinal(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_By_as(Symbol *pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_By_as(Symbol *pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -217,7 +217,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_as(Symbol *pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -245,7 +245,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
 /*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)
+Card_Expr* Card_EXPRLIST::pGetExpr(i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -258,7 +258,7 @@ Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vRenumberAll_expr(void)
+void Card_EXPRLIST::vRenumberAll_expr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -276,7 +276,7 @@ void Card_ELIST::vRenumberAll_expr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_EXPRLIST::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);

@@ -54,7 +54,7 @@ namespace STORE
   class Card_Deck;
   class Card_Direction;
 
-  class Card_ELIST;
+  class Card_EXPRLIST;
   class Card_Expr;
 
   class Card_Filter;

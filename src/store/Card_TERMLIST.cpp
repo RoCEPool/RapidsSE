@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_TLIST.cpp -- Abstract Term List                                       */
+/* Card_TERMLIST.cpp -- Abstract Term List                                    */
 /*============================================================================*/
 
-#include "Card_TLIST.hpp"
+#include "Card_TERMLIST.hpp"
 #include "CardIter.hpp"
 
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_TLIST::Card_TLIST(eCK eCard, i8 iFixedDepth)
+Card_TERMLIST::Card_TERMLIST(eCK eCard, i8 iFixedDepth)
 : Card_LIST(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -24,7 +24,7 @@ Card_TLIST::Card_TLIST(eCK eCard, i8 iFixedDepth)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_TLIST::~Card_TLIST(void) noexcept(false)
+Card_TERMLIST::~Card_TERMLIST(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

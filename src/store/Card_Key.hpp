@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_ELIST.hpp"
+#include "Card_EXPRLIST.hpp"
 #include "IndexDef.hpp"
 
 namespace STORE
 {
-  class Card_Key : public Card_ELIST
+  class Card_Key : public Card_EXPRLIST
   {  
   public:
     void* operator new(size_t);

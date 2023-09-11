@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_ELIST.hpp -- Abstract Expression List                                 */
+/* Card_EXPRLIST.hpp -- Abstract Expression List                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,11 +7,11 @@
 
 namespace STORE
 {
-  class Card_ELIST : public Card_LIST
+  class Card_EXPRLIST : public Card_LIST
   {  
   public:
-    Card_ELIST(eCK eCard, i8 iFixedDepth);
-   ~Card_ELIST(void) noexcept(false);
+    Card_EXPRLIST(eCK eCard, i8 iFixedDepth);
+   ~Card_EXPRLIST(void) noexcept(false);
 
     void vBump_keyOdn_In_rpnCalc(CardIter* pCI);
     void vBump_stmOdn_In_rpnCalc(CardIter* pCI);
@@ -33,7 +33,7 @@ namespace STORE
 
   };
 
-  Card_ELIST* _pCard_ELIST(void* aAddr);
+  Card_EXPRLIST* _pCard_EXPRLIST(void* aAddr);
 }
 
 /*============================================================================*/

@@ -22,7 +22,7 @@ __vDeleteFunction(Card_FoldElist, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_FoldElist::Card_FoldElist(void)
-: Card_ELIST(CK_FOLDELIST,1)
+: Card_EXPRLIST(CK_FOLDELIST, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
