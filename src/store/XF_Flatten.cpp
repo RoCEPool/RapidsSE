@@ -224,7 +224,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
      // pCI->vPrintBoard(__LINE__);
 
-      XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
+     // XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
 
       bFound = true;
       return C_TERMINATE_RECURSION;
@@ -240,11 +240,13 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
 
-  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
+  RASSERT(0 == m_pCI->pBoard()->pDeck()->nChildCards(CK_SUBQUERY));
+
+  //XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
 
   XF_Flatten_Join_Ordering::vXF_Join_Ordering(m_pCI);
 
-  XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
+  //XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sub-query has been flattened
