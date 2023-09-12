@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* _ray126                                                                    */
+/*============================================================================*/
+
+// NOTE: sort expr not correct
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+/keepCodeFile
+/weaved
+/pipeline_def
+select colb1, colc1, extract(day from colc1) from table1 where
+  colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1) + 1 ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
