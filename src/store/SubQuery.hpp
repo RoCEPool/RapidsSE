@@ -22,6 +22,7 @@ namespace STORE
   protected:
 
     Board* m_pBoard;     // which board
+
     i8 m_i_Caller;       // which subquery calls this subquery
 
     eQD m_eDisposition;  // linear/simple or aggregation

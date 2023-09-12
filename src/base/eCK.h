@@ -17,7 +17,10 @@ enum eCK : i8 // card kind
   /* */ CK_BOUNDS,
 
   /* */ CK_CALL,
+  /* */ CK_CALLER,
+  /* */ CK_CALLOP,
   /* */ CK_CAST,
+  /* */ CK_CLAUSE,
   /* */ CK_CMPCONJ,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
@@ -90,6 +93,7 @@ enum eCK : i8 // card kind
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
 
+  /* */ CK_RELNOP,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
   /* */ CK_RPNCALC,
@@ -101,6 +105,8 @@ enum eCK : i8 // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SORT,
   /* */ CK_SPARE,
+  /* */ CK_SQYCALLS,
+  /* */ CK_SQYNO,
   /* */ CK_STAGE,
   /* */ CK_STREAM,
   /* */ CK_STREAMHEAD,

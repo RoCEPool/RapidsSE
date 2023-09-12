@@ -129,6 +129,8 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
   Card_SubQuery* p_subQuery = new Card_SubQuery;
   m_pBoard->pDeck()->vAppendChild(p_subQuery);
 
+  p_subQuery->pSymbol()->Y_vSet(P_Pointer,m_pBoard->pSubQuery());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   i8 nStageSpecs = m_pPipeSpec->nStageSpecs();

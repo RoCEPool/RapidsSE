@@ -20,7 +20,10 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
+  /* */ "CK_CALLER"_Stz,       // CK_CALLER
+  /* */ "CK_CALLOP"_Stz,       // CK_CALLOP
   /* */ "CK_CAST"_Stz,         // CK_CAST
+  /* */ "CK_CLAUSE"_Stz,       // CK_CLAUSE
   /* */ "CK_CMPCONJ"_Stz,      // CK_CMPCONJ
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
@@ -43,7 +46,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_FILTPREDLIST"_Stz, // CK_FILTPREDLIST
   /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
-   /* */ "CK_FROM"_Stz,         // CK_FROM
+  /* */ "CK_FROM"_Stz,         // CK_FROM
 
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
 
@@ -93,6 +96,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
+  /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
@@ -103,7 +107,9 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SORT"_Stz,         // CK_SORT
-  /* */ "CK_SPARET"_Stz,       // CK_SPARE
+  /* */ "CK_SPARE"_Stz,        // CK_SPARE
+  /* */ "CK_SQYCALLS"_Stz,     // CK_SQYCALLS
+  /* */ "CK_SQYNO"_Stz,        // CK_SQYNO
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
@@ -149,7 +155,10 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
   /* */ "call"_Stz,            // CK_CALL
+  /* */ "caller"_Stz,          // CK_CALLER
+  /* */ "callOp"_Stz,          // CK_CALLOP
   /* */ "cast"_Stz,            // CK_CAST
+  /* */ "clause"_Stz,          // CK_CLAUSE
   /* */ "cmpPred"_Stz,         // CK_CMPCONJ
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
@@ -218,11 +227,11 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 
-
   /* */ "payloadCells"_Stz,    // CK_PAYLOADCELLS
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
 
+  /* */ "relnOp"_Stz,          // CK_RELNOP
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
@@ -234,6 +243,8 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "spare"_Stz,           // CK_SPARE
+  /* */ "sqyCalls"_Stz,        // CK_SQYCALLS
+  /* */ "sqyNo"_Stz,           // CK_SQYNO
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
