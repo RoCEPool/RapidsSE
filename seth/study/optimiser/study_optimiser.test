@@ -7,11 +7,6 @@ LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
 
-LOG 'AggregExpr.test';
-INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
-
-
-
 LOG ' ';
 INCLUDE 'create_customer.test';
 INCLUDE 'create_lineitem.test';
@@ -30,7 +25,6 @@ LOG ' ';
 INCLUDE 'case_sort1.test';
 INCLUDE 'case_indexScan1.test';
 INCLUDE 'case_cut_sort1.test';
-
 
 //------------------------------------------------------------------------------
 

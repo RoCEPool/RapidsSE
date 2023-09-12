@@ -1115,7 +1115,7 @@ void CardIter::vEndTransform(void)
 
     G.pDeck->vCheckCorrectness();
 
-    G.pBoard->pState()->vDumpSet();
+    //G.pBoard->pState()->vDumpSet();
 
     if (!  G.pBoard->pState()->bHasName(aXF[m_pBench->eXform()]))
       G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
