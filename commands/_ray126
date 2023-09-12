@@ -24,7 +24,7 @@ Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 /weaved
 /pipeline_def
 select colb1, colc1, extract(day from colc1) from table1 where
-  colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1) + 1 ;
+  colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1) ;
 
 /*============================================================================*/
 /* end                                                                        */
