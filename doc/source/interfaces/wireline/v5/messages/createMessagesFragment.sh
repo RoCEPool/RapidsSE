@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# A script to create a ReStructuredText fragment file (that is included into
+# another rST file) that contains all the Thrift wireline message definitions.
+#
+# Arguments:
+# $1 : The directory whose subdirectories contain *.thrift files to be included.
+# $2 : The path the rst fragment file to be written
 
 # For safety:
 #  -e          : exit immediately when a command fails.
@@ -78,8 +84,11 @@ fi
 rm -f "${TGT}"
 
 # Find the latest version directory that matches "v<num>".
+EXTENDED_REGEX_OPT=""
+[ "$(uname)" = "Darwin" ] && EXTENDED_REGEX_OPT="-E"
+
 THRIFT_DIR_COMPAT="${SRC}/compatibility"
-THRIFT_DIR_LATEST="$(find -E "${SRC}" -type d -regex ".*/v[0-9]+" -maxdepth 1 | sort -n -k 2 -t v | tail -n 1)"
+THRIFT_DIR_LATEST="$(find ${EXTENDED_REGEX_OPT} "${SRC}" -maxdepth 1 -type d -regex ".*/v[0-9]+" | sort -n -k 2 -t v | tail -n 1)"
 echo "Latest thrift dir is: ${THRIFT_DIR_LATEST}"
 
 if [ ! -d  "${THRIFT_DIR_COMPAT}" ]; then
