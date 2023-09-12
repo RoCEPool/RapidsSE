@@ -33,6 +33,16 @@ export PATH := $(PATH):$(PDFTEX_PATH)
 
 RST_FILES := $(shell find $(SOURCEDIR) -name "*.rst")
 
+# Wireline protocol message definitions
+WLP_MSG_DEF_DIR := $(shell realpath ../src/wlp/thrift 2>/dev/null)
+WLP_MSG_DEF_INC := messageDefinitions
+WLP_MSG_DEF_DEPS := $(shell find $(WLP_MSG_DEF_DIR)/$(WLP_MSG_DEF_INC) -name "*.thrift")
+WLP_MSG_DEF_SCRIPT := $(shell realpath source/interfaces/wireline/v5/messages/createMessagesFragment.sh 2>/dev/null)
+
+WLP_MSG_DEF_ZIP_NAME := RapidsSEWirelineMessages.zip
+WLP_MSG_DEF_ZIP_PATH := $(shell realpath source/_static 2>/dev/null)/$(WLP_MSG_DEF_ZIP_NAME)
+WLP_MSG_DEF_RST := $(shell realpath source/interfaces/wireline/v5/messages 2>/dev/null)/messages.rst.fragment
+
 
 ###############################################################################
 ### 								RULES									###
@@ -121,6 +131,27 @@ $(RR_INDEX_HTML): $(RR_GRAMMAR)
 	@echo "Command Reference railroad diagrams (PNG) created at: $(RR_OUTPUT_DIR)"
 #	@$(MAKE) railroad
 
+
+# Rule to build the zip file containing the wireline protocol message definitions.
+# This is provided with the HTML documentation.
+wirelineMessageDefsZip: $(WLP_MSG_DEF_ZIP_PATH)
+$(WLP_MSG_DEF_ZIP_PATH):
+	@echo "Creating the wireline protocol message definition bundle..."
+	@echo
+	@cd $(WLP_MSG_DEF_DIR) && zip -q -r $(WLP_MSG_DEF_ZIP_NAME) $(WLP_MSG_DEF_INC)/*
+	@mv $(WLP_MSG_DEF_DIR)/$(WLP_MSG_DEF_ZIP_NAME) $(WLP_MSG_DEF_ZIP_PATH)
+	@echo "Wireline protocol message definition bundle created at: $(WLP_MSG_DEF_ZIP_PATH)"
+
+# Rule to build the rst fragment file containing the wireline protocol message definitions.
+# This is used by the PDF documentation.
+wirelineMessageDefsRst: $(WLP_MSG_DEF_RST)
+$(WLP_MSG_DEF_RST): $(WLP_MSG_DEF_DEPS) $(WLP_MSG_DEF_SCRIPT)
+	@echo "Creating the wireline protocol message definition rst fragment..."
+	@echo
+	@$(WLP_MSG_DEF_SCRIPT) "$(WLP_MSG_DEF_DIR)/$(WLP_MSG_DEF_INC)" "$(WLP_MSG_DEF_RST)"
+	@echo "Wireline protocol message definition rst fragment created at: $(WLP_MSG_DEF_RST)"
+
+
 linkcheck: checkSphinx
 	@echo "Validating links in rst files..."
 	@echo
@@ -133,13 +164,13 @@ version:
 	@echo "done"
 	@echo
 
-html: checkSphinx version railroad
+html: checkSphinx version railroad wirelineMessageDefsZip wirelineMessageDefsRst
 	@echo "Building HTML documentation..."
 	@echo
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo
 
-pdf: checkSphinx checkLatex railroad
+pdf: checkSphinx checkLatex railroad wirelineMessageDefsRst
 	@echo "Building PDF documentation..."
 	@echo
 	@LATEXMKOPTS="-interaction=nonstopmode" $(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
@@ -155,6 +186,8 @@ clean:
 	@rm -rf "$(RR_OUTPUT_DIR)"
 	@rm -rf "$(RR_HTML_FRAG)"
 	@rm -rf "$(RR_PDF_FRAG)"
+	@rm -f  "$(WLP_MSG_DEF_ZIP_PATH)"
+	@rm -f  "$(WLP_MSG_DEF_RST)"
 
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

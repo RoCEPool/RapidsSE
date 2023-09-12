@@ -876,35 +876,35 @@ To determine what Thrift message is mapped to a particular value of the
 an enumeration that holds these values. As an example, the mappings for version 5
 of the Wireline Protocol are as follows:
 
-==============================  ===============   ==========
-Message Name                    MessageType ID    Currently
-                                                  Supported?
-==============================  ===============   ==========
-ProtocolCompatibleRequest     	  1                 Yes
-ProtocolCompatibleResponse    	  2                 Yes
-ProtocolIncompatibleResponse  	  4                 Yes
-ErrorResponse                 	  6                 Yes
-WarningResponse               	  8                 Yes
-ShutdownNotification          	  10                No
-DisconnectNotification        	  12                No
-DisconnectRequest             	  13                Yes
-PingRequest                       15                No
-PingResponse                      16                No
-ClearTextTunnelRequest        	  21                Yes
-TunnelSupportedResponse       	  22                Yes
-PlainAuthenticationRequest     	  31                Yes
-KerberosAuthenticationRequest	    33                No
-GssNegotiationMsg	                34                No
-AuthenticationOkResponse      	  38                Yes
-SessionChangeRequest          	  41                Yes
-SessionChangeResponse         	  42                Yes
-QueryExecuteRequest           	  51                Yes
-QueryReceiptResponse          	  52                Yes
-RowMetadataResponse           	  54                Yes
-RowDataResponse               	  56                Yes
-StatementResponse             	  58                Yes
-QueryExecuteResponse          	  60                Yes
-==============================  ===============   ==========
+==================================  ===============   ==========
+Message Name                        MessageType ID    Currently
+                                                      Supported?
+==================================  ===============   ==========
+``ProtocolCompatibleRequest``     	  ``1``             Yes
+``ProtocolCompatibleResponse``    	  ``2``             Yes
+``ProtocolIncompatibleResponse``  	  ``4``             Yes
+``ErrorResponse``                 	  ``6``             Yes
+``WarningResponse``               	  ``8``             Yes
+``ShutdownNotification``          	  ``10``            No
+``DisconnectNotification``        	  ``12``            No
+``DisconnectRequest``             	  ``13``            Yes
+``PingRequest``                       ``15``            No
+``PingResponse``                      ``16``            No
+``ClearTextTunnelRequest``        	  ``21``            Yes
+``TunnelSupportedResponse``       	  ``22``            Yes
+``PlainAuthenticationRequest``     	  ``31``            Yes
+``KerberosAuthenticationRequest``	    ``33``            No
+``GssNegotiationMsg``	                ``34``            No
+``AuthenticationOkResponse``      	  ``38``            Yes
+``SessionChangeRequest``          	  ``41``            Yes
+``SessionChangeResponse``         	  ``42``            Yes
+``QueryExecuteRequest``           	  ``51``            Yes
+``QueryReceiptResponse``          	  ``52``            Yes
+``RowMetadataResponse``           	  ``54``            Yes
+``RowDataResponse``               	  ``56``            Yes
+``StatementResponse``             	  ``58``            Yes
+``QueryExecuteResponse``          	  ``60``            Yes
+==================================  ===============   ==========
 
 
 Message Definitions
@@ -916,3 +916,26 @@ Message Definitions
   for completeness, but they may change in the future if and when RapidsSE
   supports them. Refer to the :ref:`Message Types <wlpv5MessageTypes>` section
   for details on which messages are supported.
+
+.. only:: html
+
+  This HTML documentation does not list the contents of each message. Instead
+  you can download the wireline message definition files directly and browse
+  them in any external text editor or IDE.
+
+  .. important::
+
+    :download:`Click here </_static/RapidsSEWirelineMessages.zip>` to download
+    the wireline protocol v5 message definitions in a compressed zip file.
+
+
+.. only:: latex
+
+  .. important::
+
+    To download the message definitions as a single compressed file please refer
+    to the HTML version of this documentation. This PDF documentation instead
+    lists the contents of the wireline definition messages.
+
+
+.. include:: messages/messages.rst.fragment

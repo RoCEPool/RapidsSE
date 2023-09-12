@@ -9,8 +9,8 @@
 
 .. _wirelineProtocolChangeHistory:
 
-Change History
-==============
+Protocol Change History
+=======================
 
 Periodically the wireline protocol undergoes changes in order to provide
 additional functionality or performance to clients. These changes may be simple
