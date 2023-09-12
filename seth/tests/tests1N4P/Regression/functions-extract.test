@@ -161,7 +161,7 @@ ordered rows:
 
 // Source file: ../queries/functions/extract/rextract14.sql
 // Result file: ../queries/functions/extract/results/extract14.res
-// TODO V2 : ALKA TO LOOK AT
+// TODO V2 : ALKA TO LOOK AT (_ray125)
 /*
 select colb1, colc1, extract(day from colc1) from table1 where colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1);
 // changed to unordered because column duplicates in the column being ordered

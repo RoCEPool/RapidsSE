@@ -43,7 +43,6 @@ create index table9_ucol on table9(ucol);
 create index table9_ucolvc on table9(ucolvc);
 create index table9_pcol9 on table9(pcol9);
 
-
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 
