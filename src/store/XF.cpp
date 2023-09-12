@@ -18,6 +18,7 @@
 #include "XF_Epilog_stmCol_To_colNm.hpp"
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Flatten.hpp"
+#include "XF_Flatten_Left_subQuery.hpp"
 #include "XF_Flatten_stmCol_To_tblCol.hpp"
 #include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
@@ -174,11 +175,15 @@ void XF::vTransform(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2/5) flatten
 
-  m_pCI->vPhase(OH_FLATTEN);                       //
-                                                   //
-  XF_Flatten::vFlatten(m_pCI);                     //
-                                                   // 
-  m_pCI->vEndPhase();                              //
+  m_pCI->vPhase(OH_FLATTEN);                         //
+                                                     //
+  XF_Flatten::vFlatten(m_pCI);                       //
+                                                     //
+  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI); //
+                                                     //
+  RASSERT(0 == m_pCI->pBoard()->pDeck()->nChildCards(CK_SUBQUERY));
+                                                     //
+  m_pCI->vEndPhase();                                //
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -335,6 +340,8 @@ void XF::vTransform_passThru(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
+
+  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
 
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);
 

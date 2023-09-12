@@ -126,8 +126,8 @@ void Dissector::vSubPipe(i8 i_SubPipeSpec)
   m_pOptimiser->vQueryNm(szQueryNm);
 
 
-//  Card_SubQuery* p_subQuery = new Card_SubQuery;
-//  m_pBoard->pDeck()->vAppendChild(p_subQuery);
+  Card_SubQuery* p_subQuery = new Card_SubQuery;
+  m_pBoard->pDeck()->vAppendChild(p_subQuery);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

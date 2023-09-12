@@ -81,6 +81,18 @@ CardIter::~CardIter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* advance                                                                    */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAdvanceChild(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.xKid.bEach();
+
+  return G.xKid.pChild();
+}
+
+/*----------------------------------------------------------------------------*/
 /* visit all sub-cards of given eToSubs and apply lambda function             */
 /*----------------------------------------------------------------------------*/
 bool CardIter::bApplyRecursive(Card* pCard, eCK eToSubs,
@@ -803,7 +815,7 @@ bool CardIter::G_bEachMain_reverse_NONE(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! bForward());
+  RASSERT(!bForwards());
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
@@ -832,7 +844,7 @@ bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! bForward());
+  RASSERT(!bForwards());
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
@@ -863,7 +875,7 @@ bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(! bForward());
+  RASSERT(!bForwards());
 
   RASSERT(G.xKid.bBegun());
   RASSERT(! G.xKid.bEnded());
@@ -1103,7 +1115,10 @@ void CardIter::vEndTransform(void)
 
     G.pDeck->vCheckCorrectness();
 
-    G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
+    G.pBoard->pState()->vDumpSet();
+
+    if (!  G.pBoard->pState()->bHasName(aXF[m_pBench->eXform()]))
+      G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
     for (Kid xDeck(G.pDeck); xDeck.bEach(); /**/) {
       xDeck.pChild()->vEnsureFirst(CK_LEVEL);
@@ -1219,7 +1234,7 @@ void CardIter::vFocusOnMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bForward(void)
+bool CardIter::bForwards(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1229,7 +1244,7 @@ bool CardIter::bForward(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vForward(bool bForward)
+void CardIter::vForwards(bool bForward)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 

@@ -54,6 +54,8 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
     return;
 
 
+  pCI->vPrintBoard(__LINE__);
+
   pCI->vBeginEach();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));

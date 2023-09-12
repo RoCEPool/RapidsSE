@@ -71,6 +71,7 @@ namespace STORE
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
+    Card* pAdvanceChild(void);
     bool bApplyRecursive(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
@@ -136,8 +137,8 @@ namespace STORE
     Card_Expr* pExpr_For_colNm(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
 
     void vFocusOnMain(void);
-    bool bForward(void);
-    void vForward(bool bForward);
+    bool bForwards(void);
+    void vForwards(bool bForward);
 
     Card* pGetChild(i8 i_Child);
     Card* G_pGetMember(eCK eMember);

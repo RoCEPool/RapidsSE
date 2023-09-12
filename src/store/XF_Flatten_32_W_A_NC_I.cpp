@@ -6,6 +6,7 @@
 
 #include "Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
+#include "XF_Flatten_Left_subQuery.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -94,6 +95,8 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
+
+  XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);

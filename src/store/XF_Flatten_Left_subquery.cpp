@@ -96,14 +96,14 @@ void XF_Flatten_Left_subQuery::vRotate_Next(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_FLAT, "left subQuery"_Stz);
+  //m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_FLAT, "left subQuery"_Stz);
 
   Kid xDeck(m_pCI->G.pDeck);
   if (xDeck.bEach(CK_SUBQUERY)) {
     m_pCI->G.pDeck->vRotateFirst(xDeck.pChild());
   }
 
-  m_pCI->vEndTransform();
+  //m_pCI->vEndTransform();
 }
 
 /*============================================================================*/

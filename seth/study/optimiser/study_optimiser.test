@@ -7,6 +7,11 @@ LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
 
+LOG 'AggregExpr.test';
+INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
+
+
+
 LOG ' ';
 INCLUDE 'create_customer.test';
 INCLUDE 'create_lineitem.test';
@@ -17,7 +22,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE 'tpch_q17.test';
+//INCLUDE 'tpch_q18.test';
 
 //------------------------------------------------------------------------------
 
