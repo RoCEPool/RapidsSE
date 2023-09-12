@@ -18,7 +18,7 @@ Wireline Protocol Version 5
 ..   Supported messages
 
 
-.. _wlpOverview:
+.. _wlpv5Overview:
 
 Overview, Concepts & Semantics
 ------------------------------
@@ -86,7 +86,7 @@ follows as well as its length (in bytes). This allow a client or server to
 read the header first, then read the entire payload and then decode the
 payload appropriately.
 
-.. _wlpConstraints:
+.. _wlpv5Constraints:
 
 Constraints, Limitations & Dependencies
 ---------------------------------------
@@ -125,7 +125,7 @@ used by RapidsSE. This dependency would not be needed if the client or library
 was able to construct a byte-compatible representation of each message
 independently.
 
-.. _wlpCompatibility:
+.. _wlpv5Compatibility:
 
 Protocol Compatibility
 ----------------------
@@ -150,12 +150,12 @@ version and the client can be gracefully told that it is not compatible.
 This protocol compability is described in the Connection Dialog.
 
 
-.. _messageDialogs:
+.. _wlpv5MessageDialogs:
 
 Message Dialogs
 ---------------
 
-.. _wlpFlowControl:
+.. _wlpv5FlowControl:
 
 Flow Control of Message Dialogs
 ```````````````````````````````
@@ -189,7 +189,7 @@ more of them. This would allow the client to process the messages with a minimal
 memory requirement.
 
 
-.. _wlpConnectionDialog:
+.. _wlpv5ConnectionDialog:
 
 Connection Dialog
 `````````````````
@@ -267,12 +267,12 @@ order to execute SQL commands in the system.
 .. only:: html
 
   The implementation of this Connection Dialog in a client can be shown with the
-  following state transition diagram (:numref:`connectionDialogStateDiagramHtml`).
+  following state transition diagram (:numref:`wlpv5ConnectionDialogStateDiagramHtml`).
   This shows an alternate view on what messages can be sent or received at
   different times and how the client should respond. Clients and libraries do not
   need to be represented in this way, it is purely for understanding purposes.
 
-  .. _connectionDialogStateDiagramHtml:
+  .. _wlpv5ConnectionDialogStateDiagramHtml:
 
   .. figure:: /interfaces/wireline/v5/dialogs/ConnectionDialogStateDiagram.*
      :align: center
@@ -284,7 +284,7 @@ order to execute SQL commands in the system.
 .. only:: latex
 
   The implementation of this Connection Dialog in a client can be shown with the
-  following state transition diagram (:numref:`connectionDialogStateDiagramLatex`).
+  following state transition diagram (:numref:`wlpv5ConnectionDialogStateDiagramLatex`).
   This shows an alternate view on what messages can be sent or received at
   different times and how the client should respond. Clients and libraries do not
   need to be represented in this way, it is purely for understanding purposes.
@@ -293,7 +293,7 @@ order to execute SQL commands in the system.
 
       \begin{landscape}
 
-  .. _connectionDialogStateDiagramLatex:
+  .. _wlpv5ConnectionDialogStateDiagramLatex:
 
   .. figure:: /interfaces/wireline/v5/dialogs/ConnectionDialogStateDiagram.*
      :align: center
@@ -305,7 +305,7 @@ order to execute SQL commands in the system.
       \end{landscape}
 
 
-.. _wlpQueryDialog:
+.. _wlpv5QueryDialog:
 
 Query Dialog
 ````````````
@@ -332,13 +332,13 @@ Single Statement Queries
 ::::::::::::::::::::::::
 
 The Query Dialog for single statements is shown below in
-:numref:`queryDialog-SingleStatement`. This dialog can be run
+:numref:`wlpv5QueryDialog-SingleStatement`. This dialog can be run
 after a client has successfully completed the Connection Dialog. It starts with
 the client sending a ``QueryExecuteRequest`` message, which contains the command
 to be executed along with some other optional flags to control how results and
 errors are handled.
 
-.. _queryDialog-SingleStatement:
+.. _wlpv5QueryDialog-SingleStatement:
 
 .. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-SingleStatement.*
    :align: center
@@ -422,13 +422,13 @@ When the client receives this it is then able to start a new dialog with the
 server.
 
 A fictitious example of a client executing a query that contains a single
-statements is show in :numref:`queryDialog-Example-SingleStatement`.
+statements is show in :numref:`wlpv5QueryDialog-Example-SingleStatement`.
 In this example we can see the statement returns a result set with
 row data sent over multiple ``RowDataResponse`` messages. The statement
 execution is concluded by a ``StatementResponse`` message being sent and the
 dialog is concluded by a ``QueryResponse`` message being sent by the server.
 
-.. _queryDialog-Example-SingleStatement:
+.. _wlpv5QueryDialog-Example-SingleStatement:
 
 .. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-Example-SingleStatement.*
    :align: center
@@ -447,9 +447,9 @@ that is parsed into more than one individual statements to be executed. Each of
 these statements may generate an error, a result set or no results at all.
 
 The general message sequence for the Query Dialog when there are batched
-statements is shown in :numref:`queryDialog-MultipleStatements`.
+statements is shown in :numref:`wlpv5QueryDialogMultipleStatements`.
 
-.. _queryDialog-MultipleStatements:
+.. _wlpv5QueryDialogMultipleStatements:
 
 .. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-MultipleStatements.*
    :align: center
@@ -476,14 +476,14 @@ dialog is now complete. The client can now initiate another dialog if it
 chooses to.
 
 A fictitious example of a client executing a query that contains four
-batched statements is show in :numref:`queryDialog-Example-MultipleStatements`.
+batched statements is show in :numref:`wlpv5QueryDialogExampleMultipleStatements`.
 In this example we can see the first statement returns a result set with
 row data sent over multiple ``RowDataResponse`` messages. The second batched
 statement completes execution successfully without generating a result set.
 The third batched statement returns an empty result set with no rows and
 the fourth batched statement generates an error.
 
-.. _queryDialog-Example-MultipleStatements:
+.. _wlpv5QueryDialogExampleMultipleStatements:
 
 .. figure:: /interfaces/wireline/v5/dialogs/QueryDialog-Example-MultipleStatements.*
    :align: center
@@ -498,12 +498,12 @@ Client State Transitions
 .. only:: html
 
   The implementation of the Query Dialog in a client can be shown with the
-  following state transition diagram (:numref:`queryDialogStateDiagramHtml`).
+  following state transition diagram (:numref:`wlpv5QueryDialogStateDiagramHtml`).
   This shows an alternate view on what messages can be sent or received at
   different times and how the client should respond. Clients and libraries do not
   need to be represented in this way, it is purely for understanding purposes.
 
-  .. _queryDialogStateDiagramHtml:
+  .. _wlpv5QueryDialogStateDiagramHtml:
 
   .. figure:: /interfaces/wireline/v5/dialogs/QueryDialogStateDiagram.*
      :align: center
@@ -516,7 +516,7 @@ Client State Transitions
 .. only:: latex
 
   The implementation of the Query Dialog in a client can be shown with the
-  following state transition diagram (:numref:`queryDialogStateDiagramLatex`).
+  following state transition diagram (:numref:`wlpv5QueryDialogStateDiagramLatex`).
   This shows an alternate view on what messages can be sent or received at
   different times and how the client should respond. Clients and libraries do not
   need to be represented in this way, it is purely for understanding purposes.
@@ -525,7 +525,7 @@ Client State Transitions
 
       \begin{landscape}
 
-  .. _queryDialogStateDiagramLatex:
+  .. _wlpv5QueryDialogStateDiagramLatex:
 
   .. figure:: /interfaces/wireline/v5/dialogs/QueryDialogStateDiagram.*
      :align: center
@@ -537,7 +537,7 @@ Client State Transitions
       \end{landscape}
 
 
-.. _wlpQueryCancellationDialog:
+.. _wlpv5QueryCancellationDialog:
 
 Query Cancellation Dialog
 `````````````````````````
@@ -560,7 +560,7 @@ much data.
   rather than on the original query request as a whole.
 
 The wireline protocol prioritises the simplicity of the more common
-dialogs (such as the :ref:`Query Dialog <wlpQueryDialog>`) rather than having
+dialogs (such as the :ref:`Query Dialog <wlpv5QueryDialog>`) rather than having
 a singular, highly complex approach that fits all operations. As a result the
 query cancellation dialog is a bit more complicated to implement. The wireline
 protocol is designed to be largely synchronous and serial, so cancelling a
@@ -578,7 +578,7 @@ are a few issues that need to be dealt with. Namely:
 
 This is achieved with the information that is returned by the server to the
 client in the ``QueryReceiptResponse`` message. When a client starts the
-:ref:`Query Dialog <wlpQueryDialog>` it sends the server a ``QueryExecuteRequest``.
+:ref:`Query Dialog <wlpv5QueryDialog>` it sends the server a ``QueryExecuteRequest``.
 The server parses the command string that is contained in that request and
 it returns a ``QueryReceiptResponse`` message. This message contains the
 following information for each statement in the command string that will be
@@ -611,7 +611,7 @@ It should be noted that the query cancellation is a best-effort endeavour.
 When the cancellation request is acknowledged this does not mean that the
 cancellation has completed. This may take some time to do so.
 
-We can see this interaction happening in :numref:`queryCancellationDialog`.
+We can see this interaction happening in :numref:`wlpv5QueryCancellationDialogFigure`.
 The client remembers the statement ID and secret key that was provided to it
 in the ``QueryReceiptResponse`` message and later establishes a new connection
 on which to send the ``QueryCancellationRequest`` message with these details.
@@ -625,7 +625,7 @@ can safely disconnect it. The long running query on the first client connection
 will then receive an ``ErrorResponse`` message indicating that it has been
 cancelled.
 
-.. _queryCancellationDialog:
+.. _wlpv5QueryCancellationDialogFigure:
 
 .. figure:: /interfaces/wireline/v5/dialogs/QueryCancellationDialog.*
    :align: center
@@ -639,10 +639,10 @@ Termination Dialog
 The termination dialog specifies how a client can close the connection between
 itself and the server. Clients can disconnect from their socket connection to
 the server at any time, however if they wish they can also inform the server
-that they are disconnecting too, as shown in :numref:`terminationDialog`.
+that they are disconnecting too, as shown in :numref:`wlpv5TerminationDialog`.
 Like other dialogs, this dialog cannot occur unless other dialogs are complete.
 
-.. _terminationDialog:
+.. _wlpv5TerminationDialog:
 
 .. figure:: /interfaces/wireline/v5/dialogs/TerminationDialog.*
    :align: center
@@ -677,9 +677,9 @@ The server shutdown dialog is a future dialog that tells the client that the
 server intends to shutdown soon. This gives the client the ability to handle it
 as they deem necessary. This dialog is implemented as the server sending a
 ``ShutdownNotification`` message to the client and can be see in
-:numref:`serverShutdownDialog`.
+:numref:`wlpv5ServerShutdownDialog`.
 
-.. _serverShutdownDialog:
+.. _wlpv5ServerShutdownDialog:
 
 .. figure:: /interfaces/wireline/v5/dialogs/ServerShutdownDialog.*
    :align: center
@@ -714,9 +714,9 @@ include a reason as to why it was being disconnected, which the client may use
 to provide useful feedback to the user.
 
 After sending the client the ``DisconnectNotification`` the server closes the
-connection to the client. This can be seen in :numref:`clientDisconnectionDialog`.
+connection to the client. This can be seen in :numref:`wlpv5ClientDisconnectionDialog`.
 
-.. _clientDisconnectionDialog:
+.. _wlpv5ClientDisconnectionDialog:
 
 .. figure:: /interfaces/wireline/v5/dialogs/ClientDisconnectionDialog.*
    :align: center
@@ -766,7 +766,7 @@ of information:
 
 #. The total length (in bytes) of the wireline message, including the header.
 
-The definition of the message header is shown in :numref:`messageHeaderDefinition`.
+The definition of the message header is shown in :numref:`wlpv5MessageHeaderDefinition`.
 
 The message header is 8 bytes long. Of these 8 bytes, 4 bytes are used to
 represent the entire message length (header + payload) and 1 byte is used for
@@ -777,7 +777,7 @@ data to be aligned. The 4 byte message length uses big endian (or network
 byte) ordering as this is common on messaging protocols and it is also the
 default integer byte ordering for Java.
 
-.. _messageHeaderDefinition:
+.. _wlpv5MessageHeaderDefinition:
 
 .. figure:: /interfaces/wireline/v5/messages/MessageHeader.*
    :align: center
@@ -888,8 +888,8 @@ WarningResponse               	  8                 Yes
 ShutdownNotification          	  10                No
 DisconnectNotification        	  12                No
 DisconnectRequest             	  13                Yes
-PingRequest                         15                No
-PingResponse                        16                No
+PingRequest                       15                No
+PingResponse                      16                No
 ClearTextTunnelRequest        	  21                Yes
 TunnelSupportedResponse       	  22                Yes
 PlainAuthenticationRequest     	  31                Yes
@@ -910,4 +910,9 @@ QueryExecuteResponse          	  60                Yes
 Message Definitions
 ```````````````````
 
-
+.. note::
+  Please note that there are additional wireline messages in this set that
+  are not currently being used or supported by RapidsSE. These are included
+  for completeness, but they may change in the future if and when RapidsSE
+  supports them. Refer to the :ref:`Message Types <wlpv5MessageTypes>` section
+  for details on which messages are supported.
