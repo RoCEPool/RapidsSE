@@ -138,6 +138,8 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
 
+  /* */ "CK_XCARD"_Stz,        // CK_XCARD
+
 //  /* */ "ENUMS"_Stz
 };
 
@@ -274,6 +276,8 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "unique"_Stz,          // CK_UNIQUE
 
   /* */ "where"_Stz,           // CK_WHERE
+
+  /* */ "xcard"_Stz,           // CK_XCARD
 
 //  /* */ "ENUMS"_Stz
 };

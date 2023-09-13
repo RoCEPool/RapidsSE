@@ -135,6 +135,8 @@ enum eCK : i8 // card kind
 
   /* */ CK_WHERE,
 
+  /* */ CK_XCARD,
+
   /* */ CK_ENUMS
 };
 

@@ -1398,6 +1398,8 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_WHERE:            return G.p_where;
 
+    case CK_XCARD:            return G.p_xcard;
+
     default:
       NEVER_REACH
   }
@@ -1641,6 +1643,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_WHERE:            G.p_where             = _pCard_Where(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
+    case CK_XCARD:            G.p_xcard             = _pCard_XCard(pCard); break;
+
     default:
       NEVER_REACH
   }
@@ -1852,6 +1856,8 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_unique           = nullptr;
 
   G.p_where            = nullptr;
+
+  G.p_xcard            = nullptr;
 
   G.p_NEW              = nullptr;
   G.p_CONJ             = nullptr;
@@ -2621,6 +2627,8 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_UNIQUE:    G.p_unique->vValidate(this, iDepth, pCard);  break;
 
       case CK_WHERE:     G.p_where->vValidate(this, iDepth, pCard);  break;
+
+      case CK_XCARD:     G.p_xcard->vValidate(this, iDepth, pCard);  break;
 
       default:
         NEVER_REACH

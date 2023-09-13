@@ -3046,6 +3046,19 @@ Card_Where* Card::pSub_where(void)
   return p_where;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_XCard.hpp"
+Card_XCard* Card::pSub_xcard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_XCard* p_xcard =
+      _pCard_XCard(pFindSubCard(CK_XCARD));
+  return p_xcard;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

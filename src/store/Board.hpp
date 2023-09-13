@@ -145,6 +145,8 @@
 
 #include "Card_Where.hpp"
 
+#include "Card_XCard.hpp"
+
 #include "VertexSpec.hpp"
 #include "DeckSpec.hpp"
 #include "StageSpec.hpp"

@@ -154,6 +154,8 @@ namespace STORE
 
   class Card_Where;
 
+  class Card_XCard;
+
   class CardIter;
 }
 
@@ -505,6 +507,7 @@ namespace STORE
     Card_Topology*      pSub_topology(void);
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
+    Card_XCard*         pSub_xcard(void);
 
   private:
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);

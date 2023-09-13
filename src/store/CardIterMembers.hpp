@@ -164,6 +164,8 @@ namespace STORE
 
     Card_Where *         p_where;
 
+    Card_XCard *         p_xcard;
+
     Card*                p_NEW;
     Card_OP *            p_OP;
     Card_CONJUNCTION *   p_CONJ;
