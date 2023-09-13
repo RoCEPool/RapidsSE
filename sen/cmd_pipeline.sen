@@ -561,7 +561,7 @@ then
 /* _ptp beg */  else
 /* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
-/* _ptp beg */  // pipeline hasCode ?
+/* _ptp beg */  // pipeline hasCodeBlock ?
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
 /* _ptp beg */
 /* _ptp beg */  [job].hasCodeBlock if
@@ -574,12 +574,24 @@ then
 /* _ptp beg */    [job].codeBlock@
 /* _ptp beg */      Dynamo[].fileName@ LibInfo[].compile not if
 /* _ptp beg */        LibInfo[].error .
+/* _ptp beg */        Dynamo[].delete
+/* _ptp beg */        "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
+/* _ptp beg */          false LibInfo[].delete
+/* _ptp beg */        else
+/* _ptp beg */          true LibInfo[].delete
+/* _ptp beg */        then
 /* _ptp beg */        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
 /* _ptp beg */        job.sendRejectJob
 /* _ptp beg */        [job]:retireAndExit
 /* _ptp beg */      else
 /* _ptp beg */        LibInfo[].link not if
 /* _ptp beg */          LibInfo[].error .
+/* _ptp beg */          Dynamo[].delete
+/* _ptp beg */          "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
+/* _ptp beg */            false LibInfo[].delete
+/* _ptp beg */          else
+/* _ptp beg */            true LibInfo[].delete
+/* _ptp beg */          then
 /* _ptp beg */          EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
 /* _ptp beg */          job.sendRejectJob
 /* _ptp beg */          [job]:retireAndExit
