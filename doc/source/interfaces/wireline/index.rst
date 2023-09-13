@@ -1,5 +1,5 @@
 .. index::
-   single: Interfaces; wireline protocol
+   single: Interfaces; Wireline Protocol
    single: wireline protocol
 
 .. _wirelineProtocolInterface:

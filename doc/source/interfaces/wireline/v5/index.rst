@@ -1,6 +1,5 @@
 .. index::
-   single: Interfaces; wireline protocol
-   single: wireline protocol; version 5
+   single: wireline protocol; v5
 
 .. _wirelineProtocolInterfaceV5:
 

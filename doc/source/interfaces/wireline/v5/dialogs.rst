@@ -5,7 +5,7 @@
      :backlinks: none
 
 .. index::
-   single: wireline protocol; version 5; dialogs
+   single: wireline protocol; v5, dialogs
 
 .. _wlpv5MessageDialogs:
 
@@ -47,7 +47,7 @@ memory requirement.
 
 
 .. index::
-   single: wireline protocol; version 5; dialogs ; connection
+   single: wireline protocol; v5, dialogs - connection
 
 .. _wlpv5ConnectionDialog:
 
@@ -166,7 +166,7 @@ order to execute SQL commands in the system.
 
 
 .. index::
-   single: wireline protocol; version 5; dialogs ; query
+   single: wireline protocol; v5, dialogs - query
 
 .. _wlpv5QueryDialog:
 
@@ -401,7 +401,7 @@ Client State Transitions
 
 
 .. index::
-   single: wireline protocol; version 5; dialogs ; query cancellation
+   single: wireline protocol; v5, dialogs - query cancellation
 
 .. _wlpv5QueryCancellationDialog:
 
@@ -500,7 +500,7 @@ cancelled.
 
 
 .. index::
-   single: wireline protocol; version 5; dialogs ; termination
+   single: wireline protocol; v5, dialogs - termination
 
 Termination Dialog
 ------------------
@@ -534,7 +534,7 @@ implemented as messages that are sent from the server to the client, so the
 client must be prepared to receive them at any point during any other dialog.
 
 .. index::
-   single: wireline protocol; version 5; dialogs ; server shutdown
+   single: wireline protocol; v5, dialogs - server shutdown
 
 Server Shutdown Dialog
 ``````````````````````
@@ -560,7 +560,7 @@ as they deem necessary. This dialog is implemented as the server sending a
 
 
 .. index::
-   single: wireline protocol; version 5; dialogs ; client disconnection
+   single: wireline protocol; v5, dialogs - client disconnection
 
 Client Disconnection Dialog
 ```````````````````````````

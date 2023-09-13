@@ -4,9 +4,6 @@
      :depth: 3
      :backlinks: none
 
-.. index::
-   single: Interfaces; wireline protocol
-   single: wireline protocol; version 5 ; messages
 
 Wireline Messages
 =================
@@ -27,6 +24,10 @@ This section contains the message definitions, as well as other factors such as
 string encoding, message headers and which messages are currently supported by
 this version of RapidsSE.
 
+
+.. index::
+   single: wireline protocol; v5, message encoding
+
 String Encoding
 ---------------
 
@@ -37,7 +38,7 @@ from the server. Similarly, all strings being sent to RapidsSE should be
 converted into UTF-8 format before being sent to the server.
 
 .. index::
-   single: wireline protocol; version 5 ; message header
+   single: wireline protocol; v5, message header
 
 Message Header
 --------------
@@ -87,6 +88,9 @@ before reading the payload (totalMessageLength – 8 bytes). By knowing the
 payload can then be deserialized.
 
 
+.. index::
+   single: wireline protocol; v5, compiling messages
+
 Compiling Messages
 ------------------
 
@@ -121,7 +125,7 @@ and writes the output to ``${OUTPUT_DIR}``.
 
 
 .. index::
-   single: wireline protocol; version 5 ; message types
+   single: wireline protocol; v5, message types
 
 .. _wlpv5MessageTypes:
 
@@ -197,7 +201,7 @@ Message Name                        MessageType ID    Currently
 
 
 .. index::
-   single: wireline protocol; version 5 ; message definitions
+   single: wireline protocol; v5, message definitions
 
 Message Definitions
 -------------------

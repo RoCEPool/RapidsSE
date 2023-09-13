@@ -5,7 +5,7 @@
      :backlinks: none
 
 .. index::
-   single: wireline protocol; version 5 ; overview
+   single: wireline protocol; v5, overview
 
 .. _wlpv5Overview:
 
