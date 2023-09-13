@@ -1282,10 +1282,14 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_BOUNDS:           return G.p_bounds;
 
     case CK_CALL:             return G.p_call;
+    case CK_CALLER:           return G.p_caller;
+    case CK_CALLOP:           return G.p_callOp;
     case CK_CAST:             return G.p_cast;
+    case CK_CLAUSE:           return G.p_clause;
     case CK_CMPCONJ:          return G.p_cmpConj;
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
+    case CK_CORRCOLS:         return G.p_corrCols;
     case CK_CORRELATION:      return G.p_correlation;
     case CK_COSTJOINING:      return G.p_costJoining;
     case CK_COSTNETWORK:      return G.p_costNetwork;
@@ -1338,7 +1342,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_MAP:              return G.p_map;
     case CK_MAPPING:          return G.p_mapping;
 
-    case CK_CORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
     case CK_NOTE:             return G.p_note;
     case CK_NOTCONJ:          return G.p_notConj;
@@ -1353,6 +1356,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
 
+    case CK_RELNOP:           return G.p_relnOp;
     case CK_ROWCOUNT:         return G.p_rowCount;
     case CK_ROWSIZE:          return G.p_rowSize;
     case CK_RPNCALC:          return G.p_rpnCalc;
@@ -1362,6 +1366,8 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SEND:             return G.p_send;
     case CK_SPARE:            return G.p_spare;
     case CK_SORT:             return G.p_sort;
+    case CK_SQYCALLS:         return G.p_sqyCalls;
+    case CK_SQYNO:            return G.p_sqyNo;
     case CK_STAGE:            return G.p_stage;
     case CK_STREAM:           return G.p_stream;
     case CK_STREAMHEAD:       return G.p_streamHead;
@@ -1488,14 +1494,18 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_CALL:             G.p_call              = _pCard_Call(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
+    case CK_CALLER:           G.p_caller            = _pCard_Caller(pCard); break;
+    case CK_CALLOP:           G.p_callOp            = _pCard_CallOp(pCard); break;
     case CK_CAST:             G.p_cast              = _pCard_Cast(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_CMPCONJ: G.p_cmpConj           = _pCard_CmpConj(pCard);
+    case CK_CLAUSE:           G.p_clause            = _pCard_Clause(pCard); break;
+    case CK_CMPCONJ:          G.p_cmpConj           = _pCard_CmpConj(pCard);
                               G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
 
     case CK_COMBINED:         G.p_combined          = _pCard_Combined(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_CONSTRAINT:       G.p_constraint        = _pCard_Constraint(pCard); break;
+    case CK_CORRCOLS:         G.p_corrCols          = _pCard_CorrCols(pCard); break;
     case CK_CORRELATION:      G.p_correlation       = _pCard_Correlation(pCard); ;
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_COSTJOINING:      G.p_costJoining       = _pCard_CostJoining(pCard); break;
@@ -1562,7 +1572,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_MAP:              G.p_map               = _pCard_Map(pCard); break;
     case CK_MAPPING:          G.p_mapping           = _pCard_Mapping(pCard); break;
 
-    case CK_CORRCOLS: G.p_nCorrCols         = _pCard_NCorrCols(pCard); break;
     case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
     case CK_NOTCONJ: G.p_notConj           = _pCard_NotConj(pCard);
@@ -1581,6 +1590,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_PROJECTION:       G.p_projection        = _pCard_Projection(pCard); break;
 
+    case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
     case CK_ROWCOUNT:         G.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE:          G.p_rowSize           = _pCard_RowSize(pCard); break;
     case CK_RPNCALC:          G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
@@ -1594,6 +1604,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_SPARE:            G.p_section           = _pCard_Section(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
+    case CK_SQYCALLS:         G.p_sqyCalls          = _pCard_SqyCalls(pCard); break;
+    case CK_SQYNO:            G.p_sqyNo             = _pCard_SqyNo(pCard); break;
     case CK_STAGE:            G.p_stage             = _pCard_Stage(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_STREAM:           G.p_stream            = _pCard_Stream(pCard); break;
@@ -1728,6 +1740,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_cmpConj          = nullptr;
   G.p_combined         = nullptr;
   G.p_constraint       = nullptr;
+  G.p_corrCols         = nullptr;
   G.p_correlation      = nullptr;
   G.p_costJoining      = nullptr;
   G.p_costNetwork      = nullptr;
@@ -1781,7 +1794,6 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_map              = nullptr;
   G.p_mapping          = nullptr;
 
-  G.p_nCorrCols        = nullptr;
   G.p_needed           = nullptr;
   G.p_note             = nullptr;
   G.p_notConj          = nullptr;
@@ -2491,6 +2503,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
 
       case CK_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
       case CK_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
+      case CK_CORRCOLS:     G.p_corrCols->vValidate(this, iDepth, pCard);  break;
       case CK_CORRELATION:  G.p_correlation->vValidate(this, iDepth, pCard);  break;
       case CK_COSTJOINING:  G.p_costJoining->vValidate(this, iDepth, pCard);  break;
       case CK_COSTNETWORK:  G.p_costNetwork->vValidate(this, iDepth, pCard);  break;
@@ -2543,7 +2556,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_MAP:          G.p_map->vValidate(this, iDepth, pCard);  break;
       case CK_MAPPING:      G.p_mapping->vValidate(this, iDepth, pCard);  break;
 
-      case CK_CORRCOLS:    G.p_nCorrCols->vValidate(this, iDepth, pCard);  break;
       case CK_NEEDED:       G.p_needed->vValidate(this, iDepth, pCard);  break;
       case CK_NOTE:         G.p_note->vValidate(this, iDepth, pCard);  break;
       case CK_NOTCONJ:      G.p_notConj->vValidate(this, iDepth, pCard);  break;

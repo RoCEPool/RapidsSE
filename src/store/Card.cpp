@@ -2112,14 +2112,40 @@ Card_Bounds* Card::pSub_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_JoinCast.hpp"
-Card_JoinCast* Card::pSub_locusCast(void)
+#include "Card_Caller.hpp"
+Card_Caller* Card::pSub_caller(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_JoinCast* p_castNext =
-      _pCard_JoinCast(pFindSubCard(CK_JOINCAST));
-  return p_castNext;
+  Card_Caller* p_caller =
+      _pCard_Caller(pFindSubCard(CK_CALLER));
+  return p_caller;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CallOp.hpp"
+Card_CallOp* Card::pSub_callOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CallOp* p_callOp =
+      _pCard_CallOp(pFindSubCard(CK_CALLOP));
+  return p_callOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Clause.hpp"
+Card_Clause* Card::pSub_clause(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Clause* p_clause =
+      _pCard_Clause(pFindSubCard(CK_CLAUSE));
+  return p_clause;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2151,6 +2177,71 @@ Card_Constraint* Card::pSub_constraint(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Correlation.hpp"
+Card_Correlation* Card::pSub_correlation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Correlation* p_paramList =
+      _pCard_Correlation(pFindSubCard(CK_CORRELATION));
+  return p_paramList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CostNetwork.hpp"
+Card_CostNetwork* Card::pSub_costNetwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CostNetwork* p_costNetwork =
+      _pCard_CostNetwork(pFindSubCard(CK_COSTNETWORK));
+  return p_costNetwork;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CostJoining.hpp"
+Card_CostJoining* Card::pSub_costJoining(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CostJoining* p_costJoining =
+      _pCard_CostJoining(pFindSubCard(CK_COSTJOINING));
+  return p_costJoining;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CostStream.hpp"
+Card_CostStream* Card::pSub_costQuery(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CostStream* p_costQuery =
+      _pCard_CostStream(pFindSubCard(CK_COSTSTREAM));
+  return p_costQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CostUnicast.hpp"
+Card_CostUnicast* Card::pSub_costUnicast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CostUnicast* p_loadUnicast =
+      _pCard_CostUnicast(pFindSubCard(CK_COSTUNICAST));
+  return p_loadUnicast;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Count.hpp"
 Card_Count* Card::pSub_count(void)
 {
@@ -2159,6 +2250,19 @@ Card_Count* Card::pSub_count(void)
   Card_Count* p_count =
       _pCard_Count(pFindSubCard(CK_COUNT));
   return p_count;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_CorrCols.hpp"
+Card_CorrCols* Card::pSub_corrCols(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CorrCols* p_corrCols =
+      _pCard_CorrCols(pFindSubCard(CK_CORRCOLS));
+  return p_corrCols;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2398,6 +2502,19 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_JoinCast.hpp"
+Card_JoinCast* Card::pSub_joinCast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_JoinCast* p_castNext =
+      _pCard_JoinCast(pFindSubCard(CK_JOINCAST));
+  return p_castNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Key.hpp"
 Card_Key* Card::pSub_key(void)
 {
@@ -2437,19 +2554,6 @@ Card_KeyNotExists* Card::pSub_keyNotExists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Level.hpp"
-Card_Level* Card::pSub_level(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Level* p_level =
-      _pCard_Level(pFindSubCard(CK_LEVEL));
-  return p_level;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_JoinEstimate.hpp"
 Card_JoinEstimate* Card::pSub_joinEstimate(void)
 {
@@ -2463,59 +2567,6 @@ Card_JoinEstimate* Card::pSub_joinEstimate(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CostJoining.hpp"
-Card_CostJoining* Card::pSub_costJoining(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CostJoining* p_costJoining =
-      _pCard_CostJoining(pFindSubCard(CK_COSTJOINING));
-  return p_costJoining;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_CostNetwork.hpp"
-Card_CostNetwork* Card::pSub_costNetwork(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CostNetwork* p_costNetwork =
-      _pCard_CostNetwork(pFindSubCard(CK_COSTNETWORK));
-  return p_costNetwork;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_CostStream.hpp"
-Card_CostStream* Card::pSub_costQuery(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CostStream* p_costQuery =
-      _pCard_CostStream(pFindSubCard(CK_COSTSTREAM));
-  return p_costQuery;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_CostUnicast.hpp"
-Card_CostUnicast* Card::pSub_costUnicast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CostUnicast* p_loadUnicast =
-      _pCard_CostUnicast(pFindSubCard(CK_COSTUNICAST));
-  return p_loadUnicast;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_KeyCells.hpp"
 Card_KeyCells* Card::pSub_keyCells(void)
 {
@@ -2524,6 +2575,19 @@ Card_KeyCells* Card::pSub_keyCells(void)
   Card_KeyCells* p_keyCells =
       _pCard_KeyCells(pFindSubCard(CK_KEYCELLS));
   return p_keyCells;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Level.hpp"
+Card_Level* Card::pSub_level(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Level* p_level =
+      _pCard_Level(pFindSubCard(CK_LEVEL));
+  return p_level;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2555,19 +2619,6 @@ Card_Mapping* Card::pSub_mapping(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_NCorrCols.hpp"
-Card_NCorrCols* Card::pSub_nCorrCols(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_NCorrCols* p_nCorrCols =
-      _pCard_NCorrCols(pFindSubCard(CK_CORRCOLS));
-  return p_nCorrCols;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Needed.hpp"
 Card_Needed* Card::pSub_needed(void)
 {
@@ -2582,7 +2633,7 @@ Card_Needed* Card::pSub_needed(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Cast.hpp"
-Card_Cast* Card::pSub_next(void)
+Card_Cast* Card::pSub_cast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2608,7 +2659,7 @@ Card_Note* Card::pSub_note(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_NotConj.hpp"
-Card_NotConj* Card::pSub_notPred(void)
+Card_NotConj* Card::pSub_notConj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2667,19 +2718,6 @@ Card_PayloadCells* Card::pSub_payloadCells(void)
   Card_PayloadCells* p_payloadCells =
       _pCard_PayloadCells(pFindSubCard(CK_PAYLOADCELLS));
   return p_payloadCells;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Correlation.hpp"
-Card_Correlation* Card::pSub_correlation(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Correlation* p_paramList =
-      _pCard_Correlation(pFindSubCard(CK_CORRELATION));
-  return p_paramList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2771,6 +2809,32 @@ Card_Spare* Card::pSub_spare(void)
   Card_Spare* p_spare =
       _pCard_Spare(pFindSubCard(CK_SPARE));
   return p_spare;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_SqyCalls.hpp"
+Card_SqyCalls* Card::pSub_sqyCalls(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SqyCalls* p_sqyCalls =
+      _pCard_SqyCalls(pFindSubCard(CK_SQYCALLS));
+  return p_sqyCalls;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_SqyNo.hpp"
+Card_SqyNo* Card::pSub_sqyNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SqyNo* p_sqyNo =
+      _pCard_SqyNo(pFindSubCard(CK_SQYNO));
+  return p_sqyNo;
 }
 
 /*----------------------------------------------------------------------------*/

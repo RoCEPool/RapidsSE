@@ -37,11 +37,15 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
+  class Card_Caller;
+  class Card_CallOp;
+  class Card_Clause;
   class Card_CmpConj;
   class Card_Combined;
+  class Card_CONJUNCTION;
   class Card_Constraint;
+  class Card_CorrCols;
   class Card_Correlation;
-  class Card_JoinEstimate;
   class Card_CostJoining;
   class Card_CostNetwork;
   class Card_CostStream;
@@ -49,7 +53,6 @@ namespace STORE
   class Card_Count;
   class Card_CrossJoin;
 
-  class Card_StreamHead;
   class Card_Debug;
   class Card_Deck;
   class Card_Direction;
@@ -83,8 +86,7 @@ namespace STORE
   class Card_JoinCast;
   class Card_JoinOrder;
   class Card_JoinOrdering;
-  class Card_StreamSet;
-  class Card_StreamPer;
+  class Card_JoinEstimate;
   class Card_JoinPredList;
 
   class Card_Key;
@@ -112,10 +114,10 @@ namespace STORE
   class Card_OuterJoin;
 
   class Card_PayloadCells;
-  class Card_CONJUNCTION;
   class Card_Project;
   class Card_Projection;
 
+  class Card_RelnOp;
   class Card_RowCount;
   class Card_RowSize;
   class Card_RpnCalc;
@@ -126,11 +128,16 @@ namespace STORE
   class Card_Send;
   class Card_Sort;
   class Card_Spare;
+  class Card_SqyCalls;
+  class Card_SqyNo;
   class Card_Stage;
   class Card_Stream;
+  class Card_StreamHead;
   class Card_StreamJoin;
   class Card_StreamKey;
+  class Card_StreamPer;
   class Card_StreamPtn;
+  class Card_StreamSet;
   class Card_SubQuery;
   class Card_SubSet;
 
@@ -422,9 +429,13 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_Cast*          pSub_next(void);
+    Card_Cast*          pSub_cast(void);
+    Card_Caller*        pSub_caller(void);
+    Card_CallOp*        pSub_callOp(void);
+    Card_Clause*        pSub_clause(void);
     Card_CmpConj*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
+    Card_CorrCols*      pSub_corrCols(void);
     Card_Correlation*   pSub_correlation(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
@@ -449,7 +460,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_JoinCast*      pSub_locusCast(void);
+    Card_JoinCast*      pSub_joinCast(void);
     Card_JoinEstimate*  pSub_joinEstimate(void);
     Card_Key*           pSub_key(void);
     Card_KeyCells*      pSub_keyCells(void);
@@ -458,15 +469,15 @@ namespace STORE
     Card_Level*         pSub_level(void);
     Card_Map*           pSub_map(void);
     Card_Mapping*       pSub_mapping(void);
-    Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);
-    Card_NotConj*       pSub_notPred(void);
+    Card_NotConj*       pSub_notConj(void);
     Card_Note*          pSub_note(void);
     Card_On*            pSub_on(void);
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
     Card_PayloadCells*  pSub_payloadCells(void);
     Card_Projection*    pSub_projection(void);
+    Card_RelnOp*        pSub_relnOp(void);
     Card_RowCount*      pSub_rowCount(void);
     Card_RowSize*       pSub_rowSize(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
@@ -480,6 +491,8 @@ namespace STORE
     Card_StreamPer*     pSub_streamPer(void);
     Card_StreamPtn*     pSub_streamPtn(void);
     Card_StreamSet*     pSub_streamSet(void);
+    Card_SqyCalls*      pSub_sqyCalls(void);
+    Card_SqyNo*         pSub_sqyNo(void);
     Card_SubQuery*      pSub_subQuery(void);
     Card_Table*         pSub_table(void);
     Card_TableInfo*     pSub_tableInfo(void);

@@ -608,6 +608,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_COMBINED:     pCI->G.p_combined->vValidate(pCI, 1, this); break;
       case CK_CONSTRAINT:   pCI->G.p_constraint->vValidate(pCI, 1, this); break;
+      case CK_CORRCOLS:     pCI->G.p_corrCols->vValidate(pCI, 1, this); break;
       case CK_CORRELATION:  pCI->G.p_correlation->vValidate(pCI, 1, this); break;
       case CK_COSTJOINING:  pCI->G.p_costJoining->vValidate(pCI, 1, this); break;
       case CK_COSTNETWORK:  pCI->G.p_costNetwork->vValidate(pCI, 1, this); break;
@@ -658,7 +659,6 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_MAP:          pCI->G.p_map->vValidate(pCI, 1, this); break;
       case CK_MAPPING:      pCI->G.p_mapping->vValidate(pCI, 1, this); break;
 
-      case CK_CORRCOLS:    pCI->G.p_nCorrCols->vValidate(pCI, 1, this); break;
       case CK_NEEDED:       pCI->G.p_needed->vValidate(pCI, 1, this); break;
       case CK_NOTE:         pCI->G.p_note->vValidate(pCI, 1, this); break;
       case CK_NOTCONJ:      pCI->G.p_notConj->vValidate(pCI, 1, this); break;

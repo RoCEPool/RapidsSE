@@ -51,10 +51,14 @@ namespace STORE
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
+    Card_Caller *        p_caller;
+    Card_CallOp *        p_callOp;
     Card_Cast *          p_cast;
     Card_CmpConj *       p_cmpConj;
+    Card_Clause *        p_clause;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
+    Card_CorrCols *      p_corrCols;
     Card_Correlation *   p_correlation;
     Card_CostJoining *   p_costJoining;
     Card_CostNetwork *   p_costNetwork;
@@ -107,7 +111,6 @@ namespace STORE
     Card_Map *           p_map;
     Card_Mapping *       p_mapping;
 
-    Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
     Card_Note *          p_note;
     Card_NotConj *       p_notConj;
@@ -122,6 +125,7 @@ namespace STORE
     Card_Project *       p_project;
     Card_Projection *    p_projection;
 
+    Card_RelnOp *        p_relnOp;
     Card_RowCount *      p_rowCount;
     Card_RowSize *       p_rowSize;
     Card_RpnCalc *       p_rpnCalc;
@@ -131,6 +135,8 @@ namespace STORE
     Card_Send *          p_send;
     Card_Sort *          p_sort;
     Card_Spare *         p_spare;
+    Card_SqyCalls *      p_sqyCalls;
+    Card_SqyNo *         p_sqyNo;
     Card_Stage *         p_stage;
     Card_Stream *        p_stream;
     Card_StreamHead *    p_streamHead;

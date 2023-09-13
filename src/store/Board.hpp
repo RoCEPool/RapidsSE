@@ -25,11 +25,15 @@
 #include "Card_Bounds.hpp"
 
 #include "Card_Call.hpp"
+#include "Card_Caller.hpp"
+#include "Card_CallOp.hpp"
+#include "Card_Clause.hpp"
 #include "Card_CmpConj.hpp"
 #include "Card_COLUMN.hpp"
 #include "Card_Combined.hpp"
 #include "Card_CONDITION.hpp"
 #include "Card_Constraint.hpp"
+#include "Card_CorrCols.hpp"
 #include "Card_Correlation.hpp"
 #include "Card_CostJoining.hpp"  //
 #include "Card_CostNetwork.hpp"  //
@@ -101,6 +105,7 @@
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 
+#include "Card_RelnOp.hpp"
 #include "Card_RowCount.hpp"
 #include "Card_RowSize.hpp"
 #include "Card_RpnCalc.hpp"
@@ -111,6 +116,8 @@
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Spare.hpp"
+#include "Card_SqyCalls.hpp"
+#include "Card_SqyNo.hpp"
 #include "Card_Stage.hpp"
 #include "Card_Stream.hpp"
 #include "Card_StreamHead.hpp"

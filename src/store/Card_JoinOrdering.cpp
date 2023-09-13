@@ -150,7 +150,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
     char cNextTable = p_joinOrder->pSymbol()->cSF_char();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
     Card_JoinEstimate* p_joinEstimate = p_joinOrder->pSub_joinEstimate();
-    Card_JoinCast* p_joinCast = p_joinEstimate->pSub_locusCast();
+    Card_JoinCast* p_joinCast = p_joinEstimate->pSub_joinCast();
     Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
     Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
     Card_CostJoining* p_costJoining = p_joinEstimate->pSub_costJoining();
