@@ -164,6 +164,7 @@ void StageDef::vCollapseOps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
+#ifdef Z_REJIG_STREAMDEFS
   i8 nOps = nItems();
   for (i8 i_Op = 0; i_Op < nOps - 1; i_Op++) {
     OpDef* pOpDef_curr = pGet(i_Op);
@@ -172,14 +173,13 @@ void StageDef::vCollapseOps(void)
     if (pOpDef_curr->m_sOpNm.bSame("scan"_Stz) &&
         pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
 
-#ifdef Z_REJIG_STREAMDEFS
+
       delete pOpDef_curr->m_pStreamDef_emitted;
       pOpDef_curr->m_pStreamDef_emitted = nullptr;
 
       pOpDef_curr->m_pStreamDef_emitted = pOpDef_next->m_pStreamDef_emitted->pDup();
 
       vCollapseColsReq_scan(pOpDef_curr);
-#endif
       
       if (! pOpDef_curr->m_pStreamDef_arriving) {
         pOpDef_curr->m_pStreamDef_arriving = pOpDef_curr->m_pStreamDef_emitted;
@@ -190,24 +190,24 @@ void StageDef::vCollapseOps(void)
           pOpDef_next->m_pStreamDef_emitted = nullptr;
         }
       }
+
       pOpDef_next->m_bCollapsed = true;
       pOpDef_curr->m_nCollapses++;
 
       vRemove(pOpDef_next);
       delete pOpDef_next;
+
     }
     else
     if (pOpDef_curr->m_sOpNm.bSame("indexScan"_Stz) &&
         pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
 
-#ifdef Z_REJIG_STREAMDEFS
       delete pOpDef_curr->m_pStreamDef_emitted;
       pOpDef_curr->m_pStreamDef_emitted = nullptr;
 
       pOpDef_curr->m_pStreamDef_emitted = pOpDef_next->m_pStreamDef_emitted->pDup();
 
       vCollapseColsReq_scan(pOpDef_curr);
-#endif
 
       if (! pOpDef_curr->m_pStreamDef_arriving) {
         pOpDef_curr->m_pStreamDef_arriving = pOpDef_curr->m_pStreamDef_emitted;
@@ -224,9 +224,13 @@ void StageDef::vCollapseOps(void)
 
       vRemove(pOpDef_next);
       delete pOpDef_next;
+
     }
 
   }
+
+#endif
+
 }
 
 /*----------------------------------------------------------------------------*/
