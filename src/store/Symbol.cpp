@@ -2666,6 +2666,7 @@ bool Symbol::bValidate(void)
     case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
     case SF_PRM_COL:     b = bIs_Prm_Col();     break;
     case SF_RLN_OP:      b = bIs_Rln_Op();      break;
+    case SF_SQY_NM:      b = bIs_Sqy_Nm();      break;
     case SF_SQY_OP:      b = bIs_Sqy_Op();      break;
     case SF_STG_NO:      b = bIs_Stg_Nm();      break;
     case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
