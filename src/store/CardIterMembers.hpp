@@ -68,6 +68,7 @@ namespace STORE
     Card_CrossJoin *     p_crossJoin;
 
     Card_Direction *     p_direction;
+    Card_Disposition *     p_disposition;
 
     Card_Expr *          p_expr;
 

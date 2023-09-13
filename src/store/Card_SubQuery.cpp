@@ -47,11 +47,11 @@ void Card_SubQuery::vPopulate_subQuery(CardIter* pCI, SubQuery* pSubQuery)
 
   vAppendChild(new Card_SqyNo);
   vAppendChild(new Card_Caller);
-  vAppendChild(new Card_CorrCols);
   vAppendChild(new Card_Clause);
   vAppendChild(new Card_CallOp);
   vAppendChild(new Card_RelnOp);
-  vAppendChild(new Card_NCorrCols);
+  vAppendChild(new Card_CorrCols);
+  vAppendChild(new Card_Disposition);
   vAppendChild(new Card_SqyCalls);
 }
 

@@ -100,7 +100,7 @@ namespace STORE
   class Card_Map;
   class Card_Mapping;
 
-  class Card_NCorrCols;
+  class Card_Disposition;
   class Card_Needed;
   class Card_Cast;
   class Card_Note;

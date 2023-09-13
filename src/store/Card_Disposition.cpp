@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_NCorrCols.cpp -- Number of Correlated Columns                         */
+/* Card_Disposition.cpp -- Number of Correlated Columns                         */
 /*============================================================================*/
 
-#include "Card_NCorrCols.hpp"
+#include "Card_Disposition.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_NCorrCols, CK_CORRCOLS)
-__aNewFunction(Card_NCorrCols,CN_CARD)
-__vDeleteFunction(Card_NCorrCols,CN_CARD)
+__pCastFunction_Card(STORE, Card_Disposition, CK_DISPOSITION)
+__aNewFunction(Card_Disposition, CN_CARD)
+__vDeleteFunction(Card_Disposition, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NCorrCols::Card_NCorrCols(void)
-: Card_symbol(CK_CORRCOLS, C_UNKNOWN)
+Card_Disposition::Card_Disposition(void)
+: Card_symbol(CK_DISPOSITION, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_NCorrCols::Card_NCorrCols(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_NCorrCols::~Card_NCorrCols(void) noexcept(false)
+Card_Disposition::~Card_Disposition(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -42,7 +42,7 @@ Card_NCorrCols::~Card_NCorrCols(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_NCorrCols::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_Disposition::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

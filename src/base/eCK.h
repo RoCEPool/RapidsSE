@@ -36,6 +36,7 @@ enum eCK : i8 // card kind
   /* */ CK_DEBUG,
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
+  /* */ CK_DISPOSITION,
 
   /* */ CK_EXPR,
 
