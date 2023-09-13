@@ -1338,7 +1338,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_MAP:              return G.p_map;
     case CK_MAPPING:          return G.p_mapping;
 
-    case CK_NCORRCOLS:        return G.p_nCorrCols;
+    case CK_CORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
     case CK_NOTE:             return G.p_note;
     case CK_NOTCONJ:          return G.p_notConj;
@@ -1562,7 +1562,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_MAP:              G.p_map               = _pCard_Map(pCard); break;
     case CK_MAPPING:          G.p_mapping           = _pCard_Mapping(pCard); break;
 
-    case CK_NCORRCOLS:        G.p_nCorrCols         = _pCard_NCorrCols(pCard); break;
+    case CK_CORRCOLS: G.p_nCorrCols         = _pCard_NCorrCols(pCard); break;
     case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
     case CK_NOTCONJ: G.p_notConj           = _pCard_NotConj(pCard);
@@ -2543,7 +2543,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_MAP:          G.p_map->vValidate(this, iDepth, pCard);  break;
       case CK_MAPPING:      G.p_mapping->vValidate(this, iDepth, pCard);  break;
 
-      case CK_NCORRCOLS:    G.p_nCorrCols->vValidate(this, iDepth, pCard);  break;
+      case CK_CORRCOLS:    G.p_nCorrCols->vValidate(this, iDepth, pCard);  break;
       case CK_NEEDED:       G.p_needed->vValidate(this, iDepth, pCard);  break;
       case CK_NOTE:         G.p_note->vValidate(this, iDepth, pCard);  break;
       case CK_NOTCONJ:      G.p_notConj->vValidate(this, iDepth, pCard);  break;

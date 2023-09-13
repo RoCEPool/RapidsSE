@@ -9,7 +9,6 @@
 #include "eQC.h"
 #include "eQO.h"
 #include "eRO.h"
-#include "eFF.h"
 
 namespace STORE
 {
@@ -31,8 +30,6 @@ namespace STORE
     eQC m_eClause;       // called via clause: from|where|having
     eQO m_eCallOp;       // connecting operator: (not)exists|(not)in|relnOp
     eRO m_eRelnOp;       // NONE|<|<=|==|!=|>=|> (if connecting/post call is cmpOp)
-
-    eFF m_eFold;         // which fold
 
     i8 m_nSubQueries;    // how many sub-queries under this one
 
@@ -71,10 +68,6 @@ namespace STORE
     void vDisposition(eQD eDisposition);
 
     void vDump(void);
-
-    eFF  eFold(void);
-    void vFold(eFF eFold);
-
 
     bool bIsAggregation(void);
     bool bIsCorrelated(void);

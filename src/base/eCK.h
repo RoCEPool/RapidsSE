@@ -24,6 +24,7 @@ enum eCK : i8 // card kind
   /* */ CK_CMPCONJ,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
+  /* */ CK_CORRCOLS,
   /* */ CK_CORRELATION,
   /* */ CK_COSTJOINING,
   /* */ CK_COSTNETWORK,
@@ -78,7 +79,6 @@ enum eCK : i8 // card kind
   /* */ CK_MAP,
   /* */ CK_MAPPING,
 
-  /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
   /* */ CK_NOTE,
   /* */ CK_NOTCONJ,

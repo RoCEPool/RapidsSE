@@ -658,7 +658,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_MAP:          pCI->G.p_map->vValidate(pCI, 1, this); break;
       case CK_MAPPING:      pCI->G.p_mapping->vValidate(pCI, 1, this); break;
 
-      case CK_NCORRCOLS:    pCI->G.p_nCorrCols->vValidate(pCI, 1, this); break;
+      case CK_CORRCOLS:    pCI->G.p_nCorrCols->vValidate(pCI, 1, this); break;
       case CK_NEEDED:       pCI->G.p_needed->vValidate(pCI, 1, this); break;
       case CK_NOTE:         pCI->G.p_note->vValidate(pCI, 1, this); break;
       case CK_NOTCONJ:      pCI->G.p_notConj->vValidate(pCI, 1, this); break;

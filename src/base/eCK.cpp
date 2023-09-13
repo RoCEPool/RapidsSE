@@ -27,6 +27,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_CMPCONJ"_Stz,      // CK_CMPCONJ
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
+  /* */ "CK_CORRCOLS"_Stz,     // CK_CORRCOLS
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
   /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
@@ -81,7 +82,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_MAP"_Stz,          // CK_MAP
   /* */ "CK_MAPPING"_Stz,      // CK_MAPPING
 
-  /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
   /* */ "CK_NOTCONJ"_Stz,      // CK_NOTCONJ
@@ -162,7 +162,8 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "cmpPred"_Stz,         // CK_CMPCONJ
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
-  /* */ "correlation"_Stz,     // CK_CORRELATION
+  /* */ "corrCols"_Stz,        // CK_CORRCOLS
+  /* */ "correlation"_Stz,     // CK_CORRELATIO
   /* */ "costJoining"_Stz,     // CK_COSTJOINING
   /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
   /* */ "costQuery"_Stz,       // CK_COSTSTREAM
@@ -216,7 +217,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "map"_Stz,             // CK_MAP
   /* */ "mapping"_Stz,         // CK_MAPPING
 
-  /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED
   /* */ "note"_Stz,            // CK_NOTE
   /* */ "notPred"_Stz,         // CK_NOTCONJ

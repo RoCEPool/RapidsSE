@@ -2561,7 +2561,7 @@ Card_NCorrCols* Card::pSub_nCorrCols(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_NCorrCols* p_nCorrCols =
-      _pCard_NCorrCols(pFindSubCard(CK_NCORRCOLS));
+      _pCard_NCorrCols(pFindSubCard(CK_CORRCOLS));
   return p_nCorrCols;
 }
 

@@ -35,7 +35,6 @@
 #include "eED.h"
 #include "eEK.h"
 #include "eEV.h"
-#include "eFF.h"
 #include "eFK.h"
 #include "eFM.h"
 #include "eFN.h"
@@ -195,7 +194,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aED[ED_ENUMS - 1],          "aED[]"_Stz,     "eED"_Stz },
       {           aEK[EK_ENUMS - 1],          "aEK[]"_Stz,     "eEK"_Stz },
       {           aEV[EV_ENUMS - 1],          "aEV[]"_Stz,     "eEV"_Stz },
-      {           aFF[FF_ENUMS - 1],          "aFF[]"_Stz,     "eFF"_Stz },
       {           aFK[FK_ENUMS - 1],          "aFK[]"_Stz,     "eFK"_Stz },
       {           aFM[FM_ENUMS - 1],          "aFM[]"_Stz,     "eFM"_Stz },
       {           aFN[FN_ENUMS - 1],          "aFN[]"_Stz,     "eFN"_Stz },
