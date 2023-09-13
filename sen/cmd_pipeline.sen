@@ -573,25 +573,21 @@ then
 /* _ptp beg */    LibInfo[].new
 /* _ptp beg */    [job].codeBlock@
 /* _ptp beg */      Dynamo[].fileName@ LibInfo[].compile not if
+/* _ptp beg */
 /* _ptp beg */        LibInfo[].error .
 /* _ptp beg */        Dynamo[].delete
-/* _ptp beg */        "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
-/* _ptp beg */          false LibInfo[].delete
-/* _ptp beg */        else
-/* _ptp beg */          true LibInfo[].delete
-/* _ptp beg */        then
+/* _ptp beg */        [LibInfo].cleanup
+/* _ptp beg */
 /* _ptp beg */        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
 /* _ptp beg */        job.sendRejectJob
 /* _ptp beg */        [job]:retireAndExit
 /* _ptp beg */      else
 /* _ptp beg */        LibInfo[].link not if
+/* _ptp beg */
 /* _ptp beg */          LibInfo[].error .
 /* _ptp beg */          Dynamo[].delete
-/* _ptp beg */          "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
-/* _ptp beg */            false LibInfo[].delete
-/* _ptp beg */          else
-/* _ptp beg */            true LibInfo[].delete
-/* _ptp beg */          then
+/* _ptp beg */          [LibInfo].cleanup
+/* _ptp beg */
 /* _ptp beg */          EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
 /* _ptp beg */          job.sendRejectJob
 /* _ptp beg */          [job]:retireAndExit
@@ -786,13 +782,9 @@ then
 /* _ptp end */      "_ptp end" "unlinking and deleting libInfo"   [job].trace
 /* _ptp end */  then
 /* _ptp end */  LibInfo[].isNotNull if
-/* _ptp end */    LibInfo[].Unlink assert
 /* _ptp end */
-/* _ptp end */    "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
-/* _ptp end */       false LibInfo[].delete
-/* _ptp end */    else
-/* _ptp end */       true LibInfo[].delete
-/* _ptp end */    then
+/* _ptp end */    LibInfo[].Unlink assert
+/* _ptp end */    [LibInfo].cleanup
 /* _ptp end */
 /* _ptp end */  then
 /* ---- --- */  // !!! edd !!! edd !!! edd !!! edd !!! edd !!! edd !!! edd !!!
