@@ -310,18 +310,18 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 
   eCK eCard = pCard->eCard();
 
+  if (CK_COMBINED == eCard)
+    return;
+
   if (CK_SEND == eCard)
     if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU))
       return;
-  if (CK_COMBINED == eCard)
-    return;
 
   switch (eCard) {
 
     case CK_ABSJOIN:      vArgAbsJoin      (sOpArgs,_pCard_AbsJoin(pCard));      break;
     case CK_AGGREG:       vArgAggreg       (sOpArgs,_pCard_Aggreg(pCard));       break;
     case CK_CAST:         vArgCast         (sOpArgs,_pCard_Cast(pCard));         break;
-    case CK_COMBINED:     vArgCombined     (sOpArgs,_pCard_Combined(pCard));     break;
     case CK_CROSSJOIN:    vArgCrossJoin    (sOpArgs,_pCard_CrossJoin(pCard));    break;
     case CK_FILTER:       vArgFilter       (sOpArgs,_pCard_Filter(pCard));       break;
     case CK_GBYAGG:       vArgGbyAgg       (sOpArgs,_pCard_GbyAgg(pCard));       break;
@@ -351,8 +351,8 @@ void Weaver::vOp(Card* pCard, bool bCommented)
        if (CK_CAST == eCard)       sOpNm = "next"_Stz;
   else if (CK_CROSSJOIN == eCard)  sOpNm = "indexJoin"_Stz;
   else if (CK_HAVING == eCard)     sOpNm = "filter"_Stz;
-  else if (CK_TABLE == eCard)      sOpNm = "scan"_Stz;
   else if (CK_SEND == eCard)       sOpNm = "next"_Stz;
+  else if (CK_TABLE == eCard)      sOpNm = "scan"_Stz;
   else if (CK_WHERE == eCard)      sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
 
@@ -405,23 +405,6 @@ void Weaver::vArgCast(String* psOpArgs, Card_Cast* pCard_Next)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
   psOpArgs->vCatSprint("%s"_Stz, pCard_Next->szSymbol(SF_NONE));
-}
-
-/*----------------------------------------------------------------------------*/
-/* weave : combine 0                                                          */
-/*----------------------------------------------------------------------------*/
-void Weaver::vArgCombined(String* psOpArgs, Card_Combined* pCard_Combine)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-    
-  // 0) combined :
-
-  s4K sRpnExpr;
-
-  //pCard_Combine->vRpnCombined(sRpnExpr, pCard_Combine);
-  sRpnExpr.vCatSprint("%s"_Stz, pCard_Combine->szSymbol(SF_NONE));
-
-  psOpArgs->vCatSprint("%s"_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -979,9 +962,6 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
       m_pCodeBlock->vDump();
     vDebugPoint();
   }
-
-//  m_pDeck->vDump();
-//  vDebugPoint();
 }
 
 /*============================================================================*/

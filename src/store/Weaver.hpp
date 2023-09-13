@@ -66,7 +66,6 @@ namespace STORE
     void vArgAbsJoin     (String* psOpArgs, Card_AbsJoin*   pCard_AbsJoin);
     void vArgAggreg      (String* psOpArgs, Card_Aggreg*    pCard_Aggreg);
     void vArgCast        (String* psOpArgs, Card_Cast*      pCard_Next);
-    void vArgCombined    (String* psOpArgs, Card_Combined*  pCard_Combine);
     void vArgCrossJoin   (String* psOpArgs, Card_CrossJoin* pCard_CrossJoin);
     void vArgFilter      (String* psOpArgs, Card_Filter*    pCard_Filter);
     void vArgGbyAgg      (String* psOpArgs, Card_GbyAgg*    pCard_AggGby);
