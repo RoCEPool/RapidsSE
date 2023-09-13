@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_RelnOp,CK_SPARE)
+__pCastFunction_Card(STORE,Card_RelnOp,CK_RELNOP)
 __aNewFunction(Card_RelnOp,CN_CARD)
 __vDeleteFunction(Card_RelnOp,CN_CARD)
 
@@ -19,7 +19,7 @@ __vDeleteFunction(Card_RelnOp,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RelnOp::Card_RelnOp(void)
-: Card_symbol(CK_SPARE, C_UNKNOWN)
+: Card_symbol(CK_RELNOP, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

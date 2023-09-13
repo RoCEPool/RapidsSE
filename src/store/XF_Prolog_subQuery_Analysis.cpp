@@ -122,14 +122,19 @@ void XF_Prolog_subQuery_Analysis::vXF_subQuery_Analysis(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    SubQuery* pOuterQuery = m_pCI->G.pBoard->pSubQuery();
-    UNUSED(pOuterQuery);
-    //pOuterQuery->vDump();
+    SubQuery* pSubQuery = m_pCI->G.pBoard->pSubQuery();
+
+    if ((m_pCI->G.p_subQuery =
+          _pCard_SubQuery(m_pCI->G.pBoard->pDeck()->pFindChild(CK_SUBQUERY)))) {
+      m_pCI->G.p_subQuery->vPopulate_subQuery(m_pCI,pSubQuery);
+    }
+
+    UNUSED(pSubQuery);
+    //pSubQuery->vDump();
   }
 
 
   m_pCI->vEndTransform();
-//vValidateBench();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1602,7 +1602,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_SORT:             G.p_sort              = _pCard_Sort(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_SPARE:            G.p_section           = _pCard_Section(pCard);
+    case CK_SPARE:            G.p_spare             = _pCard_Spare(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_SQYCALLS:         G.p_sqyCalls          = _pCard_SqyCalls(pCard); break;
     case CK_SQYNO:            G.p_sqyNo             = _pCard_SqyNo(pCard); break;

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card_CONSTRUCTION.hpp"
+#include "SubQuery.hpp"
 
 namespace STORE
 {
@@ -15,6 +16,8 @@ namespace STORE
   
     Card_SubQuery(void);
    ~Card_SubQuery(void) noexcept(false);
+
+    void vPopulate_subQuery(CardIter* pCI, SubQuery* pSubQuery);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
