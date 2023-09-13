@@ -19,11 +19,47 @@ set -Eeu -o pipefail
 
 # set -x    # Enable, for debugging
 
+# Any thrift files in this list are not included in the rst fragment file
+THRIFT_IGNORE_LIST=(
+  "ClosePreparedStatementRequest"
+  "ClosePreparedStatementResponse"
+  "ParseStatementRequest"
+  "ParseStatementResponse"
+  "PingRequest"
+  "PingResponse"
+  "QueryProgressRequest"
+  "QueryProgressResponse"
+  "SessionChangeRequest"
+  "SessionChangeResponse"
+  "SessionDataResponse"
+  "SessionDroppedMessagesResponse"
+  "SessionMonitoringRequest"
+  "SessionMonitoringResponse"
+  "SessionProtocolVersionResponse"
+)
+
 # -----------------------------------------------------------------------
 function printUsage() {
   echo "Usage:"
   echo "  $0 <base_path_of_thrift_files> <output_rst_fragment_file>"
   echo ""
+}
+
+# -----------------------------------------------------------------------
+function isToBeIgnored() {
+  local f="$1"
+
+  for i in "${THRIFT_IGNORE_LIST[@]}"; do
+
+    local regex="${i}\.thrift$"
+    if [[ "${f}" =~ ${regex} ]]; then
+      true
+      return
+    fi
+  done
+
+  false
+  return
 }
 
 # -----------------------------------------------------------------------
@@ -98,8 +134,8 @@ fi
 
 THRIFT_FILES_COMPAT=()
 THRIFT_FILES_LATEST=()
-while IFS= read -r line; do THRIFT_FILES_COMPAT+=("${line}"); done < <(find "${THRIFT_DIR_COMPAT}" -type f -name "*.thrift")
-while IFS= read -r line; do THRIFT_FILES_LATEST+=("${line}"); done < <(find "${THRIFT_DIR_LATEST}" -type f -name "*.thrift")
+while IFS= read -r line; do THRIFT_FILES_COMPAT+=("${line}"); done < <(find "${THRIFT_DIR_COMPAT}" -type f -name "*.thrift" | sort)
+while IFS= read -r line; do THRIFT_FILES_LATEST+=("${line}"); done < <(find "${THRIFT_DIR_LATEST}" -type f -name "*.thrift" | sort)
 
 touch "${TGT}" || exit 1
 
@@ -121,5 +157,10 @@ done
 
 for f in "${THRIFT_FILES_LATEST[@]}"
 do
-    appendMessageDef "${f}"
+  if isToBeIgnored "${f}"; then
+    # echo "ignoring ${f}"
+    continue
+  fi
+
+  appendMessageDef "${f}"
 done

@@ -180,6 +180,9 @@ pdf: checkSphinx checkLatex railroad wirelineMessageDefsRst
 internal_html: export SPHINXOPTS = -t internal
 internal_html: html
 
+docclean:
+	@rm -rf "$(BUILDDIR)"
+
 clean:
 	@rm -rf "$(BUILDDIR)"
 	@rm -rf "$(RR_OUTPUT_DIR)"
