@@ -183,6 +183,9 @@ void StageDef::vCollapseOps(void)
 
       pOpDef_next->m_bCollapsed = true;
       pOpDef_curr->m_nCollapses++;
+
+      vRemove(pOpDef_next);
+      delete pOpDef_next;
     }
     else
     if (pOpDef_curr->m_sOpNm.bSame("indexScan"_Stz) &&
@@ -199,6 +202,10 @@ void StageDef::vCollapseOps(void)
 
       pOpDef_next->m_bCollapsed = true;
       pOpDef_curr->m_nCollapses++;
+
+
+      vRemove(pOpDef_next);
+      delete pOpDef_next;
     }
 
   }

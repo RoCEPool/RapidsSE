@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray115                                                                    */
+/* _ray122                                                                    */
 /*============================================================================*/
 
 //NOTE: Optimiser should detect index does not exist
@@ -14,6 +14,7 @@ trackMemory;
 /optimise_passthru
 /pipeline_def
 /keepCodeFile
+/weaved
 pipeline is
 begin
   stage stageA on origin :
