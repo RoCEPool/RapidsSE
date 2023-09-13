@@ -24,12 +24,12 @@ Weaver::Weaver(Bench* pBench, PipelineDef* pPipelineDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  m_pPipelineDef  = pPipelineDef;
+  m_pPipelineDef = pPipelineDef;
   m_pDeck = nullptr;
 
-  m_pBench        = pBench;
-  m_pOptimiser    = m_pBench->pOptimiser();
-  m_pBoard        = nullptr;
+  m_pBench     = pBench;
+  m_pOptimiser = m_pBench->pOptimiser();
+  m_pBoard     = nullptr;
   
   m_i_Stage    = 0;
   m_i_Op_stage = 0;
@@ -37,7 +37,6 @@ Weaver::Weaver(Bench* pBench, PipelineDef* pPipelineDef)
   m_pOptStmt   = nullptr;
   m_pCodeBlock = nullptr;
   m_bSawHash   = false;
-
 
   _checkInitialised_(CN_WEAVER);
 
@@ -102,11 +101,9 @@ void Weaver::vCodeBlock(ExtendedText* pCodeBlock)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* weave : pipeline <name>                                                    */
@@ -150,7 +147,7 @@ void Weaver::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* weave : code block                _                                       */
+/* weave : code block                                                         */
 /*----------------------------------------------------------------------------*/
 void Weaver::vCppBlock(void)
 {

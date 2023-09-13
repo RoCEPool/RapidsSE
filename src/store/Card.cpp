@@ -35,6 +35,7 @@ Stz* P_Cell         = "i_Cell"_Stz;
 Stz* P_ChosenBound  = "bChosenBound"_Stz;
 Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
 Stz* P_Column       = "bColumn"_Stz;
+Stz* P_Collapsed    = "bCollapsed"_Stz;
 Stz* P_Count        = "nCount"_Stz;
 Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;
 Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
