@@ -180,7 +180,16 @@ void StageDef::vCollapseOps(void)
 
       vCollapseColsReq_scan(pOpDef_curr);
 #endif
+      
+      if (! pOpDef_curr->m_pStreamDef_arriving) {
+        pOpDef_curr->m_pStreamDef_arriving = pOpDef_curr->m_pStreamDef_emitted;
+        pOpDef_curr->m_pStreamDef_emitted = nullptr;
 
+        if (pOpDef_next->m_pStreamDef_emitted) {
+          pOpDef_curr->m_pStreamDef_emitted = pOpDef_next->m_pStreamDef_emitted;
+          pOpDef_next->m_pStreamDef_emitted = nullptr;
+        }
+      }
       pOpDef_next->m_bCollapsed = true;
       pOpDef_curr->m_nCollapses++;
 
@@ -200,9 +209,18 @@ void StageDef::vCollapseOps(void)
       vCollapseColsReq_scan(pOpDef_curr);
 #endif
 
+      if (! pOpDef_curr->m_pStreamDef_arriving) {
+        pOpDef_curr->m_pStreamDef_arriving = pOpDef_curr->m_pStreamDef_emitted;
+        pOpDef_curr->m_pStreamDef_emitted = nullptr;
+
+        if (pOpDef_next->m_pStreamDef_emitted) {
+          pOpDef_curr->m_pStreamDef_emitted = pOpDef_next->m_pStreamDef_emitted;
+          pOpDef_next->m_pStreamDef_emitted = nullptr;
+        }
+      }
+
       pOpDef_next->m_bCollapsed = true;
       pOpDef_curr->m_nCollapses++;
-
 
       vRemove(pOpDef_next);
       delete pOpDef_next;
