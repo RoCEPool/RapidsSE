@@ -246,6 +246,21 @@ bool OpSketch::bColReq(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* column required ?                                                          */
+/*----------------------------------------------------------------------------*/
+i8 OpSketch::iColReq(i8 i_Col)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	for (i8 iIndex = 0; iIndex < m_pColsReq->m_nCols; iIndex++) {
+		if (m_pColsReq->m_axCols[iIndex].m_i_Cell == i_Col)
+			return iIndex;
+	}
+
+	return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set table                                                                  */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vTable(Table* pTable)

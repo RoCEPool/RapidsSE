@@ -137,7 +137,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnToLabel, Stz* szFunMkr, String* sCode)
+bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* pColumn, Stz* sReturnToLabel, Stz* szFunMkr, String* sCode)
 {
 
   _static_
@@ -185,6 +185,12 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
       if (bFoundStart) {
 
         vReplaceColumnNo(sLine, pColumn);
+
+				vReplaceStructTo(sLine, pOpSketch);
+
+				if (pColumn)
+					vReplaceColumnName(sLine, pColumn);
+
         vReplaceReturnToLabel(sLine, sReturnToLabel);
 
         // copy line into sCode

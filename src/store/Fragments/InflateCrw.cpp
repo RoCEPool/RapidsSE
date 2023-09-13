@@ -34,6 +34,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   aDynamicT->m_iProcessRow = 1;
 
   // set the string area
+	p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
   __ROW_INFO_TO__.m_acStrArea  = __ROW_INFO_TO__.m_acStrAreaSav;
 
   // marker-end
@@ -46,12 +47,18 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   void* aSubReturnLabel;
+	byte* ayDstByte;
   u8 uMetaCode;
   u8* auMetaCode;
   u8 uHigh;
   u8 uLow;
   i8 i_Col;
   i8 __COLUMN_NO__;
+	struct __STRUCT_TO__ {
+			union Int_T __COLUMN_TO__;
+	};
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // marker-start
   // - - - - - - - - - - - -
@@ -60,7 +67,9 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
-
+#ifdef Z_REJIG_STREAMDEFS
+	ayDstByte = (byte*)&p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
+#endif
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
   goto L_InflateAColumn;
 
@@ -95,7 +104,9 @@ void vSkipCrwCol(Dynamic_T* aDynamicT) {
   uLow  = uMetaCode & 0x0F;
 
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
+#ifndef Z_REJIG_STREAMDEFS
   ayDstByte += 8;
+#endif
   goto L_SkipAColumn;
 
   __L_RETURN_TO_LABEL__:
