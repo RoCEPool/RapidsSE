@@ -89,9 +89,6 @@ namespace STORE
     void vConcat_cmd(Stz* aFormat, ...);
     void vConcat_cmd_vargs(Stz* aFormat, va_list xArgs);
 
-    void vConcat_code(Stz* aFormat, ...);
-    void vConcat_code_vargs(Stz* aFormat, va_list xArgs);
-
     void vEolOp(void);
     void vEolStage(void);
 
