@@ -180,7 +180,7 @@ void StageDef::vCollapseOps(void)
 
       vCollapseColsReq_scan(pOpDef_curr);
 #endif
-      
+
       if (! pOpDef_curr->m_pStreamDef_arriving) {
         pOpDef_curr->m_pStreamDef_arriving = pOpDef_curr->m_pStreamDef_emitted;
         pOpDef_curr->m_pStreamDef_emitted = nullptr;

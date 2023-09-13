@@ -1574,14 +1574,14 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
     case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
-    case CK_NOTCONJ: G.p_notConj           = _pCard_NotConj(pCard);
+    case CK_NOTCONJ:          G.p_notConj           = _pCard_NotConj(pCard);
                               G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
 
     case CK_ON:               G.p_on                = _pCard_On(pCard); break;
+    case CK_ORCONJ:           G.p_orConj            = _pCard_OrConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
     case CK_ORDAGG:           G.p_ordAgg            = _pCard_OrdAgg(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_ORCONJ: G.p_orConj            = _pCard_OrConj(pCard);
-                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
@@ -1634,6 +1634,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_WHERE:            G.p_where             = _pCard_Where(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
+
     default:
       NEVER_REACH
   }
@@ -2498,9 +2499,11 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_BOUNDS:       G.p_bounds->vValidate(this, iDepth, pCard);  break;
 
       case CK_CALL:         G.p_call->vValidate(this, iDepth, pCard);  break;
+      case CK_CALLER:       G.p_caller->vValidate(this, iDepth, pCard);  break;
+      case CK_CALLOP:       G.p_callOp->vValidate(this, iDepth, pCard);  break;
       case CK_CAST:         G.p_cast->vValidate(this, iDepth, pCard);  break;
       case CK_CMPCONJ:      G.p_cmpConj->vValidate(this, iDepth, pCard);  break;
-
+      case CK_CLAUSE:       G.p_clause->vValidate(this, iDepth, pCard);  break;
       case CK_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
       case CK_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
       case CK_CORRCOLS:     G.p_corrCols->vValidate(this, iDepth, pCard);  break;
@@ -2521,7 +2524,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_FILTPREDLIST: G.p_filtPredList->vValidate(this, iDepth, pCard);  break;
       case CK_FLAT:         G.p_flat->vValidate(this, iDepth, pCard);  break;
       case CK_FOLD:         G.p_fold->vValidate(this, iDepth, pCard);  break;
-       case CK_FROM:         G.p_from->vValidate(this, iDepth, pCard);  break;
+      case CK_FROM:         G.p_from->vValidate(this, iDepth, pCard);  break;
 
       case CK_GBYAGG:       G.p_gbyAgg->vValidate(this, iDepth, pCard);  break;
 
@@ -2570,6 +2573,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
       case CK_PROJECTION:   G.p_projection->vValidate(this, iDepth, pCard);  break;
 
+      case CK_RELNOP:     G.p_relnOp->vValidate(this, iDepth, pCard);  break;
       case CK_ROWCOUNT:   G.p_rowCount->vValidate(this, iDepth, pCard);  break;
       case CK_ROWSIZE:    G.p_rowSize->vValidate(this, iDepth, pCard);  break;
       case CK_RPNCALC:    G.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
@@ -2587,6 +2591,8 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_STREAMPER: G.p_streamPer->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMPTN: G.p_streamPtn->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMSET: G.p_streamSet->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYCALLS:  G.p_sqyCalls->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYNO:     G.p_sqyNo->vValidate(this, iDepth, pCard);  break;
       case CK_SUBQUERY:  G.p_subQuery->vValidate(this, iDepth, pCard);  break;
       case CK_SUBSET:    G.p_subSet->vValidate(this, iDepth, pCard);  break;
 
