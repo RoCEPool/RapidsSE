@@ -64,15 +64,8 @@ void XF_Epilog_Itemise_colNm::vEpilog(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_ITEMISE_COLNM, "de-duplicate as (column names)"_Stz);
 
-
-#ifdef Z_ITEMISED_NAMES
   Card_As::vItemise_colNm(m_pCI);
   Card_Term::vItemise_colNm(m_pCI);
-#else
-  while (m_pCI->G_bEachMainWith2Sub(CK_INDEXJOIN,CK_PROJECTION,CK_CONSTRAINT)) {
-    m_pCI->G.p_constraint->vDisambiguate(m_pCI);
-  }
-#endif
 
   m_pCI->vEndTransform();
 }

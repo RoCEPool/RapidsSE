@@ -439,14 +439,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
       p_key->vX();
 
-#ifndef Z_ITEMISED_NAMES
-      s32 sNm_modified;
-      sNm_modified.vSprint("C%lld_%s"_Stz,
-                           xProjection.i_Child(),
-                           sColNm.azChar());
-      sColNm = sNm_modified;
-#endif
-
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
     }
@@ -467,14 +459,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
         sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
       p_key->vX();
-
-#ifndef Z_ITEMISED_NAMES
-      s32 sNm_modified;
-      sNm_modified.vSprint("C%lld_%s"_Stz,
-                           xProjection.i_Child(),
-                           sColNm.azChar());
-      sColNm = sNm_modified;
-#endif
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -497,14 +481,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
       p_key->vX();
 
-#ifndef Z_ITEMISED_NAMES
-      s32 sNm_modified;
-      sNm_modified.vSprint("C%lld_%s"_Stz,
-                           xProjection.i_Child(),
-                           sColNm.azChar());
-      sColNm = sNm_modified;
-#endif
-
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
     }
@@ -524,14 +500,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
         sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-
-#ifndef Z_ITEMISED_NAMES
-      s32 sNm_modified;
-      sNm_modified.vSprint("C%lld_%s"_Stz,
-                           xProjection.i_Child(),
-                           sColNm.azChar());
-      sColNm = sNm_modified;
-#endif
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -553,14 +521,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
         sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-
-#ifndef Z_ITEMISED_NAMES
-      s32 sNm_modified;
-      sNm_modified.vSprint("C%lld_%s"_Stz,
-                           xProjection.i_Child(),
-                           sColNm.azChar());
-      sColNm = sNm_modified;
-#endif
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -594,14 +554,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       else
         sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
 
-#ifndef Z_ITEMISED_NAMES
-      s32 sNm_modified;
-      sNm_modified.vSprint("C%lld_%s"_Stz,
-                           xProjection.i_Child(),
-                           sColNm.azChar());
-      sColNm = sNm_modified;
-#endif
-
       sColNm_mapped = sColNm;
 
     }
@@ -610,14 +562,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
         sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-
-#ifndef Z_ITEMISED_NAMES
-      s32 sNm_modified;
-      sNm_modified.vSprint("C%lld_%s"_Stz,
-                           xProjection.i_Child(),
-                           sColNm.azChar());
-      sColNm = sNm_modified;
-#endif
 
       sColNm_mapped = sColNm;
     }
@@ -659,9 +603,7 @@ void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-#ifdef Z_CARD_STREAM
   RASSERT(CK_STREAM == pParent->eCard());
-#endif
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
   vValidate_notHave(CK_KEY,CK_NONE);
