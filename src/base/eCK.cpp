@@ -110,6 +110,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_SPARE"_Stz,        // CK_SPARE
   /* */ "CK_SQYCALLS"_Stz,     // CK_SQYCALLS
+  /* */ "CK_SQYINFO"_Stz,      // CK_SQYINFO
   /* */ "CK_SQYNO"_Stz,        // CK_SQYNO
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
@@ -175,7 +176,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
-  /* */ "disposition"_Stz,     // CK_DISPOSITION
+  /* */ "disp"_Stz,            // CK_DISPOSITION
 
   /* */ "expr"_Stz,            // CK_EXPR
 
@@ -246,6 +247,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "spare"_Stz,           // CK_SPARE
   /* */ "sqyCalls"_Stz,        // CK_SQYCALLS
+  /* */ "sqyInfo"_Stz,         // CK_SQYINFO
   /* */ "sqyNo"_Stz,           // CK_SQYNO
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stream"_Stz,          // CK_STREAM

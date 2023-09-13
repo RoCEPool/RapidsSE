@@ -126,6 +126,7 @@ namespace STORE
   class Card_Sort;
   class Card_Spare;
   class Card_SqyCalls;
+  class Card_SqyInfo;
   class Card_SqyNo;
   class Card_Stage;
   class Card_Stream;
@@ -482,6 +483,9 @@ namespace STORE
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
     Card_Spare*         pSub_spare(void);
+    Card_SqyCalls*      pSub_sqyCalls(void);
+    Card_SqyInfo*       pSub_sqyInfo(void);
+    Card_SqyNo*         pSub_sqyNo(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamHead*    pSub_streamHead(void);
     Card_StreamJoin*    pSub_streamJoin(void);
@@ -489,8 +493,6 @@ namespace STORE
     Card_StreamPer*     pSub_streamPer(void);
     Card_StreamPtn*     pSub_streamPtn(void);
     Card_StreamSet*     pSub_streamSet(void);
-    Card_SqyCalls*      pSub_sqyCalls(void);
-    Card_SqyNo*         pSub_sqyNo(void);
     Card_SubQuery*      pSub_subQuery(void);
     Card_Table*         pSub_table(void);
     Card_TableInfo*     pSub_tableInfo(void);

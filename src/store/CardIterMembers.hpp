@@ -137,6 +137,7 @@ namespace STORE
     Card_Sort *          p_sort;
     Card_Spare *         p_spare;
     Card_SqyCalls *      p_sqyCalls;
+    Card_SqyInfo *       p_sqyInfo;
     Card_SqyNo *         p_sqyNo;
     Card_Stage *         p_stage;
     Card_Stream *        p_stream;

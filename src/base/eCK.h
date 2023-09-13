@@ -107,6 +107,7 @@ enum eCK : i8 // card kind
   /* */ CK_SORT,
   /* */ CK_SPARE,
   /* */ CK_SQYCALLS,
+  /* */ CK_SQYINFO,
   /* */ CK_SQYNO,
   /* */ CK_STAGE,
   /* */ CK_STREAM,

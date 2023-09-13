@@ -38,15 +38,15 @@ CardIter::CardIter(Bench* pBench)
 
   G.m_bDontDescend = false;
 
-  Sqy.m_pCard_sqCopy   = nullptr;
+  Sqy.m_pCard_sqCopy = nullptr;
 
   Sqy.m_pExpr_fold = nullptr;
   Sqy.m_pExpr_corr = nullptr;
 
   Sqy.m_pCorrelation = nullptr;
-  Sqy.m_i_SubQuery = C_UNKNOWN;
-  Sqy.m_pSubQuery = nullptr;
-  Sqy.m_pTerm_sqCall       = nullptr;
+  Sqy.m_i_SubQuery   = C_UNKNOWN;
+  Sqy.m_pSubQuery    = nullptr;
+  Sqy.m_pTerm_sqCall = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 
@@ -146,6 +146,9 @@ void CardIter::G_vAppendChild(eCK eParent, Card* pChild)
   Card* pParent = G_pGetMember(eParent);
 
   pParent->vAppendChild(pChild);
+
+  G_vMember(pChild->eCard(), pChild, __func__);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1368,6 +1371,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SPARE:            return G.p_spare;
     case CK_SORT:             return G.p_sort;
     case CK_SQYCALLS:         return G.p_sqyCalls;
+    case CK_SQYINFO:          return G.p_sqyInfo;
     case CK_SQYNO:            return G.p_sqyNo;
     case CK_STAGE:            return G.p_stage;
     case CK_STREAM:           return G.p_stream;
@@ -1606,6 +1610,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SPARE:            G.p_spare             = _pCard_Spare(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_SQYCALLS:         G.p_sqyCalls          = _pCard_SqyCalls(pCard); break;
+    case CK_SQYINFO:          G.p_sqyInfo           = _pCard_SqyInfo(pCard); break;
     case CK_SQYNO:            G.p_sqyNo             = _pCard_SqyNo(pCard); break;
     case CK_STAGE:            G.p_stage             = _pCard_Stage(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1820,6 +1825,9 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_send             = nullptr;
   G.p_spare            = nullptr;
   G.p_sort             = nullptr;
+  G.p_sqyCalls         = nullptr;
+  G.p_sqyInfo          = nullptr;
+  G.p_sqyNo            = nullptr;
   G.p_stream           = nullptr;
   G.p_streamKey        = nullptr;
   G.p_streamPer        = nullptr;
@@ -2586,18 +2594,19 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_SEND:       G.p_send->vValidate(this, iDepth, pCard);  break;
       case CK_SPARE:      G.p_spare->vValidate(this, iDepth, pCard);  break;
       case CK_SORT:       G.p_sort->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYCALLS:   G.p_sqyCalls->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYINFO:    G.p_sqyInfo->vValidate(this, iDepth, pCard);  break;
+      case CK_SQYNO:      G.p_sqyNo->vValidate(this, iDepth, pCard);  break;
       case CK_STAGE:      G.p_stage->vValidate(this, iDepth, pCard);  break;
       case CK_STREAM:     G.p_stream->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMHEAD: G.p_streamHead->vValidate(this, iDepth, pCard);  break;
       case CK_STREAMJOIN: G.p_streamJoin->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMKEY: G.p_streamKey->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMPER: G.p_streamPer->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMPTN: G.p_streamPtn->vValidate(this, iDepth, pCard);  break;
-      case CK_STREAMSET: G.p_streamSet->vValidate(this, iDepth, pCard);  break;
-      case CK_SQYCALLS:  G.p_sqyCalls->vValidate(this, iDepth, pCard);  break;
-      case CK_SQYNO:     G.p_sqyNo->vValidate(this, iDepth, pCard);  break;
-      case CK_SUBQUERY:  G.p_subQuery->vValidate(this, iDepth, pCard);  break;
-      case CK_SUBSET:    G.p_subSet->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMKEY:  G.p_streamKey->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMPER:  G.p_streamPer->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMPTN:  G.p_streamPtn->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMSET:  G.p_streamSet->vValidate(this, iDepth, pCard);  break;
+      case CK_SUBQUERY:   G.p_subQuery->vValidate(this, iDepth, pCard);  break;
+      case CK_SUBSET:     G.p_subSet->vValidate(this, iDepth, pCard);  break;
 
       case CK_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
       case CK_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;

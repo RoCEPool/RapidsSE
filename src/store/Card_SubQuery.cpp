@@ -45,14 +45,17 @@ void Card_SubQuery::vPopulate_subQuery(CardIter* pCI, SubQuery* pSubQuery)
   UNUSED(pCI);
   UNUSED(pSubQuery);
 
-  vAppendChild((new Card_SqyNo)       ->SYM(SF_INT_LIT,pCI->G.pBoard->i_Board()));
-  vAppendChild((new Card_Caller)      ->SYM(SF_INT_LIT,pSubQuery->i_Caller()));
-  vAppendChild((new Card_Clause)      ->SYM(SF_NOTE,   aQC[pSubQuery->eClause()]));
-  vAppendChild((new Card_CallOp)      ->SYM(SF_NOTE,   aQO[pSubQuery->eCallOp()]));
-  vAppendChild((new Card_RelnOp)      ->SYM(SF_NOTE,   aRO[pSubQuery->eRelnOp()]));
-  vAppendChild((new Card_CorrCols)    ->SYM(SF_INT_LIT,pSubQuery->nCorrCols()));
-  vAppendChild((new Card_Disposition) ->SYM(SF_NOTE,   aQO[pSubQuery->eDisposition()]));
-  vAppendChild((new Card_SqyCalls)    ->SYM(SF_INT_LIT,pSubQuery->nSubQueries()));
+  pCI->G_vAppendChild(CK_SUBQUERY, (new Card_SqyInfo));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_SqyNo)       ->SYM(SF_INT_LIT,pCI->G.pBoard->i_Board()));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_Disposition) ->SYM(SF_NOTE,   aQO[pSubQuery->eDisposition()]));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_SqyCalls)    ->SYM(SF_INT_LIT,pSubQuery->nSubQueries()));
+
+  pCI->G_vAppendChild(CK_SUBQUERY, (new Card_Caller));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_SqyNo)       ->SYM(SF_INT_LIT,pSubQuery->i_Caller()));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_Clause)      ->SYM(SF_NOTE,   aQC[pSubQuery->eClause()]));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_CallOp)      ->SYM(SF_NOTE,   aQO[pSubQuery->eCallOp()]));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_RelnOp)      ->SYM(SF_NOTE,   aRO[pSubQuery->eRelnOp()]));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_CorrCols)    ->SYM(SF_INT_LIT,pSubQuery->nCorrCols()));
 }
 
 /*----------------------------------------------------------------------------*/

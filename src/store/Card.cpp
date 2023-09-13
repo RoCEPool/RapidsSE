@@ -2139,6 +2139,19 @@ Card_CallOp* Card::pSub_callOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Cast.hpp"
+Card_Cast* Card::pSub_cast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Cast* p_next =
+      _pCard_Cast(pFindSubCard(CK_CAST));
+  return p_next;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Clause.hpp"
 Card_Clause* Card::pSub_clause(void)
 {
@@ -2633,19 +2646,6 @@ Card_Needed* Card::pSub_needed(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Cast.hpp"
-Card_Cast* Card::pSub_cast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Cast* p_next =
-      _pCard_Cast(pFindSubCard(CK_CAST));
-  return p_next;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_Note.hpp"
 Card_Note* Card::pSub_note(void)
 {
@@ -2823,6 +2823,19 @@ Card_SqyCalls* Card::pSub_sqyCalls(void)
   Card_SqyCalls* p_sqyCalls =
       _pCard_SqyCalls(pFindSubCard(CK_SQYCALLS));
   return p_sqyCalls;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_SqyInfo.hpp"
+Card_SqyInfo* Card::pSub_sqyInfo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_SqyInfo* p_sqyInfo =
+      _pCard_SqyInfo(pFindSubCard(CK_SQYINFO));
+  return p_sqyInfo;
 }
 
 /*----------------------------------------------------------------------------*/

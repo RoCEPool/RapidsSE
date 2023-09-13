@@ -117,6 +117,7 @@
 #include "Card_Sort.hpp"
 #include "Card_Spare.hpp"
 #include "Card_SqyCalls.hpp"
+#include "Card_SqyInfo.hpp"
 #include "Card_SqyNo.hpp"
 #include "Card_Stage.hpp"
 #include "Card_Stream.hpp"
