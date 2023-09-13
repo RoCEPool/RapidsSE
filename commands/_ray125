@@ -23,9 +23,12 @@ create table TABLE1 (
 create index TABLE1_PCOL1 on table1(pcol1);
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
+// /KeepCodeFile
+
+/optimiser_trace
+/transliterated
 /pipeline_def
 /weaved
-/KeepCodeFile
 select * from table1 t where t.pcol1 < 10 order by pcol1;
 
 
@@ -42,6 +45,9 @@ ordered rows:
   (8, 122, 74, 'aqua', TIMESTAMP '2015-10-28 00:00:00.0', 127.91, 88.86, 7, 85, 101, 'bbb')
   (9, 56, 224, 'red', TIMESTAMP '2015-06-15 00:00:00.0', 82.49, 61.67, 12, 14, 246, 'rrr')
 */
+
+
+drop table TABLE1;
 
 /*============================================================================*/
 /* end                                                                        */

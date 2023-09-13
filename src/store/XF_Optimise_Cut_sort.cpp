@@ -87,14 +87,14 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
           break;
 
         m_pCI->vRemoveDeleteCurr(CK_SORT);
-        if (m_pCI->G_bIsNextMain(CK_SORT)) {
-          m_pCI->G_bEachMain_NONE();
-          m_pCI->vRemoveDeleteCurr(CK_SORT);
-          if (m_pCI->G_bIsNextMain(CK_SORT)) {
-            m_pCI->G_bEachMain_NONE();
-            m_pCI->vRemoveDeleteCurr(CK_SORT);
-          }
-        }
+//        if (m_pCI->G_bIsNextMain(CK_SORT)) {
+//          m_pCI->G_bEachMain_NONE();
+//          m_pCI->vRemoveDeleteCurr(CK_SORT);
+//          if (m_pCI->G_bIsNextMain(CK_SORT)) {
+//            m_pCI->G_bEachMain_NONE();
+//            m_pCI->vRemoveDeleteCurr(CK_SORT);
+//          }
+//        }
 
         bOptRun = true;
         break;
