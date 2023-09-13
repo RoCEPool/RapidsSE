@@ -45,14 +45,14 @@ void Card_SubQuery::vPopulate_subQuery(CardIter* pCI, SubQuery* pSubQuery)
   UNUSED(pCI);
   UNUSED(pSubQuery);
 
-  vAppendChild(new Card_SqyNo);
-  vAppendChild(new Card_Caller);
-  vAppendChild(new Card_Clause);
-  vAppendChild(new Card_CallOp);
-  vAppendChild(new Card_RelnOp);
-  vAppendChild(new Card_CorrCols);
-  vAppendChild(new Card_Disposition);
-  vAppendChild(new Card_SqyCalls);
+  vAppendChild((new Card_SqyNo)       ->SYM(SF_INT_LIT,pCI->G.pBoard->i_Board()));
+  vAppendChild((new Card_Caller)      ->SYM(SF_INT_LIT,pSubQuery->i_Caller()));
+  vAppendChild((new Card_Clause)      ->SYM(SF_NOTE,   aQC[pSubQuery->eClause()]));
+  vAppendChild((new Card_CallOp)      ->SYM(SF_NOTE,   aQO[pSubQuery->eCallOp()]));
+  vAppendChild((new Card_RelnOp)      ->SYM(SF_NOTE,   aRO[pSubQuery->eRelnOp()]));
+  vAppendChild((new Card_CorrCols)    ->SYM(SF_INT_LIT,pSubQuery->nCorrCols()));
+  vAppendChild((new Card_Disposition) ->SYM(SF_NOTE,   aQO[pSubQuery->eDisposition()]));
+  vAppendChild((new Card_SqyCalls)    ->SYM(SF_INT_LIT,pSubQuery->nSubQueries()));
 }
 
 /*----------------------------------------------------------------------------*/

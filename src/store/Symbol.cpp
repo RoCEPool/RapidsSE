@@ -163,7 +163,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Sqy_Rsl(szChrSeq))      return SF_SQY_NM;
   if (bIs_Stg_Cast(szChrSeq))     return SF_STG_CAST;
   if (bIs_Str_Fn(szChrSeq))       return SF_STR_FN;
-  if (bIs_String(szChrSeq))       return SF_STRING;
+  if (bIs_String(szChrSeq))       return SF_STR_LIT;
   if (bIs_Then(szChrSeq))         return SF_THEN;
   if (bIs_Type(szChrSeq))         return SF_TYPE;
   if (bIs_When(szChrSeq))         return SF_WHEN;
@@ -2134,7 +2134,7 @@ bool Symbol::bIs_String(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_STRING != m_eSymbol)
+  if (SF_STR_LIT != m_eSymbol)
     return false;
 
   if (bIs_String(m_sChrSeq))
@@ -2533,7 +2533,7 @@ void Symbol::vSym(eSF eSymbol, Stz* szChrSeq)
     case SF_SQY_OP:      vSet_Sqy_Op(szChrSeq);      break;
     case SF_STG_CAST:    vSet_Stg_Cast(szChrSeq);    break;
     case SF_STR_FN:      vSet_Str_Fn(szChrSeq);      break;
-    case SF_STRING:      vSet_String(szChrSeq);      break;
+    case SF_STR_LIT:     vSet_String(szChrSeq);      break;
     case SF_TBL_NM:      vSet_Tbl_Nm(szChrSeq);      break;
     case SF_TBL_SYN:     vSet_Tbl_Syn(szChrSeq);     break;
     case SF_THEN:        vSet_Then(szChrSeq);        break;
@@ -2670,7 +2670,7 @@ bool Symbol::bValidate(void)
     case SF_STG_NO:      b = bIs_Stg_Nm();      break;
     case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
     case SF_STR_FN:      b = bIs_Str_Fn();      break;
-    case SF_STRING:      b = bIs_String();      break;
+    case SF_STR_LIT: b = bIs_String();      break;
     case SF_TBL_NM:      b = bIs_Tbl_Nm();      break;
     case SF_TBL_SYN:     b = bIs_Tbl_Syn();     break;
     case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(); break;
@@ -3937,7 +3937,7 @@ void Symbol::vSet_String(Stz* szString)
   RASSERT(SF_NONE == m_eSymbol);
 
   m_sChrSeq = szString;
-  m_eSymbol = SF_STRING;
+  m_eSymbol = SF_STR_LIT;
 
   RASSERT(bIs_String());
 }
