@@ -626,8 +626,13 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
   Stz* sIndexScanExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefs
-  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+#ifdef Z_REJIG_STREAMDEFS
+	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+#else
+	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
+#endif
 
 	// get the colReq
 	ColsReq* pColsReq = pOpDef->m_pColsReq;
@@ -680,8 +685,12 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
   i8 i_Op = pOpDef->i_Op();
 
   // get the streamDefs
-  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+#ifdef Z_REJIG_STREAMDEFS
+	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+#else
+	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
+#endif
 
   // get the colReq
   ColsReq* pColsReq = pOpDef->m_pColsReq;

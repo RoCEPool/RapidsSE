@@ -119,6 +119,7 @@ namespace STORE
     void vCopyInitStack(TypedStack* pInitStack);
 
     bool bColReq(i8 i_Col);
+		i8   iColReq(i8 i_Col);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);
 

@@ -144,6 +144,7 @@ void StageDef::vCollapseColsReq_scan(OpDef* pOpDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 
+#ifdef Z_REJIG_STREAMDEFS
   StreamDef* pStreamDef_arriving = pOpDef->m_pStreamDef_arriving;
   StreamDef* pStreamDef_emitted  = pOpDef->m_pStreamDef_emitted;
 
@@ -155,6 +156,11 @@ void StageDef::vCollapseColsReq_scan(OpDef* pOpDef)
     // todo: Alka, change this if you want to
     pOpDef->m_pColsReq->vAddCol(i_Col,false,pColumn_arriving->iColumnNo());
   }
+
+#else
+	UNUSED(pOpDef);
+#endif
+
 }
 
 /*----------------------------------------------------------------------------*/

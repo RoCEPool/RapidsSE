@@ -12,7 +12,7 @@ namespace STORE {
     static bool bExtract(File *pFile, OpSketch *pOpSketch,
                            Stz *szFunMkr,String *sCode, Column *pColumn, i8 iIndexColumn);
 
-    static bool bExtractInflate(File *pFile, Column* pColumn, Stz *sReturnToLabel,
+    static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, Column* pColumn, Stz *sReturnToLabel,
                                 Stz *szFunMkr, String *sCode);
 
   private:
