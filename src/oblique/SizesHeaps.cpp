@@ -255,6 +255,7 @@
 #include "Weaver.hpp"
 
 #include "XF.hpp"
+#include "XF_Epilog_Collapse_op.hpp"
 #include "XF_Epilog_Column_hashing.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
 #include "XF_Epilog_Columns_required.hpp"
@@ -786,6 +787,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_ITEMSTRIP_COLNM,sizeof(XF_Epilog_ItemStrip_colNm),     HT_T_TINY    , FILL },
   {CN_XF_ADD_LEVEL,             sizeof(XF_Prolog_Add_level),           HT_T_TINY    , FILL },
   {CN_XF_AS_REVIEW,             sizeof(XF_Prolog_as_Review),           HT_T_TINY    , FILL },
+  {CN_XF_COLLAPSE_OP,           sizeof(XF_Epilog_Collapse_op),         HT_T_TINY    , FILL },
   {CN_XF_COLNM_TO_STMCOL,       sizeof(XF_Prolog_colNm_To_stmCol),     HT_T_TINY    , FILL },
   {CN_XF_COLUMN_HASHING,        sizeof(XF_Epilog_Column_hashing),      HT_T_TINY    , FILL },
   {CN_XF_COLUMN_MAPPING,        sizeof(XF_Epilog_Column_mapping),      HT_T_TINY    , FILL },
