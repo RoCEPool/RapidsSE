@@ -56,7 +56,7 @@ void Card_Top::vColumn_Mapping(CardIter *pCI)
   i8 i_Cell_key;
 
 
-  pCI->G_vAppendNewChild(this,CK_MAPPING);
+  pCI->G_vAppendNewChild(CK_SYNTHESISE,CK_MAPPING);
   pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
   pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
 

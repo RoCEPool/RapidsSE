@@ -76,6 +76,7 @@ namespace STORE
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
+    void G_vAppendNewChild(eCK eParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);

@@ -154,6 +154,20 @@ void CardIter::G_vAppendChild(eCK eParent, Card* pChild)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::G_vAppendNewChild(eCK eParent, eCK eChild)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  Card* pParent = G_pGetMember(eParent);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
+
+  pParent->vAppendChild(pChild);
+  G_vMember(eChild, pChild, __func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
