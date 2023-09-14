@@ -1025,6 +1025,10 @@ void CombinedSrc::vAppendFileHeaders(void) {
 
   StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), "#define WITH_CLANG");
 
+#ifdef Z_REJIG_STREAMDEFS
+	StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), "\n#define Z_REJIG_STREAMDEFS");
+#endif
+
   // read the file header in
   sCode = ""_Stz;
   nFileSize = m_pFileHeader->iSize();
