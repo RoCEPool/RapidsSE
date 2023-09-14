@@ -1764,6 +1764,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
     Dtm         wDtm;
     Bcd         xBcd;
     SP_Bcd      spBcd;
+    d8*         pDbl;
 
     eDM eDatum = (eDM) pRowPix->m_xaColPix[i_Col].m_uDatum;
 
@@ -1811,7 +1812,8 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         break;
 
       case DM_FLT:
-        xColumnWL.__set_doubleVal(*(d8*)&iVal);
+        pDbl = (d8*) &iVal;
+        xColumnWL.__set_doubleVal(*pDbl);
         break;
 
       case DM_INT:
@@ -1823,11 +1825,11 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         wDtm = iVal;
         xIntervalWL.__set_type(IntervalType::type::DAY_TO_SECOND);
         xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
-        xIntervalWL.__set_day(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M));
-        xIntervalWL.__set_hour(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
-        xIntervalWL.__set_minute(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
-        xIntervalWL.__set_second(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
-        xIntervalWL.__set_nanoseconds((wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
+        xIntervalWL.__set_day((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M));
+        xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
+        xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
+        xIntervalWL.__set_second((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
+        xIntervalWL.__set_nanoseconds((i8) (wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
         xColumnWL.__set_intervalVal(xIntervalWL);
         break;
 
@@ -1836,29 +1838,29 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         wDtm = iVal;
         xIntervalWL.__set_type(IntervalType::type::YEAR_TO_MONTH);
         xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
-        xIntervalWL.__set_year(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
-        xIntervalWL.__set_month(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
+        xIntervalWL.__set_year((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
+        xIntervalWL.__set_month((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
         xColumnWL.__set_intervalVal(xIntervalWL);
         break;
 
       case DM_TME:
         wDtm = iVal;
-        xTimeWL.__set_hour(wDtm.m_wTme.iHour());
-        xTimeWL.__set_minute(wDtm.m_wTme.iMin());
-        xTimeWL.__set_second(wDtm.m_wTme.iSec());
-        xTimeWL.__set_nanoseconds(wDtm.m_wTme.m_uMicro * C_1K);
+        xTimeWL.__set_hour((i2) wDtm.m_wTme.iHour());
+        xTimeWL.__set_minute((i2) wDtm.m_wTme.iMin());
+        xTimeWL.__set_second((i2) wDtm.m_wTme.iSec());
+        xTimeWL.__set_nanoseconds((i4) (wDtm.m_wTme.m_uMicro * (u8) C_1K));
         xColumnWL.__set_timeVal(xTimeWL);
         break;
 
       case DM_TSP:
         wDtm = iVal;
-        xTimestampWL.__set_year(wDtm.m_wTsp.iYear());
-        xTimestampWL.__set_month(wDtm.m_wTsp.iMonth());
-        xTimestampWL.__set_day(wDtm.m_wTsp.iDay());
-        xTimestampWL.__set_hour(wDtm.m_wTsp.iHour());
-        xTimestampWL.__set_minute(wDtm.m_wTsp.iMin());
-        xTimestampWL.__set_second(wDtm.m_wTsp.iSec());
-        xTimestampWL.__set_nanoseconds(wDtm.m_wTsp.iMicro() * C_1K);
+        xTimestampWL.__set_year((i4) wDtm.m_wTsp.iYear());
+        xTimestampWL.__set_month((i2) wDtm.m_wTsp.iMonth());
+        xTimestampWL.__set_day((i2) wDtm.m_wTsp.iDay());
+        xTimestampWL.__set_hour((i2) wDtm.m_wTsp.iHour());
+        xTimestampWL.__set_minute((i2) wDtm.m_wTsp.iMin());
+        xTimestampWL.__set_second((i2) wDtm.m_wTsp.iSec());
+        xTimestampWL.__set_nanoseconds((i4) (wDtm.m_wTsp.iMicro() * C_1K));
         xColumnWL.__set_timestampVal(xTimestampWL);
         break;
 
