@@ -4,6 +4,7 @@
 trackMemory;
 success
 
+/pipelineName = "OptQ9"
 select
   nation,
   o_year,

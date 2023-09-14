@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* Card_Needed.cpp -- Stream                                                  */
+/* Card_Needed.cpp -- Needed                                                  */
 /*============================================================================*/
 
 #include "Card_Needed.hpp"
 
-#include "Card_ELIST.hpp"
+#include "Card_EXPRLIST.hpp"
 #include "Card_Project.hpp"
 #include "Card_Level.hpp"
 #include "CardIter.hpp"
@@ -23,7 +23,7 @@ __vDeleteFunction(Card_Needed, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Needed::Card_Needed(void)
-: Card_ELIST(CK_NEEDED)
+: Card_EXPRLIST(CK_NEEDED, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -69,14 +69,30 @@ Card_Project* Card_Needed::pNew_project_early(CardIter* pCI)
   p_project_early->pSymbol()->Y_vSet(P_Early);
 
   Card_Level* p_level = new Card_Level(AL_PARTITION);
-  p_project_early->vAppend(p_level);
+  p_project_early->vAppendChild(p_level);
 
-  p_project_early->vAppend(pCI->Early.m_pNeeded_later->pClone());
+  p_project_early->vAppendChild(pCI->Early.m_pNeeded_later->pClone());
 
   return p_project_early;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Needed::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  UNUSED(pParent);
+  if (! pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_TBLCOL_TO_STMCOL])) {
+    Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this, iDepth + 1);
+  }
+  else {
+    vMark1Recursive(MARK_BLANK);
+  }
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

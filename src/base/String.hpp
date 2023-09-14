@@ -23,11 +23,12 @@ namespace BASE
     String(void);
    ~String(void) noexcept(false);
 
-    i8    nArea(void);
+    i8    nAreaBytes(void);
     void  vCopy(Stz* szArg);
     void  vCatSprint(Stz* szFormat, ...);
     void  vConcat(Stz* szArg);
     i8    nLength(void);
+    void  vReset(void);
     i8    nStackUsage(void);
     void  vSprint(Stz* szFormat, ...);
     char* azStr(void);

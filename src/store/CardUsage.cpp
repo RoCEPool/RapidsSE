@@ -171,7 +171,7 @@ void CardUsage::vClearAll(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
 
-  m_eLevel = Card::eStageTopologyToAggrLevel(YG_ALL_PARTITIONS);
+  m_eLevel = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
     m_baSawCard[i_Card] = false;

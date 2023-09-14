@@ -10,15 +10,10 @@ enum eOR // op return
   /*  2 */ OR_ERROR, // error
   /*  3 */ OR_EXIT,  // exit
   /*  4 */ OR_PAUSE, // pause till continued
+  /*  5 */ OR_ENUMS
 };
 
-static Stz* aOR[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "BIDE"_Stz,
-  /*  2 */ "EXIT"_Stz,
-  /*  3 */ "PAUSE"_Stz,
-};
+extern Stz* aOR[OR_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

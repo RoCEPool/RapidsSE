@@ -11,6 +11,8 @@
 #include "CardIter.hpp"
 #include "IndexDef.hpp"
 
+#include "Error.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -24,7 +26,7 @@ __vDeleteFunction(Card_Index,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Index::Card_Index(void)
-: Card(CK_INDEX)
+: Card_symbol(CK_INDEX, 4)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -48,37 +50,46 @@ Card_Index::~Card_Index(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cull non-used bound                                                        */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vCullNonusedBounds(CardIter* pCI) {
+i8 Card_Index::nCullNonusedBounds(CardIter* pCI) {
 
   _static_
 
-  // find & ignore the first ebound
-  //bool bFoundFirst = false;
+//  UNUSED(pCI);
+//
+//  return 0;
+//
+//  // todo: ...
 
-  CardIter xCI_indexes(pCI->G.p_indexList);
+  i8 nCulled = 0;
 
-  while (xCI_indexes.G_bEachMain(CK_INDEX)) {
+  //pCI->vSave();
 
-    bool bChosenIndex = xCI_indexes.G.p_index->pSymbol()->Y_bHas(P_ChosenIndex);
+  //pCI->vChangeCard(pCI->G.p_indexList);
 
-    xCI_indexes.G.p_bounds = xCI_indexes.G.p_index->pSub_bounds();
-    if (! xCI_indexes.G.p_bounds)
+  Kid xKid(pCI->G.p_indexList);
+  while (xKid.bEach(CK_INDEX)) {
+
+    Card_Bounds* p_bounds = xKid.p_index()->pSub_bounds();
+    if (! p_bounds)
       continue;
 
-    CardIter xCI_bounds(xCI_indexes.G.p_bounds);
-    while (xCI_bounds.G_bEachMain(CK_BOUND)) {
-      if (xCI_bounds.G.p_bound->pSymbol()->Y_bHas(P_ChosenBound)) {
+    Kid xCI_bounds(p_bounds);
+    while (xCI_bounds.bEach(CK_BOUND)) {
+      if (xCI_bounds.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
         continue;
       }
 
-      xCI_bounds.G.p_MainCard->vMark1(MARK_AT);
+      xCI_bounds.pChild()->vMark1(MARK_AT);
     }
 
-    pCI->vPrintBoard(__LINE__);
-    xCI_indexes.G.p_bounds->vCullBound(MARK_AT);
+   // pCI->vPrintBoard(__LINE__);
+    nCulled += p_bounds->nCullBound(MARK_AT);
 
   }
 
+  //pCI->vRestore();
+
+  return nCulled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,29 +103,29 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
   IndexDef* pIndexDef = pIndex->pIndexDef();
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->vSymbol(pIndex->szIndexNm());
-  p_index->vAppend(p_indexNm);
+  p_indexNm->SYM(SF_IDX_NM,pIndex->szIndexNm());
+  p_index->vAppendChild(p_indexNm);
 
   if (pIndexDef->bIsUnique()) {
     Card_Unique* p_unique = new Card_Unique;
-    p_index->vAppend(p_unique);
+    p_index->vAppendChild(p_unique);
   }
 
   Card_IdxColList* p_idxColList = new Card_IdxColList;
-  p_index->vAppend(p_idxColList);
+  p_index->vAppendChild(p_idxColList);
 
   i8 nColumns = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     Card_IdxCol* p_idxCol = new Card_IdxCol;
-    p_idxCol->vSymbol(pColumn->szColNm());
+    p_idxCol->SYM(SF_COL_NM, pColumn->szColNm());
 
-    p_idxColList->vAppend(p_idxCol);
+    p_idxColList->vAppendChild(p_idxCol);
 
 //    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
 //    p_idxColNm->vSymbol(pColumn->szColNm());
-//    p_idxCol->vAppend(p_idxColNm);
+//    p_idxCol->vAppendChild(p_idxColNm);
   }
 
   return p_index;
@@ -128,13 +139,24 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vAdd_key_exprs(CardIter* pCI)
+void Card_Index::vAdd_streamKey_exprs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->G.p_idxColList = pSub_idxColList();
 
-  pCI->G.p_idxColList->vAdd_key_exprs(pCI);
+  pCI->G.p_idxColList->vAdd_streamKey_exprs(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Index::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Bounds* p_bounds = pSub_bounds())
+    p_bounds->vConvert_colOdn_To_stmOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,14 +167,14 @@ void Card_Index::vDeleteBounds(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pSymbol()->Y_vCut(P_ChosenIndex);
-  Card_Bounds* p_Bounds = pSub_bounds();
-  vDeleteChild(p_Bounds);
+  if (Card_Bounds* p_Bounds = pSub_bounds())
+    vDeleteChild(p_Bounds);
 }
 
 /*----------------------------------------------------------------------------*/
 /* does this index have a bound logically equivalent to given compare?        */
 /*----------------------------------------------------------------------------*/
-bool Card_Index::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+bool Card_Index::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -196,11 +218,11 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
 
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 
-  CardIter xCI(p_idxColList);
-  while (xCI.G_bEachMain(CK_IDXCOL)) {
+  Kid xKid(p_idxColList);
+  while (xKid.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xCI.G.p_idxCol->bIsSymbol(szTblColOdn))
+    if (xKid.pChild()->pSymbol()->bSame(szTblColOdn))
       return true;
   }
 
@@ -210,37 +232,21 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_Index::pGetIndexDef(Card_Table *p_Table)
+Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
   if (! pTable)
     return nullptr;
 
-  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
-  if (! pIndex)
-    return nullptr;
-
-  IndexDef* IndexDef = pIndex->pIndexDef();
-
-  return IndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Index* Card_Index::pGetIndex(Card_Table *p_Table)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
-  if (! pTable)
-    return nullptr;
-
-  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
-  if (! pIndex)
-    return nullptr;
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol(SF_NONE));
+  if (! pIndex) {
+    s256 sErrorMsg;
+    sErrorMsg.vSprint("index: %s"_Stz,pSub_indexNm()->szSymbol(SF_NONE));
+    Error xError(EC_NO_SUCH_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
+    throw xError;
+  }
 
   return pIndex;
 }
@@ -265,15 +271,17 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_INDEXNM,CK_NONE);
 
-  if (Card_Bounds* p_bounds = pSub_bounds())
-    p_bounds->vValidate(pCI,iDepth+1,this);
-
   if (pSymbol()->Y_bHas(P_ChosenIndex)) {
     RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));
   }
   else {
     RASSERT(! pFindPpyRecursive(P_ChosenBound, CK_BOUND));
   }
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

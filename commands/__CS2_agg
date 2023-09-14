@@ -7,6 +7,5 @@ _nation
 //explain stage transliterate select sum(n_nationkey) from nation where n_nationkey < 5;
 
 /weaved
-/weaver2
 select max(n_name) from nation;
 

@@ -16,18 +16,7 @@ enum eTP // transform/question parameter
   /*    */ TP_ENUMS
 };
 
-static Stz* aTP[]
-{
-  /*  0 */ "TP_NONE"_Stz,
-  
-  /*  0 */ "TP_DATE"_Stz,
-  /*  0 */ "TP_INT"_Stz,
-  /*  0 */ "TP_LABEL"_Stz,
-  /*  0 */ "TP_STRING"_Stz,
-  /*  0 */ "TP_SUBSCR"_Stz,
-
-  /*    */ "TP_ENUMS"_Stz
-};
+extern Stz* aTP[TP_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

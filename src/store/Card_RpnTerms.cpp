@@ -19,12 +19,12 @@ __vDeleteFunction(Card_RpnTerms,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnTerms::Card_RpnTerms(void)
-: Card(CK_RPNTERMS)
+: Card_symbol(CK_RPNTERMS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -55,7 +55,7 @@ bool Card_RpnTerms::bIsInList(void)
   if (! p_term_2ndLast)
     return false;
 
-  char* azTerm = p_term_2ndLast->szSymbol()->azChar();
+  char* azTerm = p_term_2ndLast->szSymbol(SF_NONE)->azChar();
   if ('#' == azTerm[0])
     return false;
 
@@ -69,7 +69,7 @@ Card_Term* Card_RpnTerms::pPop_term(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return _pCard_Term(pPop());
+  return _pCard_Term(pPopChild());
 }
 
 

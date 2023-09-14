@@ -3,21 +3,22 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_Direction : public Card
+  class Card_Direction : public Card_symbol<Card_Direction>
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Direction(Stz* szDirn);
+    Card_Direction(void);
    ~Card_Direction(void) noexcept(false);
 
     bool bIsEqual(Card_Direction* p_direction_arg);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Direction* _pCard_Direction(void* aAddr);

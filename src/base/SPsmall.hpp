@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  static const i8 C_SPSMALL_FORMAT = 32;
+  static const i8 C_SPSMALL_FORMAT = 64;
   static const i8 C_SPSMALL_RESULT = C_4KB;
   
   class SPsmall : public StackObject

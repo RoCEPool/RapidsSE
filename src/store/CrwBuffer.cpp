@@ -235,7 +235,7 @@ void CrwBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   DataBuffer::vTable_dbuff(pTable);
-  vStreamDef(pTable->pStreamDef());
+  vStreamDef(pTable == nullptr ? nullptr : pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -468,8 +468,8 @@ void CrwBuffer::vInflateRows(StreamDef* pStreamDef)
 void CrwBuffer::vInflateRows(Tub* pTub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  UNUSED(pTub);
 
-//    #include "TccStuff.h"
 //
 //    #include "vFLAT_Structures.h"
 //    #include "vFLAT_PreliminaryCrwOld.h"
@@ -698,7 +698,7 @@ void CrwBuffer::vToCsv(Tub* pTub)
     vGetRow_single(hvRowSingle, i_Row);
     
     hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
-    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
+    StrLib::vConcat(hvRecord->az(), hvRecord->iStrBufSize(), '\n');           //! sub-optimal
     nSize = hvRecord->sz()->nSize();
     
     if (pCsvBuffer->nFreeBytes() < nSize + 1) {
@@ -707,7 +707,7 @@ void CrwBuffer::vToCsv(Tub* pTub)
     }
     
     szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
-    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nSize - 1);
+    StrLib::vCopy(szRecord->azChar(), nSize, hvRecord->sz()->azChar());
   }
   
   if (szRecord)

@@ -18,30 +18,12 @@ enum eTN // token type
   /*  9 */ TN_OBJECT,  // pointer to objects
   /* 10 */ TN_OTHER,   // other literal, e.g. {,~
   /* 11 */ TN_STRING,  // string literal, e.g. "the answer"
-  /* 11 */ TN_TAG,     // tag token such as <tableNm>
+  /* 12 */ TN_TAG,     // tag token such as <tableNm>
 
   /* 13 */ TN_ENUMS
 };
 
-static Stz* aTN[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*  1 */ "BOOLEAN"_Stz,
-  /*  2 */ "DECIMAL"_Stz,
-  /*  3 */ "FLOAT"_Stz,
-  /*  4 */ "INTEGER"_Stz,
-  /*  5 */ "INVALID"_Stz,
-  /*  6 */ "LITERAL"_Stz,
-  /*  7 */ "NAME"_Stz,
-  /*  8 */ "NULL"_Stz,
-  /*  9 */ "OBJECT"_Stz,
-  /* 10 */ "OTHER"_Stz,
-  /* 11 */ "STRING"_Stz,
-  /* 12 */ "TAG"_Stz,
-
-  /* 13 */ "ENUMS"_Stz,
-};
+extern Stz* aTN[TN_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

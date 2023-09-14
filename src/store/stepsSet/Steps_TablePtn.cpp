@@ -67,7 +67,6 @@ void Step::vTablePtnAppendBuffer(void)
   
   // append the buffer to the tablePtn
   
-  eCN eClassNo = pDataBuffer->eGetClassNo();
   pTablePtn->vAppendBuffer(pDataBuffer);
 
 //  if (CN_CRWBUFFER == eClassNo) {
@@ -243,7 +242,7 @@ void Step::vTablePtnRoot(void)
   // Nobody should call this
   vTrace(">>>>>>>>>>>>>>>>>>>>>  Step::vTablePtnRoot\n"_Stz);
   NEVER_REACH;
-  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+//  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   
   //m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   

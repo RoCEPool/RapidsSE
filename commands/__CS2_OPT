@@ -4,10 +4,10 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-///weaver2 select * from nation;
+// select * from nation;
 
 
-/weaver2 select * from nation; // where n_nationkey < 3;
+select * from nation; // where n_nationkey < 3;
 /*
 /////////////////////////////
 WEAVED BEFORE CODE SYNTHESIS

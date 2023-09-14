@@ -12,10 +12,9 @@ _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
 /joWrite
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
-/weaver2
 /filterPred
 /pipelineName = "__CS2_OPT_ray"
 select

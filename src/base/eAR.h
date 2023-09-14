@@ -18,20 +18,7 @@ enum eAR // resource actions
   /*    */ AR_ENUMS,
 };
 
-static Stz* aAR[]
-{
-  /*  0 */ "AR_NONE"_Stz,
-
-  /*    */ "AR_CLOSE"_Stz,
-  /*    */ "AR_OPEN"_Stz,
-  /*    */ "AR_READ"_Stz,
-  /*    */ "AR_RECV"_Stz,
-  /*    */ "AR_SEEK"_Stz,
-  /*    */ "AR_SEND"_Stz,
-  /*    */ "AR_WRITE"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aAR[AR_ENUMS];
 
 
 /*============================================================================*/

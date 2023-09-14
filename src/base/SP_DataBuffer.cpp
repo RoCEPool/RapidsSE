@@ -40,6 +40,8 @@ Stz* SP_DataBuffer::sz(DataBuffer* pDataBuffer)
   _precondition_(_MAGIC_,_FOOTER_)
 
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
+                  nullptr,
                   "%p Partition=%lld No=%lld Height=%lld Age=%llds Permanent=%lld"_Stz,
                   pDataBuffer,
                   pDataBuffer->tLglPtn().iAsI8(),

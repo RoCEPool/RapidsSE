@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_Expr : public Card
+  class Card_Expr : public Card_symbol<Card_Expr>
   {  
   public:
     void* operator new(size_t);
@@ -23,11 +23,13 @@ namespace STORE
     static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
+    static Card_Expr* pProj_Simple_expr_Of_key(Card_Expr* p_expr_key);
 
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_Expr* pClone(void);
-    void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
+    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+    void vConvert_stmOdn_To_colOdn(CardIter* pCI);
     Card_Expr* pCraft_expr_early(CardIter* pCI, i8 i_Expr=0);
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
@@ -35,14 +37,16 @@ namespace STORE
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);
+    Symbol* pFirstTblCol(void);
     Symbol* pGetSymbol(i8 i_Term);
     Card_Term* pGetTerm(i8 i_Term);
-    bool bIsAggFn(void);
+    bool bIsAggCalc(void);
     bool bIsDescending(void);
-    bool bIsSoleCol(void);
+    bool bExpressionOfSymbol(Symbol* pSymbol);
+    bool bIsScalarCol(void);
+    bool bIsScalarKey(void);
     bool bIsExpressionOfKey(void);
     bool bHasTerm(Symbol* pSymbol);
-    bool bOf(Symbol* pSymbol);
     Card_Expr* pPropagate(void);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);

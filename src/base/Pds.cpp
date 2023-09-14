@@ -2,6 +2,7 @@
 /* Pds.cpp -- Primary Data Structure (PDS)                                    */
 /*============================================================================*/
 
+#include <climits>
 #include "BASE.h"
 
 #include "Pds.hpp"
@@ -265,7 +266,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
     return nullptr;
   }
 
-  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
+//  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
 
   SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 

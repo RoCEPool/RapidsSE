@@ -32,7 +32,7 @@ begin
     indexScan 0 rt ri | stageD right
 
   stage stageD on all partitions :
-    mergeJoin 0 "$L1 $R1 == " | stageE
+    mergeJoin 0 "$1 $R1 == " | stageE
 
   stage stageE on origin :
     output | sink | stageA

@@ -19,13 +19,13 @@ __vDeleteFunction(Card_Combined, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Combined::Card_Combined(void)
-: Card_OP(CK_COMBINED)
+: Card_CONSTRUCTION(CK_COMBINED,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
 
-  vSymbol("0"_Stz);
+  SYM(SF_INT_LIT,(i8) 0);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,23 +43,16 @@ Card_Combined::~Card_Combined(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete the <absJoin>                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_Combined::vDeleteAllCombined(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMain(CK_COMBINED)) {
-    pCI->G_vRemoveDeleteMain(CK_COMBINED);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Combined::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
+
+  vValidationPassed();
 }
 
 

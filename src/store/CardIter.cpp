@@ -7,6 +7,8 @@
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
 
+#include "eOT.h"
+
 extern OptimiserCatalog gxOptimiserCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -21,48 +23,41 @@ __aFooterFunction(CardIter)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardIter::CardIter(Card*  pCard)
-: Object(CN_CARDITER)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vInit();
-
-  G.xKid.vParent(pCard);
-
-  G.xKid.m_bActive = true;
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-CardIter::CardIter(CardIter* pCardIter_src)
-    : Object(CN_CARDITER)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  vInit();
-
-  m_pBench = pCardIter_src->m_pBench;
-  vSet(pCardIter_src);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 CardIter::CardIter(Bench* pBench)
     : Object(CN_CARDITER)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vInit();
-
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
+  m_xSymbol_tableSyn.vInit_Tbl_Syn('a');
+
+  m_i_RecursionDepth = 0;
+
+  G.xKid.vParent(nullptr);
+
+  G.m_bDontDescend = false;
+
+  Sqy.m_pCard_sqCopy   = nullptr;
+
+  Sqy.m_pExpr_fold = nullptr;
+  Sqy.m_pExpr_corr = nullptr;
+
+  Sqy.m_pCorrelation = nullptr;
+  Sqy.m_i_SubQuery = C_UNKNOWN;
+  Sqy.m_pSubQuery = nullptr;
+  Sqy.m_pTerm_sqCall       = nullptr;
+
+  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
+
+  G.pBoard    = nullptr;
+  G.pDeck     = nullptr;
+
+  m_nAncestors = 0;
+  MemLib::vZero(m_apAncestry,sizeof(m_apAncestry),CN_CARDITER);
+
+  vNullMembers();
+  G_vClearRegisters();
 
   _checkInitialised_(CN_CARDITER);
 
@@ -76,53 +71,45 @@ CardIter::~CardIter(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-}
+  RASSERT(0 == nItems());
 
-/*----------------------------------------------------------------------------*/
-/* initialiser                                                                */
-/*----------------------------------------------------------------------------*/
-void CardIter::vInit(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  m_pBench   = nullptr;
-  m_pCardCtl = nullptr;
-
-  G.xKid.vParent(nullptr);
-
-  G.m_bDontDescend = false;
-
-  G.xKid.m_bActive = false;
-
-
-  m_iXform     = 0;
-  m_iTrace     = 0;
-
-  Sqy.m_pCard_sqCopy   = nullptr;
-
-  Sqy.m_pExpr_fold = nullptr;
-  Sqy.m_pExpr_corr = nullptr;
-
-  Sqy.m_pCorrelation = nullptr;
-  Sqy.m_i_SubQuery = C_UNKNOWN;
-  Sqy.m_pSubQuery = nullptr;
-
-  // the M iterator - - - - - - - - - - - - - - - - - - - - - -
-
-  G.pBoard    = nullptr;
-  G.pDeck     = nullptr;
-  Sqy.m_pSubQuery = nullptr;
-  Sqy.m_pTerm_sqCall       = nullptr;
-
-
-  G_vClearMembers();
-  G_vClearRegisters();
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* visit all sub-cards of given eToSubs and apply lambda function             */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bApplyRecursive(Card* pCard, eCK eToSubs,
+                               std::function<bool(Card* pCard)> bfLambdaFn)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (CK_NONE == eToSubs || eToSubs == pCard->eCard()) {
+    bool bContinue = bfLambdaFn(pCard);
+    if (! bContinue)
+      return C_TERMINATE_RECURSION;
+  }
+
+  vAncestorPush(pCard);
+  Kid xKid(pCard);
+  while (xKid.bEach()) {
+    xKid.pChild()->vItemise(xKid.i_Child());
+    bool bContinue = bApplyRecursive(xKid.pChild(),eToSubs, bfLambdaFn);
+    if (! bContinue) {
+      vAncestorPop();
+      return C_TERMINATE_RECURSION;
+    }
+    else
+      vDebugPoint();
+  }
+
+  vAncestorPop();
+  return C_CONTINUE_RECURSION;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -134,14 +121,7 @@ void CardIter::G_vAppendChild(eCK eParent, eCK eChild)
   Card* pParent = G_pGetMember(eParent);
   Card* pChild  = G_pGetMember(eChild);
 
-  pParent->vAppend(pChild);
-
-  if (! bIsTracing())
-    return;
-
-  vTrace("  %s\n"_Stz,__func__);
-  vTrace("    parent %s\n"_Stz,pParent->szBearing());
-  vTrace("    child  %s\n"_Stz,pChild->szBearing());
+  pParent->vAppendChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,14 +133,7 @@ void CardIter::G_vAppendChild(eCK eParent, Card* pChild)
 
   Card* pParent = G_pGetMember(eParent);
 
-  pParent->vAppend(pChild);
-
-  if (! bIsTracing())
-    return;
-
-  vTrace("  %s\n"_Stz,__func__);
-  vTrace("    parent %s\n"_Stz,pParent->szBearing());
-  vTrace("    child  %s\n"_Stz,pChild->szBearing());
+  pParent->vAppendChild(pChild);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,23 +143,134 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pChild = new Card(eChild);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pParent->vAppend(pChild);
+  pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue)
+void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  Card* pChild = new Card(eChild, szValue);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pParent->vAppend(pChild);
+  pChild->pSymbol()->vSymPpy(pSymbol);
+
+  pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  Card* pChild = new Card(eChild,C_UNKNOWN);
+
+  pChild->pSymbol()->vSym(&xSymbol);
+
+  pParent->vAppendChild(pChild);
+  G_vMember(eChild, pChild, __func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ancestor                                                               */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAncestor(i8 i_Ancestor)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  if (i_Ancestor < 0 || i_Ancestor > m_nAncestors)
+    return nullptr;
+
+  return m_apAncestry[i_Ancestor];
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump ancestry                                                             */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorDump(Card* pCard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vTrace("^^ Ancestor Dump\n"_Stz);
+
+  for (i8 i_Ancestor = 0; i_Ancestor < m_nAncestors; i_Ancestor++) {
+    Card* pCard_ancestor = m_apAncestry[i_Ancestor];
+    vTrace("  [%lld] %p %s /%lld\n"_Stz,
+           i_Ancestor,
+           pCard_ancestor,
+           aCK[pCard_ancestor->eCard()],
+           pCard_ancestor->iItemise());
+  }
+
+  vTrace("$$ Ancestor Dump"_Stz);
+  if (pCard)
+    vTrace(" %p %s /%lld\n"_Stz,
+           pCard,
+           aCK[pCard->eCard()],
+           pCard->iItemise());
+  else
+    vTrace("\n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* find ancestor                                                             */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAncestorFind(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (i8 i_Ancestor = m_nAncestors-1; i_Ancestor >= 0; i_Ancestor--) {
+    Card *pCard_ancestor = m_apAncestry[i_Ancestor];
+
+    if (pCard_ancestor->bIsCard(eCard))
+      return pCard_ancestor;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop ancestor                                                               */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorPop(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  if (m_nAncestors <= 0)
+    return;
+
+  m_nAncestors--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push ancestor                                                              */
+/*----------------------------------------------------------------------------*/
+void CardIter::vAncestorPush(Card* pCard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+   RASSERT(m_nAncestors < C_CARD_ANCESTRY);
+
+  m_apAncestry[m_nAncestors++] = pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop ancestor                                                               */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::nAncestors(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_nAncestors;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,6 +284,16 @@ Board* CardIter::pBoard(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set board                                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBoard(Board* pBoard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  G.pBoard = pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* setup board iteration                                                      */
 /*----------------------------------------------------------------------------*/
 void CardIter::vBoardIteration(void)
@@ -209,6 +303,26 @@ void CardIter::vBoardIteration(void)
   G.i_Board = C_UNKNOWN;
 }
 
+/*----------------------------------------------------------------------------*/
+/* burst OP                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBurst(Card* pCard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  for (Kid xCard(pCard); xCard.bEach(); /**/)
+    vMember(xCard.pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/* burst OP                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBurstOP(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vBurst(G.p_OP);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -219,7 +333,10 @@ void CardIter::vChangeCard(Card* pCard)
 
   G.xKid.vParent(pCard);
 
-  vRestart();
+  G.p_MainCard = nullptr;
+  vMember(pCard);
+
+  //vBeginEach_forward();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,109 +360,13 @@ Card* CardIter::pChild(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear the M members                                                        */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vClearMembers(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  G.p_absJoin          = nullptr;
-  G.p_aggreg           = nullptr;
-  G.p_andPred          = nullptr;
-  G.p_as               = nullptr;
-  G.p_boolCalc         = nullptr;
-  G.p_bound            = nullptr;
-  G.p_bounds           = nullptr;
-  G.p_call             = nullptr;
-  G.p_cmpPred          = nullptr;
-  G.p_combined         = nullptr;
-  G.p_constraint       = nullptr;
-  G.p_correlation      = nullptr;
-  G.p_costJoining      = nullptr;
-  G.p_costNetwork      = nullptr;
-  G.p_costQuery        = nullptr;
-  G.p_costUnicast      = nullptr;
-  G.p_count            = nullptr;
-  G.p_crossJoin        = nullptr;
-  G.p_direction        = nullptr;
-  G.p_expr             = nullptr;
-  G.p_filter           = nullptr;
-  G.p_filtPred         = nullptr;
-  G.p_filtPredList     = nullptr;
-  G.p_flat             = nullptr;
-  G.p_fold             = nullptr;
-  G.p_foldElist        = nullptr;
-  G.p_from             = nullptr;
-  G.p_gbyAgg           = nullptr;
-  G.p_hash             = nullptr;
-  G.p_having           = nullptr;
-  G.p_hshCol           = nullptr;
-  G.p_idxCol           = nullptr;
-  G.p_idxColList       = nullptr;
-  G.p_index            = nullptr;
-  G.p_indexJoin        = nullptr;
-  G.p_indexList        = nullptr;
-  G.p_indexNm          = nullptr;
-  G.p_indexScan        = nullptr;
-  G.p_joinCast         = nullptr;
-  G.p_joinOrder        = nullptr;
-  G.p_joinOrdering     = nullptr;
-  G.p_joinPredList     = nullptr;
-  G.p_key              = nullptr;
-  G.p_keyExists        = nullptr;
-  G.p_keyNotExists     = nullptr;
-  G.p_level            = nullptr;
-  G.p_limit            = nullptr;
-  G.p_joinEstimate     = nullptr;
-  G.p_nCorrCols        = nullptr;
-  G.p_needed           = nullptr;
-  G.p_cast             = nullptr;
-  G.p_note             = nullptr;
-  G.p_notPred          = nullptr;
-  G.p_on               = nullptr;
-  G.p_ordAgg           = nullptr;
-  G.p_orPred           = nullptr;
-  G.p_outerColNm       = nullptr;
-  G.p_outerJoin        = nullptr;
-  G.p_project          = nullptr;
-  G.p_projection       = nullptr;
-  G.p_rowCount         = nullptr;
-  G.p_rowSize          = nullptr;
-  G.p_rpnCalc          = nullptr;
-  G.p_scan             = nullptr;
-  G.p_section          = nullptr;
-  G.p_send             = nullptr;
-  G.p_streamKey        = nullptr;
-  G.p_streamPer        = nullptr;
-  G.p_streamPtn        = nullptr;
-  G.p_streamSet        = nullptr;
-  G.p_sort             = nullptr;
-  G.p_stage            = nullptr;
-  G.p_streamHead       = nullptr;
-  G.p_streamJoin       = nullptr;
-  G.p_subSet           = nullptr;
-  G.p_table            = nullptr;
-  G.p_tableList        = nullptr;
-  G.p_tableNm          = nullptr;
-  G.p_tablePtn         = nullptr;
-  G.p_tableSize        = nullptr;
-  G.p_term             = nullptr;
-  G.p_top              = nullptr;
-  G.p_topology         = nullptr;
-  G.p_unique           = nullptr;
-  G.p_where            = nullptr;
-
-  G.p_NEW              = nullptr;
-  G.p_OP               = nullptr;
-  G.p_PRED             = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear the general M registers                                              */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vClearRegisters(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
+
+  MemLib::vZero(G.md_Coord,sizeof(G.md_Coord),CN_CARDITER);
 
   G.p_MainCard         = nullptr;
   G.e_MainCard         = CK_NONE;
@@ -360,14 +381,14 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol      = nullptr;
 
-  Analysis.m_pProjection_prior = nullptr;
+  Prior.m_pProjection = nullptr;
 
   Early.m_pOP_root   = nullptr;
   Early.m_pOP_leaf   = nullptr;
   Early.m_pNeeded_later   = nullptr;
 
+  StreamOrder.m_pStreamKey_running  = nullptr;
   StreamOrder.m_pProjection_running = nullptr;
-  StreamOrder.m_pKey_running        = nullptr;
 
 
   Sqy.m_i_FoldCard = C_UNKNOWN;
@@ -400,9 +421,22 @@ void CardIter::G_vClearRegistersIf(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restart the M iterator                                                     */
+/*----------------------------------------------------------------------------*/
+void CardIter::vClearRestart(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  this->vBeginEach();
+
+  vNullMembers();
+  G_vClearRegisters();
+}
+
+/*----------------------------------------------------------------------------*/
 /* cue user                                                                   */
 /*----------------------------------------------------------------------------*/
-eOA CardIter::eCueUser(Stz* szPrompt)
+eOA CardIter::eCueUser(String* psPrompt)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -411,7 +445,7 @@ eOA CardIter::eCueUser(Stz* szPrompt)
   if (m_pCardCtl->bCueDisabled())
     return OA_CONTINUE_TRANSFORMING;
 
-  szPrompt->vConcat(" >> "_Stz);
+  psPrompt->vConcat(" >> "_Stz);
 
   m_pCardCtl->vCued(true);
 
@@ -420,7 +454,7 @@ eOA CardIter::eCueUser(Stz* szPrompt)
   L_Input:
 
   s4K sInput;
-  Cue::vGetInput(szPrompt,sInput);
+  Cue::vGetInput(psPrompt->szStz(), sInput);
 
   if (0 == sInput.nLength())
     return OA_CONTINUE_TRANSFORMING;
@@ -453,6 +487,7 @@ eOA CardIter::eCueUser(Stz* szPrompt)
 
   eOA eOptAct = OA_CONTINUE_TRANSFORMING;
   bool bExecuted = pOptFun->m_fpOptFun(m_pBench->pOptimiser(),pTknVec,eOptAct);
+  UNUSED(bExecuted);
 
   delete pTknVec;
   pTknVec = nullptr;
@@ -464,21 +499,6 @@ eOA CardIter::eCueUser(Stz* szPrompt)
     m_pCardCtl->vCueDisabled(true);
 
   return eOptAct;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete member of given kind; clear-if registers; update M member to null   */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vDeleteMember(eCK eMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Card* pMember = G_pGetMember(eMember);
-
-  G_vClearRegistersIf(pMember);
-  G_vMember(eMember, nullptr, __func__);
-
-  DELETE_CARD(pMember);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,8 +523,6 @@ void CardIter::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(this->bJustRestarted());
-
   if (! G_bEachMainWithSub(eMain,eSub))
     return;
 
@@ -521,11 +539,11 @@ void CardIter::G_vDeleteWhenEmptySub(eCK eMain, eCK eSub)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vDontDescend(void)
+void CardIter::vDontDescend(bool bDontDescend)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.m_bDontDescend = true;
+  G.m_bDontDescend = bDontDescend;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -588,35 +606,58 @@ Board* CardIter::pEachBoard(i8& ri_Board)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main and update M member          */
 /*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_NONE(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(G.xKid.bBegun());
+  RASSERT(! G.xKid.bEnded());
+
+  G.p_OP = nullptr;
+
+  while (G.xKid.bEach()) {
+    if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
+      continue;
+
+    G.p_MainCard = G.xKid.pChild();
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.p_MainCard = nullptr;
+  G.xKid.vEnded();
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachMain(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bBegun());
+  RASSERT(! G.xKid.bEnded());
 
-  G.xKid.vBeginForward();
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
 
-  for (;;) {
+  G.p_OP = nullptr;
 
-    if (! G.xKid.bInRange()) {
-      G.p_MainCard = nullptr;
-      G.xKid.m_bActive = false;
-      G_vMember(eOfMainKind, nullptr, __func__);
-      return false;
-    }
+  while (G.xKid.bEach()) {
+
+    if (G.xKid.pChild()->eCard() != eOfMainKind)
+      continue;
 
     G.p_MainCard = G.xKid.pChild();
-
-    if (CK_NONE == eOfMainKind || eOfMainKind == G.xKid.eChild()) {
-      vFocusOnMain();
-      G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
-      return true;
-    }
-
-    G.xKid.vForward();
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
   }
 
-  NEVER_REACH
+  G.p_MainCard = nullptr;
+  G.xKid.vEnded();
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -626,111 +667,31 @@ bool CardIter::G_bEachMain_foldBreak(eCK eOfMainKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.xKid.vBeginForward();
+  RASSERT(G.xKid.bBegun());
+  RASSERT(! G.xKid.bEnded());
 
-  for (;;) {
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
 
-    if (! G.xKid.bInRange()) {
+  G.p_OP = nullptr;
+
+  while (G.xKid.bEach()) {
+
+    if (G.xKid.pChild()->bIsCard(CK_FOLD))
       return false;
-    }
+
+    if (G.xKid.pChild()->eCard() != eOfMainKind)
+      continue;
 
     G.p_MainCard = G.xKid.pChild();
-
     vFocusOnMain();
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-
-    if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
-      //G.xKid.m_i_Child= C_UNKNOWN;
-      return false;
-    }
-
-    if (CK_NONE == eOfMainKind) {
-      return true;
-    }
-
-    eCK eCardMain = G.xKid.eChild();
-    if (eCardMain == eOfMainKind) {
-      return true;
-    }
-
-    G.xKid.vForward();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
   }
 
-  NEVER_REACH
-}
+  G.p_MainCard = nullptr;
+  G.xKid.vEnded();
+  return false;
 
-/*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main and update M member          */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMain_reverse(eCK eOfMainKind)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  G.xKid.vBeginReverse();
-
-  for (;;) {
-
-    if (! G.xKid.bInRange()) {
-      return false;
-    }
-
-    G.p_MainCard = G.xKid.pChild();
-
-    vFocusOnMain();
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-
-    if (CK_NONE == eOfMainKind) {
-      return true;
-    }
-
-    eCK eCardMain = G.xKid.eChild();
-    if (eCardMain == eOfMainKind) {
-      return G.xKid.pChild();
-    }
-
-    G.xKid.vReverse();
-  }
-
-  NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main and update M member          */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMain_reverse_foldBreak(eCK eOfMainKind)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  G.xKid.vBeginReverse();
-
-  for (;;) {
-
-    if (! G.xKid.bInRange()) {
-      return false;
-    }
-
-    G.p_MainCard = G.xKid.pChild();
-
-    if (G.xKid.pChild()->bIsCard(CK_FOLD)) {
-      //G.xKid.m_i_Child = C_UNKNOWN;
-      return false;
-    }
-
-    if (CK_NONE == eOfMainKind) {
-      return true;
-    }
-
-    vFocusOnMain();
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-
-    if (G.e_MainCard == eOfMainKind) {
-      return true;
-    }
-
-    G.xKid.vReverse();
- }
-
-  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
@@ -740,24 +701,193 @@ bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind) || CK_FILTER == eAndSubKind);
+
   while (G_bEachMain(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
-    vFocusOnMain();
-
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
     G.e_SubOfMain = G.p_SubOfMain->eCard();
     G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
     return true;
   }
 
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
-  G_vMember(eOfMainKind, nullptr, __func__);
+  RASSERT(G.xKid.bEnded());
+
   G.p_SubOfMain = nullptr;
   G.e_SubOfMain = CK_NONE;
   G_vMember(eAndSubKind, nullptr, __func__);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  while (G_bEachMainWithSub(eOfMainKind, eAndSubKind)) {
+    if (G.p_SubOfMain->szSymbol(SF_NONE)->bSame(szSubValue))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMainWith2Sub(eCK eOfMainKind,
+                                   eCK eAndSubKind1,
+                                   eCK eAndSubKind2)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind2) || CK_FILTER == eAndSubKind2);
+
+  while (G_bEachMainWithSub(eOfMainKind,eAndSubKind1)) {
+    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
+      continue;
+
+    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
+    G_vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
+    return true;
+  }
+
+  RASSERT(G.xKid.bEnded());
+
+  G.p_Sub2OfMain = nullptr;
+  G.e_Sub2OfMain = CK_NONE;
+  G_vMember(eAndSubKind2, nullptr, __func__);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main which has sub and update M   */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMainWith3Sub(eCK eOfMainKind,
+                                   eCK eAndSubKind1,
+                                   eCK eAndSubKind2,
+                                   eCK eAndSubKind3)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind3));
+
+  while (G_bEachMainWith2Sub(eOfMainKind,eAndSubKind1,eAndSubKind2)) {
+    if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eAndSubKind3)))
+      continue;
+
+    G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
+    G_vMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
+    return true;
+  }
+
+  RASSERT(G.xKid.bEnded());
+
+  G.p_Sub3OfMain = nullptr;
+  G.e_Sub3OfMain = CK_NONE;
+  G_vMember(eAndSubKind3, nullptr, __func__);
+
+  return false;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_reverse_NONE(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! bForward());
+
+  RASSERT(G.xKid.bBegun());
+  RASSERT(! G.xKid.bEnded());
+
+  G.p_OP = nullptr;
+
+  while (G.xKid.bEach_reverse()) {
+    if (G.xKid.bParentIs(CK_DECK) && ! G.xKid.pChild()->bIsMain())
+      continue;
+
+    G.p_MainCard = G.xKid.pChild();
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.p_MainCard = nullptr;
+  G.xKid.vEnded();
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_reverse_b(eCK eOfMainKind)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! bForward());
+
+  RASSERT(G.xKid.bBegun());
+  RASSERT(! G.xKid.bEnded());
+
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
+
+  G.p_OP = nullptr;
+
+  while (G.xKid.bEach_reverse()) {
+    if (G.xKid.pChild()->eCard() != eOfMainKind)
+      continue;
+
+    G.p_MainCard = G.xKid.pChild();
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.p_MainCard = nullptr;
+  G.xKid.vEnded();
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally step main register to next main and update M member          */
+/*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachMain_reverse_foldBreak_b(eCK eOfMainKind)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  RASSERT(! bForward());
+
+  RASSERT(G.xKid.bBegun());
+  RASSERT(! G.xKid.bEnded());
+
+  RASSERT(Card_MAIN::bIsMain(eOfMainKind));
+
+  G.p_OP = nullptr;
+
+  while (G.xKid.bEach_reverse()) {
+
+    if (G.xKid.pChild()->bIsCard(CK_FOLD))
+      return false;
+
+    if (G.xKid.pChild()->eCard() != eOfMainKind)
+      continue;
+
+    G.p_MainCard = G.xKid.pChild();
+    vFocusOnMain();
+    G_vMember(G.p_MainCard->eCard(), G.p_MainCard, __func__);
+    return true;
+  }
+
+  G.p_MainCard = nullptr;
+  G.xKid.vEnded();
   return false;
 }
 
@@ -768,7 +898,9 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain_reverse(eOfMainKind)) {
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind));
+
+  while (G_bEachMain_reverse_b(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -792,11 +924,13 @@ bool CardIter::G_bEachMainWithSub_reverse(eCK eOfMainKind, eCK eAndSubKind)
 /*----------------------------------------------------------------------------*/
 /* conditionally step main register to next main which has sub and update G   */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSubKind)
+bool CardIter::G_bEachMainWithSub_reverse_foldBreak_b(eCK eOfMainKind, eCK eAndSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain_reverse_foldBreak(eOfMainKind)) {
+  RASSERT(! Card_MAIN::bIsMain(eAndSubKind) || CK_FILTER == eAndSubKind);
+
+  while (G_bEachMain_reverse_foldBreak_b(eOfMainKind)) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind)))
       continue;
 
@@ -819,110 +953,15 @@ bool CardIter::G_bEachMainWithSub_reverse_foldBreak(eCK eOfMainKind, eCK eAndSub
 }
 
 /*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main which has sub and update M   */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubValue)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  while (G_bEachMainWithSub(eOfMainKind, eAndSubKind)) {
-    if (G.p_SubOfMain->szSymbol()->bSame(szSubValue))
-      return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main which has sub and update M   */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMainWith2Sub(eCK eOfMainKind,
-                                   eCK eAndSubKind1,
-                                   eCK eAndSubKind2)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  while (G_bEachMain(eOfMainKind)) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
-      continue;
-    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
-      continue;
-
-    vFocusOnMain();
-
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-    G.e_SubOfMain = G.p_SubOfMain->eCard();
-    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
-    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
-    G_vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
-    return true;
-  }
-
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
-  G_vMember(eOfMainKind, nullptr, __func__);
-  G.p_SubOfMain = nullptr;
-  G.e_SubOfMain = CK_NONE;
-  G_vMember(eAndSubKind1, nullptr, __func__);
-  G.p_Sub2OfMain = nullptr;
-  G.e_Sub2OfMain = CK_NONE;
-  G_vMember(eAndSubKind2, nullptr, __func__);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally step main register to next main which has sub and update M   */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachMainWith3Sub(eCK eOfMainKind,
-                                   eCK eAndSubKind1,
-                                   eCK eAndSubKind2,
-                                   eCK eAndSubKind3)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  while (G_bEachMain(eOfMainKind)) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eAndSubKind1)))
-      continue;
-    if (! (G.p_Sub2OfMain = G.p_MainCard->pFindSubCard(eAndSubKind2)))
-      continue;
-    if (! (G.p_Sub3OfMain = G.p_MainCard->pFindSubCard(eAndSubKind3)))
-      continue;
-
-    vFocusOnMain();
-
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-    G.e_SubOfMain = G.p_SubOfMain->eCard();
-    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
-    G.e_Sub2OfMain = G.p_Sub2OfMain->eCard();
-    G_vMember(G.e_Sub2OfMain, G.p_Sub2OfMain, __func__);
-    G.e_Sub3OfMain = G.p_Sub3OfMain->eCard();
-    G_vMember(G.e_Sub3OfMain, G.p_Sub3OfMain, __func__);
-    return true;
-  }
-
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
-  G_vMember(eOfMainKind, nullptr, __func__);
-  G.p_SubOfMain = nullptr;
-  G.e_SubOfMain = CK_NONE;
-  G_vMember(eAndSubKind1, nullptr, __func__);
-  G.p_Sub2OfMain = nullptr;
-  G.e_Sub2OfMain = CK_NONE;
-  G_vMember(eAndSubKind2, nullptr, __func__);
-  G.p_Sub3OfMain = nullptr;
-  G.e_Sub3OfMain = CK_NONE;
-  G_vMember(eAndSubKind3, nullptr, __func__);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
 /*----------------------------------------------------------------------------*/
 bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  RASSERT(! Card_MAIN::bIsMain(eSubKind));
+
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
       continue;
 
@@ -941,34 +980,6 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
   G_vMember(eSubKind, nullptr, __func__);
   return false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* step main register to next main which has sub and update M member          */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bEachSubOfMain_reverse(eCK eSubKind)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  while (G_bEachMain_reverse()) {
-    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
-      continue;
-
-    vFocusOnMain();
-
-    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
-    G.e_SubOfMain = G.p_SubOfMain->eCard();
-    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
-    return true;
-  }
-
-  G.p_MainCard  = nullptr;
-  G.e_MainCard  = CK_NONE;
-  G.p_SubOfMain = nullptr;
-  G.e_SubOfMain = CK_NONE;
-  G_vMember(eSubKind, nullptr, __func__);
-  return false;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
@@ -977,7 +988,10 @@ bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  RASSERT(! Card_MAIN::bIsMain(eSubKind1));
+  RASSERT(! Card_MAIN::bIsMain(eSubKind2));
+
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1012,7 +1026,11 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  while (G_bEachMain()) {
+  RASSERT(! Card_MAIN::bIsMain(eSubKind1));
+  RASSERT(! Card_MAIN::bIsMain(eSubKind2));
+  RASSERT(! Card_MAIN::bIsMain(eSubKind3));
+
+  while (G_bEachMain_NONE()) {
     if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind1)))
       continue;
 
@@ -1049,21 +1067,56 @@ bool CardIter::G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end of phase                                                               */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEnd(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.xKid.vEnded();
+}
+
+/*----------------------------------------------------------------------------*/
+/* end of phase                                                               */
+/*----------------------------------------------------------------------------*/
+void CardIter::vEndPhase(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_pBench->vEndPhase(this);
+
+  vValidateBench();
+
+  RASSERT(0 == nItems());
+}
+
+/*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
 void CardIter::vEndTransform(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  vRenumberCards();
+  m_pBench->vRenumberCards();
 
-  //m_pCardCtl->vUseXform();
-  // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);
+  if (G.pBoard) {
 
-  vPrintBoard();
+    G.pDeck->vCheckCorrectness();
 
-  //m_pCardCtl->vUseDefault();
+    G.pBoard->pState()->vInsert(aXF[m_pBench->eXform()]);
 
+    for (Kid xDeck(G.pDeck); xDeck.bEach(); /**/) {
+      xDeck.pChild()->vEnsureFirst(CK_LEVEL);
+      xDeck.pChild()->vEnsureLast(CK_CONSTRAINT);
+      xDeck.pChild()->vEnsureLast(CK_NEEDED);
+    }
+
+    vPrintBoard();
+  }
+
+  vValidateBench();
+
+  G.xKid.vEnded();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1093,7 +1146,7 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
             //p_rpnCalc->vDump();
             if (1 == p_rpnCalc->nChildCards() &&
-                p_rpnCalc->pGetTerm(0)->szSymbol()->bSame(p_term->szSymbol())) {
+                p_rpnCalc->pGetTerm(0)->szSymbol(SF_NONE)->bSame(p_term->szSymbol(SF_NONE))) {
               p_expr_col = p_expr_prj;
               break;
             }
@@ -1130,7 +1183,7 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
             //p_as->vDump();
-            if (p_as->bIsSymbol(p_term->szSymbol())) {
+            if (p_as->pSymbol()->bSame(p_term->szSymbol(SF_NONE))) {
               p_expr_col = p_expr_prj;
               break;
             }
@@ -1151,6 +1204,14 @@ void CardIter::vFocusOnMain(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
+//  if (! G.p_MainCard->bIsMain())
+//    return;
+//
+//  RASSERT(G.p_MainCard->bIsMain());
+
+  MemLib::vZero(G.md_Coord, sizeof(G.md_Coord), CN_CARDITER);
+  StrLib::vCopy(G.md_Coord, sizeof(G.md_Coord),G.p_MainCard->szCoord()->azChar());
+
   G.e_MainCard = G.p_MainCard->eCard();
   G.i_MainCard = this->i_Child();
 }
@@ -1158,15 +1219,21 @@ void CardIter::vFocusOnMain(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vForward(void)
+bool CardIter::bForward(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  return G.xKid.bForwards();
+}
 
-  Card* pChild = pNextChild();
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vForward(bool bForward)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
 
-  UNUSED(pChild);
+  G.xKid.vForwards(bForward);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1192,14 +1259,16 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_ABSJOIN:          return G.p_absJoin;
     case CK_AGGREG:           return G.p_aggreg;
-    case CK_ANDPRED:          return G.p_andPred;
+    case CK_ANDCONJ:          return G.p_andConj;
     case CK_AS:               return G.p_as;
+
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUND:            return G.p_bound;
     case CK_BOUNDS:           return G.p_bounds;
+
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
-    case CK_CMPPRED:          return G.p_cmpPred;
+    case CK_CMPCONJ:          return G.p_cmpConj;
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
     case CK_CORRELATION:      return G.p_correlation;
@@ -1209,19 +1278,26 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COSTUNICAST:      return G.p_costUnicast;
     case CK_COUNT:            return G.p_count;
     case CK_CROSSJOIN:        return G.p_crossJoin;
+
     case CK_DIRECTION:        return G.p_direction;
+
     case CK_EXPR:             return G.p_expr;
+
     case CK_FILTER:           return G.p_filter;
     case CK_FILTPRED:         return G.p_filtPred;
     case CK_FILTPREDLIST:     return G.p_filtPredList;
     case CK_FLAT:             return G.p_flat;
     case CK_FOLD:             return G.p_fold;
-    case CK_FOLDELIST:        return G.p_foldElist;
     case CK_FROM:             return G.p_from;
+
     case CK_GBYAGG:           return G.p_gbyAgg;
+
     case CK_HASH:             return G.p_hash;
+    case CK_HASHING:          return G.p_hashing;
     case CK_HAVING:           return G.p_having;
     case CK_HSHCOL:           return G.p_hshCol;
+    case CK_HSHCOLLIST:       return G.p_hshColList;
+
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
     case CK_INDEX:            return G.p_index;
@@ -1229,43 +1305,61 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXLIST:        return G.p_indexList;
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
+
     case CK_JOINCAST:         return G.p_joinCast;
     case CK_JOINESTIMATE:     return G.p_joinEstimate;
     case CK_JOINORDER:        return G.p_joinOrder;
     case CK_JOINORDERING:     return G.p_joinOrdering;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
+
     case CK_KEY:              return G.p_key;
+    case CK_KEYCELLS:         return G.p_keyCells;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
+
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
+
+    case CK_MAP:              return G.p_map;
+    case CK_MAPPING:          return G.p_mapping;
+
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
     case CK_NOTE:             return G.p_note;
-    case CK_NOTPRED:          return G.p_notPred;
+    case CK_NOTCONJ:          return G.p_notConj;
+
     case CK_ON:               return G.p_on;
     case CK_ORDAGG:           return G.p_ordAgg;
-    case CK_ORPRED:           return G.p_orPred;
+    case CK_ORCONJ:           return G.p_orConj;
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
+
+    case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
+
     case CK_ROWCOUNT:         return G.p_rowCount;
     case CK_ROWSIZE:          return G.p_rowSize;
     case CK_RPNCALC:          return G.p_rpnCalc;
+
     case CK_SCAN:             return G.p_scan;
     case CK_SECTION:          return G.p_section;
     case CK_SEND:             return G.p_send;
+    case CK_SPARE:            return G.p_spare;
+    case CK_SORT:             return G.p_sort;
+    case CK_STAGE:            return G.p_stage;
+    case CK_STREAM:           return G.p_stream;
     case CK_STREAMHEAD:       return G.p_streamHead;
     case CK_STREAMJOIN:       return G.p_streamJoin;
     case CK_STREAMKEY:        return G.p_streamKey;
     case CK_STREAMPER:        return G.p_streamPer;
     case CK_STREAMPTN:        return G.p_streamPtn;
     case CK_STREAMSET:        return G.p_streamSet;
-    case CK_SORT:             return G.p_sort;
-    case CK_STAGE:            return G.p_stage;
+    case CK_SUBQUERY:         return G.p_subQuery;
     case CK_SUBSET:           return G.p_subSet;
+
     case CK_TABLE:            return G.p_table;
+    case CK_TABLEINFO:        return G.p_tableInfo;
     case CK_TABLELIST:        return G.p_tableList;
     case CK_TABLENM:          return G.p_tableNm;
     case CK_TABLEPTN:         return G.p_tablePtn;
@@ -1273,7 +1367,9 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TERM:             return G.p_term;
     case CK_TOP:              return G.p_top;
     case CK_TOPOLOGY:         return G.p_topology;
+
     case CK_UNIQUE:           return G.p_unique;
+
     case CK_WHERE:            return G.p_where;
 
     default:
@@ -1288,7 +1384,7 @@ void CardIter::G_vInsertAfter(Card* pCard, Card* pAfter)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.pDeck->vInsertAfter(pCard,pAfter);
+  G.pDeck->vInsertChildAfter(pCard,pAfter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1298,7 +1394,7 @@ void CardIter::G_vInsertBefore(Card* pCard, Card* pBefore)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.pDeck->vInsertBefore(pCard,pBefore);
+  G.pDeck->vInsertChildBefore(pCard,pBefore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1330,31 +1426,11 @@ bool CardIter::G_bIsNextMain(eCK eMember)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::bJustRestarted(void)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (C_UNKNOWN == G.xKid.i_Child() &&
-      nullptr == G.xKid.pChild() &&
-      true == G.xKid.m_bActive)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::G_vMainResynch(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.m_bActive = true;
-
-  for (G.xKid.vChild(-1); G.xKid.bEach(); /**/)
-    if (G.p_MainCard == G.xKid.pChild())
-      break;
-
+  G.xKid.vResynch(G.p_MainCard);
   RASSERT(G.p_MainCard == G.xKid.pChild());
 
 }
@@ -1371,11 +1447,12 @@ void CardIter::G_vMainResynch(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set member card                                                         */
+/* set member card                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
+  UNUSED(asFuncNm);
 
   RASSERT(!pCard || pCard->bIsCard(eMember));
 
@@ -1383,217 +1460,166 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_NONE: break;
 
-    case CK_ABSJOIN:          *((Card**)&G.p_absJoin)          = pCard; break;
-    case CK_AGGREG:           *((Card**)&G.p_aggreg)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_ANDPRED:          *((Card**)&G.p_andPred)          = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
-    case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
-    case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
-    case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;
-    case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
-    case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
-    case CK_CAST:             *((Card**)&G.p_cast)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
-    case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
-    case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;
-    case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
-    case CK_COSTJOINING:      *((Card**)&G.p_costJoining)      = pCard; break;
-    case CK_COSTNETWORK:      *((Card**)&G.p_costNetwork)      = pCard; break;
-    case CK_COSTSTREAM:       *((Card**)&G.p_costQuery)        = pCard; break;
-    case CK_COSTUNICAST:      *((Card**)&G.p_costUnicast)      = pCard; break;
-    case CK_COUNT:            *((Card**)&G.p_count)            = pCard; break;
-    case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
-    case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
-    case CK_FILTER:           *((Card**)&G.p_filter)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_FILTPRED:         *((Card**)&G.p_filtPred)         = pCard; break;
-    case CK_FILTPREDLIST:     *((Card**)&G.p_filtPredList)     = pCard; break;
-    case CK_FLAT:             *((Card**)&G.p_flat)             = pCard; break;
-    case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
-    case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
-    case CK_FROM:             *((Card**)&G.p_from)             = pCard; break;
-    case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_HASH:             *((Card**)&G.p_hash)             = pCard; break;
-    case CK_HAVING:           *((Card**)&G.p_having)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_HSHCOL:           *((Card**)&G.p_hshCol)           = pCard; break;
-    case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
-    case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
-    case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
-    case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
-    case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
-    case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_JOINCAST:         *((Card**)&G.p_joinCast)         = pCard; break;
-    case CK_JOINESTIMATE:     *((Card**)&G.p_joinEstimate)     = pCard; break;
-    case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
-    case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
-    case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
-    case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
-    case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
-    case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
-    case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;
-    case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
-    case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
-    case CK_ON:               *((Card**)&G.p_on)               = pCard; break;
-    case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_ORPRED:           *((Card**)&G.p_orPred)           = pCard;
-                              *((Card**)&G.p_PRED)             = pCard; break;
-    case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
-    case CK_OUTERJOIN:        *((Card**)&G.p_outerJoin)        = pCard; break;
-    case CK_PROJECT:          *((Card**)&G.p_project)          = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
-    case CK_ROWCOUNT:         *((Card**)&G.p_rowCount)         = pCard; break;
-    case CK_ROWSIZE:          *((Card**)&G.p_rowSize)          = pCard; break;
-    case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
-    case CK_SCAN:             *((Card**)&G.p_scan)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
-    case CK_SEND:             *((Card**)&G.p_send)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_SORT:             *((Card**)&G.p_sort)             = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_STAGE:            *((Card**)&G.p_stage)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_STREAMHEAD:       *((Card**)&G.p_streamHead)       = pCard; break;
-    case CK_STREAMJOIN:       *((Card**)&G.p_streamJoin)       = pCard; break;
-    case CK_STREAMKEY:        *((Card**)&G.p_streamKey)        = pCard; break;
-    case CK_STREAMPER:        *((Card**)&G.p_streamPer)        = pCard; break;
-    case CK_STREAMPTN:        *((Card**)&G.p_streamPtn)        = pCard; break;
-    case CK_STREAMSET:        *((Card**)&G.p_streamSet)        = pCard; break;
-    case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
-    case CK_TABLE:            *((Card**)&G.p_table)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
-    case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
-    case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
-    case CK_TABLESIZE:        *((Card**)&G.p_tableSize)        = pCard; break;
-    case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
-    case CK_TOP:              *((Card**)&G.p_top)              = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
-    case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
-    case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
-    case CK_WHERE:            *((Card**)&G.p_where)            = pCard;
-                              *((Card**)&G.p_OP)               = pCard; break;
+    case CK_ABSJOIN:          G.p_absJoin          = _pCard_AbsJoin(pCard); break;
+    case CK_AGGREG:           G.p_aggreg           = _pCard_Aggreg(pCard);
+                              G.p_OP               = (Card_OP*)pCard; break;
+    case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);
+                              G.p_CONJ             = (Card_CONJUNCTION*)pCard; break;
+    case CK_AS:               G.p_as               = _pCard_As(pCard); break;
+
+    case CK_BOOLCALC:         G.p_boolCalc         = _pCard_BoolCalc(pCard); break;
+    case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
+    case CK_BOUNDS:           G.p_bounds           = _pCard_Bounds(pCard); break;
+
+    case CK_CALL:             G.p_call              = _pCard_Call(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_CAST:             G.p_cast              = _pCard_Cast(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_CMPCONJ: G.p_cmpConj           = _pCard_CmpConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
+
+    case CK_COMBINED:         G.p_combined          = _pCard_Combined(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_CONSTRAINT:       G.p_constraint        = _pCard_Constraint(pCard); break;
+    case CK_CORRELATION:      G.p_correlation       = _pCard_Correlation(pCard); ;
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_COSTJOINING:      G.p_costJoining       = _pCard_CostJoining(pCard); break;
+    case CK_COSTNETWORK:      G.p_costNetwork       = _pCard_CostNetwork(pCard); break;
+    case CK_COSTSTREAM:       G.p_costQuery         = _pCard_CostStream(pCard); break;
+    case CK_COSTUNICAST:      G.p_costUnicast       = _pCard_CostUnicast(pCard); break;
+    case CK_COUNT:            G.p_count             = _pCard_Count(pCard); break;
+    case CK_CROSSJOIN:        G.p_crossJoin         = _pCard_CrossJoin(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+
+    case CK_DECK:             G.pDeck               = _pCard_Deck(pCard); break;
+
+    case CK_DIRECTION:        G.p_direction         = _pCard_Direction(pCard); break;
+
+    case CK_EXPR:             G.p_expr              = _pCard_Expr(pCard); break;
+
+    case CK_FILTER:           G.p_filter            = _pCard_Filter(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_FILTPRED:         G.p_filtPred          = _pCard_FiltPred(pCard); break;
+    case CK_FILTPREDLIST:     G.p_filtPredList      = _pCard_FiltPredList(pCard); break;
+    case CK_FLAT:             G.p_flat              = _pCard_Flat(pCard); break;
+    case CK_FOLD:             G.p_fold              = _pCard_Fold(pCard); break;
+    case CK_FROM:             G.p_from              = _pCard_From(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+
+    case CK_GBYAGG:           G.p_gbyAgg            = _pCard_GbyAgg(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+
+    case CK_HASH:             G.p_hash              = _pCard_Hash(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_HASHING:          G.p_hashing           = _pCard_Hashing(pCard); break;
+    case CK_HAVING:           G.p_having            = _pCard_Having(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_HSHCOL:           G.p_hshCol            = _pCard_HshCol(pCard); break;
+    case CK_HSHCOLLIST:       G.p_hshColList        = _pCard_HshColList(pCard); break;
+
+    case CK_IDXCOL:           G.p_idxCol            = _pCard_IdxCol(pCard); break;
+    case CK_IDXCOLLIST:       G.p_idxColList        = _pCard_IdxColList(pCard); break;
+    case CK_INDEX:            G.p_index             = _pCard_Index(pCard); break;
+    case CK_INDEXJOIN:        G.p_indexJoin         = _pCard_IndexJoin(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_INDEXLIST:        G.p_indexList         = _pCard_IndexList(pCard); break;
+    case CK_INDEXNM:          G.p_indexNm           = _pCard_IndexNm(pCard); break;
+    case CK_INDEXSCAN:        G.p_indexScan         = _pCard_IndexScan(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+
+    case CK_JOINCAST:         G.p_joinCast          = _pCard_JoinCast(pCard); break;
+    case CK_JOINESTIMATE:     G.p_joinEstimate      = _pCard_JoinEstimate(pCard); break;
+    case CK_JOINORDER:        G.p_joinOrder         = _pCard_JoinOrder(pCard); break;
+    case CK_JOINORDERING:     G.p_joinOrdering      = _pCard_JoinOrdering(pCard); break;
+    case CK_JOINPREDLIST:     G.p_joinPredList      = _pCard_JoinPredList(pCard); break;
+
+    case CK_KEY:              G.p_key               = _pCard_Key(pCard); break;
+    case CK_KEYCELLS:         G.p_keyCells          = _pCard_KeyCells(pCard); break;
+    case CK_KEYEXISTS:        G.p_keyExists         = _pCard_KeyExists(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_KEYNOTEXISTS:     G.p_keyNotExists      = _pCard_KeyNotExists(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+
+    case CK_LEVEL:            G.p_level             = _pCard_Level(pCard); break;
+    case CK_LIMIT:            G.p_limit             = _pCard_Limit(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+
+    case CK_MAP:              G.p_map               = _pCard_Map(pCard); break;
+    case CK_MAPPING:          G.p_mapping           = _pCard_Mapping(pCard); break;
+
+    case CK_NCORRCOLS:        G.p_nCorrCols         = _pCard_NCorrCols(pCard); break;
+    case CK_NEEDED:           G.p_needed            = _pCard_Needed(pCard); break;
+    case CK_NOTE:             G.p_note              = _pCard_Note(pCard); break;
+    case CK_NOTCONJ: G.p_notConj           = _pCard_NotConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
+
+    case CK_ON:               G.p_on                = _pCard_On(pCard); break;
+    case CK_ORDAGG:           G.p_ordAgg            = _pCard_OrdAgg(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_ORCONJ: G.p_orConj            = _pCard_OrConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
+    case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
+    case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
+
+    case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
+    case CK_PROJECT:          G.p_project           = _pCard_Project(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_PROJECTION:       G.p_projection        = _pCard_Projection(pCard); break;
+
+    case CK_ROWCOUNT:         G.p_rowCount          = _pCard_RowCount(pCard); break;
+    case CK_ROWSIZE:          G.p_rowSize           = _pCard_RowSize(pCard); break;
+    case CK_RPNCALC:          G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
+
+    case CK_SCAN:             G.p_scan              = _pCard_Scan(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_SECTION:          G.p_section           = _pCard_Section(pCard); break;
+    case CK_SEND:             G.p_send              = _pCard_Send(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_SORT:             G.p_sort              = _pCard_Sort(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_SPARE:            G.p_section           = _pCard_Section(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_STAGE:            G.p_stage             = _pCard_Stage(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_STREAM:           G.p_stream            = _pCard_Stream(pCard); break;
+    case CK_STREAMHEAD:       G.p_streamHead        = _pCard_StreamHead(pCard); break;
+    case CK_STREAMJOIN:       G.p_streamJoin        = _pCard_StreamJoin(pCard); break;
+    case CK_STREAMKEY:        G.p_streamKey         = _pCard_StreamKey(pCard); break;
+    case CK_STREAMPER:        G.p_streamPer         = _pCard_StreamPer(pCard); break;
+    case CK_STREAMPTN:        G.p_streamPtn         = _pCard_StreamPtn(pCard); break;
+    case CK_STREAMSET:        G.p_streamSet         = _pCard_StreamSet(pCard); break;
+    case CK_SUBQUERY:         G.p_subQuery          = _pCard_SubQuery(pCard); break;
+    case CK_SUBSET:           G.p_subSet            = _pCard_SubSet(pCard); break;
+
+    case CK_TABLE:            G.p_table             = _pCard_Table(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_TABLEINFO:        G.p_tableInfo         = _pCard_TableInfo(pCard); break;
+    case CK_TABLELIST:        G.p_tableList         = _pCard_TableList(pCard); break;
+    case CK_TABLENM:          G.p_tableNm           = _pCard_TableNm(pCard); break;
+    case CK_TABLEPTN:         G.p_tablePtn          = _pCard_TablePtn(pCard); break;
+    case CK_TABLESIZE:        G.p_tableSize         = _pCard_TableSize(pCard); break;
+    case CK_TERM:             G.p_term              = _pCard_Term(pCard); break;
+    case CK_TOP:              G.p_top               = _pCard_Top(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
+    case CK_TOPOLOGY:         G.p_topology          = _pCard_Topology(pCard); break;
+
+    case CK_UNIQUE:           G.p_unique            = _pCard_Unique(pCard); break;
+
+    case CK_WHERE:            G.p_where             = _pCard_Where(pCard);
+                              G.p_OP                = (Card_OP*)pCard; break;
     default:
       NEVER_REACH
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* update member card                                                         */
+/* set member card                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* CardIter::szMemberNm(eCK eMember)
+void CardIter::vMember(Card* pCard)
 {
-  _precondition_( _MAGIC_, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
-  switch (eMember) {
-
-    case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
-    case CK_AGGREG:           return "G.p_aggreg"_Stz;
-    case CK_ANDPRED:          return "G.p_andPred"_Stz;
-    case CK_AS:               return "G.p_as"_Stz;
-    case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
-    case CK_BOUND:            return "G.p_bound"_Stz;
-    case CK_BOUNDS:           return "G.p_bounds"_Stz;
-    case CK_CALL:             return "G.p_call"_Stz;
-    case CK_CAST:             return "G.p_cast"_Stz;
-    case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
-    case CK_COMBINED:         return "G.p_combined"_Stz;
-    case CK_CONSTRAINT:       return "G.p_constraint"_Stz;
-    case CK_COSTJOINING:      return "G.p_costJoining"_Stz;
-    case CK_COSTNETWORK:      return "G.p_costNetwork"_Stz;
-    case CK_COSTSTREAM:       return "G.p_costQuery"_Stz;
-    case CK_COSTUNICAST:      return "G.p_costUnicast"_Stz;
-    case CK_CORRELATION:      return "G.p_correlation"_Stz;
-    case CK_COUNT:            return "G.p_count"_Stz;
-    case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
-    case CK_DIRECTION:        return "G.p_direction"_Stz;
-    case CK_EXPR:             return "G.p_expr"_Stz;
-    case CK_FILTER:           return "G.p_filter"_Stz;
-    case CK_FILTPRED:         return "G.p_filtPred"_Stz;
-    case CK_FILTPREDLIST:     return "G.p_filtPredList"_Stz;
-    case CK_FLAT:             return "G.p_flat"_Stz;
-    case CK_FOLD:             return "G.p_fold"_Stz;
-    case CK_FOLDELIST:        return "G.p_foldElist"_Stz;
-    case CK_FROM:             return "G.p_from"_Stz;
-    case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
-    case CK_HASH:             return "G.p_hash"_Stz;
-    case CK_HAVING:           return "G.p_having"_Stz;
-    case CK_HSHCOL:           return "G.p_hshCol"_Stz;
-    case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
-    case CK_INDEX:            return "G.p_index"_Stz;
-    case CK_INDEXJOIN:        return "G.p_indexJoin"_Stz;
-    case CK_INDEXLIST:        return "G.p_indexList"_Stz;
-    case CK_INDEXNM:          return "G.p_indexNm"_Stz;
-    case CK_INDEXSCAN:        return "G.p_indexScan"_Stz;
-    case CK_JOINCAST:         return "G.p_joinCast"_Stz;
-    case CK_JOINESTIMATE:     return "G.p_joinEstimate"_Stz;
-    case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
-    case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
-    case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
-    case CK_KEY:              return "G.p_key"_Stz;
-    case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
-    case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;
-    case CK_LEVEL:            return "G.p_level"_Stz;
-    case CK_LIMIT:            return "G.p_limit"_Stz;
-    case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
-    case CK_NEEDED:           return "G.p_needed"_Stz;
-    case CK_NOTE:             return "G.p_note"_Stz;
-    case CK_NOTPRED:          return "G.p_notPred"_Stz;
-    case CK_ON:               return "G.p_on"_Stz;
-    case CK_ORDAGG:           return "G.p_ordAgg"_Stz;
-    case CK_ORPRED:           return "G.p_orPred"_Stz;
-    case CK_OUTERCOLNM:       return "G.p_outerColNm"_Stz;
-    case CK_OUTERJOIN:        return "G.p_outerJoin"_Stz;
-    case CK_PROJECT:          return "G.p_project"_Stz;
-    case CK_PROJECTION:       return "G.p_projection"_Stz;
-    case CK_ROWCOUNT:         return "G.p_rowCount"_Stz;
-    case CK_ROWSIZE:          return "G.p_rowSize"_Stz;
-    case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
-    case CK_SCAN:             return "G.p_scan"_Stz;
-    case CK_SECTION:          return "G.p_section"_Stz;
-    case CK_SEND:             return "G.p_send"_Stz;
-    case CK_SORT:             return "G.p_sort"_Stz;
-    case CK_STAGE:            return "G.p_stage"_Stz;
-    case CK_STREAMHEAD:       return "G.p_streamHead"_Stz;
-    case CK_STREAMJOIN:       return "G.p_streamJoin"_Stz;
-    case CK_STREAMKEY:        return "G.p_streamKey"_Stz;
-    case CK_STREAMPER:        return "G.p_streamPer"_Stz;
-    case CK_STREAMPTN:        return "G.p_streamPtn"_Stz;
-    case CK_STREAMSET:        return "G.p_streamSet"_Stz;
-    case CK_SUBSET:           return "G.p_subSet"_Stz;
-    case CK_TABLE:            return "G.p_table"_Stz;
-    case CK_TABLELIST:        return "G.p_tableList"_Stz;
-    case CK_TABLENM:          return "G.p_tableNm"_Stz;
-    case CK_TABLEPTN:         return "G.p_tablePtn"_Stz;
-    case CK_TABLESIZE:        return "G.p_tableSize"_Stz;
-    case CK_TERM:             return "G.p_term"_Stz;
-    case CK_TOP:              return "G.p_top"_Stz;
-    case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_UNIQUE:           return "G.p_unique"_Stz;
-    case CK_WHERE:            return "G.p_where"_Stz;
-
-    default:
-      NEVER_REACH
-  }
+  G_vMember(pCard->eCard(),pCard,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1603,36 +1629,12 @@ bool CardIter::bMore(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
-  if (G.xKid.i_Child() + 1 < G.xKid.pParent()->nChildCards())
+  if (G.xKid.bMore())
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* are there more main cards?                                                 */
-/*----------------------------------------------------------------------------*/
-bool CardIter::G_bMoreMain(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  if (this->bMore())
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* morph card                                                                 */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vMorphCard(Card* pCard, eCK eCard)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  pCard->vCard(eCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1641,8 +1643,6 @@ void CardIter::G_vMorphCard(Card* pCard, eCK eCard)
 Card* CardIter::pNextChild(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
-
-  RASSERT(G.xKid.m_bActive);
 
   i8 i_Next = G.xKid.i_Child() + 1;
 
@@ -1661,8 +1661,6 @@ Card* CardIter::pNextChildIf(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
-
   Card* pNextMain = this->pNextChild();
   if (! pNextMain || eCard != pNextMain->eCard())
     return nullptr;
@@ -1673,58 +1671,175 @@ Card* CardIter::pNextChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* create a new card and optionally set member                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMember(eCK eMember, bool bUpdateMember)
+void CardIter::G_vNewMember(eCK eMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.p_NEW = new Card(eMember);
+  G.p_NEW = new Card(eMember,C_UNKNOWN);
 
-  if (bUpdateMember)
-    G_vMember(eMember, G.p_NEW, __func__);
+  G_vMember(eMember, G.p_NEW, __func__);
 }
 
 /*----------------------------------------------------------------------------*/
 /* step to next main and set member                                           */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
+void CardIter::G_vNewMember(eCK eMember, Symbol xSymbol)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G_vNewMember(eMember, bUpdateMember);
+  G_vNewMember(eMember);
 
-  G.p_NEW->vSymbol(szValue);
+  G.p_NEW->pSymbol()->vSym(&xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/* clear the M members                                                        */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMemberBefore(eCK eMember, Stz* szValue,
-                                  eCK eBefore, bool bUpdateMember)
+void CardIter::vNullMembers(bool bNull_OP)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G_vNewMember(eMember, bUpdateMember);
+  G.p_absJoin          = nullptr;
+  G.p_aggreg           = nullptr;
+  G.p_andConj          = nullptr;
+  G.p_as               = nullptr;
 
-  G.p_NEW->vSymbol(szValue);
+  G.p_boolCalc         = nullptr;
+  G.p_bound            = nullptr;
+  G.p_bounds           = nullptr;
 
-  Card* p_before = G_pGetMember(eBefore);
+  G.p_call             = nullptr;
+  G.p_cast             = nullptr;
+  G.p_cmpConj          = nullptr;
+  G.p_combined         = nullptr;
+  G.p_constraint       = nullptr;
+  G.p_correlation      = nullptr;
+  G.p_costJoining      = nullptr;
+  G.p_costNetwork      = nullptr;
+  G.p_costQuery        = nullptr;
+  G.p_costUnicast      = nullptr;
+  G.p_count            = nullptr;
+  G.p_crossJoin        = nullptr;
 
-  G.pDeck->vInsertBefore(G.p_NEW,p_before);
+  G.p_direction        = nullptr;
+
+  G.p_expr             = nullptr;
+
+  G.p_filter           = nullptr;
+  G.p_filtPred         = nullptr;
+  G.p_filtPredList     = nullptr;
+  G.p_flat             = nullptr;
+  G.p_fold             = nullptr;
+  G.p_from             = nullptr;
+
+  G.p_gbyAgg           = nullptr;
+
+  G.p_hash             = nullptr;
+  G.p_hashing          = nullptr;
+  G.p_having           = nullptr;
+  G.p_hshCol           = nullptr;
+  G.p_hshColList       = nullptr;
+
+  G.p_idxCol           = nullptr;
+  G.p_idxColList       = nullptr;
+  G.p_index            = nullptr;
+  G.p_indexJoin        = nullptr;
+  G.p_indexList        = nullptr;
+  G.p_indexNm          = nullptr;
+  G.p_indexScan        = nullptr;
+
+  G.p_joinCast         = nullptr;
+  G.p_joinOrder        = nullptr;
+  G.p_joinOrdering     = nullptr;
+  G.p_joinPredList     = nullptr;
+
+  G.p_key              = nullptr;
+  G.p_keyCells         = nullptr;
+  G.p_keyExists        = nullptr;
+  G.p_keyNotExists     = nullptr;
+
+  G.p_level            = nullptr;
+  G.p_limit            = nullptr;
+
+  G.p_joinEstimate     = nullptr;
+
+  G.p_map              = nullptr;
+  G.p_mapping          = nullptr;
+
+  G.p_nCorrCols        = nullptr;
+  G.p_needed           = nullptr;
+  G.p_note             = nullptr;
+  G.p_notConj          = nullptr;
+
+  G.p_on               = nullptr;
+  G.p_ordAgg           = nullptr;
+  G.p_orConj           = nullptr;
+  G.p_outerColNm       = nullptr;
+  G.p_outerJoin        = nullptr;
+
+  G.p_payloadCells     = nullptr;
+  G.p_project          = nullptr;
+  G.p_projection       = nullptr;
+
+  G.p_rowCount         = nullptr;
+  G.p_rowSize          = nullptr;
+  G.p_rpnCalc          = nullptr;
+
+  G.p_scan             = nullptr;
+  G.p_section          = nullptr;
+  G.p_send             = nullptr;
+  G.p_spare            = nullptr;
+  G.p_sort             = nullptr;
+  G.p_stream           = nullptr;
+  G.p_streamKey        = nullptr;
+  G.p_streamPer        = nullptr;
+  G.p_streamPtn        = nullptr;
+  G.p_streamSet        = nullptr;
+  G.p_stage            = nullptr;
+  G.p_streamHead       = nullptr;
+  G.p_streamJoin       = nullptr;
+  G.p_subQuery         = nullptr;
+  G.p_subSet           = nullptr;
+
+  G.p_table            = nullptr;
+  G.p_tableInfo        = nullptr;
+  G.p_tableList        = nullptr;
+  G.p_tableNm          = nullptr;
+  G.p_tablePtn         = nullptr;
+  G.p_tableSize        = nullptr;
+  G.p_term             = nullptr;
+  G.p_top              = nullptr;
+  G.p_topology         = nullptr;
+
+  G.p_unique           = nullptr;
+
+  G.p_where            = nullptr;
+
+  G.p_NEW              = nullptr;
+  G.p_CONJ             = nullptr;
+
+  if (bNull_OP)
+    G.p_OP = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
+/* past given phase?                                                          */
 /*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
-                              eCK eOf, bool bUpdateMember)
+bool CardIter::bPastPhase(eOH ePhase)
 {
-  _precondition_(_MAGIC_, _FOOTER_);
+  _precondition_( _MAGIC_, _FOOTER_);
 
-  G_vNewMember(eMember, bUpdateMember);
+  return m_pBench->bPastPhase(this,ePhase);
+}
 
-  G.p_NEW->vSymbol(szValue);
+/*----------------------------------------------------------------------------*/
+/* begin and record transformation information                                */
+/*----------------------------------------------------------------------------*/
+void CardIter::vPhase(eOH ePhase)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
 
-  G_vAppendChild(eOf,eMember);
+  m_pBench->vPhase(this,ePhase);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1744,7 +1859,7 @@ Card* CardIter::pPrevChild(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
   i8 i_Prev = G.xKid.i_Child() - 1;
 
@@ -1763,7 +1878,7 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+ RASSERT(G.xKid.bWithinRange());
 
   Card* pPrevMain = this->pPrevChild();
   if (! pPrevMain || eCard != pPrevMain->eCard())
@@ -1775,53 +1890,54 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vPrintBoard(i8 iLineNo)
+void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
 {
   _precondition_(_MAGIC_, _FOOTER_);
+  UNUSED(iLineNo);
 
-  if (!m_pCardCtl->bBoardPrint())
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE) && ! bForce)
     return;
 
-  G.pBoard->vPrintBoard(szXdesc());
+  G.pBoard->vPrintBoard(this,szXdesc());
+
+
+  s32 sOT;
+
+  bool bPrinted = false;
+  i8 nPrinted = 0;
+  for (i8 i_OT = 0; i_OT < OT_ENUMS; i_OT++) {
+    Stz *szOptimisation = aOT[i_OT];
+
+    if (! G.pBoard->pState()->bHasName(szOptimisation))
+      continue;
+
+    vTrace("%lls "_Stz,szOptimisation);
+    bPrinted = true;
+    if (++nPrinted == 8) {
+      vTrace("\n"_Stz);
+      bPrinted = false;
+    }
+  }
+  if (bPrinted)
+    vTrace("\n"_Stz);
+
 
   s256 sWhere;
-  sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXform());
+  sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXfunc());
 
   vTrace("%s\n"_Stz, sWhere.azChar());
 }
-/*----------------------------------------------------------------------------*/
-//void CardIter::vPrintBoard(i8 iLineNo)
-//{
-//  _precondition_(_MAGIC_,_FOOTER_);
-//
-//  if (! m_pCardCtl->bBoardPrint())
-//    return;
-//
-//  char cPrefix = m_pBench->cPrefix();
-//
-//  s256 sPrompt;
-//
-//  i8 nBoards = m_pBench->nItems();
-//
-//  for (;;) {
-//    G.pBoard->vPrintBoard(szXdesc());
-//
-//    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-//      m_pCardCtl->vFormPrompt(sPrompt,
-//                              cPrefix, szXhand(), szXform(),
-//                              G.pBoard->i_Board(), nBoards, iLineNo);
-//      printf("%s\n", sPrompt.azChar());
-//      break;
-//    }
-//
-//    m_pCardCtl->vFormPrompt(sPrompt,
-//                            cPrefix, szXhand(), szXform(),
-//                            G.pBoard->i_Board(), nBoards, iLineNo);
-//    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
-//      break;
-//  }
-//}
 
+/*----------------------------------------------------------------------------*/
+/* capture prior projection                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vSnapPriorProjection(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (Card_Projection* p_projection = G.p_OP->pSub_projection())
+    Prior.m_pProjection = p_projection;
+}
 
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
@@ -1876,11 +1992,8 @@ bool CardIter::G_bPushBoard(Stz* szBoardNm)
 
   Board* pSubQueryBoard = m_pBench->pGetBoard(szBoardNm);
   if (! pSubQueryBoard) {
-    vTracer("DID NOT FIND Board: %s\n"_Stz,szBoardNm);
-    return false;
+     return false;
   }
-
-  vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
 
   G_vPushBoard(pSubQueryBoard);
 
@@ -1894,22 +2007,9 @@ void CardIter::G_vPushNewChild(Card* pParent, eCK eChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  Card* pChild = new Card(eChild);
+  Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pParent->vPush(pChild);
-  G_vMember(eChild, pChild, __func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Card* pChild = new Card(eChild, szValue);
-
-  pParent->vPush(pChild);
+  pParent->vPushChild(pChild);
   G_vMember(eChild, pChild, __func__);
 }
 
@@ -1932,6 +2032,25 @@ void CardIter::G_vPushIter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vRecurseBegin(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vSave();
+
+  m_i_RecursionDepth++;
+  G.m_i_RecursionDepth = m_i_RecursionDepth;
+
+  vChangeCard(pCard);
+  vDontDescend(false);
+
+  G.xKid.vForwards(true);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* CardIter::pRecurseEach(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
@@ -1942,10 +2061,9 @@ Card* CardIter::pRecurseEach(void)
   if (G.p_MainCard && (! G.m_bDontDescend) ) {
     if (G.p_MainCard->nChildCards()) {
 
-      G.m_bRecursed = true;
       vPushRecurseIter();
       vChangeCard(G.p_MainCard);
-      G_bEachMain();
+      G_bEachMain_NONE();
 
       return G.p_MainCard;
     }
@@ -1956,11 +2074,11 @@ Card* CardIter::pRecurseEach(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // visit next child
 
-  if (G_bEachMain())
+  if (G_bEachMain_NONE())
     return G.p_MainCard;
 
   while (bPopRecurseIter()) {
-    if (G_bEachMain())
+    if (G_bEachMain_NONE())
       return G.p_MainCard;
   }
 
@@ -1984,11 +2102,25 @@ Card* CardIter::pRecurseEach(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardIter::vRecurseEnd(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  vRestore();
+
+  m_i_RecursionDepth--;
+
+  RASSERT(G.m_i_RecursionDepth == m_i_RecursionDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardIter::vRemoveChild(Card* pChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
   if (pChild == G.xKid.pChild())
     vRemoveCurr(G.xKid.eChild());
@@ -2003,7 +2135,7 @@ void CardIter::vRemoveDeleteChild(Card*& rpChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
   vRemoveChild(rpChild);
 
@@ -2019,7 +2151,7 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
   RASSERT(eCrossCheck == G.xKid.eChild());
 
@@ -2027,7 +2159,7 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 
   G.xKid.pParent()->vRemoveChild(pChild);
 
-  G.xKid.vPrev();
+  G.xKid.vRewind();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2037,7 +2169,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
   RASSERT(eCrossCheck == G.xKid.eChild());
 
@@ -2047,7 +2179,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 
   delete pChild;
 
-  G.xKid.vPrev();
+  G.xKid.vRewind();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2082,7 +2214,7 @@ void CardIter::vRenumberCards(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_pBench->vRenumberCards();
+  //m_pBench->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2096,17 +2228,24 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   if (! p_projection_prior)
     return nullptr;
 
-   if (p_term->pSymbol()->bIsStreamOrdinal()) {
-    Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term->pSymbol());
-    return p_expr_prior;
-  }
-  else
-  if (p_term->pSymbol()->bIsColumnOrdinal()) {
-    Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(p_term->pSymbol());
-    return p_expr_prior;
-  }
+  //RASSERT(p_projection_prior == this->Prior.m_pProjection);
 
-  return nullptr;
+  Card_Expr* p_expr_resolved = p_projection_prior->pResolve_expr(p_term);
+  return p_expr_resolved;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resolve prior expr of given term (find right-to-left)                      */
+/*----------------------------------------------------------------------------*/
+Card_Expr* CardIter::pResolvePrior_expr_prior(Card_Term* p_term)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  if (! this->Prior.m_pProjection)
+    return nullptr;
+
+  Card_Expr* p_expr_resolved = this->Prior.m_pProjection->pResolve_expr(p_term);
+  return p_expr_resolved;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2124,45 +2263,23 @@ Card_Projection* CardIter::pResolvePrior_projection(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRestart(void)
+void CardIter::vBeginEach(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.vReset();
-  G.xKid.m_bActive = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restart the M iterator                                                     */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vRestart(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  this->vRestart();
-
-  G_vClearMembers();
-  G_vClearRegisters();
+  G.xKid.vBeginEach_forward();
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRewind(void)
+void CardIter::vBeginEachReverse(void)
 {
-  _precondition_( _MAGIC_, _FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
-
-//  if (G.xKid.m_i_Child == 0) {
-//    G.xKid.m_i_Child = C_UNKNOWN;
-//    return;
-//  }
-//
-//  G.xKid.m_i_Child--;
-
-  G.xKid.vPrev();
+  G.xKid.vBeginEach_reverse();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -2178,7 +2295,7 @@ Card* CardIter::pRewindChild(void)
 //
 //  G.xKid.m_i_Child--;
 
-  G.xKid.vPrev();
+  G.xKid.vRewind();
 
   return G.xKid.pChild();
 }
@@ -2227,22 +2344,13 @@ void CardIter::vSave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 CardIter::iSentinalsDepth(void)
-{
-
-  return this->nItems();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vSet(Card* pChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
-  G.xKid.vChild(G.xKid.pParent()->iFindChild(pChild));
+  G.xKid.vResynch(G.xKid.pParent()->iFindChild(pChild));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2253,9 +2361,7 @@ void CardIter::vSet(CardIter* pCardIter_src)
   _precondition_(_MAGIC_,_FOOTER_);
 
   G.xKid.vParent(pCardIter_src->G.xKid.pParent());
-  G.xKid.vChild(pCardIter_src->G.xKid.i_Child());
-
-  G.xKid.m_bActive = pCardIter_src->G.xKid.m_bActive;
+  G.xKid.vResynch(pCardIter_src->G.xKid.i_Child());
 }
 
 
@@ -2266,9 +2372,9 @@ void CardIter::vSet(i8 i_Child)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.m_bActive);
+  RASSERT(G.xKid.bWithinRange());
 
-  G.xKid.vChild(i_Child);
+  G.xKid.vResynch(i_Child);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2286,104 +2392,15 @@ void CardIter::G_vSetBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip over next main ; optionally clear M members and registers             */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vSkipNextMain(bool bClearMembers, bool bClearRegisters)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  G_bEachMain();
-
-  if (bClearMembers)
-    G_vClearMembers();
-
-  if (bClearRegisters)
-    G_vClearRegisters();
-}
-
-/*----------------------------------------------------------------------------*/
-/* setup sub-query iteration                                                  */
-/*----------------------------------------------------------------------------*/
-void CardIter::vSubQueryIteration(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  Sqy.m_i_SubQuery = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is tracing enabled?                                                        */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bIsActive(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  return G.xKid.m_bActive;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* is tracing enabled?                                                        */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bIsTracing(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  return m_pCardCtl->bTracing(szXhand(),szXform());
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally trace                                                        */
-/*----------------------------------------------------------------------------*/
-void CardIter::vTracer(Stz* szFormat, ...)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (! bIsTracing())
-    return;
-
-  s256 sValue;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
-  va_end(xArgs);
-
-  vTrace("  [%02lld] %s"_Stz,m_iTrace++,sValue.szStz());
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vTransform(const char* azFunc, eXF eTransform, Stz* szXdesc)
+void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  vXform((Stz*)azFunc);
-  G.pBoard->vXform((Stz*)azFunc);
-  vXdesc(szXdesc);
+  m_pBench->vTransform(azFunc, eXform, szXdesc);
 
-  m_iXform++;
-  G.pBoard->vXform(m_iXform);
-  G.pBoard->vTransform(eTransform);
-
-  //m_pCardCtl->vUseXform();
-
-  this->vRestart();
-
-  if (m_pCardCtl->bTracing(szXhand(), szXform())) {
-    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 CardIter::iTransformDepth(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  return iSentinalsDepth();
+  //this->vBeginEach();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2412,44 +2429,194 @@ void CardIter::vUsingBoard(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate children                                                          */
+/*----------------------------------------------------------------------------*/
+void CardIter::vValidateBench(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  m_pBench->vValidate(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate children                                                          */
+/*----------------------------------------------------------------------------*/
+void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  i8 nAncestors_start = nAncestors();
+
+  vAncestorPush(pCard);
+  i8 nAncestors_plusOne = nAncestors();
+  RASSERT(nAncestors_start + 1 == nAncestors_plusOne);
+
+  for (Kid xKid(pCard); xKid.bEach(); /**/) {
+
+    Card* pChild = xKid.pChild();
+
+    eCK eChild = pChild->eCard();
+
+    vMember(pChild);
+
+    switch (eChild) {
+
+      case CK_ABSJOIN:      G.p_absJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_AGGREG:       G.p_aggreg->vValidate(this, iDepth, pCard);  break;
+      case CK_ANDCONJ:      G.p_andConj->vValidate(this, iDepth, pCard);  break;
+      case CK_AS:           G.p_as->vValidate(this, iDepth, pCard);  break;
+
+      case CK_BOOLCALC:     G.p_boolCalc->vValidate(this, iDepth, pCard);  break;
+      case CK_BOUND:        G.p_bound->vValidate(this, iDepth, pCard);  break;
+      case CK_BOUNDS:       G.p_bounds->vValidate(this, iDepth, pCard);  break;
+
+      case CK_CALL:         G.p_call->vValidate(this, iDepth, pCard);  break;
+      case CK_CAST:         G.p_cast->vValidate(this, iDepth, pCard);  break;
+      case CK_CMPCONJ:      G.p_cmpConj->vValidate(this, iDepth, pCard);  break;
+
+      case CK_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
+      case CK_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
+      case CK_CORRELATION:  G.p_correlation->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTJOINING:  G.p_costJoining->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTNETWORK:  G.p_costNetwork->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTSTREAM:   G.p_costQuery->vValidate(this, iDepth, pCard);  break;
+      case CK_COSTUNICAST:  G.p_costUnicast->vValidate(this, iDepth, pCard);  break;
+      case CK_COUNT:        G.p_count->vValidate(this, iDepth, pCard);  break;
+      case CK_CROSSJOIN:    G.p_crossJoin->vValidate(this, iDepth, pCard);  break;
+
+      case CK_DIRECTION:    G.p_direction->vValidate(this, iDepth, pCard);  break;
+
+      case CK_EXPR:         G.p_expr->vValidate(this, iDepth, pCard);  break;
+
+      case CK_FILTER:       G.p_filter->vValidate(this, iDepth, pCard);  break;
+      case CK_FILTPRED:     G.p_filtPred->vValidate(this, iDepth, pCard);  break;
+      case CK_FILTPREDLIST: G.p_filtPredList->vValidate(this, iDepth, pCard);  break;
+      case CK_FLAT:         G.p_flat->vValidate(this, iDepth, pCard);  break;
+      case CK_FOLD:         G.p_fold->vValidate(this, iDepth, pCard);  break;
+       case CK_FROM:         G.p_from->vValidate(this, iDepth, pCard);  break;
+
+      case CK_GBYAGG:       G.p_gbyAgg->vValidate(this, iDepth, pCard);  break;
+
+      case CK_HASH:         G.p_hash->vValidate(this, iDepth, pCard);  break;
+      case CK_HASHING:      G.p_hashing->vValidate(this, iDepth, pCard);  break;
+      case CK_HAVING:       G.p_having->vValidate(this, iDepth, pCard);  break;
+      case CK_HSHCOL:       G.p_hshCol->vValidate(this, iDepth, pCard);  break;
+      case CK_HSHCOLLIST:   G.p_hshColList->vValidate(this, iDepth, pCard);  break;
+
+      case CK_IDXCOL:       G.p_idxCol->vValidate(this, iDepth, pCard);  break;
+      case CK_IDXCOLLIST:   G.p_idxColList->vValidate(this, iDepth, pCard);  break;
+      case CK_INDEX:        G.p_index->vValidate(this, iDepth, pCard);  break;
+      case CK_INDEXJOIN:    G.p_indexJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_INDEXLIST:    G.p_indexList->vValidate(this, iDepth, pCard);  break;
+      case CK_INDEXNM:      G.p_indexNm->vValidate(this, iDepth, pCard);  break;
+      case CK_INDEXSCAN:    G.p_indexScan->vValidate(this, iDepth, pCard);  break;
+
+      case CK_JOINCAST:     G.p_joinCast->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINESTIMATE: G.p_joinEstimate->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINORDER:    G.p_joinOrder->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINORDERING: G.p_joinOrdering->vValidate(this, iDepth, pCard);  break;
+      case CK_JOINPREDLIST: G.p_joinPredList->vValidate(this, iDepth, pCard);  break;
+
+      case CK_KEY:          G.p_key->vValidate(this, iDepth, pCard);  break;
+      case CK_KEYCELLS:     G.p_keyCells->vValidate(this, iDepth, pCard);  break;
+      case CK_KEYEXISTS:    G.p_keyExists->vValidate(this, iDepth, pCard);  break;
+      case CK_KEYNOTEXISTS: G.p_keyNotExists->vValidate(this, iDepth, pCard);  break;
+
+      case CK_LEVEL:        G.p_level->vValidate(this, iDepth, pCard);  break;
+      case CK_LIMIT:        G.p_limit->vValidate(this, iDepth, pCard);  break;
+
+      case CK_MAP:          G.p_map->vValidate(this, iDepth, pCard);  break;
+      case CK_MAPPING:      G.p_mapping->vValidate(this, iDepth, pCard);  break;
+
+      case CK_NCORRCOLS:    G.p_nCorrCols->vValidate(this, iDepth, pCard);  break;
+      case CK_NEEDED:       G.p_needed->vValidate(this, iDepth, pCard);  break;
+      case CK_NOTE:         G.p_note->vValidate(this, iDepth, pCard);  break;
+      case CK_NOTCONJ:      G.p_notConj->vValidate(this, iDepth, pCard);  break;
+
+      case CK_ON:           G.p_on->vValidate(this, iDepth, pCard);  break;
+      case CK_ORDAGG:       G.p_ordAgg->vValidate(this, iDepth, pCard);  break;
+      case CK_ORCONJ:       G.p_orConj->vValidate(this, iDepth, pCard);  break;
+      case CK_OUTERCOLNM:   G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
+      case CK_OUTERJOIN:    G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
+
+      case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
+      case CK_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
+      case CK_PROJECTION:   G.p_projection->vValidate(this, iDepth, pCard);  break;
+
+      case CK_ROWCOUNT:   G.p_rowCount->vValidate(this, iDepth, pCard);  break;
+      case CK_ROWSIZE:    G.p_rowSize->vValidate(this, iDepth, pCard);  break;
+      case CK_RPNCALC:    G.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
+
+      case CK_SCAN:       G.p_scan->vValidate(this, iDepth, pCard);  break;
+      case CK_SECTION:    G.p_section->vValidate(this, iDepth, pCard);  break;
+      case CK_SEND:       G.p_send->vValidate(this, iDepth, pCard);  break;
+      case CK_SPARE:      G.p_spare->vValidate(this, iDepth, pCard);  break;
+      case CK_SORT:       G.p_sort->vValidate(this, iDepth, pCard);  break;
+      case CK_STAGE:      G.p_stage->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAM:     G.p_stream->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMHEAD: G.p_streamHead->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMJOIN: G.p_streamJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMKEY: G.p_streamKey->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMPER: G.p_streamPer->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMPTN: G.p_streamPtn->vValidate(this, iDepth, pCard);  break;
+      case CK_STREAMSET: G.p_streamSet->vValidate(this, iDepth, pCard);  break;
+      case CK_SUBQUERY:  G.p_subQuery->vValidate(this, iDepth, pCard);  break;
+      case CK_SUBSET:    G.p_subSet->vValidate(this, iDepth, pCard);  break;
+
+      case CK_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLELIST: G.p_tableList->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLENM:   G.p_tableNm->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLEPTN:  G.p_tablePtn->vValidate(this, iDepth, pCard);  break;
+      case CK_TABLESIZE: G.p_tableSize->vValidate(this, iDepth, pCard);  break;
+      case CK_TERM:      G.p_term->vValidate(this, iDepth, pCard);  break;
+      case CK_TOP:       G.p_top->vValidate(this, iDepth, pCard);  break;
+      case CK_TOPOLOGY:  G.p_topology->vValidate(this, iDepth, pCard);  break;
+
+      case CK_UNIQUE:    G.p_unique->vValidate(this, iDepth, pCard);  break;
+
+      case CK_WHERE:     G.p_where->vValidate(this, iDepth, pCard);  break;
+
+      default:
+        NEVER_REACH
+    }
+
+  }
+
+  vAncestorPop();
+  i8 nAncestors_end = nAncestors();
+  RASSERT(nAncestors_end == nAncestors_start);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transform number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::iXform(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_pBench->iXform();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */
 /*----------------------------------------------------------------------------*/
 Stz* CardIter::szXdesc(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_sXdesc;
+  return m_pBench->szXdesc();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set description of transformation                                          */
+/* get transformation function                                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vXdesc(Stz* szDescription)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  m_sXdesc = szDescription;
-  G.pBoard->vXdesc(szDescription);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* CardIter::szXform(void)
+Stz* CardIter::szXfunc(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_sXform;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
-/*----------------------------------------------------------------------------*/
-void CardIter::vXform(Stz* szTransformation)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  m_sXform = szTransformation;
+  return m_pBench->szXfunc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2459,26 +2626,13 @@ Stz* CardIter::szXhand(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_sXhand;
+  return m_pBench->szXhand();
 }
-
-/*----------------------------------------------------------------------------*/
-/* set transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-void CardIter::vXhand(const char* asXhand)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  m_sXhand = asXhand;
-
-  G.pBoard->vXhand(asXhand);
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -2487,8 +2641,8 @@ bool CardIter::bPopRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  CardIterMembers* pXsentinals2 = pPeek(0);
-  if (! pXsentinals2 || ! pXsentinals2->m_bRecursed)
+  CardIterMembers* pPeg = pPeek(0);
+  if (! pPeg || pPeg->m_i_RecursionDepth != m_i_RecursionDepth)
     return false;
 
   vRestore();
@@ -2503,432 +2657,9 @@ void CardIter::vPushRecurseIter(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  RASSERT(G.m_bRecursed);
+  RASSERT(G.m_i_RecursionDepth);
 
   vSave();
-}
-
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
-
-/*============================================================================*/
-/* Kid.cpp -- kid iterator                                                    */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-//__pCastFunction(STORE,Kid,CN_KID)
-//__aNewFunction(Kid,CN_KID)
-//__vDeleteFunction(Kid,CN_KID)
-//__aFooterFunction(Kid)
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Kid::Kid(void)
-//: Object(CN_KID)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
-
-  m_pParent = nullptr;
-  m_i_Child = C_UNKNOWN;
-
-  m_bActive = false;
-
-  _checkInitialised_(CN_KID);
-
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Kid::Kid(Card* pParent)
-//: Object(CN_KID)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
-
-  m_pParent = pParent;
-  m_i_Child = C_UNKNOWN;
-
-  m_bActive = false;
-
-  _checkInitialised_(CN_KID);
-
-  //_postcondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-Kid::~Kid(void) noexcept(false)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_KID,_FOOTER_);
-
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vBeginForward(void)
-{
-
-  if (C_UNKNOWN == m_i_Child)
-    m_i_Child= 0;
-  else
-    m_i_Child++;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vBeginReverse(void)
-{
-
-  if (C_UNKNOWN == m_i_Child)
-    m_i_Child = m_pParent->nChildCards() - 1;
-  else
-    m_i_Child--;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pParent(void)
-{
-  return m_pParent;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pChild(void)
-{
-  return pChild(m_i_Child);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pChild(i8 i_Child)
-{
-  i8 nChildren = m_pParent->nChildCards();
-
-  if (i_Child >= 0 && i_Child < nChildren) {
-    Card* pChild = m_pParent->pGetChild(i_Child);
-    return pChild;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eCK Kid::eChild(void)
-{
-  Card* pChild = this->pChild();
-
-  if (pChild)
-    return pChild->eCard();
-
-  return CK_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Kid::i_Child(void)
-{
-
-  return m_i_Child;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Bound* Kid::p_bound(void)
-{
-  return _pCard_Bound(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Kid::p_expr(void)
-{
-  return _pCard_Expr(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_IdxCol* Kid::p_idxCol(void)
-{
-  return _pCard_IdxCol(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Index* Kid::p_index(void)
-{
-  return _pCard_Index(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_OP* Kid::p_OP(void)
-{
-  return (Card_OP*)pChild();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Stage* Kid::p_stage(void)
-{
-  return _pCard_Stage(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Table* Kid::p_table(void)
-{
-  return _pCard_Table(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Term* Kid::p_term(void)
-{
-  return _pCard_Term(pChild());
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Kid::iGetOdn(void)
-{
-  return p_term()->iGetOdn();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pNextChild(void)
-{
-  return pChild(m_i_Child + 1);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Kid::pPrevChild(void)
-{
-  return pChild(m_i_Child - 1);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vFirst(void)
-{
-  m_i_Child = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vLast(void)
-{
-  m_i_Child = m_pParent->nChildCards() - 1;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vNext(void)
-{
-  m_i_Child++;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vPrev(void)
-{
-  m_i_Child--;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bEach(void)
-{
-  vNext();
-  if (bInRange())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bEach_reverse(void)
-{
-  vPrev();
-  if (bInRange())
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bEach(eCK eCard)
-{
-  while (bEach())
-    if (eChild() == eCard)
-      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bEach_reverse(eCK eCard)
-{
-  while (bEach_reverse())
-    if (eChild() == eCard)
-      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bIsFirst(void)
-{
-  i8 nChildren = m_pParent->nChildCards();
-
-  if (nChildren && 0 == m_i_Child)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bIsLast(void)
-{
-  i8 nChildren = m_pParent->nChildCards();
-
-  if (nChildren && nChildren - 1 == m_i_Child)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vForward(void)
-{
-  m_i_Child++;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vReverse(void)
-{
-  m_i_Child--;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Kid::bInRange(void)
-{
-  if (m_i_Child >= 0 && m_i_Child < m_pParent->nChildCards())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Kid::nChildren(void)
-{
-  return m_pParent->nChildCards();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vParent(Card*  pParent)
-{
-
-  m_pParent = pParent;
-  m_i_Child = C_UNKNOWN;
-
-  m_bActive = true;
- }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vChild(i8 i_Child)
-{
-
-  m_i_Child = i_Child;
-
-  //m_bActive = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vReset(void)
-{
-
-//  m_pParent   = nullptr;
-  m_i_Child = C_UNKNOWN;
-
-  m_bActive = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Kid::vSynch(Card* pChild_with)
-{
-  i8 nChildren = m_pParent->nChildCards();
-
-  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card *pChild_test = m_pParent->pGetChild(i_Child);
-    if (pChild_test == pChild_with) {
-      m_i_Child = i_Child;
-      return;
-    }
-  }
 }
 
 /*============================================================================*/

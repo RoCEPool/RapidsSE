@@ -254,14 +254,14 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
   i8 jStz = this->jStz();
   RASSERT(jStz == m_xTypeValue.m_wxValue.iAsI8());
 
-  i8 jSizeStz = sizeof(i8) + jStz;
+//  i8 jSizeStz = sizeof(i8) + jStz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // todo: copy text from m_pText
 
   jStz = m_axLocalStr->szText()->nSize();
-  jSizeStz = sizeof(i8) + jStz;
+//  jSizeStz = sizeof(i8) + jStz;
   MemLib::vCopy(aTypeValueArea->axValue(),
                 &jStz,
                 8,

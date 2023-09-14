@@ -12,7 +12,7 @@
 
 #include <sys/utsname.h>
 #include <sys/time.h>
-#include <x86intrin.h>
+//#include <x86intrin.h>
 
 
 // The variable that holds the default clock type to be used on this machine
@@ -373,7 +373,8 @@ u8 Hardware::uReadClock(void)
   int iResult = clock_gettime(S_clockSource, &ts);
   UNUSED(iResult);
 
-  u8 uNanos = (ts.tv_sec * (u8)C_1B) + ts.tv_nsec;
+  u8 uNanos = (ts.tv_sec * (u8)C_1G) + ts.tv_nsec;
+
   return uNanos;
 }
 
@@ -388,39 +389,50 @@ u8 Hardware::uReadClock(void)
 i8 Hardware::iReadTsc(u4* puLogicalProcessorId)
 {
   _static_
-  
-  /*
-   Intel SDM says:
-   The processor monotonically increments the time-stamp counter MSR
-   every clock cycle and resets it to 0 whenever the processor is reset.
-   -----------------
 
-   Note however, that the frequency that the TSC is updated is not necessarily
-   related to the max or base frequency of the processor. It can be wildly
-   different. The Linux kernel will determine this TSC update frequency at
-   boot time experimentally if it cannot retrieve it from the processor
-   directly. This TSC update frequency is not available in userspace unfortunately
-   so it is not possible to accurately convert TSC differences to a time
-   difference. Instead, simply compare ticks with ticks.
+  i8 iTscp = (i8) uReadClock();
 
-   The time stamp counter in newer processors may support an enhancement,
-   referred to as invariant TSC. Processor’s support for invariant TSC is
-   indicated by CPUID.80000007H:EDX[8]. On Linux you can also see this with
-   the flag "constant_tsc" in /proc/cpuinfo.
-   
-   The invariant TSC will run at a constant rate in all ACPI P-, C-. and
-   T-states. This is the architectural behavior moving forward. This can also
-   be seen on Linux by the presence of the flag "nonstop_tsc" in /proc/cpuinfo.
-   On processors with invariant TSC support, the OS may use the TSC for
-   wall clock timer services (instead of ACPI or HPET timers). TSC reads
-   are much more efficient and do not incur the overhead associated with
-   a ring transition or access to a platform resource.
-   */
-  
-  i8 iTscp = (i8) __rdtscp(puLogicalProcessorId);
-  _mm_lfence();
+  * puLogicalProcessorId = 0;
+
   return iTscp;
 }
+/*----------------------------------------------------------------------------*/
+//i8 Hardware::iReadTsc(u4* puLogicalProcessorId)
+//{
+//  _static_
+//
+//  /*
+//   Intel SDM says:
+//   The processor monotonically increments the time-stamp counter MSR
+//   every clock cycle and resets it to 0 whenever the processor is reset.
+//   -----------------
+//
+//   Note however, that the frequency that the TSC is updated is not necessarily
+//   related to the max or base frequency of the processor. It can be wildly
+//   different. The Linux kernel will determine this TSC update frequency at
+//   boot time experimentally if it cannot retrieve it from the processor
+//   directly. This TSC update frequency is not available in userspace unfortunately
+//   so it is not possible to accurately convert TSC differences to a time
+//   difference. Instead, simply compare ticks with ticks.
+//
+//   The time stamp counter in newer processors may support an enhancement,
+//   referred to as invariant TSC. Processor’s support for invariant TSC is
+//   indicated by CPUID.80000007H:EDX[8]. On Linux you can also see this with
+//   the flag "constant_tsc" in /proc/cpuinfo.
+//
+//   The invariant TSC will run at a constant rate in all ACPI P-, C-. and
+//   T-states. This is the architectural behavior moving forward. This can also
+//   be seen on Linux by the presence of the flag "nonstop_tsc" in /proc/cpuinfo.
+//   On processors with invariant TSC support, the OS may use the TSC for
+//   wall clock timer services (instead of ACPI or HPET timers). TSC reads
+//   are much more efficient and do not incur the overhead associated with
+//   a ring transition or access to a platform resource.
+//   */
+//
+//  i8 iTscp = (i8) __rdtscp(puLogicalProcessorId);
+//  _mm_lfence();
+//  return iTscp;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* Choose the appropriate default clock type to use for all measurements      */

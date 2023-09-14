@@ -10,7 +10,7 @@ create index C_idx0  on Customer (C_CUSTKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_Q22_1_0"

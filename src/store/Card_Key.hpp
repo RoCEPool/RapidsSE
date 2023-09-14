@@ -3,18 +3,19 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_ELIST.hpp"
+#include "Card_EXPRLIST.hpp"
 #include "IndexDef.hpp"
 
 namespace STORE
 {
-  class Card_Key : public Card_ELIST
+  class Card_Key : public Card_EXPRLIST
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_Key(void);
+    Card_Key(eCK eCard, i8 iMaxDepth);
    ~Card_Key(void) noexcept(false);
 
     void vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc);

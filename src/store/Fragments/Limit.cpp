@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "IndexDef.hpp"
 #include "CodeSynthCommon.h"
 #include "ClangStuff.h"
@@ -23,7 +23,11 @@
 // function-vLimit
 void vLimit(Dynamic_T* aDynamicT) {
 
-  i8 __LIMIT_ROWS__;
+  char* szStrArea;
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+	RowInfo __ROW_INFO_FROM__;
+
+	i8 __LIMIT_ROWS__;
 
   __L_LABEL_LOOP__:
   __L_LABEL_NEXT__:
@@ -31,9 +35,8 @@ void vLimit(Dynamic_T* aDynamicT) {
   // marker-start
   __L_LABEL__:
 
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
+	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
+	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;

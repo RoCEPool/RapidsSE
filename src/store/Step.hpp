@@ -41,7 +41,6 @@ namespace STORE
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
-    static void vAddSteps_Combined(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
     static void vAddSteps_CrwToRow(void);
@@ -178,7 +177,6 @@ namespace STORE
     static void vAddSteps_Stage(void);
     static void vAddSteps_StageOfOp(void);
     static void vAddSteps_Stats(void);
-    static void vAddSteps_Stencil(void);
     static void vAddSteps_Stencil_v2(void);
     static void vAddSteps_Steps(void);
     static void vAddSteps_Str(void);
@@ -209,7 +207,6 @@ namespace STORE
     static void vAddSteps_Thread(void);
     static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);
-    static void vAddSteps_TinyC(void);
     static void vAddSteps_To(void);
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_ToKeyHshRow(void);

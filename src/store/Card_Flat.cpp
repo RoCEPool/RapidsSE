@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Flat,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Flat::Card_Flat(void)
-: Card_OP(CK_FLAT)
+: Card_CONSTRUCTION(CK_FLAT,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -41,6 +41,15 @@ Card_Flat::~Card_Flat(void) noexcept(false)
 void Card_Flat::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
+
+  Card::vValidate(pCI,iDepth,pParent);
+  Card_CONSTRUCTION::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+
+  vValidationPassed();
 }
 
 

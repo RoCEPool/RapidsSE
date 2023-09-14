@@ -3,6 +3,7 @@
 --------------------------------------------------------------------------------
 /*  (original Query)
 
+/pipelineName = "OptQ21"
 select s_name,s_address
   from Supplier, Nation
   where     s_suppkey in

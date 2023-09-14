@@ -6,7 +6,7 @@
 
 #include <string>
 #include "thrift/transport/TTransport.h"
-#include "BaseTypes_tcc.h"
+#include "BaseTypes_general.h"
 #include "MessageTypes_types.h"
 #include "WlpHeader.hpp"
 

@@ -376,6 +376,7 @@ void StageMarkers::vProcessJoinRoutingHint(QueryNode* pPlanNode, PlanNode* pRoot
     QueryNode* pRemovedProp = pStageMarker->pRemoveProperty(pRoutingProp->szName());
     ASSERT(pRemovedProp);
     ASSERT(pRemovedProp == pRoutingProp);
+    UNUSED(pRemovedProp);
 
     QueryNode* pNewRouting = Routing::pCreate(eRouteType);
     pNewRouting->vSetName(pRoutingProp->szName());

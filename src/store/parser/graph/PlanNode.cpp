@@ -218,6 +218,19 @@ Stz* PlanNode::szValue()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get the size of the underlying buffer associated with this string value    */
+/*----------------------------------------------------------------------------*/
+i8 PlanNode::iSzBufSize()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_STRING);
+  if (m_xValue.m_pText == nullptr) {
+    return 0;
+  }
+
+  return m_xValue.m_pText->nBufferSize();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get the date value out of the Value object in this PlanNode                */
 /*----------------------------------------------------------------------------*/
 Dte PlanNode::xDateVal()

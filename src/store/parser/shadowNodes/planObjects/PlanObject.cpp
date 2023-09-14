@@ -491,6 +491,7 @@ void PlanObject::vAddHints(QueryNode* pNode, QueryNode* pHints)
 
   QueryNode* pCurrentHintsNode = PlanObject::pHintsNode(pNode);
   ASSERT(!pCurrentHintsNode);
+  UNUSED(pCurrentHintsNode);
 
   pHints->vSetName(C_HINTS_PROP);
   pNode->vAppendProperty(pHints);

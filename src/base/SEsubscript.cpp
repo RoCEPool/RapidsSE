@@ -22,19 +22,19 @@ SEsubscript::SEsubscript(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SEsubscript::SEsubscript(i8 iLimit)
+SEsubscript::SEsubscript(u8 uLimit)
 {
-  m_uLimit     = iLimit;
+  m_uLimit     = uLimit;
   m_uSubscript = 0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SEsubscript::SEsubscript(i8 iLimit, i8 iSubscript)
+SEsubscript::SEsubscript(u8 uLimit, u8 uSubscript)
 {
-  m_uLimit     = iLimit;
-  m_uSubscript = iSubscript;
+  m_uLimit     = uLimit;
+  m_uSubscript = uSubscript;
 }
 
 
@@ -48,9 +48,9 @@ SEsubscript::SEsubscript(i8 iLimit, i8 iSubscript)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* auto conversion operator : i8 (subscript)                                  */
+/* auto conversion operator : u8 (subscript)                                  */
 /*----------------------------------------------------------------------------*/
-SEsubscript::operator i8(void)
+SEsubscript::operator u8(void)
 {
   return m_uSubscript;
 }
@@ -58,17 +58,17 @@ SEsubscript::operator i8(void)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void SEsubscript::operator =(i8 iSubscript)
+void SEsubscript::operator =(u8 uSubscript)
 {
-  m_uSubscript = iSubscript;
+  m_uSubscript = uSubscript;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator  ++ increment (postfix form)                                      */
 /*----------------------------------------------------------------------------*/
-i8 SEsubscript::operator ++(int)
+u8 SEsubscript::operator ++(int)
 {
-  i8 temp;
+  u8 temp;
   temp = m_uSubscript++;
   return temp;
 }
@@ -76,9 +76,9 @@ i8 SEsubscript::operator ++(int)
 /*----------------------------------------------------------------------------*/
 /* operator : less than                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEsubscript::operator <(i8 iSubscript)
+bool SEsubscript::operator <(u8 uSubscript)
 {
-  return m_uSubscript < iSubscript;
+  return m_uSubscript < uSubscript;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ void SEsubscript::vIncSubscript(void)
 /*----------------------------------------------------------------------------*/
 /* get limit                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 SEsubscript::iLimit(void)
+u8 SEsubscript::uLimit(void)
 {
   return m_uLimit;
 }
@@ -100,15 +100,15 @@ i8 SEsubscript::iLimit(void)
 /*----------------------------------------------------------------------------*/
 /* set limit                                                                  */
 /*----------------------------------------------------------------------------*/
-void SEsubscript::vLimit(i8 iLimit)
+void SEsubscript::vLimit(u8 uLimit)
 {
-  m_uLimit = iLimit;
+  m_uLimit = uLimit;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get subscript                                                              */
 /*----------------------------------------------------------------------------*/
-i8 SEsubscript::iSubscript(void)
+u8 SEsubscript::uSubscript(void)
 {
   return m_uSubscript;
 }
@@ -116,9 +116,9 @@ i8 SEsubscript::iSubscript(void)
 /*----------------------------------------------------------------------------*/
 /* set subscript                                                              */
 /*----------------------------------------------------------------------------*/
-void SEsubscript::vSubscript(i8 iSubscript)
+void SEsubscript::vSubscript(u8 uSubscript)
 {
-  m_uSubscript = iSubscript;
+  m_uSubscript = uSubscript;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,6 +7,7 @@ success
 //NOTE:  count distinct -> count
   //count(distinct ps_suppkey) as supplier_cnt
 
+/pipelineName = "OptQ16"
 select
   p_brand,
   p_type,

@@ -129,7 +129,7 @@ Op::~Op(void) noexcept(false)
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
       if (pOperand->bIsMarker()) {
-        if ((_pMarker(pOperand))->eOpMarker() == EV_X_CHILDEXIT)
+        if ((_pMarker(pOperand))->eOpMarker() == OM_CHILDEXIT)
           AM::vDeleteOperand(pOperand, nullptr);
         }
         else {
@@ -1563,6 +1563,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 
       // Pop and discard the operand from the queue, as we are sure it is in memory.
       Operand* pPopOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
+      UNUSED(pPopOperand);
       bLeft=true;
     }
   }
@@ -1899,7 +1900,7 @@ void Op::vTask(Task* pTask)
 i8 Op::nTmpIndexSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+   /*
   if (pOpLogicUnit()->m_xpCombined.bIsNull())
     return -8;
 
@@ -1915,16 +1916,19 @@ i8 Op::nTmpIndexSize(void)
   i8 nEntBuffers = pIndexTree->nEntBuffers();
   
   return nEntBuffers;
+    */
+   RASSERT(0);
+   return C_UNKNOWN;
 }
 /*----------------------------------------------------------------------------*/
 /* print stage spec                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vToCmdStr(Stz* szCmdStr)
+void Op::vToCmdStr(String* psCmdStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
-  szCmdStr->vCopy(szOpNm());
-  m_p_OpSpec->pArgTags()->vConcat(szCmdStr);
+
+  psCmdStr->vCopy(szOpNm());
+  m_p_OpSpec->pArgTags()->vConcat(psCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 

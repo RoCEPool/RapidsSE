@@ -246,9 +246,9 @@ begin
     | next hashcast
 
   stage stageMarker2549 on all partitions :
-    filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  !=
-                 }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
-                 }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
+    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
+                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand $9 ,
@@ -337,9 +337,9 @@ begin
     | next hashcast
 
   stage stageMarker2549 on all partitions :
-    filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  !=
-                 }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
-                 }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
+    filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
+                 }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+                 }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand $9 ,
@@ -483,7 +483,7 @@ begin
 
   stage stageMarker2546 on all partitions :
     indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
-    | hash " type INTEGER J1_PS_SUPPKEY"
+    | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
@@ -491,12 +491,12 @@ begin
     filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
                  }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
                  }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 J1_PS_SUPPKEY =="
+    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand P_BRAND ,
                type VARCHAR as p_type P_TYPE ,
                type INTEGER as p_size P_SIZE ,
-               type INTEGER as ps_suppkey J1_PS_SUPPKEY
+               type INTEGER as ps_suppkey PS_SUPPKEY
                aggregates
                type VARCHAR  as p_brand $K1 ,
                type VARCHAR  as p_type $K2 ,
@@ -618,6 +618,7 @@ rows:
  ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
  ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
 
+/*
 // JOIN ORDER : part -> partsupp
 /optimise_passthru 
 pipeline unamed
@@ -633,7 +634,7 @@ begin
 
   stage stageMarker2546 on all partitions :
     indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
-    | hash " type INTEGER J1_PS_SUPPKEY"
+    | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
@@ -641,12 +642,12 @@ begin
     filter " type BOOLEAN  P_BRAND 'Brand#45'  != !f
                  }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not !f and
                  }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 J1_PS_SUPPKEY =="
+    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand P_BRAND ,
                type VARCHAR as p_type P_TYPE ,
                type INTEGER as p_size P_SIZE ,
-               type INTEGER as ps_suppkey J1_PS_SUPPKEY
+               type INTEGER as ps_suppkey PS_SUPPKEY
                aggregates
                type VARCHAR  as p_brand $K1 ,
                type VARCHAR  as p_type $K2 ,
@@ -767,7 +768,7 @@ rows:
  ('Brand#54','ECONOMY ANODIZED BRASS'  , 9 ,1)
  ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
  ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
-
+*/
 
 // moved filters and added projections early
 //sf10 : 7.8s
@@ -781,8 +782,8 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public part
-    | filter " type BOOLEAN  P_BRAND 'Brand#45' != !f
-              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not !f and
+    | filter " type BOOLEAN  P_BRAND 'Brand#45' !=
+              }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not  and
               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
@@ -793,7 +794,7 @@ begin
 
   stage S02 on all partitions :
     indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
-    | project "type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+    | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
                type INTEGER as P_SIZE P_SIZE"
@@ -952,7 +953,7 @@ begin
 
   stage S02 on all partitions :
     indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
-    | project "type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+    | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
                type INTEGER as P_SIZE P_SIZE"
@@ -1102,7 +1103,7 @@ pipeline unamed
 
   stage stageMarker2546 on all partitions :
     indexjoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="  // J1 - SUPPLIER
-    | filter "type BOOLEAN  }  J1_S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1 not"
+    | filter "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1 not"
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
     | hash " type INTEGER PS_PARTKEY"
     | combined 0
@@ -1110,8 +1111,8 @@ pipeline unamed
 
     stage stageMarker2543 on all partitions :
       indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
-      | filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  != }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
-      | project "type INTEGER as P_PARTKEY J1_P_PARTKEY , type VARCHAR as P_BRAND J1_P_BRAND , type VARCHAR as P_TYPE J1_P_TYPE , type INTEGER as P_SIZE J1_P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
+      | filter " type BOOLEAN  P_BRAND 'Brand#45'  != }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
+      | project "type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
       | combined 0
       | next
 
@@ -1178,7 +1179,7 @@ pipeline unamed
 
   stage stageMarker2546 on all partitions :
     indexjoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="  // J1 - SUPPLIER
-    | filter "type BOOLEAN  }  J1_S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1 not"
+    | filter "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1 not"
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
     | hash " type INTEGER PS_PARTKEY"
     | combined 0
@@ -1186,8 +1187,8 @@ pipeline unamed
 
   stage stageMarker2543 on all partitions :
     indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
-    | filter " type BOOLEAN  J1_P_BRAND 'Brand#45'  != }  J1_P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and }  49  14  23  45  19  3  36  9  #8  J1_P_SIZE in and"
-    | project "type INTEGER as P_PARTKEY J1_P_PARTKEY , type VARCHAR as P_BRAND J1_P_BRAND , type VARCHAR as P_TYPE J1_P_TYPE , type INTEGER as P_SIZE J1_P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
+    | filter " type BOOLEAN  P_BRAND 'Brand#45'  != }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -1270,7 +1271,7 @@ begin
 
   stage S02 on all partitions :
     indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
-    | project "type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+    | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
                type INTEGER as P_SIZE P_SIZE"

@@ -41,6 +41,8 @@ namespace STORE
     ExtendedText* pCode(void);
     void vCode(ExtendedText* pCode);
 
+    void vCollapseColsReq_scan(OpDef* pOpDef);
+
     void vCollapseOps(void);
 
     void vDump(i8 i_Tab=1);

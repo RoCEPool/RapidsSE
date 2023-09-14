@@ -14,16 +14,7 @@ enum eVB // verbose items actions
   /*    */ VB_ENUMS,
 };
 
-static Stz* aVB[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "VB_A"_Stz,
-  /*    */ "VB_B"_Stz,
-  /*    */ "VB_C"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aVB[VB_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

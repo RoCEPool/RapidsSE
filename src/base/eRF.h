@@ -15,17 +15,7 @@ enum eRF // repair from failure
   /*    */ RF_ENUMS,
 };
 
-static Stz* aRF[]
-{
-  /*  0 */ "RF_NONE"_Stz,
-  
-  /*    */ "RF_REPAIR_DELETE"_Stz,
-  /*    */ "RF_REPAIR_NONE"_Stz,
-  /*    */ "RF_NEVER"_Stz,
-  /*    */ "RF_SET_NULL"_Stz,
-
-  /*    */ "RF_ENUMS"_Stz,
-};
+extern Stz* aRF[RF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

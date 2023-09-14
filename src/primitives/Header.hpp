@@ -88,9 +88,11 @@ namespace PRIMITIVES
   /*--------------------------------------------------------------------------*/
   /* sprint the header into readable form                                     */
   /*--------------------------------------------------------------------------*/
-  inline void vSprint(Stz* szHeader)
+  inline void vSprint(Stz* szHeader, i8 nHeaderSize)
   {
     StrLib::vSprint(szHeader,
+                    nHeaderSize,
+                    nullptr,
                     "Magic: %c%c%c%c Class %03d %s (%s)"_Stz,
                     m_caMagic[0],
                     m_caMagic[1],

@@ -1548,11 +1548,13 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  UNUSED(bEntries);
   
   s256 sHigherBuffer;
   if (pHigherEntBuffer())
-    StrLib::wToString((i8)((EntBuffer*)pHigherEntBuffer())->m_iBufferHeight,
-                      sHigherBuffer.azChar());
+    StrLib::vToString(sHigherBuffer.azChar(),
+                      sHigherBuffer.nAreaBytes(),
+                      (i8) ((EntBuffer*) pHigherEntBuffer())->m_iBufferHeight);
   else
     sHigherBuffer = "..."_Stz;
   

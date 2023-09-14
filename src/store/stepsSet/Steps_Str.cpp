@@ -106,11 +106,13 @@ void Step::vStrClip(void)
   //  vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
   //         "Invalid length for: str.clip"_Stz);
 
-  if (llabs(iLength) >= iHasLength)
-    if (iLength < 0)
-      iLength = - iHasLength;
-    else
+  if (llabs(iLength) >= iHasLength) {
+    if (iLength < 0) {
+      iLength = -iHasLength;
+    } else {
       iLength = iHasLength;
+    }
+  }
 
 
   char* pStart;
@@ -120,7 +122,7 @@ void Step::vStrClip(void)
   else
     pStart = sString.azChar() + iHasLength - 1 - llabs(iLength);
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,llabs(iLength));
+  StrLib::vCopyLen(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart, llabs(iLength));
   
   m_pDataStack->vPushStr(sSubStr);
   
@@ -185,7 +187,7 @@ void Step::vStrEscape(void)
   // get the arguments
   m_pDataStack->vPopStr(xArg,__func__);
   
-  StrLib::vEscapeDblQuote(xArg.azChar(),xEscaped.azChar());
+  StrLib::vEscapeDblQuote(xEscaped.azChar(), xEscaped.nAreaBytes(), xArg.azChar());
   
   m_pDataStack->vPushStr(xEscaped);
   
@@ -206,7 +208,7 @@ void Step::vStrFirstCsv(void)
   
   char* aValue = sStr.azChar();
   
-  if (! StrLib::bExtractItem(&aValue,sFirstValue.azChar(), ','))
+  if (! StrLib::bExtractItem(&aValue,sFirstValue.azChar(), sFirstValue.nAreaBytes(), ','))
     sFirstValue = ""_Stz;
   
   m_pDataStack->vPushStr(sFirstValue);
@@ -275,7 +277,7 @@ void Step::vStrLeft(void)
   
   char* pStart = sString.azChar();
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart, iLength);
   
   m_pDataStack->vPushStr(sSubStr);
   
@@ -385,7 +387,7 @@ void Step::vStrRemovePrefix(void)
   s32 sIntro;
   m_pDataStack->vPopStr(sIntro,__func__);
   
-  StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
+  StrLib::vRemovePrefix(sString.azChar(), sString.nAreaBytes(), * sIntro.azChar());
   
   m_pDataStack->vPushStr(sString);
   
@@ -405,7 +407,7 @@ void Step::vStrRemoveSuffix(void)
   s32 sIntro;
   m_pDataStack->vPopStr(sIntro,__func__);
   
-  StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
+  StrLib::vRemoveSuffix(sString.azChar(), sString.nAreaBytes(), * sIntro.azChar());
   
   m_pDataStack->vPushStr(sString);
 
@@ -422,7 +424,7 @@ void Step::vStrRemoveTailInt(void)
   s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
   
-  StrLib::vRemoveTailInt(sString.azChar());
+  StrLib::vRemoveTailInt(sString.azChar(), sString.nAreaBytes());
   
   m_pDataStack->vPushStr(sString);
 
@@ -448,7 +450,8 @@ void Step::vStrReplace(void)
   
   s48K sReplaced;
   
-  StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
+  StrLib::bReplace(sReplaced.azChar(), sReplaced.nAreaBytes(),
+                   sString.azChar(), sThis.azChar(), sThat.azChar());
   
   m_pDataStack->vPushStr(sReplaced);
   
@@ -483,6 +486,7 @@ void Step::vStrReplaceTags(void)
     Stz* szValue = pTags->szValue(i_Tag);
     
     IGNORE_RETURN( StrLib::bReplace(sAfter.azChar(),
+                                    sAfter.nAreaBytes(),
                                     szName->azChar(),
                                     szValue->azChar()) );
   }
@@ -521,7 +525,7 @@ void Step::vStrRight(void)
   
   char* pStart = sString.azChar() + iHasLength - iLength;
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
+  StrLib::vCopy(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart);
   
   m_pDataStack->vPushStr(sSubStr);
   
@@ -585,7 +589,7 @@ void Step::vStrSub(void)
   
   char* pStart = sString.azChar() + iStart;
   
-  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.azChar(), sSubStr.nAreaBytes(), pStart, iLength);
   
   m_pDataStack->vPushStr(sSubStr);
   
@@ -668,7 +672,7 @@ void Step::vStrToStrVec(void)
   
   for (;; nStrings++) {
     
-    if (! StrLib::bExtractName(&azPath,azDicNm))
+    if (! StrLib::bExtractName(&azPath, azDicNm, sDicNm.nAreaBytes()))
       break;
     
      m_pAuxStack->vPushStr(sDicNm);

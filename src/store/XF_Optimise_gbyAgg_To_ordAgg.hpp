@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* XF_Optimise_gbyAgg_To_ordAgg.hpp -- Promote gbyAgg to ordAgg                */
+/*============================================================================*/
+#pragma once
+
+#include "XF_OPTIMISE.hpp"
+
+namespace STORE
+{
+  class XF_Optimise_gbyAgg_To_ordAgg : public XF_OPTIMISE
+  {
+  private:
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    XF_Optimise_gbyAgg_To_ordAgg(CardIter* pCI);
+   ~XF_Optimise_gbyAgg_To_ordAgg(void) noexcept(false);
+
+    static void vOptimise(CardIter* pCI);
+
+    bool bOptimise(void);
+
+  private:
+    Footer* aFooter(void);
+  };
+
+  XF_Optimise_gbyAgg_To_ordAgg* _pXF_Optimise_gbyAgg_To_ordAgg(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

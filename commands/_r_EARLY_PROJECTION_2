@@ -15,7 +15,7 @@ trackMemory;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_EARLY_PROJECTION_2"

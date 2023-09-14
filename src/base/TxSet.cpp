@@ -178,6 +178,7 @@ void TxSet::vRemoveTx(Tx* pTx)
   m_okLock.vGrabWrite();
   
   bRemoved = m_pTxList->bRemove(pTx);
+  UNUSED(bRemoved);
   
   if (pTx->tPerspective() > m_tOldestPsp)
     m_tOldestPsp = pTx->tPerspective();
@@ -233,6 +234,7 @@ void TxSet::vRemoveTx_NL(Tx* pTx)
   bool bRemoved;
   
   bRemoved = m_pTxList->bRemove(pTx);
+  UNUSED(bRemoved);
 }
 
 /*----------------------------------------------------------------------------*/

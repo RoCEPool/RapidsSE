@@ -5,7 +5,7 @@
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -64,7 +64,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // H A NC ro (refer: Q11)
   // - the nc subquery produces a single nc result, such as avg(col)
@@ -79,7 +79,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
                                   from lineitem);
   */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_74_H_A_NC_ro))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_74_H_A_NC_RO, "((vFlatten_74_H_A_NC_ro))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
@@ -90,22 +90,21 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
                                CK_HAVING, QO_RELN_OP, SM_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
+  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having [Sort]
 
-  Smooth* pSmooth = new Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   delete pFold;
   delete pCarryForward;
   delete pSmooth;
 
   m_pCI->vEndTransform();
-
-  vValidate();
+//vValidateBench();
 }
 
 /*============================================================================*/

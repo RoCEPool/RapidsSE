@@ -7,21 +7,13 @@ enum eYS // stream topology
 {
   /*  0 */ YS_NONE=0,
   
-  /*  2 */ YS_NODE_STREAM,
-  /*  3 */ YS_PTN_STREAM,
+  /*  1 */ YS_NODE_STREAM,
+  /*  2 */ YS_PTN_STREAM,
 
-  /*    */ YS_ENUMS,
+  /*  3 */ YS_ENUMS,
 };
 
-static Stz* aYS[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "YS_NODE_STREAM"_Stz,
-  /*    */ "YS_PTN_STREAM"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aYS[YS_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

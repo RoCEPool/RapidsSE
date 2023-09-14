@@ -59,21 +59,29 @@ Stz* SP_Elapsed::szNsec(i8 iNsec)
 
   if (iDays)
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
                     "%02lld %02lld:%02lld:%02lld.%03lld_%03lld_%03lld"_Stz,
                     iDays,iHours,iMinutes,iSeconds,
                     iThousandths,iMillionths,iBillionths);
   else if (iHours)
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
                     "%02lld:%02lld:%02lld.%03lld_%03lld_%03lld"_Stz,
                     iHours,iMinutes,iSeconds,
                     iThousandths,iMillionths,iBillionths);
   else if (iMinutes)
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
                     "%02lld:%02lld.%03lld_%03lld_%03lld"_Stz,
                     iMinutes,iSeconds,
                     iThousandths,iMillionths,iBillionths);
   else
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
                     "%02lld.%03lld_%03lld_%03lld"_Stz,
                     iSeconds,
                     iThousandths,iMillionths,iBillionths);

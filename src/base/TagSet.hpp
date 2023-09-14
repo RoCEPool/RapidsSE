@@ -42,8 +42,8 @@ namespace BASE
     void vAppend(Stz* szName, Object* pObject);
     void vAppend(Stz* szName, Stz* szValue);
   
-    void vConcat(Stz* szCmd);
-    void vConcat(Stz* szCmd, i8 i_Tag);
+    void vConcat(String* pCmd);
+    void vConcat(String* pCmd, i8 i_Tag);
     void vContentDump(void);
     void vCopy(TagSet* pSrcTagSet);
   
@@ -73,13 +73,13 @@ namespace BASE
     void vReplace(Stz* szName, Stz* szValue);
     void vReset(void);
   
-    void vSprint(Stz* sArgs,
+    void vSprint(String* psArgs,
                  bool bParenth=true, bool bNames=false, bool bDecode=false);
     bool bSame(TagSet* pTagSet_arg);
   
     Tag* pTag(i8 i_Tag);
     eTN  eToken(i8 i_Tag);
-    void vToString(Stz* szStz, bool bValueOnly=false);
+    void vToString(String* psStr, bool bValueOnly=false);
 
     i8   iValue(i8 i_Tag);
     i8   iValue(Stz* szName);

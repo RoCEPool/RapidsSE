@@ -245,6 +245,17 @@ EndDefine
   } \
 EndDefine
 
+/*----------------------------------------------------------------------------*/
+/* macro for standard operator delete() function                              */
+/*----------------------------------------------------------------------------*/
+#define __vDeleteFunction_DONT_FREE(CLASSNM,CN) \
+  void CLASSNM::operator delete(void* aAddr) \
+  { \
+    CLASSNM* pObject = reinterpret_cast<CLASSNM*>(aAddr); \
+    UNUSED(pObject);                                      \
+  } \
+EndDefine
+
 /*--------------------------------------------------------------------------*/
 /* check the object is of a known class                                     */
 /*--------------------------------------------------------------------------*/

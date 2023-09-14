@@ -82,6 +82,7 @@ NEVER_REACH;
 DataBuffer* FileMap::pDataBufferFromDisk(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+  UNUSED(oBufferId);
 
   //---------------------------------------------------------------------------
   // Ensure id flag bit is set
@@ -110,6 +111,7 @@ DataBuffer* FileMap::pDataBufferFromDisk(BufferId oBufferId)
 void FileMap::vToDisk(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+  UNUSED(pOperand);
 
   //---------------------------------------------------------------------------
   // Operand could be an address or a buffer id. Check flag bit.
@@ -143,6 +145,7 @@ void FileMap::vToDisk(Operand* pOperand)
 void FileMap::vToDisk(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+  UNUSED(pDataBuffer);
 
   //---------------------------------------------------------------------------
   // Look at page no bits in buffer id and assign to corresponding PageFile

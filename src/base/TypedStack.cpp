@@ -433,7 +433,7 @@ void TypedStack::vPopStr(String* pString, const char* azCallingFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop stz from stack                                                         */
 /*----------------------------------------------------------------------------*/
-void TypedStack::vPopStz(Stz* szStz, const char* azCallingFunNm)
+void TypedStack::vPopStz(Text* psText, const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -446,7 +446,7 @@ void TypedStack::vPopStz(Stz* szStz, const char* azCallingFunNm)
   
   TypeValueArea* aTypedCell = _aTypeValueArea(aTopVal());
   
-  szStz->vCopy(aTypedCell->szStz());
+  psText->vSet(aTypedCell->szStz());
     
   vDiscardTop();
   
@@ -507,8 +507,9 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
                               const char* azCallingFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  UNUSED(azCallingFunNm);
   
-  static i8 nCount = 0;
+//  static i8 nCount = 0;
   
 //  s48K sStackContents;
 //  vStackContents(sStackContents);
@@ -607,7 +608,7 @@ void TypedStack::vPushStr(String* pStr)
   i8 nSize = StrLib::nSize(pStr->azStr());
   TypeValueArea* aTypedCell = aAllotStzVal(nSize);
 
-  aTypedCell->vStz(pStr->szStz());
+  aTypedCell->vStz(pStr->szStz(), nSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -622,7 +623,7 @@ void TypedStack::vPushStz(Stz* szStz)
   i8 nSize = szStz->nSize();
   TypeValueArea* aTypedCell = aAllotStzVal(nSize);
   
-  aTypedCell->vStz(szStz);
+  aTypedCell->vStz(szStz, nSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -883,7 +884,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopBcd(__func__);
       
       char caValue[32];
-      StrLib::wToString(iInt,caValue);
+      StrLib::vToString(caValue, sizeof(caValue), iInt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -896,7 +897,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopBol(__func__);
       
       char caValue[32];
-      StrLib::wToString((bool)iInt,caValue);
+      StrLib::vToString(caValue, sizeof(caValue), (bool) iInt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -910,7 +911,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       d8 dFlt = dPopFlt(__func__);
       
       char caValue[32];
-      StrLib::wToString(dFlt,caValue);
+      StrLib::vToString(caValue, sizeof(caValue), dFlt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -924,7 +925,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       i8 iInt = iPopInt(__func__);
       
       char caValue[32];
-      StrLib::wToString(iInt,caValue);
+      StrLib::vToString(caValue, sizeof(caValue), iInt);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -938,7 +939,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       Object* pObject = pPopPtr(__func__);
       
       char caValue[32];
-      StrLib::wToPointer(pObject,caValue);
+      StrLib::vToPointer(caValue, sizeof(caValue), pObject);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;
@@ -983,7 +984,7 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       continue;
     
     i8 nPad = nWidth - nDiff;
-    StrLib::vPad(acDst,nPad,' ');
+    StrLib::vPad(acDst, sString.nAreaBytes(), nPad,' ');
     acDst += nPad;
   }
   

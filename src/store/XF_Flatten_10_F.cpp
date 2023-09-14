@@ -5,7 +5,8 @@
 #include "XF_Flatten_10_F.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
+#include "XF_Flatten_Update_projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -64,7 +65,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // F
   // (refer: Q7,8,9)
@@ -77,9 +78,9 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_10_F))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_10_F, "((vFlatten_10_F))"_Stz);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
@@ -87,26 +88,17 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   CarryForward* pCarryForward = pFold->pFold_from("From"_Stz,m_pCI);
 
-  m_pCI->vPrintBoard(__LINE__);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
   pCarryForward->Table.m_bReproject = true;
-  Smooth* pSmooth = new Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
-  m_pCI->vRenumberCards();
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G.pDeck->vClearMarksRecursive();
-
-  m_pCI->vPrintBoard(__LINE__);
-
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   // todo: discuss with Alka
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   if (m_pCI->G_bEachMain(CK_FOLD)) {
     if (m_pCI->G_bEachMain(CK_WHERE)) {
       Card_Level* p_level_where = m_pCI->G.p_where->pSub_level();
@@ -122,7 +114,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   delete pCarryForward;
   delete pFold;
 
-  vValidate();
+  XF_Flatten_Update_projection::vXF_Update_projection(m_pCI);
 }
 
 /*============================================================================*/

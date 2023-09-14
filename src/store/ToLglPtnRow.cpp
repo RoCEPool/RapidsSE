@@ -95,6 +95,7 @@ void ToLglPtnRow::vRepairHashSet(Object* pObject)
 void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
+  UNUSED(pTable);
 
   m_pFromRowBuffer = pRowBuffer;
   

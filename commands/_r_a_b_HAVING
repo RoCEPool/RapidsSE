@@ -17,7 +17,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r_a_b_HAVING"

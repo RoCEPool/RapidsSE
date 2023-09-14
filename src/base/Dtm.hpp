@@ -172,27 +172,6 @@ namespace BASE
       m_pObject = pObject;
     }
 
-    /*------------------------------------------------------------------------*/
-    /* put string column value                                                */
-    /*------------------------------------------------------------------------*/
-    inline i8 nPutColVal_offset(Stz* szColVal, Stz* StzBegin)
-    {
-      i8 nStringSize = StrLib::nCopy((char*)StzBegin,(char*)szColVal) + 1;
-
-      vSetStz_offset(StzBegin);
-    
-      return nStringSize;
-    }
-
-    /*------------------------------------------------------------------------*/
-    /* set stz offset                                                         */
-    /*------------------------------------------------------------------------*/
-    inline void vSetStz_offset(Stz* StzBegin)
-    {
-      m_iWrd = nDifference(this,StzBegin);
-    }
-  
-
   };
 
 

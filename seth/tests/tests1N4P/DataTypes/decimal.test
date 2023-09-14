@@ -361,7 +361,6 @@ success
 load datums "../DATA/DataTypes/dataTypesOver.csv" ;
 success
 
-//------------------------------------------------------------------------------
 select flt_col8 from datums order by flt_col8;
 rows:
    (null)

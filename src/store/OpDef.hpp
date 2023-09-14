@@ -5,6 +5,8 @@
 
 #include "ArgDef.hpp"
 #include "IndexDef.hpp"
+#include "ColHsh.hpp"
+#include "ColMap.hpp"
 #include "ColsReq.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"
@@ -16,8 +18,9 @@ namespace STORE
               , public ListExo2_t<ArgDef>
   {
   public:
-    i8  m_i_Op;
-    s32 m_sOpNm;
+    i8   m_i_Op;
+    s32  m_sOpNm;
+    char md_Bearing[256];
 
     i8   m_nCollapses;
     bool m_bCollapsed;
@@ -30,15 +33,17 @@ namespace STORE
     Index*     m_pIndex_indexSemi;
 
     IndexDef*  m_pIndexDef_gbyAgg;
-    ColsReq*   m_pColMap_gbyAgg;
+    ColMap*    m_pColMap_gbyAgg;
 
     IndexDef*  m_pIndexDef_sort;
-    ColsReq*   m_pColMap_sort;
+    ColMap*    m_pColMap_sort;
 
     IndexDef*  m_pIndexDef_top;
-    ColsReq*   m_pColMap_top;
+    ColMap*    m_pColMap_top;
 
     ColsReq*   m_pColsReq;
+
+    ColHsh*    m_pColHsh;
 
   protected:
     // must be last
@@ -48,8 +53,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    OpDef(void);
-    OpDef(i8 i_Op, Stz* szOpNm);
+     OpDef(i8 i_Op, Stz* szOpNm, Stz* zzBearing=nullptr);
     ~OpDef(void) noexcept(false);
 
     i8      nArgs(void);
@@ -58,9 +62,7 @@ namespace STORE
     ArgDef* pArgDef_expectingVal(Stz* szArgNm);
     ArgDef* pArgDef_expr(void);
     ArgDef* pArgDef_constraint(void);
-
-    ColsReq* pColsLoc_gbyAgg(void);
-    void vColsLoc_gbyAgg(ColsReq* pColsLoc_gbyAgg);
+    ArgDef* pArgDef_count(void);
 
     ColsReq* pColsReq(void);
     void vColsReq(ColsReq* ColsReq);
@@ -72,13 +74,6 @@ namespace STORE
 
     Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);
-
-
-    StreamDef* pStreamDef_arriving(void);
-    void vStreamDef_arriving(StreamDef* pStreamDef_arriving);
-
-    StreamDef* pStreamDef_emitted(void);
-    void vStreamDef_emitted(StreamDef* pStreamDef_emitted);
 
     void vValidate(void);
 

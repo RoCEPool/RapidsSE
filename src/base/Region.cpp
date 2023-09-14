@@ -237,7 +237,9 @@ void Region::vClose(void* aRegionAddr, int iFD)
   
   // close the temporary mapping
   bResult = ShmLib::bClose(iFD,oSysCall);
+  UNUSED(bResult);
   bResult = ShmLib::bUnmap(aRegionAddr,10_MB,oSysCall);
+  UNUSED(bResult);
 }
 
 /*============================================================================*/

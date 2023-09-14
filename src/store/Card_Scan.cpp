@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Scan,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Scan::Card_Scan(void)
-: Card_OP(CK_SCAN)
+: Card_OP(CK_SCAN,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -47,30 +47,9 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 {
   _static_
 
-  pCI->G_vNewMember(CK_SCAN);
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_scan);
+    pCI->G.p_from->vCard(CK_SCAN);
 }
 
-/*----------------------------------------------------------------------------*/
-/* scan becomes table                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
-{
-  _static_
-
-  Card_Level* p_level = nullptr;
-  if ((p_level = pCI->G.p_scan->pSub_level())) {
-    pCI->G.p_scan->vRemoveChild(p_level);
-  }
-
-  Card_Table* p_table = pCI->G.p_scan->pSub_table();
-
-  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->G.p_scan);
-  DELETE_CARD(pCI->G.p_scan);
-
-  if (p_level)
-    p_table->vInsert(p_level);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -82,6 +61,7 @@ void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
 void Card_Scan::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,9 +75,9 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 
    pCI->Early.m_pOP_leaf = this;
 
-   pCI->Analysis.m_pProjection_prior = pSub_projection();
+   pCI->Prior.m_pProjection = pSub_projection();
 
-   pCI->vPrintBoard();
+  // pCI->vPrintBoard();
 
    vDebugPoint();
 }
@@ -111,7 +91,11 @@ void Card_Scan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

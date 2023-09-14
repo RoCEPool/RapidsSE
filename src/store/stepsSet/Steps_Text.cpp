@@ -76,7 +76,7 @@ void Step::vTextSet(void)
   if (m_pLogicUnit->m_xpText.bIsNull())
     m_pLogicUnit->m_xpText = new Text(C_32KB);
     
-  m_pDataStack->vPopStz(m_pLogicUnit->m_xpText->szGet(), __func__);
+  m_pDataStack->vPopStz(* m_pLogicUnit->m_xpText, __func__);
 
   EXIT();
 }

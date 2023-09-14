@@ -10,7 +10,7 @@ _r_schema
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_SELECT_CUSTOMER_COUNT"

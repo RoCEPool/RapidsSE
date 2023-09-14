@@ -37,16 +37,16 @@ Stz* SP_TagSet::sz(TagSet* pTagSet)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-   StrLib::vSprint(m_caResult,"{ "_Stz);
+   StrLib::vSprint(m_caResult,sizeof(m_caResult),nullptr,"{ "_Stz);
   
   for (i8 i_Ename = 0; i_Ename < pTagSet->nItems(); i_Ename++) {
     
     if (i_Ename)
-      StrLib::vSprintCat((Stz*)m_caResult,", "_Stz);
+      StrLib::vSprintCat((Stz*)m_caResult,sizeof(m_caResult),nullptr,", "_Stz);
 
     if (TN_INTEGER == pTagSet->eToken(i_Ename)) {
       
-      StrLib::vSprintCat((Stz*)m_caResult,"%s=%lld"_Stz,
+      StrLib::vSprintCat((Stz*)m_caResult,sizeof(m_caResult),nullptr,"%s=%lld"_Stz,
               
                          pTagSet->szName(i_Ename),
                          pTagSet->iValue(i_Ename),
@@ -56,7 +56,7 @@ Stz* SP_TagSet::sz(TagSet* pTagSet)
       continue;
     }
     
-    StrLib::vSprintCat((Stz*)m_caResult,"%s=%s"_Stz,
+    StrLib::vSprintCat((Stz*)m_caResult,sizeof(m_caResult),nullptr,"%s=%s"_Stz,
            
                        pTagSet->szName(i_Ename),
                        pTagSet->szValue(i_Ename),
@@ -65,7 +65,7 @@ Stz* SP_TagSet::sz(TagSet* pTagSet)
                       );
   }
   
-  StrLib::vSprintCat((Stz*)m_caResult," }"_Stz);
+  StrLib::vSprintCat((Stz*)m_caResult,sizeof(m_caResult),nullptr," }"_Stz);
   
   return (Stz*) &m_caResult[0];
 }

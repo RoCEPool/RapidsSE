@@ -5,7 +5,7 @@
 #include "Card_TableList.hpp"
 
 #include "CardIter.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_TableSize.hpp"
 #include "Card_Table.hpp"
@@ -27,7 +27,7 @@ __vDeleteFunction(Card_TableList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableList::Card_TableList(void)
-: Card(CK_TABLELIST)
+: Card_symbol(CK_TABLELIST, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -57,45 +57,54 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
 
   Card_TableList* p_tableList = new Card_TableList;
 
-  CardIter xCI(p_deck);
+  Kid xKid(p_deck);
+  xKid.vEnded();
+  xKid.vBeginEach_reverse();
 
-  if (! xCI.G_bEachMain_reverse(CK_FOLD))
-    xCI.vRestart();
+  if (xKid.bEach_reverse(CK_FOLD)) {
+    xKid.vForwards(true);
+  }
+  else {
+    xKid.vEnded();
+    xKid.vBeginEach_forward();
+  }
 
-  while (xCI.G_bEachMain(CK_TABLE)) {
+  while (xKid.bEach(CK_FROM,CK_TABLE)) {
 
-    Card* p_table_dup = _pCard_Table(xCI.G.p_table->pDupCard());
-    p_tableList->vAppend(p_table_dup);
+    Card_Table* p_table = _pCard_Table(xKid.pSub1());
 
-    if (Card_TableNm* p_tableNm = xCI.G.p_table->pSub_tableNm()) {
+    Card* p_table_dup = _pCard_Table(p_table->pDupCard());
+    p_tableList->vAppendChild(p_table_dup);
+
+    if (Card_TableNm* p_tableNm = p_table->pSub_tableNm()) {
       p_tableNm = _pCard_TableNm(p_tableNm->pDupCard());
-      p_table_dup->vAppend(p_tableNm);
+      p_table_dup->vAppendChild(p_tableNm);
     }
-    if (Card_TablePtn* p_tablePtn = xCI.G.p_table->pSub_tablePtn()) {
+    if (Card_TablePtn* p_tablePtn = p_table->pSub_tablePtn()) {
       p_tablePtn = _pCard_TablePtn(p_tablePtn->pDupCard());
-      p_table_dup->vAppend(p_tablePtn);
+      p_table_dup->vAppendChild(p_tablePtn);
     }
-    if (Card_TableSize* p_tableSize = xCI.G.p_table->pSub_tableSize()) {
+    if (Card_TableSize* p_tableSize = p_table->pSub_tableSize()) {
       p_tableSize = _pCard_TableSize(p_tableSize->pDupCard());
-      p_table_dup->vAppend(p_tableSize);
+      p_table_dup->vAppendChild(p_tableSize);
     }
-    if (Card_RowSize* p_rowSize = xCI.G.p_table->pSub_rowSize()) {
+    if (Card_RowSize* p_rowSize = p_table->pSub_rowSize()) {
       p_rowSize = _pCard_RowSize(p_rowSize->pDupCard());
-      p_table_dup->vAppend(p_rowSize);
+      p_table_dup->vAppendChild(p_rowSize);
     }
-    if (Card_RowCount* p_rowCount = xCI.G.p_table->pSub_rowCount()) {
+    if (Card_RowCount* p_rowCount = p_table->pSub_rowCount()) {
       p_rowCount = _pCard_RowCount(p_rowCount->pDupCard());
-      p_table_dup->vAppend(p_rowCount);
+      p_table_dup->vAppendChild(p_rowCount);
     }
 
-    if (Card_KeyExists* p_keyExists = xCI.G.p_table->pSub_keyExists()) {
+    if (Card_KeyExists* p_keyExists = p_table->pSub_keyExists()) {
       p_keyExists = _pCard_KeyExists(p_keyExists->pDupCard());
-      p_table_dup->vAppend(p_keyExists);
+      p_table_dup->vAppendChild(p_keyExists);
     }
     else
-    if (Card_KeyNotExists* p_keyNotExists = xCI.G.p_table->pSub_keyNotExists()) {
+    if (Card_KeyNotExists* p_keyNotExists = p_table->pSub_keyNotExists()) {
       p_keyNotExists = _pCard_KeyNotExists(p_keyNotExists->pDupCard());
-      p_table_dup->vAppend(p_keyNotExists);
+      p_table_dup->vAppendChild(p_keyNotExists);
     }
   }
 
@@ -121,7 +130,7 @@ Card_Table* Card_TableList::pFind(char cTblSyn)
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);
-    char cTableSyn = p_table->cSymbol();
+    char cTableSyn = p_table->pSymbol()->cSF_char();
     if (cTableSyn == cTblSyn)
       return p_table;
   }
@@ -176,7 +185,7 @@ i8 Card_TableList::nGetTableSize(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_TableSize* p_tableSize = pGetTableSize(cTblSyn))
-    return p_tableSize->iSymbol();
+    return p_tableSize->pSymbol()->iSF_number();
 
   return 0;
 }
@@ -202,10 +211,24 @@ Stz* Card_TableList::szToTableNm(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Table* p_table = pFind(cTblSyn))
-    return p_table->pSub_tableNm()->szSymbol();
+    return p_table->pSub_tableNm()->szSymbol(SF_NONE);
 
   return nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TableList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

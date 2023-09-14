@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_CostUnicast : public Card
+  class Card_CostUnicast : public Card_symbol<Card_CostUnicast>
   {
   public:
     void* operator new(size_t);
@@ -15,6 +15,8 @@ namespace STORE
   
     Card_CostUnicast(void);
    ~Card_CostUnicast(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CostUnicast* _pCard_CostUnicast(void* aAddr);

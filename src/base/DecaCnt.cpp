@@ -40,6 +40,7 @@ DecaCnt::~DecaCnt(void) noexcept(false)
 void DecaCnt::vInc(Stz* szFormat,...)
 {
   _precondition_(_MAGIC_,CN_DECACNT,_FOOTER_);
+  UNUSED(szFormat);
 
   m_iCount++;
   

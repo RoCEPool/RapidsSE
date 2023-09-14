@@ -32,7 +32,7 @@ namespace STORE
 
     i8    iGetIntElm(void);
     i8    iGetIntElm(IndexDef* pIndexDef, i8 i_Element);
-    i8    iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue);
+    i8    iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue, i8 iKeyBufSize);
     Stz*  szGetStrElm(void);
     void  vIncElmSeqSize(i8 nDeltaBytes);
     i8    nElmSeqSize(void);

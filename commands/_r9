@@ -7,7 +7,7 @@ _tpchCreate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /optimise
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r9"

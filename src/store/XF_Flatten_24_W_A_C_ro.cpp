@@ -5,7 +5,7 @@
 #include "XF_Flatten_24_W_A_C_ro.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 #include "CorrelatedJoin.hpp"
 
 
@@ -66,7 +66,7 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_24_W_A_C_RO, _FOOTER_);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // W A C ro
 
@@ -81,27 +81,22 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
     ;
  */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_24_W_A_C_ro))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_24_W_A_C_RO, "((vFlatten_24_W_A_C_ro))"_Stz);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"24_W_A_C_ro"_Stz,CK_WHERE);
-  m_pCI->vPrintBoard(__LINE__);
 
   CorrelatedJoin* pCorrelatedJoin = new CorrelatedJoin;
   pCorrelatedJoin->vVia_gbyAgg_Promotion(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
 
   pFold->vDerive_Correleted_fold_projection(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
-  m_pCI->vPrintBoard(__LINE__);
-  m_pCI->vEndTransform();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   delete pCorrelatedJoin;
   delete pFold;
 
-  vValidate();
+  m_pCI->vEndTransform();
 }
 
 /*============================================================================*/

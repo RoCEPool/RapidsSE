@@ -3,7 +3,7 @@
 /*============================================================================*/
   
 //RASSERT(SI_CELLARRAY_ADR == eStrInflateRule || SI_CELLARRAY_PST == eStrInflateRule);
-
+/*
 #ifdef __TINYC__
 
   i8**       aaCellArray      ;
@@ -16,6 +16,7 @@
 //#define nullptr 0
 
 #else
+*/
 
   i8**       aaCellArray      = _aaCellArray;
   char*&     racStrArea       = _racStrArea;
@@ -24,8 +25,9 @@
   i8*        iaColSet         = _iaColSet;
   i8         nCols            = _nCols;
 
+/*
 #endif
-  
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   u1* auMetaCode = META_AREA(aHeadLine);

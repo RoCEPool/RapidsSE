@@ -67,7 +67,7 @@ Expected join order:
   Either A->B-C or B->A->C or B->C->A or C->B->A
 ********************************************************************************/
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_JOIN_THREE_WAY"

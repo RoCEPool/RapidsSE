@@ -43,6 +43,8 @@ Stz* SP_SchemaMetadata::sz(SchemaMetadata* pSchemaMeta)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
           
   StrLib::vSprint(m_caResult
+    ,sizeof(m_caResult)
+    ,nullptr
                   
     ,"%s/%s"_Stz
                   

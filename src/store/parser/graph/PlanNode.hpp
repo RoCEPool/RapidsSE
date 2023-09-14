@@ -579,6 +579,7 @@ namespace Parser
           } else {
             NEVER_REACH
           }
+          break;
 
         default:
           NEVER_REACH
@@ -631,6 +632,7 @@ namespace Parser
     d8   dValue();
     Bcd  xDecimalVal();
     Stz* szValue();
+    i8   iSzBufSize();
     Dte  xDateVal();
     Tme  xTimeVal();
     Tsp  xTspVal();

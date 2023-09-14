@@ -5,8 +5,8 @@
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
-#include "Smoosh.hpp"
+#include "XF_Flatten_Smooth.hpp"
+#include "XF_Flatten_Smoosh.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -65,7 +65,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // W L NC NI
   // (refer: Q16)
@@ -80,7 +80,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_53_W_L_NC_NI_JOIN, "((XF_FLATTEN_53_W_L_NC_NI_JOIN))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
@@ -90,41 +90,40 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 
   pFold->vFold_basic(m_pCI,"W_L_NC_NI_join"_Stz,CK_WHERE);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smooshing
 
-  Smoosh* pSmoosh = new Smoosh();
+  XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh();
 
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
   CarryForward* pCarryForward = new CarryForward;
   pCarryForward->Table.m_bReproject = true;
 
-  Smooth* pSmooth = new Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
-
-  m_pCI->vEndTransform();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   delete pSmoosh;
   delete pSmooth;
   delete pCarryForward;
   delete pFold;
 
-  vValidate();
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

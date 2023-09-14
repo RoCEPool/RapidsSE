@@ -12,14 +12,7 @@ enum eIS // input source
   IS_ENUMS
 };
 
-static Stz* aIS[]
-{
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "FILE"_Stz,
-  /* 2 */ "STDIN"_Stz,
-  /* 3 */ "STRING"_Stz,
-  /* 4 */ "ENUMS"_Stz
-};
+extern Stz* aIS[IS_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

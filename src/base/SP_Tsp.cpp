@@ -81,11 +81,14 @@ Stz* SP_Tsp::sz(i8 iTsp)
   wTsp = iTsp;
   
   if (wTsp.m_wTsp.T.m_uMicro) {
-    
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,wTsp.m_wTsp.T.m_uMicro,6);
+
+    const i8 nBufSize = 16;
+    char caFraction[nBufSize];
+    StrLib::vFormatFraction(caFraction,nBufSize,wTsp.m_wTsp.T.m_uMicro,6);
     
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
                     (Stz*)F_TSP_frac,
 
                     (i8)wTsp.m_wTsp.T.m_uYearDelta + C_YEAR_BASE,
@@ -100,6 +103,8 @@ Stz* SP_Tsp::sz(i8 iTsp)
   }
   else {
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
                     (Stz*)F_TSP,
 
                     (i8)wTsp.m_wTsp.T.m_uYearDelta + C_YEAR_BASE,

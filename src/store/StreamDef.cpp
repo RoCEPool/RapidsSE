@@ -88,8 +88,9 @@ StreamDef::~StreamDef(void) noexcept(false)
 void StreamDef::vPostRecv(void* aStreamDef)
 {
   _static_
+  UNUSED(aStreamDef);
 
-  StreamDef* pStreamDef = _pStreamDef(aStreamDef);
+//  StreamDef* pStreamDef = _pStreamDef(aStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

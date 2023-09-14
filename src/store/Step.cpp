@@ -60,7 +60,6 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
-  Step::vAddSteps_Combined();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_CrwBuffer();
   Step::vAddSteps_CrwToRow();
@@ -195,7 +194,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Stage();
   Step::vAddSteps_StageOfOp();
   Step::vAddSteps_Stats();
-  Step::vAddSteps_Stencil();
   Step::vAddSteps_Stencil_v2();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
@@ -227,7 +225,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Thread();
   Step::vAddSteps_Ticking();
   Step::vAddSteps_Timer();
-  Step::vAddSteps_TinyC();
   Step::vAddSteps_To();
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_ToKeyHshRow();

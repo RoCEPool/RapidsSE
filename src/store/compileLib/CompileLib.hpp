@@ -20,10 +20,11 @@ namespace STORE
 
     static bool  bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler = nullptr);
     static bool  bCompile(ExtendedText* pSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler = nullptr);
+    static bool  bCompileFile(Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler = nullptr);
     static bool  bDynamicLink(LibInfo* pLibInfo);
     static void* pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo);
     static bool  bDynamicUnlink(LibInfo* pLibInfo);
-    static void  vDelete(LibInfo* pLibInfo);
+    static void  vDelete(LibInfo* pLibInfo, bool bDeleteFile = true);
 
     // Temporary
     static void  vTest(Stz* szCompiler = nullptr);

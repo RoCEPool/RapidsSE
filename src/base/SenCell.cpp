@@ -107,7 +107,7 @@ void SenCell::operator =(Stz* szColVal)
 //
 //  m_xTypedCell.vType(CN_STZVAL);
   
-  m_xTypeValueArea.vStz(szColVal);
+  m_xTypeValueArea.vStz(szColVal, sizeof(m_xTypeValueArea.m_caStringArea));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +261,7 @@ i8 SenCell::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void SenCell::vToString(Stz* szStz)
+void SenCell::vToString(String* psStz)
 {
   _precondition_(_MAGIC_,CN_SENCELL,_FOOTER_);
   
@@ -271,35 +271,35 @@ void SenCell::vToString(Stz* szStz)
 
     case CN_BOLVAL: {
 //      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValue);
-//      aIntVal->vToStz(szStz);
-      m_xTypeValueArea.vToStz(szStz);
+//      aIntVal->vToStr(szStz);
+      m_xTypeValueArea.vToStr(psStz);
       break;
     }
 
     case CN_FIPVAL: {
 //      FipVal* aFipVal = _aFipVal(&m_xTypedCell.m_wxValue);
-//      aFipVal->vToStz(szStz);
-      m_xTypeValueArea.vToStz(szStz);
+//      aFipVal->vToStr(szStz);
+      m_xTypeValueArea.vToStr(psStz);
       break;
     }
       
     case CN_INTVAL: {
 //      IntVal* aIntVal = _aIntVal(&m_xTypedCell.m_wxValue);
-//      aIntVal->vToStz(szStz);
-      m_xTypeValueArea.vToStz(szStz);
+//      aIntVal->vToStr(szStz);
+      m_xTypeValueArea.vToStr(psStz);
       break;
     }
       
     case CN_PTRVAL: {
 //      PtrVal* aPtrVal = _aPtrVal(&m_xTypedCell.m_wxValue);
-//      aPtrVal->vToStz(szStz);
-      m_xTypeValueArea.vToStz(szStz);
+//      aPtrVal->vToStr(szStz);
+      m_xTypeValueArea.vToStr(psStz);
       break;
     }
       
     case CN_STZVAL: {
       //StzVal* aStzVal = _aStzVal(&m_xTypedCell.m_wxValue);
-      m_xTypeValueArea.vToStz(szStz);
+      m_xTypeValueArea.vToStr(psStz);
       break;
     }
             

@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_Deck : public Card
+  class Card_Deck : public Card_symbol<Card_Deck>
   {  
   public:
     void* operator new(size_t);
@@ -36,6 +36,8 @@ namespace STORE
 
     void vProjectionAnalysis(CardIter* pCI);
     void vProjectionAnalysis_passThru(CardIter* pCI);
+
+    void vValidate(CardIter* pCI);
 
   };
 

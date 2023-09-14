@@ -89,7 +89,6 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,   LR_AGGTYPESTACK)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
-,       m_xpCombined(this,RF_REPAIR_DELETE,      Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepair,  LR_CRWBUFFER)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,      CrwToRow::vRepair,       LR_CRWTOROW)
 ,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepair,  LR_CSVBUFFER)
@@ -159,7 +158,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpSocket(this,RF_REPAIR_DELETE, Socket::vRepair,                LR_SOCKET)
 ,          m_xpStage(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                          LR_STATS)
-,        m_xpStencil(this,RF_REPAIR_DELETE,       Stencil::vRepair,        LR_STENCIL)
 ,        m_xpStencil_v2(this,RF_REPAIR_DELETE,    Stencil_v2::vRepair,     LR_STENCIL)
 ,         m_xpStream(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFLFT)
@@ -177,7 +175,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
 ,           m_xpText(this,RF_REPAIR_DELETE,          Text::vRepair,          LR_TEXT)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,         Timer::vRepair,          LR_TIMER)
-,          m_xpTinyC(this,RF_REPAIR_DELETE,         TinyC::vRepair,          LR_TINYC)
 ,    m_xpToKeyHshRow(this,RF_REPAIR_DELETE,   ToKeyHshRow::vRepairList,LR_TOKEYHSHROW)
 ,    m_xpToLglPtnCrw(this,RF_REPAIR_DELETE,   ToLglPtnCrw::vRepairHashSet,LR_TOLGLPTNCRW)
 ,    m_xpToLglPtnNst(this,RF_REPAIR_DELETE,   ToLglPtnNst::vRepair,       LR_TOLGLPTNNST)
@@ -598,6 +595,15 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
                            i8 nQueueLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  UNUSED(i_EnumGroup);
+  UNUSED(i_Enum);
+  UNUSED(iItem);
+  UNUSED(nNanoSecs);
+  UNUSED(iAction);
+  UNUSED(i_ActEnumGroup);
+  UNUSED(i_ActEnum);
+  UNUSED(nQueueLength);
+
 
 //  if (!m_pRluDiary)
 //    m_pRluDiary = new RluDiary;
@@ -649,7 +655,7 @@ void LogicUnit::vEnter(void)
   
   if ( AM::bRLUDiary() ) {
     m_oSince.vUpdate();
-    i8 nNanoSeconds = m_oSince.iNanoseconds();
+//    i8 nNanoSeconds = m_oSince.iNanoseconds();
   
   //  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
   //         m_xRluCommon.m_iSql,
@@ -676,7 +682,7 @@ void LogicUnit::vExit(void)
   
   if ( AM::bRLUDiary() ) {
     m_oSince.vUpdate();
-    i8 nNanoSeconds = m_oSince.iNanoseconds();
+//    i8 nNanoSeconds = m_oSince.iNanoseconds();
     
   //  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
   //         m_xRluCommon.m_iSql,

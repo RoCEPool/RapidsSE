@@ -5,12 +5,13 @@
 #include "Card_CostNetwork.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_TableSize.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"
 
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -25,7 +26,7 @@ __vDeleteFunction(Card_CostNetwork, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CostNetwork::Card_CostNetwork(void)
-: Card(CK_COSTNETWORK)
+: Card_symbol(CK_COSTNETWORK, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -45,6 +46,19 @@ Card_CostNetwork::~Card_CostNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_CostNetwork::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

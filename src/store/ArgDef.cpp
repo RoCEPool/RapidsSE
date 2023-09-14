@@ -48,6 +48,7 @@ ArgDef::~ArgDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
 
+  vDeleteAll();
 }
 
 

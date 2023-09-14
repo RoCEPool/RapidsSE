@@ -9,7 +9,7 @@ __o_schemaCreate
 trackMemory;
 
 /optimise
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_o_s15"

@@ -91,11 +91,11 @@ void TypeValueArea::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void TypeValueArea::vStz(Stz* szStz)
+void TypeValueArea::vStz(Stz* szStz, i8 iAllottedSize)
 {
   vType(CN_STZVAL);
   
-  i8 nBytesFollowing = StrLib::nCopy(m_caStringArea,szStz->azChar()) + 1;
+  i8 nBytesFollowing = StrLib::nCopy(m_caStringArea, iAllottedSize, szStz->azChar()) + 1;
   
   m_wxValue = nBytesFollowing;
 }
@@ -257,19 +257,19 @@ void TypeValueArea::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void TypeValueArea::vToStz(Stz* szDst)
+void TypeValueArea::vToStr(String* psDst)
 {
   if (CN_BOLVAL == eType())
-    * szDst = iBol();
+    StrLib::vToString(psDst->azStr(), psDst->nAreaBytes(), iBol());
   else
   if (CN_INTVAL == eType())
-    * szDst = iInt();
+    StrLib::vToString(psDst->azStr(), psDst->nAreaBytes(), iInt());
   else
   if (CN_STZVAL == eType())
-    StrLib::vCopy(szDst->azChar(),m_caStringArea);
+    psDst->vCopy((Stz*) m_caStringArea);
   else
   if (CN_PTRVAL == eType())
-    * szDst = reinterpret_cast<void*>(pObj());
+    StrLib::vToPointer(psDst->azStr(), psDst->nAreaBytes(), pObj());
   else
     NEVER_REACH;
 

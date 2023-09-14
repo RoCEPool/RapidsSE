@@ -51,10 +51,10 @@ begin
     scan rapidsse public customer
     | stageMarker1033 broadcast
   stage stageMarker1033 on all partitions :
-    indexJoin 1 orders IxO_CUSTKEY "BOUND $I1 $L2 =="
+    indexJoin 1 orders IxO_CUSTKEY "BOUND $I1 $2 =="
     | stageMarker1036 broadcast
   stage stageMarker1036 on all partitions :
-    indexjoin 1 lineitem IxL_ORDERKEY "BOUND $I1 $L17 =="
+    indexjoin 1 lineitem IxL_ORDERKEY "BOUND $I1 $17 =="
     | stageMarker1039
   stage stageMarker1039 on all partitions :
     filter 1 " type BOOLEAN  $7 'BUILDING'  ==  $1 $10 ==  and  $18 $9 ==  and  $13 DATE '1995-03-15'  <  and  $28 DATE '1995-03-15'  >  and  "

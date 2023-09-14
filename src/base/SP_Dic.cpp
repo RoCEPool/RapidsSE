@@ -44,6 +44,8 @@ Stz* SP_Dic::sz(Dic* pDic)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
     
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
+                  nullptr,
                   "%s (%s)"_Stz,
                   pDic->szDicNm(),
                   pDic->szDicKind());

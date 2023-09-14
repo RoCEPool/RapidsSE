@@ -22,7 +22,7 @@ __vDeleteFunction(Card_IdxColList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IdxColList::Card_IdxColList(void)
-    : Card(CK_IDXCOLLIST)
+    : Card_symbol(CK_IDXCOLLIST, 5)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -46,7 +46,7 @@ Card_IdxColList::~Card_IdxColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
+void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -55,11 +55,11 @@ void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
 
     pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->G.p_expr = pCI->G.p_projection->pFindExpr(pCI->G.p_idxCol->pSymbol());
+     pCI->G.p_expr = pCI->G.p_projection->pFind_expr_Of_symbol(pCI->G.p_idxCol->pSymbol());
     if (!pCI->G.p_expr)
       continue;
 
-    pCI->G.p_key->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr,true);
+     pCI->G.p_streamKey->vAdd_key_expr_BasedOn_expr(pCI->G.p_expr,true);
   }
   //pCI->G.p_key->vDump();
 }
@@ -72,18 +72,22 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_ProjectionColNo = C_UNKNOWN;
+  Kid xKid(this);
+  while (xKid.bEach(CK_IDXCOL)) {
+    Stz* szColNm = xKid.p_idxCol()->szSymbol(SF_NONE);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_IDXCOL)) {
-    Stz* szColNm = xCI.G.p_idxCol->szSymbol();
+    Kid xCI_p(p_projection);
+    xCI_p.vEnded();
+    xCI_p.vBeginEach_reverse();
+    while (xCI_p.bEach_reverse(CK_EXPR)) {
+      if (xCI_p.p_expr()->pSub_as()->pSymbol()->bSame(szColNm)) {
+        Stz* szPrjCol = xCI_p.p_expr()->pGetTerm(0)->szSymbol(SF_NONE);
 
-    CardIter xCI_p(p_projection);
-    while (xCI_p.G_bEachMain_reverse(CK_EXPR)) {
-      if (xCI_p.G.p_expr->pSub_as()->bIsSymbol(szColNm)) {
-        Stz* szPrjCol = xCI_p.G.p_expr->pGetTerm(0)->szSymbol();
+        eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
+        RASSERT(SF_COL_TC == eSymbol);
 
-        xCI.G.p_idxCol->vSymbolMark1(szPrjCol, MARK_CHANGED);
+        xKid.p_idxCol()->SYM(SF_COL_TC,szPrjCol);
+        xKid.p_idxCol()->vMark1(MARK_CHANGED);
       }
     }
   }
@@ -104,6 +108,19 @@ Card_IdxCol* Card_IdxColList::pGetIdxCol_byIdxColOdn(Stz* szIdxColOdn)
   Card_IdxCol* pIdxCol = _pCard_IdxCol(pGetChild(i_IdxCol));
 
   return pIdxCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IdxColList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 

@@ -17,7 +17,7 @@ create index S_idx0  on Supplier (S_SUPPKEY  );
 
 /optimise
 /glean_cue_from = "vSeries_80_Index_Scan"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_STREAM_ORDER"
@@ -29,7 +29,7 @@ select count(*)
 
 /optimise
 /glean_cue_from = "vSeries_80_Index_Scan"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_STREAM_ORDER"

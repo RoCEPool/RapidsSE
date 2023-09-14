@@ -286,9 +286,9 @@ void Step::vTaskPreHibernate(void)
 {
   ENTRY();
 
-//  m_pAuxStack->vReset();
-//  m_pDataStack->vReset();
-//  m_pReturnStack->vReset();
+//  m_pAuxStack->vBeginEach_forward();
+//  m_pDataStack->vBeginEach_forward();
+//  m_pReturnStack->vBeginEach_forward();
 
   while (m_pLocalFrame) {
 

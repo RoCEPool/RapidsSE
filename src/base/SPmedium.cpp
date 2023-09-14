@@ -46,7 +46,7 @@ void SPmedium::vCatf(Stz* szFormat, ...)
   
   va_start(vaArgs,szFormat);
 
-  StrLib::vSprintCat(m_caResult,vaArgs,szFormat->azChar());
+  StrLib::vSprintCat(m_caResult,sizeof(m_caResult),vaArgs,szFormat->azChar());
   
   va_end(vaArgs);
 }
@@ -65,7 +65,7 @@ void SPmedium::vCatf(i8 iDepth, Stz* szFormat, ...)
   
   va_start(vaArgs,szFormat);
 
-  StrLib::vSprintCat(m_caResult,vaArgs,szFormat->azChar());
+  StrLib::vSprintCat(m_caResult,sizeof(m_caResult),vaArgs,szFormat->azChar());
   
   va_end(vaArgs);
 }
@@ -77,7 +77,7 @@ void SPmedium::vCats(Stz* szSubstring)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 
-  StrLib::vConcat(m_caResult,szSubstring->azChar());
+  StrLib::vConcat(m_caResult, sizeof(m_caResult), szSubstring->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ void SPmedium::vCats(i8 iDepth, Stz* szSubstring)
   if (iDepth)
     vCats(Stz::szTab(iDepth));
 
-  StrLib::vConcat(m_caResult,szSubstring->azChar());
+  StrLib::vConcat(m_caResult, sizeof(m_caResult), szSubstring->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +120,7 @@ void SPmedium::vResult(Stz* szResult)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 
-  StrLib::vCopy(m_caResult,szResult->azChar());
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), szResult->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

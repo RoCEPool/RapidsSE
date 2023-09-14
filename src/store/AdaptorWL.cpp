@@ -635,7 +635,7 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
       vCreateAndAddRow(&xRowList, pRow, pRowPix);
     }
 
-    ASSERT(xRowList.size() == iRowsToSend);
+    ASSERT((i8) xRowList.size() == iRowsToSend);
 
     RowDataResponse xRowDataResponse;
     xRowDataResponse.__set_rows(xRowList);
@@ -737,7 +737,7 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
       vCreateAndAddRow(&xRowList, pRow, pRowPix);
     }
 
-    ASSERT(xRowList.size() == iRowsToSend);
+    ASSERT((i8) xRowList.size() == iRowsToSend);
 
     RowDataResponse xRowDataResponse;
     xRowDataResponse.__set_rows(xRowList);
@@ -1305,7 +1305,8 @@ void AdaptorWL::processSessionChangeRequest()
   }
 
   // TODO: do something with the default catalog and schema
-
+  UNUSED(pcDefaultCatalog);
+  UNUSED(pcDefaultSchema);
 
   // Send a SessionChangeResponse.
   SessionChangeResponse oSsnResponse;
@@ -1637,6 +1638,7 @@ void AdaptorWL::vSendQueryReceipt()
   std::vector<StatementReceipt> xStatementReceipts;
 
   i8 nStatements = 0;
+  UNUSED(nStatements);
 
   WLP::StatementCtxIter* pIter = m_oQueryCtx.pStmtCtxIter();
 

@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_COND.hpp"
+#include "Card_CONDITION.hpp"
 
 namespace STORE
 {
   class CarryForward;
 
-  class Card_Having : public Card_COND
+  class Card_Having : public Card_CONDITION
   {
   public:
     void* operator new(size_t);

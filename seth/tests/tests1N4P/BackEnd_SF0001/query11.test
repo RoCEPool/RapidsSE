@@ -143,13 +143,13 @@ begin
 
   stage stageMarkerB on all partitions :
     indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY "
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY "
     | combined 0
     | next
 
   stage stageMarkerC on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
@@ -171,20 +171,20 @@ begin
 
   stage stageMarkerE on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "BOUND $I1"
-    | project " type INTEGER as PS_PARTKEY J1_PS_PARTKEY , type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY J1_PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT"
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT"
     | hash "type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarkerF on all partitions :
     indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT"
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerG on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
@@ -235,14 +235,14 @@ begin
 
   stage stageMarkerB on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | project " type INTEGER as S_SUPPKEY S_SUPPKEY"
     | combined 0
     | next broadcast
 
  stage stageMarkerC on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
@@ -263,20 +263,20 @@ begin
 
   stage stageMarkerE on all partitions :
     indexJoin supplier IxS_SUPPKEY "bound $I1"
-    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as S_SUPPKEY J1_S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT "
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as S_SUPPKEY S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT "
     | combined 0
     | next
 
   stage stageMarkerF on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | project " type INTEGER as S_SUPPKEY S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next broadcast
 
   stage stageMarkerG on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | gbyAgg " groupBy type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
@@ -328,13 +328,13 @@ begin
 
   stage S02 on all partitions :
     indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
-    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY"
     | combined 0
     | next broadcast
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
@@ -350,25 +350,25 @@ begin
 
   stage S06 on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1"
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
-    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
+    | project " type INTEGER as N_NATIONKEY N_NATIONKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S07 on all partitions :
     indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
-    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next broadcast
 
   stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | gbyAgg " groupBy    type INTEGER J1_PS_PARTKEY
+    | gbyAgg " groupBy    type INTEGER PS_PARTKEY
                aggregates
                           type INTEGER as PS_PARTKEY $K1 ,
-                          type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+                          type DECIMAL as VALUE ) PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
                           type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
@@ -424,14 +424,14 @@ begin
 
   stage S01 on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | project " type INTEGER as S_SUPPKEY S_SUPPKEY"
     | combined 0
     | next
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
@@ -452,15 +452,15 @@ begin
 
   stage S07 on all partitions :
     indexJoin supplier IxS_SUPPKEY "bound $I1"
-    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
-                type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY ,
+                type INTEGER as S_NATIONKEY S_NATIONKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S06 on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
     | project " type INTEGER as S_SUPPKEY S_SUPPKEY ,
                 type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
@@ -468,9 +468,9 @@ begin
 
   stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | gbyAgg " groupBy    type INTEGER J1_PS_PARTKEY
+    | gbyAgg " groupBy    type INTEGER PS_PARTKEY
                aggregates type INTEGER as PS_PARTKEY $K1 ,
-                          type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+                          type DECIMAL as VALUE )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
                           type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next

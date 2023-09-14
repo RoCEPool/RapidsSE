@@ -98,6 +98,7 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
        ) {
     bool bResult = pFile->bWriteBytes(pIter,C_1MB);
     ASSERT(bResult);
+    UNUSED(bResult);
     nBytesWritten += C_1MB;
     pIter = aAdd<void *>(pIter, C_1MB);
   }
@@ -128,6 +129,7 @@ void PersistenceHelper::vWriteHeap(Heap* pHeap, File* pFile)
   pHeap->vGrabWriteLock();
   bool bResult = pFile->bWriteBytes(pHeap,C_SIZE_POOL_BUFFER);
   ASSERT(bResult);
+  UNUSED(bResult);
   pHeap->vDropWriteLock();
 
 }
@@ -157,6 +159,7 @@ void PersistenceHelper::vWriteHeapBuffers(Heap* pHeap, File* pFile)
     if(mod == iPtnOfNode) {
       bool bResult = pFile->bWriteBytes(pHeapBuffer,C_SIZE_POOL_BUFFER);
       ASSERT(bResult);
+      UNUSED(bResult);
     }
   }
   

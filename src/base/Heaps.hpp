@@ -62,7 +62,7 @@ namespace BASE
     static void vSearchFree(void);
 
     Heap* pEachHeap(eHT& reLastHeap);
-    void vFindPtn0FilePath(Stz* szFilePath);
+    void vFindPtn0FilePath(String* psFilePath);
     Heap* pGetHeap(eHT eHeap);
     void vInit(void);
     void vReloadPHeaps(void);

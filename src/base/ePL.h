@@ -12,14 +12,7 @@ enum ePL // payload kind
   /* 4 */ PL_ENUMS
 };
 
-static Stz* aPL[]
-{
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "GBY"_Stz,
-  /* 2 */ "SRT"_Stz,
-  /* 3 */ "TOP"_Stz,
-  /* 4 */ "enums"_Stz,
-};
+extern Stz* aPL[PL_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

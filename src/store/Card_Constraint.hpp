@@ -3,12 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
-#include "Card_PRED.hpp"
+#include "Card_CONDITION.hpp"
 
 namespace STORE
 {
-  class Card_Constraint : public Card
+  class Card_Constraint : public Card_CONDITION
   {
   public:
     void* operator new(size_t);
@@ -21,9 +20,11 @@ namespace STORE
 
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
-    void vCullPred(char cWithMark);
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    i8 nCullPred(Stz* szWithMark);
     void vConvert_stmColOdn_To_stmColNm(CardIter* pCI);
+    void vDisambiguate(CardIter* pCI);
+
+    void vEnsureTypes_For_stmColOdn(CardIter *pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

@@ -7,21 +7,13 @@ enum eAD // adaptor identification
 {
   /* */ AD_NONE=0, // none
   
-  /* */ AD_RAPIDSSE
-  /* */ AD_WIRELINE
+  /* */ AD_RAPIDSSE,
+  /* */ AD_WIRELINE,
   
   /* */ AD_ENUMS
 };
 
-static Stz* aAD[]
-{
-  /* */ "AD_NONE"_Stz,
-  
-  /* */ "AD_RAPIDSSE"_Stz,
-  /* */ "AD_WIRELINE"_Stz,
-  
-  /* */ "AD_ENUMS"_Stz,
-};
+extern Stz* aAD[AD_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

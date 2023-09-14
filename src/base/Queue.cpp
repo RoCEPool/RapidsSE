@@ -74,7 +74,7 @@ Queue::~Queue(void) noexcept(false)
   if (m_nItems)
     vPostMortem();
   
-  //vReset();
+  //vBeginEach_forward();
 
   while (m_pTopBuffer)
     vDiscard();
@@ -288,6 +288,7 @@ void Queue::vVerify(void)
   }
   
   ASSERT(iCount == m_nItems);
+  UNUSED(iCount);
 }
 
 

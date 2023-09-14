@@ -322,6 +322,12 @@ namespace OBLIQUE
       static void vSignalHandler(i8 iSignal);
     };
 
+    class FILE
+    {
+    public:
+      static i8 iNextFileNo(void);
+    };
+
     class GRID
     {
     public:
@@ -492,6 +498,11 @@ namespace OBLIQUE
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
     };
 
+    class OPTIMISER
+    {
+    public:
+      static i8 iNextBenchNo(void);
+    };
     class PAGING
     {
     public:
@@ -596,7 +607,7 @@ namespace OBLIQUE
     class STR
     {
     public:
-      static void vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags);
+      static void vReplaceTags(String* psDst, Stz* szSrc, TagSet* pTags);
     };
 
     class SYSARGS
@@ -617,6 +628,7 @@ namespace OBLIQUE
       static i8   iOptimiserLvl(void);
       static void vOptimiserLvl(i8 iOptimiserLvl);
       static i8   nPtnsPerNode(void);
+      static void* aRegionAddr(void);
       static bool bSysMetrics(void);
       static void vSysMetrics(bool bJobMetrics);
       static TagSet* pTagSet(void);
@@ -776,7 +788,6 @@ namespace OBLIQUE
     static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
-    static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);

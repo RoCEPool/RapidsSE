@@ -50,7 +50,7 @@ HashMap::HashMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
 
   m_pHashMapSlot = new HashMapSlot();
-  HashMapEntry* test = m_pHashMapSlot->m_pEntry[0];
+  //HashMapEntry* test = m_pHashMapSlot->m_pEntry[0];
   m_uNoOfEntries        = 0;
 
 #ifdef WITH_HASHMAP_DEBUG
@@ -327,6 +327,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
   HashMapEntry* pEntry = new HashMapEntry(pKey, pValue);
   pEntry->m_pNext = pDummyEntry->m_pNext;
   pDummyEntry->m_pNext = pEntry;
+  m_uNoOfEntries++;
   m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
 
 //  vInsertEntryAtIndex(pTmpEntry, uIndex);

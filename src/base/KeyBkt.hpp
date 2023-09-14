@@ -12,6 +12,7 @@ class KeyBkt : public SEtype
   
   KeyBkt(void);
   KeyBkt(i8 iAsI8);
+  KeyBkt(const KeyBkt& oCopy);
 
   static KeyBkt tToKeyBkt(i8 iKeyHsh);
   

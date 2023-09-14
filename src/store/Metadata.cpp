@@ -372,14 +372,14 @@ void Metadata::vSearchColumns(InfoSet* pInfoSet,
   Row* pRow;
 
   StreamDef* pStreamDef = pTable->pStreamDef();
-  
+
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    
+
     if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
       continue;
-    
+
     pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
@@ -395,6 +395,7 @@ void Metadata::vSearchColumns(InfoSet* pInfoSet,
                                (i8)pColumn->bIsPtnKey(),
 
                                C_VARGS_END);
+    UNUSED(pRow);
   }
 }
 
@@ -432,6 +433,7 @@ void Metadata::vSearchIndexes(InfoSet* pInfoSet,
                                (i8) bIsUnique,
 
                                C_VARGS_END);
+    UNUSED(pRow);
   }
 }
 
@@ -474,6 +476,7 @@ void Metadata::vSearchIndexColumns(InfoSet* pInfoSet,
                                (i8)pColumn->bIsPtnKey(),
 
                                C_VARGS_END);
+    UNUSED(pRow);
   }
 }
 
@@ -565,6 +568,7 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
                                  (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
+      UNUSED(pRow);
     }
   }
   
@@ -633,6 +637,7 @@ InfoSet* Metadata::pIndexColumnDefs(Stz* szCatalogName,
                                  (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
+      UNUSED(pRow);
     }
 
   }
@@ -689,6 +694,7 @@ InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
                                  pColumn->szColNm(),
 
                                  C_VARGS_END);
+      UNUSED(pRow);
     }
   }
   

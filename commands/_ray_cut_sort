@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _ray_cut_sort                                                              */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+
+load customer "<tpch_dir>/customer.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index Ix_CUSTKEY on Customer(C_CUSTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/OT_SCAN_TO_INDEXSCAN
+/OT_CUT_SORT
+/pipelineName = "_ray_cut_sort"
+select *
+  from Customer
+  where C_CUSTKEY >= 1 and C_CUSTKEY <= 10
+ order by C_CUSTKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table customer;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -3,19 +3,20 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_TableNm : public Card
+  class Card_TableNm : public Card_symbol<Card_TableNm>
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_TableNm(void);
-    Card_TableNm(Stz* szTableNm);
    ~Card_TableNm(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_TableNm* _pCard_TableNm(void* aAddr);

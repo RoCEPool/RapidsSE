@@ -163,7 +163,7 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
     MagLib::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
     
     s32 sCountComma;
-    StrLib::vComma(sCountComma.azChar(), m_iGrandCount);
+    StrLib::vComma(sCountComma.azChar(), sCountComma.nAreaBytes(), m_iGrandCount);
     
     vTrace("%s %s "
            "cnt %s sum %lld min %lld max %lld "
@@ -212,7 +212,8 @@ void Peruse::vReset(void)
 void Peruse::vPrint(Stz* szFormat,...)
 {
   _precondition_(_MAGIC_,CN_PERUSE,_FOOTER_);
-  
+  UNUSED(szFormat);
+
   if (! m_iGrandCount) {
     //vTrace("cnt 0\n"_Stz);
     return;
@@ -236,7 +237,7 @@ void Peruse::vPrint(Stz* szFormat,...)
   MagLib::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
   
   s32 sCountComma;
-  StrLib::vComma(sCountComma.azChar(), m_iGrandCount);
+  StrLib::vComma(sCountComma.azChar(), sCountComma.nAreaBytes(), m_iGrandCount);
   
   
   vTrace("cnt %s sum %lld min %lld max %lld "

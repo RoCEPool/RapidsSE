@@ -186,7 +186,7 @@ function runConfigure() {
 
   if   [ "${IS_MACOS}" -eq 1 ]; then
     local arch=""
-    if [ "${ARCH_FLAG_FORCE:-}" != "-" ]; then
+    if [ -n "${ARCH_FLAG_FORCE}"  ]; then
       arch="-arch ${ARCH_FLAG_FORCE}"
       echo "Compiling thrift for x86_64 on Arm Mac"
     fi

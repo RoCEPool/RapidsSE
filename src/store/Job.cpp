@@ -1387,6 +1387,7 @@ void Job::vOutputDestroy(void)
 void Job::vOutputEnabled(bool bEnabled)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  UNUSED(bEnabled);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1709,7 +1710,7 @@ void Job::vPostRecv(void)
   /* 03 */ m_pMutex       = nullptr;
   /* 04 */ m_pOutput      = nullptr;
   /* 05 */ m_p_ResponseOp = nullptr;
-  /* 06 */ m_oResponseTimer.vStart();   // vReset
+  /* 06 */ m_oResponseTimer.vStart();   // vBeginEach_forward
   /* 07 */ m_pTask        = nullptr;
   /* 08 */ m_bWasReceived = true;
   /* 19 */ m_pMarkerChain = nullptr;
@@ -1731,7 +1732,7 @@ void Job::vPostRecv(void)
 
   /* 00 */ m_noActiveOps.vResetAtomic();
   /* 03 */ m_pMutex       = new Mutex(this);
-  /* 07 */ m_pTask        = m_pTask = new Task(szJobNm(),this);
+  /* 07 */ m_pTask        = new Task(szJobNm(),this);
   /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
   /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
 

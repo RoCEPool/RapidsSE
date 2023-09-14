@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_TableList : public Card
+  class Card_TableList : public Card_symbol<Card_TableList>
   {
   public:
     void* operator new(size_t);
@@ -27,6 +27,8 @@ namespace STORE
     Card_TableSize* pGetTableSize(char cTblSyn);
 
     Stz* szToTableNm(char cTblSyn);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_TableList* _pCard_TableList(void* aAddr);

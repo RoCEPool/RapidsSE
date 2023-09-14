@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "IndexDef.hpp"
 #include "CodeSynthCommon.h"
 #include "ClangDynamic.h"
@@ -36,10 +36,6 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
 __L_LABEL__:
-
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
 
   // Process row ?
   if (!aDynamicT->m_iProcessRow) {

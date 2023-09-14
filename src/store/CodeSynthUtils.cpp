@@ -20,12 +20,9 @@
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
 bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
-                                String* sCode, Column* pColumn, i8 iPayLoadIndex)
+                                String* sCode, Column* pColumn, i8 iIndexColumn)
 {
   _static_
-
-  i8 nFileSize = pFile->iSize();
-  i8 nStringSize = sCode->nArea();
 
   s4K sLine;
   s4K sReplacedLine;
@@ -33,7 +30,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
   bool bFoundStart = false;
 
   //if ( ! sLabel->bSame(""_Stz) )
-  //  StrLib::vSprintCat(sCode->szStz(), "\n%s:\n"_Stz, sLabel->azChar());
+  //  sCode->vCatSprint("\n%s:\n"_Stz, sLabel->azChar());
 
   sLine = ""_Stz;
 
@@ -73,20 +70,25 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         }
         else {
           // copy line into sCode
-          StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+          sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
         }
       }
     }
     else {
       if (bFoundStart) {
 
+        if (bGenerateExprStack(sLine, sCode, pOpSketch)) {
+          sLine = ""_Stz;
+          continue;
+        }
+
         vReplaceOperatorName(sLine, pOpSketch);
 
         if (pColumn)
           vReplaceColumnName(sLine, pColumn);
 
-        if (iPayLoadIndex != C_UNKNOWN)
-          vReplacePayloadIndex(sLine, iPayLoadIndex);
+        if (iIndexColumn != C_UNKNOWN)
+          vReplaceIndexColumn(sLine, iIndexColumn);
 
         vReplaceStructTo(sLine, pOpSketch);
         vReplaceStructFrom(sLine, pOpSketch);
@@ -99,9 +101,12 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceLabelNext(sLine, pOpSketch);
         vReplaceLabelLoop(sLine, pOpSketch);
         vReplaceLabelIndex(sLine, pOpSketch);
+				vReplaceLabelJoinNulls(sLine, pOpSketch);
 
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
+
+        vReplaceInsertEnt(sLine, pOpSketch);
 
         vReplaceTubPot(sLine, pOpSketch);
 
@@ -120,7 +125,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceIndexPosition(sLine, pOpSketch);
 
         // copy line into sCode
-        StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+        sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
       }
     }
     sLine = ""_Stz;
@@ -136,9 +141,6 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
 {
 
   _static_
-
-  i8 nFileSize = pFile->iSize();
-  i8 nStringSize = sCode->nArea();
 
   s4K sLine;
   bool bFoundFunc = false;
@@ -175,7 +177,7 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
         }
         else {
           // copy line into sCode
-          StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+          sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
         }
       }
     }
@@ -186,7 +188,7 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
         vReplaceReturnToLabel(sLine, sReturnToLabel);
 
         // copy line into sCode
-        StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
+        sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
       }
     }
   }
@@ -201,14 +203,66 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceColumnNo(Stz* sLine, Column* pColumn) {
+bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOpSketch)
+{
+  _static_
+
+  //s4K sCopy;
+  TypeValueArea* pTypedCell;
+
+  if (StrLib::bContains(sLine->azChar(), "__NULLSTACK__")) {
+    TypedStack* pTypedStack = pOpSketch->m_pNullStack;
+
+    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
+
+    while ( nExpr >= 0) {
+      pTypedCell = pTypedStack->aPeekItem(nExpr--);
+      Stz* sExpr = pTypedCell->szStz();
+      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
+    }
+    return true;
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__EXPRSTACK__")) {
+    TypedStack* pTypedStack = pOpSketch->m_pExprStack;
+
+    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
+
+    while ( nExpr >= 0) {
+      pTypedCell = pTypedStack->aPeekItem(nExpr--);
+      Stz* sExpr = pTypedCell->szStz();
+      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
+    }
+    return true;
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__CONSTRAINTSTACK__")) {
+    TypedStack* pTypedStack = pOpSketch->m_pConstraintStack;
+
+    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
+
+    while ( nExpr >= 0) {
+      pTypedCell = pTypedStack->aPeekItem(nExpr--);
+      Stz* sExpr = pTypedCell->szStz();
+      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
+    }
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceColumnNo(String* sLine, Column* pColumn) {
 
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__COLUMN_NO__")) {
+  if (StrLib::bContains(sLine->azStr(), "__COLUMN_NO__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pColumn->iColumnNo());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMN_NO__", sColumn.azChar());
+    sColumn.vSprint("%lld"_Stz, pColumn->iColumnNo());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_NO__", sColumn.azChar());
     RASSERT(bResult);
   }
 }
@@ -216,71 +270,73 @@ void CodeSynthUtils::vReplaceColumnNo(Stz* sLine, Column* pColumn) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
 
   _static_
 
   bool bResult;
 
-  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ROWPIX__")) {
+  if (StrLib::bContains(sLine->azStr(), "__EXTERN_ROWPIX__")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWPIX__", "vExtern_TubRowPix");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "vExtern_TubRowPix");
       RASSERT(bResult);
    }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWPIX__", "vExtern_PotRowPix");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWPIX__", "vExtern_PotRowPix");
       RASSERT(bResult);
     }
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ALLOTROW__()")) {
+  if (StrLib::bContains(sLine->azStr(), "__EXTERN_ALLOTROW__()")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__()",
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
                                  "aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode)");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__()",
-                                 "aExtern_PotAllotRow((void*)aDynamicT->m_pPot,iMixIn,&aDynamicT->m_xRowInfoPO.m_acStrArea,&aDynamicT->m_iErrorCode)");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ALLOTROW__()",
+                                 "aExtern_PotAllotRow((void*)aDynamicT->m_pPot,iKeyHash,&aDynamicT->m_xRowInfoPO.m_acStrArea,&aDynamicT->m_iErrorCode)");
 
       RASSERT(bResult);
     }
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ROWSTRSIZE")) {
+  if (StrLib::bContains(sLine->azStr(), "__EXTERN_ROWSTRSIZE")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWSTRSIZE__", "vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize)");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWSTRSIZE__",
+                                 "vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize)");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWSTRSIZE__", "vExtern_PotRowStrSize(aDynamicT->m_pPot,iMixIn, nSrcSize)");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWSTRSIZE__",
+                                 "vExtern_PotRowStrSize(aDynamicT->m_pPot,iKeyHash, nSrcSize)");
       RASSERT(bResult);
     }
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__TUB_POT__")) {
+  if (StrLib::bContains(sLine->azStr(), "__TUB_POT__")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azChar(), "__TUB_POT__", "aDynamicT->m_pTub");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__TUB_POT__", "aDynamicT->m_pTub");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azChar(), "__TUB_POT__", "aDynamicT->m_pPot");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__TUB_POT__", "aDynamicT->m_pPot");
       RASSERT(bResult);
     }
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__POT__")) {
+  if (StrLib::bContains(sLine->azStr(), "__POT__")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "0");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__POT__", "false");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "1");
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__POT__", "true");
       RASSERT(bResult);
     }
   }
@@ -290,60 +346,92 @@ void CodeSynthUtils::vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
+void CodeSynthUtils::vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch) {
+
+  _static_
+
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azStr(), "__EXTERN_INSERTENT__")) {
+    if (pOpSketch->m_eSketchKind == SK_GBYAGG ||
+        pOpSketch->m_eSketchKind == SK_SORT) {
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_INSERTENT__()",
+         "aExtern_IndexTreeInsertEnt(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);");
+      RASSERT(bResult);
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_TOP);
+
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_INSERTENT__()",
+        "aExtern_IndexTreeInsertEntTop(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, "
+           "&aDynamicT->m_xIndexInfoPL.m_aEntBottom, __TOP_COUNT__, &aDynamicT->m_iErrorCode)");
+      RASSERT(bResult);
+
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__TOP_COUNT__",pOpSketch->m_sLimitExpr.azChar());
+      RASSERT(bResult);
+    }
+
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceColumnName(String* sLine, Column* pColumn) {
 
   _static_
 
   bool bResult;
   s256 sColNm;
   sColNm = pColumn->szColNm();
-  StrLib::vToUpper((char *) sColNm.azChar());
+  StrLib::vToUpper(sColNm.azChar(), sColNm.nAreaBytes());
 
-  if (StrLib::bContains(sLine->azChar(), "__UNION_TYPE__")) {
+  if (StrLib::bContains(sLine->azStr(), "__UNION_TYPE__")) {
     switch(pColumn->eColumnType()) {
       case CT_BOOLEAN:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Bol_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Bol_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_DATE:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Dte_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Dte_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_DECIMAL:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Bcd_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Bcd_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_FLOAT:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Flt_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Flt_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_INTEGER:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Int_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Int_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_INTERVAL_DT:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Ivl_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Ivl_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_INTERVAL_YM:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Ivl_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Ivl_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_TIME:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Tme_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Tme_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_TIMESTAMP:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Tsp_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Tsp_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_UNKNOWN:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Unk_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Unk_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       case CT_CHAR:
       case CT_VARCHAR:
-        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Vch_T __COLUMN_TO__");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__UNION_TYPE__", "  union Vch_T __COLUMN_TO__");
         RASSERT(bResult);
         break;
       default:
@@ -353,13 +441,13 @@ void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__COLUMN_TO__")) {
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMN_TO__", sColNm.azChar());
+  if (StrLib::bContains(sLine->azStr(), "__COLUMN_TO__")) {
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_TO__", sColNm.azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__COLUMN_FROM__")) {
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMN_FROM__", sColNm.azChar());
+  if (StrLib::bContains(sLine->azStr(), "__COLUMN_FROM__")) {
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_FROM__", sColNm.azChar());
     RASSERT(bResult);
   }
 }
@@ -367,19 +455,21 @@ void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceIndexPosition(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceIndexPosition(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
   bool bResult;
 
-  if (StrLib::bContains(sLine->azChar(), "__INDEX_POSITION_LOWER__")) {
+  if (StrLib::bContains(sLine->azStr(), "__INDEX_POSITION_LOWER__")) {
     switch(pOpSketch->m_eLowerIP) {
       case IP_GT:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGT");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                   "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGT");
         break;
       case IP_GE:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGE");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                   "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGE");
         break;
       default:
         RASSERT(0);
@@ -388,14 +478,16 @@ void CodeSynthUtils::vReplaceIndexPosition(Stz* sLine, OpSketch* pOpSketch)
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__INDEX_POSITION_UPPER__")) {
+  if (StrLib::bContains(sLine->azStr(), "__INDEX_POSITION_UPPER__")) {
     switch(pOpSketch->m_eUpperIP) {
       case IP_LT:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLT");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                   "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLT");
         RASSERT(bResult);
         break;
       case IP_LE:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLE");
+        bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                   "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLE");
         RASSERT(bResult);
         break;
       default:
@@ -408,32 +500,38 @@ void CodeSynthUtils::vReplaceIndexPosition(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch* pOpSketch)
+bool CodeSynthUtils::bReplaceIndexInfo(String* sLine, String* sReplacedLine, OpSketch* pOpSketch)
 {
   _static_
 
   bool bResult;
+  UNUSED(bResult);
 
-  if (StrLib::bContains(sLine->azChar(), "__TABLENAME__")) {
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__TABLENAME__", pOpSketch->m_pTable->szTableNm()->azChar());
+  if (StrLib::bContains(sLine->azStr(), "__TABLENAME__")) {
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__TABLENAME__", pOpSketch->m_pTable->szTableNm()->azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__INDEXNAME__")) {
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEXNAME__", pOpSketch->m_pIndex->szIndexNm()->azChar());
+  if (StrLib::bContains(sLine->azStr(), "__INDEXNAME__")) {
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__INDEXNAME__", pOpSketch->m_pIndex->szIndexNm()->azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__INDEX_INFO__")) {
+  if (StrLib::bContains(sLine->azStr(), "__INDEX_INFO__")) {
     switch(pOpSketch->m_eIndexInfo) {
       case II_ST:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoT");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoT");
         break;
       case II_JJ:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoJ");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoJ");
         break;
       case II_PL:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoPL");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoPL");
         break;
       default:
         RASSERT(0);
@@ -447,14 +545,15 @@ bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch*
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceKeyKind(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__KEY_KIND__")) {
+  if (StrLib::bContains(sLine->azStr(), "__KEY_KIND__")) {
     s256 sKey;
-    StrLib::wToString((i8) pOpSketch->m_pIndexDef->eKeyKind(), sKey.azChar());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__KEY_KIND__", sKey.azChar());
+    StrLib::vToString(sKey.azChar(), sKey.nAreaBytes(), (i8) pOpSketch->m_pIndexDef->eKeyKind());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__KEY_KIND__", sKey.azChar());
     RASSERT(bResult);
   }
 }
@@ -462,38 +561,43 @@ void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceNumColumns(String* sLine, OpSketch* pOpSketch) {
 
   _static_
 
   bool bResult;
 
-  if (StrLib::bContains(sLine->azChar(), "__LIMIT_ROWS__")) {
+  if (StrLib::bContains(sLine->azStr(), "__LIMIT_ROWS__")) {
     if (pOpSketch->m_eSketchKind == SK_LIMIT)
-      bResult = StrLib::bReplace(sLine->azChar(), "__LIMIT_ROWS__", pOpSketch->m_sExprString.azChar());
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                 "__LIMIT_ROWS__", pOpSketch->m_sExprString.azChar());
     else
-      bResult = StrLib::bReplace(sLine->azChar(), "__LIMIT_ROWS__", pOpSketch->m_sLimitExpr.azChar());
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                 "__LIMIT_ROWS__", pOpSketch->m_sLimitExpr.azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_IN__")) {
+  if (StrLib::bContains(sLine->azStr(), "__COLUMNS_IN__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
-    bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_IN__", sColumn.azChar());
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                               "__COLUMNS_IN__", sColumn.azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_OUT__")) {
+  if (StrLib::bContains(sLine->azStr(), "__COLUMNS_OUT__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefOut->nColumns());
-    bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_OUT__", sColumn.azChar());
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefOut->nColumns());
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                               "__COLUMNS_OUT__", sColumn.azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__INDEX_COLUMNS__")) {
+  if (StrLib::bContains(sLine->azStr(), "__INDEX_COLUMNS__")) {
     s256 sColumn;
-    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pIndexDef->nColumns());
-    bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_COLUMNS__", sColumn.azChar());
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pIndexDef->nColumns());
+    bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                               "__INDEX_COLUMNS__", sColumn.azChar());
     RASSERT(bResult);
   }
 }
@@ -501,14 +605,15 @@ void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplacePayloadIndex(Stz* sLine, i8 iPayLoadIndex)
+void CodeSynthUtils::vReplaceIndexColumn(String* sLine, i8 iIndexColumn)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__PAYLOAD_INDEX__")) {
-    s256 sPayLoadIndex;
-    StrLib::vSprint(sPayLoadIndex,"%lld"_Stz,iPayLoadIndex);
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__PAYLOAD_INDEX__", sPayLoadIndex.azChar());
+  if (StrLib::bContains(sLine->azStr(), "__INDEX_COLUMN__")) {
+    s256 sIndexColumn;
+    sIndexColumn.vSprint("%lld"_Stz,iIndexColumn);
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__INDEX_COLUMN__", sIndexColumn.azChar());
     RASSERT(bResult);
   }
 
@@ -517,15 +622,16 @@ void CodeSynthUtils::vReplacePayloadIndex(Stz* sLine, i8 iPayLoadIndex)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplacePayloadBytes(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__PAYLOADBYTES__")) {
+  if (StrLib::bContains(sLine->azStr(), "__PAYLOADBYTES__")) {
     //RASSERT( pOpSketch->m_nPayloadBytes );
     s256 sPayLoadBytes;
-    StrLib::wToString(pOpSketch->m_nPayloadBytes, sPayLoadBytes.azChar());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__PAYLOADBYTES__", sPayLoadBytes.azChar());
+    StrLib::vToString(sPayLoadBytes.azChar(), sPayLoadBytes.nAreaBytes(), pOpSketch->m_nPayloadBytes);
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__PAYLOADBYTES__", sPayLoadBytes.azChar());
     RASSERT(bResult);
   }
 }
@@ -533,13 +639,14 @@ void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceReturnToLabel(Stz* sLine, Stz* sReturnToLabel)
+void CodeSynthUtils::vReplaceReturnToLabel(String* sLine, Stz* sReturnToLabel)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__L_RETURN_TO_LABEL__")) {
+  if (StrLib::bContains(sLine->azStr(), "__L_RETURN_TO_LABEL__")) {
     RASSERT(!sReturnToLabel->bSame(""_Stz));
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_RETURN_TO_LABEL__", sReturnToLabel->azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_RETURN_TO_LABEL__", sReturnToLabel->azChar());
     RASSERT(bResult);
   }
 }
@@ -547,19 +654,21 @@ void CodeSynthUtils::vReplaceReturnToLabel(Stz* sLine, Stz* sReturnToLabel)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceStructTo(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceStructTo(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "p__STRUCT_TO__")) {
+  if (StrLib::bContains(sLine->azStr(), "p__STRUCT_TO__")) {
     RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__STRUCT_TO__")) {
+  if (StrLib::bContains(sLine->azStr(), "__STRUCT_TO__")) {
     RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
     RASSERT(bResult);
   }
 }
@@ -567,19 +676,21 @@ void CodeSynthUtils::vReplaceStructTo(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceStructFrom(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceStructFrom(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "p__STRUCT_FROM__")) {
+  if (StrLib::bContains(sLine->azStr(), "p__STRUCT_FROM__")) {
     RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__STRUCT_FROM__")) {
+  if (StrLib::bContains(sLine->azStr(), "__STRUCT_FROM__")) {
     RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
     RASSERT(bResult);
   }
 
@@ -588,13 +699,14 @@ void CodeSynthUtils::vReplaceStructFrom(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLabel(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceLabel(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__L_LABEL__")) {
+  if (StrLib::bContains(sLine->azStr(), "__L_LABEL__")) {
     RASSERT( ! pOpSketch->m_sLabel.bSame(""_Stz) );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL__", pOpSketch->m_sLabel.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_LABEL__", pOpSketch->m_sLabel.azChar());
     RASSERT(bResult);
   }
 }
@@ -602,23 +714,25 @@ void CodeSynthUtils::vReplaceLabel(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLabelIndex(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceLabelIndex(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
   s256 sLabel;
 
-  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_INDEX_DEREF__")) {
+  if (StrLib::bContains(sLine->azStr(), "__L_LABEL_INDEX_DEREF__")) {
     sLabel.vSprint("L_IndexDeref_%d"_Stz, pOpSketch->m_iOperatorNo);
     RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_INDEX_DEREF__", sLabel.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_LABEL_INDEX_DEREF__", sLabel.azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_INDEX_RETURN__")) {
+  if (StrLib::bContains(sLine->azStr(), "__L_LABEL_INDEX_RETURN__")) {
     sLabel.vSprint("L_IndexReturn_%d"_Stz, pOpSketch->m_iOperatorNo);
     RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_INDEX_RETURN__", sLabel.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_LABEL_INDEX_RETURN__", sLabel.azChar());
     RASSERT(bResult);
   }
 
@@ -627,13 +741,14 @@ void CodeSynthUtils::vReplaceLabelIndex(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLabelNext(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceLabelNext(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_NEXT__")) {
+  if (StrLib::bContains(sLine->azStr(), "__L_LABEL_NEXT__")) {
     RASSERT( ! pOpSketch->m_sLabelNext.bSame(""_Stz) );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_NEXT__", pOpSketch->m_sLabelNext.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_LABEL_NEXT__", pOpSketch->m_sLabelNext.azChar());
     RASSERT(bResult);
   }
 }
@@ -641,19 +756,38 @@ void CodeSynthUtils::vReplaceLabelNext(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceLabelJoinNulls(String* sLine, OpSketch* pOpSketch)
+{
+	_static_
+
+	s256 sLabel;
+
+	if (StrLib::bContains(sLine->azStr(), "__L_LABEL_JOIN_NULLS__")) {
+		sLabel.vSprint("L_JoinNulls_%d"_Stz, pOpSketch->m_iOperatorNo);
+		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_LABEL_JOIN_NULLS__", sLabel.azChar());
+		RASSERT(bResult);
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceLabelLoop(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_LOOP__")) {
+  if (StrLib::bContains(sLine->azStr(), "__L_LABEL_LOOP__")) {
     //RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_LOOP__", pOpSketch->m_sLabelLoop.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_LABEL_LOOP__", pOpSketch->m_sLabelLoop.azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_OUTER_LOOP__")) {
+  if (StrLib::bContains(sLine->azStr(), "__L_LABEL_OUTER_LOOP__")) {
     RASSERT( ! pOpSketch->m_sLabelOuterLoop.bSame(""_Stz) );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_OUTER_LOOP__", pOpSketch->m_sLabelOuterLoop.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__L_LABEL_OUTER_LOOP__", pOpSketch->m_sLabelOuterLoop.azChar());
     RASSERT(bResult);
   }
 }
@@ -661,26 +795,27 @@ void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceColumnsInflated(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceColumnsInflated(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_INFLATED__")) {
+  if (StrLib::bContains(sLine->azStr(), "__COLUMNS_INFLATED__")) {
 
     s256 sColumnsInflated;
     if (pOpSketch->m_eSketchKind == SK_INDEXJOIN) {
       RASSERT( pOpSketch->m_pStreamDefLft );
-      StrLib::vSprint(sColumnsInflated,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+      sColumnsInflated.vSprint("%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
     }
     else if (pOpSketch->m_eSketchKind == SK_SEMIJOIN ||
              pOpSketch->m_eSketchKind == SK_ANTIJOIN) {
-      StrLib::vSprint(sColumnsInflated,"%lld"_Stz,0);
+      sColumnsInflated.vSprint("%lld"_Stz,0);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
-      StrLib::vSprint(sColumnsInflated,"0"_Stz);
+      sColumnsInflated.vSprint("0"_Stz);
     }
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_INFLATED__", sColumnsInflated.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__COLUMNS_INFLATED__", sColumnsInflated.azChar());
     RASSERT(bResult);
   }
 }
@@ -688,25 +823,26 @@ void CodeSynthUtils::vReplaceColumnsInflated(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceColumnsToInflate(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceColumnsToInflate(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_TO_INFLATE_")) {
+  if (StrLib::bContains(sLine->azStr(), "__COLUMNS_TO_INFLATE_")) {
 
     s256 sColumnsToInflate;
     if ( pOpSketch->m_eSketchKind == SK_INDEXJOIN ||
          pOpSketch->m_eSketchKind == SK_SEMIJOIN  ||
          pOpSketch->m_eSketchKind == SK_ANTIJOIN ) {
       RASSERT(pOpSketch->m_pStreamDefRht);
-      StrLib::vSprint(sColumnsToInflate, "%lld"_Stz, pOpSketch->m_pStreamDefRht->nColumns());
+      sColumnsToInflate.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefRht->nColumns());
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
-      StrLib::vSprint(sColumnsToInflate,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+      sColumnsToInflate.vSprint("%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
     }
 
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_TO_INFLATE_", sColumnsToInflate.azChar());
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__COLUMNS_TO_INFLATE_", sColumnsToInflate.azChar());
     RASSERT(bResult);
   }
 }
@@ -714,12 +850,13 @@ void CodeSynthUtils::vReplaceColumnsToInflate(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceOperatorName(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceOperatorName(String* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__OPERATOR_NAME__")) {
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__OPERATOR_NAME__", (char*)aSK[pOpSketch->m_eSketchKind]);
+  if (StrLib::bContains(sLine->azStr(), "__OPERATOR_NAME__")) {
+    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+                                    "__OPERATOR_NAME__", (char*)aSK[pOpSketch->m_eSketchKind]);
     RASSERT(bResult);
   }
 }
@@ -727,45 +864,53 @@ void CodeSynthUtils::vReplaceOperatorName(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bReplaceRowInfoFrom(Stz* sLine, Stz* sReplacedLine, OpSketch* pOpSketch)
+bool CodeSynthUtils::bReplaceRowInfoFrom(String* sLine, String* sReplacedLine, OpSketch* pOpSketch)
 {
   _static_
 
   bool bResult;
 
-  if (StrLib::bContains(sLine->azChar(), "__ROW_INFO_FROM__")) {
+  if (StrLib::bContains(sLine->azStr(), "__ROW_INFO_FROM__")) {
     RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
     switch(pOpSketch->m_eStencilFrom) {
       case SR_AT:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoAT");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoAT");
         RASSERT(bResult);
         break;
       case SR_IJ:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoIJ");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoIJ");
         RASSERT(bResult);
         break;
       case SR_IT:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoIT");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoIT");
         RASSERT(bResult);
         break;
       case SR_PL:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoPL");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoPL");
         RASSERT(bResult);
         break;
       case SR_PO:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoPO");
         RASSERT(bResult);
         break;
       case SR_PT:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoPT");
         RASSERT(bResult);
         break;
       case SR_TO:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
         RASSERT(bResult);
         break;
       case SR_TJ:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTJ");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTJ");
         RASSERT(bResult);
         break;
       default:
@@ -780,45 +925,53 @@ bool CodeSynthUtils::bReplaceRowInfoFrom(Stz* sLine, Stz* sReplacedLine, OpSketc
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bReplaceRowInfoTo(Stz* sLine, Stz* sReplacedLine, OpSketch* pOpSketch)
+bool CodeSynthUtils::bReplaceRowInfoTo(String* sLine, String* sReplacedLine, OpSketch* pOpSketch)
 {
   _static_
 
   bool bResult;
 
-  if (StrLib::bContains(sLine->azChar(), "__ROW_INFO_TO__")) {
+  if (StrLib::bContains(sLine->azStr(), "__ROW_INFO_TO__")) {
     RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
     switch(pOpSketch->m_eStencilTo) {
       case SR_AT:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoAT");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoAT");
         RASSERT(bResult);
         break;
       case SR_IJ:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoIJ");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoIJ");
         RASSERT(bResult);
         break;
       case SR_IT:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoIT");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoIT");
         RASSERT(bResult);
         break;
       case SR_PL:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoPL");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoPL");
         RASSERT(bResult);
         break;
       case SR_PO:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoPO");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoPO");
         RASSERT(bResult);
         break;
       case SR_PT:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoPT");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoPT");
         RASSERT(bResult);
         break;
       case SR_TO:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTO");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTO");
         RASSERT(bResult);
         break;
       case SR_TJ:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTJ");
+        bResult = StrLib::bReplace(sReplacedLine->azStr(), sReplacedLine->nAreaBytes(),
+                                   sLine->azStr(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTJ");
         RASSERT(bResult);
         break;
       default:

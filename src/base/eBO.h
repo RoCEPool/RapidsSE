@@ -19,21 +19,7 @@ enum eBO // boot options
   /*    */ BO_ENUMS,
 };
 
-static Stz* aBO[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "ADD_NODE"_Stz,
-  /*    */ "PROMPT"_Stz,
-  /*    */ "SETH_PROMPT"_Stz,
-  /*    */ "START"_Stz,
-  /*    */ "START_PROMPT"_Stz,
-  /*    */ "STATUS"_Stz,
-  /*    */ "STOP"_Stz,
-  /*    */ "UNLINK"_Stz,
-  
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aBO[BO_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

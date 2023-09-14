@@ -531,7 +531,7 @@ Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzAllot_begin(void)
   ASSERT(bStructurallyValid());
 
   Stz* szStz = (Stz*)ayLatterHead() + 1;
-  
+
   return szStz;
 }
 
@@ -555,9 +555,11 @@ Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzDeposit(Stz* szValue)
   ASSERT(bStructurallyValid());
 
   i8 nSize = szValue->nSize();
-  
+  i8 nBufSize = AREA - nUsedBytes();
+  ASSERT(nSize <= nBufSize);
+
   Stz* szAllottedStz = szStzAllot_begin();
-  szAllottedStz->vCopy(szValue);
+  StrLib::vCopy(szAllottedStz->azChar(), nBufSize, szValue->azChar());
   vStzAllot_end(nSize);
   
   // !! !! !! !! !! !! !! !! !!

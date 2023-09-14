@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* Card_RowSize.cpp -- Size (of table)                                           */
+/* Card_RowSize.cpp -- Size (of row)                                          */
 /*============================================================================*/
 
 #include "Card_RowSize.hpp"
 
 #include "Table.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -19,7 +20,7 @@ __vDeleteFunction(Card_RowSize,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RowSize::Card_RowSize(void)
-: Card(CK_ROWSIZE)
+: Card_symbol(CK_ROWSIZE, 4)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -39,6 +40,20 @@ Card_RowSize::~Card_RowSize(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RowSize::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

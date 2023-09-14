@@ -61,7 +61,8 @@ namespace STORE
     void    vDump(i8 i_Tab=0);
 
     Column* pFindColumn(Stz* sColumnNm);
-  
+    Column* pFindColumn_stripItemise(Stz* sColumnNm);
+
     Column* pGetColumn(i8 i_Col);
     Column* pGetOrder(i8 i_Order);
   
@@ -88,7 +89,7 @@ namespace STORE
     i8      jTableSize(void);
     void    vToColPix(RowPix* pRowPix, bool bAddKeyHash);
     void    vToRowPix(RowPix* pRowPix, bool bAddKeyHash);
-    void    vToMetadata(Stz* sMetaData);
+    void    vToMetadata(String* psMetadata);
 
     bool    bUnique(void);
     void    vUnique(bool bUnique);

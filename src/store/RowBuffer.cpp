@@ -238,7 +238,7 @@ Row* RowBuffer::pAllotCopyRow(RowSingle* pRowSingle)
       // STRING_DEPOSIT
       // allocate a string from the tail
       Stz* acDstString = aAllotHead(nSrcLength);
-      i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
+      i8 nCopyBytes = StrLib::nCopy((char*)acDstString, nSrcLength, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
       UNUSED(nCopyBytes);
       // set offset of tail string
@@ -326,13 +326,14 @@ Row* RowBuffer::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
     if (DM_VCH == pCol->eDatum()) {
       Stz* szVal = va_arg(xVarArgs,Stz*);
       if (szVal) {
-        szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+        i8 iAllotSize = StrLib::nSize(szVal->azChar());
+        szDst = (Stz*)aAllotHead(iAllotSize);
         
         // return early if no more space for the string
         if ( ! szDst )
           return nullptr;
         
-        StrLib::vCopy((char*)szDst, szVal->azChar());
+        StrLib::vCopy((char*)szDst, iAllotSize, szVal->azChar());
 
         pRow->vColVal_ofs(i_Col,szDst);
       }
@@ -382,13 +383,14 @@ Row* RowBuffer::pAllotRow(Row* pRow)
     if (DM_VCH == xColPix.m_uDatum) {
       Stz* szVal = pRow->szColVal_ofs(i_Col);
       if (szVal) {
-        szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+        i8 iAllotSize = StrLib::nSize(szVal->azChar());
+        szDst = (Stz*)aAllotHead(iAllotSize);
 
         // return early if no more space for the string
         if ( ! szDst )
           return nullptr;
 
-        StrLib::vCopy((char*)szDst, szVal->azChar());
+        StrLib::vCopy((char*)szDst, iAllotSize, szVal->azChar());
 
         pNewRow->vColVal_ofs(i_Col,szDst);
       }
@@ -463,13 +465,14 @@ bool RowBuffer::bDepositColumns(Row* pRow, va_list xVarArgs)
     if (DM_VCH == pColPix->m_uDatum) {
       Stz* szVal = va_arg(xVarArgs,Stz*);
       if (szVal) {
-        Stz* szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+        i8 iAllotSize = StrLib::nSize(szVal->azChar());
+        Stz* szDst = (Stz*)aAllotHead(iAllotSize);
 
         // return early if no more space for the string
         if ( ! szDst )
           return false;
 
-        StrLib::vCopy((char*)szDst, szVal->azChar());
+        StrLib::vCopy((char*)szDst, StrLib::nSize(szVal->azChar()), szVal->azChar());
 
         pRow->vColVal_ofs(i_Col,szDst);
       }
@@ -645,7 +648,7 @@ void RowBuffer::vToCsv(Tub* pTub)
     }
 
     szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
-    StrLib::vCopyLen(szRecord->azChar(),szRow->azChar(),nSize - 1);
+    StrLib::vCopy(szRecord->azChar(), nSize, szRow->azChar());
     
     //vTrace("At %lld : %s\n"_Stz,i_Row,pCsvBuffer->szRecords());
     //vDebugPoint();

@@ -18,7 +18,7 @@ __vDeleteFunction(Card_AbsJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AbsJoin::Card_AbsJoin(void)
-: Card(CK_ABSJOIN)
+: Card_CONSTRUCTION(CK_ABSJOIN, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -40,18 +40,18 @@ Card_AbsJoin::~Card_AbsJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete the <absJoin>                                                       */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_AbsJoin::vDeleteAllAbsJoin(CardIter* pCI) {
+void Card_AbsJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  _static_
-
-  pCI->vRestart();
-
-  while (pCI->G_bEachMain(CK_ABSJOIN)) {
-    pCI->G_vRemoveDeleteMain(CK_ABSJOIN);
-  }
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

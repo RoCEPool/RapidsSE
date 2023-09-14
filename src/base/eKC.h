@@ -12,14 +12,7 @@ enum eKC // Key Compare
   /*  4 */ KC_ENUMS
 };
 
-static Stz* aKC[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "BEFORE"_Stz,
-  /*  2 */ "SAME"_Stz,
-  /*  3 */ "AFTER"_Stz,
-  /*  4 */ "ENUMS"_Stz,
-};
+extern Stz* aKC[KC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

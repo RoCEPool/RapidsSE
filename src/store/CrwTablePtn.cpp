@@ -81,7 +81,7 @@ void CrwTablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
     CrwBuffer* pCrwBuffer = pGetBuffer(pCursor);
     nBuffers++;
 
-    pCrwBuffer->vShow();
+    //pCrwBuffer->vShow();
     nRows += (pCrwBuffer->nRows());
     jSumRowBytes += pCrwBuffer->nAllotedBytes();
 
@@ -334,7 +334,7 @@ bool CrwTablePtn::bVerifyTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   bool bVerify = true;
-
+#ifdef WITH_DEBUG_VERSION
 
   SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
 
@@ -353,7 +353,7 @@ bool CrwTablePtn::bVerifyTable(void)
 
     pCurrBlock = m_pPdsOfBufferIds->pNextSLBlock(pCurrBlock, 0);
   }
-
+#endif
   return bVerify;
 }
 

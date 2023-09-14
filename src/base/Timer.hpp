@@ -21,9 +21,10 @@ namespace BASE
     void operator delete(void* pTimerAddress);
   
     Timer(void);
+    Timer(const Timer& oCopy);
    ~Timer(void) noexcept(false);
 
-    void operator =(Timer xTimer);
+    Timer& operator =(const Timer& xTimer);
 
     static void vRepair(Object* pObject);
 

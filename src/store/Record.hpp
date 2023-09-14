@@ -27,6 +27,7 @@ namespace STORE
     char* az(void);
     Stz* sz(void);
     Stz* sz(Row* pRow, bool bNewLine=false);
+    i8 iStrBufSize(void);
   
     void vPrintAsCsv(void);
     void vPrintAsRow(Stz* szLabel=nullptr);
@@ -38,6 +39,7 @@ namespace STORE
   private:
     void vAddRow(Row* aRow);
     void vAppendCsvVal(eDM eDatum, i8 iScale, i8 iColVal);
+    const char* azRecordLastChar(void);
 
     Footer* aFooter(void);
   };

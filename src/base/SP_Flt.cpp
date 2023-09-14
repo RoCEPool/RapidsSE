@@ -77,22 +77,22 @@ Stz* SP_Flt::sz(d8 dFlt)
     // See SE-265.
 
     s256 sTmpStr;
-    StrLib::vSprint(sTmpStr.szStz(),
-                    "%.10e"_Stz,
-                    dFlt);
+    sTmpStr.vSprint("%.10e"_Stz, dFlt);
 
     // Find the position of the 'e' in the printed string
     i8 iIdx = StrLib::iFind(sTmpStr.azChar(), 'e');
 
     // Don't copy the last digit before the 'e'
-    StrLib::vCopyLen(m_caResult, sTmpStr.azChar(), iIdx - 1);
+    StrLib::vCopyLen(m_caResult, sizeof(m_caResult), sTmpStr.azChar(), iIdx - 1);
 
     // Now copy the 'e' and everything after it
-    StrLib::vConcat(m_caResult, sTmpStr.azChar() + iIdx);
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), sTmpStr.azChar() + iIdx);
 
   }
   else {
     StrLib::vSprint(m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
                     (Stz *) m_caFormat,
                     dFlt);
   }

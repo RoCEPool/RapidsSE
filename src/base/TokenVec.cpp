@@ -190,7 +190,7 @@ void TokenVec::vAppendToken(Stz* szArgChars, eTN eToken)
   Stz* szExtension = _szByteSpaceExtend(nSize);
   
   pToken->vChars(szExtension);
-  szExtension->vCopy(szArgChars);
+  StrLib::vCopy(szExtension->azChar(), nSize, szArgChars->azChar());
 
   pToken->vToken(eToken);
 
@@ -348,21 +348,22 @@ Token* TokenVec::pCurrToken(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into debug string                                        */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vDbgStr(Stz* szDstStr)
+void TokenVec::vDbgStr(String* psDstStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
-  StrLib::vCopy(szDstStr->azChar(),"");
-  
+
+  psDstStr->vReset();
+
   i8 nTokens = this->nTokens();
   
   // concat all the tokens together
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
-    if (0 == i_Token % 8)
-      StrLib::vConcat(szDstStr,"\n  "_Stz);
+    if (0 == i_Token % 8){
+      psDstStr->vConcat("\n  "_Stz);
+    }
 
-    StrLib::vSprintCat(szDstStr,"[%lld]"_Stz,i_Token);
+    psDstStr->vCatSprint("[%lld]"_Stz, i_Token);
 
     Token* pToken = pGet(i_Token);
     
@@ -374,47 +375,47 @@ void TokenVec::vDbgStr(Stz* szDstStr)
         break;
         
       case TN_BOOLEAN:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_DECIMAL:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_FLOAT:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_NULL:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(szDstStr,"\""_Stz);
-        StrLib::vConcat(szDstStr,pToken->szChars());
-        StrLib::vConcat(szDstStr,"\""_Stz);
+        psDstStr->vConcat("\""_Stz);
+        psDstStr->vConcat(pToken->szChars());
+        psDstStr->vConcat("\""_Stz);
         break;
         
       case TN_TAG:
-        StrLib::vConcat(szDstStr,pToken->szChars());
+        psDstStr->vConcat(pToken->szChars());
         break;
         
       default:
         NEVER_REACH;
     }
     
-    StrLib::vConcat(szDstStr," "_Stz);
+    psDstStr->vConcat(" "_Stz);
   }
 }
 
@@ -582,6 +583,7 @@ i8 TokenVec::iFirstTag2(void)
   while (i_Scan >= 4) {
     
     Token* pTkn_value = pGet(i_Scan--);   //            _^ value
+    UNUSED(pTkn_value);
 
     Token* pTkn_assign = pGet(i_Scan--);  //          _^ = value
     if (! pTkn_assign->bIsAssign())
@@ -682,7 +684,7 @@ void TokenVec::vInsertToken(i8 i_At, Stz* szArgChars, eTN eToken)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy the inserting token into place
   
-  szInsAt->vCopy(szArgChars);
+  StrLib::vCopy(szInsAt->azChar(), nBytesToIns, szArgChars->azChar());
   pTkn_insAt->vToken(eToken);
   
   //vDumpVec(16);
@@ -1107,11 +1109,11 @@ i8 TokenVec::nUsedByteSpace(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vToTknString(Stz* szDstStr)
+void TokenVec::vToTknString(String* psDstStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  StrLib::vCopy(szDstStr->azChar(),"");
+  StrLib::vCopy(psDstStr->azStr(), psDstStr->nAreaBytes(), "");
   
   i8 nTokens = this->nTokens();
   
@@ -1121,7 +1123,7 @@ void TokenVec::vToTknString(Stz* szDstStr)
     Token* pToken = pGet(i_Token);
     
     if (i_Token)
-      StrLib::vConcat(szDstStr->azChar()," ");
+      StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ' ');
     
     eTN eToken = pToken->eToken();
     
@@ -1131,38 +1133,38 @@ void TokenVec::vToTknString(Stz* szDstStr)
         break;
         
       case TN_BOOLEAN:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_DECIMAL:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_FLOAT:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_NULL:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_TAG:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       default:
@@ -1176,13 +1178,13 @@ void TokenVec::vToTknString(Stz* szDstStr)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
+void TokenVec::vVecToString(String* psDstStr, i8 iFromTkn, bool bAddSemicolon)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
   bool bNoQuotes = false;
 
-  StrLib::vCopy(szDstStr->azChar(),"");
+  StrLib::vCopy(psDstStr->azStr(), psDstStr->nAreaBytes(), "");
   
   i8 nTokens = this->nTokens();
   
@@ -1199,61 +1201,61 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
         break;
         
       case TN_BOOLEAN:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_DECIMAL:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_FLOAT:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_INTEGER:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
 
       case TN_LITERAL:
-        StrLib::vConcat(szDstStr->azChar(),"'");
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
-        StrLib::vConcat(szDstStr->azChar(),"'");
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '\'');
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '\'');
         break;
 
       case TN_NAME:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_NULL:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       case TN_STRING:
         if (! bNoQuotes)
-          StrLib::vConcat(szDstStr->azChar(),"\"");
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+          StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '"');
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         if (! bNoQuotes)
-          StrLib::vConcat(szDstStr->azChar(),"\"");
+          StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), '"');
         bNoQuotes = false;
         break;
         
       case TN_TAG:
-        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), pToken->szChars()->azChar());
         break;
         
       default:
         NEVER_REACH;
     }
     
-    StrLib::vConcat(szDstStr->azChar()," ");
+    StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ' ');
   }
   
   // concat a terminating semicolon (needed??)
   if (bAddSemicolon) {
-    StrLib::vConcat(szDstStr->azChar(),";");
+    StrLib::vConcat(psDstStr->azStr(), psDstStr->nAreaBytes(), ';');
   }
 }
 
@@ -1268,7 +1270,7 @@ Stz* TokenVec::_szByteSpaceExtend(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  Stz* szExtension = m_xyByteSpace.szLatter();;
+  Stz* szExtension = m_xyByteSpace.szLatter();
   
   * szExtension->azChar() = '\0';
 
@@ -1347,7 +1349,7 @@ void TokenVec::_vCharsCopyInterior(Token* pDstToken, Stz* szArgChars)
   _vByteSpaceInsert(szInsitui,nInsSize);
   _vVecRippleRight(i_Tkn,nInsSize);
 
-  szInsitui->vCopy(szArgChars);
+  StrLib::vCopy(szInsitui->azChar(), nInsSize, szArgChars->azChar());
   // * * * * * * * * * * * * * * * * * * * *
 
   
@@ -1372,7 +1374,8 @@ void TokenVec::_vCharsCopyLast(Token* pDstToken, Stz* szArgChars)
   
   pDstToken->vChars(szExtension);
 
-  szExtension->vCopy(szArgChars);
+  StrLib::vCopy(szExtension->azChar(), nSize, szArgChars->azChar());
+
   vListTokens();
   vIntegrityCheck();
 }

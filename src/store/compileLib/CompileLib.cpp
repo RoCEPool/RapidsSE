@@ -141,7 +141,7 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz
   ASSERT(!szCompiler || !szCompiler->bIsEmpty());
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -203,7 +203,7 @@ bool CompileLib::bCompile(ExtendedText* pSource, Stz* szDynLibNm, LibInfo* pLibI
   ASSERT(!szCompiler || !szCompiler->bIsEmpty());
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -239,7 +239,101 @@ bool CompileLib::bCompile(ExtendedText* pSource, Stz* szDynLibNm, LibInfo* pLibI
   }
 
   // Execute the compile command
+
   if (!bCompileSrc(pLibInfo)) {
+
+    // On failure save the src/log file in a different name
+    // so that they don't get deleted and are copied across
+
+    s256 sNewSrcFilePath;
+    s256 sNewLogFilePath;
+
+    sNewSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+    sNewLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+
+    bool bResult = File::bRename(pLibInfo->m_sSrcFilePath, sNewSrcFilePath);
+    if ( ! bResult )
+      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sSrcFilePath.azChar());
+
+    bResult = File::bRename(pLibInfo->m_sLogFilePath, sNewLogFilePath);
+    if ( ! bResult )
+      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sLogFilePath.azChar());
+
+    return false;
+  }
+
+  // Check that the library exists
+  ASSERT(File::bExists(pLibInfo->m_sDynLibPath.szStz()));
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uCompileNanos = Hardware::uReadClock() - uStartTime;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Compiler source code to a dynamic library. Returns true on success.        */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bCompileFile(Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler)
+{
+  ASSERT(szDynLibNm);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
+  ASSERT(!szCompiler || !szCompiler->bIsEmpty());
+  pLibInfo->vClearErrors();
+
+  u8 uStartTime = 0;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
+  // Choose or validate a compiler, if necessary
+  if (!bValidateCompiler(szCompiler, pLibInfo)) {
+    return false;
+  }
+
+  // Save the base name
+  pLibInfo->m_sBaseName.vCopy(szDynLibNm);
+
+  // Come up with file path for the source file and output file
+  pLibInfo->m_sSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.%s"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz(), C_LIB_EXT);
+  pLibInfo->m_sLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+
+  // Build the compile command
+  switch (pLibInfo->m_eCompilerType) {
+    case CB_GCC:        vBuildGccCompileCommand(pLibInfo);    break;
+    case CB_CLANG:      vBuildClangCompileCommand(pLibInfo);  break;
+    case CB_TCC:        vBuildTccCompileCommand(pLibInfo);    break;
+    case CB_SCL_GCC:    vBuildSclGccCompileCommand(pLibInfo); break;
+    case CB_SCL_CLANG:  vBuildSclClangCompileCommand(pLibInfo); break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Execute the compile command
+
+  if (!bCompileSrc(pLibInfo)) {
+
+//    // On failure save the src/log file in a different name
+//    // so that they don't get deleted and are copied across
+//
+//    s256 sNewSrcFilePath;
+//    s256 sNewLogFilePath;
+//
+//    sNewSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+//    sNewLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+//
+//    bool bResult = File::bRename(pLibInfo->m_sSrcFilePath, sNewSrcFilePath);
+//    if ( ! bResult )
+//      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sSrcFilePath.azChar());
+//
+//    bResult = File::bRename(pLibInfo->m_sLogFilePath, sNewLogFilePath);
+//    if ( ! bResult )
+//      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sLogFilePath.azChar());
+
     return false;
   }
 
@@ -296,7 +390,7 @@ void* CompileLib::pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo)
   ASSERT(szSymbolNm);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -329,7 +423,7 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
   ASSERT(pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -354,13 +448,13 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
 /*----------------------------------------------------------------------------*/
 /* Delete a shared object library & associated files. Returns true on success.*/
 /*----------------------------------------------------------------------------*/
-void CompileLib::vDelete(LibInfo* pLibInfo)
+void CompileLib::vDelete(LibInfo* pLibInfo, bool bDeleteFile)
 {
   ASSERT(pLibInfo);
   ASSERT(!pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -381,17 +475,17 @@ void CompileLib::vDelete(LibInfo* pLibInfo)
   Shell::iExecute(sCmd.szStz(), oSysCall);
 #endif
 
-#ifdef WITH_RELEASE_VERSION
-  // Remove log file, if exists
-  if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sLogFilePath.szStz(), true);
-  }
+  if (bDeleteFile) {
+    // Remove log file, if exists
+    if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
+      File::bRemove(pLibInfo->m_sLogFilePath.szStz(), true);
+    }
 
-  // Remove source file, if exists
-  if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+    // Remove source file, if exists
+    if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
+      File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+    }
   }
-#endif
 
   if (pLibInfo->m_bCollectStats) {
     pLibInfo->m_uDeleteNanos = Hardware::uReadClock() - uStartTime;
@@ -405,7 +499,7 @@ void CompileLib::vTest(Stz* szCompiler)
 {
   static Stz* szSrc =
 "#include <stdio.h>\n"
-"#include \"primitives/BaseTypes_tcc.h\"\n"
+"#include \"primitives/BaseTypes_general.h\"\n"
 "\n"
 "// Declaration of a function inside SE\n"
 "// We either need to supply a basic implementation, or we need\n"
@@ -570,7 +664,7 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     if      (szCompiler->bContains("g++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
       // We actually need to compile with gcc, so fix this in the compiler path
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "g++", "gcc");
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), pLibInfo->m_sCompilerPath.nAreaBytes(), "g++", "gcc");
 
     } else if (szCompiler->bContains("gcc"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
@@ -579,7 +673,7 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     } else if (szCompiler->bContains("clang++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;
       // We actually need to compile with clang, so fix this in the compiler path
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "clang++", "clang");
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), pLibInfo->m_sCompilerPath.nAreaBytes(), "clang++", "clang");
 
     } else if (szCompiler->bContains("clang"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;
@@ -668,7 +762,14 @@ bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
   if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     delete pSrcFile;
@@ -678,7 +779,14 @@ bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
   if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     pSrcFile->vClose();
@@ -704,7 +812,14 @@ bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
   if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     delete pSrcFile;
@@ -728,7 +843,14 @@ bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
     if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
       pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-      strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+      int result;
+#else
+      char* result;
+#endif
+      result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+      UNUSED(result);
+
       pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
       pSrcFile->vClose();

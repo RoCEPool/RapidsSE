@@ -492,12 +492,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("TinyC[]"_Stz)) {
-    pCurrentWord->vEncodeCall("TinyC[].set"_Stz);
-    EXIT();
-    return;
-  }
-
   else if (szTerm->bSame("Vertex[]"_Stz)) {
     pCurrentWord->vEncodeCall("Vertex[].set"_Stz);
     EXIT();

@@ -189,7 +189,7 @@
       i8 iResult = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;            \
       iScale = bcdArg1.m_iScale + bcdArg2.m_iScale;                      \
       if (iScale != iScaleNew) {                                         \
-        bcdArg1.m_iMantissa = iResult / iaPow10[iScale - iScaleNew - 1]; \
+        bcdArg1.m_iMantissa = iResult / aDynamicT->m_iaPow10[iScale - iScaleNew - 1]; \
         bcdArg1.m_iScale = iScaleNew + 1;                                \
         *paW++ = bcdArg1.m_iAsI8;                                        \
         _ROUND_BCD(eErrorCode)                                           \

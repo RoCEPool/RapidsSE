@@ -1195,10 +1195,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // }
 
     // the current node should have been specfied in the --node
-    bool bFound = false;
     for (i8 i_Test = 0; i_Test < m_xSysArgs.m_nDefinedNodes; i_Test++) {
       if (m_xSysArgs.m_xNodeDefn[i_Test].m_sNodeName.bSame(m_xSysArgs.m_sNodeName)) {
-        bFound = true;
         m_xSysArgs.m_i_ThisNode = i_Test;
         break;
       }

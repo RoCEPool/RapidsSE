@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Aggreg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::Card_Aggreg(void)
-: Card_AGG(CK_AGGREG)
+: Card_AGGREGATE(CK_AGGREG, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -58,25 +58,16 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 void Card_Aggreg::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert terms which are stmCol to tblCol                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ((pCI->G.p_projection = pSub_projection()))
-    pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vDerive_Projection_Key(CardIter* pCI)
+void Card_Aggreg::vDerive_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 
   // creates a new projection key
 
@@ -92,8 +83,6 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   RASSERT(bIsPartitionLevel());
 
   RASSERT(! pCI->Early.m_pNeeded_later);
-
-  pSymbol()->Y_vSet(P_BreakPt);
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
@@ -111,8 +100,8 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->vRenumberCards();
-  pCI->vPrintBoard();
+ // pCI->vRenumberCards();
+ // pCI->vPrintBoard();
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -121,19 +110,19 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
 
-  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_projection;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -157,12 +146,14 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
-    if (pCI->Analysis.m_pProjection_prior) {
+    if (pCI->Prior.m_pProjection) {
       pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
       pCI->G.p_projection->vRenumberAll_expr();
     }
 
   }
+
+  vValidationPassed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,13 +162,15 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
 void Card_Aggreg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
+  vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
-
-  if (pCI->m_pBench->bMadeFlat())
-    pSub_projection()->vValidate(pCI,iDepth+1,this);
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

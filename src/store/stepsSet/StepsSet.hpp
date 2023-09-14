@@ -251,14 +251,6 @@ public:
   void vColumnScaleFetch(void);
   void vColumnTypeFetch(void);
 
-  // Combined
-  void vCombinedDelete(void);
-  void vCombinedExecute(void);
-  void vCombinedHashRowsFetch(void);
-  void vCombinedGet(void);
-  void vCombinedIndexT(void);
-  void vCombinedNew(void);
-
   // command processor
   void vCommandBlankLine(void);
   void vCommandDeleteJob(void);
@@ -303,9 +295,7 @@ public:
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
   void vCrwBufferGetBufferIdAsAddr(void);
-  void vCrwBufferFlatten(void);
   void vCrwBufferInflate(void);
-  void vCrwBufferInflateTcc(void);
   void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
@@ -496,6 +486,7 @@ void vDdlLockAssertNone(void);
 
   void vDynamoCompile(void);
   void vDynamoDelete(void);
+	void vDynamoFileNameFetch(void);
   void vDynamoGet(void);
   void vDynamoNameFetch(void);
   void vDynamoNew(void);
@@ -1238,6 +1229,7 @@ void vJobIdLastJobIdFetch(void);
 
   // LibInfo
   void vLibInfoCompile(void);
+  void vLibInfoCompileFile(void);
   void vLibInfoDelete(void);
   void vLibInfoError(void);
   void vLibInfoFind(void);
@@ -1913,13 +1905,6 @@ void vJobIdLastJobIdFetch(void);
   void vStatsUpdateTimer(void);
 
   // stencil
-  void vStencilDelete(void);
-  void vStencilGet(void);
-  void vStencilNew(void);
-  void vStencilSetup(void);
-  void vStencilSketch(void);
-  void vStencilSourceFetch(void);
-
   void vStencilDelete_v2(void);
   void vStencilGet_v2(void);
   void vStencilNew_v2(void);
@@ -2012,18 +1997,13 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);
-  void vStreamDefOutGenerate(void);
   void vStreamDefOutIsNull(void);
-  void vStreamDefOutJoin(void);
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
   void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
-  void vStreamDefOutSelectColumns(void);
   void vStreamDefOutSet(void);
-
-  void vStreamDefOutGenerate_V2(void);
 
   // stream def Right
   void vStreamDefRhtDelete(void);
@@ -2361,20 +2341,6 @@ void vJobIdLastJobIdFetch(void);
   void vTimerStart(void);
   void vTimerTicks(void);
   void vTimerUpdate(void);
-
-  // tinyC
-  void vTinyCCompile(void);
-  void vTinyCDelete(void);
-  void vTinyCFind(void);
-  void vTinyCGet(void);
-  void vTinyCIsNotNull(void);
-  void vTinyCNew(void);
-  void vTinyCRelocate(void);
-  void vTinyCSet(void);
-  void vTinyCSymbols(void);
-
-  void vTinyCCompile_v2(void);
-  void vTinyCCompiledynamoCode(void);
 
   // to
   void vToBcd(void);

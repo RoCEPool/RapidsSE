@@ -19,18 +19,26 @@ __aFooterFunction(Weaver)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Weaver::Weaver(Bench* pBench)
+Weaver::Weaver(Bench* pBench, PipelineDef* pPipelineDef)
 : OptimiserTool(CN_WEAVER)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  m_pPipelineDef  = pPipelineDef;
+  m_pDeck = nullptr;
 
   m_pBench        = pBench;
   m_pOptimiser    = m_pBench->pOptimiser();
   m_pBoard        = nullptr;
   
-  m_i_Stage = 0;
+  m_i_Stage    = 0;
   m_i_Op_stage = 0;
-  
+  m_bOpPrinted = false;
+  m_pOptStmt   = nullptr;
+  m_pCodeBlock = nullptr;
+  m_bSawHash   = false;
+
+
   _checkInitialised_(CN_WEAVER);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
@@ -42,6 +50,9 @@ Weaver::Weaver(Bench* pBench)
 Weaver::~Weaver(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  if (m_pOptStmt)
+    delete m_pOptStmt;
 }
 
 
@@ -53,12 +64,43 @@ Weaver::~Weaver(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get optimised pipeline statement                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Weaver::szOptStmt(void)
+ExtendedText* Weaver::pOptStmt(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  return m_sOptStmt;
+
+  return m_pOptStmt;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set optimised pipeline statement                                           */
+/*----------------------------------------------------------------------------*/
+void Weaver::vOptStmt(ExtendedText* pOptSmt)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  m_pOptStmt = pOptSmt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get code block                                                             */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Weaver::pCodeBlock(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  return m_pCodeBlock;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code block                                                             */
+/*----------------------------------------------------------------------------*/
+void Weaver::vCodeBlock(ExtendedText* pCodeBlock)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  m_pCodeBlock = pCodeBlock;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -72,8 +114,8 @@ Stz* Weaver::szOptStmt(void)
 void Weaver::vPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  vConcat("pipeline %s\n"_Stz,m_pOptimiser->szQueryNm());
+
+  vConcat_cmd("pipeline %s\n"_Stz, m_pOptimiser->szQueryNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,8 +124,8 @@ void Weaver::vPipeline(void)
 void Weaver::vTags(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  vConcat("  tag <optimised> = 1 endTag\n"_Stz);
+
+  vConcat_cmd("  tag <optimised> = 1 endTag\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +135,7 @@ void Weaver::vBegin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  vConcat("begin\n"_Stz);
+  vConcat_cmd("begin\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,8 +145,51 @@ void Weaver::vEnd(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  vConcat("\n"_Stz);
-  vConcat("end ;\n"_Stz);
+  vConcat_cmd("\n"_Stz);
+  vConcat_cmd("end"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : code block                _                                       */
+/*----------------------------------------------------------------------------*/
+void Weaver::vCppBlock(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  bool bHasCode = false;
+
+  i8 nStages = m_pPipelineDef->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
+    if (pStageDef->bHasCode()) {
+      bHasCode = true;
+      break;
+    }
+  }
+
+  if (! bHasCode)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
+
+    if (! m_pCodeBlock)
+      m_pCodeBlock = new ExtendedText;
+    m_pCodeBlock->vConcat(pStageDef->pCode());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : ;                                                                  */
+/*----------------------------------------------------------------------------*/
+void Weaver::vSemicolon(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  //vConcat_cmd("\n"_Stz);
+  vConcat_cmd(" ;\n"_Stz);
 }
 
 
@@ -140,12 +225,15 @@ void Weaver::vStageFirst(void)
   
   vPreStage();
   vTabStage();
-  vConcat("stage S%02lld on origin : "_Stz,m_i_Stage++);
+  vConcat_cmd("stage S%02lld on origin : "_Stz, m_i_Stage++);
   vEolStage();
   
-  vTabOp();  vConcat("start"_Stz);           vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("pulse     once"_Stz);  vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("next"_Stz);            vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("start"_Stz);           vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("pulse     once"_Stz);  vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("next"_Stz);            vEolOp();  m_i_Op_stage++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,14 +249,14 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
 
   vPreStage();
   vTabStage();
-  vConcat("stage %s on %s : "_Stz
-          , pCard_Stage->szSymbol()
-          ,aYG_weave[eStageTopo]);
+  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szSymbol(SF_NONE), aYG_weave[eStageTopo]);
   vEolStage();
 
   m_i_Stage++;
   
   m_i_Op_stage = 0;
+  m_bOpPrinted = false;
+  m_bSawHash   = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,14 +270,30 @@ void Weaver::vStageLast(void)
   
   vPreStage();
   vTabStage();
-  vConcat("stage S%02lld on origin :"_Stz,m_i_Stage++);
+  vConcat_cmd("stage S%02lld on origin :"_Stz, m_i_Stage++);
   vEolStage();
   
   m_i_Op_stage = 0;
   
-  vTabOp();  vConcat("output"_Stz);       vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("sink"_Stz);         vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("first"_Stz);        vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("output"_Stz);       vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("sink"_Stz);         vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("first"_Stz);        vEolOp();  m_i_Op_stage++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : dynamic :                                                          */
+/*----------------------------------------------------------------------------*/
+void Weaver::vDynamic(StageDef* pStageDef)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+  UNUSED(pStageDef);
+
+  vTabOp();
+  vConcat_cmd("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
+  //vTabOp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,7 +302,7 @@ void Weaver::vStageLast(void)
 /*----------------------------------------------------------------------------*/
 /* weave a card                                                               */
 /*----------------------------------------------------------------------------*/
-void Weaver::vOp(Card* pCard)
+void Weaver::vOp(Card* pCard, bool bCommented)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -206,7 +310,11 @@ void Weaver::vOp(Card* pCard)
 
   eCK eCard = pCard->eCard();
 
-  Card_OP* p_OP = (Card_OP*)pCard;
+  if (CK_SEND == eCard)
+    if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU))
+      return;
+  if (CK_COMBINED == eCard)
+    return;
 
   switch (eCard) {
 
@@ -227,7 +335,10 @@ void Weaver::vOp(Card* pCard)
     case CK_ORDAGG:       vArgOrdAgg       (sOpArgs,_pCard_OrdAgg(pCard));       break;
     case CK_PROJECT:      vArgProject      (sOpArgs,_pCard_Project(pCard));      break;
     case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
+    case CK_SEND:         vArgSend         (sOpArgs,_pCard_Send(pCard));         break;
     case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
+    case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));        break;
+    case CK_TOP:          vArgTop          (sOpArgs,_pCard_Top(pCard));          break;
     case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
@@ -240,13 +351,19 @@ void Weaver::vOp(Card* pCard)
        if (CK_CAST == eCard)       sOpNm = "next"_Stz;
   else if (CK_CROSSJOIN == eCard)  sOpNm = "indexJoin"_Stz;
   else if (CK_HAVING == eCard)     sOpNm = "filter"_Stz;
+  else if (CK_TABLE == eCard)      sOpNm = "scan"_Stz;
+  else if (CK_SEND == eCard)       sOpNm = "next"_Stz;
   else if (CK_WHERE == eCard)      sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
 
-  vTabOp();
-  vConcat("%-9s %s"_Stz,
-          sOpNm.azChar(),
-          sOpArgs.szStz());
+  if (bCommented)
+    while (StrLib::bReplace(sOpArgs.azChar(), sOpArgs.nAreaBytes(), "\n    ","\n  //"))
+      {;}
+
+  vTabOp(bCommented);
+  vConcat_cmd("%-9s %s"_Stz,
+              sOpNm.azChar(),
+              sOpArgs.szStz());
   vEolOp();
 
   m_i_Op_stage++;
@@ -307,18 +424,19 @@ void Weaver::vOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* weave : abstractJoin " 1 "                                                 */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgAbsJoin(Stz* szOpArgs, Card_AbsJoin*   pCard_AbsJoin)
+void Weaver::vArgAbsJoin(String* psOpArgs, Card_AbsJoin*   pCard_AbsJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+  UNUSED(pCard_AbsJoin);
 
-  szOpArgs->vCatSprint("abstractJoin \" 1 \""_Stz);
+  psOpArgs->vCatSprint("abstractJoin \" 1 \""_Stz);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* weave : aggreg <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
+void Weaver::vArgAggreg(String* psOpArgs, Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -328,23 +446,23 @@ void Weaver::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
 
   pCard_Aggreg->vRpnAggreg(sRpnExpr,pCard_Aggreg);
 
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave :next ?                                                              */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgCast(Stz* szOpArgs, Card_Cast* pCard_Next)
+void Weaver::vArgCast(String* psOpArgs, Card_Cast* pCard_Next)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  szOpArgs->vCatSprint("%s"_Stz, pCard_Next->szSymbol());
+  psOpArgs->vCatSprint("%s"_Stz, pCard_Next->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : combine 0                                                          */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgCombined(Stz* szOpArgs, Card_Combined* pCard_Combine)
+void Weaver::vArgCombined(String* psOpArgs, Card_Combined* pCard_Combine)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
     
@@ -352,15 +470,16 @@ void Weaver::vArgCombined(Stz* szOpArgs, Card_Combined* pCard_Combine)
 
   s4K sRpnExpr;
 
-  pCard_Combine->vRpnCombined(sRpnExpr, pCard_Combine);
+  //pCard_Combine->vRpnCombined(sRpnExpr, pCard_Combine);
+  sRpnExpr.vCatSprint("%s"_Stz, pCard_Combine->szSymbol(SF_NONE));
 
-  szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("%s"_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : indexJoin <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgCrossJoin(Stz* szOpArgs, Card_CrossJoin* pCard_CrossJoin)
+void Weaver::vArgCrossJoin(String* psOpArgs, Card_CrossJoin* pCard_CrossJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -373,17 +492,17 @@ void Weaver::vArgCrossJoin(Stz* szOpArgs, Card_CrossJoin* pCard_CrossJoin)
 
   pCard_CrossJoin->vRpnCrossJoin(sRpnExpr,pCard_CrossJoin);
 
-  szOpArgs->vCatSprint("%s %s \"%s \""_Stz
-      , p_tableNm->szSymbol()
-      , p_indexNm->szSymbol()
-      ,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("%s %s \"%s \""_Stz
+      , p_tableNm->szSymbol(SF_NONE)
+      , p_indexNm->szSymbol(SF_NONE)
+      , sRpnExpr.szStz());
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : filter <expr>                                                      */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
+void Weaver::vArgFilter(String* psOpArgs, Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -395,13 +514,13 @@ void Weaver::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
 
   pCard_Filter->vRpnFilter(sRpnExpr,pCard_Filter);
   
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : aggGby <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgGbyAgg(Stz* szOpArgs, Card_GbyAgg* pCard_AggGby)
+void Weaver::vArgGbyAgg(String* psOpArgs, Card_GbyAgg* pCard_AggGby)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -415,27 +534,32 @@ void Weaver::vArgGbyAgg(Stz* szOpArgs, Card_GbyAgg* pCard_AggGby)
 
   pCard_AggGby->vRpnGbyAgg(sRpnExpr, pCard_AggGby);
 
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : hash  <expr>                                                       */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
+void Weaver::vArgHash(String* psOpArgs, Card_Hash* pCard_Hash)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
+  m_bSawHash = true;
 
-  szOpArgs->vCatSprint("\"type %s %s\""_Stz,
-                       aCT[Symbol::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))],
-                       p_hshCol->szSymbol());
+  Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
+  UNUSED(p_hshCol);
+
+  Card_Term* p_term = pCard_Hash->pSub_term();
+
+  psOpArgs->vCatSprint("\"type %s %s\""_Stz,
+                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szColType())],
+                       p_term->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : having  <expr>                                                     */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgHaving(Stz* szOpArgs, Card_Having* pCard_Having)
+void Weaver::vArgHaving(String* psOpArgs, Card_Having* pCard_Having)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -445,13 +569,13 @@ void Weaver::vArgHaving(Stz* szOpArgs, Card_Having* pCard_Having)
 
   pCard_Having->vRpnHaving(sRpnExpr,pCard_Having);
 
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : indexJoin <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
+void Weaver::vArgIndexJoin(String* psOpArgs, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -459,31 +583,32 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 
   s4K sRpnExpr;
 
-  Card_TableNm* p_tableNm = pCard_IndexJoin->pSub_tableNm();
+  Card_TableNm *p_tableNm = pCard_IndexJoin->pSub_tableNm();
 
-  Card_Index* p_index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
-  if (! p_index) {
+  Card_Index *p_index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
+  if (!p_index) {
     NEVER_REACH
   }
-  Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
+  Card_IndexNm *p_indexNm = p_index->pSub_indexNm();
 
   pCard_IndexJoin->vRpnIndexJoin(sRpnExpr, pCard_IndexJoin);
 
-  if (Card_OuterJoin* p_outerJoin = pCard_IndexJoin->pSub_outerJoin()) {
-    if (p_outerJoin->bIsSymbol("left_outer"_Stz))
-      szOpArgs->vCatSprint("%s %s \"LEFT_OUTER %s \""_Stz,
-                           p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
+  psOpArgs->vCatSprint("%s %s \"%s \""_Stz,
+                       p_tableNm->szSymbol(SF_NONE), p_indexNm->szSymbol(SF_NONE), sRpnExpr.szStz());
+
+  if (pCard_IndexJoin->pSub_constraint()) {
+    s4K sRpnConstraint;
+    pCard_IndexJoin->vRpnIndexJoin_constraint(sRpnConstraint, pCard_IndexJoin);
+    psOpArgs->vCatSprint("\n"_Stz);
+    psOpArgs->vCatSprint("                \"%s \""_Stz, sRpnConstraint.szStz());
   }
-  else {
-    szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
-                         p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
-  }
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : indexScan <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
+void Weaver::vArgIndexScan(String* psOpArgs, Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -502,19 +627,17 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
 
   pCard_IndexScan->vRpnIndexScan(sRpnExpr, pCard_IndexScan);
   
-  szOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szSymbol(), p_indexNm->szSymbol());
-  szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szSymbol(SF_NONE), p_indexNm->szSymbol(SF_NONE));
+  psOpArgs->vCatSprint("                \"%s \""_Stz, sRpnExpr.szStz());
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : keyExists <tableNm> <indexNm> <keyExpr> <expr>                     */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
+void Weaver::vArgKeyExists(String* psOpArgs, Card_KeyExists* pCard_KeyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-
-  pCard_KeyExists->vDump();
 
   Card_TableNm* p_tableNm = pCard_KeyExists->pSub_tableNm();
   Card_IndexNm* p_indexNm = pCard_KeyExists->pSub_indexNm();
@@ -528,43 +651,43 @@ void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
   else
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
-  szOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      , p_tableNm->szSymbol()
-      , p_indexNm->szSymbol()
-      ,sRpnExpr.szStz()
-      ,sRpnConstraint.szStz());
+  psOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
+      , p_tableNm->szSymbol(SF_NONE)
+      , p_indexNm->szSymbol(SF_NONE)
+      , sRpnExpr.szStz()
+      , sRpnConstraint.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : keyNotExists <tableNm> <indexNm> <keyExpr> <expr>                  */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgKeyNotExists(Stz* szOpArgs, Card_KeyNotExists* p_keyNotExists)
+void Weaver::vArgKeyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNotExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_TableNm* p_tableNm = p_keyNotExists->pSub_tableNm();
-  Card_IndexNm* p_indexNm = p_keyNotExists->pSub_indexNm();
+  Card_TableNm* p_tableNm = pCard_KeyNotExists->pSub_tableNm();
+  Card_IndexNm* p_indexNm = pCard_KeyNotExists->pSub_indexNm();
 
   s4K sRpnExpr;
-  p_keyNotExists->vRpnKeyNotExists(sRpnExpr,p_keyNotExists);
+  pCard_KeyNotExists->vRpnKeyNotExists(sRpnExpr, pCard_KeyNotExists);
 
   s4K sRpnConstraint;
-  if (p_keyNotExists->pSub_constraint())
-    p_keyNotExists->vRpnKeyNotExists_constraint(sRpnConstraint, p_keyNotExists);
+  if (pCard_KeyNotExists->pSub_constraint())
+    pCard_KeyNotExists->vRpnKeyNotExists_constraint(sRpnConstraint, pCard_KeyNotExists);
   else
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
-  szOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      , p_tableNm->szSymbol()
-      , p_indexNm->szSymbol()
-      ,sRpnExpr.szStz()
-      ,sRpnConstraint.szStz());
+  psOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
+      , p_tableNm->szSymbol(SF_NONE)
+      , p_indexNm->szSymbol(SF_NONE)
+      , sRpnExpr.szStz()
+      , sRpnConstraint.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : limit <compiled> <rows>                                            */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgLimit(Stz* szOpArgs, Card_Limit* pCard_Limit)
+void Weaver::vArgLimit(String* psOpArgs, Card_Limit* pCard_Limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -574,14 +697,14 @@ void Weaver::vArgLimit(Stz* szOpArgs, Card_Limit* pCard_Limit)
 
   pCard_Limit->vRpnLimit(sRpnExpr,pCard_Limit);
 
-  szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("%s"_Stz, sRpnExpr.szStz());
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* weave : ordagg <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgOrdAgg(Stz* szOpArgs, Card_OrdAgg* pCard_OrdAgg)
+void Weaver::vArgOrdAgg(String* psOpArgs, Card_OrdAgg* pCard_OrdAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -591,13 +714,13 @@ void Weaver::vArgOrdAgg(Stz* szOpArgs, Card_OrdAgg* pCard_OrdAgg)
 
   pCard_OrdAgg->vRpnOrdAgg(sRpnExpr, pCard_OrdAgg);
 
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : project <compiled> <expr>                                          */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgProject(Stz* szOpArgs, Card_Project* pCard_Project)
+void Weaver::vArgProject(String* psOpArgs, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -607,13 +730,13 @@ void Weaver::vArgProject(Stz* szOpArgs, Card_Project* pCard_Project)
 
   pCard_Project->vRpnProject(sRpnExpr,pCard_Project);
   
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : scan <tableNm>                                                     */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
+void Weaver::vArgScan(String* psOpArgs, Card_Scan* pCard_Scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -625,16 +748,34 @@ void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
 
   Card_TableNm* p_tableNm = pCard_Scan->pSub_tableNm();
   
-  Stz* szTableNm = p_tableNm->szSymbol();
+  Stz* szTableNm = p_tableNm->szSymbol(SF_NONE);
   //m_i_Op_stage++;
   
-  szOpArgs->vCatSprint("%s"_Stz,szTableNm);
+  psOpArgs->vCatSprint("%s"_Stz, szTableNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave :send ?                                                              */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgSend(String* psOpArgs, Card_Send* pCard_send)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+//  pCard_Send->vDump(__func__ );
+
+  if (XK_BROADCAST == (eXK)pCard_send->pSymbol()->Y_iGet(P_SendKind))
+      psOpArgs->vCatSprint("%s broadcast"_Stz, pCard_send->szSymbol(SF_NONE));
+  else
+  if (XK_HASHCAST == (eXK)pCard_send->pSymbol()->Y_iGet(P_SendKind))
+    psOpArgs->vCatSprint("%s hashcast"_Stz, pCard_send->szSymbol(SF_NONE));
+  else
+    psOpArgs->vCatSprint("%s"_Stz, pCard_send->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : sort ???                                                           */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
+void Weaver::vArgSort(String* psOpArgs, Card_Sort* pCard_Sort)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
@@ -644,13 +785,49 @@ void Weaver::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
 
   pCard_Sort->vRpnSort(sRpnExpr,pCard_Sort);
 
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : table <tableNm>                                                    */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgTable(String* psOpArgs, Card_Table* pCard_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  // scan : 0) {table}
+
+
+  Card_TableNm* p_tableNm = pCard_Table->pSub_tableNm();
+
+  Stz* szTableNm = p_tableNm->szSymbol(SF_NONE);
+
+
+  psOpArgs->vCatSprint("%s"_Stz, szTableNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : top <expr> <count>                                                 */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgTop(String* psOpArgs, Card_Top* pCard_op)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  //
+
+  s4K sRpnExpr;
+
+  pCard_op->vRpnTop(sRpnExpr, pCard_op);
+
+  psOpArgs->vCatSprint("\"%s\" %s"_Stz,
+                       sRpnExpr.szStz(),
+                       pCard_op->pSub_count()->szSymbol(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
 /* weave : where <expr>                                                       */
 /*----------------------------------------------------------------------------*/
-void Weaver::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
+void Weaver::vArgWhere(String* psOpArgs, Card_Where* pCard_Where)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
@@ -660,7 +837,7 @@ void Weaver::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
 
   pCard_Where->vRpnWhere(sRpnExpr,pCard_Where);
 
-  szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+  psOpArgs->vCatSprint("\"%s \""_Stz, sRpnExpr.szStz());
 }
 
 
@@ -671,13 +848,13 @@ void Weaver::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
 /*----------------------------------------------------------------------------*/
 /* concat formatted string                                                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vConcat(Stz* aFormat, ...)
+void Weaver::vConcat_cmd(Stz* aFormat, ...)
 {
   va_list xVarArgs;
 
   va_start(xVarArgs,aFormat);
 
-  vConcat_vargs(aFormat,xVarArgs);
+  vConcat_cmd_vargs(aFormat, xVarArgs);
   
   va_end(xVarArgs);
 }
@@ -685,16 +862,47 @@ void Weaver::vConcat(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* concat formatted string                                                    */
 /*----------------------------------------------------------------------------*/
-void Weaver::vConcat_vargs(Stz* aFormat, va_list xArgs)
+void Weaver::vConcat_cmd_vargs(Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
 
   // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
- 
-  m_sOptStmt.vConcat((Stz*)caFormatted);
-  
-  //vTraceing("%s"_Stz,caFormatted);
+  StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());
+
+  if (! m_pOptStmt)
+    m_pOptStmt = new ExtendedText;
+
+  m_pOptStmt->vConcat((Stz*)caFormatted);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat formatted string                                                    */
+/*----------------------------------------------------------------------------*/
+void Weaver::vConcat_code(Stz* aFormat, ...)
+{
+  va_list xVarArgs;
+
+  va_start(xVarArgs,aFormat);
+
+  vConcat_code_vargs(aFormat, xVarArgs);
+
+  va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat formatted string                                                    */
+/*----------------------------------------------------------------------------*/
+void Weaver::vConcat_code_vargs(Stz* aFormat, va_list xArgs)
+{
+  static char caFormatted[C_1MB] = {'\0'};
+
+  // produce formatted line
+  StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());
+
+  if (! m_pCodeBlock)
+    m_pCodeBlock = new ExtendedText;
+
+  m_pCodeBlock->vConcat((Stz*)caFormatted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -703,8 +911,8 @@ void Weaver::vConcat_vargs(Stz* aFormat, va_list xArgs)
 void Weaver::vEolStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  vConcat("\n"_Stz);
+
+  vConcat_cmd("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -713,8 +921,8 @@ void Weaver::vEolStage(void)
 void Weaver::vEolOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  vConcat("\n"_Stz);
+
+  vConcat_cmd("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -723,21 +931,35 @@ void Weaver::vEolOp(void)
 void Weaver::vPreStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  vConcat("\n"_Stz);
+
+  vConcat_cmd("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* tab before op                                                              */
 /*----------------------------------------------------------------------------*/
-void Weaver::vTabOp(void)
+void Weaver::vTabOp(bool bCommented)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
-  if (m_i_Op_stage)
-    vConcat("    | "_Stz);
-  else
-    vConcat("      "_Stz);
+  if (m_i_Op_stage) {
+    if (bCommented)
+      vConcat_cmd("  //| "_Stz);
+    else
+    if (m_bOpPrinted)
+      vConcat_cmd("    | "_Stz);
+    else
+      vConcat_cmd("      "_Stz);
+  }
+  else {
+    if (bCommented)
+      vConcat_cmd("  //  "_Stz);
+    else
+      vConcat_cmd("      "_Stz);
+  }
+
+  if (! bCommented)
+    m_bOpPrinted = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -746,8 +968,8 @@ void Weaver::vTabOp(void)
 void Weaver::vTabStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-  
-  vConcat("  "_Stz);
+
+  vConcat_cmd("  "_Stz);
 }
 
 
@@ -763,16 +985,17 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  RASSERT(BK_SUBQUERY == pBoard->eBoardKind());
+  RASSERT(BK_SUBQUERY == pBoard->eBoard());
 
   m_i_Stage = 0;
   m_i_Op_stage = 0;
-  m_sOptStmt = ""_Stz;
-  
+
   m_pBoard = pBoard;
 
+  m_pDeck = m_pBoard->pDeck();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   vPipeline();
   vTags();
   vBegin();
@@ -781,18 +1004,70 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
   vStageFirst();
 
-  CardIter xCI(m_pBoard->pDeck());
-  while (xCI.G_bEachMain())
-    vCard(xCI.G.p_MainCard);
+  Kid xKid(m_pDeck);
+  i8 nStages = m_pPipelineDef->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    StageDef* pStageDef = m_pPipelineDef->pGet(i_Stage);
+    Card_Stage* p_stage = pStageDef->pCard_Stage();
+
+    vStageNext(p_stage);
+
+    xKid.vResynch(p_stage);
+    while (xKid.bEach()) {
+
+      if (CK_STAGE == xKid.eChild())
+        break;
+      if (CK_CAST == xKid.eChild())
+        break;
+      if (CK_SEND == xKid.eChild())
+        break;
+
+      bool bCommented = true;
+//      if (xKid.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
+//                                   CK_LIMIT , CK_SCAN     , CK_TABLE,
+//                                   CK_NONE))
+      if (xKid.pChild()->bIsOne(CK_SCAN, CK_TABLE, CK_NONE))
+        bCommented = false;
+
+      vOp(xKid.pChild(),bCommented);
+    }
+
+    vDynamic(pStageDef);
+
+    //RASSERT(xKid.bIsActive());
+    if (CK_CAST == xKid.eChild())
+      vOp(xKid.pChild());
+    else
+    if (CK_SEND == xKid.eChild())
+      vOp(xKid.pChild());
+
+  }
 
   vStageLast();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vEnd();
+  vCppBlock();
+  vSemicolon();
 
-  if (AM::JOB::bHasTag(C_WEAVED))
-    vTrace("%s\n"_Stz, szOptStmt());
+  if (m_pOptStmt)
+    m_pOptStmt->vVerify();
+  if (m_pCodeBlock)
+    m_pCodeBlock->vVerify();
+
+  if (AM::JOB::bHasTag(C_WEAVED)) {
+    m_pOptStmt->vDump();
+    vDebugPoint();
+  }
+  if (AM::JOB::bHasTag(C_CODE_BLOCK)) {
+    if (m_pCodeBlock)
+      m_pCodeBlock->vDump();
+    vDebugPoint();
+  }
+
+//  m_pDeck->vDump();
+//  vDebugPoint();
 }
 
 /*============================================================================*/

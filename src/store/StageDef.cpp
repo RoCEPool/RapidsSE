@@ -137,6 +137,25 @@ void StageDef::vCode(ExtendedText* pCode)
   m_pCode = pCode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* collapse                                                                   */
+/*----------------------------------------------------------------------------*/
+void StageDef::vCollapseColsReq_scan(OpDef* pOpDef)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
+
+  StreamDef* pStreamDef_arriving = pOpDef->m_pStreamDef_arriving;
+  StreamDef* pStreamDef_emitted  = pOpDef->m_pStreamDef_emitted;
+
+  i8 nCols = pStreamDef_emitted->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pColumn_emitted  = pStreamDef_emitted->pGetColumn(i_Col);
+    Stz* szColNm = pColumn_emitted->szColNm();
+    Column* pColumn_arriving = pStreamDef_arriving->pFindColumn_stripItemise(szColNm);
+    // todo: Alka, change this if you want to
+    pOpDef->m_pColsReq->vAddCol(i_Col,false,pColumn_arriving->iColumnNo());
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* collapse one or more operators into one                                    */
@@ -153,15 +172,36 @@ void StageDef::vCollapseOps(void)
     if (pOpDef_curr->m_sOpNm.bSame("scan"_Stz) &&
         pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
 
-      /// ???
+#ifdef Z_REJIG_STREAMDEFS
+      delete pOpDef_curr->m_pStreamDef_emitted;
+      pOpDef_curr->m_pStreamDef_emitted = nullptr;
 
+      pOpDef_curr->m_pStreamDef_emitted = pOpDef_next->m_pStreamDef_emitted->pDup();
+
+      vCollapseColsReq_scan(pOpDef_curr);
+#endif
+
+      pOpDef_next->m_bCollapsed = true;
+      pOpDef_curr->m_nCollapses++;
+    }
+    else
+    if (pOpDef_curr->m_sOpNm.bSame("indexScan"_Stz) &&
+        pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
+
+#ifdef Z_REJIG_STREAMDEFS
+      delete pOpDef_curr->m_pStreamDef_emitted;
+      pOpDef_curr->m_pStreamDef_emitted = nullptr;
+
+      pOpDef_curr->m_pStreamDef_emitted = pOpDef_next->m_pStreamDef_emitted->pDup();
+
+      vCollapseColsReq_scan(pOpDef_curr);
+#endif
 
       pOpDef_next->m_bCollapsed = true;
       pOpDef_curr->m_nCollapses++;
     }
 
   }
-
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,16 +14,7 @@ enum eAT // access technique
   /* 6 */ AT_ENUMS
 };
 
-static Stz* aAT[]
-{
-  /* 0 */ "none"_Stz,
-  /* 1 */ "exact"_Stz,
-  /* 2 */ "lower"_Stz,
-  /* 3 */ "upper"_Stz,
-  /* 4 */ "range"_Stz,
-  /* 5 */ "scan"_Stz,
-  /* 6 */ "enums"_Stz
-};
+extern Stz* aAT[AT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

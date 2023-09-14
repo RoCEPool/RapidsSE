@@ -42,6 +42,8 @@ Stz* SP_AnnChar::sz(AnnChar* aAnnChar)
   SP_Char spChar1;
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
+                  nullptr,
                   "%s L%03lld C%02lld"_Stz,
                   
                   spChar1.sz(aAnnChar->m_cChar),

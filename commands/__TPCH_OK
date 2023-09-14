@@ -1134,7 +1134,7 @@ begin
     | next broadcast
 
   stage S06 on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    indexJoin lineitem IxL_PARTKEY "bound $I1 $1 =="
     | filter " type BOOLEAN  J1_L_QUANTITY AV <  "
     | project " type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  "
     | combined 0
@@ -1202,7 +1202,7 @@ begin
     | next broadcast
 
   stage S06 on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    indexJoin lineitem IxL_PARTKEY "bound $I1 $1 =="
     | filter " type BOOLEAN  J1_L_QUANTITY AV <  "
     | project " type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  "
     | combined 0
@@ -1249,14 +1249,14 @@ QUERY 18
      | next
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type DATE as O_ORDERDATE J1_O_ORDERDATE , type DECIMAL as O_TOTALPRICE J1_O_TOTALPRICE , type DECIMAL as SUM_QTY SUM_QTY "
      | hash "type INTEGER O_CUSTKEY"
      | combined 0
      | next hashcast
 
    stage S03 on all partitions :
-     indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
+     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
      | project "type VARCHAR as C_NAME J1_C_NAME , type INTEGER as C_CUSTKEY J1_C_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE , type DECIMAL as O_TOTALPRICE O_TOTALPRICE , type DECIMAL as SUM_QTY SUM_QTY "
      | combined 0
      | next
@@ -1303,7 +1303,7 @@ begin
      | next
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
      | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
                 type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
                 type DATE as O_ORDERDATE J1_O_ORDERDATE ,
@@ -1314,7 +1314,7 @@ begin
      | next hashcast
 
    stage S03 on all partitions :
-     indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
+     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
      | project "type VARCHAR as C_NAME J1_C_NAME ,
                 type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
