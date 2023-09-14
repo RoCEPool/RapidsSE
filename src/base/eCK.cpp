@@ -39,6 +39,7 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
+  /* */ "CK_DECISION"_Stz,     // CK_DECISION
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
   /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
@@ -178,6 +179,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
   /* */ "debug"_Stz,           // CK_DEBUG
+  /* */ "decision"_Stz,        // CK_DECISION
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
   /* */ "disp"_Stz,            // CK_DISPOSITION

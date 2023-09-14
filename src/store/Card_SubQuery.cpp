@@ -49,6 +49,7 @@ void Card_SubQuery::vPopulate_subQuery(CardIter* pCI, SubQuery* pSubQuery)
   pCI->G_vAppendChild(CK_SUBQUERY, (new Card_SqyInfo));
   pCI->G_vAppendChild(CK_SQYINFO,  (new Card_SqyNo)       ->SYM(SF_INT_LIT,pCI->G.pBoard->i_Board()));
   pCI->G_vAppendChild(CK_SQYINFO,  (new Card_Disposition) ->SYM(SF_NOTE,   aQO[pSubQuery->eDisposition()]));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_Decision)    ->SYM(SF_NOTE,   "tbd"_Stz));
   pCI->G_vAppendChild(CK_SQYINFO,  (new Card_SqyCalls)    ->SYM(SF_INT_LIT,pSubQuery->nSubQueries()));
 
   pCI->G_vAppendChild(CK_SUBQUERY, (new Card_Caller));

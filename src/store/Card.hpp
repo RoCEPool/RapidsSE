@@ -53,6 +53,7 @@ namespace STORE
 
   class Card_Debug;
   class Card_Deck;
+  class Card_Decision;
   class Card_Direction;
 
   class Card_EXPRLIST;
@@ -446,6 +447,7 @@ namespace STORE
     Card_CostUnicast*   pSub_costUnicast(void);
     Card_Count*         pSub_count(void);
     Card_CrossJoin*     pSub_crossJoin(void);
+    Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);

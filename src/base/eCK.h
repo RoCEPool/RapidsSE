@@ -35,6 +35,7 @@ enum eCK : i8 // card kind
   /* */ CK_CROSSJOIN,
 
   /* */ CK_DEBUG,
+  /* */ CK_DECISION,
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
   /* */ CK_DISPOSITION,
