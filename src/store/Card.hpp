@@ -8,19 +8,17 @@
 #include "BASE.h"
 
 #include "eAL.h"
-#include "ePB.h"
 #include "eGC.h"
+#include "ePB.h"
 #include "eQO.h"
 #include "eRO.h"
 #include "eTE.h"
-#include "eYG.h"
 #include "eXK.h"
+#include "eYG.h"
 
 #include "ChildCards.hpp"
-
-#include "Ribbon.hpp"
-
 #include "Mark.hpp"
+#include "Ribbon.hpp"
 #include "Symbol.hpp"
 
 namespace STORE
@@ -186,16 +184,16 @@ extern Stz* P_EmittedCol;
 extern Stz* P_FixedPos;
 extern Stz* P_HashOf;
 extern Stz* P_HideHeat;
-extern Stz* P_Injected;
 extern Stz* P_InjCrlKey;
+extern Stz* P_Injected;
 extern Stz* P_Invalid;
 extern Stz* P_Itemised;
 extern Stz* P_JoinedBuff;
 extern Stz* P_Key;
 extern Stz* P_Level;
 extern Stz* P_Network;
-extern Stz* P_Payload;
 extern Stz* P_ParamOdn;
+extern Stz* P_Payload;
 extern Stz* P_Permutation;
 extern Stz* P_Pointer;
 extern Stz* P_ProjBump;
@@ -245,8 +243,8 @@ extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
 extern Stz* MARK_NOT;
 extern Stz* MARK_OR;
-extern Stz* MARK_UP;
 extern Stz* MARK_UNVALID;
+extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
 
 extern Stz* C_SQCRLKEY;
@@ -266,28 +264,24 @@ namespace STORE
 
     eCK     m_eCard;
     i8      m_i_Child;
+    i8      m_iFixedDepth;
 
     Mark    m_xMark1;
     Mark    m_xMark2;
 
     Symbol  m_xSymbol;
 
-    Card*   m_pLastPrintParent;
-
-    i8      m_iFixedDepth;
-
-    i8      m_iItemise;
 
     i8 md__SeqNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
-
     i8      m_iFirstPrint;
     eCK     m_eFirst;
     i8      m_iLastPrint;
-
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
+    i8      m_iItemise;
+    Card*   m_pLastPrintParent;
 
   protected:
     // must be last
