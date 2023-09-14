@@ -48,10 +48,9 @@ cp "${ROOT_DIR}/src/base/RelationalMacros.h" "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/store/Ent_int.h"        "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/RluCommon.h"      "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_InflateColumn.h"   "${LAYOUT_DIR}/src/store"
-cp "${ROOT_DIR}/src/store/vFLAT_Parameters.h"      "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_SkipColumn.h"      "${LAYOUT_DIR}/src/store"
 
-cp "${ROOT_DIR}/src/store/vFLAT_Parameters_v2.h"      "${LAYOUT_DIR}/src/store"
+cp "${ROOT_DIR}/src/store/vFLAT_Parameters.h"      "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_PreliminaryCrw_v2.h"  "${LAYOUT_DIR}/src/store"
 
 cp "${ROOT_DIR}/src/store/Fragments/Aggreg.cpp"          "${LAYOUT_DIR}/src/store/Fragments"

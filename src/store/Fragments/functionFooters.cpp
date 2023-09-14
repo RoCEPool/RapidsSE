@@ -16,7 +16,7 @@ int vInflateCrwEnd(struct Dynamic_T* aDynamicT)
   {
     i8* paW;
 
-    #include "vFLAT_Parameters_v2.h"
+    #include "vFLAT_Parameters.h"
 
     __L_LABEL_LOOP__:
 
@@ -50,7 +50,7 @@ int vInflateRowIndexEnd(struct Dynamic_T* aDynamicT)
 
     i8* paW;
 
-    #include "vFLAT_Parameters_v2.h"
+    #include "vFLAT_Parameters.h"
 
     __L_LABEL_LOOP__:
 
@@ -110,7 +110,7 @@ int vIndexScanEnd(struct Dynamic_T* aDynamicT)
 
     i8* paW;
 
-#include "vFLAT_Parameters_v2.h"
+#include "vFLAT_Parameters.h"
 
     __L_LABEL_LOOP__:
 
