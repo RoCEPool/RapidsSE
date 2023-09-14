@@ -101,6 +101,11 @@ a query cancellation request must be sent over a separate connection. This is
 a design principle of the protocol - keep the common operations simple and let
 the exceptional operations be arbitrarily complex.
 
+Similarly, when a client sends a request to the server, the client cannot send
+a second request until the server completes the first one. If the client really
+needs to send a concurrent request then it should open a separate connection
+to the server.
+
 Because the wireline protocol makes use of `Apache Thrift <https://thrift.apache.org/>`_
 for message definitions, it is also limited by the programming languages
 supported by Thrift. However Thrift currently supports a wide variety of
@@ -116,6 +121,11 @@ transport mechanisms such as RPCs (Remote Procedure Calls) but these are not
 used by RapidsSE. This dependency would not be needed if the client or library
 was able to construct a byte-compatible representation of each message
 independently.
+
+Finally, the maximum size of any wireline message is 2\ :sup:`32` – 8 bytes =
+4,294,967,280 bytes. This is because there are 4 bytes (32 bits) allocated in
+the message header to the payload size, minus the size of the header itself
+(8 bytes).
 
 .. _wlpv5Compatibility:
 

@@ -500,6 +500,27 @@ cancelled.
 
 
 .. index::
+   single: wireline protocol; v5, dialogs - ping
+
+Ping Dialog
+-----------
+
+The ping dialog is a very simple dialog whereby the client can check that the
+server is alive and responding to requests. This could, of course, be achieved
+by sending a Query to the server to execute, however the Ping Dialog is simpler
+and faster. The server responds with a ``PingResponse`` message. That message
+does not contain any useful information however its presence indicates that the
+server is alive and responding.
+
+.. _wlpv5PingDialog:
+
+.. figure:: /interfaces/wireline/v5/dialogs/PingDialog.*
+   :align: center
+
+   The Ping Dialog
+
+
+.. index::
    single: wireline protocol; v5, dialogs - termination
 
 Termination Dialog

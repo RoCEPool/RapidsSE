@@ -181,8 +181,8 @@ Message Name                        MessageType ID    Currently
 ``ShutdownNotification``          	  ``10``            No
 ``DisconnectNotification``        	  ``12``            No
 ``DisconnectRequest``             	  ``13``            Yes
-``PingRequest``                       ``15``            No
-``PingResponse``                      ``16``            No
+``PingRequest``                       ``15``            Yes
+``PingResponse``                      ``16``            Yes
 ``ClearTextTunnelRequest``        	  ``21``            Yes
 ``TunnelSupportedResponse``       	  ``22``            Yes
 ``PlainAuthenticationRequest``     	  ``31``            Yes
