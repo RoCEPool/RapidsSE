@@ -10,8 +10,9 @@
 
 #include "XF_Epilog_Column_hashing.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
-#include "XF_Epilog_Itemise_colNm.hpp"
+#include "XF_Epilog_Columns_required.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
+#include "XF_Epilog_Itemise_colNm.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Epilog_stage_cast.hpp"
@@ -20,7 +21,6 @@
 #include "XF_Flatten.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 #include "XF_Flatten_stmCol_To_tblCol.hpp"
-#include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
@@ -29,18 +29,19 @@
 #include "XF_Optimise_Early_projection.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
+#include "XF_Optimise_Static_calc.hpp"
+#include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
 #include "XF_Optimise_gbyAgg_To_ordAgg.hpp"
 #include "XF_Optimise_max_To_top.hpp"
-#include "XF_Optimise_Static_calc.hpp"
 #include "XF_Optimise_scan_To_indexScan.hpp"
-#include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Optimise_sortDesc_limit_To_top.hpp"
+#include "XF_Optimise_sort_limit_All_Levels.hpp"
 #include "XF_Prolog_Add_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
-#include "XF_Prolog_boardNm_To_sqyNm.hpp"
 #include "XF_Prolog_as_Review.hpp"
+#include "XF_Prolog_boardNm_To_sqyNm.hpp"
 #include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Prolog_index_Analysis.hpp"
 #include "XF_Prolog_not_Ops.hpp"
@@ -51,8 +52,6 @@
 #include "XF_Prolog_table_Analysis.hpp"
 #include "XF_Synthesise_code.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
-
-#include "eOT.h"
 
 #include "Job.hpp"
 
@@ -227,6 +226,7 @@ void XF::vTransform(void)
   XF_Epilog_stage_cast::vEpilog(m_pCI);                //
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);          //
   XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);           //
+  XF_Epilog_Column_mapping::vEpilog(m_pCI);            //
   XF_Epilog_Column_mapping::vEpilog(m_pCI);            //
   XF_Epilog_Column_hashing::vEpilog(m_pCI);            //
                                                        //
