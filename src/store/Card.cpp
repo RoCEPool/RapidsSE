@@ -2750,6 +2750,19 @@ Card_Projection* Card::pSub_projection(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Required.hpp"
+Card_Required* Card::pSub_required(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Required* p_required =
+      _pCard_Required(pFindSubCard(CK_REQUIRED));
+  return p_required;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_RowCount.hpp"
 Card_RowCount* Card::pSub_rowCount(void)
 {
@@ -2914,6 +2927,19 @@ Card_SubQuery* Card::pSub_subQuery(void)
   Card_SubQuery* p_subQuery =
       _pCard_SubQuery(pFindSubCard(CK_SUBQUERY));
   return p_subQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Synthesise.hpp"
+Card_Synthesise* Card::pSub_synthesise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Synthesise* pSub_synthesise =
+      _pCard_Synthesise(pFindSubCard(CK_SYNTHESISE));
+  return pSub_synthesise;
 }
 
 /*----------------------------------------------------------------------------*/

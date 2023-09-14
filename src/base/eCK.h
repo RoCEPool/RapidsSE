@@ -97,6 +97,7 @@ enum eCK : i8 // card kind
   /* */ CK_PROJECTION,
 
   /* */ CK_RELNOP,
+  /* */ CK_REQUIRED,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
   /* */ CK_RPNCALC,
@@ -121,6 +122,7 @@ enum eCK : i8 // card kind
   /* */ CK_STREAMSET,
   /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
+  /* */ CK_SYNTHESISE,
 
   /* */ CK_TABLE,
   /* */ CK_TABLEINFO,

@@ -129,6 +129,7 @@ namespace STORE
     Card_Projection *    p_projection;
 
     Card_RelnOp *        p_relnOp;
+    Card_Required *      p_required;
     Card_RowCount *      p_rowCount;
     Card_RowSize *       p_rowSize;
     Card_RpnCalc *       p_rpnCalc;
@@ -151,6 +152,7 @@ namespace STORE
     Card_StreamSet *     p_streamSet;
     Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
+    Card_Synthesise *    p_synthesise;
 
     Card_Table *         p_table;
     Card_TableInfo *     p_tableInfo;

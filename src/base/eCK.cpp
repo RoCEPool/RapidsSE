@@ -100,6 +100,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
+  /* */ "CK_RQUIRED"_Stz,      // CK_REQUIRED
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
@@ -124,6 +125,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_STREAMSET"_Stz,    // CK_STREAMSET
   /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
+  /* */ "CK_SYNTHESISE"_Stz,   // CK_SYNTHESISE
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
   /* */ "CK_TABLEINFO"_Stz,    // CK_TABLEINFO
@@ -241,6 +243,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "projection"_Stz,      // CK_PROJECTION
 
   /* */ "relnOp"_Stz,          // CK_RELNOP
+  /* */ "required"_Stz,        // CK_REQUIRED
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
@@ -265,6 +268,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
   /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
+  /* */ "synthesise"_Stz,      // CK_SYNTHESISE
 
   /* */ "table"_Stz,           // CK_TABLE
   /* */ "tableInfo"_Stz,       // CK_TABLEINFO

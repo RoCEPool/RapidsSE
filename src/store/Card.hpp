@@ -117,6 +117,7 @@ namespace STORE
   class Card_Projection;
 
   class Card_RelnOp;
+  class Card_Required;
   class Card_RowCount;
   class Card_RowSize;
   class Card_RpnCalc;
@@ -140,6 +141,7 @@ namespace STORE
   class Card_StreamSet;
   class Card_SubQuery;
   class Card_SubSet;
+  class Card_Synthesise;
 
   class Card_Table;
   class Card_TableInfo;
@@ -483,6 +485,7 @@ namespace STORE
     Card_PayloadCells*  pSub_payloadCells(void);
     Card_Projection*    pSub_projection(void);
     Card_RelnOp*        pSub_relnOp(void);
+    Card_Required*      pSub_required(void);
     Card_RowCount*      pSub_rowCount(void);
     Card_RowSize*       pSub_rowSize(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
@@ -500,6 +503,7 @@ namespace STORE
     Card_StreamPtn*     pSub_streamPtn(void);
     Card_StreamSet*     pSub_streamSet(void);
     Card_SubQuery*      pSub_subQuery(void);
+    Card_Synthesise*    pSub_synthesise(void);
     Card_Table*         pSub_table(void);
     Card_TableInfo*     pSub_tableInfo(void);
     Card_TableNm*       pSub_tableNm(void);

@@ -108,6 +108,7 @@
 #include "Card_Projection.hpp"
 
 #include "Card_RelnOp.hpp"
+#include "Card_Required.hpp"
 #include "Card_RowCount.hpp"
 #include "Card_RowSize.hpp"
 #include "Card_RpnCalc.hpp"
@@ -131,6 +132,7 @@
 #include "Card_StreamSet.hpp"  //
 #include "Card_SubQuery.hpp"
 #include "Card_SubSet.hpp"
+#include "Card_Synthesise.hpp"
 
 #include "Card_Table.hpp"
 #include "Card_TableInfo.hpp"

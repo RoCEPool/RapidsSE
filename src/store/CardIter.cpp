@@ -1363,6 +1363,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_PROJECTION:       return G.p_projection;
 
     case CK_RELNOP:           return G.p_relnOp;
+    case CK_REQUIRED:         return G.p_required;
     case CK_ROWCOUNT:         return G.p_rowCount;
     case CK_ROWSIZE:          return G.p_rowSize;
     case CK_RPNCALC:          return G.p_rpnCalc;
@@ -1385,6 +1386,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STREAMSET:        return G.p_streamSet;
     case CK_SUBQUERY:         return G.p_subQuery;
     case CK_SUBSET:           return G.p_subSet;
+    case CK_SYNTHESISE:       return G.p_synthesise;
 
     case CK_TABLE:            return G.p_table;
     case CK_TABLEINFO:        return G.p_tableInfo;
@@ -1602,6 +1604,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PROJECTION:       G.p_projection        = _pCard_Projection(pCard); break;
 
     case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
+    case CK_REQUIRED:         G.p_required          = _pCard_Required(pCard); break;
     case CK_ROWCOUNT:         G.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE:          G.p_rowSize           = _pCard_RowSize(pCard); break;
     case CK_RPNCALC:          G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
@@ -1629,6 +1632,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STREAMSET:        G.p_streamSet         = _pCard_StreamSet(pCard); break;
     case CK_SUBQUERY:         G.p_subQuery          = _pCard_SubQuery(pCard); break;
     case CK_SUBSET:           G.p_subSet            = _pCard_SubSet(pCard); break;
+    case CK_SYNTHESISE:       G.p_synthesise        = _pCard_Synthesise(pCard); break;
 
     case CK_TABLE:            G.p_table             = _pCard_Table(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1826,6 +1830,8 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
 
+  G.p_relnOp           = nullptr;
+  G.p_required         = nullptr;
   G.p_rowCount         = nullptr;
   G.p_rowSize          = nullptr;
   G.p_rpnCalc          = nullptr;
@@ -1848,6 +1854,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_streamJoin       = nullptr;
   G.p_subQuery         = nullptr;
   G.p_subSet           = nullptr;
+  G.p_synthesise       = nullptr;
 
   G.p_table            = nullptr;
   G.p_tableInfo        = nullptr;
@@ -2599,6 +2606,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_PROJECTION:   G.p_projection->vValidate(this, iDepth, pCard);  break;
 
       case CK_RELNOP:     G.p_relnOp->vValidate(this, iDepth, pCard);  break;
+      case CK_REQUIRED:   G.p_required->vValidate(this, iDepth, pCard);  break;
       case CK_ROWCOUNT:   G.p_rowCount->vValidate(this, iDepth, pCard);  break;
       case CK_ROWSIZE:    G.p_rowSize->vValidate(this, iDepth, pCard);  break;
       case CK_RPNCALC:    G.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
@@ -2621,6 +2629,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_STREAMSET:  G.p_streamSet->vValidate(this, iDepth, pCard);  break;
       case CK_SUBQUERY:   G.p_subQuery->vValidate(this, iDepth, pCard);  break;
       case CK_SUBSET:     G.p_subSet->vValidate(this, iDepth, pCard);  break;
+      case CK_SYNTHESISE: G.p_synthesise->vValidate(this, iDepth, pCard);  break;
 
       case CK_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
       case CK_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;
