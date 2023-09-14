@@ -42,6 +42,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - -
 
     Card_AbsJoin *       p_absJoin;
+    Card_Address *       p_address;
     Card_Aggreg *        p_aggreg;
     Card_AndConj *       p_andConj;
     Card_As *            p_as;

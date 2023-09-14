@@ -26,6 +26,7 @@
 namespace STORE
 {
   class Card_AbsJoin;
+  class Card_Address;
   class Card_Aggreg;
   class Card_AndConj;
   class Card_As;
@@ -425,6 +426,7 @@ namespace STORE
 
   public:
 
+    Card_Address*       pSub_address(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);

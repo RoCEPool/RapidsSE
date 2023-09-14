@@ -1276,6 +1276,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return G.p_absJoin;
+    case CK_ADDRESS:          return G.p_address;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_ANDCONJ:          return G.p_andConj;
     case CK_AS:               return G.p_as;
@@ -1489,6 +1490,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NONE: break;
 
     case CK_ABSJOIN:          G.p_absJoin          = _pCard_AbsJoin(pCard); break;
+    case CK_ADDRESS:          G.p_address          = _pCard_Address(pCard); break;
     case CK_AGGREG:           G.p_aggreg           = _pCard_Aggreg(pCard);
                               G.p_OP               = (Card_OP*)pCard; break;
     case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);
@@ -1738,6 +1740,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   _precondition_( _MAGIC_, _FOOTER_);
 
   G.p_absJoin          = nullptr;
+  G.p_address          = nullptr;
   G.p_aggreg           = nullptr;
   G.p_andConj          = nullptr;
   G.p_as               = nullptr;
@@ -2506,6 +2509,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
     switch (eChild) {
 
       case CK_ABSJOIN:      G.p_absJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_ADDRESS:      G.p_address->vValidate(this, iDepth, pCard);  break;
       case CK_AGGREG:       G.p_aggreg->vValidate(this, iDepth, pCard);  break;
       case CK_ANDCONJ:      G.p_andConj->vValidate(this, iDepth, pCard);  break;
       case CK_AS:           G.p_as->vValidate(this, iDepth, pCard);  break;

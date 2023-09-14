@@ -11,6 +11,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
+  /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
   /* */ "CK_AS"_Stz,           // CK_AS
@@ -150,6 +151,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
+  /* */ "address"_Stz,         // CK_ADDRESS
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "andConj"_Stz,         // CK_ANDCONJ
   /* */ "as"_Stz,              // CK_AS

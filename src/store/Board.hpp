@@ -15,6 +15,7 @@
 #include "CardCtl.hpp"
 
 #include "Card_AbsJoin.hpp"
+#include "Card_Address.hpp"
 #include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
