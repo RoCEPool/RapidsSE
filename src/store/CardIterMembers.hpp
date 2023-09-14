@@ -42,6 +42,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - -
 
     Card_AbsJoin *       p_absJoin;
+    Card_Address *       p_address;
     Card_Aggreg *        p_aggreg;
     Card_AndConj *       p_andConj;
     Card_As *            p_as;
@@ -67,8 +68,9 @@ namespace STORE
     Card_Count *         p_count;
     Card_CrossJoin *     p_crossJoin;
 
+    Card_Decision *      p_decision;
     Card_Direction *     p_direction;
-    Card_Disposition *     p_disposition;
+    Card_Disposition *   p_disposition;
 
     Card_Expr *          p_expr;
 
@@ -163,6 +165,8 @@ namespace STORE
     Card_Unique *        p_unique;
 
     Card_Where *         p_where;
+
+    Card_XCard *         p_xcard;
 
     Card*                p_NEW;
     Card_OP *            p_OP;

@@ -26,6 +26,7 @@
 namespace STORE
 {
   class Card_AbsJoin;
+  class Card_Address;
   class Card_Aggreg;
   class Card_AndConj;
   class Card_As;
@@ -52,6 +53,7 @@ namespace STORE
 
   class Card_Debug;
   class Card_Deck;
+  class Card_Decision;
   class Card_Direction;
 
   class Card_EXPRLIST;
@@ -153,6 +155,8 @@ namespace STORE
   class Card_Unique;
 
   class Card_Where;
+
+  class Card_XCard;
 
   class CardIter;
 }
@@ -423,6 +427,7 @@ namespace STORE
 
   public:
 
+    Card_Address*       pSub_address(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
     Card_BoolCalc*      pSub_boolCalc(void);
@@ -442,6 +447,7 @@ namespace STORE
     Card_CostUnicast*   pSub_costUnicast(void);
     Card_Count*         pSub_count(void);
     Card_CrossJoin*     pSub_crossJoin(void);
+    Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);
@@ -505,6 +511,7 @@ namespace STORE
     Card_Topology*      pSub_topology(void);
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
+    Card_XCard*         pSub_xcard(void);
 
   private:
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);

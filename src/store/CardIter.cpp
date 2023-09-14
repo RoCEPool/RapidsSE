@@ -1276,6 +1276,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
   switch (eMember) {
 
     case CK_ABSJOIN:          return G.p_absJoin;
+    case CK_ADDRESS:          return G.p_address;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_ANDCONJ:          return G.p_andConj;
     case CK_AS:               return G.p_as;
@@ -1301,6 +1302,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COUNT:            return G.p_count;
     case CK_CROSSJOIN:        return G.p_crossJoin;
 
+    case CK_DECISION:         return G.p_decision;
     case CK_DIRECTION:        return G.p_direction;
     case CK_DISPOSITION:      return G.p_disposition;
 
@@ -1398,6 +1400,8 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_WHERE:            return G.p_where;
 
+    case CK_XCARD:            return G.p_xcard;
+
     default:
       NEVER_REACH
   }
@@ -1487,6 +1491,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_NONE: break;
 
     case CK_ABSJOIN:          G.p_absJoin          = _pCard_AbsJoin(pCard); break;
+    case CK_ADDRESS:          G.p_address          = _pCard_Address(pCard); break;
     case CK_AGGREG:           G.p_aggreg           = _pCard_Aggreg(pCard);
                               G.p_OP               = (Card_OP*)pCard; break;
     case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);
@@ -1522,6 +1527,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP                = (Card_OP*)pCard; break;
 
     case CK_DECK:             G.pDeck               = _pCard_Deck(pCard); break;
+    case CK_DECISION:         G.p_decision          = _pCard_Decision(pCard); break;
     case CK_DIRECTION:        G.p_direction         = _pCard_Direction(pCard); break;
     case CK_DISPOSITION:      G.p_disposition       = _pCard_Disposition(pCard); break;
 
@@ -1641,6 +1647,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_WHERE:            G.p_where             = _pCard_Where(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
 
+    case CK_XCARD:            G.p_xcard             = _pCard_XCard(pCard); break;
+
     default:
       NEVER_REACH
   }
@@ -1734,6 +1742,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   _precondition_( _MAGIC_, _FOOTER_);
 
   G.p_absJoin          = nullptr;
+  G.p_address          = nullptr;
   G.p_aggreg           = nullptr;
   G.p_andConj          = nullptr;
   G.p_as               = nullptr;
@@ -1756,6 +1765,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_count            = nullptr;
   G.p_crossJoin        = nullptr;
 
+  G.p_decision         = nullptr;
   G.p_direction        = nullptr;
   G.p_disposition      = nullptr;
 
@@ -1852,6 +1862,8 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_unique           = nullptr;
 
   G.p_where            = nullptr;
+
+  G.p_xcard            = nullptr;
 
   G.p_NEW              = nullptr;
   G.p_CONJ             = nullptr;
@@ -2500,6 +2512,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
     switch (eChild) {
 
       case CK_ABSJOIN:      G.p_absJoin->vValidate(this, iDepth, pCard);  break;
+      case CK_ADDRESS:      G.p_address->vValidate(this, iDepth, pCard);  break;
       case CK_AGGREG:       G.p_aggreg->vValidate(this, iDepth, pCard);  break;
       case CK_ANDCONJ:      G.p_andConj->vValidate(this, iDepth, pCard);  break;
       case CK_AS:           G.p_as->vValidate(this, iDepth, pCard);  break;
@@ -2525,6 +2538,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_COUNT:        G.p_count->vValidate(this, iDepth, pCard);  break;
       case CK_CROSSJOIN:    G.p_crossJoin->vValidate(this, iDepth, pCard);  break;
 
+      case CK_DECISION:     G.p_decision->vValidate(this, iDepth, pCard);  break;
       case CK_DIRECTION:    G.p_direction->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:  G.p_disposition->vValidate(this, iDepth, pCard);  break;
 
@@ -2621,6 +2635,8 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_UNIQUE:    G.p_unique->vValidate(this, iDepth, pCard);  break;
 
       case CK_WHERE:     G.p_where->vValidate(this, iDepth, pCard);  break;
+
+      case CK_XCARD:     G.p_xcard->vValidate(this, iDepth, pCard);  break;
 
       default:
         NEVER_REACH

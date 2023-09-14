@@ -15,6 +15,7 @@
 #include "CardCtl.hpp"
 
 #include "Card_AbsJoin.hpp"
+#include "Card_Address.hpp"
 #include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
@@ -44,6 +45,7 @@
 
 #include "Card_Debug.hpp"
 #include "Card_Deck.hpp"
+#include "Card_Decision.hpp"
 #include "Card_Direction.hpp"
 
 #include "Card_Expr.hpp"         //
@@ -144,6 +146,8 @@
 #include "Card_Unique.hpp"
 
 #include "Card_Where.hpp"
+
+#include "Card_XCard.hpp"
 
 #include "VertexSpec.hpp"
 #include "DeckSpec.hpp"

@@ -8,6 +8,7 @@ enum eCK : i8 // card kind
   /* */ CK_NONE=0,
 
   /* */ CK_ABSJOIN,
+  /* */ CK_ADDRESS,
   /* */ CK_AGGREG,
   /* */ CK_ANDCONJ,
   /* */ CK_AS,
@@ -34,6 +35,7 @@ enum eCK : i8 // card kind
   /* */ CK_CROSSJOIN,
 
   /* */ CK_DEBUG,
+  /* */ CK_DECISION,
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
   /* */ CK_DISPOSITION,
@@ -134,6 +136,8 @@ enum eCK : i8 // card kind
   /* */ CK_UNIQUE,
 
   /* */ CK_WHERE,
+
+  /* */ CK_XCARD,
 
   /* */ CK_ENUMS
 };

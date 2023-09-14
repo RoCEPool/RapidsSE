@@ -2295,6 +2295,19 @@ Card_CrossJoin* Card::pSub_crossJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Decision.hpp"
+Card_Decision* Card::pSub_decision(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Decision* p_decision =
+      _pCard_Decision(pFindSubCard(CK_DECISION));
+  return p_decision;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Direction.hpp"
 Card_Direction* Card::pSub_direction(void)
 {
@@ -3044,6 +3057,19 @@ Card_Where* Card::pSub_where(void)
   Card_Where* p_where =
       _pCard_Where(pFindSubCard(CK_WHERE));
   return p_where;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_XCard.hpp"
+Card_XCard* Card::pSub_xcard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_XCard* p_xcard =
+      _pCard_XCard(pFindSubCard(CK_XCARD));
+  return p_xcard;
 }
 
 /*============================================================================*/

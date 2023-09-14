@@ -11,6 +11,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
+  /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
   /* */ "CK_AS"_Stz,           // CK_AS
@@ -38,6 +39,7 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
+  /* */ "CK_DECISION"_Stz,     // CK_DECISION
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
   /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
@@ -138,6 +140,8 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
 
+  /* */ "CK_XCARD"_Stz,        // CK_XCARD
+
 //  /* */ "ENUMS"_Stz
 };
 
@@ -148,6 +152,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
+  /* */ "address"_Stz,         // CK_ADDRESS
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "andConj"_Stz,         // CK_ANDCONJ
   /* */ "as"_Stz,              // CK_AS
@@ -174,6 +179,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
   /* */ "debug"_Stz,           // CK_DEBUG
+  /* */ "decision"_Stz,        // CK_DECISION
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
   /* */ "disp"_Stz,            // CK_DISPOSITION
@@ -274,6 +280,8 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "unique"_Stz,          // CK_UNIQUE
 
   /* */ "where"_Stz,           // CK_WHERE
+
+  /* */ "xcard"_Stz,           // CK_XCARD
 
 //  /* */ "ENUMS"_Stz
 };
