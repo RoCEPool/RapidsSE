@@ -13,7 +13,7 @@ __TPCH_SCHEMA
 
 /transliterated
 /weaved
-/keepCodeFile
+/optimiser_trace
 /pipeline_def
 SELECT n_regionkey , n_name FROM nation  where n_regionkey < 2 ;
 
