@@ -54,7 +54,7 @@ namespace STORE
       /* 16 */ NENUMS
     };
 
-    static Stz* aState[];
+    static Stz* aState[NENUMS];
 
     // Current State enum
     apache::thrift::TBase* m_pCurrentMsg;

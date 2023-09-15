@@ -70,7 +70,7 @@ const d8 C_ROWDATARESP_SCALE_UP   = 0.05; // Added
 using namespace com::rapidsdata::wirelineprotocol::messages::compatibility;
 using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
-Stz* AdaptorWL::aState[] {
+Stz* AdaptorWL::aState[eState::NENUMS] {
     /* 00 NONE */                     "NONE"_Stz,
     /* 01 CONNECTED */                "CONNECTED"_Stz,
     /* 02 PROTOCOL_COMPATIBLE */      "PROTOCOL_COMPATIBLE"_Stz,
@@ -87,7 +87,7 @@ Stz* AdaptorWL::aState[] {
     /* 13 API_CHILD_JOB_EXITED */    "API_CHILD_JOB_EXITED"_Stz,
     /* 14 QUERY_COMPLETED */         "QUERY_COMPLETED"_Stz,
     /* 15 DISCONNECTED */            "DISCONNECTED"_Stz,
-    /* 16 NENUMS */                  "NENUM"_Stz
+//  /* 16 NENUMS */                  "NENUM"_Stz
 };
 
 // Static function definitions
@@ -947,7 +947,7 @@ void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType, b
     // to be closed.
     m_eProtocolError = EC_WL_MSG_TOO_BIG; // This causes the socket closure.
     s2K sBuf;
-    sBuf.vSprint("Error: %s; %s;"_Stz, aEC2[m_eProtocolError], aState[m_eProtocolError]);
+    sBuf.vSprint("Error: %s; %s;"_Stz, aEC2[m_eProtocolError], aState[m_eProtocolState]);
 
     ErrorResponse oErrorResponse;
     oErrorResponse.__set_errorString(sBuf.azChar());
@@ -1346,7 +1346,7 @@ void AdaptorWL::processQueryExecuteRequest()
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
                             aEC2[m_eProtocolError],
-                            aState[m_eProtocolError],
+                            aState[m_eProtocolState],
                             pMsg->rowsPerRowDataResponse);
     vNextState(READY);
     return;
@@ -1359,7 +1359,7 @@ void AdaptorWL::processQueryExecuteRequest()
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
                             aEC2[m_eProtocolError],
-                            aState[m_eProtocolError],
+                            aState[m_eProtocolState],
                             pMsg->rowsPerRowDataResponse);
     vNextState(READY);
     return;
