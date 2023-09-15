@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This file compiles all *.thrift files found in subdirectories of here
 # and writes them out into the typical maven source directory.
