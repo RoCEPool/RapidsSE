@@ -38,12 +38,11 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     static eEC eSynthesise(PipelineDef* pPipelineDef);
 
     Stz* szOpSource(void);
-    void vSynthesise(bool bFirstStage, bool bLastStage);
-    eEC  eSketch(Dynamic* pDynamic, Stream* pStream);
     Stz* szStageNm(void);
 
   private:
 
+		void vSynthesise(bool bFirstStage, bool bLastStage);
     eEC  eSynthesise(StageDef* pStageDef);
     void vGetNextLabel(String* psLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault);
 

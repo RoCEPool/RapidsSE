@@ -107,364 +107,8 @@ eEC Stencil::eSynthesise(PipelineDef *pPipelineDef) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* synthesise given pipeline                                                  */
-/*----------------------------------------------------------------------------*/
-eEC Stencil::eSynthesise(StageDef *pStageDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
-
-  bool bInflateGenerated = false;
-  bool bGeneratePotTub = true;
-  bool bGeneratePot = false;
-  bool bPayload = false;
-
-  s256 sHashExpr = ""_Stz;
-  s256 sLimitExpr = ""_Stz;
-
-  OpSketch *pOpSketch = nullptr;
-  OpDef* pHashOpDef = nullptr;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the stage name of stage being synthesised
-  m_szStageNm = pStageDef->szStageNm();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // look for hashOP and limitOp
-  for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
-
-    // get the opDef
-    OpDef *pOpDef = pStageDef->pGet(i_Op);
-
-    if (pOpDef->szOpNm()->bSame("hash"_Stz)) {
-
-      // generate pot
-      bGeneratePot = true;
-
-      // get hash opDef
-      pHashOpDef = pOpDef;
-    }
-
-    if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
-
-      // get limit expr from OpDef
-      sLimitExpr = pOpDef->pArgDef_expr()->szArgVal();
-    }
-  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each operator in the stageDef
-  for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
-
-    // get the opDef
-    OpDef *pOpDef = pStageDef->pGet(i_Op);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for inflate CRW
-    if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
-
-      m_eHandlerKind = HK_CRWBUFFER;
-      m_sLabelLoop = "L_AdvanceNextCrwT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchInflateCrw(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      bInflateGenerated = true;
-      m_ePreviousStencil = SR_IT;
-      continue;
-    }
-
-    // generate code for indexScan OP
-    if (pOpDef->szOpNm()->bSame("indexScan"_Stz)) {
-
-      m_eHandlerKind = HK_INDEXBUFFER;
-      m_sLabelLoop = "L_AdvanceNextIndexT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchIndexScan(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      bInflateGenerated = true;
-      m_ePreviousStencil = SR_IT;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for inflateRow before handling the current operator
-    if (!bInflateGenerated) {
-
-      m_eHandlerKind = HK_ROWBUFFER;
-      m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchInflateRow(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      bInflateGenerated = true;
-      m_ePreviousStencil = SR_IT;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggregOP
-    if (pOpDef->szOpNm()->bSame("aggreg"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchAggreg(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      m_ePreviousStencil = SR_AT;
-      m_eHandlerKind = HK_EOS;
-
-      OpSketch *pAggOpSketch = pOpSketch;
-
-      pOpSketch = pSketchEos(pStageDef);
-      vAppend(pOpSketch);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-      vAppend(pOpSketch);
-
-      bGeneratePotTub = false;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the filterOP
-    if (pOpDef->szOpNm()->bSame("filter"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchFilter(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggregOp
-    if (pOpDef->szOpNm()->bSame("gbyAgg"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchGbyAgg(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      m_ePreviousStencil = SR_PL;
-      m_eHandlerKind = HK_EOS;
-
-      OpSketch *pGbyAggOpSketch = pOpSketch;
-
-      pOpSketch = pSketchEos(pStageDef);
-      vAppend(pOpSketch);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pGbyAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-      vAppend(pOpSketch);
-
-      bGeneratePotTub = false;
-      bPayload = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the hashOp
-    if (pOpDef->szOpNm()->bSame("hash"_Stz)) {
-
-      // handled in pot
-      continue;
-    }
-
-    // generate code for indexJoin OP
-    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz) ||
-        pOpDef->szOpNm()->bSame("crossJoin"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchIndexJoin(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      m_sLabelLoop = "L_AdvanceNextRowJ"_Stz;
-
-      m_ePreviousStencil = SR_TJ;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the limitOP
-    if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
-
-      // limit after a payload will move to EOSHandler
-      if (bPayload) {
-        continue;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchLimit(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the ordAgg
-    if (pOpDef->szOpNm()->bSame("ordAgg"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchOrdAgg(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      m_ePreviousStencil = SR_PL;
-      m_eHandlerKind = HK_EOS;
-
-      OpSketch *pOrdAggOpSketch = pOpSketch;
-
-      pOpSketch = pSketchEos(pStageDef);
-      vAppend(pOpSketch);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pOrdAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-      vAppend(pOpSketch);
-
-      bGeneratePotTub = false;
-      bPayload = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the projectOP
-    if (pOpDef->szOpNm()->bSame("project"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchProject(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      m_ePreviousStencil = SR_PT;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the semiJoinOP
-    if (pOpDef->szOpNm()->bSame("keyExists"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchSemiJoin(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the antiJoinOP
-    if (pOpDef->szOpNm()->bSame("keyNotExists"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchAntiJoin(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the sort OP
-    if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchSort(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      m_ePreviousStencil = SR_PL;
-      m_eHandlerKind = HK_EOS;
-
-      OpSketch *pSortOpSketch = pOpSketch;
-
-      pOpSketch = pSketchEos(pStageDef);
-      vAppend(pOpSketch);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-      vAppend(pOpSketch);
-
-      bGeneratePotTub = false;
-      bPayload = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the top OP
-    if (pOpDef->szOpNm()->bSame("top"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchTop(pStageDef, pOpDef);
-      vAppend(pOpSketch);
-
-      m_ePreviousStencil = SR_PL;
-      m_eHandlerKind = HK_EOS;
-
-      OpSketch *pTopOpSketch = pOpSketch;
-
-      pOpSketch = pSketchEos(pStageDef);
-      vAppend(pOpSketch);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-      vAppend(pOpSketch);
-
-      bGeneratePotTub = false;
-      bPayload = true;
-      continue;
-    }
-
-  }
-
-  OpSketch* pLastOpSketch = pOpSketch;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the POT/TUB if not already generated
-  if ( bGeneratePotTub ) {
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // sketch pot/tub
-    pOpSketch = pSketchPotTub(pLastOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-    vAppend(pOpSketch);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // sketch EOS handler function
-    m_eHandlerKind = HK_EOS;
-    pOpSketch = pSketchEos(pStageDef);
-    vAppend(pOpSketch);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sketch StreamDef function
-  m_eHandlerKind = HK_STREAMDEF;
-  pOpSketch = pSketchStreamDef(pLastOpSketch);
-  vAppend(pOpSketch);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //vTrace("OpSketch's generated for stage %s to be synthesised: \n"_Stz, pStageDef->szStageNm());
-
-  // for (i8 i_OpSketch = 0; i_OpSketch < nItems(); i_OpSketch++) {
-  //   OpSketch* pOpSketch = pGet(i_OpSketch);
-  //   vTrace("  %s\n"_Stz, aSK[pOpSketch->m_eSketchKind]);
-  // }
-
-  return EC_NONE;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* synthesizecode for all operators for given stage                           */
-/*----------------------------------------------------------------------------*/
-void Stencil::vSynthesise(bool bFirstStage, bool bLastStage)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // synthesize the code for the combined operators
-  m_pOpSource->vSynthesizeCode(this, bFirstStage, bLastStage);
-
-}
 
 /*----------------------------------------------------------------------------*/
 /* return op source code                                                      */
@@ -498,6 +142,361 @@ Stz* Stencil::szStageNm(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* synthesizecode for all operators for given stage                           */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSynthesise(bool bFirstStage, bool bLastStage)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// synthesize the code for the combined operators
+	m_pOpSource->vSynthesizeCode(this, bFirstStage, bLastStage);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* synthesise operators for given stage                                       */
+/*----------------------------------------------------------------------------*/
+eEC Stencil::eSynthesise(StageDef *pStageDef)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
+
+	bool bInflateGenerated = false;
+	bool bGeneratePotTub = true;
+	bool bGeneratePot = false;
+	bool bPayload = false;
+
+	s256 sHashExpr = ""_Stz;
+	s256 sLimitExpr = ""_Stz;
+
+	OpSketch *pOpSketch = nullptr;
+	OpDef* pHashOpDef = nullptr;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// get the stage name of stage being synthesised
+	m_szStageNm = pStageDef->szStageNm();
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// look for hashOP and limitOp
+	for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
+
+		// get the opDef
+		OpDef *pOpDef = pStageDef->pGet(i_Op);
+
+		if (pOpDef->szOpNm()->bSame("hash"_Stz)) {
+
+			// generate pot
+			bGeneratePot = true;
+
+			// get hash opDef
+			pHashOpDef = pOpDef;
+		}
+
+		if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
+
+			// get limit expr from OpDef
+			sLimitExpr = pOpDef->pArgDef_expr()->szArgVal();
+		}
+	}
+
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// for each operator in the stageDef
+	for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
+
+		// get the opDef
+		OpDef *pOpDef = pStageDef->pGet(i_Op);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for inflate CRW
+		if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
+
+			m_eHandlerKind = HK_CRWBUFFER;
+			m_sLabelLoop = "L_AdvanceNextCrwT"_Stz;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchInflateCrw(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			bInflateGenerated = true;
+			m_ePreviousStencil = SR_IT;
+			continue;
+		}
+
+		// generate code for indexScan OP
+		if (pOpDef->szOpNm()->bSame("indexScan"_Stz)) {
+
+			m_eHandlerKind = HK_INDEXBUFFER;
+			m_sLabelLoop = "L_AdvanceNextIndexT"_Stz;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchIndexScan(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			bInflateGenerated = true;
+			m_ePreviousStencil = SR_IT;
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for inflateRow before handling the current operator
+		if (!bInflateGenerated) {
+
+			m_eHandlerKind = HK_ROWBUFFER;
+			m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchInflateRow(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			bInflateGenerated = true;
+			m_ePreviousStencil = SR_IT;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the aggregOP
+		if (pOpDef->szOpNm()->bSame("aggreg"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchAggreg(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			m_ePreviousStencil = SR_AT;
+			m_eHandlerKind = HK_EOS;
+
+			OpSketch *pAggOpSketch = pOpSketch;
+
+			pOpSketch = pSketchEos(pStageDef);
+			vAppend(pOpSketch);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchPotTub(pAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			vAppend(pOpSketch);
+
+			bGeneratePotTub = false;
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the filterOP
+		if (pOpDef->szOpNm()->bSame("filter"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchFilter(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the aggregOp
+		if (pOpDef->szOpNm()->bSame("gbyAgg"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchGbyAgg(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			m_ePreviousStencil = SR_PL;
+			m_eHandlerKind = HK_EOS;
+
+			OpSketch *pGbyAggOpSketch = pOpSketch;
+
+			pOpSketch = pSketchEos(pStageDef);
+			vAppend(pOpSketch);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchPotTub(pGbyAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			vAppend(pOpSketch);
+
+			bGeneratePotTub = false;
+			bPayload = true;
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the hashOp
+		if (pOpDef->szOpNm()->bSame("hash"_Stz)) {
+
+			// handled in pot
+			continue;
+		}
+
+		// generate code for indexJoin OP
+		if (pOpDef->szOpNm()->bSame("indexJoin"_Stz) ||
+				pOpDef->szOpNm()->bSame("crossJoin"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchIndexJoin(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			m_sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+
+			m_ePreviousStencil = SR_TJ;
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the limitOP
+		if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
+
+			// limit after a payload will move to EOSHandler
+			if (bPayload) {
+				continue;
+			}
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchLimit(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the ordAgg
+		if (pOpDef->szOpNm()->bSame("ordAgg"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchOrdAgg(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			m_ePreviousStencil = SR_PL;
+			m_eHandlerKind = HK_EOS;
+
+			OpSketch *pOrdAggOpSketch = pOpSketch;
+
+			pOpSketch = pSketchEos(pStageDef);
+			vAppend(pOpSketch);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchPotTub(pOrdAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			vAppend(pOpSketch);
+
+			bGeneratePotTub = false;
+			bPayload = true;
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the projectOP
+		if (pOpDef->szOpNm()->bSame("project"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchProject(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			m_ePreviousStencil = SR_PT;
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the semiJoinOP
+		if (pOpDef->szOpNm()->bSame("keyExists"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchSemiJoin(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the antiJoinOP
+		if (pOpDef->szOpNm()->bSame("keyNotExists"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchAntiJoin(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the sort OP
+		if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchSort(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			m_ePreviousStencil = SR_PL;
+			m_eHandlerKind = HK_EOS;
+
+			OpSketch *pSortOpSketch = pOpSketch;
+
+			pOpSketch = pSketchEos(pStageDef);
+			vAppend(pOpSketch);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			vAppend(pOpSketch);
+
+			bGeneratePotTub = false;
+			bPayload = true;
+			continue;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// generate the code for the top OP
+		if (pOpDef->szOpNm()->bSame("top"_Stz)) {
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchTop(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			m_ePreviousStencil = SR_PL;
+			m_eHandlerKind = HK_EOS;
+
+			OpSketch *pTopOpSketch = pOpSketch;
+
+			pOpSketch = pSketchEos(pStageDef);
+			vAppend(pOpSketch);
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			vAppend(pOpSketch);
+
+			bGeneratePotTub = false;
+			bPayload = true;
+			continue;
+		}
+
+	}
+
+	OpSketch* pLastOpSketch = pOpSketch;
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// generate the code for the POT/TUB if not already generated
+	if ( bGeneratePotTub ) {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// sketch pot/tub
+		pOpSketch = pSketchPotTub(pLastOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+		vAppend(pOpSketch);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// sketch EOS handler function
+		m_eHandlerKind = HK_EOS;
+		pOpSketch = pSketchEos(pStageDef);
+		vAppend(pOpSketch);
+	}
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// sketch StreamDef function
+	m_eHandlerKind = HK_STREAMDEF;
+	pOpSketch = pSketchStreamDef(pLastOpSketch);
+	vAppend(pOpSketch);
+
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	//vTrace("OpSketch's generated for stage %s to be synthesised: \n"_Stz, pStageDef->szStageNm());
+
+	// for (i8 i_OpSketch = 0; i_OpSketch < nItems(); i_OpSketch++) {
+	//   OpSketch* pOpSketch = pGet(i_OpSketch);
+	//   vTrace("  %s\n"_Stz, aSK[pOpSketch->m_eSketchKind]);
+	// }
+
+	return EC_NONE;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
