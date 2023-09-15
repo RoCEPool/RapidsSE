@@ -179,6 +179,7 @@ void StageDef::vCollapseOps(void)
     if (pOpDef_curr->m_sOpNm.bSame("scan"_Stz) &&
         pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
 
+      RASSERT(pOpDef_next->m_pCard->pSymbol()->Y_bHas(P_Collapsed));
 
       delete pOpDef_curr->m_pStreamDef_emitted;
       pOpDef_curr->m_pStreamDef_emitted = nullptr;
@@ -210,6 +211,8 @@ void StageDef::vCollapseOps(void)
     else
     if (pOpDef_curr->m_sOpNm.bSame("indexScan"_Stz) &&
         pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
+
+      RASSERT(pOpDef_next->m_pCard->pSymbol()->Y_bHas(P_Collapsed));
 
       delete pOpDef_curr->m_pStreamDef_emitted;
       pOpDef_curr->m_pStreamDef_emitted = nullptr;

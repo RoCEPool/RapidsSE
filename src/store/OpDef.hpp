@@ -20,7 +20,9 @@ namespace STORE
   public:
     i8   m_i_Op;
     s32  m_sOpNm;
-    char md_Bearing[256];
+    char md_Coord[256];
+
+    Card* m_pCard;
 
     i8   m_nCollapses;
     bool m_bCollapsed;
@@ -53,7 +55,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-     OpDef(i8 i_Op, Stz* szOpNm, Stz* zzBearing=nullptr);
+     OpDef(i8 i_Op, Stz* szOpNm, Card* pCard);
     ~OpDef(void) noexcept(false);
 
     i8      nArgs(void);

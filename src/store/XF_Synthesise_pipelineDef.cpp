@@ -198,15 +198,15 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(Card_OP* p_OP)
     return;
 
        if (p_OP->bIsCard(CK_HAVING))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz, p_OP->szCoord());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz, p_OP);
   else if (p_OP->bIsCard(CK_HASH))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz, p_OP->szCoord());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz, p_OP);
   else if (p_OP->bIsCard(CK_FROM))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz, p_OP->szCoord());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz, p_OP);
   else if (p_OP->bIsCard(CK_WHERE))
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz, p_OP->szCoord());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz, p_OP);
   else
-    m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm(), p_OP->szCoord());
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm(), p_OP);
 
   m_pStageDef->vAppend(m_pOpDef);
 

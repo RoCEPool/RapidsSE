@@ -8,6 +8,7 @@ Stz* aXF[XF_ENUMS]
 {
   /* */ "XF_NONE"_Stz,
 
+  /* */ "XF_EPILOG_COLLAPSE_OP"_Stz,
   /* */ "XF_EPILOG_COLUMN_HASHING"_Stz,
   /* */ "XF_EPILOG_COLUMN_MAPPING"_Stz,
   /* */ "XF_EPILOG_ITEMISE_COLNM"_Stz,
@@ -90,6 +91,7 @@ Stz* aXF_desc[XF_ENUMS]
 {
   /* */ "none"_Stz, // XF_NONE
 
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_COLLAPSE_OP
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_COLUMN_MAPPING
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMISE_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMSTRIP_COLNM

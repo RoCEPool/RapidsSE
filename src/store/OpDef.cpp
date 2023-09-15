@@ -18,7 +18,7 @@ __aFooterFunction(OpDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
+OpDef::OpDef(i8 i_Op, Stz* szOpNm, Card* pCard)
     : Object(CN_OPDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
@@ -26,9 +26,10 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
   vOp(i_Op);
   vOpNm(szOpNm);
 
-  MemLib::vZero(md_Bearing,sizeof(md_Bearing),CN_OPDEF);
-  if (szBearing)
-    StrLib::vCopy(md_Bearing, sizeof(md_Bearing), szBearing->azChar());
+  m_pCard = pCard;
+
+  MemLib::vZero(md_Coord, sizeof(md_Coord), CN_OPDEF);
+  StrLib::vCopy(md_Coord, sizeof(md_Coord), pCard->szCoord()->azChar());
 
   m_nCollapses = 0;
   m_bCollapsed = false;
@@ -57,7 +58,6 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -215,7 +215,7 @@ void OpDef::vDump(i8 i_Tab)
          m_sOpNm.szStz(),
          m_bCollapsed ? " COLLAPSED" : "",
          m_nCollapses,
-         md_Bearing);
+         md_Coord);
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {

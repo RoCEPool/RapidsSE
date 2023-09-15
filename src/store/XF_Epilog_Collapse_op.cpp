@@ -43,11 +43,11 @@ void XF_Epilog_Collapse_op::vEpilog(CardIter* pCI)
 {
   _static_
 
-  XF_Epilog_Collapse_op* pXF_Column_Mapping = new XF_Epilog_Collapse_op(pCI);
+  XF_Epilog_Collapse_op* pEpilog_Collapse_op = new XF_Epilog_Collapse_op(pCI);
 
-  pXF_Column_Mapping->vXF_Columns_required();
+  pEpilog_Collapse_op->vCollapse_op();
 
-  delete pXF_Column_Mapping;
+  delete pEpilog_Collapse_op;
 }
 
 
@@ -58,11 +58,23 @@ void XF_Epilog_Collapse_op::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* columns required                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Collapse_op::vXF_Columns_required(void)
+void XF_Epilog_Collapse_op::vCollapse_op(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLLAPSE_OP, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_COLLAPSE_OP, "collapse op"_Stz);
+
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain(CK_SCAN)) {
+    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT))))
+      m_pCI->G.p_project->pSymbol()->Y_vSet(P_Collapsed);
+  }
+
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
+    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT))))
+      m_pCI->G.p_project->pSymbol()->Y_vSet(P_Collapsed);
+  }
 
   m_pCI->vEndTransform();
 }
