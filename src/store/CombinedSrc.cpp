@@ -295,7 +295,27 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         break;
 
       case SK_ORDAGG:
-        RASSERT(0);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// open the aggregate code fragments file
+				bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/OrdAgg.cpp"_Stz);
+				RASSERT ( bOpened );
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator begin
+				//vOperatorBegin(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilTo(pOpSketch);
+				vAppendCodeFragment(pOpSketch, "vOrdAggBegin"_Stz, pOperatorFile);
+
+				vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz, pOperatorFile);
+				vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
+				vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz, pOperatorFile);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// close the aggregate code fragments file
+				pOperatorFile->vClose();
+
         break;
 
       case SK_PROJECT:

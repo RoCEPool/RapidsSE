@@ -906,15 +906,15 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 
   i8 i_Op = pOpDef->i_Op();
 
-  // get the grouby aggregate expr from OpDef
-  Stz* sGbyAggExpr = pOpDef->pArgDef_expr()->szArgVal();
+  // get the ordered groupBy aggregate expr from OpDef
+  Stz* sOrdAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sGbyAggExpr, m_eHandlerKind, SK_ORDAGG, m_ePreviousStencil, SR_AT, II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sOrdAggExpr, m_eHandlerKind, SK_ORDAGG, m_ePreviousStencil, SR_AT, II_PL);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -924,11 +924,11 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
-  // set the indexDef
-  IndexDef *pIndexDef = nullptr; // pOpDef->m_pIndexDef_ordAgg;
-  pOpSketch->vIndexDef(pIndexDef);
+	// generate the expression stacks
+	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer $1\n"
+																 " aggregates type integer $K1 , type decimal as total )  $5 sum"_Stz);
 
-  return nullptr;
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/

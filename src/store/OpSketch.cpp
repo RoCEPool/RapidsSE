@@ -113,7 +113,10 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
     m_pGbyStack = new TypedStack(KK_DATA_STACK);
     m_pOrdAggStack = new TypedStack(KK_DATA_STACK);    // ALKA COME BACK TO THIS
   }
-  else {
+	else if (eSketchKind == SK_ORDAGG) {
+		m_pGbyStack = new TypedStack(KK_DATA_STACK);
+	}
+	else {
     m_pGbyStack = nullptr;
     m_pOrdAggStack = nullptr;
   }

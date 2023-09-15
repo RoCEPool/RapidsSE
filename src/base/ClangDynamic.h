@@ -51,6 +51,7 @@ struct Dynamic_T
   i8 m_iRowsProcessed;
   i8 m_iLimitRows;
 
+	bool m_bHasAggRow;
   bool m_bIndexScan;
 
   // rowBuffer T
