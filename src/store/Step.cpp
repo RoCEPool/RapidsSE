@@ -193,7 +193,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Stage();
   Step::vAddSteps_StageOfOp();
   Step::vAddSteps_Stats();
-  Step::vAddSteps_Stencil();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_Stream();
