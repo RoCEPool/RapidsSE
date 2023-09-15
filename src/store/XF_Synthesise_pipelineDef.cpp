@@ -8,7 +8,7 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "PipelineDef.hpp"
-#include "Stencil_v2.hpp"
+#include "Stencil.hpp"
 
 #include "Symbol.hpp"
 #include "Table.hpp"

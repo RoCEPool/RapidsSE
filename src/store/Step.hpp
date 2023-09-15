@@ -176,7 +176,7 @@ namespace STORE
     static void vAddSteps_Stage(void);
     static void vAddSteps_StageOfOp(void);
     static void vAddSteps_Stats(void);
-    static void vAddSteps_Stencil_v2(void);
+    static void vAddSteps_Stencil(void);
     static void vAddSteps_Steps(void);
     static void vAddSteps_Str(void);
     static void vAddSteps_Stream(void);

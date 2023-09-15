@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Stencil_v2.cpp -- stencil step group                                 */
+/* Steps_Stencil.cpp -- stencil step group                                 */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -18,64 +18,64 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Stencil_v2(void)
+void Step::vAddSteps_Stencil(void)
 {
-  vAddStep("Stencil_v2[]"_Stz,           &Step::vStencilGet_v2);
-  vAddStep("Stencil_v2[].delete"_Stz,    &Step::vStencilDelete_v2);
-  vAddStep("Stencil_v2[].new"_Stz,       &Step::vStencilNew_v2);
-  vAddStep("Stencil_v2[].setup"_Stz,     &Step::vStencilSetup_v2);
-  vAddStep("Stencil_v2[].sketch"_Stz,    &Step::vStencilSketch_v2);
-  vAddStep("Stencil_v2[].source@"_Stz,   &Step::vStencilSourceFetch_v2);
+  vAddStep("Stencil[]"_Stz,           &Step::vStencilGet);
+  vAddStep("Stencil[].delete"_Stz,    &Step::vStencilDelete);
+  vAddStep("Stencil[].new"_Stz,       &Step::vStencilNew);
+  vAddStep("Stencil[].setup"_Stz,     &Step::vStencilSetup);
+  vAddStep("Stencil[].sketch"_Stz,    &Step::vStencilSketch);
+  vAddStep("Stencil[].source@"_Stz,   &Step::vStencilSourceFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Stencil_v2[].delete -- delete stencil                                      */
+/* Stencil[].delete -- delete stencil                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vStencilDelete_v2(void)
+void Step::vStencilDelete(void)
 {
   ENTRY();
 
   //vTrace("vStencilDelete\n"_Stz);
 
-//  delete * m_pLogicUnit->m_xpStencil_v2;
+//  delete * m_pLogicUnit->m_xpStencil;
 //
-//  m_pLogicUnit->m_xpStencil_v2 = nullptr;
+//  m_pLogicUnit->m_xpStencil = nullptr;
 
-  m_pLogicUnit->m_xpStencil_v2.vDeleteComponent();
+  m_pLogicUnit->m_xpStencil.vDeleteComponent();
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Stencil_v2[].get -- get stencil                                            */
+/* Stencil[].get -- get stencil                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vStencilGet_v2(void)
+void Step::vStencilGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStencil_v2);
+  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStencil);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Stencil_v2[].new -- new stencil                                            */
+/* Stencil[].new -- new stencil                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vStencilNew_v2(void)
+void Step::vStencilNew(void)
 {
   ENTRY();
 
   //vTrace("vStencilNew\n"_Stz);
 
-  m_pLogicUnit->m_xpStencil_v2 = new Stencil_v2;
+  m_pLogicUnit->m_xpStencil = new Stencil;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Stencil_v2[].setup -- use stencil to setup                                 */
+/* Stencil[].setup -- use stencil to setup                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vStencilSetup_v2(void)
+void Step::vStencilSetup(void)
 {
   ENTRY();
 
@@ -92,13 +92,13 @@ void Step::vStencilSetup_v2(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Stencil_v2[].sketch -- use stencil to sketch                               */
+/* Stencil[].sketch -- use stencil to sketch                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vStencilSketch_v2(void)
+void Step::vStencilSketch(void)
 {
   ENTRY();
 /*
-  Stencil_v2* pStencil   = * m_pLogicUnit->m_xpStencil_v2;
+  Stencil* pStencil   = * m_pLogicUnit->m_xpStencil;
 
   Dynamic* pDynamic = _pDynamic(m_pDataStack->pPopPtr(__func__));
 
@@ -132,13 +132,13 @@ void Step::vStencilSketch_v2(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Stencil_v2[].source@ -- get sketched source                                */
+/* Stencil[].source@ -- get sketched source                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vStencilSourceFetch_v2(void)
+void Step::vStencilSourceFetch(void)
 {
   ENTRY();
 
-  Stencil_v2* pStencil = * m_pLogicUnit->m_xpStencil_v2;
+  Stencil* pStencil = * m_pLogicUnit->m_xpStencil;
   
   Stz* szSource = pStencil->szOpSource();
 

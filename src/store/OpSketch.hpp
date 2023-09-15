@@ -35,7 +35,7 @@ namespace STORE
   {
 
     friend class CombinedSrc;
-    friend class Stencil_v2;
+    friend class Stencil;
     friend class CodeSynthUtils;
 
   private:

@@ -161,7 +161,7 @@
 #include "StageSpec.hpp"
 #include "Starter.hpp"
 #include "Statement.hpp"
-#include "Stencil_v2.hpp"
+#include "Stencil.hpp"
 #include "Steps.hpp"
 #include "Stream.hpp"
 #include "StreamDefRht.hpp"
@@ -697,7 +697,7 @@ SizeHeap gxaSizeHeap[]
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
-  { CN_STENCIL_V2,               sizeof(Stencil_v2),         HT_T_LARGE   ,FILL },
+  { CN_STENCIL,                  sizeof(Stencil),            HT_T_LARGE   ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },
   { CN_STEPACCUM,                sizeof(StepAccum),          HT_INVALID   ,FILL },
   { CN_STEPS,                    sizeof(Steps),              HT_T_LARGE   ,FILL },

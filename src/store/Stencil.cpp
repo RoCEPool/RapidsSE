@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* Stencil_v2.cpp -- Op Stencil_v2                                            */
+/* Stencil.cpp -- Op Stencil                                            */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "Stencil_v2.hpp"
+#include "Stencil.hpp"
 #include "Stream.hpp"
 #include "StreamDef.hpp"
 #include "Op.hpp"
@@ -25,17 +25,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Stencil_v2,CN_STENCIL_V2)
-__aNewFunction(Stencil_v2,CN_STENCIL_V2)
-__vDeleteFunction(Stencil_v2,CN_STENCIL_V2)
-__aFooterFunction(Stencil_v2)
+__pCastFunction(STORE,Stencil,CN_STENCIL)
+__aNewFunction(Stencil,CN_STENCIL)
+__vDeleteFunction(Stencil,CN_STENCIL)
+__aFooterFunction(Stencil)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stencil_v2::Stencil_v2(void)
+Stencil::Stencil(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   m_szStageNm    = ""_Stz;
   m_pOpSource    = nullptr;
@@ -54,17 +54,17 @@ Stencil_v2::Stencil_v2(void)
     throw xInternalError;
   }
 
-  _checkInitialised_(CN_STENCIL_V2);
+  _checkInitialised_(CN_STENCIL);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Stencil_v2::~Stencil_v2(void) noexcept(false)
+Stencil::~Stencil(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   delete m_pOpSource;
 }
@@ -76,23 +76,23 @@ Stencil_v2::~Stencil_v2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair and delete the stencil                                              */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vRepair(Object* pObject)
+void Stencil::vRepair(Object* pObject)
 {
   _static_
 
-  Stencil_v2* pStencil_v2 = _pStencil_v2(pObject);
+  Stencil* pStencil = _pStencil(pObject);
 
   // repair the stencil
   // ...
   
   // delete the stencil object
-  delete pStencil_v2;
+  delete pStencil;
 }
 
 /*----------------------------------------------------------------------------*/
 /* synthesise given pipeline                                                  */
 /*----------------------------------------------------------------------------*/
-eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
+eEC Stencil::eSynthesise(PipelineDef *pPipelineDef) {
   _static_
 
   eEC eErrorCode;
@@ -102,7 +102,7 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesise the code for each stage
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stencil_v2* pStencil = new Stencil_v2;
+    Stencil* pStencil = new Stencil;
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
     eErrorCode = pStencil->eSynthesise(pStageDef);
     if (eErrorCode != EC_NONE) {
@@ -125,9 +125,9 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
 /*----------------------------------------------------------------------------*/
 /* synthesise given pipeline                                                  */
 /*----------------------------------------------------------------------------*/
-eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
+eEC Stencil::eSynthesise(StageDef *pStageDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   bool bInflateGenerated = false;
   bool bGeneratePotTub = true;
@@ -472,9 +472,9 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 /*----------------------------------------------------------------------------*/
 /* synthesizecode for all operators for given stage                           */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSynthesise(bool bFirstStage, bool bLastStage)
+void Stencil::vSynthesise(bool bFirstStage, bool bLastStage)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize the code for the combined operators
@@ -485,9 +485,9 @@ void Stencil_v2::vSynthesise(bool bFirstStage, bool bLastStage)
 /*----------------------------------------------------------------------------*/
 /* return op source code                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* Stencil_v2::szOpSource(void)
+Stz* Stencil::szOpSource(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
   
   char* azCode = m_pOpSource->azCode();
 
@@ -504,9 +504,9 @@ Stz* Stencil_v2::szOpSource(void)
 /*----------------------------------------------------------------------------*/
 /* return op stage name                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* Stencil_v2::szStageNm(void)
+Stz* Stencil::szStageNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   return (Stz*)m_szStageNm;
 }
@@ -518,8 +518,8 @@ Stz* Stencil_v2::szStageNm(void)
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vGetNextLabel(String* psLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+void Stencil::vGetNextLabel(String* psLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   i8 iNextOp = i_Op + 1;
 
@@ -543,9 +543,9 @@ void Stencil_v2::vGetNextLabel(String* psLabelNext, StageDef* pStageDef, i8 i_Op
 /*----------------------------------------------------------------------------*/
 /* sketch code for indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
+OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   OpSketch *pOpSketch;
 
@@ -611,9 +611,9 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
+OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   OpSketch* pOpSketch;
 
@@ -673,9 +673,9 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch inflate compact rows of crwBuffer)                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   OpSketch* pOpSketch;
 
@@ -717,9 +717,9 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch inflate of row from rowBuffer                                       */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   OpSketch *pOpSketch;
 
@@ -750,9 +750,9 @@ OpSketch* Stencil_v2::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch eos                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchEos(StageDef* pStageDef) {
+OpSketch* Stencil::pSketchEos(StageDef* pStageDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -772,9 +772,9 @@ OpSketch* Stencil_v2::pSketchEos(StageDef* pStageDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch filter                                                              */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -809,9 +809,9 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch semiJoin                                                            */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   OpSketch *pOpSketch;
 
@@ -875,9 +875,9 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch limit                                                               */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -913,9 +913,9 @@ OpSketch* Stencil_v2::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch ordered aggregatewith group by                                      */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -951,9 +951,9 @@ OpSketch* Stencil_v2::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef)
+OpSketch* Stencil::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -989,9 +989,9 @@ OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch antiJoin                                                            */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
+OpSketch* Stencil::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   OpSketch *pOpSketch;
 
@@ -1051,9 +1051,9 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
+OpSketch* Stencil::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -1088,10 +1088,10 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch project group by expressions                                        */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
+OpSketch* Stencil::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
 {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -1140,10 +1140,10 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch sort                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
+OpSketch* Stencil::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
 {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -1191,9 +1191,9 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch streamDef                                                           */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp) {
+OpSketch* Stencil::pSketchStreamDef(OpSketch* pLastOp) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -1214,10 +1214,10 @@ OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch top                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
+OpSketch* Stencil::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
 {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
@@ -1270,9 +1270,9 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr) {
+OpSketch* Stencil::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, OpDef* pHashOpDef, Stz* sLimitExpr) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
