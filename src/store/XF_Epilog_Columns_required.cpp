@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Columns_required.cpp -- Column Mapping                                    */
+/* XF_Epilog_Columns_required.cpp -- Columns required                         */
 /*============================================================================*/
 
 #include "XF_Epilog_Columns_required.hpp"
@@ -43,11 +43,11 @@ void XF_Epilog_Columns_required::vEpilog(CardIter* pCI)
 {
   _static_
 
-  XF_Epilog_Columns_required* pXF_Column_Mapping = new XF_Epilog_Columns_required(pCI);
+  XF_Epilog_Columns_required* pXF_Columns_required = new XF_Epilog_Columns_required(pCI);
 
-  pXF_Column_Mapping->vXF_Columns_required();
+  pXF_Columns_required->vXF_Columns_required();
 
-  delete pXF_Column_Mapping;
+  delete pXF_Columns_required;
 }
 
 
@@ -62,7 +62,11 @@ void XF_Epilog_Columns_required::vXF_Columns_required(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_COLUMNS_REQUIRED, "columns required"_Stz);
+
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain_NONE()) {
+  }
 
   m_pCI->vEndTransform();
 }

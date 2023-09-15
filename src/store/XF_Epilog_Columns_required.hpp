@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Columns_required.hpp -- Column Required                          */
+/* XF_Epilog_Columns_required.hpp -- Columns required                         */
 /*============================================================================*/
 #pragma once
 
