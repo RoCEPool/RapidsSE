@@ -1,0 +1,71 @@
+.. only:: html
+
+  .. contents:: Contents of this section:
+     :depth: 3
+     :backlinks: none
+
+
+.. index::
+   single: JDBC driver; introduction
+
+.. _jdbcDriverIntro:
+
+Introduction
+============
+
+About the JDBC Driver
+---------------------
+
+The RapidsSE JDBC driver is the primary supported method for accessing RapidsSE
+from a client application. It is a type 4 JDBC driver that provides a programmatic
+interface for Java applications to RapidsSE. A type 4 JDBC driver is written
+entirely in Java and communicates with the database system using the database
+system’s own network protocol. Because of this, the driver is platform independent;
+once compiled, the driver can be used on any system.
+
+The RapidsSE JDBC driver is based on the similar RapidsDB JDBC driver, however
+while the two are very similar and share a lot of code, the two are not
+compatible. This is not only because of differences in the version of the
+underlying wireline protocol that they both use, but also with how the JDBC driver
+implements certain functions such as metadata retrieval. The RapidsDB JDBC driver
+also has support for federated data sources which RapidsSE and its JDBC driver
+does not need to handle.
+
+This section of the documentation describes how to configure and use the RapidsSE
+JDBC driver. It is not intended to be a guide for programming with JDBC. For more
+information on JDBC the user should refer to the standard JDBC API documentation.
+
+Architecture
+------------
+
+TODO
+
+TODO add architecture diagram
+
+The JDBC driver communicates with a node in the RapidsSE cluster using a
+Thrift-based messaging protocol (referred to as the
+:ref:`RapidsSE Wireline Protocol <wirelineProtocolInterface>`).
+The JDBC Driver can be configured on the client (see 4.2) to use any of the
+nodes in the RapidsSE cluster, and there can be multiple JDBC drivers
+communicating with different nodes in the RapidsSE cluster at any time.
+
+Limits & Constraints
+--------------------
+
+- The RapidsSE JDBC driver is not compatible with RapidsDB. Similarly, the
+  RapidsDB JDBC driver is not compatible with RapidsSE. Both drivers have
+  different JDBC URLs to protect against accidentally using one driver against
+  the other server.
+
+Requirements and Dependencies
+-----------------------------
+
+The driver has been tested under Java runtime 11. It has not certified for use
+under prior versions of Java.
+
+The driver uses the Java package SLF4J to integrate with client logging frameworks.
+The driver will emit a warning message from SLF4J if there is no logging framework
+supplied by the client application. The JDBC driver complies with the SLF4J logging
+API, but it is up to the end-user to provide a logging framework compatible to SLF4J.
+
+

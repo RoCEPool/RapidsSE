@@ -9,8 +9,8 @@ Interfaces
 .. toctree::
    :maxdepth: 1
 
-   shell
-   jdbcDriver
+   seShell/index
+   jdbcDriver/index
    wireline/index
 
 
