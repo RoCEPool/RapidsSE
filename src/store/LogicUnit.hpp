@@ -157,7 +157,6 @@ namespace STORE
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
-    REG<Stencil,        CN_STENCIL       > m_xpStencil;
     REG<Stream,         CN_STREAM        > m_xpStream;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;

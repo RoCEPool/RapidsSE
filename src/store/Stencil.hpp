@@ -35,8 +35,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     Stencil(void);
    ~Stencil(void) noexcept(false);
 
-    static void vRepair(Object* pObject);
-
     static eEC eSynthesise(PipelineDef* pPipelineDef);
 
     Stz* szOpSource(void);

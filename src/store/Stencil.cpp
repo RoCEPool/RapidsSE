@@ -74,22 +74,6 @@ Stencil::~Stencil(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repair and delete the stencil                                              */
-/*----------------------------------------------------------------------------*/
-void Stencil::vRepair(Object* pObject)
-{
-  _static_
-
-  Stencil* pStencil = _pStencil(pObject);
-
-  // repair the stencil
-  // ...
-  
-  // delete the stencil object
-  delete pStencil;
-}
-
-/*----------------------------------------------------------------------------*/
 /* synthesise given pipeline                                                  */
 /*----------------------------------------------------------------------------*/
 eEC Stencil::eSynthesise(PipelineDef *pPipelineDef) {
