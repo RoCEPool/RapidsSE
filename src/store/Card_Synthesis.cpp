@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Synthesise.cpp -- Synthesise Info                                     */
+/* Card_Synthesis.cpp -- Synthesis Info                                       */
 /*============================================================================*/
 
-#include "Card_Synthesise.hpp"
+#include "Card_Synthesis.hpp"
 
 #include "CardIter.hpp"
 
@@ -10,16 +10,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Synthesise,CK_SYNTHESISE)
-__aNewFunction(Card_Synthesise,CN_CARD)
-__vDeleteFunction(Card_Synthesise,CN_CARD)
+__pCastFunction_Card(STORE, Card_Synthesis, CK_SYNTHESIS)
+__aNewFunction(Card_Synthesis, CN_CARD)
+__vDeleteFunction(Card_Synthesis, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Synthesise::Card_Synthesise(void)
-: Card_symbol(CK_SYNTHESISE, C_UNKNOWN)
+Card_Synthesis::Card_Synthesis(void)
+: Card_symbol(CK_SYNTHESIS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -31,7 +31,7 @@ Card_Synthesise::Card_Synthesise(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Synthesise::~Card_Synthesise(void) noexcept(false)
+Card_Synthesis::~Card_Synthesis(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,7 +43,7 @@ Card_Synthesise::~Card_Synthesise(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Synthesise::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_Synthesis::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

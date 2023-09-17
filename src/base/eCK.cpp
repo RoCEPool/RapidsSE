@@ -125,7 +125,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_STREAMSET"_Stz,    // CK_STREAMSET
   /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
-  /* */ "CK_SYNTHESISE"_Stz,   // CK_SYNTHESISE
+  /* */ "CK_SYNTHESIS"_Stz,   // CK_SYNTHESIS
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
   /* */ "CK_TABLEINFO"_Stz,    // CK_TABLEINFO
@@ -268,7 +268,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
   /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
-  /* */ "synthesise"_Stz,      // CK_SYNTHESISE
+  /* */ "synthesise"_Stz,      // CK_SYNTHESIS
 
   /* */ "table"_Stz,           // CK_TABLE
   /* */ "tableInfo"_Stz,       // CK_TABLEINFO

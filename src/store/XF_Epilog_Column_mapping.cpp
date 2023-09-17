@@ -66,19 +66,19 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_GBYAGG)) {
-    m_pCI->G_vAppendNewChild(CK_GBYAGG,CK_SYNTHESISE);
+    m_pCI->G_vAppendNewChild(CK_GBYAGG, CK_SYNTHESIS);
     m_pCI->G.p_gbyAgg->vColumn_Mapping(m_pCI);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SORT)) {
-    m_pCI->G_vAppendNewChild(CK_SORT,CK_SYNTHESISE);
+    m_pCI->G_vAppendNewChild(CK_SORT, CK_SYNTHESIS);
     m_pCI->G.p_sort->vColumn_Mapping(m_pCI);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_TOP)) {
-    m_pCI->G_vAppendNewChild(CK_TOP,CK_SYNTHESISE);
+    m_pCI->G_vAppendNewChild(CK_TOP, CK_SYNTHESIS);
     m_pCI->G.p_top->vColumn_Mapping(m_pCI);
   }
 

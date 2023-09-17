@@ -2932,14 +2932,14 @@ Card_SubQuery* Card::pSub_subQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Synthesise.hpp"
-Card_Synthesise* Card::pSub_synthesise(void)
+#include "Card_Synthesis.hpp"
+Card_Synthesis* Card::pSub_synthesis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Synthesise* pSub_synthesise =
-      _pCard_Synthesise(pFindSubCard(CK_SYNTHESISE));
-  return pSub_synthesise;
+  Card_Synthesis* pSub_synthesis =
+      _pCard_Synthesis(pFindSubCard(CK_SYNTHESIS));
+  return pSub_synthesis;
 }
 
 /*----------------------------------------------------------------------------*/
