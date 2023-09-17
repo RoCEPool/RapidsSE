@@ -29,7 +29,7 @@ __aFooterFunction(XF_Synthesise_pipelineDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Synthesise_pipelineDef::XF_Synthesise_pipelineDef(CardIter* pCI)
-: XF_SYNTHESISE(CN_XF_SYNTHESISE_PIPELINEDEF,pCI)
+    : XF_SYNTHESISE(CN_XF_SYNTHESISE_PIPELINEDEF,pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
@@ -190,20 +190,15 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   Card* p_OP = m_pCI->G.p_OP;
 
-  if (p_OP->pSymbol()->Y_bHas(P_Collapsed))
-    return;
+  if (p_OP->bIsCard(CK_KEYEXISTS))
+    vDebugPoint();
 
   if (p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;
 
-  if (p_OP->bIsCard(CK_KEYEXISTS))
-    vDebugPoint();
-
   m_pOpDef = new OpDef(m_pStageDef->nItems(), p_OP);
 
   m_pStageDef->vAppend(m_pOpDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vCraftStreamDefs();
   vCraftIndexes();
@@ -231,6 +226,8 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
   switch (eCard) {
 
     case CK_AGGREG:       p_OP->vRpnAggreg      (sExpr, _pCard_Aggreg      (p_OP)); break;
+    case CK_CAST:         break;
+    case CK_COMBINED:     break;
     case CK_CROSSJOIN:    p_OP->vRpnCrossJoin   (sExpr, _pCard_CrossJoin   (p_OP)); break;
     case CK_FILTER:       p_OP->vRpnFilter      (sExpr, _pCard_Filter      (p_OP)); break;
     case CK_GBYAGG:       p_OP->vRpnGbyAgg      (sExpr, _pCard_GbyAgg      (p_OP)); break;
@@ -244,7 +241,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_ORDAGG:       p_OP->vRpnOrdAgg      (sExpr, _pCard_OrdAgg      (p_OP)); break;
     case CK_PROJECT:      p_OP->vRpnProject     (sExpr, _pCard_Project     (p_OP)); break;
     case CK_SCAN:         p_OP->vRpnScan        (sExpr, _pCard_Scan        (p_OP)); break;
+    case CK_SEND:         break;
     case CK_SORT:         p_OP->vRpnSort        (sExpr, _pCard_Sort        (p_OP)); break;
+    case CK_TABLE:        break;
     case CK_TOP:          p_OP->vRpnTop         (sExpr, _pCard_Top         (p_OP)); break;
     case CK_WHERE:        p_OP->vRpnWhere       (sExpr, _pCard_Where       (p_OP)); break;
 
@@ -261,6 +260,13 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_AGGREG:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
+
+    case CK_CAST:
+      m_pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szSymbol(SF_NONE)));
+      break;
+
+//    case CK_COMBINED:
+//      break;
 
     case CK_CROSSJOIN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
@@ -337,8 +343,15 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
       break;
 
+    case CK_SEND:
+      break;
+
     case CK_SORT:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_TABLE:
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Table(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
       break;
 
     case CK_TOP:
@@ -427,8 +440,8 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   }
 #endif
 
-  ColMap** ppColMap = nullptr;
 
+  ColMap** ppColMap = nullptr;
   if (p_OP->bIsCard(CK_GBYAGG))
     ppColMap = &m_pOpDef->m_pColMap_gbyAgg;
   else
@@ -469,7 +482,7 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
     case CK_KEYNOTEXISTS:
     case CK_SCAN:
       p_table = p_OP->pSub_table();
-       break;
+      break;
 
     case CK_TABLE:
       p_table = _pCard_Table(p_OP);
@@ -531,8 +544,8 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vUpdateColsReq_filter(Card_Table* p_table,
-                                               ColsReq* pColsReq,
-                                               Card_Filter* p_filter)
+                                                      ColsReq* pColsReq,
+                                                      Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
@@ -544,8 +557,8 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_filter(Card_Table* p_table,
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vUpdateColsReq_project(Card_Table* p_table,
-                                                ColsReq* pColsReq,
-                                                Card_Project* p_project)
+                                                       ColsReq* pColsReq,
+                                                       Card_Project* p_project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
@@ -557,8 +570,8 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_project(Card_Table* p_table,
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vUpdateColsReq_Scan(Card_Table* p_table,
-                                             ColsReq* pColsReq,
-                                             Card_Scan* p_scan)
+                                                    ColsReq* pColsReq,
+                                                    Card_Scan* p_scan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
   UNUSED(p_table);
@@ -589,8 +602,8 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_Scan(Card_Table* p_table,
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vUpdateColsReq_IndexJoin(Card_Table* p_table,
-                                                  ColsReq* pColsReq,
-                                                  Card_IndexJoin* p_indexJoin)
+                                                         ColsReq* pColsReq,
+                                                         Card_IndexJoin* p_indexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
@@ -626,8 +639,8 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_IndexJoin(Card_Table* p_table,
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vUpdateColsReq_terms(Card_Table* p_table,
-                                              ColsReq* pColsReq,
-                                              Card* pSubCard)
+                                                     ColsReq* pColsReq,
+                                                     Card* pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
