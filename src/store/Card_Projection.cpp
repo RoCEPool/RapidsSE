@@ -97,6 +97,29 @@ void Card_Projection::vAdjust_Wrt_key(Card_Key* p_key)
 }
 
 /*----------------------------------------------------------------------------*/
+/* as review                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vAs_Review(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xProjection(this); xProjection.bEach(); /**/) {
+    Card_Expr *p_expr_prj = xProjection.p_expr();
+
+    if (p_expr_prj->bIsScalarKey()) {
+      Symbol* pSymbol_key_term = p_expr_prj->pGetTerm(0)->pSymbol();
+
+      if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
+        Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
+
+        p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol(SF_NONE));
+        p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
+      }
+    }
+  }
+
+}
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pClone(void)
@@ -282,6 +305,91 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vMapColumns(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Cell = 0;
+  i8 i_Emit = 0;
+
+  for (Kid xProjection(pCI->G.p_projection); xProjection.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_projection = xProjection.p_expr();
+
+    if (p_expr_projection->bIsExpressionOfKey()) {
+      Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
+
+      Card_Map* p_map_keyCell = pCI->G.p_keyCells->pDecodeMap(pSymbol_keyCol);
+
+      i_Emit++;
+      p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
+      p_map_keyCell->pSymbol()->Y_vSet(P_StmCol, p_expr_projection->szSymbol(SF_NONE));
+
+    }
+    else {
+      i_Cell++;
+      i_Emit++;
+      pCI->G_vAppendNewChild(pCI->G.p_payloadCells, CK_MAP,p_expr_projection->pSymbol());
+      pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+
+      pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
+    }
+  }
+
+
+
+
+  i8 nExpr_key = 0;
+  i8 i_Cell_key;
+  i8 i_Emitted = 1;
+  i8 i_Cell_payload = 1;
+
+
+  for (Kid xPrjn(pCI->G.p_projection); xPrjn.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_prjn = xPrjn.p_expr();
+
+    if (p_expr_prjn->bIsExpressionOfKey()) {
+
+      //pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP);
+
+      nExpr_key++;
+
+      Symbol *pSymbol_key = p_expr_prjn->pFirstKeyCol();
+
+      i_Cell_key = pSymbol_key->iSF_ordinal();
+
+      p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+      p_expr_prjn->pSymbol()->Y_vSet(P_Key);
+      p_expr_prjn->pSymbol()->Y_vSet(P_Cell, i_Cell_key);
+    }
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    else {
+
+      //pCI->G_vAppendNewChild(pCI->G.p_payloadCells,CK_MAP);
+
+      Symbol* pSymbol_stmCol_projection = p_expr_prjn->pFirstStmCol();
+
+      if (pSymbol_stmCol_projection) {
+        i_Cell_payload = pSymbol_stmCol_projection->iSF_ordinal() - nExpr_key;
+
+        p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Payload);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
+      }
+      else {
+
+        p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Payload);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
+      }
+
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* propagate this projection                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pPropagate(CardIter* pCI) {
@@ -383,29 +491,6 @@ Card_Expr* Card_Projection::pResolve_expr(Card_Term* p_term)
   }
 
   return nullptr;
-}
-/*----------------------------------------------------------------------------*/
-/* as review                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_Projection::vAs_Review(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xProjection(this); xProjection.bEach(); /**/) {
-    Card_Expr *p_expr_prj = xProjection.p_expr();
-
-    if (p_expr_prj->bIsScalarKey()) {
-      Symbol* pSymbol_key_term = p_expr_prj->pGetTerm(0)->pSymbol();
-
-      if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
-        Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
-
-        p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol(SF_NONE));
-        p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
-      }
-    }
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/

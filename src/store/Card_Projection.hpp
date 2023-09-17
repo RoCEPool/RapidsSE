@@ -21,6 +21,8 @@ namespace STORE
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
     void vAdjust_Wrt_key(Card_Key* p_key);
+    void vAs_Review(CardIter* pCI);
+
     Card_Projection* pClone(void);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
@@ -32,10 +34,9 @@ namespace STORE
     Card_Expr* pFindExprOfAs(Symbol* pSymbol);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     bool bHasTerm(Symbol* pSymbol);
+    void vMapColumns(CardIter* pCI);
     Card_Projection* pReducedCopy(CardIter* pCI);
     Card_Expr* pResolve_expr(Card_Term* p_term);
-
-    void vAs_Review(CardIter* pCI);
 
     StreamDef* pToStreamDef(ColMap* pColMap,
                             Card_Key* p_key,
