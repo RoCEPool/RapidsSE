@@ -185,6 +185,25 @@ void Card_Key::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* map the columns of this key                                                */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vMapColumns(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Cell = 0;
+
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_key = xKey.p_expr();
+
+    i_Cell++;
+    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
+    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Card_Key::szP_Type(void)

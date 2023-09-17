@@ -77,19 +77,14 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
 
   i8 i_Emit = 0;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // map the columns of the key
+
+  pCI->G.p_key->vMapColumns(pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   i8 i_Cell = 0;
-  for (Kid xKey(pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
-    Card_Expr *p_expr_key = xKey.p_expr();
-
-    i_Cell++;
-    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
-    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
-
-
-    //pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
-  }
-
-  i_Cell = 0;
   for (Kid xProjection(pCI->G.p_projection); xProjection.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_projection = xProjection.p_expr();
 
