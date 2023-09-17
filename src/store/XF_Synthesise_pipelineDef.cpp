@@ -33,7 +33,7 @@ XF_Synthesise_pipelineDef::XF_Synthesise_pipelineDef(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  m_pCI = pCI;
+  m_pCI  = pCI;
 
   m_pPipelineDef = nullptr;
   m_pStageDef    = nullptr;
@@ -129,9 +129,7 @@ void XF_Synthesise_pipelineDef::vSynthesise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
-
-  vCraftPipelineDef(pBoard);
+  vCraftPipelineDef();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,25 +139,22 @@ void XF_Synthesise_pipelineDef::vSynthesise(void)
 /*----------------------------------------------------------------------------*/
 /* craft pipeline def                                                         */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftPipelineDef(Board* pBoard)
+void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
 
   s32 sQueryNm = pBoard->pBench()->pOptimiser()->szQueryNm();
 
   m_pPipelineDef = new PipelineDef(sQueryNm);
 
-  Kid xDeck(pBoard->pDeck());
-  while (xDeck.bEach()) {
-
-    if (xDeck.pChild()->szCardNm()->bSame("stage"_Stz)) {
-      vCraftStageDef(xDeck.p_stage());
-    }
-    else {
-      RASSERT(m_pStageDef);
-      vCraftOpDef(xDeck.p_OP());
-    }
-
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain_NONE()) {
+    if (m_pCI->G.p_OP->bIsCard(CK_STAGE))
+      vCraftStageDef();
+    else
+      vCraftOpDef();
   }
 
   m_pPipelineDef->vCollapseOps();
@@ -174,22 +169,26 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* craft stage def                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftStageDef(Card_Stage* p_stage)
+void XF_Synthesise_pipelineDef::vCraftStageDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
-                             p_stage->szSymbol(SF_NONE),
-                             p_stage);
+                             m_pCI->G.p_stage->szSymbol(SF_NONE),
+                             m_pCI->G.p_stage);
   m_pPipelineDef->vAppend(m_pStageDef);
 }
 
 /*----------------------------------------------------------------------------*/
 /* craft op def                                                               */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftOpDef(Card_OP* p_OP)
+void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  RASSERT(m_pStageDef);
+
+  Card* p_OP = m_pCI->G.p_OP;
 
   if (p_OP->bIsCard(CK_KEYEXISTS))
     vDebugPoint();
@@ -201,19 +200,21 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(Card_OP* p_OP)
 
   m_pStageDef->vAppend(m_pOpDef);
 
-  vCraftStreamDefs(p_OP);
-  vCraftIndexes(p_OP);
-  vCraftIndexDefs(p_OP);
-  vCraftArgDefs(p_OP);
-  vUpdateColsReq(p_OP);
+  vCraftStreamDefs();
+  vCraftIndexes();
+  vCraftIndexDefs();
+  vCraftArgDefs();
+  vUpdateColsReq();
 }
 
 /*----------------------------------------------------------------------------*/
 /* craft arg def                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftArgDefs(Card_OP* p_OP)
+void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Card_OP* p_OP = m_pCI->G.p_OP;
 
   s2K sExpr;
   s2K sConstraint;
@@ -374,9 +375,11 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft indexes                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftIndexes(Card_OP* p_OP)
+void XF_Synthesise_pipelineDef::vCraftIndexes(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Card_OP* p_OP = m_pCI->G.p_OP;
 
   eCK eCard = p_OP->eCard();
 
@@ -399,9 +402,11 @@ void XF_Synthesise_pipelineDef::vCraftIndexes(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft index def's                                                          */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftIndexDefs(Card_OP* p_OP)
+void XF_Synthesise_pipelineDef::vCraftIndexDefs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Card_OP* p_OP = m_pCI->G.p_OP;
 
   eCK eCard = p_OP->eCard();
 
@@ -418,9 +423,11 @@ void XF_Synthesise_pipelineDef::vCraftIndexDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft stream def's for operator                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftStreamDefs(Card_OP* p_OP)
+void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Card_OP* p_OP = m_pCI->G.p_OP;
 
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
@@ -456,9 +463,11 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq(Card_OP* p_OP)
+void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Card* p_OP = m_pCI->G.p_OP;
 
   eCK eCard_OP = p_OP->eCard();
 

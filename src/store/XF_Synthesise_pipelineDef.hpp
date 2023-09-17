@@ -43,18 +43,18 @@ namespace STORE
     void vSynthesise(void);
 
   private:
-    void vCraftPipelineDef(Board* pBoard);
+    void vCraftPipelineDef(void);
 
-    void vCraftStageDef(Card_Stage*p_stage);
-    void vCraftOpDef(Card_OP* p_OP);
-    void vCraftArgDefs(Card_OP* p_OP);
+    void vCraftStageDef(void);
+    void vCraftOpDef(void);
+    void vCraftArgDefs(void);
 
-    void vCraftIndexes(Card_OP* p_OP);
+    void vCraftIndexes(void);
 
-    void vCraftIndexDefs(Card_OP* p_OP);
-    void vCraftStreamDefs(Card_OP* p_OP);
+    void vCraftIndexDefs(void);
+    void vCraftStreamDefs(void);
 
-    void vUpdateColsReq(Card_OP* p_OP);
+    void vUpdateColsReq(void);
 
     void vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq,
                                Card_Filter* p_filter);
