@@ -64,6 +64,14 @@ void XF_Epilog_Add_synthesis::vAdd_synthesis(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_ADD_SYNTHESIS, "add synthesis"_Stz);
 
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain_NONE()) {
+    if (m_pCI->G.p_MainCard->bIsOne(CK_STAGE,CK_NONE))
+      continue;
+
+    m_pCI->G_vAppendNewChild(m_pCI->G.p_MainCard, CK_SYNTHESIS);
+  }
+
   m_pCI->vEndTransform();
 }
 
