@@ -255,6 +255,7 @@
 #include "Weaver.hpp"
 
 #include "XF.hpp"
+#include "XF_Epilog_Add_synthesis.hpp"
 #include "XF_Epilog_Collapse_op.hpp"
 #include "XF_Epilog_Column_hashing.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
@@ -782,6 +783,7 @@ SizeHeap gxaSizeHeap[]
   {CN__X__,                    'X' - ('A' - 1),                        HT_INVALID   , FILL },
   {CN_XC,                       sizeof(XC),                            HT_T_TINY    , FILL },
   {CN_XF,                       sizeof(XF),                            HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_ADD_SYNTHESIS, sizeof(XF_Epilog_Add_synthesis),        HT_T_TINY    , FILL },
   {CN_XF_LEFT_SUBQUERY,         sizeof(XF_Flatten_Left_subQuery),      HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMISE_COLNM,  sizeof(XF_Epilog_Itemise_colNm),       HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMSTRIP_COLNM,sizeof(XF_Epilog_ItemStrip_colNm),     HT_T_TINY    , FILL },

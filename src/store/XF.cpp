@@ -8,6 +8,7 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
+#include "XF_Epilog_Add_synthesis.hpp"
 #include "XF_Epilog_Collapse_op.hpp"
 #include "XF_Epilog_Column_hashing.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
@@ -227,6 +228,8 @@ void XF::vTransform(void)
   XF_Epilog_stage_cast::vEpilog(m_pCI);                //
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);          //
   XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);           //
+                                                       //
+  XF_Epilog_Add_synthesis::vEpilog(m_pCI);             //
   XF_Epilog_Column_mapping::vEpilog(m_pCI);            //
   XF_Epilog_Collapse_op::vEpilog(m_pCI);               //
   XF_Epilog_Columns_required::vEpilog(m_pCI);          //
