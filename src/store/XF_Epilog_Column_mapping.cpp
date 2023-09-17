@@ -66,17 +66,17 @@ void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_SYNTHESIS)) {
-    m_pCI->G.p_gbyAgg->vColumn_Mapping(m_pCI);
+    m_pCI->G.p_OP->vMapColumns(m_pCI);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_SORT,CK_SYNTHESIS)) {
-    m_pCI->G.p_sort->vColumn_Mapping(m_pCI);
+    m_pCI->G.p_OP->vMapColumns(m_pCI);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_TOP,CK_SYNTHESIS)) {
-    m_pCI->G.p_top->vColumn_Mapping(m_pCI);
+    m_pCI->G.p_OP->vMapColumns(m_pCI);
   }
 
   m_pCI->vEndTransform();

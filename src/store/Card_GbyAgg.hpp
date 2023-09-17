@@ -20,9 +20,6 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy);
 
-    void vColumn_Mapping(CardIter* pCI);
-
-
     void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_root(CardIter* pCI);

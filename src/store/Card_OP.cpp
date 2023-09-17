@@ -404,6 +404,31 @@ bool Card_OP::bIsOriginLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* column mapping                                                             */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vMapColumns(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_key = pSub_key();
+  pCI->G.p_projection = pSub_projection();
+
+  pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_MAPPING);
+  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
+  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // map the columns of the key
+
+  pCI->G.p_key->vMapColumns(pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // map the columns of the projection
+
+  pCI->G.p_projection->vMapColumns(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this op at partition level                                              */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bIsPartitionLevel(void)
