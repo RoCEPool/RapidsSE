@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stencil_v2.hpp -- Op Stencil_v2                                            */
+/* Stencil.hpp -- Op Stencil                                                  */
 /*============================================================================*/
 #pragma once
 
@@ -14,7 +14,7 @@ namespace STORE
 {
 static const i8 C_MAX_OPS_PER_STAGE = 32;
 
-  class Stencil_v2 : public VectorNL_t<CN_STENCIL_V2,OpSketch,C_MAX_OPS_PER_STAGE>
+  class Stencil : public VectorNL_t<CN_STENCIL,OpSketch,C_MAX_OPS_PER_STAGE>
   {
   private:
 
@@ -32,20 +32,17 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Stencil_v2(void);
-   ~Stencil_v2(void) noexcept(false);
-
-    static void vRepair(Object* pObject);
+    Stencil(void);
+   ~Stencil(void) noexcept(false);
 
     static eEC eSynthesise(PipelineDef* pPipelineDef);
 
     Stz* szOpSource(void);
-    void vSynthesise(bool bFirstStage, bool bLastStage);
-    eEC  eSketch(Dynamic* pDynamic, Stream* pStream);
     Stz* szStageNm(void);
 
   private:
 
+		void vSynthesise(bool bFirstStage, bool bLastStage);
     eEC  eSynthesise(StageDef* pStageDef);
     void vGetNextLabel(String* psLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault);
 
@@ -71,7 +68,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     Footer* aFooter(void);
   };
   
-  Stencil_v2* _pStencil_v2(void* aAddr);
+  Stencil* _pStencil(void* aAddr);
 }
 
 /*============================================================================*/

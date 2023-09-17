@@ -83,7 +83,7 @@ CombinedSrc::~CombinedSrc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Synthesize code for the combined operators                                 */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool bLastStage)
+void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLastStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
@@ -295,7 +295,27 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         break;
 
       case SK_ORDAGG:
-        RASSERT(0);
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// open the aggregate code fragments file
+				bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/OrdAgg.cpp"_Stz);
+				RASSERT ( bOpened );
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator begin
+				//vOperatorBegin(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilTo(pOpSketch);
+				vAppendCodeFragment(pOpSketch, "vOrdAggBegin"_Stz, pOperatorFile);
+
+				vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz, pOperatorFile);
+				vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
+				vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz, pOperatorFile);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// close the aggregate code fragments file
+				pOperatorFile->vClose();
+
         break;
 
       case SK_PROJECT:

@@ -1,0 +1,43 @@
+/*============================================================================*/
+/* _ordAgg                                                                    */
+/*============================================================================*/
+
+_lineitem;
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+load lineitem "../DATA/TPCH/lineitem10.csv";
+
+/pipeline_def
+/weaved
+/keepCodeFile
+select sum(l_quantity) from lineitem;
+//select l_orderkey, sum(l_quantity) from lineitem where l_orderkey >= 2 group by l_orderkey ;
+
+/*
+/optimise_passthru
+/keepCodeFile
+/pipeline_def
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 2 >="
+    | ordAgg " ORDGROUPBY type integer $1
+               aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    //| gbyAgg " groupby type integer $1
+    //           aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    //| aggreg "type decimal as total )  $5 sum"
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

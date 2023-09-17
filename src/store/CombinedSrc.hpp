@@ -17,7 +17,7 @@ namespace STORE {
 
   static const i8 C_FLATTEN_SOURCE_V2 = C_256K; //C_SIZE_LARGE_OBJECT - C_1KB;
 
-  class Stencil_v2;
+  class Stencil;
 
   //----------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ namespace STORE {
     CombinedSrc(void);
     ~CombinedSrc(void) noexcept(false);
 
-    void vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool bLastStage);
+    void vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLastStage);
 
     char *azCode(void);
 
