@@ -18,15 +18,23 @@ __aFooterFunction(OpDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDef::OpDef(i8 i_Op, Stz* szOpNm, Card* pCard)
+OpDef::OpDef(i8 i_Op, Card* pCard)
     : Object(CN_OPDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   vOp(i_Op);
-  vOpNm(szOpNm);
-
   m_pCard = pCard;
+
+  //vOpNm(szOpNm);
+
+       if (pCard->bIsCard(CK_HAVING)) vOpNm("filter"_Stz);
+  else if (pCard->bIsCard(CK_HASH))   vOpNm("hash"_Stz);
+  else if (pCard->bIsCard(CK_FROM))   vOpNm("scan"_Stz);
+  else if (pCard->bIsCard(CK_WHERE))  vOpNm("filter"_Stz);
+  else
+    vOpNm(pCard->szCardNm());
+
 
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_OPDEF);
   StrLib::vCopy(md_Coord, sizeof(md_Coord), pCard->szCoord()->azChar());

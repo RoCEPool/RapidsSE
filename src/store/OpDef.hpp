@@ -55,7 +55,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-     OpDef(i8 i_Op, Stz* szOpNm, Card* pCard);
+     OpDef(i8 i_Op, Card* pCard);
     ~OpDef(void) noexcept(false);
 
     i8      nArgs(void);
