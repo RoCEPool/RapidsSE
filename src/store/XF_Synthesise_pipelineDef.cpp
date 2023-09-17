@@ -243,7 +243,6 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_SCAN:         p_OP->vRpnScan        (sExpr, _pCard_Scan        (p_OP)); break;
     case CK_SEND:         break;
     case CK_SORT:         p_OP->vRpnSort        (sExpr, _pCard_Sort        (p_OP)); break;
-    case CK_TABLE:        break;
     case CK_TOP:          p_OP->vRpnTop         (sExpr, _pCard_Top         (p_OP)); break;
     case CK_WHERE:        p_OP->vRpnWhere       (sExpr, _pCard_Where       (p_OP)); break;
 
@@ -264,9 +263,6 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_CAST:
       m_pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szSymbol(SF_NONE)));
       break;
-
-//    case CK_COMBINED:
-//      break;
 
     case CK_CROSSJOIN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
@@ -348,10 +344,6 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
     case CK_SORT:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
-      break;
-
-    case CK_TABLE:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Table(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
       break;
 
     case CK_TOP:

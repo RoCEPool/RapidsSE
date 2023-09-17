@@ -1564,6 +1564,9 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
     p_key = pSub_key();
     RASSERT(p_key);
   }
+  else {
+    vDebugPoint();
+  }
 
   ColMap* pColMap = ppColMap? *ppColMap : nullptr;
 
@@ -1573,21 +1576,21 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
 
   if (CK_GBYAGG == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    pColMap = p_mapping->pToColMap(pColMap,p_key,this);
+    p_mapping->vToColMap(pColMap);
   }
   else
   if (CK_SORT == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    pColMap = p_mapping->pToColMap(pColMap,p_key,this);
+    p_mapping->vToColMap(pColMap);
   }
   else
   if (CK_TOP == eCard()) {
     Card_Mapping* p_mapping = pSub_mapping();
-    pColMap = p_mapping->pToColMap(pColMap,p_key,this);
+    p_mapping->vToColMap(pColMap);
   }
 
-  if (ppColMap)
-    (*ppColMap)->vValidate();
+  if (pColMap)
+    pColMap->vValidate();
 
   return pStreamDef_emitted;
 }
