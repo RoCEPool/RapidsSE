@@ -312,31 +312,27 @@ void Card_Projection::vMapColumns(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Cell = 0;
+  i8 i_Cell_key;
+  i8 i_Cell_payload = 1;
   i8 i_EmittedCol = 0;
   i8 nExpr_key = 0;
-  i8 i_Cell_key;
-  i8 i_Emitted = 1;
-  i8 i_Cell_payload = 1;
 
   for (Kid xProjection(pCI->G.p_projection); xProjection.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_projection = xProjection.p_expr();
 
+    i_EmittedCol++;
+
     if (p_expr_projection->bIsExpressionOfKey()) {
+
       nExpr_key++;
 
       Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
-
       Card_Map* p_map_keyCell = pCI->G.p_keyCells->pDecodeMap(pSymbol_keyCol);
-
-      i_EmittedCol++;
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_map_keyCell->pSymbol()->Y_vSet(P_StmCol, p_expr_projection->szSymbol(SF_NONE));
 
-
-
       i_Cell_key = pSymbol_keyCol->iSF_ordinal();
-
-      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_expr_projection->pSymbol()->Y_vSet(P_Key);
       p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_key);
 
@@ -344,27 +340,20 @@ void Card_Projection::vMapColumns(CardIter* pCI)
     }
 
     i_Cell++;
-    i_EmittedCol++;
+
     pCI->G_vAppendNewChild(pCI->G.p_payloadCells, CK_MAP,p_expr_projection->pSymbol());
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
-
     pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
 
-
-
-    Symbol* pSymbol_stmCol_projection = p_expr_projection->pFirstStmCol();
-
-    if (pSymbol_stmCol_projection) {
+    if (Symbol* pSymbol_stmCol_projection = p_expr_projection->pFirstStmCol()) {
       i_Cell_payload = pSymbol_stmCol_projection->iSF_ordinal() - nExpr_key;
-
-      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_expr_projection->pSymbol()->Y_vSet(P_Payload);
       p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
     }
     else {
-
-      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_expr_projection->pSymbol()->Y_vSet(P_Payload);
       p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
     }
