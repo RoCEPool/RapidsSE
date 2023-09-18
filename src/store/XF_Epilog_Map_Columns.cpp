@@ -1,51 +1,51 @@
 /*============================================================================*/
-/* XF_Epilog_Column_mapping.cpp -- Column Mapping                                    */
+/* XF_Epilog_Map_Columns.cpp -- Column Mapping                                    */
 /*============================================================================*/
 
-#include "XF_Epilog_Column_mapping.hpp"
+#include "XF_Epilog_Map_Columns.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Column_mapping, CN_XF_COLUMN_MAPPING)
-__aNewFunction(XF_Epilog_Column_mapping, CN_XF_COLUMN_MAPPING)
-__vDeleteFunction(XF_Epilog_Column_mapping, CN_XF_COLUMN_MAPPING)
-__aFooterFunction(XF_Epilog_Column_mapping)
+__pCastFunction(STORE, XF_Epilog_Map_Columns, CN_XF_MAP_COLUMNS)
+__aNewFunction(XF_Epilog_Map_Columns, CN_XF_MAP_COLUMNS)
+__vDeleteFunction(XF_Epilog_Map_Columns, CN_XF_MAP_COLUMNS)
+__aFooterFunction(XF_Epilog_Map_Columns)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_Column_mapping::XF_Epilog_Column_mapping(CardIter* pCI)
-: XF_EPILOG(CN_XF_COLUMN_MAPPING, pCI)
+XF_Epilog_Map_Columns::XF_Epilog_Map_Columns(CardIter* pCI)
+: XF_EPILOG(CN_XF_MAP_COLUMNS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_COLUMN_MAPPING);
+  _checkInitialised_(CN_XF_MAP_COLUMNS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_Column_mapping::~XF_Epilog_Column_mapping(void) noexcept(false)
+XF_Epilog_Map_Columns::~XF_Epilog_Map_Columns(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Column_mapping::vEpilog(CardIter* pCI)
+void XF_Epilog_Map_Columns::vEpilog(CardIter* pCI)
 {
   _static_
 
-  XF_Epilog_Column_mapping* pXF_Column_Mapping = new XF_Epilog_Column_mapping(pCI);
+  XF_Epilog_Map_Columns* pXF_Column_Mapping = new XF_Epilog_Map_Columns(pCI);
 
-  pXF_Column_Mapping->vXF_Column_Mapping();
+  pXF_Column_Mapping->vXF_Map_Columns();
 
   delete pXF_Column_Mapping;
 }
@@ -58,11 +58,11 @@ void XF_Epilog_Column_mapping::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* column mapping                                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Column_mapping::vXF_Column_Mapping(void)
+void XF_Epilog_Map_Columns::vXF_Map_Columns(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_MAPPING, "column mapping"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_MAO_COLUMNS, "column mapping"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_SYNTHESIS)) {

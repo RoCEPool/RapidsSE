@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Columns_required, CN_XF_COLUMN_MAPPING)
-__aNewFunction(XF_Epilog_Columns_required, CN_XF_COLUMN_MAPPING)
-__vDeleteFunction(XF_Epilog_Columns_required, CN_XF_COLUMN_MAPPING)
+__pCastFunction(STORE, XF_Epilog_Columns_required, CN_XF_MAP_COLUMNS)
+__aNewFunction(XF_Epilog_Columns_required, CN_XF_MAP_COLUMNS)
+__vDeleteFunction(XF_Epilog_Columns_required, CN_XF_MAP_COLUMNS)
 __aFooterFunction(XF_Epilog_Columns_required)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Epilog_Columns_required)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Columns_required::XF_Epilog_Columns_required(CardIter* pCI)
-: XF_EPILOG(CN_XF_COLUMN_MAPPING, pCI)
+: XF_EPILOG(CN_XF_MAP_COLUMNS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_COLUMN_MAPPING);
+  _checkInitialised_(CN_XF_MAP_COLUMNS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Epilog_Columns_required::XF_Epilog_Columns_required(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Columns_required::~XF_Epilog_Columns_required(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Epilog_Columns_required::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_Columns_required::vXF_Columns_required(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_EPILOG_COLUMNS_REQUIRED, "columns required"_Stz);
 

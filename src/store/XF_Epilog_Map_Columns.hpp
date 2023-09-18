@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Column_mapping.hpp -- Column Mapping                                    */
+/* XF_Epilog_Map_Columns.hpp -- Column Mapping                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_Column_mapping : public XF_EPILOG
+  class XF_Epilog_Map_Columns : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_Column_mapping(CardIter* pCI);
-   ~XF_Epilog_Column_mapping(void) noexcept(false);
+    XF_Epilog_Map_Columns(CardIter* pCI);
+   ~XF_Epilog_Map_Columns(void) noexcept(false);
 
     static void vEpilog(CardIter* pCI);
 
-    void vXF_Column_Mapping(void);
+    void vXF_Map_Columns(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Epilog_Column_mapping* _pXF_Epilog_Column_mapping(void* aAddr);
+  XF_Epilog_Map_Columns* _pXF_Epilog_Map_Columns(void* aAddr);
 }
 
 /*============================================================================*/

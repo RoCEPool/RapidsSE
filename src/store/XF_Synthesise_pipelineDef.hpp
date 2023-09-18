@@ -45,6 +45,7 @@ namespace STORE
   private:
     void vCraftPipelineDef(void);
 
+
     void vCraftStageDef(void);
     void vCraftOpDef(void);
 

@@ -11,7 +11,7 @@
 #include "XF_Epilog_Add_synthesis.hpp"
 #include "XF_Epilog_Collapse_op.hpp"
 #include "XF_Epilog_Column_hashing.hpp"
-#include "XF_Epilog_Column_mapping.hpp"
+#include "XF_Epilog_Map_Columns.hpp"
 #include "XF_Epilog_Columns_required.hpp"
 #include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
@@ -232,7 +232,7 @@ void XF::vTransform(void)
                                                        //
   XF_Epilog_Collapse_op::vEpilog(m_pCI);               //
   XF_Epilog_Add_synthesis::vEpilog(m_pCI);             //
-  XF_Epilog_Column_mapping::vEpilog(m_pCI);            //
+  XF_Epilog_Map_Columns::vEpilog(m_pCI);               //
   XF_Epilog_Craft_StreamDef::vEpilog(m_pCI);           //
   XF_Epilog_Columns_required::vEpilog(m_pCI);          //
   XF_Epilog_Column_hashing::vEpilog(m_pCI);            //
@@ -339,7 +339,7 @@ void XF::vTransform_passThru(void)
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);
 
   XF_Epilog_Add_synthesis::vEpilog(m_pCI);             //
-  XF_Epilog_Column_mapping::vEpilog(m_pCI);
+  XF_Epilog_Map_Columns::vEpilog(m_pCI);
   XF_Epilog_Column_hashing::vEpilog(m_pCI);
 
   XF_Epilog_Itemise_colNm::vEpilog(m_pCI);
