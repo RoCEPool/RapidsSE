@@ -13,7 +13,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_HASH_COLUMNS"_Stz,
   /* */ "XF_EPILOG_MAO_COLUMNS"_Stz,
   /* */ "XF_EPILOG_COLUMNS_REQUIRED"_Stz,
-  /* */ "XF_EPILOG_ITEMISE_COLNM"_Stz,
+  /* */ "XF_EPILOG_ITEMISE_COLUMNS"_Stz,
   /* */ "XF_EPILOG_ITEMSTRIP_COLNM"_Stz,
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,
   /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,
@@ -97,7 +97,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_MAO_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_COLUMNS_REQUIRED
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMISE_COLNM
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMISE_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMSTRIP_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_PROMOTE_FILTER
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_REINSTATE_STAGE

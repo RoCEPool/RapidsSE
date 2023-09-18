@@ -15,7 +15,7 @@
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
-#include "XF_Epilog_Itemise_colNm.hpp"
+#include "XF_Epilog_Itemise_Columns.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Epilog_Add_hash_cast.hpp"
@@ -200,7 +200,7 @@ void XF::vTransform(void)
   XF_Optimise_scan_To_indexScan::vOptimise(m_pCI);     //
   XF_Optimise_Derive_streamKey::vOptimise(m_pCI);      //
   XF_Optimise_Cut_sort::vOptimise(m_pCI);              //
-  //XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);    //
+//XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);      //
   XF_Optimise_Cull_bound::vOptimise(m_pCI);            //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
                                                        //
@@ -226,18 +226,18 @@ void XF::vTransform(void)
                                                        //
   XF_Epilog_Promote_filter::vEpilog(m_pCI);            //
   XF_Epilog_Reinstate_stage::vEpilog(m_pCI);           //
-  XF_Epilog_Add_hash_cast::vEpilog(m_pCI);                //
+  XF_Epilog_Add_hash_cast::vEpilog(m_pCI);             //
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);          //
   XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);           //
                                                        //
-  XF_Epilog_Fuse_project::vEpilog(m_pCI);               //
-  XF_Epilog_Append_synthesis::vEpilog(m_pCI);             //
+  XF_Epilog_Fuse_project::vEpilog(m_pCI);              //
+  XF_Epilog_Append_synthesis::vEpilog(m_pCI);          //
   XF_Epilog_Map_Columns::vEpilog(m_pCI);               //
-  XF_Epilog_Craft_StreamDef::vEpilog(m_pCI);           //
-  XF_Epilog_Determine_Columns::vEpilog(m_pCI);          //
-  XF_Epilog_Hash_Columns::vEpilog(m_pCI);            //
+//XF_Epilog_Craft_StreamDef::vItemise(m_pCI);           //
+  XF_Epilog_Determine_Columns::vEpilog(m_pCI);         //
+  XF_Epilog_Hash_Columns::vEpilog(m_pCI);              //
                                                        //
-  XF_Epilog_Itemise_colNm::vEpilog(m_pCI);             //
+  XF_Epilog_Itemise_Columns::vEpilog(m_pCI);             //
                                                        //
   m_pCI->vEndPhase();                                  //
                                                        //
@@ -254,7 +254,7 @@ void XF::vTransform(void)
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);       //
   XF_Synthesise_code::vSynthesise(m_pCI);              //
                                                        //
-//XF_Epilog_ItemStrip_colNm::vEpilog(m_pCI);
+//XF_Epilog_ItemStrip_colNm::vItemise(m_pCI);
                                                        //
   m_pCI->vEndPhase();                                  //
 }
@@ -342,7 +342,7 @@ void XF::vTransform_passThru(void)
   XF_Epilog_Map_Columns::vEpilog(m_pCI);
   XF_Epilog_Hash_Columns::vEpilog(m_pCI);
 
-  XF_Epilog_Itemise_colNm::vEpilog(m_pCI);
+  XF_Epilog_Itemise_Columns::vEpilog(m_pCI);
 
   vCrosscheck_Optimisations();
 

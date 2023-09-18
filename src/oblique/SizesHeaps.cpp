@@ -262,7 +262,7 @@
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
-#include "XF_Epilog_Itemise_colNm.hpp"
+#include "XF_Epilog_Itemise_Columns.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Epilog_Add_hash_cast.hpp"
@@ -777,8 +777,8 @@ SizeHeap gxaSizeHeap[]
   {CN__W__,                     'W' - ('A' - 1),                      HT_INVALID   , FILL },
   {CN_WAKEUP, sizeof(Wakeup),                                         HT_INVALID   , FILL },
   {CN_WEAVER, sizeof(Weaver),                                         HT_T_LARGE   , FILL },
-  {CN_WILDERNESS, sizeof(Wilderness),                                 HT_INVALID   , FILL },
-  {CN_WORD, sizeof(Word),                                             HT_T_TINY    , FILL },
+  {CN_WILDERNESS,                 sizeof(Wilderness),                    HT_INVALID   , FILL },
+  {CN_WORD,                       sizeof(Word),                          HT_T_TINY    , FILL },
   {CN_WSPCONVERGENT_t,            0,                                     HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),                          HT_INVALID   , FILL },
@@ -787,7 +787,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_APPEND_SYNTHESIS, sizeof(XF_Epilog_Append_synthesis),    HT_T_TINY    , FILL },
   {CN_XF_EPILOG_CRAFT_STREAMDEF,  sizeof(XF_Epilog_Craft_StreamDef),     HT_T_TINY    , FILL },
   {CN_XF_LEFT_SUBQUERY,           sizeof(XF_Flatten_Left_subQuery),      HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_ITEMISE_COLNM,    sizeof(XF_Epilog_Itemise_colNm),       HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_ITEMISE_COLUMNS,  sizeof(XF_Epilog_Itemise_Columns),     HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMSTRIP_COLNM,  sizeof(XF_Epilog_ItemStrip_colNm),     HT_T_TINY    , FILL },
   {CN_XF_ENSURE_LEVEL,            sizeof(XF_Prolog_Ensure_level),        HT_T_TINY    , FILL },
   {CN_XF_AS_REVIEW,               sizeof(XF_Prolog_Review_as),           HT_T_TINY    , FILL },
