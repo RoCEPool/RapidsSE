@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Prolog_as_Review.cpp -- As Review                                              */
+/* XF_Prolog_Review_as.cpp -- As Review                                              */
 /*============================================================================*/
 
-#include "XF_Prolog_as_Review.hpp"
+#include "XF_Prolog_Review_as.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_as_Review, CN_XF_AS_REVIEW)
-__aNewFunction(XF_Prolog_as_Review, CN_XF_AS_REVIEW)
-__vDeleteFunction(XF_Prolog_as_Review, CN_XF_AS_REVIEW)
-__aFooterFunction(XF_Prolog_as_Review)
+__pCastFunction(STORE, XF_Prolog_Review_as, CN_XF_AS_REVIEW)
+__aNewFunction(XF_Prolog_Review_as, CN_XF_AS_REVIEW)
+__vDeleteFunction(XF_Prolog_Review_as, CN_XF_AS_REVIEW)
+__aFooterFunction(XF_Prolog_Review_as)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_as_Review::XF_Prolog_as_Review(CardIter* pCI)
+XF_Prolog_Review_as::XF_Prolog_Review_as(CardIter* pCI)
 : XF_PROLOG(CN_XF_AS_REVIEW, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Prolog_as_Review::XF_Prolog_as_Review(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_as_Review::~XF_Prolog_as_Review(void) noexcept(false)
+XF_Prolog_Review_as::~XF_Prolog_Review_as(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_Prolog_as_Review::~XF_Prolog_as_Review(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_as_Review::vProlog(CardIter* pCI)
+void XF_Prolog_Review_as::vProlog(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_as_Review* pXF_as_Review = new XF_Prolog_as_Review(pCI);
+  XF_Prolog_Review_as* pXF_as_Review = new XF_Prolog_Review_as(pCI);
 
   pXF_as_Review->vXF_as_Review();
 
@@ -58,7 +58,7 @@ void XF_Prolog_as_Review::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_as_Review::vXF_as_Review(void)
+void XF_Prolog_Review_as::vXF_as_Review(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 

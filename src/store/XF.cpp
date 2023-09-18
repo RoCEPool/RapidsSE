@@ -43,7 +43,7 @@
 #include "XF_Prolog_Ensure_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
-#include "XF_Prolog_as_Review.hpp"
+#include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_boardNm_To_sqyNm.hpp"
 #include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Prolog_index_Analysis.hpp"
@@ -166,7 +166,7 @@ void XF::vTransform(void)
                                                    //
     // preliminary conversions                     //
     XF_Prolog_rpnCalc_To_boolCalc::vProlog(m_pCI); //
-    XF_Prolog_as_Review::vProlog(m_pCI);           //
+    XF_Prolog_Review_as::vProlog(m_pCI);           //
   }                                                //
                                                    //
   // sub-query analysis                            //

@@ -97,7 +97,7 @@ void Card_Projection::vAdjust_Wrt_key(Card_Key* p_key)
 }
 
 /*----------------------------------------------------------------------------*/
-/* as review                                                                  */
+/* review synthetic as -- e.g. can COL1/$K1 -> l_returnFlag/$K1               */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vAs_Review(CardIter* pCI)
 {
