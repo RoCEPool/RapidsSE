@@ -69,24 +69,15 @@ namespace STORE
     void vRpnTop         (String* psRpnExpr, Card_Top*       pCard_Top);
     void vRpnWhere       (String* psRpnExpr, Card_Where*     pCard_Where);
 
-    void vExpr        (String* psRpnExpr, Card_Expr*      pCard_Expr);
+    void vAs          (String* psRpnExpr, Card_As*        pCard_As);
     void vBoolCalc    (String* psRpnExpr, Card_BoolCalc*  pCard_BoolCalc);
     void vBoolPart    (String* psRpnExpr, Card*           p_part, i8 i);
+    void vExpr        (String* psRpnExpr, Card_Expr*      pCard_Expr);
     void vRpnCalc     (String* psRpnExpr, Card_RpnCalc*   pCard_RpnCalc);
-
-    void vAs          (String* psRpnExpr, Card_As*        pCard_As);
     void vTerm        (String* psRpnExpr, Card_Term*      pCard_Term);
 
-    ColsReq*  pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
-                                  IndexDef*  pIndexDef_gbyAgg);
-
-    Index*    pCraftIndex_indexJoin(void);
-    Index*    pCraftIndex_indexScan(void);
-
-    IndexDef* pCraftIndexDef_gbyAgg(void);
-    IndexDef* pCraftIndexDef_sort(void);
-    IndexDef* pCraftIndexDef_top(void);
-
+    Index*    pGetIndex_chosenIndex(void);
+    IndexDef* pCraftIndexDef_key(void);
     StreamDef* pCraftStreamDef_emitted(ColMap** ppColMap);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

@@ -376,19 +376,19 @@ void XF_Synthesise_pipelineDef::vCraftIndexes(void)
   eCK eCard = p_OP->eCard();
 
   if (CK_CROSSJOIN == eCard)
-    m_pOpDef->m_pIndex_indexJoin   = p_OP->pCraftIndex_indexJoin();
+    m_pOpDef->m_pIndex_indexJoin   = p_OP->pGetIndex_chosenIndex();
   else
   if (CK_INDEXJOIN == eCard)
-    m_pOpDef->m_pIndex_indexJoin   = p_OP->pCraftIndex_indexJoin();
+    m_pOpDef->m_pIndex_indexJoin   = p_OP->pGetIndex_chosenIndex();
   else
   if (CK_INDEXSCAN == eCard)
-    m_pOpDef->m_pIndex_indexScan   = p_OP->pCraftIndex_indexScan();
+    m_pOpDef->m_pIndex_indexScan   = p_OP->pGetIndex_chosenIndex();
   else
   if (CK_KEYEXISTS == eCard)
-    m_pOpDef->m_pIndex_indexSemi   = p_OP->pCraftIndex_indexScan();
+    m_pOpDef->m_pIndex_indexSemi   = p_OP->pGetIndex_chosenIndex();
   else
   if (CK_KEYNOTEXISTS == eCard)
-    m_pOpDef->m_pIndex_indexSemi   = p_OP->pCraftIndex_indexScan();
+    m_pOpDef->m_pIndex_indexSemi   = p_OP->pGetIndex_chosenIndex();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,13 +403,13 @@ void XF_Synthesise_pipelineDef::vCraftIndexDefs(void)
   eCK eCard = p_OP->eCard();
 
   if (CK_GBYAGG == eCard)
-    m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_gbyAgg();
+    m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_key();
   else
   if (CK_SORT == eCard)
-    m_pOpDef->m_pIndexDef_sort = p_OP->pCraftIndexDef_sort();
+    m_pOpDef->m_pIndexDef_sort = p_OP->pCraftIndexDef_key();
   else
   if (CK_TOP == eCard)
-    m_pOpDef->m_pIndexDef_top = p_OP->pCraftIndexDef_top();
+    m_pOpDef->m_pIndexDef_top = p_OP->pCraftIndexDef_key();
 }
 
 /*----------------------------------------------------------------------------*/

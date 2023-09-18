@@ -1370,6 +1370,18 @@ void Card_OP::vRpnWhere(String* psRpnExpr, Card_Where* pCard_Where)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for pCard_As                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vAs(String* psRpnExpr, Card_As* pCard_As)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  psRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szSymbol(SF_NONE));
+}
 
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <calcBool>                                            */
@@ -1435,40 +1447,6 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_RpnCalc                                          */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRpnCalc(String* psRpnExpr, Card_RpnCalc* pCard_RpnCalc)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (!pCard_RpnCalc->pSymbol()->Y_bHas(P_Type)) {
-    pCard_RpnCalc->vDump(__func__);
-    RASSERT(pCard_RpnCalc->pSymbol()->Y_bHas(P_Type));
-  }
-
-  i8 nSubCards = pCard_RpnCalc->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard = pCard_RpnCalc->pGet(i_Child);
-
-    eCK eCard = pCard->eCard();
-
-    switch (eCard) {
-
-      case CK_TERM:
-        vTerm(psRpnExpr, _pCard_Term(pCard));
-        break;
-
-      default:
-        //{;}
-        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
-        break;
-    }
-
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* produce <expr> for pCard_Expr                                              */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vExpr(String* psRpnExpr, Card_Expr* pCard_Expr)
@@ -1511,13 +1489,37 @@ void Card_OP::vExpr(String* psRpnExpr, Card_Expr* pCard_Expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_As                                                */
+/* produce <expr> for pCard_RpnCalc                                          */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vAs(String* psRpnExpr, Card_As* pCard_As)
+void Card_OP::vRpnCalc(String* psRpnExpr, Card_RpnCalc* pCard_RpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  psRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szSymbol(SF_NONE));
+  if (!pCard_RpnCalc->pSymbol()->Y_bHas(P_Type)) {
+    pCard_RpnCalc->vDump(__func__);
+    RASSERT(pCard_RpnCalc->pSymbol()->Y_bHas(P_Type));
+  }
+
+  i8 nSubCards = pCard_RpnCalc->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard = pCard_RpnCalc->pGet(i_Child);
+
+    eCK eCard = pCard->eCard();
+
+    switch (eCard) {
+
+      case CK_TERM:
+        vTerm(psRpnExpr, _pCard_Term(pCard));
+        break;
+
+      default:
+        //{;}
+        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+        break;
+    }
+
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1540,36 +1542,46 @@ void Card_OP::vTerm(String* psRpnExpr, Card_Term* pCard_Term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft column map (where to find columns of stream def in index entry       */
 /*----------------------------------------------------------------------------*/
-ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
-                                      IndexDef*  pIndexDef_gbyAgg)
+
+/*----------------------------------------------------------------------------*/
+/* craft index for indexJoin                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Card_OP::pGetIndex_chosenIndex(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pIndexDef_gbyAgg);
 
-  if (! bIsCard(CK_GBYAGG))
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
     return nullptr;
 
-  ColsReq*  pColMap_gbyAgg = new ColsReq;
+  Card_IndexList* p_indexList = pSub_indexList();
+  if (! p_indexList)
+    return nullptr;
 
-  i8 nCols = pStreamDef_emitted->nColumns();
+  Card_Index* p_index = p_indexList->pFindChosenIndex();
+  if (! p_index)
+    return nullptr;
 
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-//    Column* pCol = pStreamDef_emitted->pGetColumn(i_Col);
+  Index* pIndex = p_index->pGetIndex(p_table->pSub_tableNm());
 
-    /// ????
-//    if $K
-//      key
-//    else
-//      payload
+  return pIndex;
+}
 
-    pColMap_gbyAgg->vAddCol(i_Col, false, i_Col);
-  }
+/*----------------------------------------------------------------------------*/
+/* craft indexDef for key                                                     */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_OP::pCraftIndexDef_key(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pColMap_gbyAgg->vValidate();
+  Card_Key* p_key = pSub_key();
+  if (! p_key)
+    return nullptr;
 
-  return pColMap_gbyAgg;
+  IndexDef* pIndexDef = p_key->pToIndexDef();
+
+  return pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1618,103 +1630,6 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
     pColMap->vValidate();
 
   return pStreamDef_emitted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft index for indexJoin                                                  */
-/*----------------------------------------------------------------------------*/
-Index* Card_OP::pCraftIndex_indexJoin(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Table* p_table = pSub_table();
-  if (! p_table)
-    return nullptr;
-
-  Card_IndexList* p_indexList = pSub_indexList();
-  if (! p_indexList)
-    return nullptr;
-
-  Card_Index* p_index = p_indexList->pFindChosenIndex();
-  if (! p_index)
-    return nullptr;
-
-  Index* pIndex = p_index->pGetIndex(p_table->pSub_tableNm());
-
-  return pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft index for indexScan                                                  */
-/*----------------------------------------------------------------------------*/
-Index* Card_OP::pCraftIndex_indexScan(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Table* p_table = pSub_table();
-  if (! p_table)
-    return nullptr;
-
-  Card_IndexList* p_indexList = pSub_indexList();
-  if (! p_indexList)
-    return nullptr;
-
-  Card_Index* p_index = p_indexList->pFindChosenIndex();
-  if (! p_index)
-    return nullptr;
-
-  Index* pIndex = p_index->pGetIndex(p_table->pSub_tableNm());
-
-  return pIndex;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* craft indexDef for gbyAgg                                                  */
-/*----------------------------------------------------------------------------*/
-IndexDef* Card_OP::pCraftIndexDef_gbyAgg(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Key* p_key = pSub_key();
-  if (! p_key)
-    return nullptr;
-
-  IndexDef* pIndexDef = p_key->pToIndexDef();
-
-  return pIndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft indexDef for sort                                                    */
-/*----------------------------------------------------------------------------*/
-IndexDef* Card_OP::pCraftIndexDef_sort(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Key* p_key = pSub_key();
-  if (! p_key)
-    return nullptr;
-
-  IndexDef* pIndexDef = p_key->pToIndexDef();
-
-  return pIndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* craft indexDef for top                                                     */
-/*----------------------------------------------------------------------------*/
-IndexDef* Card_OP::pCraftIndexDef_top(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Key* p_key = pSub_key();
-  if (! p_key)
-    return nullptr;
-
-  IndexDef* pIndexDef = p_key->pToIndexDef();
-
-  return pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
