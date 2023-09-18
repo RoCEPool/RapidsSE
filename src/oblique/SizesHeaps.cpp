@@ -260,6 +260,7 @@
 #include "XF_Epilog_Column_hashing.hpp"
 #include "XF_Epilog_Column_mapping.hpp"
 #include "XF_Epilog_Columns_required.hpp"
+#include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
 #include "XF_Epilog_Itemise_colNm.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
@@ -783,7 +784,8 @@ SizeHeap gxaSizeHeap[]
   {CN__X__,                    'X' - ('A' - 1),                        HT_INVALID   , FILL },
   {CN_XC,                       sizeof(XC),                            HT_T_TINY    , FILL },
   {CN_XF,                       sizeof(XF),                            HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_ADD_SYNTHESIS, sizeof(XF_Epilog_Add_synthesis),        HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_ADD_SYNTHESIS,  sizeof(XF_Epilog_Add_synthesis),       HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_CRAFT_STREAMDEF,sizeof(XF_Epilog_Craft_StreamDef),     HT_T_TINY    , FILL },
   {CN_XF_LEFT_SUBQUERY,         sizeof(XF_Flatten_Left_subQuery),      HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMISE_COLNM,  sizeof(XF_Epilog_Itemise_colNm),       HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMSTRIP_COLNM,sizeof(XF_Epilog_ItemStrip_colNm),     HT_T_TINY    , FILL },
