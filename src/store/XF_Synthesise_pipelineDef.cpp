@@ -461,31 +461,13 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
 
   Card* p_OP = m_pCI->G.p_OP;
 
+  if (! p_OP->bIsOne(CK_CROSSJOIN,CK_INDEXJOIN,CK_INDEXSCAN,
+                     CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_SCAN))
+    return;
+
   eCK eCard_OP = p_OP->eCard();
-
-  Card_Table* p_table = nullptr;
-
-  switch (eCard_OP) {
-
-    case CK_CROSSJOIN:
-    case CK_INDEXJOIN:
-    case CK_INDEXSCAN:
-    case CK_KEYEXISTS:
-    case CK_KEYNOTEXISTS:
-    case CK_SCAN:
-      p_table = p_OP->pSub_table();
-      break;
-
-    case CK_TABLE:
-      p_table = _pCard_Table(p_OP);
-      break;
-
-    default:
-      return;
-  }
-
+  Card_Table* p_table = p_OP->pSub_table();
   RASSERT(p_table->pSymbol()->bIs_Tbl_Syn() || p_table->pSymbol()->bIs_Tbl_Syn_rep());
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -523,9 +505,6 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
     else
     if (CK_INDEXJOIN == eCard_OP) {
       vUpdateColsReq_IndexJoin(p_table, pColsReq, _pCard_IndexJoin(p_OP));
-    }
-    else {
-      //NEVER_REACH
     }
   }
 
