@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Add_cast.hpp -- Stage Cast                                            */
+/* XF_Epilog_Add_hash_cast.hpp -- Add Hash (opt) and Cast                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_Add_cast : public XF_EPILOG
+  class XF_Epilog_Add_hash_cast : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_Add_cast(CardIter* pCI);
-   ~XF_Epilog_Add_cast(void) noexcept(false);
+    XF_Epilog_Add_hash_cast(CardIter* pCI);
+   ~XF_Epilog_Add_hash_cast(void) noexcept(false);
 
     static void vEpilog(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Epilog_Add_cast* _pXF_Epilog_Add_cast(void* aAddr);
+  XF_Epilog_Add_hash_cast* _pXF_Epilog_Add_hash_cast(void* aAddr);
 }
 
 /*============================================================================*/

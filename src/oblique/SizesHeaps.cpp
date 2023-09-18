@@ -265,7 +265,7 @@
 #include "XF_Epilog_Itemise_colNm.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
-#include "XF_Epilog_Add_cast.hpp"
+#include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_stmCol_To_colNm.hpp"
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Flatten_10_F.hpp"
@@ -842,7 +842,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_BOARDNM_TO_SQYNM,      sizeof(XF_Prolog_boardNm_To_sqyNm),      HT_T_TINY    , FILL },
   {CN_XF_SMOOSH,                       sizeof(XF_Flatten_Smoosh),               HT_T_TINY    , FILL },
   {CN_XF_SMOOTH,                       sizeof(XF_Flatten_Smooth),               HT_T_TINY    , FILL },
-  {CN_XF_ADD_CAST,                     sizeof(XF_Epilog_Add_cast),              HT_T_TINY    , FILL },
+  {CN_XF_ADD_HASH_CAST,                sizeof(XF_Epilog_Add_hash_cast),         HT_T_TINY    , FILL },
   {CN_XF_STMCOL_TO_COLNM,              sizeof(XF_Epilog_stmCol_To_colNm),       HT_T_TINY    , FILL },
   {CN_XF_STMCOL_TO_TBLCOL,             sizeof(XF_Flatten_stmCol_To_tblCol),     HT_T_TINY    , FILL },
   {CN_XF_SUBQUERY_ANALYSIS,            sizeof(XF_Prolog_subQuery_Analysis),     HT_T_TINY    , FILL },

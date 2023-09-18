@@ -17,7 +17,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_EPILOG_ITEMSTRIP_COLNM"_Stz,
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,
   /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,
-  /* */ "XF_EPILOG_ADD_CAST"_Stz,
+  /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,
   /* */ "XF_EPILOG_STMCOL_TO_COLNM"_Stz,
   /* */ "XF_EPILOG_STMCOL_TO_TBLCOL"_Stz,
   /* */ "XF_EPILOG_TBLCOL_TO_STMCOL"_Stz,
@@ -101,7 +101,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMSTRIP_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_PROMOTE_FILTER
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_REINSTATE_STAGE
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_CAST
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_HASH_CAST
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_STMCOL_TO_COLNM
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_STMCOL_TO_TBLCOL
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_TBLCOL_TO_STMCOL

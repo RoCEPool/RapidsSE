@@ -18,7 +18,7 @@
 #include "XF_Epilog_Itemise_colNm.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
-#include "XF_Epilog_Add_cast.hpp"
+#include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_stmCol_To_colNm.hpp"
 #include "XF_Epilog_tblCol_To_stmCol.hpp"
 #include "XF_Flatten.hpp"
@@ -226,7 +226,7 @@ void XF::vTransform(void)
                                                        //
   XF_Epilog_Promote_filter::vEpilog(m_pCI);            //
   XF_Epilog_Reinstate_stage::vEpilog(m_pCI);           //
-  XF_Epilog_Add_cast::vEpilog(m_pCI);                //
+  XF_Epilog_Add_hash_cast::vEpilog(m_pCI);                //
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);          //
   XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);           //
                                                        //
