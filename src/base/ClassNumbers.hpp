@@ -448,7 +448,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_LEFT_SUBQUERY,
   /* */ CN_XF_EPILOG_ITEMISE_COLNM,
   /* */ CN_XF_EPILOG_ITEMSTRIP_COLNM,
-  /* */ CN_XF_ADD_LEVEL,
+  /* */ CN_XF_ENSURE_LEVEL,
   /* */ CN_XF_AS_REVIEW,
   /* */ CN_XF_FUSE_PROJECT,
   /* */ CN_XF_COLNM_TO_STMCOL,
@@ -958,7 +958,7 @@ static Stz* aCN[]
   /* */ "XF_LEFT_SUBQUERY"_Stz,             // CN_XF_LEFT_SUBQUERY
   /* */ "XF_EPILOG_ITEMISE_COLNM"_Stz,                 // CN_XF_EPILOG_ITEMISE_COLNM
   /* */ "XF_EPILOG_ITEMSTRIP_COLNM"_Stz,               // CN_XF_EPILOG_ITEMSTRIP_COLNM
-  /* */ "XF_PROLOG_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
+  /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,                 // CN_XF_ENSURE_LEVEL
   /* */ "XF_PROLOG_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
   /* */ "XF_PROLOG_COLLAPSE_OP"_Stz,               // CN_XF_FUSE_PROJECT
   /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL

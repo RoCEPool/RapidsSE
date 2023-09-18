@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_Add_level.hpp -- As Review                                              */
+/* XF_Prolog_Ensure_level.hpp -- Ensure level                                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_Add_level : public XF_PROLOG
+  class XF_Prolog_Ensure_level : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_Add_level(CardIter* pCI);
-   ~XF_Prolog_Add_level(void) noexcept(false);
+    XF_Prolog_Ensure_level(CardIter* pCI);
+   ~XF_Prolog_Ensure_level(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
 
-    void vXF_Add_level(void);
+    void vEnsure(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Prolog_Add_level* _pXF_Prolog_Add_level(void* aAddr);
+  XF_Prolog_Ensure_level* _pXF_Prolog_Ensure_level(void* aAddr);
 }
 
 /*============================================================================*/

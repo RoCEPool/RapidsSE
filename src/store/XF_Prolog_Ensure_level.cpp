@@ -1,51 +1,51 @@
 /*============================================================================*/
-/* XF_Prolog_Add_level.cpp -- Add Level                                              */
+/* XF_Prolog_Ensure_level.cpp -- Add Level                                              */
 /*============================================================================*/
 
-#include "XF_Prolog_Add_level.hpp"
+#include "XF_Prolog_Ensure_level.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Add_level, CN_XF_ADD_LEVEL)
-__aNewFunction(XF_Prolog_Add_level, CN_XF_ADD_LEVEL)
-__vDeleteFunction(XF_Prolog_Add_level, CN_XF_ADD_LEVEL)
-__aFooterFunction(XF_Prolog_Add_level)
+__pCastFunction(STORE, XF_Prolog_Ensure_level, CN_XF_ENSURE_LEVEL)
+__aNewFunction(XF_Prolog_Ensure_level, CN_XF_ENSURE_LEVEL)
+__vDeleteFunction(XF_Prolog_Ensure_level, CN_XF_ENSURE_LEVEL)
+__aFooterFunction(XF_Prolog_Ensure_level)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Add_level::XF_Prolog_Add_level(CardIter* pCI)
-: XF_PROLOG(CN_XF_ADD_LEVEL, pCI)
+XF_Prolog_Ensure_level::XF_Prolog_Ensure_level(CardIter* pCI)
+: XF_PROLOG(CN_XF_ENSURE_LEVEL, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ADD_LEVEL);
+  _checkInitialised_(CN_XF_ENSURE_LEVEL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_Add_level::~XF_Prolog_Add_level(void) noexcept(false)
+XF_Prolog_Ensure_level::~XF_Prolog_Ensure_level(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Add_level::vProlog(CardIter* pCI)
+void XF_Prolog_Ensure_level::vProlog(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_Add_level* pXF_Add_level = new XF_Prolog_Add_level(pCI);
+  XF_Prolog_Ensure_level* pXF_Add_level = new XF_Prolog_Ensure_level(pCI);
 
-  pXF_Add_level->vXF_Add_level();
+  pXF_Add_level->vEnsure();
 
   delete pXF_Add_level;
 }
@@ -56,13 +56,13 @@ void XF_Prolog_Add_level::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* ensure each op has a level                                                 */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Add_level::vXF_Add_level(void)
+void XF_Prolog_Ensure_level::vEnsure(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_ADD_LEVEL, "add level to op"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_ENSURE_LEVEL, "ensure op has level"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {

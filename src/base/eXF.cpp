@@ -70,7 +70,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PASSTHRU_TWEAK_KEYEXISTS"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYNOTEXITS"_Stz,
 
-  /* */ "XF_PROLOG_ADD_LEVEL"_Stz,
+  /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,
   /* */ "XF_PROLOG_AS_REVIEW"_Stz,
   /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,
   /* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz,
@@ -154,7 +154,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYEXISTS
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYNOTEXITS
 
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ADD_LEVEL
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_LEVEL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_AS_REVIEW
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_COLNM_TO_STMCOL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ERASE_CONSTRUCTION
