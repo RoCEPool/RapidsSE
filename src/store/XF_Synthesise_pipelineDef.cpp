@@ -483,12 +483,12 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
     switch (eCard_later) {
 
       case CK_FILTER:
-        vUpdateColsReq_filter(p_table, pColsReq, _pCard_Filter(p_later));
+        vUpdateColsReq_terms(p_table, pColsReq,p_later->pSub_boolCalc());
         nUpdates++;
         continue;
 
       case CK_PROJECT:
-        vUpdateColsReq_project(p_table, pColsReq, _pCard_Project(p_later));
+        vUpdateColsReq_terms(p_table, pColsReq, p_later->pSub_projection());
         nUpdates++;
         continue;
 
@@ -500,11 +500,11 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
 
   if (! nUpdates) {
     if (CK_SCAN == eCard_OP) {
-      vUpdateColsReq_Scan(p_table, pColsReq, _pCard_Scan(p_OP));
+      vUpdateColsReq_stmCol(p_table, pColsReq, _pCard_Scan(p_OP));
     }
     else
     if (CK_INDEXJOIN == eCard_OP) {
-      vUpdateColsReq_IndexJoin(p_table, pColsReq, _pCard_IndexJoin(p_OP));
+      vUpdateColsReq_tblCol(p_table, pColsReq, _pCard_IndexJoin(p_OP));
     }
   }
 
@@ -514,40 +514,12 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq_filter(Card_Table* p_table,
+void XF_Synthesise_pipelineDef::vUpdateColsReq_stmCol(Card_Table* p_table,
                                                       ColsReq* pColsReq,
-                                                      Card_Filter* p_filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
-
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  vUpdateColsReq_terms(p_table, pColsReq,p_boolCalc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* update the current cols required                                           */
-/*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq_project(Card_Table* p_table,
-                                                       ColsReq* pColsReq,
-                                                       Card_Project* p_project)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
-
-  Card_Projection* p_projection = p_project->pSub_projection();
-  vUpdateColsReq_terms(p_table, pColsReq,p_projection);
-}
-
-/*----------------------------------------------------------------------------*/
-/* update the current cols required                                           */
-/*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq_Scan(Card_Table* p_table,
-                                                    ColsReq* pColsReq,
-                                                    Card_Scan* p_scan)
+                                                      Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
   UNUSED(p_table);
-
-//  Card_Projection* p_projection = p_scan->pSub_projection();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -565,20 +537,18 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_Scan(Card_Table* p_table,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_scan->bApplyRecursive(CK_EXPR,bLambda);
+  pSubCard->bApplyRecursive(CK_EXPR, bLambda);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq_IndexJoin(Card_Table* p_table,
-                                                         ColsReq* pColsReq,
-                                                         Card_IndexJoin* p_indexJoin)
+void XF_Synthesise_pipelineDef::vUpdateColsReq_tblCol(Card_Table* p_table,
+                                                      ColsReq* pColsReq,
+                                                      Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
-
-//  Card_Projection* p_projection = p_indexJoin->pSub_projection();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -602,7 +572,7 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_IndexJoin(Card_Table* p_table,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_indexJoin->bApplyRecursive(CK_EXPR,bLambda);
+  pSubCard->bApplyRecursive(CK_EXPR, bLambda);
 
 }
 
