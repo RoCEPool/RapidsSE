@@ -47,21 +47,18 @@ namespace STORE
 
     void vCraftStageDef(void);
     void vCraftOpDef(void);
+
     void vCraftArgDefs(void);
-
     void vCraftIndexes(void);
-
     void vCraftIndexDefs(void);
     void vCraftStreamDefs(void);
-
-    void vUpdateColsReq(void);
-
-    void vUpdateColsReq_stmCol(Card_Table* p_table, ColsReq* pColsReq,
-                               Card *pSubCard);
-    void vUpdateColsReq_tblCol(Card_Table* p_table, ColsReq* pColsReq,
-                               Card *pSubCard);
-    void vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq,
-                              Card* pSubCard);
+    void vCraftColsReq(void);
+    void vCraftColsReq_stmCol(Card_Table* p_table, ColsReq* pColsReq,
+                              Card *pSubCard);
+    void vCraftColsReq_tblCol(Card_Table* p_table, ColsReq* pColsReq,
+                              Card *pSubCard);
+    void vCraftColsReq_terms(Card_Table* p_table, ColsReq* pColsReq,
+                             Card* pSubCard);
 
   protected:
     Footer* aFooter(void);

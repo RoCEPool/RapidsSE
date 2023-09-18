@@ -188,23 +188,22 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-  Card* p_OP = m_pCI->G.p_OP;
+//  if (m_pCI->G.p_OP->bIsCard(CK_KEYEXISTS))
+//    vDebugPoint();
 
-  if (p_OP->bIsCard(CK_KEYEXISTS))
-    vDebugPoint();
-
-  if (p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
+  if (m_pCI->G.p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;
 
-  m_pOpDef = new OpDef(m_pStageDef->nItems(), p_OP);
-
+  m_pOpDef = new OpDef(m_pStageDef->nItems(), m_pCI->G.p_OP);
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs();
+  vCraftColsReq();
+
   vCraftIndexes();
   vCraftIndexDefs();
+
   vCraftArgDefs();
-  vUpdateColsReq();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -455,40 +454,41 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
+void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card* p_OP = m_pCI->G.p_OP;
+  Card* p_OP_curr = m_pCI->G.p_OP;
 
-  if (! p_OP->bIsOne(CK_CROSSJOIN,CK_INDEXJOIN,CK_INDEXSCAN,
-                     CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_SCAN))
+  if (! p_OP_curr->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_INDEXSCAN,
+                          CK_KEYEXISTS, CK_KEYNOTEXISTS, CK_SCAN, CK_NONE))
     return;
 
-  eCK eCard_OP = p_OP->eCard();
-  Card_Table* p_table = p_OP->pSub_table();
+  eCK eCard_OP = p_OP_curr->eCard();
+  Card_Table* p_table = p_OP_curr->pSub_table();
   RASSERT(p_table->pSymbol()->bIs_Tbl_Syn() || p_table->pSymbol()->bIs_Tbl_Syn_rep());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  RASSERT(! m_pOpDef->pColsReq());
   ColsReq* pColsReq = new ColsReq;
   m_pOpDef->vColsReq(pColsReq);
 
   i8 nUpdates = 0;
-  Kid xKid(m_pCI->G.pDeck);
-  for (xKid.vResynch(p_OP); xKid.bEach(); /**/) {
-    Card* p_later = xKid.pChild();
-    eCK eCard_later = p_later->eCard();
+  Kid xDeck(m_pCI->G.pDeck);
+  for (xDeck.vResynch(p_OP_curr); xDeck.bEach(); /**/) {
+    Card* p_OP_later = xDeck.pChild();
+    eCK eCard_later = p_OP_later->eCard();
 
     switch (eCard_later) {
 
       case CK_FILTER:
-        vUpdateColsReq_terms(p_table, pColsReq,p_later->pSub_boolCalc());
+        vCraftColsReq_terms(p_table, pColsReq, p_OP_later->pSub_boolCalc());
         nUpdates++;
         continue;
 
       case CK_PROJECT:
-        vUpdateColsReq_terms(p_table, pColsReq, p_later->pSub_projection());
+        vCraftColsReq_terms(p_table, pColsReq, p_OP_later->pSub_projection());
         nUpdates++;
         continue;
 
@@ -500,11 +500,11 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
 
   if (! nUpdates) {
     if (CK_SCAN == eCard_OP) {
-      vUpdateColsReq_stmCol(p_table, pColsReq, _pCard_Scan(p_OP));
+      vCraftColsReq_stmCol(p_table, pColsReq, p_OP_curr);
     }
     else
     if (CK_INDEXJOIN == eCard_OP) {
-      vUpdateColsReq_tblCol(p_table, pColsReq, _pCard_IndexJoin(p_OP));
+      vCraftColsReq_tblCol(p_table, pColsReq, p_OP_curr);
     }
   }
 
@@ -514,9 +514,9 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq(void)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq_stmCol(Card_Table* p_table,
-                                                      ColsReq* pColsReq,
-                                                      Card *pSubCard)
+void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
+                                                     ColsReq* pColsReq,
+                                                     Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
   UNUSED(p_table);
@@ -544,9 +544,9 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_stmCol(Card_Table* p_table,
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq_tblCol(Card_Table* p_table,
-                                                      ColsReq* pColsReq,
-                                                      Card *pSubCard)
+void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
+                                                     ColsReq* pColsReq,
+                                                     Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
@@ -579,9 +579,9 @@ void XF_Synthesise_pipelineDef::vUpdateColsReq_tblCol(Card_Table* p_table,
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vUpdateColsReq_terms(Card_Table* p_table,
-                                                     ColsReq* pColsReq,
-                                                     Card* pSubCard)
+void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
+                                                    ColsReq* pColsReq,
+                                                    Card* pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
