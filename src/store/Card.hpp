@@ -170,7 +170,7 @@ extern Stz* P_BumpedBy;
 extern Stz* P_Cell;
 extern Stz* P_ChosenBound;
 extern Stz* P_ChosenIndex;
-extern Stz* P_Collapsed;
+extern Stz* P_Fused;
 extern Stz* P_Column;
 extern Stz* P_Count;
 extern Stz* P_CrlKeyExpr;

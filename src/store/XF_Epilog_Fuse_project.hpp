@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Collapse_op.hpp -- Column Required                          */
+/* XF_Epilog_Fuse_project.hpp -- Fuse project                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_Collapse_op : public XF_EPILOG
+  class XF_Epilog_Fuse_project : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_Collapse_op(CardIter* pCI);
-   ~XF_Epilog_Collapse_op(void) noexcept(false);
+    XF_Epilog_Fuse_project(CardIter* pCI);
+   ~XF_Epilog_Fuse_project(void) noexcept(false);
 
     static void vEpilog(CardIter* pCI);
 
-    void vCollapse_op(void);
+    void vFuse(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Epilog_Collapse_op* _pXF_Epilog_Collapse_op(void* aAddr);
+  XF_Epilog_Fuse_project* _pXF_Epilog_Fuse_project(void* aAddr);
 }
 
 /*============================================================================*/

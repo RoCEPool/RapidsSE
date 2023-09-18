@@ -9,7 +9,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_NONE"_Stz,
 
   /* */ "XF_EPILOG_ADD_SYNTHESIS"_Stz,
-  /* */ "XF_EPILOG_COLLAPSE_OP"_Stz,
+  /* */ "XF_EPILOG_FUSE_PROJECT"_Stz,
   /* */ "XF_EPILOG_COLUMN_HASHING"_Stz,
   /* */ "XF_EPILOG_MAO_COLUMNS"_Stz,
   /* */ "XF_EPILOG_COLUMNS_REQUIRED"_Stz,
@@ -94,7 +94,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "none"_Stz, // XF_NONE
 
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_SYNTHESIS
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_COLLAPSE_OP
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_MAO_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_COLUMNS_REQUIRED
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMISE_COLNM

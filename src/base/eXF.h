@@ -8,7 +8,7 @@ enum eXF // transform
   /* */ XF_NONE = 0,   // none
 
   /* */ XF_EPILOG_ADD_SYNTHESIS,
-  /* */ XF_EPILOG_COLLAPSE_OP,
+  /* */ XF_EPILOG_FUSE_PROJECT,
   /* */ XF_EPILOG_COLUMN_HASHING,
   /* */ XF_EPILOG_MAO_COLUMNS,
   /* */ XF_EPILOG_COLUMNS_REQUIRED,
