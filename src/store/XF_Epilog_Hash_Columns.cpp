@@ -1,51 +1,51 @@
 /*============================================================================*/
-/* XF_Epilog_Column_hashing.cpp -- Column Mapping                                    */
+/* XF_Epilog_Hash_Columns.cpp -- Hash Columns                                 */
 /*============================================================================*/
 
-#include "XF_Epilog_Column_hashing.hpp"
+#include "XF_Epilog_Hash_Columns.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Column_hashing, CN_XF_COLUMN_HASHING)
-__aNewFunction(XF_Epilog_Column_hashing, CN_XF_COLUMN_HASHING)
-__vDeleteFunction(XF_Epilog_Column_hashing, CN_XF_COLUMN_HASHING)
-__aFooterFunction(XF_Epilog_Column_hashing)
+__pCastFunction(STORE, XF_Epilog_Hash_Columns, CN_XF_HASH_COLUMNS)
+__aNewFunction(XF_Epilog_Hash_Columns, CN_XF_HASH_COLUMNS)
+__vDeleteFunction(XF_Epilog_Hash_Columns, CN_XF_HASH_COLUMNS)
+__aFooterFunction(XF_Epilog_Hash_Columns)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_Column_hashing::XF_Epilog_Column_hashing(CardIter* pCI)
-: XF_EPILOG(CN_XF_COLUMN_HASHING, pCI)
+XF_Epilog_Hash_Columns::XF_Epilog_Hash_Columns(CardIter* pCI)
+: XF_EPILOG(CN_XF_HASH_COLUMNS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_HASHING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_HASH_COLUMNS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_COLUMN_HASHING);
+  _checkInitialised_(CN_XF_HASH_COLUMNS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_HASHING, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_HASH_COLUMNS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_Column_hashing::~XF_Epilog_Column_hashing(void) noexcept(false)
+XF_Epilog_Hash_Columns::~XF_Epilog_Hash_Columns(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_HASHING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_HASH_COLUMNS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Column_hashing::vEpilog(CardIter* pCI)
+void XF_Epilog_Hash_Columns::vEpilog(CardIter* pCI)
 {
   _static_
 
-  XF_Epilog_Column_hashing* pXF_Column_Hashing = new XF_Epilog_Column_hashing(pCI);
+  XF_Epilog_Hash_Columns* pXF_Column_Hashing = new XF_Epilog_Hash_Columns(pCI);
 
-  pXF_Column_Hashing->vXF_Column_Hashing();
+  pXF_Column_Hashing->vHash();
 
   delete pXF_Column_Hashing;
 }
@@ -58,11 +58,11 @@ void XF_Epilog_Column_hashing::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* column mapping                                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
+void XF_Epilog_Hash_Columns::vHash(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_HASHING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_HASH_COLUMNS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_HASHING, "column hashing"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_HASH_COLUMNS, "column hashing"_Stz);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain_NONE()) {
@@ -144,11 +144,11 @@ void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
   m_pCI->vEndTransform();
 }
 /*----------------------------------------------------------------------------*/
-//void XF_Epilog_Column_hashing::vXF_Column_Hashing(void)
+//void XF_Epilog_Hash_Columns::vHash(void)
 //{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_HASHING, _FOOTER_);
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_HASH_COLUMNS, _FOOTER_);
 //
-//  m_pCI->vTransform(__func__, XF_EPILOG_COLUMN_HASHING, "column hashing"_Stz);
+//  m_pCI->vTransform(__func__, XF_EPILOG_HASH_COLUMNS, "column hashing"_Stz);
 //
 //  m_pCI->vBeginEach();
 //  while (m_pCI->G_bEachMain_NONE()) {
