@@ -12,7 +12,7 @@
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
 #include "XF_Epilog_Map_Columns.hpp"
-#include "XF_Epilog_Columns_required.hpp"
+#include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
 #include "XF_Epilog_Itemise_colNm.hpp"
@@ -234,7 +234,7 @@ void XF::vTransform(void)
   XF_Epilog_Add_synthesis::vEpilog(m_pCI);             //
   XF_Epilog_Map_Columns::vEpilog(m_pCI);               //
   XF_Epilog_Craft_StreamDef::vEpilog(m_pCI);           //
-  XF_Epilog_Columns_required::vEpilog(m_pCI);          //
+  XF_Epilog_Determine_Columns::vEpilog(m_pCI);          //
   XF_Epilog_Hash_Columns::vEpilog(m_pCI);            //
                                                        //
   XF_Epilog_Itemise_colNm::vEpilog(m_pCI);             //

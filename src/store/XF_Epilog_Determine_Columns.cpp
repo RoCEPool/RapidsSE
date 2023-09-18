@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_Epilog_Columns_required.cpp -- Columns required                         */
+/* XF_Epilog_Determine_Columns.cpp -- Determine Columns (required)            */
 /*============================================================================*/
 
-#include "XF_Epilog_Columns_required.hpp"
+#include "XF_Epilog_Determine_Columns.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Columns_required, CN_XF_MAP_COLUMNS)
-__aNewFunction(XF_Epilog_Columns_required, CN_XF_MAP_COLUMNS)
-__vDeleteFunction(XF_Epilog_Columns_required, CN_XF_MAP_COLUMNS)
-__aFooterFunction(XF_Epilog_Columns_required)
+__pCastFunction(STORE, XF_Epilog_Determine_Columns, CN_XF_MAP_COLUMNS)
+__aNewFunction(XF_Epilog_Determine_Columns, CN_XF_MAP_COLUMNS)
+__vDeleteFunction(XF_Epilog_Determine_Columns, CN_XF_MAP_COLUMNS)
+__aFooterFunction(XF_Epilog_Determine_Columns)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_Columns_required::XF_Epilog_Columns_required(CardIter* pCI)
+XF_Epilog_Determine_Columns::XF_Epilog_Determine_Columns(CardIter* pCI)
 : XF_EPILOG(CN_XF_MAP_COLUMNS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
@@ -31,7 +31,7 @@ XF_Epilog_Columns_required::XF_Epilog_Columns_required(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_Columns_required::~XF_Epilog_Columns_required(void) noexcept(false)
+XF_Epilog_Determine_Columns::~XF_Epilog_Determine_Columns(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 }
@@ -39,11 +39,11 @@ XF_Epilog_Columns_required::~XF_Epilog_Columns_required(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Columns_required::vEpilog(CardIter* pCI)
+void XF_Epilog_Determine_Columns::vEpilog(CardIter* pCI)
 {
   _static_
 
-  XF_Epilog_Columns_required* pXF_Columns_required = new XF_Epilog_Columns_required(pCI);
+  XF_Epilog_Determine_Columns* pXF_Columns_required = new XF_Epilog_Determine_Columns(pCI);
 
   pXF_Columns_required->vXF_Columns_required();
 
@@ -58,7 +58,7 @@ void XF_Epilog_Columns_required::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* columns required                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Columns_required::vXF_Columns_required(void)
+void XF_Epilog_Determine_Columns::vXF_Columns_required(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAP_COLUMNS, _FOOTER_);
 

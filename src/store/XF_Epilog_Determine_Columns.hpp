@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Columns_required.hpp -- Columns required                         */
+/* XF_Epilog_Determine_Columns.hpp -- Determine Columns (required)            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_Columns_required : public XF_EPILOG
+  class XF_Epilog_Determine_Columns : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_Columns_required(CardIter* pCI);
-   ~XF_Epilog_Columns_required(void) noexcept(false);
+    XF_Epilog_Determine_Columns(CardIter* pCI);
+   ~XF_Epilog_Determine_Columns(void) noexcept(false);
 
     static void vEpilog(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Epilog_Columns_required* _pXF_Epilog_Columns_required(void* aAddr);
+  XF_Epilog_Determine_Columns* _pXF_Epilog_Determine_Columns(void* aAddr);
 }
 
 /*============================================================================*/

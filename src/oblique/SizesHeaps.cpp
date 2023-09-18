@@ -259,7 +259,7 @@
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
 #include "XF_Epilog_Map_Columns.hpp"
-#include "XF_Epilog_Columns_required.hpp"
+#include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
 #include "XF_Epilog_Itemise_colNm.hpp"
@@ -795,7 +795,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_COLNM_TO_STMCOL,        sizeof(XF_Prolog_colNm_To_stmCol),     HT_T_TINY    , FILL },
   {CN_XF_HASH_COLUMNS,           sizeof(XF_Epilog_Hash_Columns),        HT_T_TINY    , FILL },
   {CN_XF_MAP_COLUMNS,            sizeof(XF_Epilog_Map_Columns),         HT_T_TINY    , FILL },
-  {CN_XF_COLUMNS_REQUIRED,       sizeof(XF_Epilog_Columns_required),    HT_T_TINY    , FILL },
+  {CN_XF_COLUMNS_REQUIRED,       sizeof(XF_Epilog_Determine_Columns),   HT_T_TINY    , FILL },
   {CN_XF_CULL_NONUSED_BOUND,     sizeof(XF_Optimise_Cull_bound),        HT_T_TINY    , FILL },
   {CN_XF_DELETE_EMPTY_WHERE,     sizeof(XF_Flatten_Delete_Empty_where), HT_T_TINY    , FILL },
   {CN_XF_DELETE_FLAT,            sizeof(XF_Flatten_Delete_flat),        HT_T_TINY    , FILL },
@@ -805,7 +805,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FIX_TABLE_POS,          sizeof(XF_Flatten_Fix_table_Pos),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN,                sizeof(XF_Flatten),                    HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_10_F,           sizeof(XF_Flatten_10_F),               HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_24_W_A_C_RO,  sizeof(XF_Flatten_24_W_A_C_ro),        HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_24_W_A_C_RO,  sizeof(XF_Flatten_24_W_A_C_ro),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_32_W_A_NC_I,  sizeof(XF_Flatten_32_W_A_NC_I),        HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_34_W_A_NC_RO,       sizeof(XF_Flatten_34_W_A_NC_ro),       HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_40_W_L_C_E,         sizeof(XF_Flatten_40_W_L_C_E),         HT_T_TINY    , FILL },
