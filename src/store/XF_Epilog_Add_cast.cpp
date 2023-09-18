@@ -1,49 +1,49 @@
 /*============================================================================*/
-/* XF_Epilog_stage_cast.cpp -- Stage Cast                                            */
+/* XF_Epilog_Add_cast.cpp -- Stage Cast                                            */
 /*============================================================================*/
 
-#include "XF_Epilog_stage_cast.hpp"
+#include "XF_Epilog_Add_cast.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_stage_cast, CN_XF_STAGE_CAST)
-__aNewFunction(XF_Epilog_stage_cast, CN_XF_STAGE_CAST)
-__vDeleteFunction(XF_Epilog_stage_cast, CN_XF_STAGE_CAST)
-__aFooterFunction(XF_Epilog_stage_cast)
+__pCastFunction(STORE, XF_Epilog_Add_cast, CN_XF_ADD_CAST)
+__aNewFunction(XF_Epilog_Add_cast, CN_XF_ADD_CAST)
+__vDeleteFunction(XF_Epilog_Add_cast, CN_XF_ADD_CAST)
+__aFooterFunction(XF_Epilog_Add_cast)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_stage_cast::XF_Epilog_stage_cast(CardIter* pCI)
-: XF_EPILOG(CN_XF_STAGE_CAST, pCI)
+XF_Epilog_Add_cast::XF_Epilog_Add_cast(CardIter* pCI)
+: XF_EPILOG(CN_XF_ADD_CAST, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_CAST, _FOOTER_);
 
-  _checkInitialised_(CN_XF_STAGE_CAST);
+  _checkInitialised_(CN_XF_ADD_CAST);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Epilog_stage_cast::~XF_Epilog_stage_cast(void) noexcept(false)
+XF_Epilog_Add_cast::~XF_Epilog_Add_cast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_stage_cast::vEpilog(CardIter* pCI)
+void XF_Epilog_Add_cast::vEpilog(CardIter* pCI)
 {
   _static_
 
-  XF_Epilog_stage_cast* pXF_stage_cast = new XF_Epilog_stage_cast(pCI);
+  XF_Epilog_Add_cast* pXF_stage_cast = new XF_Epilog_Add_cast(pCI);
 
   pXF_stage_cast->vXF_stage_cast();
 
@@ -58,11 +58,11 @@ void XF_Epilog_stage_cast::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_stage_cast::vXF_stage_cast(void)
+void XF_Epilog_Add_cast::vXF_stage_cast(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STAGE_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_CAST, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_STAGE_CAST, "add stage casts"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_ADD_CAST, "add stage casts"_Stz);
 
   m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 

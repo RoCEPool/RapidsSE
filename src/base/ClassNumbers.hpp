@@ -501,7 +501,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_PROLOG_BOARDNM_TO_SQYNM,
   /* */ CN_XF_SMOOSH,
   /* */ CN_XF_SMOOTH,
-  /* */ CN_XF_STAGE_CAST,
+  /* */ CN_XF_ADD_CAST,
   /* */ CN_XF_STMCOL_TO_COLNM,
   /* */ CN_XF_STMCOL_TO_TBLCOL,
   /* */ CN_XF_SUBQUERY_ANALYSIS,
@@ -1011,7 +1011,7 @@ static Stz* aCN[]
   /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_PROLOG_BOARDNM_TO_SQYNM
   /* */ "XF_FLATTEN_SMOOSH"_Stz,                    // CN_XF_SMOOSH
   /* */ "XF_FLATTEN_SMOOTH"_Stz,                    // CN_XF_SMOOTH
-  /* */ "XF_EPILOG_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
+  /* */ "XF_EPILOG_ADD_CAST"_Stz,                // CN_XF_ADD_CAST
   /* */ "XF_EPILOG_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
   /* */ "XF_EPILOG_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL
   /* */ "XF_PROLOG_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
