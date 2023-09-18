@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_Add_synthesis : public XF_EPILOG
+  class XF_Epilog_Append_synthesis : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_Add_synthesis(CardIter* pCI);
-   ~XF_Epilog_Add_synthesis(void) noexcept(false);
+    XF_Epilog_Append_synthesis(CardIter* pCI);
+   ~XF_Epilog_Append_synthesis(void) noexcept(false);
 
     static void vEpilog(CardIter* pCI);
 
-    void vAdd_synthesis(void);
+    void vAppend(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Epilog_Add_synthesis* _pXF_Epilog_Add_synthesis(void* aAddr);
+  XF_Epilog_Append_synthesis* _pXF_Epilog_Append_synthesis(void* aAddr);
 }
 
 /*============================================================================*/

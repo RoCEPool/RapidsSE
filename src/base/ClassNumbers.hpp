@@ -443,7 +443,7 @@ enum eCN : u2 // Class Number
   /* */ CN__X__,
   /* */ CN_XC,
   /* */ CN_XF,
-  /* */ CN_XF_EPILOG_ADD_SYNTHESIS,
+  /* */ CN_XF_EPILOG_APPEND_SYNTHESIS,
   /* */ CN_XF_EPILOG_CRAFT_STREAMDEF,
   /* */ CN_XF_LEFT_SUBQUERY,
   /* */ CN_XF_EPILOG_ITEMISE_COLNM,
@@ -953,7 +953,7 @@ static Stz* aCN[]
   /* */ "_X__"_Stz,                 // CN__X__
   /* */ "XC"_Stz,                           // CN_XC
   /* */ "XF"_Stz,                           // CN_XF
-  /* */ "XF_EPILOG_ADD_SYNTHESIS"_Stz ,// CN_XF_EPILOG_ADD_SYNTHESIS,
+  /* */ "XF_EPILOG_ADD_SYNTHESIS"_Stz ,// CN_XF_EPILOG_APPEND_SYNTHESIS,
   /* */ "XF_EPILOG_CRAFT_STREAMDEF"_Stz ,// CN_XF_EPILOG_CRAFT_STREAMDEF,
   /* */ "XF_LEFT_SUBQUERY"_Stz,             // CN_XF_LEFT_SUBQUERY
   /* */ "XF_EPILOG_ITEMISE_COLNM"_Stz,                 // CN_XF_EPILOG_ITEMISE_COLNM
