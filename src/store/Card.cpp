@@ -2061,6 +2061,19 @@ Card_Aggreg* Card::pSub_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Arriving.hpp"
+Card_Arriving* Card::pSub_arriving(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Arriving* p_arriving =
+      _pCard_Arriving(pFindSubCard(CK_ARRIVING));
+  return p_arriving;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_As.hpp"
 Card_As* Card::pSub_as(void)
 {

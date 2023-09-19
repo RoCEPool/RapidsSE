@@ -11,6 +11,7 @@ enum eCK : i8 // card kind
   /* */ CK_ADDRESS,
   /* */ CK_AGGREG,
   /* */ CK_ANDCONJ,
+  /* */ CK_ARRIVING,
   /* */ CK_AS,
 
   /* */ CK_BOOLCALC,

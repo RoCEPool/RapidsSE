@@ -14,6 +14,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
+  /* */ "CK_ARRIVING"_Stz,     // CK_ARRIVING
   /* */ "CK_AS"_Stz,           // CK_AS
 
   /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
@@ -157,6 +158,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "address"_Stz,         // CK_ADDRESS
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "andConj"_Stz,         // CK_ANDCONJ
+  /* */ "arriving"_Stz,        // CK_ARRIVING
   /* */ "as"_Stz,              // CK_AS
 
   /* */ "boolCalc"_Stz,        // CK_BOOLCALC
