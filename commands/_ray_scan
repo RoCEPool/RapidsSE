@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* _ray_scan                                                                  */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+
+create index Ix_O_CUSTKEY on Orders(O_CUSTKEY);
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_scan"
+select C_CUSTKEY, C_NAME
+  from Customer
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

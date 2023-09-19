@@ -68,10 +68,12 @@ void XF_Epilog_Fuse_project::vFuse(void)
   while (m_pCI->G_bEachMain(CK_SCAN)) {
     if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
       m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
-      m_pCI->G.p_OP->vFuseNext_projection(m_pCI);
+      m_pCI->G.p_scan->vFuseNext_projection(m_pCI);
 #ifdef Z_FUSE
-#endif
+      m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+#else
       m_pCI->G.p_project->pSymbol()->Y_vSet(P_Fused);
+#endif
     }
   }
 
@@ -79,10 +81,12 @@ void XF_Epilog_Fuse_project::vFuse(void)
   while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
     if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
       m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
-      m_pCI->G.p_OP->vFuseNext_projection(m_pCI);
+      m_pCI->G.p_indexScan->vFuseNext_projection(m_pCI);
 #ifdef Z_FUSE
-#endif
+      m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+#else
       m_pCI->G.p_project->pSymbol()->Y_vSet(P_Fused);
+#endif
     }
   }
 
