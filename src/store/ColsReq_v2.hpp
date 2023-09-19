@@ -32,7 +32,7 @@ namespace STORE
 
    ~ColsReq_v2(void) noexcept(false);
 
-    void vAddCol(i8 i_EmittedCol, i8 i_Cell);
+    void vAddMapping(i8 i_CrwCol, i8 i_StructCell);
 
     void vDump(i8 i_Tab=0);
 

@@ -51,14 +51,14 @@ ColsReq_v2::~ColsReq_v2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add column mapping                                                         */
+/* add mapping of crwCol to structCol                                         */
 /*----------------------------------------------------------------------------*/
-void ColsReq_v2::vAddCol(i8 i_EmittedCol, i8 i_Cell)
+void ColsReq_v2::vAddMapping(i8 i_CrwCol, i8 i_StructCell)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
 
-  m_axCols[m_nCols].m_i_CrwCol = i_EmittedCol;
-  m_axCols[m_nCols].m_i_StructCell = i_Cell;
+  m_axCols[m_nCols].m_i_CrwCol     = i_CrwCol;
+  m_axCols[m_nCols].m_i_StructCell = i_StructCell;
 
   m_nCols++;
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Synthesise_pipelineDef.cpp -- Make Simpler                                            */
+/* XF_Synthesise_pipelineDef.cpp -- Synthesise PipelineDef                    */
 /*============================================================================*/
 
 #include "XF_Synthesise_pipelineDef.hpp"
@@ -459,7 +459,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* update the current cols required                                           */
+/* craft the columns required maps for this pipeline                          */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 {
@@ -483,7 +483,6 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   ColsReq_v2* pColsReq_v2 = new ColsReq_v2;
   m_pOpDef->vColsReq_v2(pColsReq_v2);
 
-  i8 nUpdates = 0;
   Kid xDeck(m_pCI->G.pDeck);
   for (xDeck.vResynch(p_OP_curr); xDeck.bEach(); /**/) {
     Card* p_OP_later = xDeck.pChild();
@@ -493,12 +492,10 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 
       case CK_FILTER:
         vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2, p_OP_later->pSub_boolCalc());
-        nUpdates++;
         continue;
 
       case CK_PROJECT:
         vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2, p_OP_later->pSub_projection());
-        nUpdates++;
         continue;
 
       default:
@@ -507,7 +504,10 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 
   }
 
-  if (! nUpdates) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if no mapping so far then attempt to map scan/indexScan
+
+  if (! pColsReq_v2->m_nCols) {
     if (CK_SCAN == eCard_OP) {
       vCraftColsReq_stmCol(p_table, pColsReq, pColsReq_v2, p_OP_curr);
     }
@@ -517,12 +517,16 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
     }
   }
 
+  // todo: indexScan?  Chat with ALka
+
+  //RASSERT(pColsReq_v2->m_nCols);
+
   pColsReq->vValidate();
   pColsReq_v2->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
-/* update the current cols required                                           */
+/* craft the columns required map for given card                              */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
                                                      ColsReq* pColsReq,
@@ -534,27 +538,28 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [pColsReq, pColsReq_v2] (Card* pCard) {
-    Card_Expr* p_expr = _pCard_Expr(pCard);
+  auto bfMap_stmCol = [pColsReq, pColsReq_v2] (Card* pCard_expr) {
+    Card_Expr* p_expr = _pCard_Expr(pCard_expr);
+
+    //p_expr->vDump(__func__);
 
     Symbol* pSymbol_stmCol = p_expr->pFirstStmCol();
 
     i8 i_Col = pSymbol_stmCol->iSF_ordinal();
 
     pColsReq->vAddCol(i_Col, false, i_Col);
-    pColsReq_v2->vAddCol(i_Col, i_Col);
+    pColsReq_v2->vAddMapping(i_Col, i_Col);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSubCard->bApplyRecursive(CK_EXPR, bLambda);
-
+  pSubCard->bApplyRecursive(CK_EXPR, bfMap_stmCol);
 }
 
 /*----------------------------------------------------------------------------*/
-/* update the current cols required                                           */
+/* craft the columns required map for given card                              */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
                                                      ColsReq* pColsReq,
@@ -565,8 +570,8 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [p_table, pColsReq, pColsReq_v2] (Card* pCard) {
-    Card_Expr* p_expr = _pCard_Expr(pCard);
+  auto bfMap_tblCol = [p_table, pColsReq, pColsReq_v2] (Card* pCard_expr) {
+    Card_Expr* p_expr = _pCard_Expr(pCard_expr);
 
     Symbol* pSymbol_tblCol = p_expr->pFirstTblCol();
     if (! pSymbol_tblCol)
@@ -579,19 +584,18 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
     i8 i_Col = StrLib::iGleanInt(szTblCol->azChar());
 
     pColsReq->vAddCol(i_Col, false, i_Col);
-    pColsReq_v2->vAddCol(i_Col, i_Col);
+    pColsReq_v2->vAddMapping(i_Col, i_Col);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSubCard->bApplyRecursive(CK_EXPR, bLambda);
-
+  pSubCard->bApplyRecursive(CK_EXPR, bfMap_tblCol);
 }
 
 /*----------------------------------------------------------------------------*/
-/* update the current cols required                                           */
+/* craft the columns required map for given card                              */
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
                                                     ColsReq* pColsReq,
@@ -602,7 +606,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [p_table, pColsReq, pColsReq_v2] (Card_Term* p_term) {
+  auto bfMap_terms = [p_table, pColsReq, pColsReq_v2] (Card_Term* p_term) {
 
     if (!p_term->pSymbol()->bIs_Col_No())
       return C_CONTINUE_RECURSION;
@@ -631,14 +635,14 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
       sColNm = "??"_Stz;
 
     pColsReq->vAddCol(i_Col, false, i_Col);
-    pColsReq_v2->vAddCol(i_Col, i_Col);
+    pColsReq_v2->vAddMapping(i_Col, i_Col);
 
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSubCard->bApplyRecursive_term(bLambda);
+  pSubCard->bApplyRecursive_term(bfMap_terms);
 }
 
 /*============================================================================*/

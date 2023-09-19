@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Synthesise_pipelineDef.hpp -- Craft Pipeline Definition                     */
+/* XF_Synthesise_pipelineDef.hpp -- Synthesise PipelineDef                    */
 /*============================================================================*/
 #pragma once
 
@@ -52,9 +52,9 @@ namespace STORE
     void vCraftIndexDefs(void);
     void vCraftStreamDefs(void);
     void vCraftColsReq(void);
-    void vCraftColsReq_stmCol(Card_Table* p_table, ColsReq* pColsReq, ColsReq_v2* pColsReq_v2,
+    void vCraftColsReq_stmCol(Card_Table* pCard_expr, ColsReq* pColsReq, ColsReq_v2* pColsReq_v2,
                               Card *pSubCard);
-    void vCraftColsReq_tblCol(Card_Table* p_table, ColsReq* pColsReq, ColsReq_v2* pColsReq_v2,
+    void vCraftColsReq_tblCol(Card_Table* pCard_expr, ColsReq* pColsReq, ColsReq_v2* pColsReq_v2,
                               Card *pSubCard);
     void vCraftColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, ColsReq_v2* pColsReq_v2,
                              Card* pSubCard);
