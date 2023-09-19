@@ -2,48 +2,48 @@
 /* XF_projection_Analysis.cpp -- Projection Analysis                          */
 /*============================================================================*/
 
-#include "XF_Prolog_projection_Analysis.hpp"
+#include "XF_Prolog_Analyse_projection.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_projection_Analysis, CN_XF_PROJECTION_ANALYSIS)
-__aNewFunction(XF_Prolog_projection_Analysis, CN_XF_PROJECTION_ANALYSIS)
-__vDeleteFunction(XF_Prolog_projection_Analysis, CN_XF_PROJECTION_ANALYSIS)
-__aFooterFunction(XF_Prolog_projection_Analysis)
+__pCastFunction(STORE, XF_Prolog_Analyse_projection, CN_XF_ANALYSE_PROJECTION)
+__aNewFunction(XF_Prolog_Analyse_projection, CN_XF_ANALYSE_PROJECTION)
+__vDeleteFunction(XF_Prolog_Analyse_projection, CN_XF_ANALYSE_PROJECTION)
+__aFooterFunction(XF_Prolog_Analyse_projection)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_projection_Analysis::XF_Prolog_projection_Analysis(CardIter* pCI)
-: XF_PROLOG(CN_XF_PROJECTION_ANALYSIS, pCI)
+XF_Prolog_Analyse_projection::XF_Prolog_Analyse_projection(CardIter* pCI)
+: XF_PROLOG(CN_XF_ANALYSE_PROJECTION, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_PROJECTION, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROJECTION_ANALYSIS);
+  _checkInitialised_(CN_XF_ANALYSE_PROJECTION);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_PROJECTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_projection_Analysis::~XF_Prolog_projection_Analysis(void) noexcept(false)
+XF_Prolog_Analyse_projection::~XF_Prolog_Analyse_projection(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_PROJECTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_projection_Analysis::vProlog(CardIter* pCI)
+void XF_Prolog_Analyse_projection::vProlog(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_projection_Analysis* pXF_projection_Analysis = new XF_Prolog_projection_Analysis(pCI);
+  XF_Prolog_Analyse_projection* pXF_projection_Analysis = new XF_Prolog_Analyse_projection(pCI);
 
   pXF_projection_Analysis->vXF_projection_Analysis();
 
@@ -53,11 +53,11 @@ void XF_Prolog_projection_Analysis::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(CardIter* pCI)
+void XF_Prolog_Analyse_projection::vXF_projection_Analysis_passThru(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_projection_Analysis* pXF_projection_Analysis = new XF_Prolog_projection_Analysis(pCI);
+  XF_Prolog_Analyse_projection* pXF_projection_Analysis = new XF_Prolog_Analyse_projection(pCI);
 
   pXF_projection_Analysis->vXF_projection_Analysis_passThru();
 
@@ -72,9 +72,9 @@ void XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(CardIter* p
 /*----------------------------------------------------------------------------*/
 /* projection analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_projection_Analysis::vXF_projection_Analysis(void)
+void XF_Prolog_Analyse_projection::vXF_projection_Analysis(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_PROJECTION, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_PROJECTION_ANALYSIS, "projection analysis"_Stz);
 
@@ -86,9 +86,9 @@ void XF_Prolog_projection_Analysis::vXF_projection_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /* projection analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(void)
+void XF_Prolog_Analyse_projection::vXF_projection_Analysis_passThru(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_PROJECTION, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_PROJECTION_ANALYSIS, "vProjectionAnalysis_passThru"_Stz);
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_projection_Analysis.hpp -- Projection Prior                          */
+/* XF_Prolog_Analyse_projection.hpp -- Analyse Projection                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_projection_Analysis : public XF_PROLOG
+  class XF_Prolog_Analyse_projection : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_projection_Analysis(CardIter* pCI);
-   ~XF_Prolog_projection_Analysis(void) noexcept(false);
+    XF_Prolog_Analyse_projection(CardIter* pCI);
+   ~XF_Prolog_Analyse_projection(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
     static void vXF_projection_Analysis_passThru(CardIter* pCI);
@@ -30,7 +30,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Prolog_projection_Analysis* _pXF_Prolog_projection_Analysis(void* aAddr);
+  XF_Prolog_Analyse_projection* _pXF_Prolog_Analyse_projection(void* aAddr);
 }
 
 /*============================================================================*/

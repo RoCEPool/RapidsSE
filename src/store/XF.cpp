@@ -48,7 +48,7 @@
 #include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
 #include "XF_Prolog_not_Ops.hpp"
-#include "XF_Prolog_projection_Analysis.hpp"
+#include "XF_Prolog_Analyse_projection.hpp"
 #include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
 #include "XF_Prolog_scan_To_from.hpp"
 #include "XF_Prolog_subQuery_Analysis.hpp"
@@ -161,7 +161,7 @@ void XF::vTransform(void)
                                                    //
     // meta analysis                               //
     XF_Prolog_table_Analysis::vProlog(m_pCI);      //
-    XF_Prolog_projection_Analysis::vProlog(m_pCI); //
+    XF_Prolog_Analyse_projection::vProlog(m_pCI); //
     XF_Prolog_Analyse_index::vProlog(m_pCI);      //
                                                    //
     // preliminary conversions                     //
@@ -276,7 +276,7 @@ void XF::vTransform_passThru(void)
   while (m_pCI->bEachBoard()) {
 
     XF_Prolog_table_Analysis::vXF_table_Analysis_passThru(m_pCI);
-    XF_Prolog_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
+    XF_Prolog_Analyse_projection::vXF_projection_Analysis_passThru(m_pCI);
 
     XF_Flatten_stmCol_To_tblCol::vFlatten(m_pCI);
 
