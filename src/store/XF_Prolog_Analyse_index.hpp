@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_index_Analysis.hpp -- Index Prior                                    */
+/* XF_Prolog_Analyse_index.hpp -- Index Prior                                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_index_Analysis : public XF_PROLOG
+  class XF_Prolog_Analyse_index : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_index_Analysis(CardIter* pCI);
-   ~XF_Prolog_index_Analysis(void) noexcept(false);
+    XF_Prolog_Analyse_index(CardIter* pCI);
+   ~XF_Prolog_Analyse_index(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
     static void vXF_index_Analysis_passThru(CardIter* pCI);
@@ -30,7 +30,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Prolog_index_Analysis* _pXF_Prolog_index_Analysis(void* aAddr);
+  XF_Prolog_Analyse_index* _pXF_Prolog_Analyse_index(void* aAddr);
 }
 
 /*============================================================================*/

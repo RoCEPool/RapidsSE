@@ -475,7 +475,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,
   /* */ CN_XF_FLATTEN_74_H_A_NC_RO,
   /* */ CN_XF_FROM_TO_OP,
-  /* */ CN_XF_INDEX_ANALYSIS,
+  /* */ CN_XF_ANALYSE_INDEX,
   /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_MOVE_ON,
   /* */ CN_XF_NOT_OPS,
@@ -986,7 +986,7 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN_53_W_L_NC_NI_JOIN"_Stz, // CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,
   /* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,      // CN_XF_FLATTEN_74_H_A_NC_RO,
   /* */ "XF_OPTIMISE_FROM_TO_OP"_Stz,                // CN_XF_FROM_TO_OP
-  /* */ "XF_PROLOG_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
+  /* */ "XF_PROLOG_INDEX_ANALYSIS"_Stz,            // CN_XF_ANALYSE_INDEX
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
   /* */ "XF_PROLOG_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
   /* */ "XF_PROLOG_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS

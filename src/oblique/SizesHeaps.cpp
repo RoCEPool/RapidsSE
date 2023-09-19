@@ -308,7 +308,7 @@
 #include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_boardNm_To_sqyNm.hpp"
 #include "XF_Prolog_colNm_To_stmCol.hpp"
-#include "XF_Prolog_index_Analysis.hpp"
+#include "XF_Prolog_Analyse_index.hpp"
 #include "XF_Prolog_not_Ops.hpp"
 #include "XF_Prolog_projection_Analysis.hpp"
 #include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
@@ -807,17 +807,17 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FIX_TABLE_POS,          sizeof(XF_Flatten_Fix_table_Pos),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN,                sizeof(XF_Flatten),                    HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_10_F,           sizeof(XF_Flatten_10_F),               HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_24_W_A_C_RO,  sizeof(XF_Flatten_24_W_A_C_ro),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_32_W_A_NC_I,  sizeof(XF_Flatten_32_W_A_NC_I),        HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_34_W_A_NC_RO,       sizeof(XF_Flatten_34_W_A_NC_ro),       HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_40_W_L_C_E,         sizeof(XF_Flatten_40_W_L_C_E),         HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, sizeof(XF_Flatten_52_W_L_NC_I_exists), HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_52_W_L_NC_I_JOIN,     sizeof(XF_Flatten_52_W_L_NC_I_join),    HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS,  sizeof(XF_Flatten_53_W_L_NC_NI_exists), HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,    sizeof(XF_Flatten_53_W_L_NC_NI_join),   HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_74_H_A_NC_RO,         sizeof(XF_Flatten_74_H_A_NC_ro),        HT_T_TINY    , FILL },
-  {CN_XF_FROM_TO_OP,                   sizeof(XF_Optimise_from_To_OP),             HT_T_TINY    , FILL },
-  {CN_XF_INDEX_ANALYSIS,               sizeof(XF_Prolog_index_Analysis),           HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_24_W_A_C_RO,            sizeof(XF_Flatten_24_W_A_C_ro),            HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_32_W_A_NC_I,            sizeof(XF_Flatten_32_W_A_NC_I),            HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_34_W_A_NC_RO,           sizeof(XF_Flatten_34_W_A_NC_ro),           HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_40_W_L_C_E,             sizeof(XF_Flatten_40_W_L_C_E),             HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,     sizeof(XF_Flatten_52_W_L_NC_I_exists),     HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_52_W_L_NC_I_JOIN,       sizeof(XF_Flatten_52_W_L_NC_I_join),       HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS,    sizeof(XF_Flatten_53_W_L_NC_NI_exists),    HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,      sizeof(XF_Flatten_53_W_L_NC_NI_join),      HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_74_H_A_NC_RO,           sizeof(XF_Flatten_74_H_A_NC_ro),           HT_T_TINY    , FILL },
+  {CN_XF_FROM_TO_OP,                     sizeof(XF_Optimise_from_To_OP),            HT_T_TINY    , FILL },
+  {CN_XF_ANALYSE_INDEX,                  sizeof(XF_Prolog_Analyse_index),           HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,             sizeof(XF_Epilog_Promote_filter),          HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                        sizeof(XF_Prolog_Move_on),                 HT_T_TINY    , FILL },
   {CN_XF_NOT_OPS,                        sizeof(XF_Prolog_not_Ops),                 HT_T_TINY    , FILL },
