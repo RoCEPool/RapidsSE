@@ -430,7 +430,14 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
         p_projection->pToStreamDef(nullptr, nullptr, p_OP);
   }
 #endif
-
+#ifdef Z_FUSE
+  else
+  if (p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
+    Card_Arriving* p_arriving = p_OP->pSub_arriving();
+    m_pOpDef->m_pStreamDef_arriving =
+        p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
+  }
+#endif
 
   ColMap** ppColMap = nullptr;
   if (p_OP->bIsCard(CK_GBYAGG))

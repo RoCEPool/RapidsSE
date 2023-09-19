@@ -38,10 +38,10 @@ namespace STORE
     Card_Projection* pReducedCopy(CardIter* pCI);
     Card_Expr* pResolve_expr(Card_Term* p_term);
 
-    StreamDef* pToStreamDef(ColMap* pColMap,
-                            Card_Key* p_key,
-                            Card* p_OP);
-
+//    StreamDef* pToStreamDef(ColMap* pColMap,
+//                            Card_Key* p_key,
+//                            Card* p_OP);
+//
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
   private:

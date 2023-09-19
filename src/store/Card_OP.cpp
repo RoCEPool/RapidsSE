@@ -315,6 +315,8 @@ void Card_OP::vFuseNext_projection(CardIter *pCI)
 
   // <op>/<stream>/<projection> -> <op>/<stream>/<arriving>
   p_projection_OP->vCard(CK_ARRIVING);
+
+  // <op>/<stream> <= <project>/<stream>/<projection>
   pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pClone());
 #endif
 }

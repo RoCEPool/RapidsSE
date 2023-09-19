@@ -18,7 +18,7 @@ load Customer "<tpch_dir>/customer.<suffix>" ;
 /pipeline_def
 /weaved
 /pipelineName = "_ray_scan"
-select C_CUSTKEY, C_NAME
+select C_NATIONKEY, C_CUSTKEY
   from Customer
 ;
 

@@ -238,16 +238,15 @@ void XF::vTransform(void)
   XF_Epilog_Fuse_project::vEpilog(m_pCI);              //
   XF_Epilog_Append_synthesis::vEpilog(m_pCI);          //
   XF_Epilog_Map_Columns::vEpilog(m_pCI);               //
-//XF_Epilog_Craft_StreamDef::vItemise(m_pCI);           //
+//XF_Epilog_Craft_StreamDef::vItemise(m_pCI);          //
   XF_Epilog_Determine_Columns::vEpilog(m_pCI);         //
   XF_Epilog_Hash_Columns::vEpilog(m_pCI);              //
                                                        //
-  XF_Epilog_Itemise_Columns::vEpilog(m_pCI);             //
+  XF_Epilog_Itemise_Columns::vEpilog(m_pCI);           //
                                                        //
   m_pCI->vEndPhase();                                  //
                                                        //
   vCrosscheck_Optimisations();                         //
-
 
   m_pCI->vPhase(OH_SYNTHESISE);                        //
                                                        //
