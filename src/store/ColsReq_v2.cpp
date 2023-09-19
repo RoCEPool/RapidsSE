@@ -74,7 +74,7 @@ void ColsReq_v2::vDump(i8 i_Tab)
   UNUSED(i_Tab);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("            m_axCols[%lld] : crwCol [%lld] -> structCell [%lld] \n"_Stz,
+    vTrace("            m_axCols[%lld] : m_i_CrwCol [%lld] -> m_i_StructCell [%lld] \n"_Stz,
            i_Col,
            m_axCols[i_Col].m_i_CrwCol,
            m_axCols[i_Col].m_i_StructCell);

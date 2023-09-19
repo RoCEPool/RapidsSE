@@ -540,21 +540,15 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // map first stmCol of given expr
 
-  auto bfMap_stmCol = [p_stream, pColsReq, pColsReq_v2] (Card* pCard_expr) {
-    UNUSED(p_stream);
+  auto bfMap_stmCol = [pColsReq] (Card* pCard_expr) {
 
     Card_Expr* p_expr = _pCard_Expr(pCard_expr);
-
-//    p_expr->vDump(__func__);
-//    p_stream->vDump(__func__);
-
     Symbol* pSymbol_stmCol = p_expr->pFirstStmCol();
-
     i8 i_Col = pSymbol_stmCol->iSF_ordinal();
 
     pColsReq->vAddCol(i_Col, false, i_Col);
-    pColsReq_v2->vAddMapping(i_Col, i_Col);
 
     return C_CONTINUE_RECURSION;
   };
@@ -562,6 +556,50 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pSubCard->bApplyRecursive(CK_EXPR, bfMap_stmCol);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  UNUSED(pColsReq_v2);
+  UNUSED(p_stream);
+
+#ifdef Z_FUSE
+  Card_Arriving* p_arriving = p_stream->pSub_arriving();
+  Card_Projection* p_projection = p_stream->pSub_projection();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // map first stmCol of given expr
+
+  auto bfMap_stmCol_v2 = [p_arriving, pColsReq_v2] (Card* pCard_expr) {
+    UNUSED(pColsReq_v2);
+    Card_Expr* p_expr_projection = _pCard_Expr(pCard_expr);
+    Card_As* p_as_projection = p_expr_projection->pSub_as();
+
+//    p_expr_projection->vDump(__func__);
+//    p_arriving->vDump(__func__);
+
+    Card_Expr* p_expr_arriving =
+        p_arriving->pFind_expr_By_as_stripItem(p_as_projection->pSymbol());
+
+    p_expr_arriving->vDump(__func__);
+    Symbol* pSymbol_stmCol_a = p_expr_arriving->pFirstStmCol();
+    i8 i_CrwCol = pSymbol_stmCol_a->iSF_ordinal();
+
+//    Symbol* pSymbol_stmCol_p = p_expr_projection->pFirstStmCol();
+//    i8 i_StructCell = pSymbol_stmCol_p->iSF_ordinal();
+
+    pColsReq_v2->vAddMapping(i_CrwCol, pColsReq_v2->m_nCols);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_projection->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+#endif
+
 }
 
 /*----------------------------------------------------------------------------*/
