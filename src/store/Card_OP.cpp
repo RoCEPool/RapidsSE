@@ -300,6 +300,24 @@ void Card_OP::vEnsure_stream(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_OP::vFuseNext_projection(STORE::CardIter *pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(pCI->G.p_projection == pCI->G.p_project->pSub_projection());
+
+#ifdef Z_FUSE
+  pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+  Card_Projection* p_projection_OP = pCI->G.p_stream->pSub_projection();
+  pCI->G.p_stream->vDeleteChild(p_projection_OP);
+
+  pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pClone());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

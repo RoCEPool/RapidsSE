@@ -5,6 +5,8 @@
 
 //#define Z_REJIG_STREAMDEFS
 
+//#define Z_FUSE
+
 #include "BASE.h"
 
 #include "eAL.h"

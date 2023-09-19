@@ -189,7 +189,7 @@ void XF::vTransform(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3/5) optimisw
+  // 3/5) optimise
 
   m_pCI->vPhase(OH_OPTIMISE);                          //
                                                        //
@@ -230,6 +230,11 @@ void XF::vTransform(void)
   XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);          //
   XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);           //
                                                        //
+  // - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 5/5) synthesise
+
   XF_Epilog_Fuse_project::vEpilog(m_pCI);              //
   XF_Epilog_Append_synthesis::vEpilog(m_pCI);          //
   XF_Epilog_Map_Columns::vEpilog(m_pCI);               //
@@ -243,8 +248,6 @@ void XF::vTransform(void)
                                                        //
   vCrosscheck_Optimisations();                         //
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 5/5) synthesise
 
   m_pCI->vPhase(OH_SYNTHESISE);                        //
                                                        //

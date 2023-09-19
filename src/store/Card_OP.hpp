@@ -31,6 +31,8 @@ namespace STORE
 
     void vEnsure_stream(CardIter* pCI);
 
+    void vFuseNext_projection(CardIter* pCI);
+
     bool bIsEarlyLeaf(CardIter* pCI);
     bool bIsEarlyRoot(void);
     bool bIsNodeLevel(void);

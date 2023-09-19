@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_Fuse_project.cpp -- Column Mapping                                    */
+/* XF_Epilog_Fuse_project.cpp -- Fuse Project                                 */
 /*============================================================================*/
 
 #include "XF_Epilog_Fuse_project.hpp"
@@ -56,7 +56,7 @@ void XF_Epilog_Fuse_project::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* fuse projections                                                           */
+/* fuse <scan> <project/projection> -> <scan/projection>                      */
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_Fuse_project::vFuse(void)
 {
@@ -66,14 +66,24 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SCAN)) {
-    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT))))
+    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
+      m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
+      m_pCI->G.p_OP->vFuseNext_projection(m_pCI);
+#ifdef Z_FUSE
+#endif
       m_pCI->G.p_project->pSymbol()->Y_vSet(P_Fused);
+    }
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
-    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT))))
+    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
+      m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
+      m_pCI->G.p_OP->vFuseNext_projection(m_pCI);
+#ifdef Z_FUSE
+#endif
       m_pCI->G.p_project->pSymbol()->Y_vSet(P_Fused);
+    }
   }
 
   m_pCI->vEndTransform();
