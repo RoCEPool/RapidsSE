@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_subQuery_Analysis.hpp -- SubQuery Prior                              */
+/* XF_Prolog_Analyse_subQuery.hpp -- Analyse SubQuery                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_subQuery_Analysis : public XF_PROLOG
+  class XF_Prolog_Analyse_subQuery : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_subQuery_Analysis(CardIter* pCI);
-   ~XF_Prolog_subQuery_Analysis(void) noexcept(false);
+    XF_Prolog_Analyse_subQuery(CardIter* pCI);
+   ~XF_Prolog_Analyse_subQuery(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
 
@@ -32,7 +32,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Prolog_subQuery_Analysis* _pXF_Prolog_subQuery_Analysis(void* aAddr);
+  XF_Prolog_Analyse_subQuery* _pXF_Prolog_Analyse_subQuery(void* aAddr);
 }
 
 /*============================================================================*/

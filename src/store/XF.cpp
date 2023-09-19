@@ -51,7 +51,7 @@
 #include "XF_Prolog_Analyse_projection.hpp"
 #include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
 #include "XF_Prolog_scan_To_from.hpp"
-#include "XF_Prolog_subQuery_Analysis.hpp"
+#include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Synthesise_code.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
@@ -170,7 +170,7 @@ void XF::vTransform(void)
   }                                                //
                                                    //
   // sub-query analysis                            //
-  XF_Prolog_subQuery_Analysis::vProlog(m_pCI);     //
+  XF_Prolog_Analyse_subQuery::vProlog(m_pCI);     //
                                                    //
   m_pCI->vEndPhase();                              //
 
