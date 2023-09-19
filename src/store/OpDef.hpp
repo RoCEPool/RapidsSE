@@ -69,7 +69,9 @@ namespace STORE
     ArgDef* pArgDef_count(void);
 
     ColsReq* pColsReq(void);
-    void vColsReq(ColsReq* ColsReq);
+    void vColsReq(ColsReq* pColsReq);
+    ColsReq_v2* pColsReq_v2(void);
+    void vColsReq_v2(ColsReq_v2* pColsReq_v2);
 
     void vDump(i8 i_Tab=2);
 

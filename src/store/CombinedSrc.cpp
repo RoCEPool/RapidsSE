@@ -881,7 +881,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 
 		sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
-//    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_EmittedCol == C_UNKNOWN) {
+//    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_CrwCol == C_UNKNOWN) {
 //      sCode = ""_Stz;
 //      pOperatorFile->vSeekStart();
 //

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ColsReq_v2.cpp -- Columns Required Metadata                               */
+/* ColsReq_v2.cpp -- Columns Required Metadata                                */
 /*============================================================================*/
 
 #include "ColsReq_v2.hpp"
@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ColsReq_v2,CN_COLSREQ)
-__aNewFunction(ColsReq_v2,CN_COLSREQ)
-__vDeleteFunction(ColsReq_v2,CN_COLSREQ)
+__pCastFunction(STORE,ColsReq_v2,CN_COLSREQ_V2)
+__aNewFunction(ColsReq_v2,CN_COLSREQ_V2)
+__vDeleteFunction(ColsReq_v2,CN_COLSREQ_V2)
 __aFooterFunction(ColsReq_v2)
 
 
@@ -18,18 +18,17 @@ __aFooterFunction(ColsReq_v2)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ColsReq_v2::ColsReq_v2(void)
-    : Object(CN_COLSREQ)
+    : Object(CN_COLSREQ_V2)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++) {
-    m_axCols[i_Col].m_i_EmittedCol = C_UNKNOWN;
-    m_axCols[i_Col].m_bPayload     = false;
-    m_axCols[i_Col].m_i_Cell       = C_UNKNOWN;
+    m_axCols[i_Col].m_i_CrwCol = C_UNKNOWN;
+    m_axCols[i_Col].m_i_StructCell = C_UNKNOWN;
   }
   m_nCols = 0;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ_V2,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +36,7 @@ ColsReq_v2::ColsReq_v2(void)
 /*----------------------------------------------------------------------------*/
 ColsReq_v2::~ColsReq_v2(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ_V2,_FOOTER_);
 
 }
 
@@ -54,13 +53,12 @@ ColsReq_v2::~ColsReq_v2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add column mapping                                                         */
 /*----------------------------------------------------------------------------*/
-void ColsReq_v2::vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
+void ColsReq_v2::vAddCol(i8 i_EmittedCol, i8 i_Cell)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
 
-  m_axCols[m_nCols].m_i_EmittedCol = i_EmittedCol;
-  m_axCols[m_nCols].m_bPayload     = bPayLoad;
-  m_axCols[m_nCols].m_i_Cell       = i_Cell;
+  m_axCols[m_nCols].m_i_CrwCol = i_EmittedCol;
+  m_axCols[m_nCols].m_i_StructCell = i_Cell;
 
   m_nCols++;
 
@@ -72,14 +70,14 @@ void ColsReq_v2::vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
 /*----------------------------------------------------------------------------*/
 void ColsReq_v2::vDump(i8 i_Tab)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
   UNUSED(i_Tab);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("               [%lld] $%lld <- cell %lld \n"_Stz,
+    vTrace("            m_axCols[%lld] : crwCol [%lld] -> structCell [%lld] \n"_Stz,
            i_Col,
-           m_axCols[i_Col].m_i_EmittedCol,
-           m_axCols[i_Col].m_i_Cell);
+           m_axCols[i_Col].m_i_CrwCol,
+           m_axCols[i_Col].m_i_StructCell);
   }
 }
 
@@ -88,7 +86,7 @@ void ColsReq_v2::vDump(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 void ColsReq_v2::vValidate(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
 
 
 }

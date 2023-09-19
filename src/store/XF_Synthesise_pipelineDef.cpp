@@ -480,6 +480,8 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   RASSERT(! m_pOpDef->pColsReq());
   ColsReq* pColsReq = new ColsReq;
   m_pOpDef->vColsReq(pColsReq);
+  ColsReq_v2* pColsReq_v2 = new ColsReq_v2;
+  m_pOpDef->vColsReq_v2(pColsReq_v2);
 
   i8 nUpdates = 0;
   Kid xDeck(m_pCI->G.pDeck);
@@ -490,12 +492,12 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
     switch (eCard_later) {
 
       case CK_FILTER:
-        vCraftColsReq_terms(p_table, pColsReq, p_OP_later->pSub_boolCalc());
+        vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2, p_OP_later->pSub_boolCalc());
         nUpdates++;
         continue;
 
       case CK_PROJECT:
-        vCraftColsReq_terms(p_table, pColsReq, p_OP_later->pSub_projection());
+        vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2, p_OP_later->pSub_projection());
         nUpdates++;
         continue;
 
@@ -507,15 +509,16 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 
   if (! nUpdates) {
     if (CK_SCAN == eCard_OP) {
-      vCraftColsReq_stmCol(p_table, pColsReq, p_OP_curr);
+      vCraftColsReq_stmCol(p_table, pColsReq, pColsReq_v2, p_OP_curr);
     }
     else
     if (CK_INDEXJOIN == eCard_OP) {
-      vCraftColsReq_tblCol(p_table, pColsReq, p_OP_curr);
+      vCraftColsReq_tblCol(p_table, pColsReq, pColsReq_v2, p_OP_curr);
     }
   }
 
   pColsReq->vValidate();
+  pColsReq_v2->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,6 +526,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
                                                      ColsReq* pColsReq,
+                                                     ColsReq_v2* pColsReq_v2,
                                                      Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
@@ -530,7 +534,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [pColsReq] (Card* pCard) {
+  auto bLambda = [pColsReq, pColsReq_v2] (Card* pCard) {
     Card_Expr* p_expr = _pCard_Expr(pCard);
 
     Symbol* pSymbol_stmCol = p_expr->pFirstStmCol();
@@ -538,6 +542,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
     i8 i_Col = pSymbol_stmCol->iSF_ordinal();
 
     pColsReq->vAddCol(i_Col, false, i_Col);
+    pColsReq_v2->vAddCol(i_Col, i_Col);
 
     return C_CONTINUE_RECURSION;
   };
@@ -553,13 +558,14 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
                                                      ColsReq* pColsReq,
+                                                     ColsReq_v2* pColsReq_v2,
                                                      Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [p_table, pColsReq] (Card* pCard) {
+  auto bLambda = [p_table, pColsReq, pColsReq_v2] (Card* pCard) {
     Card_Expr* p_expr = _pCard_Expr(pCard);
 
     Symbol* pSymbol_tblCol = p_expr->pFirstTblCol();
@@ -573,6 +579,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
     i8 i_Col = StrLib::iGleanInt(szTblCol->azChar());
 
     pColsReq->vAddCol(i_Col, false, i_Col);
+    pColsReq_v2->vAddCol(i_Col, i_Col);
 
     return C_CONTINUE_RECURSION;
   };
@@ -588,13 +595,14 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
 /*----------------------------------------------------------------------------*/
 void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
                                                     ColsReq* pColsReq,
+                                                    ColsReq_v2* pColsReq_v2,
                                                     Card* pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [p_table, pColsReq] (Card_Term* p_term) {
+  auto bLambda = [p_table, pColsReq, pColsReq_v2] (Card_Term* p_term) {
 
     if (!p_term->pSymbol()->bIs_Col_No())
       return C_CONTINUE_RECURSION;
@@ -623,6 +631,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
       sColNm = "??"_Stz;
 
     pColsReq->vAddCol(i_Col, false, i_Col);
+    pColsReq_v2->vAddCol(i_Col, i_Col);
 
     return C_CONTINUE_RECURSION;
   };

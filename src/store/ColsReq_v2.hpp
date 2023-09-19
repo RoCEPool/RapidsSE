@@ -16,12 +16,8 @@ namespace STORE
     i8 m_nCols;
 
     struct {
-      i8   m_i_EmittedCol;  // emitted column $n
-
-      bool m_bPayload;      // payload or key?
-      i8   m_i_Cell;        // cell (base 0) of payload/key
-
-      //s32  m_sColNm;
+      i8   m_i_CrwCol;     // column of compact row (base 0)
+      i8   m_i_StructCell; // cell of struct (base 0)
     } m_axCols[C_COLSREQ];
 
   protected:
@@ -36,7 +32,7 @@ namespace STORE
 
    ~ColsReq_v2(void) noexcept(false);
 
-    void vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell);
+    void vAddCol(i8 i_EmittedCol, i8 i_Cell);
 
     void vDump(i8 i_Tab=0);
 
