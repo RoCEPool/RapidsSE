@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_table_Analysis.hpp -- Table Prior                                    */
+/* XF_Prolog_Analyse_table.hpp -- Analyse Table                               */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_table_Analysis : public XF_PROLOG
+  class XF_Prolog_Analyse_table : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_table_Analysis(CardIter* pCI);
-   ~XF_Prolog_table_Analysis(void) noexcept(false);
+    XF_Prolog_Analyse_table(CardIter* pCI);
+   ~XF_Prolog_Analyse_table(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
     static void vXF_table_Analysis_passThru(CardIter* pCI);
@@ -30,7 +30,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Prolog_table_Analysis* _pXF_Prolog_table_Analysis(void* aAddr);
+  XF_Prolog_Analyse_table* _pXF_Prolog_Analyse_table(void* aAddr);
 }
 
 /*============================================================================*/
