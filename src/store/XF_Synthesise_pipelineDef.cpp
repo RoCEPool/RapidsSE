@@ -491,11 +491,13 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
     switch (eCard_later) {
 
       case CK_FILTER:
-        vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2, p_OP_later->pSub_boolCalc());
+        vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2,
+                            p_OP_curr->pSub_stream(), p_OP_later->pSub_boolCalc());
         continue;
 
       case CK_PROJECT:
-        vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2, p_OP_later->pSub_projection());
+        vCraftColsReq_terms(p_table, pColsReq, pColsReq_v2,
+                            p_OP_curr->pSub_stream(), p_OP_later->pSub_projection());
         continue;
 
       default:
@@ -509,11 +511,13 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 
   if (! pColsReq_v2->m_nCols) {
     if (CK_SCAN == eCard_OP) {
-      vCraftColsReq_stmCol(p_table, pColsReq, pColsReq_v2, p_OP_curr);
+      vCraftColsReq_stmCol(pColsReq, pColsReq_v2,
+                           p_OP_curr->pSub_stream(), p_OP_curr);
     }
     else
     if (CK_INDEXJOIN == eCard_OP) {
-      vCraftColsReq_tblCol(p_table, pColsReq, pColsReq_v2, p_OP_curr);
+      vCraftColsReq_tblCol(p_table, pColsReq, pColsReq_v2,
+                           p_OP_curr->pSub_stream(), p_OP_curr);
     }
   }
 
@@ -528,20 +532,22 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 /*----------------------------------------------------------------------------*/
 /* craft the columns required map for given card                              */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
-                                                     ColsReq* pColsReq,
+void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
                                                      ColsReq_v2* pColsReq_v2,
+                                                     Card_Stream* p_stream,
                                                      Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
-  UNUSED(p_table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfMap_stmCol = [pColsReq, pColsReq_v2] (Card* pCard_expr) {
+  auto bfMap_stmCol = [p_stream, pColsReq, pColsReq_v2] (Card* pCard_expr) {
+    UNUSED(p_stream);
+
     Card_Expr* p_expr = _pCard_Expr(pCard_expr);
 
-    //p_expr->vDump(__func__);
+//    p_expr->vDump(__func__);
+//    p_stream->vDump(__func__);
 
     Symbol* pSymbol_stmCol = p_expr->pFirstStmCol();
 
@@ -564,9 +570,11 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(Card_Table* p_table,
 void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
                                                      ColsReq* pColsReq,
                                                      ColsReq_v2* pColsReq_v2,
+                                                     Card_Stream* p_stream,
                                                      Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+  UNUSED(p_stream);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -600,9 +608,11 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
 void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
                                                     ColsReq* pColsReq,
                                                     ColsReq_v2* pColsReq_v2,
+                                                    Card_Stream* p_stream,
                                                     Card* pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+  UNUSED(p_stream);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
