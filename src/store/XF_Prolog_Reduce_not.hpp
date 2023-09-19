@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_not_Ops.hpp -- Not Ops                                                  */
+/* XF_Prolog_Reduce_not.hpp -- Reduce Not expression ops                      */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_not_Ops : public XF_PROLOG
+  class XF_Prolog_Reduce_not : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_not_Ops(CardIter* pCI);
-   ~XF_Prolog_not_Ops(void) noexcept(false);
+    XF_Prolog_Reduce_not(CardIter* pCI);
+   ~XF_Prolog_Reduce_not(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Prolog_not_Ops* _pXF_Prolog_not_Ops(void* aAddr);
+  XF_Prolog_Reduce_not* _pXF_Prolog_Reduce_not(void* aAddr);
 }
 
 /*============================================================================*/

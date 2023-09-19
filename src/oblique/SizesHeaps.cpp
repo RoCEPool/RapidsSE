@@ -309,7 +309,7 @@
 #include "XF_Prolog_boardNm_To_sqyNm.hpp"
 #include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
-#include "XF_Prolog_not_Ops.hpp"
+#include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Analyse_projection.hpp"
 #include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
 #include "XF_Prolog_scan_To_from.hpp"
@@ -820,7 +820,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_ANALYSE_INDEX,                  sizeof(XF_Prolog_Analyse_index),           HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,             sizeof(XF_Epilog_Promote_filter),          HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                        sizeof(XF_Prolog_Move_on),                 HT_T_TINY    , FILL },
-  {CN_XF_NOT_OPS,                        sizeof(XF_Prolog_not_Ops),                 HT_T_TINY    , FILL },
+  {CN_XF_REDUCE_NOT,                     sizeof(XF_Prolog_Reduce_not),              HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, sizeof(XF_Optimise_aggreg_To_sort_ordAgg), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_DUPLICATE_FILTER,      sizeof(XF_Optimise_Duplicate_filter),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_FILTER,          sizeof(XF_Optimise_Early_filter),          HT_T_TINY    , FILL },

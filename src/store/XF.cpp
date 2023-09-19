@@ -47,7 +47,7 @@
 #include "XF_Prolog_boardNm_To_sqyNm.hpp"
 #include "XF_Prolog_colNm_To_stmCol.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
-#include "XF_Prolog_not_Ops.hpp"
+#include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Analyse_projection.hpp"
 #include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
 #include "XF_Prolog_scan_To_from.hpp"
@@ -157,7 +157,7 @@ void XF::vTransform(void)
     XF_Prolog_Erase_construction::vProlog(m_pCI);  //
     XF_Prolog_scan_To_from::vProlog(m_pCI);        //
     XF_Prolog_Ensure_level::vProlog(m_pCI);           //
-    XF_Prolog_not_Ops::vProlog(m_pCI);             //
+    XF_Prolog_Reduce_not::vProlog(m_pCI);             //
                                                    //
     // meta analysis                               //
     XF_Prolog_Analyse_table::vProlog(m_pCI);      //
