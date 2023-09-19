@@ -8,6 +8,7 @@
 #include "ColHsh.hpp"
 #include "ColMap.hpp"
 #include "ColsReq.hpp"
+#include "ColsReq_v2.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"
 #include "ListExo2_t.hpp"
@@ -44,6 +45,7 @@ namespace STORE
     ColMap*    m_pColMap_top;
 
     ColsReq*   m_pColsReq;
+    ColsReq_v2* m_pColsReq_v2;
 
     ColHsh*    m_pColHsh;
 

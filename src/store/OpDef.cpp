@@ -59,6 +59,7 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
   m_pColMap_top         = nullptr;
 
   m_pColsReq            = nullptr;
+  m_pColsReq_v2         = nullptr;
 
   m_pColHsh             = nullptr;
 
@@ -87,6 +88,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pColMap_top;
 
   delete m_pColsReq;
+  delete m_pColsReq_v2;
   delete m_pColHsh;
 }
 
