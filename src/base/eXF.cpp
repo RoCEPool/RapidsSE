@@ -71,15 +71,15 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PROLOG_ANALYSE_PROJECTION"_Stz,
   /* */ "XF_PROLOG_ANALYSE_SUBQUERY"_Stz,
   /* */ "XF_PROLOG_ANALYSE_TABLE"_Stz,
-  /* */ "XF_PROLOG_AS_REVIEW"_Stz,
-  /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,
   /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,
   /* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz,
   /* */ "XF_PROLOG_MOVE_ON"_Stz,
   /* */ "XF_PROLOG_REDUCE_NOT"_Stz,
-  /* */ "XF_PROLOG_RPNCALC_TO_BOOLCALC"_Stz,
-  /* */ "XF_PROLOG_SCAN_TO_FROM"_Stz,
-  /* */ "XF_PROLOG_SHORTEN_QUERYNNM"_Stz,
+  /* */ "XF_PROLOG_REVIEW_AS"_Stz,
+  /* */ "XF_PROLOG_X_BOARD_TO_SQYNM"_Stz,
+  /* */ "XF_PROLOG_X_COLNM_TO_STMCOL"_Stz,
+  /* */ "XF_PROLOG_X_RPNCALC_TO_BOOLCALC"_Stz,
+  /* */ "XF_PROLOG_X_SCAN_TO_FROM"_Stz,
   /* */ "XF_SYNTHESISE_CODE"_Stz,
 
 //  /* */ "XF_ENUMS"_Stz
@@ -91,6 +91,7 @@ Stz* aXF_desc[XF_ENUMS]
 
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_HASH_CAST
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_APPEND_SYNTHESIS
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_CRAFT_STREAMDEF
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_DETERMINE_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_HASH_COLUMNS
@@ -117,6 +118,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_DERIVE_BOUNDS
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_FIX_TABLE_POS
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_JOIN_ORDERING
+  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_LEFT_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_PULLUP
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_REPOSITION
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOSH
@@ -150,15 +152,15 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_PROJECTION
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_TABLE
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_AS_REVIEW
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_COLNM_TO_STMCOL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_LEVEL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ERASE_CONSTRUCTION
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_MOVE_ON
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_REDUCE_NOT
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_RPNCALC_TO_BOOLCALC
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_SCAN_TO_FROM
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_SHORTEN_QUERYNNM
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_REVIEW_AS
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_BOARD_TO_SQYNM
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_COLNM_TO_STMCOL
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_RPNCALC_TO_BOOLCALC
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_SCAN_TO_FROM
   /* */ "<to be supplied>"_Stz, // XF_SYNTHESISE_CODE
 
 // /* */        // XF_ENUMS"_Stz

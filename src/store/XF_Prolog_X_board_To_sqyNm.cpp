@@ -62,7 +62,7 @@ void XF_Prolog_X_board_To_sqyNm::vProlog(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_BOARD_TO_SQYNM, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_SHORTEN_QUERYNM, "shorten query names"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_X_BOARD_TO_SQYNM, "shorten query names"_Stz);
 
   s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
   if (Symbol::bIs_Sqy_Nm(sBoardNm)) {
