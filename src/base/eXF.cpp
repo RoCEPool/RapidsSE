@@ -35,7 +35,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_PURGE_WHERE"_Stz,
   /* */ "XF_FLATTEN_DELETE_FLAT"_Stz,
   /* */ "XF_FLATTEN_DERIVE_BOUNDS"_Stz,
-  /* */ "XF_FLATTEN_FIX_TABLE_POS"_Stz,
+  /* */ "XF_FLATTEN_ANCHOR_TABLE"_Stz,
   /* */ "XF_FLATTEN_JOIN_ORDERING"_Stz,
   /* */ "XF_FLATTEN_LEFT_SUBQUERY"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_PULLUP"_Stz,
@@ -116,7 +116,7 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PURGE_WHERE
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_DELETE_FLAT
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_DERIVE_BOUNDS
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_FIX_TABLE_POS
+  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_ANCHOR_TABLE
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_JOIN_ORDERING
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_LEFT_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_PULLUP

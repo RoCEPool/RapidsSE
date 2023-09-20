@@ -11,7 +11,7 @@
 #include "XF_Flatten_Smooth.hpp"
 #include "Optimiser.hpp"
 
-#include "XF_Flatten_Fix_table_Pos.hpp"
+#include "XF_Flatten_Anchor_table.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
 #include "XF_Flatten_Purge_where.hpp"
 #include "XF_Flatten_Predicate_Pull_Up.hpp"
@@ -104,7 +104,7 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix position of table which uses subquery result as pos 0
-  XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(m_pCI);
+  XF_Flatten_Anchor_table::vXF_Fix_table_Pos(m_pCI);
   m_pCI->vValidateBench();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

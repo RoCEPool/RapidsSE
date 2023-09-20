@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Flatten_Fix_table_Pos.hpp -- Fix Table Position                         */
+/* XF_Flatten_Anchor_table.hpp -- Fix Table Position                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Flatten_Fix_table_Pos : public XF_TRANSFORM
+  class XF_Flatten_Anchor_table : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Flatten_Fix_table_Pos(CardIter* pCI);
-   ~XF_Flatten_Fix_table_Pos(void) noexcept(false);
+    XF_Flatten_Anchor_table(CardIter* pCI);
+   ~XF_Flatten_Anchor_table(void) noexcept(false);
 
     static void vXF_Fix_table_Pos(CardIter* pCI);
 
-    void vXF_Fix_table_Pos(void);
+    void vAnchor(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Flatten_Fix_table_Pos* _pXF_Flatten_Fix_table_Pos(void* aAddr);
+  XF_Flatten_Anchor_table* _pXF_Flatten_Anchor_table(void* aAddr);
 }
 
 /*============================================================================*/
