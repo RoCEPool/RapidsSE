@@ -73,7 +73,7 @@ i8 Card_Bounds::nCullBound(Stz* szWithMark)
 
     vDeleteChild(xCI_bounds.pChild());
     nCulled++;
-    xCI_bounds.vRewind();
+    xCI_bounds.vBackstep();
   }
 
   return nCulled;

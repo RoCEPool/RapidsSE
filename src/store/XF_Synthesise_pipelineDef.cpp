@@ -484,7 +484,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   m_pOpDef->vColsReq_v2(pColsReq_v2);
 
   Kid xDeck(m_pCI->G.pDeck);
-  for (xDeck.vResynch(p_OP_curr); xDeck.bEach(); /**/) {
+  for (xDeck.vReposition(p_OP_curr); xDeck.bEach(); /**/) {
     Card* p_OP_later = xDeck.pChild();
     eCK eCard_later = p_OP_later->eCard();
 

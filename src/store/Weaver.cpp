@@ -910,7 +910,7 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
     vStageNext(p_stage);
 
-    xKid.vResynch(p_stage);
+    xKid.vReposition(p_stage);
     while (xKid.bEach()) {
 
       if (CK_STAGE == xKid.eChild())

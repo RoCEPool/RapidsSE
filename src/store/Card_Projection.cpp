@@ -55,8 +55,8 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 
   Kid xKid(pCI->G.pDeck);
 
-  xKid.vBeginEach_reverse();
-  xKid.vResynch(pCI->G.i_MainCard);
+  xKid.vBegin_reverse();
+  xKid.vReposition(pCI->G.i_MainCard);
 
   while (xKid.bEach_reverse()) {
     if (Card_Projection* p_projection = xKid.pChild()->pSub_projection())

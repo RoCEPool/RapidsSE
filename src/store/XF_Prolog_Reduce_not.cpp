@@ -80,7 +80,7 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
         RASSERT(xKid.bEach(CK_TERM));
         Card_Term* p_term_next = xKid.p_term();
         if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-          xKid.vRewind();
+          xKid.vBackstep();
           m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notExists"_Stz);
           continue;
@@ -93,7 +93,7 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
         RASSERT(xKid.bEach(CK_TERM));
         Card_Term* p_term_next = xKid.p_term();
         if (p_term_next->pSymbol()->bSame("not"_Stz)) {
-          xKid.vRewind();
+          xKid.vBackstep();
           m_pCI->G.p_rpnCalc->vRemoveChild(p_term_next);
           p_term->SYM(SF_SQY_OP,"notIn"_Stz);
           DELETE_CARD(p_term_next);

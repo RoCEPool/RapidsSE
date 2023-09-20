@@ -365,7 +365,7 @@ void CardIter::vChangeCard(Card* pCard)
   G.p_MainCard = nullptr;
   vMember(pCard);
 
-  //vBeginEach_forward();
+  //vBegin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1477,7 +1477,7 @@ void CardIter::G_vMainResynch(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.vResynch(G.p_MainCard);
+  G.xKid.vReposition(G.p_MainCard);
   RASSERT(G.p_MainCard == G.xKid.pChild());
 
 }
@@ -1933,14 +1933,16 @@ Card* CardIter::pPrevChild(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  RASSERT(G.xKid.bWithinRange());
+//  RASSERT(G.xKid.bWithinRange());
+//
+//  i8 i_Prev = G.xKid.i_Child() - 1;
+//
+//  if (i_Prev < 0)
+//    return nullptr;
+//
+//  Card* pChild = G.xKid.pParent()->pGetChild(i_Prev);
 
-  i8 i_Prev = G.xKid.i_Child() - 1;
-
-  if (i_Prev < 0)
-    return nullptr;
-
-  Card* pChild = G.xKid.pParent()->pGetChild(i_Prev);
+  Card* pChild = G.xKid.pPrev();
 
   return pChild;
 }
@@ -2233,7 +2235,7 @@ void CardIter::vRemoveCurr(eCK eCrossCheck)
 
   G.xKid.pParent()->vRemoveChild(pChild);
 
-  G.xKid.vRewind();
+  G.xKid.vBackstep();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2253,7 +2255,7 @@ void CardIter::vRemoveDeleteCurr(eCK eCrossCheck)
 
   delete pChild;
 
-  G.xKid.vRewind();
+  G.xKid.vBackstep();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2341,7 +2343,7 @@ void CardIter::vBeginEach(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.vBeginEach_forward();
+  G.xKid.vBegin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2351,7 +2353,7 @@ void CardIter::vBeginEachReverse(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.vBeginEach_reverse();
+  G.xKid.vBegin_reverse();
 }
 
 
@@ -2369,7 +2371,7 @@ Card* CardIter::pRewindChild(void)
 //
 //  G.xKid.m_i_Child--;
 
-  G.xKid.vRewind();
+  G.xKid.vBackstep();
 
   return G.xKid.pChild();
 }
@@ -2424,7 +2426,7 @@ void CardIter::vSet(Card* pChild)
 
   RASSERT(G.xKid.bWithinRange());
 
-  G.xKid.vResynch(G.xKid.pParent()->iFindChild(pChild));
+  G.xKid.vReposition(G.xKid.pParent()->iFindChild(pChild));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2435,7 +2437,7 @@ void CardIter::vSet(CardIter* pCardIter_src)
   _precondition_(_MAGIC_,_FOOTER_);
 
   G.xKid.vParent(pCardIter_src->G.xKid.pParent());
-  G.xKid.vResynch(pCardIter_src->G.xKid.i_Child());
+  G.xKid.vReposition(pCardIter_src->G.xKid.i_Child());
 }
 
 
@@ -2448,7 +2450,7 @@ void CardIter::vSet(i8 i_Child)
 
   RASSERT(G.xKid.bWithinRange());
 
-  G.xKid.vResynch(i_Child);
+  G.xKid.vReposition(i_Child);
 }
 
 /*----------------------------------------------------------------------------*/
