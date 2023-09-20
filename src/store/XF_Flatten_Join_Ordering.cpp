@@ -13,7 +13,7 @@
 
 #include "XF_Flatten_Fix_table_Pos.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
-#include "XF_Flatten_Delete_Empty_where.hpp"
+#include "XF_Flatten_Purge_where.hpp"
 #include "XF_Flatten_Predicate_Pull_Up.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
 #include "XF_Flatten_Update_projection.hpp"
@@ -92,7 +92,7 @@ void XF_Flatten_Join_Ordering::vJoinOrdering(void)
   m_pCI->vValidateBench();
 
   // delete empty where
-  XF_Flatten_Delete_Empty_where::vXF_Delete_Empty_where(m_pCI);
+  XF_Flatten_Purge_where::vXF_Delete_Empty_where(m_pCI);
   m_pCI->vValidateBench();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
