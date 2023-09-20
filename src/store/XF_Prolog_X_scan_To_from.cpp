@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_X_scan_To_from, CN_XF_X_SCAN_TO_FROM)
-__aNewFunction(XF_Prolog_X_scan_To_from, CN_XF_X_SCAN_TO_FROM)
-__vDeleteFunction(XF_Prolog_X_scan_To_from, CN_XF_X_SCAN_TO_FROM)
+__pCastFunction(STORE, XF_Prolog_X_scan_To_from, CN_XF_PROLOG_X_SCAN_TO_FROM)
+__aNewFunction(XF_Prolog_X_scan_To_from, CN_XF_PROLOG_X_SCAN_TO_FROM)
+__vDeleteFunction(XF_Prolog_X_scan_To_from, CN_XF_PROLOG_X_SCAN_TO_FROM)
 __aFooterFunction(XF_Prolog_X_scan_To_from)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Prolog_X_scan_To_from)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_X_scan_To_from::XF_Prolog_X_scan_To_from(CardIter* pCI)
-: XF_PROLOG(CN_XF_X_SCAN_TO_FROM, pCI)
+: XF_PROLOG(CN_XF_PROLOG_X_SCAN_TO_FROM, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_SCAN_TO_FROM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SCAN_TO_FROM, _FOOTER_);
 
-  _checkInitialised_(CN_XF_X_SCAN_TO_FROM);
+  _checkInitialised_(CN_XF_PROLOG_X_SCAN_TO_FROM);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_X_SCAN_TO_FROM, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SCAN_TO_FROM, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Prolog_X_scan_To_from::XF_Prolog_X_scan_To_from(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_X_scan_To_from::~XF_Prolog_X_scan_To_from(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_SCAN_TO_FROM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SCAN_TO_FROM, _FOOTER_);
 }
 
 
@@ -65,7 +65,7 @@ void XF_Prolog_X_scan_To_from::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_X_scan_To_from::vXF_scan_To_table(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_SCAN_TO_FROM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SCAN_TO_FROM, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_SCAN_TO_FROM, "scan to table"_Stz);
 

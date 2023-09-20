@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_X_rpnCalc_To_boolCalc, CN_XF_X_RPNCALC_TO_BOOLCALC)
-__aNewFunction(XF_Prolog_X_rpnCalc_To_boolCalc, CN_XF_X_RPNCALC_TO_BOOLCALC)
-__vDeleteFunction(XF_Prolog_X_rpnCalc_To_boolCalc, CN_XF_X_RPNCALC_TO_BOOLCALC)
+__pCastFunction(STORE, XF_Prolog_X_rpnCalc_To_boolCalc, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC)
+__aNewFunction(XF_Prolog_X_rpnCalc_To_boolCalc, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC)
+__vDeleteFunction(XF_Prolog_X_rpnCalc_To_boolCalc, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC)
 __aFooterFunction(XF_Prolog_X_rpnCalc_To_boolCalc)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Prolog_X_rpnCalc_To_boolCalc)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_X_rpnCalc_To_boolCalc::XF_Prolog_X_rpnCalc_To_boolCalc(CardIter* pCI)
-: XF_PROLOG(CN_XF_X_RPNCALC_TO_BOOLCALC, pCI)
+: XF_PROLOG(CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
 
-  _checkInitialised_(CN_XF_X_RPNCALC_TO_BOOLCALC);
+  _checkInitialised_(CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Prolog_X_rpnCalc_To_boolCalc::XF_Prolog_X_rpnCalc_To_boolCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_X_rpnCalc_To_boolCalc::~XF_Prolog_X_rpnCalc_To_boolCalc(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ void XF_Prolog_X_rpnCalc_To_boolCalc::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_X_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_RPNCALC_TO_BOOLCALC, "all $n become $c.n"_Stz);
 

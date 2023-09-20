@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG)
-__aNewFunction(XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG)
-__vDeleteFunction(XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG)
+__pCastFunction(STORE, XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG)
+__aNewFunction(XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG)
+__vDeleteFunction(XF_Optimise_gbyAgg_To_ordAgg, CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG)
 __aFooterFunction(XF_Optimise_gbyAgg_To_ordAgg)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Optimise_gbyAgg_To_ordAgg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_gbyAgg_To_ordAgg::XF_Optimise_gbyAgg_To_ordAgg(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG, OT_GBYAGG_TO_ORDAGG, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG, OT_GBYAGG_TO_ORDAGG, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
 
-  _checkInitialised_(CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG);
+  _checkInitialised_(CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Optimise_gbyAgg_To_ordAgg::XF_Optimise_gbyAgg_To_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_gbyAgg_To_ordAgg::~XF_Optimise_gbyAgg_To_ordAgg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ void XF_Optimise_gbyAgg_To_ordAgg::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG, _FOOTER_);
 
   bool bOptRun = false;
 
