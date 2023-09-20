@@ -255,17 +255,17 @@
 #include "Weaver.hpp"
 
 #include "XF.hpp"
+#include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_Append_synthesis.hpp"
+#include "XF_Epilog_Craft_StreamDef.hpp"
+#include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
-#include "XF_Epilog_Map_Columns.hpp"
-#include "XF_Epilog_Determine_Columns.hpp"
-#include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_ItemStrip_colNm.hpp"
 #include "XF_Epilog_Itemise_Columns.hpp"
+#include "XF_Epilog_Map_Columns.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
-#include "XF_Epilog_Add_hash_cast.hpp"
 #include "XF_Epilog_X_stmCol_To_colNm.hpp"
 #include "XF_Epilog_X_tblCol_To_stmCol.hpp"
 #include "XF_Flatten_10_F.hpp"
@@ -302,19 +302,20 @@
 #include "XF_Optimise_scan_To_indexScan.hpp"
 #include "XF_Optimise_sortDesc_limit_To_top.hpp"
 #include "XF_Optimise_sort_limit_All_Levels.hpp"
+#include "XF_Prolog_Analyse_index.hpp"
+#include "XF_Prolog_Analyse_projection.hpp"
+#include "XF_Prolog_Analyse_subQuery.hpp"
+#include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
+#include "XF_Flatten_Predicate_Pull_Up.hpp"
+#include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_X_board_To_sqyNm.hpp"
 #include "XF_Prolog_X_colNm_To_stmCol.hpp"
-#include "XF_Prolog_Analyse_index.hpp"
-#include "XF_Prolog_Reduce_not.hpp"
-#include "XF_Prolog_Analyse_projection.hpp"
 #include "XF_Prolog_X_rpnCalc_To_boolCalc.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
-#include "XF_Prolog_Analyse_subQuery.hpp"
-#include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
 
 #include "XC.hpp"
@@ -786,6 +787,7 @@ SizeHeap gxaSizeHeap[]
   {CN__X__,                    'X' - ('A' - 1),                         HT_INVALID   , FILL },
   {CN_XC,                          sizeof(XC),                          HT_T_TINY    , FILL },
   {CN_XF,                          sizeof(XF),                          HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_PREDICATE_PULLUP,  sizeof(XF_Flatten_Predicate_Pull_Up),HT_T_TINY   , FILL },
   {CN_XF_EPILOG_APPEND_SYNTHESIS,  sizeof(XF_Epilog_Append_synthesis),  HT_T_TINY    , FILL },
   {CN_XF_EPILOG_CRAFT_STREAMDEF,   sizeof(XF_Epilog_Craft_StreamDef),   HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_LEFT_SUBQUERY,     sizeof(XF_Flatten_Left_subQuery),      HT_T_TINY    , FILL },
@@ -835,7 +837,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY,     sizeof(XF_Optimise_Reduce_gbyAgg_key),     HT_T_TINY    , FILL },
   {CN_XF_OT_OPTIMISE_GBYAGG_TO_ORDAGG,   sizeof(XF_Optimise_gbyAgg_To_ordAgg),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN,     sizeof(XF_Optimise_scan_To_indexScan),     HT_T_TINY    , FILL },
-  {CN_XF_PREDICATE_PULL_UP,              sizeof(XF_Flatten_Predicate_Pull_Up),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PREDICATE_REPOSITION,   sizeof(XF_Flatten_Predicate_Reposition),   HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_PROJECTION,      sizeof(XF_Prolog_Analyse_projection),      HT_T_TINY    , FILL },
   {CN_XF_EPILOG_REINSTATE_STAGE,         sizeof(XF_Epilog_Reinstate_stage),         HT_T_TINY    , FILL },
