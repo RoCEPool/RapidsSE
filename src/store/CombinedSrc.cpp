@@ -292,8 +292,6 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         pOperatorFile->vClose();
         break;
 
-        break;
-
       case SK_ORDAGG:
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				// open the aggregate code fragments file
