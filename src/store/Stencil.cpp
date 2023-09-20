@@ -610,14 +610,18 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
   // get the streamDefs
 
 	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
-#ifdef Z_REJIG_STREAMDEFS
+#ifdef Z_FUSE
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 #else
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
 #endif
 
 	// get the colReq
+#ifdef Z_FUSE
+	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+#else
 	ColsReq* pColsReq = pOpDef->m_pColsReq;
+#endif
 
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
@@ -668,14 +672,19 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 
   // get the streamDefs
 	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
-#ifdef Z_REJIG_STREAMDEFS
+#ifdef Z_FUSE
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 #else
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
 #endif
 
-  // get the colReq
+#ifdef Z_FUSE
+	// get the colReq
+	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+#else
+	// get the colReq
   ColsReq* pColsReq = pOpDef->m_pColsReq;
+#endif
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);

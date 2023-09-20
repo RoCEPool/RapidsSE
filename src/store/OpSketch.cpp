@@ -212,39 +212,61 @@ void OpSketch::vCopyColHsh(ColHsh* pColHsh)
 /*----------------------------------------------------------------------------*/
 /* copy columns required                                                      */
 /*----------------------------------------------------------------------------*/
+#ifdef Z_FUSE
+void OpSketch::vCopyColsReq(ColsReq_v2* pColsReq)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	m_pColsReq = new ColsReq_v2;
+
+	m_pColsReq->m_nCols = pColsReq->m_nCols;
+	for (i8 i_Col = 0; i_Col < pColsReq->m_nCols; i_Col++) {
+			m_pColsReq->m_axCols[i_Col].m_i_CrwCol = pColsReq->m_axCols[i_Col].m_i_CrwCol;
+			m_pColsReq->m_axCols[i_Col].m_i_StructCell = pColsReq->m_axCols[i_Col].m_i_StructCell;
+		m_pColsReq->m_axCols[i_Col].m_sCn_memberNm = pColsReq->m_axCols[i_Col].m_sCn_memberNm;
+		}
+}
+#else
 void OpSketch::vCopyColsReq(ColsReq* pColsReq)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  i8 nCols = 0;
+	i8 nCols = 0;
 
-  m_pColsReq = new ColsReq;
+	m_pColsReq = new ColsReq;
 
-  m_pColsReq->m_nCols = pColsReq->m_nCols;
-  for (i8 i_Col = 0; nCols < pColsReq->m_nCols; i_Col++) {
-    if (pColsReq->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
-      nCols++;
-      m_pColsReq->m_axCols[i_Col].m_i_EmittedCol = pColsReq->m_axCols[i_Col].m_i_EmittedCol;
-      m_pColsReq->m_axCols[i_Col].m_bPayload = pColsReq->m_axCols[i_Col].m_bPayload;
-      m_pColsReq->m_axCols[i_Col].m_i_Cell = pColsReq->m_axCols[i_Col].m_i_Cell;
-    }
-  }
+	m_pColsReq->m_nCols = pColsReq->m_nCols;
+	for (i8 i_Col = 0; nCols < pColsReq->m_nCols; i_Col++) {
+		if (pColsReq->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
+			nCols++;
+			m_pColsReq->m_axCols[i_Col].m_i_EmittedCol = pColsReq->m_axCols[i_Col].m_i_EmittedCol;
+			m_pColsReq->m_axCols[i_Col].m_bPayload = pColsReq->m_axCols[i_Col].m_bPayload;
+			m_pColsReq->m_axCols[i_Col].m_i_Cell = pColsReq->m_axCols[i_Col].m_i_Cell;
+		}
+	}
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* column required ?                                                          */
 /*----------------------------------------------------------------------------*/
 bool OpSketch::bColReq(i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  for (i8 iIndex = 0; iIndex < m_pColsReq->m_nCols; iIndex++) {
-    if (m_pColsReq->m_axCols[iIndex].m_i_Cell == i_Col)
-      return true;
-  }
+#ifdef Z_FUSE
+	UNUSED(i_Col);
+	return true;
+#else
+	for (i8 iIndex = 0; iIndex < m_pColsReq->m_nCols; iIndex++) {
+		if (m_pColsReq->m_axCols[iIndex].m_i_Cell == i_Col)
+			return true;
+	}
 
-  return false;
+	return false;
+#endif
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* column required ?                                                          */
@@ -253,12 +275,18 @@ i8 OpSketch::iColReq(i8 i_Col)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
+#ifdef Z_FUSE
+	UNUSED(i_Col);
+	return C_UNKNOWN;
+#else
+
 	for (i8 iIndex = 0; iIndex < m_pColsReq->m_nCols; iIndex++) {
 		if (m_pColsReq->m_axCols[iIndex].m_i_Cell == i_Col)
 			return iIndex;
 	}
 
 	return C_UNKNOWN;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

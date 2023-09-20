@@ -45,7 +45,7 @@ void XF_Epilog_Craft_StreamDef::vEpilog(CardIter* pCI)
 
   XF_Epilog_Craft_StreamDef* pXF_Columns_required = new XF_Epilog_Craft_StreamDef(pCI);
 
-  pXF_Columns_required->vXF_Columns_required();
+  pXF_Columns_required->vCraft();
 
   delete pXF_Columns_required;
 }
@@ -56,13 +56,13 @@ void XF_Epilog_Craft_StreamDef::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* columns required                                                           */
+/* craft stream definition                                                    */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Craft_StreamDef::vXF_Columns_required(void)
+void XF_Epilog_Craft_StreamDef::vCraft(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_CRAFT_STREAMDEF, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_COLUMNS_REQUIRED, "columns required"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_CRAFT_STREAMDEF, "craft stream definition"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {

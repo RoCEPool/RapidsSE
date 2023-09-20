@@ -76,7 +76,7 @@ void XF_Prolog_Analyse_projection::vXF_projection_Analysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_PROJECTION, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_PROJECTION_ANALYSIS, "projection analysis"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_PROJECTION, "projection analysis"_Stz);
 
   m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
 
@@ -90,7 +90,7 @@ void XF_Prolog_Analyse_projection::vXF_projection_Analysis_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_PROJECTION, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_PROJECTION_ANALYSIS, "vProjectionAnalysis_passThru"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_PROJECTION, "vProjectionAnalysis_passThru"_Stz);
 
   m_pCI->G.pDeck->vProjectionAnalysis_passThru(m_pCI);
 

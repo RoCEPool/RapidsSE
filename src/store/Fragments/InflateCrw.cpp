@@ -31,7 +31,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   i_CurrentRow = -1;
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   // set the string area
 	p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
@@ -67,7 +67,7 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
-#ifdef Z_REJIG_STREAMDEFS
+#ifdef Z_FUSE
 	ayDstByte = (byte*)&p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 #endif
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
@@ -104,7 +104,7 @@ void vSkipCrwCol(Dynamic_T* aDynamicT) {
   uLow  = uMetaCode & 0x0F;
 
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
-#ifndef Z_REJIG_STREAMDEFS
+#ifndef Z_FUSE
   ayDstByte += 8;
 #endif
   goto L_SkipAColumn;

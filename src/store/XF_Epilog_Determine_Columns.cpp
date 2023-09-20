@@ -56,13 +56,13 @@ void XF_Epilog_Determine_Columns::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* columns required                                                           */
+/* determine columns required                                                 */
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_Determine_Columns::vXF_Columns_required(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_DETERMINE_COLUMNS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_COLUMNS_REQUIRED, "columns required"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_DETERMINE_COLUMNS, "determine columns required"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {

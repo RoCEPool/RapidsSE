@@ -12,7 +12,7 @@
     *paW++ = (i8)bFilterResult;                         \
   }                                                     \
   else {                                                \
-    aDynamicT->m_iProcessRow = 0;                       \
+    aDynamicT->m_bProcessRow = false;                   \
     goto sLabel;                                        \
   }
 
@@ -25,7 +25,7 @@
     *paW++ = (i8)bFilterResult;                         \
   }                                                     \
   else {                                                \
-    aDynamicT->m_iProcessRow = 0;                       \
+    aDynamicT->m_bProcessRow = false;                   \
     goto sLabel;                                        \
   }
 

@@ -84,8 +84,11 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 
         vReplaceOperatorName(sLine, pOpSketch);
 
-        if (pColumn)
-          vReplaceColumnName(sLine, pColumn);
+        if (pColumn) {
+					vReplaceUnionType(sLine, pColumn);
+					vReplaceColumnName(sLine, pColumn->szColNm()->azChar());
+				}
+
 
         if (iIndexColumn != C_UNKNOWN)
           vReplaceIndexColumn(sLine, iIndexColumn);
@@ -188,8 +191,11 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
 
 				vReplaceStructTo(sLine, pOpSketch);
 
-				if (pColumn)
-					vReplaceColumnName(sLine, pColumn);
+				if (pColumn) {
+					vReplaceUnionType(sLine, pColumn);
+					vReplaceColumnName(sLine, pColumn->szColNm()->azChar());
+				}
+
 
         vReplaceReturnToLabel(sLine, sReturnToLabel);
 
@@ -202,6 +208,73 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, char* sColumnNm, i8 iCol, Stz* sReturnToLabel, Stz* szFunMkr, String* sCode)
+{
+
+	_static_
+
+	s4K sLine;
+	bool bFoundFunc = false;
+	bool bFoundStart = false;
+
+	while (pFile->bReadLine(sLine)) {
+
+		// look for comments
+		if (StrLib::bContains(sLine.azChar(), "//")) {
+
+			// look for function marker
+			if ( ! bFoundFunc) {
+				if (StrLib::bContains(sLine.azChar(), szFunMkr->azChar())) {
+					//vTrace("FOUND FUNCTION MARKER - %s\n"_Stz, szFunMkr);
+					bFoundFunc = true;
+					continue;
+				}
+			}
+
+			// look for start marker
+			if (bFoundFunc && !bFoundStart) {
+				if (StrLib::bContains(sLine.azChar(), "marker-start")) {
+					//vTrace("FOUND FUNCTION START MARKER - marker-start\n"_Stz);
+					bFoundStart = true;
+					continue;
+				}
+			}
+
+			// look for end marker
+			if (bFoundStart) {
+				if (StrLib::bContains(sLine.azChar(), "marker-end")) {
+					//vTrace("FOUND FUNCTION END MARKER - marker-end\n"_Stz);
+					return true;
+				}
+				else {
+					// copy line into sCode
+					sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
+				}
+			}
+		}
+		else {
+			if (bFoundStart) {
+
+				vReplaceColumnNo(sLine, iCol);
+
+				vReplaceStructTo(sLine, pOpSketch);
+
+				//vReplaceUnionType(sLine, pColumn);
+				vReplaceColumnName(sLine, sColumnNm);
+
+				vReplaceReturnToLabel(sLine, sReturnToLabel);
+
+				// copy line into sCode
+				sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
+			}
+		}
+	}
+
+	return false;
+}
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -262,6 +335,21 @@ void CodeSynthUtils::vReplaceColumnNo(String* sLine, Column* pColumn) {
     bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_NO__", sColumn.azChar());
     RASSERT(bResult);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceColumnNo(String* sLine, i8 iCol) {
+
+	_static_
+
+	if (StrLib::bContains(sLine->azStr(), "__COLUMN_NO__")) {
+		s256 sColumn;
+		sColumn.vSprint("%lld"_Stz, iCol);
+		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_NO__", sColumn.azChar());
+		RASSERT(bResult);
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +463,7 @@ void CodeSynthUtils::vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceColumnName(String* sLine, Column* pColumn) {
+void CodeSynthUtils::vReplaceUnionType(String* sLine, Column* pColumn) {
 
   _static_
 
@@ -437,16 +525,27 @@ void CodeSynthUtils::vReplaceColumnName(String* sLine, Column* pColumn) {
 
     RASSERT(bResult);
   }
+}
 
-  if (StrLib::bContains(sLine->azStr(), "__COLUMN_TO__")) {
-    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_TO__", sColNm.azChar());
-    RASSERT(bResult);
-  }
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceColumnName(String* sLine, char* sColumnNm) {
 
-  if (StrLib::bContains(sLine->azStr(), "__COLUMN_FROM__")) {
-    bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_FROM__", sColNm.azChar());
-    RASSERT(bResult);
-  }
+	_static_
+
+	s32 sColNm(sColumnNm);
+	sColNm.vToUpper();
+
+	if (StrLib::bContains(sLine->azStr(), "__COLUMN_TO__")) {
+		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_TO__", sColNm.azChar());
+		RASSERT(bResult);
+	}
+
+	if (StrLib::bContains(sLine->azStr(), "__COLUMN_FROM__")) {
+		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_FROM__", sColNm.azChar());
+		RASSERT(bResult);
+	}
 }
 
 /*----------------------------------------------------------------------------*/

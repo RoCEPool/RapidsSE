@@ -12,7 +12,7 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i_Col = -1;
 
-#ifndef Z_REJIG_STREAMDEFS
+#ifndef Z_FUSE
   ayDstByte = (byte*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 #endif
 
