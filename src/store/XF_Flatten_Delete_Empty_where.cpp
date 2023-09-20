@@ -9,10 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//todo: incorrect CN
-__pCastFunction(STORE, XF_Flatten_Delete_Empty_where, CN_XF_PROLOG_ENSURE_LEVEL)
-__aNewFunction(XF_Flatten_Delete_Empty_where, CN_XF_PROLOG_ENSURE_LEVEL)
-__vDeleteFunction(XF_Flatten_Delete_Empty_where, CN_XF_PROLOG_ENSURE_LEVEL)
+__pCastFunction(STORE, XF_Flatten_Delete_Empty_where, CN_XF_FLATTEN_DELETE_EMPTY_WHERE)
+__aNewFunction(XF_Flatten_Delete_Empty_where, CN_XF_FLATTEN_DELETE_EMPTY_WHERE)
+__vDeleteFunction(XF_Flatten_Delete_Empty_where, CN_XF_FLATTEN_DELETE_EMPTY_WHERE)
 __aFooterFunction(XF_Flatten_Delete_Empty_where)
 
 
@@ -20,13 +19,13 @@ __aFooterFunction(XF_Flatten_Delete_Empty_where)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Delete_Empty_where::XF_Flatten_Delete_Empty_where(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_PROLOG_ENSURE_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_DELETE_EMPTY_WHERE, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_EMPTY_WHERE, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROLOG_ENSURE_LEVEL);
+  _checkInitialised_(CN_XF_FLATTEN_DELETE_EMPTY_WHERE);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_EMPTY_WHERE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +33,7 @@ XF_Flatten_Delete_Empty_where::XF_Flatten_Delete_Empty_where(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Delete_Empty_where::~XF_Flatten_Delete_Empty_where(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_EMPTY_WHERE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +60,7 @@ void XF_Flatten_Delete_Empty_where::vXF_Delete_Empty_where(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Delete_Empty_where::vXF_Delete_Empty_where(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_EMPTY_WHERE, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_EMPTY_WHERE, "delete empty where"_Stz);
 

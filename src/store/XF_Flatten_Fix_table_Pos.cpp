@@ -9,10 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//todo: incorrect CN
-__pCastFunction(STORE, XF_Flatten_Fix_table_Pos, CN_XF_PROLOG_ENSURE_LEVEL)
-__aNewFunction(XF_Flatten_Fix_table_Pos, CN_XF_PROLOG_ENSURE_LEVEL)
-__vDeleteFunction(XF_Flatten_Fix_table_Pos, CN_XF_PROLOG_ENSURE_LEVEL)
+__pCastFunction(STORE, XF_Flatten_Fix_table_Pos, CN_XF_FLATTEN_FIX_TABLE_POS)
+__aNewFunction(XF_Flatten_Fix_table_Pos, CN_XF_FLATTEN_FIX_TABLE_POS)
+__vDeleteFunction(XF_Flatten_Fix_table_Pos, CN_XF_FLATTEN_FIX_TABLE_POS)
 __aFooterFunction(XF_Flatten_Fix_table_Pos)
 
 
@@ -20,13 +19,13 @@ __aFooterFunction(XF_Flatten_Fix_table_Pos)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Fix_table_Pos::XF_Flatten_Fix_table_Pos(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_PROLOG_ENSURE_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_FIX_TABLE_POS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FIX_TABLE_POS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROLOG_ENSURE_LEVEL);
+  _checkInitialised_(CN_XF_FLATTEN_FIX_TABLE_POS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FIX_TABLE_POS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +33,7 @@ XF_Flatten_Fix_table_Pos::XF_Flatten_Fix_table_Pos(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Fix_table_Pos::~XF_Flatten_Fix_table_Pos(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FIX_TABLE_POS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +60,7 @@ void XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Fix_table_Pos::vXF_Fix_table_Pos(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_FIX_TABLE_POS, _FOOTER_);
 
   // fix position of table which uses subquery result as pos 0
   m_pCI->vTransform(__func__, XF_FLATTEN_FIX_TABLE_POS, "fix position of table which uses subquery result"_Stz);
