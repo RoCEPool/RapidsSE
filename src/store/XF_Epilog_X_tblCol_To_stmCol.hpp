@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Epilog_stmCol_To_colNm.hpp -- Stream-Column to Column-Name                     */
+/* XF_Epilog_X_tblCol_To_stmCol.hpp -- Table-Column to Stream-Column          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Epilog_stmCol_To_colNm : public XF_EPILOG
+  class XF_Epilog_X_tblCol_To_stmCol : public XF_EPILOG
   {
   private:
     // must be last
@@ -17,18 +17,21 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Epilog_stmCol_To_colNm(CardIter* pCI);
-   ~XF_Epilog_stmCol_To_colNm(void) noexcept(false);
+    XF_Epilog_X_tblCol_To_stmCol(CardIter* pCI);
+   ~XF_Epilog_X_tblCol_To_stmCol(void) noexcept(false);
 
     static void vEpilog(CardIter* pCI);
 
-    void vXF_stmCol_To_colNm(void);
+    void vXF_tblCol_To_stmCol(void);
 
   private:
+
+    void vConvert_tblColOdn_To_stmColOdn(void);
+
     Footer* aFooter(void);
   };
 
-  XF_Epilog_stmCol_To_colNm* _pXF_Epilog_stmCol_To_colNm(void* aAddr);
+  XF_Epilog_X_tblCol_To_stmCol* _pXF_Epilog_X_tblCol_To_stmCol(void* aAddr);
 }
 
 /*============================================================================*/

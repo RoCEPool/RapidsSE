@@ -503,7 +503,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_SMOOSH,
   /* */ CN_XF_SMOOTH,
   /* */ CN_XF_ADD_HASH_CAST,
-  /* */ CN_XF_STMCOL_TO_COLNM,
+  /* */ CN_XF_EPILOG_X_STMCOL_TO_COLNM,
   /* */ CN_XF_STMCOL_TO_TBLCOL,
   /* */ CN_XF_ANALYSE_SUBQUERY,
   /* */ CN_XF_SYNTHESISE_CODE,
@@ -1014,7 +1014,7 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN_SMOOSH"_Stz,                    // CN_XF_SMOOSH
   /* */ "XF_FLATTEN_SMOOTH"_Stz,                    // CN_XF_SMOOTH
   /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,                // CN_XF_ADD_HASH_CAST
-  /* */ "XF_EPILOG_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
+  /* */ "XF_EPILOG_STMCOL_TO_COLNM"_Stz,           // CN_XF_EPILOG_X_STMCOL_TO_COLNM
   /* */ "XF_EPILOG_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL
   /* */ "XF_PROLOG_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_ANALYSE_SUBQUERY
   /* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE

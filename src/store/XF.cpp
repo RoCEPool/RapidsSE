@@ -19,8 +19,8 @@
 #include "XF_Epilog_Promote_filter.hpp"
 #include "XF_Epilog_Reinstate_stage.hpp"
 #include "XF_Epilog_Add_hash_cast.hpp"
-#include "XF_Epilog_stmCol_To_colNm.hpp"
-#include "XF_Epilog_tblCol_To_stmCol.hpp"
+#include "XF_Epilog_X_stmCol_To_colNm.hpp"
+#include "XF_Epilog_X_tblCol_To_stmCol.hpp"
 #include "XF_Flatten.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 #include "XF_Flatten_stmCol_To_tblCol.hpp"
@@ -227,8 +227,8 @@ void XF::vTransform(void)
   XF_Epilog_Promote_filter::vEpilog(m_pCI);            //
   XF_Epilog_Reinstate_stage::vEpilog(m_pCI);           //
   XF_Epilog_Add_hash_cast::vEpilog(m_pCI);             //
-  XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);          //
-  XF_Epilog_stmCol_To_colNm::vEpilog(m_pCI);           //
+  XF_Epilog_X_tblCol_To_stmCol::vEpilog(m_pCI);          //
+  XF_Epilog_X_stmCol_To_colNm::vEpilog(m_pCI);           //
                                                        //
   // - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -338,7 +338,7 @@ void XF::vTransform_passThru(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->vUsingBoard((i8)0);
-  XF_Epilog_tblCol_To_stmCol::vEpilog(m_pCI);
+  XF_Epilog_X_tblCol_To_stmCol::vEpilog(m_pCI);
 
   XF_Epilog_Append_synthesis::vEpilog(m_pCI);             //
   XF_Epilog_Map_Columns::vEpilog(m_pCI);
