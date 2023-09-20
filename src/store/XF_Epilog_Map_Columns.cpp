@@ -62,7 +62,7 @@ void XF_Epilog_Map_Columns::vXF_Map_Columns(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_MAP_COLUMNS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_EPILOG_MAO_COLUMNS, "column mapping"_Stz);
+  m_pCI->vTransform(__func__, XF_EPILOG_MAP_COLUMNS, "column mapping"_Stz);
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_GBYAGG,CK_SYNTHESIS)) {
