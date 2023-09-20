@@ -510,7 +510,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   // if no mapping so far then attempt to map scan/indexScan
 
   if (! pColsReq_v2->m_nCols) {
-    if (CK_SCAN == eCard_OP) {
+    if (CK_SCAN == eCard_OP || CK_INDEXSCAN == eCard_OP) {
       vCraftColsReq_stmCol(pColsReq, pColsReq_v2,
                            p_OP_curr->pSub_stream(), p_OP_curr);
     }

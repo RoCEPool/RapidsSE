@@ -20,10 +20,10 @@ create index Ix_CUSTKEY on Customer(C_CUSTKEY);
 /OT_DERIVE_STREAMKEY
 /OT_SCAN_TO_INDEXSCAN
 /pipelineName = "_ray_indexScan"
-select *
+select C_MKTSEGMENT, C_NATIONKEY, C_CUSTKEY
   from Customer
  where C_CUSTKEY >= 1
-   and C_CUSTKEY <= 10
+   //and C_CUSTKEY <= 10
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
