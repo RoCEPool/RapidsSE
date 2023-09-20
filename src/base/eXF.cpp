@@ -8,18 +8,17 @@ Stz* aXF[XF_ENUMS]
 {
   /* */ "XF_NONE"_Stz,
 
+  /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,
   /* */ "XF_EPILOG_APPEND_SYNTHESIS"_Stz,
+  /* */ "XF_EPILOG_COLUMNS_REQUIRED"_Stz,
   /* */ "XF_EPILOG_FUSE_PROJECT"_Stz,
   /* */ "XF_EPILOG_HASH_COLUMNS"_Stz,
-  /* */ "XF_EPILOG_MAP_COLUMNS"_Stz,
-  /* */ "XF_EPILOG_COLUMNS_REQUIRED"_Stz,
   /* */ "XF_EPILOG_ITEMISE_COLUMNS"_Stz,
   /* */ "XF_EPILOG_ITEMSTRIP_COLNM"_Stz,
+  /* */ "XF_EPILOG_MAP_COLUMNS"_Stz,
   /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,
   /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,
-  /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,
   /* */ "XF_EPILOG_X_STMCOL_TO_COLNM"_Stz,
-  /* */ "XF_FLATTEN_X_STMCOL_TO_TBLCOL"_Stz,
   /* */ "XF_EPILOG_X_TBLCOL_TO_STMCOL"_Stz,
   /* */ "XF_FLATTEN"_Stz,
   /* */ "XF_FLATTEN_10_F"_Stz,
@@ -36,12 +35,13 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_FLATTEN_DELETE_FLAT"_Stz,
   /* */ "XF_FLATTEN_DERIVE_BOUNDS"_Stz,
   /* */ "XF_FLATTEN_FIX_TABLE_POS"_Stz,
+  /* */ "XF_FLATTEN_JOIN_ORDERING"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_PULLUP"_Stz,
   /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,
   /* */ "XF_FLATTEN_SMOOSH"_Stz,
   /* */ "XF_FLATTEN_SMOOTH"_Stz,
   /* */ "XF_FLATTEN_UPDATE_PROJECTION"_Stz,
-  /* */ "XF_FLATTEN_JOIN_ORDERING"_Stz,
+  /* */ "XF_FLATTEN_X_STMCOL_TO_TBLCOL"_Stz,
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz,
   /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,
   /* */ "XF_OPTIMISE_CULL_USED_BOUND"_Stz,
@@ -65,9 +65,9 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PASSTHRU_TWEAK_INDEXSCAN"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYEXISTS"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYNOTEXITS"_Stz,
-  /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,
   /* */ "XF_PROLOG_AS_REVIEW"_Stz,
   /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,
+  /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,
   /* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz,
   /* */ "XF_PROLOG_INDEX_ANALYSIS"_Stz,
   /* */ "XF_PROLOG_MOVE_ON"_Stz,
@@ -87,17 +87,17 @@ Stz* aXF_desc[XF_ENUMS]
 {
   /* */ "none"_Stz, // XF_NONE
 
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_HASH_CAST
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_APPEND_SYNTHESIS
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_MAP_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_COLUMNS_REQUIRED
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_FUSE_PROJECT
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_HASH_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMISE_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_ITEMSTRIP_COLNM
+  /* */ "<to be supplied>"_Stz, // XF_EPILOG_MAP_COLUMNS
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_PROMOTE_FILTER
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_REINSTATE_STAGE
-  /* */ "<to be supplied>"_Stz, // XF_EPILOG_ADD_HASH_CAST
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_STMCOL_TO_COLNM
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_STMCOL_TO_TBLCOL
   /* */ "<to be supplied>"_Stz, // XF_EPILOG_X_TBLCOL_TO_STMCOL
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_10_F
@@ -114,12 +114,13 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_DELETE_FLAT
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_DERIVE_BOUNDS
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_FIX_TABLE_POS
+  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_JOIN_ORDERING
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_PULLUP
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_PREDICATE_REPOSITION
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOSH
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_SMOOTH
   /* */ "<to be supplied>"_Stz, // XF_FLATTEN_UPDATE_PROJECTION
-  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_JOIN_ORDERING
+  /* */ "<to be supplied>"_Stz, // XF_FLATTEN_X_STMCOL_TO_TBLCOL
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_NONUSED_BOUND
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_CULL_USED_BOUND
@@ -143,9 +144,9 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_INDEXSCAN
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYEXISTS
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYNOTEXITS
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_LEVEL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_AS_REVIEW
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_COLNM_TO_STMCOL
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_LEVEL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ERASE_CONSTRUCTION
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_INDEX_ANALYSIS
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_MOVE_ON
