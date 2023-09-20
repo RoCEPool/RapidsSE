@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_Cut_sort, CN_XF_OT_CUT_SORT)
-__aNewFunction(XF_Optimise_Cut_sort, CN_XF_OT_CUT_SORT)
-__vDeleteFunction(XF_Optimise_Cut_sort, CN_XF_OT_CUT_SORT)
+__pCastFunction(STORE, XF_Optimise_Cut_sort, CN_XF_OPTIMISE_CUT_SORT)
+__aNewFunction(XF_Optimise_Cut_sort, CN_XF_OPTIMISE_CUT_SORT)
+__vDeleteFunction(XF_Optimise_Cut_sort, CN_XF_OPTIMISE_CUT_SORT)
 __aFooterFunction(XF_Optimise_Cut_sort)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Optimise_Cut_sort)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Cut_sort::XF_Optimise_Cut_sort(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_OT_CUT_SORT, OT_CUT_SORT, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_CUT_SORT, OT_CUT_SORT, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CUT_SORT, _FOOTER_);
 
-  _checkInitialised_(CN_XF_OT_CUT_SORT);
+  _checkInitialised_(CN_XF_OPTIMISE_CUT_SORT);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CUT_SORT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Optimise_Cut_sort::XF_Optimise_Cut_sort(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Cut_sort::~XF_Optimise_Cut_sort(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CUT_SORT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ void XF_Optimise_Cut_sort::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Cut_sort::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_CUT_SORT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CUT_SORT, _FOOTER_);
 
   bool bOptRun = false;
 

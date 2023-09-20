@@ -11,20 +11,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Smoosh, CN_XF_SMOOSH)
-__aNewFunction(XF_Flatten_Smoosh, CN_XF_SMOOSH)
-__vDeleteFunction(XF_Flatten_Smoosh, CN_XF_SMOOSH)
+__pCastFunction(STORE, XF_Flatten_Smoosh, CN_XF_FLATTEN_SMOOSH)
+__aNewFunction(XF_Flatten_Smoosh, CN_XF_FLATTEN_SMOOSH)
+__vDeleteFunction(XF_Flatten_Smoosh, CN_XF_FLATTEN_SMOOSH)
 __aFooterFunction(XF_Flatten_Smoosh)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Smoosh::XF_Flatten_Smoosh(void)
-: Object(CN_XF_SMOOSH)
+: Object(CN_XF_FLATTEN_SMOOSH)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ XF_Flatten_Smoosh::XF_Flatten_Smoosh(void)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Smoosh::~XF_Flatten_Smoosh(void) noexcept(false)
 {
-_precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+_precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 }
 
 
@@ -45,7 +45,7 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
   UNUSED(pCI);
   UNUSED(Smoosh);
 }
@@ -55,7 +55,7 @@ void XF_Flatten_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 
   pCI->vClearRestart();
   RASSERT(pCI->G_bEachMain_foldBreak(CK_FROM));

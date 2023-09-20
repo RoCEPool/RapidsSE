@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Left_subQuery, CN_XF_LEFT_SUBQUERY)
-__aNewFunction(XF_Flatten_Left_subQuery, CN_XF_LEFT_SUBQUERY)
-__vDeleteFunction(XF_Flatten_Left_subQuery, CN_XF_LEFT_SUBQUERY)
+__pCastFunction(STORE, XF_Flatten_Left_subQuery, CN_XF_FLATTEN_LEFT_SUBQUERY)
+__aNewFunction(XF_Flatten_Left_subQuery, CN_XF_FLATTEN_LEFT_SUBQUERY)
+__vDeleteFunction(XF_Flatten_Left_subQuery, CN_XF_FLATTEN_LEFT_SUBQUERY)
 __aFooterFunction(XF_Flatten_Left_subQuery )
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_Left_subQuery )
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Left_subQuery::XF_Flatten_Left_subQuery(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_LEFT_SUBQUERY, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_LEFT_SUBQUERY, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_LEFT_SUBQUERY);
+  _checkInitialised_(CN_XF_FLATTEN_LEFT_SUBQUERY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_Left_subQuery::XF_Flatten_Left_subQuery(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Left_subQuery::~XF_Flatten_Left_subQuery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ void XF_Flatten_Left_subQuery::vRemove_LeftMost(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Left_subQuery::vRemove_LeftMost(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_FLAT, "left subQuery"_Stz);
 
@@ -94,7 +94,7 @@ void XF_Flatten_Left_subQuery::vRemove_LeftMost(void)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Left_subQuery::vRotate_Next(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_LEFT_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_LEFT_SUBQUERY, _FOOTER_);
 
   //m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_FLAT, "left subQuery"_Stz);
 

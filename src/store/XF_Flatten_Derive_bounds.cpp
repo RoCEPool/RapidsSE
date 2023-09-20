@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Derive_bounds, CN_XF_DERIVE_BOUNDS)
-__aNewFunction(XF_Flatten_Derive_bounds, CN_XF_DERIVE_BOUNDS)
-__vDeleteFunction(XF_Flatten_Derive_bounds, CN_XF_DERIVE_BOUNDS)
+__pCastFunction(STORE, XF_Flatten_Derive_bounds, CN_XF_FLATTEN_DERIVE_BOUNDS)
+__aNewFunction(XF_Flatten_Derive_bounds, CN_XF_FLATTEN_DERIVE_BOUNDS)
+__vDeleteFunction(XF_Flatten_Derive_bounds, CN_XF_FLATTEN_DERIVE_BOUNDS)
 __aFooterFunction(XF_Flatten_Derive_bounds)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_Derive_bounds)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Derive_bounds::XF_Flatten_Derive_bounds(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_DERIVE_BOUNDS, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_DERIVE_BOUNDS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DERIVE_BOUNDS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_DERIVE_BOUNDS);
+  _checkInitialised_(CN_XF_FLATTEN_DERIVE_BOUNDS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DERIVE_BOUNDS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_Derive_bounds::XF_Flatten_Derive_bounds(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Derive_bounds::~XF_Flatten_Derive_bounds(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DERIVE_BOUNDS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_Derive_bounds::vXF_Derive_bounds(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Derive_bounds::vXF_Derive_bounds(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_BOUNDS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DERIVE_BOUNDS, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_FLATTEN_DERIVE_BOUNDS, "derive index bounds from table filter"_Stz);
 

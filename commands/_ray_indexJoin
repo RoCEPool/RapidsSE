@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* _ray_indexJoin                                                             */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+_orders
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+load Orders "<tpch_dir>/orders.<suffix>" ;
+
+create index Ix_CUSTKEY on Orders(O_CUSTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_indexJoin"
+select C_MKTSEGMENT, C_NATIONKEY, C_CUSTKEY,
+       O_CUSTKEY, O_ORDERDATE
+  from Customer, Orders
+ where C_CUSTKEY = O_CUSTKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+drop table Orders;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
