@@ -432,7 +432,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 #endif
 #ifdef Z_FUSE
   else
-  if (p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
+  if (p_OP->bIsCard(CK_INDEXJOIN) || p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
     Card_Arriving* p_arriving = p_OP->pSub_arriving();
     m_pOpDef->m_pStreamDef_arriving =
         p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
@@ -510,15 +510,15 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   // if no mapping so far then attempt to map scan/indexScan
 
   if (! pColsReq_v2->m_nCols) {
-    if (CK_SCAN == eCard_OP || CK_INDEXSCAN == eCard_OP) {
+    if (CK_SCAN == eCard_OP || CK_INDEXJOIN == eCard_OP || CK_INDEXSCAN == eCard_OP) {
       vCraftColsReq_stmCol(pColsReq, pColsReq_v2,
                            p_OP_curr->pSub_stream(), p_OP_curr);
     }
-    else
-    if (CK_INDEXJOIN == eCard_OP) {
-      vCraftColsReq_tblCol(p_table, pColsReq, pColsReq_v2,
-                           p_OP_curr->pSub_stream(), p_OP_curr);
-    }
+//    else
+//    if (CK_INDEXJOIN == eCard_OP) {
+//      vCraftColsReq_tblCol(p_table, pColsReq, pColsReq_v2,
+//                           p_OP_curr->pSub_stream(), p_OP_curr);
+//    }
   }
 
   // todo: indexScan?  Chat with ALka

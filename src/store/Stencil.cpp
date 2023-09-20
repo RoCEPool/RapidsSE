@@ -359,20 +359,19 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			pOpSketch = pSketchOrdAgg(pStageDef, pOpDef);
 			vAppend(pOpSketch);
 
-			m_ePreviousStencil = SR_PL;
-			m_eHandlerKind = HK_EOS;
+			m_ePreviousStencil = SR_AT;
+			//m_eHandlerKind = HK_EOS;
 
-			OpSketch *pOrdAggOpSketch = pOpSketch;
+			//OpSketch *pOrdAggOpSketch = pOpSketch;
 
-			pOpSketch = pSketchEos(pStageDef);
-			vAppend(pOpSketch);
+			//pOpSketch = pSketchEos(pStageDef);
+			//vAppend(pOpSketch);
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			pOpSketch = pSketchPotTub(pOrdAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-			vAppend(pOpSketch);
+			//pOpSketch = pSketchPotTub(pOrdAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
+			//vAppend(pOpSketch);
 
-			bGeneratePotTub = false;
-			bPayload = true;
+			//bGeneratePotTub = false;
 			continue;
 		}
 
@@ -914,7 +913,7 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sOrdAggExpr, m_eHandlerKind, SK_ORDAGG, m_ePreviousStencil, SR_AT, II_PL);
+  OpSketch *pOpSketch = new OpSketch(pStageDef, i_Op, sOrdAggExpr, m_eHandlerKind, SK_ORDAGG, m_ePreviousStencil, SR_AT, II_NONE);
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
@@ -922,11 +921,13 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
   // set the labels in the opSketch
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
+
+	// set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
 	// generate the expression stacks
-	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer $1\n"
-																 " aggregates type integer $K1 , type decimal as total )  $5 sum"_Stz);
+	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer as C0_l_orderkey $1\n"
+																 " aggregates type integer as C0_l_orderkey $K1 , type decimal as C1_COL2 )  $2 sum"_Stz);
 
   return pOpSketch;
 }

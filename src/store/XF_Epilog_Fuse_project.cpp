@@ -93,6 +93,22 @@ void XF_Epilog_Fuse_project::vFuse(void)
     }
   }
 
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
+    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
+      m_pCI->G.p_projection = m_pCI->G.p_project->pSub_projection();
+      m_pCI->G.p_indexJoin->vFuseNext_projection(m_pCI);
+#ifdef Z_FUSE
+      m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+#else
+      m_pCI->G.p_project->pSymbol()->Y_vSet(P_Fused);
+#endif
+    }
+    else {
+      m_pCI->G.p_indexJoin->vFuseSame_projection(m_pCI);
+    }
+  }
+
   m_pCI->vEndTransform();
 }
 
