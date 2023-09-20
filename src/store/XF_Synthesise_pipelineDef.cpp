@@ -599,7 +599,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
     Symbol* pSymbol_p = p_as_p->pSymbol();
     i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
 
-    pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p);
+    pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p, p_as_p->szSymbol(SF_NONE));
 
     return C_CONTINUE_RECURSION;
   };
@@ -709,7 +709,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_tblCol(Card_Table* p_table,
     i8 i_Col = StrLib::iGleanInt(szTblCol->azChar());
 
     pColsReq->vAddCol(i_Col, false, i_Col);
-    pColsReq_v2->vAddMapping(i_Col, i_Col);
+    pColsReq_v2->vAddMapping(i_Col, i_Col, nullptr);
 
     return C_CONTINUE_RECURSION;
   };
@@ -762,7 +762,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_terms(Card_Table* p_table,
       sColNm = "??"_Stz;
 
     pColsReq->vAddCol(i_Col, false, i_Col);
-    pColsReq_v2->vAddMapping(i_Col, i_Col);
+    pColsReq_v2->vAddMapping(i_Col, i_Col, sColNm);
 
     return C_CONTINUE_RECURSION;
   };

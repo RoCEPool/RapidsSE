@@ -18,6 +18,7 @@ namespace STORE
     struct {
       i8   m_i_CrwCol;     // column of compact row (base 0)
       i8   m_i_StructCell; // cell of struct (base 0)
+      s32  m_sCn_memberNm; // member name
     } m_axCols[C_COLSREQ];
 
   protected:
@@ -32,7 +33,7 @@ namespace STORE
 
    ~ColsReq_v2(void) noexcept(false);
 
-    void vAddMapping(i8 i_CrwCol, i8 i_StructCell);
+    void vAddMapping(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm);
 
     void vDump(i8 i_Tab=0);
 
