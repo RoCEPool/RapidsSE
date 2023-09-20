@@ -306,12 +306,12 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
 				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 				vAppendStencilTo(pOpSketch);
-				vAppendCodeFragment(pOpSketch, "vOrdAggBegin"_Stz, pOperatorFile);
-
+				vAppendCodeFragment(pOpSketch, "iOrdAggBegin"_Stz, pOperatorFile);
+/*
 				vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz, pOperatorFile);
 				vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
 				vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz, pOperatorFile);
-
+*/
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				// close the aggregate code fragments file
 				pOperatorFile->vClose();

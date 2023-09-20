@@ -215,47 +215,38 @@ bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOp
 
   //s4K sCopy;
   TypeValueArea* pTypedCell;
+	TypedStack* pTypedStack;
 
-  if (StrLib::bContains(sLine->azChar(), "__NULLSTACK__")) {
-    TypedStack* pTypedStack = pOpSketch->m_pNullStack;
+	if (StrLib::bContains(sLine->azChar(), "__CONSTRAINTSTACK__")) {
+		pTypedStack = pOpSketch->m_pConstraintStack;
+	}
+	else if (StrLib::bContains(sLine->azChar(), "__EXPRSTACK__")) {
+		pTypedStack = pOpSketch->m_pExprStack;
+	}
+	else if (StrLib::bContains(sLine->azChar(), "__GBYSTACK__")) {
+		pTypedStack = pOpSketch->m_pGbyStack;
+	}
+	else if (StrLib::bContains(sLine->azChar(), "__INITSTACK__")) {
+		pTypedStack = pOpSketch->m_pInitStack;
+	}
+	else if (StrLib::bContains(sLine->azChar(), "__NULLSTACK__")) {
+		pTypedStack = pOpSketch->m_pNullStack;
+	}
+	else if (StrLib::bContains(sLine->azChar(), "__ORDAGGSTACK__")) {
+		pTypedStack = pOpSketch->m_pOrdAggStack;
+	}
+	else {
+		return false;
+	}
 
-    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
+	i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
 
-    while ( nExpr >= 0) {
-      pTypedCell = pTypedStack->aPeekItem(nExpr--);
-      Stz* sExpr = pTypedCell->szStz();
-      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
-    }
-    return true;
-  }
-
-  if (StrLib::bContains(sLine->azChar(), "__EXPRSTACK__")) {
-    TypedStack* pTypedStack = pOpSketch->m_pExprStack;
-
-    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
-
-    while ( nExpr >= 0) {
-      pTypedCell = pTypedStack->aPeekItem(nExpr--);
-      Stz* sExpr = pTypedCell->szStz();
-      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
-    }
-    return true;
-  }
-
-  if (StrLib::bContains(sLine->azChar(), "__CONSTRAINTSTACK__")) {
-    TypedStack* pTypedStack = pOpSketch->m_pConstraintStack;
-
-    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
-
-    while ( nExpr >= 0) {
-      pTypedCell = pTypedStack->aPeekItem(nExpr--);
-      Stz* sExpr = pTypedCell->szStz();
-      sCode->vCatSprint("\n %s"_Stz, sExpr->azChar());
-    }
-    return true;
-  }
-
-  return false;
+	while ( nExpr >= 0) {
+		pTypedCell = pTypedStack->aPeekItem(nExpr--);
+		Stz* sExpr = pTypedCell->szStz();
+		sCode->vCatSprint("\n    %s"_Stz, sExpr->azChar());
+	}
+	return true;
 }
 
 /*----------------------------------------------------------------------------*/

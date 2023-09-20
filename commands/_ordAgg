@@ -6,11 +6,16 @@ _lineitem;
 create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 load lineitem "../DATA/TPCH/lineitem10.csv";
 
+
 /pipeline_def
 /weaved
 /keepCodeFile
-select sum(l_quantity) from lineitem;
-//select l_orderkey, sum(l_quantity) from lineitem where l_orderkey >= 2 group by l_orderkey ;
+select l_orderkey, sum(l_quantity) from lineitem where l_orderkey >= 2 group by l_orderkey ;
+
+/*
+(2,38.00)
+(3,116.00)
+*/
 
 /*
 /optimise_passthru

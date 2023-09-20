@@ -109,17 +109,16 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pUpperStack  = new TypedStack(KK_DATA_STACK);
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
+	m_pGbyStack = nullptr;
+	m_pOrdAggStack = nullptr;
+
   if (eSketchKind == SK_GBYAGG) {
     m_pGbyStack = new TypedStack(KK_DATA_STACK);
-    m_pOrdAggStack = new TypedStack(KK_DATA_STACK);    // ALKA COME BACK TO THIS
   }
 	else if (eSketchKind == SK_ORDAGG) {
 		m_pGbyStack = new TypedStack(KK_DATA_STACK);
+		m_pOrdAggStack = new TypedStack(KK_DATA_STACK);    // ALKA COME BACK TO THIS
 	}
-	else {
-    m_pGbyStack = nullptr;
-    m_pOrdAggStack = nullptr;
-  }
 
   // duplicate the init stack
   if (pInitStack) {
@@ -1180,6 +1179,16 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 //    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
 //    vTrace("%s\n"_Stz, pTypedCell->szStz());
 //  }
+//
+//	// dump the m_pOrdAggStack stack
+//  vTrace("--------------------------------------\n"_Stz);
+//  vTrace("ORDAGGSTACK:\n"_Stz);
+//  nExpr = m_pGbyStack ? m_pOrdAggStack->nValues() - 1 : -1;
+//
+//  while ( nExpr >= 0) {
+//    pTypedCell = m_pOrdAggStack->aPeekItem(nExpr--);
+//    vTrace("%s\n"_Stz, pTypedCell->szStz());
+//  }
 
 #endif
 
@@ -1331,7 +1340,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
 
     RASSERT(m_eSketchKind == SK_AGGREG ||
             m_eSketchKind == SK_ORDAGG)
-    sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
+    sOperation.vSprint("_ASSIGN(%s)\n"_Stz, sStructColumn.azChar());
     m_pInitStack->vPushStr(sOperation);
   }
 
@@ -1877,6 +1886,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   if (pExprStack == m_pGbyStack) {
     m_pOrdAggStack->vPushStz(sPush);
   }
+
 //  }
 
 
@@ -2009,6 +2019,8 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         sPush = aFM[eMacro_Eq[eDatum][eDatum]];
         sPush.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
         m_pOrdAggStack->vPushStz(sPush);
+				sPush.vSprint("_ASSIGN(bKeyMatch)\n"_Stz);
+				m_pOrdAggStack->vPushStz(sPush);
         break;
       }
 
@@ -2390,6 +2402,7 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
   switch(m_eSketchKind) {
     case SK_AGGREG:
     case SK_GBYAGG:
+		case SK_ORDAGG:
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
@@ -2399,11 +2412,11 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
 
       return m_pInitStack;
 
-    case SK_ORDAGG:
-      if (ePreExp == PE_GBY)
-        return m_pGbyStack;
-      else
-        return m_pExprStack;
+//    case SK_ORDAGG:
+//      if (ePreExp == PE_GBY)
+//        return m_pGbyStack;
+//      else
+//        return m_pExprStack;
 
     case SK_FILTER:
     case SK_INDEXSCAN:
