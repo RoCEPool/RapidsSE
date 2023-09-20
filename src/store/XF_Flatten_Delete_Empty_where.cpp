@@ -9,6 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+//todo: incorrect CN
 __pCastFunction(STORE, XF_Flatten_Delete_Empty_where, CN_XF_PROLOG_ENSURE_LEVEL)
 __aNewFunction(XF_Flatten_Delete_Empty_where, CN_XF_PROLOG_ENSURE_LEVEL)
 __vDeleteFunction(XF_Flatten_Delete_Empty_where, CN_XF_PROLOG_ENSURE_LEVEL)

@@ -9,6 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+//todo: incorrect CN
 __pCastFunction(STORE, XF_Epilog_Map_Columns, CN_XF_EPILOG_DETERMINE_COLUMNS)
 __aNewFunction(XF_Epilog_Map_Columns, CN_XF_EPILOG_DETERMINE_COLUMNS)
 __vDeleteFunction(XF_Epilog_Map_Columns, CN_XF_EPILOG_DETERMINE_COLUMNS)

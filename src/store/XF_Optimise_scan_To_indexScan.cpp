@@ -11,9 +11,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_scan_To_indexScan, CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN)
-__aNewFunction(XF_Optimise_scan_To_indexScan, CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN)
-__vDeleteFunction(XF_Optimise_scan_To_indexScan, CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN)
+__pCastFunction(STORE, XF_Optimise_scan_To_indexScan, CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN)
+__aNewFunction(XF_Optimise_scan_To_indexScan, CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN)
+__vDeleteFunction(XF_Optimise_scan_To_indexScan, CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN)
 __aFooterFunction(XF_Optimise_scan_To_indexScan)
 
 
@@ -21,13 +21,13 @@ __aFooterFunction(XF_Optimise_scan_To_indexScan)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_scan_To_indexScan::XF_Optimise_scan_To_indexScan(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN, OT_SCAN_TO_INDEXSCAN, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN, OT_SCAN_TO_INDEXSCAN, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
 
-  _checkInitialised_(CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN);
+  _checkInitialised_(CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ XF_Optimise_scan_To_indexScan::XF_Optimise_scan_To_indexScan(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_scan_To_indexScan::~XF_Optimise_scan_To_indexScan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ void XF_Optimise_scan_To_indexScan::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_scan_To_indexScan::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN, _FOOTER_);
 
   bool bOptRun = false;
 
