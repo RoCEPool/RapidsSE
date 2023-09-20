@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Fuse_project, CN_XF_FUSE_PROJECT)
-__aNewFunction(XF_Epilog_Fuse_project, CN_XF_FUSE_PROJECT)
-__vDeleteFunction(XF_Epilog_Fuse_project, CN_XF_FUSE_PROJECT)
+__pCastFunction(STORE, XF_Epilog_Fuse_project, CN_XF_EPILOG_FUSE_PROJECT)
+__aNewFunction(XF_Epilog_Fuse_project, CN_XF_EPILOG_FUSE_PROJECT)
+__vDeleteFunction(XF_Epilog_Fuse_project, CN_XF_EPILOG_FUSE_PROJECT)
 __aFooterFunction(XF_Epilog_Fuse_project)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Epilog_Fuse_project)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Fuse_project::XF_Epilog_Fuse_project(CardIter* pCI)
-: XF_EPILOG(CN_XF_FUSE_PROJECT, pCI)
+: XF_EPILOG(CN_XF_EPILOG_FUSE_PROJECT, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FUSE_PROJECT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 
-  _checkInitialised_(CN_XF_FUSE_PROJECT);
+  _checkInitialised_(CN_XF_EPILOG_FUSE_PROJECT);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FUSE_PROJECT, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Epilog_Fuse_project::XF_Epilog_Fuse_project(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Fuse_project::~XF_Epilog_Fuse_project(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FUSE_PROJECT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Epilog_Fuse_project::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_Fuse_project::vFuse(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FUSE_PROJECT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_EPILOG_FUSE_PROJECT, "fuse project"_Stz);
 

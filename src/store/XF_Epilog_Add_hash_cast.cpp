@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Add_hash_cast, CN_XF_ADD_HASH_CAST)
-__aNewFunction(XF_Epilog_Add_hash_cast, CN_XF_ADD_HASH_CAST)
-__vDeleteFunction(XF_Epilog_Add_hash_cast, CN_XF_ADD_HASH_CAST)
+__pCastFunction(STORE, XF_Epilog_Add_hash_cast, CN_XF_EPILOG_ADD_HASH_CAST)
+__aNewFunction(XF_Epilog_Add_hash_cast, CN_XF_EPILOG_ADD_HASH_CAST)
+__vDeleteFunction(XF_Epilog_Add_hash_cast, CN_XF_EPILOG_ADD_HASH_CAST)
 __aFooterFunction(XF_Epilog_Add_hash_cast)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Epilog_Add_hash_cast)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Add_hash_cast::XF_Epilog_Add_hash_cast(CardIter* pCI)
-: XF_EPILOG(CN_XF_ADD_HASH_CAST, pCI)
+: XF_EPILOG(CN_XF_EPILOG_ADD_HASH_CAST, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_HASH_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_HASH_CAST, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ADD_HASH_CAST);
+  _checkInitialised_(CN_XF_EPILOG_ADD_HASH_CAST);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_HASH_CAST, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_HASH_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Epilog_Add_hash_cast::XF_Epilog_Add_hash_cast(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Add_hash_cast::~XF_Epilog_Add_hash_cast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_HASH_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_HASH_CAST, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Epilog_Add_hash_cast::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_Add_hash_cast::vXF_stage_cast(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_HASH_CAST, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_HASH_CAST, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_EPILOG_ADD_HASH_CAST, "add stage casts"_Stz);
 
