@@ -39,6 +39,20 @@ Kid::Kid(Card* pParent)
   _checkInitialised_(CN_KID);
 }
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Kid::Kid(Card* pParent, Card *pChild)
+{
+  _nonProper_
+
+  m_pParent = pParent;
+
+  vBegin();
+  vReposition(pChild);
+
+  _checkInitialised_(CN_KID);
+}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

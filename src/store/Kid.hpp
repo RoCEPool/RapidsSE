@@ -28,6 +28,7 @@ namespace STORE
   public:
     Kid(void);
     Kid(Card *pParent);
+    Kid(Card *pParent, Card *pChild);
     ~Kid(void) noexcept(false);
 
     void vBackstep(void);
