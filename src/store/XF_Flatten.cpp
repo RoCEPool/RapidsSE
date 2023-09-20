@@ -23,7 +23,7 @@
 #include "XF_Flatten_Delete_flat.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
-#include "XF_Flatten_stmCol_To_tblCol.hpp"
+#include "XF_Flatten_X_stmCol_To_tblCol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -111,7 +111,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // things before sub-queries
 
 
-  XF_Flatten_stmCol_To_tblCol::vFlatten(m_pCI);
+  XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // flatten the sub-queries of this outer query

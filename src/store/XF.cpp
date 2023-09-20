@@ -23,7 +23,7 @@
 #include "XF_Epilog_X_tblCol_To_stmCol.hpp"
 #include "XF_Flatten.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
-#include "XF_Flatten_stmCol_To_tblCol.hpp"
+#include "XF_Flatten_X_stmCol_To_tblCol.hpp"
 #include "XF_Optimise_Cull_bound.hpp"
 #include "XF_Optimise_Cut_sort.hpp"
 #include "XF_Optimise_Derive_streamKey.hpp"
@@ -278,7 +278,7 @@ void XF::vTransform_passThru(void)
     XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(m_pCI);
     XF_Prolog_Analyse_projection::vXF_projection_Analysis_passThru(m_pCI);
 
-    XF_Flatten_stmCol_To_tblCol::vFlatten(m_pCI);
+    XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
     // todo: needs discussion with Alka re constraint
     XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
