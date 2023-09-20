@@ -67,7 +67,7 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
-#ifdef Z_REJIG_STREAMDEFS
+#ifdef Z_FUSE
 	ayDstByte = (byte*)&p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 #endif
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
@@ -104,7 +104,7 @@ void vSkipCrwCol(Dynamic_T* aDynamicT) {
   uLow  = uMetaCode & 0x0F;
 
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
-#ifndef Z_REJIG_STREAMDEFS
+#ifndef Z_FUSE
   ayDstByte += 8;
 #endif
   goto L_SkipAColumn;

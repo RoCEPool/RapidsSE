@@ -14,12 +14,16 @@ namespace STORE {
 
     static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, Column* pColumn, Stz *sReturnToLabel,
                                 Stz *szFunMkr, String *sCode);
+		static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, char* sColumnNm, i8 iColumn, Stz *sReturnToLabel,
+																Stz *szFunMkr, String *sCode);
 
   private:
     static bool bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOpSketch);
 
     static void vReplaceColumnNo(String* sLine, Column *pColumn);
-    static void vReplaceColumnName(String* sLine, Column *pColumn);
+		static void vReplaceColumnNo(String* sLine, i8 iCol);
+		static void vReplaceUnionType(String* sLine, Column* pColumn);
+    static void vReplaceColumnName(String* sLine, char* sColumnNm);
     static bool bReplaceIndexInfo(String* sLine, String* sReplacedLine, OpSketch *pOpSketch);
     static void vReplaceIndexPosition(String* sLine, OpSketch *pOpSketch);
     static void vReplaceInsertEnt(String* sLine, OpSketch* pOpSketch);
