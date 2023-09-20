@@ -67,19 +67,19 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PASSTHRU_TWEAK_INDEXSCAN"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYEXISTS"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYNOTEXITS"_Stz,
+  /* */ "XF_PROLOG_ANALYSE_INDEX"_Stz,
+  /* */ "XF_PROLOG_ANALYSE_PROJECTION"_Stz,
+  /* */ "XF_PROLOG_ANALYSE_SUBQUERY"_Stz,
+  /* */ "XF_PROLOG_ANALYSE_TABLE"_Stz,
   /* */ "XF_PROLOG_AS_REVIEW"_Stz,
   /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,
   /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,
   /* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz,
-  /* */ "XF_PROLOG_ANALYSE_INDEX"_Stz,
   /* */ "XF_PROLOG_MOVE_ON"_Stz,
   /* */ "XF_PROLOG_REDUCE_NOT"_Stz,
-  /* */ "XF_PROLOG_ANALYSE_PROJECTION"_Stz,
   /* */ "XF_PROLOG_RPNCALC_TO_BOOLCALC"_Stz,
   /* */ "XF_PROLOG_SCAN_TO_FROM"_Stz,
   /* */ "XF_PROLOG_SHORTEN_QUERYNNM"_Stz,
-  /* */ "XF_PROLOG_ANALYSE_SUBQUERY"_Stz,
-  /* */ "XF_PROLOG_ANALYSE_TABLE"_Stz,
   /* */ "XF_SYNTHESISE_CODE"_Stz,
 
 //  /* */ "XF_ENUMS"_Stz
@@ -146,19 +146,19 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_INDEXSCAN
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYEXISTS
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYNOTEXITS
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_INDEX
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_PROJECTION
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_SUBQUERY
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_TABLE
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_AS_REVIEW
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_COLNM_TO_STMCOL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_LEVEL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ERASE_CONSTRUCTION
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_INDEX
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_MOVE_ON
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_REDUCE_NOT
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_PROJECTION
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_RPNCALC_TO_BOOLCALC
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_SCAN_TO_FROM
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_SHORTEN_QUERYNNM
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_SUBQUERY
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_TABLE
   /* */ "<to be supplied>"_Stz, // XF_SYNTHESISE_CODE
 
 // /* */        // XF_ENUMS"_Stz
