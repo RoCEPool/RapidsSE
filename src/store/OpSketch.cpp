@@ -109,15 +109,14 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pUpperStack  = new TypedStack(KK_DATA_STACK);
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
-	m_pGbyStack = nullptr;
-	m_pOrdAggStack = nullptr;
-
-  if (eSketchKind == SK_GBYAGG) {
+  if (eSketchKind == SK_GBYAGG ||
+			eSketchKind == SK_ORDAGG) {
     m_pGbyStack = new TypedStack(KK_DATA_STACK);
+		m_pOrdAggStack = new TypedStack(KK_DATA_STACK);
   }
-	else if (eSketchKind == SK_ORDAGG) {
-		m_pGbyStack = new TypedStack(KK_DATA_STACK);
-		m_pOrdAggStack = new TypedStack(KK_DATA_STACK);    // ALKA COME BACK TO THIS
+	else {
+		m_pGbyStack = nullptr;
+		m_pOrdAggStack = nullptr;
 	}
 
   // duplicate the init stack

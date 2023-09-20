@@ -539,6 +539,11 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
+#ifndef Z_FUSE
+  if (pSubCard->bIsCard(CK_INDEXJOIN))
+    return;
+#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map first stmCol of given expr
 
