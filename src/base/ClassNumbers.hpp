@@ -497,9 +497,9 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_PREDICATE_REPOSITION,
   /* */ CN_XF_ANALYSE_PROJECTION,
   /* */ CN_XF_REINSTATE_STAGE,
-  /* */ CN_XF_RPNCALC_TO_BOOLCALC,
-  /* */ CN_XF_SCAN_TO_FROM,
-  /* */ CN_XF_PROLOG_BOARDNM_TO_SQYNM,
+  /* */ CN_XF_X_RPNCALC_TO_BOOLCALC,
+  /* */ CN_XF_X_SCAN_TO_FROM,
+  /* */ CN_XF_PROLOG_X_BOARD_TO_SQYNM,
   /* */ CN_XF_SMOOSH,
   /* */ CN_XF_SMOOTH,
   /* */ CN_XF_ADD_HASH_CAST,
@@ -509,7 +509,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_SYNTHESISE_CODE,
   /* */ CN_XF_SYNTHESISE_PIPELINEDEF,
   /* */ CN_XF_ANALYSE_TABLE,
-  /* */ CN_XF_TBLCOL_TO_STMCOL,
+  /* */ CN_XF_X_TBLCOL_TO_STMCOL,
   /* */ CN_XF_UPDATE_PROJECTION,
 
   /* */ CN__Y__,
@@ -1008,9 +1008,9 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,      // CN_XF_PREDICATE_REPOSITION
   /* */ "XF_PROLOG_PROJECTION_ANALYSIS"_Stz,       // CN_XF_ANALYSE_PROJECTION
   /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,           // CN_XF_REINSTATE_STAGE
-  /* */ "XF_PROLOG_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
-  /* */ "XF_SCAN_TO_FROM"_Stz,              // CN_XF_SCAN_TO_FROM
-  /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_PROLOG_BOARDNM_TO_SQYNM
+  /* */ "XF_PROLOG_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_X_RPNCALC_TO_BOOLCALC
+  /* */ "XF_SCAN_TO_FROM"_Stz,              // CN_XF_X_SCAN_TO_FROM
+  /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_PROLOG_X_BOARD_TO_SQYNM
   /* */ "XF_FLATTEN_SMOOSH"_Stz,                    // CN_XF_SMOOSH
   /* */ "XF_FLATTEN_SMOOTH"_Stz,                    // CN_XF_SMOOTH
   /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,                // CN_XF_ADD_HASH_CAST
@@ -1020,7 +1020,7 @@ static Stz* aCN[]
   /* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
   /* */ "XF_SYNTHESISE_PIPELINEDEF"_Stz,    // CN_XF_SYNTHESISE_PIPELINEDEF
   /* */ "XF_PROLOG_TABLE_ANALYSIS"_Stz,            // CN_XF_ANALYSE_TABLE
-  /* */ "XF_EPILOG_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
+  /* */ "XF_EPILOG_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_X_TBLCOL_TO_STMCOL
   /* */ "XF_FLATTEN_UPDATE_PROJECTION"_Stz,         // CN_XF_UPDATE_PROJECTION
 
   /* */ "_Y__"_Stz,                 // CN__Y__

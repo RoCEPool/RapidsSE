@@ -44,13 +44,13 @@
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Review_as.hpp"
-#include "XF_Prolog_boardNm_To_sqyNm.hpp"
-#include "XF_Prolog_colNm_To_stmCol.hpp"
+#include "XF_Prolog_X_board_To_sqyNm.hpp"
+#include "XF_Prolog_X_colNm_To_stmCol.hpp"
 #include "XF_Prolog_Analyse_index.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Analyse_projection.hpp"
-#include "XF_Prolog_rpnCalc_To_boolCalc.hpp"
-#include "XF_Prolog_scan_To_from.hpp"
+#include "XF_Prolog_X_rpnCalc_To_boolCalc.hpp"
+#include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Synthesise_code.hpp"
@@ -147,7 +147,7 @@ void XF::vTransform(void)
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard())                      //
-    XF_Prolog_boardNm_To_sqyNm::vProlog(m_pCI);    //
+    XF_Prolog_X_board_To_sqyNm::vProlog(m_pCI);    //
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
@@ -155,7 +155,7 @@ void XF::vTransform(void)
     // initial adjustments                         //
     XF_Prolog_Move_on::vProlog(m_pCI);             //
     XF_Prolog_Erase_construction::vProlog(m_pCI);  //
-    XF_Prolog_scan_To_from::vProlog(m_pCI);        //
+    XF_Prolog_X_scan_To_from::vProlog(m_pCI);        //
     XF_Prolog_Ensure_level::vProlog(m_pCI);           //
     XF_Prolog_Reduce_not::vProlog(m_pCI);             //
                                                    //
@@ -165,7 +165,7 @@ void XF::vTransform(void)
     XF_Prolog_Analyse_index::vProlog(m_pCI);      //
                                                    //
     // preliminary conversions                     //
-    XF_Prolog_rpnCalc_To_boolCalc::vProlog(m_pCI); //
+    XF_Prolog_X_rpnCalc_To_boolCalc::vProlog(m_pCI); //
     XF_Prolog_Review_as::vProlog(m_pCI);           //
   }                                                //
                                                    //
@@ -270,7 +270,7 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
-    XF_Prolog_boardNm_To_sqyNm::vProlog(m_pCI);
+    XF_Prolog_X_board_To_sqyNm::vProlog(m_pCI);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
@@ -281,7 +281,7 @@ void XF::vTransform_passThru(void)
     XF_Flatten_stmCol_To_tblCol::vFlatten(m_pCI);
 
     // todo: needs discussion with Alka re constraint
-    XF_Prolog_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
+    XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
@@ -328,7 +328,7 @@ void XF::vTransform_passThru(void)
     }
     m_pCI->vEndTransform();
 
-    XF_Prolog_rpnCalc_To_boolCalc::vProlog(m_pCI);
+    XF_Prolog_X_rpnCalc_To_boolCalc::vProlog(m_pCI);
 
     vDebugPoint();
   }

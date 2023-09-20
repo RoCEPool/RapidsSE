@@ -1,49 +1,49 @@
 /*============================================================================*/
-/* XF_Prolog_boardNm_To_sqyNm.cpp -- Change boardNm to sqyNm                  */
+/* XF_Prolog_X_board_To_sqyNm.cpp -- Change boardNm to sqyNm                  */
 /*============================================================================*/
 
-#include "XF_Prolog_boardNm_To_sqyNm.hpp"
+#include "XF_Prolog_X_board_To_sqyNm.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_boardNm_To_sqyNm, CN_XF_PROLOG_BOARDNM_TO_SQYNM)
-__aNewFunction(XF_Prolog_boardNm_To_sqyNm, CN_XF_PROLOG_BOARDNM_TO_SQYNM)
-__vDeleteFunction(XF_Prolog_boardNm_To_sqyNm, CN_XF_PROLOG_BOARDNM_TO_SQYNM)
-__aFooterFunction(XF_Prolog_boardNm_To_sqyNm)
+__pCastFunction(STORE, XF_Prolog_X_board_To_sqyNm, CN_XF_PROLOG_X_BOARD_TO_SQYNM)
+__aNewFunction(XF_Prolog_X_board_To_sqyNm, CN_XF_PROLOG_X_BOARD_TO_SQYNM)
+__vDeleteFunction(XF_Prolog_X_board_To_sqyNm, CN_XF_PROLOG_X_BOARD_TO_SQYNM)
+__aFooterFunction(XF_Prolog_X_board_To_sqyNm)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_boardNm_To_sqyNm::XF_Prolog_boardNm_To_sqyNm(CardIter* pCI)
-: XF_PROLOG(CN_XF_PROLOG_BOARDNM_TO_SQYNM, pCI)
+XF_Prolog_X_board_To_sqyNm::XF_Prolog_X_board_To_sqyNm(CardIter* pCI)
+: XF_PROLOG(CN_XF_PROLOG_X_BOARD_TO_SQYNM, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_BOARDNM_TO_SQYNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_BOARD_TO_SQYNM, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PROLOG_BOARDNM_TO_SQYNM);
+  _checkInitialised_(CN_XF_PROLOG_X_BOARD_TO_SQYNM);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_BOARDNM_TO_SQYNM, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_BOARD_TO_SQYNM, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Prolog_boardNm_To_sqyNm::~XF_Prolog_boardNm_To_sqyNm(void) noexcept(false)
+XF_Prolog_X_board_To_sqyNm::~XF_Prolog_X_board_To_sqyNm(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_BOARDNM_TO_SQYNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_BOARD_TO_SQYNM, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_boardNm_To_sqyNm::vProlog(CardIter* pCI)
+void XF_Prolog_X_board_To_sqyNm::vProlog(CardIter* pCI)
 {
   _static_
 
-  XF_Prolog_boardNm_To_sqyNm* pXF_Shorten_QueryNames = new XF_Prolog_boardNm_To_sqyNm(pCI);
+  XF_Prolog_X_board_To_sqyNm* pXF_Shorten_QueryNames = new XF_Prolog_X_board_To_sqyNm(pCI);
 
   pXF_Shorten_QueryNames->vProlog();
 
@@ -58,9 +58,9 @@ void XF_Prolog_boardNm_To_sqyNm::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* shorten query names                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_boardNm_To_sqyNm::vProlog(void)
+void XF_Prolog_X_board_To_sqyNm::vProlog(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_BOARDNM_TO_SQYNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_BOARD_TO_SQYNM, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_SHORTEN_QUERYNM, "shorten query names"_Stz);
 

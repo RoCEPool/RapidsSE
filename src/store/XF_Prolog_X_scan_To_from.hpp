@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_colNm_To_stmCol.hpp -- Column-Name to Stream-Column                     */
+/* XF_Prolog_X_scan_To_from.hpp -- Scan Becomes Table                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_colNm_To_stmCol : public XF_PROLOG
+  class XF_Prolog_X_scan_To_from : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,21 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_colNm_To_stmCol(CardIter* pCI);
-   ~XF_Prolog_colNm_To_stmCol(void) noexcept(false);
+    XF_Prolog_X_scan_To_from(CardIter* pCI);
+   ~XF_Prolog_X_scan_To_from(void) noexcept(false);
 
-    static void vXF_colNm_To_stmCol(CardIter* pCI);
+    static void vProlog(CardIter* pCI);
 
-    void vXF_colNm_To_stmCol(void);
+    void vXF_scan_To_table(void);
 
   private:
-
-    void vConvert_colNm_To_stmCol(void);
-
     Footer* aFooter(void);
   };
 
-  XF_Prolog_colNm_To_stmCol* _pXF_Prolog_colNm_To_stmCol(void* aAddr);
+  XF_Prolog_X_scan_To_from* _pXF_Prolog_X_scan_To_from(void* aAddr);
 }
 
 /*============================================================================*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Prolog_rpnCalc_To_boolCalc.hpp -- RpnCalc to BoolCalc                          */
+/* XF_Prolog_X_rpnCalc_To_boolCalc.hpp -- RpnCalc to BoolCalc                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Prolog_rpnCalc_To_boolCalc : public XF_PROLOG
+  class XF_Prolog_X_rpnCalc_To_boolCalc : public XF_PROLOG
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Prolog_rpnCalc_To_boolCalc(CardIter* pCI);
-   ~XF_Prolog_rpnCalc_To_boolCalc(void) noexcept(false);
+    XF_Prolog_X_rpnCalc_To_boolCalc(CardIter* pCI);
+   ~XF_Prolog_X_rpnCalc_To_boolCalc(void) noexcept(false);
 
     static void vProlog(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Prolog_rpnCalc_To_boolCalc* _pXF_Prolog_rpnCalc_To_boolCalc(void* aAddr);
+  XF_Prolog_X_rpnCalc_To_boolCalc* _pXF_Prolog_X_rpnCalc_To_boolCalc(void* aAddr);
 }
 
 /*============================================================================*/
