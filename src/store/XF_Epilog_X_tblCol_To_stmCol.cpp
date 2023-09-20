@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_X_tblCol_To_stmCol, CN_XF_X_TBLCOL_TO_STMCOL)
-__aNewFunction(XF_Epilog_X_tblCol_To_stmCol, CN_XF_X_TBLCOL_TO_STMCOL)
-__vDeleteFunction(XF_Epilog_X_tblCol_To_stmCol, CN_XF_X_TBLCOL_TO_STMCOL)
+__pCastFunction(STORE, XF_Epilog_X_tblCol_To_stmCol, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL)
+__aNewFunction(XF_Epilog_X_tblCol_To_stmCol, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL)
+__vDeleteFunction(XF_Epilog_X_tblCol_To_stmCol, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL)
 __aFooterFunction(XF_Epilog_X_tblCol_To_stmCol)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Epilog_X_tblCol_To_stmCol)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_X_tblCol_To_stmCol::XF_Epilog_X_tblCol_To_stmCol(CardIter* pCI)
-: XF_EPILOG(CN_XF_X_TBLCOL_TO_STMCOL, pCI)
+: XF_EPILOG(CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_X_TBLCOL_TO_STMCOL);
+  _checkInitialised_(CN_XF_PROLOG_X_TBLCOL_TO_STMCOL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Epilog_X_tblCol_To_stmCol::XF_Epilog_X_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Epilog_X_tblCol_To_stmCol::~XF_Epilog_X_tblCol_To_stmCol(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_X_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_EPILOG_TBLCOL_TO_STMCOL, "transform table-columns to stream-columns"_Stz);
 
@@ -91,7 +91,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_X_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
   if (m_pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt)) {
     //vDump();

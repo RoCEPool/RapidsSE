@@ -11,9 +11,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Analyse_table, CN_XF_ANALYSE_TABLE)
-__aNewFunction(XF_Prolog_Analyse_table, CN_XF_ANALYSE_TABLE)
-__vDeleteFunction(XF_Prolog_Analyse_table, CN_XF_ANALYSE_TABLE)
+__pCastFunction(STORE, XF_Prolog_Analyse_table, CN_XF_PROLOG_ANALYSE_TABLE)
+__aNewFunction(XF_Prolog_Analyse_table, CN_XF_PROLOG_ANALYSE_TABLE)
+__vDeleteFunction(XF_Prolog_Analyse_table, CN_XF_PROLOG_ANALYSE_TABLE)
 __aFooterFunction(XF_Prolog_Analyse_table)
 
 
@@ -21,13 +21,13 @@ __aFooterFunction(XF_Prolog_Analyse_table)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Analyse_table::XF_Prolog_Analyse_table(CardIter* pCI)
-: XF_PROLOG(CN_XF_ANALYSE_TABLE, pCI)
+: XF_PROLOG(CN_XF_PROLOG_ANALYSE_TABLE, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ANALYSE_TABLE);
+  _checkInitialised_(CN_XF_PROLOG_ANALYSE_TABLE);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_TABLE, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ XF_Prolog_Analyse_table::XF_Prolog_Analyse_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Analyse_table::~XF_Prolog_Analyse_table(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +98,7 @@ void XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_table::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_TABLE_ANALYSIS, "add a <tableSyn> to all <table>'s"_Stz);
 
@@ -146,7 +146,7 @@ void XF_Prolog_Analyse_table::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(Symbol* pSymbol_tableSyn)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_TABLE_ANALYSIS, "add a <tableSyn> to all <table>'s"_Stz);
 

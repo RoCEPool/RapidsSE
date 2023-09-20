@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_X_colNm_To_stmCol, CN_XF_X_TBLCOL_TO_STMCOL)
-__aNewFunction(XF_Prolog_X_colNm_To_stmCol, CN_XF_X_TBLCOL_TO_STMCOL)
-__vDeleteFunction(XF_Prolog_X_colNm_To_stmCol, CN_XF_X_TBLCOL_TO_STMCOL)
+__pCastFunction(STORE, XF_Prolog_X_colNm_To_stmCol, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL)
+__aNewFunction(XF_Prolog_X_colNm_To_stmCol, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL)
+__vDeleteFunction(XF_Prolog_X_colNm_To_stmCol, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL)
 __aFooterFunction(XF_Prolog_X_colNm_To_stmCol)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Prolog_X_colNm_To_stmCol)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_X_colNm_To_stmCol::XF_Prolog_X_colNm_To_stmCol(CardIter* pCI)
-: XF_PROLOG(CN_XF_X_TBLCOL_TO_STMCOL, pCI)
+: XF_PROLOG(CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_X_TBLCOL_TO_STMCOL);
+  _checkInitialised_(CN_XF_PROLOG_X_TBLCOL_TO_STMCOL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Prolog_X_colNm_To_stmCol::XF_Prolog_X_colNm_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_X_colNm_To_stmCol::~XF_Prolog_X_colNm_To_stmCol(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_COLNM_TO_STMCOL, "transform column-name to stream-column"_Stz);
 
@@ -85,7 +85,7 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_X_TBLCOL_TO_STMCOL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
   if (m_pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt))
     vDebugPoint();

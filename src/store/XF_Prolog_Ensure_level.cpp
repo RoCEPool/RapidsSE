@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Ensure_level, CN_XF_ENSURE_LEVEL)
-__aNewFunction(XF_Prolog_Ensure_level, CN_XF_ENSURE_LEVEL)
-__vDeleteFunction(XF_Prolog_Ensure_level, CN_XF_ENSURE_LEVEL)
+__pCastFunction(STORE, XF_Prolog_Ensure_level, CN_XF_PROLOG_ENSURE_LEVEL)
+__aNewFunction(XF_Prolog_Ensure_level, CN_XF_PROLOG_ENSURE_LEVEL)
+__vDeleteFunction(XF_Prolog_Ensure_level, CN_XF_PROLOG_ENSURE_LEVEL)
 __aFooterFunction(XF_Prolog_Ensure_level)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Prolog_Ensure_level)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Ensure_level::XF_Prolog_Ensure_level(CardIter* pCI)
-: XF_PROLOG(CN_XF_ENSURE_LEVEL, pCI)
+: XF_PROLOG(CN_XF_PROLOG_ENSURE_LEVEL, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ENSURE_LEVEL);
+  _checkInitialised_(CN_XF_PROLOG_ENSURE_LEVEL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Prolog_Ensure_level::XF_Prolog_Ensure_level(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Ensure_level::~XF_Prolog_Ensure_level(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Prolog_Ensure_level::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Ensure_level::vEnsure(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_ENSURE_LEVEL, "ensure op has level"_Stz);
 

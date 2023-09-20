@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Review_as, CN_XF_AS_REVIEW)
-__aNewFunction(XF_Prolog_Review_as, CN_XF_AS_REVIEW)
-__vDeleteFunction(XF_Prolog_Review_as, CN_XF_AS_REVIEW)
+__pCastFunction(STORE, XF_Prolog_Review_as, CN_XF_PROLOG_REVIEW_AS)
+__aNewFunction(XF_Prolog_Review_as, CN_XF_PROLOG_REVIEW_AS)
+__vDeleteFunction(XF_Prolog_Review_as, CN_XF_PROLOG_REVIEW_AS)
 __aFooterFunction(XF_Prolog_Review_as)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Prolog_Review_as)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Review_as::XF_Prolog_Review_as(CardIter* pCI)
-: XF_PROLOG(CN_XF_AS_REVIEW, pCI)
+: XF_PROLOG(CN_XF_PROLOG_REVIEW_AS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_REVIEW_AS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_AS_REVIEW);
+  _checkInitialised_(CN_XF_PROLOG_REVIEW_AS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_REVIEW_AS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Prolog_Review_as::XF_Prolog_Review_as(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Review_as::~XF_Prolog_Review_as(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_REVIEW_AS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Prolog_Review_as::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Review_as::vXF_as_Review(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_REVIEW_AS, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_AS_REVIEW, "as review"_Stz);
 

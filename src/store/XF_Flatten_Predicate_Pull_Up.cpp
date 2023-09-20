@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Predicate_Pull_Up, CN_XF_ENSURE_LEVEL)
-__aNewFunction(XF_Flatten_Predicate_Pull_Up, CN_XF_ENSURE_LEVEL)
-__vDeleteFunction(XF_Flatten_Predicate_Pull_Up, CN_XF_ENSURE_LEVEL)
+__pCastFunction(STORE, XF_Flatten_Predicate_Pull_Up, CN_XF_PROLOG_ENSURE_LEVEL)
+__aNewFunction(XF_Flatten_Predicate_Pull_Up, CN_XF_PROLOG_ENSURE_LEVEL)
+__vDeleteFunction(XF_Flatten_Predicate_Pull_Up, CN_XF_PROLOG_ENSURE_LEVEL)
 __aFooterFunction(XF_Flatten_Predicate_Pull_Up)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_Predicate_Pull_Up)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Predicate_Pull_Up::XF_Flatten_Predicate_Pull_Up(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ENSURE_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_PROLOG_ENSURE_LEVEL, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ENSURE_LEVEL);
+  _checkInitialised_(CN_XF_PROLOG_ENSURE_LEVEL);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_Predicate_Pull_Up::XF_Flatten_Predicate_Pull_Up(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Predicate_Pull_Up::~XF_Flatten_Predicate_Pull_Up(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ENSURE_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_FLATTEN_PREDICATE_PULL_UP, "use @c to move predicates"_Stz);
 

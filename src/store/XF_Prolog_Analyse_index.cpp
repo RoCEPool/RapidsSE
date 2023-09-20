@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Analyse_index, CN_XF_ANALYSE_INDEX)
-__aNewFunction(XF_Prolog_Analyse_index, CN_XF_ANALYSE_INDEX)
-__vDeleteFunction(XF_Prolog_Analyse_index, CN_XF_ANALYSE_INDEX)
+__pCastFunction(STORE, XF_Prolog_Analyse_index, CN_XF_PROLOG_ANALYSE_INDEX)
+__aNewFunction(XF_Prolog_Analyse_index, CN_XF_PROLOG_ANALYSE_INDEX)
+__vDeleteFunction(XF_Prolog_Analyse_index, CN_XF_PROLOG_ANALYSE_INDEX)
 __aFooterFunction(XF_Prolog_Analyse_index)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Prolog_Analyse_index)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Analyse_index::XF_Prolog_Analyse_index(CardIter* pCI)
-: XF_PROLOG(CN_XF_ANALYSE_INDEX, pCI)
+: XF_PROLOG(CN_XF_PROLOG_ANALYSE_INDEX, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_INDEX, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ANALYSE_INDEX);
+  _checkInitialised_(CN_XF_PROLOG_ANALYSE_INDEX);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_INDEX, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Prolog_Analyse_index::XF_Prolog_Analyse_index(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Analyse_index::~XF_Prolog_Analyse_index(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_INDEX, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ void XF_Prolog_Analyse_index::vXF_index_Analysis_passThru(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_index::vXF_index_Analysis(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_INDEX, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_INDEX_ANALYSIS, "index analysis"_Stz);
 
@@ -99,7 +99,7 @@ void XF_Prolog_Analyse_index::vXF_index_Analysis(void)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_index::vXF_index_Analysis_passThru(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_INDEX, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_INDEX_ANALYSIS, "index analysis"_Stz);
 

@@ -585,7 +585,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
 
     p_expr_arriving->vDump(__func__);
     Symbol* pSymbol_stmCol_a = p_expr_arriving->pFirstStmCol();
-    i8 i_CrwCol = pSymbol_stmCol_a->iSF_ordinal();
+    i8 i_CrwCol = pSymbol_stmCol_a->iSF_ordinal() -1;
 
 //    Symbol* pSymbol_stmCol_p = p_expr_projection->pFirstStmCol();
 //    i8 i_StructCell = pSymbol_stmCol_p->iSF_ordinal();

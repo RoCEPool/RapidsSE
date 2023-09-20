@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Erase_construction, CN_XF_ERASE_CONSTRUCTION)
-__aNewFunction(XF_Prolog_Erase_construction, CN_XF_ERASE_CONSTRUCTION)
-__vDeleteFunction(XF_Prolog_Erase_construction, CN_XF_ERASE_CONSTRUCTION)
+__pCastFunction(STORE, XF_Prolog_Erase_construction, CN_XF_PROLOG_ERASE_CONSTRUCTION)
+__aNewFunction(XF_Prolog_Erase_construction, CN_XF_PROLOG_ERASE_CONSTRUCTION)
+__vDeleteFunction(XF_Prolog_Erase_construction, CN_XF_PROLOG_ERASE_CONSTRUCTION)
 __aFooterFunction(XF_Prolog_Erase_construction)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Prolog_Erase_construction)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Erase_construction::XF_Prolog_Erase_construction(CardIter* pCI)
-: XF_PROLOG(CN_XF_ERASE_CONSTRUCTION, pCI)
+: XF_PROLOG(CN_XF_PROLOG_ERASE_CONSTRUCTION, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ERASE_CONSTRUCTION, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ERASE_CONSTRUCTION);
+  _checkInitialised_(CN_XF_PROLOG_ERASE_CONSTRUCTION);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ERASE_CONSTRUCTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Prolog_Erase_construction::XF_Prolog_Erase_construction(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Erase_construction::~XF_Prolog_Erase_construction(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ERASE_CONSTRUCTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Prolog_Erase_construction::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Erase_construction::vProlog(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ERASE_CONSTRUCTION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ERASE_CONSTRUCTION, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_ERASE_CONSTRUCTION, "erase constructions"_Stz);
 

@@ -11,9 +11,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Analyse_subQuery, CN_XF_ANALYSE_SUBQUERY)
-__aNewFunction(XF_Prolog_Analyse_subQuery, CN_XF_ANALYSE_SUBQUERY)
-__vDeleteFunction(XF_Prolog_Analyse_subQuery, CN_XF_ANALYSE_SUBQUERY)
+__pCastFunction(STORE, XF_Prolog_Analyse_subQuery, CN_XF_PROLOG_ANALYSE_SUBQUERY)
+__aNewFunction(XF_Prolog_Analyse_subQuery, CN_XF_PROLOG_ANALYSE_SUBQUERY)
+__vDeleteFunction(XF_Prolog_Analyse_subQuery, CN_XF_PROLOG_ANALYSE_SUBQUERY)
 __aFooterFunction(XF_Prolog_Analyse_subQuery)
 
 
@@ -21,13 +21,13 @@ __aFooterFunction(XF_Prolog_Analyse_subQuery)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Analyse_subQuery::XF_Prolog_Analyse_subQuery(CardIter* m_pCI)
-: XF_PROLOG(CN_XF_ANALYSE_SUBQUERY, m_pCI)
+: XF_PROLOG(CN_XF_PROLOG_ANALYSE_SUBQUERY, m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ANALYSE_SUBQUERY);
+  _checkInitialised_(CN_XF_PROLOG_ANALYSE_SUBQUERY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_SUBQUERY, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ XF_Prolog_Analyse_subQuery::XF_Prolog_Analyse_subQuery(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Analyse_subQuery::~XF_Prolog_Analyse_subQuery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ void XF_Prolog_Analyse_subQuery::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_subQuery::vXF_subQuery_Analysis(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_SUBQUERY_ANALYSIS, "subQuery analysis"_Stz);
   
@@ -146,7 +146,7 @@ void XF_Prolog_Analyse_subQuery::vXF_subQuery_Analysis(void)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
   Stz* szBoardNm = m_pCI->G.p_call->szSymbol(SF_NONE);
   Board* pBoard = m_pCI->m_pBench->pGetBoard(szBoardNm);
@@ -161,7 +161,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
   Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
 
@@ -209,7 +209,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ANALYSE_SUBQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
   Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
 
