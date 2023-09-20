@@ -41,7 +41,7 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
   aDynamicT->m_iJoinedRows = 0;
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   i_CurrentRow++;
   if (i_CurrentRow  >= aDynamicT->m_nRows) {

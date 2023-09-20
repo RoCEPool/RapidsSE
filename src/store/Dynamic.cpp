@@ -32,7 +32,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   m_xDynamicT.m_bTrace      = false;
   m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
-  m_xDynamicT.m_iProcessRow = 1;
+  m_xDynamicT.m_bProcessRow = true;
   m_xDynamicT.m_iRowsProcessed = 0;
 
 	m_xDynamicT.m_bHasAggRow = false;

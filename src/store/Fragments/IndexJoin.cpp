@@ -110,7 +110,7 @@ void vIndexJoinContinueLO1(Dynamic_T* aDynamicT) {
   // did we join any rows with current left row ?
   if (aDynamicT->m_iJoinedRows == 0) {
 
-    aDynamicT->m_iProcessRow = 1;
+		aDynamicT->m_bProcessRow = true;
     bLeftOuterRow = true;
     //printf("leftOuter = 1\n");
 
@@ -134,7 +134,7 @@ void vIndexJoinContinueLO2(Dynamic_T* aDynamicT) {
 
   } else {
 
-      aDynamicT->m_iProcessRow = 0;
+		aDynamicT->m_bProcessRow = false;
       goto __L_LABEL_OUTER_LOOP__;
 
   }
@@ -166,11 +166,11 @@ void vIndexJoinCrossPosition(Dynamic_T* aDynamicT) {
 
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
-    aDynamicT->m_iProcessRow = 0;
+		aDynamicT->m_bProcessRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   // marker-end
 
@@ -206,7 +206,7 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   // marker-start
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   aHeadLineSav = aHeadLine;
 
@@ -254,7 +254,7 @@ void vIndexJoinPosition(Dynamic_T* aDynamicT) {
 
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
-    aDynamicT->m_iProcessRow = 0;
+		aDynamicT->m_bProcessRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
@@ -266,11 +266,11 @@ void vIndexJoinPosition(Dynamic_T* aDynamicT) {
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 #endif
   __L_LABEL_INDEX_DEREF__:
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
 
-    aDynamicT->m_iProcessRow = 0;
+		aDynamicT->m_bProcessRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
@@ -301,7 +301,7 @@ void vIndexAntiJoinPosition(Dynamic_T* aDynamicT) {
 
 	// did we find the entry ?
 	if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
-		aDynamicT->m_iProcessRow = 1;
+		aDynamicT->m_bProcessRow = true;
 		goto __L_LABEL_NEXT__;
 	}
 
@@ -313,11 +313,11 @@ void vIndexAntiJoinPosition(Dynamic_T* aDynamicT) {
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 #endif
 	__L_LABEL_INDEX_DEREF__:
-	aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
 	if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
 
-		aDynamicT->m_iProcessRow = 1;
+		aDynamicT->m_bProcessRow = true;
 		goto __L_LABEL_NEXT__;
 	}
 
@@ -426,10 +426,10 @@ i8 iIndexJoinConstraint(Dynamic_T* aDynamicT) {
 
   // check for constraint result
   if (bFilterResult && bFilterResult != C_DATUM_NULL) {
-    aDynamicT->m_iProcessRow = 1;
+		aDynamicT->m_bProcessRow = true;
     aDynamicT->m_iJoinedRows++;
   } else {
-    aDynamicT->m_iProcessRow = 0;
+		aDynamicT->m_bProcessRow = false;
   }
 
   goto __L_LABEL_NEXT__;
@@ -491,9 +491,9 @@ i8 iIndexAntiJoinConstraint(Dynamic_T* aDynamicT) {
 
     // check for constraint result
     if (bFilterResult && bFilterResult != C_DATUM_NULL) {
-        aDynamicT->m_iProcessRow = 0;
+			aDynamicT->m_bProcessRow = false;
     } else {
-        aDynamicT->m_iProcessRow = 1;
+			aDynamicT->m_bProcessRow = true;
     }
 
     goto __L_LABEL_INDEX_RETURN__;
@@ -506,10 +506,10 @@ i8 iIndexAntiJoinConstraint(Dynamic_T* aDynamicT) {
 
     aHeadLine = aHeadLineSav;
 
-    if ( aDynamicT->m_iProcessRow ) {
+    if ( aDynamicT->m_bProcessRow ) {
 #ifdef WITH_CLANG
 
-        aDynamicT->m_iProcessRow = 0;
+			aDynamicT->m_bProcessRow = false;
 
     // move to next entry
     aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
@@ -552,9 +552,9 @@ i8 iIndexSemiJoinConstraint(Dynamic_T* aDynamicT) {
 
     // check for constraint result
     if (bFilterResult && bFilterResult != C_DATUM_NULL) {
-        aDynamicT->m_iProcessRow = 1;
+			aDynamicT->m_bProcessRow = true;
     } else {
-        aDynamicT->m_iProcessRow = 0;
+			aDynamicT->m_bProcessRow = false;
     }
 
     goto __L_LABEL_INDEX_RETURN__;
@@ -567,7 +567,7 @@ i8 iIndexSemiJoinConstraint(Dynamic_T* aDynamicT) {
 
     aHeadLine = aHeadLineSav;
 
-    if ( ! aDynamicT->m_iProcessRow ) {
+    if ( ! aDynamicT->m_bProcessRow ) {
 #ifdef WITH_CLANG
         // move to next entry
     aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
@@ -615,14 +615,14 @@ void vIndexLeftOuterJoinPosition(Dynamic_T* aDynamicT) {
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 #endif
 	__L_LABEL_INDEX_DEREF__:
-	aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;;
 
 	if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
 		// did we join any rows with current left row ?
 		if (aDynamicT->m_iJoinedRows == 0)
 			goto __L_LABEL_JOIN_NULLS__;
 		else {
-			aDynamicT->m_iProcessRow = 0;
+			aDynamicT->m_bProcessRow = false;
 			goto __L_LABEL_OUTER_LOOP__;
 		}
 	}

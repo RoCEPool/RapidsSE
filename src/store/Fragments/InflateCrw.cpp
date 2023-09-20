@@ -31,7 +31,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   i_CurrentRow = -1;
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   // set the string area
 	p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;

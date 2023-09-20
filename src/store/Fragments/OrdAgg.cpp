@@ -47,8 +47,8 @@ i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Process row ?
-  if ( ! aDynamicT->m_iProcessRow ) {
-		aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+		aDynamicT->m_bProcessRow = true;
 		goto __L_LABEL_OUTER_LOOP__;
   }
 

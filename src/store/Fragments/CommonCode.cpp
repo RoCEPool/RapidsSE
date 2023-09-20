@@ -76,8 +76,8 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Process row ?
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+    aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
@@ -158,7 +158,7 @@ i8 vNullCheck(Dynamic_T* aDynamicT) {
 
   // check null result
   if (bNullResult) {
-    aDynamicT->m_iProcessRow = 0;
+    aDynamicT->m_bProcessRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
@@ -451,8 +451,8 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // process the row ?
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+    aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_LOOP__;
   }
 
@@ -636,7 +636,7 @@ void vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
   // traverse the index
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
-    aDynamicT->m_iProcessRow = 1;
+    aDynamicT->m_bProcessRow = true;
 
     aDynamicT->m_xRowInfoPT.m_acStrArea = aDynamicT->m_xRowInfoPT.m_acStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
@@ -676,7 +676,7 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
   // traverse theindex
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
-    aDynamicT->m_iProcessRow = 1;
+    aDynamicT->m_bProcessRow = true;
 
     aDynamicT->m_xRowInfoPT.m_acStrArea = aDynamicT->m_xRowInfoPT.m_acStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
@@ -1337,8 +1337,8 @@ i8 iResetPLKey(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process row ?
-  if ( ! aDynamicT->m_iProcessRow ) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+    aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_LOOP__;
   }
 
