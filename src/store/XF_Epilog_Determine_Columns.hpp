@@ -22,7 +22,7 @@ namespace STORE
 
     static void vEpilog(CardIter* pCI);
 
-    void vXF_Columns_required(void);
+    void vDeterime(void);
 
   private:
     Footer* aFooter(void);

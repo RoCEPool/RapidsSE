@@ -75,6 +75,9 @@ void XF_Epilog_Fuse_project::vFuse(void)
       m_pCI->G.p_project->pSymbol()->Y_vSet(P_Fused);
 #endif
     }
+    else {
+      m_pCI->G.p_scan->vFuseSame_projection(m_pCI);
+    }
   }
 
   m_pCI->vClearRestart();
