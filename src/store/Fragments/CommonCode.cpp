@@ -937,7 +937,6 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 		__ROW_INFO_TO__.m_nStringAreaSize -= nSrcSize;
 		__ROW_INFO_TO__.m_acStrArea += iDstLen;
 #ifdef WITH_CLANG
-    //vExtern_TubRowStrSize(aDynamicT->m_pTub,iDstLen);
     __EXTERN_ROWSTRSIZE__;
 #endif
 
@@ -1047,7 +1046,6 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 
 #ifdef WITH_CLANG
-    //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
     __EXTERN_ROWSTRSIZE__;
 #endif
   }
@@ -1115,7 +1113,6 @@ void vTubRowStr(Dynamic_T* aDynamicT) {
   {
   // marker-start
 #ifdef WITH_CLANG
-    //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
     __EXTERN_ROWSTRSIZE__;
 #endif
   }
@@ -1220,7 +1217,6 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      // update the tub string size
      __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 #ifdef WITH_CLANG
-     //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
      __EXTERN_ROWSTRSIZE__;
 #endif
   }

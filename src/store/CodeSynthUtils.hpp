@@ -14,8 +14,6 @@ namespace STORE {
 
     static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, Column* pColumn, Stz *sReturnToLabel,
                                 Stz *szFunMkr, String *sCode);
-		static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, char* sColumnNm, i8 iColumn, Stz *sReturnToLabel,
-																Stz *szFunMkr, String *sCode);
 
   private:
     static bool bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOpSketch);

@@ -143,8 +143,6 @@ int iEosEnd(struct Dynamic_T* aDynamicT)
 
   // marker-start
   L_Return:
-    //if (paW != &aDynamicT->m_aW[0])
-    //  NEVER_REACH;
     return 1;
 }
 // marker-end

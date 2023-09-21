@@ -544,7 +544,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // append to stencil
+        // append to-stencil
         vAppendStencilTo(pOpSketch);
 
         vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz, pOperatorFile);
@@ -833,69 +833,37 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
   bool bExtracted;
 
 #ifdef Z_FUSE
-	/*
-	Column* pColumn;
-	i8 nColsReq = 0;
-
-	for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
-
-		sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_Col+1);
-
-		if (pOpSketch->bColReq(i_Col)) {
-			nColsReq++;
-			sCode = ""_Stz;
-			pOperatorFile->vSeekStart();
-
-			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->iColReq(i_Col));
-
-			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
-			RASSERT(bExtracted);
-			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
-		}
-		else {
-			sCode = ""_Stz;
-			pOperatorFile->vSeekStart();
-
-			pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
-
-			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
-			RASSERT(bExtracted);
-			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
-			continue;
-		}
-
-		if (nColsReq >= pOpSketch->m_pColsReq->m_nCols)
-			return;
-  }
-*/
 
 	Column* pColumn;
 	i8 i_StreamLeftCol = 0;
 
 	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColsReq->m_nCols; i_Col++) {
 
-			// skip not needed columns
-			while (i_StreamLeftCol < pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_CrwCol) {
-				sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamLeftCol);
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// skip columns nott required
+		while (i_StreamLeftCol < pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_CrwCol) {
+			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamLeftCol);
 
-				sCode = ""_Stz;
-				pOperatorFile->vSeekStart();
+			sCode = ""_Stz;
+			pOperatorFile->vSeekStart();
 
-				pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_StreamLeftCol);
+			pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_StreamLeftCol);
 
-				bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
-				RASSERT(bExtracted);
-				StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
-				i_StreamLeftCol++;
-			}
+			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
+			RASSERT(bExtracted);
+			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
+			i_StreamLeftCol++;
+		}
 
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// skip columns nott required
 		if (i_StreamLeftCol == pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_CrwCol) {
 			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamLeftCol);
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
-			//pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_StructCell);
-			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pOpSketch->m_pColsReq->m_axCols[i_Col].m_sCn_memberNm.azChar(), i_StreamLeftCol, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
+			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_StructCell);
+			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
 			RASSERT(bExtracted);
 			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 			i_StreamLeftCol++;
