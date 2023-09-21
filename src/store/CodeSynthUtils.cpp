@@ -86,7 +86,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 
         if (pColumn) {
 					vReplaceUnionType(sLine, pColumn);
-					vReplaceColumnName(sLine, pColumn->szColNm()->azChar());
+					vReplaceColumnTo(sLine, pColumn);
+					vReplaceColumnFrom(sLine, pColumn);
 				}
 
 
@@ -137,6 +138,129 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
+															String* sCode, Column* pColumnFrom, Column* pColumnTo, i8 iIndexColumn)
+{
+	_static_
+
+	s4K sLine;
+	s4K sReplacedLine;
+	bool bFoundFunc = false;
+	bool bFoundStart = false;
+
+	//if ( ! sLabel->bSame(""_Stz) )
+	//  sCode->vCatSprint("\n%s:\n"_Stz, sLabel->azChar());
+
+	sLine = ""_Stz;
+
+	while (pFile->bReadLine(sLine)) {
+
+		// look for comments
+		if (StrLib::bContains(sLine.azChar(), "//")) {
+
+			// look for function marker
+			if ( ! bFoundFunc) {
+				if (StrLib::bContains(sLine.azChar(), szFunMkr->azChar())) {
+					//vTrace("FOUND FUNCTION MARKER - %s\n"_Stz, szFunMkr);
+					bFoundFunc = true;
+					continue;
+				}
+			}
+
+			// look for start marker
+			if (bFoundFunc && !bFoundStart) {
+				if (StrLib::bContains(sLine.azChar(), "marker-start")) {
+					//vTrace("FOUND FUNCTION START MARKER - %s\n"_Stz, szStartMkr);
+					bFoundStart = true;
+					continue;
+				}
+			}
+
+			vReplaceOperatorName(sLine, pOpSketch);
+
+			if (pColumnTo)
+				vReplaceColumnNo(sLine, pColumnTo);
+
+			// look for end marker
+			if (bFoundStart) {
+				if (StrLib::bContains(sLine.azChar(), "marker-end")) {
+					//vTrace("FOUND FUNCTION END MARKER - %s\n"_Stz, szEndMkr);
+					return true;
+				}
+				else {
+					// copy line into sCode
+					sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
+				}
+			}
+		}
+		else {
+			if (bFoundStart) {
+
+				if (bGenerateExprStack(sLine, sCode, pOpSketch)) {
+					sLine = ""_Stz;
+					continue;
+				}
+
+				vReplaceOperatorName(sLine, pOpSketch);
+
+				if (pColumnFrom) {
+					vReplaceColumnFrom(sLine, pColumnFrom);
+				}
+
+				if (pColumnTo) {
+					vReplaceUnionType(sLine, pColumnTo);
+					vReplaceColumnTo(sLine, pColumnTo);
+				}
+
+				if (iIndexColumn != C_UNKNOWN)
+					vReplaceIndexColumn(sLine, iIndexColumn);
+
+				vReplaceStructTo(sLine, pOpSketch);
+				vReplaceStructFrom(sLine, pOpSketch);
+
+				vReplaceColumnsInflated(sLine, pOpSketch);
+				vReplaceColumnsToInflate(sLine, pOpSketch);
+				vReplaceNumColumns(sLine, pOpSketch);
+
+				vReplaceLabel(sLine, pOpSketch);
+				vReplaceLabelNext(sLine, pOpSketch);
+				vReplaceLabelLoop(sLine, pOpSketch);
+				vReplaceLabelIndex(sLine, pOpSketch);
+				vReplaceLabelJoinNulls(sLine, pOpSketch);
+
+				vReplacePayloadBytes(sLine, pOpSketch);
+				vReplaceKeyKind(sLine, pOpSketch);
+
+				vReplaceInsertEnt(sLine, pOpSketch);
+
+				vReplaceTubPot(sLine, pOpSketch);
+
+				// cater to multiple replaces of IndexInfo
+				if (bReplaceRowInfoTo(sLine, sReplacedLine, pOpSketch) )
+					sLine = sReplacedLine;
+
+				// cater to multiple replaces of IndexInfo
+				if (bReplaceRowInfoFrom(sLine, sReplacedLine, pOpSketch) )
+					sLine = sReplacedLine;
+
+				// cater to multiple replaces of IndexInfo
+				if (bReplaceIndexInfo(sLine, sReplacedLine, pOpSketch) )
+					sLine = sReplacedLine;
+
+				vReplaceIndexPosition(sLine, pOpSketch);
+
+				// copy line into sCode
+				sCode->vCatSprint("%s\n"_Stz, sLine.azChar());
+			}
+		}
+		sLine = ""_Stz;
+	}
+
+	return false;
+}
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
@@ -193,9 +317,9 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, OpSketch* pOpSketch, Column* p
 
 				if (pColumn) {
 					vReplaceUnionType(sLine, pColumn);
-					vReplaceColumnName(sLine, pColumn->szColNm()->azChar());
+					vReplaceColumnTo(sLine, pColumn);
+					vReplaceColumnFrom(sLine, pColumn);
 				}
-
 
         vReplaceReturnToLabel(sLine, sReturnToLabel);
 
@@ -463,20 +587,29 @@ void CodeSynthUtils::vReplaceUnionType(String* sLine, Column* pColumn) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceColumnName(String* sLine, char* sColumnNm) {
+void CodeSynthUtils::vReplaceColumnFrom(String* sLine, Column* pColumn) {
 
 	_static_
 
-	s32 sColNm(sColumnNm);
-	sColNm.vToUpper();
-
-	if (StrLib::bContains(sLine->azStr(), "__COLUMN_TO__")) {
-		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_TO__", sColNm.azChar());
+	if (StrLib::bContains(sLine->azStr(), "__COLUMN_FROM__")) {
+		s32 sColNm(pColumn->szColNm());
+		sColNm.vToUpper();
+		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_FROM__", sColNm.azChar());
 		RASSERT(bResult);
 	}
+}
 
-	if (StrLib::bContains(sLine->azStr(), "__COLUMN_FROM__")) {
-		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_FROM__", sColNm.azChar());
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceColumnTo(String* sLine, Column* pColumn) {
+
+	_static_
+
+	if (StrLib::bContains(sLine->azStr(), "__COLUMN_TO__")) {
+		s32 sColNm(pColumn->szColNm());
+		sColNm.vToUpper();
+		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_TO__", sColNm.azChar());
 		RASSERT(bResult);
 	}
 }

@@ -545,7 +545,14 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
-  // get the index
+	// get the colReq
+#ifdef Z_FUSE
+	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+#else
+	ColsReq* pColsReq = pOpDef->m_pColsReq;
+#endif
+
+	// get the index
   Index* pIndex = pOpDef->m_pIndex_indexJoin;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -566,6 +573,9 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   // set the labels in the opSketch
   sLabelOuterLoop = m_sLabelLoop;
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
+
+	// copy the colsReq
+	pOpSketch->vCopyColsReq(pColsReq);
 
   // set the indexDef
   pOpSketch->vTable(pTable);
