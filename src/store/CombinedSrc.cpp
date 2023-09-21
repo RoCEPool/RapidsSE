@@ -89,7 +89,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
   bool bOpened;
   bool bHasIndexInflate = false;
-	i8   iLeftCols;
+	i8   iLeftCols = C_UNKNOWN;
 
   eHK ePreviousHandler = HK_NONE;
   eHK eCurrentHandler  = HK_NONE;
@@ -164,6 +164,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // inflate the right table columns
+				// ALKA: come back to this (iLeftCols)
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, iLeftCols, pInflateFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
