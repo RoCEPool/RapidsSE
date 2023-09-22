@@ -48,19 +48,34 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
 
 #ifdef Z_FUSE
 
-  // <op>/<stream> ; <op>/<stream>/<projection>
-  //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
-  pCI->G.p_arriving = (Card_Arriving*)pCI->G.p_stream->pSub_projection();
-  pCI->G.p_arriving->vCard(CK_ARRIVING);
+  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
+    // <op>/<stream> ; <op>/<stream>/<projection>
+    //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+    pCI->G.p_arriving = (Card_Arriving *) pCI->G.p_stream->pSub_projection();
+    pCI->G.p_arriving->vCard(CK_ARRIVING);
 
-  if ((pCI->G.p_streamKey = pCI->G.p_arriving->pSub_streamKey())) {
-    pCI->G.p_arriving->vDeleteChild(pCI->G.p_streamKey);
+    if ((pCI->G.p_streamKey = pCI->G.p_arriving->pSub_streamKey())) {
+      pCI->G.p_arriving->vDeleteChild(pCI->G.p_streamKey);
+    }
+
+    // <op>/<stream>/<projection> -> <op>/<stream>/<arriving>
+
+    // <op>/<stream> <= <project>/<stream>/<projection>
+    pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pClone());
   }
+  else {
+    // index join
 
-  // <op>/<stream>/<projection> -> <op>/<stream>/<arriving>
+    pCI->G.p_arriving = (Card_Arriving *) pCI->G.p_stream->pSub_projection();
+    pCI->G.p_arriving->vCard(CK_ARRIVING);
 
-  // <op>/<stream> <= <project>/<stream>/<projection>
-  pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pClone());
+    if ((pCI->G.p_streamKey = pCI->G.p_arriving->pSub_streamKey())) {
+      pCI->G.p_arriving->vDeleteChild(pCI->G.p_streamKey);
+    }
+
+    // <op>/<stream> <= <project>/<stream>/<projection>
+    pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pClone());
+  }
 #endif
 }
 

@@ -198,6 +198,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->Prior.m_pProjection) {
+
     if (Card_Expr *p_expr_col = pCI->Prior.m_pProjection->pFind_expr_Of_symbol(pSymbol_term)) {
       pSymbol_term->vSym(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
       vMark1(MARK_CHANGED);
@@ -216,6 +217,18 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
         }
       }
     }
+
+    if (pCI->G.p_OP->bIsCard(CK_INDEXJOIN)) {
+      if ((pCI->G.p_arriving = pCI->G.p_OP->pSub_arriving())) {
+        if (Card_Expr *p_expr_col = pCI->G.p_arriving->pFind_expr_Of_symbol(pSymbol_term)) {
+          pSymbol_term->vSym(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
+          vMark1(MARK_CHANGED);
+          return;
+        }
+      }
+    }
+
+
   }
 
   // arrives here as col_tc is not in prior projection
@@ -230,7 +243,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   else
   if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
       pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
-    nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
+    nCols_injectedByThisCard = 0;
   }
   else
   if (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||

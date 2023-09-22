@@ -420,6 +420,15 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 
   Card_OP* p_OP = m_pCI->G.p_OP;
 
+#ifdef Z_FUSE
+  if (p_OP->bIsCard(CK_INDEXJOIN)) {
+    Card_Arriving* p_arriving = p_OP->pSub_arriving();
+    m_pOpDef->m_pStreamDef_arriving =
+        p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
+  }
+  else
+#endif
+
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
 #ifdef Z_REJIG_STREAMDEFS
@@ -438,6 +447,9 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
         p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
 #endif
+
+  if (p_OP->bIsCard(CK_INDEXJOIN))
+    vDebugPoint();
 
   ColMap** ppColMap = nullptr;
   if (p_OP->bIsCard(CK_GBYAGG))
@@ -576,39 +588,150 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map first stmCol of given expr
 
-  auto bfMap_stmCol_v2 = [p_projection, pColsReq_v2] (Card* pCard_expr) {
+  auto bfMap_stmCol_v2 = [p_arriving, pColsReq_v2] (Card* pCard_expr) {
     UNUSED(pColsReq_v2);
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr);
+    Symbol* pSymbol_stmCol_a = p_expr_a->pFirstStmCol();
     Card_As* p_as_a = p_expr_a->pSub_as();
 
     Card_Expr* p_expr_p =
-        p_projection->pFind_expr_By_as_stripItem(p_as_a->pSymbol());
-    if (! p_expr_p)
-      return C_CONTINUE_RECURSION;
-    Card_As* p_as_p = p_expr_p->pSub_as();
+        p_arriving->pFind_expr_By_as_stripItem(p_as_a->pSymbol());
+    if (p_expr_p) {
+      Card_As *p_as_p = p_expr_p->pSub_as();
 
 //    p_expr_a->vDump(__func__);
 //    p_as_a->vDump(__func__);
 //    p_expr_p->vDump(__func__);
 //    p_as_p->vDump(__func__);
 
-    Symbol* pSymbol_a = p_as_a->pSymbol();
-    i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
+      Symbol *pSymbol_a = p_as_a->pSymbol();
+      i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
 
-    Symbol* pSymbol_p = p_as_p->pSymbol();
-    i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+      Symbol *pSymbol_p = p_as_p->pSymbol();
+      i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
 
-    pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p, p_as_p->szSymbol(SF_NONE));
+      pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p, p_as_p->szSymbol(SF_NONE));
+    }
+    else
+    if (pSymbol_stmCol_a &&
+        (p_expr_p = p_arriving->pFind_expr_Of_symbol(pSymbol_stmCol_a))) {
+      //Card_As *p_as_p = p_expr_p->pSub_as();
 
+      Symbol *pSymbol_a = p_expr_p->pSymbol();
+      i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
+
+      i8 i_StructCell_p = pCard_expr->pSymbol()->iSF_ordinal();
+
+      pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p, p_as_a->szSymbol(SF_NONE));
+
+    }
     return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+  p_projection->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
 #endif
 
 }
+/*----------------------------------------------------------------------------*/
+//void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
+//                                                     ColsReq_v2* pColsReq_v2,
+//                                                     Card_Stream* p_stream,
+//                                                     Card *pSubCard)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+//
+//#ifndef Z_FUSE
+//  if (pSubCard->bIsCard(CK_INDEXJOIN))
+//    return;
+//#endif
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // map first stmCol of given expr
+//
+//  auto bfMap_stmCol = [pColsReq] (Card* pCard_expr) {
+//
+//    Card_Expr* p_expr = _pCard_Expr(pCard_expr);
+//    Symbol* pSymbol_stmCol = p_expr->pFirstStmCol();
+//    i8 i_Col = pSymbol_stmCol->iSF_ordinal();
+//
+//    pColsReq->vAddCol(i_Col, false, i_Col);
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  pSubCard->bApplyRecursive(CK_EXPR, bfMap_stmCol);
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  UNUSED(pColsReq_v2);
+//  UNUSED(p_stream);
+//
+//#ifdef Z_FUSE
+//  Card_Arriving* p_arriving = p_stream->pSub_arriving();
+//  Card_Projection* p_projection = p_stream->pSub_projection();
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // map first stmCol of given expr
+//
+//  auto bfMap_stmCol_v2 = [p_projection, pColsReq_v2] (Card* pCard_expr) {
+//    UNUSED(pColsReq_v2);
+//    Card_Expr* p_expr_a = _pCard_Expr(pCard_expr);
+//    //Symbol* pSymbol_stmCol_a = p_expr_a->pFirstStmCol();
+//    Card_As* p_as_a = p_expr_a->pSub_as();
+//
+//    Card_Expr* p_expr_p =
+//        p_projection->pFind_expr_By_as_stripItem(p_as_a->pSymbol());
+//    if (p_expr_p) {
+//      Card_As *p_as_p = p_expr_p->pSub_as();
+//
+////    p_expr_a->vDump(__func__);
+////    p_as_a->vDump(__func__);
+////    p_expr_p->vDump(__func__);
+////    p_as_p->vDump(__func__);
+//
+//      Symbol *pSymbol_a = p_as_a->pSymbol();
+//      i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
+//
+//      Symbol *pSymbol_p = p_as_p->pSymbol();
+//      i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+//
+//      pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p, p_as_p->szSymbol(SF_NONE));
+//    }
+////    else
+////    if (pSymbol_stmCol_a &&
+////        (p_expr_p = p_projection->pFindExprOfSymbol(pSymbol_stmCol_a))) {
+////      Card_As *p_as_p = p_expr_p->pSub_as();
+////
+////      Symbol *pSymbol_a = p_as_a->pSymbol();
+////      i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
+////
+////      Symbol *pSymbol_p = p_as_p->pSymbol();
+////      i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+////
+////      pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p, p_as_p->szSymbol(SF_NONE));
+////
+////    }
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+//#endif
+//
+//}
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 //void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
 //                                                     ColsReq_v2* pColsReq_v2,

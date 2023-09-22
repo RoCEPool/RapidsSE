@@ -103,12 +103,12 @@ void XF_Epilog_Fuse_project::vFuse(void)
   while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
     if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
-      m_pCI->G.p_indexJoin->vFuseNext_projection(m_pCI);
+      m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
       m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
     }
     else {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
-      m_pCI->G.p_indexJoin->vFuseSame_projection(m_pCI);
+      m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
     }
   }
 #endif
