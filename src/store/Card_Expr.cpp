@@ -231,11 +231,17 @@ void Card_Expr::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  i8 nAncestors = pCI->nAncestors();
+  pCI->vAncestorPush(this);
+
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
     p_boolCalc->vConvert_colOdn_To_stmOdn(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vConvert_colOdn_To_stmOdn(pCI);
+
+  pCI->vAncestorPop();
+  RASSERT(pCI->nAncestors() == nAncestors);
 }
 
 /*----------------------------------------------------------------------------*/

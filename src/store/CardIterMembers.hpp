@@ -32,6 +32,11 @@ namespace STORE
     Card * p_MainCard;
     eCK    e_MainCard;
     i8     i_MainCard;
+
+    Card*                p_NEW;
+    Card_OP *            p_OP;
+    Card_CONJUNCTION *   p_CONJ;
+
     Card * p_SubOfMain;
     eCK    e_SubOfMain;
     Card * p_Sub2OfMain;
@@ -170,10 +175,6 @@ namespace STORE
     Card_Where *         p_where;
 
     Card_XCard *         p_xcard;
-
-    Card*                p_NEW;
-    Card_OP *            p_OP;
-    Card_CONJUNCTION *   p_CONJ;
 
   private:
     // must be last

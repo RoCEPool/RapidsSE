@@ -174,7 +174,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert term (if stream-column) to table-column                            */
+/* convert table-column term to stream-column                                 */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
@@ -182,6 +182,20 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 
   Symbol* pSymbol_term = this->pSymbol();
   RASSERT(pSymbol_term->bIs_Col_Tc());
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is the expression synthetic?
+  if (Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))) {
+    if (Card_As* p_as = p_expr->pSub_as()) {
+      if (p_as->pSymbol()->Y_bHas(P_Synthetic)) {
+        p_expr->vDump(__func__);
+        vDebugPoint();
+      }
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pCI->Prior.m_pProjection) {
     if (Card_Expr *p_expr_col = pCI->Prior.m_pProjection->pFind_expr_Of_symbol(pSymbol_term)) {
@@ -215,8 +229,11 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   }
   else
   if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
-      pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-      pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
+      pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
+    nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
+  }
+  else
+  if (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
       pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
     nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
   }
@@ -224,7 +241,8 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
     return;
   }
 
-  // is introduced
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // term is introduced
 
   i8 i_Col = this->iGetOdn();
   i8 i_ColOdn = nCols_injectedByThisCard + i_Col;

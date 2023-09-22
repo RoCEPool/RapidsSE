@@ -98,6 +98,11 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn(void)
     vDebugPoint();
   }
 
+  if (m_pCI->G.p_OP->bIsCard(CK_INDEXJOIN)) {
+    m_pCI->G.p_OP->vDump(__func__);
+    vDebugPoint();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {

@@ -6,6 +6,7 @@
 
 __TPCH_SCHEMA
 
+/optimiser_trace
 /optimise_passthru
 /pipeline_def
 /weaved
@@ -34,3 +35,5 @@ begin
     | sink
     | stageA
 end ;
+
+_tpchDrop

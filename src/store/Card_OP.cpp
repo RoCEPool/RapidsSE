@@ -305,12 +305,13 @@ void Card_OP::vFuseNext_projection(CardIter *pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_NONE));
-  RASSERT(pCI->G.p_projection == pCI->G.p_project->pSub_projection());
+
+  pCI->G.p_projection = pCI->G.p_project->pSub_projection();
 
 #ifdef Z_FUSE
 
   // <op>/<stream> ; <op>/<stream>/<projection>
-  pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+  //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
   pCI->G.p_arriving = (Card_Arriving*)pCI->G.p_stream->pSub_projection();
   pCI->G.p_arriving->vCard(CK_ARRIVING);
 
@@ -338,7 +339,7 @@ void Card_OP::vFuseSame_projection(CardIter *pCI)
 #ifdef Z_FUSE
 
   // <op>/<stream> ; <op>/<stream>/<projection>
-  pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+  //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
   pCI->G.p_projection = pCI->G.p_stream->pSub_projection();
 
   // <op>/<stream>/<projection> -> <arriving>

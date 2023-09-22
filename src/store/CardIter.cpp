@@ -268,6 +268,19 @@ Card* CardIter::pAncestorFind(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test ancestry                                                              */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bAncestorIncludes(eCK eCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (pAncestorFind(eCard))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop ancestor                                                               */
 /*----------------------------------------------------------------------------*/
 void CardIter::vAncestorPop(void)
