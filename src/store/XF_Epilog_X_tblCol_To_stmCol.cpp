@@ -99,7 +99,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn(void)
   }
 
   if (m_pCI->G.p_OP->bIsCard(CK_INDEXJOIN)) {
-    m_pCI->G.p_OP->vDump(__func__);
+    //m_pCI->G.p_OP->vDump(__func__);
     vDebugPoint();
   }
 

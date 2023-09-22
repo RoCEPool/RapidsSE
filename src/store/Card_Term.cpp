@@ -189,7 +189,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   if (Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))) {
     if (Card_As* p_as = p_expr->pSub_as()) {
       if (p_as->pSymbol()->Y_bHas(P_Synthetic)) {
-        p_expr->vDump(__func__);
+        //p_expr->vDump(__func__);
         vDebugPoint();
       }
     }
