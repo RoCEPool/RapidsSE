@@ -124,6 +124,9 @@
 #include "SP_Tme.hpp"
 #include "SP_Tsp.hpp"
 
+// TO GO WITH Z_FUSE
+#include "Card.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -778,6 +781,13 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
 
   sScan.vCatSprint("scan %s %s %s"_Stz, szCatalogName, szSchemaName, szTableName);
   pBackend->vAppendNextOp(sScan);
+
+#ifdef Z_FUSE
+	s256 sInflate;
+
+	sInflate.vCatSprint("inflate %s %s %s"_Stz, szCatalogName, szSchemaName, szTableName);
+  pBackend->vAppendNextOp(sInflate);
+#endif
 
 }
 

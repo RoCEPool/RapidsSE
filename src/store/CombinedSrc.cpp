@@ -1309,7 +1309,7 @@ i8 CombinedSrc::iAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 		}
 	}
 
-	return C_UNKNOWN;
+	return pOpSketch->m_pStreamDefLft->nColumns();
 #else
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 

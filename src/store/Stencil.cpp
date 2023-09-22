@@ -211,6 +211,22 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// generate the code for inflate CRW
+#ifdef Z_FUSE
+
+    if (pOpDef->szOpNm()->bSame("inflate"_Stz)) {
+
+			m_eHandlerKind = HK_CRWBUFFER;
+			m_sLabelLoop = "L_AdvanceNextCrwT"_Stz;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			pOpSketch = pSketchInflateCrw(pStageDef, pOpDef);
+			vAppend(pOpSketch);
+
+			bInflateGenerated = true;
+			m_ePreviousStencil = SR_IT;
+			continue;
+		}
+#else
 		if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
 
 			m_eHandlerKind = HK_CRWBUFFER;
@@ -224,7 +240,7 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			m_ePreviousStencil = SR_IT;
 			continue;
 		}
-
+#endif
 		// generate code for indexScan OP
 		if (pOpDef->szOpNm()->bSame("indexScan"_Stz)) {
 
