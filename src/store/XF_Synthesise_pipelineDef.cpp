@@ -157,7 +157,7 @@ void XF_Synthesise_pipelineDef::vCraftPipelineDef(void)
       vCraftOpDef();
   }
 
-  m_pPipelineDef->vCollapseOps();
+  //m_pPipelineDef->vCollapseOps();
   m_pPipelineDef->vValidate();
 
   if (AM::JOB::bHasTag(C_PIPELINE_DEF)) {
@@ -431,14 +431,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
-#ifdef Z_REJIG_STREAMDEFS
-  else
-  if (p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
-    Card_Projection* p_projection = p_OP->pSub_projection();
-    m_pOpDef->m_pStreamDef_arriving =
-        p_projection->pToStreamDef(nullptr, nullptr, p_OP);
-  }
-#endif
+
 #ifdef Z_FUSE
   else
   if (p_OP->bIsCard(CK_INDEXJOIN) || p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {

@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-//#define Z_REJIG_STREAMDEFS
-
 //#define Z_FUSE
 //#define Z_BASE0
 
