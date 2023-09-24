@@ -445,6 +445,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XC,
   /* */ CN_XF,
   /* */ CN_XF_EPILOG_ADD_HASH_CAST,
+  /* */ CN_XF_EPILOG_ADD_INFLATE,
   /* */ CN_XF_EPILOG_APPEND_SYNTHESIS,
   /* */ CN_XF_EPILOG_CRAFT_STREAMDEF,
   /* */ CN_XF_EPILOG_DETERMINE_COLUMNS,
@@ -748,7 +749,7 @@ static Stz* aCN[]
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PDS"_Stz,                  // CN_PDS
-        "PDSBUFFERIDQUEUE"_Stz,     // CN_PDSBUFFERIDQUEUE
+  /* */ "PDSBUFFERIDQUEUE"_Stz,     // CN_PDSBUFFERIDQUEUE
   /* */ "PDSCURSOR"_Stz,            // CN_PDSCURSOR
   /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT
@@ -955,6 +956,7 @@ static Stz* aCN[]
   /* */ "XC"_Stz,                           // CN_XC
   /* */ "XF"_Stz,                           // CN_XF
   /* */ "XF_EPILOG_ADD_HASH_CAST"_Stz,                // CN_XF_EPILOG_ADD_HASH_CAST
+  /* */ "XF_EPILOG_ADD_INFLATE"_Stz,                // CN_XF_EPILOG_ADD_INFLATE
   /* */ "XF_EPILOG_APPEND_SYNTHESIS"_Stz ,   // CN_XF_EPILOG_APPEND_SYNTHESIS
   /* */ "XF_EPILOG_CRAFT_STREAMDEF"_Stz , // CN_XF_EPILOG_CRAFT_STREAMDEF
   /* */ "XF_EPILOG_DETERMINE_COLUMNS"_Stz,            // CN_XF_EPILOG_DETERMINE_COLUMNS

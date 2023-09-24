@@ -256,6 +256,7 @@
 
 #include "XF.hpp"
 #include "XF_Epilog_Add_hash_cast.hpp"
+#include "XF_Epilog_Add_inflate.hpp"
 #include "XF_Epilog_Append_synthesis.hpp"
 #include "XF_Epilog_Craft_StreamDef.hpp"
 #include "XF_Epilog_Determine_Columns.hpp"
@@ -788,6 +789,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XC,                               sizeof(XC),                                HT_T_TINY    , FILL },
   {CN_XF,                               sizeof(XF),                                HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ADD_HASH_CAST,       sizeof(XF_Epilog_Add_hash_cast),       HT_T_TINY    , FILL },
+  {CN_XF_EPILOG_ADD_INFLATE,         sizeof(XF_Epilog_Add_inflate),       HT_T_TINY    , FILL },
   {CN_XF_EPILOG_APPEND_SYNTHESIS,       sizeof(XF_Epilog_Append_synthesis),        HT_T_TINY    , FILL },
   {CN_XF_EPILOG_CRAFT_STREAMDEF,        sizeof(XF_Epilog_Craft_StreamDef),         HT_T_TINY    , FILL },
   {CN_XF_EPILOG_DETERMINE_COLUMNS,    sizeof(XF_Epilog_Determine_Columns),    HT_T_TINY    , FILL },
