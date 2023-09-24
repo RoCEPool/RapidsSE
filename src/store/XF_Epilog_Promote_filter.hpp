@@ -20,9 +20,9 @@ namespace STORE
     XF_Epilog_Promote_filter(CardIter* pCI);
    ~XF_Epilog_Promote_filter(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vPromote(CardIter* pCI);
 
-    void vXF_Individuate_filter(void);
+    void vPromote(void);
 
   private:
     Footer* aFooter(void);

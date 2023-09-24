@@ -39,7 +39,7 @@ XF_Epilog_Hash_Columns::~XF_Epilog_Hash_Columns(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Hash_Columns::vEpilog(CardIter* pCI)
+void XF_Epilog_Hash_Columns::vHash(CardIter* pCI)
 {
   _static_
 

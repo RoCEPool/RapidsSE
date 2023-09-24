@@ -39,13 +39,13 @@ XF_Epilog_X_tblCol_To_stmCol::~XF_Epilog_X_tblCol_To_stmCol(void) noexcept(false
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_stmCol::vEpilog(CardIter* pCI)
+void XF_Epilog_X_tblCol_To_stmCol::vConvert(CardIter* pCI)
 {
   _static_
 
   XF_Epilog_X_tblCol_To_stmCol* pXF_tblCol_To_stmCol = new XF_Epilog_X_tblCol_To_stmCol(pCI);
 
-  pXF_tblCol_To_stmCol->vXF_tblCol_To_stmCol();
+  pXF_tblCol_To_stmCol->vConvert();
 
   delete pXF_tblCol_To_stmCol;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* transform table-columns to stream-columns                                  */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
+void XF_Epilog_X_tblCol_To_stmCol::vConvert(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 
@@ -72,7 +72,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
         continue;
     }
 
-    vConvert_tblColOdn_To_stmColOdn();
+    vConvertTblCol();
 
 //    m_pCI->vPrintBoard(__LINE__);
     vDebugPoint();
@@ -89,7 +89,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 /*----------------------------------------------------------------------------*/
 /* convert tblColOdn to stmColOdn                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_tblCol_To_stmCol::vConvert_tblColOdn_To_stmColOdn(void)
+void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_TBLCOL_TO_STMCOL, _FOOTER_);
 

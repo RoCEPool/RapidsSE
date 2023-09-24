@@ -39,13 +39,13 @@ XF_Epilog_ItemStrip_colNm::~XF_Epilog_ItemStrip_colNm(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* de-duplicate as (column names)                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_ItemStrip_colNm::vEpilog(CardIter* pCI)
+void XF_Epilog_ItemStrip_colNm::vItemStrip(CardIter* pCI)
 {
   _static_
 
   XF_Epilog_ItemStrip_colNm* pXF_Dedupe_colNm = new XF_Epilog_ItemStrip_colNm(pCI);
 
-  pXF_Dedupe_colNm->vEpilog();
+  pXF_Dedupe_colNm->vItemStrip();
 
   delete pXF_Dedupe_colNm;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_ItemStrip_colNm::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* de-duplicate as (column names)                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_ItemStrip_colNm::vEpilog(void)
+void XF_Epilog_ItemStrip_colNm::vItemStrip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ITEMSTRIP_COLNM, _FOOTER_);
 

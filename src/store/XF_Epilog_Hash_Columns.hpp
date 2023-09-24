@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Hash_Columns(CardIter* pCI);
    ~XF_Epilog_Hash_Columns(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vHash(CardIter* pCI);
 
     void vHash(void);
 

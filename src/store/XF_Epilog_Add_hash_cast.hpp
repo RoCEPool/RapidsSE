@@ -20,9 +20,9 @@ namespace STORE
     XF_Epilog_Add_hash_cast(CardIter* pCI);
    ~XF_Epilog_Add_hash_cast(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vAdd(CardIter* pCI);
 
-    void vXF_stage_cast(void);
+    void vAdd(void);
 
   private:
     Footer* aFooter(void);

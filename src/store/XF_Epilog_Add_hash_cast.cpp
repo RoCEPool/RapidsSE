@@ -39,13 +39,13 @@ XF_Epilog_Add_hash_cast::~XF_Epilog_Add_hash_cast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Add_hash_cast::vEpilog(CardIter* pCI)
+void XF_Epilog_Add_hash_cast::vAdd(CardIter* pCI)
 {
   _static_
 
   XF_Epilog_Add_hash_cast* pXF_stage_cast = new XF_Epilog_Add_hash_cast(pCI);
 
-  pXF_stage_cast->vXF_stage_cast();
+  pXF_stage_cast->vAdd();
 
   delete pXF_stage_cast;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Add_hash_cast::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Add_hash_cast::vXF_stage_cast(void)
+void XF_Epilog_Add_hash_cast::vAdd(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_HASH_CAST, _FOOTER_);
 

@@ -39,7 +39,7 @@ XF_Epilog_Determine_Columns::~XF_Epilog_Determine_Columns(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Determine_Columns::vEpilog(CardIter* pCI)
+void XF_Epilog_Determine_Columns::vDetermine(CardIter* pCI)
 {
   _static_
 

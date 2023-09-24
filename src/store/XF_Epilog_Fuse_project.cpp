@@ -39,7 +39,7 @@ XF_Epilog_Fuse_project::~XF_Epilog_Fuse_project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Fuse_project::vEpilog(CardIter* pCI)
+void XF_Epilog_Fuse_project::vFuse(CardIter* pCI)
 {
   _static_
 

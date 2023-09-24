@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Itemise_Columns(CardIter* pCI);
    ~XF_Epilog_Itemise_Columns(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vItemise(CardIter* pCI);
 
     void vItemise(void);
 

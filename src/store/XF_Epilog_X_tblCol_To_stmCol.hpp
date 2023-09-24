@@ -20,13 +20,13 @@ namespace STORE
     XF_Epilog_X_tblCol_To_stmCol(CardIter* pCI);
    ~XF_Epilog_X_tblCol_To_stmCol(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vConvert(CardIter* pCI);
 
-    void vXF_tblCol_To_stmCol(void);
+    void vConvert(void);
 
   private:
 
-    void vConvert_tblColOdn_To_stmColOdn(void);
+    void vConvertTblCol(void);
 
     Footer* aFooter(void);
   };

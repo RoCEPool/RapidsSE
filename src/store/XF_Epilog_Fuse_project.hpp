@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Fuse_project(CardIter* pCI);
    ~XF_Epilog_Fuse_project(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vFuse(CardIter* pCI);
 
     void vFuse(void);
 

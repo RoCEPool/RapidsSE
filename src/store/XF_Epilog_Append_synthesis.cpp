@@ -39,7 +39,7 @@ XF_Epilog_Append_synthesis::~XF_Epilog_Append_synthesis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Append_synthesis::vEpilog(CardIter* pCI)
+void XF_Epilog_Append_synthesis::vAppend(CardIter* pCI)
 {
   _static_
 

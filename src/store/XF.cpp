@@ -224,25 +224,25 @@ void XF::vTransform(void)
   m_pCI->vBoardIteration();                            //
   RASSERT(m_pCI->bEachBoard());                        //
                                                        //
-  XF_Epilog_Promote_filter::vEpilog(m_pCI);            //
-  XF_Epilog_Reinstate_stage::vEpilog(m_pCI);           //
-  XF_Epilog_Add_hash_cast::vEpilog(m_pCI);             //
-  XF_Epilog_X_tblCol_To_stmCol::vEpilog(m_pCI);        //
-  XF_Epilog_X_stmCol_To_colNm::vEpilog(m_pCI);         //
+  XF_Epilog_Promote_filter::vPromote(m_pCI);           //
+  XF_Epilog_Reinstate_stage::vReinstate(m_pCI);        //
+  XF_Epilog_Add_hash_cast::vAdd(m_pCI);                //
+  XF_Epilog_X_tblCol_To_stmCol::vConvert(m_pCI);       //
+  XF_Epilog_X_stmCol_To_colNm::vConvert(m_pCI);        //
                                                        //
   // - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5/5) synthesise
 
-  XF_Epilog_Fuse_project::vEpilog(m_pCI);              // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
-  XF_Epilog_Append_synthesis::vEpilog(m_pCI);          // adds <synthesis>
-  XF_Epilog_Map_Columns::vEpilog(m_pCI);               // gbyAgg, sort, top
+  XF_Epilog_Fuse_project::vFuse(m_pCI);                // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
+  XF_Epilog_Append_synthesis::vAppend(m_pCI);          // adds <synthesis>
+  XF_Epilog_Map_Columns::vMap(m_pCI);                  // gbyAgg, sort, top
 //XF_Epilog_Craft_StreamDef::vItemise(m_pCI);          //
-  XF_Epilog_Determine_Columns::vEpilog(m_pCI);         // nil
-  XF_Epilog_Hash_Columns::vEpilog(m_pCI);              //
+  XF_Epilog_Determine_Columns::vDetermine(m_pCI);      // nil
+  XF_Epilog_Hash_Columns::vHash(m_pCI);                //
                                                        //
-  XF_Epilog_Itemise_Columns::vEpilog(m_pCI);           //
+  XF_Epilog_Itemise_Columns::vItemise(m_pCI);          //
                                                        //
   m_pCI->vEndPhase();                                  //
                                                        //
@@ -339,13 +339,13 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vUsingBoard((i8)0);
 
-  XF_Epilog_X_tblCol_To_stmCol::vEpilog(m_pCI);        // tblCol -> stmCol
-  XF_Epilog_Fuse_project::vEpilog(m_pCI);              // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
-  XF_Epilog_Append_synthesis::vEpilog(m_pCI);          // adds <synthesis>
-  XF_Epilog_Map_Columns::vEpilog(m_pCI);
-  XF_Epilog_Hash_Columns::vEpilog(m_pCI);
+  XF_Epilog_X_tblCol_To_stmCol::vConvert(m_pCI);        // tblCol -> stmCol
+  XF_Epilog_Fuse_project::vFuse(m_pCI);              // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
+  XF_Epilog_Append_synthesis::vAppend(m_pCI);          // adds <synthesis>
+  XF_Epilog_Map_Columns::vMap(m_pCI);
+  XF_Epilog_Hash_Columns::vHash(m_pCI);
 
-  XF_Epilog_Itemise_Columns::vEpilog(m_pCI);
+  XF_Epilog_Itemise_Columns::vItemise(m_pCI);
 
   vCrosscheck_Optimisations();
 

@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Craft_StreamDef(CardIter* pCI);
    ~XF_Epilog_Craft_StreamDef(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vCraft(CardIter* pCI);
 
     void vCraft(void);
 

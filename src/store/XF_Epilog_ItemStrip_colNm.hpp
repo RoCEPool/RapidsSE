@@ -20,9 +20,9 @@ namespace STORE
     XF_Epilog_ItemStrip_colNm(CardIter* pCI);
    ~XF_Epilog_ItemStrip_colNm(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vItemStrip(CardIter* pCI);
 
-    void vEpilog(void);
+    void vItemStrip(void);
 
   private:
     Footer* aFooter(void);

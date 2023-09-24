@@ -20,9 +20,9 @@ namespace STORE
     XF_Epilog_X_stmCol_To_colNm(CardIter* pCI);
    ~XF_Epilog_X_stmCol_To_colNm(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vConvert(CardIter* pCI);
 
-    void vXF_stmCol_To_colNm(void);
+    void vConvert(void);
 
   private:
     Footer* aFooter(void);

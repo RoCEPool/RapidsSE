@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Determine_Columns(CardIter* pCI);
    ~XF_Epilog_Determine_Columns(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vDetermine(CardIter* pCI);
 
     void vDeterime(void);
 

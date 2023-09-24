@@ -43,13 +43,13 @@ XF_Epilog_Promote_filter::~XF_Epilog_Promote_filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Promote_filter::vEpilog(CardIter* pCI)
+void XF_Epilog_Promote_filter::vPromote(CardIter* pCI)
 {
   _static_
 
   XF_Epilog_Promote_filter* pXF_Individuate_filter = new XF_Epilog_Promote_filter(pCI);
 
-  pXF_Individuate_filter->vXF_Individuate_filter();
+  pXF_Individuate_filter->vPromote();
 
   delete pXF_Individuate_filter;
 }
@@ -62,7 +62,7 @@ void XF_Epilog_Promote_filter::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Promote_filter::vXF_Individuate_filter(void)
+void XF_Epilog_Promote_filter::vPromote(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_PROMOTE_FILTER, _FOOTER_);
 

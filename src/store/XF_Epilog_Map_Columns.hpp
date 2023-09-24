@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Map_Columns(CardIter* pCI);
    ~XF_Epilog_Map_Columns(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vMap(CardIter* pCI);
 
     void vMap(void);
 

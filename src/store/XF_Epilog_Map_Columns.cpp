@@ -39,7 +39,7 @@ XF_Epilog_Map_Columns::~XF_Epilog_Map_Columns(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Map_Columns::vEpilog(CardIter* pCI)
+void XF_Epilog_Map_Columns::vMap(CardIter* pCI)
 {
   _static_
 

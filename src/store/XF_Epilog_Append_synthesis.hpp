@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Append_synthesis(CardIter* pCI);
    ~XF_Epilog_Append_synthesis(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vAppend(CardIter* pCI);
 
     void vAppend(void);
 

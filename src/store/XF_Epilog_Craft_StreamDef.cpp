@@ -39,7 +39,7 @@ XF_Epilog_Craft_StreamDef::~XF_Epilog_Craft_StreamDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Craft_StreamDef::vEpilog(CardIter* pCI)
+void XF_Epilog_Craft_StreamDef::vCraft(CardIter* pCI)
 {
   _static_
 

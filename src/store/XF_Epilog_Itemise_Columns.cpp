@@ -39,7 +39,7 @@ XF_Epilog_Itemise_Columns::~XF_Epilog_Itemise_Columns(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* de-duplicate as (column names)                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Itemise_Columns::vEpilog(CardIter* pCI)
+void XF_Epilog_Itemise_Columns::vItemise(CardIter* pCI)
 {
   _static_
 
