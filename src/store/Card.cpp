@@ -2544,6 +2544,19 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Injected.hpp"
+Card_Injected* Card::pSub_injected(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Injected* p_injected =
+      _pCard_Injected(pFindSubCard(CK_INJECTED));
+  return p_injected;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_JoinCast.hpp"
 Card_JoinCast* Card::pSub_joinCast(void)
 {

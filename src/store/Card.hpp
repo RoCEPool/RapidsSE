@@ -81,6 +81,7 @@ namespace STORE
   class Card_IndexList;
   class Card_IndexNm;
   class Card_IndexScan;
+  class Card_Injected;
 
   class Card_JoinCast;
   class Card_JoinOrder;
@@ -464,6 +465,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
+    Card_Injected*      pSub_injected(void);
     Card_JoinCast*      pSub_joinCast(void);
     Card_JoinEstimate*  pSub_joinEstimate(void);
     Card_Key*           pSub_key(void);

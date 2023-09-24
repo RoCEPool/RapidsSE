@@ -73,6 +73,7 @@
 #include "Card_IndexList.hpp"
 #include "Card_IndexNm.hpp"
 #include "Card_IndexScan.hpp"
+#include "Card_Injected.hpp"
 
 #include "Card_JoinCast.hpp"
 #include "Card_JoinEstimate.hpp" //

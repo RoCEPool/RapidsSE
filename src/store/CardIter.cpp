@@ -1358,6 +1358,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXLIST:        return G.p_indexList;
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
+    case CK_INJECTED:         return G.p_injected;
 
     case CK_JOINCAST:         return G.p_joinCast;
     case CK_JOINESTIMATE:     return G.p_joinEstimate;
@@ -1593,6 +1594,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXNM:          G.p_indexNm           = _pCard_IndexNm(pCard); break;
     case CK_INDEXSCAN:        G.p_indexScan         = _pCard_IndexScan(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
+    case CK_INJECTED:         G.p_injected          = _pCard_Injected(pCard); break;
 
     case CK_JOINCAST:         G.p_joinCast          = _pCard_JoinCast(pCard); break;
     case CK_JOINESTIMATE:     G.p_joinEstimate      = _pCard_JoinEstimate(pCard); break;
@@ -1827,6 +1829,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_indexList        = nullptr;
   G.p_indexNm          = nullptr;
   G.p_indexScan        = nullptr;
+  G.p_injected         = nullptr;
 
   G.p_joinCast         = nullptr;
   G.p_joinOrder        = nullptr;
@@ -2606,6 +2609,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_INDEXLIST:    G.p_indexList->vValidate(this, iDepth, pCard);  break;
       case CK_INDEXNM:      G.p_indexNm->vValidate(this, iDepth, pCard);  break;
       case CK_INDEXSCAN:    G.p_indexScan->vValidate(this, iDepth, pCard);  break;
+      case CK_INJECTED:     G.p_injected->vValidate(this, iDepth, pCard);  break;
 
       case CK_JOINCAST:     G.p_joinCast->vValidate(this, iDepth, pCard);  break;
       case CK_JOINESTIMATE: G.p_joinEstimate->vValidate(this, iDepth, pCard);  break;
