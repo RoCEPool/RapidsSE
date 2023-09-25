@@ -2557,6 +2557,19 @@ Card_Injected* Card::pSub_injected(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Inflate.hpp"
+Card_Inflate* Card::pSub_inflate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Inflate* p_inflate =
+      _pCard_Inflate(pFindSubCard(CK_INFLATE));
+  return p_inflate;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_JoinCast.hpp"
 Card_JoinCast* Card::pSub_joinCast(void)
 {
