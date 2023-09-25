@@ -345,14 +345,15 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vUsingBoard((i8)0);
 
-  XF_Epilog_X_tblCol_To_stmCol::vConvert(m_pCI);        // tblCol -> stmCol
-  XF_Epilog_Fuse_project::vFuse(m_pCI);              // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
+  XF_Epilog_X_tblCol_To_stmCol::vConvert(m_pCI);       // tblCol -> stmCol
+  XF_Epilog_Fuse_project::vFuse(m_pCI);                // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
   XF_Epilog_Append_synthesis::vAppend(m_pCI);          // adds <synthesis>
-  XF_Epilog_Map_Columns::vMap(m_pCI);
-  XF_Epilog_Hash_Columns::vHash(m_pCI);
-
-  XF_Epilog_Itemise_Columns::vItemise(m_pCI);
-
+  XF_Epilog_Map_Columns::vMap(m_pCI);                  //
+  XF_Epilog_Hash_Columns::vHash(m_pCI);                //
+                                                       //
+  XF_Epilog_Itemise_Columns::vItemise(m_pCI);          //
+  XF_Epilog_Add_inflate::vBifurcate(m_pCI);            //
+                                                       //
   vCrosscheck_Optimisations();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
