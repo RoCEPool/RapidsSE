@@ -641,6 +641,8 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_INDEXLIST:    pCI->G.p_indexList->vValidate(pCI, 1, this); break;
       case CK_INDEXNM:      pCI->G.p_indexNm->vValidate(pCI, 1, this); break;
       case CK_INDEXSCAN:    pCI->G.p_indexScan->vValidate(pCI, 1, this); break;
+      case CK_INFLATE:      pCI->G.p_inflate->vValidate(pCI, 1, this); break;
+      case CK_INJECTED:     pCI->G.p_injected->vValidate(pCI, 1, this); break;
 
       case CK_JOINCAST:     pCI->G.p_joinCast->vValidate(pCI, 1, this); break;
       case CK_JOINESTIMATE: pCI->G.p_joinEstimate->vValidate(pCI, 1, this); break;

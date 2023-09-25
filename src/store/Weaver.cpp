@@ -338,6 +338,9 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_TOP:          vArgTop          (sOpArgs,_pCard_Top(pCard));          break;
     case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
 
+    case CK_INFLATE:
+      return;
+
     default:
       vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
              __FILE__, (i8)__LINE__,(i8) eCard, aCK[eCard]);

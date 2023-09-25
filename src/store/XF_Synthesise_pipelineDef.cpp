@@ -225,8 +225,6 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
   switch (eCard) {
 
     case CK_AGGREG:       p_OP->vRpnAggreg      (sExpr, _pCard_Aggreg      (p_OP)); break;
-    case CK_CAST:         break;
-    case CK_COMBINED:     break;
     case CK_CROSSJOIN:    p_OP->vRpnCrossJoin   (sExpr, _pCard_CrossJoin   (p_OP)); break;
     case CK_FILTER:       p_OP->vRpnFilter      (sExpr, _pCard_Filter      (p_OP)); break;
     case CK_GBYAGG:       p_OP->vRpnGbyAgg      (sExpr, _pCard_GbyAgg      (p_OP)); break;
@@ -240,10 +238,15 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_ORDAGG:       p_OP->vRpnOrdAgg      (sExpr, _pCard_OrdAgg      (p_OP)); break;
     case CK_PROJECT:      p_OP->vRpnProject     (sExpr, _pCard_Project     (p_OP)); break;
     case CK_SCAN:         p_OP->vRpnScan        (sExpr, _pCard_Scan        (p_OP)); break;
-    case CK_SEND:         break;
     case CK_SORT:         p_OP->vRpnSort        (sExpr, _pCard_Sort        (p_OP)); break;
     case CK_TOP:          p_OP->vRpnTop         (sExpr, _pCard_Top         (p_OP)); break;
     case CK_WHERE:        p_OP->vRpnWhere       (sExpr, _pCard_Where       (p_OP)); break;
+
+    case CK_CAST:
+    case CK_COMBINED:
+    case CK_INFLATE:
+    case CK_SEND:
+      break;
 
     default:
       vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
@@ -304,6 +307,9 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
+    case CK_INFLATE:
+      break;
+
     case CK_KEYEXISTS:
       p_OP->vRpnKeyExists_constraint(sConstraint, _pCard_KeyExists(p_OP));
 
@@ -353,6 +359,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_WHERE:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
+
 
     default:
       vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,

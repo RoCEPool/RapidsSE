@@ -63,8 +63,16 @@ void XF_Epilog_Add_inflate::vAdd(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_INFLATE, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_EPILOG_ADD_INFLATE, "add inflate"_Stz);
-  
 
+  m_pCI->vBeginEach();
+  while (m_pCI->G_bEachMain_NONE()) {
+
+    if (CK_INDEXJOIN == m_pCI->G.e_MainCard ||
+        CK_INDEXSCAN == m_pCI->G.e_MainCard ||
+        CK_SCAN == m_pCI->G.e_MainCard) {
+      m_pCI->G_vInsertAfter(new Card_Inflate,m_pCI->G.p_MainCard);
+    }
+  }
   m_pCI->vEndTransform();
 }
 

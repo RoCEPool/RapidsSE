@@ -1644,6 +1644,9 @@ void Card_OP::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card_MAIN::vValidate(pCI, iDepth, pParent);
 
+  if (eCard() == CK_INFLATE)
+    return;
+
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
     vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
 }
