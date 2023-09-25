@@ -38,16 +38,42 @@ information on JDBC the user should refer to the standard JDBC API documentation
 Architecture
 ------------
 
-TODO
-
-TODO add architecture diagram
-
 The JDBC driver communicates with a node in the RapidsSE cluster using a
-Thrift-based messaging protocol (referred to as the
-:ref:`RapidsSE Wireline Protocol <wirelineProtocolInterface>`).
-The JDBC Driver can be configured on the client (see 4.2) to use any of the
-nodes in the RapidsSE cluster, and there can be multiple JDBC drivers
-communicating with different nodes in the RapidsSE cluster at any time.
+Thrift-based messaging protocol referred to as the
+:ref:`RapidsSE Wireline Protocol <wirelineProtocolInterface>`. This is shown
+in :numref:`jdbcDriverArchitecture`. This wireline protocol can support
+various different transport mechanisms, though the currently supported transport
+is TCP/IP sockets.
+
+.. _jdbcDriverArchitecture:
+
+.. figure:: jdbcDriverArchitecture.*
+   :align: center
+
+   The architecture of a JDBC client communicating with RapidsSE.
+
+The client can configure the JDBC Driver to connect to any of the nodes in the
+RapidsSE cluster - all nodes are considered equal. There can also be multiple
+JDBC drivers communicating with different nodes in the RapidsSE cluster at any
+time. This can be via multiple connections from a single client application or
+through multiple clients all communicating with RapidsSE.
+
+The JDBC standard only allows a single query at a time on a single JDBC
+connection. Therefore, if a client application wishes to execute concurrent
+queries it must create multiple JDBC connections and execute single queries
+over each of the connections. Each connection will have its own TCP/IP connection
+to RapidsSE.
+
+Within RapidsSE a Socket Handler will accept incoming client connections and read
+data payloads off the socket. These are passed on to a Wireline Adaptor which
+decodes the payload for a given version of the wireline protocol and determines
+how to process it. This will typically involve extracting the query to be executed
+and passing this off to the Execution Engine to be executed. The Execution Engine
+will return metadata and data (e.g. rows or error messages) back to the Wireline
+Adaptor which will then serialise this information into Wireline Thrift messages
+before passing it back to the Socket Handler which will send it back to the
+client application.
+
 
 Limits & Constraints
 --------------------

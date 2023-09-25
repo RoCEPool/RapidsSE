@@ -16,5 +16,7 @@ Change History
 Version 1.0
 -----------
 
-- **Note:** This is the initial release of the RapidsSE JDBC Driver.
+- **Note:** This is the initial release of the RapidsSE JDBC Driver. It is based
+  upon version 4.08 of the RapidsDB JDBC Driver with various changes due to the
+  functional differences of the two products.
 
