@@ -246,7 +246,7 @@ void XF::vTransform(void)
   XF_Epilog_Hash_Columns::vHash(m_pCI);                //
                                                        //
   XF_Epilog_Itemise_Columns::vItemise(m_pCI);          //
-//  XF_Epilog_Add_inflate::vAdd(m_pCI);                  //
+  XF_Epilog_Add_inflate::vAdd(m_pCI);                  //
                                                        //
   m_pCI->vEndPhase();                                  //
                                                        //

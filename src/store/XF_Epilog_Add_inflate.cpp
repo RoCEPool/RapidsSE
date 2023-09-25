@@ -70,7 +70,20 @@ void XF_Epilog_Add_inflate::vAdd(void)
     if (CK_INDEXJOIN == m_pCI->G.e_MainCard ||
         CK_INDEXSCAN == m_pCI->G.e_MainCard ||
         CK_SCAN == m_pCI->G.e_MainCard) {
-      m_pCI->G_vInsertAfter(new Card_Inflate,m_pCI->G.p_MainCard);
+      m_pCI->G.p_inflate = new Card_Inflate;
+      m_pCI->G_vInsertAfter(m_pCI->G.p_inflate,m_pCI->G.p_MainCard);
+
+      m_pCI->vBurst(m_pCI->G.p_MainCard);
+
+      if (m_pCI->G.p_table)
+        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_table->pDupCardRecursive());
+      if (m_pCI->G.p_stream)
+        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_stream->pDupCardRecursive());
+      if (m_pCI->G.p_injected)
+        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_injected->pDupCardRecursive());
+      if (m_pCI->G.p_synthesis)
+        m_pCI->G.p_inflate->vAppendChild(m_pCI->G.p_synthesis->pDupCardRecursive());
+
     }
   }
   m_pCI->vEndTransform();
