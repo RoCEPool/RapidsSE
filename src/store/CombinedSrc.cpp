@@ -165,7 +165,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // inflate the right table columns
 				// ALKA: come back to this (iLeftCols)
-        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, iLeftCols, pInflateFile);
+        vAppendCodeInflateRightCols2(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate code for the constraint
@@ -983,6 +983,30 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* append code fragment for inflate columns                                   */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeInflateRightCols2(OpSketch* pOpSketch, Stz* sReturnPrefix, File* pOperatorFile)
+{
+	_precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+	s256 sReturnToColumn;
+	s16KB sCode;
+	bool bExtracted;
+
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefRht->nColumns(); i_Col++) {
+
+		Column* pColumn = pOpSketch->m_pStreamDefRht->pGetColumn(i_Col);
+		sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_Col+1);
+
+		sCode = ""_Stz;
+		pOperatorFile->vSeekStart();
+
+		bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
+		RASSERT(bExtracted);
+		StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
+	}
+}
 
 /*----------------------------------------------------------------------------*/
 /* append code fragment for inflate columns                                   */
