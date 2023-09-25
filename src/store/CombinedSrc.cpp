@@ -919,6 +919,7 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
+	UNUSED(iLeftCols);
 	s256 sReturnToColumn;
 	s16KB sCode;
 	bool bExtracted;
@@ -927,13 +928,13 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
 
 	Column* pColumn;
 	i8 i_StreamRightCol = 0;
-	i8 i_StreamLeftCols = pOpSketch->m_pStreamDefLft->nColumns();
+	//i8 i_StreamLeftCols = pOpSketch->m_pStreamDefLft->nColumns();
 
-	for (i8 i_Col = iLeftCols; i_Col < pOpSketch->m_pColsReq->m_nCols; i_Col++) {
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColsReq->m_nCols; i_Col++) {
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// skip columns not required
-		while (i_StreamRightCol < pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_CrwCol - i_StreamLeftCols) {
+		while (i_StreamRightCol < pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_CrwCol) {
 			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamRightCol);
 
 			sCode = ""_Stz;
@@ -949,7 +950,7 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// inflate columns required
-		if (i_StreamRightCol == pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_CrwCol - i_StreamLeftCols) {
+		if (i_StreamRightCol == pOpSketch->m_pColsReq->m_axCols[i_Col].m_i_CrwCol) {
 			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamRightCol);
 
 			sCode = ""_Stz;
@@ -1278,7 +1279,7 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
 i8 CombinedSrc::iAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
-
+/*
 #ifdef Z_FUSE
 
 	Column* pColumnFrom;
@@ -1311,6 +1312,7 @@ i8 CombinedSrc::iAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 
 	return pOpSketch->m_pStreamDefLft->nColumns();
 #else
+ */
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
     m_pCommonCode->vSeekStart();
@@ -1334,7 +1336,7 @@ i8 CombinedSrc::iAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
   }
 
 	return pOpSketch->m_pStreamDefLft->nColumns();
-#endif
+//#endif
 }
 
 /*----------------------------------------------------------------------------*/
