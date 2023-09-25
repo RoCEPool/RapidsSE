@@ -1909,6 +1909,7 @@ void CardIter::vNullMembers(bool bNull_OP)
 
   G.p_xcard            = nullptr;
 
+  G.p_CARD             = nullptr;
   G.p_NEW              = nullptr;
   G.p_CONJ             = nullptr;
 

@@ -100,7 +100,14 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
 #ifdef Z_FUSE
   m_pCI->vClearRestart();
-  while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
+  while (m_pCI->G_bEachMain_NONE()) {
+
+    if (CK_INDEXJOIN != m_pCI->G.e_MainCard) {
+      if (m_pCI->G.p_MainCard->pSub_projection())
+        m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_projection();
+      continue;
+    }
+
     if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
       m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
@@ -109,6 +116,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
     else {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
+      m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_projection();
     }
   }
 #endif

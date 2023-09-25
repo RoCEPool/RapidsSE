@@ -66,15 +66,15 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   else {
     // index join
 
-    pCI->G.p_arriving = (Card_Arriving *) pCI->G.p_stream->pSub_projection();
-    pCI->G.p_arriving->vCard(CK_ARRIVING);
+    pCI->G.p_CARD = pCI->Prior.m_pProjection->pDupCardRecursive();
+    pCI->G.p_CARD->vCard(CK_ARRIVING);
 
-    if ((pCI->G.p_streamKey = pCI->G.p_arriving->pSub_streamKey())) {
-      pCI->G.p_arriving->vDeleteChild(pCI->G.p_streamKey);
+    if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {
+      pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
     }
 
     // <op>/<stream> <= <project>/<stream>/<projection>
-    pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pClone());
+    pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
   }
 #endif
 }
@@ -91,20 +91,35 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
 
 #ifdef Z_FUSE
 
-  // <op>/<stream> ; <op>/<stream>/<projection>
-  //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
-  pCI->G.p_projection = pCI->G.p_stream->pSub_projection();
+  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
 
-  // <op>/<stream>/<projection> -> <arriving>
-  pCI->G.p_arriving = (Card_Arriving*)pCI->G.p_projection->pClone();
-  pCI->G.p_arriving->vCard(CK_ARRIVING);
+    // <op>/<stream> ; <op>/<stream>/<projection>
+    //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
+    pCI->G.p_projection = pCI->G.p_stream->pSub_projection();
 
-  if ((pCI->G.p_streamKey = pCI->G.p_arriving->pSub_streamKey())) {
-    pCI->G.p_arriving->vDeleteChild(pCI->G.p_streamKey);
+    // <op>/<stream>/<projection> -> <arriving>
+    pCI->G.p_arriving = (Card_Arriving *) pCI->G.p_projection->pClone();
+    pCI->G.p_arriving->vCard(CK_ARRIVING);
+
+    if ((pCI->G.p_streamKey = pCI->G.p_arriving->pSub_streamKey())) {
+      pCI->G.p_arriving->vDeleteChild(pCI->G.p_streamKey);
+    }
+
+    // <project>/<stream> -> <project>/<stream>/<arriving>
+    pCI->G.p_stream->vAppendChild(pCI->G.p_arriving);
   }
+  else {
+    pCI->G.p_CARD = pCI->Prior.m_pProjection->pDupCardRecursive();
+    pCI->G.p_CARD->vCard(CK_ARRIVING);
 
-  // <project>/<stream> -> <project>/<stream>/<arriving>
-  pCI->G.p_stream->vAppendChild(pCI->G.p_arriving);
+    if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {
+      pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
+    }
+
+    // <op>/<stream> <= <project>/<stream>/<projection>
+    pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
+
+  }
 #endif
 }
 
