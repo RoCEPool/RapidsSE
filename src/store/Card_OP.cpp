@@ -97,6 +97,20 @@ void Card_OP::vAdd_Pred_Under_filter(Card_CONJUNCTION *p_PRED)
 }
 
 /*----------------------------------------------------------------------------*/
+/* analyse from for injected columns                                          */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vAnalyse_injected(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pCI);
+
+  pCI->G.p_injected = Card_Injected::pNew_injected(pCI);
+
+  vAppendChild(pCI->G.p_injected);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert given lambda function to all terms                                 */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,

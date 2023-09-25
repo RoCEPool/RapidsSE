@@ -281,6 +281,7 @@ void XF::vTransform_passThru(void)
   while (m_pCI->bEachBoard()) {
 
     XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(m_pCI);
+    XF_Prolog_Analyse_injected::vAnalyse_passThru(m_pCI);   //
     XF_Prolog_Analyse_projection::vXF_projection_Analysis_passThru(m_pCI);
 
     XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);

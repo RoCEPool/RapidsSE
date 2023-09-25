@@ -44,20 +44,6 @@ Card_From::~Card_From(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyse from for injected columns                                          */
-/*----------------------------------------------------------------------------*/
-void Card_From::vAnalyse_injected(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(pCI);
-
-  pCI->G.p_injected = Card_Injected::pNew_injected(pCI);
-
-  vAppendChild(pCI->G.p_injected);
-}
-
-/*----------------------------------------------------------------------------*/
 /* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* Card_From::szColNm(i8 i_Col_base0)

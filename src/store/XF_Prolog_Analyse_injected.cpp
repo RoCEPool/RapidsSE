@@ -76,7 +76,7 @@ void XF_Prolog_Analyse_injected::vAnalyse(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INJECTED, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_PROJECTION, "projection analysis"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_INJECTION, "injection analysis"_Stz);
 
   m_pCI->vBeginEach();
 
@@ -96,8 +96,19 @@ void XF_Prolog_Analyse_injected::vAnalyse_passThru(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_PROJECTION, "vProjectionAnalysis_passThru"_Stz);
 
-  while (m_pCI->G_bEachMainWithSub(CK_FROM, CK_TABLE)) {
-    m_pCI->G.p_from->vAnalyse_injected(m_pCI);
+  m_pCI->vBeginEach();
+  while (m_pCI->G_bEachMainWithSub(CK_SCAN, CK_TABLE)) {
+    m_pCI->G.p_scan->vAnalyse_injected(m_pCI);
+  }
+
+  m_pCI->vBeginEach();
+  while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN, CK_TABLE)) {
+    m_pCI->G.p_indexScan->vAnalyse_injected(m_pCI);
+  }
+
+  m_pCI->vBeginEach();
+  while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN, CK_TABLE)) {
+    m_pCI->G.p_indexJoin->vAnalyse_injected(m_pCI);
   }
 
   m_pCI->vEndTransform();
