@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_projection_Analysis.cpp -- Projection Injection                         */
+/* XF_projection_Analysis.cpp -- Analyse Injected                             */
 /*============================================================================*/
 
 #include "XF_Prolog_Analyse_injected.hpp"
@@ -78,6 +78,11 @@ void XF_Prolog_Analyse_injected::vAnalyse(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_PROJECTION, "projection analysis"_Stz);
 
+  m_pCI->vBeginEach();
+
+  while (m_pCI->G_bEachMainWithSub(CK_FROM, CK_TABLE)) {
+    m_pCI->G.p_from->vAnalyse_injected(m_pCI);
+  }
 
   m_pCI->vEndTransform();
 }
@@ -91,6 +96,9 @@ void XF_Prolog_Analyse_injected::vAnalyse_passThru(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_PROJECTION, "vProjectionAnalysis_passThru"_Stz);
 
+  while (m_pCI->G_bEachMainWithSub(CK_FROM, CK_TABLE)) {
+    m_pCI->G.p_from->vAnalyse_injected(m_pCI);
+  }
 
   m_pCI->vEndTransform();
 }

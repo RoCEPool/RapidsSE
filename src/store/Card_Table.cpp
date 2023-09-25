@@ -513,6 +513,18 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* Card_Table::pGet_Table(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table* pTable = reinterpret_cast<Table*>(pSymbol()->Y_pGet(P_Pointer));
+
+  return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate table                                                             */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

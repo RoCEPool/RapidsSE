@@ -608,7 +608,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
-    if (m_xSymbol.bIs_Col_Tc() ) {
+    if (m_xSymbol.bIs_Col_Tc() && ! pCI->pAncestorFind(CK_INJECTED)) {
       vDump(__func__);
       vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
     }

@@ -18,6 +18,8 @@ namespace STORE
     Card_Injected(void);
    ~Card_Injected(void) noexcept(false);
 
+    static Card_Injected* pNew_injected(CardIter* pCI);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

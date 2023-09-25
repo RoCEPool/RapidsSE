@@ -18,6 +18,8 @@ namespace STORE
     Card_From(void);
    ~Card_From(void) noexcept(false);
 
+    void vAnalyse_injected(CardIter* pCI);
+
     Stz* szColNm(i8 i_Col_base0);
     void vSmooth(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);

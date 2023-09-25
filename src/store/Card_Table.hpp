@@ -48,6 +48,8 @@ namespace STORE
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn);
 
+    Table* pGet_Table(void);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

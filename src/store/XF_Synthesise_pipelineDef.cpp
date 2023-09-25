@@ -555,6 +555,10 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
 
     Card_Expr* p_expr = _pCard_Expr(pCard_expr);
     Symbol* pSymbol_stmCol = p_expr->pFirstStmCol();
+
+    if (! pSymbol_stmCol)
+      return C_CONTINUE_RECURSION;
+
     i8 i_Col = pSymbol_stmCol->iSF_ordinal();
 
     pColsReq->vAddCol(i_Col, false, i_Col);
