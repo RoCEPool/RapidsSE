@@ -118,7 +118,7 @@ void ColHsh::vUpdate(Card_Hashing* p_hashing)
 //
 //  Symbol* pSymbol = p_term->pSymbol();
 //
-//  vAdd(p_term->iGetOdn() - 1,
+//  vBifurcate(p_term->iGetOdn() - 1,
 //       Symbol::eTo_eCT_char(pSymbol->Y_szColType()),
 //       pSymbol->Y_szGet(P_HashOf));
 //}

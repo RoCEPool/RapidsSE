@@ -3,8 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//#define Z_FUSE
-//#define Z_BASE0
+#define Z_FUSE
 
 #include "BASE.h"
 

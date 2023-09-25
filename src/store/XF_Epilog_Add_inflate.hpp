@@ -20,7 +20,7 @@ namespace STORE
     XF_Epilog_Add_inflate(CardIter* pCI);
    ~XF_Epilog_Add_inflate(void) noexcept(false);
 
-    static void vAdd(CardIter* pCI);
+    static void vBifurcate(CardIter* pCI);
 
     void vAdd(void);
 

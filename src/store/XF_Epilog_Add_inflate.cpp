@@ -39,7 +39,7 @@ XF_Epilog_Add_inflate::~XF_Epilog_Add_inflate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Add_inflate::vAdd(CardIter* pCI)
+void XF_Epilog_Add_inflate::vBifurcate(CardIter* pCI)
 {
   _static_
 

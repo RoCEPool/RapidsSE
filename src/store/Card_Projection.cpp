@@ -636,11 +636,11 @@ Card_Expr* Card_Projection::pResolve_expr(Card_Term* p_term)
 //      RASSERT(p_key);
 //
 //      if (p_expr->pSymbol()->Y_bHas(P_Key))
-//        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
+//        pColMap->vBifurcate(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
 //                      false,
 //                      p_expr->pSymbol()->Y_iGet(P_Cell));
 //      else
-//        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
+//        pColMap->vBifurcate(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
 //                      true,
 //                      p_expr->pSymbol()->Y_iGet(P_Cell));
 //

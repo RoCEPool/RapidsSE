@@ -193,8 +193,10 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   if (m_pCI->G.p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;
-  if (m_pCI->G.p_OP->bIsCard(CK_SCAN))
+
+  if (m_pCI->G.p_OP->bIsCard(CK_SCAN)) {
     return;
+  }
 
   m_pOpDef = new OpDef(m_pStageDef->nItems(), m_pCI->G.p_OP);
   m_pStageDef->vAppend(m_pOpDef);
@@ -450,6 +452,12 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
         p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
 #endif
+  else
+  if (p_OP->bIsCard(CK_INFLATE)) {
+    Card_Injected* p_injected = p_OP->pSub_injected();
+    m_pOpDef->m_pStreamDef_arriving =
+        p_injected->pToStreamDef(nullptr, nullptr, p_OP);
+  }
 
   if (p_OP->bIsCard(CK_INDEXJOIN))
     vDebugPoint();
