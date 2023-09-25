@@ -597,6 +597,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
 
 #ifdef Z_FUSE
   Card_Arriving* p_arriving = p_stream->pSub_arriving();
+  Card_Injected* p_injected = pSubCard->pSub_injected();
   Card_Projection* p_projection = p_stream->pSub_projection();
 
 
@@ -645,7 +646,11 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+  if (pSubCard->bIsCard(CK_INDEXJOIN))
+    p_injected->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+  else
+    p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+
 #endif
 
 }
