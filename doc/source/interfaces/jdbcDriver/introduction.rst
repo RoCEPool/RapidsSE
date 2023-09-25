@@ -35,6 +35,10 @@ This section of the documentation describes how to configure and use the RapidsS
 JDBC driver. It is not intended to be a guide for programming with JDBC. For more
 information on JDBC the user should refer to the standard JDBC API documentation.
 
+
+.. index::
+   single: JDBC driver; architecture
+
 Architecture
 ------------
 
@@ -83,15 +87,24 @@ Limits & Constraints
   different JDBC URLs to protect against accidentally using one driver against
   the other server.
 
+
+.. index::
+   single: JDBC driver; requirements
+
 Requirements and Dependencies
 -----------------------------
 
-The driver has been tested under Java runtime 11. It has not certified for use
-under prior versions of Java.
+The driver has been tested under Java runtime 11. It has not certified for
+use under prior versions of Java.
 
-The driver uses the Java package SLF4J to integrate with client logging frameworks.
-The driver will emit a warning message from SLF4J if there is no logging framework
-supplied by the client application. The JDBC driver complies with the SLF4J logging
-API, but it is up to the end-user to provide a logging framework compatible to SLF4J.
+The driver uses the Java package SLF4J to integrate with client logging
+frameworks. The driver will emit a warning message from SLF4J if there is no
+logging framework supplied by the client application. The JDBC driver complies
+with the SLF4J logging API, but it is up to the end-user to provide a logging
+framework compatible to SLF4J.
 
+The client port that the JDBC driver connects to on a RapidsSE server must be
+opened on any firewalls that exist between the client computer and the RapidsSE
+server. This is typically port ``TCP/9123``, though it can be customised when
+RapidsSE is installed.
 

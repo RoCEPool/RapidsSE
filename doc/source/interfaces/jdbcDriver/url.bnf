@@ -1,0 +1,28 @@
+/*
+    This is the grammar file used for producing railroad (rr) diagrams for the
+    JDBC Connection URL
+
+    NOTE:
+      This file is processed to produce a series of *.png files, one for each rule.
+      If you change the name of a rule then the output filename will also change,
+      and this needs to be updated in the Command Reference section where it
+      references this static image filename.
+
+    This file was originally converted on from ANTLR format to EBNF on
+    Mon Jan 30, 2023, 11:43 (UTC+11) by antlr_4-to-w3c v0.62 which is
+    Copyright (c) 2011-2022 by Gunther Rademacher <grd@gmx.net>
+
+    Converted by the utility at: https://bottlecaps.de/convert/
+*/
+
+connectionURL ::= 'jdbc:se:'
+                  (
+                    hostAndPort
+//                    defaultLocation?
+                    properties?
+                  )?
+
+hostAndPort   ::= '//' host (':' port)? ( ',' host (':' port)? )*
+host          ::= hostName | hostIPv4Address | '[' hostIPv6Address ']'
+//defaultLocation ::= '/' catalogName ( '/' schemaName )?
+properties    ::= '?' key '=' value ('&' key '=' value)*
