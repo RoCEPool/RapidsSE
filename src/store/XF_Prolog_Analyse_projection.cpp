@@ -39,7 +39,7 @@ XF_Prolog_Analyse_projection::~XF_Prolog_Analyse_projection(void) noexcept(false
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_projection::vProlog(CardIter* pCI)
+void XF_Prolog_Analyse_projection::vAnalyse(CardIter* pCI)
 {
   _static_
 

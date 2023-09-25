@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_X_scan_To_from(CardIter* pCI);
    ~XF_Prolog_X_scan_To_from(void) noexcept(false);
 
-    static void vProlog(CardIter* pCI);
+    static void vConvert(CardIter* pCI);
 
     void vXF_scan_To_table(void);
 

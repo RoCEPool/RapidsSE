@@ -39,7 +39,7 @@ XF_Prolog_Erase_construction::~XF_Prolog_Erase_construction(void) noexcept(false
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Erase_construction::vProlog(CardIter* pCI)
+void XF_Prolog_Erase_construction::vErase(CardIter* pCI)
 {
   _static_
 

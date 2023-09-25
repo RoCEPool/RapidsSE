@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Analyse_table(CardIter* pCI);
    ~XF_Prolog_Analyse_table(void) noexcept(false);
 
-    static void vProlog(CardIter* pCI);
+    static void vAnalyse(CardIter* pCI);
     static void vXF_table_Analysis_passThru(CardIter* pCI);
 
     void vXF_table_Analysis(Symbol* pSymbol_tableSyn);

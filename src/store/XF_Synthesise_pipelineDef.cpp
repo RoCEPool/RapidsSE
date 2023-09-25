@@ -603,14 +603,14 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map first stmCol of given expr
 
-  auto bfMap_stmCol_v2 = [p_arriving, pColsReq_v2] (Card* pCard_expr) {
+  auto bfMap_stmCol_v2 = [p_projection, pColsReq_v2] (Card* pCard_expr) {
     UNUSED(pColsReq_v2);
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr);
     Symbol* pSymbol_stmCol_a = p_expr_a->pFirstStmCol();
     Card_As* p_as_a = p_expr_a->pSub_as();
 
     Card_Expr* p_expr_p =
-        p_arriving->pFind_expr_By_as_stripItem(p_as_a->pSymbol());
+        p_projection->pFind_expr_By_as_stripItem(p_as_a->pSymbol());
     if (p_expr_p) {
       Card_As *p_as_p = p_expr_p->pSub_as();
 
@@ -629,7 +629,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
     }
     else
     if (pSymbol_stmCol_a &&
-        (p_expr_p = p_arriving->pFind_expr_Of_symbol(pSymbol_stmCol_a))) {
+        (p_expr_p = p_projection->pFind_expr_Of_symbol(pSymbol_stmCol_a))) {
       //Card_As *p_as_p = p_expr_p->pSub_as();
 
       Symbol *pSymbol_a = p_expr_p->pSymbol();
@@ -645,7 +645,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq* pColsReq,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_projection->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+  p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
 #endif
 
 }

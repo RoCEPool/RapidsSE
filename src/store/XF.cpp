@@ -155,25 +155,25 @@ void XF::vTransform(void)
   while (m_pCI->bEachBoard()) {                    //
                                                    //
     // initial adjustments                         //
-    XF_Prolog_Move_on::vProlog(m_pCI);             //
-    XF_Prolog_Erase_construction::vProlog(m_pCI);  //
-    XF_Prolog_X_scan_To_from::vProlog(m_pCI);        //
-    XF_Prolog_Ensure_level::vProlog(m_pCI);           //
-    XF_Prolog_Reduce_not::vProlog(m_pCI);             //
+    XF_Prolog_Move_on::vMove(m_pCI);               //
+    XF_Prolog_Erase_construction::vErase(m_pCI);   //
+    XF_Prolog_X_scan_To_from::vConvert(m_pCI);     //
+    XF_Prolog_Ensure_level::vConvert(m_pCI);       //
+    XF_Prolog_Reduce_not::vReduce(m_pCI);          //
                                                    //
     // meta analysis                               //
-    XF_Prolog_Analyse_table::vProlog(m_pCI);      //
-    XF_Prolog_Analyse_injected::vAnalyse(m_pCI);      //
-    XF_Prolog_Analyse_projection::vProlog(m_pCI); //
-    XF_Prolog_Analyse_index::vProlog(m_pCI);      //
+    XF_Prolog_Analyse_table::vAnalyse(m_pCI);      //
+    XF_Prolog_Analyse_injected::vAnalyse(m_pCI);   //
+    XF_Prolog_Analyse_projection::vAnalyse(m_pCI); //
+    XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
                                                    //
     // preliminary conversions                     //
-    XF_Prolog_X_rpnCalc_To_boolCalc::vProlog(m_pCI); //
-    XF_Prolog_Review_as::vProlog(m_pCI);           //
+    XF_Prolog_X_rpnCalc_To_boolCalc::vConvert(m_pCI); //
+    XF_Prolog_Review_as::vReview(m_pCI);           //
   }                                                //
                                                    //
   // sub-query analysis                            //
-  XF_Prolog_Analyse_subQuery::vProlog(m_pCI);     //
+  XF_Prolog_Analyse_subQuery::vAnalyse(m_pCI);     //
                                                    //
   m_pCI->vEndPhase();                              //
 
@@ -247,7 +247,7 @@ void XF::vTransform(void)
                                                        //
   XF_Epilog_Itemise_Columns::vItemise(m_pCI);          //
                                                        //
-  XF_Epilog_Add_inflate::vBifurcate(m_pCI);       //
+  XF_Epilog_Add_inflate::vBifurcate(m_pCI);            //
                                                        //
   m_pCI->vEndPhase();                                  //
                                                        //
@@ -333,7 +333,7 @@ void XF::vTransform_passThru(void)
     }
     m_pCI->vEndTransform();
 
-    XF_Prolog_X_rpnCalc_To_boolCalc::vProlog(m_pCI);
+    XF_Prolog_X_rpnCalc_To_boolCalc::vConvert(m_pCI);
 
     vDebugPoint();
   }

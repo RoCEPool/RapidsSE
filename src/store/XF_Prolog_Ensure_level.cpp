@@ -39,7 +39,7 @@ XF_Prolog_Ensure_level::~XF_Prolog_Ensure_level(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Ensure_level::vProlog(CardIter* pCI)
+void XF_Prolog_Ensure_level::vConvert(CardIter* pCI)
 {
   _static_
 

@@ -41,7 +41,7 @@ XF_Prolog_Analyse_subQuery::~XF_Prolog_Analyse_subQuery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_subQuery::vProlog(CardIter* pCI)
+void XF_Prolog_Analyse_subQuery::vAnalyse(CardIter* pCI)
 {
   _static_
 

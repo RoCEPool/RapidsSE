@@ -39,7 +39,7 @@ XF_Prolog_Reduce_not::~XF_Prolog_Reduce_not(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Reduce_not::vProlog(CardIter* pCI)
+void XF_Prolog_Reduce_not::vReduce(CardIter* pCI)
 {
   _static_
 

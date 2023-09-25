@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Analyse_subQuery(CardIter* pCI);
    ~XF_Prolog_Analyse_subQuery(void) noexcept(false);
 
-    static void vProlog(CardIter* pCI);
+    static void vAnalyse(CardIter* pCI);
 
     void vXF_subQuery_Analysis(void);
 

@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Analyse_index(CardIter* pCI);
    ~XF_Prolog_Analyse_index(void) noexcept(false);
 
-    static void vProlog(CardIter* pCI);
+    static void vAnalyse(CardIter* pCI);
     static void vXF_index_Analysis_passThru(CardIter* pCI);
 
     void vXF_index_Analysis(void);

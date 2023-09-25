@@ -41,7 +41,7 @@ XF_Prolog_Analyse_table::~XF_Prolog_Analyse_table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_table::vProlog(CardIter* pCI)
+void XF_Prolog_Analyse_table::vAnalyse(CardIter* pCI)
 {
   _static_
 

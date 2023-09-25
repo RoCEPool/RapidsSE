@@ -44,7 +44,7 @@ XF_Prolog_X_scan_To_from::~XF_Prolog_X_scan_To_from(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_scan_To_from::vProlog(CardIter* pCI)
+void XF_Prolog_X_scan_To_from::vConvert(CardIter* pCI)
 {
   _static_
 

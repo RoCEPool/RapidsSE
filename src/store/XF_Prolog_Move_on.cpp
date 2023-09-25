@@ -39,7 +39,7 @@ XF_Prolog_Move_on::~XF_Prolog_Move_on(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Move_on::vProlog(CardIter* pCI)
+void XF_Prolog_Move_on::vMove(CardIter* pCI)
 {
   _static_
 
