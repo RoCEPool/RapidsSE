@@ -488,6 +488,9 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
+  if (m_pStageDef->i_Stage() == 9)
+    vDebugPoint();
+
   Card* p_OP_curr = m_pCI->G.p_OP;
 
   if (! p_OP_curr->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_INDEXSCAN,

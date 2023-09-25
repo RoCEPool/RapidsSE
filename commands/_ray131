@@ -13,6 +13,7 @@ __TPCH_SCHEMA
 /pipeline_def
 /pipelineName = "OptQ7"
 /weaved
+/transliterated
 select supp_nation,
   cust_nation,
   l_year,

@@ -53,15 +53,21 @@ ColsReq_v2::~ColsReq_v2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add mapping of crwCol to structCol                                         */
 /*----------------------------------------------------------------------------*/
-void ColsReq_v2::vAddMapping(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm)
+void ColsReq_v2::vAddMapping(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
+                             Stz* szNote1, Stz* szNote2)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
 
   m_axCols[m_nCols].m_i_CrwCol     = i_CrwCol;
   m_axCols[m_nCols].m_i_StructCell = i_StructCell;
-
   if (szCn_memberNm)
     m_axCols[m_nCols].m_sCn_memberNm = szCn_memberNm;
+
+  if (szNote1)
+    m_axCols[m_nCols].m_sNote1 = szNote1;
+  if (szNote2)
+    m_axCols[m_nCols].m_sNote2 = szNote2;
+
   m_nCols++;
 
   vValidate();
@@ -75,12 +81,26 @@ void ColsReq_v2::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
   UNUSED(i_Tab);
 
+  s256 sNotes;
+
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("            m_axCols[%lld] : m_i_CrwCol [%lld] -> m_i_StructCell [%lld] %s\n"_Stz,
+    if (*m_axCols[i_Col].m_sNote1.azChar() ||*m_axCols[i_Col].m_sNote2.azChar()) {
+      sNotes.vSprint("(%s %s)"_Stz,
+                     m_axCols[i_Col].m_sNote1.azChar(),
+                     m_axCols[i_Col].m_sNote2.azChar());
+    }
+    else {
+      sNotes = ""_Stz;
+    }
+
+    vTrace("%s%sm_axCols[%lld] : m_i_CrwCol [%lld] -> m_i_StructCell [%lld] %s %s\n"_Stz,
+           Stz::szTab(i_Tab),
+           Stz::szSpaces(7),
            i_Col,
            m_axCols[i_Col].m_i_CrwCol,
            m_axCols[i_Col].m_i_StructCell,
-           m_axCols[i_Col].m_sCn_memberNm.szStz());
+           m_axCols[i_Col].m_sCn_memberNm.szStz(),
+           sNotes.azChar());
   }
 }
 
