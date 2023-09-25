@@ -326,6 +326,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_HAVING:       vArgHaving       (sOpArgs,_pCard_Having(pCard));       break;
     case CK_INDEXJOIN:    vArgIndexJoin    (sOpArgs,_pCard_IndexJoin(pCard));    break;
     case CK_INDEXSCAN:    vArgIndexScan    (sOpArgs,_pCard_IndexScan(pCard));    break;
+    case CK_INFLATE:      vArgInflate      (sOpArgs,_pCard_Inflate(pCard));      break;
     case CK_KEYEXISTS:    vArgKeyExists    (sOpArgs,_pCard_KeyExists(pCard));    break;
     case CK_KEYNOTEXISTS: vArgKeyNotExists (sOpArgs,_pCard_KeyNotExists(pCard)); break;
     case CK_LIMIT:        vArgLimit        (sOpArgs,_pCard_Limit(pCard));        break;
@@ -337,9 +338,6 @@ void Weaver::vOp(Card* pCard, bool bCommented)
     case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));        break;
     case CK_TOP:          vArgTop          (sOpArgs,_pCard_Top(pCard));          break;
     case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
-
-    case CK_INFLATE:
-      return;
 
     default:
       vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
@@ -561,6 +559,27 @@ void Weaver::vArgIndexScan(String* psOpArgs, Card_IndexScan* pCard_IndexScan)
   psOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szSymbol(SF_NONE), p_indexNm->szSymbol(SF_NONE));
   psOpArgs->vCatSprint("                \"%s \""_Stz, sRpnExpr.szStz());
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : inflate <tableNm>                                                  */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgInflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  // scan : 0) {table}
+
+  s4K sRpnExpr;
+
+  pCard_Inflate->vRpnInflate(sRpnExpr,pCard_Inflate);
+
+  Card_TableNm* p_tableNm = pCard_Inflate->pSub_tableNm();
+
+  Stz* szTableNm = p_tableNm->szSymbol(SF_NONE);
+  //m_i_Op_stage++;
+
+  psOpArgs->vCatSprint("%s"_Stz, szTableNm);
 }
 
 /*----------------------------------------------------------------------------*/

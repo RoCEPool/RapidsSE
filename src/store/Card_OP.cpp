@@ -993,6 +993,16 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for inflate op                                              */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnInflate(String* psRpnExpr, Card_Inflate* pCard_Inflate)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(psRpnExpr);
+  UNUSED(pCard_Inflate);
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpnKeyExists(String* psRpnExpr, Card_KeyExists* pCard_KeyExists)

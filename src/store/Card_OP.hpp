@@ -57,6 +57,7 @@ namespace STORE
     void vRpnIndexJoin   (String* psRpnExpr, Card_IndexJoin* pCard_IndexJoin);
     void vRpnIndexJoin_constraint(String* psRpnExpr, Card_IndexJoin* pCard_IndexJoin);
     void vRpnIndexScan   (String* psRpnExpr, Card_IndexScan* pCard_IndexScan);
+    void vRpnInflate     (String* psRpnExpr, Card_Inflate*   pCard_Inflate);
     void vRpnKeyExists   (String* psRpnExpr, Card_KeyExists* pCard_KeyExists);
     void vRpnKeyExists_constraint(String* psRpnExpr, Card_KeyExists* pCard_KeyExists);
     void vRpnKeyNotExists(String* psRpnExpr, Card_KeyNotExists* pCard_KeyNotExists);

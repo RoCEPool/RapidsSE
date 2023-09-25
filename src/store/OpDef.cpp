@@ -461,6 +461,12 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("INFLATE"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+
+    //RASSERT(! m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("KEYEXISTS"_Stz)) {

@@ -232,6 +232,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_HAVING:       p_OP->vRpnHaving      (sExpr, _pCard_Having      (p_OP)); break;
     case CK_INDEXJOIN:    p_OP->vRpnIndexJoin   (sExpr, _pCard_IndexJoin   (p_OP)); break;
     case CK_INDEXSCAN:    p_OP->vRpnIndexScan   (sExpr, _pCard_IndexScan   (p_OP)); break;
+    case CK_INFLATE:      p_OP->vRpnInflate     (sExpr, _pCard_Inflate     (p_OP)); break;
     case CK_KEYEXISTS:    p_OP->vRpnKeyExists   (sExpr, _pCard_KeyExists   (p_OP)); break;
     case CK_KEYNOTEXISTS: p_OP->vRpnKeyNotExists(sExpr, _pCard_KeyNotExists(p_OP)); break;
     case CK_LIMIT:        p_OP->vRpnLimit       (sExpr, _pCard_Limit       (p_OP)); break;
@@ -244,7 +245,6 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
     case CK_CAST:
     case CK_COMBINED:
-    case CK_INFLATE:
     case CK_SEND:
       break;
 
@@ -308,6 +308,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_INFLATE:
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
       break;
 
     case CK_KEYEXISTS:
@@ -480,7 +481,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   Card* p_OP_curr = m_pCI->G.p_OP;
 
   if (! p_OP_curr->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_INDEXSCAN,
-                          CK_KEYEXISTS, CK_KEYNOTEXISTS, CK_SCAN, CK_NONE))
+                          CK_KEYEXISTS, CK_KEYNOTEXISTS, CK_SCAN, CK_INFLATE, CK_NONE))
     return;
 
   eCK eCard_OP = p_OP_curr->eCard();
@@ -521,7 +522,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   // if no mapping so far then attempt to map scan/indexScan
 
   if (! pColsReq_v2->m_nCols) {
-    if (CK_SCAN == eCard_OP || CK_INDEXJOIN == eCard_OP || CK_INDEXSCAN == eCard_OP) {
+    if (CK_SCAN == eCard_OP || CK_INFLATE == eCard_OP || CK_INDEXJOIN == eCard_OP || CK_INDEXSCAN == eCard_OP) {
       vCraftColsReq_stmCol(pColsReq, pColsReq_v2,
                            p_OP_curr->pSub_stream(), p_OP_curr);
     }
