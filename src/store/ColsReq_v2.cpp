@@ -93,7 +93,7 @@ void ColsReq_v2::vDump(i8 i_Tab)
       sNotes = ""_Stz;
     }
 
-    vTrace("%s%sm_axCols[%lld] : m_i_CrwCol [%lld] -> m_i_StructCell [%lld] %s %s\n"_Stz,
+    vTrace("%s%sm_axCols[%lld] : m_i_CrwCol [%lld] -> m_i_StructCell [%lld] %20s %s\n"_Stz,
            Stz::szTab(i_Tab),
            Stz::szSpaces(7),
            i_Col,
