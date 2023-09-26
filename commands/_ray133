@@ -2,7 +2,7 @@
 /* _ray133                                                                    */
 /*============================================================================*/
 
-// NOTE : crashing in the optimiser
+// NOTE : S07 colsInj not correct
 
 __TPCH_SCHEMA
 
