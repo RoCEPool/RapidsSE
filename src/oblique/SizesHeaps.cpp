@@ -327,7 +327,7 @@
 #include "CardHistory.hpp"
 #include "SketchTkn.hpp"
 #include "ColHsh.hpp"
-#include "ColsReq_v2.hpp"
+#include "ColInj.hpp"
 
 
 #include "graph/PlanConstants.hpp"
@@ -393,27 +393,27 @@ SizeHeap gxaSizeHeap[]
   { CN_CARDIMAGE,                sizeof(CardImage),          HT_T_SMALL   , FILL },
   { CN_CARDITER,                 sizeof(CardIter),           HT_T_SMALL   , FILL },
   { CN_CARDITERMEMBERS,          sizeof(CardIterMembers),    HT_T_SMALL   , FILL },
-  { CN_CARDUSAGE,                sizeof(CardUsage),          HT_T_SMALL   ,FILL },
-  { CN_CARRYFORWARD,             sizeof(CarryForward),       HT_T_TINY    , FILL },
-  { CN_CATALOG,                  sizeof(Catalog),            HT_INVALID   ,FILL },
-  { CN_CHARSER,                  sizeof(Charser),            HT_T_LARGE   ,FILL },
-  { CN_CHILDEXIT,                sizeof(ChildExit),          HT_T_TINY    ,FILL },
-  { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,FILL },
-  { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
-  { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
-  { CN_COLHSH,                   sizeof(ColHsh),             HT_T_MEDIUM  , FILL },
-  { CN_COLMAP,                   sizeof(ColMap),             HT_T_MEDIUM  , FILL },
-  { CN_COLSREQ_V2,               sizeof(ColsReq_v2),         HT_T_MEDIUM  , FILL },
-  { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
-  { CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
-  { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
-  { CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
-  { CN_CRVBUFFER,                sizeof(CrvBuffer),          HT_T_LARGE   ,FILL },
-  { CN_CRWBUFFER,                sizeof(CrwBuffer),          HT_T_LARGE   ,FILL },
-  { CN_CRWTABLEPTN,              sizeof(CrwTablePtn),        HT_T_TINY    ,FILL },
-  { CN_CRWTOROW,                 sizeof(CrwToRow),           HT_T_TINY    ,FILL },
-  { CN_CSVBUFFER,                sizeof(CsvBuffer),          HT_T_LARGE   ,FILL },
-  { CN_CSVMETA,                  sizeof(CsvMeta),            HT_T_TINY    ,FILL },
+  {CN_CARDUSAGE,                sizeof(CardUsage),                HT_T_SMALL   , FILL },
+  {CN_CARRYFORWARD,             sizeof(CarryForward),             HT_T_TINY    , FILL },
+  {CN_CATALOG,                  sizeof(Catalog),                  HT_INVALID   , FILL },
+  {CN_CHARSER,                  sizeof(Charser),                  HT_T_LARGE   , FILL },
+  {CN_CHILDEXIT,                sizeof(ChildExit),                HT_T_TINY    , FILL },
+  {CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),         HT_T_LARGE   , FILL },
+  {CN_CMDLINEARGS,              sizeof(CmdLineArgs),              HT_INVALID   , FILL },
+  {CN_CODEBLOCK,                sizeof(CodeBlock),                HT_T_MEDIUM  , FILL },
+  {CN_COLHSH,                   sizeof(ColHsh),                   HT_T_MEDIUM  , FILL },
+  {CN_COLINJ,                   sizeof(ColInj),                   HT_T_MEDIUM  , FILL },
+  {CN_COLMAP,                   sizeof(ColMap),                   HT_T_MEDIUM  , FILL },
+   {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
+  {CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
+  {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
+  {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
+  {CN_CRVBUFFER,                sizeof(CrvBuffer),                HT_T_LARGE   , FILL },
+  {CN_CRWBUFFER,                sizeof(CrwBuffer),                HT_T_LARGE   , FILL },
+  {CN_CRWTABLEPTN,              sizeof(CrwTablePtn),              HT_T_TINY    , FILL },
+  {CN_CRWTOROW,                 sizeof(CrwToRow),                 HT_T_TINY    , FILL },
+  {CN_CSVBUFFER,                sizeof(CsvBuffer),                HT_T_LARGE   , FILL },
+  {CN_CSVMETA,                  sizeof(CsvMeta),                  HT_T_TINY    , FILL },
 
   { CN__D__,                     'D' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_DATATRANSIENT,            sizeof(Heap), /*correct*/   HT_INVALID   ,FILL },

@@ -192,7 +192,7 @@ ArgDef* OpDef::pArgDef_constraint(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-ColsReq_v2* OpDef::pColsReq_v2(void)
+ColInj* OpDef::pColsReq_v2(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
@@ -202,7 +202,7 @@ ColsReq_v2* OpDef::pColsReq_v2(void)
 //*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void OpDef::vColsReq_v2(ColsReq_v2* pColsReq_v2)
+void OpDef::vColsReq_v2(ColInj* pColsReq_v2)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
@@ -292,7 +292,7 @@ void OpDef::vDump(i8 i_Tab)
 
 
   if (m_pColsReq_v2) {
-    vTrace("%s%s : ColsReq_v2      %p\n"_Stz,
+    vTrace("%s%s : ColInj      %p\n"_Stz,
            Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq_v2);
     m_pColsReq_v2->vDump(i_Tab + 1);
   }

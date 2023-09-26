@@ -563,7 +563,7 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 
 	// get the colReq
 #ifdef Z_FUSE
-	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
 #else
 	ColsReq* pColsReq = pOpDef->m_pColsReq;
 #endif
@@ -644,7 +644,7 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
 
 	// get the colReq
 #ifdef Z_FUSE
-	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
 #else
 	ColsReq* pColsReq = pOpDef->m_pColsReq;
 #endif
@@ -706,7 +706,7 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 
 #ifdef Z_FUSE
 	// get the colReq
-	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
 #else
 	// get the colReq
   ColsReq* pColsReq = pOpDef->m_pColsReq;

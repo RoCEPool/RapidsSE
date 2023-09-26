@@ -1,42 +1,42 @@
 /*============================================================================*/
-/* ColsReq_v2.cpp -- Columns Required Metadata                                */
+/* ColInj.cpp -- Columns Required Metadata                                */
 /*============================================================================*/
 
-#include "ColsReq_v2.hpp"
+#include "ColInj.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ColsReq_v2,CN_COLSREQ_V2)
-__aNewFunction(ColsReq_v2,CN_COLSREQ_V2)
-__vDeleteFunction(ColsReq_v2,CN_COLSREQ_V2)
-__aFooterFunction(ColsReq_v2)
+__pCastFunction(STORE, ColInj, CN_COLINJ)
+__aNewFunction(ColInj, CN_COLINJ)
+__vDeleteFunction(ColInj, CN_COLINJ)
+__aFooterFunction(ColInj)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ColsReq_v2::ColsReq_v2(void)
-    : Object(CN_COLSREQ_V2)
+ColInj::ColInj(void)
+    : Object(CN_COLINJ)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 
-  for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++) {
+  for (i8 i_Col = 0; i_Col < C_COLSINJ; i_Col++) {
     m_axCols[i_Col].m_i_CrwCol = C_UNKNOWN;
     m_axCols[i_Col].m_i_StructCell = C_UNKNOWN;
   }
   m_nCols = 0;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ_V2,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ColsReq_v2::~ColsReq_v2(void) noexcept(false)
+ColInj::~ColInj(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ_V2,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 
 }
 
@@ -51,12 +51,12 @@ ColsReq_v2::~ColsReq_v2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add mapping of crwCol to structCol                                         */
+/* add injection of crwCol to structCol                                       */
 /*----------------------------------------------------------------------------*/
-void ColsReq_v2::vAddMapping(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
-                             Stz* szNote1, Stz* szNote2)
+void ColInj::vAdd(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
+                  Stz* szNote1, Stz* szNote2)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 
   m_axCols[m_nCols].m_i_CrwCol     = i_CrwCol;
   m_axCols[m_nCols].m_i_StructCell = i_StructCell;
@@ -76,9 +76,9 @@ void ColsReq_v2::vAddMapping(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void ColsReq_v2::vDump(i8 i_Tab)
+void ColInj::vDump(i8 i_Tab)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
   UNUSED(i_Tab);
 
   s256 sNotes;
@@ -107,9 +107,9 @@ void ColsReq_v2::vDump(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void ColsReq_v2::vValidate(void)
+void ColInj::vValidate(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 
 
 }

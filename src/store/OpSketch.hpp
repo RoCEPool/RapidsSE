@@ -16,7 +16,7 @@
 #include "eIV.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
-#include "ColsReq_v2.hpp"
+#include "ColInj.hpp"
 
 #include "ColMap.hpp"
 #include "StageDef.hpp"
@@ -64,7 +64,7 @@ namespace STORE
     IndexDef*  m_pIndexDef;
 
 #ifdef Z_FUSE
-		ColsReq_v2*   m_pColsReq;
+		ColInj*   m_pColsReq;
 #else
     ColsReq*   m_pColsReq;
 #endif
@@ -119,7 +119,7 @@ namespace STORE
    ~OpSketch(void) noexcept(false);
 
 #ifdef Z_FUSE
-		void vCopyColsReq(ColsReq_v2* pColsReq_v2);
+		void vCopyColsReq(ColInj* pColsReq_v2);
 #else
     void vCopyColsReq(ColsReq* pColsReq);
 #endif

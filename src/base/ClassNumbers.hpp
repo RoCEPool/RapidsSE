@@ -58,8 +58,8 @@ enum eCN : u2 // Class Number
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
   /* */ CN_COLHSH,
+  /* */ CN_COLINJ,
   /* */ CN_COLMAP,
-  /* */ CN_COLSREQ_V2,
   /* */ CN_COLUMN,
   /* */ CN_COMBINEDSRC,
   /* */ CN_CONDITIONALQUERYNODEITER,
@@ -569,8 +569,8 @@ static Stz* aCN[]
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "COLHSH"_Stz,               // CN_COLHSH
+  /* */ "COLINJ"_Stz,               // CN_COLINJ
   /* */ "COLMAP"_Stz,               // CN_COLMAP
-  /* */ "COLSREQ_V2"_Stz,           // CN_COLSREQ_V2
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER

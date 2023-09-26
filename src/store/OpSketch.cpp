@@ -213,11 +213,11 @@ void OpSketch::vCopyColHsh(ColHsh* pColHsh)
 /* copy columns required                                                      */
 /*----------------------------------------------------------------------------*/
 #ifdef Z_FUSE
-void OpSketch::vCopyColsReq(ColsReq_v2* pColsReq)
+void OpSketch::vCopyColsReq(ColInj* pColsReq)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColsReq = new ColsReq_v2;
+	m_pColsReq = new ColInj;
 
 	m_pColsReq->m_nCols = pColsReq->m_nCols;
 	for (i8 i_Col = 0; i_Col < pColsReq->m_nCols; i_Col++) {
