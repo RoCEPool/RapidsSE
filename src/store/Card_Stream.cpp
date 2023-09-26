@@ -46,8 +46,6 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_NONE));
   pCI->G.p_projection = pCI->G.p_project->pSub_projection();
 
-#ifdef Z_FUSE
-
   if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
     // <op>/<stream> ; <op>/<stream>/<projection>
     //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
@@ -76,7 +74,7 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
     // <op>/<stream> <= <project>/<stream>/<projection>
     pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
   }
-#endif
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,8 +86,6 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
 
   RASSERT(pCI->G.p_OP->bIsOne(CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_NONE));
   RASSERT(! pCI->G.p_projection);
-
-#ifdef Z_FUSE
 
   if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
 
@@ -120,7 +116,6 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
     pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
 
   }
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

@@ -432,26 +432,22 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 
   Card_OP* p_OP = m_pCI->G.p_OP;
 
-#ifdef Z_FUSE
   if (p_OP->bIsCard(CK_INDEXJOIN)) {
     Card_Arriving* p_arriving = p_OP->pSub_arriving();
     m_pOpDef->m_pStreamDef_arriving =
         p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
   else
-#endif
 
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
 
-#ifdef Z_FUSE
   else
   if (p_OP->bIsCard(CK_INDEXJOIN) || p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
     Card_Arriving* p_arriving = p_OP->pSub_arriving();
     m_pOpDef->m_pStreamDef_arriving =
         p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
-#endif
   else
   if (p_OP->bIsCard(CK_INFLATE)) {
     Card_Injected* p_injected = p_OP->pSub_injected();
@@ -535,7 +531,6 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColInj* pColsReq_v2,
   UNUSED(pColsReq_v2);
   UNUSED(p_stream);
 
-#ifdef Z_FUSE
 //  Card_Arriving* p_arriving = p_stream->pSub_arriving();
   Card_Injected* p_injected = pSubCard->pSub_injected();
   Card_Projection* p_projection = p_stream->pSub_projection();
@@ -604,7 +599,6 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColInj* pColsReq_v2,
 //  else
 //    p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
 
-#endif
 }
 
 /*============================================================================*/
