@@ -89,8 +89,9 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
 
   // labels
   m_sLabel     = ""_Stz;
-  m_sLabelNext = ""_Stz;
   m_sLabelLoop = ""_Stz;
+	m_sLabelNext = ""_Stz;
+	m_sLabelOrdAgg = ""_Stz;
   m_sLabelOuterLoop = ""_Stz;
 
   // stencils

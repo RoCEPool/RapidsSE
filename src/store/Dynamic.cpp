@@ -36,6 +36,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_iRowsProcessed = 0;
 
 	m_xDynamicT.m_bHasAggRow = false;
+	m_xDynamicT.m_bHasRowToAgg = false;
   m_xDynamicT.m_bIndexScan = false;
 
   // limit

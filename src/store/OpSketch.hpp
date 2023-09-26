@@ -80,8 +80,9 @@ namespace STORE
 
     // labels
     s256 m_sLabel;
+		s256 m_sLabelLoop;
     s256 m_sLabelNext;
-    s256 m_sLabelLoop;
+		s256 m_sLabelOrdAgg;
     s256 m_sLabelOuterLoop;
 
     // expression stacks

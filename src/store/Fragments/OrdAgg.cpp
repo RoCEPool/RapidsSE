@@ -56,6 +56,7 @@ i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
 	// do we have an aggregate row
 	if (  ! aDynamicT->m_bHasAggRow ) {
 		aDynamicT->m_bHasAggRow = true;
+		aDynamicT->m_bHasRowToAgg = false;
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// populate the key
@@ -97,6 +98,7 @@ i8 iOrdAggBegin(Dynamic_T* aDynamicT) {
 		goto __L_LABEL_OUTER_LOOP__;
 	}
 
+	aDynamicT->m_bHasRowToAgg = true;
 	aDynamicT->m_bHasAggRow = false;
 	goto __L_LABEL_NEXT__;
 

@@ -39,6 +39,7 @@ namespace STORE {
     static void vReplaceLabel(String* sLine, OpSketch *pOpSketch);
     static void vReplaceLabelIndex(String* sLine, OpSketch *pOpSketch);
 		static void vReplaceLabelJoinNulls(String* sLine, OpSketch *pOpSketch);
+		static void vReplaceLabelOrdAgg(String* sLine, OpSketch *pOpSketch);
     static void vReplaceLabelNext(String* sLine, OpSketch *pOpSketch);
     static void vReplaceLabelLoop(String* sLine, OpSketch *pOpSketch);
     static void vReplaceColumnsInflated(String* sLine, OpSketch *pOpSketch);

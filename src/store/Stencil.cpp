@@ -361,18 +361,6 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 			vAppend(pOpSketch);
 
 			m_ePreviousStencil = SR_AT;
-			//m_eHandlerKind = HK_EOS;
-
-			//OpSketch *pOrdAggOpSketch = pOpSketch;
-
-			//pOpSketch = pSketchEos(pStageDef);
-			//vAppend(pOpSketch);
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			//pOpSketch = pSketchPotTub(pOrdAggOpSketch, bGeneratePot, pHashOpDef, sLimitExpr);
-			//vAppend(pOpSketch);
-
-			//bGeneratePotTub = false;
 			continue;
 		}
 
@@ -926,7 +914,7 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
 
 	// generate the expression stacks
 	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer as C0_l_orderkey $1\n"
-																 " aggregates type integer as C0_l_orderkey $K1 , type decimal as C1_COL2 )  $2 sum"_Stz);
+																 " aggregates type integer as C0_l_orderkey $K1 , type decimal as C1_COL2 )  $5 sum"_Stz);
 
   return pOpSketch;
 }

@@ -106,6 +106,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceLabelLoop(sLine, pOpSketch);
         vReplaceLabelIndex(sLine, pOpSketch);
 				vReplaceLabelJoinNulls(sLine, pOpSketch);
+				vReplaceLabelOrdAgg(sLine, pOpSketch);
 
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
@@ -952,6 +953,22 @@ void CodeSynthUtils::vReplaceLabelLoop(String* sLine, OpSketch* pOpSketch)
                                     "__L_LABEL_OUTER_LOOP__", pOpSketch->m_sLabelOuterLoop.azChar());
     RASSERT(bResult);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceLabelOrdAgg(String* sLine, OpSketch* pOpSketch)
+{
+	_static_
+
+	if (StrLib::bContains(sLine->azStr(), "__LABEL_ORDAGG__")) {
+		//RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
+		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
+																		"__LABEL_ORDAGG__", pOpSketch->m_sLabelOrdAgg.azChar());
+		RASSERT(bResult);
+	}
+
 }
 
 /*----------------------------------------------------------------------------*/

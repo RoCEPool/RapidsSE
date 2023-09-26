@@ -90,6 +90,8 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
   bool bOpened;
   bool bHasIndexInflate = false;
 	i8   iLeftCols = C_UNKNOWN;
+	bool bHasOrdAgg = false;
+	s32 sLabel_ordAgg;
 
   eHK ePreviousHandler = HK_NONE;
   eHK eCurrentHandler  = HK_NONE;
@@ -186,7 +188,8 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
       case SK_EOS:
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // end previous handler (by appending its footer)
-        vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate);
+				pOpSketch->m_sLabelOrdAgg = sLabel_ordAgg;
+        vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate, bHasOrdAgg);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // begin new EOS handler (by appending its function header)
@@ -295,6 +298,10 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
         break;
 
       case SK_ORDAGG:
+
+				bHasOrdAgg = true;
+				sLabel_ordAgg = pOpSketch->m_sLabel;
+
 				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 				// open the aggregate code fragments file
 				bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/OrdAgg.cpp"_Stz);
@@ -638,7 +645,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // end previous handler function
-        vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate);
+				vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate, bHasOrdAgg);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // begin new StreamDef handler function
@@ -1072,7 +1079,7 @@ void CombinedSrc::vAppendFileHeaders(void) {
 /*----------------------------------------------------------------------------*/
 /* append function footer fragment                                            */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, bool &bHasIndexInflate)
+void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, bool &bHasIndexInflate, bool bHasOrdAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -1080,19 +1087,34 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, b
 
   switch(eHandlerKind) {
     case HK_CRWBUFFER:
-      szFunction = "vInflateCrwEnd";
+			if (bHasOrdAgg)
+				szFunction = "vInflateCrwEnd_OA";
+			else
+        szFunction = "vInflateCrwEnd";
       break;
     case HK_EOS:
       szFunction = "iEosEnd";
       break;
     case HK_INDEXBUFFER:
-      szFunction = "vIndexScanEnd";
+			if (bHasOrdAgg)
+        szFunction = "vIndexScanEnd_OA";
+			else
+			  szFunction = "vIndexScanEnd";
       break;
     case HK_ROWBUFFER:
-      if (bHasIndexInflate)
-        szFunction = "vInflateRowIndexEnd";
-      else
-        szFunction = "vInflateRowEnd";
+			if (bHasOrdAgg) {
+				if (bHasIndexInflate)
+					szFunction = "vInflateRowIndexEnd_OA";
+				else
+					szFunction = "vInflateRowEnd_OA";
+			}
+			else {
+				if (bHasIndexInflate)
+					szFunction = "vInflateRowIndexEnd";
+				else
+					szFunction = "vInflateRowEnd";
+			}
+
       break;
     case HK_STREAMDEF:
       szFunction = "iStreamDefEnd";

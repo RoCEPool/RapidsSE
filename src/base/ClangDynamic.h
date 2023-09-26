@@ -52,6 +52,7 @@ struct Dynamic_T
 
 	bool m_bProcessRow;
 	bool m_bHasAggRow;
+	bool m_bHasRowToAgg;
   bool m_bIndexScan;
 
   // rowBuffer T
