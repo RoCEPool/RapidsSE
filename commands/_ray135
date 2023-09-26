@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 // NOTE : ColsInj in Stage S03 not correct
+// I think this got fixed by the correction of copy/paste error in vCraftColInj()
 
 __TPCH_SCHEMA
 
