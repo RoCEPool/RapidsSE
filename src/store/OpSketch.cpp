@@ -83,7 +83,7 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pIndex        = nullptr;
   m_pIndexDef     = nullptr;
 
-  m_pColsReq      = nullptr;
+  m_pColsInj      = nullptr;
   m_pColMap       = nullptr;
 	m_pColHsh       = nullptr;
 
@@ -149,7 +149,7 @@ OpSketch::~OpSketch(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  delete m_pColsReq;
+  delete m_pColsInj;
   delete m_pColMap;
 	delete m_pColHsh;
   delete m_pConstraintStack;
@@ -212,17 +212,17 @@ void OpSketch::vCopyColHsh(ColHsh* pColHsh)
 /*----------------------------------------------------------------------------*/
 /* copy columns required                                                      */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vCopyColsReq(ColInj* pColsReq)
+void OpSketch::vCopyColsInj(ColInj* pColsInj)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColsReq = new ColInj;
+	m_pColsInj = new ColInj;
 
-	m_pColsReq->m_nCols = pColsReq->m_nCols;
-	for (i8 i_Col = 0; i_Col < pColsReq->m_nCols; i_Col++) {
-		m_pColsReq->m_axCols[i_Col].m_i_CrwCol = pColsReq->m_axCols[i_Col].m_i_CrwCol;
-		m_pColsReq->m_axCols[i_Col].m_i_StructCell = pColsReq->m_axCols[i_Col].m_i_StructCell;
-		m_pColsReq->m_axCols[i_Col].m_sCn_memberNm = pColsReq->m_axCols[i_Col].m_sCn_memberNm;
+	m_pColsInj->m_nCols = pColsInj->m_nCols;
+	for (i8 i_Col = 0; i_Col < pColsInj->m_nCols; i_Col++) {
+		m_pColsInj->m_axCols[i_Col].m_i_CrwCol = pColsInj->m_axCols[i_Col].m_i_CrwCol;
+		m_pColsInj->m_axCols[i_Col].m_i_StructCell = pColsInj->m_axCols[i_Col].m_i_StructCell;
+		m_pColsInj->m_axCols[i_Col].m_sCn_memberNm = pColsInj->m_axCols[i_Col].m_sCn_memberNm;
 	}
 }
 

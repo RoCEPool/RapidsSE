@@ -546,8 +546,8 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
-	// get the colReq
-	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
+	// get the colInj
+	ColInj* pColsInj = pOpDef->m_pColsReq_v2;
 
 	// get the index
   Index* pIndex = pOpDef->m_pIndex_indexJoin;
@@ -571,8 +571,8 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   sLabelOuterLoop = m_sLabelLoop;
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
 
-	// copy the colsReq
-	pOpSketch->vCopyColsReq(pColsReq);
+	// copy the colsInj
+	pOpSketch->vCopyColsInj(pColsInj);
 
   // set the indexDef
   pOpSketch->vTable(pTable);
@@ -619,8 +619,8 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
 	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
-	// get the colReq
-	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
+	// get the colInj
+	ColInj* pColsInj = pOpDef->m_pColsReq_v2;
 
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
@@ -637,8 +637,8 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
-	// copy the colsReq
-	pOpSketch->vCopyColsReq(pColsReq);
+	// copy the colsInj
+	pOpSketch->vCopyColsInj(pColsInj);
 
   // set the table
   pOpSketch->vTable(pIndex->pTable());
@@ -673,8 +673,8 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
-	// get the colReq
-	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
+	// get the colInj
+	ColInj* pColsInj = pOpDef->m_pColsReq_v2;
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);
@@ -689,8 +689,8 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
-  // copy the colsReq
-  pOpSketch->vCopyColsReq(pColsReq);
+  // copy the colsInj
+  pOpSketch->vCopyColsInj(pColsInj);
 
   return pOpSketch;
 }

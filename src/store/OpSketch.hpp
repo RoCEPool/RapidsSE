@@ -63,7 +63,7 @@ namespace STORE
     Index*     m_pIndex;
     IndexDef*  m_pIndexDef;
 
-		ColInj*    m_pColsReq;
+		ColInj*    m_pColsInj;
     ColMap*    m_pColMap;
 		ColHsh*    m_pColHsh;
 
@@ -114,11 +114,7 @@ namespace STORE
 
    ~OpSketch(void) noexcept(false);
 
-#ifdef Z_FUSE
-		void vCopyColsReq(ColInj* pColsReq_v2);
-#else
-    void vCopyColsReq(ColsReq* pColsReq);
-#endif
+		void vCopyColsInj(ColInj* pColsInj);
     void vCopyColMap(ColMap* pColMap);
 		void vCopyColHsh(ColHsh* pColHsh);
     void vCopyInitStack(TypedStack* pInitStack);
