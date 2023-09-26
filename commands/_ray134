@@ -1,17 +1,21 @@
 /*============================================================================*/
-/* _ray132                                                                    */
+/* _ray134                                                                    */
 /*============================================================================*/
 
 // NOTE : streamDef_emitted and colsInj not correct
 
 __TPCH_SCHEMA
 
-/weaved
+/optimiser_trace
 /pipeline_def
-SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-                                             FROM nation
-                                             GROUP BY region
-                                             HAVING region > 1;
+/weaved
+/transliterated
+/pipelineName = "_ray134"
+SELECT n_regionkey AS region ,
+       COUNT(n_nationkey) AS nationcount
+ FROM nation
+ GROUP BY region
+ HAVING region > 1;
 
 /*
 rows:
