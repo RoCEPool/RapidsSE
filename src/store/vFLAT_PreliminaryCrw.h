@@ -12,10 +12,6 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i_Col = -1;
 
-#ifndef Z_FUSE
-  ayDstByte = (byte*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-#endif
-
   //aDynamicT->m_xRowInfoT.m_aRowCellArray = ayDstByte;
   acStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
   racStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrAreaSav;

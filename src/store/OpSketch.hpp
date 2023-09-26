@@ -63,11 +63,7 @@ namespace STORE
     Index*     m_pIndex;
     IndexDef*  m_pIndexDef;
 
-#ifdef Z_FUSE
-		ColsReq_v2*   m_pColsReq;
-#else
-    ColsReq*   m_pColsReq;
-#endif
+		ColsReq_v2* m_pColsReq;
     ColMap*    m_pColMap;
 		ColHsh*    m_pColHsh;
 
@@ -126,9 +122,6 @@ namespace STORE
     void vCopyColMap(ColMap* pColMap);
 		void vCopyColHsh(ColHsh* pColHsh);
     void vCopyInitStack(TypedStack* pInitStack);
-
-    bool bColReq(i8 i_Col);
-		i8   iColReq(i8 i_Col);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);
 
