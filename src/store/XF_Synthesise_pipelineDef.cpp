@@ -533,27 +533,23 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 
     Card_Expr* p_expr_i = _pCard_Expr(pCard_expr_i);
     Card_As* p_as_i     = p_expr_i->pSub_as();
+    Symbol *pSymbol_i   = p_as_i->pSymbol();
+    i8 i_CrwCol_i       = pSymbol_i->iSF_ordinal();
+    Stz* szTblCol_i     = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
 
-    Card_Expr* p_expr_p = p_projection->pFind_expr_By_as_stripItem(p_as_i->pSymbol());
+    Card_Expr* p_expr_p =
+        p_projection->pFind_expr_By_as_stripped(p_as_i->pSymbol(),szTblCol_i);
     if (! p_expr_p)
       return C_CONTINUE_RECURSION;
-    Card_As *p_as_p     = p_expr_p->pSub_as();
 
-//    p_expr_i->vDump(__func__);
-//    p_as_i->vDump(__func__);
-//    p_expr_p->vDump(__func__);
-//    p_as_p->vDump(__func__);
-
-    Symbol *pSymbol_i = p_as_i->pSymbol();
-    i8 i_CrwCol_i     = pSymbol_i->iSF_ordinal();
-    Stz* szTblCol_i   = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
-
+    Card_As *p_as_p   = p_expr_p->pSub_as();
     Symbol *pSymbol_p = p_as_p->pSymbol();
-    i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
     Stz* szWas_p      = p_expr_p->pFirstStmCol()->Y_szGet(P_WasStmCol);
+    i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
 
     pColInj->vAdd(i_CrwCol_i, i_StructCell_p, p_as_p->szSymbol(SF_NONE),
                   szTblCol_i, szWas_p);
+
     return C_CONTINUE_RECURSION;
 
 //    }
