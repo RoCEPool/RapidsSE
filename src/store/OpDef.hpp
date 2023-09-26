@@ -7,7 +7,6 @@
 #include "IndexDef.hpp"
 #include "ColHsh.hpp"
 #include "ColMap.hpp"
-#include "ColsReq.hpp"
 #include "ColsReq_v2.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"

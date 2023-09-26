@@ -16,11 +16,7 @@
 #include "eIV.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
-#ifdef Z_FUSE
-  #include "ColsReq_v2.hpp"
-#else
-  #include "ColsReq.hpp"
-#endif
+#include "ColsReq_v2.hpp"
 
 #include "ColMap.hpp"
 #include "StageDef.hpp"

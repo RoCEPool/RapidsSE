@@ -245,7 +245,6 @@
 #include "XF_Flatten_Left_subQuery.hpp"
 
 #include "ArgDef.hpp"
-#include "ColsReq.hpp"
 #include "OpDef.hpp"
 #include "PipelineDef.hpp"
 #include "StageDef.hpp"
@@ -404,7 +403,6 @@ SizeHeap gxaSizeHeap[]
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
   { CN_COLHSH,                   sizeof(ColHsh),             HT_T_MEDIUM  , FILL },
   { CN_COLMAP,                   sizeof(ColMap),             HT_T_MEDIUM  , FILL },
-  { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLSREQ_V2,               sizeof(ColsReq_v2),         HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
   { CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },

@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Card_EXPRLIST.hpp"
-#include "ColsReq.hpp"
 #include "ColMap.hpp"
 
 namespace STORE

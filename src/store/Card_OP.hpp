@@ -5,7 +5,6 @@
 
 #include "Card_MAIN.hpp"
 #include "IndexDef.hpp"
-#include "ColsReq.hpp"
 #include "ColMap.hpp"
 
 namespace STORE
