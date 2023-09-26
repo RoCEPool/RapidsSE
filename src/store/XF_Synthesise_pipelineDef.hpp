@@ -51,9 +51,8 @@ namespace STORE
     void vCraftIndexes(void);
     void vCraftIndexDefs(void);
     void vCraftStreamDefs(void);
-    void vCraftColsReq(void);
-    void vCraftColsReq_stmCol(ColInj* pColsReq_v2,
-                              Card_Stream* p_stream, Card *pSubCard);
+    void vCraftColInj(void);
+    void vCraftColInj(ColInj* pColInj, Card *pSubCard);
 
   protected:
     Footer* aFooter(void);

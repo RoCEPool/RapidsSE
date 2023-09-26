@@ -39,9 +39,6 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
   MemLib::vZero(md_Coord, sizeof(md_Coord), CN_OPDEF);
   StrLib::vCopy(md_Coord, sizeof(md_Coord), pCard->szCoord()->azChar());
 
-  m_nCollapses = 0;
-  m_bCollapsed = false;
-
   m_pStreamDef_arriving = nullptr;
   m_pStreamDef_emitted  = nullptr;
 
@@ -217,12 +214,10 @@ void OpDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   i8 nTab_plus = 4;
-  vTrace("%sOpDef: [%lld] %s%s /%lld %s\n"_Stz,
+  vTrace("%sOpDef: [%lld] %s %s\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Op,
          m_sOpNm.szStz(),
-         m_bCollapsed ? " COLLAPSED" : "",
-         m_nCollapses,
          md_Coord);
 
   i8 nSpaces = 4;
@@ -233,7 +228,7 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pStreamDef_emitted) {
-    vTrace("%s%s : StreamDef_emitted  %p\n"_Stz,
+    vTrace("%s%s : StreamDef_emitted %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pStreamDef_emitted);
     m_pStreamDef_emitted->vDump(i_Tab + 4);
   }
@@ -261,44 +256,44 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pColMap_gbyAgg) {
-    vTrace("%s%s : ColMap_gbyAgg  %p\n"_Stz,
+    vTrace("%s%s : ColMap_gbyAgg %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_gbyAgg);
     m_pColMap_gbyAgg->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pIndexDef_sort) {
-    vTrace("%s%s : IndexDef_sort   %p\n"_Stz,
+    vTrace("%s%s : IndexDef_sort %p\n"_Stz,
            Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_sort);
     m_pIndexDef_sort->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pColMap_sort) {
-    vTrace("%s%s : ColMap_sort     %p\n"_Stz,
+    vTrace("%s%s : ColMap_sort %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_sort);
     m_pColMap_sort->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pIndexDef_top) {
-    vTrace("%s%s : IndexDef_top    %p\n"_Stz,
+    vTrace("%s%s : IndexDef_top %p\n"_Stz,
            Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_top);
     m_pIndexDef_top->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pColMap_top) {
-    vTrace("%s%s : ColMap_top      %p\n"_Stz,
+    vTrace("%s%s : ColMap_top %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_top);
     m_pColMap_top->vDump(i_Tab + 1);
   }
 
 
   if (m_pColInj) {
-    vTrace("%s%s : ColInj      %p\n"_Stz,
+    vTrace("%s%s : ColInj %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj);
     m_pColInj->vDump(i_Tab + 1);
   }
 
   if (m_pColHsh) {
-    vTrace("%s%s : ColHsh         %p\n"_Stz,
+    vTrace("%s%s : ColHsh %p\n"_Stz,
            Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColHsh);
     m_pColHsh->vDump(i_Tab + 1);
   }
@@ -308,7 +303,6 @@ void OpDef::vDump(i8 i_Tab)
   i8 nArgs = nItems();
   for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
     ArgDef* pArgDef = pGet(i_Arg);
-
     pArgDef->vDump(i_Tab+1);
   }
 }

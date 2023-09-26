@@ -202,7 +202,7 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs();
-  vCraftColsReq();
+  vCraftColInj();
 
   vCraftIndexes();
   vCraftIndexDefs();
@@ -480,7 +480,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 /*----------------------------------------------------------------------------*/
 /* craft the columns required maps for this pipeline                          */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftColsReq(void)
+void XF_Synthesise_pipelineDef::vCraftColInj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
@@ -499,105 +499,90 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ColInj* pColsReq_v2 = new ColInj;
-  m_pOpDef->vColInj(pColsReq_v2);
-
+  ColInj* pColInj = new ColInj;
+  m_pOpDef->vColInj(pColInj);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // if no mapping so far then attempt to map scan/indexScan
 
-  if (! pColsReq_v2->m_nCols) {
-    if (CK_SCAN == eCard_OP || CK_INFLATE == eCard_OP || CK_INDEXJOIN == eCard_OP || CK_INDEXSCAN == eCard_OP) {
-      vCraftColsReq_stmCol(pColsReq_v2,
-                           p_OP_curr->pSub_stream(), p_OP_curr);
-    }
+  if (CK_SCAN      == eCard_OP ||
+      CK_INFLATE   == eCard_OP ||
+      CK_INDEXJOIN == eCard_OP ||
+      CK_INDEXSCAN == eCard_OP) {
+    vCraftColInj(pColInj, p_OP_curr);
   }
 
-  pColsReq_v2->vValidate();
+  pColInj->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
 /* craft the columns required map for given card                              */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColInj* pColsReq_v2,
-                                                     Card_Stream* p_stream,
-                                                     Card *pSubCard)
+void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  UNUSED(pColsReq_v2);
-  UNUSED(p_stream);
-
-//  Card_Arriving* p_arriving = p_stream->pSub_arriving();
-  Card_Injected* p_injected = pSubCard->pSub_injected();
-  Card_Projection* p_projection = p_stream->pSub_projection();
-
+  Card_Injected*   p_injected   = pSubCard->pSub_injected();
+  Card_Projection* p_projection = pSubCard->pSub_projection();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // map first stmCol of given expr
 
-  auto bfMap_stmCol_v2 = [p_projection, pColsReq_v2] (Card* pCard_expr_i) {
-    UNUSED(pColsReq_v2);
+  auto bfInject = [pColInj, p_projection] (Card* pCard_expr_i) {
+
     Card_Expr* p_expr_i = _pCard_Expr(pCard_expr_i);
-    Symbol* pSymbol_stmCol_i = p_expr_i->pFirstStmCol();
-    Card_As* p_as_i = p_expr_i->pSub_as();
+    Card_As* p_as_i     = p_expr_i->pSub_as();
 
-    Card_Expr* p_expr_p =
-        p_projection->pFind_expr_By_as_stripItem(p_as_i->pSymbol());
-    if (p_expr_p) {
-      Card_As *p_as_p = p_expr_p->pSub_as();
+    Card_Expr* p_expr_p = p_projection->pFind_expr_By_as_stripItem(p_as_i->pSymbol());
+    if (! p_expr_p)
+      return C_CONTINUE_RECURSION;
+    Card_As *p_as_p     = p_expr_p->pSub_as();
 
 //    p_expr_i->vDump(__func__);
 //    p_as_i->vDump(__func__);
 //    p_expr_p->vDump(__func__);
 //    p_as_p->vDump(__func__);
 
-      Symbol *pSymbol_i = p_as_i->pSymbol();
-      i8 i_CrwCol_i = pSymbol_i->iSF_ordinal();
+    Symbol *pSymbol_i = p_as_i->pSymbol();
+    i8 i_CrwCol_i     = pSymbol_i->iSF_ordinal();
+    Stz* szTblCol_i   = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
 
-      Symbol *pSymbol_p = p_as_p->pSymbol();
-      i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+    Symbol *pSymbol_p = p_as_p->pSymbol();
+    i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+    Stz* szWas_p      = p_expr_p->pFirstStmCol()->Y_szGet(P_WasStmCol);
 
-      Stz* szTblCol_i = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
-      Stz* szWas_p = p_expr_p->pFirstStmCol()->Y_szGet(P_WasStmCol);
-
-      pColsReq_v2->vAdd(i_CrwCol_i, i_StructCell_p, p_as_p->szSymbol(SF_NONE),
-                        szTblCol_i, szWas_p);
-    }
-    else
-    if (pSymbol_stmCol_i &&
-        (p_expr_p = p_projection->pFind_expr_Of_symbol(pSymbol_stmCol_i))) {
-      //Card_As *p_as_p = p_expr_p->pSub_as();
-
-      Symbol *pSymbol_a = p_expr_p->pSymbol();
-      i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
-
-      Symbol *pSymbol_p = pCard_expr_i->pSymbol();
-      i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
-
-//      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_WasStmCol);
-//      Stz* szWas_p = p_expr_p->pFirstTblCol()->Y_szGet(P_WasStmCol);
-
-      pColsReq_v2->vAdd(i_CrwCol_a, i_StructCell_p, p_as_i->szSymbol(SF_NONE));
-//                               szWas_i, szWas_p);
-    }
+    pColInj->vAdd(i_CrwCol_i, i_StructCell_p, p_as_p->szSymbol(SF_NONE),
+                  szTblCol_i, szWas_p);
     return C_CONTINUE_RECURSION;
+
+//    }
+//    else {
+//      NEVER_REACH
+//      if (pSymbol_stmCol_i &&
+//          (p_expr_p = p_projection->pFind_expr_Of_symbol(pSymbol_stmCol_i))) {
+//        //Card_As *p_as_p = p_expr_p->pSub_as();
+//
+//        Symbol *pSymbol_a = p_expr_p->pSymbol();
+//        i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
+//
+//        Symbol *pSymbol_p = pCard_expr_i->pSymbol();
+//        i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+//
+////      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_WasStmCol);
+////      Stz* szWas_p = p_expr_p->pFirstTblCol()->Y_szGet(P_WasStmCol);
+//
+//        pColInj->vAdd(i_CrwCol_a, i_StructCell_p, p_as_i->szSymbol(SF_NONE));
+////                               szWas_i, szWas_p);
+//      }
+//
+//    }
+//    return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (pSubCard->bIsCard(CK_INDEXJOIN))
-//    p_injected->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
-//  else
-//    p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
-
-  if (p_injected)
-    p_injected->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
-//  else
-//    p_arriving->bApplyRecursive(CK_EXPR, bfMap_stmCol_v2);
+  p_injected->bApplyRecursive(CK_EXPR, bfInject);
 
 }
 

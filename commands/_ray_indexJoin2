@@ -56,22 +56,22 @@ drop table Orders;
 /*============================================================================*/
 
 /*
-m_axCols[0] : m_i_CrwCol [0] -> m_i_StructCell [2] C2_c_custkey
-m_axCols[1] : m_i_CrwCol [3] -> m_i_StructCell [1] C1_c_nationkey
-m_axCols[2] : m_i_CrwCol [6] -> m_i_StructCell [0] C0_c_mktsegment
-m_axCols[3] : m_i_CrwCol [9] -> m_i_StructCell [3] C3_o_custkey
-m_axCols[4] : m_i_CrwCol [12] -> m_i_StructCell [4] C4_o_orderdate
+m_axCol[0] : m_i_CrwCol [0] -> m_i_StructCell [2] C2_c_custkey
+m_axCol[1] : m_i_CrwCol [3] -> m_i_StructCell [1] C1_c_nationkey
+m_axCol[2] : m_i_CrwCol [6] -> m_i_StructCell [0] C0_c_mktsegment
+m_axCol[3] : m_i_CrwCol [9] -> m_i_StructCell [3] C3_o_custkey
+m_axCol[4] : m_i_CrwCol [12] -> m_i_StructCell [4] C4_o_orderdate
 
 
 m_pColsReq
 ColsReq (left)
-m_axCols[0] : m_i_CrwCol [0] -> m_i_StructCell [2] C2_c_custkey
-m_axCols[1] : m_i_CrwCol [3] -> m_i_StructCell [1] C1_c_nationkey
-m_axCols[2] : m_i_CrwCol [6] -> m_i_StructCell [0] C0_c_mktsegment
+m_axCol[0] : m_i_CrwCol [0] -> m_i_StructCell [2] C2_c_custkey
+m_axCol[1] : m_i_CrwCol [3] -> m_i_StructCell [1] C1_c_nationkey
+m_axCol[2] : m_i_CrwCol [6] -> m_i_StructCell [0] C0_c_mktsegment
 
 m_pColsReqRht
 ColsReq (right)
-m_axCols[0] : m_i_CrwCol [1] -> m_i_StructCell [3] C3_o_custkey
-m_axCols[1] : m_i_CrwCol [4] -> m_i_StructCell [4] C4_o_orderdate
+m_axCol[0] : m_i_CrwCol [1] -> m_i_StructCell [3] C3_o_custkey
+m_axCol[1] : m_i_CrwCol [4] -> m_i_StructCell [4] C4_o_orderdate
 
 */

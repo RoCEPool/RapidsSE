@@ -24,9 +24,6 @@ namespace STORE
 
     Card* m_pCard;
 
-    i8   m_nCollapses;
-    bool m_bCollapsed;
-
     StreamDef* m_pStreamDef_arriving;
     StreamDef* m_pStreamDef_emitted;
 

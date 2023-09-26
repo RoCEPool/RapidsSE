@@ -9,7 +9,7 @@ namespace STORE
 {
   class ColInj : public Object
   {
-    static const i8 C_COLSINJ = 128;
+    static const i8 C_COLINJ = 128;
 
   public:
 
@@ -22,7 +22,7 @@ namespace STORE
 
       s32  m_sNote1;       // note
       s32  m_sNote2;       // note
-    } m_axCols[C_COLSINJ];
+    } m_axCol[C_COLINJ];
 
   protected:
     // must be last
