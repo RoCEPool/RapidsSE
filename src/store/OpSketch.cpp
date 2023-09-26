@@ -220,9 +220,9 @@ void OpSketch::vCopyColsInj(ColInj* pColsInj)
 
 	m_pColsInj->m_nCols = pColsInj->m_nCols;
 	for (i8 i_Col = 0; i_Col < pColsInj->m_nCols; i_Col++) {
-		m_pColsInj->m_axCols[i_Col].m_i_CrwCol = pColsInj->m_axCols[i_Col].m_i_CrwCol;
-		m_pColsInj->m_axCols[i_Col].m_i_StructCell = pColsInj->m_axCols[i_Col].m_i_StructCell;
-		m_pColsInj->m_axCols[i_Col].m_sCn_memberNm = pColsInj->m_axCols[i_Col].m_sCn_memberNm;
+		m_pColsInj->m_axCol[i_Col].m_i_CrwCol = pColsInj->m_axCol[i_Col].m_i_CrwCol;
+		m_pColsInj->m_axCol[i_Col].m_i_StructCell = pColsInj->m_axCol[i_Col].m_i_StructCell;
+		m_pColsInj->m_axCol[i_Col].m_sCn_memberNm = pColsInj->m_axCol[i_Col].m_sCn_memberNm;
 	}
 }
 

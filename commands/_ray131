@@ -3,9 +3,9 @@
 /*============================================================================*/
 
 // NOTE : In stafe S10 in ColsReq:
-//  m_axCols[1] : m_i_CrwCol [1] -> m_i_StructCell [0] C0_N_NAME
+//  m_axCol[1] : m_i_CrwCol [1] -> m_i_StructCell [0] C0_N_NAME
 // should have been :
-//  m_axCols[1] : m_i_CrwCol [1] -> m_i_StructCell [6] C6_N_NAME
+//  m_axCol[1] : m_i_CrwCol [1] -> m_i_StructCell [6] C6_N_NAME
 
 __TPCH_SCHEMA
 

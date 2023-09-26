@@ -242,6 +242,40 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find expr of term                                                          */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol, Stz* szTblCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Symbol xSymbol_arg_stripped;
+  Symbol xSymbol_as_stripped;
+
+  xSymbol_arg_stripped.vSym(pSymbol);
+  xSymbol_arg_stripped.vItemStrip();
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_Expr* p_expr = xKid.p_expr();
+    Card_As*   p_as =   p_expr->pSub_as();
+    if (! p_as)
+      continue;
+
+    Symbol* pSymbol_tblCol = p_expr->pFirstStmCol();
+    Stz* szTblCol_p = pSymbol_tblCol->Y_szGet(P_WasStmCol);
+    xSymbol_as_stripped.vSym(p_as->pSymbol());
+    xSymbol_as_stripped.vItemStrip();
+
+//  vTrace("%s -- %s\n"_Stz,szTblCol_p,szTblCol);
+
+    if (xSymbol_as_stripped.bSame(&xSymbol_arg_stripped) &&
+        szTblCol_p->bSame(szTblCol))
+      return xKid.p_expr();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pGetExpr(i8 i_Expr)

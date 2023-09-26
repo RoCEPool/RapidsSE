@@ -22,9 +22,9 @@ ColInj::ColInj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 
-  for (i8 i_Col = 0; i_Col < C_COLSINJ; i_Col++) {
-    m_axCols[i_Col].m_i_CrwCol = C_UNKNOWN;
-    m_axCols[i_Col].m_i_StructCell = C_UNKNOWN;
+  for (i8 i_Col = 0; i_Col < C_COLINJ; i_Col++) {
+    m_axCol[i_Col].m_i_CrwCol = C_UNKNOWN;
+    m_axCol[i_Col].m_i_StructCell = C_UNKNOWN;
   }
   m_nCols = 0;
 
@@ -58,15 +58,15 @@ void ColInj::vAdd(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
 
-  m_axCols[m_nCols].m_i_CrwCol     = i_CrwCol;
-  m_axCols[m_nCols].m_i_StructCell = i_StructCell;
+  m_axCol[m_nCols].m_i_CrwCol     = i_CrwCol;
+  m_axCol[m_nCols].m_i_StructCell = i_StructCell;
   if (szCn_memberNm)
-    m_axCols[m_nCols].m_sCn_memberNm = szCn_memberNm;
+    m_axCol[m_nCols].m_sCn_memberNm = szCn_memberNm;
 
   if (szNote1)
-    m_axCols[m_nCols].m_sNote1 = szNote1;
+    m_axCol[m_nCols].m_sNote1 = szNote1;
   if (szNote2)
-    m_axCols[m_nCols].m_sNote2 = szNote2;
+    m_axCol[m_nCols].m_sNote2 = szNote2;
 
   m_nCols++;
 
@@ -84,10 +84,10 @@ void ColInj::vDump(i8 i_Tab)
   s256 sNotes;
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    if (*m_axCols[i_Col].m_sNote1.azChar() ||*m_axCols[i_Col].m_sNote2.azChar()) {
+    if (*m_axCol[i_Col].m_sNote1.azChar() || *m_axCol[i_Col].m_sNote2.azChar()) {
       sNotes.vSprint("(%s %s)"_Stz,
-                     m_axCols[i_Col].m_sNote1.azChar(),
-                     m_axCols[i_Col].m_sNote2.azChar());
+                     m_axCol[i_Col].m_sNote1.azChar(),
+                     m_axCol[i_Col].m_sNote2.azChar());
     }
     else {
       sNotes = ""_Stz;
@@ -97,9 +97,9 @@ void ColInj::vDump(i8 i_Tab)
            Stz::szTab(i_Tab),
            Stz::szSpaces(7),
            i_Col,
-           m_axCols[i_Col].m_i_CrwCol,
-           m_axCols[i_Col].m_i_StructCell,
-           m_axCols[i_Col].m_sCn_memberNm.szStz(),
+           m_axCol[i_Col].m_i_CrwCol,
+           m_axCol[i_Col].m_i_StructCell,
+           m_axCol[i_Col].m_sCn_memberNm.szStz(),
            sNotes.azChar());
   }
 }
