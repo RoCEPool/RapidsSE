@@ -503,7 +503,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ColsReq_v2* pColsReq_v2 = new ColsReq_v2;
+  ColInj* pColsReq_v2 = new ColInj;
   m_pOpDef->vColsReq_v2(pColsReq_v2);
 
 
@@ -523,7 +523,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
 /*----------------------------------------------------------------------------*/
 /* craft the columns required map for given card                              */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq_v2* pColsReq_v2,
+void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColInj* pColsReq_v2,
                                                      Card_Stream* p_stream,
                                                      Card *pSubCard)
 {
@@ -569,8 +569,8 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq_v2* pColsReq_v2,
       Stz* szTblCol_i = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
       Stz* szWas_p = p_expr_p->pFirstStmCol()->Y_szGet(P_WasStmCol);
 
-      pColsReq_v2->vAddMapping(i_CrwCol_i, i_StructCell_p, p_as_p->szSymbol(SF_NONE),
-                               szTblCol_i, szWas_p);
+      pColsReq_v2->vAdd(i_CrwCol_i, i_StructCell_p, p_as_p->szSymbol(SF_NONE),
+                        szTblCol_i, szWas_p);
     }
     else
     if (pSymbol_stmCol_i &&
@@ -586,7 +586,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq_stmCol(ColsReq_v2* pColsReq_v2,
 //      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_WasStmCol);
 //      Stz* szWas_p = p_expr_p->pFirstTblCol()->Y_szGet(P_WasStmCol);
 
-      pColsReq_v2->vAddMapping(i_CrwCol_a, i_StructCell_p, p_as_i->szSymbol(SF_NONE));
+      pColsReq_v2->vAdd(i_CrwCol_a, i_StructCell_p, p_as_i->szSymbol(SF_NONE));
 //                               szWas_i, szWas_p);
     }
     return C_CONTINUE_RECURSION;

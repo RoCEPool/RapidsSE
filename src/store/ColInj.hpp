@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ColsReq_v2.hpp -- Columns Required Metadata                                */
+/* ColInj.hpp -- Columns Required Metadata                                */
 /*============================================================================*/
 #pragma once
 
@@ -7,9 +7,9 @@
 
 namespace STORE
 {
-  class ColsReq_v2 : public Object
+  class ColInj : public Object
   {
-    static const i8 C_COLSREQ = 128;
+    static const i8 C_COLSINJ = 128;
 
   public:
 
@@ -22,7 +22,7 @@ namespace STORE
 
       s32  m_sNote1;       // note
       s32  m_sNote2;       // note
-    } m_axCols[C_COLSREQ];
+    } m_axCols[C_COLSINJ];
 
   protected:
     // must be last
@@ -32,12 +32,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ColsReq_v2(void);
+    ColInj(void);
 
-   ~ColsReq_v2(void) noexcept(false);
+   ~ColInj(void) noexcept(false);
 
-    void vAddMapping(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
-                     Stz* szNote1=nullptr, Stz* szNote2=nullptr);
+    void vAdd(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
+              Stz* szNote1= nullptr, Stz* szNote2= nullptr);
 
     void vDump(i8 i_Tab=0);
 
@@ -47,7 +47,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  ColsReq_v2* _pColsReq_v2(void* aAddr);
+  ColInj* _pColInj(void* aAddr);
 }
 
 /*============================================================================*/

@@ -547,7 +547,7 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
 	// get the colReq
-	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
 
 	// get the index
   Index* pIndex = pOpDef->m_pIndex_indexJoin;
@@ -620,7 +620,7 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
 	// get the colReq
-	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
 
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
@@ -674,7 +674,7 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
 	// get the colReq
-	ColsReq_v2* pColsReq = pOpDef->m_pColsReq_v2;
+	ColInj* pColsReq = pOpDef->m_pColsReq_v2;
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);
