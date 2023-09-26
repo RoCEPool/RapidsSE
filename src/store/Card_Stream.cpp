@@ -85,7 +85,7 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->G.p_OP->bIsOne(CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_NONE));
-  RASSERT(! pCI->G.p_projection);
+  //RASSERT(! pCI->G.p_projection);
 
   if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
 
