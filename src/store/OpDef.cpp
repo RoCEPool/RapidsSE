@@ -58,7 +58,7 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
   m_pIndexDef_top       = nullptr;
   m_pColMap_top         = nullptr;
 
-  m_pColsReq_v2         = nullptr;
+  m_pColInj         = nullptr;
 
   m_pColHsh             = nullptr;
 
@@ -86,7 +86,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pIndexDef_top;
   delete m_pColMap_top;
 
-  delete m_pColsReq_v2;
+  delete m_pColInj;
   delete m_pColHsh;
 }
 
@@ -192,21 +192,21 @@ ArgDef* OpDef::pArgDef_constraint(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-ColInj* OpDef::pColsReq_v2(void)
+ColInj* OpDef::pColInj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  return m_pColsReq_v2;
+  return m_pColInj;
 }
 
 //*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void OpDef::vColsReq_v2(ColInj* pColsReq_v2)
+void OpDef::vColInj(ColInj* pColInj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  m_pColsReq_v2 = pColsReq_v2;
+  m_pColInj = pColInj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,10 +291,10 @@ void OpDef::vDump(i8 i_Tab)
   }
 
 
-  if (m_pColsReq_v2) {
+  if (m_pColInj) {
     vTrace("%s%s : ColInj      %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq_v2);
-    m_pColsReq_v2->vDump(i_Tab + 1);
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj);
+    m_pColInj->vDump(i_Tab + 1);
   }
 
   if (m_pColHsh) {
@@ -379,7 +379,7 @@ void OpDef::vValidate(void)
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexJoin);
-    RASSERT(m_pColsReq_v2);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("FILTER"_Stz)) {
@@ -418,7 +418,7 @@ void OpDef::vValidate(void)
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexJoin);
-    RASSERT(m_pColsReq_v2);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("INDEXSCAN"_Stz)) {
@@ -430,7 +430,7 @@ void OpDef::vValidate(void)
     //RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexScan);
-    RASSERT(m_pColsReq_v2);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("INFLATE"_Stz)) {
@@ -439,7 +439,7 @@ void OpDef::vValidate(void)
 
     //RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
-    RASSERT(m_pColsReq_v2);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("KEYEXISTS"_Stz)) {
@@ -498,7 +498,7 @@ void OpDef::vValidate(void)
 
     //RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
-    RASSERT(m_pColsReq_v2);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("SORT"_Stz)) {
@@ -553,8 +553,8 @@ void OpDef::vValidate(void)
   if (m_pColMap_top)
     m_pColMap_top->vValidate();
 
-  if (m_pColsReq_v2)
-    m_pColsReq_v2->vValidate();
+  if (m_pColInj)
+    m_pColInj->vValidate();
 
 //  i8 nArgs = nItems();
 //  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {

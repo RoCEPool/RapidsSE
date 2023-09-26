@@ -504,7 +504,7 @@ void XF_Synthesise_pipelineDef::vCraftColsReq(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ColInj* pColsReq_v2 = new ColInj;
-  m_pOpDef->vColsReq_v2(pColsReq_v2);
+  m_pOpDef->vColInj(pColsReq_v2);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

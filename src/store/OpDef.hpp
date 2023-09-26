@@ -43,7 +43,7 @@ namespace STORE
     IndexDef*  m_pIndexDef_top;
     ColMap*    m_pColMap_top;
 
-    ColInj*    m_pColsReq_v2;
+    ColInj*    m_pColInj;
 
     ColHsh*    m_pColHsh;
 
@@ -66,8 +66,8 @@ namespace STORE
     ArgDef* pArgDef_constraint(void);
     ArgDef* pArgDef_count(void);
 
-    ColInj* pColsReq_v2(void);
-    void vColsReq_v2(ColInj* pColsReq_v2);
+    ColInj* pColInj(void);
+    void vColInj(ColInj* pColInj);
 
     void vDump(i8 i_Tab=2);
 
