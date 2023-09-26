@@ -2,12 +2,14 @@
 /* _ray132                                                                    */
 /*============================================================================*/
 
-// NOTE : In stage S2 the crossJoin has no colsReq
+// NOTE : In stage S2 the crossJoin has no colInj
 
 __TPCH_SCHEMA
 
+/optimiser_trace
 /pipeline_def
 /weaved
+/transliterated
 /pipelineName = "OptQ11"
 select
   ps_partkey,
