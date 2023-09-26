@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _ray132                                                                    */
+/*============================================================================*/
+
+// NOTE : streamDef_emitted and colsInj not correct
+
+__TPCH_SCHEMA
+
+/weaved
+/pipeline_def
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+                                             FROM nation
+                                             GROUP BY region
+                                             HAVING region > 1;
+
+/*
+rows:
+(3,5)
+(4,5)
+(2,5)
+*/
+
+
+_tpchDrop
