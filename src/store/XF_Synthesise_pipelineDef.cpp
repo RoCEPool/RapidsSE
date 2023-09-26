@@ -484,8 +484,12 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 9)
+  if (m_pStageDef->i_Stage() == 6) {
     vDebugPoint();
+    if (m_pOpDef->i_Op() == 0)
+      vDebugPoint();
+  }
+
 
   Card* p_OP_curr = m_pCI->G.p_OP;
 
@@ -506,7 +510,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 
   if (CK_SCAN      == eCard_OP ||
       CK_INFLATE   == eCard_OP ||
-      CK_INFLATE   == eCard_OP ||
+      CK_INDEXJOIN == eCard_OP ||
       CK_CROSSJOIN == eCard_OP ||
       CK_INDEXSCAN == eCard_OP) {
     vCraftColInj(pColInj, p_OP_curr);
@@ -521,6 +525,12 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  if (m_pStageDef->i_Stage() == 6) {
+    vDebugPoint();
+    if (m_pOpDef->i_Op() == 0)
+      vDebugPoint();
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
