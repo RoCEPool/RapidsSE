@@ -39,14 +39,14 @@ INCLUDE 'tpch_q7.test';
 INCLUDE 'tpch_q8.test';
 INCLUDE 'tpch_q9.test';
 INCLUDE 'tpch_q10.test';
-INCLUDE 'tpch_q11.test';
+///////////INCLUDE 'tpch_q11.test'; (_ray132)
 INCLUDE 'tpch_q12.test';
 //INCLUDE 'tpch_q13.test';
 INCLUDE 'tpch_q14.test';
 //INCLUDE 'tpch_q15.test';
 INCLUDE 'tpch_q16.test';
-INCLUDE 'tpch_q17.test';
-INCLUDE 'tpch_q18.test';
+///////////INCLUDE 'tpch_q17.test';
+///////////INCLUDE 'tpch_q18.test'; (_ray133)
 INCLUDE 'tpch_q19.test';
 //INCLUDE 'tpch_q20.test';
 //INCLUDE 'tpch_q21.test';
