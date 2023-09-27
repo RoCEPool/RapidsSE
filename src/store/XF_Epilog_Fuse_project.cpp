@@ -66,28 +66,30 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SCAN)) {
-    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
-      m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
-      m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
-      m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
-    }
-    else {
+    m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
+    if (! m_pCI->G.p_project) {
       m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
+      continue;
     }
+
+    m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
+    m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
-    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
-      m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
-      m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
-      m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
-    }
-    else {
+    m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
+    if (! m_pCI->G.p_project) {
       m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
+      continue;
     }
+
+    m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
+    m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
   }
 
   m_pCI->vClearRestart();
@@ -99,16 +101,17 @@ void XF_Epilog_Fuse_project::vFuse(void)
       continue;
     }
 
-    if ((m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT)))) {
-      m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
-      m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
-      m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
-    }
-    else {
+    m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
+    if (! m_pCI->G.p_project) {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
       m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_projection();
+      continue;
     }
+
+    m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
+    m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
   }
 
   m_pCI->vEndTransform();
