@@ -1,0 +1,13 @@
+/*============================================================================*/
+/* _ray137                                                                    */
+/*============================================================================*/
+
+// NOTE : optimiser crashing
+
+__TPCH_SCHEMA
+
+/optimiser_trace
+/pipeline_def
+/weaved
+/transliterated
+SELECT -1 BETWEEN -2 AND -1 FROM nation LIMIT 1;
