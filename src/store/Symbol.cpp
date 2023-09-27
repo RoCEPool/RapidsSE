@@ -3348,11 +3348,11 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
   RASSERT(SF_NONE == m_eSymbol || SF_COL_NO == m_eSymbol || SF_KEY_COL == m_eSymbol);
 
   if (bIs_Col_Tc()) {
-     Y_vSet(P_AltTblCol, szSF_symbol(SF_COL_TC));
+     Y_vSet(P_TblCol, szSF_symbol(SF_COL_TC));
   }
   else
   if (bIs_Key_Col()) {
-    Y_vSet(P_WasKeyCol, szSF_symbol(SF_KEY_COL));
+    Y_vSet(P_KeyCol, szSF_symbol(SF_KEY_COL));
   }
 
   vSymSprint("$%lld"_Stz, iStmColOdn);
@@ -3378,7 +3378,7 @@ void Symbol::vSet_Col_No(Stz* szColNo)
           );
 
   if (bIs_Col_Tc()) {
-    Y_vSet(P_AltTblCol, szSF_symbol(SF_COL_TC));
+    Y_vSet(P_TblCol, szSF_symbol(SF_COL_TC));
   }
   m_sChrSeq = szColNo;
   m_eSymbol = SF_COL_NO;

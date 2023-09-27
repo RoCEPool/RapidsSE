@@ -165,7 +165,6 @@ namespace STORE
 // These would really benefit from being const and being in a namespace
 // or class to avoid polluting the global namespace.
 extern Stz* P_AggOp;
-extern Stz* P_As;
 extern Stz* P_BreakPt;
 extern Stz* P_BumpedBy;
 extern Stz* P_Cell;
@@ -184,35 +183,27 @@ extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedPos;
 extern Stz* P_HashOf;
-extern Stz* P_HideHeat;
 extern Stz* P_InjCrlKey;
 extern Stz* P_Injected;
 extern Stz* P_Invalid;
 extern Stz* P_Itemised;
-extern Stz* P_JoinedBuff;
 extern Stz* P_Key;
+extern Stz* P_KeyCol;
 extern Stz* P_Level;
-extern Stz* P_Network;
 extern Stz* P_ParamOdn;
 extern Stz* P_Payload;
 extern Stz* P_Permutation;
 extern Stz* P_Pointer;
 extern Stz* P_ProjBump;
 extern Stz* P_ProjBumped;
-extern Stz* P_PtndJoin;
-extern Stz* P_ReqCol;
 extern Stz* P_SendKind;
-extern Stz* P_SentOut;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SubQryCall;
 extern Stz* P_Synthetic;
-extern Stz* P_TableUsed;
 extern Stz* P_TblCol;
 extern Stz* P_Type;
 extern Stz* P_Unproject;
-extern Stz* P_WasKeyCol;
-extern Stz* P_AltTblCol;
 
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;
