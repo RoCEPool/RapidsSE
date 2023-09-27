@@ -581,7 +581,7 @@ void Weaver::vArgInflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
 
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
 
-  pCard_Inflate->vDump(__func__);
+  //pCard_Inflate->vDump(__func__);
   if (pCard_Inflate->pSymbol()->Y_bHas(P_FusedProject))
     psOpArgs->vCatSprint(" // fused project"_Stz);
 
