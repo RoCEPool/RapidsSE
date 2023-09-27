@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* _ray138                                                                    */
+/*============================================================================*/
+
+// NOTE : optimiser crashing
+
+__TPCH_SCHEMA
+
+/optimiser_trace
+/optimise_passthru
+/pipeline_def
+/weaved
+pipeline OptPassThru
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan nation
+    | combined 0
+    | next
+  stage S16 on origin :
+      output
+    | sink
+    | first
+
+end ;
