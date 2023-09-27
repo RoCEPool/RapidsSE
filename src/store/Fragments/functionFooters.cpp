@@ -113,11 +113,11 @@ int vIndexScanEnd(struct Dynamic_T* aDynamicT)
 #include "vFLAT_Parameters.h"
 
     __L_LABEL_LOOP__:
-		L_AddRowToTubPot:
 
     aSubReturnLabel = && __L_LABEL_LOOP__;
 
     // marker-start
+		goto __L_LABEL_LOOP__;
 
     L_Return:
     if (paW != &aDynamicT->m_aW[0])
