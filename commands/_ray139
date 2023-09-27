@@ -9,8 +9,11 @@
 _lineitem;
 load lineitem "../DATA/TPCH/lineitem10.csv";
 
+/optimiser_trace
 /pipeline_def
-/transliterated
 /weaved
-/keepCodeFile
+/transliterated
+/pipelineName = "_ray139"
 select 2 as a, l_shipdate as b from lineitem;
+
+drop table lineitem;

@@ -34,4 +34,4 @@ load datums "../DATA/DataTypes/dataTypes.csv" ;
 /pipelineName = "_ray140"
 select cast(2.002130e+02 as decimal) from datums;
 
-delete table datums;
+drop table datums;
