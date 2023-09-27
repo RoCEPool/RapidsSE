@@ -558,7 +558,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Card_As*      p_as_p = p_expr_p->pSub_as();
     Symbol*    pSym_as_p = p_as_p->pSymbol();
     Stz*      szSym_as_p = pSym_as_p->szSF_symbol(SF_NONE);
-    Stz*      szTblCol_p = p_expr_p->pFirstStmCol()->Y_szGet(P_AltTblCol);
+    Stz*      szTblCol_p = p_expr_p->pFirstStmCol()->Y_szGet(P_TblCol);
     i8    i_StructCell_p = pSym_as_p->iSF_ordinal();
 
     pColInj->vAdd(i_CrwCol_i, i_StructCell_p,
@@ -579,8 +579,8 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 //        Symbol *pSym_as_p = pCard_expr_i->pSymbol();
 //        i8 i_StructCell_p = pSym_as_p->iSF_ordinal();
 //
-////      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_AltTblCol);
-////      Stz* szTblCol_p = p_expr_p->pFirstTblCol()->Y_szGet(P_AltTblCol);
+////      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_TblCol);
+////      Stz* szTblCol_p = p_expr_p->pFirstTblCol()->Y_szGet(P_TblCol);
 //
 //        pColInj->vAdd(i_CrwCol_a, i_StructCell_p, p_as_i->szSymbol(SF_NONE));
 ////                               szWas_i, szTblCol_p);
