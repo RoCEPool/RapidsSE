@@ -19,7 +19,7 @@
 ../../../seth/tests/tests1N4P/Limit/testList
 ../../../seth/tests/tests1N4P/Memory/testList
 ../../../seth/tests/tests1N4P/Misc/testList
-////////////../../../seth/tests/tests1N4P/QA/interval/testList
+../../../seth/tests/tests1N4P/QA/interval/testList
 ////////////../../../seth/tests/tests1N4P/Projections/testList
 ////////////../../../seth/tests/tests1N4P/Regression/testList
 
