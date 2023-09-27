@@ -24,8 +24,10 @@ for connecting to RapidsSE: understanding the TCP/IP port number that RapidsSE
 is listening on, and forming a valid JDBC connection URL. These are explained
 below.
 
+
 .. index::
    single: JDBC driver; port number
+   single: JDBC driver; RapidsSE configuration
 
 .. _clientPort:
 
@@ -106,6 +108,9 @@ These fields need to be set in a specific order and with specific syntax. This
 is documented below.
 
 
+.. index::
+   single: JDBC driver; url
+
 Connection URL Grammar
 ``````````````````````
 
@@ -149,6 +154,11 @@ In addition, the following rules apply to the connection URL:
 
 #. The URL must not end with any of the following characters: ``/``, ``=``, ``?` or ``&``.
 
+
+
+.. index::
+   single: JDBC driver; host
+   single: JDBC driver; port number
 
 Specifying the Host and Port Numbers
 ````````````````````````````````````
@@ -273,6 +283,9 @@ Some valid examples of setting the hostname and port include:
     # sets the default catalog to RAPIDS and schema to SYSTEM without specifying a host/port
     jdbc:se:/RAPIDS/SYSTEM
 
+
+.. index::
+   single: JDBC driver; properties
 
 Supported Properties
 ````````````````````
@@ -404,12 +417,18 @@ Some examples are shown below:
 
 
 
+.. index::
+   single: JDBC driver; authentication
+
 Authentication
 --------------
 
 Currently the JDBC driver does not support user authentication because the
 RapidsSE server does not implement this yet.
 
+
+.. index::
+   single: JDBC driver; prepared statements
 
 Prepared Statement Support
 --------------------------
@@ -465,6 +484,8 @@ The Driver supports all methods of the PreparedStatement interface except for th
    * ``executeLargeUpdate(String, String[])``
 
 
+.. index::
+   single: JDBC driver; resultsets
 
 ResultSet Support
 -----------------
@@ -475,28 +496,226 @@ direction only. This means that the client cannot move the ``ResultSet``
 iterator backward to look at a row it previously went past.
 
 
+.. index::
+   single: JDBC driver; batched statements
+
 Batched Statements and Multiple ResultSets
 ------------------------------------------
 
+TODO:
 Describe batched statements in a single string as well as Statement.addBatch()
 and statement.executeBatch().
+
+
+.. index::
+   single: JDBC driver; warnings
 
 Warnings
 --------
 
+RapidsSE and the JDBC driver do support the concept of SQL warnings. A warning
+can occur at any time of a connection or query, and it may contain pertinent
+information that the user may want to know about. It is up to the client
+application to check for warnings and to display or handle them appropriately.
+
+The execution of a statement may produce one or more warnings. A client should
+call ``statement.getWarnings()`` after executing a statement as well as before that
+``statement`` object is closed. This is because RapidsSE does not return all of
+the ResultSet data in one hit. Instead it sends additional chunks of rows as
+the client iterates the ResultSet. This can mean that SQL warnings that were
+generated as later row results were being created may not have been sent to
+the client. So it is important to check for warnings both immediately after the
+statement has been executed as well as after all rows in the ResultSet have
+been iterated over.
+
+Calling ``statement.getWarnings()`` will return the first warning in a chain.
+The client should then check for additional warnings in the chain by calling
+``warning.getNextWarning()`` until it returns ``null``. This is shown in the
+example below:
+
+.. code::java
+
+  public void someFunction() {
+    ...
+    ResultSet rs = statement.executeQuery("SELECT * FROM t;");
+    checkForWarnings();
+    ...
+    // iterate through all rows in result set
+    ...
+    checkForWarnings();
+  }
+
+  public void checkForWarnings() {
+    Warning warning = statement.getWarnings();
+
+    while (warning != null) {
+      // handle warning in some way
+      ...
+      warning = warning.getNextWarning();
+    }
+  }
+
+
+.. index::
+   single: JDBC driver; data types
 
 .. _jdbcResultSetDataTypes:
 
 Supported ResultSet Data Types
 ------------------------------
 
+The table below shows the data types that are supported in the JDBC driver
+when calling methods in the JDBC class ``ResultSet``.
+
+.. table::
+  :name: jdbc-resultset-data-types
+  :class: widetable
+  :widths: 40, 10, 50
+
+  ========================= =========== ========================================================================
+  ResultSet Method          Supported?  Notes
+  ========================= =========== ========================================================================
+  ``getArray()``            No          Not supported in RapidsSE
+  ``getAsciiStream()``      Yes
+  ``getBigDecimal()``       Yes
+  ``getBinaryStream()``     Yes         Binary types are not supported in RapidsSE
+  ``getBlob()``             Yes         Binary types are not supported in RapidsSE
+  ``getBoolean()``          Yes
+  ``getByte()``             Yes         RapidsSE returns all integers with 64 bit precision
+  ``getBytes()``            No          Binary types are not supported in RapidsSE
+  ``getCharacterStream()``  Yes
+  ``getClob()``             No
+  ``getDate()``             Yes
+  ``getDouble()``           Yes
+  ``getFloat()``            Yes         RapidsSE returns all floating point numbers with double length precision
+  ``getInt()``              Yes         RapidsSE returns all integers with 64 bit precision
+  ``getLong()``             Yes
+  ``getNCharacterStream()`` No          RapidsSE does not support the ``NVARCHAR`` or ``NCHAR`` data types
+  ``getNClob()``            No          RapidsSE does not support the ``NVARCHAR`` or ``NCHAR`` data types
+  ``getNString()``          No          RapidsSE does not support the ``NVARCHAR`` or ``NCHAR`` data types
+  ``getObject()``           Yes
+  ``getRef()``              No          RapidsSE does not support the REFs
+  ``getRowId()``            No          RapidsSE does not support the RowIds
+  ``getShort()``            Yes
+  ``getSQLXML()``           No
+  ``getString()``           Yes
+  ``getTime()``             Yes
+  ``getTimestamp()``        Yes         RapidsSE supports timestamps with microsecond precision, however the
+                                        JDBC interface only supports precision to the millisecond level.
+  ``getUnicodeStream()``    No
+  ``getURL()``              No
+  ========================= =========== ========================================================================
+
+
+.. index::
+   single: JDBC driver; type conversions
+
 .. _jdbcTypeConversions:
 
-Supported SQL to Java Data Type Conversions
+Supported SQL to JDBC Data Type Conversions
 -------------------------------------------
 
-Debugging JDBC Applications
----------------------------
+JDBC drivers can support automatic type conversions when the client requests a
+column value through the ``ResultSet`` class. For example, the client may
+execute a query where the data type of the first column returned is a ``TIMESTAMP``,
+however the client could then request to get this first column from the ResultSet
+as a ``TIME`` value instead. The JDBC driver will then attempt to convert the
+``TIMESTAMP`` value to a ``TIME`` value. Not all conversions are supported, or
+may be valid. The table below shows the conversions that are supported by the
+JDBC driver from a SQL data type when a JDBC ``ResultSet`` method is invoked.
+
+.. raw:: latex
+
+  \begin{landscape}
+
+.. table:: SQL to JDBC Data Type Conversions
+   :name: sql-to-jdbc-data-type-conversions
+   :class: widetable longtable
+   :widths: 20, 5,5,5,5,5,5,5,5,5,5,5, 25
+
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | JDBC Method               | ``BOOLEAN`` | ``CHAR`` | ``DATE`` | ``DECIMAL`` | ``FLOAT`` | ``INTEGER`` | ``INTERVAL D-T`` | ``INTERVAL Y-M`` | ``TIME`` | ``TIMESTAMP`` | ``VARCHAR`` |                       Notes                                   |
+   +===========================+=============+==========+==========+=============+===========+=============+==================+==================+==========+===============+=============+===============================================================+
+   | ``getArray()``            |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getAsciiStream()``      |     Yes     |   Yes    |   Yes    |    Yes      |    Yes    |     Yes     |     Yes          |     Yes          |   Yes    |      Yes      |     Yes     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getBigDecimal()``       |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Conversion from a ``CHAR``/``VARCHAR`` supported only if it   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | contains a numeric value                                      |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getBinaryStream()``     |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     Yes     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getBlob()``             |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     Yes     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getBoolean()``          |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Numerics: A value of 0 is converted to FALSE.                 |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | Everything else is TRUE.                                      |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             |                                                               |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | ``VARCHAR``: Conversion is supported if the string is a case  |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | insensitive form of "true" or "false".                        |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getByte()``             |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Conversion from a ``CHAR``/``VARCHAR`` supported only if it   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | contains a numeric value                                      |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getBytes()``            |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     Yes     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getCharacterStream()``  |     Yes     |   Yes    |   Yes    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   Yes    |      Yes      |     Yes     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getClob()``             |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getDate()``             |     ---     |   Yes    |   Yes    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      Yes      |     Yes     | Conversion from VARCHAR support if it only contains a valid   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | date string                                                   |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getDouble()``           |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Conversion from a ``CHAR``/``VARCHAR`` supported only if it   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | contains a numeric value                                      |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getFloat()``            |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Conversion from a ``CHAR``/``VARCHAR`` supported only if it   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | contains a numeric value                                      |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getInt()``              |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Conversion from a ``CHAR``/``VARCHAR`` supported only if it   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | contains a numeric value                                      |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getLong()``             |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Conversion from a ``CHAR``/``VARCHAR`` supported only if it   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | contains a numeric value                                      |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getNCharacterStream()`` |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getNClob()``            |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getNString()``          |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getObject()``           |     Yes     |   Yes    |   Yes    |    Yes      |    Yes    |     Yes     |     Yes          |     Yes          |   Yes    |      Yes      |     Yes     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getRef()``              |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getRowId()``            |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getShort()``            |     Yes     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     | Conversion from a ``CHAR``/``VARCHAR`` supported only if it   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | contains a numeric value                                      |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getSQLXML()``           |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getString()``           |     Yes     |   Yes    |   Yes    |    Yes      |    Yes    |     Yes     |     Yes          |     Yes          |   Yes    |      Yes      |     Yes     |                                                               |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getTime()``             |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |      Yes      |     Yes     | Conversion from VARCHAR support if it only contains a valid   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | time string                                                   |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getTimestamp()``        |     ---     |   Yes    |   Yes    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |      Yes      |     Yes     | Conversion from VARCHAR support if it only contains a valid   |
+   |                           |             |          |          |             |           |             |                  |                  |          |               |             | timestamp string                                              |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getURL()``              |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+   | ``getUnicode()``          |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     | Data type not supported                                       |
+   +---------------------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+---------------------------------------------------------------+
+
+
+.. raw:: latex
+
+  \end{landscape}
+
+
+
+.. index::
+   single: JDBC driver; unsupported features
 
 Unsupported JDBC Features
 -------------------------
@@ -505,52 +724,53 @@ The following features are not supported in the RapidsSE JDBC Driver:
 
 .. table::
   :name: jdbc-unsupported-features
-  :widths: 5, 20, 20, 60
+  :class: widetable longtable
+  :widths: 10, 20, 20, 50
 
   === ================= ================= =============================================================
   Num Interface         Topic             Description
   === ================= ================= =============================================================
-  1.  General           Error Codes       Exceptions thrown by the JDBC driver may not have SQLState
+  1   General           Error Codes       Exceptions thrown by the JDBC driver may not have SQLState
                                           error codes.
-  2.  Connection        Auto-commit       Non-auto-commit transactions are not supported since RapidsSE
+  2   Connection        Auto-commit       Non-auto-commit transactions are not supported since RapidsSE
                         transactions      does not support them.
-  3.  Connection        Callable          Callable statements are not supported since RapidsSE
+  3   Connection        Callable          Callable statements are not supported since RapidsSE
                         Statements        does not support them.
-  4.  Connection        Rollbacks         Transaction rollbacks are not supported since RapidsSE does
+  4   Connection        Rollbacks         Transaction rollbacks are not supported since RapidsSE does
                                           not support non-auto-commit transactions.
-  5.  Connection        Savepoints        Transaction savepoints are not supported since RapidsSE does
+  5   Connection        Savepoints        Transaction savepoints are not supported since RapidsSE does
                                           not support them.
-  6.  Connection        Network           Setting a network timeout with
+  6   Connection        Network           Setting a network timeout with
                                           ``connection.setNetworkTimeout()`` is not yet supported.
                         Timeouts
-  7.  Connection        Connection        Connection pooling within the JDBC driver is not supported.
+  7   Connection        Connection        Connection pooling within the JDBC driver is not supported.
                         pooling
-  8.  Statement         closeOnCompletion ``Statement.setCloseOnCompletion()`` is not supported.
-  9.  Statement         Pooling           Statement pooling via ``statement.setPoolable()`` is not
+  8   Statement         closeOnCompletion ``Statement.setCloseOnCompletion()`` is not supported.
+  9   Statement         Pooling           Statement pooling via ``statement.setPoolable()`` is not
                         statements        supported.
-  10. Statement         Auto-generated    Execution and retrieval of auto-generated keys is not
+  10  Statement         Auto-generated    Execution and retrieval of auto-generated keys is not
                         keys              supported (e.g., via
                                           ``statement.execute(String sql, String[] columns)``, since
                                           RapidsSE does not yet support retrieval of auto-generated
                                           keys.
-  11. Statement         Query Timeout     Setting a query timeout via Statement.setQueryTimeout() is
+  11  Statement         Query Timeout     Setting a query timeout via Statement.setQueryTimeout() is
                                           not yet supported.
-  12. Statement         Escape Processing Escape processing within the JDBC driver is generally not
+  12  Statement         Escape Processing Escape processing within the JDBC driver is generally not
                                           supported.
-  13. Statement         Fetch Direction   The JDBC driver only supports a forward fetch direction of
+  13  Statement         Fetch Direction   The JDBC driver only supports a forward fetch direction of
                                           ResultSets.
-  14. Statement         Fetch Size        The fetch size set for a JDBC statement is not currently
+  14  Statement         Fetch Size        The fetch size set for a JDBC statement is not currently
                                           used by the driver.
-  15. Statement         Max Field Size    The driver currently does not adhere to any maximum field
+  15  Statement         Max Field Size    The driver currently does not adhere to any maximum field
                                           size set via ``Statement.setMaxFieldSize()``.
-  16. ResultSet         ResultSet         ResultSets only support read-only operations and are not
+  16  ResultSet         ResultSet         ResultSets only support read-only operations and are not
                         Updatability      updatable. Operations such as ``insertRow()``,
                                           ``deleteRow()``, ``updateRow()`` and ``update<datatype>()``
                                           related operations are not supported.
-  17. ResultSet         ResultSet         By default, ResultSets are kept open over commits. They
+  17  ResultSet         ResultSet         By default, ResultSets are kept open over commits. They
                         Holdability       do not support "close at commit" semantics since RapidsSE
                                           does not support this.
-  18. ResultSet         ResultSet Type    ResultSets currently only support forward-only iterating,
+  18  ResultSet         ResultSet Type    ResultSets currently only support forward-only iterating,
                                           even though ``Statement.getResultSetType()`` returns
                                           ``TYPE_SCROLL_INSENSITIVE``. This is because this type of
                                           ResultSet is required for JMeter, however ResultSets
@@ -570,18 +790,18 @@ The following features are not supported in the RapidsSE JDBC Driver:
                                           - ``last()``
 
                                           - ``previous()``
-  19. ResultSet         ResultSet         The JDBC driver only supports ResultSets that are insensitive
+  19  ResultSet         ResultSet         The JDBC driver only supports ResultSets that are insensitive
                         Sensitivity       to database changes. As such, related operations such as
                                           ``refreshRow()`` are not supported.
-  20. ResultSet         Data Types        The JDBC driver does not support all possible data types
+  20  ResultSet         Data Types        The JDBC driver does not support all possible data types
                                           defined in the ResultSet interface definition. Refer to
                                           `this section <jdbcResultSetDataTypes>` for supported and
                                           unsupported data types.
-  21. ResultSet         Data Type         The JDBC driver does not support all possible conversions
+  21  ResultSet         Data Type         The JDBC driver does not support all possible conversions
                         Conversions       from SQL data types to Java data types. Refer to `this
                                           section <jdbcTypeConversions>` for supported and unsupported
                                           data type conversions.
-  22. DatabaseMetaData  Unsupported       The following methods are not supported:
+  22  DatabaseMetaData  Unsupported       The following methods are not supported:
                         Methods
                                           -	``getBestRowIdentifier()``
 
@@ -606,7 +826,7 @@ The following features are not supported in the RapidsSE JDBC Driver:
                                           - ``getSQLKeywords()``
 
 
-  23. DatabaseMetaData  Methods Returning The following methods are not fully implemented and return
+  23  DatabaseMetaData  Methods Returning The following methods are not fully implemented and return
                         Empty Results or  empty ResultSets:
                         Empty ResultSet
                                           - ``getPrimaryKeys()``
@@ -627,17 +847,173 @@ The following features are not supported in the RapidsSE JDBC Driver:
 
                                           - ``getVersionColumns()``
 
-  24. ResultSetMetaData Column Name And   RapidsSE and the JDBC driver currently do not distinguish
+  24  ResultSetMetaData Column Name And   RapidsSE and the JDBC driver currently do not distinguish
                         Label             between column names and column labels. If an alias is given
                                           for a column then that alias will be used as both the column
                                           name and the column label.
-  25. ResultSetMetaData Originating       RapidsSE and the JDBC driver currently do not provide the
+  25  ResultSetMetaData Originating       RapidsSE and the JDBC driver currently do not provide the
                         Table, Schema And catalog name, schema name or table name that each column of
                         Catalog           a ResultSet came from. Instead, an empty string is returned.
 
   === ================= ================= =============================================================
 
+
+
+
+.. index::
+   single: JDBC driver; debugging applications
+
+Debugging JDBC Applications
+---------------------------
+
+The JDBC driver does not contain a logging framework, as this would impose a
+constraint on any client that uses it. Instead, the driver uses the SLF4J
+logging API, which has bindings with many popular logging frameworks. So it is
+up to the client application that is using the JDBC driver to provide a logging
+framework that can bind to SLF4J. Failure to do so will result in some warning
+messages appearing on the console about the lack of a logging framework being
+supplied:
+
+.. code::
+
+  SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+  SLF4J: Defaulting to no-operation (NOP) logger implementation
+  SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+
+These messages will not appear if a client application provides a jar file for
+binding SLF4J to Log4J (for example), as well as a jar file for the implementation
+of Log4J. This enables all of the logging that occurs within the JDBC driver to be
+directed through the Log4J framework.
+
+Once a logging framework is in place, the driver can be debugged by setting the log
+level to ``TRACE`` or ``DEBUG`` (where ``TRACE`` is an even more verbose level than
+``DEBUG``) for all the classes in the ``com.rapidsdata.jdbcdriver`` namespace. How
+this is done will vary greatly with the logging framework used, as well as the user's
+preferred way of configuring the logging framework.
+
+As one possible example, if the user is using Log4J then the JDBC driver can be
+debugged by providing a file, ``log4j.properties``, on the application's classpath
+with the following contents:
+
+.. code:: properties
+
+  # By default, log INFO or higher to console
+  log4j.rootLogger=INFO,consoleLogger
+
+  # Output ALL logging messages from the RapidsDB JDBC driver
+  log4j.logger.com.rapidsdata.jdbcdriver=TRACE
+
+  # A logger for sending messages to the console
+  log4j.appender.consoleLogger=org.apache.log4j.ConsoleAppender
+  log4j.appender.consoleLogger.layout.ConversionPattern=%d{ISO8601} [%-22c{2}] %-5p: %m%n
+  log4j.appender.consoleLogger.layout=org.apache.log4j.EnhancedPatternLayout
+
+
+
+.. index::
+   single: JDBC driver; sample application
+
 Sample Application
 ------------------
 
+Below is a simple Java application that uses the RapidsSE JDBC driver to query
+a table that already exists in the system. It shows how a query that generates
+a ResultSet can be executed and how that ResultSet can be iterated.
+
+.. code:: java
+
+  // Copyright (c) 2019 Boray Data Co. Ltd.  All rights reserved.
+
+  // Instructions:
+  // * Make the directories [some_dir]/com/rapidsdata
+  // * Copy this content into a file at [some_dir]/com/rapidsdata/JdbcSample.java
+  //
+  // From [some_dir]:
+  // To compile:  javac com/rapidsdata/JdbcSample.java
+  // To execute:  java -cp .:/path/to/rapidsse-jdbc-<version>.jar JdbcSample
+  //
+  // This example assumes an table exists called T with
+  // columns (A VARCHAR(128), B INTEGER) and that table contains
+  // some rows. It also assumes that the JDBC driver can connect to a
+  // RapidsSE node listening on localhost:9123.
+  //
+  // The app will read all rows in the table T and then print them
+  // to the screen.
+  //
+  //
+  // To avoid a warning from SLF4J about logging defaulting to a no-operation,
+  // simply add a compatible logging framework to the class path when running
+  // the sample (e.g. any one of slf4j-nop.jar, slf4j-simple.jar, slf4j-log4j12.jar,
+  // slf4j-jdk14.jar or logback-classic.jar).
+
+
+  package com.rapidsdata;
+
+  import java.sql.*;
+
+  public class JdbcSample
+  {
+    public static boolean doSample()
+    {
+      boolean bRet = false;
+      String url = "jdbc:se://localhost:9123";
+      String userName = null;
+      String password = null;
+      Connection conn = null;
+      Statement stmt = null;
+      try {
+        // Connect to Rapids
+        conn = DriverManager.getConnection(url, userName, password);
+
+        // Get a Statement object from the connection
+        stmt = conn.createStatement();
+
+        // Execute an SQL statement "Select...".
+        ResultSet rs = stmt.executeQuery("SELECT A, B FROM T;");
+
+        ResultSetMetaData metaData = rs.getMetaData();
+        int numberOfColumns = metaData.getColumnCount();
+
+        while (rs.next()) {
+          for (int i = 1; i <= numberOfColumns; i++) {
+            System.out.print(String.format("%s=", metaData.getColumnName(i)));
+
+            switch(metaData.getColumnType(i)) {
+              case java.sql.Types.VARCHAR:
+                System.out.print(String.format("%s, ", rs.getString(i)));
+                break;
+
+              case java.sql.Types.TINYINT:
+              case java.sql.Types.SMALLINT:
+              case java.sql.Types.INTEGER:
+              case java.sql.Types.BIGINT:
+                System.out.print(String.format("%d, ", rs.getLong(i)));
+                break;
+
+              default:
+                System.err.print(String.format("Unhandled type: %d",
+                                               metaData.getColumnType(i)));
+            }
+          } // end for-loop
+
+          System.out.println(" ");
+
+        } // end while-loop
+
+        rs.close();
+        stmt.close();
+        conn.close();
+        bRet = true;
+
+      } catch (SQLException se) {
+        System.out.println(se.toString());
+      }
+      return bRet;
+    }
+
+    public static void main(String[] args)
+    {
+      doSample();
+    }
+  }
 
