@@ -31,6 +31,7 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Symbol* pSymbol);
     bool bIsAggCalc(void);
+    bool bIsCompound(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bNeedsBrace(void);

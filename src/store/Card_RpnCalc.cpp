@@ -307,6 +307,19 @@ bool Card_RpnCalc::bIsAggCalc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a compound rpnCalc?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsCompound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this rpnCalc a simple expression of a column ?                          */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsScalarCol(void)

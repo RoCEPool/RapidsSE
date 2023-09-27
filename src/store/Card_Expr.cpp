@@ -450,6 +450,25 @@ bool Card_Expr::bIsExpressionOfKey(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a compound expr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsCompound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bCompound = false;
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc()) {
+    bCompound = p_boolCalc->bIsCompound();
+  }
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
+    bCompound = p_rpnCalc->bIsCompound();
+  }
+
+  return bCompound;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this expr a simple expression of a column?                              */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsScalarCol(void)

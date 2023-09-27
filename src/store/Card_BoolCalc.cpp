@@ -366,6 +366,19 @@ Card_CONJUNCTION* Card_BoolCalc::pFindRemove_CorrPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a compound boolCalc                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bIsCompound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this boolCalc a simple expression of a column                           */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bIsScalarCol(void) {

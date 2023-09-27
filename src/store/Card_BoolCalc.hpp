@@ -29,6 +29,7 @@ namespace STORE
     bool bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     Card_CONJUNCTION* pFindRemove_CorrPred(void);
+    bool bIsCompound(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bHasTerm(Symbol* pSymbol);
