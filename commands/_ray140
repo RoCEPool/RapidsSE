@@ -27,8 +27,11 @@ create table datums (
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
 
+/optimiser_trace
 /pipeline_def
-/transliterated
 /weaved
-/keepCodeFile
+/transliterated
+/pipelineName = "_ray140"
 select cast(2.002130e+02 as decimal) from datums;
+
+delete table datums;
