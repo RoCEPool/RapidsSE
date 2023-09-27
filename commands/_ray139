@@ -1,0 +1,14 @@
+/*============================================================================*/
+/* _ray139                                                                    */
+/*============================================================================*/
+
+// NOTE : ColsInj not correct in Stage S01
+
+_lineitem;
+load lineitem "../DATA/TPCH/lineitem10.csv";
+
+/pipeline_def
+/transliterated
+/weaved
+/keepCodeFile
+select 2 as a, l_shipdate as b from lineitem;
