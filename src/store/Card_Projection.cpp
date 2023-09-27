@@ -425,6 +425,20 @@ bool Card_Projection::bHasTerm(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a compound projection?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card_Projection::bIsCompound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bIsCompound())
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return a reduced copy of this projection                                   */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pReducedCopy(CardIter* pCI)
