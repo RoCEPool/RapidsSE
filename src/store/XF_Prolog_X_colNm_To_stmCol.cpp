@@ -96,25 +96,25 @@ void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
 
   CardIter* pCI = m_pCI;
 
-  auto b_colNm_To_stmCol = [pCI](Card* pCard)
+  auto fb_colNm_To_stmCol = [pCI](Card* pCard)
   {
-    Card_Term* p_term = _pCard_Term(pCard);
-    if (!p_term->pSymbol()->bIs_Col_Nm())
+    Card_Term* p_term_colNm = _pCard_Term(pCard);
+    if (! p_term_colNm->pSymbol()->bIs_Col_Nm())
       return C_CONTINUE_RECURSION;
 
-    //p_term->vDump(__func__);
+    //p_term_colNm->vDump(__func__);
 
-//    // todo: delete
-//    if (Card_Expr* p_expr_col =
-//        pCI->Prior.m_pProjection->pFind_expr_Of_symbol(p_term->pSymbol())) {
-//      //p_expr_col->vDump();
-//      p_term->pSymbol()->vSym(p_expr_col->pSymbol());
-//    }
-//    else
-    if (Card_Expr* p_expr_col =
-        pCI->Prior.m_pProjection->pFind_expr_By_as(p_term->pSymbol())) {
-//      p_expr_col->vDump(__func__);
-      p_term->pSymbol()->vSymPpy(p_expr_col->pSymbol());
+    if (Card_Expr* p_expr_found =
+        pCI->Prior.m_pProjection->pFind_expr_By_as(p_term_colNm->pSymbol())) {
+      //p_expr_found->vDump(__func__);
+      p_term_colNm->pSymbol()->vSymPpy(p_expr_found->pSymbol());
+      if (Symbol* pSymbol_found = p_expr_found->pFirstTblCol()) {
+        pSymbol_found->vDump();
+        p_term_colNm->pSymbol()->Y_vSet(P_TblCol, pSymbol_found->szSF_symbol(SF_NONE));
+      }
+
+      //p_term_colNm->vDump(__func__);
+      vDebugPoint();
     }
 
     return C_CONTINUE_RECURSION;
@@ -122,7 +122,7 @@ void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_OP->vApply_lambdaFn_ToAll_term(pCI, b_colNm_To_stmCol);
+  pCI->G.p_OP->vApply_lambdaFn_ToAll_term(pCI, fb_colNm_To_stmCol);
 }
 
 /*============================================================================*/

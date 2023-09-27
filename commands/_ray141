@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray140                                                                   */
+/* _ray141                                                                    */
 /*============================================================================*/
 
 // NOTE: colInj not correct in stage S01
@@ -7,8 +7,10 @@
 __TPCH_SCHEMA;
 
 /optimise_passthru
+/optimiser_trace
 /pipeline_def
 /weaved
+/transliterated
 /keepCodeFile
 /pipelineName = "_ray141"
 pipeline _ray141
@@ -37,3 +39,5 @@ begin
    | first
 
 end ;
+
+_tpchDrop

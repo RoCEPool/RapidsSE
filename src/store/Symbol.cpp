@@ -1151,7 +1151,17 @@ void Symbol::vDump(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vTrace("Symbol : %%lld %s\n"_Stz,(i8)m_eSymbol,aSF[m_eSymbol]);
+  s4K sProperties;
+  vPpy_To_String(sProperties);
+
+  vTrace("Symbol : %lld %s: %s {%s} %s\n"_Stz
+         , (i8)m_eSymbol
+         , aSF[m_eSymbol]
+
+         , *szSF_symbol(SF_NONE)->azChar() ? szSF_symbol(SF_NONE) : "??Symbol"_Stz
+         , sProperties.szStz()
+         , szWhatIs()
+  );
 }
 
 /*----------------------------------------------------------------------------*/
