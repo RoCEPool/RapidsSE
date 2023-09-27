@@ -69,7 +69,10 @@ void XF_Epilog_Add_inflate::vAdd(void)
 
     if (CK_SCAN == m_pCI->G.e_MainCard) {
       m_pCI->G.p_inflate = new Card_Inflate;
-      m_pCI->G_vInsertAfter(m_pCI->G.p_inflate,m_pCI->G.p_MainCard);
+      m_pCI->G_vInsertAfter(m_pCI->G.p_inflate,m_pCI->G.p_scan);
+
+      if (m_pCI->G.p_scan->pSymbol()->Y_bHas(P_FusedProject))
+        m_pCI->G.p_inflate->pSymbol()->Y_vSet(P_FusedProject);
 
       m_pCI->vBurst(m_pCI->G.p_MainCard);
 
