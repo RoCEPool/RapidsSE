@@ -69,9 +69,6 @@ void XF_Epilog_Append_synthesis::vAppend(void)
     if (m_pCI->G.p_MainCard->bIsOne(CK_STAGE,CK_NONE))
       continue;
 
-    if (m_pCI->G.p_MainCard->pSymbol()->Y_bHas(P_Fused))
-      continue;
-
     m_pCI->G_vAppendNewChild(m_pCI->G.p_MainCard, CK_SYNTHESIS);
   }
 

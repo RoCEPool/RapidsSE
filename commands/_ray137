@@ -10,4 +10,7 @@ __TPCH_SCHEMA
 /pipeline_def
 /weaved
 /transliterated
+/pipelineName = "_ray137"
 SELECT -1 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+
+_tpchDrop

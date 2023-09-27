@@ -76,6 +76,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
     m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vClearRestart();
@@ -90,6 +91,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
     m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vClearRestart();
@@ -112,6 +114,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
     m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vEndTransform();
