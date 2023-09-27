@@ -261,7 +261,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol, Stz* szTblC
       continue;
 
     Symbol* pSymbol_tblCol = p_expr->pFirstStmCol();
-    Stz* szTblCol_p = pSymbol_tblCol->Y_szGet(P_WasStmCol);
+    Stz* szTblCol_p = pSymbol_tblCol->Y_szGet(P_AltTblCol);
     xSymbol_as_stripped.vSym(p_as->pSymbol());
     xSymbol_as_stripped.vItemStrip();
 

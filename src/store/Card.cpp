@@ -68,7 +68,6 @@ Stz* P_SendKind     = "eSendKind"_Stz;
 Stz* P_SentOut      = "nSentOut"_Stz;
 Stz* P_Smoothed     = "bSmoothed"_Stz;
 Stz* P_StageTopo    = "eStageTopo"_Stz;
-Stz* P_StmCol       = "szStmCol"_Stz;
 Stz* P_SubQryCall   = "bSubQryCall"_Stz;
 Stz* P_Synthetic    = "bSynthetic"_Stz;
 Stz* P_TableUsed    = "bTableUsed"_Stz;
@@ -76,7 +75,7 @@ Stz* P_TblCol       = "szTblCol"_Stz;
 Stz* P_Type         = "szType"_Stz;
 Stz* P_Unproject    = "bUnproject"_Stz;
 Stz* P_WasKeyCol    = "bWasKeyCol"_Stz;
-Stz* P_WasStmCol    = "szWasStmCol"_Stz;
+Stz* P_AltTblCol    = "szWasStmCol"_Stz;
 
 Stz* C_CARD_HISTORY = "<card_history>"_Stz;
 Stz* C_CODE_BLOCK   = "<code_block>"_Stz;

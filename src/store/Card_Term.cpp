@@ -535,8 +535,8 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   s32 sType_short = pSymbol()->Y_szColType();
 
   pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
-  if (pSymbol()->Y_bHas(P_WasStmCol))
-    pRibbon->vSprintSnippet(true,"%s %s"_Stz,P_WasStmCol,pSymbol()->Y_szGet(P_WasStmCol));
+  if (pSymbol()->Y_bHas(P_AltTblCol))
+    pRibbon->vSprintSnippet(true, "%s %s"_Stz, P_AltTblCol, pSymbol()->Y_szGet(P_AltTblCol));
   else
   if (pSymbol()->Y_bHas(P_WasKeyCol))
     pRibbon->vSprintSnippet(true,"%s %s"_Stz,P_WasKeyCol,pSymbol()->Y_szGet(P_WasKeyCol));

@@ -542,24 +542,27 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 
   auto bfInject = [pColInj, p_projection] (Card* pCard_expr_i) {
 
-    Card_Expr* p_expr_i = _pCard_Expr(pCard_expr_i);
-    Card_As* p_as_i     = p_expr_i->pSub_as();
-    Symbol *pSymbol_i   = p_as_i->pSymbol();
-    i8 i_CrwCol_i       = pSymbol_i->iSF_ordinal();
-    Stz* szTblCol_i     = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
+    // injected related
+    Card_Expr*  p_expr_i = _pCard_Expr(pCard_expr_i);
+    Card_As*      p_as_i = p_expr_i->pSub_as();
+    Symbol*    pSym_as_i = p_as_i->pSymbol();
+    i8        i_CrwCol_i = pSym_as_i->iSF_ordinal();
+    Stz*      szTblCol_i = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
 
-    Card_Expr* p_expr_p =
-        p_projection->pFind_expr_By_as_stripped(p_as_i->pSymbol(),szTblCol_i);
+    // projected related
+    Card_Expr* p_expr_p  =
+        p_projection->pFind_expr_By_as_stripped(pSym_as_i,szTblCol_i);
     if (! p_expr_p)
       return C_CONTINUE_RECURSION;
 
-    Card_As *p_as_p   = p_expr_p->pSub_as();
-    Symbol *pSymbol_p = p_as_p->pSymbol();
-    Stz* szWas_p      = p_expr_p->pFirstStmCol()->Y_szGet(P_WasStmCol);
-    i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+    Card_As*      p_as_p = p_expr_p->pSub_as();
+    Symbol*    pSym_as_p = p_as_p->pSymbol();
+    Stz*      szSym_as_p = pSym_as_p->szSF_symbol(SF_NONE);
+    Stz*      szTblCol_p = p_expr_p->pFirstStmCol()->Y_szGet(P_AltTblCol);
+    i8    i_StructCell_p = pSym_as_p->iSF_ordinal();
 
-    pColInj->vAdd(i_CrwCol_i, i_StructCell_p, p_as_p->szSymbol(SF_NONE),
-                  szTblCol_i, szWas_p);
+    pColInj->vAdd(i_CrwCol_i, i_StructCell_p,
+                  szSym_as_p, szTblCol_i, szTblCol_p);
 
     return C_CONTINUE_RECURSION;
 
@@ -573,14 +576,14 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 //        Symbol *pSymbol_a = p_expr_p->pSymbol();
 //        i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
 //
-//        Symbol *pSymbol_p = pCard_expr_i->pSymbol();
-//        i8 i_StructCell_p = pSymbol_p->iSF_ordinal();
+//        Symbol *pSym_as_p = pCard_expr_i->pSymbol();
+//        i8 i_StructCell_p = pSym_as_p->iSF_ordinal();
 //
-////      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_WasStmCol);
-////      Stz* szWas_p = p_expr_p->pFirstTblCol()->Y_szGet(P_WasStmCol);
+////      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_AltTblCol);
+////      Stz* szTblCol_p = p_expr_p->pFirstTblCol()->Y_szGet(P_AltTblCol);
 //
 //        pColInj->vAdd(i_CrwCol_a, i_StructCell_p, p_as_i->szSymbol(SF_NONE));
-////                               szWas_i, szWas_p);
+////                               szWas_i, szTblCol_p);
 //      }
 //
 //    }

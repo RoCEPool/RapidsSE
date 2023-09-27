@@ -205,7 +205,6 @@ extern Stz* P_SendKind;
 extern Stz* P_SentOut;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
-extern Stz* P_StmCol;
 extern Stz* P_SubQryCall;
 extern Stz* P_Synthetic;
 extern Stz* P_TableUsed;
@@ -213,7 +212,7 @@ extern Stz* P_TblCol;
 extern Stz* P_Type;
 extern Stz* P_Unproject;
 extern Stz* P_WasKeyCol;
-extern Stz* P_WasStmCol;
+extern Stz* P_AltTblCol;
 
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;

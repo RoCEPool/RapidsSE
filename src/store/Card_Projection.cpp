@@ -329,7 +329,6 @@ void Card_Projection::vMapColumns(CardIter* pCI)
       Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
       Card_Map* p_map_keyCell = pCI->G.p_keyCells->pDecodeMap(pSymbol_keyCol);
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
-      p_map_keyCell->pSymbol()->Y_vSet(P_StmCol, p_expr_projection->szSymbol(SF_NONE));
 
       i_Cell_key = pSymbol_keyCol->iSF_ordinal();
       p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
