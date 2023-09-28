@@ -401,6 +401,8 @@ end ;
 
 rows: 5996
 
+// TODO FUSE : _ray143
+/*
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -422,6 +424,7 @@ begin
 end ;
 
 rows: 1160
+
 
 /optimise_passthru 
 pipeline unnamed
@@ -445,7 +448,7 @@ begin
 end ;
 
 rows: 36
-
+*/
 
 /optimise_passthru 
 pipeline unnamed

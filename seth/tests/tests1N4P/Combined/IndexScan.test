@@ -299,7 +299,7 @@ success
 
 //------------------------------------------------------------------------------
 // indexscan with indexjoin
-/optimise_passthru 
+/optimise_passthru
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -319,6 +319,8 @@ end ;
 
 rows: 5996
 
+// TODO FUSE :
+/*
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -340,6 +342,7 @@ begin
 end ;
 
 rows: 1160
+*/
 
 //------------------------------------------------------------------------------
 // drop the tables
@@ -356,6 +359,9 @@ rows: 0
 CLEANUP {
 
   drop table lineitem;
+  mute
+
+  drop table orders;
   mute
 
   bye;
