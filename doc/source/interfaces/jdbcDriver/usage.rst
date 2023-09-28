@@ -287,6 +287,8 @@ Some valid examples of setting the hostname and port include:
 .. index::
    single: JDBC driver; properties
 
+.. _jdbcSupportedProperties:
+
 Supported Properties
 ````````````````````
 
@@ -495,16 +497,112 @@ updatable. In addition the ``ResultSet`` can only be iterated in a forward
 direction only. This means that the client cannot move the ``ResultSet``
 iterator backward to look at a row it previously went past.
 
+By using a forward-only iterating ``ResultSet``, the client will not incur a
+large overhead of reading all row data from the server in one go (for a statement
+that returns a large number of rows). Instead the client will read a single
+buffer of rows (typically up to 1MB in size) and only when the client has
+iterated through these rows will the next buffer be read from the socket. Due
+to TCP/IP flow control, the server will be blocked from sending additional
+buffers of rows to the client until the client is ready to read them.
+
 
 .. index::
    single: JDBC driver; batched statements
 
-Batched Statements and Multiple ResultSets
-------------------------------------------
+Batched Query and Multiple ResultSets
+-------------------------------------
 
-TODO:
-Describe batched statements in a single string as well as Statement.addBatch()
-and statement.executeBatch().
+Both RapidsSE and the JDBC driver support the concept of batched queries.
+That is, a single command that contain one or more separately logical statements.
+When this is sent to RapidsSE, the server will parse the string into individual
+statements and then execute then sequentially, returning results from each of
+them back to the JDBC driver. This means that a single batched query being
+executed may return multiple ResultSets and update counts.
+
+An example of a batched query being executed through a JDBC driver is shown below:
+
+.. code:: java
+
+  String query = "SELECT * FROM t1; SELECT * FROM t2;";
+
+  ResultSet rs = statement.executeQuery(query);
+
+  // Process the first result set
+  // ...
+
+  // Get the subsequent result sets
+  while (statement.getMoreResults()) {
+    rs = statement.getResultSet();
+
+    // Process the subsequent result sets
+    // ...
+  }
+
+
+The above example shows a single query being executed that contains two logical
+``SELECT`` statements. The two statements are each properly terminated by
+semicolons and the statements are concatenated together into a single string that
+is then sent to the server to be executed as a single query.
+
+The server will parse this string into two separate commands to be executed. The
+first command will be executed and its results will be generated before the second
+command is executed. Each of these individual ``SELECT`` statement will return a
+different ResultSet. This means that the client needs to handle this using the
+methods available through the JDBC specification.
+
+In the above specific example we can see that after the first ResultSet is
+returned and processed by the client, the call to ``statement.getMoreResults()``
+will initially return ``true`` because a second ResultSet exists. This can then
+be retrieved by calling ``statement.getResultSet()``. Please note that as per
+the JDBC specification, calling ``statement.getMoreResults()`` will close the
+first ResultSet that was retrieved.
+
+.. note::
+
+  Please refer to the JDBC specification and Java documentation on how to correctly
+  handle ResultSets, update counts and errors when multiple results are being
+  returned.
+
+A batched query does not necessarily need to contain commands that generate
+ResultSets. A batched query can contain any valid commands. As per the JDBC
+specification, a command that doesn't generate a ResultSet will represent their
+result as an update count instead. The client application should use the JDBC
+specification with care to determine whether there is a next result and whether
+that next result is a ResultSet, an update count or an error.
+
+By default, if an individual command in a batched query causes an error to be
+generated in RapidsSE then the remaining commands in that batch will not be
+executed. Consider the following batched query:
+
+.. code:: sql
+
+  SELECT * FROM t1; SELECT * FROM badTable; CREATE TABLE t2 (col1 INTEGER);
+
+Initially the first command (``SELECT * FROM t1;``) will be executed and this
+will return a ResultSet. Then the second command executes (``SELECT * FROM badTable;``)
+but this generates an error because ``badTable`` does not exist. Because of this
+the third command in the batch (``CREATE TABLE t2 (col1 INTEGER);``) does not
+get executed and the batched query is now ended.
+
+This behaviour can be controlled by setting a JDBC property ``continuebatchonerror``.
+Setting this property to ``true`` will cause the JDBC driver to instruct RapidsSE
+that it wishes for execution of subsequent commands in a batched query to be
+executed after a previous command has generated an error. If this setting was
+applied to the above example then the third command (``CREATE TABLE t2 (col1 INTEGER);``)
+would have been executed and table ``t2`` would have been created.
+
+This property must be set at the time the JDBC connection is established to the
+server. It cannot be set on an individual JDBC Statement object. Refer to
+:ref:`this section <jdbcSupportedProperties>` for how to specify the property
+when establishing a new JDBC connection.
+
+.. note::
+
+  The JDBC specification includes the methods ``Statement.addBatch(String)`` and
+  ``Statement.executeBatch()``. These methods only support commands that do not
+  generate a ResultSet. As such, it is preferable and more flexible to specify a
+  batched query as a single string (as per the previous example) rather than use
+  these JDBC methods.
 
 
 .. index::
