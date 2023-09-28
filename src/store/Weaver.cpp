@@ -365,6 +365,16 @@ void Weaver::vOp(Card* pCard, bool bCommented)
   vEolOp();
 
   m_i_Op_stage++;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (CK_INFLATE ==eCard && pCard->pSymbol()->Y_bHas(P_FusedProject)) {
+    Card_Project *p_project = new Card_Project(CK_PROJECT);
+    p_project->vAppendChild(_pCard_Inflate(pCard)->pSub_projection()->pDupCardRecursive());
+    vOp(p_project, true);
+    delete p_project;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,17 +595,8 @@ void Weaver::vArgInflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
   if (! pCard_Inflate->pSymbol()->Y_bHas(P_FusedProject))
     return;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  psOpArgs->vCatSprint(" // fused project"_Stz);
 
-//  psOpArgs->vCatSprint(" // fused project"_Stz);
-//
-//  Card_Project* p_project = new Card_Project(CK_PROJECT);
-//
-//  p_project->vAppendChild(pCard_Inflate->pSub_projection());
-//
-//  vOp(p_project, true);
-//
-//  delete p_project;
 }
 
 /*----------------------------------------------------------------------------*/
