@@ -13,7 +13,7 @@
 ../../../seth/tests/tests1N4P/Top/testList
 ../../../seth/tests/tests1N4P/CombinedV2/testList
 
-////////////../../../seth/tests/tests1N4P/DataTypes/testList
+../../../seth/tests/tests1N4P/DataTypes/testList
 ../../../seth/tests/tests1N4P/Expressions/testList
 ../../../seth/tests/tests1N4P/Filter/testList
 ../../../seth/tests/tests1N4P/Limit/testList
