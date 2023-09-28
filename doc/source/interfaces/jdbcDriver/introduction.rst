@@ -108,3 +108,18 @@ opened on any firewalls that exist between the client computer and the RapidsSE
 server. This is typically port ``TCP/9123``, though it can be customised when
 RapidsSE is installed.
 
+
+.. index::
+   single: JDBC driver; installation
+
+Installation
+------------
+
+The JDBC driver does not need any specific installation instructions. It already
+comes bundled in the installation of each RapidsSE node, for use with SE Shell.
+
+To use the JDBC driver in a separate client application, simply copy the JDBC
+driver JAR file to your project and ensure it is included in the Java class path
+when your client is executed. Java will preload the driver JAR file and register
+it as an available JDBC driver. If the client application then uses the a valid
+JDBC URL then this driver will be used.

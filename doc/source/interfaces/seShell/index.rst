@@ -1,26 +1,16 @@
-.. only:: html
-
-  .. contents:: Contents of this section:
-     :depth: 3
-     :backlinks: none
-
 .. index::
-   single: Interfaces; RapidsSE Shell
-   single: RapidsSE Shell
+   single: Interfaces; SE Shell
    single: SE Shell
    single: Shell, SE
 
 .. _seShellInterface:
 
-RapidsSE Shell
-=========================
+SE Shell
+========
 
-Detailed information on this will be coming soon.
+.. toctree::
+  :maxdepth: 1
 
-
-Subheading 1
------------------
-
-
-Subheading 2
-```````````````
+  introduction
+  usage
+  changeHistory
