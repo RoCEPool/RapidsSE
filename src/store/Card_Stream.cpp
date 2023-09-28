@@ -46,9 +46,11 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_NONE));
   pCI->G.p_projection = pCI->G.p_project->pSub_projection();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no arrived columns, only injected
+
   if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
     // <op>/<stream> ; <op>/<stream>/<projection>
-    //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
     pCI->G.p_arriving = (Card_Arriving *) pCI->G.p_stream->pSub_projection();
     pCI->G.p_arriving->vCard(CK_ARRIVING);
 
@@ -60,21 +62,24 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
 
     // <op>/<stream> <= <project>/<stream>/<projection>
     pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pClone());
-  }
-  else {
-    // index join
 
-    pCI->G.p_CARD = pCI->Prior.m_pProjection->pDupCardRecursive();
-    pCI->G.p_CARD->vCard(CK_ARRIVING);
-
-    if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {
-      pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
-    }
-
-    // <op>/<stream> <= <project>/<stream>/<projection>
-    pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
+    return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // arrived and injected columns
+
+  // index join
+
+  pCI->G.p_CARD = pCI->Prior.m_pProjection->pDupCardRecursive();
+  pCI->G.p_CARD->vCard(CK_ARRIVING);
+
+  if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {
+    pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
+  }
+
+  // <op>/<stream> <= <project>/<stream>/<projection>
+  pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray141                                                                    */
+/* _ray142                                                                    */
 /*============================================================================*/
 
 // NOTE: colInj not matching the streamDef_emitted
@@ -10,13 +10,12 @@ _lineitem;
 load lineitem "../DATA/TPCH/lineitem10.csv";
 
 
-/optimise_passthru
 /optimiser_trace
 /pipeline_def
 /weaved
 /transliterated
 /keepCodeFile
-/pipelineName = "_ray141"
+/pipelineName = "_ray142"
 select L_ORDERKEY, L_COMMENT, L_SHIPDATE,  L_DISCOUNT, L_ORDERKEY from lineitem;
 
 drop table lineitem;

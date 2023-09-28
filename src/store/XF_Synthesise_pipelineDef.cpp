@@ -532,15 +532,12 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
       vDebugPoint();
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   Card_Injected*   p_injected   = pSubCard->pSub_injected();
   Card_Projection* p_projection = pSubCard->pSub_projection();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfInject = [pColInj, p_projection] (Card* pCard_expr_i) {
+  auto bfAddDescriptors = [pColInj, p_projection] (Card* pCard_expr_i) {
 
     // injected related
     Card_Expr*  p_expr_i = _pCard_Expr(pCard_expr_i);
@@ -550,11 +547,13 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Stz*      szTblCol_i = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
 
     // projected related
+    Kid xKid(p_projection);
     Card_Expr* p_expr_p  =
-        p_projection->pFind_expr_By_as_stripped(pSym_as_i,szTblCol_i);
+        p_projection->pFind_expr_By_as_stripped(pSym_as_i,szTblCol_i,&xKid);
     if (! p_expr_p)
       return C_CONTINUE_RECURSION;
 
+    // assemble descriptor
     Card_As*      p_as_p = p_expr_p->pSub_as();
     Symbol*    pSym_as_p = p_as_p->pSymbol();
     Stz*      szSym_as_p = pSym_as_p->szSF_symbol(SF_NONE);
@@ -565,35 +564,11 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
                   szSym_as_p, szTblCol_i, szTblCol_p);
 
     return C_CONTINUE_RECURSION;
-
-//    }
-//    else {
-//      NEVER_REACH
-//      if (pSymbol_stmCol_i &&
-//          (p_expr_p = p_projection->pFind_expr_Of_symbol(pSymbol_stmCol_i))) {
-//        //Card_As *p_as_p = p_expr_p->pSub_as();
-//
-//        Symbol *pSymbol_a = p_expr_p->pSymbol();
-//        i8 i_CrwCol_a = pSymbol_a->iSF_ordinal();
-//
-//        Symbol *pSym_as_p = pCard_expr_i->pSymbol();
-//        i8 i_StructCell_p = pSym_as_p->iSF_ordinal();
-//
-////      Stz* szWas_i = p_expr_i->pFirstTblCol()->Y_szGet(P_TblCol);
-////      Stz* szTblCol_p = p_expr_p->pFirstTblCol()->Y_szGet(P_TblCol);
-//
-//        pColInj->vAdd(i_CrwCol_a, i_StructCell_p, p_as_i->szSymbol(SF_NONE));
-////                               szWas_i, szTblCol_p);
-//      }
-//
-//    }
-//    return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_injected->bApplyRecursive(CK_EXPR, bfInject);
-
+  p_injected->bApplyRecursive(CK_EXPR, bfAddDescriptors);
 }
 
 /*============================================================================*/

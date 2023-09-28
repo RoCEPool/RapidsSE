@@ -244,18 +244,22 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol, Stz* szTblCol)
+Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol,
+                                                    Stz* szTblCol,
+                                                    Kid* aKid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(aKid->pParent() == this);
   Symbol xSymbol_arg_stripped;
   Symbol xSymbol_as_stripped;
 
   xSymbol_arg_stripped.vSym(pSymbol);
   xSymbol_arg_stripped.vItemStrip();
 
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    Card_Expr* p_expr = xKid.p_expr();
+//for (aKid->vParent(this); aKid->bEach(CK_EXPR); /**/) {
+  while(aKid->bEach(CK_EXPR)) {
+    Card_Expr* p_expr = aKid->p_expr();
     Card_As*   p_as =   p_expr->pSub_as();
     if (! p_as)
       continue;
@@ -274,9 +278,9 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol, Stz* szTblC
     if ((xSymbol_as_stripped.bSame(&xSymbol_arg_stripped) ||
         p_as->pSymbol()->Y_bHas(P_Synthetic)) &&
         szTblCol_p->bSame(szTblCol))
-      return xKid.p_expr();
+      return aKid->p_expr();
     if (szTblCol_p->bSame(szTblCol))
-      return xKid.p_expr();
+      return aKid->p_expr();
   }
 
   return nullptr;

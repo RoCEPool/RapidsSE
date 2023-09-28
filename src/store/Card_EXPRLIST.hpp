@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_EXPRLIST.hpp -- Abstract Expression List                                 */
+/* Card_EXPRLIST.hpp -- Abstract Expression List                              */
 /*============================================================================*/
 #pragma once
 
@@ -10,8 +10,10 @@
 
 namespace STORE
 {
+  class Kid;
+
   class Card_EXPRLIST : public Card_LIST
-  {  
+  {
   public:
     Card_EXPRLIST(eCK eCard, i8 iFixedDepth);
    ~Card_EXPRLIST(void) noexcept(false);
@@ -31,7 +33,7 @@ namespace STORE
     Card_Expr* pFind_expr_Of_symbol(Symbol* pSymbol);
     Card_Expr* pFind_expr_By_as(Symbol* pSymbol);
     Card_Expr* pFind_expr_By_as_stripItem(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_as_stripped(Symbol* pSymbol, Stz* szTblCol);
+    Card_Expr* pFind_expr_By_as_stripped(Symbol* pSymbol, Stz* szTblCol, Kid* aKid);
     Card_Expr* pFind_expr_By_Ordinal(Symbol* pSymbol);
 
     Card_Expr* pGetExpr(i8 i_Expr);
