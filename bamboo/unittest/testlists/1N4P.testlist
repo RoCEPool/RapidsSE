@@ -20,12 +20,12 @@
 ../../../seth/tests/tests1N4P/Memory/testList
 ../../../seth/tests/tests1N4P/Misc/testList
 ../../../seth/tests/tests1N4P/QA/interval/testList
-////////////../../../seth/tests/tests1N4P/Projections/testList
+../../../seth/tests/tests1N4P/Projections/testList
 ../../../seth/tests/tests1N4P/Regression/testList
 
 ////////////../../../seth/tests/tests1N4P/Combined/testList
 
-////////////../../../seth/tests/tests1N4P/Transliterate/testList
+../../../seth/tests/tests1N4P/Transliterate/testList
 
 ../../../seth/tests/tests1N4P/BackEnd/testList
 ////////////../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
