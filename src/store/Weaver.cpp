@@ -582,9 +582,20 @@ void Weaver::vArgInflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
 
   //pCard_Inflate->vDump(__func__);
-  if (pCard_Inflate->pSymbol()->Y_bHas(P_FusedProject))
-    psOpArgs->vCatSprint(" // fused project"_Stz);
+  if (! pCard_Inflate->pSymbol()->Y_bHas(P_FusedProject))
+    return;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  psOpArgs->vCatSprint(" // fused project"_Stz);
+//
+//  Card_Project* p_project = new Card_Project(CK_PROJECT);
+//
+//  p_project->vAppendChild(pCard_Inflate->pSub_projection());
+//
+//  vOp(p_project, true);
+//
+//  delete p_project;
 }
 
 /*----------------------------------------------------------------------------*/
