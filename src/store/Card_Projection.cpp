@@ -439,6 +439,24 @@ bool Card_Projection::bIsCompound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a literals projection?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card_Projection::bIsLiterals(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bLiterals = true;
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (! xKid.p_expr()->bIsLiterals()) {
+      bLiterals = false;
+      break;
+    }
+
+  return bLiterals;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return a reduced copy of this projection                                   */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pReducedCopy(CardIter* pCI)

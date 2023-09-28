@@ -306,6 +306,19 @@ bool Card_Project::bIsCompound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a compound project?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_Project::bIsLiterals(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (pSub_projection()->bIsLiterals())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_Project::vEarlyProject_root(CardIter* pCI)

@@ -34,6 +34,7 @@ namespace STORE
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     bool bHasTerm(Symbol* pSymbol);
     bool bIsCompound(void);
+    bool bIsLiterals(void);
     void vMapColumns(CardIter* pCI);
     Card_Projection* pReducedCopy(CardIter* pCI);
     Card_Expr* pResolve_expr(Card_Term* p_term);

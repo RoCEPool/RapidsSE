@@ -37,6 +37,7 @@ namespace STORE
 
     void vInject_foldExpr(CardIter* pCI);
     bool bIsCompound(void);
+    bool bIsLiterals(void);
 
     void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);
     void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);

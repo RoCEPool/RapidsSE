@@ -396,7 +396,7 @@ bool Card_BoolCalc::bIsLiterals(void)
       bLiterals = true;
       return C_TERMINATE_RECURSION;
     }
-    
+
     return C_CONTINUE_RECURSION;
   };
 
