@@ -32,6 +32,7 @@ namespace STORE
     bool bHasTerm(Symbol* pSymbol);
     bool bIsAggCalc(void);
     bool bIsCompound(void);
+    bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bNeedsBrace(void);

@@ -30,6 +30,7 @@ namespace STORE
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     Card_CONJUNCTION* pFindRemove_CorrPred(void);
     bool bIsCompound(void);
+    bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bHasTerm(Symbol* pSymbol);

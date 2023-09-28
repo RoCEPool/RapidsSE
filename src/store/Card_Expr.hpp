@@ -44,6 +44,7 @@ namespace STORE
     bool bIsDescending(void);
     bool bExpressionOfSymbol(Symbol* pSymbol);
     bool bIsCompound(void);
+    bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bIsExpressionOfKey(void);

@@ -379,6 +379,36 @@ bool Card_BoolCalc::bIsCompound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a compound boolCalc                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bIsLiterals(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bLiterals = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  auto fbTestLiterals = [&bLiterals](Card* p_card)
+  {
+    Card_Term* p_term = _pCard_Term(p_card);
+
+    if (p_term->bIsValOdn()) {
+      bLiterals = true;
+      return C_TERMINATE_RECURSION;
+    }
+    
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,fbTestLiterals);
+  UNUSED(bIgnore);
+
+  return bLiterals;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this boolCalc a simple expression of a column                           */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bIsScalarCol(void) {

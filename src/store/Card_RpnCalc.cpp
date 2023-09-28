@@ -320,6 +320,22 @@ bool Card_RpnCalc::bIsCompound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a literals rpnCalc?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsLiterals(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    if (xKid.p_term()->bIsValOdn())
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this rpnCalc a simple expression of a column ?                          */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsScalarCol(void)

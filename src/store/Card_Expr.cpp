@@ -469,6 +469,25 @@ bool Card_Expr::bIsCompound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a literals expr?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsLiterals(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bCompound = false;
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc()) {
+    bCompound = p_boolCalc->bIsLiterals();
+  }
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
+    bCompound = p_rpnCalc->bIsLiterals();
+  }
+
+  return bCompound;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this expr a simple expression of a column?                              */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsScalarCol(void)
