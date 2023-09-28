@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _ray143                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+// NOTE: project went missing.
+//       looks like project got fused with filter
+
+// (Combined/indexJoin.test)
+
+/pipeline_def
+/weaved
+/optimise_passthru
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0374
+  stage stageMarker0374 on all partitions :
+    scan lineitem
+    | indexJoin Orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
+    | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type DATE as O_ORDERDATE O_ORDERDATE  "
+    | filter " type BOOLEAN O_CUSTKEY 120 > "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
