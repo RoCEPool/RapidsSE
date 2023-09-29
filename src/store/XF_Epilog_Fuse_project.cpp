@@ -117,6 +117,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
       continue;
     }
 
+    // can fuse next projection
     m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);

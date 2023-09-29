@@ -38,6 +38,11 @@ namespace STORE
     } Prior;
 
     struct {
+      Card_Project *    m_pProject;
+      Card_Projection * m_pProjection;
+    } Next;
+
+    struct {
       i8         m_i_SubQuery;
       SubQuery*  m_pSubQuery;
 
