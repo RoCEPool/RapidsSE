@@ -66,10 +66,10 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SCAN)) {
-    m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
-    if (! m_pCI->G.p_project ||
-        m_pCI->G.p_project->bIsCompound() ||
-        m_pCI->G.p_project->bIsLiterals()) {
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
+    if (! m_pCI->Next.m_pProject ||
+        m_pCI->Next.m_pProject->bIsCompound() ||
+        m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
       continue;
@@ -77,16 +77,16 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
     m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
 
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
-    m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
-    if (! m_pCI->G.p_project ||
-        m_pCI->G.p_project->bIsCompound() ||
-        m_pCI->G.p_project->bIsLiterals()) {
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
+    if (! m_pCI->Next.m_pProject ||
+        m_pCI->Next.m_pProject->bIsCompound() ||
+        m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
       continue;
@@ -94,7 +94,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
     m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
 
@@ -107,10 +107,10 @@ void XF_Epilog_Fuse_project::vFuse(void)
       continue;
     }
 
-    m_pCI->G.p_project = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
-    if (! m_pCI->G.p_project ||
-        m_pCI->G.p_project->bIsCompound() ||
-        m_pCI->G.p_project->bIsLiterals()) {
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
+    if (! m_pCI->Next.m_pProject ||
+        m_pCI->Next.m_pProject->bIsCompound() ||
+        m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
       m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_projection();
@@ -120,7 +120,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
     // can fuse next projection
     m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_project);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
 
