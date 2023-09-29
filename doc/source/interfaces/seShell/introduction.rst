@@ -64,6 +64,7 @@ with a RapidsSE node.
 
 .. figure:: seShellArchitecture.*
    :align: center
+
    The architecture of the SE Shell client communicating with RapidsSE.
 
 

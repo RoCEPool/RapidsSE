@@ -20,3 +20,4 @@ Version 1.0
   version 4.0.11 of the Rapids Shell (bundled with RapidsDB) with various
   changes due to the functional differences of the two products.
 
+
