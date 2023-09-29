@@ -443,7 +443,8 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
 
   else
-  if (p_OP->bIsCard(CK_INDEXJOIN) || p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
+//if (p_OP->bIsCard(CK_INDEXJOIN) || p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
+  if (p_OP->bIsCard(CK_INDEXJOIN)) {
     Card_Arriving* p_arriving = p_OP->pSub_arriving();
     m_pOpDef->m_pStreamDef_arriving =
         p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
