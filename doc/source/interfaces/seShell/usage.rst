@@ -77,6 +77,16 @@ SE Shell will also accept the following command line arguments:
 Stopping
 --------
 
+Stopping SE Shell after it has been started is as simple as one of the
+following options:
+
+- Pressing ``<Control>-C``
+
+- Entering the command ``exit;``, ``quit;``, or ``bye;``
+
+SE Shell will exit out back to the command line.
+
+
 
 .. index::
    single: SE Shell; entering commands
@@ -84,11 +94,55 @@ Stopping
 Entering Commands
 -----------------
 
-semi colons
-multi-line commands
-comments
-up arrow
+After starting up SE Shell, a prompt will be displayed that indicates that
+SE Shell is ready to accept commands. The prompt will look like this:
 
+.. code::
+
+  rapids >
+
+Commands can be executed by entering them at the prompt and terminating the
+command with a semicolon (``;``) before pressing enter.
+Commands that are not terminated with a semicolon are assumed to continue on
+the next line, until a semicolon and enter key combination is detected.
+
+SE Shell accepts commands being split over multiple lines. This can make it
+easier to type and edit long commands. SE Shell will submit the command to RapidsSE
+as it is written, with any line breaks in the middle of the command.
+
+.. index::
+   single: SE Shell; history recall
+
+.. rubric:: Command History, Recall & Editing
+
+SE Shell supports line-editing and recall of commands. Pressing the up arrow key will
+cycle through and recall the past history of commands. Pressing the down arrow
+will cycle through the history in the opposite direction. This makes it easier to
+re-execute previous commands rather than re-typing them. SE Shell will only
+remember commands from the current session. Once the user has exited out of
+SE Shell the history will be forgotten.
+
+Please note that while SE Shell allows for commands to span multiple lines,
+any recalled commands can only be displayed on a single line. For this reason,
+SE Shell will display any line breaks in the command as the single printable character
+``^J``. This is purely for display and internal limitation reasons. If the
+multi-line command is submitted to RapidsSE the command will contain the
+correct line breaks.
+
+.. rubric:: Comments
+
+SE Shell supports the following comment markers in commands:
+
+- ``//`` for C++ style line comments
+- ``--`` for line comments
+- ``/*`` and ``*/`` for C style block comments
+
+
+Cancelling Queries
+------------------
+
+SE Shell does not yet support cancelling queries that are currently running
+because RapidsSE does not support this just yet.
 
 
 .. index::
