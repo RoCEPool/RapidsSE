@@ -22,6 +22,7 @@ cp "${ROOT_DIR}/bin/se.man"        "${LAYOUT_DIR}/bin"
 mkdir -p "${LAYOUT_DIR}/shell"
 cp "${ROOT_DIR}/shell/"*.jar       "${LAYOUT_DIR}/shell"
 cp "${ROOT_DIR}/shell/seshell.sh"  "${LAYOUT_DIR}/shell"
+cp "${ROOT_DIR}/shell/seshell.bat" "${LAYOUT_DIR}/shell"
 cp "${ROOT_DIR}/shell/seshell.sh"  "${LAYOUT_DIR}"
 
 # commands directory
