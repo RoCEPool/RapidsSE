@@ -9,10 +9,12 @@ __TPCH_SCHEMA;
 
 // (Combined/indexJoin.test)
 
+/optimiser_trace
+/transliterated
 /pipeline_def
 /weaved
 /optimise_passthru
-pipeline unnamed
+pipeline _ray143
 begin
   stage stageStart on origin :
     start
@@ -30,3 +32,5 @@ begin
     | sink
     | stageStart
 end ;
+
+_tpchDrop

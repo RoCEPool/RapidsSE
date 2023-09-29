@@ -420,14 +420,16 @@ void CardIter::G_vClearRegisters(void)
   G.p_Sub3OfMain       = nullptr;
   G.e_Sub3OfMain       = CK_NONE;
 
+  Sqy.m_pTerm_corrCol  = nullptr;
 
-  Sqy.m_pTerm_corrCol      = nullptr;
+  Prior.m_pProjection  = nullptr;
 
-  Prior.m_pProjection = nullptr;
+  Next.m_pProject      = nullptr;
+  Next.m_pProjection   = nullptr;
 
-  Early.m_pOP_root   = nullptr;
-  Early.m_pOP_leaf   = nullptr;
-  Early.m_pNeeded_later   = nullptr;
+  Early.m_pOP_root     = nullptr;
+  Early.m_pOP_leaf     = nullptr;
+  Early.m_pNeeded_later = nullptr;
 
   StreamOrder.m_pStreamKey_running  = nullptr;
   StreamOrder.m_pProjection_running = nullptr;
