@@ -874,9 +874,9 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
 
-			pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_StreamLeftCol);
+			//pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_StreamLeftCol);
 
-			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
+			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, nullptr, i_StreamLeftCol, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
 			RASSERT(bExtracted);
 			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 			i_StreamLeftCol++;
@@ -890,7 +890,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
 			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_StructCell);
-			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
+			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, i_StreamLeftCol, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
 			RASSERT(bExtracted);
 			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
 			i_StreamLeftCol++;
