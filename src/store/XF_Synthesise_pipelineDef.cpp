@@ -547,23 +547,33 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Stz*      szTblCol_i = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
 
     // projected related
+
+    Card_Expr *p_prior_expr_p = nullptr;
+
     Kid xKid(p_projection);
-    Card_Expr* p_expr_p  =
-        p_projection->pFind_expr_By_as_stripped(pSym_as_i,szTblCol_i,&xKid);
-    if (! p_expr_p)
-      return C_CONTINUE_RECURSION;
+    for (;;) {
+      Card_Expr *p_expr_p =
+          p_projection->pFind_expr_By_as_stripped(pSym_as_i, szTblCol_i, &xKid);
+      if (! p_expr_p)
+        return C_CONTINUE_RECURSION;
 
-    // assemble descriptor
-    Card_As*      p_as_p = p_expr_p->pSub_as();
-    Symbol*    pSym_as_p = p_as_p->pSymbol();
-    Stz*      szSym_as_p = pSym_as_p->szSF_symbol(SF_NONE);
-    Stz*      szTblCol_p = p_expr_p->pFirstStmCol()->Y_szGet(P_TblCol);
-    i8    i_StructCell_p = pSym_as_p->iSF_ordinal();
+      // assemble descriptor
+      Card_As *p_as_p   = p_expr_p->pSub_as();
+      Symbol *pSym_as_p = p_as_p->pSymbol();
+      Stz *szSym_as_p   = pSym_as_p->szSF_symbol(SF_NONE);
+      Stz *szTblCol_p   = p_expr_p->pFirstStmCol()->Y_szGet(P_TblCol);
+      i8 i_StructCell_p = pSym_as_p->iSF_ordinal();
 
-    pColInj->vAdd(i_CrwCol_i, i_StructCell_p,
-                  szSym_as_p, szTblCol_i, szTblCol_p);
+      pColInj->vAdd(i_CrwCol_i, i_StructCell_p,
+                    szSym_as_p, szTblCol_i, szTblCol_p);
 
-    return C_CONTINUE_RECURSION;
+      if (p_prior_expr_p) {
+        pColInj->vRepeatsPrior();
+        vDebugPoint();
+      }
+      p_prior_expr_p = p_expr_p;
+    }
+    NEVER_REACH
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

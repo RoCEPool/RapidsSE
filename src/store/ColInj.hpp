@@ -20,6 +20,8 @@ namespace STORE
       i8   m_i_StructCell; // cell of struct (base 0)
       s32  m_sCn_memberNm; // member name
 
+      bool m_bPriorCrwCol; // is same m_i_CrwCol as prior
+
       s32  m_sNote1;       // note
       s32  m_sNote2;       // note
     } m_axCol[C_COLINJ];
@@ -40,6 +42,8 @@ namespace STORE
               Stz* szNote1= nullptr, Stz* szNote2= nullptr);
 
     void vDump(i8 i_Tab=0);
+
+    void vRepeatsPrior(void);
 
     void vValidate(void);
 
