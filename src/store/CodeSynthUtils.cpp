@@ -813,7 +813,9 @@ void CodeSynthUtils::vReplaceNumColumns(String* sLine, OpSketch* pOpSketch) {
 
   if (StrLib::bContains(sLine->azStr(), "__COLUMNS_IN__")) {
     s256 sColumn;
-    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pColsInj->m_nCrwCols);
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefLft ?
+		  pOpSketch->m_pStreamDefLft->nColumns() : pOpSketch->m_pColsInj->m_nCrwCols);
+
     bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
                                "__COLUMNS_IN__", sColumn.azChar());
     RASSERT(bResult);
@@ -1088,7 +1090,7 @@ void CodeSynthUtils::vReplaceColumnsToInflate(String* sLine, OpSketch* pOpSketch
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
-      sColumnsToInflate.vSprint("%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+      sColumnsToInflate.vSprint("%lld"_Stz,pOpSketch->m_pColsInj->m_nCrwCols);
     }
 
     bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),

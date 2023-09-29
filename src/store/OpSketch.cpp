@@ -1794,12 +1794,14 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   s256 sPush;
 
   i8 i_ColumnOrdinal = C_UNKNOWN;
-  i8 nColumns = m_pStreamDefLft->nColumns();
+  i8 nColumns;
 
   // skip index column
   if (pTkn->szChars()->bContains("I"_Stz)) {
     return;
   }
+
+	nColumns = m_pStreamDefLft->nColumns();
 
   // ignore right columns
   if (pTkn->szChars()->bContains("R"_Stz)) {

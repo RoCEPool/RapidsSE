@@ -450,9 +450,9 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   }
   else
   if (p_OP->bIsCard(CK_INFLATE)) {
-    Card_Injected* p_injected = p_OP->pSub_injected();
-    m_pOpDef->m_pStreamDef_arriving =
-        p_injected->pToStreamDef(nullptr, nullptr, p_OP);
+//    Card_Injected* p_injected = p_OP->pSub_injected();
+//    m_pOpDef->m_pStreamDef_arriving =
+//        p_injected->pToStreamDef(nullptr, nullptr, p_OP);
   }
 
   if (p_OP->bIsCard(CK_INDEXJOIN))
