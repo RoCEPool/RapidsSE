@@ -17,10 +17,12 @@ __aFooterFunction(ColInj)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ColInj::ColInj(void)
+ColInj::ColInj(i8 nCrwCols)
     : Object(CN_COLINJ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLINJ, _FOOTER_);
+
+  m_nCrwCols = nCrwCols;
 
   for (i8 i_Col = 0; i_Col < C_COLINJ; i_Col++) {
     m_axCol[i_Col].m_i_CrwCol     = C_UNKNOWN;
@@ -86,6 +88,11 @@ void ColInj::vDump(i8 i_Tab)
   UNUSED(i_Tab);
 
   s256 sNotes;
+
+  vTrace("%s%snCrwCols %lld\n"_Stz,
+         Stz::szTab(i_Tab),
+         Stz::szSpaces(7),
+         m_nCrwCols);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     if (*m_axCol[i_Col].m_sNote1.azChar() || *m_axCol[i_Col].m_sNote2.azChar()) {

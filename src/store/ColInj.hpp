@@ -13,6 +13,7 @@ namespace STORE
 
   public:
 
+    i8 m_nCrwCols;
     i8 m_nCols;
 
     struct {
@@ -34,7 +35,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ColInj(void);
+    ColInj(i8 nCrwCols);
 
    ~ColInj(void) noexcept(false);
 
