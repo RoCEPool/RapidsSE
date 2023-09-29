@@ -19,7 +19,6 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   i8* paW;
   i8 i_CurrentRow;
-  i8 __COLUMNS_IN__;
 
   // marker-start
   struct __STRUCT_TO__* p__STRUCT_TO__;

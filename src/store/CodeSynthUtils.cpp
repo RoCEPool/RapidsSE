@@ -813,7 +813,7 @@ void CodeSynthUtils::vReplaceNumColumns(String* sLine, OpSketch* pOpSketch) {
 
   if (StrLib::bContains(sLine->azStr(), "__COLUMNS_IN__")) {
     s256 sColumn;
-    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
+    sColumn.vSprint("%lld"_Stz, pOpSketch->m_pColsInj->m_nCrwCols);
     bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(),
                                "__COLUMNS_IN__", sColumn.azChar());
     RASSERT(bResult);

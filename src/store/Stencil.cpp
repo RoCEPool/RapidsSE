@@ -659,7 +659,7 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 
   // get the streamDefs
 	StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
-	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+	StreamDef *pStreamDefLft = nullptr; //pOpDef->m_pStreamDef_arriving;
 
 	// get the colInj
 	ColInj* pColsInj = pOpDef->m_pColInj;
