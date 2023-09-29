@@ -5,10 +5,12 @@
 _nation;
 load nation "../TPCH/SF_0001/nation.csv";
 
+/optimiser_trace
 /transliterated
 /pipeline_def
 /keepCodeFile
 /weaved
+/pipelineName = "_ray144"
 SELECT  n_name, n_regionkey FROM nation order by n_name, n_regionKey limit 5;
 
 drop table nation;
