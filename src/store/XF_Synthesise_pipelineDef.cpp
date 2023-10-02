@@ -430,7 +430,16 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
+  if (m_pStageDef->i_Stage() == 7) {
+    vDebugPoint();
+    if (m_pOpDef->i_Op() == 0)
+      vDebugPoint();
+  }
+
   Card_OP* p_OP = m_pCI->G.p_OP;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // arriving
 
   if (p_OP->bIsCard(CK_INDEXJOIN)) {
     Card_Arriving* p_arriving = p_OP->pSub_arriving();
@@ -455,6 +464,9 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 //    m_pOpDef->m_pStreamDef_arriving =
 //        p_injected->pToStreamDef(nullptr, nullptr, p_OP);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // emitted
 
   if (p_OP->bIsCard(CK_INDEXJOIN))
     vDebugPoint();

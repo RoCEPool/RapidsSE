@@ -28,7 +28,7 @@ __TPCH_SCHEMA
 /pipeline_def
 /weaved
 /transliterated
-/pipelineName = "OptQ18"
+/pipelineName = "_ray133"
 select
   c_name,
   c_custkey,
