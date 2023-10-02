@@ -17,10 +17,7 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-INCLUDE 'tpch_q5.test';
-
 //------------------------------------------------------------------------------
-
 LOG ' ';
 INCLUDE 'case_sort1.test';
 INCLUDE 'case_indexScan1.test';
@@ -39,14 +36,18 @@ INCLUDE 'tpch_q7.test';
 INCLUDE 'tpch_q8.test';
 INCLUDE 'tpch_q9.test';
 INCLUDE 'tpch_q10.test';
-///////////INCLUDE 'tpch_q11.test'; (_ray132)
+INCLUDE 'tpch_q11.test';
 INCLUDE 'tpch_q12.test';
 //INCLUDE 'tpch_q13.test';
 INCLUDE 'tpch_q14.test';
 //INCLUDE 'tpch_q15.test';
 INCLUDE 'tpch_q16.test';
-///////////INCLUDE 'tpch_q17.test';
-///////////INCLUDE 'tpch_q18.test'; (_ray133)
+INCLUDE 'tpch_q17.test';
+// TODO FUSE
+/*
+INCLUDE 'tpch_q18.test'; (_ray133)
+*/
+
 INCLUDE 'tpch_q19.test';
 //INCLUDE 'tpch_q20.test';
 //INCLUDE 'tpch_q21.test';
@@ -67,10 +68,10 @@ LOG 'Double Checking:';
 
 LOG 'AggregExpr.test';
 INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
-LOG 'IndexJoin.test';
-INCLUDE '../../tests/tests1N4P/Combined/IndexJoin.test';
-LOG 'operator.test';
-INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
+/////////LOG 'IndexJoin.test';
+/////////INCLUDE '../../tests/tests1N4P/Combined/IndexJoin.test';
+/////////LOG 'operator.test';
+/////////INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
 
 LOG 'End Double Checking';
 

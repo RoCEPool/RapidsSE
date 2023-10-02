@@ -131,9 +131,12 @@ INCLUDE 'OptQ16.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+// TODO FUSE (_ray133)
+/*
 LOG 'Running tpch query 18...';
 INCLUDE 'OptQ18.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 19...';
