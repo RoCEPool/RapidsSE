@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* _ray144                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+//
+// NOTE : To enable Ordered aggregates :
+//        Uncomment XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI); in Xf.cpp line 206
+//
+//
+
+// NOTE: GbyAgg got replaced by OrdAgg (as per the weaved pipeline)
+//         but the opDef of S01 does not have the ordAgg.
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+create index TABLE1_COLA1 on table1(cola1);
+
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_pcol9 on table9(pcol9);
+
+Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+
+/transliterated
+/pipeline_def
+/keepCodeFile
+/weaved
+select max(colb1), cola1 from table1 where cola1 > 450 group by cola1 ;
+
+/*
+rows:
+row: ('PURPLE',457)
+row: ('orange',467)
+row: ('pink',474)
+row: ('YELLOW',480)
+row: ('BLACK',485)
+row: ('orange',491)
+row: ('maroon',493)
+
+*/
