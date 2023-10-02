@@ -323,6 +323,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEPROMPT,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
+  /* */ CN_SHORTFORM,
   /* */ CN_SINCE,
   /* */ CN_SKETCHTKN,
   /* */ CN_SKIPLIST,
@@ -834,6 +835,7 @@ static Stz* aCN[]
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
+  /* */ "SHORTFORM"_Stz,            // CN_SHORTFORM
   /* */ "SINCE"_Stz,                // CN_SINCE
   /* */ "SKETCHTKN"_Stz,            // CN_SKETCHTKN
   /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST

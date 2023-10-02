@@ -38,7 +38,6 @@ namespace STORE
     void vProjectionAnalysis_passThru(CardIter* pCI);
 
     void vValidate(CardIter* pCI);
-
   };
 
   Card_Deck* _pCard_Deck(void* aAddr);
