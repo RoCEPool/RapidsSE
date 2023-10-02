@@ -43,9 +43,9 @@ INCLUDE 'tpch_q14.test';
 //INCLUDE 'tpch_q15.test';
 INCLUDE 'tpch_q16.test';
 INCLUDE 'tpch_q17.test';
-// TODO FUSE
+// TODO FUSE (_ray133)
 /*
-INCLUDE 'tpch_q18.test'; (_ray133)
+INCLUDE 'tpch_q18.test';
 */
 
 INCLUDE 'tpch_q19.test';
