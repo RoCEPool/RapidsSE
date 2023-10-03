@@ -204,7 +204,8 @@ ordered rows:
 // Result file: ../queries/aggs/max/results/max12.res
 select max(cold9) + max(cole9) from table9;
 rows:
-  (3.976800e+02)
+  //(3.976800e+02)
+  (3.9767999e+02)
   //(397.67999999999995)
 
 
