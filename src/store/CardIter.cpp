@@ -6,6 +6,7 @@
 #include "Cue.hpp"
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
+#include "ShortForm.hpp"
 
 #include "eOT.h"
 
@@ -1159,6 +1160,10 @@ void CardIter::vEndTransform(void)
     }
 
     vPrintBoard();
+
+    ShortForm* pShortForm = new ShortForm(this);
+    pShortForm->vDump(0);
+    delete pShortForm;
   }
 
   vValidateBench();

@@ -65,22 +65,22 @@ void ShortForm::vAdd(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SHORTFORM, _FOOTER_);
 
-  if (pCI->G.p_OP->bIsCard(CK_STAGE)) {
+  if (pCI->G.p_MainCard->bIsCard(CK_STAGE)) {
     m_i_Stage_curr++;
-    m_sStage_curr = pCI->G.p_OP->szSymbol(SF_NONE);
+    m_sStage_curr = pCI->G.p_MainCard->szSymbol(SF_NONE);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - -
 
   m_axOp[m_nOps].m_i_Stage = m_i_Stage_curr;
   m_axOp[m_nOps].m_sStage  = m_sStage_curr;
-  m_axOp[m_nOps].m_sOp     = pCI->G.p_OP->szCardNm();
+  m_axOp[m_nOps].m_sOp     = pCI->G.p_MainCard->szCardNm();
 
-  if ((pCI->G.p_injected = pCI->G.p_OP->pSub_injected()))
+  if ((pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected()))
     pCI->G.p_injected->vShortForm(m_axOp[m_nOps].m_sInjected);
-  if ((pCI->G.p_projection = pCI->G.p_OP->pSub_projection()))
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
     pCI->G.p_projection->vShortForm(m_axOp[m_nOps].m_sProjection);
-  if ((pCI->G.p_key = pCI->G.p_OP->pSub_key()))
+  if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key()))
     pCI->G.p_key->vShortForm(m_axOp[m_nOps].m_sKey);
 
   m_nOps++;
@@ -104,11 +104,11 @@ void ShortForm::vDump(i8 i_Tab)
 
   for (i8 i_Op = 0; i_Op < m_nOps; i_Op++) {
 
-    i8 nLen_s = m_axOp[m_nOps].m_sStage.nLength();
-    i8 nLen_o = m_axOp[m_nOps].m_sOp.nLength();
-    i8 nLen_i = m_axOp[m_nOps].m_sInjected.nLength();
-    i8 nLen_p = m_axOp[m_nOps].m_sProjection.nLength();
-    i8 nLen_k = m_axOp[m_nOps].m_sKey.nLength();
+    i8 nLen_s = m_axOp[i_Op].m_sStage.nLength();
+    i8 nLen_o = m_axOp[i_Op].m_sOp.nLength();
+    i8 nLen_i = m_axOp[i_Op].m_sInjected.nLength();
+    i8 nLen_p = m_axOp[i_Op].m_sProjection.nLength();
+    i8 nLen_k = m_axOp[i_Op].m_sKey.nLength();
 
     if (nLen_i > nMax_i)  nMax_i = nLen_i;
     if (nLen_k > nMax_k)  nMax_k = nLen_k;
@@ -137,12 +137,12 @@ void ShortForm::vDump(i8 i_Tab)
     vTrace(sFormat,
            Stz::szTab(i_Tab),
            Stz::szSpaces(2),
-           m_axOp[m_nOps].m_sStage.azChar(),
-           m_axOp[m_nOps].m_sOp.azChar(),
+           m_axOp[i_Op].m_sStage.azChar(),
+           m_axOp[i_Op].m_sOp.azChar(),
 
-           m_axOp[m_nOps].m_sInjected.azChar(),
-           m_axOp[m_nOps].m_sProjection.azChar(),
-           m_axOp[m_nOps].m_sKey.azChar()
+           m_axOp[i_Op].m_sInjected.azChar(),
+           m_axOp[i_Op].m_sProjection.azChar(),
+           m_axOp[i_Op].m_sKey.azChar()
            );
   }
 }
