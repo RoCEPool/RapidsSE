@@ -68,8 +68,8 @@ namespace OBLIQUE
     static Dic*       pTenantDic(void);
     static Thread*    pThread(void);
   
-    static Stz*       szPath(Stz* szPathBuffer);
-    static void       vPath(Stz* szPathBuffer);
+    static String*    szPath(String* psPathBuffer);
+    static void       vPath(String* psPathBuffer);
   };
 }
 

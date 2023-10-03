@@ -35,7 +35,7 @@ namespace STORE
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Crw*       pRefdCrw(Rrf xRef);
     static CrwBuffer* pRefdCrwBuffer(Rrf& xRef);
-    static void       vRepairList(Object* pObject);
+    static void       vRepair(Object* pObject);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
   
@@ -65,16 +65,9 @@ namespace STORE
     i8         iDecile(void);
     void       vInflateRows(StreamDef* pStreamDef);
     void       vInflateRows(Tub* pTub);
-    i8         iLengthList(void);
-    CrwBuffer* pNextCrwBuffer(void);
-    void       vNextCrwBuffer(CrwBuffer* pNextBuffer);
-    CrwBuffer* pPrevCrwBuffer(void);
-    void       vPrevCrwBuffer(CrwBuffer* pPrevBuffer);
     void       vPrintRows(StreamDef* pStreamDef);
     void vToCsv(Tub* pTub);
-    CsvBuffer* pToCsvBuffer(void);
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
-    void       vTruncate(void);
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions
@@ -105,21 +98,16 @@ namespace STORE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
-  
-    void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
+
     void vDump(void);
-    void vRestore(void);
     void vRestoreNub(void);
-    void vRestoreTable(Table* pTable);
-    bool bVerify(void);
+    bool bVerifyRows(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // verify functions        
-    bool bVerifyNextPrev(void);
-    bool bVerifyRows(void);
+    // verify functions
     void vVerifyFault(const char* azFunc, const char* azFilePath, i8 iLineNo);
 
     public:

@@ -218,7 +218,7 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::nItems(void)
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   //RASSERT(m_pOwningTask == MY::pTask());
 
-  ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
+  ASSERT(m_nItems <= MAX_ITEMS);  // m_nItems is always positive being unsigned
   
   return m_nItems;
 }

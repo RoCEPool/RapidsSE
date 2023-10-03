@@ -4,6 +4,7 @@
 trackmemory force;
 success
 
+/pipelineName = "OptQ18"
 select
   c_name,
   c_custkey,

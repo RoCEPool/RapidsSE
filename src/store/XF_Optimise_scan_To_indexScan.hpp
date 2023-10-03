@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* XF_Optimise_scan_To_indexScan.hpp -- Morph scan to indexScan                  */
+/*============================================================================*/
+#pragma once
+
+#include "XF_OPTIMISE.hpp"
+
+namespace STORE
+{
+  class XF_Optimise_scan_To_indexScan : public XF_OPTIMISE
+  {
+  private:
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    XF_Optimise_scan_To_indexScan(CardIter* pCI);
+   ~XF_Optimise_scan_To_indexScan(void) noexcept(false);
+
+    static void vOptimise(CardIter* pCI);
+
+    bool bOptimise(void);
+
+  private:
+    Footer* aFooter(void);
+  };
+
+  XF_Optimise_scan_To_indexScan* _pXF_Optimise_scan_To_indexScan(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

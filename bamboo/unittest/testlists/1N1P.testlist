@@ -12,9 +12,9 @@
 //../../../seth/tests/tests1N4P/Regression/testList
 //../../../seth/tests/tests1N1P/Transliterate/testList
 
-// DIABLE FOR V2
-../../../seth/tests/tests1N4P/BackEnd/testList
-../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
+// DISABLE FOR V2
+//../../../seth/tests/tests1N4P/BackEnd/testList
+//../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
 ////////////////
 
 //../../../seth/tests/tests1N4P/Optimiser_SF0001/testList

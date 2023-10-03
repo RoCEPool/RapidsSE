@@ -12,14 +12,7 @@ enum eCF // meta class
   /*    */ CF_ENUMS
 };
 
-static Stz* aCF[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "CF_INSPECT"_Stz,
-  
-  /*    */ "ENUMS"_Stz
-};
+extern Stz* aCF[CF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

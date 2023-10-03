@@ -71,17 +71,12 @@ void CsvBuffer::vPostRecv(void* aCsvBuffer)
 /*----------------------------------------------------------------------------*/
 /* repair csvBuffer                                                           */
 /*----------------------------------------------------------------------------*/
-void CsvBuffer::vRepairList(Object* pObject)
+void CsvBuffer::vRepair(Object* pObject)
 {
   _static_
   CsvBuffer* pCsvBuffer = _pCsvBuffer(pObject);
-  CsvBuffer* pNextCsvBuffer;
 
-  while (pCsvBuffer) {
-    pNextCsvBuffer = pCsvBuffer->pNextBuffer();
-    AM::vDeleteOperand(pCsvBuffer,nullptr);
-    pCsvBuffer = pNextCsvBuffer;
-  }
+  AM::vDeleteOperand(pCsvBuffer,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +119,7 @@ Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
   
   Stz* szAllotted = szAllotRecord(nSize - 1);
   
-  StrLib::vCopy(szAllotted->azChar(),szRecord->azChar());
+  StrLib::vCopy(szAllotted->azChar(), nSize, szRecord->azChar());
 
   return szAllotted;
 }
@@ -171,16 +166,6 @@ i8 CsvBuffer::nFreeBytes(void)
   i8 nFree = m_xWsp.nFree();
   
   return nFree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-CsvBuffer* CsvBuffer::pNextBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
-  
-  return _pCsvBuffer(LinkedBuffer::pNextLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/

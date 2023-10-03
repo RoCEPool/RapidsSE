@@ -16,6 +16,7 @@ class LglPtn : public SEtype
 
   LglPtn(void);
   LglPtn(i8 iAsI8);
+  LglPtn(const LglPtn& oCopy);
 
   
   // auto conversion

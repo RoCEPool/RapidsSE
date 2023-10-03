@@ -22,7 +22,7 @@ namespace BASE
   public:    
     String_t(void);
     String_t(i8 iArg);
-    String_t(char* azArg);
+    String_t(const char* azArg);
     String_t(Stz* szArg);
    ~String_t(void) noexcept(false);
   
@@ -37,7 +37,7 @@ namespace BASE
 
     void vAppend(const char cChar);
     void vAppend(char** aazCursor, Stz* szArg);
-    i8   nArea(void);
+    i8   nAreaBytes(void);
     bool bBeginsWith(Stz* szArg);
     bool bBreak(i8 iBreakAt, i8& iPrevBreak);
     byte* ayByte(void);
@@ -130,7 +130,7 @@ String_t<AREA>::String_t(i8 iArg)
 
   ASSERT(AREA == nFreeBytes());
 
-  StrLib::wToString(iArg,m_caCharArea);
+  StrLib::vToString(m_caCharArea, AREA, iArg);
 
   _checkInitialisedSize_(AREA);
 }
@@ -139,7 +139,7 @@ String_t<AREA>::String_t(i8 iArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-String_t<AREA>::String_t(char* azArg)
+String_t<AREA>::String_t(const char* azArg)
         : Object(CN_STRING_T)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
@@ -154,7 +154,7 @@ String_t<AREA>::String_t(char* azArg)
 
   ASSERT(AREA == nFreeBytes());
 
-  StrLib::vCopyLen(m_caCharArea,azArg,AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, azArg);
 
   _checkInitialisedSize_(AREA);
 }
@@ -178,7 +178,7 @@ String_t<AREA>::String_t(Stz* szArg)
 
   ASSERT(AREA == nFreeBytes());
 
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
   
   _checkInitialisedSize_(AREA);
 }
@@ -225,8 +225,8 @@ template <i8 AREA>
 void String_t<AREA>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
-  
-  StrLib::wToString(iArg,m_caCharArea);
+
+  StrLib::vToString(m_caCharArea, sizeof(m_caCharArea), iArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -239,7 +239,7 @@ void String_t<AREA>::operator =(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -252,7 +252,7 @@ void String_t<AREA>::operator =(char* asArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vCopyLen(m_caCharArea,asArg,AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, asArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -265,7 +265,7 @@ void String_t<AREA>::operator =(const char* asArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 
-  StrLib::vCopyLen(m_caCharArea,asArg,AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, asArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -284,7 +284,7 @@ void String_t<AREA>::vAppend(const char cChar)
   
   // limit???
   
-  StrLib::vConcat(m_caCharArea,cChar);
+  StrLib::vConcat(m_caCharArea, m_nArea, cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -299,7 +299,7 @@ void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
   
   // limit???
   
-  StrLib::vAppendString(aazCursor,szArg->azChar());
+  StrLib::vAppendString(aazCursor, m_caCharArea + m_nArea - 1, szArg->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -308,7 +308,7 @@ void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
 /* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-i8 String_t<AREA>::nArea(void)
+i8 String_t<AREA>::nAreaBytes(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -363,7 +363,7 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea, m_nArea, szArg->azChar());
   
   
   va_list xVarArgs;
@@ -372,7 +372,7 @@ void String_t<AREA>::vCat(Stz* szArg, ...)
   
   
   while (Stz* szVal = va_arg(xVarArgs,Stz*)) {
-    StrLib::vConcat(m_caCharArea,szVal->azChar());
+    StrLib::vConcat(m_caCharArea, m_nArea, szVal->azChar());
   }
   
   va_end(xVarArgs);
@@ -388,11 +388,13 @@ void String_t<AREA>::vCatSprint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   va_list vaArgs;
-  
-  char* aEnd = aAdd<char*>(azChar(),nLength());
+
+  i8 nLen = nLength();
+  char* aEnd = aAdd<char*>(azChar(),nLen);
+  i8 iRemaining = this->m_nArea - nLen;
   
   va_start(vaArgs,szFormat);
-  vsprintf(aEnd,(char*)szFormat,vaArgs);
+  StrLib::vSprint(aEnd, iRemaining, vaArgs, szFormat->azChar());
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -431,7 +433,7 @@ void String_t<AREA>::vConcat(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea,AREA, szArg->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -444,7 +446,7 @@ void String_t<AREA>::vConcat(Stz* szArg, i8 nLen)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vConcat(m_caCharArea,szArg->azChar(),nLen);
+  StrLib::vConcat(m_caCharArea, AREA, szArg->azChar(), nLen);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -503,7 +505,7 @@ void String_t<AREA>::vCopy(Stz* szArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+  StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -516,9 +518,7 @@ void String_t<AREA>::vCopy(Stz* szArg, i8 iLen)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  i8 nBytes = (iLen > AREA-1 ? AREA-1 : iLen);
-
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),nBytes);
+  StrLib::vCopyLen(m_caCharArea, AREA, szArg->azChar(), iLen);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -531,7 +531,7 @@ void String_t<AREA>::vCopyTill(Stz* szArg, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(m_caCharArea,szArg->azChar(),cTill);
+  StrLib::vCopyTill(m_caCharArea, AREA, szArg->azChar(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -713,7 +713,7 @@ void String_t<AREA>::vSprint(Stz* szFormat, ...)
   va_list vaArgs;
   
   va_start(vaArgs,szFormat);
-  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
+  StrLib::vSprint(azChar(),AREA,vaArgs,szFormat->azChar());
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -730,7 +730,7 @@ void String_t<AREA>::vSprintCat(Stz* szFormat, ...)
   va_list vaArgs;
   
   va_start(vaArgs,szFormat);
-  StrLib::vSprintCat(azChar(),vaArgs,szFormat->azChar());
+  StrLib::vSprintCat(azChar(),AREA,vaArgs,szFormat->azChar());
   va_end(vaArgs);
 
   _postcondition_(_MAGIC_,_FOOTER_);
@@ -744,7 +744,7 @@ void String_t<AREA>::vSprintVA(Stz* szFormat, va_list vaArgs)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
+  StrLib::vSprint(azChar(),AREA,vaArgs,szFormat->azChar());
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -823,7 +823,7 @@ void String_t<AREA>::vToLower(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vToLower(m_caCharArea);
+  StrLib::vToLower(m_caCharArea, m_nArea);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -836,7 +836,7 @@ void String_t<AREA>::vToUpper(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vToUpper(m_caCharArea);
+  StrLib::vToUpper(m_caCharArea, m_nArea);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

@@ -174,9 +174,9 @@ begin
   //SQY
     stage S02 on all partitions :
       indexJoin lineitem IxL_PARTKEY "BOUND $I1 P_PARTKEY =="
-      | filter " type BOOLEAN  J1_L_SHIPDATE DATE '1994-01-01' >= J1_L_SHIPDATE DATE '1995-01-01'  <  and  "
+      | filter " type BOOLEAN  L_SHIPDATE DATE '1994-01-01' >= L_SHIPDATE DATE '1995-01-01'  <  and  "
       | gbyAgg " groupBy  type integer P_PARTKEY ,
-                          type integer J1_L_SUPPKEY
+                          type integer L_SUPPKEY
                        aggregates type integer as P_PARTKEY $K1 ,
                                   type integer as L_SUPPKEY $K2 ,
                                   type DECIMAL )  $6 sum"
@@ -208,7 +208,7 @@ begin
 
    stage S06 on all partitions :
      indexJoin partSupp IxPS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
-     | filter " type BOOLEAN P_PARTKEY J1_PS_PARTKEY == J1_PS_AVAILQTY casttype DECIMAL CAST sqyResult  > and "
+     | filter " type BOOLEAN P_PARTKEY PS_PARTKEY == PS_AVAILQTY casttype DECIMAL CAST sqyResult  > and "
      | project " type INTEGER as PS_SUPPKEY $2"
      | hash "type INTEGER PS_SUPPKEY"
      | combined 0
@@ -222,13 +222,13 @@ begin
 
   stage S07 on all partitions :
     indexJoin Supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR as S_NAME J1_S_NAME , type VARCHAR as S_ADDRESS J1_S_ADDRESS"
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'IRAQ' ==  "
+    | filter " type BOOLEAN N_NAME 'IRAQ' ==  "
     | project " type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
     | sort " type VARCHAR S_NAME ASC  "
     | combined 0

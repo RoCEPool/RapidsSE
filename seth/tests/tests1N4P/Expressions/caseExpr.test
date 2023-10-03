@@ -451,8 +451,6 @@ rows:
   (null)
   (null)
 
-// TODO V2 : ALKA TO LOOK AT
-/*
 // CASE in a WHERE clause
 SELECT *
 FROM nation
@@ -524,8 +522,6 @@ rows:
   (24)
   (25)
 
-*/
-
 // Subquery within a CASE
 /*
 TODO: ENABLE WHEN SUBQUERY
@@ -563,9 +559,6 @@ rows:
   ('everywhere')
   ('here')
 */
-
-// TODO V2 : ALKA TO LOOK AT
-/*
 
 // Nested CASE
 SELECT CASE n_name
@@ -606,7 +599,6 @@ rows:
   ('everywhere')
   ('everywhere')
   ('everywhere')
-*/
 
 CREATE TABLE caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
 success
@@ -717,7 +709,7 @@ rows:
   ('woman',true)
   ('man',false)
 
-// TODO V2 : optimiser to detect and give EC_NOT_IMPLENTED
+// TODO V2 : OPTIMISER to detect and give EC_NOT_IMPLENTED
 /*
 select
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end,

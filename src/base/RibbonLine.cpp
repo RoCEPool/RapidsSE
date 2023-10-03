@@ -25,7 +25,7 @@ RibbonLine::RibbonLine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBONLINE);
   
   m_caText[0] = '\0';
-  StrLib::vPad(m_caText, C_RIBBON_MAX_TEXT - 1, ' ');
+  StrLib::vPad(m_caText, sizeof(m_caText), C_RIBBON_MAX_TEXT - 1, ' ');
 
   _checkInitialised_(CN_RIBBONLINE);
   
@@ -51,7 +51,9 @@ void RibbonLine::vInsert(i8 i_Char, char cChar)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
 
-  StrLib::vInsertChar(&m_caText[i_Char],cChar);
+  char* psAddr = &m_caText[i_Char];
+  i8 iBufRemaining = (i8) sizeof(m_caText) - i_Char;
+  StrLib::vInsertChar(psAddr, iBufRemaining, cChar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,12 +63,20 @@ void RibbonLine::vInsert(i8 i_Char, Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
 
-  i8 nChars = szStz->nLength();
+//  i8 nChars = szStz->nLength();
+//
+//  for (i8 i_Stz = 0; i_Stz < nChars; i_Stz++) {
+//    char cChar = szStz->azChar()[i_Stz];
+//
+//    char* psAddr = &m_caText[i_Char + i_Stz];
+//    i8 iBufRemaining = (i8) sizeof(m_caText) - i_Char - i_Stz;
+//
+//    StrLib::vInsertChar(psAddr, iBufRemaining, cChar);
+//  }
 
-  for (i8 i_Stz = 0; i_Stz < nChars; i_Stz++) {
-    char cChar = szStz->azChar()[i_Stz];
-    StrLib::vInsertChar(&m_caText[i_Char+i_Stz],cChar);
-  }
+  char* psAddr = &m_caText[i_Char];
+  i8 iBufRemaining = (i8) sizeof(m_caText) - i_Char;
+  StrLib::vInsertStrTrimRight(psAddr, iBufRemaining, szStz->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +86,7 @@ void RibbonLine::vPut(i8 i_Char, char cChr)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
-  StrLib::vPut(m_caText,i_Char,cChr);
+  StrLib::vPut(m_caText,sizeof(m_caText),i_Char,cChr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +96,7 @@ void RibbonLine::vPut(i8 i_Char, Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
-  StrLib::vPut(m_caText,i_Char,(char*)szStz);
+  StrLib::vPut(m_caText,sizeof(m_caText),i_Char,(char*)szStz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +107,7 @@ void RibbonLine::vPut(i8 i_Char, char cChr, i8 nTimes)
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
   while (nTimes--)
-    StrLib::vPut(m_caText,i_Char++,cChr);
+    StrLib::vPut(m_caText,sizeof(m_caText),i_Char++,cChr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,12 +116,13 @@ void RibbonLine::vPut(i8 i_Char, char cChr, i8 nTimes)
 void RibbonLine::vSprint(i8 i_Char, Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
-  
+
+  const i8 nBufSize = 1024;
   char zText[1024];
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zText,xArgs,(char*)szFormat);
+  StrLib::vSprint(zText,nBufSize,xArgs,(char*)szFormat);
   va_end(xArgs);
 
   vPut(i_Char,(Stz*)zText);
@@ -134,7 +145,7 @@ void RibbonLine::vTrim(void)
 {
   _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
   
-  StrLib::vTrim(m_caText,' ');
+  StrLib::vTrim(m_caText, sizeof(m_caText), ' ');
 }
 
 /*============================================================================*/

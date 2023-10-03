@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* _colAs0 : Column As testing                                                */
+/*============================================================================*/
+
+_part
+CREATE INDEX IxP_PARTKEY ON part(p_partkey);
+load part "../TPCH/SF_0001/part.csv";
+
+/optimiser_trace
+/weaved
+/transliterated
+/pipeline_def
+/pipelineName = "_colAs0"
+select p_brand as X,
+       p_mfgr
+  from part
+ where p_size < 5
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

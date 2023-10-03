@@ -13,7 +13,7 @@ create index S_idx0  on Supplier (S_SUPPKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_Q20"

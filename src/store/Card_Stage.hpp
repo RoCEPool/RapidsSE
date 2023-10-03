@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_CONSTRUCTION.hpp"
 
 namespace STORE
 {
   class Card_OP;
   class SawOpCards;
 
-  class Card_Stage : public Card
+  class Card_Stage : public Card_CONSTRUCTION
   {  
   public:
     void* operator new(size_t);
@@ -19,7 +19,6 @@ namespace STORE
     Card_Stage(void);
    ~Card_Stage(void) noexcept(false);
 
-    static void vDeleteAllStage(CardIter* pCI);
     static void vReinstate_stages(CardIter* pCI);
     static void vReinstate_stages_v2(CardIter* pCI);
 

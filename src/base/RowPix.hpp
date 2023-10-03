@@ -6,7 +6,7 @@
 #include "eDM.h"
 
 #define C_ROWPIX_AREA    8192
-#define C_ROWPIX_COLUMNS 2
+#define C_ROWPIX_COLUMNS 16
 
 namespace BASE
 {

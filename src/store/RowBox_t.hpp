@@ -30,7 +30,7 @@ namespace STORE
   
     i8   m_nRowStringBytes; // string size of current row (discard)
 
-    char m_caModel[32]; // row slab model string
+    char m_caModel[64]; // row slab model string
     i8   m_iSeVersion;  // se version number
     i8   m_iSeFormat;   // se format number
 
@@ -197,7 +197,10 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
   MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWBUFFER);
   m_caModel[sizeof(m_caModel) - 1] = '\0';
   
-  StrLib::vSprint(m_caModel,"RapidsSE %s SeFormat %s"_Stz,
+  StrLib::vSprint(m_caModel,
+                  sizeof(m_caModel),
+                  nullptr,
+                  "RapidsSE %s SeFormat %s"_Stz,
                   AM::szVersionString(),
                   AM::szFormatString());
   
@@ -674,8 +677,9 @@ void RowBox_t<AREA>::vDepositColVal(Stz* szColVal)
   _poolAddress_(this); _footer_();
 
   char* azTgt = azDepositString_begin();
-  
-  i8 nLen = StrLib::nCopy(azTgt,szColVal->azChar());
+  i8 iFreeBytes = WspConvergent_t<AREA,Stz,Row>::nFreeBytes();
+
+  i8 nLen = StrLib::nCopy(azTgt, iFreeBytes, szColVal->azChar());
 
   vDepositString_end(nLen + 1);
 }

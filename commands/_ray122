@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* _ray115                                                                    */
+/*============================================================================*/
+
+//NOTE: Optimiser should detect index does not exist
+
+//_lineitem;
+
+__TPCH_SCHEMA
+
+trackMemory;
+
+/optimiser_trace
+/optimise_passthru
+/pipeline_def
+/keepCodeFile
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan lineitem IxL_ORDERKEY " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project " type INTEGER l_orderkey "
+    | combined 0
+    | stageC
+  stage stageC on origin :
+    output | sink | stageA
+end ;
+
+MemoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

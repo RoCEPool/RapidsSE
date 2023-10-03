@@ -5,7 +5,7 @@
 
 #include "eSK.h"
 #include "eHK.h"
-#include "TinyC.hpp"
+#include "eSR.h"
 #include "Tub.hpp"
 #include "ePE.h"
 #include "ePL.h"
@@ -17,6 +17,8 @@
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
 #include "ColsReq.hpp"
+#include "ColMap.hpp"
+#include "StageDef.hpp"
 
 namespace STORE
 {
@@ -38,6 +40,9 @@ namespace STORE
 
   private:
 
+    i8   m_iStageNo;
+    s256 m_sStageNm;
+
     i8 m_iOperatorNo;
 
     eSK  m_eSketchKind;
@@ -47,6 +52,7 @@ namespace STORE
     s4K m_sExprString;
 
     s4K m_sLimitExpr;
+    i8  m_iTopCount;
 
     // definitions
     StreamDef* m_pStreamDefLft;
@@ -57,7 +63,8 @@ namespace STORE
     IndexDef*  m_pIndexDef;
 
     ColsReq*   m_pColsReq;
-    ColsReq*   m_pColsMap;
+    ColMap*    m_pColMap;
+		ColHsh*    m_pColHsh;
 
     // stencils
     eSR m_eStencilFrom;
@@ -87,13 +94,12 @@ namespace STORE
     TypedStack* m_pInitStack;
 
     bool m_bLeftOuter;
+    bool m_bCrossJoin;
 
     eIP m_eLowerIP;
     eIP m_eUpperIP;
 
     i8 m_nPayloadBytes;
-
-    i8 m_iLimitRows;
 
     // must be last
     Footer m_xFooter;
@@ -102,18 +108,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    OpSketch(i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, eII eIndexInfo,
-             StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack = nullptr);
+    OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
+             eSR eStencilOut, eII eIndexInfo, TypedStack* pInitStack = nullptr);
 
    ~OpSketch(void) noexcept(false);
 
-    static void vMakeColumnNm(StreamDef *pStreamDef, Stz *szColumn, eSR eStencilRow, i8 i_Column);
-    static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
-    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
-
     void vCopyColsReq(ColsReq* pColsReq);
-    void vCopyColsMap(ColsReq* pColsMap);
+    void vCopyColMap(ColMap* pColMap);
+		void vCopyColHsh(ColHsh* pColHsh);
     void vCopyInitStack(TypedStack* pInitStack);
+
+    bool bColReq(i8 i_Col);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);
 
@@ -125,8 +130,9 @@ namespace STORE
     void vLimitExpr(Stz* sLimitExpr);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
-    void vStreamDefRht(StreamDef* pStreamDefRht);
-    eSK eSketchKind(void);
+    void vStreamDefs(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut);
+    eSK  eSketchKind(void);
+    void vTopCount(i8 iTopCount);
 
   private:
 

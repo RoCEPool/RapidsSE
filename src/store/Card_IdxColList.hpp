@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_IdxColList : public Card
+  class Card_IdxColList : public Card_symbol<Card_IdxColList>
   {
   public:
     void* operator new(size_t);
@@ -16,9 +16,11 @@ namespace STORE
     Card_IdxColList(void);
    ~Card_IdxColList(void) noexcept(false);
 
-    void vAdd_key_exprs(CardIter* pCI);
+    void vAdd_streamKey_exprs(CardIter* pCI);
     void vAffix_tblColOdn(Card_Projection* p_projection);
     Card_IdxCol* pGetIdxCol_byIdxColOdn(Stz* szIdxColOdn);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_IdxColList* _pCard_IdxColList(void* aAddr);

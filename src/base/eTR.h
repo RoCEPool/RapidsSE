@@ -18,20 +18,7 @@ enum eTR // Transition Request
   /* 8 */ TR_ENUMS
 };
   
-static Stz* aTR[]
-{
-  /* 0 */ "TR_NONE"_Stz,
-  
-  /* 1 */ "TR_BIDE_OPERAND"_Stz,
-  /* 2 */ "TR_BIDE_PAGEIN"_Stz,
-  /* 3 */ "TR_HIBERNATE"_Stz,
-  /* 4 */ "TR_RETIRE"_Stz,
-  /* 5 */ "TR_SLEEP"_Stz,
-  /* 6 */ "TR_WAIT"_Stz,
-  /* 7 */ "TR_YIELD"_Stz,
-  
-  /* 8 */ "TR_ENUMS"_Stz,
-};
+extern Stz* aTR[TR_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

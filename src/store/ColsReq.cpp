@@ -23,9 +23,9 @@ ColsReq::ColsReq(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++) {
-    m_axCols[i_Col].m_i_Col_base1 = C_UNKNOWN;
-    m_axCols[i_Col].m_i_Col2_base1 = C_UNKNOWN;
-    m_axCols[i_Col].m_bPayload = false;
+    m_axCols[i_Col].m_i_EmittedCol = C_UNKNOWN;
+    m_axCols[i_Col].m_bPayload     = false;
+    m_axCols[i_Col].m_i_Cell       = C_UNKNOWN;
   }
   m_nCols = 0;
 
@@ -52,16 +52,15 @@ ColsReq::~ColsReq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add column mapping                                                         */
 /*----------------------------------------------------------------------------*/
-void ColsReq::vAddCol(i8 i_Col_base1, i8 i_Col2_base1, Stz *szColNm, bool bPayLoad)
+void ColsReq::vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
-  m_axCols[m_nCols].m_i_Col_base1 = i_Col_base1;
-  m_axCols[m_nCols].m_i_Col2_base1 = i_Col2_base1;
-  m_axCols[m_nCols].m_sColNm      = szColNm;
-  m_axCols[m_nCols].m_bPayload    = bPayLoad;
+  m_axCols[m_nCols].m_i_EmittedCol = i_EmittedCol;
+  m_axCols[m_nCols].m_bPayload     = bPayLoad;
+  m_axCols[m_nCols].m_i_Cell       = i_Cell;
 
   m_nCols++;
 
@@ -69,39 +68,29 @@ void ColsReq::vAddCol(i8 i_Col_base1, i8 i_Col2_base1, Stz *szColNm, bool bPayLo
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void ColsReq::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  UNUSED(i_Tab);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("               Col [%lld]: %lld %lld %s %s\n"_Stz,
+    vTrace("               [%lld] $%lld <- cell %lld \n"_Stz,
            i_Col,
-           m_axCols[i_Col].m_i_Col_base1,
-           m_axCols[i_Col].m_i_Col2_base1,
-           m_axCols[i_Col].m_sColNm.szStz(),
-           m_axCols[i_Col].m_bPayload ? "payload" : "key");
+           m_axCols[i_Col].m_i_EmittedCol,
+           m_axCols[i_Col].m_i_Cell);
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void ColsReq::vValidate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
-  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    if (! StrLib::bIsSqlName(m_axCols[i_Col].m_sColNm.azChar())) {
-      vDump();
-      break;
-    }
-  }
 
-  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    RASSERT(StrLib::bIsSqlName(m_axCols[i_Col].m_sColNm.azChar()));
-  }
 }
 
 /*============================================================================*/

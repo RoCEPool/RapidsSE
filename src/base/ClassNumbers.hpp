@@ -45,6 +45,8 @@ enum eCN : u2 // Class Number
   /* */ CN__C__,
   /* */ CN_CARD,
   /* */ CN_CARDCTL,
+  /* */ CN_CARDHISTORY,
+  /* */ CN_CARDIMAGE,
   /* */ CN_CARDITER,
   /* */ CN_CARDITERMEMBERS,
   /* */ CN_CARDUSAGE,
@@ -55,10 +57,10 @@ enum eCN : u2 // Class Number
   /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
-  /* */ CN_CODESYNTH,
+  /* */ CN_COLHSH,
+  /* */ CN_COLMAP,
   /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
-  /* */ CN_COMBINED,
   /* */ CN_COMBINEDSRC,
   /* */ CN_COMMANDPARSER,
   /* */ CN_CONDITIONALQUERYNODEITER,
@@ -110,7 +112,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FILE,
   /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
-  /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
   /* */ CN_FOLD,
   /* */ CN_FORMAT,
@@ -186,6 +187,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
+  /* */ CN_MARK,
   /* */ CN_MARKER,
   /* */ CN_MARKERCHAIN,
   /* */ CN_MARKERMGR,
@@ -238,6 +240,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
   /* */ CN_PDS,
+  /* */ CN_PDSBUFFERIDQUEUE,
+  /* */ CN_PDSCURSOR,
   /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
@@ -263,8 +267,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PSXTHD,
   /* */ CN_PTNDEF,
   /* */ CN_PTNID,
-  /* */ CN_PTNSTMCURSOR,
-  /* */ CN_PTNSTREAM,
   /* */ CN_PTRVAL,
 
   /* */ CN__Q__,
@@ -298,7 +300,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWPIX,
   /* */ CN_ROWSINGLE,
   /* */ CN_ROWSINGLELIST,
-  /* */ CN_ROWTABLEPTN,
   /* */ CN_ROWTRAY,
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
@@ -325,10 +326,10 @@ enum eCN : u2 // Class Number
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
-  /* */ CN_SHAPE,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
+  /* */ CN_SKETCHTKN,
   /* */ CN_SKIPLIST,
   /* */ CN_SKIPLISTNODE,
   /* */ CN_SKIPLISTBLOCK,
@@ -338,8 +339,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SMALLPERSISTENT,
   /* */ CN_SMALLTRANSIENT,
   /* */ CN_SMALLVIRTUAL,
-  /* */ CN_SMOOSH,
-  /* */ CN_SMOOTH,
   /* */ CN_SNBCD,
   /* */ CN_SNBOL,
   /* */ CN_SNDTE,
@@ -365,7 +364,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STATEMENT,
   /* */ CN_STATEMENTCONTEXT,
   /* */ CN_STATS,
-  /* */ CN_STENCIL,
   /* */ CN_STENCIL_V2,
   /* */ CN_STEP,
   /* */ CN_STEPACCUM,
@@ -377,6 +375,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAMMETRICS,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
+  /* */ CN_STRLIB,
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
@@ -396,7 +395,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
   /* */ CN_TASKQUEUE,
-  /* */ CN_TCCLOCK,
   /* */ CN_TEMPNAME,
   /* */ CN_TENANT,
   /* */ CN_TENANTS,
@@ -412,7 +410,6 @@ enum eCN : u2 // Class Number
   /* */ CN_THREADSCRATCH,
   /* */ CN_THREADVEC,
   /* */ CN_TIMER,
-  /* */ CN_TINYC,
   /* */ CN_TINYPERSISTENT,
   /* */ CN_TINYTRANSIENT,
   /* */ CN_TINYVIRTUAL,
@@ -445,26 +442,27 @@ enum eCN : u2 // Class Number
   /* */ CN__W__,
   /* */ CN_WAKEUP,
   /* */ CN_WEAVER,
-  /* */ CN_WEAVER2,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
+  /* */ CN_XC,
   /* */ CN_XF,
+  /* */ CN_XF_LEFT_SUBQUERY,
+  /* */ CN_XF_EPILOG_ITEMISE_COLNM,
+  /* */ CN_XF_EPILOG_ITEMSTRIP_COLNM,
   /* */ CN_XF_ADD_LEVEL,
   /* */ CN_XF_AS_REVIEW,
   /* */ CN_XF_COLNM_TO_STMCOL,
+  /* */ CN_XF_COLUMN_HASHING,
+  /* */ CN_XF_COLUMN_MAPPING,
   /* */ CN_XF_CULL_NONUSED_BOUND,
-  /* */ CN_XF_CULL_USED_BOUND,
-  /* */ CN_XF_CUT_SORT,
-  /* */ CN_XF_DEDUPE_AS,
   /* */ CN_XF_DELETE_EMPTY_WHERE,
   /* */ CN_XF_DELETE_FLAT,
-  /* */ CN_XF_DELETE_UNNEEDED,
+  /* */ CN_XF_ERASE_CONSTRUCTION,
   /* */ CN_XF_DERIVE_BOUNDS,
-  /* */ CN_XF_DERIVE_PROJECTION_KEY,
-  /* */ CN_XF_EARLY_PROJECTION,
+  /* */ CN_XF_DERIVE_STREAM_KEY,
   /* */ CN_XF_FIX_TABLE_POS,
   /* */ CN_XF_FLATTEN,
   /* */ CN_XF_FLATTEN_10_F,
@@ -477,29 +475,43 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS,
   /* */ CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,
   /* */ CN_XF_FLATTEN_74_H_A_NC_RO,
+  /* */ CN_XF_FROM_TO_OP,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
-  /* */ CN_XF_JOIN_ORDERING,
-  /* */ CN_XF_MORPH_SCAN_TO_INDEXSCAN,
-  /* */ CN_XF_MORPH_TABLE_TO_EEOP,
   /* */ CN_XF_MOVE_ON,
   /* */ CN_XF_NOT_OPS,
+  /* */ CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG,
+  /* */ CN_XF_OPTIMISE_DUPLICATE_FILTER,
+  /* */ CN_XF_OPTIMISE_EARLY_FILTER,
+  /* */ CN_XF_OPTIMISE_LATE_PROJECTION,
+  /* */ CN_XF_OPTIMISE_MAX_TO_TOP,
+  /* */ CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS,
+  /* */ CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP,
+  /* */ CN_XF_OPTIMISE_STATIC_CALC,
+  /* */ CN_XF_OT_CUT_SORT,
+  /* */ CN_XF_OT_EARLY_PROJECTION,
+  /* */ CN_XF_OT_JOIN_ORDERING,
+  /* */ CN_XF_OT_REDUCE_GBYAGG_KEY,
+  /* */ CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG,
+  /* */ CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN,
   /* */ CN_XF_PREDICATE_PULL_UP,
   /* */ CN_XF_PREDICATE_REPOSITION,
   /* */ CN_XF_PROJECTION_ANALYSIS,
-  /* */ CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,
-  /* */ CN_XF_REDUCE_KEY_GBYAGG,
   /* */ CN_XF_REINSTATE_STAGE,
   /* */ CN_XF_RPNCALC_TO_BOOLCALC,
-  /* */ CN_XF_SCAN_TO_TABLE,
-  /* */ CN_XF_SHORTEN_QUERYNM,
+  /* */ CN_XF_SCAN_TO_FROM,
+  /* */ CN_XF_PROLOG_BOARDNM_TO_SQYNM,
+  /* */ CN_XF_SMOOSH,
+  /* */ CN_XF_SMOOTH,
   /* */ CN_XF_STAGE_CAST,
   /* */ CN_XF_STMCOL_TO_COLNM,
   /* */ CN_XF_STMCOL_TO_TBLCOL,
   /* */ CN_XF_SUBQUERY_ANALYSIS,
   /* */ CN_XF_SYNTHESISE_CODE,
+  /* */ CN_XF_SYNTHESISE_PIPELINEDEF,
   /* */ CN_XF_TABLE_ANALYSIS,
   /* */ CN_XF_TBLCOL_TO_STMCOL,
+  /* */ CN_XF_UPDATE_PROJECTION,
 
   /* */ CN__Y__,
 
@@ -545,6 +557,8 @@ static Stz* aCN[]
   /* */ "_C__"_Stz,                 // CN__C__
   /* */ "CARD"_Stz,                 // CN_CARD
   /* */ "CARDCTL"_Stz,              // CN_CARDCTL
+  /* */ "CARDHISTORY"_Stz,          // CN_CARDHISTORY
+  /* */ "CARDIMAGE"_Stz,            // CN_CARDIMAGE
   /* */ "CARDITER"_Stz,             // CN_CARDITER
   /* */ "CARDITERMEMBERS"_Stz,      // CN_CARDITERMEMBERS
   /* */ "CARDUSAGE"_Stz,            // CN_CARDUSAGE
@@ -555,10 +569,10 @@ static Stz* aCN[]
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
-  /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
+  /* */ "COLHSH"_Stz,               // CN_COLHSH
+  /* */ "COLMAP"_Stz,               // CN_COLMAP
   /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN
-  /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
   /* */ "COMMANDPARSER"_Stz,        // CN_COMMANDPARSER
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
@@ -610,7 +624,6 @@ static Stz* aCN[]
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
-  /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FOLD"_Stz,                 // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
@@ -686,6 +699,7 @@ static Stz* aCN[]
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__
+  /* */ "MARK"_Stz,                 // CN_MARK
   /* */ "MARKER"_Stz,               // CN_MARKER
   /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
   /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR
@@ -738,6 +752,8 @@ static Stz* aCN[]
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
   /* */ "PDS"_Stz,                  // CN_PDS
+        "PDSBUFFERIDQUEUE"_Stz,     // CN_PDSBUFFERIDQUEUE
+  /* */ "PDSCURSOR"_Stz,            // CN_PDSCURSOR
   /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
@@ -763,8 +779,6 @@ static Stz* aCN[]
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNDEF"_Stz,               // CN_PTNDEF
   /* */ "PTNID"_Stz,                // CN_PTNID
-  /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
-  /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 
   /* */ "_Q__"_Stz,                 // CN__Q__
@@ -798,7 +812,6 @@ static Stz* aCN[]
   /* */ "ROWPIX"_Stz,               // CN_ROWPIX
   /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
   /* */ "ROWSINGLELIST"_Stz,        // CN_ROWSINGLELIST
-  /* */ "ROWTABLEPTN"_Stz,          // CN_ROWTABLEPTN
   /* */ "ROWTRAY"_Stz,              // CN_ROWTRAY
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
@@ -825,10 +838,10 @@ static Stz* aCN[]
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
-  /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
+  /* */ "SKETCHTKN"_Stz,            // CN_SKETCHTKN
   /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST
   /* */ "SKIPLISTNODE"_Stz,         // CN_SKIPLISTNODE
   /* */ "SKIPLISTBLOCK"_Stz,        // CN_SKIPLISTBLOCK
@@ -838,8 +851,6 @@ static Stz* aCN[]
   /* */ "SMALLPERSISTENT"_Stz,      // CN_SMALLPERSISTENT
   /* */ "SMALLTRANSIENT"_Stz,       // CN_SMALLTRANSIENT
   /* */ "SMALLVIRTUAL"_Stz,         // CN_SMALLVIRTUAL
-  /* */ "SMOOSH"_Stz,               // CN_SMOOSH
-  /* */ "SMOOTH"_Stz,               // CN_SMOOTH
   /* */ "SNBCD"_Stz,                // CN_SNBCD
   /* */ "SNBOL"_Stz,                // CN_SNBOL
   /* */ "SNDTE"_Stz,                // CN_SNDTE
@@ -865,7 +876,6 @@ static Stz* aCN[]
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATEMENTCONTEXT"_Stz,     // CN_STATEMENTCONTEXT
   /* */ "STATS"_Stz,                // CN_STATS
-  /* */ "STENCIL"_Stz,              // CN_STENCIL
   /* */ "STENCIL_V2"_Stz,           // CN_STENCIL_V2
   /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
@@ -877,6 +887,7 @@ static Stz* aCN[]
   /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T
+  /* */ "STRLIB"_Stz,               // CN_STRLIB
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
@@ -896,7 +907,6 @@ static Stz* aCN[]
   /* */ "TASK"_Stz,                 // CN_TASK
   /* */ "TASKLIST"_Stz,             // CN_TASKLIST
   /* */ "TASKQUEUE"_Stz,            // CN_TASKQUEUE
-  /* */ "TCCLOCK"_Stz,              // CN_TCCLOCK
   /* */ "TEMPNAME"_Stz,             // CN_TEMPNAME
   /* */ "TENANT"_Stz,               // CN_TENANT
   /* */ "TENANTS"_Stz,              // CN_TENANTS
@@ -912,7 +922,6 @@ static Stz* aCN[]
   /* */ "THREADSCRATCH"_Stz,        // CN_THREADSCRATCH
   /* */ "THREADVEC"_Stz,            // CN_THREADVEC
   /* */ "TIMER"_Stz,                // CN_TIMER
-  /* */ "TINYC"_Stz,                // CN_TINYC
   /* */ "TINYPERSISTENT"_Stz,       // CN_TINYPERSISTENT
   /* */ "TINYTRANSIENT"_Stz,        // CN_TINYTRANSIENT
   /* */ "TINYVIRTUAL"_Stz,          // CN_TINYVIRTUAL
@@ -945,27 +954,28 @@ static Stz* aCN[]
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP
   /* */ "WEAVER"_Stz,               // CN_WEAVER
-  /* */ "WEAVER2"_Stz,              // CN_WEAVER2
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
   /* */ "_X__"_Stz,                 // CN__X__
+  /* */ "XC"_Stz,                           // CN_XC
   /* */ "XF"_Stz,                           // CN_XF
-  /* */ "XF_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
-  /* */ "XF_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
-  /* */ "XF_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL
-  /* */ "XF_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
-  /* */ "XF_CULL_USED_BOUND"_Stz,           // CN_XF_CULL_USED_BOUND
-  /* */ "XF_CUT_SORT"_Stz,                  // CN_XF_CUT_SORT
-  /* */ "XF_DEDUPE_AS"_Stz,                 // CN_XF_DEDUPE_AS
-  /* */ "XF_DELETE_EMPTY_WHERE"_Stz,        // CN_XF_DELETE_EMPTY_WHERE
-  /* */ "XF_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT
-  /* */ "XF_DELETE_UNNEEDED"_Stz,           // CN_XF_DELETE_UNNEEDED
-  /* */ "XF_DERIVE_BOUNDS"_Stz,             // CN_XF_DERIVE_BOUNDS
-  /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,     // CN_XF_DERIVE_PROJECTION_KEY
-  /* */ "XF_EARLY_PROJECTION"_Stz,          // CN_XF_EARLY_PROJECTION
-  /* */ "XF_FIX_TABLE_POS"_Stz,             // CN_XF_FIX_TABLE_POS
+  /* */ "XF_LEFT_SUBQUERY"_Stz,             // CN_XF_LEFT_SUBQUERY
+  /* */ "XF_EPILOG_ITEMISE_COLNM"_Stz,                 // CN_XF_EPILOG_ITEMISE_COLNM
+  /* */ "XF_EPILOG_ITEMSTRIP_COLNM"_Stz,               // CN_XF_EPILOG_ITEMSTRIP_COLNM
+  /* */ "XF_PROLOG_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
+  /* */ "XF_PROLOG_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
+  /* */ "XF_PROLOG_COLNM_TO_STMCOL"_Stz,           // CN_XF_COLNM_TO_STMCOL
+  /* */ "XF_EPILOG_COLUMN_HASHING"_Stz,            // CN_XF_COLUMN_HASHING
+  /* */ "XF_EPILOG_COLUMN_MAPPING"_Stz,            // CN_XF_COLUMN_MAPPING
+  /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
+  /* */ "XF_FLATTEN_DELETE_EMPTY_WHERE"_Stz,        // CN_XF_DELETE_EMPTY_WHERE
+  /* */ "XF_FLATTEN_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT
+  /* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz,           // CN_XF_ERASE_CONSTRUCTION
+  /* */ "XF_FLATTEN_DERIVE_BOUNDS"_Stz,             // CN_XF_DERIVE_BOUNDS
+  /* */ "XF_OPTIMISE_DERIVE_STREAMKEY"_Stz,         // CN_XF_DERIVE_STREAM_KEY
+  /* */ "XF_FLATTEN_FIX_TABLE_POS"_Stz,             // CN_XF_FIX_TABLE_POS
   /* */ "XF_FLATTEN"_Stz,                   // CN_XF_FLATTEN
   /* */ "XF_FLATTEN_10_F"_Stz,              // CN_XF_FLATTEN_10_F,
   /* */ "XF_FLATTEN_24_W_A_C_RO"_Stz,       // CN_XF_FLATTEN_24_W_A_C_RO,
@@ -977,29 +987,43 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN_53_W_L_NC_NI_EXISTS"_Stz,  // CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS,
   /* */ "XF_FLATTEN_53_W_L_NC_NI_JOIN"_Stz, // CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,
   /* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,      // CN_XF_FLATTEN_74_H_A_NC_RO,
-  /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
-  /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
-  /* */ "XF_JOIN_ORDERING"_Stz,             // CN_XF_JOIN_ORDERING
-  /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,   // CN_XF_MORPH_SCAN_TO_INDEXSCAN
-  /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
-  /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
-  /* */ "XF_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
-  /* */ "XF_PREDICATE_PULL_UP"_Stz,         // CN_XF_PREDICATE_PULL_UP
-  /* */ "XF_PREDICATE_REPOSITION"_Stz,      // CN_XF_PREDICATE_REPOSITION
-  /* */ "XF_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
-  /* */ "XF_PROMOTE_GBYAGG_TO_ORDAGG"_Stz,  // CN_XF_PROMOTE_GBYAGG_TO_ORDAGG
-  /* */ "XF_REDUCE_KEY_GBYAGG"_Stz,         // CN_XF_REDUCE_KEY_GBYAGG
-  /* */ "XF_REINSTATE_STAGE"_Stz,           // CN_XF_REINSTATE_STAGE
-  /* */ "XF_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
-  /* */ "XF_SCAN_TO_TABLE"_Stz,             // CN_XF_SCAN_TO_TABLE
-  /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_SHORTEN_QUERYNM
-  /* */ "XF_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
-  /* */ "XF_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
-  /* */ "XF_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL
-  /* */ "XF_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
+  /* */ "XF_OPTIMISE_FROM_TO_OP"_Stz,                // CN_XF_FROM_TO_OP
+  /* */ "XF_PROLOG_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
+  /* */ "XF_EPILOG_PROMOTE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
+  /* */ "XF_PROLOG_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
+  /* */ "XF_PROLOG_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
+  /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz, // CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
+  /* */ "XF_OPTIMISE_EARLY_FILTER"_Stz,     // CN_XF_OPTIMISE_EARLY_FILTER
+  /* */ "XF_OPTIMISE_LATE_PROJECTION"_Stz,  // CN_XF_OPTIMISE_LATE_PROJECTION
+  /* */ "XF_OPTIMISE_MAX_TO_TOP"_Stz,       // CN_XF_OPTIMISE_MAX_TO_TOP
+  /* */ "XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS"_Stz, // CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS
+  /* */ "XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP"_Stz, // CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP
+  /* */ "XF_OPTIMISE_STATIC_CALC"_Stz,      // CN_XF_OPTIMISE_STATIC_CALC
+  /* */ "XF_OT_CUT_SORT"_Stz,                  // CN_XF_OT_CUT_SORT
+  /* */ "XF_OT_DUPLICATE_FILTER"_Stz,          // CN_XF_OT_DUPLICATE_FILTER
+  /* */ "XF_OT_EARLY_PROJECTION"_Stz,          // CN_XF_OT_EARLY_PROJECTION
+  /* */ "XF_OT_JOIN_ORDERING"_Stz,             // CN_XF_OT_JOIN_ORDERING
+  /* */ "XF_OT_REDUCE_GBYAGG_KEY"_Stz,         // CN_XF_OT_REDUCE_GBYAGG_KEY
+  /* */ "XF_OT_PREPLACE_GBYAGG_BY_ORDAGG"_Stz, // CN_XF_OT_REPLACE_GBYAGG_BY_ORDAGG
+  /* */ "XF_OT_REPLACE_SCAN_BY_INDEXSCAN"_Stz, // CN_XF_OT_REPLACE_SCAN_BY_INDEXSCAN
+  /* */ "XF_FLATTEN_PREDICATE_PULL_UP"_Stz,         // CN_XF_PREDICATE_PULL_UP
+  /* */ "XF_FLATTEN_PREDICATE_REPOSITION"_Stz,      // CN_XF_PREDICATE_REPOSITION
+  /* */ "XF_PROLOG_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
+  /* */ "XF_EPILOG_REINSTATE_STAGE"_Stz,           // CN_XF_REINSTATE_STAGE
+  /* */ "XF_PROLOG_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
+  /* */ "XF_SCAN_TO_FROM"_Stz,              // CN_XF_SCAN_TO_FROM
+  /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_PROLOG_BOARDNM_TO_SQYNM
+  /* */ "XF_FLATTEN_SMOOSH"_Stz,                    // CN_XF_SMOOSH
+  /* */ "XF_FLATTEN_SMOOTH"_Stz,                    // CN_XF_SMOOTH
+  /* */ "XF_EPILOG_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
+  /* */ "XF_EPILOG_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
+  /* */ "XF_EPILOG_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL
+  /* */ "XF_PROLOG_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
   /* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
-  /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
-  /* */ "XF_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
+  /* */ "XF_SYNTHESISE_PIPELINEDEF"_Stz,    // CN_XF_SYNTHESISE_PIPELINEDEF
+  /* */ "XF_PROLOG_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
+  /* */ "XF_EPILOG_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
+  /* */ "XF_FLATTEN_UPDATE_PROJECTION"_Stz,         // CN_XF_UPDATE_PROJECTION
 
   /* */ "_Y__"_Stz,                 // CN__Y__
 

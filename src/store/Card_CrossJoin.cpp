@@ -19,7 +19,7 @@ __vDeleteFunction(Card_CrossJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CrossJoin::Card_CrossJoin(void)
-: Card_OP(CK_CROSSJOIN)
+: Card_OP(CK_CROSSJOIN,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -50,23 +50,21 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 
   pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
 
-  pCI->G_vNewMember(CK_CROSSJOIN);
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
+//  pCI->G_vNewMember(CK_CROSSJOIN);
+//  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
 
 
+  pCI->G.p_crossJoin = _pCard_CrossJoin(pCI->G.p_from->pCard(CK_CROSSJOIN));
   pCI->G.p_index = pCI->G.p_crossJoin->pSub_index();
 
-  pCI->G_vNewMember(CK_BOUNDS,"cross"_Stz);
-  pCI->G.p_index->vAppend(pCI->G.p_bounds);
+  pCI->G_vNewMember(CK_BOUNDS,Symbol(SF_CROSS,"cross"_Stz));
+  pCI->G.p_index->vAppendChild(pCI->G.p_bounds);
 
   pCI->G_vNewMember(CK_BOUND);
-  pCI->G.p_bounds->vAppend(pCI->G.p_bound);
+  pCI->G.p_bounds->vAppendChild(pCI->G.p_bound);
 
-  Symbol xSymbol_idxColOdn;
-  xSymbol_idxColOdn.vSetIndexColOrdinal(1);
-
-  pCI->G_vNewMember(CK_TERM,xSymbol_idxColOdn);
-  pCI->G.p_bound->vAppend(pCI->G.p_term);
+  pCI->G_vNewMember(CK_TERM,Symbol(SF_IDX_COL,1));
+  pCI->G.p_bound->vAppendChild(pCI->G.p_term);
 
   pCI->G.p_indexList->vChoose_index_For_crossJoin();
 }
@@ -81,36 +79,34 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 {
-  //vDump(0,(Stz*)__func__);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
   Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_projection();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -121,10 +117,17 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 void Card_CrossJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
-  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
+  RASSERT(pSub_table()->pSub_indexList());
+
+  Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+
+  vValidationPassed();
 }
 
 /*============================================================================*/

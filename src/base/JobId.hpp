@@ -23,7 +23,8 @@ namespace BASE
 
     JobId(void);
     JobId(i8 iAsI8);
-    
+    JobId(const JobId& oCopy);
+
     void operator =(i8 iAsI8);
     void operator =(JobId tJobId);
 
@@ -34,8 +35,8 @@ namespace BASE
   
     bool bIsUnknown(void);
 
-    i8   nJobBits(void);
-    u8   uJobMask(void);
+//    i8   nJobBits(void);
+//    u8   uJobMask(void);
     u8   uJobNo(void);
     void vJobNo(u8 uJobNo);
     

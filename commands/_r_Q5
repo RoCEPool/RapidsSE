@@ -2,7 +2,7 @@
 /* _r_Q5 -- TCPH query 5 test                                                 */
 /*============================================================================*/
 
-// /glean_interactive
+// /optimiser_trace
 /jo_disable
 // /ep_disable
 /filterPred

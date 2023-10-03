@@ -30,9 +30,9 @@ Exception::Exception(eFK   eFailure,
                      i8    iLineNo)
 {
   m_eFailure = eFailure;
-  StrLib::vCopyLen(m_zFuncNm,azFuncNm,sizeof(m_zFuncNm)-1);
-  StrLib::vCopyLen(m_zText,  azText,  sizeof(m_zText)-1);
-  StrLib::vCopyLen(m_zFileNm,azFileNm,sizeof(m_zFileNm)-1);
+  StrLib::vCopy(m_zFuncNm, sizeof(m_zFuncNm), azFuncNm);
+  StrLib::vCopy(m_zText,   sizeof(m_zText),   azText);
+  StrLib::vCopy(m_zFileNm, sizeof(m_zFileNm), azFileNm);
   m_iLineNo = iLineNo;
 }
 
@@ -93,9 +93,10 @@ char* Exception::azText(void)
 /*----------------------------------------------------------------------------*/
 void Exception::vPrint(void)
 {
-  char zIntoBuf[1024];
+  const i8 nBufSize = 1024;
+  char zIntoBuf[nBufSize];
   
-  vSprint(zIntoBuf);
+  vSprint(zIntoBuf, nBufSize);
   
   vTrace("%s\n"_Stz,zIntoBuf);
   
@@ -105,9 +106,11 @@ void Exception::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sprint the exception into given char buffer                                */
 /*----------------------------------------------------------------------------*/
-void Exception::vSprint(char* azIntoBuf)
+void Exception::vSprint(char* azIntoBuf, i8 nBufSize)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
+                  nBufSize,
+                  nullptr,
                   
                   "Exception eFK=%lld:%s`%s`; "
                   "%s() "

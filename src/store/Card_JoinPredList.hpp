@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_JoinPredList : public Card
+  class Card_JoinPredList : public Card_symbol<Card_JoinPredList>
   {
   public:
     void* operator new(size_t);
@@ -22,6 +22,8 @@ namespace STORE
 
     void vBuildList(Card_Filter* pCard_cmpPred, Card_IndexList* p_indexList);
 
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_JoinPredList* _pCard_JoinPredList(void* aAddr);

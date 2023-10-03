@@ -85,11 +85,12 @@ void Step::vCsvBufferCsvAppend(void)
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
   i8 nBytes = sCsvRow.nSize();
-  if (pCsvBuffer->nFreeBytes() < nBytes + 1)
-      ASSERT(0);
+  if (pCsvBuffer->nFreeBytes() < nBytes + 1) {
+    ASSERT(0);
+  }
 
   Stz* szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
-  StrLib::vCopyLen(szRecord->azChar(),sCsvRow.azChar(),nBytes - 1);
+  StrLib::vCopy(szRecord->azChar(), nBytes, sCsvRow.azChar());
 
   EXIT();
 }

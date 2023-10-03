@@ -16,7 +16,7 @@ trackMemory;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // /filterPred
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /joWrite

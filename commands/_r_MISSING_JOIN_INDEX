@@ -9,7 +9,7 @@ _r_schema
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_interactive
+/optimiser_trace
 /pipelineName = "_r_MISSING_JOIN_INDEX"
 select count(*)
   from Orders, Lineitem

@@ -94,7 +94,6 @@ enum eEG // enum groups
   EG_SC,
   EG_SI,
 
-  EG_ST,
 
   EG_TA,
   EG_TN,

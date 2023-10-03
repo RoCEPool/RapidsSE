@@ -5,8 +5,8 @@
 #include "XF_Flatten_40_W_L_C_E.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
-#include "Smoosh.hpp"
+#include "XF_Flatten_Smooth.hpp"
+#include "XF_Flatten_Smoosh.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_40_W_L_C_E, _FOOTER_);
 
-  m_pCI->vPrintBoard(__LINE__);
+ //// m_pCI->vPrintBoard(__LINE__);
 
   /* ARCHETYPE :
       select count(*)
@@ -78,24 +78,23 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_40_W_L_C_E))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_40_W_L_C_E, "((vFlatten_40_W_L_C_E))"_Stz);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"40_W_L_C_E"_Stz,CK_WHERE);
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
-  Smoosh* pSmoosh = new Smoosh;
+  XF_Flatten_Smoosh* pSmoosh = new XF_Flatten_Smoosh;
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
-
-  m_pCI->vEndTransform();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   delete pSmoosh;
   delete pFold;
 
-  vValidate();
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

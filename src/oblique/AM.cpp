@@ -32,7 +32,6 @@
 #include "eRG.h"
 #include "eRO.h"
 #include "eRU.h"
-#include "eST.h"
 #include "eTP.h"
 #include "eTT.h"
 #include "eUK.h"
@@ -547,6 +546,24 @@ void AM::ENGINE::vSignalHandler(i8 iSignal)
   
   Engine::vSignalHandler((int)iSignal);
 }
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   FILE                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* call engine signal handler                                                 */
+/*----------------------------------------------------------------------------*/
+i8 AM::FILE::iNextFileNo(void)
+{
+  _static_
+
+  i8 iFileNo = gpAttachMap->m_ixFileNo.iInc();
+
+  return iFileNo;
+}
+
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   GRID                                     */
@@ -1098,6 +1115,7 @@ void AM::JOB::vSendReject(RejectJob *pRejectJob)
   // send the rejectJob
   pSocket->vGrabWrite();
   bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
+  UNUSED(bResult);
   pSocket->vDropWrite();
 }
 
@@ -1133,8 +1151,6 @@ void AM::JOB::vTriggerExecute(JobId tDistId)
   Task* pTaskParticipant = pJobParticipant->pTask();
 
   // get the state of the job
-  eTS eState = pTaskParticipant->eState();
-
   while (pTaskParticipant->eState() != TS_HIBERNATING)
   {;}
 
@@ -1920,6 +1936,24 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   OPTIMISER                                */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* call engine signal handler                                                 */
+/*----------------------------------------------------------------------------*/
+i8 AM::OPTIMISER::iNextBenchNo(void)
+{
+  _static_
+
+  i8 iBenchNo = gpAttachMap->m_ixBenchNo.iInc();
+
+  return iBenchNo;
+}
+
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 PAGING                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1929,6 +1963,8 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
 {
   _static_
+  UNUSED(pTask);
+  UNUSED(oBufferId);
 
 #ifdef WITH_PAGING
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
@@ -2667,11 +2703,11 @@ Starter* AM::STARTER::pStarter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
+void AM::STR::vReplaceTags(String* psDst, Stz* szSrc, TagSet* pTags)
 {
   _static_
 
-  szDst->vCopy(szSrc);
+  psDst->vCopy(szSrc);
 
   i8 nEnames = pTags->nItems();
   for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
@@ -2681,7 +2717,8 @@ void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
     Stz* szName  = pTags->szName(i_Tag);
     Stz* szValue = pTags->szValue(i_Tag);
 
-    IGNORE_RETURN( StrLib::bReplace(szDst->azChar(),
+    IGNORE_RETURN( StrLib::bReplace(psDst->azStr(),
+                                    psDst->nAreaBytes(),
                                     szName->azChar(),
                                     szValue->azChar()) );
   }
@@ -2870,6 +2907,17 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
 
   return gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get base address of shm region                                             */
+/*----------------------------------------------------------------------------*/
+void* AM::SYSARGS::aRegionAddr(void)
+{
+  _static_
+
+  return gpAttachMap->m_xSysArgs.m_aRegionAddr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get collect sys metrics option                                             */
@@ -3173,6 +3221,7 @@ void AM::TASK::vRetire(Task* pTask)
   }
   else
   if (Job* pJob = pTask->pJob()) {
+    UNUSED(pJob);
     // retiring job
     //pJob->vReapable(true);
 //    if (pJob->bIsPipelineLocal()) {
@@ -3634,7 +3683,6 @@ Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
-MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
@@ -3711,6 +3759,25 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+
+      if (pCsvBuffer->bIsPermanent()) {
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this csvbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pCsvBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pCsvBuffer->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this csvbuffer
+        // should not have any locks on it
+
+        pCsvBuffer->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pCsvBuffer->oGetBufferId().m_pvAsAddress));
+        break;
+      }
+
       delete pCsvBuffer;
       break;
     }
@@ -3737,6 +3804,25 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
+
+      if (pInfoSet->bIsPermanent()) {
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this infoset
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pInfoSet->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pInfoSet->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this infoset
+        // should not have any locks on it
+
+        pInfoSet->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pInfoSet->oGetBufferId().m_pvAsAddress));
+        break;
+      }
+
       delete pInfoSet;
       break;
     }
@@ -3842,10 +3928,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 
     case CN_GRID: {
      break;
-    }
-
-    case CN_PTNSTREAM: {
-      break;
     }
       
     default: {
@@ -4206,7 +4288,7 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
   //  printf("NOT LOCKING TRACE\n");
   
   // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
+  StrLib::vSprint(caFormatted, sizeof(caFormatted) - 3, xArgs, aFormat->azChar());
 
   // print formatted line
   fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
@@ -4243,7 +4325,7 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
       giTraceFileSize = giTraceFileSize + nWritten;
   }
   
-  StrLib::vStrip(caFormatted,'\n');
+  StrLib::vStrip(caFormatted, sizeof(caFormatted),'\n');
     
   if (bUseLock)
     gpAttachMap->vTraceLockDrop();
@@ -4261,6 +4343,8 @@ void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+
   struct timespec xReq;
   struct timespec xRem;
   
@@ -4292,6 +4376,8 @@ void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+
   struct timespec xReq;
   struct timespec xRem;
   
@@ -4689,7 +4775,10 @@ void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 void AM::vJobContentDump(Job* pJob) { pJob->vPrintJobContents(); }
 
 void AM::vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc) {
-  
+
+  UNUSED(pDeleter);
+  UNUSED(szFunc);
+
   Job* pJob = * ppJob;
   
   delete pJob;
@@ -5044,7 +5133,6 @@ static Stz* aEG[]
   
   "EG_SC"_Stz,
   "EG_SI"_Stz,
-  "EG_ST"_Stz,
 
   "EG_TA"_Stz,
   "EG_TN"_Stz,
@@ -5156,7 +5244,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
       
     case EG_SC: return aSC[i_Enum];
     case EG_SI: return aSI[i_Enum];
-    case EG_ST: return aST[i_Enum];
 
     case EG_TA: return aTA[i_Enum];
     case EG_TN: return aTN[i_Enum];

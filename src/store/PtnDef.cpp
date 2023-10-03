@@ -402,6 +402,10 @@ void PtnDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
                                 * ( m_nColumns + (bAddPtnHash ? 1 : 0) );
   pRowPixDst->m_nTotalChars = 0;
 
+  i8 iBufSpaceRemaining = (i8) (sizeof(pRowPixDst->m_xaColPix) +
+                                sizeof(pRowPixDst->m_baPixArea) -
+                                pRowPixDst->m_nNameOffset);
+
   char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
   char* azColNmDst = azNames;
 
@@ -423,9 +427,10 @@ void PtnDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
     axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
     axColPixDst->m_uSpare    = (u8)0;
-    
-    StrLib::vCopy(azColNmDst,pColumn->szColNm()->azChar());
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, pColumn->szColNm()->azChar());
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;
@@ -457,9 +462,10 @@ void PtnDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     axColPixDst->m_bNullable = (u8)false;
     axColPixDst->m_bPtnKey   = (u8)false;
     axColPixDst->m_uSpare    = (u8)0;
-    
-    StrLib::vCopy(azColNmDst,"__keyHash");
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;
@@ -512,27 +518,27 @@ void PtnDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */
 /*----------------------------------------------------------------------------*/
-void PtnDef::vToMetadata(Stz* sMetadata)
+void PtnDef::vToMetadata(String* psMetadata)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
-  sMetadata->vCopy("metadata: ("_Stz);
+  psMetadata->vCopy("metadata: ("_Stz);
   
   i8 i_DefSet = 0;
     
   if (i_DefSet != 0)
-    sMetadata->vConcat(","_Stz);
+    psMetadata->vConcat(","_Stz);
 
   for (i8 i_DefColumn = 0; i_DefColumn < m_nColumns; i_DefColumn++) {
 
     if (i_DefColumn != 0)
-      sMetadata->vConcat(","_Stz);
+      psMetadata->vConcat(","_Stz);
 
-    sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                          aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+    psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
+                           aCT[m_xaColumn[i_DefColumn].eColumnType()]);
   }
 
-  sMetadata->vConcat(")"_Stz);
+  psMetadata->vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

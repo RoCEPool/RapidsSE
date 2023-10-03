@@ -181,7 +181,7 @@ void Pipeline::vDropDebugLock(void)
 void Pipeline::vDump(bool bRecursive)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
+  UNUSED(bRecursive);
 }
 
 /*----------------------------------------------------------------------------*/

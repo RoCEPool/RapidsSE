@@ -25,7 +25,7 @@ void BASE::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vThreadCallStackDump(void)
 {
-//  vThreadCallStackDump_Mangled(); vThreadCallStackDump_Demangled();
+  vThreadCallStackDump_Demangled();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,7 +351,7 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
 
     // Remove the trailing newline and save the function name
     //vTrace("Line: %s"_Stz, sBuf.azChar());
-    StrLib::vStrip(sBuf.azChar(), '\n');
+    StrLib::vStrip(sBuf.azChar(), sBuf.nAreaBytes(), '\n');
     psFuncNames[i].vCopy(sBuf);
 
     // Get the second line - the file name and line number
@@ -495,17 +495,18 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
                                        Stz*  szCondition,
                                        ...)
 {
-  char zFileNm[1024];
-  char zCondition[1024];
+  const i8 nBufSize = 1024;
+  char zFileNm[nBufSize];
+  char zCondition[nBufSize];
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
-  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  StrLib::vSprint(zCondition,nBufSize,xArgs,(char*)szCondition);
   va_end(xArgs);
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
@@ -585,11 +586,11 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
-  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szCondition);
   va_end(xArgs);
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
@@ -634,11 +635,11 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
-  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szCondition);
   va_end(xArgs);
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
@@ -665,11 +666,11 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
-  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szCondition);
   va_end(xArgs);
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
@@ -709,12 +710,12 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 //  }
 
   char zFileNm[256];
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
 
   va_list xArgs;
   va_start(xArgs,szFormat);
   char zCondition[256];
-  StrLib::vSprint(zCondition,xArgs,(char*)szFormat);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szFormat);
   va_end(xArgs);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -753,12 +754,12 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 //  }
 
   char zFileNm[256];
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
 
   va_list xArgs;
   va_start(xArgs,szFormat);
   char zCondition[256];
-  StrLib::vSprint(zCondition,xArgs,(char*)szFormat);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szFormat);
   va_end(xArgs);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -784,11 +785,11 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
-  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szCondition);
   va_end(xArgs);
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
@@ -815,11 +816,11 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the exception
   
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szCondition);
-  StrLib::vSprint(zCondition,xArgs,(char*)szCondition);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szCondition);
   va_end(xArgs);
   
   Exception xException(eFailure,azFunc,zCondition,zFileNm,iLineNo);
@@ -859,12 +860,12 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
 //  }
   
   char zFileNm[256];
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  StrLib::vSubPath(zFileNm, sizeof(zFileNm), (char*)azFilePath);
   
   va_list xArgs;
   va_start(xArgs,szFormat);
   char zCondition[256];
-  StrLib::vSprint(zCondition,xArgs,(char*)szFormat);
+  StrLib::vSprint(zCondition, sizeof(zCondition), xArgs, (char*)szFormat);
   va_end(xArgs);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -892,8 +893,13 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // put a breakpoint here to trap throws
   sleep(0);
   
-  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+  if (eGotClass < CN_ENUMS)
+    // Note: No need to check eGotClass >= CN_NONE because this is always true
+    // (according to annoying compiler messages). I guess this is probably because
+    // the eCN enum is implemented as an unsigned type, thus it is always >= 0.
     StrLib::vSprint(zCondition,
+                    sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d %s "
                     "object=%p\n"_Stz
@@ -903,6 +909,8 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
                     );
   else
     StrLib::vSprint(zCondition,
+                    sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d "
                     "object=%p\n"_Stz
@@ -946,8 +954,13 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   // put a breakpoint here to trap throws
   sleep(0);
   
-  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+  if (eGotClass < CN_ENUMS)
+    // Note: No need to check eGotClass >= CN_NONE because this is always true
+    // (according to annoying compiler messages). I guess this is probably because
+    // the eCN enum is implemented as an unsigned type, thus it is always >= 0.
     StrLib::vSprint(zCondition,
+                    sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d %s "
                     "object=%p\n"_Stz
@@ -957,6 +970,8 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
                     );
   else
     StrLib::vSprint(zCondition,
+                    sizeof(zCondition),
+                    nullptr,
                     "Expecting class %d %s; "
                     "Got %d "
                     "object=%p\n"_Stz

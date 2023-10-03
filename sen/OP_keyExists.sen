@@ -5,113 +5,6 @@
 " OP_keyExists.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* on EV_M_CLEANING ...                                                   END */
-/*----------------------------------------------------------------------------*/
-: keyExists_Cleaning \handler
-
-  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
-
-  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
-
-  EV_M_CLEANING_handler
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* on EV_M_START ...                                                     INIT */
-/*----------------------------------------------------------------------------*/
-: keyExists_Start \handler
-
-  0 EV_M_START EG_ZK LogicUnit[].diaryNote
-
-  <tableNm> <indexNm> op__table_index not if
-    Pipein[].delete
-    true
-    exit
-  then
-
-  EV_M_START_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on EV_D_STREAMDEF ...                                            STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: keyExists_StreamDef \handler
-
-  EC_NONE locals| eError |
-
-  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
-
-  // move pipein[] to StreamDefLft[]
-  Pipein[]\clear to StreamDefLft[]
-
-  // new a streamDefRht from the right table
-  Table[] StreamDefRht[].newFromTable
-
-  // generate selectColumns bitmap from key expr and streamDefRht
-  <keyExpr> StreamDefLft[].selectColumns to eError
-
-  // check for error
-    eError EC_NONE == not if
-      eError op__execErr
-      true
-      exit
-    then
-
-  <expr> nullptr StreamDefRht[] StreamDefOut[].generate to eError
-
-  // check for error
-  eError EC_NONE == not if
-    StreamDefOut[].delete
-    eError op__execErr
-    true
-    exit
-  then
-
-  // delete the streamDefOut[]. Not needed for filter
-  StreamDefOut[].delete
-
-  // evaluate the expression
-  StreamDefLft[].duplicate to StreamDefOut[]
-
-  StreamDefLft[].duplicate to Pipein[]
-
-  // pipe out the streamDef
-  Pipein[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* filter request                                                       SPAWN */
-/*----------------------------------------------------------------------------*/
-: keyExists_op \operator
-
-  _lu_initialise_
-
-  op__topology
-
-  find: keyExists_Cleaning    EV_M_CLEANING   [op].handler!
-  find: keyExists_Start       EV_M_START      [op].handler!
-  find: keyExists_StreamDef   EV_D_STREAMDEF  [op].handler!
-
-  op__loop
-
-  _lu_finalise_
-  
-  op__retires
-  
-  HAZARD
-;
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: top :: keyExists <tableNm> <indexNm> <keyExpr> <expr> ;
@@ -119,7 +12,7 @@ cmdSyntax: top :: keyExists <tableNm> <indexNm> <keyExpr> <expr> ;
 : keyExists_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "keyExists_op"
+    //<opEntry> = "keyExists_op"
   }
 ;
 

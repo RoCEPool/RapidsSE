@@ -13,8 +13,6 @@
 
   //PipeIn[].drain
 
-  nullptr to TinyC[]
-
   Tub[].isNull not if
     Tub[].deleteAllBuffers
   then

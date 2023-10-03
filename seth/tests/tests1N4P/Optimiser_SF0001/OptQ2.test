@@ -4,6 +4,7 @@
 trackmemory force;
 success
 
+/pipelineName = "OptQ2"
 select
   s_acctbal,
   s_name,

@@ -23,24 +23,24 @@ class SEsubscript : public SEtype
   public:
 
   SEsubscript(void);
-  SEsubscript(i8 iLimit);
-  SEsubscript(i8 iLimit, i8 iSubscript);
+  SEsubscript(u8 uLimit);
+  SEsubscript(u8 uLimit, u8 uSubscript);
 
   // auto conversion
-  operator i8(void);
+  operator u8(void);
 
-  void operator =(i8 iSubscript); // assignment
+  void operator =(u8 uSubscript); // assignment
   
-  i8 operator ++(int); // increment (postfix form)
-  bool operator <(i8 iSubscript);
+  u8 operator ++(int); // increment (postfix form)
+  bool operator <(u8 uSubscript);
 
   void vIncSubscript(void);
 
-  i8   iLimit(void);
-  void vLimit(i8 iLimit);
+  u8   uLimit(void);
+  void vLimit(u8 uLimit);
 
-  i8   iSubscript(void);
-  void vSubscript(i8 iSubscript);
+  u8   uSubscript(void);
+  void vSubscript(u8 uSubscript);
   
   bool bValid(void);
 };

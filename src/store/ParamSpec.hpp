@@ -23,6 +23,7 @@ namespace STORE
    ~ParamSpec(void) noexcept(false);
 
     Stz* szParamNm(void);
+    i8   iParamNmBufSize(void);
 
     Footer* aFooter(void);
   };

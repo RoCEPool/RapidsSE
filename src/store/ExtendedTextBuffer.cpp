@@ -50,6 +50,17 @@ ExtendedTextBuffer::~ExtendedTextBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get area bytes                                                             */
+/*----------------------------------------------------------------------------*/
+i8 ExtendedTextBuffer::nAreaBytes(void)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
+
+  return m_sTextBlock.nAreaBytes();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* concat sub string to text                                                  */
 /*----------------------------------------------------------------------------*/
 bool ExtendedTextBuffer::bConcat(Stz* szSubStr)
@@ -100,7 +111,7 @@ i8 ExtendedTextBuffer::nFreeBytes(void)
 //  else
 //    return C_4K - nTextSize;
 
-  i8 nBytesFree = m_sTextBlock.nFreeBytes();
+//  i8 nBytesFree = m_sTextBlock.nFreeBytes();
   return m_sTextBlock.nFreeBytes();
 }
 

@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* _ray_join_2way                                                             */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+_orders
+
+create index Ix_O_CUSTKEY on Orders(O_CUSTKEY);
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+load Orders   "<tpch_dir>/orders.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_join_2way"
+select C_CUSTKEY, O_CUSTKEY
+  from Customer, Orders
+ where Customer.C_CUSTKEY = Orders.O_CUSTKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+drop table Orders;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,32 @@
+--------------------------------------------------------------------------------
+-- indexScan test 1
+--------------------------------------------------------------------------------
+
+LOG 'Case IndexScan 1 ...';
+
+
+select count(*) from Customer;
+success
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/OT_DERIVE_STREAMKEY
+/OT_SCAN_TO_INDEXSCAN
+/pipelineName = "OT_indexScan1"
+select *
+  from Customer
+ where C_CUSTKEY >= 1
+   and C_CUSTKEY <= 10
+;
+
+CLEANUP {
+
+  bye;
+  mute
+}
+
+--------------------------------------------------------------------------------
+-- end
+--------------------------------------------------------------------------------

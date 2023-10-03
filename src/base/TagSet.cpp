@@ -180,46 +180,46 @@ void TagSet::vAppend(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* concat tagSet to cmd string                                              */
 /*----------------------------------------------------------------------------*/
-void TagSet::vConcat(Stz* szCmd)
+void TagSet::vConcat(String* pCmd)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
     
-    szCmd->vConcat(" "_Stz);
+    pCmd->vConcat(" "_Stz);
     
     if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
-      
-      szCmd->vCatSprint("%lld "_Stz,
+
+      pCmd->vCatSprint("%lld "_Stz,
              m_xaTag[i_Tag].m_i_Value
              );
       continue;
     }
-    szCmd->vConcat("\""_Stz);
-    szCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
-    szCmd->vConcat("\""_Stz);
+    pCmd->vConcat("\""_Stz);
+    pCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    pCmd->vConcat("\""_Stz);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* append tagSet to cmd string                                                */
 /*----------------------------------------------------------------------------*/
-void TagSet::vConcat(Stz* szCmd, i8 i_Tag)
+void TagSet::vConcat(String* pCmd, i8 i_Tag)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  szCmd->vConcat(" "_Stz);
+  pCmd->vConcat(" "_Stz);
   
   if (TN_INTEGER == m_xaTag[i_Tag].m_eToken) {
     
-    szCmd->vCatSprint("%lld "_Stz,
+    pCmd->vCatSprint("%lld "_Stz,
                       m_xaTag[i_Tag].m_i_Value
                       );
   }
   else {
-    szCmd->vConcat("\""_Stz);
-    szCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
-    szCmd->vConcat("\""_Stz);
+    pCmd->vConcat("\""_Stz);
+    pCmd->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+    pCmd->vConcat("\""_Stz);
   }
 }
 
@@ -653,15 +653,14 @@ void TagSet::vNamesString(String* pString)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
-  char* azStr = pString->azStr();
-  UNUSED(azStr);
   char* azCrs = pString->azStr();
+  const char* azDstLastChar = pString->azStr() + pString->nAreaBytes() - 1;
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
     if (i_Tag)
-      StrLib::vAppendChar(&azCrs,' ');
+      StrLib::vAppendChar(&azCrs, azDstLastChar, ' ');
     char* azName = szName(i_Tag)->azChar();
-    StrLib::vAppendString(&azCrs,azName);
+    StrLib::vAppendString(&azCrs, azDstLastChar, azName);
   }
 }
 
@@ -709,7 +708,7 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
 //  bool bWasCopied = false;
 //
 //  xTagSet.vCopy(this);
-//  vReset();
+//  vBeginEach_forward();
 //
 //  for (i8 i_Tag = 0; i_Tag < xTagSet.nEnames(); i_Tag++) {
 //
@@ -809,7 +808,7 @@ void TagSet::vReplace(Stz* szName, Stz* szValue)
 //  bool bWasCopied = false;
 //
 //  xTagSet.vCopy(this);
-//  vReset();
+//  vBeginEach_forward();
 //
 //  for (i8 i_Tag = 0; i_Tag < xTagSet.nEnames(); i_Tag++) {
 //
@@ -846,25 +845,26 @@ void TagSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
-void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames, bool bDecode)
+void TagSet::vSprint(String* psArgs, bool bParenth, bool bNames, bool bDecode)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  UNUSED(bDecode);
   
   if (bParenth)
-    sArgs->vCopy("("_Stz);
+    psArgs->vCopy("("_Stz);
   
   for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
     
     if (i_Tag)
-      sArgs->vConcat(", "_Stz);
+      psArgs->vConcat(", "_Stz);
     
     if (bNames) {
-      sArgs->vConcat(szName(i_Tag));
-      sArgs->vConcat("="_Stz);
+      psArgs->vConcat(szName(i_Tag));
+      psArgs->vConcat("="_Stz);
     }
     
     if (bIsString(i_Tag)) {
-      sArgs->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+      psArgs->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
       continue;
     }
     
@@ -876,11 +876,11 @@ void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames, bool bDecode)
       sValue = szValueDecoded(i_Tag);
     else
       sValue.vSprint("%lld"_Stz,iValue(i_Tag));
-    sArgs->vConcat(sValue);
+    psArgs->vConcat(sValue);
   }
   
   if (bParenth)
-    sArgs->vConcat(")"_Stz);
+    psArgs->vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,12 +952,12 @@ bool TagSet::bSame(TagSet* pTagSet_arg)
 /*----------------------------------------------------------------------------*/
 /* to string                                                                  */
 /*----------------------------------------------------------------------------*/
-void TagSet::vToString(Stz* szStz, bool bValueOnly)
+void TagSet::vToString(String* psStr, bool bValueOnly)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   if (! m_nItems) {
-    szStz->vConcat("(empty)"_Stz);
+    psStr->vConcat("(empty)"_Stz);
     return;
   }
   
@@ -965,18 +965,18 @@ void TagSet::vToString(Stz* szStz, bool bValueOnly)
 
     if (bValueOnly) {
       if (i_Tag)
-        szStz->vConcat(" "_Stz);
+        psStr->vConcat(" "_Stz);
     }
     else {
       if (i_Tag)
-        szStz->vConcat(", "_Stz);
+        psStr->vConcat(", "_Stz);
 
-      szStz->vConcat(szName(i_Tag));
-      szStz->vConcat("="_Stz);
+      psStr->vConcat(szName(i_Tag));
+      psStr->vConcat("="_Stz);
     }
 
     if (bIsString(i_Tag)) {
-      szStz->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+      psStr->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
       continue;
     }
     
@@ -986,7 +986,7 @@ void TagSet::vToString(Stz* szStz, bool bValueOnly)
 
     if (bIsObject(i_Tag)) {
       sValue.vSprint( "%p"_Stz, pValue(i_Tag));
-      szStz->vConcat(sValue);
+      psStr->vConcat(sValue);
       continue;
     }
 
@@ -995,7 +995,7 @@ void TagSet::vToString(Stz* szStz, bool bValueOnly)
 
     else
       sValue.vSprint("%lld"_Stz,iValue(i_Tag));
-    szStz->vConcat(sValue);
+    psStr->vConcat(sValue);
   }
 }
 

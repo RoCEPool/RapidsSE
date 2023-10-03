@@ -87,7 +87,8 @@ void PFileUtility::vCreate(void)
   else {
 #ifdef WITH_APPLE
     s2K sCmdNm;
-    StrLib::vSprint(sCmdNm, "mkfile -n %s %s"_Stz, miPFileRegionSize.azChar(), msPFilePath.azChar());
+    StrLib::vSprint(sCmdNm, sCmdNm.nAreaBytes(), nullptr,
+                    "mkfile -n %s %s"_Stz, miPFileRegionSize.azChar(), msPFilePath.azChar());
 
     int rv = system(sCmdNm.azChar());
     if(0 != rv) {
@@ -113,7 +114,8 @@ void PFileUtility::vDelete(void)
   }
   else {
     s2K sCmdNm;
-    StrLib::vSprint(sCmdNm, "rm %s"_Stz, msPFilePath.azChar());
+    StrLib::vSprint(sCmdNm, sCmdNm.nAreaBytes(), nullptr,
+                    "rm %s"_Stz, msPFilePath.azChar());
 
     int rv = system(sCmdNm.azChar());
     if(0 != rv) {

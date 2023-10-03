@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class CrwTablePtn; class RowTablePtn;}
+namespace STORE { class CrwTablePtn;}
 
 namespace STORE
 {
@@ -21,10 +21,7 @@ namespace STORE
     LglPtn m_tLglPtn;  // logical partition (in grid)
     PhyPtn m_tPhyPtn;  // physical partition (in grid)
 
-    union {
-      CrwTablePtn* m_pCrwTablePtn;
-      RowTablePtn* m_pRowTablePtn;
-    };
+    CrwTablePtn* m_pCrwTablePtn;
 
     // must be last
     Footer m_xFooter;
@@ -52,6 +49,7 @@ namespace STORE
     void vAppendBuffer(DataBuffer* pDataBuffer, i8& nRowsInserted);
     i8   nBuffers(void);
     void vDump(void);
+    BufferId oExtractBufferId(void* pItemAddr);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
@@ -61,13 +59,12 @@ namespace STORE
     DataBuffer* pRootBuffer(void);
     BufferId oRootBufferId(void);
     CrwBuffer* pRootCrwBuffer(void);
-    RowBuffer* pRootRowBuffer(void);
     void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
-    Stz* szDumpContents(void);
+    void vDumpContents(String* pStr);
 
   private:
     Footer* aFooter(void);

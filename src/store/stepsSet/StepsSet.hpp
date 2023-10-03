@@ -240,9 +240,11 @@ public:
   void vBufferIdDropLock(void);
   void vBufferIdGet(void);
   void vBufferIdGetAndClear(void);
+  void vBufferIdGetDataBuffer(void);
   void vBufferIdIsNotNull(void);
   void vBufferIdIsNull(void);
   void vBufferIdSet(void);
+  void vBufferIdDeRefSet(void);
 
   // build
   void vBuildBranch(void);
@@ -263,14 +265,6 @@ public:
   void vColumnNameFetch(void);
   void vColumnScaleFetch(void);
   void vColumnTypeFetch(void);
-
-  // Combined
-  void vCombinedDelete(void);
-  void vCombinedExecute(void);
-  void vCombinedHashRowsFetch(void);
-  void vCombinedGet(void);
-  void vCombinedIndexT(void);
-  void vCombinedNew(void);
 
   // command processor
   void vCommandBlankLine(void);
@@ -316,17 +310,13 @@ public:
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
   void vCrwBufferGetBufferIdAsAddr(void);
-  void vCrwBufferGetNextLinkedBufferId(void);
-  void vCrwBufferFlatten(void);
   void vCrwBufferInflate(void);
-  void vCrwBufferInflateTcc(void);
   void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
   void vCrwBufferIsReport(void);
   void vCrwBufferSet(void);
   void vCrwBufferToCsv(void);
-  void vCrwBufferToCsv_OLD(void);
   void vCrwBufferWriteToFile0(void);
 
   // crw to row
@@ -512,6 +502,7 @@ void vDdlLockAssertNone(void);
 
   void vDynamoCompile(void);
   void vDynamoDelete(void);
+	void vDynamoFileNameFetch(void);
   void vDynamoGet(void);
   void vDynamoNameFetch(void);
   void vDynamoNew(void);
@@ -804,8 +795,6 @@ void vDdlLockAssertNone(void);
   void vInfoSetTableSet(void);
 
   // inject
-  void vInjectBloat(void);
-  void vInjectBloatCleanup(void);
   void vInjectSigsegv(void);
   void vInjectSigsegv_dbg(void);
   void vInjectThrow(void);
@@ -1261,6 +1250,7 @@ void vJobIdLastJobIdFetch(void);
 
   // LibInfo
   void vLibInfoCompile(void);
+  void vLibInfoCompileFile(void);
   void vLibInfoDelete(void);
   void vLibInfoError(void);
   void vLibInfoFind(void);
@@ -1566,18 +1556,6 @@ void vJobIdLastJobIdFetch(void);
   void vPtnMapPtnsInGrid(void);
   void vPtnMapSee(void);
 
-  // ptnStream
-  void vPtnStreamBufferNo(void);
-  void vPtnStreamClose(void);
-  void vPtnStreamDelete(void);
-  void vPtnStreamGet(void);
-  void vPtnStreamIsNull(void);
-  void vPtnStreamNew(void);
-  void vPtnStreamOpen(void);
-  void vPtnStreamRead(void);
-  void vPtnStreamSeek(void);
-  void vPtnStreamSet(void);
-
   // ptr
   void vPtrIsNull(void);
 
@@ -1699,6 +1677,13 @@ void vJobIdLastJobIdFetch(void);
   void vPayloadObjSize(void);
   void vPayloadObjMsgType(void);
 
+  // pds Cursor
+  void vPdsCursorGet(void);
+  void vPdsCursorItemAddr(void);
+  void vPdsCursorCurrIsNotNull(void);
+  void vPdsCursorNext(void);
+  void vPdsCursorSet(void);
+
   // reg Pipein
   void vPipeinBide(void);
   void vPipeinBideNext(void);
@@ -1741,7 +1726,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetBufferIdAsAddr(void);
-  void vRowBufferGetNextLinkedBufferId(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
@@ -1754,7 +1738,6 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferSetDeciderCopies(void);
   void vRowBufferSetLglPtn(void);
   void vRowBufferToCsv(void);
-  void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);
 
   // rowCounts
@@ -1962,13 +1945,6 @@ void vJobIdLastJobIdFetch(void);
   void vStatsUpdateTimer(void);
 
   // stencil
-  void vStencilDelete(void);
-  void vStencilGet(void);
-  void vStencilNew(void);
-  void vStencilSetup(void);
-  void vStencilSketch(void);
-  void vStencilSourceFetch(void);
-
   void vStencilDelete_v2(void);
   void vStencilGet_v2(void);
   void vStencilNew_v2(void);
@@ -2061,18 +2037,13 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);
-  void vStreamDefOutGenerate(void);
   void vStreamDefOutIsNull(void);
-  void vStreamDefOutJoin(void);
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
   void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
-  void vStreamDefOutSelectColumns(void);
   void vStreamDefOutSet(void);
-
-  void vStreamDefOutGenerate_V2(void);
 
   // stream def Right
   void vStreamDefRhtDelete(void);
@@ -2139,7 +2110,6 @@ void vJobIdLastJobIdFetch(void);
   // subset
   void vSubsetGet(void);
   void vSubsetNext(void);
-  void vSubsetNextBuffer(void);
   void vSubsetSet(void);
 
   // Supervisor
@@ -2232,9 +2202,11 @@ void vJobIdLastJobIdFetch(void);
   // table partition
   void vTablePtnAppendBuffer(void);
   void vTablePtnGet(void);
+  void vTablePtnExtractBufferId(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnRoot(void);
   void vTablePtnRootBufferId(void);
+  void vTablePtnRootPdsCursor(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
   void vTablePtnTruncateIndex(void);
@@ -2425,20 +2397,6 @@ void vJobIdLastJobIdFetch(void);
   void vTimerStart(void);
   void vTimerTicks(void);
   void vTimerUpdate(void);
-
-  // tinyC
-  void vTinyCCompile(void);
-  void vTinyCDelete(void);
-  void vTinyCFind(void);
-  void vTinyCGet(void);
-  void vTinyCIsNotNull(void);
-  void vTinyCNew(void);
-  void vTinyCRelocate(void);
-  void vTinyCSet(void);
-  void vTinyCSymbols(void);
-
-  void vTinyCCompile_v2(void);
-  void vTinyCCompiledynamoCode(void);
 
   // to
   void vToBcd(void);

@@ -6,12 +6,15 @@
 #include "ListExo2_t.hpp"
 
 #include "eCK.h"
+#include "eSF.h"
+
 #include "StzList.hpp"
 
 namespace STORE
 {
   class Card;
   class Card_Table;
+  class Symbol;
 
   class ChildCards : public ListExo2_t<Card>
   {
@@ -19,10 +22,21 @@ namespace STORE
     ChildCards(void);
    ~ChildCards(void) noexcept(false);
 
-    i8   nChildCards(void);
-    void vConcatChildren(Stz* szTerms, eCK eChild=CK_NONE);
+    void vAppendChild(Card* pChild);
 
-    i8    iFindChild(eCK eCard);
+    i8   nChildCards(void);
+    i8   nChildCards(eCK eChild);
+
+    void vDeleteAllChildren(void);
+    bool bDeleteChild(Card* pChild);
+    void vDeleteChild(Card* pChild);
+    void vDeleteSub(Card* pSub);
+
+//    void vEnsureAfter(eCK eChild, eCK eChild_after);
+//    void vEnsureBefore(eCK eChild, eCK eChild_before);
+    void vEnsureFirst(eCK eChild);
+    void vEnsureLast(eCK eChild);
+
     i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
@@ -33,38 +47,33 @@ namespace STORE
 
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reCard);
+    Card* pGetChild_bySym(Symbol* pSymbol);
+
+    void  vInsertChildAfter(Card* pChild, Card* pAfter);
+    void  vInsertChildBefore(Card* pChild, Card* pBefore);
 
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
 
     void vOntoStzList(StzList* pStzList);
 
+    Card* pPeekChild(void);
+    Card* pPeekChild_last(void);
     Card* pPopChild(void);
-    Card* pPlopChild(void);
+    Card* pPopChild_tail(void);
+    Card* pPopChildIf(Symbol xSymbol);
+    bool  bPopDeleteChildIf(eCK eCard, Symbol xSymbol);
+    void  vPushChild(Card* pChild);
 
-    void vPromoteSubs(Card* pChildCard);
-
-    void vRemoveAllChildren(void);
-    void vRemoveChild(Card* pChildCard);
-    void vDeleteAllChildren(void);
-    void vDeleteChild(Card* pChild);
+    bool bRemoveChild(Card* pChild);
+    void vRemoveChild(Card* pChild);
     void vRemoveSub(Card* pSubCard);
-    void vReplaceChildWithItsSubs(Card* pChildCard);
-    void vReplaceChild(Card* pChildCard, Card* pWithCard);
-    void vRotateChild(Card* pChildCard);
+    void vReplaceChildWithItsSubs(Card* pChild);
+    void vReplaceChild(Card* pChild, Card* pWith);
+    void vRotateFirst(Card* pChild);
+    void vRotateLast(Card* pChild);
 
-    StzList* pToStzList(void);
-
-    void vTransferChildren(Card* pFromCard);
-    void vTransferFrom(Card* pCards, Card* pFrom,
-                       Card* pAt=nullptr, bool bAfter=true);
-    void vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
-                         Card* pAt=nullptr, bool bAfter=true);
-    void vTransferTill(Card* pCards, Card* pTill,
-                       Card* pAt=nullptr, bool bAfter=true);
-
-    i8 nTrimChildren(eCK eCard, Stz* szSymbol);
-
-
+    void vTransferChildren(Card* pFrom);
+    void vTransferChildren(Card* pFrom, eSF eSymbol_limit);
   };
 }
 

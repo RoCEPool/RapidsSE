@@ -5,13 +5,20 @@
 
 namespace STORE
 {
+  typedef struct {
+    i8 iLglPtn;
+    i8 iSynthKey;
+    BufferId oBufferId;
+  } PotPdsItem;
+
   class Pot : public Object
   {
   private:
   
     RowPix* m_pRowPix;    // condensed stream def
 
-    DataBuffer*  m_paBufferChain[C_MAX_LGLPTNS];
+    i8                      m_iSynthKey;     // Synthetic key used to append buffers to the Pds structure
+    Pds_t<PotPdsItem>*      m_pPdsOfBuffers; // Pds of buffers
 
     // must be last
     Footer m_xFooter;
@@ -25,8 +32,8 @@ namespace STORE
   
   public:
 
-    static void* aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
-    static void  vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize);
+    static void* aAllotRow(Pot* pPot, i8 iKeyHsh, char** aazStrArea, i8* piErrorCode);
+    static void  vRowStrSize(Pot* pPot, i8 iKeyHsh, i8 nRowStrSize);
     static void  vRepair(Object* pObject);
     static void  vSetRowPix(Pot* pPot, RowPix* pRowPix);
 
@@ -45,9 +52,9 @@ namespace STORE
     Footer* aFooter(void);
   };
 
+  static i8 iPotPdsItemKeyCompare(void* aItem_l, void* aItem_r);
+
   Pot* _pPot(void* aAddr);
-  void* aPot_AllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
-  void  vPot_RowStrSize(void* pPot, i8 iPtn, i8 nRowStrSize);
 }
 
 /*============================================================================*/

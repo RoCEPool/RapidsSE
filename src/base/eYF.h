@@ -17,19 +17,7 @@ enum eYF // parcel forward
   /*    */ YF_ENUMS,
 };
 
-static Stz* aYF[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "YF_ALL_NODES"_Stz,
-  /*    */ "YF_ALL_PARTITIONS"_Stz,
-  /*    */ "YF_ALL_PARTITIONS_ON_ORIGIN"_Stz,
-  /*    */ "YF_NEXT_NODE"_Stz,
-  /*    */ "YF_ORIGIN"_Stz,
-  /*    */ "YF_SAME_NODE"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aYF[YF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

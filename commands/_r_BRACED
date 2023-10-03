@@ -10,7 +10,7 @@ _r_schema
 
 /optimise
 /glean_cue_from = "vReorderJoins"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_BRACED"

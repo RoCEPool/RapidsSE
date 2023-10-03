@@ -13,15 +13,7 @@ enum eNS // Node State
   /*   */ NS_ENUMS
 };
   
-static Stz* aNS[]
-{
-  /* 0 */ "NONE"_Stz,
-  
-  /*   */ "ACTIVE"_Stz,
-  /*   */ "INACTIVE"_Stz,
-  
-  /*   */ "ENUMS"_Stz,
-};
+extern Stz* aNS[NS_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

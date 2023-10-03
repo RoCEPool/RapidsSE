@@ -86,6 +86,8 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
   m_nNameOffset = sizeof(ColPix)
                            * ( m_nColumns + (bAddPtnHash ? 1 : 0) );
 
+  i8 iBufSpaceRemaining = (i8) (sizeof(m_xaColPix) + sizeof(m_baPixArea) - m_nNameOffset);
+
   MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
 
   ColPix* axaColPixDst = m_xaColPix;
@@ -112,8 +114,9 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
 
     ColPix* pColPix = pRowPix->axColPix(i_Col);
 
-    StrLib::vCopy(azColNmDst,aAdd<char*>(pColPix,pColPix->m_uName));
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, aAdd<char*>(pColPix,pColPix->m_uName));
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;
@@ -146,8 +149,9 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
     axColPixDst->m_bPtnKey   = (u8)false;
     axColPixDst->m_uSpare    = (u8)0;
 
-    StrLib::vCopy(azColNmDst,"__keyHash");
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;
@@ -195,6 +199,7 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
 
   pRowPix->m_nNameOffset = sizeof(ColPix)
                               * ( nNumCols + (bAddPtnHash ? 1 : 0) );
+  i8 iBufSpaceRemaining = (i8) (sizeof(m_xaColPix) + sizeof(m_baPixArea) - pRowPix->m_nNameOffset);
 
   MemLib::vZero(pRowPix->m_baPixArea,sizeof(pRowPix->m_baPixArea),CN_ROWPIX);
 
@@ -219,8 +224,9 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
     axColPixDst->m_bPtnKey   = (u8)pColumnInfo[i_Col].m_bPtnKey;
     axColPixDst->m_uSpare    = (u8)0;
 
-    StrLib::vCopy(azColNmDst,&pColumnInfo[i_Col].m_cColumnNm[0]);
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, &pColumnInfo[i_Col].m_cColumnNm[0]);
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;

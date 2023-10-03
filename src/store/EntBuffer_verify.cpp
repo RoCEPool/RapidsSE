@@ -738,10 +738,7 @@ bool EntBuffer::bVerifyRowRefs(void)
   
   ASSERT(0 == m_iBufferHeight);
 
-  i8 nEnt = 0;
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
-
-    nEnt++;
 
     // get the row buffer that this H0 key leaf references
     Rrf xRef = aEnt->rxRef();
@@ -781,7 +778,7 @@ bool EntBuffer::bVerifyRowRefs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the skip list only contains only entries                            */
+/* verify the skip list only contains valid entries                           */
 /*----------------------------------------------------------------------------*/
 bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
 {
@@ -796,10 +793,10 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
   
   IndexDef* pIndexDef = this->pIndexDef();
   
-  Ent* aNextEntry2;
-  Ent* aNextEntry1;
-  Ent* aNextEntry0;
-  
+//  Ent* aNextEntry2;
+//  Ent* aNextEntry1;
+//  Ent* aNextEntry0;
+
   for (i8 i_ScanLevel = nLvlLevels - 1; i_ScanLevel >= 0; i_ScanLevel--) {
     
     if (bShowKeys)
@@ -812,29 +809,36 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
         vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
       }
-      
-      switch (i_ScanLevel) {
-        case 2:
-          aNextEntry2 = aNextEntry(aTestEntry_sl,2);
-          if (aNextEntry2 && CN_ENT != aNextEntry2->eGetClassNo()) {
-            vVerifyFault(__func__,__FILE__,__LINE__);
-            return false;
-          }
-        case 1:
-          aNextEntry1 = aNextEntry(aTestEntry_sl,1);
-          if (aNextEntry1 && CN_ENT != aNextEntry1->eGetClassNo()) {
-            vVerifyFault(__func__,__FILE__,__LINE__);
-            return false;
-          }
-        case 0:
-          aNextEntry0 = aNextEntry(aTestEntry_sl,0);
-          if (aNextEntry0 && CN_ENT != aNextEntry0->eGetClassNo()) {
-            vVerifyFault(__func__,__FILE__,__LINE__);
-            return false;
-          }
-          break;
+
+//      switch (i_ScanLevel) {
+//        case 2:
+//          aNextEntry2 = aNextEntry(aTestEntry_sl,2);
+//          if (aNextEntry2 && CN_ENT != aNextEntry2->eGetClassNo()) {
+//            vVerifyFault(__func__,__FILE__,__LINE__);
+//            return false;
+//          }
+//        case 1:
+//          aNextEntry1 = aNextEntry(aTestEntry_sl,1);
+//          if (aNextEntry1 && CN_ENT != aNextEntry1->eGetClassNo()) {
+//            vVerifyFault(__func__,__FILE__,__LINE__);
+//            return false;
+//          }
+//        case 0:
+//          aNextEntry0 = aNextEntry(aTestEntry_sl,0);
+//          if (aNextEntry0 && CN_ENT != aNextEntry0->eGetClassNo()) {
+//            vVerifyFault(__func__,__FILE__,__LINE__);
+//            return false;
+//          }
+//          break;
+//      }
+
+      // we currently allow up to seven scan levels in this skip list
+      Ent* aNextEntry_chk = this->aNextEntry(aTestEntry_sl,i_ScanLevel);
+      if (aNextEntry_chk && CN_ENT != aNextEntry_chk->eGetClassNo()) {
+        vVerifyFault(__func__, __FILE__, __LINE__);
+        return false;
       }
-      
+
       if (bShowKeys) {
         Key* aTestKey = _aKey(aTestEntry_sl->aElmSeq_dtm());
         vTrace("Test %p: "_Stz,aTestEntry_sl);

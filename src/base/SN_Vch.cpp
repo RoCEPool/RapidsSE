@@ -42,6 +42,7 @@ Stz* SN_Vch::sz(char** aacCrs, i8 iLength, Format* pFmt,
   
   if ( ! StrLib::bExtractVarchar(aacCrs,
                                  m_caVch,
+                                 sizeof(m_caVch),
                                  iLength,
                                  bSawLeadingEnclosed,
                                  pFmt->cEnclosedBy_Leading(),

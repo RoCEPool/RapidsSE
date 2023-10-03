@@ -12,7 +12,7 @@ create index L_idx0  on Lineitem (L_PARTKEY );
 
 /optimise
 /glean_cue_from = "vSeries_34_Predicate_Pullup"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_CROSS_JOIN"

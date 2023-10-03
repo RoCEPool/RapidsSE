@@ -48,6 +48,33 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
+Lock::Lock(void)
+    : Object(CN_LOCK)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+
+  m_uLockWord = 0;
+  m_pObjectLocked = nullptr;
+
+  m_eLockKind = CN_NONE;
+
+  m_bLockSet = false;
+
+  m_ixReadGrabs.vCheckInit();
+  m_ixReadCollisions.vCheckInit();
+
+  m_ixWriteGrabs.vCheckInit();
+  m_ixWriteCollisions.vCheckInit();
+
+  _checkInitialised_(CN_LOCK);
+
+  _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor (for non-focal case)                                           */
+/*----------------------------------------------------------------------------*/
 Lock::Lock(Object* pObjectLocked, bool bLockSet)
 : Object(CN_LOCK)
 {
@@ -225,6 +252,21 @@ u8 Lock::iLockIsLocked(u8* pWord)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* outline                                                                    */
+/*----------------------------------------------------------------------------*/
+void Lock::vInit(Object* pObjectLocked)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+
+  if (m_pObjectLocked)
+    m_eLockKind = m_pObjectLocked->eGetClassNo();
+  else
+    m_eLockKind = CN_NONE;
+
+  m_pObjectLocked = pObjectLocked;
+}
 
 /*----------------------------------------------------------------------------*/
 /* outline                                                                    */

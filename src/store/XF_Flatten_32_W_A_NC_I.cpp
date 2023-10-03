@@ -5,7 +5,7 @@
 #include "XF_Flatten_32_W_A_NC_I.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -64,7 +64,7 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_32_W_A_NC_I, _FOOTER_);
 
-  m_pCI->vPrintBoard(__LINE__);
+ // m_pCI->vPrintBoard(__LINE__);
 
   // W A NC I
   // push a (single-value aggregate non-correlated in) sub-query before the main-query
@@ -82,7 +82,7 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_32_W_A_NC_I))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_32_W_A_NC_I, "((vFlatten_32_W_A_NC_I))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
@@ -95,20 +95,19 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
-  Smooth* pSmooth = new Smooth;
+  XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->vEndTransform();
+ // m_pCI->vPrintBoard(__LINE__);
 
   delete pCarryForward;
   delete pSmooth;
   delete pFold;
 
-  vValidate();
+  m_pCI->vEndTransform();
+//vValidateBench();
 }
 
 /*============================================================================*/

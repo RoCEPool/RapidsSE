@@ -9,8 +9,6 @@
 #include "Steps.hpp"
 
 #include "eYX.h"
-#include "ExprEval2.hpp"
-#include "ExprEval_v2.hpp"
 
 #include "Op.hpp"
 #include "Job.hpp"
@@ -33,18 +31,13 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].addColumn"_Stz,  &Step::vStreamDefOutAddColumn);
   vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
   vAddStep("StreamDefOut[].duplicate"_Stz,  &Step::vStreamDefOutDuplicate);
-  vAddStep("StreamDefOut[].generate"_Stz,   &Step::vStreamDefOutGenerate);
   vAddStep("StreamDefOut[].isNull"_Stz,     &Step::vStreamDefOutIsNull);
-  vAddStep("StreamDefOut[].join"_Stz,       &Step::vStreamDefOutJoin);
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
   vAddStep("StreamDefOut[].newFromTable"_Stz,&Step::vStreamDefOutNewFromTable);
   vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
-  vAddStep("StreamDefOut[].selectColumns"_Stz,   &Step::vStreamDefOutSelectColumns);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
-
-  vAddStep("StreamDefOut[].generate_V2"_Stz,   &Step::vStreamDefOutGenerate_V2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,176 +111,6 @@ void Step::vStreamDefOutGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDefOut[].generate -- generate the stream definition out from expr    */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefOutGenerate(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
-
-  s4K sExpr;
-  m_pDataStack->vPopStr(sExpr, __func__);
-
-  if (m_pLogicUnit->m_xpStreamDefOut.bIsNull())
-    m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
-
-  m_pLogicUnit->m_xpPreExpStack = new IntStack;
-
-  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
-  IntStack*  pPreExpStack = * m_pLogicUnit->m_xpPreExpStack;
-
-  eEK eExprKind;
-
-  eEC eError = ExprEval2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                            pPreExpStack, eExprKind, sExpr, &m_pLogicUnit->m_uSelectColumns);
-  m_pLogicUnit->m_eExprKind = eExprKind;
-/*
-#ifdef WITH_DEBUG_VERSION
-
-  vTrace("*****************************************************\n"_Stz);
-  vTrace("* Intermediate Representation for OP: %10s    *\n"_Stz, m_pOp->pOpSpec()->szOpNm());
-  vTrace("*****************************************************\n"_Stz);
-
-  // dump the Expression
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("Expr: \"%s\"\n"_Stz, sExpr.szStz());
-
-  // dump the Expression kind
-  vTrace("eEK: %s\n"_Stz, aEK[eExprKind]);
-
-  // dump the PreExp stack
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("PREEXPSTACK:\n"_Stz);
-  i8 nExpr = pPreExpStack->nItems() - 1;
-
-  while ( nExpr >= 0) {
-    i8 iValue = pPreExpStack->iPeek(nExpr--);
-    vTrace("%s\n"_Stz, aPE[iValue]);
-  }
-
-  // dump the select column list
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("SELECT COLUMNS:\n"_Stz);
-  for (i8 i_Col = 0; i_Col < 64; i_Col++) {
-
-    // skip columns in join not needed
-    if (BitLib::bIsOn(m_pLogicUnit->m_uSelectColumns, i_Col)) {
-      vTrace("%s\n"_Stz, pStreamDefIn->pGetColumn(i_Col)->szColNm());
-    }
-  }
-
-  // dump the streamDefOut
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("STREAMDEFOUT:\n"_Stz);
-  pStreamDefOut->vPrint();
-
-  // dump the indexDef
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("INDEXDEF:\n"_Stz);
-  if (pIndexDef) {
-    pIndexDef->vPrint();
-  }
-
-  vTrace("\n\n\n"_Stz);
-
-#endif
-*/
-
-  m_pDataStack->vPushInt(eError);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDefOut[].generate_V2 -- generate the stream definition out from expr */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefOutGenerate_V2(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
-
-  s4K sExpr;
-  m_pDataStack->vPopStr(sExpr, __func__);
-
-  if (m_pLogicUnit->m_xpStreamDefOut.bIsNull())
-    m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
-
-  m_pLogicUnit->m_xpPreExpStack = new IntStack;
-
-  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
-  IntStack*  pPreExpStack = * m_pLogicUnit->m_xpPreExpStack;
-
-  eEK eExprKind;
-
-  eEC eError = ExprEval_v2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                             pPreExpStack, sExpr, &m_pLogicUnit->m_uSelectColumns);
-
-  // TODO: V2 - ALKA REMOVED m_eExprKind from LU
-  //m_pLogicUnit->m_eExprKind = eExprKind;
-
-#ifdef WITH_DEBUG_VERSION
-
-  vTrace("*****************************************************\n"_Stz);
-  vTrace("* Intermediate Representation for OP: %10s    *\n"_Stz, m_pOp->pOpSpec()->szOpNm());
-  vTrace("*****************************************************\n"_Stz);
-
-  // dump the Expression
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("Expr: \"%s\"\n"_Stz, sExpr.szStz());
-
-  // dump the Expression kind
-  vTrace("eEK: %s\n"_Stz, aEK[eExprKind]);
-
-  // dump the PreExp stack
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("PREEXPSTACK:\n"_Stz);
-  i8 nExpr = pPreExpStack->nItems() - 1;
-
-  while ( nExpr >= 0) {
-    i8 iValue = pPreExpStack->iPeek(nExpr--);
-    vTrace("%s\n"_Stz, aPE[iValue]);
-  }
-
-  // dump the select column list
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("SELECT COLUMNS:\n"_Stz);
-  for (i8 i_Col = 0; i_Col < 64; i_Col++) {
-
-    // skip columns in join not needed
-    if (BitLib::bIsOn(m_pLogicUnit->m_uSelectColumns, i_Col)) {
-      vTrace("%s\n"_Stz, pStreamDefIn->pGetColumn(i_Col)->szColNm());
-    }
-  }
-
-  // dump the streamDefOut
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("STREAMDEFOUT:\n"_Stz);
-  pStreamDefOut->vPrint();
-
-  // dump the indexDef
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("INDEXDEF:\n"_Stz);
-  if (pIndexDef) {
-    pIndexDef->vPrint();
-  }
-
-  vTrace("\n\n\n"_Stz);
-
-#endif
-
-
-  m_pDataStack->vPushInt(eError);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* StreamDefOut[].isNull -- is streamDef null ?                               */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamDefOutIsNull(void)
@@ -296,27 +119,6 @@ void Step::vStreamDefOutIsNull(void)
   
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDefOut[].join -- generate the stream definition out for join         */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefOutJoin(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
-
-  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
-
-  eEC eError = ExprEval2::eJoinStreamDef(pStreamDefLft, pStreamDefRht, pStreamDefOut);
-
-  m_pDataStack->vPushInt(eError);
-
   EXIT();
 }
 
@@ -385,24 +187,6 @@ void Step::vStreamDefOutPrint(void)
   StreamDef* pStreamDefOut = _pStreamDef(*m_pLogicUnit->m_xpStreamDefOut);
   
   pStreamDefOut->vPrint();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDefOut[].selectColumns -- generate select columns from expr          */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefOutSelectColumns(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDefOut = _pStreamDef(*m_pLogicUnit->m_xpStreamDefOut);
-
-  s4K sExpr;
-  m_pDataStack->vPopStr(sExpr, __func__);
-
-  eEC eError = ExprEval2::eGenerateSelectColumns(pStreamDefOut, sExpr, &m_pLogicUnit->m_uSelectColumns);
-  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

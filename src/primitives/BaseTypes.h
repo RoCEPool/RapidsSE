@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-#include "BaseTypes_tcc.h"
+#include "BaseTypes_general.h"
 
   typedef __int128           i16;  // 16 byte signed integer (GNU extension)
   typedef unsigned __int128  u16;  // 16 byte unsigned integer (GNU extension)

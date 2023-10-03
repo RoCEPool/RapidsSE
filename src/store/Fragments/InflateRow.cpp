@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "IndexDef.hpp"
 #include "CodeSynthCommon.h"
 #include "ClangDynamic.h"
@@ -26,32 +26,11 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
   i8* paW;
   i8  i_CurrentRow;
   i8* piColumn;
-  i8  iaPow10[15];
 
   // marker-start
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
-
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
-  iaPow10[0] = 1;
-  iaPow10[1] = 10;
-  iaPow10[2] = 100;
-  iaPow10[3] = 1000;
-  iaPow10[4] = 10000;
-  iaPow10[5] = 100000;
-  iaPow10[6] = 1000000;
-  iaPow10[7] = 10000000;
-  iaPow10[8] = 100000000;
-  iaPow10[9] = 1000000000;
-  iaPow10[10] = 10000000000;
-  iaPow10[11] = 100000000000;
-  iaPow10[12] = 1000000000000;
-  iaPow10[13] = 10000000000000;
-  iaPow10[14] = 100000000000000;
 
   paW = &aDynamicT->m_aW[0];
 
@@ -59,24 +38,25 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL_LOOP__:
 
-   aDynamicT->m_iJoinedRows = 0;
+  aDynamicT->m_iJoinedRows = 0;
 
-   // process the row
-   aDynamicT->m_iProcessRow = 1;
+  // process the row
+  aDynamicT->m_iProcessRow = 1;
 
-   i_CurrentRow++;
-   if (i_CurrentRow  >= aDynamicT->m_nRows) {
-     goto L_Return;
-   }
+  i_CurrentRow++;
+  if (i_CurrentRow  >= aDynamicT->m_nRows) {
+    goto L_Return;
+  }
 
-   // get the next row (should be able to add rowsize)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the next row (should be able to add rowsize)
 #ifdef WITH_CLANG
-   aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_RowBufferCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
+  aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_RowBufferCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
 #endif
 
-   aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
+  aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
 
-   piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   // marker-end
   L_Return:

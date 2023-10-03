@@ -6,13 +6,13 @@
 #include "BASE.h"
 
 #include "eCK.h"
+#include "CardHistory.hpp"
 
 namespace STORE
 {
   struct _CardCtl
   {
     bool m_bHeatNext;        // print card on new horizontal heat/row
-    s32  m_sHideHeat;        // hide this heat (when it starts with this card)
 
     bool m_bPrintBelow;      // force print of subcards below this one
     bool m_bPrintByKind;     // print card by kind (or the following settings...)
@@ -32,7 +32,6 @@ namespace STORE
   protected:
     b8 m_bCued;
     b8 m_bCueDisabled;
-    b8 m_bTrace;
 
     _CardCtl m_xaCardCtl[CK_ENUMS];
 
@@ -47,6 +46,8 @@ namespace STORE
 
     i8  m_iPrintNo;
 
+    CardHistory* m_pCardHistory;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -58,9 +59,7 @@ namespace STORE
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
 
-    bool bBenchPrint(void);
-    bool bBoardPrint(void);
-
+    CardHistory* pCardHistory(void);
     bool bCued(void);
     void vCued(bool bCued);
     bool bCueDisabled(void);
@@ -79,8 +78,6 @@ namespace STORE
     void vPrintBelow(i8 iBelow, va_list xVarArgs);
     bool bPrintByKind(i8 i_Card);
     void vPrintByKind(i8 i_Card, bool bPrintByKind);
-    Stz* szHorizExclude(i8 i_Card);
-    void vHorizExclude(i8 i_Card, Stz* szHorizExclude);
     bool bPrintName(i8 i_Card);
     void vPrintName(i8 i_Card, bool bPrintName);
     bool bPrintNo(i8 i_Card);
@@ -96,7 +93,7 @@ namespace STORE
     void vPrintProperties(i8 i_Card, bool bPrintProperties);
     bool bPrintSubCards(i8 i_Card);
     void vPrintSubCards(i8 i_Card, bool bPrintSubCards);
-    void vPrintSubCards(bool bPrintSubCards, ...);
+    void vPrintSubCards(i8 bPrintSubCards, ...);
     bool bPrintSubShort(i8 i_Card);
     void vPrintSubShort(i8 i_Card, bool bPrintSubShort);
 
@@ -119,10 +116,6 @@ namespace STORE
     void vSetSubsPrintNone(void);
 
     void vShowSettings(i8 i_Card);
-
-    bool bTrace(void);
-    void vTraceing(bool bTrace);
-    bool bTracing(Stz* szXhand, Stz* szXform);
 
     void vUseDefault(void);
     void vUseExpanded(void);

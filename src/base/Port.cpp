@@ -249,7 +249,7 @@ void Port::vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort)
   MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_PORT);
   
   aAddr->sin_family      = AF_INET;
-  aAddr->sin_addr.s_addr = sAddr->azChar() == nullptr ? C_UNKNOWN : inet_addr(sAddr->azChar());
+  aAddr->sin_addr.s_addr = sAddr == nullptr ? C_UNKNOWN : inet_addr(sAddr->azChar());
   aAddr->sin_port        = htons((int)iPort);
 }
 
@@ -351,7 +351,7 @@ bool Port::bConnectServer(Stz* sAddr, int iPort, SysCall& roSysCall)
   xAddrInfo.ai_flags    = AI_PASSIVE;
   
   s256 sPort;
-  StrLib::vSprint(sPort.szStz(), "%lld"_Stz, iPort);
+  sPort.vSprint("%lld"_Stz, iPort);
   
   i8 iReturn = getaddrinfo(sAddr->azChar(), sPort.azChar(), &xAddrInfo, &pAddrInfo);
   if (iReturn != 0) {
@@ -596,7 +596,8 @@ i8 Port::iRecvBufferSize(void)
                        ,(void*)&iOptValue
                        ,(socklen_t *)&iOptSize
                        );
-  
+  UNUSED(iResult);
+
   return iOptValue;
 }
 
@@ -669,7 +670,8 @@ i8 Port::iSendBufferSize(void)
                        ,(void*)&iOptValue
                        ,(socklen_t *)&iOptSize
                        );
-  
+  UNUSED(iResult);
+
   return iOptValue;
 }
 

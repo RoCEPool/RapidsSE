@@ -6,23 +6,11 @@
 enum eXA // transaction actions
 {
   /*  0 */ XA_TSK_NONE=0,
-  
-  /*    */ XA_TSK_ENUMS,
+  /*    */ XA_TSK_ENUMS
 };
 
-static Stz* aXA[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "ENUMS"_Stz,
-};
-
-static Stz* aXA_short[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aXA[XA_TSK_ENUMS];
+extern Stz* aXA_short[XA_TSK_ENUMS];
 
 
 /*============================================================================*/

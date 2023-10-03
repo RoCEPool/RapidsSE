@@ -517,7 +517,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_RU"_Stz,   EG_RU);
   vAddConstant("EG_SC"_Stz,   EG_SC);
   vAddConstant("EG_SI"_Stz,   EG_SI);
-  vAddConstant("EG_ST"_Stz,   EG_ST);
   vAddConstant("EG_TA"_Stz,   EG_TA);
   vAddConstant("EG_TN"_Stz,   EG_TN);
   vAddConstant("EG_TR"_Stz,   EG_TR);
@@ -872,20 +871,6 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_TRACE_API"_Stz,(i8)false);
   #endif
-
-#ifdef WITH_WEAVER2
-  vAddConstant("WITH_WEAVER2"_Stz,(i8)true);
-
-  //s32 sTagName = "<weaver2>"_Stz;
-  //gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
-
-#else
-  vAddConstant("WITH_WEAVER2"_Stz,(i8)false);
-
-  //s32 sTagName = "<weaver1>"_Stz;
-  //gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
-
-#endif
 }
 
 /*============================================================================*/

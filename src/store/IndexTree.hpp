@@ -89,7 +89,6 @@ namespace STORE
     static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
 
     PayStr*    pAllotPayStr(Stz* szStz);
-    Stz*       pAnalyze(void);
     i8         nBufferCount(void);
     void       vCompact(void);
     i8         iCountH0Entries(void);

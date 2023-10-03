@@ -4,6 +4,7 @@
 trackmemory force;
 success
 
+/pipelineName = "OptQ7"
 select supp_nation,
   cust_nation,
   l_year,

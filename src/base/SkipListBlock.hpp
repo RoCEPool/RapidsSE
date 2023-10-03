@@ -20,15 +20,16 @@ namespace BASE
   {
   public:
     SkipListNode  m_xNode;
-    char m_xItem[1];
+    i8 m_xItem[1];
 
   public:
     SkipListBlock(eCN eClassNo, i8 nSizeEnt);
     ~SkipListBlock(void) noexcept(false);
 
-    void* aItemBody(void);
-    void* aItemKey(void);
+    void* aItem(void);
     i8 iKey(void);
+
+    SkipListBlock* aNext(void);
 
     void vSetKey(i8 iKey);
 

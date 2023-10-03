@@ -36,6 +36,7 @@ __aFooterFunction(Marker)
 /*----------------------------------------------------------------------------*/
 void* Marker::operator new(size_t, eMG eMarker)
 {
+  UNUSED(eMarker);
   //RASSERT(MG_CHAIN == eMarker || MG_MANAGER == eMarker);
   
   Marker* pMarker =
@@ -107,6 +108,7 @@ Marker::~Marker(void) noexcept(false)
 void Marker::vPostRecv(void* aMarker)
 {
   _static_
+  UNUSED(aMarker);
   
   //Marker* pMarker = _pMarker(aMarker);
 }

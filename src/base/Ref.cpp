@@ -33,6 +33,22 @@ Rrf::Rrf(u8 uBuffer, u8 uItem, u8 uLevels)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+Rrf::Rrf(const Rrf& oCopy)
+{
+  m_uBuffer  = oCopy.m_uBuffer;
+  m_uItem    = oCopy.m_uItem;
+  m_uLevels  = oCopy.m_uLevels;
+
+  m_uKind    = oCopy.m_uKind;
+  m_uPayload = oCopy.m_uPayload;
+  m_uFree    = oCopy.m_uFree;
+  m_uDesc    = oCopy.m_uDesc;
+  m_uSpare   = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Rrf::~Rrf(void) noexcept(false)
@@ -46,9 +62,10 @@ Rrf::~Rrf(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* assignment                                                                 */
 /*----------------------------------------------------------------------------*/
-void Rrf::operator =(Rrf xwRef)
+Rrf& Rrf::operator =(const Rrf& xwRef)
 {
   vSet(xwRef);
+  return *this;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -9,17 +9,11 @@ enum eTT // Table Type
   /* 1 */ TT_INFOSET,
   /* 2 */ TT_INTERNAL,
   /* 3 */ TT_NORMAL,
-  /* 4 */ TT_REPLICATED
+  /* 4 */ TT_REPLICATED,
+  /* 5 */ TT_ENUMS
 };
 
-static Stz* aTT[]
-{
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "TT_INFOSET"_Stz,
-  /* 2 */ "TT_INTERNAL"_Stz,
-  /* 3 */ "TT_NORMAL"_Stz,
-  /* 4 */ "TT_REPLICATED"_Stz
-};
+extern Stz* aTT[TT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

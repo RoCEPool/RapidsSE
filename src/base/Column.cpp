@@ -63,7 +63,7 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eCT Column::eColumn(Stz* szType)
 {
-  i8 nEntries = sizeof(aCT) / sizeof (Stz*);
+  i8 nEntries = CT_ENUMS;
   
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
     
@@ -255,6 +255,16 @@ void Column::vColumnNm(Stz* aColumnName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
   m_sColumnNm = aColumnName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column name                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Column::iColNmBufSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+  return m_sColumnNm.nAreaBytes();
 }
 
 /*----------------------------------------------------------------------------*/

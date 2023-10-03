@@ -15,15 +15,7 @@ enum eUT // utility
   /*  5 */ UT_ENUMS
 };
 
-static Stz* aUT[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "UT_APIDEMO"_Stz,
-  /*  2 */ "UT_PFILE"_Stz,
-  /*  3 */ "UT_RAPIDSSE"_Stz,
-  /*  4 */ "UT_SHM"_Stz,
-  /*  5 */ "ENUMS"_Stz,
-};
+extern Stz* aUT[UT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -35,7 +35,7 @@ namespace BASE
     char* azText(void);
 
     void  vPrint(void);
-    void  vSprint(char* azText);
+    void  vSprint(char* azText, i8 nBufSize);
 
   };
 }

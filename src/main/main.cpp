@@ -11,6 +11,7 @@
 //#include "Heart.h"
 #include "Engine.hpp"
 #include "Mersenne.hpp"
+#include "EnumValidator.hpp"
 
 // Since trace file is opened before the attach map is ready
 // we use globals instead of saving it to the attach map
@@ -186,6 +187,10 @@ int main(int argc, char* argv[])
   // Set the default clock type for Hardware::iReadClock().
   // This needs to be done after IntLib::vInitGlobals() above.
   Hardware::vChooseClockType();
+
+  // Check that the Stz arrays associated with enums that frequently changed are
+  // properly initialised
+  EnumValidator::vValidateEnumStzArrays();
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -13,7 +13,7 @@ create index RV_idx0 on RevenueV (RV_SUPPKEY );
 
 /optimise
 /glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_Q15"

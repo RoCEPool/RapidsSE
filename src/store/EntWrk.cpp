@@ -464,13 +464,14 @@ void EntWrk::vAppendRef(Rrf xwArg)
 void EntWrk::vAppendStz(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  char* aDst = (char*)ayElmNext_dtm();
+
+  i8 iBufRemaining;
+  char* aDst = (char*)ayElmNext_dtm(&iBufRemaining);
 
   // Alka: entwrk reset
   //vTrace("aDst %p\n"_Stz,aDst);
-  
-  i8 nElmSize = StrLib::iWordFlip(aDst, szArg->azChar());
+
+  i8 nElmSize = StrLib::iWordFlip(aDst, iBufRemaining, szArg->azChar());
   
   vIncElmSeqSize(nElmSize);
 }
@@ -500,13 +501,17 @@ void EntWrk::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* get address where next element would be added                              */
 /*----------------------------------------------------------------------------*/
-Dtm* EntWrk::ayElmNext_dtm(void)
+Dtm* EntWrk::ayElmNext_dtm(i8* piBufRemaining)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nElmSeqSize = m_xEnt.nElmSeqSize();
 
   Dtm* ayNextElm = aAdd<Dtm*>(aElmSeq_dtm(),nElmSeqSize);
+
+  if (piBufRemaining) {
+    *piBufRemaining = (i8) sizeof(m_yaKeySpace) - nElmSeqSize;
+  }
 
   return ayNextElm;
 }

@@ -752,7 +752,7 @@ void Engine::vErrorHandler(Error* pError)
   if (pError) {
     acEnd = StrLib::acLast(pError->aFileName()->azChar());
     StrLib::bBackward(&acEnd,(char*)pError->aFileName(),'/');
-    StrLib::vCopy(caFileName,acEnd+1);
+    StrLib::vCopy(caFileName,sizeof(caFileName),acEnd+1);
     vTrace("%s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
            pError->iLineNo(),
@@ -1024,6 +1024,7 @@ void Engine::vMungeCheck(void)
   Dir* pDir = new Dir(nullptr);
   bool bResult = pDir->bOpen("../sen"_Stz);
   ASSERT(bResult);
+  UNUSED(bResult);
   
   s256 sEntryNm;
   s256 sFilePath;
@@ -2082,7 +2083,7 @@ void Engine::vWaitStop(void)
   
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
-    AM::vNapMsec(10,CN_NONE);
+    AM::vNapMsec(100,CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/

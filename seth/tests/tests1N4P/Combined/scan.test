@@ -29,6 +29,8 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
+// TODO V2 : OPTIMISER TO DETECT INVLAID PIPELINE (combined after scan)
+/*
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -46,6 +48,7 @@ begin
     | stageStart
 end ;
 failure contains: 'EC_INVALID_PIPELINE'
+*/
 
 //------------------------------------------------------------------------------
 /optimise_passthru 

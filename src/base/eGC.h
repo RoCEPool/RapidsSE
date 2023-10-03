@@ -15,17 +15,7 @@ enum eGC // card category
   /*    */ GC_ENUMS,
 };
 
-static Stz* aGC[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*  0 */ "GC_BOARD"_Stz,
-  /*  0 */ "GC_MAIN"_Stz,
-  /*  0 */ "GC_SUB"_Stz,
-  /*  0 */ "GC_OTHER"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aGC[GC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

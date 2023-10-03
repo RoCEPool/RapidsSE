@@ -9,14 +9,13 @@
 #include "SP_PipeSpec.hpp"
 #include "Job.hpp"
 #include "InfoSet.hpp"
-#include "XF_Synthesise_Code.hpp"
+#include "XF_Synthesise_code.hpp"
 #include "CardIter.hpp"
 
 #include "CarryForward.hpp"
 #include "Error.hpp"
 
 #include "Weaver.hpp"
-#include "Weaver2.hpp"
 #include "XF.hpp"
 
 
@@ -61,7 +60,11 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   m_pCodeBlock = nullptr;
 
   _checkInitialised_(CN_OPTIMISER);
-  
+
+  //MY::pJob()->pJobTags()->vAppend(C_OPTIMISER_TRACE);
+  //MY::pJob()->pJobTags()->vAppend(C_PIPELINE_DEF);
+  //MY::pJob()->pJobTags()->vAppend(C_WEAVED);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
 
@@ -71,7 +74,12 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 Optimiser::~Optimiser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-  
+
+  RASSERT(0 == m_pCI->nItems());
+
+  if (m_pCardCtl->pCardHistory())
+    m_pCardCtl->pCardHistory()->vPrintImages(CK_GBYAGG,AL_PARTITION);
+
   delete m_pCardCtl;
   
   delete m_pBench;
@@ -110,9 +118,9 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* transform matrix                                                           */
+/* apply transforms                                                           */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bApplyTransformationMatrix(Error& rxError)
+bool Optimiser::bApplyTransformations(Error& rxError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -120,7 +128,7 @@ bool Optimiser::bApplyTransformationMatrix(Error& rxError)
 
   try {
 
-    if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE)) {
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
       vTrace("JobTags\n"_Stz);
       MY::pJob()->pJobTags()->vDumpSet(true);
     }
@@ -373,35 +381,20 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  if (AM::JOB::bHasTag(C_WEAVER1)) {
-    Weaver *pWeaver1 = new Weaver(m_pBench);
+  Weaver *pWeaver = new Weaver(m_pBench, m_pPipelineDef);
 
-    Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
-    pWeaver1->vWeaveOptStmt(pBoard_query);
+  Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
+  pWeaver->vWeaveOptStmt(pBoard_query);
 
-    if (! m_pOptStmt)
-      m_pOptStmt = new ExtendedText;
-    m_pOptStmt->vCopy(pWeaver1->szOptStmt());
+  m_pOptStmt = pWeaver->pOptStmt();
+  pWeaver->vOptStmt(nullptr);
 
-    delete pWeaver1;
+  if (pWeaver->pCodeBlock()) {
+    m_pCodeBlock = pWeaver->pCodeBlock();
+    pWeaver->vCodeBlock(nullptr);
   }
-  else {
 
-    Weaver2 *pWeaver = new Weaver2(m_pBench,m_pPipelineDef);
-
-    Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
-    pWeaver->vWeaveOptStmt(pBoard_query);
-
-    m_pOptStmt = pWeaver->pOptStmt();
-    pWeaver->vOptStmt(nullptr);
-
-    if (pWeaver->pCodeBlock()) {
-      m_pCodeBlock = pWeaver->pCodeBlock();
-      pWeaver->vCodeBlock(nullptr);
-    }
-
-    delete pWeaver;
-  }
+  delete pWeaver;
 
   return m_pOptStmt->szTextBlock(0);
 }
@@ -423,7 +416,7 @@ bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
   bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
   bool bJoinPermutations = pJobTags->bHasName("<JoinPermutations>"_Stz);
 
-  bool bClean = bApplyTransformationMatrix(rxError);
+  bool bClean = bApplyTransformations(rxError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -432,13 +425,17 @@ bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
     Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     m_sJoinOrder.szStz(),
                                     C_VARGS_END);
+    UNUSED(pRow);
+
   }
   else if (bJoinPermutations) {
     RASSERT(pInfoSet);
-    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++)
-      Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++) {
+      Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                       m_sJoinPermutation[iIndex].szStz(),
                                       C_VARGS_END);
+      UNUSED(pRow);
+    }
   }
 
    return bClean;

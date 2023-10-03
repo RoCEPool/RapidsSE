@@ -20,7 +20,7 @@ namespace STORE
 
     static void vMorph_table_To_indexJoin(CardIter* pCI);
 
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_add_transients(CardIter* pCI);
 

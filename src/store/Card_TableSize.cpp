@@ -7,6 +7,7 @@
 #include "Card_Table.hpp"
 
 #include "Table.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -21,7 +22,7 @@ __vDeleteFunction(Card_TableSize,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableSize::Card_TableSize(void)
-: Card(CK_TABLESIZE)
+: Card_symbol(CK_TABLESIZE, 4)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -64,12 +65,23 @@ Card_TableSize* Card_TableSize::pDerive(Table* pTable)
   Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
   Card_TableSize* p_size = new Card_TableSize;
-  s32 sSize(jTableSize);
-  p_size->vSymbol(sSize);
+  p_size->SYM(SF_INT_LIT,jTableSize);
 
   return p_size;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TableSize::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

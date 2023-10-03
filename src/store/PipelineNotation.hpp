@@ -9,7 +9,7 @@ namespace STORE
   {
   public:
     static void vPipelineNotation(Stz* szPipelineStatement);
-    static void vPipelineFromFile(Stz* pFilename, Stz* sDstStr);
+    static void vPipelineFromFile(Stz* szFilename, String* psDstStr);
     static void vPipelineToFile(Stz* pFilename, Stz* sDstStr);
     static void vPrintPipeline(TokenVec* pTknVec);
     static void vShorten(TokenVec* pTknVec);

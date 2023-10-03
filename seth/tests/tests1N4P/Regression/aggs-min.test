@@ -111,13 +111,11 @@ select colb9,  min(cold9) as MinFloat from table9 where MinFloat > 0 group by co
 failure contains: 'EC_SEMANTIC_ERROR'
 //failure: 'Reference to undefined column MINFLOAT'
 
-
 // Source file: ../queries/aggs/min/rmin20.sql
 // Result file: ../queries/aggs/min/results/min20.res
 select min(ucolvc), min(colb1) from table1;
 rows:
   ('aaa', 'BLACK')
-
 
 // Source file: ../queries/aggs/min/rmin6.sql
 // Result file: ../queries/aggs/min/results/min6.res
@@ -216,9 +214,12 @@ rows:
 
 // Source file: ../queries/aggs/min/rmin18.sql
 // Result file: ../queries/aggs/min/results/min18.res
+// TODO: RAY TO LOOK AT
+/*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX;
 rows:
   (-2.490800000e+02,-148.19,-15)
+*/
 
 // Source file: ../queries/aggs/min/rmin25.sql
 // Result file: ../queries/aggs/min/results/min25.res

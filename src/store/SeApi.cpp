@@ -93,7 +93,7 @@ Stz* SeApi::szCurrentFolderPath(String* psFolderPath)
   DicStack* pDicStack = pTask->pDicStack();
   
   // express that as a path-folder string
-  pDicStack->vToPathStr(psFolderPath->szStz());
+  pDicStack->vToPathStr(psFolderPath);
   
   return psFolderPath->szStz();
 }

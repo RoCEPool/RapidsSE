@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_AGG.hpp"
+#include "Card_AGGREGATE.hpp"
 
 namespace STORE
 {
-  class Card_Aggreg : public Card_AGG
+  class Card_Aggreg : public Card_AGGREGATE
   {  
   public:
     void* operator new(size_t);
@@ -20,8 +20,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy);
 
     void vComputeProjection(CardIter* pCI); // prototype
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_root(CardIter* pCI);
 

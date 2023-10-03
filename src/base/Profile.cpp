@@ -89,8 +89,8 @@ void Profile::vWriteReport(File* pFile)
 void Profile::vPostRecv(void* aProfile)
 {
   _static_
-  
-  Profile* pProfile = _pProfile(aProfile);
+  UNUSED(aProfile);
+//  Profile* pProfile = _pProfile(aProfile);
 }
 
 /*============================================================================*/

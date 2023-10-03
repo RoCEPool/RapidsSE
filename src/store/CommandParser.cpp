@@ -1236,7 +1236,8 @@ Text* CommandParser::pCleanString(Parser::sqlParser::StringLiteralContext *pCtx)
     Text* pText = new Text((Stz*) idStr.substr(1, idLen - 2).c_str());
 
     // Unescape any two consecutive single quotes
-    while (StrLib::bReplace(pText->szGet()->azChar(), "''", "'")) { /*noop*/ }
+    while (StrLib::bReplace(pText->szGet()->azChar(), pText->nBufferSize(),
+                            "''", "'")) { /*noop*/ }
     pText->vSizeText();
 
     return pText;
@@ -1248,7 +1249,8 @@ Text* CommandParser::pCleanString(Parser::sqlParser::StringLiteralContext *pCtx)
     Text* pText = new Text((Stz*) idStr.substr(1, idLen - 2).c_str());
 
     // Unescape any two consecutive double quotes
-    while (StrLib::bReplace(pText->szGet()->azChar(), "\"\"", "\"")) { /*noop*/ }
+    while (StrLib::bReplace(pText->szGet()->azChar(), pText->nBufferSize(),
+                            "\"\"", "\"")) { /*noop*/ }
     pText->vSizeText();
 
     return pText;
@@ -1329,7 +1331,8 @@ void CommandParser::vCleanString(std::string& sStr, s256& sBuf)
     sBuf.vCopy((Stz*) sStr.substr(1, len - 2).c_str());
 
     // Unescape any two consecutive single quotes
-    while (StrLib::bReplace(sBuf.azChar(), "''", "'")) { /*noop*/ }
+    while (StrLib::bReplace(sBuf.azChar(), sBuf.nAreaBytes(),
+                            "''", "'")) { /*noop*/ }
     return;
   }
 
@@ -1339,7 +1342,8 @@ void CommandParser::vCleanString(std::string& sStr, s256& sBuf)
     sBuf.vCopy((Stz*) sStr.substr(1, len - 2).c_str());
 
     // Unescape any two consecutive double quotes
-    while (StrLib::bReplace(sBuf.azChar(), "\"\"", "\"")) { /*noop*/ }
+    while (StrLib::bReplace(sBuf.azChar(), sBuf.nAreaBytes(),
+                            "\"\"", "\"")) { /*noop*/ }
     return;
 
 

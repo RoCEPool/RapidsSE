@@ -90,7 +90,6 @@ ordered rows:
   ('green', 1295)
   ('grey', 260)
 
-
 // Source file: ../queries/aggs/sum/rsum1.sql
 // Result file: ../queries/aggs/sum/results/sum1.res
 select sum(cola1) from table1;

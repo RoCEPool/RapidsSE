@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_IndexList : public Card
+  class Card_IndexList : public Card_symbol<Card_IndexList>
   {
   public:
     void* operator new(size_t);
@@ -22,15 +22,17 @@ namespace STORE
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
 
+    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+
     void vDeleteAll_bounds(void);
 
     Card_Index* pFindChosenIndex(void);
 
-    bool bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred);
+    bool bHas_cmpPred_In_bounds(Card_CmpConj* p_cmpPred);
 
     void vTypes_For_stmColOdn(CardIter* pCI);
 
-    bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
+    bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
     bool bUsesSqyRsl(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

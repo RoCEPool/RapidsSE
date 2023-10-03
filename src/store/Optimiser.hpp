@@ -7,7 +7,6 @@
 
 #include "Bench.hpp"
 #include "CardCtl.hpp"
-#include "Weaver.hpp"
 #include "PermGen.hpp"
 #include "Error.hpp"
 #include "PipelineDef.hpp"
@@ -51,12 +50,11 @@ namespace STORE
     void  operator delete(void*);
   
     Optimiser(TagSet* p_JobTags);
-  
    ~Optimiser(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
-    bool bApplyTransformationMatrix(Error& rxError);
+    bool bApplyTransformations(Error& rxError);
 
     Bench* pBench(void);
 

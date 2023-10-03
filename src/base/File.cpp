@@ -194,6 +194,8 @@ void File::vRepair(Object* pObject)
 /*---------------------------------------------------------------------------*/
 bool File::bAccess(Stz* szFilePath, i8 iPermission)
 {
+  _static_
+
   int iResult = access(szFilePath->azChar(),(int)iPermission);
 
   if (0 == iResult)
@@ -207,6 +209,8 @@ bool File::bAccess(Stz* szFilePath, i8 iPermission)
 /*---------------------------------------------------------------------------*/
 bool File::bExists(Stz* szFilePath, bool bWarning)
 {
+  _static_
+
   struct stat xStat;
   
   int iResult = stat(szFilePath->azChar(),&xStat);
@@ -224,10 +228,28 @@ bool File::bExists(Stz* szFilePath, bool bWarning)
 }
 
 /*---------------------------------------------------------------------------*/
+/* create unique temporary file name                                         */
+/*---------------------------------------------------------------------------*/
+void File::vMakeTempNm(BASE::String *pTempNm, BASE::Stz *szBaseNm)
+{
+  _static_
+
+  s256 sTemplate;
+
+  sTemplate.vSprint("%s_XXXXXX"_Stz,szBaseNm);
+
+  char* azTempNm = mkdtemp(sTemplate.azChar());
+
+  pTempNm->vCopy((Stz*)azTempNm);
+}
+
+/*---------------------------------------------------------------------------*/
 /* get the modification time of the file                                     */
 /*---------------------------------------------------------------------------*/
 bool File::bModTime(Stz* szFilePath, time_t& tTime)
 {
+  _static_
+
   struct stat xStat;
   
   int iResult = stat(szFilePath->azChar(),&xStat);
@@ -250,6 +272,8 @@ bool File::bModTime(Stz* szFilePath, time_t& tTime)
 /*----------------------------------------------------------------------------*/
 bool File::bRemove(Stz* szFilePath, bool bIgnoreMissing)
 {
+  _static_
+
   int iResult = unlink(szFilePath->azChar());
   
   if (-1 == iResult) {
@@ -269,6 +293,8 @@ bool File::bRemove(Stz* szFilePath, bool bIgnoreMissing)
 /*----------------------------------------------------------------------------*/
 bool File::bRename(Stz* szOldPath, Stz* szNewPath)
 {
+  _static_
+
   return (rename(szOldPath->azChar(), szNewPath->azChar()) == 0);
 }
 
@@ -277,6 +303,8 @@ bool File::bRename(Stz* szOldPath, Stz* szNewPath)
 /*----------------------------------------------------------------------------*/
 i8 File::nSize(Stz* szFilePath)
 {
+  _static_
+
   struct stat xStat;
   
   int iResult = stat(szFilePath->azChar(),&xStat);
@@ -749,6 +777,12 @@ void File::vPreAllocate(i8 nOffset, i8 nBytes)
     return;
   }
 #endif
+
+#ifdef WITH_APPLE
+  UNUSED(nOffset);
+  UNUSED(nBytes);
+  UNUSED(fd);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -910,7 +944,7 @@ i8 File::nReadFile(String* aDst)
 #endif
 
   i8 nFileSize = iSize();
-  i8 nStringSize = aDst->nArea();
+  i8 nStringSize = aDst->nAreaBytes();
 
   // string size should be > than the file size
   RASSERT(nStringSize > nFileSize );
@@ -990,7 +1024,22 @@ bool File::bReadLine(Stz* szDst)
     *y++ = cNextChar;
 
   }
-  
+
+/*
+  size_t len = 0;
+  char* sRead;
+
+  m_oSysCall.vClear();
+
+  sRead = fgets((char*)szDst, 256, m_aFile);
+
+  if (sRead == NULL)
+    return false;
+  else {
+    m_oSysCall.vSuccess();
+    return true;
+  }
+*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1001,7 +1050,7 @@ void File::vReset(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   //if (m_aFile && ! bIsStdin() && ! bIsStdout())
-  //  vTrace("File::vReset: previous file not closed: %s\n"_Stz,m_sPath.azChar());
+  //  vTrace("File::vBeginEach_forward: previous file not closed: %s\n"_Stz,m_sPath.azChar());
 
   m_oSysCall.vClear();
   

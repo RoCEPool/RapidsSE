@@ -36,8 +36,8 @@ UNAME_S := $(shell uname -s)
 # Currently used to build and run RapidsSe in x86_64 architecture on
 # the Arm M1 chip, that allows rosetta to kick in and translate from
 # x86_64 to arm64, since tinyc support for the M1 chip is not ready yet.
-ARCH_FLAG_FORCE = x86_64
-export ARCH_FLAG_FORCE
+# ARCH_FLAG_FORCE = x86_64
+# export ARCH_FLAG_FORCE
 
 ifeq ($(UNAME_S),Linux)
   include makefile.linux.in
@@ -55,7 +55,47 @@ endif
 CPP = g++
 
 WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
-ERRORS = -Werror=return-type
+
+# Warnings that are treated as errors.
+# We first add the gcc/clang-specific warnings, then we add the warnings
+# that are common to both tools. Getting this wrong will cause a compilation
+# failure on one system or the other.
+ERRORS  = $(strip $(LINUX_ERRORS) $(DARWIN_ERRORS))
+
+#ERRORS += -Werror=return-type
+#ERRORS += -Werror=unused-parameter
+#ERRORS += -Werror=unused-but-set-variable
+#ERRORS += -Werror=enum-compare
+#ERRORS += -Werror=unused-label
+#ERRORS += -Werror=uninitialized
+#ERRORS += -Werror=varargs
+#ERRORS += -Werror=parentheses
+#ERRORS += -Werror=unused-value
+
+#ERRORS := -Werror=unused-variable			# currently MacOS only
+#ERRORS += -Werror=missing-declarations		# currently MacOS only
+#ERRORS += -Werror=tautological-constant-out-of-range-compare
+#ERRORS += -Werror=unused-lambda-capture
+#ERRORS += -Werror=writable-strings
+#ERRORS += -Werror=reorder-ctor
+#ERRORS += -Werror=missing-declarations
+#ERRORS += -Werror=array-bounds
+#ERRORS += -Werror=deprecated-declarations
+
+# Warnings that are ignored for the code in the src/store/Fragments directory.
+# These need to be common for both gcc and clang.
+FRAGMENT_IGNORE_WARNINGS  = $(strip $(LINUX_FRAGMENT_IGNORE_WARNINGS) $(DARWIN_FRAGMENT_IGNORE_WARNINGS))
+FRAGMENT_IGNORE_WARNINGS += -Wno-unused-parameter
+FRAGMENT_IGNORE_WARNINGS += -Wno-unused-variable
+FRAGMENT_IGNORE_WARNINGS += -Wno-unused-but-set-variable
+FRAGMENT_IGNORE_WARNINGS += -Wno-unused-label
+FRAGMENT_IGNORE_WARNINGS += -Wno-uninitialized
+FRAGMENT_IGNORE_WARNINGS += -Wno-unused-value
+
+# Warnings that are ignored for the ANTLR-generated code
+# These need to be common for both gcc and clang.
+ANTLR_IGNORE_WARNINGS  = $(strip $(LINUX_ANTLR_IGNORE_WARNINGS) $(DARWIN_ANTLR_IGNORE_WARNINGS))
+ANTLR_IGNORE_WARNINGS += -Wno-unused-parameter
 
 CPPFLAGS = -std=c++14 $(WARNINGS) $(ERRORS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
 CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION $(WARNINGS) $(ERRORS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
@@ -78,6 +118,9 @@ MAN_PAGES=se.man
 # Source Files
 SRC_DIR := .
 SOURCES := $(shell find $(SRC_DIR) -name "*.cpp")
+# Note: We exclude the *.cpp files in the src/store/Fragments directory because they contain
+#       many warnings because they are, well, C++ fragments that are used dynamically.
+#SOURCES := $(shell find $(SRC_DIR) -name "*.cpp" -not -path "$(SRC_DIR)/store/Fragments/*")
 SOURCES += $(wildcard $(SRC_DIR)/../munge/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/xxhash/*.cpp)
 SOURCES += $(wildcard $(SRC_DIR)/../thirdparty/mersenne/*.cpp)
@@ -131,18 +174,17 @@ DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
-THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include  -I../thirdparty/thrift/include  -I../thirdparty/thrift/boost_1_80_0
+THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I../thirdparty/thrift/include -I../thirdparty/thrift/boost_1_80_0
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
-LIBS = -lc -lstdc++ -lpthread -ldl $(strip $(LINUX_LIBS) $(DARWIN_LIBS)) -ltcc -lantlr4-runtime -lthrift
-LIB_DIRS = -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib -L../thirdparty/thrift/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIBS = -lc -lstdc++ -lpthread -ldl $(strip $(LINUX_LIBS) $(DARWIN_LIBS)) -lantlr4-runtime -lthrift
+LIB_DIRS = -L../thirdparty/antlr/lib -L../thirdparty/thrift/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
 ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
-TCC_LIB := ../thirdparty/tcc/lib/libtcc.a
 THRIFT_LIB := ../thirdparty/thrift/lib/libthrift.a
-COMPILED_LIBS := $(ANTLR_LIB) $(TCC_LIB) ${THRIFT_LIB}
+COMPILED_LIBS := $(ANTLR_LIB) $(THRIFT_LIB)
 
 # A callable function for defining the file that describes whether a target
 # was built as debug or release.
@@ -152,7 +194,7 @@ targetConfigFile = $(shell echo -n "$$(dirname $1)/.$$(basename $1).lastBuildCon
 
 ###############################################################################
 ### Build Rules																														  ###
-###############################################################################
+##############################################cc#################################
 
 # The default target (because it is first)
 all : post-build
@@ -194,7 +236,23 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) -o $(TARGET_EXE) $(OBJECTS) $(LIBS) 
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
-# Compile source .cpp files into object files
+#-------------------------------------------------------
+# Source file compilation rules:
+#-------------------------------------------------------
+
+# Compile the src/store/Fragment source .cpp files into object files
+# These files have some warnings ignored.
+$(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.o: $(SRC_DIR)/store/Fragments/%.cpp $(OBJ_DIR)/$(SRC_DIR)/store/Fragments/%.d
+	$(DIR_GUARD)
+	@echo "Compiling fragment file: $@"
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(FRAGMENT_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+
+$(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.o: $(SRC_DIR)/../thirdparty/antlr/generated/%.cpp $(OBJ_DIR)/$(SRC_DIR)/../thirdparty/antlr/generated/%.d
+	$(DIR_GUARD)
+	@echo "Compiling ANTLR-generated file: $@"
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(ANTLR_IGNORE_WARNINGS) $(INCLUDES)  $< -o $@
+
+# Compile general source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
@@ -211,6 +269,8 @@ $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
 	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
+
+#-------------------------------------------------------
 
 # Include all of the generated dependency rules from all .d files.
 # The '-' means ignore the exit status of the command.
@@ -292,12 +352,6 @@ antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
 	+@cd ../thirdparty/antlr && env -u CPPFLAGS -u LDFLAGS $(MAKE)
 
-# Rule for building TCC
-tcc : $(TCC_LIB)
-$(TCC_LIB) : 
-	env
-	+@cd ../thirdparty/tcc && env -u CPPFLAGS -u LDFLAGS $(MAKE)
-
 # Rule for building Thrift
 thrift : $(THRIFT_LIB)
 $(THRIFT_LIB) :
@@ -313,7 +367,6 @@ distclean : clean
 	@echo "Removing 3rd-party generated libraries..."
 	@echo ""
 	+@cd ../thirdparty/antlr && $(MAKE) clean
-	+@cd ../thirdparty/tcc && $(MAKE) clean
 	+@cd ../thirdparty/thrift && $(MAKE) clean
 
 #To remove RapidsSE-generated files only
@@ -332,4 +385,4 @@ print-% : ; @echo $* = $($*)
 .SECONDARY :
 
 # List of make targets that don't correlate to files in the filesystem.
-.PHONY : clean distclean FORCE thirdparty antlr tcc thrift version sql buildConfigCheck target release debug post-build main-build pre-build all
+.PHONY : clean distclean FORCE thirdparty antlr thrift version sql buildConfigCheck target release debug post-build main-build pre-build all

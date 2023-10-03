@@ -7,7 +7,7 @@
 __TPCH_SCHEMA
 
 /jobMetrics
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_jo1_PS_S"

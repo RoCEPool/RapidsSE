@@ -53,15 +53,15 @@ MemTest::MemTest(void)
   m_iIntFlipped = IntLib::iFlipEndian(m_iInt);
   m_iNull = C_DATUM_NULL;
   m_iNullFlipped = IntLib::iFlipEndian(m_iNull);
-  StrLib::vCopy(m_caCharA,"AbCdEfG");
-  StrLib::vCopy(m_caCharB,"aBcDeFg");
-  StrLib::vCopy(m_caCharC,"aBc");
+  StrLib::vCopy(m_caCharA, sizeof(m_caCharA), "AbCdEfG");
+  StrLib::vCopy(m_caCharB, sizeof(m_caCharB), "aBcDeFg");
+  StrLib::vCopy(m_caCharC, sizeof(m_caCharC), "aBc");
 
-  StrLib::vCopy(m_caCharUpper,"AbCdEfGhIjKlMnO");
-  StrLib::iWordFlip(m_caCharUpperFlipped, m_caCharUpper);
+  StrLib::vCopy(m_caCharUpper, sizeof(m_caCharUpper), "AbCdEfGhIjKlMnO");
+  StrLib::iWordFlip(m_caCharUpperFlipped, sizeof(m_caCharUpperFlipped), m_caCharUpper);
   
-  StrLib::vCopy(m_caCharLower,"aBcDeFgHiJkLmNo");
-  StrLib::iWordFlip(m_caCharLowerFlipped, m_caCharLower);
+  StrLib::vCopy(m_caCharLower, sizeof(m_caCharLower), "aBcDeFgHiJkLmNo");
+  StrLib::iWordFlip(m_caCharLowerFlipped, sizeof(m_caCharLowerFlipped), m_caCharLower);
  
   _checkInitialised_(CN_MEMTEST);
 

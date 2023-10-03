@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* _ray_ordAgg                                                               */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_lineitem
+
+load Lineitem "<tpch_dir>/lineitem.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_indexScan"
+select L_SUPPKEY, count(*), max(L_QUANTITY)
+  from Lineitem
+  group by L_SUPPKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index Ix_L_SUPPKEY on Lineitem(L_SUPPKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_indexScan"
+select L_SUPPKEY, count(*), max(L_QUANTITY)
+  from Lineitem
+  where L_SUPPKEY > 0
+  group by L_SUPPKEY
+;
+
+
+drop table Lineitem;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

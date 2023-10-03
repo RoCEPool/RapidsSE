@@ -216,6 +216,8 @@ void* Thread::aEntryPoint_dummy(void* pArg)
       i8 iSum = 0;
       for (i8 i_Loop = 0; i_Loop < AM::nDummyLoop(); i_Loop++)
         iSum += TickingDevice::iGetTick();
+
+      UNUSED(iSum);
     }
     
     //pThread->m_pPsxThd->vThreadExit();
@@ -245,7 +247,8 @@ void* Thread::aEntryPoint_dummy(void* pArg)
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThisTLSThread(void)
 {
-  if (C_UNKNOWN == (i8)giTLS_ThreadKey)
+  i8 iTLSVal = (i8) giTLS_ThreadKey;
+  if (C_UNKNOWN == iTLSVal)
     return nullptr;
   
   Thread* pThread = static_cast<Thread*>(PsxThd::pTlsGet(giTLS_ThreadKey));

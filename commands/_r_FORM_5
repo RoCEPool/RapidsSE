@@ -10,7 +10,7 @@ _r_init
 
 /optimise
 /glean_cue_from = "vS26_T10_SubQuery_Analysis_Of_Main_Query"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r_FORM_5"

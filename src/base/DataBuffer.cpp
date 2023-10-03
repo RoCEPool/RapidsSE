@@ -31,7 +31,7 @@ DataBuffer* BASE::_pDataBuffer(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
-: LinkedBuffer(eClassNo)
+: Operand(eClassNo)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -40,15 +40,9 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 
   m_iBufferNo  = iBufferNo();
 
-  if(eClassNo == CN_CRWBUFFER ||
-     eClassNo == CN_ROWBUFFER) {
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 
-    m_oBufferId = AM::pFileMap()->oGetNewBufferId();
-
-    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
-  } else {
-    m_oBufferId.m_iAsI8 = 0;
-  }
+  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 
   m_tLglPtn     = C_UNKNOWN;
   
@@ -132,17 +126,11 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vRepairList(Object* pObject)
+void DataBuffer::vRepair(Object* pObject)
 {
   _static_
   DataBuffer* pDataBuffer = _pDataBuffer(pObject);
-  DataBuffer* pNextDataBuffer;
-
-  while (pDataBuffer) {
-    pNextDataBuffer = _pDataBuffer(pDataBuffer->pNextLinkedBuffer());
-    AM::vDeleteOperand(pDataBuffer,nullptr);
-    pDataBuffer = pNextDataBuffer;
-  }
+  AM::vDeleteOperand(pDataBuffer,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +195,7 @@ void DataBuffer::vTable_dbuff(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_);
   //vTrace("DataBuffer::vTable\n"_Stz);
   m_pTable_dbuff = pTable;
-  vStreamDef_dbuff(pTable->pStreamDef());
+  vStreamDef_dbuff(pTable == nullptr ? nullptr : pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/

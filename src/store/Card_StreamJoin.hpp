@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_StreamJoin : public Card
+  class Card_StreamJoin : public Card_symbol<Card_StreamJoin>
   {
   public:
     void* operator new(size_t);
@@ -22,6 +22,8 @@ namespace STORE
                     i8 nFiltPred_prev,
                     eXK eJoinCast,
                     i8 nBuff_joining_with);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_StreamJoin* _pCard_StreamJoin(void* aAddr);

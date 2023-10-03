@@ -11,13 +11,7 @@ enum eLH // Have Lock
   /*  3 */ LH_ENUMS
 };
 
-static Stz* aLH[]
-{
-  /*  0 */ "NO_DDL_LOCK"_Stz,
-  /*  1 */ "HAVE_DDL_READ_LOCKED"_Stz,
-  /*  2 */ "HAVE_DDL_WRITE_LOCKED"_Stz,
-  /*  3 */ "ENUMS"_Stz,
-};
+extern Stz* aLH[LH_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

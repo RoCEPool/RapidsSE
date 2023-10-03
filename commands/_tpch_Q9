@@ -4,7 +4,7 @@
 
 // /jo_disable
 // /ep_disable
-/glean_interactive
+/optimiser_trace
 /filterPred
 /jobMetrics
 /joWrite

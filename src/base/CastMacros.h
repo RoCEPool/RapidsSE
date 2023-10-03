@@ -36,7 +36,7 @@
       else {                                                               \
         i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
         bcdArg1.m_iMantissa = iArg1;                                       \
-        bcdArg2.m_iMantissa = iaPow10[max_col_decimal];                    \
+        bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[max_col_decimal];       \
         iErrorCode = _OF_BCDMUL;                                           \
         if(iErrorCode != EC_NONE) {                                        \
           *paW++ = C_DATUM_NULL;                                           \
@@ -65,14 +65,14 @@
   }                                                                      \
   else {                                                                 \
     fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa);                          \
-    fltArg1.m_dFlt = fltArg1.m_dFlt / iaPow10[bcdArg1.m_iScale];         \
+    fltArg1.m_dFlt = fltArg1.m_dFlt / aDynamicT->m_iaPow10[bcdArg1.m_iScale]; \
     *paW++ = fltArg1.m_iAsI8 ;                                           \
   }                                                                      \
 }
 
 // INT to Float
 #define _INT_TOFLT(iErrorCode) \
-{                                                                          \
+{                                                                        \
   fltArg1.m_iAsI8 = *(--paW);                                            \
   if (iErrorCode != EC_NONE ||                                           \
   fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
@@ -147,7 +147,7 @@
       }                                                                    \
                                                                            \
       bcdArg1.m_iMantissa = fltArg1.m_iAsI8;                               \
-      bcdArg2.m_iMantissa = iaPow10[cnt];                                  \
+      bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[cnt];                     \
                                                                            \
       i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);       \
       while (iMantissa > C_BCD_MAX) {                                      \
@@ -191,7 +191,7 @@
       }                                                                    \
                                                                            \
       bcdArg1.m_iMantissa = fltArg1.m_iAsI8;                               \
-      bcdArg2.m_iMantissa = iaPow10[iScale];                               \
+      bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[iScale];                  \
                                                                            \
       i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);       \
       while (iMantissa > C_BCD_MAX) {                                      \
@@ -319,7 +319,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      *paW++ = bcdArg1.m_iMantissa / iaPow10[bcdArg1.m_iScale];            \
+      *paW++ = bcdArg1.m_iMantissa / aDynamicT->m_iaPow10[bcdArg1.m_iScale]; \
     }                                                                      \
   }
 

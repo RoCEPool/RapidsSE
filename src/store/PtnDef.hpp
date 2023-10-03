@@ -53,7 +53,7 @@ namespace STORE
     RowPix* pRowPix(void);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
-    void    vToMetadata(Stz* sMetaData);
+    void    vToMetadata(String* psMetadata);
     
   private:
     

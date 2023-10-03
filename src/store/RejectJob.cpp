@@ -54,6 +54,7 @@ RejectJob::~RejectJob(void) noexcept(false)
 void RejectJob::vPostRecv(void* aReceivedJob)
 {
   _static_
+  UNUSED(aReceivedJob);
 
   // nothing to do
 

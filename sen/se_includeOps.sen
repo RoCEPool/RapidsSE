@@ -43,7 +43,6 @@ assert::stack_0
   "OP_checkTable.sen"           include
   "OP_childSelectTest.sen"      include
   "OP_chunk.sen"                include
-  "OP_combined.sen"             include
   "OP_compactIdx.sen"           include
   "OP_compactIndexPtn.sen"      include
   "OP_compilerOpEg.sen"         include
@@ -120,8 +119,6 @@ assert::stack_0
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_insDel.sen"               include
-  "OP_inflate.sen"              include
-  "OP_inflateDynamic.sen"       include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
   "OP_invoke.sen"               include

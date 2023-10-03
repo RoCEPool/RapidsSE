@@ -36,7 +36,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 <= "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -59,7 +59,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 < "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -81,7 +81,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 >= "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -100,7 +100,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 >= "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :

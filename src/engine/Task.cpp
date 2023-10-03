@@ -270,7 +270,8 @@ Task::~Task(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Task* Task::pThisTLSTask(void)
 {
-  if (C_UNKNOWN == (i8)giTLS_TaskKey)
+  i8 iTLSVal = (i8) giTLS_TaskKey;
+  if (C_UNKNOWN == iTLSVal)
     return nullptr;
   
   Task* pTask = static_cast<Task*>(PsxThd::pTlsGet(giTLS_TaskKey));
@@ -968,8 +969,9 @@ void Task::vDropAllLocks(void)
 void Task::vDropTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Stz* szCaller = MY::szCallerNm();
+  UNUSED(szFunc);
+
+//  Stz* szCaller = MY::szCallerNm();
   
 //  if (m_sTaskNm.bSame("supervisor"_Stz)) {
 //
@@ -996,8 +998,9 @@ void Task::vDropTaskLock(Stz* szFunc)
 void Task::vGrabTaskLock(Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Stz* szCaller = MY::szCallerNm();
+  UNUSED(szFunc);
+
+//  Stz* szCaller = MY::szCallerNm();
 
   m_okLock.vGrabWrite();
 

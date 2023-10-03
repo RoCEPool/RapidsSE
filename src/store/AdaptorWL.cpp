@@ -754,7 +754,7 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
   // Work out how many rows from this CrwBuffer to serialise
   i8 iStartingRow = 0;
   d8 dScalingFactor = 1.0;  // if the serialised form doesn't fit in a single payload buffer
-  i8 iRowsInBuf = pCrwBuffer->nHeads();
+  i8 iRowsInBuf = pCrwBuffer->nRows();
   i8 iMaxRowsThatFit = 0; // how many did we sucessfully fit in a RowDataResponse?
 
   // We might need to send multiple RowDataResponses for this CrwBuffer.
@@ -799,7 +799,7 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
       vCreateAndAddRow(&xRowList, pRow, pRowPix);
     }
 
-    ASSERT(xRowList.size() == iRowsToSend);
+    ASSERT((i8) xRowList.size() == iRowsToSend);
 
     RowDataResponse xRowDataResponse;
     xRowDataResponse.__set_rows(xRowList);
@@ -904,7 +904,7 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
       vCreateAndAddRow(&xRowList, pRow, pRowPix);
     }
 
-    ASSERT(xRowList.size() == iRowsToSend);
+    ASSERT( (i8) xRowList.size() == iRowsToSend);
 
     RowDataResponse xRowDataResponse;
     xRowDataResponse.__set_rows(xRowList);
@@ -1003,6 +1003,7 @@ void AdaptorWL::vQueryReceipt(ENGINE::TaskList* pTaskList)
   std::vector<StatementReceipt> xStatementReceipts;
 
   i8 nStatements = 0;
+  UNUSED(nStatements);
 
   pTaskList->vGrabLock();
   Task* pTask = pTaskList->pPeekTask();
@@ -1599,6 +1600,8 @@ void AdaptorWL::vProcessSessionChangeRequest()
 
   const char* pcDefaultCatalog = nullptr;
   const char* pcDefaultSchema  = nullptr;
+  UNUSED(pcDefaultCatalog);
+  UNUSED(pcDefaultSchema);
   // Note: we ignore the defaultFederation field in this message. Doesn't apply to SE.
 
   if (pMsg->__isset.defaultCatalog) {

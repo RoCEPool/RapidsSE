@@ -16,19 +16,18 @@ namespace STORE
   private:
     Optimiser* m_pOptimiser;
 
-    char m_cPrefix;
+    i8   m_iBenchNo;
 
-    bool m_bIsFlat;
+    i8          m_iXform;
+    s32         m_sXhand;
+    s256        m_sXfunc;
+    s256        m_sXdesc;
+    i8          m_iPrint;
 
-    bool m_bMadeSimpler;
-    bool m_bMadeFlat;
-    bool m_bMadeOptimal;
-    bool m_bMadeWeavable;
-    bool m_bMadeCode;
+    eXF         m_eXform;
 
 
   public:
-    CardIter*    m_pCI;
 
     // must be last
     Footer m_xFooter;
@@ -41,38 +40,44 @@ namespace STORE
    ~Bench(void) noexcept(false);
 
 
-    static void vValidate(CardIter* pCI);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBoard(Board* pBoard);
-    bool bBoardExists(i8 i_SubBoard = C_UNKNOWN);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
-    void vClearMarks(void);
+    void vEndPhase(CardIter* pCI);
+
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
-    bool bIsFlat(void);
-    void vIsFlat(bool bIsFlat);
     bool bIsSubQueryNm(Stz* szSubQueryNm);
     Optimiser* pOptimiser(void);
-    char cPrefix(void);
-    void vPrefix(char cPrefix);
 
+    bool bPastPhase(CardIter* pCI, eOH ePhase);
 
-    bool bMadeSimpler(void);
-    void vMadeSimpler(bool bMadeSimpler);
-    bool bMadeFlat(void);
-    void vMadeFlat(bool bMadeFlat);
-    bool bMadeOptimal(void);
-    void vMadeOptimal(bool bMadeOptimal);
-    bool bMadeWeavable(void);
-    void vMadeWeavable(bool bMadeWeavable);
-    bool bMadeCode(void);
-    void vMadeCode(bool bMadeCode);
+    void vPhase(CardIter* pCI, eOH ePhase);
 
     void vRenumberCards(void);
+
+
+    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
+
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szXdesc);
+    eXF  eXform(void);
+    void vXform(eXF eXform);
+    i8   iXform(void);
+    void vXform_Inc(void);
+    Stz* szXfunc(void);
+    void vXfunc(Stz* szXfunc);
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
+    i8   iPrint(void);
+    i8   iPrint_inc(void);
+    i8   iBenchNo(void);
+
+    void vValidate(CardIter* pCI);
 
   private:
     Footer* aFooter(void);

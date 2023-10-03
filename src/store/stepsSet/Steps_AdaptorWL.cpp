@@ -419,7 +419,7 @@ void Step::vAdaptorWLStatementParsingError(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   s2K sErrMsg;
-  m_pDataStack->vPopStz(sErrMsg.szStz(), __func__);
+  m_pDataStack->vPopStr(sErrMsg, __func__);
   ASSERT(sErrMsg.nLength() > 0);
 
   eEC eErrCode = (eEC) m_pDataStack->iPopInt(__func__);

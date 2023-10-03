@@ -223,6 +223,7 @@ void TaskQueue::vRemoveTask(Task* pTask)
   ASSERT(m_okLock.bIsLocked());
   
   bRemoved = m_pTaskSkipList->bRemove(pTask);
+  UNUSED(bRemoved);
 }
 
 /*----------------------------------------------------------------------------*/

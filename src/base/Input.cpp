@@ -1665,7 +1665,7 @@ void Input::vCollectSenNumber(void)
   char *z = azChars;
 
   i8 nIntegerDigits  = 0;
-  i8 nFractionDigits = 0;
+//  i8 nFractionDigits = 0;
   i8 nExponentDigits = 0;
 
   // we have seen a minus or a digit
@@ -1739,7 +1739,7 @@ void Input::vCollectSenNumber(void)
     // collect digits after decimal
     while (m_xAnnChar.bIsDigit()) {
       *z++ = m_xAnnChar.m_cChar;
-      nFractionDigits++;
+//      nFractionDigits++;
       vGetAnnCharStripped();
     }
 

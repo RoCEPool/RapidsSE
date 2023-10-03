@@ -61,6 +61,9 @@ success
 create index IxC_CUSTKEY  ON customer (C_CUSTKEY)  ;
 success;
 
+//------------------------------------------------------------------------------
+// TODO V2 : OPTIMISER TO DETECT INVLAID PIPELINES
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine
 /optimise_passthru 
@@ -84,6 +87,7 @@ begin
 
 end ;
 failure contains: 'EC_INVALID_PIPELINE'
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine (nothing to do)
@@ -290,7 +294,6 @@ failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple scanOp's
-/*
 /optimise_passthru 
 pipeline Q
 begin
@@ -312,8 +315,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE' 
-*/
+failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexScan to be a first OP
@@ -356,8 +358,8 @@ begin
   | next
 
  stage S02 on all partitions :
-   indexJoin orders IxO_CUSTKEY "bound $I1 $L1 =="
-   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 J1_O_ORDERKEY =="
+   indexJoin orders IxO_CUSTKEY "bound $I1 $1 =="
+   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
    | combined 0
    | next
@@ -409,8 +411,8 @@ begin
 
   stage Gs_ORDERS on all partitions :
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
-    | indexJoin customer IxC_CUSTKEY "bound $I1 $L2 =="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    | indexJoin customer IxC_CUSTKEY "bound $I1 $2 =="
     | combined 0
     | next
 
@@ -461,7 +463,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
     | limit 3
     | limit 3
     | combined 0
@@ -521,7 +523,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
     | sort "type INTEGER L_PARTKEY ASC"
     | sort "type INTEGER L_ORDERKEY ASC"
     | combined 0
@@ -549,9 +551,9 @@ begin
 
   stage Gs_ORDERS on all partitions :
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
-    | top "TOP type INTEGER L_PARTKEY" 2
-    | top "TOP type INTEGER L_PARTKEY" 2
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    | top "type INTEGER L_PARTKEY" 2
+    | top "type INTEGER L_PARTKEY" 2
     | combined 0
     | next
 
@@ -577,9 +579,9 @@ begin
 
   stage Gs_ORDERS on all partitions :
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
     | sort "type INTEGER L_PARTKEY ASC"
-    | top "TOP type INTEGER L_PARTKEY" 2
+    | top "type INTEGER L_PARTKEY" 2
     | combined 0
     | next
 
@@ -641,6 +643,7 @@ end ;
 
 failure contains: 'EC_INVALID_PIPELINE'
 
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

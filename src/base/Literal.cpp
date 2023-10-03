@@ -62,17 +62,16 @@ bool Literal::bToCell(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* sprint into target                                                         */
 /*----------------------------------------------------------------------------*/
-void Literal::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
+void Literal::vSprint(char* psDst, i8 iDstBufSize, Dtm *avSrc, Column *pCol)
 {
   eDM eDatum = pCol->eDatum();
-  char* az   = (char*)szTgt;
   i8 iValue  = *(i8*)avSrc;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
   if (C_DATUM_NULL == iValue) {
-    StrLib::vCopy(az,(char*)C_NULL);
+    StrLib::vCopy(psDst, iDstBufSize,(char*)C_NULL);
     return;
   }
   
@@ -82,61 +81,61 @@ void Literal::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
       
     case DM_BCD: {
       SP_Bcd SP_Bcd;
-      StrLib::vCopy(az,(char*)SP_Bcd.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)SP_Bcd.sz(iValue));
       break;
     }
       
     case DM_BOL: {
       SP_Bol SP_Bol;
-      StrLib::vCopy(az,(char*)SP_Bol.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)SP_Bol.sz(iValue));
       break;
     }
       
     case DM_DTE: {
       SP_Dte SP_Dte;
-      StrLib::vCopy(az,(char*)SP_Dte.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)SP_Dte.sz(iValue));
       break;
     }
       
     case DM_FLT: {
       SP_Flt SP_Flt;
-      StrLib::vCopy(az,(char*)SP_Flt.sz(*(d8*)avSrc));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)SP_Flt.sz(*(d8*)avSrc));
       break;
     }
       
     case DM_INT: {
       SP_Int spInt;
-      StrLib::vCopy(az,(char*)spInt.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)spInt.sz(iValue));
       break;
     }
       
     case DM_IVD: {
       SP_Ivd spIvd;
-      StrLib::vCopy(az,(char*)spIvd.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)spIvd.sz(iValue));
       break;
     }
       
     case DM_IVY: {
       SP_Ivy spIvy;
-      StrLib::vCopy(az,(char*)spIvy.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)spIvy.sz(iValue));
       break;
     }
       
     case DM_TME: {
       SP_Tme SP_Tme;
-      StrLib::vCopy(az,(char*)SP_Tme.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)SP_Tme.sz(iValue));
       break;
     }
       
     case DM_TSP: {
       SP_Tsp SP_Tsp;
-      StrLib::vCopy(az,(char*)SP_Tsp.sz(iValue));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)SP_Tsp.sz(iValue));
       break;
     }
       
     case DM_VCH: {
       SP_Vch SP_Vch;
-      StrLib::vCopy(az,(char*)SP_Vch.sz((char*)avSrc));
+      StrLib::vCopy(psDst, iDstBufSize,(char*)SP_Vch.sz((char*)avSrc));
       break;
     }
       

@@ -168,8 +168,8 @@ Object* Socket::pRecvObject(void)
   
   RASSERT(! pReceivedObject());
 
-  static i8 nPipeline = 0;
-  bool bLowMem = false;
+//  static i8 nPipeline = 0;
+//  bool bLowMem = false;
 
   m_pObject->vSetWasReceived(true);
   m_pObject->vSetPostRecvRun(false);
@@ -219,7 +219,7 @@ Object* Socket::pRecvObject(void)
 
     // handle the received reject job
     AM::JOB::vRecvdReject(m_pRejectJob);
-    nPipeline++;
+//    nPipeline++;
     vSuccess(true);
     return nullptr;
   }
@@ -615,8 +615,7 @@ Object* Socket::pObjectRecv(eCN eClass)
     return nullptr;
   }
 
-    if (eClass == CN_ROWBUFFER ||
-        eClass == CN_CRWBUFFER) {
+    if (DataBuffer::bIsDataBuffer(eClass)) {
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
       i8 iPoolBufferNo = pDataBuffer->iBufferNo();
       pDataBuffer->vSetBufferNo(iPoolBufferNo);

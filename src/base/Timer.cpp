@@ -57,6 +57,22 @@ Timer::Timer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy constructor                                                           */
+/*----------------------------------------------------------------------------*/
+Timer::Timer(const Timer& oCopy)
+: Object(CN_TIMER)
+{
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+
+  m_uStart  = oCopy.m_uStart;
+  m_uUpdate = oCopy.m_uUpdate;
+
+  _checkInitialised_(CN_TIMER);
+
+  _postcondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Timer::~Timer(void) noexcept(false)
@@ -67,10 +83,12 @@ Timer::~Timer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* assignment operator : ???                                                  */
 /*----------------------------------------------------------------------------*/
-void Timer::operator =(Timer xTimer)
+Timer& Timer::operator =(const Timer& xTimer)
 {
   m_uStart = xTimer.m_uStart;
   m_uUpdate = xTimer.m_uUpdate;
+
+  return *this;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -21,7 +21,7 @@ load customer "../tpch/sf_0001/customer.csv" ;
 
 /optimise
 /glean_cue_from = "vHZ0_T10_Restore_stmColOdn_from_tblColOdn"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r18_in"

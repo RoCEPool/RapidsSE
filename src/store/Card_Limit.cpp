@@ -4,6 +4,7 @@
 
 #include "Card_Limit.hpp"
 #include "Card_Level.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -17,12 +18,10 @@ __vDeleteFunction(Card_Limit,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(Stz* szRows)
-: Card_OP(CK_LIMIT)
+Card_Limit::Card_Limit(void)
+: Card_OP(CK_LIMIT,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vSymbol(szRows);
 
   _checkInitialised_(CN_CARD);
   
@@ -47,6 +46,7 @@ Card_Limit::~Card_Limit(void) noexcept(false)
 void Card_Limit::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,10 +55,15 @@ void Card_Limit::vComputeProjection(CardIter* pCI)
 void Card_Limit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_LEVEL,CK_NONE);
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

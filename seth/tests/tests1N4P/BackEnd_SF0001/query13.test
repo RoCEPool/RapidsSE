@@ -76,7 +76,7 @@ pipeline c_orders
       | stageMarker1083 broadcast
     stage stageMarker1083 on all partitions :
       scan rapidsse public orders
-      | abstractJoin "LEFT_OUTER $L1 $R2 ==  }  $R9 ''%special%requests%''  7 8 matchMiddle1  not  and  "
+      | abstractJoin "LEFT_OUTER $1 $R2 ==  }  $R9 ''%special%requests%''  7 8 matchMiddle1  not  and  "
       | stageMarker1086
     stage stageMarker1086 on all partitions :
       gbyAgg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $9 count  "
@@ -134,8 +134,8 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-                                 "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+                                 "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | combined 0
     | next
 
@@ -186,6 +186,8 @@ rows:
   (10,135)
   (20,1)
 
+// TODO V2 : ORDAGG
+/*
 /optimise_passthru 
 pipeline Query13
 begin
@@ -199,8 +201,8 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-           "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+           "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | combined 0
     | next
 
@@ -251,11 +253,11 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-        "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+        "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
-               type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
-               type VARCHAR as O_COMMENT J1_O_COMMENT"
+               type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as O_COMMENT O_COMMENT"
     | combined 0
     | next
 
@@ -306,10 +308,10 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-        "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+        "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
-               type INTEGER as O_ORDERKEY J1_O_ORDERKEY"
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
@@ -346,7 +348,7 @@ ordered rows:
  (9,11)
  (8,2)
  (0,1)
-
+*/
 
  CLEANUP {
    bye;

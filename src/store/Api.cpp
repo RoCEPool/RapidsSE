@@ -567,19 +567,6 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
 
-#ifdef WITH_WEAVER2
-  if ( ! pJobTagSet->bHasName(C_TAG_WEAVER1) ) {
-    pJobTagSet->vInsert(C_TAG_WEAVER2);
-  }
-
-#endif
-
-#ifdef WITH_WEAVER1
-  if ( ! pJobTagSet->bHasName(C_TAG_WEAVER2) ) {
-    pJobTagSet->vInsert(C_TAG_WEAVER1);
-  }
-#endif
-
   if (pJobTagSet->bHasName(C_SHOW_CMD_TAGS)) {
     pJobTagSet->vDumpSet();
     vDebugPoint();

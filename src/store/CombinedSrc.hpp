@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "TinyC.hpp"
 #include "Tub.hpp"
 #include "ePE.h"
 #include "ePL.h"
@@ -44,9 +43,7 @@ namespace STORE {
     CombinedSrc(void);
     ~CombinedSrc(void) noexcept(false);
 
-    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
-
-    void vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool bLastStage);
+    void vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool bLastStage);
 
     char *azCode(void);
 
@@ -56,10 +53,13 @@ namespace STORE {
 
 
   private:
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, i8 iKeyColumn);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile = nullptr);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, File* pCodeFile = nullptr);
     void vAppendCodeFragmentPL(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
-    void vAppendCodeFragmentKey(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyType);
+    void vAppendCodeFragmentKEY(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyColumn);
+		void vAppendCodePLToHashCols(OpSketch* pOpSketch);
+		void vAppendCodeHashCols(OpSketch* pOpSketch);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
     void vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
     void vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile);
@@ -76,6 +76,10 @@ namespace STORE {
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
     bool bOpenCodeFiles(void);
+
+    void vOperatorBegin(OpSketch* pOpSketch);
+
+    const char* azCodeLastChar();
 
     Footer *aFooter(void);
   };

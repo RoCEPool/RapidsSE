@@ -30,6 +30,7 @@ namespace BASE
 
     Stz* szGet(void);
     i8   nLength(void);
+    i8   nBufferSize(void);
     void vSet(Stz* szArg);
     void vSizeText(void);
 

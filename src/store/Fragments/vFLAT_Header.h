@@ -7,21 +7,15 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "../src/primitives/BaseTypes_tcc.h"
+#include "../src/primitives/BaseTypes_general.h"
 #include "../src/base/CodeSynthCommon.h"
 #include "../src/base/ClangStuff.h"
 #include "../src/base/ClangDynamic.h"
 
-void vNeverReachCode(i8 iLine) {
-
-  //exit(0);
-}
-
 #define NEVER_REACH  { \
-  printf("NEVER_REACH CODE point in synthesised code was reached at line %lld !!!\n", __LINE__); \
-  aDynamicT->m_iErrorCode = (i8)EC_INTERNAL_ERROR;                                               \
-  printf("%x %x\n", paW, &aDynamicT->m_aW[0]);                                                  \
-  return 0; \
+  printf("NEVER_REACH CODE point in synthesised code was reached at line %d !!!\n", __LINE__); \
+  aDynamicT->m_iErrorCode = (i8)EC_INTERNAL_ERROR;                                             \
+  return 0;                                                                                    \
 }
 
 typedef char i1;
@@ -68,7 +62,7 @@ static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
 #include "../src/base/LogicalMacros.h"
 #include "../src/base/RelationalMacros.h"
 #include "../src/base/MathMacros.h"
-#include "../src/base/TccMacros.h"
+#include "../src/base/FunctionMacros.h"
 
 /*============================================================================*/
 /* end                                                                        */

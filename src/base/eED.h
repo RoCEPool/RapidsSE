@@ -11,13 +11,7 @@ enum eED // RLU Diary Entry
   /*  3 */ ED_ENUMS
 };
 
-static Stz* aED[]
-{
-  /*  0 */ "ED_NONE"_Stz,
-  /*  1 */ "ED_ENTER"_Stz,
-  /*  2 */ "ED_EXIT"_Stz,
-  /*  3 */ "ED_ENUMS"_Stz
-};
+extern Stz* aED[ED_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

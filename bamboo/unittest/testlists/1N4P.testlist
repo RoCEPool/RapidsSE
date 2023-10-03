@@ -3,7 +3,13 @@
 # These tests are run in a single node, multi-partition configuration.
 # This is a recursive testList file.
 
-//../../../seth/tests/tests1N4P/CombinedV2/testList
+../../../seth/tests/dummyTests/testList
+
+../../../seth/tests/tests1N4P/GbyAgg/testList
+../../../seth/tests/tests1N4P/OrderBy/testList
+../../../seth/tests/tests1N4P/Top/testList
+../../../seth/tests/tests1N4P/CombinedV2/testList
+
 ../../../seth/tests/tests1N4P/DataTypes/testList
 ../../../seth/tests/tests1N4P/Expressions/testList
 ../../../seth/tests/tests1N4P/Filter/testList
@@ -12,19 +18,14 @@
 ../../../seth/tests/tests1N4P/Misc/testList
 ../../../seth/tests/tests1N4P/QA/interval/testList
 ../../../seth/tests/tests1N4P/Projections/testList
-//../../../seth/tests/tests1N4P/Regression/testList
+../../../seth/tests/tests1N4P/Regression/testList
 
-// DIABLE FOR V2
 ../../../seth/tests/tests1N4P/Combined/testList
-////////////////
-
 
 ../../../seth/tests/tests1N4P/Transliterate/testList
 
-// DIABLE FOR V2
 ../../../seth/tests/tests1N4P/BackEnd/testList
 ../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
-////////////////
 
 ../../../seth/tests/tests1N4P/Create/testList
 ../../../seth/tests/tests1N4P/Compiler/testList
@@ -36,8 +37,8 @@
 ../../../seth/tests/tests1N4P/Load/testList
 ../../../seth/tests/tests1N4P/LocalFunctions/testList
 ../../../seth/tests/tests1N4P/Operators/testList
-// DIABLE FOR V2../../../seth/tests/tests1N4P/Optimiser_SF0001/testList
-////////////////
+
+../../../seth/tests/tests1N4P/Optimiser_SF0001/testList
 
 ../../../seth/tests/tests1N4P/PartitionKey/testList
 ../../../seth/tests/tests1N4P/Queries/testList

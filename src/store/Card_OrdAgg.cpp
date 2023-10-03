@@ -19,7 +19,7 @@ __vDeleteFunction(Card_OrdAgg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::Card_OrdAgg(void)
-: Card_AGG(CK_ORDAGG)
+: Card_AGGREGATE(CK_ORDAGG, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -48,6 +48,7 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +56,7 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  vDump(__func__,0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,8 +66,6 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT))
     return;
-
-  pSymbol()->Y_vSet(P_BreakPt);
 
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
@@ -81,8 +80,8 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->vRenumberCards();
-  pCI->vPrintBoard();
+ // pCI->vRenumberCards();
+ // pCI->vPrintBoard();
 
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -91,19 +90,19 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
 
-  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_projection;
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -116,7 +115,7 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->Analysis.m_pProjection_prior) {
+    if (pCI->Prior.m_pProjection) {
       pCI->G.p_key->vTypes_For_stmColOdn(pCI);
       pCI->G.p_key->vRenumberAll_expr();
     }
@@ -124,7 +123,7 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
-    if (pCI->Analysis.m_pProjection_prior) {
+    if (pCI->Prior.m_pProjection) {
       pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
       pCI->G.p_projection->vRenumberAll_expr();
     }
@@ -141,8 +140,10 @@ void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
-  pSub_projection()->vValidate(pCI,iDepth+1,this);
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

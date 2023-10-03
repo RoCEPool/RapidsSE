@@ -28,12 +28,12 @@
     iScaleDiff = bcdReScale1.m_iScale - bcdReScale2.m_iScale;         \
                                                                       \
     if (iScaleDiff > 0) {                                             \
-      bcdReScale2.m_iScale = bcdReScale1.m_iScale;                               \
-      bcdReScale2.m_iMantissa = bcdReScale2.m_iMantissa * iaPow10[iScaleDiff];   \
-    }                                                                            \
-    else {                                                                       \
-      bcdReScale1.m_iScale = bcdReScale2.m_iScale;                               \
-      bcdReScale1.m_iMantissa = bcdReScale1.m_iMantissa * iaPow10[-iScaleDiff];  \
+      bcdReScale2.m_iScale = bcdReScale1.m_iScale;                    \
+      bcdReScale2.m_iMantissa = bcdReScale2.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff]; \
+    }                                                                 \
+    else {                                                            \
+      bcdReScale1.m_iScale = bcdReScale2.m_iScale;                    \
+      bcdReScale1.m_iMantissa = bcdReScale1.m_iMantissa * aDynamicT->m_iaPow10[-iScaleDiff]; \
     }                                                                   \
                                                                         \
     *paW++ = bcdReScale1.m_iAsI8;                                       \
@@ -52,10 +52,10 @@
     if(iScaleDiff < 0 || iScaleDiff > 14) {                                \
       eErrorCode = EC_SCALE_OUT_OF_BOUNDS;                                 \
     } else {                                                               \
-      bcdArg2.m_iMantissa = iaPow10[iScaleDiff];                           \
+      bcdArg2.m_iMantissa = aDynamicT->m_iaPow10[iScaleDiff];              \
       eErrorCode = _OF_BCDMUL;                                             \
       if(eErrorCode == EC_NONE) {                                          \
-        bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * iaPow10[iScaleDiff];   \
+        bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * aDynamicT->m_iaPow10[iScaleDiff];   \
       }                                                                    \
     }                                                                      \
     *paW++ = bcdArg1.m_iAsI8;                                              \

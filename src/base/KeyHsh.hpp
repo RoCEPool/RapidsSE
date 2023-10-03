@@ -12,6 +12,7 @@ class KeyHsh : public SEtype
   
   KeyHsh(void);
   KeyHsh(i8 iAsI8);
+  KeyHsh(const KeyHsh& oCopy);
 
   static KeyHsh tToKeyHsh(i8 iKeyHsh);
   

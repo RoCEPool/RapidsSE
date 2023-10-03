@@ -1,0 +1,29 @@
+--------------------------------------------------------------------------------
+-- cut sort test
+--------------------------------------------------------------------------------
+
+LOG 'Case Cut Sort 1 ...';
+
+
+select count(*) from customer;
+success
+
+/OT_SCAN_TO_INDEXSCAN
+/OT_CUT_SORT
+/pipelineName = "OT_cut_sort1"
+select *
+  from Customer
+  where C_CUSTKEY >= 1 and C_CUSTKEY <= 10
+ order by C_CUSTKEY
+;
+
+
+CLEANUP {
+
+  bye;
+  mute
+}
+
+--------------------------------------------------------------------------------
+-- end
+--------------------------------------------------------------------------------

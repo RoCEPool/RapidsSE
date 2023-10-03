@@ -18,7 +18,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 /optimise
 /glean_cue_from = "vH36_T20_Transfer_whereB_To_whereA"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r_b_a_WHERE"

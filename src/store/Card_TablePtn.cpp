@@ -8,6 +8,7 @@
 #include "Table.hpp"
 #include "PtnDef.hpp"
 #include "Card_TableNm.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -22,7 +23,7 @@ __vDeleteFunction(Card_TablePtn,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TablePtn::Card_TablePtn(void)
-: Card(CK_TABLEPTN)
+: Card_symbol(CK_TABLEPTN, 4)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -52,8 +53,8 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   _static_
 
   Card_TableNm* p_tableNm = p_table->pSub_tableNm();
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
-  char cTableSyn = p_table->cSymbol();
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+  char cTableSyn = p_table->pSymbol()->cSF_char();
 
   PtnDef* pPtnDef = pTable->pPtnDef();
   Column* pPtnColumn = pPtnDef->pGetColumn(0);
@@ -63,9 +64,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   i8 iStmColNo = pStmColumn->iColumnNo();
 
   Card_TablePtn* p_tablePtn = new Card_TablePtn;
-  Symbol xSymbol_tablePtn;
-  xSymbol_tablePtn.vSetTableColOrdinal(cTableSyn, iStmColNo + 1);
-  p_tablePtn->vSymbol(xSymbol_tablePtn);
+  p_tablePtn->SYM(SF_COL_TC,cTableSyn, iStmColNo + 1);
 
   return p_tablePtn;
 }
@@ -77,10 +76,23 @@ bool Card_TablePtn::bColumnMatchesPtn(Symbol* p_Y_tblPtn, Symbol* p_Y_tblCol)
 {
   _static_
 
-  if (p_Y_tblCol->bSameAs(p_Y_tblPtn))
+  if (p_Y_tblCol->bSame(p_Y_tblPtn))
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TablePtn::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

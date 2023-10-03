@@ -66,11 +66,13 @@ void String::vCatSprint(Stz* szFormat, ...)
   aFooter()->vAssertFooter();
   
   va_list vaArgs;
-  
-  char* aEnd = aAdd<char*>(m_caCharArea,nLength());
-  
+
+  i8 nLen = nLength();
+  char* aEnd = aAdd<char*>(m_caCharArea,nLen);
+  i8 nRemaining = m_nArea - nLen;
+
   va_start(vaArgs,szFormat);
-  vsprintf(aEnd,(char*)szFormat,vaArgs);
+  StrLib::vSprint(aEnd, nRemaining, vaArgs, (char*)szFormat);
   va_end(vaArgs);
 }
 
@@ -82,7 +84,7 @@ void String::vConcat(Stz* szArg)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
   
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea, m_nArea, szArg->azChar());
 }
 
 
@@ -94,7 +96,7 @@ void String::vCopy(Stz* szArg)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
 
-  StrLib::vCopyLen(m_caCharArea,szArg->azChar(),m_nArea - 1);
+  StrLib::vCopy(m_caCharArea, m_nArea, szArg->azChar());
 
   aFooter()->vAssertFooter();
 }
@@ -115,7 +117,7 @@ i8 String::nLength(void)
 /*----------------------------------------------------------------------------*/
 /* get size of string                                                         */
 /*----------------------------------------------------------------------------*/
-i8 String::nArea(void)
+i8 String::nAreaBytes(void)
 {
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
@@ -130,10 +132,21 @@ void String::vSprint(Stz* szFormat, ...)
 {
   va_list args;
   va_start(args,szFormat);
-  
-  vsnprintf(m_caCharArea, m_nArea, szFormat->azChar(),args);
-  
+
+  StrLib::vSprint(m_caCharArea, m_nArea, args, szFormat->azChar());
+
   va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset string                                                               */
+/*----------------------------------------------------------------------------*/
+void String::vReset(void)
+{
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
+  m_caCharArea[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/

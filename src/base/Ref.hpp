@@ -30,9 +30,10 @@ namespace BASE
   public:   
     Rrf(void);
     Rrf(u8 uBuffer, u8 uItem, u8 uLevels);
+    Rrf(const Rrf& oCopy);
    ~Rrf(void) noexcept(false);
     
-    void operator =(Rrf xwRef); // assignment
+    Rrf& operator =(const Rrf& xwRef); // assignment
 
     i8    iAsI8(void);
     i8    iBuffer(void);

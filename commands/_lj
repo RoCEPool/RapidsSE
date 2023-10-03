@@ -40,7 +40,7 @@ begin
     scan T1 | filter 0 "type boolean $2 500 >=  " | stageC
 
   stage stageC on all partitions :
-    scanRight T2 | loopJoin 0 " $L1 $R1 == " | stageD
+    scanRight T2 | loopJoin 0 " $1 $R1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -56,7 +56,7 @@ begin
     scan T1 | stageC
 
   stage stageC on all partitions :
-    scanRight T2 | loopJoin 0 "leftOuter $L1 $R1 == " | stageD
+    scanRight T2 | loopJoin 0 "leftOuter $1 $R1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -72,7 +72,7 @@ begin
     scan T1 | filter 0 "type boolean $2 500 >=  " | stageC
 
   stage stageC on all partitions :
-    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "leftOuter $L1 $R1 == " | stageD
+    scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "leftOuter $1 $R1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -88,7 +88,7 @@ end
      scan T1 | stageC
 
    stage stageC on all partitions :
-     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "leftOuter $L1 $R1 == " | stageD
+     scanRight T2 | filterRight 0 "type boolean $2 500 >= " | loopJoin 0 "leftOuter $1 $R1 == " | stageD
 
    stage stageD on origin :
      output | sink | stageA
@@ -141,7 +141,7 @@ begin
     scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
 
   stage stageC on all partitions :
-    scanRight  T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+    scanRight  T2 | loopJoin 0 "$1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -188,7 +188,7 @@ begin
     scan T1 | stageC broadcast
 
   stage stageC on all partitions :
-    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+    scanRight T2 | loopJoin 0 "$1 $R1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -212,7 +212,7 @@ begin
     scanRight T2 | hashRight 0 "type INTEGER $1" | stageD hashcast
 
   stage stageD on all partitions :
-    loopJoin 0 "leftOuter $L1 $R1 ==" | stageE
+    loopJoin 0 "leftOuter $1 $R1 ==" | stageE
 
   stage stageE on origin :
     output | sink | stageA
@@ -264,7 +264,7 @@ begin
 
 
   stage stageC on all partitions :
-    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $L1 == " | stageD
+    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
@@ -281,7 +281,7 @@ begin
 
 
   stage stageC on all partitions :
-    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $L1 ==" | stageD
+    indexJoin 0  T2 jidx "leftOuter EQUAL $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output | sink | stageA

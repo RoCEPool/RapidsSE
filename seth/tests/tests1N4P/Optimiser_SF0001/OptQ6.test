@@ -16,6 +16,7 @@ where
 */
 
 // modified original query for SF0001
+/pipelineName = "OptQ6"
 select
   sum(l_extendedprice*l_discount) as revenue
 from

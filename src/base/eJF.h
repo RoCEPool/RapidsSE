@@ -7,13 +7,10 @@ enum eJF // job flags
 {
   /*  0 */ JF_NONE   = 0x0,
   /*  1 */ JF_LOWMEM = 0x1,  // low memory sensistive
+  /*  2 */ JF_ENUMS = 0x2
 };
 
-static Stz* aJF[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "LOWMEM"_Stz,
-};
+extern Stz* aJF[JF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

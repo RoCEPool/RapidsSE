@@ -12,14 +12,7 @@ enum eQN // queue kind
   /*  */ QN_ENUMS,
 };
 
-static Stz* aQN[]
-{
-  /*  */ "QN_NONE"_Stz,
-  /*  */ "QN_ELEMENTS_BY_ATR_NAME"_Stz,
-  /*  */ "QN_ELEMENTS_BY_ATR_NAME_VALUE"_Stz,
-  /*  */ "QN_ELEMENTS_BY_ELM_NAME"_Stz,
-  /*  */ "QN_ENUMS"_Stz,
-};
+extern Stz* aQN[QN_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

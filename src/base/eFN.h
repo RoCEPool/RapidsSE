@@ -14,16 +14,7 @@ enum eFN // function kind
   /*    */ FN_ENUMS
 };
 
-static Stz* aFN[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "FN_CONSTRUCTOR"_Stz,
-  /*    */ "FN_DESTRUCTOR"_Stz,
-  /*    */ "FN_NORMAL"_Stz,
-  
-  /*    */ "ENUMS"_Stz
-};
+extern Stz* aFN[FN_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

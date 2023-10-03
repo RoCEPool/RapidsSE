@@ -11,7 +11,7 @@ create index O_idx0  on Orders   (O_CUSTKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_r_Q22_1b"

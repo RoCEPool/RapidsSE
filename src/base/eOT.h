@@ -7,75 +7,28 @@ enum eOT // Optimiser Transformations
 {
   /* 00 */ OT_NONE = 0,
 
-  // CUT
-  /* 01 */ OT_CUT_SORT,                   // Cut : SORT (AGGREG and SORT on SAME COLUMNS)
+  /* */ OT_AGGREG_TO_SORT_ORDAGG,      // Replace: AGGREG with SORT AND ORDAGG
+  /* */ OT_CULL_BOUND,                 // Cull bound
+  /* */ OT_CUT_SORT,                   // Cut : SORT (AGGREG and SORT on SAME COLUMNS)
+  /* */ OT_DERIVE_STREAMKEY,          // Derive: stream key
+  /* */ OT_DUPLICATE_FILTER,           // Duplicate: Join-dependent predicate duplicates
+  /* */ OT_EARLY_FILTER,               // Early: Filters
+  /* */ OT_EARLY_PROJECTION,           // Early: Projections
+  /* */ OT_FROM_TO_OP,                 // Replace from with op
+  /* */ OT_GBYAGG_TO_ORDAGG,           // Replace: GBYAGG with ORDAGG
+  /* */ OT_JOIN_ORDERING,              // Sequence: Join Ordering
+  /* */ OT_LATE_PROJECTION,            // Postpone: VARCHAR Projections after re-join
+  /* */ OT_MAX_TO_TOP,                 // Replace: MAX with TOP
+  /* */ OT_REDUCE_GBYAGG_KEY,          // Minimize: group by keys based on unique keys
+  /* */ OT_SCAN_TO_INDEXSCAN,          // Replace: SCAN with INDEXSCAN
+  /* */ OT_SORTDESC_LIMIT_TO_TOP,      // Replace: SORTDESC +LIMIT with TOP
+  /* */ OT_SORT_LIMIT_ALL_LEVELS,      // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
+  /* */ OT_STATIC_CALC,                // One-Time: CALCULATIONS
 
-  // DUPLICATE
-  /* 02 */ OT_DUP_FILTER,                 // Duplicate: Join-dependent predicate duplicates
-
-  // EARLY
-  /* 03 */ OT_ELY_FILTERS,                // Early: Filters
-  /* 04 */ OT_ELY_PROJECTIONS,            // Early: Projections
-
-  // MINIMIZE
-  /* 05 */ OT_MIN_GROUPBY,                // Minimize: group by keys based on unique keys
-
-  // one-time CALCULATIONS
-  /* 06 */ OT_OTM_CALCULATIONS,           // One-Time: CALCULATIONS
-
-  // Postpone
-  /* 07 */ OT_PPT_PROJECTIONS,            // Postpone: VARCHAR Projections after re-join
-
-  // REPLACE
-  /* 08 */ OT_RPL_AGGREG_BY_ORDAGG,       // Replace: AGGREG with ORDAGG
-  /* 09 */ OT_RPL_AGGREG_BY_SORT_ORDAGG,  // Replace: AGGREG with SORT AND ORDAGG
-  /* 10 */ OT_RPL_MAX_BY_TOP,             // Replace: MAX with TOP
-  /* 11 */ OT_RPL_SCAN_BY_INDEXSCAN,      // Replace: SCAN with INDEXSCAN
-  /* 12 */ OT_RPL_SORTDESC_LIMIT_BY_TOP,  // Replace: SORTDESC +LIMIT with TOP
-  /* 13 */ OT_RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS,  // Replace: SORT+LIMIT ON ORIGIN with SORT ON all LEVELS
-
-  // SEQUENCING
-  /* 14 */ OT_SEQ_JOIN_ORDER,             // Sequence: Join Order
-
-  /* 15 */ OT_ENUMS,
+  /* */ OT_ENUMS,
 };
 
-static Stz* aOT[]
-{
-  /*   */ "NONE"_Stz,
-
-  // CUT
-  /*  */ "CUT_SORT"_Stz,
-
-  // DUPLICATE
-  /*  */ "DUP_FILTER"_Stz,
-
-  // EARLY
-  /*  */ "ELY_FILTERS"_Stz,
-  /*  */ "ELY_PROJECTIONS"_Stz,
-
-  // MINIMIZE
-  /*  */ "MIN_GROUPBY"_Stz,
-
-  // ONE-TIME CALCULATIONS
-  /*  */ "OTM_CALCULATIONS"_Stz,
-
-  // Postpone
-  /*  */ "PPT_PROJECTIONS"_Stz,
-
-  // REPLACE
-  /*  */ "RPL_AGGREG_BY_ORDAGG"_Stz,
-  /*  */ "RPL_AGGREG_BY_SORT_ORDAGG"_Stz,
-  /*  */ "RPL_MAX_BY_TOP"_Stz,
-  /*  */ "RPL_SCAN_BY_INDEXSCAN"_Stz,
-  /*  */ "RPL_SORTDESC_LIMIT_BY_TOP"_Stz,
-  /*  */ "RPL_SORT_LIMIT_ONORIGIN_BY_ALLLEVELS"_Stz,
-
-  // SEQUENCING
-  /*  */ "JOI_ORD"_Stz,
-
-  /*  */ "ENUMS"_Stz,
-};
+extern Stz* aOT[OT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

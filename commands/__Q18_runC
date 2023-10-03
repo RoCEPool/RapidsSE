@@ -52,7 +52,7 @@ begin
     | next broadcast
 
   stage stageQ18_1_b on all partitions :
-    indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
     | combined 0
     | next broadcast
 
@@ -62,7 +62,7 @@ begin
     | next
 
   stage stageQ18_1_d on all partitions :
-    indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
+    indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
     | combined 0
     | next
 

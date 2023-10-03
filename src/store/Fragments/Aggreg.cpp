@@ -10,13 +10,52 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vAggregInit -------------------------------------------------------------*/
+/*-- vAggregBegin ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vAggregBegin
+void vAggregBegin(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+  RowInfo __ROW_INFO_TO__;
+
+  char* szStrArea;
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  __L_LABEL__:
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // FROM
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TO
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+  //__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+  szStrArea = __ROW_INFO_TO__.m_acStrArea;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Process row ?
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vAggregInitBegin --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vAggregInitBegin
 void vAggregInitBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
-  if ( aDynamicT->m_xRowInfoAT.m_iInitialize == 1 ) {
+  if ( aDynamicT->m_xRowInfoAT.m_bInitialize ) {
   // marker-end
   }
 
@@ -35,7 +74,7 @@ i8 iAggregInitEnd(Dynamic_T* aDynamicT) {
       return 0;
     }
 
-    aDynamicT->m_xRowInfoAT.m_iInitialize = 0;
+    aDynamicT->m_xRowInfoAT.m_bInitialize = false;
   }
 
   // marker-end

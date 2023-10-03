@@ -1,0 +1,92 @@
+/*============================================================================*/
+/* eSF.h - symbol form                                                        */
+/*============================================================================*/
+#pragma once
+
+enum eSF // symbol form
+{
+  /* */ SF_NONE = 0,    // none
+
+  /* */ SF_AGG_FN,      // Aggregate Function  : AVG, COUNT, ... SUM
+  /* */ SF_AS,          // As                  : AS
+  /* */ SF_AS_NM,       // As Name             : bIsName() but not bIs_Agg_Fn() etc
+  /* */ SF_AS_NM_itm,   // As Name (itemised)  : Cn_<col_nm>
+  /* */ SF_AS_NM_syn,   // As Name (synthetic) : __COLn
+
+  /* */ SF_BOL_FN,      // Boolean Function    : BETWEEN, CASE ... MATCHTRAILING
+  /* */ SF_BOL_LIT,     // Boolean Literal     : FALSE, TRUE
+  /* */ SF_BOL_OP,      // Boolean Operator    : AND, NOT, OR
+  /* */ SF_BOUND,       // Index Bound         : BOUND, LBOUND, UBOUND
+  /* */ SF_BRACE,       // Brace               : {
+
+  /* */ SF_CASE,        // Case                : CASE
+  /* */ SF_CAST,        // Cast                : CAST
+  /* */ SF_CASTTYPE,    // CastType            : CASTTYPE
+  /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
+  /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
+  /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
+  /* */ SF_COL_NO,      // Column Number       : $n
+  /* */ SF_COL_TC,      // (table) Column No   : $c.n
+  /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
+  /* */ SF_COMMA,       // comma               : ,
+  /* */ SF_CROSS,       // Cross               : CROSS
+
+  /* */ SF_DCM_LIT,     // Decimal Literal     : StrLib::bIsDecimal()
+  /* */ SF_DIRECTION,   // Direction           : ASC, DESC
+
+  /* */ SF_ELSE,        // Else                : ELSE
+  /* */ SF_ENDIF,       // EndIf               : ENDIF
+
+  /* */ SF_FLD_NM,      // Fold Name           :
+  /* */ SF_FLT_LIT,     // Float Literal       : StrLib::bIsFloat()
+
+  /* */ SF_GROUPBY,     // GroupBy             : GROUPBY
+
+  /* */ SF_IDX_COL,     // Index Column no     : $In
+  /* */ SF_IDX_NM,      // Index Name          : bIsName
+  /* */ SF_INT_LIT,     // Integer Literal     : StrLib::bIsInteger()
+  /* */ SF_INTERVAL_DT, // INTERVAL_DT         : INTERVAL_DT
+  /* */ SF_INTERVAL_YM, // INTERVAL_YM         : INTERVAL_YM
+  /* */ SF_IVL_FN,      // Interval Function   : extract_year etc
+
+  /* */ SF_KEY_COL,     // Key Column no       : $Kn
+
+  /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
+
+  /* */ SF_NEGATE,      // Negate              : NEGATE
+  /* */ SF_NOTE,        // Note Literal        : ...any...
+  /* */ SF_NULL,        // Null                : NULL
+
+  /* */ SF_PARENTHESIS, // Parenthesis         : (, )
+  /* */ SF_PPE_NM,      // PipeName            : bIsName
+  /* */ SF_PRM_COL,     // Parameter Column    : %n
+
+  /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
+
+  /* */ SF_SQY_NM,      // SubQuery Nm         : __sq<n>
+  /* */ SF_SQY_OP,      // SubQuery Op         :
+  /* */ SF_SQY_RSL,     // SubQuery Result     :
+  /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
+  /* */ SF_STG_NO,      // Stage No            : Sn
+  /* */ SF_STR_FN,      // String Function     : SUBSTRING2 ... SUBSTRING3
+  /* */ SF_STRING,      // String              : 'abc'
+
+  /* */ SF_TBL_NM,      // Table Name          : bIsName
+  /* */ SF_TBL_SYN,     // Table Synonym       : c
+  /* */ SF_TBL_SYN_rep, // " (replicated)      : C
+  /* */ SF_THEN,        // Then                : THEN
+  /* */ SF_TYPE,        // Type                : TYPE
+
+  /* */ SF_WHEN,        // When                : WHEN
+
+  /* */ SF_XK_CAST,     // CrossRef No         : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
+  /* */ SF_XRF_NO,      // CrossRef No         : #n
+
+  /* */ SF_ENUMS
+};
+
+extern Stz* aSF[SF_ENUMS];
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

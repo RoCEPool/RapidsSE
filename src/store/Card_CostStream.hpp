@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_CostStream : public Card
+  class Card_CostStream : public Card_symbol<Card_CostStream>
   {
   public:
     void* operator new(size_t);
@@ -18,6 +18,8 @@ namespace STORE
 
     bool bIsHigherCost(Card_CostStream* p_costQuery_arg);
     bool bIsLowerCost(Card_CostStream* p_costQuery_arg);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CostStream* _pCard_CostStream(void* aAddr);

@@ -8,9 +8,8 @@ tag default <suffix>   = "csv";
 __TPCH_SCHEMA_LOAD_SF0001
 
 // /code_block
-/glean_interactive
+/optimiser_trace
 /transliterated
-/weaver2
 /weaved
 /pipeline_def
 /pipelineName = "_r_Q2b"

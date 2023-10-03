@@ -26,7 +26,6 @@ namespace BASE
     void  operator delete(void*);
     
     Token(void);
-    Token(Token* pToCopy, TokenVec* pCaller);
    ~Token(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

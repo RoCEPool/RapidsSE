@@ -173,17 +173,17 @@ pipeline Query15
      | next
 
    stage S05 on origin :
-     top "TOP type DECIMAL $2" 1
+     top "type DECIMAL $2" 1
      | hash "type INTEGER supplier_no"
      | combined 0
      | next hashcast
 
    stage S06 on all partitions :
      indexJoin supplier IxS_SUPPKEY "BOUND $I1 supplier_no =="
-     | project "type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
-                type VARCHAR as S_NAME J1_S_NAME ,
-                type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
-                type VARCHAR as S_PHONE J1_S_PHONE ,
+     | project "type INTEGER as S_SUPPKEY S_SUPPKEY ,
+                type VARCHAR as S_NAME S_NAME ,
+                type VARCHAR as S_ADDRESS S_ADDRESS ,
+                type VARCHAR as S_PHONE S_PHONE ,
                 type DECIMAL TOTAL_REVENUE "
      | combined 0
      | next

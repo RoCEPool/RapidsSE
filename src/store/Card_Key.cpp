@@ -25,12 +25,25 @@ __vDeleteFunction(Card_Key,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Key::Card_Key(void)
-: Card_ELIST(CK_KEY)
+: Card_EXPRLIST(CK_KEY, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   _checkInitialised_(CN_CARD);
   
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Key::Card_Key(eCK eCard, i8 iMaxDepth)
+    : Card_EXPRLIST(eCard, iMaxDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
@@ -59,25 +72,27 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   p_expr_new->vRenumberForm_keyOdn(i_Key);
 
   if (Card_As* p_as = p_expr->pSub_as())
-    p_expr_new->vAppend(p_as->pDupCardRecursive());
+    p_expr_new->vAppendChild(p_as->pDupCardRecursive());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_rpnCalc())
-    p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
-  p_expr_new->vAppend(p_rpnCalc);
+    p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
+  p_expr_new->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr->szP_Type());
+  p_rpnCalc->pSymbol()->Y_vColType(p_expr->szP_Type());
+  p_expr_new->pSymbol()->Y_vColType(p_expr->szP_Type());
 
   if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = new Card_Direction(p_expr->pSub_direction()->szSymbol());
-    p_expr_new->vAppend(p_direction);
+    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol(SF_NONE));
+    p_expr_new->vAppendChild(p_direction);
   }
   else
   if (bAsc) {
-    Card_Direction *p_direction = new Card_Direction("ASC"_Stz);
-    p_expr_new->vAppend(p_direction);
+    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, "ASC"_Stz);
+    p_expr_new->vAppendChild(p_direction);
   }
-  vAppend(p_expr_new);
+
+  vAppendChild(p_expr_new);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,8 +220,8 @@ IndexDef* Card_Key::pToIndexDef(void)
     if (! p_term)
       continue;
 
-    Stz* szColNm  = p_term->szSymbol();
-    eCT  eColType = p_term->eColType();
+    Stz* szColNm  = p_term->szSymbol(SF_NONE);
+    eCT  eColType = p_term->pSymbol()->Y_eColType();
 
     if (! szColNm || CT_NONE == eColType)
       continue;
@@ -228,40 +243,6 @@ IndexDef* Card_Key::pToIndexDef(void)
   delete pIndexDef;
   return nullptr;
 }
-/*----------------------------------------------------------------------------*/
-//IndexDef* Card_Key::pToIndexDef(void)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  IndexDef* pIndexDef = new IndexDef;
-//
-//  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
-//  if (! p_rpnCalc)
-//    return nullptr;
-//
-//  Kid xRpnCalc(p_rpnCalc);
-//  while (xRpnCalc.bEach(CK_EXPR)) {
-//    Card_Expr* p_expr = xRpnCalc.p_expr();
-//
-//    Card_Term* p_term = p_expr->pGetTerm(0);
-//    if (! p_term)
-//      continue;
-//
-//    Stz* szColNm  = p_term->szSymbol();
-//    eCT  eColType = p_term->eColType();
-//
-//    if (! szColNm || CT_NONE == eColType)
-//      continue;
-//
-//    pIndexDef->vAddColumn(szColNm,eColType);
-//  }
-//
-//  if (pIndexDef->nColumns())
-//    return pIndexDef;
-//
-//  delete pIndexDef;
-//  return nullptr;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -277,15 +258,12 @@ void Card_Key::vX(void)
 void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
-
-  Kid xKey(this);
-  while (xKey.bEach(CK_EXPR)) {
-    Card_Expr *p_expr = xKey.p_expr();
-
-    p_expr->vValidate(pCI,iDepth+1,this);
-  }
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

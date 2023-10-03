@@ -34,17 +34,9 @@ SkipListBlock::~SkipListBlock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Get start addr of body in item                                             */
+/* Get start addr of item                                                     */
 /*----------------------------------------------------------------------------*/
-void* SkipListBlock::aItemBody(void)
-{
-  return (void*) aAdd<void*>(m_xItem, member_size(conceptual__item, iKey));
-}
-
-/*----------------------------------------------------------------------------*/
-/* Get start addr of key in item                                              */
-/*----------------------------------------------------------------------------*/
-void* SkipListBlock::aItemKey(void)
+void* SkipListBlock::aItem(void)
 {
   return (void*) m_xItem;
 }
@@ -54,8 +46,16 @@ void* SkipListBlock::aItemKey(void)
 /*----------------------------------------------------------------------------*/
 i8 SkipListBlock::iKey(void)
 {
-  conceptual__item* pItem = (conceptual__item*) m_xItem;
-  return pItem->iKey;
+//  conceptual__item* pItem = (conceptual__item*) m_xItem;
+  return m_xItem[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next                                                                */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* SkipListBlock::aNext(void)
+{
+   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
