@@ -55,7 +55,7 @@ statementChoice   :
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
-keyValueTag       : '<' keyName=tagName '>' '=' (stringLiteral | INTEGER_LITERAL);
+keyValueTag       : (('<' keyName=tagName '>') | ('/' keyName=tagName)) '=' (stringLiteral | INTEGER_LITERAL);
 keyOnlyTag        : '/' tagName |
                     '<' tagName '>' ;
 tagName           : PLAIN_IDENTIFIER | TIME ;

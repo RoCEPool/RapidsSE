@@ -370,9 +370,9 @@ public:
     sqlParser::TagNameContext *keyName = nullptr;;
     KeyValueTagContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    TagNameContext *tagName();
     StringLiteralContext *stringLiteral();
     antlr4::tree::TerminalNode *INTEGER_LITERAL();
+    TagNameContext *tagName();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
