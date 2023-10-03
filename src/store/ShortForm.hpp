@@ -5,21 +5,29 @@
 
 #include "BASE.h"
 
+#include "Board.hpp"
+
 namespace STORE
 {
   class ShortForm : public Object
   {
-    static const i8 C_SHORTFORM = 64;
+    static const i8 C_SHORTFORM = 128;
 
   public:
 
-    i8 m_nCols;
-
+    i8  m_iPrint;
+    i8  m_i_Stage_curr;
     s32 m_sStage_curr;
 
+    i8 m_nOps;
     struct {
-      i8   m_i_CrwCol;     // column of compact row (base 0)
-    } m_axCol[C_SHORTFORM];
+      i8   m_i_Stage;
+      s32  m_sStage;
+      s32  m_sOp;
+      s256 m_sInjected;
+      s256 m_sProjection;
+      s256 m_sKey;
+    } m_axOp[C_SHORTFORM];
 
   protected:
     // must be last
@@ -29,11 +37,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ShortForm(void);
-
+    ShortForm(CardIter* pCI);
    ~ShortForm(void) noexcept(false);
 
-    void vAdd(i8 i_CrwCol);
+    void vAdd(CardIter* pCI);
 
     void vDump(i8 i_Tab=0);
     
