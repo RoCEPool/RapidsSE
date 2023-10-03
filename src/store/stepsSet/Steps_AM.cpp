@@ -613,6 +613,8 @@ void Step::vAM_TakeLeaksSnapshot(void)
 
   ASSERT(pSnapshotThen);
   ASSERT(pSnapshotNow);
+  UNUSED(pSnapshotThen);
+  UNUSED(pSnapshotNow);
 
   pSnapshotNow->vTakeSnapshot();
   EXIT();

@@ -577,6 +577,7 @@ antlrcpp::Any CommandParser::visitCreateIndexCmd(Parser::sqlParser::CreateIndexC
   pInput->vUseBegin();
   bool bResult = pInput->bReadCommand(eInputErr);
   ASSERT(bResult);
+  UNUSED(bResult);
 
   // Append these tokens and clean up
   m_pArgValues->vAppendVector(pInput->pInpTknVec());
@@ -652,6 +653,7 @@ antlrcpp::Any CommandParser::visitCreateTableCmd(Parser::sqlParser::CreateTableC
   pInput->vUseBegin();
   bool bResult = pInput->bReadCommand(eInputErr);
   ASSERT(bResult);
+  UNUSED(bResult);
 
   // Append these tokens and clean up
   m_pArgValues->vAppendVector(pInput->pInpTknVec());
