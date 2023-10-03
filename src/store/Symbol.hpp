@@ -33,6 +33,8 @@ namespace STORE
 
     void vDump(void);
 
+    static i8   iOrdDiff(Stz* szSeq1, Stz* szSeq2);
+
     static eRO  eEvalRelnOp(Stz* szSymbol);
     static eQO  eEvalSubQryOp(Stz* szSymbol);
     static eSF  eEvalSymbol(Stz* szSymbol);

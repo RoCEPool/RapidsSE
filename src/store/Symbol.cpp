@@ -86,6 +86,33 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* determine the ordinal difference between seq 1 and 2                       */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::iOrdDiff(Stz* szSeq1, Stz* szSeq2)
+{
+  _static_
+
+  char* acSeq1 = szSeq1->azChar();
+  char* acSeq2 = szSeq2->azChar();
+  while (*acSeq1 && ! StrLib::bIsDigit(*acSeq1) && *acSeq1 == *acSeq2) {
+    acSeq1++;
+    acSeq2++;
+  }
+
+  if (StrLib::bIsDigit(*acSeq1) &&  StrLib::bIsDigit(*acSeq2)) {
+    i8 iSeq1 = StrLib::iGleanInt(acSeq1);
+    i8 iSeq2 = StrLib::iGleanInt(acSeq2);
+
+    if (iSeq2 >= iSeq1) {
+      i8 iDiff = iSeq2 - iSeq1;
+      return iDiff;
+    }
+  }
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
 eQO Symbol::eEvalSubQryOp(Stz* szChrSeq)
