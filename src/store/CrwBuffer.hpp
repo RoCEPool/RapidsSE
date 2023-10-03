@@ -56,7 +56,6 @@ namespace STORE
     i8         nAllotedBytes(void);
     i8         jRowSizeEst(void);
     i8         nHeadSize(void);
-    i8         nHeads(void);
 
 
     ////////////////////////////////////////////////////////////////////////////

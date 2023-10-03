@@ -3,6 +3,8 @@
 readonly DIR="$(dirname "$0")"
 readonly BOOSTDIR="$(realpath "${DIR}/boost_1_80_0")"
 
+MACOS_OPENSSL_BASE_DIR="/usr/local/opt/openssl"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Print an error message to stderr and exit,
 ## Params:
@@ -82,16 +84,26 @@ function checkDependenciesMacOs() {
   fi
 
   # 3. Check for OpenSSL headers and library
-  if [ ! -d /usr/local/opt/openssl/include ]; then
-    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed.\n"\
-              "(Looking for: /usr/local/opt/openssl/include).\n"\
-              "Install with the command:  brew install openssl"
+  if [ -d /usr/local/opt/openssl ]; then
+    MACOS_OPENSSL_BASE_DIR="/usr/local/opt/openssl"
+
+  elif [ -d /opt/homebrew/opt/openssl ]; then
+    MACOS_OPENSSL_BASE_DIR="/opt/homebrew/opt/openssl"
+
+  else
+    errorExit "The Thrift pre-requisite OpenSSL does not appear to be installed.\n"\
+              "It can be installed with the command:\n"\
+              "  brew install openssl\n"
   fi
 
-  if [ ! -d /usr/local/opt/openssl/lib ]; then
-    errorExit "The Thrift pre-requisite OpenSSL library does not appear to be installed.\n"\
-              "(Looking for: /usr/local/opt/openssl/lib).\n"\
-              "Install with the command:  brew install openssl"
+  if [ ! -d "${MACOS_OPENSSL_BASE_DIR}/include/openssl" ]; then
+    errorExit "The Thrift pre-requisite OpenSSL headers could not be found. They were \n"\
+              "expecting to be found at: ${MACOS_OPENSSL_BASE_DIR}/include/openssl"
+  fi
+
+  if [ ! -d "${MACOS_OPENSSL_BASE_DIR}/lib" ]; then
+    errorExit "The Thrift pre-requisite OpenSSL libraries could not be found. They were \n"\
+              "expecting to be found at: ${MACOS_OPENSSL_BASE_DIR}/lib"
   fi
 }
 
@@ -157,6 +169,7 @@ function runConfigure() {
                        "--without-lua"
                        "--without-python"
                        "--without-py3"
+                       "--without-perl"
                        "--without-php"
                        "--without-php_extension"
                        "--without-dart"
@@ -164,6 +177,7 @@ function runConfigure() {
                        "--without-go"
                        "--without-swift"
                        "--without-rs"
+                       "--without-cl"
                        "--without-haxe"
                        "--without-netstd"
                        "--without-d"
@@ -171,9 +185,14 @@ function runConfigure() {
                        "--without-qt5")
 
   if   [ "${IS_MACOS}" -eq 1 ]; then
+    local arch=""
+    if [ -n "${ARCH_FLAG_FORCE}"  ]; then
+      arch="-arch ${ARCH_FLAG_FORCE}"
+      echo "Compiling thrift for x86_64 on Arm Mac"
+    fi
     command=("env"
-             "LD_FLAGS=-L/usr/local/opt/openssl/lib"
-             "CPPFLAGS=-I/usr/local/opt/openssl/include"
+             "LDFLAGS=-L${MACOS_OPENSSL_BASE_DIR}/lib ${arch}"
+             "CPPFLAGS=-I${MACOS_OPENSSL_BASE_DIR}/include ${arch}"
              "./configure"
              "${commonOptions[@]}" )
 

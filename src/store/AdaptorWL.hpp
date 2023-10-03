@@ -55,7 +55,7 @@ namespace STORE
       /* 16 */ NENUMS
     };
 
-    static Stz* aState[];
+    static Stz* aState[NENUMS];
 
     s256         m_sClientAddr;
     apache::thrift::TBase* m_pCurrentMsg;

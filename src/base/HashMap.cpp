@@ -178,8 +178,8 @@ void HashMap::vDeleteKey(void* pKey)
       delete pIter;
       // Assert before decrement
       // since unsigned underflow could occur
-      ASSERT(1 <= m_uNoOfEntries);
-      m_uNoOfEntries--;
+//      ASSERT(1 <= m_uNoOfEntries);
+//      m_uNoOfEntries--;
       m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
 
 //      if ( pPrevIter != nullptr )

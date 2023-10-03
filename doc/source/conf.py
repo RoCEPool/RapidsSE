@@ -73,6 +73,7 @@ latex_elements = {
   # Number headings below 3
   'preamble': r'''
   \setcounter{secnumdepth}{5}
+  \usepackage{lscape}
   ''',
 }
 

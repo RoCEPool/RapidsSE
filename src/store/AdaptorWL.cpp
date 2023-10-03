@@ -72,7 +72,7 @@ const d8 C_ROWDATARESP_SCALE_UP   = 0.05; // Added
 using namespace com::rapidsdata::wirelineprotocol::messages::compatibility;
 using namespace com::rapidsdata::wirelineprotocol::messages::v5;
 
-Stz* AdaptorWL::aState[] {
+Stz* AdaptorWL::aState[eState::NENUMS] {
     /* 00 NONE */                     "NONE"_Stz,
     /* 01 CONNECTED */                "CONNECTED"_Stz,
     /* 02 PROTOCOL_COMPATIBLE */      "PROTOCOL_COMPATIBLE"_Stz,
@@ -89,7 +89,7 @@ Stz* AdaptorWL::aState[] {
     /* 13 API_CHILD_JOB_EXITED */    "API_CHILD_JOB_EXITED"_Stz,
     /* 14 QUERY_COMPLETED */         "QUERY_COMPLETED"_Stz,
     /* 15 DISCONNECTED */            "DISCONNECTED"_Stz,
-    /* 16 NENUMS */                  "NENUM"_Stz
+//  /* 16 NENUMS */                  "NENUM"_Stz
 };
 
 // Static function definitions
@@ -1251,7 +1251,7 @@ void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType, b
     // Handle this situation by sending an error message and causing the client socket
     // to be closed.
     s2K sBuf;
-    sBuf.vSprint("Error: %s; %s;"_Stz, aEC2[m_eProtocolError], aState[m_eProtocolError]);
+    sBuf.vSprint("Error: %s; %s;"_Stz, aEC2[m_eProtocolError], aState[m_eProtocolState]);
 
     ErrorResponse oErrorResponse;
     oErrorResponse.__set_errorString(sBuf.azChar());
@@ -1651,7 +1651,7 @@ void AdaptorWL::vProcessQueryExecuteRequest()
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
                             aEC2[m_eProtocolError],
-                            aState[m_eProtocolError],
+                            aState[m_eProtocolState],
                             pMsg->rowsPerRowDataResponse);
     vDisconnectClient(EC_WL_PROTOCOL_ERROR);
     vNextState(READY);
@@ -1664,7 +1664,7 @@ void AdaptorWL::vProcessQueryExecuteRequest()
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
                             aEC2[m_eProtocolError],
-                            aState[m_eProtocolError],
+                            aState[m_eProtocolState],
                             pMsg->rowsPerRowDataResponse);
     vDisconnectClient(EC_WL_PROTOCOL_ERROR);
     vNextState(READY);
@@ -2052,6 +2052,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
     Dtm         wDtm;
     Bcd         xBcd;
     SP_Bcd      spBcd;
+    d8*         pDbl;
 
     eDM eDatum = (eDM) pRowPix->m_xaColPix[i_Col].m_uDatum;
 
@@ -2100,7 +2101,8 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         break;
 
       case DM_FLT:
-        xColumnWL.__set_doubleVal(*(d8*)&iVal);
+        pDbl = (d8*) &iVal;
+        xColumnWL.__set_doubleVal(*pDbl);
         break;
 
       case DM_INT:
@@ -2112,11 +2114,11 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         wDtm = iVal;
         xIntervalWL.__set_type(IntervalType::type::DAY_TO_SECOND);
         xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
-        xIntervalWL.__set_day(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M));
-        xIntervalWL.__set_hour(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
-        xIntervalWL.__set_minute(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
-        xIntervalWL.__set_second(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
-        xIntervalWL.__set_nanoseconds((wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
+        xIntervalWL.__set_day((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M));
+        xIntervalWL.__set_hour((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
+        xIntervalWL.__set_minute((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
+        xIntervalWL.__set_second((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
+        xIntervalWL.__set_nanoseconds((i8) (wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
         xColumnWL.__set_intervalVal(xIntervalWL);
         break;
 
@@ -2125,29 +2127,29 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         wDtm = iVal;
         xIntervalWL.__set_type(IntervalType::type::YEAR_TO_MONTH);
         xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
-        xIntervalWL.__set_year(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
-        xIntervalWL.__set_month(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
+        xIntervalWL.__set_year((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
+        xIntervalWL.__set_month((i8) wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
         xColumnWL.__set_intervalVal(xIntervalWL);
         break;
 
       case DM_TME:
         wDtm = iVal;
-        xTimeWL.__set_hour(wDtm.m_wTme.iHour());
-        xTimeWL.__set_minute(wDtm.m_wTme.iMin());
-        xTimeWL.__set_second(wDtm.m_wTme.iSec());
-        xTimeWL.__set_nanoseconds(wDtm.m_wTme.m_uMicro * C_1K);
+        xTimeWL.__set_hour((i2) wDtm.m_wTme.iHour());
+        xTimeWL.__set_minute((i2) wDtm.m_wTme.iMin());
+        xTimeWL.__set_second((i2) wDtm.m_wTme.iSec());
+        xTimeWL.__set_nanoseconds((i4) (wDtm.m_wTme.m_uMicro * (u8) C_1K));
         xColumnWL.__set_timeVal(xTimeWL);
         break;
 
       case DM_TSP:
         wDtm = iVal;
-        xTimestampWL.__set_year(wDtm.m_wTsp.iYear());
-        xTimestampWL.__set_month(wDtm.m_wTsp.iMonth());
-        xTimestampWL.__set_day(wDtm.m_wTsp.iDay());
-        xTimestampWL.__set_hour(wDtm.m_wTsp.iHour());
-        xTimestampWL.__set_minute(wDtm.m_wTsp.iMin());
-        xTimestampWL.__set_second(wDtm.m_wTsp.iSec());
-        xTimestampWL.__set_nanoseconds(wDtm.m_wTsp.iMicro() * C_1K);
+        xTimestampWL.__set_year((i4) wDtm.m_wTsp.iYear());
+        xTimestampWL.__set_month((i2) wDtm.m_wTsp.iMonth());
+        xTimestampWL.__set_day((i2) wDtm.m_wTsp.iDay());
+        xTimestampWL.__set_hour((i2) wDtm.m_wTsp.iHour());
+        xTimestampWL.__set_minute((i2) wDtm.m_wTsp.iMin());
+        xTimestampWL.__set_second((i2) wDtm.m_wTsp.iSec());
+        xTimestampWL.__set_nanoseconds((i4) (wDtm.m_wTsp.iMicro() * C_1K));
         xColumnWL.__set_timestampVal(xTimestampWL);
         break;
 
