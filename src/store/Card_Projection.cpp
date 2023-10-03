@@ -501,8 +501,10 @@ void Card_Projection::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCopy("{projection}"_Stz);
+  pString->vCopy("p:"_Stz);
   Card_EXPRLIST::vShortForm(pString);
+  //pString->vConcat("}"_Stz);
+
 }
 
 

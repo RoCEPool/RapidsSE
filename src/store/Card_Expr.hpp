@@ -59,7 +59,7 @@ namespace STORE
 
     bool bSameAs(Card_Expr* pExpr_arg);
 
-    void vShortForm(String* pString);
+    void vShortForm(String* pString, Stz* szSep);
 
 
     Stz* szP_Type(void);

@@ -24,6 +24,7 @@ namespace STORE
       i8   m_i_Stage;
       s32  m_sStage;
       s32  m_sOp;
+      s32  m_sMeta;
       s256 m_sInjected;
       s256 m_sProjection;
       s256 m_sKey;
@@ -42,7 +43,7 @@ namespace STORE
 
     void vAdd(CardIter* pCI);
 
-    void vDump(i8 i_Tab=0);
+    void vDump(i8 i_Tab=0, bool bTrim=true);
     
     void vValidate(void);
 

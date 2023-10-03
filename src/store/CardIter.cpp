@@ -1161,9 +1161,9 @@ void CardIter::vEndTransform(void)
 
     vPrintBoard();
 
-//    ShortForm* pShortForm = new ShortForm(this);
-//    pShortForm->vDump(0);
-//    delete pShortForm;
+    ShortForm* pShortForm = new ShortForm(this);
+    pShortForm->vDump(0);
+    delete pShortForm;
   }
 
   vValidateBench();

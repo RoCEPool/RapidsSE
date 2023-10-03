@@ -565,11 +565,12 @@ void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
 /*----------------------------------------------------------------------------*/
 /* short form                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vShortForm(String* pString)
+void Card_Term::vShortForm(String* pString, Stz* szSep)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCatSprint(" %s"_Stz, szSymbol(SF_NONE));
+  pString->vCatSprint("%s%s"_Stz,szSep,
+                      szSymbol(SF_NONE));
 }
 
 

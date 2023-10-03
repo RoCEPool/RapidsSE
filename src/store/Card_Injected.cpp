@@ -97,8 +97,10 @@ void Card_Injected::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCopy("{injected}"_Stz);
+  pString->vCopy("i:"_Stz);
   Card_EXPRLIST::vShortForm(pString);
+  //pString->vConcat("}"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/

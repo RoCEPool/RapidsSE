@@ -74,8 +74,15 @@ void ShortForm::vAdd(CardIter* pCI)
 
   m_axOp[m_nOps].m_i_Stage = m_i_Stage_curr;
   m_axOp[m_nOps].m_sStage  = m_sStage_curr;
-  m_axOp[m_nOps].m_sOp     = pCI->G.p_MainCard->szCardNm();
 
+  if (pCI->G.p_MainCard->bIsCard(CK_PROJECT) &&
+      pCI->G.p_MainCard->pSymbol()->Y_bHas(P_Early))
+    m_axOp[m_nOps].m_sOp     = "early"_Stz;
+  else
+    m_axOp[m_nOps].m_sOp     = pCI->G.p_MainCard->szCardNm();
+
+  if ((pCI->G.p_table = pCI->G.p_MainCard->pSub_table()))
+    pCI->G.p_table->vShortForm(m_axOp[m_nOps].m_sMeta);
   if ((pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected()))
     pCI->G.p_injected->vShortForm(m_axOp[m_nOps].m_sInjected);
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
@@ -91,13 +98,14 @@ void ShortForm::vAdd(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void ShortForm::vDump(i8 i_Tab)
+void ShortForm::vDump(i8 i_Tab, bool bTrim)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SHORTFORM, _FOOTER_);
   UNUSED(i_Tab);
 
   i8 nMax_i = 0;
   i8 nMax_k = 0;
+  i8 nMax_m = 0;
   i8 nMax_o = 0;
   i8 nMax_p = 0;
   i8 nMax_s = 0;
@@ -106,45 +114,66 @@ void ShortForm::vDump(i8 i_Tab)
 
     i8 nLen_s = m_axOp[i_Op].m_sStage.nLength();
     i8 nLen_o = m_axOp[i_Op].m_sOp.nLength();
+    i8 nLen_m = m_axOp[i_Op].m_sMeta.nLength();
     i8 nLen_i = m_axOp[i_Op].m_sInjected.nLength();
     i8 nLen_p = m_axOp[i_Op].m_sProjection.nLength();
     i8 nLen_k = m_axOp[i_Op].m_sKey.nLength();
 
     if (nLen_i > nMax_i)  nMax_i = nLen_i;
     if (nLen_k > nMax_k)  nMax_k = nLen_k;
+    if (nLen_m > nMax_m)  nMax_m = nLen_m;
     if (nLen_o > nMax_o)  nMax_o = nLen_o;
     if (nLen_p > nMax_p)  nMax_p = nLen_p;
     if (nLen_s > nMax_s)  nMax_s = nLen_s;
   }
 
   s256 sFormat;
-  //                             s       o       i       p       k
-  sFormat.vSprint("%%s%%s : %%%llds %%%llds %%%llds %%%llds %%%llds\n"_Stz,
+  //                             s          o            m            i          p          k
+  sFormat.vSprint("%%s%%s `%%-%llds` `%%-%llds` : `%%-%llds` : `%%-%llds` `%%-%llds` `%%-%llds`\n"_Stz,
                   nMax_s,
                   nMax_o,
+                  nMax_m,
                   nMax_i,
                   nMax_p,
                   nMax_k);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTrace("%s%lld\n"_Stz,
+  vTrace("%sShortForm %lld::\n"_Stz,
          Stz::szTab(i_Tab),
          m_iPrint);
 
-  if (m_sStage_curr.nLength())
+  vDebugPoint();
+
   for (i8 i_Op = 0; i_Op < m_nOps; i_Op++) {
+
+    if (bTrim) {
+      i8 nLen =
+                //m_axOp[i_Op].m_sStage.nLength() +
+               // m_axOp[i_Op].m_sOp.nLength() +
+                m_axOp[i_Op].m_sMeta.nLength() +
+                m_axOp[i_Op].m_sInjected.nLength() +
+                m_axOp[i_Op].m_sProjection.nLength() +
+                m_axOp[i_Op].m_sKey.nLength();
+      if (! nLen)
+        continue;
+    }
+
     vTrace(sFormat,
            Stz::szTab(i_Tab),
            Stz::szSpaces(2),
+
            m_axOp[i_Op].m_sStage.azChar(),
            m_axOp[i_Op].m_sOp.azChar(),
+
+           m_axOp[i_Op].m_sMeta.azChar(),
 
            m_axOp[i_Op].m_sInjected.azChar(),
            m_axOp[i_Op].m_sProjection.azChar(),
            m_axOp[i_Op].m_sKey.azChar()
            );
   }
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

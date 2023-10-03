@@ -473,13 +473,14 @@ bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
 /*----------------------------------------------------------------------------*/
 /* short form                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vShortForm(String* pString)
+void Card_RpnCalc::vShortForm(String* pString, Stz* szSep)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    xKid.p_term()->vShortForm(pString);
+    xKid.p_term()->vShortForm(pString,szSep);
+    szSep = " "_Stz;
   }
 }
 

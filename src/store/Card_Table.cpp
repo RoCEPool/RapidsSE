@@ -312,6 +312,19 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find chosen index                                                          */
+/*----------------------------------------------------------------------------*/
+Card_Index* Card_Table::pFindChosenIndex(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_IndexList* p_indexList = pSub_indexList())
+    return p_indexList->pFindChosenIndex();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
@@ -371,6 +384,18 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
     bool bIgnore = p_pred_root->bPredRecursive(bLambdaFn);
     UNUSED(bIgnore);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* Card_Table::pGet_Table(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table* pTable = reinterpret_cast<Table*>(pSymbol()->Y_pGet(P_Pointer));
+
+  return pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -513,15 +538,24 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table                                                                  */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-Table* Card_Table::pGet_Table(void)
+void Card_Table::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Table* pTable = reinterpret_cast<Table*>(pSymbol()->Y_pGet(P_Pointer));
+  Stz* szSep = ""_Stz;
+  if (Card_TableNm* p_tableNm = pSub_tableNm()) {
+    pString->vCatSprint("%c.%s"_Stz,
+                        pSymbol()->cSF_char(),
+                        p_tableNm->szSymbol(SF_NONE));
+    szSep = ","_Stz;
+  }
 
-  return pTable;
+  if (Card_Index* p_index = pFindChosenIndex()) {
+    if (Card_IndexNm* p_indexNm = pSub_indexNm())
+      pString->vCatSprint("%s%s"_Stz,szSep,p_indexNm->szSymbol(SF_NONE));
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -324,8 +324,10 @@ void Card_EXPRLIST::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  Stz* szSep = ""_Stz;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    xKid.p_expr()->vShortForm(pString);
+    xKid.p_expr()->vShortForm(pString,szSep);
+    szSep = ","_Stz;
   }
 
 }
