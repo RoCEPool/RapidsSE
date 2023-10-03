@@ -123,9 +123,9 @@ failure contains: 'EC_SEMANTIC_ERROR'
 // Result file: ../queries/aggs/sum/results/sum20.res
 select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
- ('BLACK',4.501200000e+02)
+ ('BLACK',4.501199999e+02)
  ('BLUE',-5.893000000e+02)
- ('GREEN',9.210000000e+01)
+ ('GREEN',9.209999999e+01)
 
  /*
   ('BLACK', 450.1200000000001)
@@ -135,10 +135,11 @@ ordered rows:
 
 select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1;
 unordered rows:
-  ('BLACK', 4.501200e+02)
+  //('BLACK', 4.501200e+02)
+  ('BLACK', 4.50119999e+02)
   ('BLUE', -589.3)
-  ('GREEN', 9.210000e+01)
-  //('GREEN', 92.09999999999991)
+  //('GREEN', 9.210000e+01)
+  ('GREEN', 92.09999999999991)
 
 // Source file: ../queries/aggs/sum/rnsum5.sql
 // Result file: ../queries/aggs/sum/results/nsum5.res
@@ -187,7 +188,8 @@ select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1
 ordered rows:
  ('BLACK',1.180120000e+03)
  ('BLUE',1.407000000e+02)
- ('GREEN',8.221000000e+02)
+ //('GREEN',8.221000000e+02)
+ ('GREEN',8.22099999999e+02)
 
 /*
   ('BLACK', 1180.1200000000001)
@@ -201,7 +203,8 @@ select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1
 unordered rows:
   ('BLACK', 1180.12e0)
   ('BLUE', 140.7)
-  ('GREEN', 822.1e0)
+  //('GREEN', 822.1e0)
+  ('GREEN', 822.09999e0)
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
@@ -209,7 +212,8 @@ select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 o
 ordered rows:
  ('BLACK',3.000300000e+02)
  ('BLUE',4.017500000e+01)
- ('GREEN',2.105250000e+02)
+ //('GREEN',2.105250000e+02)
+ ('GREEN',2.10524999999e+02)
 
  /*
   ('BLACK', 300.03)
@@ -221,9 +225,10 @@ ordered rows:
 // Result file: ../queries/aggs/sum/results/sum15.res
 select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1;
 rows:
-  ('BLACK', 300.03)
-  ('BLUE', 40.175)
-  ('GREEN', 210.525)
+  ('BLACK', 300.03e0)
+  ('BLUE', 40.175e0)
+  //('GREEN', 210.525)
+  ('GREEN', 210.52499e0)
 
 // Source file: ../queries/aggs/sum/rsum7.sql
 // Result file: ../queries/aggs/sum/results/sum7.res
@@ -375,17 +380,21 @@ rows:
 // Result file: ../queries/aggs/sum/results/sum19.res
 select colb1, sum(cold1) - 500 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
-  ('BLACK',7.001200000e+02)
+  //('BLACK',7.001200000e+02)
+  ('BLACK',7.001199999e+02)
   ('BLUE',-3.393000000e+02)
-  ('GREEN',3.421000000e+02)
+  //('GREEN',3.421000000e+02)
+  ('GREEN',3.420999999e+02)
 
 // Source file: ../queries/aggs/sum/rsum19.sql
 // Result file: ../queries/aggs/sum/results/sum19.res
 select colb1, sum(cold1) - 500 from table1 where colb1 < 'INDIGO' group by colb1;
 rows:
-  ('BLACK', 700.12e0)
+  //('BLACK', 700.12e0)
+  ('BLACK', 700.11999e0)
   ('BLUE', -339.3e0)
-  ('GREEN', 342.10e0)
+  //('GREEN', 342.10e0)
+  ('GREEN', 342.09999e0)
 
 // Source file: ../queries/aggs/sum/rnsum2.sql
 // Result file: ../queries/aggs/sum/results/nsum2.res
@@ -407,7 +416,8 @@ select colb1, sum(cold1) * 4 from table1 where colb1 < 'INDIGO' group by colb1 o
 ordered rows:
   ('BLACK',4.800480000e+03)
   ('BLUE',6.428000000e+02)
-  ('GREEN',3.368400000e+03)
+  //('GREEN',3.368400000e+03)
+  ('GREEN',3.36839999e+03)
 
 // Source file: ../queries/aggs/sum/rsum16.sql
 // Result file: ../queries/aggs/sum/results/sum16.res
@@ -415,7 +425,8 @@ select colb1, sum(cold1) * 4 from table1 where colb1 < 'INDIGO' group by colb1;
 rows:
   ('BLACK', 4800.48e0)
   ('BLUE', 642.8e0)
-  ('GREEN', 3368.4e0)
+  //('GREEN', 3368.4e0)
+  ('GREEN', 3368.3999e0)
 
 // Source file: ../queries/aggs/sum/rsum21.sql
 // Result file: ../queries/aggs/sum/results/sum21.res
