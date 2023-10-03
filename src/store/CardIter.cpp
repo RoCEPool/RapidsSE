@@ -1161,9 +1161,11 @@ void CardIter::vEndTransform(void)
 
     vPrintBoard();
 
-    ShortForm* pShortForm = new ShortForm(this);
-    pShortForm->vDump(0);
-    delete pShortForm;
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+      ShortForm *pShortForm = new ShortForm(this);
+      pShortForm->vDump(0);
+      delete pShortForm;
+    }
   }
 
   vValidateBench();

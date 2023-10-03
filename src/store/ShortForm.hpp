@@ -25,8 +25,9 @@ namespace STORE
       s32  m_sStage;
       s32  m_sOp;
       s32  m_sMeta;
+      s256 m_sBounds;
       s256 m_sInjected;
-      s256 m_sProjection;
+      s4K  m_sProjection;
       s256 m_sKey;
     } m_axOp[C_SHORTFORM];
 

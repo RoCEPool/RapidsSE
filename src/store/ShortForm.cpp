@@ -82,7 +82,8 @@ void ShortForm::vAdd(CardIter* pCI)
     m_axOp[m_nOps].m_sOp     = pCI->G.p_MainCard->szCardNm();
 
   if ((pCI->G.p_table = pCI->G.p_MainCard->pSub_table()))
-    pCI->G.p_table->vShortForm(m_axOp[m_nOps].m_sMeta);
+    pCI->G.p_table->vShortForm(m_axOp[m_nOps].m_sMeta, m_axOp[m_nOps].m_sBounds);
+
   if ((pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected()))
     pCI->G.p_injected->vShortForm(m_axOp[m_nOps].m_sInjected);
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
@@ -103,6 +104,7 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
   _precondition_(_ADDRESS_, _MAGIC_, CN_SHORTFORM, _FOOTER_);
   UNUSED(i_Tab);
 
+  i8 nMax_b = 0;
   i8 nMax_i = 0;
   i8 nMax_k = 0;
   i8 nMax_m = 0;
@@ -112,13 +114,15 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
 
   for (i8 i_Op = 0; i_Op < m_nOps; i_Op++) {
 
-    i8 nLen_s = m_axOp[i_Op].m_sStage.nLength();
-    i8 nLen_o = m_axOp[i_Op].m_sOp.nLength();
-    i8 nLen_m = m_axOp[i_Op].m_sMeta.nLength();
+    i8 nLen_b = m_axOp[i_Op].m_sBounds.nLength();
     i8 nLen_i = m_axOp[i_Op].m_sInjected.nLength();
-    i8 nLen_p = m_axOp[i_Op].m_sProjection.nLength();
     i8 nLen_k = m_axOp[i_Op].m_sKey.nLength();
+    i8 nLen_m = m_axOp[i_Op].m_sMeta.nLength();
+    i8 nLen_o = m_axOp[i_Op].m_sOp.nLength();
+    i8 nLen_p = m_axOp[i_Op].m_sProjection.nLength();
+    i8 nLen_s = m_axOp[i_Op].m_sStage.nLength();
 
+    if (nLen_b > nMax_b)  nMax_b = nLen_b;
     if (nLen_i > nMax_i)  nMax_i = nLen_i;
     if (nLen_k > nMax_k)  nMax_k = nLen_k;
     if (nLen_m > nMax_m)  nMax_m = nLen_m;
@@ -128,11 +132,12 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
   }
 
   s256 sFormat;
-  //                             s          o            m            i          p          k
-  sFormat.vSprint("%%s%%s `%%-%llds` `%%-%llds` : `%%-%llds` : `%%-%llds` `%%-%llds` `%%-%llds`\n"_Stz,
+  //                             s          o            m          b            i          p          k
+  sFormat.vSprint("%%s%%s `%%-%llds` `%%-%llds` : `%%-%llds` `%%-%llds` : `%%-%llds` `%%-%llds` `%%-%llds`\n"_Stz,
                   nMax_s,
                   nMax_o,
                   nMax_m,
+                  nMax_b,
                   nMax_i,
                   nMax_p,
                   nMax_k);
@@ -149,10 +154,9 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
 
     if (bTrim) {
       i8 nLen =
-                //m_axOp[i_Op].m_sStage.nLength() +
-               // m_axOp[i_Op].m_sOp.nLength() +
-                m_axOp[i_Op].m_sMeta.nLength() +
-                m_axOp[i_Op].m_sInjected.nLength() +
+                m_axOp[i_Op].m_sMeta.nLength()       +
+                m_axOp[i_Op].m_sBounds.nLength()     +
+                m_axOp[i_Op].m_sInjected.nLength()   +
                 m_axOp[i_Op].m_sProjection.nLength() +
                 m_axOp[i_Op].m_sKey.nLength();
       if (! nLen)
@@ -167,6 +171,7 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
            m_axOp[i_Op].m_sOp.azChar(),
 
            m_axOp[i_Op].m_sMeta.azChar(),
+           m_axOp[i_Op].m_sBounds.azChar(),
 
            m_axOp[i_Op].m_sInjected.azChar(),
            m_axOp[i_Op].m_sProjection.azChar(),

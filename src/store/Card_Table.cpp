@@ -540,22 +540,26 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vShortForm(String* pString)
+void Card_Table::vShortForm(String* pString_m, String* pString_b)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Stz* szSep = ""_Stz;
   if (Card_TableNm* p_tableNm = pSub_tableNm()) {
-    pString->vCatSprint("%c.%s"_Stz,
-                        pSymbol()->cSF_char(),
-                        p_tableNm->szSymbol(SF_NONE));
+    pString_m->vCatSprint("%c.%s"_Stz,
+                          pSymbol()->cSF_char(),
+                          p_tableNm->szSymbol(SF_NONE));
     szSep = ","_Stz;
   }
 
   if (Card_Index* p_index = pFindChosenIndex()) {
-    if (Card_IndexNm* p_indexNm = pSub_indexNm())
-      pString->vCatSprint("%s%s"_Stz,szSep,p_indexNm->szSymbol(SF_NONE));
+    if (Card_IndexNm* p_indexNm = p_index->pSub_indexNm())
+      pString_m->vCatSprint("%s%s"_Stz, szSep, p_indexNm->szSymbol(SF_NONE));
+    if (Card_Bounds* p_bounds = p_index->pSub_bounds())
+      p_bounds->vShortForm(pString_b);
   }
+
+
 }
 
 /*----------------------------------------------------------------------------*/

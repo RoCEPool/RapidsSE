@@ -23,6 +23,8 @@ namespace STORE
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
 
+    void vShortForm(String* pString_b);
+
     bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
     bool bUsesSqyRsl(void);
 
