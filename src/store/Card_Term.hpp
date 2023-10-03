@@ -44,6 +44,8 @@ namespace STORE
     bool bIsValOdn(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
+    void vShortForm(String* pString);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

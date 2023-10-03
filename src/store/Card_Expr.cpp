@@ -689,6 +689,20 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* short form                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vShortForm(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vShortForm(pString);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    p_rpnCalc->vShortForm(pString);
+
+}
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Card_Expr::szP_Type(void)

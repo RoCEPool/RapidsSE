@@ -471,6 +471,19 @@ bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* short form                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vShortForm(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    xKid.p_term()->vShortForm(pString);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
 Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)

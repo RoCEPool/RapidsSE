@@ -40,6 +40,7 @@ namespace STORE
     Card_RpnCalc *pReducedCopy(i8 i_Expr,  bool bIs_SQCRLKEY);
     Card_RpnCalc *pReducedCopy_key(void);
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
+    void vShortForm(String* pString);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolCalc* pTo_boolCalc(CardIter* pCI);
     Stz* szP_Type(void);

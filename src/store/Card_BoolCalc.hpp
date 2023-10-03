@@ -39,6 +39,8 @@ namespace STORE
     void vPushPred(Card_CONJUNCTION* p_pred_toBeAdded);
     void vRemovePred(Card_CONJUNCTION* p_pred);
     Card_CONJUNCTION* pRootPred(void);
+    void vShortForm(String* pString);
+
     bool bYank_PRED(Stz* szWithMark, Card_CONJUNCTION*& p_pred_yanked);
     bool bYank_PRED(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_pred_yanked);
 

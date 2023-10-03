@@ -563,6 +563,17 @@ void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
 }
 
 /*----------------------------------------------------------------------------*/
+/* short form                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vShortForm(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pString->vCatSprint(" %s"_Stz, szSymbol(SF_NONE));
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

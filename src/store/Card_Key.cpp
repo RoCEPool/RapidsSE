@@ -226,6 +226,7 @@ void Card_Key::vShortForm(String* pString)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pString->vCopy("{key}"_Stz);
+  Card_EXPRLIST::vShortForm(pString);
 }
 
 /*----------------------------------------------------------------------------*/

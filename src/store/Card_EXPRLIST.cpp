@@ -318,6 +318,19 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* short form                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vShortForm(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    xKid.p_expr()->vShortForm(pString);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
 StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
