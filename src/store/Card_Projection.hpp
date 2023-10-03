@@ -39,7 +39,9 @@ namespace STORE
     Card_Projection* pReducedCopy(CardIter* pCI);
     Card_Expr* pResolve_expr(Card_Term* p_term);
 
-//    StreamDef* pToStreamDef(ColMap* pColMap,
+    void vShortForm(String* pString);
+
+    //    StreamDef* pToStreamDef(ColMap* pColMap,
 //                            Card_Key* p_key,
 //                            Card* p_OP);
 //

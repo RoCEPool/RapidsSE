@@ -495,6 +495,17 @@ Card_Expr* Card_Projection::pResolve_expr(Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
+/* short form                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vShortForm(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pString->vCopy("{projection}"_Stz);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
 //StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,

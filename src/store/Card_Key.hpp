@@ -29,6 +29,8 @@ namespace STORE
     void vMapColumns(CardIter *pCI);
     Stz* szP_Type(void);
 
+    void vShortForm(String* pString);
+
     IndexDef* pToIndexDef(void);
 
     void vX(void);

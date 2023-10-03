@@ -77,11 +77,11 @@ void ShortForm::vAdd(CardIter* pCI)
   m_axOp[m_nOps].m_sOp     = pCI->G.p_OP->szCardNm();
 
   if ((pCI->G.p_injected = pCI->G.p_OP->pSub_injected()))
-    {;}
+    pCI->G.p_injected->vShortForm(m_axOp[m_nOps].m_sInjected);
   if ((pCI->G.p_projection = pCI->G.p_OP->pSub_projection()))
-    {;}
+    pCI->G.p_projection->vShortForm(m_axOp[m_nOps].m_sProjection);
   if ((pCI->G.p_key = pCI->G.p_OP->pSub_key()))
-    {;}
+    pCI->G.p_key->vShortForm(m_axOp[m_nOps].m_sKey);
 
   m_nOps++;
 
@@ -117,7 +117,7 @@ void ShortForm::vDump(i8 i_Tab)
     if (nLen_s > nMax_s)  nMax_s = nLen_s;
   }
 
-  s32 sFormat;
+  s256 sFormat;
   //                             s       o       i       p       k
   sFormat.vSprint("%%s%%s : %%%llds %%%llds %%%llds %%%llds %%%llds\n"_Stz,
                   nMax_s,
