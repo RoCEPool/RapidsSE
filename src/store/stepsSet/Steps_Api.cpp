@@ -101,7 +101,8 @@ void Step::vApiScheduleTask(void)
 
   // TODO: This should be a suspending call rather than a blocking call
   //       that is is currently. Do not call this from a non-dedicated thread.
-  Api::vScheduleTask(pChildTask);
+  eEC eChildErr = Api::eScheduleTask(pChildTask);
+  m_pDataStack->vPushInt((i8) eChildErr);
 
   EXIT();
 }

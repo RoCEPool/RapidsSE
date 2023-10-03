@@ -42,8 +42,8 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].rowBuffer"_Stz,           &Step::vAdaptorWLRowBuffer);
   vAddStep("AdaptorWL[].statementToSubmit"_Stz,   &Step::vAdaptorWLStatementToSubmit);
   vAddStep("AdaptorWL[].stmtParsingErr"_Stz,      &Step::vAdaptorWLStatementParsingError);
-  vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);   // DELETE
-  vAddStep("AdaptorWL[].stmtSubmittedErr"_Stz,    &Step::vAdaptorWLStatementSubmittedError);  // DELETE???
+  vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);
+  vAddStep("AdaptorWL[].stmtSubmittedErr"_Stz,    &Step::vAdaptorWLStatementSubmittedError);
   vAddStep("AdaptorWL[].streamSet"_Stz,           &Step::vAdaptorWLStreamSet);
 }
 

@@ -167,7 +167,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
 /*----------------------------------------------------------------------------*/
 /* schedule a task to run                                                     */
 /*----------------------------------------------------------------------------*/
-void Api::vScheduleTask(ENGINE::Task* pTask)
+eEC Api::eScheduleTask(ENGINE::Task* pTask)
 {
   // TODO
   // NOTE: While the content of this function is currently the same as
@@ -197,7 +197,17 @@ void Api::vScheduleTask(ENGINE::Task* pTask)
 
   Scheduler::vTaskApi_Add(pChildJob->pTask());
 
+  pParentJob->vMutexWait();
   pParentJob->vMutexUnlock();
+
+  // check for error from child job
+  eEC eChildError = pParentJob->eChildError();
+
+  if (eChildError != EC_NONE) {
+    return eChildError;
+  }
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

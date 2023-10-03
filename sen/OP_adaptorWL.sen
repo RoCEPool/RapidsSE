@@ -78,11 +78,21 @@
   TaskList[].pop to pNextTask
 
   pNextTask AdaptorWL[].statementToSubmit
-  AdaptorWL[].stmtSubmitted
 
   [Op] [job].responseOp!
+  pNextTask api::scheduleTask to ErrorCode[]
 
-  pNextTask api::scheduleTask
+  // Check if there were any errors while scheduling the task.
+  // If there are errors then there are likely errors like low memory
+  // or system closed. i.e. fatal errors.
+  ErrorCode[] if
+    ErrorCode[] AdaptorWL[].stmtSubmittedErr
+    AdaptorWL[].queryComplete
+    TaskList[].delete
+    exit
+  then
+
+  AdaptorWL[].stmtSubmitted
 ;
 
 

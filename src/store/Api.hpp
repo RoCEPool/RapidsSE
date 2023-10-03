@@ -16,7 +16,7 @@ namespace STORE
 
   static TaskList* pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTask,
                                  eEC& eErrCode, s2K& sErrStr);
-  static void vScheduleTask(Task* pTask);
+  static eEC eScheduleTask(Task* pTask);
 
   static Task* pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId, Stz* szOrigCmd);
 
