@@ -211,7 +211,7 @@ insertCmd         : (WITH withQuery (',' withQuery)*)?
 loadCmd           : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
 loadReplicatedCmd : LOADREPLICATED tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
 loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
-loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
+loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT | RECORD_ENDS ;
 logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
 lscolCmd          : LSCOL tableName ;
 lsidxCmd          : LSIDX tableName ;
@@ -623,7 +623,7 @@ nonReservedWord   :
                   | OBJECTS | OFF | OFFSET | ORIGIN
                   | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE | REGIONS | REPLICATED | ROWSIZE
+                  | RECORD_ENDS | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
@@ -793,6 +793,7 @@ PRETTY                : P R E T T Y;
 PRIMARY               : P R I M A R Y;
 QUARTER               : Q U A R T E R;
 QUARTERS              : Q U A R T E R S;
+RECORD_ENDS           : R E C O R D '_' E N D S;
 RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
 REGIONS               : R E G I O N S;
