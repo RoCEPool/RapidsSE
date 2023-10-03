@@ -663,6 +663,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       false,    // tiny heap is always the smallest
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated())
@@ -715,6 +716,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       bChgHeap,
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated())
@@ -768,6 +770,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       bChgHeap,
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated())
@@ -821,6 +824,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       bChgHeap,
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated())
@@ -872,6 +876,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       false,      // tiny heap is the smallest
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Transient.m_pTiny->nCurrAllocated())
@@ -925,6 +930,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       bChgHeap,
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Transient.m_pSmall->nCurrAllocated())
@@ -978,6 +984,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       bChgHeap,
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Transient.m_pMedium->nCurrAllocated())
@@ -1031,6 +1038,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       bChgHeap,
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 
   if(nObjInHeap != AM::pHeaps()->Transient.m_pLarge->nCurrAllocated())
@@ -1090,6 +1098,7 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
                                       false,
                                       C_VARGS_END);
     ASSERT(pRow);
+    UNUSED(pRow);
   }
 }
 
