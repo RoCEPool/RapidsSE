@@ -192,8 +192,9 @@ antlrcpp::Any CommandParser::visitStatements(Parser::sqlParser::StatementsContex
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext *pCtx)
 {
-  // Save the current statement text
-  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  // Save the current statement text, without any preceeding tags
+  antlr4::misc::Interval interval(pCtx->statementChoice()->start->getStartIndex(),
+                                  pCtx->stop->getStopIndex());
   std::string sStmtStr = pCtx->start->getInputStream()->getText(interval);
 
   m_sCurStmtStr.vCopy((Stz*) sStmtStr.c_str());
