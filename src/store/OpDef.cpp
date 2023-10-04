@@ -55,7 +55,8 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
   m_pIndexDef_top       = nullptr;
   m_pColMap_top         = nullptr;
 
-  m_pColInj         = nullptr;
+  m_pColPpg             = nullptr;
+  m_pColInj             = nullptr;
 
   m_pColHsh             = nullptr;
 
@@ -83,6 +84,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pIndexDef_top;
   delete m_pColMap_top;
 
+  delete m_pColPpg;
   delete m_pColInj;
   delete m_pColHsh;
 }
@@ -196,7 +198,7 @@ ColInj* OpDef::pColInj(void)
   return m_pColInj;
 }
 
-//*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void OpDef::vColInj(ColInj* pColInj)
@@ -204,6 +206,26 @@ void OpDef::vColInj(ColInj* pColInj)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   m_pColInj = pColInj;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ColPpg* OpDef::pColPpg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return m_pColPpg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vColPpg(ColPpg* pColPpg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  m_pColPpg = pColPpg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,7 +306,12 @@ void OpDef::vDump(i8 i_Tab)
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_top);
     m_pColMap_top->vDump(i_Tab + 1);
   }
-
+  
+  if (m_pColPpg) {
+    vTrace("%s%s : ColPpg %p\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColPpg);
+    m_pColPpg->vDump(i_Tab + 1);
+  }
 
   if (m_pColInj) {
     vTrace("%s%s : ColInj %p\n"_Stz,

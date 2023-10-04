@@ -8,6 +8,7 @@
 #include "ColHsh.hpp"
 #include "ColMap.hpp"
 #include "ColInj.hpp"
+#include "ColPpg.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"
 #include "ListExo2_t.hpp"
@@ -40,6 +41,7 @@ namespace STORE
     IndexDef*  m_pIndexDef_top;
     ColMap*    m_pColMap_top;
 
+    ColPpg*    m_pColPpg;
     ColInj*    m_pColInj;
 
     ColHsh*    m_pColHsh;
@@ -65,6 +67,9 @@ namespace STORE
 
     ColInj* pColInj(void);
     void vColInj(ColInj* pColInj);
+
+    ColPpg* pColPpg(void);
+    void vColPpg(ColPpg* pColPpg);
 
     void vDump(i8 i_Tab=2);
 
