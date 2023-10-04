@@ -18,12 +18,19 @@ RR_PDF_FRAG      = source/cmdRef/rr.rst.fragment
 RR_PDF_FRAG_GEN  = source/cmdRef/rrPdfFragGen.sh
 RR_COMMON_ARGS   = -suppressebnf -nofactoring -noinline -color:\#FFE270 -offset:166 -width:750
 
-
+# JDBC driver URL railroad diagrams
 JDBC_URL_GRAMMAR = source/interfaces/jdbcDriver/url.bnf
 JDBC_URL_OUTPUT  = source/interfaces/jdbcDriver/connectionURL
 JDBC_URL_TMP     = source/interfaces/jdbcDriver/tmp
 JDBC_URL_ZIP     = $(JDBC_URL_TMP)/url.zip
 JDBC_URL_PNG 	 = $(JDBC_URL_OUTPUT)/connectionUrl.png
+
+# SE Shell grammar railroad diagrams
+SE_SHELL_RR_GRAMMAR = source/interfaces/seShell/seShellGrammar.bnf
+SE_SHELL_RR_OUTPUT  = source/interfaces/seShell/rr
+SE_SHELL_RR_TMP     = source/interfaces/seShell/tmp
+SE_SHELL_RR_ZIP     = $(SE_SHELL_RR_TMP)/grammar_rr.zip
+SE_SHELL_RR_PNG 	= $(SE_SHELL_RR_OUTPUT)/runCommand.png
 
 # Let's work out what OS we are on
 UNAME_S := $(shell uname -s)
@@ -156,6 +163,21 @@ $(JDBC_URL_PNG): $(JDBC_URL_GRAMMAR)
 	@echo "JDBC connection URL railroad diagrams (PNG) created at: $(JDBC_URL_OUTPUT)"
 
 
+# Rule to generate the PNG railroad diagram for SE Shell built-in commands
+seShellGrammar: $(SE_SHELL_RR_PNG)
+$(SE_SHELL_RR_PNG): $(SE_SHELL_RR_GRAMMAR)
+	@echo
+	@echo "Building SE Shell railroad diagrams (PNG)"
+	@mkdir -p "$(SE_SHELL_RR_OUTPUT)"
+	@mkdir -p "$(SE_SHELL_RR_TMP)"
+	@java -jar tools/rr/rr.war $(RR_COMMON_ARGS) -png -out:$(SE_SHELL_RR_ZIP) "$(SE_SHELL_RR_GRAMMAR)"
+	@unzip -o -d "$(SE_SHELL_RR_TMP)" "$(SE_SHELL_RR_ZIP)" > /dev/null
+	@# Copy *.png files to output dir. Ignore the rr-1.67.png file
+	@rm -f "$(SE_SHELL_RR_TMP)"/diagram/rr-*.png
+	@cp "$(SE_SHELL_RR_TMP)"/diagram/*.png "$(SE_SHELL_RR_OUTPUT)" > /dev/null
+	@rm -rf "$(SE_SHELL_RR_TMP)"
+	@echo "SE Shell railroad diagrams (PNG) created at: $(SE_SHELL_RR_OUTPUT)"
+
 # Rule to build the zip file containing the wireline protocol message definitions.
 # This is provided with the HTML documentation.
 wirelineMessageDefsZip: $(WLP_MSG_DEF_ZIP_PATH)
@@ -186,14 +208,14 @@ version:
 	@./updateVersion.sh
 	@echo "done"
 
-html: checkSphinx version railroad wirelineMessageDefsZip wirelineMessageDefsRst jdbcConnectionUrl
+html: checkSphinx version railroad wirelineMessageDefsZip wirelineMessageDefsRst jdbcConnectionUrl seShellGrammar
 	@echo
 	@echo "Building HTML documentation..."
 	@echo
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	@echo
 
-pdf: checkSphinx checkLatex railroad wirelineMessageDefsRst jdbcConnectionUrl
+pdf: checkSphinx checkLatex railroad wirelineMessageDefsRst jdbcConnectionUrl seShellGrammar
 	@echo
 	@echo "Building PDF documentation..."
 	@echo
@@ -216,11 +238,12 @@ clean:
 	@rm -f  "$(WLP_MSG_DEF_ZIP_PATH)"
 	@rm -f  "$(WLP_MSG_DEF_RST)"
 	@rm -rf "$(JDBC_URL_OUTPUT)"
+	@rm -rf "$(SE_SHELL_RR_OUTPUT)"
 
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: all checkSphinx checkLatex clean help html internal_html jdbcConnectionUrl linkcheck pdf railroad rr version
+.PHONY: all checkSphinx checkLatex clean help html internal_html jdbcConnectionUrl seShellGrammar linkcheck pdf railroad rr version
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
