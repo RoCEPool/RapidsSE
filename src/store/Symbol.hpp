@@ -16,8 +16,12 @@ namespace STORE
   class Symbol : public Object
   {
   private:
-    eSF     m_eSymbol;
-    s256    m_sChrSeq;
+    struct
+    {
+      eSF  m_eFacet;
+      s256 m_sChrSeq;
+    } xFacet[1];
+
     TagSet* m_pProperties;
 
   protected:
@@ -26,8 +30,8 @@ namespace STORE
 
   public:
     Symbol(void);
-    Symbol(eSF eSymbol, i8 iInt);
-    Symbol(eSF eSymbol, Stz* szChrSeq);
+    Symbol(eSF eFacet, i8 iInt);
+    Symbol(eSF eFacet, Stz* szChrSeq);
 
     ~Symbol(void);
 
@@ -197,12 +201,12 @@ namespace STORE
     Stz* szSF_symbol(eSF eSymbol_xchk);
     char cSF_tblSyn(void);
 
-    void vSym(eSF eSymbol);
-    void vSym(eSF eSymbol, char cChr);
-    void vSym(eSF eSymbol, char cChr, i8 iInt);
-    void vSym(eSF eSymbol, i8 iInt);
-    void vSym(eSF eSymbol, i8 iInt, Symbol* pSymbol);
-    void vSym(eSF eSymbol, Stz* szChrSeq);
+    void vSym(eSF eFacet);
+    void vSym(eSF eFacet, char cChr);
+    void vSym(eSF eFacet, char cChr, i8 iInt);
+    void vSym(eSF eFacet, i8 iInt);
+    void vSym(eSF eFacet, i8 iInt, Symbol* pSymbol);
+    void vSym(eSF eFacet, Stz* szChrSeq);
     void vSym(Symbol* pSymbol);
     void vSymPpy(Symbol* pSymbol);
 
