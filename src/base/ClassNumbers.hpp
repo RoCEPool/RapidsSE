@@ -60,6 +60,7 @@ enum eCN : u2 // Class Number
   /* */ CN_COLHSH,
   /* */ CN_COLINJ,
   /* */ CN_COLMAP,
+  /* */ CN_COLPPG,
   /* */ CN_COLUMN,
   /* */ CN_COMBINEDSRC,
   /* */ CN_CONDITIONALQUERYNODEITER,
@@ -572,6 +573,7 @@ static Stz* aCN[]
   /* */ "COLHSH"_Stz,               // CN_COLHSH
   /* */ "COLINJ"_Stz,               // CN_COLINJ
   /* */ "COLMAP"_Stz,               // CN_COLMAP
+  /* */ "COLPPG"_Stz,               // CN_COLPPG
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
