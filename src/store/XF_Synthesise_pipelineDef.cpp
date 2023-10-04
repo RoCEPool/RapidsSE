@@ -202,6 +202,8 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs();
+
+  vCraftColPpg();
   vCraftColInj();
 
   vCraftIndexes();
@@ -563,7 +565,6 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Stz*      szTblCol_i = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
 
     // projected related
-
     Card_Expr *p_prior_expr_p = nullptr;
 
     Kid xKid(p_projection);
@@ -595,6 +596,110 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   p_injected->bApplyRecursive(CK_EXPR, bfAddDescriptors);
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft the columns propagated for this pipeline                             */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_pipelineDef::vCraftColPpg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  if (m_pStageDef->i_Stage() == 6) {
+    vDebugPoint();
+    if (m_pOpDef->i_Op() == 0)
+      vDebugPoint();
+  }
+
+  if (! m_pCI->G.p_OP->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_NONE))
+    return;
+
+  m_pCI->G.p_arriving = m_pCI->G.p_OP->pSub_arriving();
+  if (! m_pCI->G.p_arriving)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nArriving = m_pCI->G.p_arriving->nChildCards();
+  ColPpg* pColPpg = new ColPpg(nArriving);
+  m_pOpDef->vColPpg(pColPpg);
+
+  vCraftColPpg(pColPpg, m_pCI->G.p_OP);
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft the columns propagated for given card                                */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Card_Arriving *p_arriving = pSubCard->pSub_arriving();
+  Card_Projection *p_projection = pSubCard->pSub_projection();
+
+  UNUSED(p_arriving);
+  UNUSED(p_projection);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfAddDescriptors = [pColPpg, p_projection](Card *pCard_expr_a) {
+
+    UNUSED(pColPpg);
+    UNUSED(p_projection);
+
+    Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
+
+    p_expr_a->vDump(__func__);
+    p_projection->vDump(__func__);
+    vDebugPoint();
+
+    Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
+    Card_Expr *p_expr_p =
+        p_projection->pFind_expr_Of_symbol(pSym_stmCol_a);
+
+    if (p_expr_p) {
+      p_expr_p->vDump(__func__);
+      pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
+                    p_expr_p->pSymbol()->iSF_ordinal() - 1,
+                    p_expr_p->szSymbol(SF_NONE),
+                    pSym_stmCol_a->szSF_symbol(SF_NONE),
+                    p_expr_p->pSymbol()->szSF_symbol(SF_NONE));
+    }
+
+    return C_CONTINUE_RECURSION;
+//    pCard_expr_a->vDump(__func__ );
+//    // arriving related
+//    Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
+//    Card_As*      p_as_a = p_expr_a->pSub_as();
+//    Symbol*    pSym_as_a = p_as_a->pSymbol();
+//    i8           i_col_a = pSym_as_a->iSF_ordinal();
+//    Stz*      szStmCol_a = p_expr_a->pFirstStmCol()->szSF_symbol(SF_NONE);
+//
+//    // projected related
+//    Kid xKid(p_projection);
+//    for (;;) {
+//      Card_Expr *p_expr_p =
+//          p_projection->pFind_expr_Of_symbol(szStmCol_a);
+//      if (! p_expr_p)
+//        return C_CONTINUE_RECURSION;
+//
+//      // assemble descriptor
+//      Card_As *p_as_p   = p_expr_p->pSub_as();
+//      Symbol *pSym_as_p = p_as_p->pSymbol();
+//      Stz *szSym_as_p   = pSym_as_p->szSF_symbol(SF_NONE);
+//      Stz *szTblCol_p   = p_expr_p->pFirstStmCol()->Y_szGet(P_TblCol);
+//      i8        i_Col_p = pSym_as_p->iSF_ordinal();
+//
+//      pColPpg->vAdd(i_col_a,i_Col_p,
+//                    szSym_as_p, szStmCol_a, szTblCol_p);
+//
+//    }
+//    NEVER_REACH
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
 }
 
 /*============================================================================*/

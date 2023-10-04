@@ -53,6 +53,8 @@ namespace STORE
     void vCraftStreamDefs(void);
     void vCraftColInj(void);
     void vCraftColInj(ColInj* pColInj, Card *pSubCard);
+    void vCraftColPpg(void);
+    void vCraftColPpg(ColPpg* pColPpg, Card *pSubCard);
 
   protected:
     Footer* aFooter(void);

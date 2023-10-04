@@ -22,13 +22,13 @@ ColPpg::ColPpg(i8 nCrwCols)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLPPG, _FOOTER_);
 
-  m_nCrwCols = nCrwCols;
+  m_nArriving = nCrwCols;
 
   for (i8 i_Col = 0; i_Col < C_COLPPG; i_Col++) {
     m_axCol[i_Col].m_i_CellIn  = C_UNKNOWN;
-    m_axCol[i_Col].m_i_CellOut = C_UNKNOWN;
+    m_axCol[i_Col].m_i_StructCell = C_UNKNOWN;
   }
-  m_nCols = 0;
+  m_nPropagated = 0;
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_COLPPG, _FOOTER_);
 }
@@ -60,18 +60,18 @@ void ColPpg::vAdd(i8 i_CellIn, i8 i_CellOut, Stz* szCn_memberNm,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLPPG, _FOOTER_);
 
-  m_axCol[m_nCols].m_i_CellIn  = i_CellIn;
-  m_axCol[m_nCols].m_i_CellOut = i_CellOut;
+  m_axCol[m_nPropagated].m_i_CellIn  = i_CellIn;
+  m_axCol[m_nPropagated].m_i_StructCell = i_CellOut;
 
   if (szCn_memberNm)
-    m_axCol[m_nCols].m_sCn_memberNm = szCn_memberNm;
+    m_axCol[m_nPropagated].m_sCn_memberNm = szCn_memberNm;
 
   if (szNote1)
-    m_axCol[m_nCols].m_sNote1 = szNote1;
+    m_axCol[m_nPropagated].m_sNote1 = szNote1;
   if (szNote2)
-    m_axCol[m_nCols].m_sNote2 = szNote2;
+    m_axCol[m_nPropagated].m_sNote2 = szNote2;
 
-  m_nCols++;
+  m_nPropagated++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,12 +84,12 @@ void ColPpg::vDump(i8 i_Tab)
 
   s256 sNotes;
 
-  vTrace("%s%snCrwCols %lld\n"_Stz,
+  vTrace("%s%snArriving %lld\n"_Stz,
          Stz::szTab(i_Tab),
          Stz::szSpaces(7),
-         m_nCrwCols);
+         m_nArriving);
 
-  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_nPropagated; i_Col++) {
     if (*m_axCol[i_Col].m_sNote1.azChar() || *m_axCol[i_Col].m_sNote2.azChar()) {
       sNotes.vSprint("(%s %s)"_Stz,
                      m_axCol[i_Col].m_sNote1.azChar(),
@@ -99,13 +99,13 @@ void ColPpg::vDump(i8 i_Tab)
       sNotes = ""_Stz;
     }
 
-    vTrace("%s%sm_axCols[%lld] : m_i_CellIn [%lld] -> m_i_CellOut [%lld] %s %s\n"_Stz,
+    vTrace("%s%sm_axCol[%lld] : m_i_CellIn [%lld] -> m_i_StructCell [%lld] %s %s\n"_Stz,
            Stz::szTab(i_Tab),
            Stz::szSpaces(7),
            i_Col,
 
            m_axCol[i_Col].m_i_CellIn,
-           m_axCol[i_Col].m_i_CellOut,
+           m_axCol[i_Col].m_i_StructCell,
            m_axCol[i_Col].m_sCn_memberNm.szStz(),
            sNotes.azChar());
   }

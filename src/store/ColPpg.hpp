@@ -13,12 +13,12 @@ namespace STORE
 
   public:
 
-    i8 m_nCrwCols;
-    i8 m_nCols;
+    i8 m_nArriving;
+    i8 m_nPropagated;
 
     struct {
       i8   m_i_CellIn;     // in cell of struct (base 0)
-      i8   m_i_CellOut;    // out cell of struct (base 0)
+      i8   m_i_StructCell; // out cell of struct (base 0)
 
       s32  m_sCn_memberNm; // member name
 

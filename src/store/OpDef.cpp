@@ -306,7 +306,7 @@ void OpDef::vDump(i8 i_Tab)
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_top);
     m_pColMap_top->vDump(i_Tab + 1);
   }
-  
+
   if (m_pColPpg) {
     vTrace("%s%s : ColPpg %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColPpg);
@@ -573,6 +573,9 @@ void OpDef::vValidate(void)
 
   if (m_pColMap_top)
     m_pColMap_top->vValidate();
+
+  if (m_pColPpg)
+    m_pColPpg->vValidate();
 
   if (m_pColInj)
     m_pColInj->vValidate();
