@@ -1196,6 +1196,161 @@ eSF Symbol::eFacet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get facet                                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_TBL_SYN_rep: vSet_Tbl_Syn_rep(); break;
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet(eSF eFacet, char cChr)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_TBL_SYN: vSet_Tbl_Syn(cChr); break;
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet(eSF eFacet, char cChr, i8 iInt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_COL_TC:    vSet_Col_Tc(cChr,iInt);    break;
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet(eSF eFacet, i8 iInt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_AS_NM_itm:  vSet_As_Nm_itm(iInt);  break;
+    case SF_AS_NM_syn:  vSet_As_Nm_syn(iInt);  break;
+    case SF_COL_NO:     vSet_Col_No(iInt);     break;
+    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt); break;
+    case SF_IDX_COL:    vSet_Idx_Col(iInt);    break;
+    case SF_INT_LIT:    vSet_Int_Lit(iInt);    break;
+    case SF_KEY_COL:    vSet_Key_Col(iInt);    break;
+    case SF_SQY_NM:     vSet_Sqy_Nm(iInt);     break;
+    case SF_STG_NO:     vSet_Stg_Nm(iInt);     break;
+    case SF_PRM_COL:    vSet_Prm_Col(iInt);    break;
+    case SF_XRF_NO:     vSet_Xrf_No(iInt);     break;
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt,pSymbol); break;
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eFacet) {
+
+    case SF_AGG_FN:      vSet_Agg_Fn(szChrSeq);      break;
+    case SF_AS:          vSet_As(szChrSeq);          break;
+    case SF_AS_NM:       vSet_As_Nm(szChrSeq);       break;
+    case SF_BOL_FN:      vSet_Bol_Fn(szChrSeq);      break;
+    case SF_BOL_LIT:     vSet_Bol_Lit(szChrSeq);     break;
+    case SF_BOL_OP:      vSet_Bol_Op(szChrSeq);      break;
+    case SF_BOUND:       vSet_Bound(szChrSeq);       break;
+    case SF_BRACE:       vSet_Brace(szChrSeq);       break;
+    case SF_CASE:        vSet_Case(szChrSeq);        break;
+    case SF_CAST:        vSet_Cast(szChrSeq);        break;
+    case SF_CASTTYPE:    vSet_CastType(szChrSeq);    break;
+    case SF_COL_NM:      vSet_Col_Nm(szChrSeq);      break;
+    case SF_COL_NM_syn:  vSet_Col_Nm_syn(szChrSeq);  break;
+    case SF_COL_NO:      vSet_Col_No(szChrSeq);      break;
+    case SF_COL_TC:      vSet_Col_Tc(szChrSeq);      break;
+    case SF_COL_TYPE:    vSet_Col_Type(szChrSeq);    break;
+    case SF_COMMA:       vSet_Comma(szChrSeq);       break;
+    case SF_CROSS:       vSet_Cross(szChrSeq);       break;
+    case SF_DCM_LIT:     vSet_Dcm_Lit(szChrSeq);     break;
+    case SF_DIRECTION:   vSet_Direction(szChrSeq);   break;
+    case SF_ELSE:        vSet_Else(szChrSeq);        break;
+    case SF_ENDIF:       vSet_EndIf(szChrSeq);       break;
+    case SF_FLD_NM:      vSet_Fld_Nm(szChrSeq);      break;
+    case SF_FLT_LIT:     vSet_Flt_Lit(szChrSeq);     break;
+    case SF_GROUPBY:     vSet_GroupBy(szChrSeq);     break;
+    case SF_IDX_COL:     vSet_Idx_Col(szChrSeq);     break;
+    case SF_IDX_NM:      vSet_Idx_Nm(szChrSeq);      break;
+    case SF_INT_LIT:     vSet_Int_Lit(szChrSeq);     break;
+    case SF_IVL_FN:      vSet_Ivl_Fn(szChrSeq);      break;
+    case SF_INTERVAL_DT: vSet_Interval_DT(szChrSeq); break;
+    case SF_INTERVAL_YM: vSet_Interval_YM(szChrSeq); break;
+    case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
+    case SF_NEGATE:      vSet_Negate(szChrSeq);      break;
+    case SF_NOTE:        vSet_Note(szChrSeq);        break;
+    case SF_NULL:        vSet_Null(szChrSeq);        break;
+    case SF_MTH_OP:      vSet_Mth_Op(szChrSeq);      break;
+    case SF_PARENTHESIS: vSet_Parenthesis(szChrSeq); break;
+    case SF_PPE_NM:      vSet_Ppe_Nm(szChrSeq);      break;
+    case SF_PRM_COL:     vSet_Prm_Col(szChrSeq);     break;
+    case SF_RLN_OP:      vSet_Rln_Op(szChrSeq);      break;
+    case SF_SQY_OP:      vSet_Sqy_Op(szChrSeq);      break;
+    case SF_STG_CAST:    vSet_Stg_Cast(szChrSeq);    break;
+    case SF_STR_FN:      vSet_Str_Fn(szChrSeq);      break;
+    case SF_STR_LIT:     vSet_String(szChrSeq);      break;
+    case SF_TBL_NM:      vSet_Tbl_Nm(szChrSeq);      break;
+    case SF_TBL_SYN:     vSet_Tbl_Syn(szChrSeq);     break;
+    case SF_THEN:        vSet_Then(szChrSeq);        break;
+    case SF_TYPE:        vSet_Type(szChrSeq);        break;
+    case SF_WHEN:        vSet_When(szChrSeq);        break;
+    case SF_XK_CAST:     vSet_Xk_Cast(szChrSeq);     break;
+    case SF_XRF_NO:      vSet_Xrf_No(szChrSeq);      break;
+
+    default: NEVER_REACH;
+  }
+
+}
+/*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
 eRO Symbol::eEvalRelnOp(void)
@@ -2382,162 +2537,6 @@ char Symbol::cSF_char(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return * xFacet[0].m_sChrSeq.azChar();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get facet                                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_TBL_SYN_rep: vSet_Tbl_Syn_rep(); break;
-
-    default: NEVER_REACH;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, char cChr)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_TBL_SYN: vSet_Tbl_Syn(cChr); break;
-
-    default: NEVER_REACH;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, char cChr, i8 iInt)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_COL_TC:    vSet_Col_Tc(cChr,iInt);    break;
-
-    default: NEVER_REACH;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, i8 iInt)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_AS_NM_itm:  vSet_As_Nm_itm(iInt);  break;
-    case SF_AS_NM_syn:  vSet_As_Nm_syn(iInt);  break;
-    case SF_COL_NO:     vSet_Col_No(iInt);     break;
-    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt); break;
-    case SF_IDX_COL:    vSet_Idx_Col(iInt);    break;
-    case SF_INT_LIT:    vSet_Int_Lit(iInt);    break;
-    case SF_KEY_COL:    vSet_Key_Col(iInt);    break;
-    case SF_SQY_NM:     vSet_Sqy_Nm(iInt);     break;
-    case SF_STG_NO:     vSet_Stg_Nm(iInt);     break;
-    case SF_PRM_COL:    vSet_Prm_Col(iInt);    break;
-    case SF_XRF_NO:     vSet_Xrf_No(iInt);     break;
-
-    default: NEVER_REACH;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt,pSymbol); break;
-
-    default: NEVER_REACH;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  switch (eFacet) {
-
-    case SF_AGG_FN:      vSet_Agg_Fn(szChrSeq);      break;
-    case SF_AS:          vSet_As(szChrSeq);          break;
-    case SF_AS_NM:       vSet_As_Nm(szChrSeq);       break;
-    case SF_BOL_FN:      vSet_Bol_Fn(szChrSeq);      break;
-    case SF_BOL_LIT:     vSet_Bol_Lit(szChrSeq);     break;
-    case SF_BOL_OP:      vSet_Bol_Op(szChrSeq);      break;
-    case SF_BOUND:       vSet_Bound(szChrSeq);       break;
-    case SF_BRACE:       vSet_Brace(szChrSeq);       break;
-    case SF_CASE:        vSet_Case(szChrSeq);        break;
-    case SF_CAST:        vSet_Cast(szChrSeq);        break;
-    case SF_CASTTYPE:    vSet_CastType(szChrSeq);    break;
-    case SF_COL_NM:      vSet_Col_Nm(szChrSeq);      break;
-    case SF_COL_NM_syn:  vSet_Col_Nm_syn(szChrSeq);  break;
-    case SF_COL_NO:      vSet_Col_No(szChrSeq);      break;
-    case SF_COL_TC:      vSet_Col_Tc(szChrSeq);      break;
-    case SF_COL_TYPE:    vSet_Col_Type(szChrSeq);    break;
-    case SF_COMMA:       vSet_Comma(szChrSeq);       break;
-    case SF_CROSS:       vSet_Cross(szChrSeq);       break;
-    case SF_DCM_LIT:     vSet_Dcm_Lit(szChrSeq);     break;
-    case SF_DIRECTION:   vSet_Direction(szChrSeq);   break;
-    case SF_ELSE:        vSet_Else(szChrSeq);        break;
-    case SF_ENDIF:       vSet_EndIf(szChrSeq);       break;
-    case SF_FLD_NM:      vSet_Fld_Nm(szChrSeq);      break;
-    case SF_FLT_LIT:     vSet_Flt_Lit(szChrSeq);     break;
-    case SF_GROUPBY:     vSet_GroupBy(szChrSeq);     break;
-    case SF_IDX_COL:     vSet_Idx_Col(szChrSeq);     break;
-    case SF_IDX_NM:      vSet_Idx_Nm(szChrSeq);      break;
-    case SF_INT_LIT:     vSet_Int_Lit(szChrSeq);     break;
-    case SF_IVL_FN:      vSet_Ivl_Fn(szChrSeq);      break;
-    case SF_INTERVAL_DT: vSet_Interval_DT(szChrSeq); break;
-    case SF_INTERVAL_YM: vSet_Interval_YM(szChrSeq); break;
-    case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
-    case SF_NEGATE:      vSet_Negate(szChrSeq);      break;
-    case SF_NOTE:        vSet_Note(szChrSeq);        break;
-    case SF_NULL:        vSet_Null(szChrSeq);        break;
-    case SF_MTH_OP:      vSet_Mth_Op(szChrSeq);      break;
-    case SF_PARENTHESIS: vSet_Parenthesis(szChrSeq); break;
-    case SF_PPE_NM:      vSet_Ppe_Nm(szChrSeq);      break;
-    case SF_PRM_COL:     vSet_Prm_Col(szChrSeq);     break;
-    case SF_RLN_OP:      vSet_Rln_Op(szChrSeq);      break;
-    case SF_SQY_OP:      vSet_Sqy_Op(szChrSeq);      break;
-    case SF_STG_CAST:    vSet_Stg_Cast(szChrSeq);    break;
-    case SF_STR_FN:      vSet_Str_Fn(szChrSeq);      break;
-    case SF_STR_LIT:     vSet_String(szChrSeq);      break;
-    case SF_TBL_NM:      vSet_Tbl_Nm(szChrSeq);      break;
-    case SF_TBL_SYN:     vSet_Tbl_Syn(szChrSeq);     break;
-    case SF_THEN:        vSet_Then(szChrSeq);        break;
-    case SF_TYPE:        vSet_Type(szChrSeq);        break;
-    case SF_WHEN:        vSet_When(szChrSeq);        break;
-    case SF_XK_CAST:     vSet_Xk_Cast(szChrSeq);     break;
-    case SF_XRF_NO:      vSet_Xrf_No(szChrSeq);      break;
-
-    default: NEVER_REACH;
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
