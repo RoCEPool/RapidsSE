@@ -553,7 +553,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
-  pCard_dup->pSymbol()->vSym(pSymbol());
+  pCard_dup->pSymbol()->vSymbol(pSymbol());
 
   return pCard_dup;
 }
@@ -566,7 +566,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
-  pCard_dup->pSymbol()->vSymPpy(pSymbol());
+  pCard_dup->pSymbol()->vSymbolPpy(pSymbol());
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1509,7 +1509,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
     if (! pCard->bSameSymbol(pSymbol))
       return C_CONTINUE_RECURSION;
 
-    pCard->m_xSymbol.vSymPpy(pWith);
+    pCard->m_xSymbol.vSymbolPpy(pWith);
 
     bReplaced = true;
 

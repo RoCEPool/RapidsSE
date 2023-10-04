@@ -81,7 +81,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     Symbol* pSym_expr_x = p_expr_key->pFirstStmCol();
     Card_Expr* p_expr_prj = p_projection_sort->pDecodeExpr(pSym_expr_x);
 
-    p_expr_prj->pGetTerm(0)->pSymbol()->vSym(p_expr_key->pSymbol());
+    p_expr_prj->pGetTerm(0)->pSymbol()->vSymbol(p_expr_key->pSymbol());
   }
 
   pCI->G.p_stream->vAppendChild(p_projection_sort);

@@ -62,7 +62,7 @@ Card_Injected* Card_Injected::pNew_injected(CardIter* pCI)
 
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol(SF_COL_NO,i_Col+1);
-    p_expr->pSymbol()->vSym(&xSymbol);
+    p_expr->pSymbol()->vSymbol(&xSymbol);
     p_injected->vAppendChild(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();

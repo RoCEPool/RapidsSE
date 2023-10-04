@@ -630,7 +630,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   Symbol xExprNo(SF_COL_NO,i_Expr + 1);
 
   Card_Expr* p_expr_reduced = new Card_Expr;
-  p_expr_reduced->pSymbol()->vSym(&xExprNo);
+  p_expr_reduced->pSymbol()->vSymbol(&xExprNo);
   p_expr_reduced->vColType(this);
 
   bool bIs_SQCRLKEY = false;

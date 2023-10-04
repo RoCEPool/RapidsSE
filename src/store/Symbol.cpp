@@ -2543,7 +2543,7 @@ void Symbol::vSym(eSF eFacet, Stz* szChrSeq)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(Symbol* pSymbol)
+void Symbol::vSymbol(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2567,7 +2567,7 @@ void Symbol::vSym(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSymPpy(Symbol* pSymbol)
+void Symbol::vSymbolPpy(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

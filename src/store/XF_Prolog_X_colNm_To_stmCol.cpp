@@ -107,7 +107,7 @@ void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
     if (Card_Expr* p_expr_found =
         pCI->Prior.m_pProjection->pFind_expr_By_as(p_term_colNm->pSymbol())) {
       //p_expr_found->vDump(__func__);
-      p_term_colNm->pSymbol()->vSymPpy(p_expr_found->pSymbol());
+      p_term_colNm->pSymbol()->vSymbolPpy(p_expr_found->pSymbol());
       if (Symbol* pSymbol_found = p_expr_found->pFirstTblCol()) {
         pSymbol_found->vDump();
         p_term_colNm->pSymbol()->Y_vSet(P_TblCol, pSymbol_found->szSF_symbol(SF_NONE));

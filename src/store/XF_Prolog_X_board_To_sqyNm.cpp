@@ -80,7 +80,7 @@ void XF_Prolog_X_board_To_sqyNm::vProlog(void)
     i8 iSqyNo = StrLib::iGleanInt(p_card->szSymbol(SF_NONE)->azChar());
 
     Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
-    p_card->pSymbol()->vSym(&xSymbol_sqyNm);
+    p_card->pSymbol()->vSymbol(&xSymbol_sqyNm);
 
     return C_CONTINUE_RECURSION;
   };

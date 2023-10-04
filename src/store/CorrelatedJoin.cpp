@@ -459,7 +459,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
         if (xKid.pChild()->pSymbol()->bIs_Sqy_Prm()) {
 
           Symbol x_Symbol_stmCol1(SF_COL_NO,1);
-          xKid.pChild()->pSymbol()->vSym(&x_Symbol_stmCol1);  // TODO: hack!!
+          xKid.pChild()->pSymbol()->vSymbol(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
               pCI->Prior.m_pProjection->pGetExpr(0);

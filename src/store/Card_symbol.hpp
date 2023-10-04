@@ -61,7 +61,7 @@ CARD* Card_symbol<CARD>::SYM(Symbol xSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vSym(&xSymbol);
+  m_xSymbol.vSymbol(&xSymbol);
 
   return (CARD*)this;
 }
@@ -74,7 +74,7 @@ CARD* Card_symbol<CARD>::SYM(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vSym(pSymbol);
+  m_xSymbol.vSymbol(pSymbol);
 
   return (CARD*)this;
 }
@@ -87,7 +87,7 @@ CARD* Card_symbol<CARD>::SYMPPY(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.vSymPpy(pSymbol);
+  m_xSymbol.vSymbolPpy(pSymbol);
 
   return (CARD*)this;
 }
