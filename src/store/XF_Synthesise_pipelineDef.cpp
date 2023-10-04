@@ -644,13 +644,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   auto bfAddDescriptors = [pColPpg, p_projection](Card *pCard_expr_a) {
 
-    UNUSED(pColPpg);
-    UNUSED(p_projection);
-
     Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
 
-    p_expr_a->vDump(__func__);
-    p_projection->vDump(__func__);
+    //p_expr_a->vDump(__func__);
+    //p_projection->vDump(__func__);
     vDebugPoint();
 
     Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
@@ -658,7 +655,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         p_projection->pFind_expr_Of_symbol(pSym_stmCol_a);
 
     if (p_expr_p) {
-      p_expr_p->vDump(__func__);
+      //p_expr_p->vDump(__func__);
       pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
                     p_expr_p->pSymbol()->iSF_ordinal() - 1,
                     p_expr_p->szSymbol(SF_NONE),
@@ -667,34 +664,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     }
 
     return C_CONTINUE_RECURSION;
-//    pCard_expr_a->vDump(__func__ );
-//    // arriving related
-//    Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
-//    Card_As*      p_as_a = p_expr_a->pSub_as();
-//    Symbol*    pSym_as_a = p_as_a->pSymbol();
-//    i8           i_col_a = pSym_as_a->iSF_ordinal();
-//    Stz*      szStmCol_a = p_expr_a->pFirstStmCol()->szSF_symbol(SF_NONE);
-//
-//    // projected related
-//    Kid xKid(p_projection);
-//    for (;;) {
-//      Card_Expr *p_expr_p =
-//          p_projection->pFind_expr_Of_symbol(szStmCol_a);
-//      if (! p_expr_p)
-//        return C_CONTINUE_RECURSION;
-//
-//      // assemble descriptor
-//      Card_As *p_as_p   = p_expr_p->pSub_as();
-//      Symbol *pSym_as_p = p_as_p->pSymbol();
-//      Stz *szSym_as_p   = pSym_as_p->szSF_symbol(SF_NONE);
-//      Stz *szTblCol_p   = p_expr_p->pFirstStmCol()->Y_szGet(P_TblCol);
-//      i8        i_Col_p = pSym_as_p->iSF_ordinal();
-//
-//      pColPpg->vAdd(i_col_a,i_Col_p,
-//                    szSym_as_p, szStmCol_a, szTblCol_p);
-//
-//    }
-//    NEVER_REACH
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
