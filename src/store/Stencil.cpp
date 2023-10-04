@@ -534,10 +534,19 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
 	// get the colInj
-	ColInj* pColsInj = pOpDef->m_pColInj;
+	ColInj* pColInj = pOpDef->m_pColInj;
+
+	// get the colPpg
+	ColPpg* pColPpg = pOpDef->m_pColPpg;
 
 	// get the index
   Index* pIndex = pOpDef->m_pIndex_indexJoin;
+
+	RASSERT(pStreamDefOut->nColumns() ==
+	  (pColInj ? pColInj->m_nCols : 0)
+	  +
+	  (pColPpg ? pColPpg->m_nPropagated : 0)
+	);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
@@ -558,8 +567,13 @@ OpSketch* Stencil::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   sLabelOuterLoop = m_sLabelLoop;
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
 
-	// copy the colsInj
-	pOpSketch->vCopyColsInj(pColsInj);
+	// copy the colPpg
+	if (pColPpg)
+	  pOpSketch->vCopyColPpg(pColPpg);
+
+	// copy the colInj
+	if (pColInj)
+	  pOpSketch->vCopyColInj(pColInj);
 
   // set the indexDef
   pOpSketch->vTable(pTable);
@@ -607,7 +621,16 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
 	StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
 	// get the colInj
-	ColInj* pColsInj = pOpDef->m_pColInj;
+	ColInj* pColInj = pOpDef->m_pColInj;
+
+	// get the colPpg
+	ColPpg* pColPpg = pOpDef->m_pColPpg;
+
+	RASSERT(pStreamDefOut->nColumns() ==
+		(pColInj ? pColInj->m_nCols : 0)
+		+
+		(pColPpg ? pColPpg->m_nPropagated : 0)
+	);
 
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
@@ -625,7 +648,9 @@ OpSketch* Stencil::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
 	// copy the colsInj
-	pOpSketch->vCopyColsInj(pColsInj);
+	pOpSketch->vCopyColInj(pColInj);
+
+	RASSERT(pStreamDefOut->nColumns() == pColInj->m_nCols);
 
   // set the table
   pOpSketch->vTable(pIndex->pTable());
@@ -661,7 +686,7 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
 	StreamDef *pStreamDefLft = nullptr; //pOpDef->m_pStreamDef_arriving;
 
 	// get the colInj
-	ColInj* pColsInj = pOpDef->m_pColInj;
+	ColInj* pColInj = pOpDef->m_pColInj;
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(pStageDef, i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);
@@ -676,8 +701,9 @@ OpSketch* Stencil::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
-  // copy the colsInj
-  pOpSketch->vCopyColsInj(pColsInj);
+	// copy colInj
+	if (pColInj)
+		pOpSketch->vCopyColInj(pColInj);
 
   return pOpSketch;
 }

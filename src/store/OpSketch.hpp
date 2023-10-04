@@ -63,9 +63,11 @@ namespace STORE
     Index*     m_pIndex;
     IndexDef*  m_pIndexDef;
 
-		ColInj*    m_pColsInj;
-    ColMap*    m_pColMap;
 		ColHsh*    m_pColHsh;
+		ColInj*    m_pColInj;
+    ColMap*    m_pColMap;
+		ColPpg*    m_pColPpg;
+
 
     // stencils
     eSR m_eStencilFrom;
@@ -115,9 +117,11 @@ namespace STORE
 
    ~OpSketch(void) noexcept(false);
 
-		void vCopyColsInj(ColInj* pColsInj);
-    void vCopyColMap(ColMap* pColMap);
 		void vCopyColHsh(ColHsh* pColHsh);
+		void vCopyColInj(ColInj* pColsInj);
+    void vCopyColMap(ColMap* pColMap);
+		void vCopyColPpg(ColPpg* pColPpg);
+
     void vCopyInitStack(TypedStack* pInitStack);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);

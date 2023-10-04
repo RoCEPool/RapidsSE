@@ -441,8 +441,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 					vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
           vAppendCodeFragment(pOpSketch, "vIndexJoinCrossPosition"_Stz, pOperatorFile);
-          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-					//vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
+          vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // dereference the join
@@ -474,8 +473,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 					vAppendCodeFragment(pOpSketch, "vExprStack"_Stz);
 
           vAppendCodeFragment(pOpSketch, "vIndexLeftOuterJoinPosition"_Stz, pOperatorFile);
-					vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-          //vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
+					vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // dereference the join
@@ -493,8 +491,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
           }
 
 					vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
-					vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-					//vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
+					vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
 
 					vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
 					vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
@@ -514,8 +511,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // position the index
           vAppendCodeFragment(pOpSketch, "vIndexJoinPosition"_Stz, pOperatorFile);
-					vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-					//vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
+					vAppendCodePpgCols(pOpSketch, "vCopyVchCol"_Stz);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // dereference the join
@@ -867,11 +863,14 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 	Column* pColumn;
 	i8 i_StreamLeftCol = 0;
 
-	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColsInj->m_nCols; i_Col++) {
+	if ( ! pOpSketch->m_pColInj )
+		return;
+
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColInj->m_nCols; i_Col++) {
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// skip columns not required
-		while (i_StreamLeftCol < pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_CrwCol) {
+		while (i_StreamLeftCol < pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
 			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamLeftCol);
 
 			sCode = ""_Stz;
@@ -887,12 +886,12 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// inflate columns required
-		if (i_StreamLeftCol == pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_CrwCol) {
+		if (i_StreamLeftCol == pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
 			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamLeftCol);
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
-			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_StructCell);
+			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColInj->m_axCol[i_Col].m_i_StructCell);
 			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, i_StreamLeftCol, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
 			RASSERT(bExtracted);
 			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
@@ -916,11 +915,11 @@ void CombinedSrc::vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* sReturnPre
 	Column* pColumn;
 	i8 i_StreamRightCol = 0;
 
-	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColsInj->m_nCols; i_Col++) {
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColInj->m_nCols; i_Col++) {
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// skip columns not required
-		while (i_StreamRightCol < pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_CrwCol) {
+		while (i_StreamRightCol < pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
 			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamRightCol);
 
 			sCode = ""_Stz;
@@ -936,12 +935,12 @@ void CombinedSrc::vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* sReturnPre
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// inflate columns required
-		if (i_StreamRightCol == pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_CrwCol) {
+		if (i_StreamRightCol == pOpSketch->m_pColInj->m_axCol[i_Col].m_i_CrwCol) {
 			sReturnToColumn.vSprint("%s%lld"_Stz, sReturnPrefix, i_StreamRightCol);
 
 			sCode = ""_Stz;
 			pOperatorFile->vSeekStart();
-			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_StructCell);
+			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColInj->m_axCol[i_Col].m_i_StructCell);
 			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
 			RASSERT(bExtracted);
 			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
@@ -1291,12 +1290,8 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 
     switch (pColumn->eColumnType()) {
 
-      case CT_VARCHAR:
-
-        if (pOpSketch->m_eStencilTo == SR_TO)
-          vAppendCodeFragment(pOpSketch, "vPotTubVchCol"_Stz, pColumn);
-        else
-          vAppendCodeFragment(pOpSketch, szFunction, pColumn);
+			case CT_VARCHAR:
+        vAppendCodeFragment(pOpSketch, szFunction, pColumn);
         break;
 
       default:
@@ -1309,16 +1304,19 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 /*----------------------------------------------------------------------------*/
 /* append code fragment for copying propagated columns                        */
 /*----------------------------------------------------------------------------*/
-/*
 void CombinedSrc::vAppendCodePpgCols(OpSketch* pOpSketch, Stz* szFunction)
 {
 	_precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
-	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColsPpg->m_nCols; i_Col++) {
+	if ( ! pOpSketch->m_pColPpg ) {
+		return;
+	}
+
+	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColPpg->m_nPropagated; i_Col++) {
 
 		m_pCommonCode->vSeekStart();
 
-		Column* pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColsPpg->m_axCol[i_Col].m_i_StructCell);
+		Column* pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColPpg->m_axCol[i_Col].m_i_StructCell);
 
 		switch (pColumn->eColumnType()) {
 
@@ -1332,7 +1330,6 @@ void CombinedSrc::vAppendCodePpgCols(OpSketch* pOpSketch, Stz* szFunction)
 		}
 	}
 }
-*/
 
 /*----------------------------------------------------------------------------*/
 /* append code fragment for copying columns                                   */
@@ -1592,15 +1589,16 @@ void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
 
 }
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /* append code fragment for copying columns                                   */
 /*----------------------------------------------------------------------------*/
 void CombinedSrc::vAppendCodeNullRightCols(OpSketch* pOpSketch, Stz* szFunction)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
-  for (i8 i_Col = 0; i_Col < pOpSketch->m_pColsInj->m_nCols; i_Col++) {
+  for (i8 i_Col = 0; i_Col < pOpSketch->m_pColInj->m_nCols; i_Col++) {
     m_pCommonCode->vSeekStart();
-    Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColsInj->m_axCol[i_Col].m_i_StructCell);
+    Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColInj->m_axCol[i_Col].m_i_StructCell);
     vAppendCodeFragment(pOpSketch, szFunction, pColumn);
   }
 

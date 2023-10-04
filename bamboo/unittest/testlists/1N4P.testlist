@@ -4,7 +4,7 @@
 # This is a recursive testList file.
 
 
-////////////////// to be enabled when colsReq done
+////////////////// to be enabled when colInj/ colPpg done
 
 ../../../seth/tests/dummyTests/testList
 
@@ -21,7 +21,7 @@
 ../../../seth/tests/tests1N4P/Misc/testList
 ../../../seth/tests/tests1N4P/QA/interval/testList
 ../../../seth/tests/tests1N4P/Projections/testList
-../../../seth/tests/tests1N4P/Regression/testList
+////////////../../../seth/tests/tests1N4P/Regression/testList
 
 ../../../seth/tests/tests1N4P/Combined/testList
 

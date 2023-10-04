@@ -83,9 +83,10 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pIndex        = nullptr;
   m_pIndexDef     = nullptr;
 
-  m_pColsInj      = nullptr;
-  m_pColMap       = nullptr;
 	m_pColHsh       = nullptr;
+  m_pColInj       = nullptr;
+  m_pColMap       = nullptr;
+	m_pColPpg       = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
@@ -150,9 +151,11 @@ OpSketch::~OpSketch(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  delete m_pColsInj;
-  delete m_pColMap;
 	delete m_pColHsh;
+  delete m_pColInj;
+  delete m_pColMap;
+	delete m_pColPpg;
+
   delete m_pConstraintStack;
   delete m_pExprStack;
   delete m_pInitStack;
@@ -211,19 +214,36 @@ void OpSketch::vCopyColHsh(ColHsh* pColHsh)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy columns required                                                      */
+/* copy columns injected                                                      */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vCopyColsInj(ColInj* pColsInj)
+void OpSketch::vCopyColInj(ColInj* pColsInj)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-	m_pColsInj = new ColInj(pColsInj->m_nCrwCols);
+	m_pColInj = new ColInj(pColsInj->m_nCrwCols);
 
-	m_pColsInj->m_nCols = pColsInj->m_nCols;
+	m_pColInj->m_nCols = pColsInj->m_nCols;
 	for (i8 i_Col = 0; i_Col < pColsInj->m_nCols; i_Col++) {
-		m_pColsInj->m_axCol[i_Col].m_i_CrwCol = pColsInj->m_axCol[i_Col].m_i_CrwCol;
-		m_pColsInj->m_axCol[i_Col].m_i_StructCell = pColsInj->m_axCol[i_Col].m_i_StructCell;
-		m_pColsInj->m_axCol[i_Col].m_sCn_memberNm = pColsInj->m_axCol[i_Col].m_sCn_memberNm;
+		m_pColInj->m_axCol[i_Col].m_i_CrwCol = pColsInj->m_axCol[i_Col].m_i_CrwCol;
+		m_pColInj->m_axCol[i_Col].m_i_StructCell = pColsInj->m_axCol[i_Col].m_i_StructCell;
+		m_pColInj->m_axCol[i_Col].m_sCn_memberNm = pColsInj->m_axCol[i_Col].m_sCn_memberNm;
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy columns propagated                                                    */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyColPpg(ColPpg* pColPpg)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	m_pColPpg = new ColPpg(pColPpg->m_nArriving);
+
+	m_pColPpg->m_nPropagated = pColPpg->m_nPropagated;
+	for (i8 i_Col = 0; i_Col < pColPpg->m_nPropagated; i_Col++) {
+		m_pColPpg->m_axCol[i_Col].m_i_CellIn = pColPpg->m_axCol[i_Col].m_i_CellIn;
+		m_pColPpg->m_axCol[i_Col].m_i_StructCell = pColPpg->m_axCol[i_Col].m_i_StructCell;
+		m_pColPpg->m_axCol[i_Col].m_sCn_memberNm = pColPpg->m_axCol[i_Col].m_sCn_memberNm;
 	}
 }
 
