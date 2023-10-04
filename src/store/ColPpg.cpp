@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ColPpg.cpp -- Columns Required Metadata                                */
+/* ColPpg.cpp -- Columns Propagated Metadata                                  */
 /*============================================================================*/
 
 #include "ColPpg.hpp"
@@ -25,10 +25,8 @@ ColPpg::ColPpg(i8 nCrwCols)
   m_nCrwCols = nCrwCols;
 
   for (i8 i_Col = 0; i_Col < C_COLPPG; i_Col++) {
-    m_axCol[i_Col].m_i_CrwCol     = C_UNKNOWN;
-    m_axCol[i_Col].m_i_StructCell = C_UNKNOWN;
-    m_axCol[i_Col].m_bPriorCrwCol = false;
-
+    m_axCol[i_Col].m_i_CellIn  = C_UNKNOWN;
+    m_axCol[i_Col].m_i_CellOut = C_UNKNOWN;
   }
   m_nCols = 0;
 
@@ -55,19 +53,18 @@ ColPpg::~ColPpg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add injection of crwCol to structCol                                       */
+/* add propagated column                                                      */
 /*----------------------------------------------------------------------------*/
-void ColPpg::vAdd(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
+void ColPpg::vAdd(i8 i_CellIn, i8 i_CellOut, Stz* szCn_memberNm,
                   Stz* szNote1, Stz* szNote2)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLPPG, _FOOTER_);
 
-  m_axCol[m_nCols].m_i_CrwCol     = i_CrwCol;
-  m_axCol[m_nCols].m_i_StructCell = i_StructCell;
+  m_axCol[m_nCols].m_i_CellIn  = i_CellIn;
+  m_axCol[m_nCols].m_i_CellOut = i_CellOut;
+
   if (szCn_memberNm)
     m_axCol[m_nCols].m_sCn_memberNm = szCn_memberNm;
-
-  m_axCol[m_nCols].m_bPriorCrwCol = false;
 
   if (szNote1)
     m_axCol[m_nCols].m_sNote1 = szNote1;
@@ -75,8 +72,6 @@ void ColPpg::vAdd(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
     m_axCol[m_nCols].m_sNote2 = szNote2;
 
   m_nCols++;
-
-  vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,29 +99,16 @@ void ColPpg::vDump(i8 i_Tab)
       sNotes = ""_Stz;
     }
 
-    vTrace("%s%sm_axCols[%lld] : m_i_CrwCol [%lld] %s-> m_i_StructCell [%lld] %s %s\n"_Stz,
+    vTrace("%s%sm_axCols[%lld] : m_i_CellIn [%lld] -> m_i_CellOut [%lld] %s %s\n"_Stz,
            Stz::szTab(i_Tab),
            Stz::szSpaces(7),
            i_Col,
 
-           m_axCol[i_Col].m_i_CrwCol,
-           m_axCol[i_Col].m_bPriorCrwCol ? "(prior) " : "",
-           m_axCol[i_Col].m_i_StructCell,
+           m_axCol[i_Col].m_i_CellIn,
+           m_axCol[i_Col].m_i_CellOut,
            m_axCol[i_Col].m_sCn_memberNm.szStz(),
            sNotes.azChar());
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* prior m_i_CrwCol is used again                                             */
-/*----------------------------------------------------------------------------*/
-void ColPpg::vRepeatsPrior(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLPPG, _FOOTER_);
-
-  RASSERT(m_nCols >= 2);
-
-  m_axCol[m_nCols - 1].m_bPriorCrwCol = true;
 }
 
 /*----------------------------------------------------------------------------*/

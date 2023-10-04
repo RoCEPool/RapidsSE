@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ColPpg.hpp -- Columns Required Metadata                                */
+/* ColPpg.hpp -- Columns Propagated Metadata                                  */
 /*============================================================================*/
 #pragma once
 
@@ -17,11 +17,10 @@ namespace STORE
     i8 m_nCols;
 
     struct {
-      i8   m_i_CrwCol;     // column of compact row (base 0)
-      i8   m_i_StructCell; // cell of struct (base 0)
-      s32  m_sCn_memberNm; // member name
+      i8   m_i_CellIn;     // in cell of struct (base 0)
+      i8   m_i_CellOut;    // out cell of struct (base 0)
 
-      bool m_bPriorCrwCol; // is same m_i_CrwCol as prior
+      s32  m_sCn_memberNm; // member name
 
       s32  m_sNote1;       // note
       s32  m_sNote2;       // note
@@ -39,12 +38,10 @@ namespace STORE
 
    ~ColPpg(void) noexcept(false);
 
-    void vAdd(i8 i_CrwCol, i8 i_StructCell, Stz* szCn_memberNm,
+    void vAdd(i8 i_CellIn, i8 i_CellOut, Stz* szCn_memberNm,
               Stz* szNote1= nullptr, Stz* szNote2= nullptr);
 
     void vDump(i8 i_Tab=0);
-
-    void vRepeatsPrior(void);
 
     void vValidate(void);
 
