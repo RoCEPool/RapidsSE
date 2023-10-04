@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* _ray147                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA
+
+// Backend/indexJoin.test (line 518)
+
+/*
+
+// NOTE:
+  In Stage S02 ColPpg is incorrect:
+  : ColPpg 0x204831d20040
+               nArriving 2
+               m_axCol[0] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($1 $1)
+               m_axCol[1] : m_i_CellIn [3] -> m_i_StructCell [5] $6 ($4 $6)
+
+  should be:
+  : ColPpg 0x204831d20040
+               nArriving 2
+               m_axCol[0] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($1 $1)
+               m_axCol[1] : m_i_CellIn [3] -> m_i_StructCell [1] $2 ($4 $6)
+
+
+*/
+
+/pipeline_def
+/weaved
+/optimise_passthru
+/pipelineName = "_ray147"
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan customer
+    | filter "type boolean $4 4 >= "
+    | project "type integer $1 , type integer $4 "
+    | combined 0
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+/*
+contains rows :
+  (148,11,1498,148,'F',*,*,*,*,*,*)
+  (148,11,1348,148,'O',*,*,*,*,*,*)
+  (148,11,1198,148,'F',*,*,*,*,*,*)
+  (148,11,1048,148,'O',*,*,*,*,*,*)
+  (148,11,898,148,'F',*,*,*,*,*,*)
+  (148,11,748,148,'O',*,*,*,*,*,*)
+  (148,11,598,148,'F',*,*,*,*,*,*)
+  (148,11,448,148,'F',*,*,*,*,*,*)
+  (148,11,298,148,'O',*,*,*,*,*,*)
+  (148,11,148,148,'O',*,*,*,*,*,*)
+*/
+
+_tpchDrop
