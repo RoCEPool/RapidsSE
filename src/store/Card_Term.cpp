@@ -297,7 +297,7 @@ void Card_Term::vConvert_stmOdn_To_colOdn(CardIter* pCI)
       vMark1(MARK_CHANGED);
     }
     else {
-      eSF eSymbol = pSymbol->eSymbol();
+      eSF eSymbol = pSymbol->eFacet();
       switch (eSymbol) {
         case SF_COL_NO:
           break;

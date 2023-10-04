@@ -1781,7 +1781,7 @@ void Card::vCoord(void)
   StrLib::vConcat(md_Coord,sizeof(md_Coord), szSymbol(SF_NONE)->azChar());
 
   StrLib::vConcat(md_Coord,sizeof(md_Coord), " ");
-  StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eSymbol()]->azChar());
+  StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eFacet()]->azChar());
 
   //  vTrace("%s\n"_Stz,md_Coord);
 }

@@ -3,12 +3,6 @@
 /*============================================================================*/
 
 #include "Card.hpp"
-#include "CardCtl.hpp"
-#include "Board.hpp"
-#include "CardIter.hpp"
-
-#include "Card_Index.hpp"  // TODO: remove
-#include "Index.hpp"       // TODO: remove
 
 #include "SketchTkn.hpp"
 
@@ -1192,47 +1186,9 @@ void Symbol::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column type                                                            */
-/*----------------------------------------------------------------------------*/
-eCT Symbol::Y_eColType(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Stz* szType = Y_szColType();
-  if (! szType)
-    return CT_NONE;
-
-  eCT eColumnType = eTo_eCT_char(szType);
-
-  return eColumnType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::Y_szColType(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Stz* sz = Y_szGet(P_Type);
-
-  return sz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol:: Y_vColType(Stz* szColType)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Y_vSet(P_Type,szColType);
-}
-
-/*----------------------------------------------------------------------------*/
 /* return symbol form                                                         */
 /*----------------------------------------------------------------------------*/
-eSF Symbol::eSymbol(void)
+eSF Symbol::eFacet(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2762,6 +2718,44 @@ Stz* Symbol::szWhatIs(void)
   if (bIs_Sqy_Rsl())      return "SubQueryColumn"_Stz;
 
   return "??WhatIs"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column type                                                            */
+/*----------------------------------------------------------------------------*/
+eCT Symbol::Y_eColType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Stz* szType = Y_szColType();
+  if (! szType)
+    return CT_NONE;
+
+  eCT eColumnType = eTo_eCT_char(szType);
+
+  return eColumnType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::Y_szColType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Stz* sz = Y_szGet(P_Type);
+
+  return sz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol:: Y_vColType(Stz* szColType)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Y_vSet(P_Type,szColType);
 }
 
 

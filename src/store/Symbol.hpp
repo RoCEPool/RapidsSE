@@ -111,11 +111,10 @@ namespace STORE
 
     // - - - - - -
 
-    eSF  eSymbol(void);
-
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
+    eSF  eFacet(void);
     bool bFormIs(eSF eSymbol);
 
     bool bHasSymbol(void);
