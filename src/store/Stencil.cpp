@@ -168,7 +168,6 @@ eEC Stencil::eSynthesise(StageDef *pStageDef)
 	bool bGeneratePot = false;
 	bool bPayload = false;
 
-	s256 sHashExpr = ""_Stz;
 	s256 sLimitExpr = ""_Stz;
 
 	OpSketch *pOpSketch = nullptr;

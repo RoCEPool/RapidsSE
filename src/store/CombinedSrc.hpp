@@ -60,6 +60,7 @@ namespace STORE {
     void vAppendCodeFragmentPL(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
     void vAppendCodeFragmentKEY(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyColumn);
 		void vAppendCodePLToHashCols(OpSketch* pOpSketch);
+		void vAppendCodePpgCols(OpSketch* pOpSketch, Stz* szFunction);
 		void vAppendCodeHashCols(OpSketch* pOpSketch);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
     void vAppendCodeInflateInjCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
