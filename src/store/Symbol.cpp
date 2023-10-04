@@ -42,7 +42,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vSym(eFacet, iInt);
+  vFacet(eFacet, iInt);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -60,7 +60,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vSym(eFacet, szChrSeq);
+  vFacet(eFacet, szChrSeq);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -2385,9 +2385,9 @@ char Symbol::cSF_char(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
+/* get facet                                                                 */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(eSF eFacet)
+void Symbol::vFacet(eSF eFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2403,7 +2403,7 @@ void Symbol::vSym(eSF eFacet)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(eSF eFacet, char cChr)
+void Symbol::vFacet(eSF eFacet, char cChr)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2419,7 +2419,7 @@ void Symbol::vSym(eSF eFacet, char cChr)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(eSF eFacet, char cChr, i8 iInt)
+void Symbol::vFacet(eSF eFacet, char cChr, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2435,7 +2435,7 @@ void Symbol::vSym(eSF eFacet, char cChr, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(eSF eFacet, i8 iInt)
+void Symbol::vFacet(eSF eFacet, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2461,7 +2461,7 @@ void Symbol::vSym(eSF eFacet, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(eSF eFacet, i8 iInt, Symbol* pSymbol)
+void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -2477,7 +2477,7 @@ void Symbol::vSym(eSF eFacet, i8 iInt, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSym(eSF eFacet, Stz* szChrSeq)
+void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

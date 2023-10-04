@@ -200,12 +200,12 @@ namespace STORE
     Stz* szSF_symbol(eSF eSymbol_xchk);
     char cSF_tblSyn(void);
 
-    void vSym(eSF eFacet);
-    void vSym(eSF eFacet, char cChr);
-    void vSym(eSF eFacet, char cChr, i8 iInt);
-    void vSym(eSF eFacet, i8 iInt);
-    void vSym(eSF eFacet, i8 iInt, Symbol* pSymbol);
-    void vSym(eSF eFacet, Stz* szChrSeq);
+    void vFacet(eSF eFacet);
+    void vFacet(eSF eFacet, char cChr);
+    void vFacet(eSF eFacet, char cChr, i8 iInt);
+    void vFacet(eSF eFacet, i8 iInt);
+    void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
+    void vFacet(eSF eFacet, Stz* szChrSeq);
     void vSymbol(Symbol* pSymbol);
     void vSymbolPpy(Symbol* pSymbol);
 

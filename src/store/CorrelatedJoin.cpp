@@ -480,7 +480,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol(SF_NONE);
           RASSERT(Symbol::bIs_Col_Tc(szProjectedCol));
-          xKid.pChild()->pSymbol()->vSym(SF_COL_TC,szProjectedCol);  // TODO: hack!!
+          xKid.pChild()->pSymbol()->vFacet(SF_COL_TC,szProjectedCol);  // TODO: hack!!
 
           DELETE_CARD(p_term);
         }

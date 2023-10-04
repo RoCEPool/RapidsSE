@@ -82,13 +82,13 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     else
     if (Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pCI->pAncestorFind(CK_BOOLCALC))) {
       i8 iItemise = p_boolCalc->iItemise();
-      p_term->pSymbol()->vSym(SF_COL_NM_dis, iItemise);
+      p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
       return C_CONTINUE_RECURSION;
     }
     else
     if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
       i8 iItemise = p_rpnCalc->iItemise();
-      p_term->pSymbol()->vSym(SF_COL_NM_dis, iItemise);
+      p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
       return C_CONTINUE_RECURSION;
     }
 
@@ -200,7 +200,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   if (pCI->Prior.m_pProjection) {
 
     if (Card_Expr *p_expr_col = pCI->Prior.m_pProjection->pFind_expr_Of_symbol(pSymbol_term)) {
-      pSymbol_term->vSym(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
+      pSymbol_term->vFacet(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
       vMark1(MARK_CHANGED);
       return;
     }
@@ -211,7 +211,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
         RASSERT(pSymbol_key->bIs_Key_Col());
 
         if (Card_Expr *p_expr_col_ind = pCI->Prior.m_pProjection->pFind_expr_Of_symbol(pSymbol_key)) {
-          pSymbol_term->vSym(SF_COL_NO, p_expr_col_ind->szSymbol(SF_NONE));
+          pSymbol_term->vFacet(SF_COL_NO, p_expr_col_ind->szSymbol(SF_NONE));
           vMark1(MARK_CHANGED);
           return;
         }
@@ -221,7 +221,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
     if (pCI->G.p_OP->bIsCard(CK_INDEXJOIN)) {
       if ((pCI->G.p_arriving = pCI->G.p_OP->pSub_arriving())) {
         if (Card_Expr *p_expr_col = pCI->G.p_arriving->pFind_expr_Of_symbol(pSymbol_term)) {
-          pSymbol_term->vSym(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
+          pSymbol_term->vFacet(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
           vMark1(MARK_CHANGED);
           return;
         }

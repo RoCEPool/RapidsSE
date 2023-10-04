@@ -66,7 +66,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     i8 iItemise = p_expr->iItemise();
-    p_as->pSymbol()->vSym(SF_AS_NM_itm,iItemise);
+    p_as->pSymbol()->vFacet(SF_AS_NM_itm,iItemise);
 
     return C_CONTINUE_RECURSION;
   };
