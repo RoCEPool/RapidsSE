@@ -1281,7 +1281,7 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets,
 TypeId Expr::xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMaxCount)
 {
   i8 iNumAtMaxCount = 0;
-  i8 iCommonTarget;
+  i8 iCommonTarget = -1;
 
   // First check to see how many data types have a count of iMaxCount.
   // If there is only one then that's our answer.
