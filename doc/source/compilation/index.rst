@@ -62,7 +62,7 @@ Install an updated version of ``gcc`` for this version of CentOS:
 
 .. code:: bash
 
-   sudo yum install libuuid-devel centos-release-scl
+   sudo yum install libuuid-devel openssl-devel centos-release-scl
    sudo yum install devtoolset-10-gcc* devtoolset-10-libatomic-devel
 
 Install the necessary tools for generating the documentation:
@@ -96,7 +96,7 @@ CentOS 8 can be easily set up to compile RapidsSE with the following commands:
 
 .. code:: bash
 
-   sudo yum install git git-lfs gcc-c++ libatomic-static cmake unzip libuuid-devel nmap-ncat iproute bc ncurses parallel gawk vim-enhanced
+   sudo yum install git git-lfs gcc-c++ libatomic-static cmake openssl-devel unzip libuuid-devel nmap-ncat iproute bc ncurses parallel gawk vim-enhanced
    git lfs install
 
 Install the necessary tools for generating the documentation:
@@ -124,21 +124,21 @@ required in order to install and run RapidsSE. lease refer to the
 :ref:`RapidsSE Installation and Management Guide <instMgmt>` for details on this.
 
 
-Ubuntu 20
+Ubuntu 22
 `````````
-Ubuntu 20 can be easily set up to compile RapidsSE with the following three commands:
+Ubuntu 22 can be easily set up to compile RapidsSE with the following three commands:
 
 .. code:: bash
 
    sudo apt update
-   sudo apt install g++ git git-lfs libatomic1 cmake unzip libuuid1 uuid-dev netcat iproute2 bc parallel gawk vim
+   sudo apt install g++ git git-lfs libatomic1 cmake unzip libuuid1 uuid-dev netcat iproute2 bc parallel gawk vim libssl-dev
    git lfs install
 
 Install the necessary tools for generating the documentation:
 
 .. code:: bash
 
-   sudo yum install python3 openjdk-11-jdk-headless
+   sudo apt install python3 openjdk-11-jdk-headless
    python3 -m pip install --user -U sphinx
 
 **Optional:** install the necessary libraries for generating documentation in
@@ -147,14 +147,14 @@ tools and libraries. This requires a download of approximately **4GB**.
 
 .. code:: bash
 
-   sudo yum install perl-Digest-MD5 wget tar
+   sudo apt install libdigest-perl-md5-perl wget tar
    cd /tmp
    wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
    tar xvzf install-tl-unx.tar.gz
    cd install-tl-*
    sudo perl ./install-tl --no-interaction --no-doc-install --no-src-install -portable
 
-Ubuntu 20 should now be ready to compile RapidsSE. Other setup steps may be
+Ubuntu 22 should now be ready to compile RapidsSE. Other setup steps may be
 required in order to install and run RapidsSE. lease refer to the
 :ref:`RapidsSE Installation and Management Guide <instMgmt>` for details on this.
 
