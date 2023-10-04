@@ -634,43 +634,53 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_Arriving *p_arriving = pSubCard->pSub_arriving();
-  Card_Projection *p_projection = pSubCard->pSub_projection();
+  Card_Arriving*   p_arriving   = pSubCard->pSub_arriving();
+  Card_Projection* p_projection = pSubCard->pSub_projection();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfAddDescriptors = [this, pColPpg, p_projection](Card *pCard_expr_a) {
 
+    if (m_pStageDef->i_Stage() == 5) {
+      vDebugPoint();
+      if (m_pOpDef->i_Op() == 0)
+        vDebugPoint();
+    }
+
+    // arriving related
     Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
 
-    //p_expr_a->vDump(__func__);
-    //p_projection->vDump(__func__);
-    vDebugPoint();
+    if (p_expr_a->bIsScalarCol()) {
 
-    Kid xKid(p_projection);
-
-    Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
-    Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
-
-    Card_Expr *p_expr_p =
-        //p_projection->pFind_expr_Of_symbol(pSym_stmCol_a);
-        p_projection->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
-
-
-    if (p_expr_p) {
-      //p_expr_p->vDump(__func__);
-
-      if (m_pStageDef->i_Stage() == 1) {
-        vDebugPoint();
-        if (m_pOpDef->i_Op() == 0)
-          vDebugPoint();
-      }
+      Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
+      Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
+      Kid xKid(p_projection);
+      Card_Expr* p_expr_p =
+          p_projection->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
 
       pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
+                      p_expr_p->pSymbol()->iSF_ordinal() - 1,
+                      p_expr_p->szSymbol(SF_NONE),
+                      pSym_stmCol_a->szSF_symbol(SF_NONE),
+                      p_expr_p->pSymbol()->szSF_symbol(SF_NONE));
+
+    }
+    else {
+      Symbol*    pSym_expr_a = p_expr_a->pSymbol();
+
+      Card_Expr* p_expr_p =
+          p_projection->pDecodeExpr(pSym_expr_a);
+
+    p_projection->vDump(__func__);
+    p_expr_a->vDump(__func__);
+    p_expr_p->vDump(__func__);
+
+      pColPpg->vAdd(pSym_expr_a->iSF_ordinal() - 1,
                     p_expr_p->pSymbol()->iSF_ordinal() - 1,
                     p_expr_p->szSymbol(SF_NONE),
-                    pSym_stmCol_a->szSF_symbol(SF_NONE),
+                    pSym_expr_a->szSF_symbol(SF_NONE),
                     p_expr_p->pSymbol()->szSF_symbol(SF_NONE));
+
     }
 
     return C_CONTINUE_RECURSION;
@@ -680,6 +690,65 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
 }
+/*----------------------------------------------------------------------------*/
+//void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+//
+//  Card_Arriving *p_arriving = pSubCard->pSub_arriving();
+//  Card_Projection *p_projection = pSubCard->pSub_projection();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bfAddDescriptors = [this, pColPpg, p_projection](Card *pCard_expr_a) {
+//
+//    Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
+//    Card_Expr* p_expr_p = nullptr;
+//
+//    p_projection->vDump(__func__);
+//    p_expr_a->vDump(__func__);
+//    vDebugPoint();
+//
+//
+//    if (p_expr_a->nChildCards() > 1) {
+//      Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
+//      Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
+//      p_expr_p = p_projection->pFind_expr_Of_symbol(pSym_stmCol_a);
+//
+//
+//
+//
+//
+//    }
+//    else {
+//      Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
+//      Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
+//      Kid xKid(p_projection);
+//      p_expr_p = p_projection->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
+//
+//      if (p_expr_p) {
+//        p_expr_p->vDump(__func__);
+//
+//        if (m_pStageDef->i_Stage() == 5) {
+//          vDebugPoint();
+//          if (m_pOpDef->i_Op() == 0)
+//            vDebugPoint();
+//        }
+//
+//        pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
+//                      p_expr_p->pSymbol()->iSF_ordinal() - 1,
+//                      p_expr_p->szSymbol(SF_NONE),
+//                      pSym_stmCol_a->szSF_symbol(SF_NONE),
+//                      p_expr_p->pSymbol()->szSF_symbol(SF_NONE));
+//      }
+//    }
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
+//}
 
 /*============================================================================*/
 /* end                                                                        */

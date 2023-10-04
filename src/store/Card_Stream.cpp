@@ -43,7 +43,7 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_NONE));
+  RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_CROSSJOIN,CK_NONE));
   pCI->Next.m_pProjection = pCI->Next.m_pProject->pSub_projection();
 
   if ((pCI->G.p_projection = pCI->G.p_stream->pSub_projection()))
@@ -52,7 +52,7 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no arrived columns, only injected
 
-  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
+  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_CROSSJOIN,CK_NONE)) {
      pCI->G.p_stream->vAppendChild(pCI->Next.m_pProjection->pClone());
     return;
   }
@@ -79,7 +79,7 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_OP->bIsOne(CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_NONE));
+  RASSERT(pCI->G.p_OP->bIsOne(CK_CROSSJOIN,CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_NONE));
   //RASSERT(! pCI->G.p_projection);
 
   if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
