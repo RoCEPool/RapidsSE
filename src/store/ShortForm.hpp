@@ -22,6 +22,7 @@ namespace STORE
     i8 m_nOps;
     struct {
       i8   m_i_Stage;
+      i8   m_i_Op;
       s32  m_sStage;
       s32  m_sOp;
       s32  m_sMeta;
@@ -29,6 +30,7 @@ namespace STORE
       s256 m_sInjected;
       s4K  m_sProjection;
       s256 m_sKey;
+      s256 m_sFilter;
     } m_axOp[C_SHORTFORM];
 
   protected:

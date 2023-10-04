@@ -239,11 +239,21 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
       pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
     nCols_injectedByThisCard = 0;
+
+//    RASSERT(this->pSymbol()->bIs_Col_Tc());
+//    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
+//    return;
   }
   else
   if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
       pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
     nCols_injectedByThisCard = 0;
+
+//    nCols_injectedByThisCard = pCI->Prior.m_pProjection->nChildCards();
+
+//    RASSERT(this->pSymbol()->bIs_Col_Tc());
+//    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
+//    return;
   }
   else
   if (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
@@ -573,7 +583,6 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
                       szSymbol(SF_NONE));
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
@@ -619,12 +628,12 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
 
 
-  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
-    if (m_xSymbol.bIs_Col_Tc() && ! pCI->pAncestorFind(CK_INJECTED)) {
-      vDump(__func__);
-      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
-    }
-  }
+//  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
+//    if (m_xSymbol.bIs_Col_Tc() && ! pCI->pAncestorFind(CK_INJECTED)) {
+//      vDump(__func__);
+//      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
+//    }
+//  }
 
   vValidationPassed();
 }

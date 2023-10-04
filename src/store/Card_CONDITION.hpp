@@ -18,6 +18,7 @@ namespace STORE
    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
    void vConvert_stmOdn_To_colOdn(CardIter* pCI);
 
+    void vShortForm(String* p_string);
 
   };
 

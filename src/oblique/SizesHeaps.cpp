@@ -329,6 +329,7 @@
 #include "ColHsh.hpp"
 #include "ColInj.hpp"
 #include "ShortForm.hpp"
+#include "ColPpg.hpp"
 
 
 #include "graph/PlanConstants.hpp"
@@ -405,7 +406,8 @@ SizeHeap gxaSizeHeap[]
   {CN_COLHSH,                   sizeof(ColHsh),                   HT_T_MEDIUM  , FILL },
   {CN_COLINJ,                   sizeof(ColInj),                   HT_T_MEDIUM  , FILL },
   {CN_COLMAP,                   sizeof(ColMap),                   HT_T_MEDIUM  , FILL },
-   {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
+  {CN_COLPPG,                   sizeof(ColPpg),                   HT_T_MEDIUM  , FILL },
+  {CN_COLUMN,                   sizeof(Column),                   HT_T_TINY    , FILL },
   {CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
   {CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,     FILL },
   {CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
