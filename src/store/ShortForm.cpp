@@ -30,6 +30,7 @@ ShortForm::ShortForm(CardIter* pCI)
   m_nOps = 0;
   for (i8 i_Op = 0; i_Op < C_SHORTFORM; i_Op++) {
     m_axOp[m_nOps].m_i_Stage = C_UNKNOWN;
+    m_axOp[m_nOps].m_i_Op    = C_UNKNOWN;
   }
 
   pCI->vBeginEach();
@@ -73,6 +74,7 @@ void ShortForm::vAdd(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - -
 
   m_axOp[m_nOps].m_i_Stage = m_i_Stage_curr;
+  m_axOp[m_nOps].m_i_Op    = pCI->G.i_MainCard;
   m_axOp[m_nOps].m_sStage  = m_sStage_curr;
 
   if (pCI->G.p_MainCard->bIsCard(CK_PROJECT) &&
@@ -132,8 +134,8 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
   }
 
   s256 sFormat;
-  //                             s          o            m          b            i          p          k
-  sFormat.vSprint("%%s%%s `%%-%llds` `%%-%llds` : `%%-%llds` `%%-%llds` : `%%-%llds` `%%-%llds` `%%-%llds`\n"_Stz,
+  //                             s                  o            m          b            i          p          k
+  sFormat.vSprint("%%s%%s `%%-%llds` `%%2lld] %%-%llds` : `%%-%llds` `%%-%llds` : `%%-%llds` `%%-%llds` `%%-%llds`\n"_Stz,
                   nMax_s,
                   nMax_o,
                   nMax_m,
@@ -168,6 +170,7 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
            Stz::szSpaces(2),
 
            m_axOp[i_Op].m_sStage.azChar(),
+           m_axOp[i_Op].m_i_Op,
            m_axOp[i_Op].m_sOp.azChar(),
 
            m_axOp[i_Op].m_sMeta.azChar(),

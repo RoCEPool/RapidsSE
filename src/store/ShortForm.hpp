@@ -22,6 +22,7 @@ namespace STORE
     i8 m_nOps;
     struct {
       i8   m_i_Stage;
+      i8   m_i_Op;
       s32  m_sStage;
       s32  m_sOp;
       s32  m_sMeta;
