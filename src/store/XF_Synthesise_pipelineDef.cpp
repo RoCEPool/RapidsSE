@@ -605,7 +605,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 6) {
+  if (m_pStageDef->i_Stage() == 5) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -637,12 +637,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   Card_Arriving *p_arriving = pSubCard->pSub_arriving();
   Card_Projection *p_projection = pSubCard->pSub_projection();
 
-  UNUSED(p_arriving);
-  UNUSED(p_projection);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfAddDescriptors = [pColPpg, p_projection](Card *pCard_expr_a) {
+  auto bfAddDescriptors = [this, pColPpg, p_projection](Card *pCard_expr_a) {
 
     Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
 
@@ -650,12 +647,25 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     //p_projection->vDump(__func__);
     vDebugPoint();
 
+    Kid xKid(p_projection);
+
     Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
+    Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
+
     Card_Expr *p_expr_p =
-        p_projection->pFind_expr_Of_symbol(pSym_stmCol_a);
+        //p_projection->pFind_expr_Of_symbol(pSym_stmCol_a);
+        p_projection->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
+
 
     if (p_expr_p) {
       //p_expr_p->vDump(__func__);
+
+      if (m_pStageDef->i_Stage() == 1) {
+        vDebugPoint();
+        if (m_pOpDef->i_Op() == 0)
+          vDebugPoint();
+      }
+
       pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
                     p_expr_p->pSymbol()->iSF_ordinal() - 1,
                     p_expr_p->szSymbol(SF_NONE),

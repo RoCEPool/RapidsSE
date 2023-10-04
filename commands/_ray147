@@ -24,6 +24,7 @@ __TPCH_SCHEMA
 
 */
 
+/optimiser_trace
 /pipeline_def
 /weaved
 /optimise_passthru

@@ -11,9 +11,10 @@ __TPCH_SCHEMA
 
 */
 
+/optimiser_trace
 /weaved
 /pipeline_def
-/pipelineName = "OptQ17"
+/pipelineName = "_ray146"
 select
   sum(l_extendedprice) / 7.0 as avg_yearly
 from
