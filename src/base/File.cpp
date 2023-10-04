@@ -634,11 +634,13 @@ bool File::bNextLiteTok(Stz *szDst)
       }
     }
   }
-       
+   
+  i4 iNextChar = 0;  
   do {
     *az++ = cNextChar;
-    cNextChar = getc(m_aFile);
-  } while (' ' != cNextChar && '\n' != cNextChar && EOF != cNextChar);
+    iNextChar = getc(m_aFile);
+    cNextChar = iNextChar;
+  } while (' ' != cNextChar && '\n' != cNextChar && EOF != iNextChar);
   ungetc(cNextChar,m_aFile);
 
   *az = '\0';
