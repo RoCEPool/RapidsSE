@@ -30,6 +30,7 @@ namespace STORE
       s256 m_sInjected;
       s4K  m_sProjection;
       s256 m_sKey;
+      s256 m_sFilter;
     } m_axOp[C_SHORTFORM];
 
   protected:

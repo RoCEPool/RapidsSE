@@ -93,6 +93,12 @@ void ShortForm::vAdd(CardIter* pCI)
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key()))
     pCI->G.p_key->vShortForm(m_axOp[m_nOps].m_sKey);
 
+  if (pCI->G.p_MainCard->bIsCard(CK_FILTER))
+    pCI->G.p_filter->vShortForm(m_axOp[m_nOps].m_sFilter);
+  else
+  if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
+    pCI->G.p_filter->vShortForm(m_axOp[m_nOps].m_sFilter);
+
   m_nOps++;
 
   vValidate();
@@ -107,6 +113,7 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
   UNUSED(i_Tab);
 
   i8 nMax_b = 0;
+  i8 nMax_f = 0;
   i8 nMax_i = 0;
   i8 nMax_k = 0;
   i8 nMax_m = 0;
@@ -117,6 +124,7 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
   for (i8 i_Op = 0; i_Op < m_nOps; i_Op++) {
 
     i8 nLen_b = m_axOp[i_Op].m_sBounds.nLength();
+    i8 nLen_f = m_axOp[i_Op].m_sFilter.nLength();
     i8 nLen_i = m_axOp[i_Op].m_sInjected.nLength();
     i8 nLen_k = m_axOp[i_Op].m_sKey.nLength();
     i8 nLen_m = m_axOp[i_Op].m_sMeta.nLength();
@@ -125,6 +133,7 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
     i8 nLen_s = m_axOp[i_Op].m_sStage.nLength();
 
     if (nLen_b > nMax_b)  nMax_b = nLen_b;
+    if (nLen_f > nMax_f)  nMax_f = nLen_f;
     if (nLen_i > nMax_i)  nMax_i = nLen_i;
     if (nLen_k > nMax_k)  nMax_k = nLen_k;
     if (nLen_m > nMax_m)  nMax_m = nLen_m;
@@ -134,15 +143,16 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
   }
 
   s256 sFormat;
-  //                             s                  o            m          b            i          p          k
-  sFormat.vSprint("%%s%%s `%%-%llds` `%%2lld] %%-%llds` : `%%-%llds` `%%-%llds` : `%%-%llds` `%%-%llds` `%%-%llds`\n"_Stz,
+  //                             s                  o            m          b            i          p          k          f
+  sFormat.vSprint("%%s%%s `%%-%llds` `%%2lld] %%-%llds` : `%%-%llds` `%%-%llds` : `%%-%llds` `%%-%llds` `%%-%llds` `%%-%llds`\n"_Stz,
                   nMax_s,
                   nMax_o,
                   nMax_m,
                   nMax_b,
                   nMax_i,
                   nMax_p,
-                  nMax_k);
+                  nMax_k,
+                  nMax_f);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -155,12 +165,13 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
   for (i8 i_Op = 0; i_Op < m_nOps; i_Op++) {
 
     if (bTrim) {
-      i8 nLen =
-                m_axOp[i_Op].m_sMeta.nLength()       +
-                m_axOp[i_Op].m_sBounds.nLength()     +
-                m_axOp[i_Op].m_sInjected.nLength()   +
-                m_axOp[i_Op].m_sProjection.nLength() +
-                m_axOp[i_Op].m_sKey.nLength();
+      i8 nLen = m_axOp[i_Op].m_sMeta.nLength()
+              + m_axOp[i_Op].m_sBounds.nLength()
+              + m_axOp[i_Op].m_sInjected.nLength()
+              + m_axOp[i_Op].m_sProjection.nLength()
+              + m_axOp[i_Op].m_sKey.nLength()
+              + m_axOp[i_Op].m_sFilter.nLength()
+              ;
       if (! nLen)
         continue;
     }
@@ -178,8 +189,9 @@ void ShortForm::vDump(i8 i_Tab, bool bTrim)
 
            m_axOp[i_Op].m_sInjected.azChar(),
            m_axOp[i_Op].m_sProjection.azChar(),
-           m_axOp[i_Op].m_sKey.azChar()
-           );
+           m_axOp[i_Op].m_sKey.azChar(),
+           m_axOp[i_Op].m_sFilter.azChar()
+    );
   }
   vDebugPoint();
 }

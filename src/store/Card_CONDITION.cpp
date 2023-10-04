@@ -93,6 +93,18 @@ void Card_CONDITION::vConvert_stmOdn_To_colOdn(CardIter* pCI)
     pCI->G.p_rpnCalc->vConvert_stmOdn_To_colOdn(pCI);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_CONDITION::vShortForm(String* p_string)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vShortForm(p_string);
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

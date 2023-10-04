@@ -610,8 +610,14 @@ void Card_BoolCalc::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  UNUSED(pString);
+  if (! nChildCards())
+    return;
+
+  Card_CONJUNCTION* p_CONJUNCTION = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+
+  p_CONJUNCTION->vShortForm(pString);
 }
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/

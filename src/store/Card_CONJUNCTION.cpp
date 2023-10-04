@@ -613,6 +613,41 @@ Symbol* Card_CONJUNCTION::pTable_WhichTableFor_Pred(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* concat short form of this conjunction                                      */
+/*----------------------------------------------------------------------------*/
+void Card_CONJUNCTION::vShortForm(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(bIsOne(CK_ANDCONJ,CK_CMPCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE));
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (xKid.eChild() == CK_TERM) {
+      xKid.p_term()->vShortForm(pString, " "_Stz);
+    }
+    else {
+      xKid.p_CONJUNCTION()->vShortForm(pString);
+    }
+  }
+
+  if (bIsCard(CK_ANDCONJ)) {
+    pString->vConcat(" and"_Stz);
+  }
+  else
+  if (bIsCard(CK_CMPCONJ)) {
+    pString->vCatSprint(" %s"_Stz,szSymbol(SF_NONE));
+  }
+  else
+  if (bIsCard(CK_NOTCONJ)) {
+    pString->vConcat(" not"_Stz);
+  }
+  else
+  if (bIsCard(CK_ORCONJ)) {
+    pString->vConcat(" or"_Stz);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_CONJUNCTION::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

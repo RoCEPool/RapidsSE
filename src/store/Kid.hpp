@@ -80,6 +80,7 @@ namespace STORE
 
     Card_Bound*       p_bound(void);
     Card_CmpConj*     p_cmpPred(void);
+    Card_CONJUNCTION* p_CONJUNCTION(void);
     Card_Correlation* p_correlation(void);
     Card_Expr*        p_expr(void);
     Card_Fold*        p_fold(void);

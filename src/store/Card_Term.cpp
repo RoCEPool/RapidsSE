@@ -239,6 +239,10 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
       pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
     nCols_injectedByThisCard = 0;
+
+//    RASSERT(this->pSymbol()->bIs_Col_Tc());
+//    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
+//    return;
   }
   else
   if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
@@ -578,7 +582,6 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
   pString->vCatSprint("%s%s"_Stz,szSep,
                       szSymbol(SF_NONE));
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
