@@ -21,7 +21,7 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_nFacets = 1;
+  m_nFacets = 0;
   for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
     xaFacet[i_Facet].m_eFacet = SF_NONE;
   }
@@ -40,7 +40,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_nFacets = 1;
+  m_nFacets = 0;
   for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
     xaFacet[i_Facet].m_eFacet = SF_NONE;
   }
@@ -61,7 +61,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_nFacets = 1;
+  m_nFacets = 0;
   for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
     xaFacet[i_Facet].m_eFacet = SF_NONE;
   }
@@ -1067,7 +1067,7 @@ bool Symbol::bIs_Xrf_No(Stz* szArg)
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
 
-  if ('[' == acFirst &&
+  if ('#' == acFirst &&
       StrLib::bIsDigit(acSecond))
     return true;
   else
@@ -1249,7 +1249,10 @@ eSF Symbol::eFacet(i8 i_Facet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(i_Facet < m_nFacets);
+  //RASSERT(i_Facet < m_nFacets);
+  if (! m_nFacets)
+    return SF_NONE;
+
   return xaFacet[i_Facet].m_eFacet;
 }
 
@@ -4071,7 +4074,7 @@ void Symbol::vFacet_Xrf_No(i8 iXrefNo)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_XRF_NO,"[%lld]"_Stz, iXrefNo);
+  vFacetSprint(SF_XRF_NO,"#%lld"_Stz, iXrefNo);
 
   RASSERT(bIs_Xrf_No());
 }
@@ -4099,6 +4102,8 @@ void Symbol::vFacetPush(eSF eFacet)
 
   UNUSED(eFacet);
 
+  m_nFacets++;
+
   for (i8 i_Facet = nFacets() - 1; i_Facet >= 1; i_Facet--) {
     xaFacet[i_Facet].m_eFacet  = xaFacet[i_Facet - 1].m_eFacet;
     xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet - 1].m_sChrSeq;
@@ -4106,6 +4111,7 @@ void Symbol::vFacetPush(eSF eFacet)
 
   xaFacet[0].m_eFacet  = eFacet;
   xaFacet[0].m_sChrSeq = ""_Stz;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4142,7 +4148,6 @@ void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  xaFacet[0].m_eFacet = eFacet;
 
   s256 sSymbol;
 
@@ -4152,6 +4157,7 @@ void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
   va_end(xArgs);
 
   vFacetRotate(eFacet);
+  xaFacet[0].m_eFacet = eFacet;
   xaFacet[0].m_sChrSeq = sSymbol;
 }
 

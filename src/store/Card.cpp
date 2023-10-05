@@ -2071,6 +2071,13 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
                               szSymbol(SF_NONE));
   else
     pRibbon->vSprintSnippet(true,"  %s"_Stz, szSymbol(SF_NONE));
+
+  if (m_xSymbol.nFacets()) {
+    for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
+      Facet* aFacet = m_xSymbol.aFacet(i_Facet);
+      pRibbon->vSprintSnippet(true,"%18s~%lld"_Stz, aFacet->m_sChrSeq.azChar(),i_Facet);
+    }
+  }
 }
 
 
