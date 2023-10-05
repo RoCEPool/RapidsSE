@@ -52,7 +52,7 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no arrived columns, only injected
 
-  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_CROSSJOIN,CK_NONE)) {
+  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
      pCI->G.p_stream->vAppendChild(pCI->Next.m_pProjection->pClone());
     return;
   }
