@@ -19,7 +19,8 @@ RapidsSE currently sports the following features:
 * Deterministic & efficient non-garbage collected memory model;
 * Table partitioning across nodes;
 * Table indexes;
-* CLI (SE Shell) and (soon) programmatic (JDBC) interfaces;
+* CLI (:ref:`SE Shell <seShellInterface>`) and programmatic
+  (:ref:`JDBC <jdbcInterface`) interfaces;
 * Data unload and reload;
 * Low-memory job management
 

@@ -102,7 +102,7 @@ any of the nodes and executing: ``./prompt.sh``
 
 SE prompt does not support up-arrow command histories, cursor word/line jumping,
 or text replacement (other than simple backspacing). The SE Prompt is intended
-to be replaced by the ``rapids-shell``.
+to be replaced by the :ref:`SE Shell <seShellInterface>`.
 
 When it starts up, the SE prompt will print some internal version information
 before printing the console input marker. An example of this is shown below:

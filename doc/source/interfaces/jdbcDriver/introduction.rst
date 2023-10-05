@@ -116,7 +116,8 @@ Installation
 ------------
 
 The JDBC driver does not need any specific installation instructions. It already
-comes bundled in the installation of each RapidsSE node, for use with SE Shell.
+comes bundled in the installation of each RapidsSE node, for use with
+:ref:`SE Shell <seShellInterface>`.
 
 To use the JDBC driver in a separate client application, simply copy the JDBC
 driver JAR file to your project and ensure it is included in the Java class path

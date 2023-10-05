@@ -25,7 +25,7 @@ SE Prompt
 SE Prompt is the original mechanism for submitting commands and queries to
 RapidsSE and getting back responses. It was never intended to be a complete
 shell-like experience. Instead it is intended to be deprecated and replaced
-by the `SE Shell`_.
+by the :ref:`SE Shell <seShellInterface>`.
 
 SE Prompt is started by running the command ``./prompt.sh`` in the installation
 directory of any of the nodes in the RapidsSE cluster. SE Prompt will establish
@@ -70,9 +70,10 @@ be produced:
 
 SE Shell
 --------
-SE Shell is the future replacement for `SE Prompt`_. It will appear in a near
-future version of RapidsSE. SE Shell will offer a more user-friendly
-command line interface (CLI) experience by supporting:
+SE Shell is a command line interface (CLI) method of executing commands and viewing
+results that are formatted for human readability. SE Shell is built for the
+ad-hoc entry and execution of commands by users. It is not built to be a
+programmatic interface. SE Shell offers a more user-friendly CLI experience by supporting:
 
 * The ability to run SE Shell on a remote client computer (without having to
   install RapidsSE), connecting to RapidsSE over a socket connection.
@@ -80,10 +81,19 @@ command line interface (CLI) experience by supporting:
 * A more intuitive experience when editing commands.
 * Pretty-printing of query results for easier reading.
 
-SE Shell utilises the capabilities of the RapidsSE `JDBC Driver`_ for
+SE Shell utilises the capabilities of the RapidsSE :ref:`JDBC Driver <jdbcInterface>` for
 submitting commands and extracting results.
 
-SE Shell will be documented further once it is released.
+SE Shell is started by running ``./seShell.sh`` in the root of the RapidsSE
+installation directory. When SE Shell has started it will display the prompt
+``rapids >``. To exit the SE Shell simply enter the command ``exit;`` or
+press ``<Control>``-``<C>``. This can be seen in the example below:
+
+.. code:: console
+
+  craig@machine$ ./seshell.sh
+  rapids > exit;
+  craig@machine$
 
 Further information on interfacing to RapidsSE with SE Shell can be found
 :ref:`here <seShellInterface>`.
@@ -93,7 +103,7 @@ Further information on interfacing to RapidsSE with SE Shell can be found
 
 JDBC Driver
 -----------
-The RapidsSE JDBC Driver is a feature that will appear with `SE Shell`_ in
+The :ref:`RapidsSE JDBC Driver <jdbcInterface>` is a feature that will appear with `SE Shell`_ in
 the near future. It allows for easy programmatic access to RapidsSE from
 Java applications for submitting commands and getting results. The RapidsSE
 JDBC Driver communicates with RapidsSE over a socket connection, and it
