@@ -3080,7 +3080,7 @@ void Symbol::vFacet_Agg_Fn(Stz* szAggFn)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_AGG_FN,szAggFn);
+  vFacetSprint(SF_AGG_FN,"%s"_Stz,szAggFn);
 
   RASSERT(bIs_Agg_Fn());
 }
@@ -3094,7 +3094,7 @@ void Symbol::vFacet_As(Stz* szAs)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_AS,szAs);
+  vFacetSprint(SF_AS,"%s"_Stz,szAs);
 
   RASSERT(bIs_As());
 }
@@ -3108,7 +3108,7 @@ void Symbol::vFacet_As_Nm(Stz* szAsNm)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_AS_NM == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_AS_NM,szAsNm);
+  vFacetSprint(SF_AS_NM,"%s"_Stz,szAsNm);
 
   Y_vCut(P_Synthetic);
 
@@ -3154,7 +3154,7 @@ void Symbol::vFacet_Bol_Fn(Stz* szBolFn)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_BOL_FN,szBolFn);
+  vFacetSprint(SF_BOL_FN,"%s"_Stz,szBolFn);
 
   RASSERT(bIs_Bol_Fn());
 }
@@ -3168,7 +3168,7 @@ void Symbol::vFacet_Bol_Lit(Stz* szBolLit)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_BOL_LIT,szBolLit);
+  vFacetSprint(SF_BOL_LIT,"%s"_Stz,szBolLit);
 
   RASSERT(bIs_Bol_Lit());
 }
@@ -3182,7 +3182,7 @@ void Symbol::vFacet_Bol_Op(Stz* szBolOp)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_BOL_OP,szBolOp);
+  vFacetSprint(SF_BOL_OP,"%s"_Stz,szBolOp);
 
   RASSERT(bIs_Bol_Op());
 }
@@ -3196,7 +3196,7 @@ void Symbol::vFacet_Bound(Stz* szBound)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_BOUND,szBound);
+  vFacetSprint(SF_BOUND,"%s"_Stz,szBound);
 
   RASSERT(bIs_Bound());
 }
@@ -3210,7 +3210,7 @@ void Symbol::vFacet_Brace(Stz* szBrace)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_BRACE,szBrace);
+  vFacetSprint(SF_BRACE,"%s"_Stz,szBrace);
 
   RASSERT(bIs_Brace());
 }
@@ -3224,7 +3224,7 @@ void Symbol::vFacet_Case(Stz* szCase)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_CASE,szCase);
+  vFacetSprint(SF_CASE,"%s"_Stz,szCase);
 
   RASSERT(bIs_Case());
 }
@@ -3238,7 +3238,7 @@ void Symbol::vFacet_Cast(Stz* szCast)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_CAST,szCast);
+  vFacetSprint(SF_CAST,"%s"_Stz,szCast);
 
   RASSERT(bIs_Cast());
 }
@@ -3252,7 +3252,7 @@ void Symbol::vFacet_CastType(Stz* szCastType)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_CASTTYPE,szCastType);
+  vFacetSprint(SF_CASTTYPE,"%s"_Stz,szCastType);
 
   RASSERT(bIs_CastType());
 }
@@ -3266,7 +3266,7 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_COL_NO == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_NM,szColNm);
+  vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm);
 
   Y_vCut(P_DisamCol);
 
@@ -3315,7 +3315,7 @@ void Symbol::vFacet_Col_Nm_syn(Stz* szColNm_syn)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_NM,szColNm_syn);
+  vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm_syn);
 
   Y_vSet(P_Synthetic);
 
@@ -3364,7 +3364,7 @@ void Symbol::vFacet_Col_No(Stz* szColNo)
     Y_vSet(P_TblCol, szSF_chrSeq(SF_COL_TC));
   }
 
-  vFacetSprint(SF_COL_NO,szColNo);
+  vFacetSprint(SF_COL_NO,"%s"_Stz,szColNo);
 
   RASSERT(bIs_Col_No());
 }
@@ -3392,7 +3392,7 @@ void Symbol::vFacet_Col_Tc(Stz* szColTc)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_COL_NM == xFacet[0].m_eFacet || SF_COL_TC == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_TC,szColTc);
+  vFacetSprint(SF_COL_TC,"%s"_Stz,szColTc);
 
   RASSERT(bIs_Col_Tc());
 }
@@ -3406,7 +3406,7 @@ void Symbol::vFacet_Comma(Stz* szComma)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COMMA,szComma);
+  vFacetSprint(SF_COMMA,"%s"_Stz,szComma);
 
   RASSERT(bIs_Comma());
 }
@@ -3420,7 +3420,7 @@ void Symbol::vFacet_Cross(Stz* szCross)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_CROSS,szCross);
+  vFacetSprint(SF_CROSS,"%s"_Stz,szCross);
 
   RASSERT(bIs_Cross());
 }
@@ -3434,7 +3434,7 @@ void Symbol::vFacet_Col_Type(Stz* szColType)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_TYPE,szColType);
+  vFacetSprint(SF_COL_TYPE,"%s"_Stz,szColType);
 
   RASSERT(bIs_Col_Type());
 }
@@ -3448,7 +3448,7 @@ void Symbol::vFacet_Dcm_Lit(Stz* szDcmLit)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_DCM_LIT,szDcmLit);
+  vFacetSprint(SF_DCM_LIT,"%s"_Stz,szDcmLit);
 
   RASSERT(bIs_Dcm_Lit());
 }
@@ -3462,7 +3462,7 @@ void Symbol::vFacet_Direction(Stz* szDirection)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_DIRECTION, szDirection);
+  vFacetSprint(SF_DIRECTION,"%s"_Stz,szDirection);
 
   RASSERT(bIs_Direction());
 }
@@ -3476,7 +3476,7 @@ void Symbol::vFacet_Else(Stz* szElse)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_ELSE,szElse);
+  vFacetSprint(SF_ELSE,"%s"_Stz,szElse);
 
   RASSERT(bIs_Else());
 }
@@ -3490,7 +3490,7 @@ void Symbol::vFacet_EndIf(Stz* szEndIf)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_ENDIF,szEndIf);
+  vFacetSprint(SF_ENDIF,"%s"_Stz,szEndIf);
 
   RASSERT(bIs_EndIf());
 }
@@ -3504,7 +3504,7 @@ void Symbol::vFacet_Fld_Nm(Stz* szFldNm)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_FLD_NM,szFldNm);
+  vFacetSprint(SF_FLD_NM,"%s"_Stz,szFldNm);
 
   RASSERT(bIs_Fld_Nm());
 }
@@ -3518,7 +3518,7 @@ void Symbol::vFacet_Flt_Lit(Stz* szFltLit)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_FLT_LIT,szFltLit);
+  vFacetSprint(SF_FLT_LIT,"%s"_Stz,szFltLit);
 
   RASSERT(bIs_Flt_Lit());
 }
@@ -3532,7 +3532,7 @@ void Symbol::vFacet_GroupBy(Stz* szGroupBy)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_GROUPBY,szGroupBy);
+  vFacetSprint(SF_GROUPBY,"%s"_Stz,szGroupBy);
 
   RASSERT(bIs_GroupBy());
 }
@@ -3560,7 +3560,7 @@ void Symbol::vFacet_Idx_Col(Stz* szIdxCol)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_IDX_COL,szIdxCol);
+  vFacetSprint(SF_IDX_COL,"%s"_Stz,szIdxCol);
 
   RASSERT(bIs_Idx_Col());
 }
@@ -3574,7 +3574,7 @@ void Symbol::vFacet_Idx_Nm(Stz* szIdxNm)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_IDX_NM,szIdxNm);
+  vFacetSprint(SF_IDX_NM,"%s"_Stz,szIdxNm);
 
   RASSERT(bIs_Idx_Nm());
 }
@@ -3602,7 +3602,7 @@ void Symbol::vFacet_Int_Lit(Stz* szIntLit)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_INT_LIT,szIntLit);
+  vFacetSprint(SF_INT_LIT,"%s"_Stz,szIntLit);
 
   RASSERT(bIs_Int_Lit());
 }
@@ -3616,7 +3616,7 @@ void Symbol::vFacet_Interval_DT(Stz* szInterval_DT)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_INTERVAL_DT,szInterval_DT);
+  vFacetSprint(SF_INTERVAL_DT,"%s"_Stz,szInterval_DT);
 
   RASSERT(bIs_Interval_DT());
 }
@@ -3630,7 +3630,7 @@ void Symbol::vFacet_Interval_YM(Stz* szInterval_YM)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_INTERVAL_YM,szInterval_YM);
+  vFacetSprint(SF_INTERVAL_YM,"%s"_Stz,szInterval_YM);
 
   RASSERT(bIs_Interval_YM());
 }
@@ -3644,7 +3644,7 @@ void Symbol::vFacet_Ivl_Fn(Stz* szIvlFn)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_IVL_FN,szIvlFn);
+  vFacetSprint(SF_IVL_FN,"%s"_Stz,szIvlFn);
 
   RASSERT(bIs_Ivl_Fn());
 }
@@ -3672,7 +3672,7 @@ void Symbol::vFacet_Key_Col(Stz* szKeyCol)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_KEY_COL,szKeyCol);
+  vFacetSprint(SF_KEY_COL,"%s"_Stz,szKeyCol);
 
   RASSERT(bIs_Key_Col());
 }
@@ -3686,7 +3686,7 @@ void Symbol::vFacet_Mth_Op(Stz* szMthOp)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_MTH_OP,szMthOp);
+  vFacetSprint(SF_MTH_OP,"%s"_Stz,szMthOp);
 
   RASSERT(bIs_Mth_Op());
 }
@@ -3700,7 +3700,7 @@ void Symbol::vFacet_Negate(Stz* szNegate)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_NEGATE, szNegate);
+  vFacetSprint(SF_NEGATE,"%s"_Stz,szNegate);
 
   RASSERT(bIs_Negate());
 }
@@ -3714,7 +3714,7 @@ void Symbol::vFacet_Note(Stz* szNote)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_NOTE,szNote);
+  vFacetSprint(SF_NOTE,"%s"_Stz,szNote);
 
   RASSERT(bIs_Note());
 }
@@ -3728,7 +3728,7 @@ void Symbol::vFacet_Null(Stz* szNull)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_NULL,szNull);
+  vFacetSprint(SF_NULL,"%s"_Stz,szNull);
 
   RASSERT(bIs_Null());
 }
@@ -3742,7 +3742,7 @@ void Symbol::vFacet_Parenthesis(Stz* szParenthesis)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_PARENTHESIS,szParenthesis);
+  vFacetSprint(SF_PARENTHESIS,"%s"_Stz,szParenthesis);
 
   RASSERT(bIs_Parenthesis());
 }
@@ -3756,7 +3756,7 @@ void Symbol::vFacet_Ppe_Nm(Stz* szPpeNm)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_PPE_NM,szPpeNm);
+  vFacetSprint(SF_PPE_NM,"%s"_Stz,szPpeNm);
 
   RASSERT(bIs_Ppe_Nm());
 }
@@ -3784,7 +3784,7 @@ void Symbol::vFacet_Prm_Col(Stz* szPrmCol)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_PRM_COL,szPrmCol);
+  vFacetSprint(SF_PRM_COL,"%s"_Stz,szPrmCol);
 
   RASSERT(bIs_Sqy_Prm());
 }
@@ -3798,7 +3798,7 @@ void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_SQY_OP == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_RLN_OP,szRlnOp);
+  vFacetSprint(SF_RLN_OP,"%s"_Stz,szRlnOp);
 
   RASSERT(bIs_Rln_Op());
 }
@@ -3826,7 +3826,7 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_SQY_OP == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_SQY_OP,szSqyOp);
+  vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
 
   RASSERT(bIs_Sqy_Op());
 }
@@ -3840,7 +3840,7 @@ void Symbol::vFacet_Stg_Cast(Stz* szStgCast)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_STG_CAST == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_STG_CAST,szStgCast);
+  vFacetSprint(SF_STG_CAST,"%s"_Stz,szStgCast);
 
   RASSERT(bIs_Stg_Cast());
 }
@@ -3868,7 +3868,7 @@ void Symbol::vFacet_Str_Fn(Stz* szBolFn)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_STR_FN,szBolFn);
+  vFacetSprint(SF_STR_FN,"%s"_Stz,szBolFn);
 
   RASSERT(bIs_Str_Fn());
 }
@@ -3882,7 +3882,7 @@ void Symbol::vFacet_String(Stz* szString)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_STR_LIT,szString);
+  vFacetSprint(SF_STR_LIT,"%s"_Stz,szString);
 
   RASSERT(bIs_String());
 }
@@ -3896,7 +3896,7 @@ void Symbol::vFacet_Tbl_Nm(Stz* szTblNm)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_TBL_NM,szTblNm);
+  vFacetSprint(SF_TBL_NM,"%s"_Stz,szTblNm);
 
   RASSERT(bIs_Tbl_Nm());
 }
@@ -3924,7 +3924,7 @@ void Symbol::vFacet_Tbl_Syn(Stz* szTblSyn)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_TBL_SYN,szTblSyn);
+  vFacetSprint(SF_TBL_SYN,"%s"_Stz,szTblSyn);
 
   RASSERT(bIs_Tbl_Syn());
 }
@@ -3955,7 +3955,7 @@ void Symbol::vFacet_Then(Stz* szThen)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_THEN,szThen);
+  vFacetSprint(SF_THEN,"%s"_Stz,szThen);
 
   RASSERT(bIs_Then());
 }
@@ -3969,7 +3969,7 @@ void Symbol::vFacet_Type(Stz* szType)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_TYPE,szType);
+  vFacetSprint(SF_TYPE,"%s"_Stz,szType);
 
   RASSERT(bIs_Type());
 }
@@ -3983,7 +3983,7 @@ void Symbol::vFacet_When(Stz* szWhen)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_WHEN,szWhen);
+  vFacetSprint(SF_WHEN,"%s"_Stz,szWhen);
 
   RASSERT(bIs_When());
 }
@@ -3997,7 +3997,7 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_XK_CAST,szXkCast);
+  vFacetSprint(SF_XK_CAST,"%s"_Stz,szXkCast);
 
   RASSERT(bIs_Xk_Cast());
 }
@@ -4025,7 +4025,7 @@ void Symbol::vFacet_Xrf_No(Stz* szXrefNo)
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vFacetSprint(SF_XRF_NO,szXrefNo);
+  vFacetSprint(SF_XRF_NO,"%s"_Stz,szXrefNo);
 
   RASSERT(bIs_Xrf_No());
 }
