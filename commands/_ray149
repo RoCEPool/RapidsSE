@@ -8,7 +8,7 @@ __TPCH_SCHEMA;
 
 // NOTE: S10 (crossJoin) : ColPpg is null.
 
-// /optimiser_trace
+/optimiser_trace
 /transliterated
 /pipeline_def
 /weaved
@@ -45,3 +45,1892 @@ order by
 //rows: 20
 
 _tpchdrop
+
+/*
+1 _ray149 80 EL  1 SQ0 -----------------------------------------------------------------------------------------------------------------------------
+1 _ray149 80 EL  2 SQ0 XF_EPILOG_ADD_INFLATE : <to be supplied> : add inflate
+1 _ray149 80 EL  3 SQ0 -----------------------------------------------------------------------------------------------------------------------------
+1 _ray149 80 EL  4 SQ0 ==00 ?--0x816b7040-- ==01 P--0x59665040-- ==02 ?--0x7c2d3040-- ==03 P--0x750b8040-- ==04 ?--0x8129a040-- ==05 ?--0x8129b040--
+1 _ray149 80 EL  5 SQ0   STAGE S01 *1         SCAN *5            ` INFLATE *4           HASH *5              COMBINED 0 *1        CAST hashcast *1
+1 _ray149 80 EL  6 SQ0   0]topology              bFusedProject=y      bFusedProject=y   0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL  7 SQ0    YG_ALL_PARTITIONS   0]level            ` 0]table d                  AL_PARTITION
+1 _ray149 80 EL  8 SQ0                              AL_PARTITION ` .0]tableNm           1]stream
+1 _ray149 80 EL  9 SQ0                        1]table d                      PartSupp   .0]projection #56
+1 _ray149 80 EL 10 SQ0                        .0]tableNm         ` .1]tableInfo         ..0]expr $1
+1 _ray149 80 EL 11 SQ0                                  PartSupp ` ..0]tablePtn $d.1              szType=l
+1 _ray149 80 EL 12 SQ0                        .1]tableInfo       ` ..1]tableSize 131    ...0]as
+1 _ray149 80 EL 13 SQ0                        ..0]tablePtn $d.1  ` ..2]rowSize 173        C0_PS_SUPPLYCOST
+1 _ray149 80 EL 14 SQ0                        ..1]tableSize 131  ` ..3]rowCount 720            bItemised=y
+1 _ray149 80 EL 15 SQ0                        ..2]rowSize 173    ` .2]indexList         ...1]rpnCalc
+1 _ray149 80 EL 16 SQ0                        ..3]rowCount 720   ` ..0]index                      szType=l
+1 _ray149 80 EL 17 SQ0                        .2]indexList       ` ...0]indexNm                       $1 l
+1 _ray149 80 EL 18 SQ0                        ..0]index                  IxPS_PARTKEY        szTblCol $d.4
+1 _ray149 80 EL 19 SQ0                        ...0]indexNm       ` ...1]idxColList      ..1]expr $2
+1 _ray149 80 EL 20 SQ0                              IxPS_PARTKEY ` ....0]idxCol $d.1              szType=i
+1 _ray149 80 EL 21 SQ0                        ...1]idxColList    ` ..1]index            ...0]as
+1 _ray149 80 EL 22 SQ0                        ....0]idxCol $d.1  ` ...0]indexNm             C1_PS_AVAILQTY
+1 _ray149 80 EL 23 SQ0                        ..1]index                  IxPS_SUPPKEY          bItemised=y
+1 _ray149 80 EL 24 SQ0                        ...0]indexNm       ` ...1]idxColList      ...1]rpnCalc
+1 _ray149 80 EL 25 SQ0                              IxPS_SUPPKEY ` ....0]idxCol $d.2              szType=i
+1 _ray149 80 EL 26 SQ0                        ...1]idxColList    ` 1]stream                           $2 i
+1 _ray149 80 EL 27 SQ0                        ....0]idxCol $d.2  ` .0]projection #56         szTblCol $d.3
+1 _ray149 80 EL 28 SQ0                        2]injected         ` ..0]expr $1          ..2]expr $3
+1 _ray149 80 EL 29 SQ0                        .0]expr $1                     szType=l             szType=i
+1 _ray149 80 EL 30 SQ0                                  szType=i ` ...0]as              ...0]as
+1 _ray149 80 EL 31 SQ0                        ..0]as                 C0_PS_SUPPLYCOST        C2_PS_SUPPKEY
+1 _ray149 80 EL 32 SQ0                             C0_PS_PARTKEY          bItemised=y          bItemised=y
+1 _ray149 80 EL 33 SQ0                               bItemised=y ` ...1]rpnCalc         ...1]rpnCalc
+1 _ray149 80 EL 34 SQ0                        ..1]rpnCalc                    szType=l             szType=i
+1 _ray149 80 EL 35 SQ0                                  szType=i                 $4 l                 $3 i
+1 _ray149 80 EL 36 SQ0                                    $d.1 i        szTblCol $d.4        szTblCol $d.2
+1 _ray149 80 EL 37 SQ0                        .1]expr $2         ` ..1]expr $2          2]hshColList
+1 _ray149 80 EL 38 SQ0                                  szType=i             szType=i   .0]hshCol
+1 _ray149 80 EL 39 SQ0                        ..0]as             ` ...0]as                            $3 i
+1 _ray149 80 EL 40 SQ0                             C1_PS_SUPPKEY       C1_PS_AVAILQTY        szTblCol $d.2
+1 _ray149 80 EL 41 SQ0                               bItemised=y          bItemised=y   3]synthesise
+1 _ray149 80 EL 42 SQ0                        ..1]rpnCalc        ` ...1]rpnCalc         4]hashing
+1 _ray149 80 EL 43 SQ0                                  szType=i             szType=i                 $3 i
+1 _ray149 80 EL 44 SQ0                                    $d.2 i                 $3 i        szTblCol $d.2
+1 _ray149 80 EL 45 SQ0                        .2]expr $3                szTblCol $d.3
+1 _ray149 80 EL 46 SQ0                                  szType=i ` ..2]expr $3
+1 _ray149 80 EL 47 SQ0                        ..0]as                         szType=i
+1 _ray149 80 EL 48 SQ0                            C2_PS_AVAILQTY ` ...0]as
+1 _ray149 80 EL 49 SQ0                               bItemised=y        C2_PS_SUPPKEY
+1 _ray149 80 EL 50 SQ0                        ..1]rpnCalc                 bItemised=y
+1 _ray149 80 EL 51 SQ0                                  szType=i ` ...1]rpnCalc
+1 _ray149 80 EL 52 SQ0                                    $d.3 i             szType=i
+1 _ray149 80 EL 53 SQ0                        .3]expr $4                         $2 i
+1 _ray149 80 EL 54 SQ0                                  szType=l        szTblCol $d.2
+1 _ray149 80 EL 55 SQ0                        ..0]as             ` 2]injected
+1 _ray149 80 EL 56 SQ0                          C3_PS_SUPPLYCOST ` .0]expr $1
+1 _ray149 80 EL 57 SQ0                               bItemised=y             szType=i
+1 _ray149 80 EL 58 SQ0                        ..1]rpnCalc        ` ..0]as
+1 _ray149 80 EL 59 SQ0                                  szType=l        C0_PS_PARTKEY
+1 _ray149 80 EL 60 SQ0                                    $d.4 l          bItemised=y
+1 _ray149 80 EL 61 SQ0                        .4]expr $5         ` ..1]rpnCalc
+1 _ray149 80 EL 62 SQ0                                  szType=v             szType=i
+1 _ray149 80 EL 63 SQ0                        ..0]as                           $d.1 i
+1 _ray149 80 EL 64 SQ0                             C4_PS_COMMENT ` .1]expr $2
+1 _ray149 80 EL 65 SQ0                               bItemised=y             szType=i
+1 _ray149 80 EL 66 SQ0                        ..1]rpnCalc        ` ..0]as
+1 _ray149 80 EL 67 SQ0                                  szType=v        C1_PS_SUPPKEY
+1 _ray149 80 EL 68 SQ0                                    $d.5 v          bItemised=y
+1 _ray149 80 EL 69 SQ0                        3]stream           ` ..1]rpnCalc
+1 _ray149 80 EL 70 SQ0                        .0]projection #56              szType=i
+1 _ray149 80 EL 71 SQ0                        ..0]expr $1                      $d.2 i
+1 _ray149 80 EL 72 SQ0                                  szType=l ` .2]expr $3
+1 _ray149 80 EL 73 SQ0                        ...0]as                        szType=i
+1 _ray149 80 EL 74 SQ0                          C0_PS_SUPPLYCOST ` ..0]as
+1 _ray149 80 EL 75 SQ0                               bItemised=y       C2_PS_AVAILQTY
+1 _ray149 80 EL 76 SQ0                        ...1]rpnCalc                bItemised=y
+1 _ray149 80 EL 77 SQ0                                  szType=l ` ..1]rpnCalc
+1 _ray149 80 EL 78 SQ0                                      $4 l             szType=i
+1 _ray149 80 EL 79 SQ0                             szTblCol $d.4               $d.3 i
+1 _ray149 80 EL 80 SQ0                        ..1]expr $2        ` .3]expr $4
+1 _ray149 80 EL 81 SQ0                                  szType=i             szType=l
+1 _ray149 80 EL 82 SQ0                        ...0]as            ` ..0]as
+1 _ray149 80 EL 83 SQ0                            C1_PS_AVAILQTY     C3_PS_SUPPLYCOST
+1 _ray149 80 EL 84 SQ0                               bItemised=y          bItemised=y
+1 _ray149 80 EL 85 SQ0                        ...1]rpnCalc       ` ..1]rpnCalc
+1 _ray149 80 EL 86 SQ0                                  szType=i             szType=l
+1 _ray149 80 EL 87 SQ0                                      $3 i               $d.4 l
+1 _ray149 80 EL 88 SQ0                             szTblCol $d.3 ` .4]expr $5
+1 _ray149 80 EL 89 SQ0                        ..2]expr $3                    szType=v
+1 _ray149 80 EL 90 SQ0                                  szType=i ` ..0]as
+1 _ray149 80 EL 91 SQ0                        ...0]as                   C4_PS_COMMENT
+1 _ray149 80 EL 92 SQ0                             C2_PS_SUPPKEY          bItemised=y
+1 _ray149 80 EL 93 SQ0                               bItemised=y ` ..1]rpnCalc
+1 _ray149 80 EL 94 SQ0                        ...1]rpnCalc                   szType=v
+1 _ray149 80 EL 95 SQ0                                  szType=i               $d.5 v
+1 _ray149 80 EL 96 SQ0                                      $2 i ` 3]synthesise
+1 _ray149 80 EL 97 SQ0                             szTblCol $d.2
+1 _ray149 80 EL 98 SQ0                        4]synthesise
+1 _ray149 80 EL 99 SQ0
+1 _ray149 80 EL 100 SQ0 ==06 ?--0x8129c040-- ==07 P--0x88440040-- ==08 ?--0x8129e040-- ==09 ?--0x8129f040--
+1 _ray149 80 EL 101 SQ0   STAGE S02 *1         INDEXJOIN *5         COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 102 SQ0   0]topology           0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 103 SQ0    YG_ALL_PARTITIONS         AL_PARTITION
+1 _ray149 80 EL 104 SQ0                        1]table e
+1 _ray149 80 EL 105 SQ0                        .0]tableNm
+1 _ray149 80 EL 106 SQ0                                  Supplier
+1 _ray149 80 EL 107 SQ0                        .1]tableInfo
+1 _ray149 80 EL 108 SQ0                        ..0]tablePtn $e.1
+1 _ray149 80 EL 109 SQ0                        ..1]tableSize 2
+1 _ray149 80 EL 110 SQ0                        ..2]rowSize 0
+1 _ray149 80 EL 111 SQ0                        ..3]rowCount 0
+1 _ray149 80 EL 112 SQ0                        .2]indexList
+1 _ray149 80 EL 113 SQ0                        ..0]index
+1 _ray149 80 EL 114 SQ0                            bChosenIndex=y
+1 _ray149 80 EL 115 SQ0                        ...0]indexNm
+1 _ray149 80 EL 116 SQ0                               IxS_SUPPKEY
+1 _ray149 80 EL 117 SQ0                        ...1]idxColList
+1 _ray149 80 EL 118 SQ0                        ....0]idxCol $e.1
+1 _ray149 80 EL 119 SQ0                        ...2]bounds
+1 _ray149 80 EL 120 SQ0                        ....0]bound ==
+1 _ray149 80 EL 121 SQ0                            bChosenBound=y
+1 _ray149 80 EL 122 SQ0                                       $I1
+1 _ray149 80 EL 123 SQ0                                        $3
+1 _ray149 80 EL 124 SQ0                             szTblCol=$d.2
+1 _ray149 80 EL 125 SQ0                                  szType=i
+1 _ray149 80 EL 126 SQ0                        2]injected
+1 _ray149 80 EL 127 SQ0                        .0]expr $1
+1 _ray149 80 EL 128 SQ0                                  szType=i
+1 _ray149 80 EL 129 SQ0                        ..0]as
+1 _ray149 80 EL 130 SQ0                              C0_S_SUPPKEY
+1 _ray149 80 EL 131 SQ0                               bItemised=y
+1 _ray149 80 EL 132 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 133 SQ0                                  szType=i
+1 _ray149 80 EL 134 SQ0                                    $e.1 i
+1 _ray149 80 EL 135 SQ0                        .1]expr $2
+1 _ray149 80 EL 136 SQ0                                  szType=v
+1 _ray149 80 EL 137 SQ0                        ..0]as C1_S_NAME
+1 _ray149 80 EL 138 SQ0                               bItemised=y
+1 _ray149 80 EL 139 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 140 SQ0                                  szType=v
+1 _ray149 80 EL 141 SQ0                                    $e.2 v
+1 _ray149 80 EL 142 SQ0                        .2]expr $3
+1 _ray149 80 EL 143 SQ0                                  szType=v
+1 _ray149 80 EL 144 SQ0                        ..0]as
+1 _ray149 80 EL 145 SQ0                              C2_S_ADDRESS
+1 _ray149 80 EL 146 SQ0                               bItemised=y
+1 _ray149 80 EL 147 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 148 SQ0                                  szType=v
+1 _ray149 80 EL 149 SQ0                                    $e.3 v
+1 _ray149 80 EL 150 SQ0                        .3]expr $4
+1 _ray149 80 EL 151 SQ0                                  szType=i
+1 _ray149 80 EL 152 SQ0                        ..0]as
+1 _ray149 80 EL 153 SQ0                            C3_S_NATIONKEY
+1 _ray149 80 EL 154 SQ0                               bItemised=y
+1 _ray149 80 EL 155 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 156 SQ0                                  szType=i
+1 _ray149 80 EL 157 SQ0                                    $e.4 i
+1 _ray149 80 EL 158 SQ0                        .4]expr $5
+1 _ray149 80 EL 159 SQ0                                  szType=v
+1 _ray149 80 EL 160 SQ0                        ..0]as C4_S_PHONE
+1 _ray149 80 EL 161 SQ0                               bItemised=y
+1 _ray149 80 EL 162 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 163 SQ0                                  szType=v
+1 _ray149 80 EL 164 SQ0                                    $e.5 v
+1 _ray149 80 EL 165 SQ0                        .5]expr $6
+1 _ray149 80 EL 166 SQ0                                  szType=l
+1 _ray149 80 EL 167 SQ0                        ..0]as
+1 _ray149 80 EL 168 SQ0                              C5_S_ACCTBAL
+1 _ray149 80 EL 169 SQ0                               bItemised=y
+1 _ray149 80 EL 170 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 171 SQ0                                  szType=l
+1 _ray149 80 EL 172 SQ0                                    $e.6 l
+1 _ray149 80 EL 173 SQ0                        .6]expr $7
+1 _ray149 80 EL 174 SQ0                                  szType=v
+1 _ray149 80 EL 175 SQ0                        ..0]as
+1 _ray149 80 EL 176 SQ0                              C6_S_COMMENT
+1 _ray149 80 EL 177 SQ0                               bItemised=y
+1 _ray149 80 EL 178 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 179 SQ0                                  szType=v
+1 _ray149 80 EL 180 SQ0                                    $e.7 v
+1 _ray149 80 EL 181 SQ0                        3]stream
+1 _ray149 80 EL 182 SQ0                        .0]projection #56
+1 _ray149 80 EL 183 SQ0                        ..0]expr $1
+1 _ray149 80 EL 184 SQ0                                  szType=l
+1 _ray149 80 EL 185 SQ0                        ...0]as
+1 _ray149 80 EL 186 SQ0                          C0_PS_SUPPLYCOST
+1 _ray149 80 EL 187 SQ0                               bItemised=y
+1 _ray149 80 EL 188 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 189 SQ0                                  szType=l
+1 _ray149 80 EL 190 SQ0                                      $1 l
+1 _ray149 80 EL 191 SQ0                             szTblCol $d.4
+1 _ray149 80 EL 192 SQ0                        ..1]expr $2
+1 _ray149 80 EL 193 SQ0                                  szType=i
+1 _ray149 80 EL 194 SQ0                        ...0]as
+1 _ray149 80 EL 195 SQ0                            C1_PS_AVAILQTY
+1 _ray149 80 EL 196 SQ0                               bItemised=y
+1 _ray149 80 EL 197 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 198 SQ0                                  szType=i
+1 _ray149 80 EL 199 SQ0                                      $2 i
+1 _ray149 80 EL 200 SQ0                             szTblCol $d.3
+1 _ray149 80 EL 201 SQ0                        ..2]expr $3
+1 _ray149 80 EL 202 SQ0                                  szType=i
+1 _ray149 80 EL 203 SQ0                        ...0]as
+1 _ray149 80 EL 204 SQ0                             C2_PS_SUPPKEY
+1 _ray149 80 EL 205 SQ0                               bItemised=y
+1 _ray149 80 EL 206 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 207 SQ0                                  szType=i
+1 _ray149 80 EL 208 SQ0                                      $3 i
+1 _ray149 80 EL 209 SQ0                             szTblCol $d.2
+1 _ray149 80 EL 210 SQ0                        ..3]expr $4
+1 _ray149 80 EL 211 SQ0                                  szType=i
+1 _ray149 80 EL 212 SQ0                        ...0]as
+1 _ray149 80 EL 213 SQ0                              C3_S_SUPPKEY
+1 _ray149 80 EL 214 SQ0                               bItemised=y
+1 _ray149 80 EL 215 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 216 SQ0                                  szType=i
+1 _ray149 80 EL 217 SQ0                                      $1 i
+1 _ray149 80 EL 218 SQ0                             szTblCol $e.1
+1 _ray149 80 EL 219 SQ0                        ..4]expr $5
+1 _ray149 80 EL 220 SQ0                                  szType=v
+1 _ray149 80 EL 221 SQ0                        ...0]as C4_S_NAME
+1 _ray149 80 EL 222 SQ0                               bItemised=y
+1 _ray149 80 EL 223 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 224 SQ0                                  szType=v
+1 _ray149 80 EL 225 SQ0                                      $2 v
+1 _ray149 80 EL 226 SQ0                             szTblCol $e.2
+1 _ray149 80 EL 227 SQ0                        ..5]expr $6
+1 _ray149 80 EL 228 SQ0                                  szType=v
+1 _ray149 80 EL 229 SQ0                        ...0]as
+1 _ray149 80 EL 230 SQ0                              C5_S_ADDRESS
+1 _ray149 80 EL 231 SQ0                               bItemised=y
+1 _ray149 80 EL 232 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 233 SQ0                                  szType=v
+1 _ray149 80 EL 234 SQ0                                      $3 v
+1 _ray149 80 EL 235 SQ0                             szTblCol $e.3
+1 _ray149 80 EL 236 SQ0                        ..6]expr $7
+1 _ray149 80 EL 237 SQ0                                  szType=i
+1 _ray149 80 EL 238 SQ0                        ...0]as
+1 _ray149 80 EL 239 SQ0                            C6_S_NATIONKEY
+1 _ray149 80 EL 240 SQ0                               bItemised=y
+1 _ray149 80 EL 241 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 242 SQ0                                  szType=i
+1 _ray149 80 EL 243 SQ0                                      $4 i
+1 _ray149 80 EL 244 SQ0                             szTblCol $e.4
+1 _ray149 80 EL 245 SQ0                        ..7]expr $8
+1 _ray149 80 EL 246 SQ0                                  szType=v
+1 _ray149 80 EL 247 SQ0                        ...0]as C7_S_PHONE
+1 _ray149 80 EL 248 SQ0                               bItemised=y
+1 _ray149 80 EL 249 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 250 SQ0                                  szType=v
+1 _ray149 80 EL 251 SQ0                                      $5 v
+1 _ray149 80 EL 252 SQ0                             szTblCol $e.5
+1 _ray149 80 EL 253 SQ0                        ..8]expr $9
+1 _ray149 80 EL 254 SQ0                                  szType=l
+1 _ray149 80 EL 255 SQ0                        ...0]as
+1 _ray149 80 EL 256 SQ0                              C8_S_ACCTBAL
+1 _ray149 80 EL 257 SQ0                               bItemised=y
+1 _ray149 80 EL 258 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 259 SQ0                                  szType=l
+1 _ray149 80 EL 260 SQ0                                      $6 l
+1 _ray149 80 EL 261 SQ0                             szTblCol $e.6
+1 _ray149 80 EL 262 SQ0                        ..9]expr $10
+1 _ray149 80 EL 263 SQ0                                  szType=v
+1 _ray149 80 EL 264 SQ0                        ...0]as
+1 _ray149 80 EL 265 SQ0                              C9_S_COMMENT
+1 _ray149 80 EL 266 SQ0                               bItemised=y
+1 _ray149 80 EL 267 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 268 SQ0                                  szType=v
+1 _ray149 80 EL 269 SQ0                                      $7 v
+1 _ray149 80 EL 270 SQ0                             szTblCol $e.7
+1 _ray149 80 EL 271 SQ0                        .1]arriving #56
+1 _ray149 80 EL 272 SQ0                        ..0]expr $1
+1 _ray149 80 EL 273 SQ0                                  szType=l
+1 _ray149 80 EL 274 SQ0                        ...0]as
+1 _ray149 80 EL 275 SQ0                          C0_PS_SUPPLYCOST
+1 _ray149 80 EL 276 SQ0                               bItemised=y
+1 _ray149 80 EL 277 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 278 SQ0                                  szType=l
+1 _ray149 80 EL 279 SQ0                                      $1 l
+1 _ray149 80 EL 280 SQ0                             szTblCol $d.4
+1 _ray149 80 EL 281 SQ0                        ..1]expr $2
+1 _ray149 80 EL 282 SQ0                                  szType=i
+1 _ray149 80 EL 283 SQ0                        ...0]as
+1 _ray149 80 EL 284 SQ0                            C1_PS_AVAILQTY
+1 _ray149 80 EL 285 SQ0                               bItemised=y
+1 _ray149 80 EL 286 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 287 SQ0                                  szType=i
+1 _ray149 80 EL 288 SQ0                                      $2 i
+1 _ray149 80 EL 289 SQ0                             szTblCol $d.3
+1 _ray149 80 EL 290 SQ0                        ..2]expr $3
+1 _ray149 80 EL 291 SQ0                                  szType=i
+1 _ray149 80 EL 292 SQ0                        ...0]as
+1 _ray149 80 EL 293 SQ0                             C2_PS_SUPPKEY
+1 _ray149 80 EL 294 SQ0                               bItemised=y
+1 _ray149 80 EL 295 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 296 SQ0                                  szType=i
+1 _ray149 80 EL 297 SQ0                                      $3 i
+1 _ray149 80 EL 298 SQ0                             szTblCol $d.2
+1 _ray149 80 EL 299 SQ0                        4]synthesise
+1 _ray149 80 EL 300 SQ0
+1 _ray149 80 EL 301 SQ0 ==10 ?--0x812a0040-- ==11 P--0x884bc040-- ==12 ?--0x812a2040-- ==13 ?--0x812a3040--
+1 _ray149 80 EL 302 SQ0   STAGE S03 *1         PROJECT *4           COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 303 SQ0   0]topology                     bEarly=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 304 SQ0    YG_ALL_PARTITIONS   0]level
+1 _ray149 80 EL 305 SQ0                              AL_PARTITION
+1 _ray149 80 EL 306 SQ0                        1]stream
+1 _ray149 80 EL 307 SQ0                        .0]projection #56
+1 _ray149 80 EL 308 SQ0                        ..0]expr $1
+1 _ray149 80 EL 309 SQ0                                  szType=l
+1 _ray149 80 EL 310 SQ0                        ...0]as
+1 _ray149 80 EL 311 SQ0                          C0_PS_SUPPLYCOST
+1 _ray149 80 EL 312 SQ0                               bItemised=y
+1 _ray149 80 EL 313 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 314 SQ0                                  szType=l
+1 _ray149 80 EL 315 SQ0                                      $1 l
+1 _ray149 80 EL 316 SQ0                             szTblCol $d.4
+1 _ray149 80 EL 317 SQ0                        ..1]expr $2
+1 _ray149 80 EL 318 SQ0                                  szType=i
+1 _ray149 80 EL 319 SQ0                        ...0]as
+1 _ray149 80 EL 320 SQ0                            C1_PS_AVAILQTY
+1 _ray149 80 EL 321 SQ0                               bItemised=y
+1 _ray149 80 EL 322 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 323 SQ0                                  szType=i
+1 _ray149 80 EL 324 SQ0                                      $2 i
+1 _ray149 80 EL 325 SQ0                             szTblCol $d.3
+1 _ray149 80 EL 326 SQ0                        ..2]expr $3
+1 _ray149 80 EL 327 SQ0                                  szType=i
+1 _ray149 80 EL 328 SQ0                        ...0]as
+1 _ray149 80 EL 329 SQ0                            C2_S_NATIONKEY
+1 _ray149 80 EL 330 SQ0                               bItemised=y
+1 _ray149 80 EL 331 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 332 SQ0                                  szType=i
+1 _ray149 80 EL 333 SQ0                                      $7 i
+1 _ray149 80 EL 334 SQ0                             szTblCol $e.4
+1 _ray149 80 EL 335 SQ0                        2]synthesise
+1 _ray149 80 EL 336 SQ0                        3]needed
+1 _ray149 80 EL 337 SQ0                        .0]expr $1
+1 _ray149 80 EL 338 SQ0                                  szType=l
+1 _ray149 80 EL 339 SQ0                        ..0]as
+1 _ray149 80 EL 340 SQ0                          C0_PS_SUPPLYCOST
+1 _ray149 80 EL 341 SQ0                               bItemised=y
+1 _ray149 80 EL 342 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 343 SQ0                                  szType=l
+1 _ray149 80 EL 344 SQ0                                    $d.4 l
+1 _ray149 80 EL 345 SQ0                        .1]expr $2
+1 _ray149 80 EL 346 SQ0                                  szType=i
+1 _ray149 80 EL 347 SQ0                        ..0]as
+1 _ray149 80 EL 348 SQ0                            C1_PS_AVAILQTY
+1 _ray149 80 EL 349 SQ0                               bItemised=y
+1 _ray149 80 EL 350 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 351 SQ0                                  szType=i
+1 _ray149 80 EL 352 SQ0                                    $d.3 i
+1 _ray149 80 EL 353 SQ0                        .2]expr $3
+1 _ray149 80 EL 354 SQ0                                  szType=i
+1 _ray149 80 EL 355 SQ0                        ..0]as
+1 _ray149 80 EL 356 SQ0                            C2_S_NATIONKEY
+1 _ray149 80 EL 357 SQ0                               bItemised=y
+1 _ray149 80 EL 358 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 359 SQ0                                  szType=i
+1 _ray149 80 EL 360 SQ0                                    $e.4 i
+1 _ray149 80 EL 361 SQ0
+1 _ray149 80 EL 362 SQ0 ==14 ?--0x812a4040-- ==15 P--0x59688040-- ==16 P--0x596c2040-- ==17 ?--0x812a6040-- ==18 ?--0x812a7040--
+1 _ray149 80 EL 363 SQ0   STAGE S04 *1         INDEXJOIN *5         FILTER *4            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 364 SQ0   0]topology           0]level              0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 365 SQ0    YG_ALL_PARTITIONS         AL_PARTITION         AL_PARTITION
+1 _ray149 80 EL 366 SQ0                        1]table F            1]boolCalc
+1 _ray149 80 EL 367 SQ0                        .0]tableNm nation    .0]cmpPred ==
+1 _ray149 80 EL 368 SQ0                        .1]tableInfo                         $5
+1 _ray149 80 EL 369 SQ0                        ..0]tablePtn $F.1         szTblCol=$F.2
+1 _ray149 80 EL 370 SQ0                        ..1]tableSize 4                szType=v
+1 _ray149 80 EL 371 SQ0                        ..2]rowSize 120                  'IRAQ'
+1 _ray149 80 EL 372 SQ0                        ..3]rowCount 25      2]stream
+1 _ray149 80 EL 373 SQ0                        .2]indexList         .0]projection #56
+1 _ray149 80 EL 374 SQ0                        ..0]index            ..0]expr $1
+1 _ray149 80 EL 375 SQ0                            bChosenIndex=y             szType=l
+1 _ray149 80 EL 376 SQ0                        ...0]indexNm         ...0]as
+1 _ray149 80 EL 377 SQ0                             IxN_NATIONKEY     C0_PS_SUPPLYCOST
+1 _ray149 80 EL 378 SQ0                        ...1]idxColList             bItemised=y
+1 _ray149 80 EL 379 SQ0                        ....0]idxCol $F.1    ...1]rpnCalc
+1 _ray149 80 EL 380 SQ0                        ...2]bounds                    szType=l
+1 _ray149 80 EL 381 SQ0                        ....0]bound ==                     $1 l
+1 _ray149 80 EL 382 SQ0                            bChosenBound=y        szTblCol $d.4
+1 _ray149 80 EL 383 SQ0                                       $I1   ..1]expr $2
+1 _ray149 80 EL 384 SQ0                                        $3             szType=i
+1 _ray149 80 EL 385 SQ0                             szTblCol=$e.4   ...0]as
+1 _ray149 80 EL 386 SQ0                                  szType=i       C1_PS_AVAILQTY
+1 _ray149 80 EL 387 SQ0                        2]injected                  bItemised=y
+1 _ray149 80 EL 388 SQ0                        .0]expr $1           ...1]rpnCalc
+1 _ray149 80 EL 389 SQ0                                  szType=i             szType=i
+1 _ray149 80 EL 390 SQ0                        ..0]as                             $2 i
+1 _ray149 80 EL 391 SQ0                            C0_N_NATIONKEY        szTblCol $d.3
+1 _ray149 80 EL 392 SQ0                               bItemised=y   ..2]expr $3
+1 _ray149 80 EL 393 SQ0                        ..1]rpnCalc                    szType=i
+1 _ray149 80 EL 394 SQ0                                  szType=i   ...0]as
+1 _ray149 80 EL 395 SQ0                                    $F.1 i       C2_S_NATIONKEY
+1 _ray149 80 EL 396 SQ0                        .1]expr $2                  bItemised=y
+1 _ray149 80 EL 397 SQ0                                  szType=v   ...1]rpnCalc
+1 _ray149 80 EL 398 SQ0                        ..0]as C1_N_NAME               szType=i
+1 _ray149 80 EL 399 SQ0                               bItemised=y                 $3 i
+1 _ray149 80 EL 400 SQ0                        ..1]rpnCalc               szTblCol $e.4
+1 _ray149 80 EL 401 SQ0                                  szType=v   ..3]expr $4
+1 _ray149 80 EL 402 SQ0                                    $F.2 v             szType=i
+1 _ray149 80 EL 403 SQ0                        .2]expr $3           ...0]as
+1 _ray149 80 EL 404 SQ0                                  szType=i       C3_N_NATIONKEY
+1 _ray149 80 EL 405 SQ0                        ..0]as                      bItemised=y
+1 _ray149 80 EL 406 SQ0                            C2_N_REGIONKEY   ...1]rpnCalc
+1 _ray149 80 EL 407 SQ0                               bItemised=y             szType=i
+1 _ray149 80 EL 408 SQ0                        ..1]rpnCalc                        $4 i
+1 _ray149 80 EL 409 SQ0                                  szType=i        szTblCol $F.1
+1 _ray149 80 EL 410 SQ0                                    $F.3 i   ..4]expr $5
+1 _ray149 80 EL 411 SQ0                        .3]expr $4                     szType=v
+1 _ray149 80 EL 412 SQ0                                  szType=v   ...0]as C4_N_NAME
+1 _ray149 80 EL 413 SQ0                        ..0]as                      bItemised=y
+1 _ray149 80 EL 414 SQ0                              C3_N_COMMENT   ...1]rpnCalc
+1 _ray149 80 EL 415 SQ0                               bItemised=y             szType=v
+1 _ray149 80 EL 416 SQ0                        ..1]rpnCalc                        $5 v
+1 _ray149 80 EL 417 SQ0                                  szType=v        szTblCol $F.2
+1 _ray149 80 EL 418 SQ0                                    $F.4 v   ..5]expr $6
+1 _ray149 80 EL 419 SQ0                        3]stream                       szType=i
+1 _ray149 80 EL 420 SQ0                        .0]projection #56    ...0]as
+1 _ray149 80 EL 421 SQ0                        ..0]expr $1              C5_N_REGIONKEY
+1 _ray149 80 EL 422 SQ0                                  szType=l          bItemised=y
+1 _ray149 80 EL 423 SQ0                        ...0]as              ...1]rpnCalc
+1 _ray149 80 EL 424 SQ0                          C0_PS_SUPPLYCOST             szType=i
+1 _ray149 80 EL 425 SQ0                               bItemised=y                 $6 i
+1 _ray149 80 EL 426 SQ0                        ...1]rpnCalc              szTblCol $F.3
+1 _ray149 80 EL 427 SQ0                                  szType=l   ..6]expr $7
+1 _ray149 80 EL 428 SQ0                                      $1 l             szType=v
+1 _ray149 80 EL 429 SQ0                             szTblCol $d.4   ...0]as
+1 _ray149 80 EL 430 SQ0                        ..1]expr $2                C6_N_COMMENT
+1 _ray149 80 EL 431 SQ0                                  szType=i          bItemised=y
+1 _ray149 80 EL 432 SQ0                        ...0]as              ...1]rpnCalc
+1 _ray149 80 EL 433 SQ0                            C1_PS_AVAILQTY             szType=v
+1 _ray149 80 EL 434 SQ0                               bItemised=y                 $7 v
+1 _ray149 80 EL 435 SQ0                        ...1]rpnCalc              szTblCol $F.4
+1 _ray149 80 EL 436 SQ0                                  szType=i   3]synthesise
+1 _ray149 80 EL 437 SQ0                                      $2 i
+1 _ray149 80 EL 438 SQ0                             szTblCol $d.3
+1 _ray149 80 EL 439 SQ0                        ..2]expr $3
+1 _ray149 80 EL 440 SQ0                                  szType=i
+1 _ray149 80 EL 441 SQ0                        ...0]as
+1 _ray149 80 EL 442 SQ0                            C2_S_NATIONKEY
+1 _ray149 80 EL 443 SQ0                               bItemised=y
+1 _ray149 80 EL 444 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 445 SQ0                                  szType=i
+1 _ray149 80 EL 446 SQ0                                      $3 i
+1 _ray149 80 EL 447 SQ0                             szTblCol $e.4
+1 _ray149 80 EL 448 SQ0                        ..3]expr $4
+1 _ray149 80 EL 449 SQ0                                  szType=i
+1 _ray149 80 EL 450 SQ0                        ...0]as
+1 _ray149 80 EL 451 SQ0                            C3_N_NATIONKEY
+1 _ray149 80 EL 452 SQ0                               bItemised=y
+1 _ray149 80 EL 453 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 454 SQ0                                  szType=i
+1 _ray149 80 EL 455 SQ0                                      $1 i
+1 _ray149 80 EL 456 SQ0                             szTblCol $F.1
+1 _ray149 80 EL 457 SQ0                        ..4]expr $5
+1 _ray149 80 EL 458 SQ0                                  szType=v
+1 _ray149 80 EL 459 SQ0                        ...0]as C4_N_NAME
+1 _ray149 80 EL 460 SQ0                               bItemised=y
+1 _ray149 80 EL 461 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 462 SQ0                                  szType=v
+1 _ray149 80 EL 463 SQ0                                      $2 v
+1 _ray149 80 EL 464 SQ0                             szTblCol $F.2
+1 _ray149 80 EL 465 SQ0                        ..5]expr $6
+1 _ray149 80 EL 466 SQ0                                  szType=i
+1 _ray149 80 EL 467 SQ0                        ...0]as
+1 _ray149 80 EL 468 SQ0                            C5_N_REGIONKEY
+1 _ray149 80 EL 469 SQ0                               bItemised=y
+1 _ray149 80 EL 470 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 471 SQ0                                  szType=i
+1 _ray149 80 EL 472 SQ0                                      $3 i
+1 _ray149 80 EL 473 SQ0                             szTblCol $F.3
+1 _ray149 80 EL 474 SQ0                        ..6]expr $7
+1 _ray149 80 EL 475 SQ0                                  szType=v
+1 _ray149 80 EL 476 SQ0                        ...0]as
+1 _ray149 80 EL 477 SQ0                              C6_N_COMMENT
+1 _ray149 80 EL 478 SQ0                               bItemised=y
+1 _ray149 80 EL 479 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 480 SQ0                                  szType=v
+1 _ray149 80 EL 481 SQ0                                      $4 v
+1 _ray149 80 EL 482 SQ0                             szTblCol $F.4
+1 _ray149 80 EL 483 SQ0                        .1]arriving #56
+1 _ray149 80 EL 484 SQ0                        ..0]expr $1
+1 _ray149 80 EL 485 SQ0                                  szType=l
+1 _ray149 80 EL 486 SQ0                        ...0]as
+1 _ray149 80 EL 487 SQ0                          C0_PS_SUPPLYCOST
+1 _ray149 80 EL 488 SQ0                               bItemised=y
+1 _ray149 80 EL 489 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 490 SQ0                                  szType=l
+1 _ray149 80 EL 491 SQ0                                      $1 l
+1 _ray149 80 EL 492 SQ0                             szTblCol $d.4
+1 _ray149 80 EL 493 SQ0                        ..1]expr $2
+1 _ray149 80 EL 494 SQ0                                  szType=i
+1 _ray149 80 EL 495 SQ0                        ...0]as
+1 _ray149 80 EL 496 SQ0                            C1_PS_AVAILQTY
+1 _ray149 80 EL 497 SQ0                               bItemised=y
+1 _ray149 80 EL 498 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 499 SQ0                                  szType=i
+1 _ray149 80 EL 500 SQ0                                      $2 i
+1 _ray149 80 EL 501 SQ0                             szTblCol $d.3
+1 _ray149 80 EL 502 SQ0                        ..2]expr $3
+1 _ray149 80 EL 503 SQ0                                  szType=i
+1 _ray149 80 EL 504 SQ0                        ...0]as
+1 _ray149 80 EL 505 SQ0                            C2_S_NATIONKEY
+1 _ray149 80 EL 506 SQ0                               bItemised=y
+1 _ray149 80 EL 507 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 508 SQ0                                  szType=i
+1 _ray149 80 EL 509 SQ0                                      $7 i
+1 _ray149 80 EL 510 SQ0                             szTblCol $e.4
+1 _ray149 80 EL 511 SQ0                        4]synthesise
+1 _ray149 80 EL 512 SQ0
+1 _ray149 80 EL 513 SQ0 ==19 ?--0x812a8040-- ==20 P--0x57db7040-- ==21 ?--0x812aa040-- ==22 ?--0x812ab040--
+1 _ray149 80 EL 514 SQ0   STAGE S05 *1         PROJECT *4           COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 515 SQ0   0]topology                     bEarly=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 516 SQ0    YG_ALL_PARTITIONS   0]level
+1 _ray149 80 EL 517 SQ0                              AL_PARTITION
+1 _ray149 80 EL 518 SQ0                        1]stream
+1 _ray149 80 EL 519 SQ0                        .0]projection #56
+1 _ray149 80 EL 520 SQ0                        ..0]expr $1
+1 _ray149 80 EL 521 SQ0                                  szType=l
+1 _ray149 80 EL 522 SQ0                        ...0]as
+1 _ray149 80 EL 523 SQ0                          C0_PS_SUPPLYCOST
+1 _ray149 80 EL 524 SQ0                               bItemised=y
+1 _ray149 80 EL 525 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 526 SQ0                                  szType=l
+1 _ray149 80 EL 527 SQ0                                      $1 l
+1 _ray149 80 EL 528 SQ0                             szTblCol $d.4
+1 _ray149 80 EL 529 SQ0                        ..1]expr $2
+1 _ray149 80 EL 530 SQ0                                  szType=i
+1 _ray149 80 EL 531 SQ0                        ...0]as
+1 _ray149 80 EL 532 SQ0                            C1_PS_AVAILQTY
+1 _ray149 80 EL 533 SQ0                               bItemised=y
+1 _ray149 80 EL 534 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 535 SQ0                                  szType=i
+1 _ray149 80 EL 536 SQ0                                      $2 i
+1 _ray149 80 EL 537 SQ0                             szTblCol $d.3
+1 _ray149 80 EL 538 SQ0                        2]synthesise
+1 _ray149 80 EL 539 SQ0                        3]needed
+1 _ray149 80 EL 540 SQ0                        .0]expr $1
+1 _ray149 80 EL 541 SQ0                                  szType=l
+1 _ray149 80 EL 542 SQ0                        ..0]as
+1 _ray149 80 EL 543 SQ0                          C0_PS_SUPPLYCOST
+1 _ray149 80 EL 544 SQ0                               bItemised=y
+1 _ray149 80 EL 545 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 546 SQ0                                  szType=l
+1 _ray149 80 EL 547 SQ0                                    $d.4 l
+1 _ray149 80 EL 548 SQ0                        .1]expr $2
+1 _ray149 80 EL 549 SQ0                                  szType=i
+1 _ray149 80 EL 550 SQ0                        ..0]as
+1 _ray149 80 EL 551 SQ0                            C1_PS_AVAILQTY
+1 _ray149 80 EL 552 SQ0                               bItemised=y
+1 _ray149 80 EL 553 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 554 SQ0                                  szType=i
+1 _ray149 80 EL 555 SQ0                                    $d.3 i
+1 _ray149 80 EL 556 SQ0
+1 _ray149 80 EL 557 SQ0 ==23 ?--0x812ac040-- ==24 P--0x596b3040-- ==25 ?--0x812ae040-- ==26 ?--0x812af040--
+1 _ray149 80 EL 558 SQ0   STAGE S06 *1         AGGREG *3            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 559 SQ0   0]topology           0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 560 SQ0    YG_ALL_PARTITIONS         AL_PARTITION
+1 _ray149 80 EL 561 SQ0                        1]stream
+1 _ray149 80 EL 562 SQ0                        .0]projection #0
+1 _ray149 80 EL 563 SQ0                        ..0]expr $1
+1 _ray149 80 EL 564 SQ0                                  szType=l
+1 _ray149 80 EL 565 SQ0                        ...0]as C0_COL1
+1 _ray149 80 EL 566 SQ0                               bItemised=y
+1 _ray149 80 EL 567 SQ0                              bSynthetic=y
+1 _ray149 80 EL 568 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 569 SQ0                                  bAggOp=y
+1 _ray149 80 EL 570 SQ0                                  szType=l
+1 _ray149 80 EL 571 SQ0                                         )
+1 _ray149 80 EL 572 SQ0                                        $1
+1 _ray149 80 EL 573 SQ0                             szTblCol=$d.4
+1 _ray149 80 EL 574 SQ0                                  szType=l
+1 _ray149 80 EL 575 SQ0                                        $2
+1 _ray149 80 EL 576 SQ0                             szTblCol=$d.3
+1 _ray149 80 EL 577 SQ0                                  szType=i
+1 _ray149 80 EL 578 SQ0                                  casttype
+1 _ray149 80 EL 579 SQ0                                   DECIMAL
+1 _ray149 80 EL 580 SQ0                                      CAST
+1 _ray149 80 EL 581 SQ0                                         *
+1 _ray149 80 EL 582 SQ0                                       sum
+1 _ray149 80 EL 583 SQ0                        2]synthesise
+1 _ray149 80 EL 584 SQ0
+1 _ray149 80 EL 585 SQ0 ==27 ?--0x812b0040-- ==28 N--0x5962f040-- ==29 ?--0x812b2040-- ==30 ?--0x812b3040--
+1 _ray149 80 EL 586 SQ0   STAGE S07 *1         AGGREG *3            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 587 SQ0   0]topology           0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 588 SQ0         YG_ALL_NODES              AL_NODE
+1 _ray149 80 EL 589 SQ0                        1]stream
+1 _ray149 80 EL 590 SQ0                        .0]projection #0
+1 _ray149 80 EL 591 SQ0                        ..0]expr $1
+1 _ray149 80 EL 592 SQ0                                  szType=l
+1 _ray149 80 EL 593 SQ0                        ...0]as C0_COL1
+1 _ray149 80 EL 594 SQ0                               bItemised=y
+1 _ray149 80 EL 595 SQ0                              bSynthetic=y
+1 _ray149 80 EL 596 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 597 SQ0                                  bAggOp=y
+1 _ray149 80 EL 598 SQ0                                  szType=l
+1 _ray149 80 EL 599 SQ0                                         )
+1 _ray149 80 EL 600 SQ0                                        $1
+1 _ray149 80 EL 601 SQ0                                  szType=l
+1 _ray149 80 EL 602 SQ0                                       sum
+1 _ray149 80 EL 603 SQ0                        2]synthesise
+1 _ray149 80 EL 604 SQ0
+1 _ray149 80 EL 605 SQ0 ==31 ?--0x812b4040-- ==32 O--0x59625040-- ==33 ?--0x812b6040-- ==34 ?--0x812b7040--
+1 _ray149 80 EL 606 SQ0   STAGE S08 *1         AGGREG *3            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 607 SQ0   0]topology           0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 608 SQ0       YG_ORIGIN_NODE            AL_ORIGIN
+1 _ray149 80 EL 609 SQ0                        1]stream
+1 _ray149 80 EL 610 SQ0                        .0]projection #0
+1 _ray149 80 EL 611 SQ0                        ..0]expr $1
+1 _ray149 80 EL 612 SQ0                                  szType=l
+1 _ray149 80 EL 613 SQ0                        ...0]as C0_COL1
+1 _ray149 80 EL 614 SQ0                               bItemised=y
+1 _ray149 80 EL 615 SQ0                              bSynthetic=y
+1 _ray149 80 EL 616 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 617 SQ0                                  bAggOp=y
+1 _ray149 80 EL 618 SQ0                                  szType=l
+1 _ray149 80 EL 619 SQ0                                         )
+1 _ray149 80 EL 620 SQ0                                        $1
+1 _ray149 80 EL 621 SQ0                                  szType=l
+1 _ray149 80 EL 622 SQ0                                       sum
+1 _ray149 80 EL 623 SQ0                        2]synthesise
+1 _ray149 80 EL 624 SQ0
+1 _ray149 80 EL 625 SQ0 ==35 ?--0x812b8040-- ==36 O--0x50c5b040-- ==37 ?--0x812ba040-- ==38 ?--0x812bb040--
+1 _ray149 80 EL 626 SQ0   STAGE S09 *1         PROJECT *3           COMBINED 0 *1        CAST broadcast *1
+1 _ray149 80 EL 627 SQ0   0]topology           0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 628 SQ0       YG_ORIGIN_NODE            AL_ORIGIN
+1 _ray149 80 EL 629 SQ0                        1]stream
+1 _ray149 80 EL 630 SQ0                        .0]projection #0
+1 _ray149 80 EL 631 SQ0                        ..0]expr $1
+1 _ray149 80 EL 632 SQ0                                  szType=l
+1 _ray149 80 EL 633 SQ0                        ...0]as C0_COL1
+1 _ray149 80 EL 634 SQ0                               bItemised=y
+1 _ray149 80 EL 635 SQ0                              bSynthetic=y
+1 _ray149 80 EL 636 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 637 SQ0                                  szType=l
+1 _ray149 80 EL 638 SQ0                                        $1
+1 _ray149 80 EL 639 SQ0                                  szType=l
+1 _ray149 80 EL 640 SQ0                                    0.0001
+1 _ray149 80 EL 641 SQ0                                         *
+1 _ray149 80 EL 642 SQ0                        2]synthesise
+1 _ray149 80 EL 643 SQ0
+1 _ray149 80 EL 644 SQ0 ==39 ?--0x812bc040-- ==40 P--0x6c8e8040-- ==41 P--0x65d0c040-- ==42 ?--0x812be040-- ==43 ?--0x812bf040--
+1 _ray149 80 EL 645 SQ0   STAGE S10 *1         CROSSJOIN *5         HASH *5              COMBINED 0 *1        CAST hashcast *1
+1 _ray149 80 EL 646 SQ0   0]topology              bFusedProject=y   0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 647 SQ0    YG_ALL_PARTITIONS          bSmoothed=y         AL_PARTITION
+1 _ray149 80 EL 648 SQ0                        0]level              1]stream
+1 _ray149 80 EL 649 SQ0                              AL_PARTITION   .0]projection #56
+1 _ray149 80 EL 650 SQ0                        1]table a            ..0]expr $1
+1 _ray149 80 EL 651 SQ0                        .0]tableNm                  bInjected=y
+1 _ray149 80 EL 652 SQ0                                  PartSupp          bKeyCol=$K1
+1 _ray149 80 EL 653 SQ0                        .1]tableInfo                   szType=l
+1 _ray149 80 EL 654 SQ0                        ..0]tablePtn $a.1    ...0]rpnCalc
+1 _ray149 80 EL 655 SQ0                        ..1]tableSize 131              szType=l
+1 _ray149 80 EL 656 SQ0                        ..2]rowSize 173                      $1
+1 _ray149 80 EL 657 SQ0                        ..3]rowCount 720               szType=l
+1 _ray149 80 EL 658 SQ0                        .2]indexList         ...1]as C0_COL0
+1 _ray149 80 EL 659 SQ0                        ..0]index                   bItemised=y
+1 _ray149 80 EL 660 SQ0                            bChosenIndex=y         bSynthetic=y
+1 _ray149 80 EL 661 SQ0                        ...0]indexNm         ..1]expr $2
+1 _ray149 80 EL 662 SQ0                              IxPS_PARTKEY          bKeyCol=$K2
+1 _ray149 80 EL 663 SQ0                        ...1]idxColList                szType=i
+1 _ray149 80 EL 664 SQ0                        ....0]idxCol $a.1    ...0]as
+1 _ray149 80 EL 665 SQ0                        ...2]bounds cross         C1_ps_partkey
+1 _ray149 80 EL 666 SQ0                        ....0]bound                 bItemised=y
+1 _ray149 80 EL 667 SQ0                            bChosenBound=y   ...1]rpnCalc
+1 _ray149 80 EL 668 SQ0                                       $I1             szType=i
+1 _ray149 80 EL 669 SQ0                        ..1]index                            $2
+1 _ray149 80 EL 670 SQ0                        ...0]indexNm              szTblCol=$a.1
+1 _ray149 80 EL 671 SQ0                              IxPS_SUPPKEY             szType=i
+1 _ray149 80 EL 672 SQ0                        ...1]idxColList      ...2]direction ASC
+1 _ray149 80 EL 673 SQ0                        ....0]idxCol $a.2    ..2]expr $3
+1 _ray149 80 EL 674 SQ0                        2]injected                     szType=l
+1 _ray149 80 EL 675 SQ0                        .0]expr $1           ...0]as
+1 _ray149 80 EL 676 SQ0                                  szType=i     C2_PS_SUPPLYCOST
+1 _ray149 80 EL 677 SQ0                        ..0]as                      bItemised=y
+1 _ray149 80 EL 678 SQ0                             C0_PS_PARTKEY   ...1]rpnCalc
+1 _ray149 80 EL 679 SQ0                               bItemised=y             szType=l
+1 _ray149 80 EL 680 SQ0                        ..1]rpnCalc                        $3 l
+1 _ray149 80 EL 681 SQ0                                  szType=i        szTblCol $a.4
+1 _ray149 80 EL 682 SQ0                                    $a.1 i   ..3]expr $4
+1 _ray149 80 EL 683 SQ0                        .1]expr $2                     szType=i
+1 _ray149 80 EL 684 SQ0                                  szType=i   ...0]as
+1 _ray149 80 EL 685 SQ0                        ..0]as                   C3_PS_AVAILQTY
+1 _ray149 80 EL 686 SQ0                             C1_PS_SUPPKEY          bItemised=y
+1 _ray149 80 EL 687 SQ0                               bItemised=y   ...1]rpnCalc
+1 _ray149 80 EL 688 SQ0                        ..1]rpnCalc                    szType=i
+1 _ray149 80 EL 689 SQ0                                  szType=i                 $4 i
+1 _ray149 80 EL 690 SQ0                                    $a.2 i        szTblCol $a.3
+1 _ray149 80 EL 691 SQ0                        .2]expr $3           ..4]expr $5
+1 _ray149 80 EL 692 SQ0                                  szType=i             szType=i
+1 _ray149 80 EL 693 SQ0                        ..0]as               ...0]as
+1 _ray149 80 EL 694 SQ0                            C2_PS_AVAILQTY        C4_PS_SUPPKEY
+1 _ray149 80 EL 695 SQ0                               bItemised=y          bItemised=y
+1 _ray149 80 EL 696 SQ0                        ..1]rpnCalc          ...1]rpnCalc
+1 _ray149 80 EL 697 SQ0                                  szType=i             szType=i
+1 _ray149 80 EL 698 SQ0                                    $a.3 i                 $5 i
+1 _ray149 80 EL 699 SQ0                        .3]expr $4                szTblCol $a.2
+1 _ray149 80 EL 700 SQ0                                  szType=l   2]hshColList
+1 _ray149 80 EL 701 SQ0                        ..0]as               .0]hshCol
+1 _ray149 80 EL 702 SQ0                          C3_PS_SUPPLYCOST                 $5 i
+1 _ray149 80 EL 703 SQ0                               bItemised=y        szTblCol $a.2
+1 _ray149 80 EL 704 SQ0                        ..1]rpnCalc          3]synthesise
+1 _ray149 80 EL 705 SQ0                                  szType=l   4]hashing
+1 _ray149 80 EL 706 SQ0                                    $a.4 l                 $5 i
+1 _ray149 80 EL 707 SQ0                        .4]expr $5                szTblCol $a.2
+1 _ray149 80 EL 708 SQ0                                  szType=v
+1 _ray149 80 EL 709 SQ0                        ..0]as
+1 _ray149 80 EL 710 SQ0                             C4_PS_COMMENT
+1 _ray149 80 EL 711 SQ0                               bItemised=y
+1 _ray149 80 EL 712 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 713 SQ0                                  szType=v
+1 _ray149 80 EL 714 SQ0                                    $a.5 v
+1 _ray149 80 EL 715 SQ0                        3]stream
+1 _ray149 80 EL 716 SQ0                        .0]projection #56
+1 _ray149 80 EL 717 SQ0                        ..0]expr $1
+1 _ray149 80 EL 718 SQ0                               bInjected=y
+1 _ray149 80 EL 719 SQ0                               bKeyCol=$K1
+1 _ray149 80 EL 720 SQ0                                  szType=l
+1 _ray149 80 EL 721 SQ0                        ...0]rpnCalc
+1 _ray149 80 EL 722 SQ0                                  szType=l
+1 _ray149 80 EL 723 SQ0                                        $1
+1 _ray149 80 EL 724 SQ0                                  szType=l
+1 _ray149 80 EL 725 SQ0                        ...1]as C0_COL0
+1 _ray149 80 EL 726 SQ0                               bItemised=y
+1 _ray149 80 EL 727 SQ0                              bSynthetic=y
+1 _ray149 80 EL 728 SQ0                        ..1]expr $2
+1 _ray149 80 EL 729 SQ0                               bKeyCol=$K2
+1 _ray149 80 EL 730 SQ0                                  szType=i
+1 _ray149 80 EL 731 SQ0                        ...0]as
+1 _ray149 80 EL 732 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 733 SQ0                               bItemised=y
+1 _ray149 80 EL 734 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 735 SQ0                                  szType=i
+1 _ray149 80 EL 736 SQ0                                        $2
+1 _ray149 80 EL 737 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 738 SQ0                                  szType=i
+1 _ray149 80 EL 739 SQ0                        ...2]direction ASC
+1 _ray149 80 EL 740 SQ0                        ..2]expr $3
+1 _ray149 80 EL 741 SQ0                                  szType=l
+1 _ray149 80 EL 742 SQ0                        ...0]as
+1 _ray149 80 EL 743 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 744 SQ0                               bItemised=y
+1 _ray149 80 EL 745 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 746 SQ0                                  szType=l
+1 _ray149 80 EL 747 SQ0                                      $5 l
+1 _ray149 80 EL 748 SQ0                             szTblCol $a.4
+1 _ray149 80 EL 749 SQ0                        ..3]expr $4
+1 _ray149 80 EL 750 SQ0                                  szType=i
+1 _ray149 80 EL 751 SQ0                        ...0]as
+1 _ray149 80 EL 752 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 753 SQ0                               bItemised=y
+1 _ray149 80 EL 754 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 755 SQ0                                  szType=i
+1 _ray149 80 EL 756 SQ0                                      $4 i
+1 _ray149 80 EL 757 SQ0                             szTblCol $a.3
+1 _ray149 80 EL 758 SQ0                        ..4]expr $5
+1 _ray149 80 EL 759 SQ0                                  szType=i
+1 _ray149 80 EL 760 SQ0                        ...0]as
+1 _ray149 80 EL 761 SQ0                             C4_PS_SUPPKEY
+1 _ray149 80 EL 762 SQ0                               bItemised=y
+1 _ray149 80 EL 763 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 764 SQ0                                  szType=i
+1 _ray149 80 EL 765 SQ0                                      $3 i
+1 _ray149 80 EL 766 SQ0                             szTblCol $a.2
+1 _ray149 80 EL 767 SQ0                        4]synthesise
+1 _ray149 80 EL 768 SQ0
+1 _ray149 80 EL 769 SQ0 ==44 ?--0x812c0040-- ==45 P--0x50c17040-- ==46 ?--0x812c2040-- ==47 ?--0x812c3040--
+1 _ray149 80 EL 770 SQ0   STAGE S11 *1         INDEXJOIN *5         COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 771 SQ0   0]topology                  bSmoothed=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 772 SQ0    YG_ALL_PARTITIONS   0]level
+1 _ray149 80 EL 773 SQ0                              AL_PARTITION
+1 _ray149 80 EL 774 SQ0                        1]table b
+1 _ray149 80 EL 775 SQ0                        .0]tableNm
+1 _ray149 80 EL 776 SQ0                                  Supplier
+1 _ray149 80 EL 777 SQ0                        .1]tableInfo
+1 _ray149 80 EL 778 SQ0                        ..0]tablePtn $b.1
+1 _ray149 80 EL 779 SQ0                        ..1]tableSize 2
+1 _ray149 80 EL 780 SQ0                        ..2]rowSize 0
+1 _ray149 80 EL 781 SQ0                        ..3]rowCount 0
+1 _ray149 80 EL 782 SQ0                        .2]indexList
+1 _ray149 80 EL 783 SQ0                        ..0]index
+1 _ray149 80 EL 784 SQ0                            bChosenIndex=y
+1 _ray149 80 EL 785 SQ0                        ...0]indexNm
+1 _ray149 80 EL 786 SQ0                               IxS_SUPPKEY
+1 _ray149 80 EL 787 SQ0                        ...1]idxColList
+1 _ray149 80 EL 788 SQ0                        ....0]idxCol $b.1
+1 _ray149 80 EL 789 SQ0                        ...2]bounds
+1 _ray149 80 EL 790 SQ0                        ....0]bound ==
+1 _ray149 80 EL 791 SQ0                            bChosenBound=y
+1 _ray149 80 EL 792 SQ0                                       $I1
+1 _ray149 80 EL 793 SQ0                                        $5
+1 _ray149 80 EL 794 SQ0                             szTblCol=$a.2
+1 _ray149 80 EL 795 SQ0                                  szType=i
+1 _ray149 80 EL 796 SQ0                        2]injected
+1 _ray149 80 EL 797 SQ0                        .0]expr $1
+1 _ray149 80 EL 798 SQ0                                  szType=i
+1 _ray149 80 EL 799 SQ0                        ..0]as
+1 _ray149 80 EL 800 SQ0                              C0_S_SUPPKEY
+1 _ray149 80 EL 801 SQ0                               bItemised=y
+1 _ray149 80 EL 802 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 803 SQ0                                  szType=i
+1 _ray149 80 EL 804 SQ0                                    $b.1 i
+1 _ray149 80 EL 805 SQ0                        .1]expr $2
+1 _ray149 80 EL 806 SQ0                                  szType=v
+1 _ray149 80 EL 807 SQ0                        ..0]as C1_S_NAME
+1 _ray149 80 EL 808 SQ0                               bItemised=y
+1 _ray149 80 EL 809 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 810 SQ0                                  szType=v
+1 _ray149 80 EL 811 SQ0                                    $b.2 v
+1 _ray149 80 EL 812 SQ0                        .2]expr $3
+1 _ray149 80 EL 813 SQ0                                  szType=v
+1 _ray149 80 EL 814 SQ0                        ..0]as
+1 _ray149 80 EL 815 SQ0                              C2_S_ADDRESS
+1 _ray149 80 EL 816 SQ0                               bItemised=y
+1 _ray149 80 EL 817 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 818 SQ0                                  szType=v
+1 _ray149 80 EL 819 SQ0                                    $b.3 v
+1 _ray149 80 EL 820 SQ0                        .3]expr $4
+1 _ray149 80 EL 821 SQ0                                  szType=i
+1 _ray149 80 EL 822 SQ0                        ..0]as
+1 _ray149 80 EL 823 SQ0                            C3_S_NATIONKEY
+1 _ray149 80 EL 824 SQ0                               bItemised=y
+1 _ray149 80 EL 825 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 826 SQ0                                  szType=i
+1 _ray149 80 EL 827 SQ0                                    $b.4 i
+1 _ray149 80 EL 828 SQ0                        .4]expr $5
+1 _ray149 80 EL 829 SQ0                                  szType=v
+1 _ray149 80 EL 830 SQ0                        ..0]as C4_S_PHONE
+1 _ray149 80 EL 831 SQ0                               bItemised=y
+1 _ray149 80 EL 832 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 833 SQ0                                  szType=v
+1 _ray149 80 EL 834 SQ0                                    $b.5 v
+1 _ray149 80 EL 835 SQ0                        .5]expr $6
+1 _ray149 80 EL 836 SQ0                                  szType=l
+1 _ray149 80 EL 837 SQ0                        ..0]as
+1 _ray149 80 EL 838 SQ0                              C5_S_ACCTBAL
+1 _ray149 80 EL 839 SQ0                               bItemised=y
+1 _ray149 80 EL 840 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 841 SQ0                                  szType=l
+1 _ray149 80 EL 842 SQ0                                    $b.6 l
+1 _ray149 80 EL 843 SQ0                        .6]expr $7
+1 _ray149 80 EL 844 SQ0                                  szType=v
+1 _ray149 80 EL 845 SQ0                        ..0]as
+1 _ray149 80 EL 846 SQ0                              C6_S_COMMENT
+1 _ray149 80 EL 847 SQ0                               bItemised=y
+1 _ray149 80 EL 848 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 849 SQ0                                  szType=v
+1 _ray149 80 EL 850 SQ0                                    $b.7 v
+1 _ray149 80 EL 851 SQ0                        3]stream
+1 _ray149 80 EL 852 SQ0                        .0]projection #56
+1 _ray149 80 EL 853 SQ0                        ..0]expr $1
+1 _ray149 80 EL 854 SQ0                                  szType=l
+1 _ray149 80 EL 855 SQ0                        ...0]as C0_COL0
+1 _ray149 80 EL 856 SQ0                               bItemised=y
+1 _ray149 80 EL 857 SQ0                              bSynthetic=y
+1 _ray149 80 EL 858 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 859 SQ0                                  szType=l
+1 _ray149 80 EL 860 SQ0                                        $1
+1 _ray149 80 EL 861 SQ0                                  szType=l
+1 _ray149 80 EL 862 SQ0                        ..1]expr $2
+1 _ray149 80 EL 863 SQ0                                  szType=i
+1 _ray149 80 EL 864 SQ0                        ...0]as
+1 _ray149 80 EL 865 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 866 SQ0                               bItemised=y
+1 _ray149 80 EL 867 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 868 SQ0                                  szType=i
+1 _ray149 80 EL 869 SQ0                                        $2
+1 _ray149 80 EL 870 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 871 SQ0                                  szType=i
+1 _ray149 80 EL 872 SQ0                        ..2]expr $3
+1 _ray149 80 EL 873 SQ0                                  szType=l
+1 _ray149 80 EL 874 SQ0                        ...0]as
+1 _ray149 80 EL 875 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 876 SQ0                               bItemised=y
+1 _ray149 80 EL 877 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 878 SQ0                                  szType=l
+1 _ray149 80 EL 879 SQ0                                      $3 l
+1 _ray149 80 EL 880 SQ0                             szTblCol $a.4
+1 _ray149 80 EL 881 SQ0                        ..3]expr $4
+1 _ray149 80 EL 882 SQ0                                  szType=i
+1 _ray149 80 EL 883 SQ0                        ...0]as
+1 _ray149 80 EL 884 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 885 SQ0                               bItemised=y
+1 _ray149 80 EL 886 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 887 SQ0                                  szType=i
+1 _ray149 80 EL 888 SQ0                                      $4 i
+1 _ray149 80 EL 889 SQ0                             szTblCol $a.3
+1 _ray149 80 EL 890 SQ0                        ..4]expr $5
+1 _ray149 80 EL 891 SQ0                                  szType=i
+1 _ray149 80 EL 892 SQ0                        ...0]as
+1 _ray149 80 EL 893 SQ0                             C4_PS_SUPPKEY
+1 _ray149 80 EL 894 SQ0                               bItemised=y
+1 _ray149 80 EL 895 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 896 SQ0                                  szType=i
+1 _ray149 80 EL 897 SQ0                                      $5 i
+1 _ray149 80 EL 898 SQ0                             szTblCol $a.2
+1 _ray149 80 EL 899 SQ0                        ..5]expr $6
+1 _ray149 80 EL 900 SQ0                                  szType=i
+1 _ray149 80 EL 901 SQ0                        ...0]as
+1 _ray149 80 EL 902 SQ0                              C5_S_SUPPKEY
+1 _ray149 80 EL 903 SQ0                               bItemised=y
+1 _ray149 80 EL 904 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 905 SQ0                                  szType=i
+1 _ray149 80 EL 906 SQ0                                      $1 i
+1 _ray149 80 EL 907 SQ0                             szTblCol $b.1
+1 _ray149 80 EL 908 SQ0                        ..6]expr $7
+1 _ray149 80 EL 909 SQ0                                  szType=v
+1 _ray149 80 EL 910 SQ0                        ...0]as C6_S_NAME
+1 _ray149 80 EL 911 SQ0                               bItemised=y
+1 _ray149 80 EL 912 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 913 SQ0                                  szType=v
+1 _ray149 80 EL 914 SQ0                                      $2 v
+1 _ray149 80 EL 915 SQ0                             szTblCol $b.2
+1 _ray149 80 EL 916 SQ0                        ..7]expr $8
+1 _ray149 80 EL 917 SQ0                                  szType=v
+1 _ray149 80 EL 918 SQ0                        ...0]as
+1 _ray149 80 EL 919 SQ0                              C7_S_ADDRESS
+1 _ray149 80 EL 920 SQ0                               bItemised=y
+1 _ray149 80 EL 921 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 922 SQ0                                  szType=v
+1 _ray149 80 EL 923 SQ0                                      $3 v
+1 _ray149 80 EL 924 SQ0                             szTblCol $b.3
+1 _ray149 80 EL 925 SQ0                        ..8]expr $9
+1 _ray149 80 EL 926 SQ0                                  szType=i
+1 _ray149 80 EL 927 SQ0                        ...0]as
+1 _ray149 80 EL 928 SQ0                            C8_S_NATIONKEY
+1 _ray149 80 EL 929 SQ0                               bItemised=y
+1 _ray149 80 EL 930 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 931 SQ0                                  szType=i
+1 _ray149 80 EL 932 SQ0                                      $4 i
+1 _ray149 80 EL 933 SQ0                             szTblCol $b.4
+1 _ray149 80 EL 934 SQ0                        ..9]expr $10
+1 _ray149 80 EL 935 SQ0                                  szType=v
+1 _ray149 80 EL 936 SQ0                        ...0]as C9_S_PHONE
+1 _ray149 80 EL 937 SQ0                               bItemised=y
+1 _ray149 80 EL 938 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 939 SQ0                                  szType=v
+1 _ray149 80 EL 940 SQ0                                      $5 v
+1 _ray149 80 EL 941 SQ0                             szTblCol $b.5
+1 _ray149 80 EL 942 SQ0                        ..10]expr $11
+1 _ray149 80 EL 943 SQ0                                  szType=l
+1 _ray149 80 EL 944 SQ0                        ...0]as
+1 _ray149 80 EL 945 SQ0                             C10_S_ACCTBAL
+1 _ray149 80 EL 946 SQ0                               bItemised=y
+1 _ray149 80 EL 947 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 948 SQ0                                  szType=l
+1 _ray149 80 EL 949 SQ0                                      $6 l
+1 _ray149 80 EL 950 SQ0                             szTblCol $b.6
+1 _ray149 80 EL 951 SQ0                        ..11]expr $12
+1 _ray149 80 EL 952 SQ0                                  szType=v
+1 _ray149 80 EL 953 SQ0                        ...0]as
+1 _ray149 80 EL 954 SQ0                             C11_S_COMMENT
+1 _ray149 80 EL 955 SQ0                               bItemised=y
+1 _ray149 80 EL 956 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 957 SQ0                                  szType=v
+1 _ray149 80 EL 958 SQ0                                      $7 v
+1 _ray149 80 EL 959 SQ0                             szTblCol $b.7
+1 _ray149 80 EL 960 SQ0                        .1]arriving #56
+1 _ray149 80 EL 961 SQ0                        ..0]expr $1
+1 _ray149 80 EL 962 SQ0                               bInjected=y
+1 _ray149 80 EL 963 SQ0                               bKeyCol=$K1
+1 _ray149 80 EL 964 SQ0                                  szType=l
+1 _ray149 80 EL 965 SQ0                        ...0]rpnCalc
+1 _ray149 80 EL 966 SQ0                                  szType=l
+1 _ray149 80 EL 967 SQ0                                        $1
+1 _ray149 80 EL 968 SQ0                                  szType=l
+1 _ray149 80 EL 969 SQ0                        ...1]as C0_COL0
+1 _ray149 80 EL 970 SQ0                               bItemised=y
+1 _ray149 80 EL 971 SQ0                              bSynthetic=y
+1 _ray149 80 EL 972 SQ0                        ..1]expr $2
+1 _ray149 80 EL 973 SQ0                               bKeyCol=$K2
+1 _ray149 80 EL 974 SQ0                                  szType=i
+1 _ray149 80 EL 975 SQ0                        ...0]as
+1 _ray149 80 EL 976 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 977 SQ0                               bItemised=y
+1 _ray149 80 EL 978 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 979 SQ0                                  szType=i
+1 _ray149 80 EL 980 SQ0                                        $2
+1 _ray149 80 EL 981 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 982 SQ0                                  szType=i
+1 _ray149 80 EL 983 SQ0                        ...2]direction ASC
+1 _ray149 80 EL 984 SQ0                        ..2]expr $3
+1 _ray149 80 EL 985 SQ0                                  szType=l
+1 _ray149 80 EL 986 SQ0                        ...0]as
+1 _ray149 80 EL 987 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 988 SQ0                               bItemised=y
+1 _ray149 80 EL 989 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 990 SQ0                                  szType=l
+1 _ray149 80 EL 991 SQ0                                      $3 l
+1 _ray149 80 EL 992 SQ0                             szTblCol $a.4
+1 _ray149 80 EL 993 SQ0                        ..3]expr $4
+1 _ray149 80 EL 994 SQ0                                  szType=i
+1 _ray149 80 EL 995 SQ0                        ...0]as
+1 _ray149 80 EL 996 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 997 SQ0                               bItemised=y
+1 _ray149 80 EL 998 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 999 SQ0                                  szType=i
+1 _ray149 80 EL 1000 SQ0                                      $4 i
+1 _ray149 80 EL 1001 SQ0                             szTblCol $a.3
+1 _ray149 80 EL 1002 SQ0                        ..4]expr $5
+1 _ray149 80 EL 1003 SQ0                                  szType=i
+1 _ray149 80 EL 1004 SQ0                        ...0]as
+1 _ray149 80 EL 1005 SQ0                             C4_PS_SUPPKEY
+1 _ray149 80 EL 1006 SQ0                               bItemised=y
+1 _ray149 80 EL 1007 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1008 SQ0                                  szType=i
+1 _ray149 80 EL 1009 SQ0                                      $5 i
+1 _ray149 80 EL 1010 SQ0                             szTblCol $a.2
+1 _ray149 80 EL 1011 SQ0                        4]synthesise
+1 _ray149 80 EL 1012 SQ0
+1 _ray149 80 EL 1013 SQ0 ==48 ?--0x812c4040-- ==49 P--0x57dba040-- ==50 ?--0x812c6040-- ==51 ?--0x812c7040--
+1 _ray149 80 EL 1014 SQ0   STAGE S12 *1         PROJECT *4           COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1015 SQ0   0]topology                     bEarly=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 1016 SQ0    YG_ALL_PARTITIONS   0]level
+1 _ray149 80 EL 1017 SQ0                              AL_PARTITION
+1 _ray149 80 EL 1018 SQ0                        1]stream
+1 _ray149 80 EL 1019 SQ0                        .0]projection #56
+1 _ray149 80 EL 1020 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1021 SQ0                               bInjected=y
+1 _ray149 80 EL 1022 SQ0                               bKeyCol=$K1
+1 _ray149 80 EL 1023 SQ0                                  szType=l
+1 _ray149 80 EL 1024 SQ0                        ...0]rpnCalc
+1 _ray149 80 EL 1025 SQ0                                  szType=l
+1 _ray149 80 EL 1026 SQ0                                        $1
+1 _ray149 80 EL 1027 SQ0                                  szType=l
+1 _ray149 80 EL 1028 SQ0                        ...1]as C0_COL0
+1 _ray149 80 EL 1029 SQ0                               bItemised=y
+1 _ray149 80 EL 1030 SQ0                              bSynthetic=y
+1 _ray149 80 EL 1031 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1032 SQ0                               bKeyCol=$K2
+1 _ray149 80 EL 1033 SQ0                                  szType=i
+1 _ray149 80 EL 1034 SQ0                        ...0]as
+1 _ray149 80 EL 1035 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1036 SQ0                               bItemised=y
+1 _ray149 80 EL 1037 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1038 SQ0                                  szType=i
+1 _ray149 80 EL 1039 SQ0                                        $2
+1 _ray149 80 EL 1040 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 1041 SQ0                                  szType=i
+1 _ray149 80 EL 1042 SQ0                        ...2]direction ASC
+1 _ray149 80 EL 1043 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1044 SQ0                                  szType=l
+1 _ray149 80 EL 1045 SQ0                        ...0]as
+1 _ray149 80 EL 1046 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 1047 SQ0                               bItemised=y
+1 _ray149 80 EL 1048 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1049 SQ0                                  szType=l
+1 _ray149 80 EL 1050 SQ0                                      $3 l
+1 _ray149 80 EL 1051 SQ0                             szTblCol $a.4
+1 _ray149 80 EL 1052 SQ0                        ..3]expr $4
+1 _ray149 80 EL 1053 SQ0                                  szType=i
+1 _ray149 80 EL 1054 SQ0                        ...0]as
+1 _ray149 80 EL 1055 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 1056 SQ0                               bItemised=y
+1 _ray149 80 EL 1057 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1058 SQ0                                  szType=i
+1 _ray149 80 EL 1059 SQ0                                      $4 i
+1 _ray149 80 EL 1060 SQ0                             szTblCol $a.3
+1 _ray149 80 EL 1061 SQ0                        ..4]expr $5
+1 _ray149 80 EL 1062 SQ0                                  szType=i
+1 _ray149 80 EL 1063 SQ0                        ...0]as
+1 _ray149 80 EL 1064 SQ0                            C4_S_NATIONKEY
+1 _ray149 80 EL 1065 SQ0                               bItemised=y
+1 _ray149 80 EL 1066 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1067 SQ0                                  szType=i
+1 _ray149 80 EL 1068 SQ0                                      $9 i
+1 _ray149 80 EL 1069 SQ0                             szTblCol $b.4
+1 _ray149 80 EL 1070 SQ0                        2]synthesise
+1 _ray149 80 EL 1071 SQ0                        3]needed
+1 _ray149 80 EL 1072 SQ0                        .0]expr $1
+1 _ray149 80 EL 1073 SQ0                               bInjected=y
+1 _ray149 80 EL 1074 SQ0                               bKeyCol=$K1
+1 _ray149 80 EL 1075 SQ0                                  szType=l
+1 _ray149 80 EL 1076 SQ0                        ..0]rpnCalc
+1 _ray149 80 EL 1077 SQ0                                  szType=l
+1 _ray149 80 EL 1078 SQ0                                        $1
+1 _ray149 80 EL 1079 SQ0                                  szType=l
+1 _ray149 80 EL 1080 SQ0                        .1]expr $2
+1 _ray149 80 EL 1081 SQ0                               bKeyCol=$K2
+1 _ray149 80 EL 1082 SQ0                                  szType=i
+1 _ray149 80 EL 1083 SQ0                        ..0]as
+1 _ray149 80 EL 1084 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1085 SQ0                               bItemised=y
+1 _ray149 80 EL 1086 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1087 SQ0                                  szType=i
+1 _ray149 80 EL 1088 SQ0                                      $a.1
+1 _ray149 80 EL 1089 SQ0                                  szType=i
+1 _ray149 80 EL 1090 SQ0                        ..2]direction ASC
+1 _ray149 80 EL 1091 SQ0                        .2]expr $3
+1 _ray149 80 EL 1092 SQ0                                  szType=l
+1 _ray149 80 EL 1093 SQ0                        ..0]as
+1 _ray149 80 EL 1094 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 1095 SQ0                               bItemised=y
+1 _ray149 80 EL 1096 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1097 SQ0                                  szType=l
+1 _ray149 80 EL 1098 SQ0                                    $a.4 l
+1 _ray149 80 EL 1099 SQ0                        .3]expr $4
+1 _ray149 80 EL 1100 SQ0                                  szType=i
+1 _ray149 80 EL 1101 SQ0                        ..0]as
+1 _ray149 80 EL 1102 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 1103 SQ0                               bItemised=y
+1 _ray149 80 EL 1104 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1105 SQ0                                  szType=i
+1 _ray149 80 EL 1106 SQ0                                    $a.3 i
+1 _ray149 80 EL 1107 SQ0                        .4]expr $5
+1 _ray149 80 EL 1108 SQ0                                  szType=i
+1 _ray149 80 EL 1109 SQ0                        ..0]as
+1 _ray149 80 EL 1110 SQ0                            C4_S_NATIONKEY
+1 _ray149 80 EL 1111 SQ0                               bItemised=y
+1 _ray149 80 EL 1112 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1113 SQ0                                  szType=i
+1 _ray149 80 EL 1114 SQ0                                    $b.4 i
+1 _ray149 80 EL 1115 SQ0
+1 _ray149 80 EL 1116 SQ0 ==52 ?--0x812c8040-- ==53 P--0x6c8dc040-- ==54 P--0x5965f040-- ==55 ?--0x812ca040-- ==56 ?--0x812cb040--
+1 _ray149 80 EL 1117 SQ0   STAGE S13 *1         INDEXJOIN *5         FILTER *4            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1118 SQ0   0]topology                  bSmoothed=y   0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 1119 SQ0    YG_ALL_PARTITIONS   0]level                    AL_PARTITION
+1 _ray149 80 EL 1120 SQ0                              AL_PARTITION   1]boolCalc
+1 _ray149 80 EL 1121 SQ0                        1]table C            .0]cmpPred ==
+1 _ray149 80 EL 1122 SQ0                        .0]tableNm nation                    $7
+1 _ray149 80 EL 1123 SQ0                        .1]tableInfo              szTblCol=$C.2
+1 _ray149 80 EL 1124 SQ0                        ..0]tablePtn $C.1              szType=v
+1 _ray149 80 EL 1125 SQ0                        ..1]tableSize 4                  'IRAQ'
+1 _ray149 80 EL 1126 SQ0                        ..2]rowSize 120      2]stream
+1 _ray149 80 EL 1127 SQ0                        ..3]rowCount 25      .0]projection #56
+1 _ray149 80 EL 1128 SQ0                        .2]indexList         ..0]expr $1
+1 _ray149 80 EL 1129 SQ0                        ..0]index                      szType=l
+1 _ray149 80 EL 1130 SQ0                            bChosenIndex=y   ...0]as C0_COL0
+1 _ray149 80 EL 1131 SQ0                        ...0]indexNm                bItemised=y
+1 _ray149 80 EL 1132 SQ0                             IxN_NATIONKEY         bSynthetic=y
+1 _ray149 80 EL 1133 SQ0                        ...1]idxColList      ...1]rpnCalc
+1 _ray149 80 EL 1134 SQ0                        ....0]idxCol $C.1              szType=l
+1 _ray149 80 EL 1135 SQ0                        ...2]bounds                          $1
+1 _ray149 80 EL 1136 SQ0                        ....0]bound ==                 szType=l
+1 _ray149 80 EL 1137 SQ0                            bChosenBound=y   ..1]expr $2
+1 _ray149 80 EL 1138 SQ0                                       $I1             szType=i
+1 _ray149 80 EL 1139 SQ0                                        $5   ...0]as
+1 _ray149 80 EL 1140 SQ0                             szTblCol=$b.4        C1_ps_partkey
+1 _ray149 80 EL 1141 SQ0                                  szType=i          bItemised=y
+1 _ray149 80 EL 1142 SQ0                        2]injected           ...1]rpnCalc
+1 _ray149 80 EL 1143 SQ0                        .0]expr $1                     szType=i
+1 _ray149 80 EL 1144 SQ0                                  szType=i                   $2
+1 _ray149 80 EL 1145 SQ0                        ..0]as                    szTblCol=$a.1
+1 _ray149 80 EL 1146 SQ0                            C0_N_NATIONKEY             szType=i
+1 _ray149 80 EL 1147 SQ0                               bItemised=y   ..2]expr $3
+1 _ray149 80 EL 1148 SQ0                        ..1]rpnCalc                    szType=l
+1 _ray149 80 EL 1149 SQ0                                  szType=i   ...0]as
+1 _ray149 80 EL 1150 SQ0                                    $C.1 i     C2_PS_SUPPLYCOST
+1 _ray149 80 EL 1151 SQ0                        .1]expr $2                  bItemised=y
+1 _ray149 80 EL 1152 SQ0                                  szType=v   ...1]rpnCalc
+1 _ray149 80 EL 1153 SQ0                        ..0]as C1_N_NAME               szType=l
+1 _ray149 80 EL 1154 SQ0                               bItemised=y                 $3 l
+1 _ray149 80 EL 1155 SQ0                        ..1]rpnCalc               szTblCol $a.4
+1 _ray149 80 EL 1156 SQ0                                  szType=v   ..3]expr $4
+1 _ray149 80 EL 1157 SQ0                                    $C.2 v             szType=i
+1 _ray149 80 EL 1158 SQ0                        .2]expr $3           ...0]as
+1 _ray149 80 EL 1159 SQ0                                  szType=i       C3_PS_AVAILQTY
+1 _ray149 80 EL 1160 SQ0                        ..0]as                      bItemised=y
+1 _ray149 80 EL 1161 SQ0                            C2_N_REGIONKEY   ...1]rpnCalc
+1 _ray149 80 EL 1162 SQ0                               bItemised=y             szType=i
+1 _ray149 80 EL 1163 SQ0                        ..1]rpnCalc                        $4 i
+1 _ray149 80 EL 1164 SQ0                                  szType=i        szTblCol $a.3
+1 _ray149 80 EL 1165 SQ0                                    $C.3 i   ..4]expr $5
+1 _ray149 80 EL 1166 SQ0                        .3]expr $4                     szType=i
+1 _ray149 80 EL 1167 SQ0                                  szType=v   ...0]as
+1 _ray149 80 EL 1168 SQ0                        ..0]as                   C4_S_NATIONKEY
+1 _ray149 80 EL 1169 SQ0                              C3_N_COMMENT          bItemised=y
+1 _ray149 80 EL 1170 SQ0                               bItemised=y   ...1]rpnCalc
+1 _ray149 80 EL 1171 SQ0                        ..1]rpnCalc                    szType=i
+1 _ray149 80 EL 1172 SQ0                                  szType=v                 $5 i
+1 _ray149 80 EL 1173 SQ0                                    $C.4 v        szTblCol $b.4
+1 _ray149 80 EL 1174 SQ0                        3]stream             ..5]expr $6
+1 _ray149 80 EL 1175 SQ0                        .0]projection #56              szType=i
+1 _ray149 80 EL 1176 SQ0                        ..0]expr $1          ...0]as
+1 _ray149 80 EL 1177 SQ0                                  szType=l       C5_N_NATIONKEY
+1 _ray149 80 EL 1178 SQ0                        ...0]as C0_COL0             bItemised=y
+1 _ray149 80 EL 1179 SQ0                               bItemised=y   ...1]rpnCalc
+1 _ray149 80 EL 1180 SQ0                              bSynthetic=y             szType=i
+1 _ray149 80 EL 1181 SQ0                        ...1]rpnCalc                       $6 i
+1 _ray149 80 EL 1182 SQ0                                  szType=l        szTblCol $C.1
+1 _ray149 80 EL 1183 SQ0                                        $1   ..6]expr $7
+1 _ray149 80 EL 1184 SQ0                                  szType=l             szType=v
+1 _ray149 80 EL 1185 SQ0                        ..1]expr $2          ...0]as C6_N_NAME
+1 _ray149 80 EL 1186 SQ0                                  szType=i          bItemised=y
+1 _ray149 80 EL 1187 SQ0                        ...0]as              ...1]rpnCalc
+1 _ray149 80 EL 1188 SQ0                             C1_ps_partkey             szType=v
+1 _ray149 80 EL 1189 SQ0                               bItemised=y                 $7 v
+1 _ray149 80 EL 1190 SQ0                        ...1]rpnCalc              szTblCol $C.2
+1 _ray149 80 EL 1191 SQ0                                  szType=i   ..7]expr $8
+1 _ray149 80 EL 1192 SQ0                                        $2             szType=i
+1 _ray149 80 EL 1193 SQ0                             szTblCol=$a.1   ...0]as
+1 _ray149 80 EL 1194 SQ0                                  szType=i       C7_N_REGIONKEY
+1 _ray149 80 EL 1195 SQ0                        ..2]expr $3                 bItemised=y
+1 _ray149 80 EL 1196 SQ0                                  szType=l   ...1]rpnCalc
+1 _ray149 80 EL 1197 SQ0                        ...0]as                        szType=i
+1 _ray149 80 EL 1198 SQ0                          C2_PS_SUPPLYCOST                 $8 i
+1 _ray149 80 EL 1199 SQ0                               bItemised=y        szTblCol $C.3
+1 _ray149 80 EL 1200 SQ0                        ...1]rpnCalc         ..8]expr $9
+1 _ray149 80 EL 1201 SQ0                                  szType=l             szType=v
+1 _ray149 80 EL 1202 SQ0                                      $3 l   ...0]as
+1 _ray149 80 EL 1203 SQ0                             szTblCol $a.4         C8_N_COMMENT
+1 _ray149 80 EL 1204 SQ0                        ..3]expr $4                 bItemised=y
+1 _ray149 80 EL 1205 SQ0                                  szType=i   ...1]rpnCalc
+1 _ray149 80 EL 1206 SQ0                        ...0]as                        szType=v
+1 _ray149 80 EL 1207 SQ0                            C3_PS_AVAILQTY                 $9 v
+1 _ray149 80 EL 1208 SQ0                               bItemised=y        szTblCol $C.4
+1 _ray149 80 EL 1209 SQ0                        ...1]rpnCalc         3]synthesise
+1 _ray149 80 EL 1210 SQ0                                  szType=i
+1 _ray149 80 EL 1211 SQ0                                      $4 i
+1 _ray149 80 EL 1212 SQ0                             szTblCol $a.3
+1 _ray149 80 EL 1213 SQ0                        ..4]expr $5
+1 _ray149 80 EL 1214 SQ0                                  szType=i
+1 _ray149 80 EL 1215 SQ0                        ...0]as
+1 _ray149 80 EL 1216 SQ0                            C4_S_NATIONKEY
+1 _ray149 80 EL 1217 SQ0                               bItemised=y
+1 _ray149 80 EL 1218 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1219 SQ0                                  szType=i
+1 _ray149 80 EL 1220 SQ0                                      $5 i
+1 _ray149 80 EL 1221 SQ0                             szTblCol $b.4
+1 _ray149 80 EL 1222 SQ0                        ..5]expr $6
+1 _ray149 80 EL 1223 SQ0                                  szType=i
+1 _ray149 80 EL 1224 SQ0                        ...0]as
+1 _ray149 80 EL 1225 SQ0                            C5_N_NATIONKEY
+1 _ray149 80 EL 1226 SQ0                               bItemised=y
+1 _ray149 80 EL 1227 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1228 SQ0                                  szType=i
+1 _ray149 80 EL 1229 SQ0                                      $1 i
+1 _ray149 80 EL 1230 SQ0                             szTblCol $C.1
+1 _ray149 80 EL 1231 SQ0                        ..6]expr $7
+1 _ray149 80 EL 1232 SQ0                                  szType=v
+1 _ray149 80 EL 1233 SQ0                        ...0]as C6_N_NAME
+1 _ray149 80 EL 1234 SQ0                               bItemised=y
+1 _ray149 80 EL 1235 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1236 SQ0                                  szType=v
+1 _ray149 80 EL 1237 SQ0                                      $2 v
+1 _ray149 80 EL 1238 SQ0                             szTblCol $C.2
+1 _ray149 80 EL 1239 SQ0                        ..7]expr $8
+1 _ray149 80 EL 1240 SQ0                                  szType=i
+1 _ray149 80 EL 1241 SQ0                        ...0]as
+1 _ray149 80 EL 1242 SQ0                            C7_N_REGIONKEY
+1 _ray149 80 EL 1243 SQ0                               bItemised=y
+1 _ray149 80 EL 1244 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1245 SQ0                                  szType=i
+1 _ray149 80 EL 1246 SQ0                                      $3 i
+1 _ray149 80 EL 1247 SQ0                             szTblCol $C.3
+1 _ray149 80 EL 1248 SQ0                        ..8]expr $9
+1 _ray149 80 EL 1249 SQ0                                  szType=v
+1 _ray149 80 EL 1250 SQ0                        ...0]as
+1 _ray149 80 EL 1251 SQ0                              C8_N_COMMENT
+1 _ray149 80 EL 1252 SQ0                               bItemised=y
+1 _ray149 80 EL 1253 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1254 SQ0                                  szType=v
+1 _ray149 80 EL 1255 SQ0                                      $4 v
+1 _ray149 80 EL 1256 SQ0                             szTblCol $C.4
+1 _ray149 80 EL 1257 SQ0                        .1]arriving #56
+1 _ray149 80 EL 1258 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1259 SQ0                               bInjected=y
+1 _ray149 80 EL 1260 SQ0                               bKeyCol=$K1
+1 _ray149 80 EL 1261 SQ0                                  szType=l
+1 _ray149 80 EL 1262 SQ0                        ...0]rpnCalc
+1 _ray149 80 EL 1263 SQ0                                  szType=l
+1 _ray149 80 EL 1264 SQ0                                        $1
+1 _ray149 80 EL 1265 SQ0                                  szType=l
+1 _ray149 80 EL 1266 SQ0                        ...1]as C0_COL0
+1 _ray149 80 EL 1267 SQ0                               bItemised=y
+1 _ray149 80 EL 1268 SQ0                              bSynthetic=y
+1 _ray149 80 EL 1269 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1270 SQ0                               bKeyCol=$K2
+1 _ray149 80 EL 1271 SQ0                                  szType=i
+1 _ray149 80 EL 1272 SQ0                        ...0]as
+1 _ray149 80 EL 1273 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1274 SQ0                               bItemised=y
+1 _ray149 80 EL 1275 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1276 SQ0                                  szType=i
+1 _ray149 80 EL 1277 SQ0                                        $2
+1 _ray149 80 EL 1278 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 1279 SQ0                                  szType=i
+1 _ray149 80 EL 1280 SQ0                        ...2]direction ASC
+1 _ray149 80 EL 1281 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1282 SQ0                                  szType=l
+1 _ray149 80 EL 1283 SQ0                        ...0]as
+1 _ray149 80 EL 1284 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 1285 SQ0                               bItemised=y
+1 _ray149 80 EL 1286 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1287 SQ0                                  szType=l
+1 _ray149 80 EL 1288 SQ0                                      $3 l
+1 _ray149 80 EL 1289 SQ0                             szTblCol $a.4
+1 _ray149 80 EL 1290 SQ0                        ..3]expr $4
+1 _ray149 80 EL 1291 SQ0                                  szType=i
+1 _ray149 80 EL 1292 SQ0                        ...0]as
+1 _ray149 80 EL 1293 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 1294 SQ0                               bItemised=y
+1 _ray149 80 EL 1295 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1296 SQ0                                  szType=i
+1 _ray149 80 EL 1297 SQ0                                      $4 i
+1 _ray149 80 EL 1298 SQ0                             szTblCol $a.3
+1 _ray149 80 EL 1299 SQ0                        ..4]expr $5
+1 _ray149 80 EL 1300 SQ0                                  szType=i
+1 _ray149 80 EL 1301 SQ0                        ...0]as
+1 _ray149 80 EL 1302 SQ0                            C4_S_NATIONKEY
+1 _ray149 80 EL 1303 SQ0                               bItemised=y
+1 _ray149 80 EL 1304 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1305 SQ0                                  szType=i
+1 _ray149 80 EL 1306 SQ0                                      $9 i
+1 _ray149 80 EL 1307 SQ0                             szTblCol $b.4
+1 _ray149 80 EL 1308 SQ0                        4]synthesise
+1 _ray149 80 EL 1309 SQ0
+1 _ray149 80 EL 1310 SQ0 ==57 ?--0x812cc040-- ==58 P--0x81690040-- ==59 ?--0x812ce040-- ==60 ?--0x812cf040--
+1 _ray149 80 EL 1311 SQ0   STAGE S14 *1         PROJECT *4           COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1312 SQ0   0]topology                     bEarly=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 1313 SQ0    YG_ALL_PARTITIONS   0]level
+1 _ray149 80 EL 1314 SQ0                              AL_PARTITION
+1 _ray149 80 EL 1315 SQ0                        1]stream
+1 _ray149 80 EL 1316 SQ0                        .0]projection #56
+1 _ray149 80 EL 1317 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1318 SQ0                               bInjected=y
+1 _ray149 80 EL 1319 SQ0                               bKeyCol=$K1
+1 _ray149 80 EL 1320 SQ0                                  szType=l
+1 _ray149 80 EL 1321 SQ0                        ...0]rpnCalc
+1 _ray149 80 EL 1322 SQ0                                  szType=l
+1 _ray149 80 EL 1323 SQ0                                        $1
+1 _ray149 80 EL 1324 SQ0                                  szType=l
+1 _ray149 80 EL 1325 SQ0                        ...1]as C0_COL0
+1 _ray149 80 EL 1326 SQ0                               bItemised=y
+1 _ray149 80 EL 1327 SQ0                              bSynthetic=y
+1 _ray149 80 EL 1328 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1329 SQ0                               bKeyCol=$K2
+1 _ray149 80 EL 1330 SQ0                                  szType=i
+1 _ray149 80 EL 1331 SQ0                        ...0]as
+1 _ray149 80 EL 1332 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1333 SQ0                               bItemised=y
+1 _ray149 80 EL 1334 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1335 SQ0                                  szType=i
+1 _ray149 80 EL 1336 SQ0                                        $2
+1 _ray149 80 EL 1337 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 1338 SQ0                                  szType=i
+1 _ray149 80 EL 1339 SQ0                        ...2]direction ASC
+1 _ray149 80 EL 1340 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1341 SQ0                                  szType=l
+1 _ray149 80 EL 1342 SQ0                        ...0]as
+1 _ray149 80 EL 1343 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 1344 SQ0                               bItemised=y
+1 _ray149 80 EL 1345 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1346 SQ0                                  szType=l
+1 _ray149 80 EL 1347 SQ0                                      $3 l
+1 _ray149 80 EL 1348 SQ0                             szTblCol $a.4
+1 _ray149 80 EL 1349 SQ0                        ..3]expr $4
+1 _ray149 80 EL 1350 SQ0                                  szType=i
+1 _ray149 80 EL 1351 SQ0                        ...0]as
+1 _ray149 80 EL 1352 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 1353 SQ0                               bItemised=y
+1 _ray149 80 EL 1354 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1355 SQ0                                  szType=i
+1 _ray149 80 EL 1356 SQ0                                      $4 i
+1 _ray149 80 EL 1357 SQ0                             szTblCol $a.3
+1 _ray149 80 EL 1358 SQ0                        2]synthesise
+1 _ray149 80 EL 1359 SQ0                        3]needed
+1 _ray149 80 EL 1360 SQ0                        .0]expr $1
+1 _ray149 80 EL 1361 SQ0                               bInjected=y
+1 _ray149 80 EL 1362 SQ0                               bKeyCol=$K1
+1 _ray149 80 EL 1363 SQ0                                  szType=l
+1 _ray149 80 EL 1364 SQ0                        ..0]rpnCalc
+1 _ray149 80 EL 1365 SQ0                                  szType=l
+1 _ray149 80 EL 1366 SQ0                                        $1
+1 _ray149 80 EL 1367 SQ0                                  szType=l
+1 _ray149 80 EL 1368 SQ0                        .1]expr $2
+1 _ray149 80 EL 1369 SQ0                               bKeyCol=$K2
+1 _ray149 80 EL 1370 SQ0                                  szType=i
+1 _ray149 80 EL 1371 SQ0                        ..0]as
+1 _ray149 80 EL 1372 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1373 SQ0                               bItemised=y
+1 _ray149 80 EL 1374 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1375 SQ0                                  szType=i
+1 _ray149 80 EL 1376 SQ0                                      $a.1
+1 _ray149 80 EL 1377 SQ0                                  szType=i
+1 _ray149 80 EL 1378 SQ0                        ..2]direction ASC
+1 _ray149 80 EL 1379 SQ0                        .2]expr $3
+1 _ray149 80 EL 1380 SQ0                                  szType=l
+1 _ray149 80 EL 1381 SQ0                        ..0]as
+1 _ray149 80 EL 1382 SQ0                          C2_PS_SUPPLYCOST
+1 _ray149 80 EL 1383 SQ0                               bItemised=y
+1 _ray149 80 EL 1384 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1385 SQ0                                  szType=l
+1 _ray149 80 EL 1386 SQ0                                    $a.4 l
+1 _ray149 80 EL 1387 SQ0                        .3]expr $4
+1 _ray149 80 EL 1388 SQ0                                  szType=i
+1 _ray149 80 EL 1389 SQ0                        ..0]as
+1 _ray149 80 EL 1390 SQ0                            C3_PS_AVAILQTY
+1 _ray149 80 EL 1391 SQ0                               bItemised=y
+1 _ray149 80 EL 1392 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1393 SQ0                                  szType=i
+1 _ray149 80 EL 1394 SQ0                                    $a.3 i
+1 _ray149 80 EL 1395 SQ0
+1 _ray149 80 EL 1396 SQ0 ==61 ?--0x812d0040-- ==62 P--0x6c860040-- ==63 ?--0x812d2040-- ==64 ?--0x812d3040--
+1 _ray149 80 EL 1397 SQ0   STAGE S15 *1         GBYAGG *4            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1398 SQ0   0]topology                  bSmoothed=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 1399 SQ0    YG_ALL_PARTITIONS   0]level
+1 _ray149 80 EL 1400 SQ0                              AL_PARTITION
+1 _ray149 80 EL 1401 SQ0                        1]key
+1 _ray149 80 EL 1402 SQ0                        .0]expr $K1
+1 _ray149 80 EL 1403 SQ0                               bInjected=y
+1 _ray149 80 EL 1404 SQ0                                  szType=l
+1 _ray149 80 EL 1405 SQ0                        ..0]rpnCalc
+1 _ray149 80 EL 1406 SQ0                                  szType=l
+1 _ray149 80 EL 1407 SQ0                                        $1
+1 _ray149 80 EL 1408 SQ0                                  szType=l
+1 _ray149 80 EL 1409 SQ0                        .1]expr $K2
+1 _ray149 80 EL 1410 SQ0                                  szType=i
+1 _ray149 80 EL 1411 SQ0                        ..0]as
+1 _ray149 80 EL 1412 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1413 SQ0                               bItemised=y
+1 _ray149 80 EL 1414 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1415 SQ0                                  szType=i
+1 _ray149 80 EL 1416 SQ0                                        $2
+1 _ray149 80 EL 1417 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 1418 SQ0                                  szType=i
+1 _ray149 80 EL 1419 SQ0                        ..2]direction ASC
+1 _ray149 80 EL 1420 SQ0                        2]stream
+1 _ray149 80 EL 1421 SQ0                        .0]projection #0
+1 _ray149 80 EL 1422 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1423 SQ0                               bInjected=y
+1 _ray149 80 EL 1424 SQ0                                    bKey=y
+1 _ray149 80 EL 1425 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1426 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1427 SQ0                                  szType=l
+1 _ray149 80 EL 1428 SQ0                        ...0]as
+1 _ray149 80 EL 1429 SQ0                            C0__SQ1RESULT_
+1 _ray149 80 EL 1430 SQ0                               bItemised=y
+1 _ray149 80 EL 1431 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1432 SQ0                                  szType=l
+1 _ray149 80 EL 1433 SQ0                                       $K1
+1 _ray149 80 EL 1434 SQ0                                  szType=l
+1 _ray149 80 EL 1435 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1436 SQ0                                    bKey=y
+1 _ray149 80 EL 1437 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1438 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1439 SQ0                                  szType=i
+1 _ray149 80 EL 1440 SQ0                        ...0]as
+1 _ray149 80 EL 1441 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1442 SQ0                               bItemised=y
+1 _ray149 80 EL 1443 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1444 SQ0                                  szType=i
+1 _ray149 80 EL 1445 SQ0                                       $K2
+1 _ray149 80 EL 1446 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1447 SQ0                                  szType=i
+1 _ray149 80 EL 1448 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1449 SQ0                                bPayload=y
+1 _ray149 80 EL 1450 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1451 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1452 SQ0                                  szType=l
+1 _ray149 80 EL 1453 SQ0                        ...0]as C2_COL2
+1 _ray149 80 EL 1454 SQ0                               bItemised=y
+1 _ray149 80 EL 1455 SQ0                              bSynthetic=y
+1 _ray149 80 EL 1456 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1457 SQ0                                  bAggOp=y
+1 _ray149 80 EL 1458 SQ0                                  szType=l
+1 _ray149 80 EL 1459 SQ0                                         )
+1 _ray149 80 EL 1460 SQ0                                        $3
+1 _ray149 80 EL 1461 SQ0                             szTblCol=$a.4
+1 _ray149 80 EL 1462 SQ0                                  szType=l
+1 _ray149 80 EL 1463 SQ0                                        $4
+1 _ray149 80 EL 1464 SQ0                             szTblCol=$a.3
+1 _ray149 80 EL 1465 SQ0                                  szType=i
+1 _ray149 80 EL 1466 SQ0                                  casttype
+1 _ray149 80 EL 1467 SQ0                                   DECIMAL
+1 _ray149 80 EL 1468 SQ0                                      CAST
+1 _ray149 80 EL 1469 SQ0                                         *
+1 _ray149 80 EL 1470 SQ0                                       sum
+1 _ray149 80 EL 1471 SQ0                        ..3]streamKey
+1 _ray149 80 EL 1472 SQ0                        ...0]expr $K1
+1 _ray149 80 EL 1473 SQ0                               bInjected=y
+1 _ray149 80 EL 1474 SQ0                                  szType=l
+1 _ray149 80 EL 1475 SQ0                        ....0]rpnCalc
+1 _ray149 80 EL 1476 SQ0                                  szType=l
+1 _ray149 80 EL 1477 SQ0                                        $1
+1 _ray149 80 EL 1478 SQ0                                  szType=l
+1 _ray149 80 EL 1479 SQ0                        ...1]expr $K2
+1 _ray149 80 EL 1480 SQ0                                  szType=i
+1 _ray149 80 EL 1481 SQ0                        ....0]as
+1 _ray149 80 EL 1482 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1483 SQ0                               bItemised=y
+1 _ray149 80 EL 1484 SQ0                        ....1]rpnCalc
+1 _ray149 80 EL 1485 SQ0                                  szType=i
+1 _ray149 80 EL 1486 SQ0                                        $2
+1 _ray149 80 EL 1487 SQ0                             szTblCol=$a.1
+1 _ray149 80 EL 1488 SQ0                                  szType=i
+1 _ray149 80 EL 1489 SQ0                        ....2]direction
+1 _ray149 80 EL 1490 SQ0                                       ASC
+1 _ray149 80 EL 1491 SQ0                        3]synthesise
+1 _ray149 80 EL 1492 SQ0                        .0]mapping
+1 _ray149 80 EL 1493 SQ0                        ..0]keyCells
+1 _ray149 80 EL 1494 SQ0                        ...0]map $K1
+1 _ray149 80 EL 1495 SQ0                               bInjected=y
+1 _ray149 80 EL 1496 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1497 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1498 SQ0                                  szType=l
+1 _ray149 80 EL 1499 SQ0                        ...1]map $K2
+1 _ray149 80 EL 1500 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1501 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1502 SQ0                                  szType=i
+1 _ray149 80 EL 1503 SQ0                        ..1]payloadCells
+1 _ray149 80 EL 1504 SQ0                        ...0]map $3
+1 _ray149 80 EL 1505 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1506 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1507 SQ0                                  szType=l
+1 _ray149 80 EL 1508 SQ0
+1 _ray149 80 EL 1509 SQ0 ==65 ?--0x812d9040-- ==66 N--0x6c890040-- ==67 ?--0x812db040-- ==68 ?--0x812dc040--
+1 _ray149 80 EL 1510 SQ0   STAGE S16 *1         GBYAGG *4            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1511 SQ0   0]topology                  bSmoothed=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 1512 SQ0         YG_ALL_NODES   0]level
+1 _ray149 80 EL 1513 SQ0                                   AL_NODE
+1 _ray149 80 EL 1514 SQ0                        1]key
+1 _ray149 80 EL 1515 SQ0                        .0]expr $K1
+1 _ray149 80 EL 1516 SQ0                               bInjected=y
+1 _ray149 80 EL 1517 SQ0                                  szType=l
+1 _ray149 80 EL 1518 SQ0                        ..0]rpnCalc
+1 _ray149 80 EL 1519 SQ0                                  szType=l
+1 _ray149 80 EL 1520 SQ0                                        $1
+1 _ray149 80 EL 1521 SQ0                                  szType=l
+1 _ray149 80 EL 1522 SQ0                        .1]expr $K2
+1 _ray149 80 EL 1523 SQ0                                  szType=i
+1 _ray149 80 EL 1524 SQ0                        ..0]as
+1 _ray149 80 EL 1525 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1526 SQ0                               bItemised=y
+1 _ray149 80 EL 1527 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1528 SQ0                                  szType=i
+1 _ray149 80 EL 1529 SQ0                                        $2
+1 _ray149 80 EL 1530 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1531 SQ0                                  szType=i
+1 _ray149 80 EL 1532 SQ0                        ..2]direction ASC
+1 _ray149 80 EL 1533 SQ0                        2]stream
+1 _ray149 80 EL 1534 SQ0                        .0]projection #0
+1 _ray149 80 EL 1535 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1536 SQ0                               bInjected=y
+1 _ray149 80 EL 1537 SQ0                                    bKey=y
+1 _ray149 80 EL 1538 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1539 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1540 SQ0                                  szType=l
+1 _ray149 80 EL 1541 SQ0                        ...0]as
+1 _ray149 80 EL 1542 SQ0                            C0__SQ1RESULT_
+1 _ray149 80 EL 1543 SQ0                               bItemised=y
+1 _ray149 80 EL 1544 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1545 SQ0                                  szType=l
+1 _ray149 80 EL 1546 SQ0                                       $K1
+1 _ray149 80 EL 1547 SQ0                                  szType=l
+1 _ray149 80 EL 1548 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1549 SQ0                                    bKey=y
+1 _ray149 80 EL 1550 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1551 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1552 SQ0                                  szType=i
+1 _ray149 80 EL 1553 SQ0                        ...0]as
+1 _ray149 80 EL 1554 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1555 SQ0                               bItemised=y
+1 _ray149 80 EL 1556 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1557 SQ0                                  szType=i
+1 _ray149 80 EL 1558 SQ0                                       $K2
+1 _ray149 80 EL 1559 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1560 SQ0                                  szType=i
+1 _ray149 80 EL 1561 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1562 SQ0                                bPayload=y
+1 _ray149 80 EL 1563 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1564 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1565 SQ0                                  szType=l
+1 _ray149 80 EL 1566 SQ0                        ...0]as C2_COL2
+1 _ray149 80 EL 1567 SQ0                               bItemised=y
+1 _ray149 80 EL 1568 SQ0                              bSynthetic=y
+1 _ray149 80 EL 1569 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1570 SQ0                                  bAggOp=y
+1 _ray149 80 EL 1571 SQ0                                  szType=l
+1 _ray149 80 EL 1572 SQ0                                         )
+1 _ray149 80 EL 1573 SQ0                                        $3
+1 _ray149 80 EL 1574 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1575 SQ0                                  szType=l
+1 _ray149 80 EL 1576 SQ0                                       sum
+1 _ray149 80 EL 1577 SQ0                        ..3]streamKey
+1 _ray149 80 EL 1578 SQ0                        ...0]expr $K1
+1 _ray149 80 EL 1579 SQ0                               bInjected=y
+1 _ray149 80 EL 1580 SQ0                                  szType=l
+1 _ray149 80 EL 1581 SQ0                        ....0]rpnCalc
+1 _ray149 80 EL 1582 SQ0                                  szType=l
+1 _ray149 80 EL 1583 SQ0                                        $1
+1 _ray149 80 EL 1584 SQ0                                  szType=l
+1 _ray149 80 EL 1585 SQ0                        ...1]expr $K2
+1 _ray149 80 EL 1586 SQ0                                  szType=i
+1 _ray149 80 EL 1587 SQ0                        ....0]as
+1 _ray149 80 EL 1588 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1589 SQ0                               bItemised=y
+1 _ray149 80 EL 1590 SQ0                        ....1]rpnCalc
+1 _ray149 80 EL 1591 SQ0                                  szType=i
+1 _ray149 80 EL 1592 SQ0                                        $2
+1 _ray149 80 EL 1593 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1594 SQ0                                  szType=i
+1 _ray149 80 EL 1595 SQ0                        ....2]direction
+1 _ray149 80 EL 1596 SQ0                                       ASC
+1 _ray149 80 EL 1597 SQ0                        3]synthesise
+1 _ray149 80 EL 1598 SQ0                        .0]mapping
+1 _ray149 80 EL 1599 SQ0                        ..0]keyCells
+1 _ray149 80 EL 1600 SQ0                        ...0]map $K1
+1 _ray149 80 EL 1601 SQ0                               bInjected=y
+1 _ray149 80 EL 1602 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1603 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1604 SQ0                                  szType=l
+1 _ray149 80 EL 1605 SQ0                        ...1]map $K2
+1 _ray149 80 EL 1606 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1607 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1608 SQ0                                  szType=i
+1 _ray149 80 EL 1609 SQ0                        ..1]payloadCells
+1 _ray149 80 EL 1610 SQ0                        ...0]map $3
+1 _ray149 80 EL 1611 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1612 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1613 SQ0                                  szType=l
+1 _ray149 80 EL 1614 SQ0
+1 _ray149 80 EL 1615 SQ0 ==69 ?--0x812dd040-- ==70 O--0x50cd9040-- ==71 ?--0x812df040--
+1 _ray149 80 EL 1616 SQ0   STAGE S17 *1         GBYAGG *4            CAST *1
+1 _ray149 80 EL 1617 SQ0   0]topology                  bSmoothed=y   0]synthesise
+1 _ray149 80 EL 1618 SQ0       YG_ORIGIN_NODE   0]level
+1 _ray149 80 EL 1619 SQ0                                 AL_ORIGIN
+1 _ray149 80 EL 1620 SQ0                        1]key
+1 _ray149 80 EL 1621 SQ0                        .0]expr $K1
+1 _ray149 80 EL 1622 SQ0                               bInjected=y
+1 _ray149 80 EL 1623 SQ0                                  szType=l
+1 _ray149 80 EL 1624 SQ0                        ..0]rpnCalc
+1 _ray149 80 EL 1625 SQ0                                  szType=l
+1 _ray149 80 EL 1626 SQ0                                        $1
+1 _ray149 80 EL 1627 SQ0                                  szType=l
+1 _ray149 80 EL 1628 SQ0                        .1]expr $K2
+1 _ray149 80 EL 1629 SQ0                                  szType=i
+1 _ray149 80 EL 1630 SQ0                        ..0]as
+1 _ray149 80 EL 1631 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1632 SQ0                               bItemised=y
+1 _ray149 80 EL 1633 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1634 SQ0                                  szType=i
+1 _ray149 80 EL 1635 SQ0                                        $2
+1 _ray149 80 EL 1636 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1637 SQ0                                  szType=i
+1 _ray149 80 EL 1638 SQ0                        ..2]direction ASC
+1 _ray149 80 EL 1639 SQ0                        2]stream
+1 _ray149 80 EL 1640 SQ0                        .0]projection #0
+1 _ray149 80 EL 1641 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1642 SQ0                               bInjected=y
+1 _ray149 80 EL 1643 SQ0                                    bKey=y
+1 _ray149 80 EL 1644 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1645 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1646 SQ0                                  szType=l
+1 _ray149 80 EL 1647 SQ0                        ...0]as
+1 _ray149 80 EL 1648 SQ0                            C0__SQ1RESULT_
+1 _ray149 80 EL 1649 SQ0                               bItemised=y
+1 _ray149 80 EL 1650 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1651 SQ0                                  szType=l
+1 _ray149 80 EL 1652 SQ0                                       $K1
+1 _ray149 80 EL 1653 SQ0                                  szType=l
+1 _ray149 80 EL 1654 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1655 SQ0                                    bKey=y
+1 _ray149 80 EL 1656 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1657 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1658 SQ0                                  szType=i
+1 _ray149 80 EL 1659 SQ0                        ...0]as
+1 _ray149 80 EL 1660 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1661 SQ0                               bItemised=y
+1 _ray149 80 EL 1662 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1663 SQ0                                  szType=i
+1 _ray149 80 EL 1664 SQ0                                       $K2
+1 _ray149 80 EL 1665 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1666 SQ0                                  szType=i
+1 _ray149 80 EL 1667 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1668 SQ0                                bPayload=y
+1 _ray149 80 EL 1669 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1670 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1671 SQ0                                  szType=l
+1 _ray149 80 EL 1672 SQ0                        ...0]as C2_value
+1 _ray149 80 EL 1673 SQ0                               bItemised=y
+1 _ray149 80 EL 1674 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1675 SQ0                                  bAggOp=y
+1 _ray149 80 EL 1676 SQ0                                  szType=l
+1 _ray149 80 EL 1677 SQ0                                         )
+1 _ray149 80 EL 1678 SQ0                                        $3
+1 _ray149 80 EL 1679 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1680 SQ0                                  szType=l
+1 _ray149 80 EL 1681 SQ0                                       sum
+1 _ray149 80 EL 1682 SQ0                        ..3]streamKey
+1 _ray149 80 EL 1683 SQ0                        ...0]expr $K1
+1 _ray149 80 EL 1684 SQ0                               bInjected=y
+1 _ray149 80 EL 1685 SQ0                                  szType=l
+1 _ray149 80 EL 1686 SQ0                        ....0]rpnCalc
+1 _ray149 80 EL 1687 SQ0                                  szType=l
+1 _ray149 80 EL 1688 SQ0                                        $1
+1 _ray149 80 EL 1689 SQ0                                  szType=l
+1 _ray149 80 EL 1690 SQ0                        ...1]expr $K2
+1 _ray149 80 EL 1691 SQ0                                  szType=i
+1 _ray149 80 EL 1692 SQ0                        ....0]as
+1 _ray149 80 EL 1693 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1694 SQ0                               bItemised=y
+1 _ray149 80 EL 1695 SQ0                        ....1]rpnCalc
+1 _ray149 80 EL 1696 SQ0                                  szType=i
+1 _ray149 80 EL 1697 SQ0                                        $2
+1 _ray149 80 EL 1698 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1699 SQ0                                  szType=i
+1 _ray149 80 EL 1700 SQ0                        ....2]direction
+1 _ray149 80 EL 1701 SQ0                                       ASC
+1 _ray149 80 EL 1702 SQ0                        3]synthesise
+1 _ray149 80 EL 1703 SQ0                        .0]mapping
+1 _ray149 80 EL 1704 SQ0                        ..0]keyCells
+1 _ray149 80 EL 1705 SQ0                        ...0]map $K1
+1 _ray149 80 EL 1706 SQ0                               bInjected=y
+1 _ray149 80 EL 1707 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1708 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1709 SQ0                                  szType=l
+1 _ray149 80 EL 1710 SQ0                        ...1]map $K2
+1 _ray149 80 EL 1711 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1712 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1713 SQ0                                  szType=i
+1 _ray149 80 EL 1714 SQ0                        ..1]payloadCells
+1 _ray149 80 EL 1715 SQ0                        ...0]map $3
+1 _ray149 80 EL 1716 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1717 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1718 SQ0                                  szType=l
+1 _ray149 80 EL 1719 SQ0
+1 _ray149 80 EL 1720 SQ0 ==72 ?--0x812e0040-- ==73 O--0x50cd5040-- ==74 ?--0x812e2040-- ==75 ?--0x812e3040--
+1 _ray149 80 EL 1721 SQ0   STAGE S18 *1         HAVING *4            COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1722 SQ0   0]topology                  bSmoothed=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 1723 SQ0       YG_ORIGIN_NODE   0]level
+1 _ray149 80 EL 1724 SQ0                                 AL_ORIGIN
+1 _ray149 80 EL 1725 SQ0                        1]filter
+1 _ray149 80 EL 1726 SQ0                        .0]boolCalc
+1 _ray149 80 EL 1727 SQ0                        ..0]cmpPred >
+1 _ray149 80 EL 1728 SQ0                             bSubQryCall=y
+1 _ray149 80 EL 1729 SQ0                                        $3
+1 _ray149 80 EL 1730 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1731 SQ0                                  szType=l
+1 _ray149 80 EL 1732 SQ0                                        $1
+1 _ray149 80 EL 1733 SQ0                                  szType=l
+1 _ray149 80 EL 1734 SQ0                        2]stream
+1 _ray149 80 EL 1735 SQ0                        .0]projection #44
+1 _ray149 80 EL 1736 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1737 SQ0                                  szType=l
+1 _ray149 80 EL 1738 SQ0                        ...0]as
+1 _ray149 80 EL 1739 SQ0                            C0__SQ1RESULT_
+1 _ray149 80 EL 1740 SQ0                               bItemised=y
+1 _ray149 80 EL 1741 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1742 SQ0                                  szType=l
+1 _ray149 80 EL 1743 SQ0                                        $1
+1 _ray149 80 EL 1744 SQ0                                  szType=l
+1 _ray149 80 EL 1745 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1746 SQ0                                  szType=i
+1 _ray149 80 EL 1747 SQ0                        ...0]as
+1 _ray149 80 EL 1748 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1749 SQ0                               bItemised=y
+1 _ray149 80 EL 1750 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1751 SQ0                                  szType=i
+1 _ray149 80 EL 1752 SQ0                                        $2
+1 _ray149 80 EL 1753 SQ0                                  szType=i
+1 _ray149 80 EL 1754 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1755 SQ0                                  szType=l
+1 _ray149 80 EL 1756 SQ0                        ...0]as C2_value
+1 _ray149 80 EL 1757 SQ0                               bItemised=y
+1 _ray149 80 EL 1758 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1759 SQ0                                  szType=l
+1 _ray149 80 EL 1760 SQ0                                        $3
+1 _ray149 80 EL 1761 SQ0                                  szType=l
+1 _ray149 80 EL 1762 SQ0                        3]synthesise
+1 _ray149 80 EL 1763 SQ0
+1 _ray149 80 EL 1764 SQ0 ==76 ?--0x812e4040-- ==77 O--0x50cdc040-- ==78 ?--0x812e6040-- ==79 ?--0x812e7040--
+1 _ray149 80 EL 1765 SQ0   STAGE S19 *1         SORT *4              COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1766 SQ0   0]topology           0]level              0]synthesise         0]synthesise
+1 _ray149 80 EL 1767 SQ0       YG_ORIGIN_NODE            AL_ORIGIN
+1 _ray149 80 EL 1768 SQ0                        1]key
+1 _ray149 80 EL 1769 SQ0                        .0]expr $K1
+1 _ray149 80 EL 1770 SQ0                                  szType=l
+1 _ray149 80 EL 1771 SQ0                        ..0]as C0_COL1
+1 _ray149 80 EL 1772 SQ0                               bItemised=y
+1 _ray149 80 EL 1773 SQ0                              bSynthetic=y
+1 _ray149 80 EL 1774 SQ0                        ..1]rpnCalc
+1 _ray149 80 EL 1775 SQ0                                  szType=l
+1 _ray149 80 EL 1776 SQ0                                        $2
+1 _ray149 80 EL 1777 SQ0                                  szType=l
+1 _ray149 80 EL 1778 SQ0                        ..2]direction DESC
+1 _ray149 80 EL 1779 SQ0                        2]stream
+1 _ray149 80 EL 1780 SQ0                        .0]projection #38
+1 _ray149 80 EL 1781 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1782 SQ0                                bPayload=y
+1 _ray149 80 EL 1783 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1784 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1785 SQ0                                  szType=l
+1 _ray149 80 EL 1786 SQ0                        ...0]as
+1 _ray149 80 EL 1787 SQ0                            C0__SQ1RESULT_
+1 _ray149 80 EL 1788 SQ0                               bItemised=y
+1 _ray149 80 EL 1789 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1790 SQ0                                  szType=l
+1 _ray149 80 EL 1791 SQ0                                        $1
+1 _ray149 80 EL 1792 SQ0                                  szType=l
+1 _ray149 80 EL 1793 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1794 SQ0                                    bKey=y
+1 _ray149 80 EL 1795 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1796 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1797 SQ0                                  szType=i
+1 _ray149 80 EL 1798 SQ0                        ...0]as
+1 _ray149 80 EL 1799 SQ0                             C1_ps_partkey
+1 _ray149 80 EL 1800 SQ0                               bItemised=y
+1 _ray149 80 EL 1801 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1802 SQ0                                  szType=i
+1 _ray149 80 EL 1803 SQ0                                       $K1
+1 _ray149 80 EL 1804 SQ0                                  szType=i
+1 _ray149 80 EL 1805 SQ0                        ..2]expr $3
+1 _ray149 80 EL 1806 SQ0                                bPayload=y
+1 _ray149 80 EL 1807 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1808 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1809 SQ0                                  szType=l
+1 _ray149 80 EL 1810 SQ0                        ...0]as C2_value
+1 _ray149 80 EL 1811 SQ0                               bItemised=y
+1 _ray149 80 EL 1812 SQ0                        ...1]rpnCalc
+1 _ray149 80 EL 1813 SQ0                                  szType=l
+1 _ray149 80 EL 1814 SQ0                                        $3
+1 _ray149 80 EL 1815 SQ0                                  szType=l
+1 _ray149 80 EL 1816 SQ0                        ..3]streamKey
+1 _ray149 80 EL 1817 SQ0                        ...0]expr $K1
+1 _ray149 80 EL 1818 SQ0                                  szType=l
+1 _ray149 80 EL 1819 SQ0                        ....0]as C0_COL1
+1 _ray149 80 EL 1820 SQ0                               bItemised=y
+1 _ray149 80 EL 1821 SQ0                              bSynthetic=y
+1 _ray149 80 EL 1822 SQ0                        ....1]rpnCalc
+1 _ray149 80 EL 1823 SQ0                                  szType=l
+1 _ray149 80 EL 1824 SQ0                                        $2
+1 _ray149 80 EL 1825 SQ0                                  szType=l
+1 _ray149 80 EL 1826 SQ0                        ....2]direction
+1 _ray149 80 EL 1827 SQ0                                      DESC
+1 _ray149 80 EL 1828 SQ0                        3]synthesise
+1 _ray149 80 EL 1829 SQ0                        .0]mapping
+1 _ray149 80 EL 1830 SQ0                        ..0]keyCells
+1 _ray149 80 EL 1831 SQ0                        ...0]map $K1
+1 _ray149 80 EL 1832 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1833 SQ0                            i_EmittedCol=2
+1 _ray149 80 EL 1834 SQ0                                  szType=l
+1 _ray149 80 EL 1835 SQ0                        ..1]payloadCells
+1 _ray149 80 EL 1836 SQ0                        ...0]map $1
+1 _ray149 80 EL 1837 SQ0                                  i_Cell=1
+1 _ray149 80 EL 1838 SQ0                            i_EmittedCol=1
+1 _ray149 80 EL 1839 SQ0                                  szType=l
+1 _ray149 80 EL 1840 SQ0                        ...1]map $3
+1 _ray149 80 EL 1841 SQ0                                  i_Cell=2
+1 _ray149 80 EL 1842 SQ0                            i_EmittedCol=3
+1 _ray149 80 EL 1843 SQ0                                  szType=l
+1 _ray149 80 EL 1844 SQ0
+1 _ray149 80 EL 1845 SQ0 ==80 ?--0x812e8040-- ==81 O--0x88423040-- ==82 ?--0x812ea040-- ==83 ?--0x812eb040--
+1 _ray149 80 EL 1846 SQ0   STAGE S20 *1         PROJECT *3           COMBINED 0 *1        CAST *1
+1 _ray149 80 EL 1847 SQ0   0]topology                 bUnproject=y   0]synthesise         0]synthesise
+1 _ray149 80 EL 1848 SQ0       YG_ORIGIN_NODE   0]level
+1 _ray149 80 EL 1849 SQ0                                 AL_ORIGIN
+1 _ray149 80 EL 1850 SQ0                        1]stream
+1 _ray149 80 EL 1851 SQ0                        .0]projection #38
+1 _ray149 80 EL 1852 SQ0                        ..0]expr $1
+1 _ray149 80 EL 1853 SQ0                                  szType=i
+1 _ray149 80 EL 1854 SQ0                        ...0]rpnCalc
+1 _ray149 80 EL 1855 SQ0                                  szType=i
+1 _ray149 80 EL 1856 SQ0                                        $2
+1 _ray149 80 EL 1857 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1858 SQ0                                  szType=i
+1 _ray149 80 EL 1859 SQ0                        ...1]as
+1 _ray149 80 EL 1860 SQ0                             C0_ps_partkey
+1 _ray149 80 EL 1861 SQ0                               bItemised=y
+1 _ray149 80 EL 1862 SQ0                        ...2]direction
+1 _ray149 80 EL 1863 SQ0                                      DESC
+1 _ray149 80 EL 1864 SQ0                        ..1]expr $2
+1 _ray149 80 EL 1865 SQ0                                  szType=l
+1 _ray149 80 EL 1866 SQ0                        ...0]rpnCalc
+1 _ray149 80 EL 1867 SQ0                                  szType=l
+1 _ray149 80 EL 1868 SQ0                                        $3
+1 _ray149 80 EL 1869 SQ0                                  szType=l
+1 _ray149 80 EL 1870 SQ0                        ...1]as C1_value
+1 _ray149 80 EL 1871 SQ0                               bItemised=y
+1 _ray149 80 EL 1872 SQ0                        ..2]streamKey
+1 _ray149 80 EL 1873 SQ0                        ...0]expr $K1
+1 _ray149 80 EL 1874 SQ0                                  szType=i
+1 _ray149 80 EL 1875 SQ0                        ....0]as
+1 _ray149 80 EL 1876 SQ0                             C0_ps_partkey
+1 _ray149 80 EL 1877 SQ0                               bItemised=y
+1 _ray149 80 EL 1878 SQ0                        ....1]rpnCalc
+1 _ray149 80 EL 1879 SQ0                                  szType=i
+1 _ray149 80 EL 1880 SQ0                                        $2
+1 _ray149 80 EL 1881 SQ0                               nBumpedBy=1
+1 _ray149 80 EL 1882 SQ0                                  szType=i
+1 _ray149 80 EL 1883 SQ0                        ....2]direction
+1 _ray149 80 EL 1884 SQ0                                      DESC
+1 _ray149 80 EL 1885 SQ0                        2]synthesise
+1 _ray149 80 EL 1886 SQ0 =============================================================================================================================
+*/
