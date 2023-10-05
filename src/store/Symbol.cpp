@@ -21,7 +21,9 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  xFacet[0].m_eFacet = SF_NONE;
+  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
+    xFacet[i_Facet].m_eFacet = SF_NONE;
+  }
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -37,7 +39,9 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  xFacet[0].m_eFacet = SF_NONE;
+  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
+    xFacet[i_Facet].m_eFacet = SF_NONE;
+  }
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -55,7 +59,9 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  xFacet[0].m_eFacet = SF_NONE;
+  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
+    xFacet[i_Facet].m_eFacet = SF_NONE;
+  }
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);

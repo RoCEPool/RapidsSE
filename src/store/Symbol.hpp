@@ -16,11 +16,13 @@ namespace STORE
   class Symbol : public Object
   {
   private:
+    static const i8 C_FACETS = 6;
+
     struct
     {
       eSF  m_eFacet;
       s256 m_sChrSeq;
-    } xFacet[1];
+    } xFacet[C_FACETS];
 
     TagSet* m_pProperties;
 
