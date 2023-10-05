@@ -2,6 +2,9 @@
 /* _ray149                                                                    */
 /*============================================================================*/
 
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
 __TPCH_SCHEMA;
 
 // OptQ11
@@ -45,3 +48,4 @@ order by
 //rows: 20
 
 _tpchdrop
+
