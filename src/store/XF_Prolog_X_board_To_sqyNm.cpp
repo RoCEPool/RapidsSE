@@ -68,7 +68,7 @@ void XF_Prolog_X_board_To_sqyNm::vProlog(void)
   if (Symbol::bIs_Sqy_Nm(sBoardNm)) {
     i8 iSqyNo = StrLib::iGleanInt(sBoardNm.azChar());
     Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
-    m_pCI->G.pBoard->vBoardNm(xSymbol_sqyNm.szSF_symbol(SF_SQY_NM));
+    m_pCI->G.pBoard->vBoardNm(xSymbol_sqyNm.szSF_chrSeq(SF_SQY_NM));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -62,7 +62,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
     Card_Term* p_term = _pCard_Term(pCard);
 
-    if (p_term->pSymbol()->szSF_symbol(SF_NONE)->bSame("O_COMMENT"_Stz))
+    if (p_term->pSymbol()->szSF_chrSeq(SF_NONE)->bSame("O_COMMENT"_Stz))
       vDebugPoint();
 
     if (! pCard->pSymbol()->bIs_Col_Nm())

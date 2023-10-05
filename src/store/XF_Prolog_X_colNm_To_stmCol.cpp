@@ -110,7 +110,7 @@ void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
       p_term_colNm->pSymbol()->vSymbolPpy(p_expr_found->pSymbol());
       if (Symbol* pSymbol_found = p_expr_found->pFirstTblCol()) {
         pSymbol_found->vDump();
-        p_term_colNm->pSymbol()->Y_vSet(P_TblCol, pSymbol_found->szSF_symbol(SF_NONE));
+        p_term_colNm->pSymbol()->Y_vSet(P_TblCol, pSymbol_found->szSF_chrSeq(SF_NONE));
       }
 
       //p_term_colNm->vDump(__func__);

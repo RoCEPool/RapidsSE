@@ -200,7 +200,7 @@ void Symbol::vInit_Tbl_Syn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vSymSprint("%c"_Stz, cTblSyn);
+  vFacetSprint("%c"_Stz, cTblSyn);
   xFacet[0].m_eFacet = SF_TBL_SYN;
 
   RASSERT(bIs_Tbl_Syn());
@@ -1179,7 +1179,7 @@ void Symbol::vDump(void)
          , (i8)xFacet[0].m_eFacet
          , aSF[xFacet[0].m_eFacet]
 
-         , *szSF_symbol(SF_NONE)->azChar() ? szSF_symbol(SF_NONE) : "??Symbol"_Stz
+         , *szSF_chrSeq(SF_NONE)->azChar() ? szSF_chrSeq(SF_NONE) : "??Symbol"_Stz
          , sProperties.szStz()
          , szWhatIs()
   );
@@ -1204,7 +1204,7 @@ void Symbol::vFacet(eSF eFacet)
 
   switch (eFacet) {
 
-    case SF_TBL_SYN_rep: vSet_Tbl_Syn_rep(); break;
+    case SF_TBL_SYN_rep: vFacet_Tbl_Syn_rep(); break;
 
     default: NEVER_REACH;
   }
@@ -1220,7 +1220,7 @@ void Symbol::vFacet(eSF eFacet, char cChr)
 
   switch (eFacet) {
 
-    case SF_TBL_SYN: vSet_Tbl_Syn(cChr); break;
+    case SF_TBL_SYN: vFacet_Tbl_Syn(cChr); break;
 
     default: NEVER_REACH;
   }
@@ -1236,7 +1236,7 @@ void Symbol::vFacet(eSF eFacet, char cChr, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_COL_TC:    vSet_Col_Tc(cChr,iInt);    break;
+    case SF_COL_TC:    vFacet_Col_Tc(cChr,iInt);    break;
 
     default: NEVER_REACH;
   }
@@ -1252,17 +1252,17 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_AS_NM_itm:  vSet_As_Nm_itm(iInt);  break;
-    case SF_AS_NM_syn:  vSet_As_Nm_syn(iInt);  break;
-    case SF_COL_NO:     vSet_Col_No(iInt);     break;
-    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt); break;
-    case SF_IDX_COL:    vSet_Idx_Col(iInt);    break;
-    case SF_INT_LIT:    vSet_Int_Lit(iInt);    break;
-    case SF_KEY_COL:    vSet_Key_Col(iInt);    break;
-    case SF_SQY_NM:     vSet_Sqy_Nm(iInt);     break;
-    case SF_STG_NO:     vSet_Stg_Nm(iInt);     break;
-    case SF_PRM_COL:    vSet_Prm_Col(iInt);    break;
-    case SF_XRF_NO:     vSet_Xrf_No(iInt);     break;
+    case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
+    case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
+    case SF_COL_NO:     vFacet_Col_No(iInt);     break;
+    case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt); break;
+    case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
+    case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
+    case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
+    case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
+    case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
+    case SF_PRM_COL:    vFacet_Prm_Col(iInt);    break;
+    case SF_XRF_NO:     vFacet_Xrf_No(iInt);     break;
 
     default: NEVER_REACH;
   }
@@ -1278,7 +1278,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
 
   switch (eFacet) {
 
-    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt,pSymbol); break;
+    case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt,pSymbol); break;
 
     default: NEVER_REACH;
   }
@@ -1294,57 +1294,57 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
 
   switch (eFacet) {
 
-    case SF_AGG_FN:      vSet_Agg_Fn(szChrSeq);      break;
-    case SF_AS:          vSet_As(szChrSeq);          break;
-    case SF_AS_NM:       vSet_As_Nm(szChrSeq);       break;
-    case SF_BOL_FN:      vSet_Bol_Fn(szChrSeq);      break;
-    case SF_BOL_LIT:     vSet_Bol_Lit(szChrSeq);     break;
-    case SF_BOL_OP:      vSet_Bol_Op(szChrSeq);      break;
-    case SF_BOUND:       vSet_Bound(szChrSeq);       break;
-    case SF_BRACE:       vSet_Brace(szChrSeq);       break;
-    case SF_CASE:        vSet_Case(szChrSeq);        break;
-    case SF_CAST:        vSet_Cast(szChrSeq);        break;
-    case SF_CASTTYPE:    vSet_CastType(szChrSeq);    break;
-    case SF_COL_NM:      vSet_Col_Nm(szChrSeq);      break;
-    case SF_COL_NM_syn:  vSet_Col_Nm_syn(szChrSeq);  break;
-    case SF_COL_NO:      vSet_Col_No(szChrSeq);      break;
-    case SF_COL_TC:      vSet_Col_Tc(szChrSeq);      break;
-    case SF_COL_TYPE:    vSet_Col_Type(szChrSeq);    break;
-    case SF_COMMA:       vSet_Comma(szChrSeq);       break;
-    case SF_CROSS:       vSet_Cross(szChrSeq);       break;
-    case SF_DCM_LIT:     vSet_Dcm_Lit(szChrSeq);     break;
-    case SF_DIRECTION:   vSet_Direction(szChrSeq);   break;
-    case SF_ELSE:        vSet_Else(szChrSeq);        break;
-    case SF_ENDIF:       vSet_EndIf(szChrSeq);       break;
-    case SF_FLD_NM:      vSet_Fld_Nm(szChrSeq);      break;
-    case SF_FLT_LIT:     vSet_Flt_Lit(szChrSeq);     break;
-    case SF_GROUPBY:     vSet_GroupBy(szChrSeq);     break;
-    case SF_IDX_COL:     vSet_Idx_Col(szChrSeq);     break;
-    case SF_IDX_NM:      vSet_Idx_Nm(szChrSeq);      break;
-    case SF_INT_LIT:     vSet_Int_Lit(szChrSeq);     break;
-    case SF_IVL_FN:      vSet_Ivl_Fn(szChrSeq);      break;
-    case SF_INTERVAL_DT: vSet_Interval_DT(szChrSeq); break;
-    case SF_INTERVAL_YM: vSet_Interval_YM(szChrSeq); break;
-    case SF_KEY_COL:     vSet_Key_Col(szChrSeq);     break;
-    case SF_NEGATE:      vSet_Negate(szChrSeq);      break;
-    case SF_NOTE:        vSet_Note(szChrSeq);        break;
-    case SF_NULL:        vSet_Null(szChrSeq);        break;
-    case SF_MTH_OP:      vSet_Mth_Op(szChrSeq);      break;
-    case SF_PARENTHESIS: vSet_Parenthesis(szChrSeq); break;
-    case SF_PPE_NM:      vSet_Ppe_Nm(szChrSeq);      break;
-    case SF_PRM_COL:     vSet_Prm_Col(szChrSeq);     break;
-    case SF_RLN_OP:      vSet_Rln_Op(szChrSeq);      break;
-    case SF_SQY_OP:      vSet_Sqy_Op(szChrSeq);      break;
-    case SF_STG_CAST:    vSet_Stg_Cast(szChrSeq);    break;
-    case SF_STR_FN:      vSet_Str_Fn(szChrSeq);      break;
-    case SF_STR_LIT:     vSet_String(szChrSeq);      break;
-    case SF_TBL_NM:      vSet_Tbl_Nm(szChrSeq);      break;
-    case SF_TBL_SYN:     vSet_Tbl_Syn(szChrSeq);     break;
-    case SF_THEN:        vSet_Then(szChrSeq);        break;
-    case SF_TYPE:        vSet_Type(szChrSeq);        break;
-    case SF_WHEN:        vSet_When(szChrSeq);        break;
-    case SF_XK_CAST:     vSet_Xk_Cast(szChrSeq);     break;
-    case SF_XRF_NO:      vSet_Xrf_No(szChrSeq);      break;
+    case SF_AGG_FN:      vFacet_Agg_Fn(szChrSeq);      break;
+    case SF_AS:          vFacet_As(szChrSeq);          break;
+    case SF_AS_NM:       vFacet_As_Nm(szChrSeq);       break;
+    case SF_BOL_FN:      vFacet_Bol_Fn(szChrSeq);      break;
+    case SF_BOL_LIT:     vFacet_Bol_Lit(szChrSeq);     break;
+    case SF_BOL_OP:      vFacet_Bol_Op(szChrSeq);      break;
+    case SF_BOUND:       vFacet_Bound(szChrSeq);       break;
+    case SF_BRACE:       vFacet_Brace(szChrSeq);       break;
+    case SF_CASE:        vFacet_Case(szChrSeq);        break;
+    case SF_CAST:        vFacet_Cast(szChrSeq);        break;
+    case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
+    case SF_COL_NM:      vFacet_Col_Nm(szChrSeq);      break;
+    case SF_COL_NM_syn:  vFacet_Col_Nm_syn(szChrSeq);  break;
+    case SF_COL_NO:      vFacet_Col_No(szChrSeq);      break;
+    case SF_COL_TC:      vFacet_Col_Tc(szChrSeq);      break;
+    case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
+    case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
+    case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
+    case SF_DCM_LIT:     vFacet_Dcm_Lit(szChrSeq);     break;
+    case SF_DIRECTION:   vFacet_Direction(szChrSeq);   break;
+    case SF_ELSE:        vFacet_Else(szChrSeq);        break;
+    case SF_ENDIF:       vFacet_EndIf(szChrSeq);       break;
+    case SF_FLD_NM:      vFacet_Fld_Nm(szChrSeq);      break;
+    case SF_FLT_LIT:     vFacet_Flt_Lit(szChrSeq);     break;
+    case SF_GROUPBY:     vFacet_GroupBy(szChrSeq);     break;
+    case SF_IDX_COL:     vFacet_Idx_Col(szChrSeq);     break;
+    case SF_IDX_NM:      vFacet_Idx_Nm(szChrSeq);      break;
+    case SF_INT_LIT:     vFacet_Int_Lit(szChrSeq);     break;
+    case SF_IVL_FN:      vFacet_Ivl_Fn(szChrSeq);      break;
+    case SF_INTERVAL_DT: vFacet_Interval_DT(szChrSeq); break;
+    case SF_INTERVAL_YM: vFacet_Interval_YM(szChrSeq); break;
+    case SF_KEY_COL:     vFacet_Key_Col(szChrSeq);     break;
+    case SF_NEGATE:      vFacet_Negate(szChrSeq);      break;
+    case SF_NOTE:        vFacet_Note(szChrSeq);        break;
+    case SF_NULL:        vFacet_Null(szChrSeq);        break;
+    case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
+    case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
+    case SF_PPE_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
+    case SF_PRM_COL:     vFacet_Prm_Col(szChrSeq);     break;
+    case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
+    case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
+    case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
+    case SF_STR_FN:      vFacet_Str_Fn(szChrSeq);      break;
+    case SF_STR_LIT:     vFacet_String(szChrSeq);      break;
+    case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
+    case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
+    case SF_THEN:        vFacet_Then(szChrSeq);        break;
+    case SF_TYPE:        vFacet_Type(szChrSeq);        break;
+    case SF_WHEN:        vFacet_When(szChrSeq);        break;
+    case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
+    case SF_XRF_NO:      vFacet_Xrf_No(szChrSeq);      break;
 
     default: NEVER_REACH;
   }
@@ -1388,36 +1388,6 @@ bool Symbol::bFormIs(eSF eSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::iSF_ordinal(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  i8 i_Col = StrLib::iGleanInt(xFacet[0].m_sChrSeq.azChar());
-
-  return i_Col;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table synonym from $c.n                                                */
-/*----------------------------------------------------------------------------*/
-char Symbol::cSF_tblSyn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  char acFirst  = xFacet[0].m_sChrSeq.azChar()[0];
-  char acSecond = xFacet[0].m_sChrSeq.azChar()[1];
-//  char acThird  = xFacet[0].m_sChrSeq.azChar()[2];
-//  char acFourth = xFacet[0].m_sChrSeq.azChar()[3];
-
-  if ('$' == acFirst && StrLib::bIsAlpha(acSecond))
-    return acSecond;
-  else
-    return acFirst;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does symbol a symbolic value?                                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bHasSymbol(void)
@@ -1454,7 +1424,7 @@ void Symbol::vInc_Tbl_Syn(void)
 
   char cTblSyn = cSF_char();
 
-  vSymSprint("%c"_Stz, cTblSyn + 1);
+  vFacetSprint("%c"_Stz, cTblSyn + 1);
 
   RASSERT(bIs_Tbl_Syn());
 }
@@ -2505,6 +2475,29 @@ bool Symbol::bSame(Symbol* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+char Symbol::cSF_char(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return * xFacet[0].m_sChrSeq.azChar();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol stz                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szSF_chrSeq(eSF eSymbol_xchk)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_NONE != eSymbol_xchk)
+    RASSERT(eSymbol_xchk = xFacet[0].m_eFacet);
+
+  return xFacet[0].m_sChrSeq.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get symbol int                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iSF_number(void)
@@ -2517,26 +2510,33 @@ i8 Symbol::iSF_number(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol stz                                                             */
+/* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szSF_symbol(eSF eSymbol_xchk)
+i8 Symbol::iSF_ordinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_NONE != eSymbol_xchk)
-    RASSERT(eSymbol_xchk = xFacet[0].m_eFacet);
+  i8 i_Col = StrLib::iGleanInt(xFacet[0].m_sChrSeq.azChar());
 
-  return xFacet[0].m_sChrSeq.szStz();
+  return i_Col;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
+/* get table synonym from $c.n                                                */
 /*----------------------------------------------------------------------------*/
-char Symbol::cSF_char(void)
+char Symbol::cSF_tblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return * xFacet[0].m_sChrSeq.azChar();
+  char acFirst  = xFacet[0].m_sChrSeq.azChar()[0];
+  char acSecond = xFacet[0].m_sChrSeq.azChar()[1];
+//  char acThird  = xFacet[0].m_sChrSeq.azChar()[2];
+//  char acFourth = xFacet[0].m_sChrSeq.azChar()[3];
+
+  if ('$' == acFirst && StrLib::bIsAlpha(acSecond))
+    return acSecond;
+  else
+    return acFirst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2547,7 +2547,7 @@ void Symbol::vSymbol(Symbol* pSymbol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (SF_COL_NO == pSymbol->xFacet[0].m_eFacet) {
-    vSet_Col_No(pSymbol->xFacet[0].m_sChrSeq);
+    vFacet_Col_No(pSymbol->xFacet[0].m_sChrSeq);
   }
   else {
     xFacet[0].m_sChrSeq = pSymbol->xFacet[0].m_sChrSeq;
@@ -2580,35 +2580,6 @@ void Symbol::vSymbolPpy(Symbol* pSymbol)
     RASSERT(Symbol::bIs_Col_Tc(xFacet[0].m_sChrSeq));
 
   Y_vAll(pSymbol);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* validate symbol properties                                                 */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  bool bMustHave = true;
-
-  va_list xArgs;
-
-  va_start(xArgs, szPpy);
-  Stz* szPpy_mustHave = szPpy;
-  while (nullptr != szPpy_mustHave) {
-
-    bMustHave = Y_bHas(szPpy_mustHave);
-
-    if (! bMustHave)
-      break;
-
-    szPpy_mustHave = (Stz*)va_arg(xArgs, Stz*);
-  }
-
-  va_end(xArgs);
-
-  return bMustHave;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3104,7 +3075,7 @@ void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given aggregate fn                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Agg_Fn(Stz* szAggFn)
+void Symbol::vFacet_Agg_Fn(Stz* szAggFn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3119,7 +3090,7 @@ void Symbol::vSet_Agg_Fn(Stz* szAggFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as                                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_As(Stz* szAs)
+void Symbol::vFacet_As(Stz* szAs)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3134,7 +3105,7 @@ void Symbol::vSet_As(Stz* szAs)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_As_Nm(Stz* szAsNm)
+void Symbol::vFacet_As_Nm(Stz* szAsNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3150,13 +3121,13 @@ void Symbol::vSet_As_Nm(Stz* szAsNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given synthetic-as no                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_As_Nm_itm(i8 iAsNo)
+void Symbol::vFacet_As_Nm_itm(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_AS_NM == xFacet[0].m_eFacet);
 
-  vSymSprint("C%lld_%s"_Stz, iAsNo, xFacet[0].m_sChrSeq.szStz());
+  vFacetSprint("C%lld_%s"_Stz, iAsNo, xFacet[0].m_sChrSeq.szStz());
   xFacet[0].m_eFacet = SF_AS_NM_itm;
   Y_vSet(P_Itemised);
 
@@ -3166,13 +3137,13 @@ void Symbol::vSet_As_Nm_itm(i8 iAsNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given synthetic-as no                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_As_Nm_syn(i8 iAsNo)
+void Symbol::vFacet_As_Nm_syn(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("COL%lld"_Stz, iAsNo);
+  vFacetSprint("COL%lld"_Stz, iAsNo);
   xFacet[0].m_eFacet = SF_AS_NM;
   Y_vSet(P_Synthetic);
 
@@ -3182,7 +3153,7 @@ void Symbol::vSet_As_Nm_syn(i8 iAsNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given boolean fn                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Bol_Fn(Stz* szBolFn)
+void Symbol::vFacet_Bol_Fn(Stz* szBolFn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3197,7 +3168,7 @@ void Symbol::vSet_Bol_Fn(Stz* szBolFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given boolean literal                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Bol_Lit(Stz* szBolLit)
+void Symbol::vFacet_Bol_Lit(Stz* szBolLit)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3212,7 +3183,7 @@ void Symbol::vSet_Bol_Lit(Stz* szBolLit)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given boolean op                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Bol_Op(Stz* szBolOp)
+void Symbol::vFacet_Bol_Op(Stz* szBolOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3227,7 +3198,7 @@ void Symbol::vSet_Bol_Op(Stz* szBolOp)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given bound                                             */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Bound(Stz* szBound)
+void Symbol::vFacet_Bound(Stz* szBound)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3242,7 +3213,7 @@ void Symbol::vSet_Bound(Stz* szBound)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given brace                                             */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Brace(Stz* szBrace)
+void Symbol::vFacet_Brace(Stz* szBrace)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3257,7 +3228,7 @@ void Symbol::vSet_Brace(Stz* szBrace)
 /*----------------------------------------------------------------------------*/
 /* set this symbol CASE                                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Case(Stz* szCase)
+void Symbol::vFacet_Case(Stz* szCase)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3272,7 +3243,7 @@ void Symbol::vSet_Case(Stz* szCase)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as                                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Cast(Stz* szCast)
+void Symbol::vFacet_Cast(Stz* szCast)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3287,7 +3258,7 @@ void Symbol::vSet_Cast(Stz* szCast)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as                                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_CastType(Stz* szCastType)
+void Symbol::vFacet_CastType(Stz* szCastType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3302,7 +3273,7 @@ void Symbol::vSet_CastType(Stz* szCastType)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given column-name                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Nm(Stz* szColNm)
+void Symbol::vFacet_Col_Nm(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3320,13 +3291,13 @@ void Symbol::vSet_Col_Nm(Stz* szColNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Nm_dis(i8 i_Child)
+void Symbol::vFacet_Col_Nm_dis(i8 i_Child)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_COL_NM == xFacet[0].m_eFacet);
 
-  vSymSprint("C%lld_%s"_Stz, i_Child, xFacet[0].m_sChrSeq.szStz());
+  vFacetSprint("C%lld_%s"_Stz, i_Child, xFacet[0].m_sChrSeq.szStz());
   xFacet[0].m_eFacet = SF_COL_NM;
 
   Y_vSet(P_DisamCol);
@@ -3337,13 +3308,13 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
+void Symbol::vFacet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("C%lld_%s"_Stz, i_Child, pSymbol->xFacet[0].m_sChrSeq.szStz());
+  vFacetSprint("C%lld_%s"_Stz, i_Child, pSymbol->xFacet[0].m_sChrSeq.szStz());
   xFacet[0].m_eFacet = SF_COL_NM;
 
   Y_vSet(P_DisamCol);
@@ -3354,7 +3325,7 @@ void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Nm_syn(Stz* szColNm_syn)
+void Symbol::vFacet_Col_Nm_syn(Stz* szColNm_syn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3371,21 +3342,21 @@ void Symbol::vSet_Col_Nm_syn(Stz* szColNm_syn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given column number                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_No(i8 iStmColOdn)
+void Symbol::vFacet_Col_No(i8 iStmColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_COL_NO == xFacet[0].m_eFacet || SF_KEY_COL == xFacet[0].m_eFacet);
 
   if (bIs_Col_Tc()) {
-     Y_vSet(P_TblCol, szSF_symbol(SF_COL_TC));
+     Y_vSet(P_TblCol, szSF_chrSeq(SF_COL_TC));
   }
   else
   if (bIs_Key_Col()) {
-    Y_vSet(P_KeyCol, szSF_symbol(SF_KEY_COL));
+    Y_vSet(P_KeyCol, szSF_chrSeq(SF_KEY_COL));
   }
 
-  vSymSprint("$%lld"_Stz, iStmColOdn);
+  vFacetSprint("$%lld"_Stz, iStmColOdn);
   xFacet[0].m_eFacet = SF_COL_NO;
 
   RASSERT(bIs_Col_No());
@@ -3394,7 +3365,7 @@ void Symbol::vSet_Col_No(i8 iStmColOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given column nuber                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_No(Stz* szColNo)
+void Symbol::vFacet_Col_No(Stz* szColNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3408,7 +3379,7 @@ void Symbol::vSet_Col_No(Stz* szColNo)
           );
 
   if (bIs_Col_Tc()) {
-    Y_vSet(P_TblCol, szSF_symbol(SF_COL_TC));
+    Y_vSet(P_TblCol, szSF_chrSeq(SF_COL_TC));
   }
   xFacet[0].m_sChrSeq = szColNo;
   xFacet[0].m_eFacet = SF_COL_NO;
@@ -3419,13 +3390,13 @@ void Symbol::vSet_Col_No(Stz* szColNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
+void Symbol::vFacet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+  vFacetSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
   xFacet[0].m_eFacet = SF_COL_TC;
 
   RASSERT(bIs_Col_Tc());
@@ -3434,7 +3405,7 @@ void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Tc(Stz* szColTc)
+void Symbol::vFacet_Col_Tc(Stz* szColTc)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3449,7 +3420,7 @@ void Symbol::vSet_Col_Tc(Stz* szColTc)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given comma                                             */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Comma(Stz* szComma)
+void Symbol::vFacet_Comma(Stz* szComma)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3464,7 +3435,7 @@ void Symbol::vSet_Comma(Stz* szComma)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given cross                                             */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Cross(Stz* szCross)
+void Symbol::vFacet_Cross(Stz* szCross)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3479,7 +3450,7 @@ void Symbol::vSet_Cross(Stz* szCross)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given type                                              */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Col_Type(Stz* szColType)
+void Symbol::vFacet_Col_Type(Stz* szColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3494,7 +3465,7 @@ void Symbol::vSet_Col_Type(Stz* szColType)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given decimal literal                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Dcm_Lit(Stz* szDcmLit)
+void Symbol::vFacet_Dcm_Lit(Stz* szDcmLit)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3509,7 +3480,7 @@ void Symbol::vSet_Dcm_Lit(Stz* szDcmLit)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given direction                                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Direction(Stz* szColNm)
+void Symbol::vFacet_Direction(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3524,7 +3495,7 @@ void Symbol::vSet_Direction(Stz* szColNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to ELSE                                                    */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Else(Stz* szElse)
+void Symbol::vFacet_Else(Stz* szElse)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3539,7 +3510,7 @@ void Symbol::vSet_Else(Stz* szElse)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to ENDIF                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_EndIf(Stz* szEndIf)
+void Symbol::vFacet_EndIf(Stz* szEndIf)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3554,7 +3525,7 @@ void Symbol::vSet_EndIf(Stz* szEndIf)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given fold name                                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Fld_Nm(Stz* szFldNm)
+void Symbol::vFacet_Fld_Nm(Stz* szFldNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3569,7 +3540,7 @@ void Symbol::vSet_Fld_Nm(Stz* szFldNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to be a float literal                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Flt_Lit(Stz* szFltLit)
+void Symbol::vFacet_Flt_Lit(Stz* szFltLit)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3584,7 +3555,7 @@ void Symbol::vSet_Flt_Lit(Stz* szFltLit)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given group-by                                          */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_GroupBy(Stz* szGroupBy)
+void Symbol::vFacet_GroupBy(Stz* szGroupBy)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3599,13 +3570,13 @@ void Symbol::vSet_GroupBy(Stz* szGroupBy)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given index-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
+void Symbol::vFacet_Idx_Col(i8 iIdxColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("$I%lld"_Stz, iIdxColOdn);
+  vFacetSprint("$I%lld"_Stz, iIdxColOdn);
   xFacet[0].m_eFacet = SF_IDX_COL;
 
   RASSERT(bIs_Idx_Col());
@@ -3614,7 +3585,7 @@ void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given index-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Idx_Col(Stz* szIdxCol)
+void Symbol::vFacet_Idx_Col(Stz* szIdxCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3629,7 +3600,7 @@ void Symbol::vSet_Idx_Col(Stz* szIdxCol)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to a index name                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
+void Symbol::vFacet_Idx_Nm(Stz* szIdxNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3644,7 +3615,7 @@ void Symbol::vSet_Idx_Nm(Stz* szIdxNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given integer literal                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Int_Lit(i8 iIIntLIt)
+void Symbol::vFacet_Int_Lit(i8 iIIntLIt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3659,7 +3630,7 @@ void Symbol::vSet_Int_Lit(i8 iIIntLIt)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to be a integer literal                                    */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Int_Lit(Stz* szIntLit)
+void Symbol::vFacet_Int_Lit(Stz* szIntLit)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3674,7 +3645,7 @@ void Symbol::vSet_Int_Lit(Stz* szIntLit)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given INTERVAL_DT                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Interval_DT(Stz* szInterval_DT)
+void Symbol::vFacet_Interval_DT(Stz* szInterval_DT)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3689,7 +3660,7 @@ void Symbol::vSet_Interval_DT(Stz* szInterval_DT)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given INTERVAL_YM                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Interval_YM(Stz* szInterval_YM)
+void Symbol::vFacet_Interval_YM(Stz* szInterval_YM)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3704,7 +3675,7 @@ void Symbol::vSet_Interval_YM(Stz* szInterval_YM)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given interval fn                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Ivl_Fn(Stz* szIvlFn)
+void Symbol::vFacet_Ivl_Fn(Stz* szIvlFn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3719,13 +3690,13 @@ void Symbol::vSet_Ivl_Fn(Stz* szIvlFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Key_Col(i8 iKeyOdn)
+void Symbol::vFacet_Key_Col(i8 iKeyOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet || SF_KEY_COL == xFacet[0].m_eFacet);
 
-  vSymSprint("$K%lld"_Stz, iKeyOdn);
+  vFacetSprint("$K%lld"_Stz, iKeyOdn);
   xFacet[0].m_eFacet = SF_KEY_COL;
 
   RASSERT(bIs_Key_Col());
@@ -3734,7 +3705,7 @@ void Symbol::vSet_Key_Col(i8 iKeyOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Key_Col(Stz* szKeyCol)
+void Symbol::vFacet_Key_Col(Stz* szKeyCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3749,7 +3720,7 @@ void Symbol::vSet_Key_Col(Stz* szKeyCol)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given math op                                           */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Mth_Op(Stz* szMthOp)
+void Symbol::vFacet_Mth_Op(Stz* szMthOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3764,7 +3735,7 @@ void Symbol::vSet_Mth_Op(Stz* szMthOp)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to NEGATE                                                  */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Negate(Stz* szNull)
+void Symbol::vFacet_Negate(Stz* szNull)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3779,7 +3750,7 @@ void Symbol::vSet_Negate(Stz* szNull)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given note                                              */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Note(Stz* szNote)
+void Symbol::vFacet_Note(Stz* szNote)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3794,7 +3765,7 @@ void Symbol::vSet_Note(Stz* szNote)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to NULL                                                    */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Null(Stz* szNull)
+void Symbol::vFacet_Null(Stz* szNull)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3809,7 +3780,7 @@ void Symbol::vSet_Null(Stz* szNull)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given parenthesis                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Parenthesis(Stz* szParenthesis)
+void Symbol::vFacet_Parenthesis(Stz* szParenthesis)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3824,7 +3795,7 @@ void Symbol::vSet_Parenthesis(Stz* szParenthesis)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given pipeline name                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
+void Symbol::vFacet_Ppe_Nm(Stz* szPpeNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3839,13 +3810,13 @@ void Symbol::vSet_Ppe_Nm(Stz* szPpeNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given parameter column                                  */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Prm_Col(i8 iOrdinal)
+void Symbol::vFacet_Prm_Col(i8 iOrdinal)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("%%%lld"_Stz, iOrdinal);
+  vFacetSprint("%%%lld"_Stz, iOrdinal);
   xFacet[0].m_eFacet = SF_PRM_COL;
 
   RASSERT(bIs_Sqy_Prm());
@@ -3854,7 +3825,7 @@ void Symbol::vSet_Prm_Col(i8 iOrdinal)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given parameter column                                  */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Prm_Col(Stz* szPrmCol)
+void Symbol::vFacet_Prm_Col(Stz* szPrmCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3869,7 +3840,7 @@ void Symbol::vSet_Prm_Col(Stz* szPrmCol)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given relational op                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Rln_Op(Stz* szRlnOp)
+void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3884,13 +3855,13 @@ void Symbol::vSet_Rln_Op(Stz* szRlnOp)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given subquery-number                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Sqy_Nm(i8 iSqyNo)
+void Symbol::vFacet_Sqy_Nm(i8 iSqyNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("__sq%02lld"_Stz, iSqyNo);
+  vFacetSprint("__sq%02lld"_Stz, iSqyNo);
   xFacet[0].m_eFacet = SF_SQY_NM;
 
   RASSERT(bIs_Sqy_Nm());
@@ -3899,7 +3870,7 @@ void Symbol::vSet_Sqy_Nm(i8 iSqyNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given subquery op                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
+void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3914,7 +3885,7 @@ void Symbol::vSet_Sqy_Op(Stz* szSqyOp)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given stage cast                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Stg_Cast(Stz* szStgCast)
+void Symbol::vFacet_Stg_Cast(Stz* szStgCast)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3929,13 +3900,13 @@ void Symbol::vSet_Stg_Cast(Stz* szStgCast)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to iven stage name                                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Stg_Nm(i8 iStgNo)
+void Symbol::vFacet_Stg_Nm(i8 iStgNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("S%02lld"_Stz, iStgNo);
+  vFacetSprint("S%02lld"_Stz, iStgNo);
   xFacet[0].m_eFacet = SF_STG_NO;
 
   RASSERT(bIs_Stg_Nm());
@@ -3944,7 +3915,7 @@ void Symbol::vSet_Stg_Nm(i8 iStgNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given string fn                                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Str_Fn(Stz* szBolFn)
+void Symbol::vFacet_Str_Fn(Stz* szBolFn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3959,7 +3930,7 @@ void Symbol::vSet_Str_Fn(Stz* szBolFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given string                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_String(Stz* szString)
+void Symbol::vFacet_String(Stz* szString)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3974,7 +3945,7 @@ void Symbol::vSet_String(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table name                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Tbl_Nm(Stz* szTblNm)
+void Symbol::vFacet_Tbl_Nm(Stz* szTblNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -3989,13 +3960,13 @@ void Symbol::vSet_Tbl_Nm(Stz* szTblNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Tbl_Syn(char cTblSyn)
+void Symbol::vFacet_Tbl_Syn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("%c"_Stz, cTblSyn);
+  vFacetSprint("%c"_Stz, cTblSyn);
   xFacet[0].m_eFacet = SF_TBL_SYN;
 
   RASSERT(bIs_Tbl_Syn());
@@ -4004,7 +3975,7 @@ void Symbol::vSet_Tbl_Syn(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
+void Symbol::vFacet_Tbl_Syn(Stz* szTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4019,7 +3990,7 @@ void Symbol::vSet_Tbl_Syn(Stz* szTblSyn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given ttable-synonym replicated                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Tbl_Syn_rep(void)
+void Symbol::vFacet_Tbl_Syn_rep(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4028,7 +3999,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
   char cTableSyn_actual = cSF_char();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
-  vSymSprint("%c"_Stz, cTableSyn_actual);
+  vFacetSprint("%c"_Stz, cTableSyn_actual);
   xFacet[0].m_eFacet = SF_TBL_SYN_rep;
 
   RASSERT(bIs_Tbl_Syn_rep());
@@ -4037,7 +4008,7 @@ void Symbol::vSet_Tbl_Syn_rep(void)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to THEN                                                    */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Then(Stz* szThen)
+void Symbol::vFacet_Then(Stz* szThen)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4052,7 +4023,7 @@ void Symbol::vSet_Then(Stz* szThen)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to TYPE                                                    */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Type(Stz* szType)
+void Symbol::vFacet_Type(Stz* szType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4067,7 +4038,7 @@ void Symbol::vSet_Type(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given when                                              */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_When(Stz* szWhen)
+void Symbol::vFacet_When(Stz* szWhen)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4082,7 +4053,7 @@ void Symbol::vSet_When(Stz* szWhen)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given xk cast                                           */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Xk_Cast(Stz* szXkCast)
+void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4097,13 +4068,13 @@ void Symbol::vSet_Xk_Cast(Stz* szXkCast)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Xrf_No(i8 iXrefNo)
+void Symbol::vFacet_Xrf_No(i8 iXrefNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xFacet[0].m_eFacet);
 
-  vSymSprint("#%lld"_Stz, iXrefNo);
+  vFacetSprint("#%lld"_Stz, iXrefNo);
   xFacet[0].m_eFacet = SF_XRF_NO;
 
   RASSERT(bIs_Xrf_No());
@@ -4112,7 +4083,7 @@ void Symbol::vSet_Xrf_No(i8 iXrefNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_Xrf_No(Stz* szXrefNo)
+void Symbol::vFacet_Xrf_No(Stz* szXrefNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -4125,11 +4096,30 @@ void Symbol::vSet_Xrf_No(Stz* szXrefNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint symbol                                                              */
+/* sprint facet                                                               */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSymSprint(Stz* szFormat, ...)
+void Symbol::vFacetSprint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  s256 sSymbol;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sSymbol.azChar(), sSymbol.nAreaBytes(), xArgs, (char*)szFormat);
+  va_end(xArgs);
+
+  xFacet[0].m_sChrSeq = sSymbol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  xFacet[0].m_eFacet = eFacet;
 
   s256 sSymbol;
 

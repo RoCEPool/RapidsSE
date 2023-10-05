@@ -1473,7 +1473,7 @@ Card_HshCol* Dissector::pPopHshCol(Card_RpnTerms* pCard_RpnTerms)
   if (! pCard_Term_head)
     return nullptr;
 
-  if (pCard_Term_head->pSymbol()->szSF_symbol(SF_NONE)->bSame(","_Stz)) {
+  if (pCard_Term_head->pSymbol()->szSF_chrSeq(SF_NONE)->bSame(","_Stz)) {
     pCard_Term_head = pCard_RpnTerms->pPopChild();
     delete pCard_Term_head;
   }

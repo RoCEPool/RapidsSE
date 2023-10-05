@@ -538,7 +538,7 @@ bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol)
     return true;
 
   if (pSymbol_0->Y_bHas(P_TblCol) &&
-      pSymbol_0->Y_szGet(P_TblCol)->bSame(pSymbol->szSF_symbol(SF_NONE)))
+      pSymbol_0->Y_szGet(P_TblCol)->bSame(pSymbol->szSF_chrSeq(SF_NONE)))
     return true;
 
   return false;
@@ -728,7 +728,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! pSymbol()->bTest_mustHave_ppy(P_Type,nullptr)) {
+  if (! pSymbol()->Y_bHas(P_Type)) {
     vDump(__func__);
     RASSERT(0);
   }

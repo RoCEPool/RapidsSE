@@ -204,7 +204,7 @@ void Card::vCardLeaks(void)
 //    if (gapCard[i_Card]) {
 //      Card *pLeaked = gapCard[i_Card];
 //      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSF_symbol());
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSF_chrSeq());
 //      vDebugPoint();
 //    }
 //  }
@@ -249,7 +249,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //         i_Card,
 //         p_cardInQuestion,
 //         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->szSF_symbol());
+//         p_cardInQuestion->szSF_chrSeq());
 //    vDebugPoint();
 //  }
 //
@@ -1488,7 +1488,7 @@ Stz* Card::szSymbol(eSF eSymbol_xchk)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* sz = m_xSymbol.szSF_symbol(eSymbol_xchk);
+  Stz* sz = m_xSymbol.szSF_chrSeq(eSymbol_xchk);
 
   return sz;
 }

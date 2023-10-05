@@ -272,8 +272,8 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol,
     xSymbol_as_stripped.vItemStrip();
 
 //    vTrace("%s %s -- %s %s\n"_Stz,
-//           xSymbol_as_stripped.szSF_symbol(SF_NONE),szTblCol_p,
-//           xSymbol_arg_stripped.szSF_symbol(SF_NONE),szTblCol);
+//           xSymbol_as_stripped.szSF_chrSeq(SF_NONE),szTblCol_p,
+//           xSymbol_arg_stripped.szSF_chrSeq(SF_NONE),szTblCol);
 
     if ((xSymbol_as_stripped.bSame(&xSymbol_arg_stripped) ||
         p_as->pSymbol()->Y_bHas(P_Synthetic)) &&

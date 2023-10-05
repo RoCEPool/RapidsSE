@@ -562,7 +562,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Card_As*      p_as_i = p_expr_i->pSub_as();
     Symbol*    pSym_as_i = p_as_i->pSymbol();
     i8        i_CrwCol_i = pSym_as_i->iSF_ordinal();
-    Stz*      szTblCol_i = p_expr_i->pFirstTblCol()->szSF_symbol(SF_NONE);
+    Stz*      szTblCol_i = p_expr_i->pFirstTblCol()->szSF_chrSeq(SF_NONE);
 
     // projected related
     Card_Expr *p_prior_expr_p = nullptr;
@@ -577,7 +577,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
       // assemble descriptor
       Card_As *p_as_p   = p_expr_p->pSub_as();
       Symbol *pSym_as_p = p_as_p->pSymbol();
-      Stz *szSym_as_p   = pSym_as_p->szSF_symbol(SF_NONE);
+      Stz *szSym_as_p   = pSym_as_p->szSF_chrSeq(SF_NONE);
       Stz *szTblCol_p   = p_expr_p->pFirstStmCol()->Y_szGet(P_TblCol);
       i8 i_StructCell_p = pSym_as_p->iSF_ordinal();
 
@@ -661,8 +661,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
                       p_expr_p->pSymbol()->iSF_ordinal() - 1,
                       p_expr_p->szSymbol(SF_NONE),
-                      pSym_stmCol_a->szSF_symbol(SF_NONE),
-                      p_expr_p->pSymbol()->szSF_symbol(SF_NONE));
+                    pSym_stmCol_a->szSF_chrSeq(SF_NONE),
+                    p_expr_p->pSymbol()->szSF_chrSeq(SF_NONE));
 
     }
     else {
@@ -678,8 +678,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       pColPpg->vAdd(pSym_expr_a->iSF_ordinal() - 1,
                     p_expr_p->pSymbol()->iSF_ordinal() - 1,
                     p_expr_p->szSymbol(SF_NONE),
-                    pSym_expr_a->szSF_symbol(SF_NONE),
-                    p_expr_p->pSymbol()->szSF_symbol(SF_NONE));
+                    pSym_expr_a->szSF_chrSeq(SF_NONE),
+                    p_expr_p->pSymbol()->szSF_chrSeq(SF_NONE));
 
     }
 
@@ -738,8 +738,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //        pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
 //                      p_expr_p->pSymbol()->iSF_ordinal() - 1,
 //                      p_expr_p->szSymbol(SF_NONE),
-//                      pSym_stmCol_a->szSF_symbol(SF_NONE),
-//                      p_expr_p->pSymbol()->szSF_symbol(SF_NONE));
+//                      pSym_stmCol_a->szSF_chrSeq(SF_NONE),
+//                      p_expr_p->pSymbol()->szSF_chrSeq(SF_NONE));
 //      }
 //    }
 //    return C_CONTINUE_RECURSION;
