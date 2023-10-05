@@ -310,7 +310,6 @@ namespace STORE
     void vFacet_Xrf_No(i8 iXrefNo);
     void vFacet_Xrf_No(Stz* szXrefNo);
 
-    void vFacetSprint(Stz* szFormat, ...);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
 
   protected:
