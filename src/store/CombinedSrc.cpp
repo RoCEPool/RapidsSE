@@ -1316,16 +1316,17 @@ void CombinedSrc::vAppendCodePpgCols(OpSketch* pOpSketch, Stz* szFunction)
 
 		m_pCommonCode->vSeekStart();
 
-		Column* pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColPpg->m_axCol[i_Col].m_i_StructCell);
+		Column* pColumnIn = pOpSketch->m_pStreamDefLft->pGetColumn(pOpSketch->m_pColPpg->m_axCol[i_Col].m_i_CellIn);
+		Column* pColumnOut = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColPpg->m_axCol[i_Col].m_i_StructCell);
 
-		switch (pColumn->eColumnType()) {
+		switch (pColumnIn->eColumnType()) {
 
 			case CT_VARCHAR:
-				vAppendCodeFragment(pOpSketch, szFunction, pColumn);
+				vAppendCodeFragment(pOpSketch, szFunction, pColumnIn, pColumnOut);
 				break;
 
 			default:
-				vAppendCodeFragment(pOpSketch, "vCopyCol"_Stz, pColumn);
+				vAppendCodeFragment(pOpSketch, "vCopyCol"_Stz, pColumnIn, pColumnOut);
 				break;
 		}
 	}

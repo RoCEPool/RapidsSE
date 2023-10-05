@@ -9,9 +9,24 @@ __TPCH_SCHEMA;
 
 // OptQ11
 
-// NOTE: S10 (crossJoin) : ColPpg is null.
+/*
+// NOTE : IN S04 ColPpg 0x20494d1d0040
+                nArriving 3
+                m_axCol[0] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($1 $1)
+                m_axCol[1] : m_i_CellIn [1] -> m_i_StructCell [1] $2 ($2 $2)
+                m_axCol[2] : m_i_CellIn [6] -> m_i_StructCell [2] $3 ($7 $3)
 
-/optimiser_trace
+should be:
+: ColPpg 0x20494d1d0040
+             nArriving 3
+             m_axCol[0] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($1 $1)
+             m_axCol[1] : m_i_CellIn [1] -> m_i_StructCell [1] $2 ($2 $2)
+             m_axCol[2] : m_i_CellIn [2] -> m_i_StructCell [2] $3 ($7 $3)
+*/
+
+
+
+///optimiser_trace
 /transliterated
 /pipeline_def
 /weaved
