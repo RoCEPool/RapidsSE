@@ -605,7 +605,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 5) {
+  if (m_pStageDef->i_Stage() == 9) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -641,7 +641,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   auto bfAddDescriptors = [this, pColPpg, p_projection](Card *pCard_expr_a) {
 
-    if (m_pStageDef->i_Stage() == 5) {
+    if (m_pStageDef->i_Stage() == 9) {
       vDebugPoint();
       if (m_pOpDef->i_Op() == 0)
         vDebugPoint();

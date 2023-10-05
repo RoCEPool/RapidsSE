@@ -8,7 +8,7 @@ __TPCH_SCHEMA;
 
 // NOTE: S10 (crossJoin) : ColPpg is null.
 
-// /optimiser_trace
+/optimiser_trace
 /transliterated
 /pipeline_def
 /weaved
