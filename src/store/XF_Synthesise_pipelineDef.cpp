@@ -651,8 +651,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     Card_Expr*  p_expr_a = _pCard_Expr(pCard_expr_a);
 
     if (p_expr_a->bIsScalarCol()) {
-      p_projection->vDump(__func__);
-      p_expr_a->vDump(__func__);
+//      p_projection->vDump(__func__);
+//      p_expr_a->vDump(__func__);
 
       Card_As *p_as_a   = p_expr_a->pSub_as();
       Symbol *pSym_as_a = p_as_a->pSymbol();
@@ -666,7 +666,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
       if (p_expr_p) {
 
-        p_expr_p->vDump(__func__);
+//        p_expr_p->vDump(__func__);
         pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
                       p_expr_p->pSymbol()->iSF_ordinal() - 1,
                       p_expr_p->szSymbol(SF_NONE),

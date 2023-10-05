@@ -13,18 +13,18 @@
 
 namespace STORE
 {
+  struct Facet {
+    eSF  m_eFacet;
+    s256 m_sChrSeq;
+  };
+
   class Symbol : public Object
   {
   private:
     static const i8 C_FACETS = 6;
 
     i8 m_nFacets;
-
-    struct
-    {
-      eSF  m_eFacet;
-      s256 m_sChrSeq;
-    } xFacet[C_FACETS];
+    Facet xaFacet[C_FACETS];
 
     TagSet* m_pProperties;
 
@@ -38,8 +38,6 @@ namespace STORE
     Symbol(eSF eFacet, Stz* szChrSeq);
 
     ~Symbol(void);
-
-    void vDump(void);
 
     static i8   iOrdDiff(Stz* szSeq1, Stz* szSeq2);
 
@@ -115,9 +113,13 @@ namespace STORE
 
     // - - - - - -
 
+    void vDump(void);
+
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
+    Facet* aFacet(eSF eFacet);
+    Facet* aFacet(i8 i_Facet);
     eSF  eFacet(i8 i_Facet=0);
     i8   i_Facet(eSF eFacet);
     void vFacet(eSF eFacet);
