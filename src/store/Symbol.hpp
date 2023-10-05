@@ -318,6 +318,7 @@ namespace STORE
     void vFacet_Xrf_No(i8 iXrefNo);
     void vFacet_Xrf_No(Stz* szXrefNo);
 
+    void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetPush(eSF eFacet);
     void vFacetRotate(eSF eFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);

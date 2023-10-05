@@ -4094,6 +4094,20 @@ void Symbol::vFacet_Xrf_No(Stz* szXrefNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy facets                                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_nFacets = pSymbol_arg->m_nFacets;
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
+    xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* push facet                                                                 */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacetPush(eSF eFacet)
