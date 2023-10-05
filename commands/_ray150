@@ -1,0 +1,55 @@
+/*============================================================================*/
+/* _ray144                                                                    */
+/*============================================================================*/
+
+// Backend_SF0001/IndexJoin.test (line 695)
+__TPCH_SCHEMA;
+
+/*
+// NOTE:
+
+In stage S02
+: ColPpg 0x20483edd0040
+             nArriving 2
+             m_axCol[0] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($1 $1)
+             m_axCol[1] : m_i_CellIn [1] -> m_i_StructCell [1] $2 ($2 $2)
+should have been
+: ColPpg 0x20483edd0040
+             nArriving 2
+             m_axCol[1] : m_i_CellIn [1] -> m_i_StructCell [0] $1 ($2 $2)
+*/
+
+/pipeline_def
+/weaved
+/optimise_passthru
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan orders
+    | filter "type boolean $1 4 >= "
+    | project "type integer $1 , type integer $2 "
+    | combined 0
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    | project "type integer $2 , type integer $3 , type integer $6"
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+/*
+contains rows :
+  (148,148,11)
+  (149,149,19)
+*/
