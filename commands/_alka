@@ -23,10 +23,11 @@ create index IxR_NAME on Region (R_NAME);
 load Region "../DATA/TPCH/region.tbl";
 
 
+/optimiser_trace
 /optimise_passthru
 /pipeline_def
 /weaved
-pipeline _unnamed_
+pipeline _alka
 begin
 
   stage S00 on origin :
