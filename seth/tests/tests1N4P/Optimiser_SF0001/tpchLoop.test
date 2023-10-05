@@ -101,6 +101,7 @@ INCLUDE 'sleep.test';
 LOG 'Running tpch query 11...';
 INCLUDE 'OptQ11.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 12...';
@@ -132,7 +133,6 @@ INCLUDE 'sleep.test';
 LOG 'Running tpch query 16...';
 INCLUDE 'OptQ16.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 18...';
