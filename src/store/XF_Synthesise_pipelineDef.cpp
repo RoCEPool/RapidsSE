@@ -658,6 +658,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       Card_Expr* p_expr_p =
           p_projection->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
 
+      if (! p_expr_p)
+        return C_CONTINUE_RECURSION;
+
       pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
                       p_expr_p->pSymbol()->iSF_ordinal() - 1,
                       p_expr_p->szSymbol(SF_NONE),
@@ -671,9 +674,12 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       Card_Expr* p_expr_p =
           p_projection->pDecodeExpr(pSym_expr_a);
 
-    p_projection->vDump(__func__);
-    p_expr_a->vDump(__func__);
-    p_expr_p->vDump(__func__);
+      if (! p_expr_p)
+        return C_CONTINUE_RECURSION;
+
+//      p_projection->vDump(__func__);
+//      p_expr_a->vDump(__func__);
+//      p_expr_p->vDump(__func__);
 
       pColPpg->vAdd(pSym_expr_a->iSF_ordinal() - 1,
                     p_expr_p->pSymbol()->iSF_ordinal() - 1,

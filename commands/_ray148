@@ -13,9 +13,10 @@ Backend_SF0001/indexJoin.test - line 695
 
 */
 
+/optimiser_trace
 /weaved
 /pipeline_def
-/pipelineName = "OptQ17"
+/pipelineName = "_ray148"
 /optimise_passthru
 pipeline indexJoinTest
 begin
