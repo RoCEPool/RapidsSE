@@ -1194,7 +1194,7 @@ void Symbol::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return symbol form                                                         */
+/* return symbol facet                                                        */
 /*----------------------------------------------------------------------------*/
 eSF Symbol::eFacet(i8 i_Facet)
 {
@@ -1202,6 +1202,20 @@ eSF Symbol::eFacet(i8 i_Facet)
 
   RASSERT(i_Facet < m_nFacets);
   return xFacet[i_Facet].m_eFacet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan for symbol facet                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::i_Facet(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
+    if (eFacet == xFacet[i_Facet].m_eFacet)
+      return i_Facet;
+  }
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

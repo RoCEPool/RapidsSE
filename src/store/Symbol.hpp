@@ -119,6 +119,7 @@ namespace STORE
     eQO  eEvalSubQryOp(void);
 
     eSF  eFacet(i8 i_Facet=0);
+    i8   i_Facet(eSF eFacet);
     void vFacet(eSF eFacet);
     void vFacet(eSF eFacet, char cChr);
     void vFacet(eSF eFacet, char cChr, i8 iInt);
