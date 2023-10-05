@@ -40,12 +40,9 @@ LOG 'Create supplier ...';
 INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
-// TODO COLPPG (_ray147)
-/*
 LOG 'Running tpch query 17...';
 INCLUDE 'OptQ17.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 1...';
@@ -68,29 +65,25 @@ INCLUDE 'OptQ4.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO COLPPG (_ray145)
-/*
 LOG 'Running tpch query 5...';
 INCLUDE 'OptQ5.test';
 INCLUDE 'sleep.test';
-*/
+
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 6...';
 INCLUDE 'OptQ6.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO COLPPG
-/*
 LOG 'Running tpch query 7...';
 INCLUDE 'OptQ7.test';
 INCLUDE 'sleep.test';
-
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 8...';
 INCLUDE 'OptQ8.test';
 INCLUDE 'sleep.test';
+
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 9...';
@@ -103,6 +96,8 @@ INCLUDE 'OptQ10.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+// TODO COLPPG
+/*
 LOG 'Running tpch query 11...';
 INCLUDE 'OptQ11.test';
 INCLUDE 'sleep.test';
