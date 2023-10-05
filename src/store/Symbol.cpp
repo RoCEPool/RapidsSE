@@ -21,6 +21,7 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  m_nFacets = 1;
   for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
     xFacet[i_Facet].m_eFacet = SF_NONE;
   }
@@ -39,6 +40,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  m_nFacets = 1;
   for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
     xFacet[i_Facet].m_eFacet = SF_NONE;
   }
@@ -59,6 +61,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  m_nFacets = 1;
   for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
     xFacet[i_Facet].m_eFacet = SF_NONE;
   }
@@ -1193,11 +1196,12 @@ void Symbol::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* return symbol form                                                         */
 /*----------------------------------------------------------------------------*/
-eSF Symbol::eFacet(void)
+eSF Symbol::eFacet(i8 i_Facet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return xFacet[0].m_eFacet;
+  RASSERT(i_Facet < m_nFacets);
+  return xFacet[i_Facet].m_eFacet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1355,6 +1359,17 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
   }
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* get number of facets                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::nFacets(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_nFacets;
+}
+
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/

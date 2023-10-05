@@ -18,6 +18,8 @@ namespace STORE
   private:
     static const i8 C_FACETS = 6;
 
+    i8 m_nFacets;
+
     struct
     {
       eSF  m_eFacet;
@@ -116,13 +118,14 @@ namespace STORE
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
-    eSF  eFacet(void);
+    eSF  eFacet(i8 i_Facet=0);
     void vFacet(eSF eFacet);
     void vFacet(eSF eFacet, char cChr);
     void vFacet(eSF eFacet, char cChr, i8 iInt);
     void vFacet(eSF eFacet, i8 iInt);
     void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
+    i8   nFacets(void);
     bool bFormIs(eSF eSymbol);
 
     bool bHasSymbol(void);
