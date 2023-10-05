@@ -268,7 +268,7 @@ namespace STORE
     void vFacet_Comma(Stz* szComma);
     void vFacet_Cross(Stz* szCross);
     void vFacet_Dcm_Lit(Stz* szDcmLit);
-    void vFacet_Direction(Stz* szColNm);
+    void vFacet_Direction(Stz* szDirection);
     void vFacet_Else(Stz* szElse);
     void vFacet_EndIf(Stz* szEndIf);
     void vFacet_Fld_Nm(Stz* szFldNm);
@@ -277,7 +277,7 @@ namespace STORE
     void vFacet_Idx_Col(i8 iIdxColOdn);
     void vFacet_Idx_Col(Stz* szIdxCol);
     void vFacet_Idx_Nm(Stz* szIdxNm);
-    void vFacet_Int_Lit(i8 iIIntLIt);
+    void vFacet_Int_Lit(i8 iIntLit);
     void vFacet_Int_Lit(Stz* szIntLit);
     void vFacet_Interval_DT(Stz* szInterval_DT);
     void vFacet_Interval_YM(Stz* szInterval_YM);
@@ -285,7 +285,7 @@ namespace STORE
     void vFacet_Key_Col(i8 iKeyOdn);
     void vFacet_Key_Col(Stz* szKeyCol);
     void vFacet_Mth_Op(Stz* szMthOp);
-    void vFacet_Negate(Stz* szNull);
+    void vFacet_Negate(Stz* szNegate);
     void vFacet_Note(Stz* szNote);
     void vFacet_Null(Stz* szNull);
     void vFacet_Parenthesis(Stz* szParenthesis);
