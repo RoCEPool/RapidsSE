@@ -4066,6 +4066,34 @@ void Symbol::vFacet_Xrf_No(Stz* szXrefNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push facet                                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetPush(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  UNUSED(eFacet);
+
+  for (i8 i_Facet = nFacets() - 1; i_Facet >= 1; i_Facet--) {
+    xFacet[i_Facet].m_eFacet  = xFacet[i_Facet - 1].m_eFacet;
+    xFacet[i_Facet].m_sChrSeq = xFacet[i_Facet - 1].m_sChrSeq;
+  }
+
+  xFacet[0].m_eFacet  = eFacet;
+  xFacet[0].m_sChrSeq = ""_Stz"";
+}
+
+/*----------------------------------------------------------------------------*/
+/* rotate facet to top                                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetRotate(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  UNUSED(eFacet);
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint facet                                                               */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
