@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray144                                                                    */
+/* _ray150                                                                    */
 /*============================================================================*/
 
 // Backend_SF0001/IndexJoin.test (line 695)
@@ -19,9 +19,11 @@ should have been
              m_axCol[1] : m_i_CellIn [1] -> m_i_StructCell [0] $1 ($2 $2)
 */
 
+/optimiser_trace
 /pipeline_def
 /weaved
 /optimise_passthru
+/pipelineName = "_ray150"
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -53,3 +55,5 @@ contains rows :
   (148,148,11)
   (149,149,19)
 */
+
+_tpchDrop
