@@ -4080,7 +4080,7 @@ void Symbol::vFacetPush(eSF eFacet)
   }
 
   xFacet[0].m_eFacet  = eFacet;
-  xFacet[0].m_sChrSeq = ""_Stz"";
+  xFacet[0].m_sChrSeq = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4091,6 +4091,21 @@ void Symbol::vFacetRotate(eSF eFacet)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   UNUSED(eFacet);
+
+  i8 i_Facet = this->i_Facet(eFacet);
+  if (C_UNKNOWN == i_Facet) {
+    vFacetPush(eFacet);
+    return;
+  }
+
+  eSF  eFacet_tmp  = xFacet[0].m_eFacet;
+  s256 sChrSeq_tmp = xFacet[0].m_sChrSeq;
+
+  xFacet[0].m_eFacet  = xFacet[i_Facet].m_eFacet;
+  xFacet[0].m_sChrSeq = xFacet[i_Facet].m_sChrSeq;
+
+  xFacet[i_Facet].m_eFacet  = eFacet_tmp;
+  xFacet[i_Facet].m_sChrSeq = sChrSeq_tmp;
 }
 
 /*----------------------------------------------------------------------------*/
