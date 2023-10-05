@@ -388,6 +388,96 @@ This command exits the SE Shell.
 Scripting Mode
 --------------
 
+The SE Shell provides a scripting option to facilitate the submission of
+queries programmatically, particularly from a shell scripting environment. For
+full control of the programmatic environment please use the RapidsSE JDBC driver
+or the wireline protocol directly.
 
+To run the SE Shell in scripting mode specify the parameter ``-s`` on the command
+line when it is started. For example:
 
+.. code:: bash
 
+  ./seshell.sh -s
+
+There is an optional second parameter, ``-t``, which when specified will result
+in the second record of the query result containing a comma-separated list of
+the data types for each column returned.
+
+When run in scripting mode, the input/output is optimized for being parsed, not
+for human readability. The following describes the behavior of the SE Shell
+when run in scripting mode:
+
+#. The SE Shell will read from stdin and execute the supplied query(s), write
+   the results to the client via its stdout pipe and then terminate when its
+   stdin pipe is closed. Multiple queries should be separated by line breaks.
+
+#. The query results will be returned on stdout in the format of a csv file,
+   where the first record returned will be a comma-separated list of the column
+   names from the query select list. If the ``-t`` option was specified when
+   starting up SE Shell then the second record which will contain a comma-separated
+   list of the data types for each column returned. The data types will be one
+   of the following:
+
+   - ``BOOLEAN``
+   - ``TINYINT``
+   - ``SMALLINT``
+   - ``INTEGER``
+   - ``BIGINT``
+   - ``FLOAT``
+   - ``DECIMAL``
+   - ``DATE``
+   - ``TIME``
+   - ``TIMESTAMP``
+   - ``JAVA_OBJECT``
+   - ``OTHER``
+   - ``VARBINARY``
+   - ``NULL`` (for the case of selecting literal nulls).
+
+   The query results will then follow as a comma-separated set of values that
+   correspond to the columns in the select list.
+
+   .. note::
+
+      Please note that the JDBC specification does not contain a representation
+      of SQL intervals, so these cannot be represented in JDBC drivers as a
+      distinct type. SE Shell cannot display the SQL interval type because it
+      relies on JDBC drivers. SQL interval values will be displayed in string form
+      but their column type will be represented as ``JAVA_OBJECT``.
+
+#. To aid in the processing of the results:
+
+   - String column values are surrounded by double quotes.
+
+   - Double quote characters within a string are escaped by preceding them with an
+     additional double quote.
+
+   - Timestamp fields are encoded as: ``TIMESTAMP ‘yyyy-mm-dd hh:mm:ss.ffff’``
+
+   - Date fields are encoded as: ``DATE ‘yyyy-mm-dd’``
+
+   - Time fields are encoded as: ``TIME ‘hh:mm:ss.ffff’``
+
+   - Every other data type has no special encoding.
+
+   - Any errors will be reported on stderr.
+
+   - When the query execution has been completed, the SE Shell will terminate
+     with either a zero completion code to indicate that the query completed
+     successfully, or a non-zero error code when an error has occurred.
+
+.. rubric:: Example:
+
+The following example shows the output generated when using the ``-t`` option
+to include the data types for the returned columns:
+
+.. code:: bash
+
+  craig@machine:shell$ echo "select * from datums limit 5;" | ./seshell.sh -s -t
+  "int_col0","bol_col2","dte_col4","dec_col6","flt_col8","tme_col10","tsp_col12","vch_col14"
+  "BIGINT","BOOLEAN","DATE","DECIMAL","FLOAT","TIME","TIMESTAMP","VARCHAR"
+  2,null,DATE '1942-01-01',47.04,0.22,TIME '11:23:31',TIMESTAMP '1972-01-01 12:00:00.0',"life"
+  8,false,DATE '1942-11-01',23.04,0.22,TIME '11:23:31',null,"pink"
+  9,false,DATE '1941-01-10',4001.04,10.22,TIME '10:23:31',TIMESTAMP '1941-01-01 00:00:00.0',null
+  10,true,DATE '1942-01-19',477.04,0.22,TIME '11:23:31',TIMESTAMP '1944-01-01 12:00:00.0',"hello"
+  1,false,DATE '1941-01-01',41.04,10.22,TIME '10:23:31',TIMESTAMP '1941-01-01 00:00:00.0',"hello"
