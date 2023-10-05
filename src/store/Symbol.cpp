@@ -1058,7 +1058,7 @@ bool Symbol::bIs_Xk_Cast(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
+/* is this a symbol for a cross-reference?  (i.e. [n])                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Xrf_No(Stz* szArg)
 {
@@ -1067,7 +1067,7 @@ bool Symbol::bIs_Xrf_No(Stz* szArg)
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
 
-  if ('#' == acFirst &&
+  if ('[' == acFirst &&
       StrLib::bIsDigit(acSecond))
     return true;
   else
@@ -4071,7 +4071,7 @@ void Symbol::vFacet_Xrf_No(i8 iXrefNo)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_XRF_NO,"#%lld"_Stz, iXrefNo);
+  vFacetSprint(SF_XRF_NO,"[%lld]"_Stz, iXrefNo);
 
   RASSERT(bIs_Xrf_No());
 }
