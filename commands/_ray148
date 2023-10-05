@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* _ray148                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA
+
+/*
+
+Backend_SF0001/indexJoin.test - line 695
+
+// NOTE:
+
+
+*/
+
+/weaved
+/pipeline_def
+/pipelineName = "OptQ17"
+/optimise_passthru
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan orders
+    | filter "type boolean $1 4 >= "
+    | project "type integer $1 , type integer $2 "
+    | combined 0
+    | stageC
+
+  stage stageC on all partitions :
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    | project "type integer $2 , type integer $3 , type integer $6"
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+/*
+contains rows :
+  (148,148,11)
+  (149,149,19)
+*/
+
+_tpchDrop
