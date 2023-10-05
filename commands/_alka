@@ -2,138 +2,82 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-__TPCH_SCHEMA
+create table Nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+create index IxN_NATIONKEY on nation (n_nationkey);
 
-create table TABLE1 (
-  pcol1   INTEGER NOT NULL,
-  tcol1   INTEGER NOT NULL,
-  cola1   INTEGER,
-  colb1   VARCHAR(20),
-  colc1   TIMESTAMP,
-  cold1   FLOAT,
-  cole1   DECIMAL(15, 2),
-  colf1   INTEGER,
-  colg1   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
+load nation "../DATA/TPCH/nation.tbl";
+
+create table Region (
+	 R_REGIONKEY       INTEGER      NOT NULL,
+	 R_NAME            CHAR(25)     NOT NULL,
+	 R_COMMENT         VARCHAR(152)
 );
 
-//create index TABLE1_PCOL1 on table1(pcol1);
-//create index TABLE1_COLA1 on table1(cola1);
-//create index TABLE1_COLB1 on table1(colb1);
-//create index TABLE1_UCOL on table1(ucol);
-//create index TABLE1_UCOLVC on table1(ucolvc);
+create index IxR_REGIONKEY on Region (R_REGIONKEY);
+create index IxR_NAME on Region (R_NAME);
+load Region "../DATA/TPCH/region.tbl";
 
 
-create table TABLE9 (
-  pcol9   INTEGER NOT NULL,
-  scol9   INTEGER NOT NULL,
-  tcol9   INTEGER NOT NULL,
-  colb9   VARCHAR(20),
-  cold9   FLOAT,
-  cole9   DECIMAL,
-  colf9   INTEGER,
-  colg9   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
-
-create index table9_colb9 on table9(colb9);
-create index table9_ucol on table9(ucol);
-create index table9_ucolvc on table9(ucolvc);
-create index table9_pcol9 on table9(pcol9);
-
-Load TABLE1 "../DATA/Load/tbl1data.csv" ;
-Load TABLE9 "../DATA/Load/tbl9data.csv" ;
-
-/*
+/optimise_passthru
 /pipeline_def
 /weaved
-/KeepCodeFile
-///UseCodeFile = 'CompilationFailed'
-select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
-*/
-/pipeline_def
-/weaved
-/KeepCodeFile
-select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
-
-/*
 pipeline _unnamed_
-  tag <optimised> = 1 endTag
 begin
 
   stage S00 on origin :
-      start
-    | pulse     once
-    | next
+     start
+   | pulse     once
+   | next
 
   stage S01 on all partitions :
-      scan      TABLE1
-  //| filter    " type BOOLEAN $4 'GRE' < "
-    | dynamic
-    | next
+     scan      Nation
+   | project "type INTEGER N_NATIONKEY , type VARCHAR N_NAME , type INTEGER N_REGIONKEY"
+   | hash "type INTEGER $3"
+   | combined 0
+   | next hashcast
 
   stage S02 on all partitions :
-  //  project   "   type INTEGER as C0_cola1 $3
-  //              , type VARCHAR as C1_colb1 $4
-  //              , type INTEGER as C2_pcol1 $1 "
-      dynamic
-    | next
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+   | combined 0
+   | next
 
-  stage S03 on all partitions :
-  //  indexJoin TABLE9 table9_pcol9 " BOUND $I1 $3 == "
-      dynamic
-    | next
-
-  stage S04 on all partitions :
-  //  project   "   type INTEGER as C0_cola1 $1
-  //              , type VARCHAR as C1_colb1 $2
-  //              , type FLOAT as C2_cold9 $8
-  //              , type VARCHAR as C3_colb9 $7 "
-      dynamic
-    | next
-
-  stage S05 on all partitions :
-  //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_colb1 $2
-  //              , type VARCHAR as C1_colb9 $4
-  //              aggregates
-  //                type INTEGER as C0_COL1 ) $1 max
-  //              , type VARCHAR as C1_colb1 $K1
-  //              , type FLOAT as C2_COL3 ) $3 max
-  //              , type VARCHAR as C3_colb9 $K2 "
-      dynamic
-    | next
-
-  stage S06 on all nodes :
-  //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_colb1 $2
-  //              , type VARCHAR as C1_colb9 $4
-  //              aggregates
-  //                type INTEGER as C0_COL1 ) $1 max
-  //              , type VARCHAR as C1_colb1 $K1
-  //              , type FLOAT as C2_COL3 ) $3 max
-  //              , type VARCHAR as C3_colb9 $K2 "
-      dynamic
-    | next
-
-  stage S07 on origin :
-  //  gbyAgg    " groupBy
-  //                type VARCHAR as C0_colb1 $2
-  //              , type VARCHAR as C1_colb9 $4
-  //              aggregates
-  //                type INTEGER as C0_COL1 ) $1 max
-  //              , type VARCHAR as C1_colb1 $K1
-  //              , type FLOAT as C2_COL3 ) $3 max
-  //              , type VARCHAR as C3_colb9 $K2 "
-      dynamic
-    | next
-
-  stage S08 on origin :
-      output
-    | sink
-    | first
+  stage S04 on origin :
+     output
+   | sink
+   | first
 
 end ;
+
+/*
+rows:
+  (0,'ALGERIA',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (1,'ARGENTINA',1,1,'AMERICA','hs use ironic, even requests. s')
+  (2,'BRAZIL',1,1,'AMERICA','hs use ironic, even requests. s')
+  (3,'CANADA',1,1,'AMERICA','hs use ironic, even requests. s')
+  (4,'EGYPT',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (5,'ETHIOPIA',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (6,'FRANCE',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (7,'GERMANY',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (8,'INDIA',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (9,'INDONESIA',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (10,'IRAN',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (11,'IRAQ',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (12,'JAPAN',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (13,'JORDAN',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (14,'KENYA',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (15,'MOROCCO',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (16,'MOZAMBIQUE',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (17,'PERU',1,1,'AMERICA','hs use ironic, even requests. s')
+  (18,'CHINA',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (19,'ROMANIA',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (20,'SAUDI ARABIA',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (21,'VIETNAM',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (22,'RUSSIA',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (23,'UNITED KINGDOM',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (24,'UNITED STATES',1,1,'AMERICA','hs use ironic, even requests. s')
 */
