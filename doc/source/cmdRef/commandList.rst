@@ -1123,7 +1123,7 @@ enabled in subsequent releases.
 ``SLEEP``
 ---------
 
-Causes the SE Prompt to sleep and not accept input for a given number of seconds.
+Causes SE Shell to sleep and not accept input for a given number of seconds.
 
 .. rubric:: Syntax:
 

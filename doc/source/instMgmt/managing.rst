@@ -30,45 +30,51 @@ below.
 
 .. table::
    :name: install-dir-desc
-   :widths: 20, 80
+   :widths: 25, 75
 
-   ================== ===========================================================
-   Path               Description
-   ================== ===========================================================
-   ``bin/``           The directory that contains the compiled binaries for
-                      RapidsSE.
-   ``bin/rapidsse``   The main RapidsSE application binary.
-   ``cluster.config`` The configuration file that contains the settings for all
-                      RapidsSE nodes in the cluster. This exists on each node
-                      and it is used to provide command line parameters to the
-                      RapidsSE binary.
-   ``collectLogs.sh`` A management tool that collects log and environmental data
-                      from each node in the cluster.
-   ``commands/``      A directory containing internal RapidsSE script files
-                      that is used at runtime.
-   ``dbgen/``         A directory containing the TPC-H utility ``dbgen`` for
-                      generating TPC-H data files.
-   ``node.name``      Contains the node name of the current instance. This file
-                      is created when the node is started.
-   ``prompt.sh``      A script file to invoke the SE Prompt.
-   ``res/``           A directory containing various resources that can be used
-                      by RapidsSE at runtime.
-   ``se.log``         The main logfile used by RapidsSE.
-   ``se.pid``         A file containing the process ID (pid) of the instance that
-                      was started.
-   ``setup.sh``       A script file that is automatically invoked after the
-                      installer has unpacked itself to a temporary directory and
-                      before RapidsSE is installed in the installation directory.
-   ``startSE.sh``     The script file that starts the RapidsSE cluster.
-   ``status.sh``      A script file that checks whether each node in the cluster
-                      is running or not.
-   ``stopSE.sh``      The script file that stops the RapidsSE cluster.
-   ``thirdparty/``    A directory containing libraries and other external files
-                      used by RapidsSE at runtime.
-   ``tmp/``           A directory used by RapidsSE for any temporary files.
-   ``version``        A file containing the build and version information of
-                      this installation of RapidsSE.
-   ================== ===========================================================
+   ========================== ===========================================================
+   Path                       Description
+   ========================== ===========================================================
+   ``bin/``                   The directory that contains the compiled binaries for
+                              RapidsSE.
+   ``bin/rapidsse``           The main RapidsSE application binary.
+   ``cluster.config``         The configuration file that contains the settings for all
+                              RapidsSE nodes in the cluster. This exists on each node
+                              and it is used to provide command line parameters to the
+                              RapidsSE binary.
+   ``collectLogs.sh``         A management tool that collects log and environmental data
+                              from each node in the cluster.
+   ``commands/``              A directory containing internal RapidsSE script files
+                              that is used at runtime.
+   ``dbgen/``                 A directory containing the TPC-H utility ``dbgen`` for
+                              generating TPC-H data files.
+   ``node.name``              Contains the node name of the current instance. This file
+                              is created when the node is started.
+   ``res/``                   A directory containing various resources that can be used
+                              by RapidsSE at runtime.
+   ``se.log``                 The main logfile used by RapidsSE.
+   ``se.pid``                 A file containing the process ID (pid) of the instance that
+                              was started.
+   ``seshell.sh``             A script file to invoke SE Shell.
+   ``setup.sh``               A script file that is automatically invoked after the
+                              installer has unpacked itself to a temporary directory and
+                              before RapidsSE is installed in the installation directory.
+   ``shell/``                 A directory containing the necessary files for running
+                              SE Shell locally or remotely. This directory can be copied
+                              to remote machines for remote shell execution.
+   ``shell/sejdbc-*.jar``     The RapidsSE JDBC driver.
+   ``shell/seshell-*.jar``    The SE Shell binary.
+   ``shell/seshell.[sh|bat]`` Script files for executing SE Shell.
+   ``startSE.sh``             The script file that starts the RapidsSE cluster.
+   ``status.sh``              A script file that checks whether each node in the cluster
+                              is running or not.
+   ``stopSE.sh``              The script file that stops the RapidsSE cluster.
+   ``thirdparty/``            A directory containing libraries and other external files
+                              used by RapidsSE at runtime.
+   ``tmp/``                   A directory used by RapidsSE for any temporary files.
+   ``version``                A file containing the build and version information of
+                              this installation of RapidsSE.
+   ========================== ===========================================================
 
 
 .. index::
@@ -162,7 +168,7 @@ Logfiles
 If a problem or failure occurs when running RapidsSE, there may be information
 about the failure produced in any of two places:
 
-#. On the stdout of the :ref:`SE Prompt <sePrompt>` window, if a command was
+#. On the stdout of the :ref:`SE Shell <seShell>` window, if a command was
    being executed.
 #. In the RapidsSE log file.
 
@@ -184,7 +190,8 @@ is started and stopped, as per the file size and rollover rules above. If you
 do not want historical log information then simply delete all log files on each
 node of the cluster prior to starting the cluster.
 
-The SE prompt does not write to the logfile.
+SE Shell does not write to the logfile as it is a separate application and can
+be executed from remote machines on the network.
 
 The log files and operating environment each each node can be collected into one
 package by running the following command from the installation directory of any
@@ -234,7 +241,7 @@ internal memory layout. For this reason, the unload/reload capability should
 not be considered an export or a backup utility.
 
 An unload operation can only occur when the cluster is running. It is invoked
-by running the unload command on the SE prompt. Please refer to the RapidsSE
+by running the unload command on the SE Shell. Please refer to the RapidsSE
 Command Reference section for details. Additionally, the cluster must be
 quiesced at the time of the unload command (that is, no user activity on the
 system) otherwise the memory snapshot taken may be inconsistent and RapidsSE
@@ -316,7 +323,7 @@ the following storage paths were specified during installation: ::
 	/mnt/disk2
 
 A snapshot of the persistent data heap can be taken by running the following
-command in the SE prompt: ::
+command in the SE Shell: ::
 
   unload '<name_of_snapshot>';
 
@@ -431,7 +438,7 @@ but that still belongs to the process.
 
 To get a true understanding of how much memory RapidsSE is using and how
 much is spare we must ask RapidsSE itself. This is done by executing the
-following command through the SE Prompt: ::
+following command through the SE Shell: ::
 
   space;
 
