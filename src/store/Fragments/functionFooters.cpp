@@ -99,6 +99,41 @@ int vInflateRowEnd(struct Dynamic_T* aDynamicT)
   // marker-end
 }
 
+// function-vInflateRowEnd_OA
+/*--------------------------------------------------------------------*/
+/* vInflateRowEnd_OA                                                  */
+/*--------------------------------------------------------------------*/
+int vInflateRowEnd_OA(struct Dynamic_T* aDynamicT)
+{
+	{
+
+		i8* paW;
+
+		__LABEL_ORDAGG__:
+		__L_LABEL_OUTER_LOOP__:
+		__L_LABEL_LOOP__:
+		L_AddRowToTubPot:
+
+		// marker-start
+		if (aDynamicT->m_bHasRowToAgg)
+			goto __LABEL_ORDAGG__;
+		if (aDynamicT->m_bHasAggRow)
+			goto __L_LABEL_OUTER_LOOP__;
+
+		L_Return:
+		if (aDynamicT->m_bHasAggRow) {
+			aDynamicT->m_bHasAggRow = false;
+			goto L_AddRowToTubPot;
+		}
+		if (paW != &aDynamicT->m_aW[0])
+			NEVER_REACH;
+		goto L_ReturnFinal;
+
+		L_ReturnFinal:
+		return 1;
+	}
+	// marker-end
+}
 
 // function-vIndexScanEnd
 /*--------------------------------------------------------------------*/
@@ -147,7 +182,6 @@ int vIndexScanEnd_OA(struct Dynamic_T* aDynamicT)
 
 		__LABEL_ORDAGG__:
 		__L_LABEL_OUTER_LOOP__:
-		L_gbyAgg_1:
 		L_AddRowToTubPot:
 
 		aSubReturnLabel = && __L_LABEL_OUTER_LOOP__;

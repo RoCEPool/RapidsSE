@@ -938,8 +938,10 @@ OpSketch* Stencil::pSketchOrdAgg(StageDef* pStageDef, OpDef* pOpDef) {
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
 	// generate the expression stacks
-	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer as C0_l_orderkey $1\n"
-																 " aggregates type integer as C0_l_orderkey $K1 , type decimal as C1_COL2 )  $5 sum"_Stz);
+	pOpSketch->vGenerateExprStacks(sOrdAggExpr);
+
+//	pOpSketch->vGenerateExprStacks("ORDGROUPBY type integer as C0_l_orderkey $1\n"
+//																 " aggregates type integer as C0_l_orderkey $K1 , type decimal as C1_COL2 )  $5 sum"_Stz);
 
   return pOpSketch;
 }
