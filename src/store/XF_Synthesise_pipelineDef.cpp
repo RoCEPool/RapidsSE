@@ -499,7 +499,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 6) {
+  if (m_pStageDef->i_Stage() == 0) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -544,7 +544,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 6) {
+  if (m_pStageDef->i_Stage() == 0) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();

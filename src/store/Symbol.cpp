@@ -1459,7 +1459,11 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
     vFacet_Col_No(pSymbol_arg->xaFacet[0].m_sChrSeq);
   }
 
+#ifdef Z_FACETS
+  vFacetConcat(pSymbol_arg);
+#else
   vFacetCopy(pSymbol_arg);
+#endif
 
   if (SF_COL_NO == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Col_No(xaFacet[0].m_sChrSeq));
@@ -4176,7 +4180,7 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   i8 nFacets_arg = pSymbol_arg->m_nFacets;
-  for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
+  for (i8 i_Facet_arg = nFacets_arg - 1; i_Facet_arg >= 0; i_Facet_arg--) {
     Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
     vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
   }
