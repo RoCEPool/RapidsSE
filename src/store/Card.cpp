@@ -531,7 +531,7 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
         , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
         , m_xMark1.szChrSeq()
         , m_xMark2.szChrSeq()
-        , *szSymbol(SF_NONE)->azChar() ? szSymbol(SF_NONE) : "??Symbol"_Stz
+        , m_xSymbol.bHasSymbol() ? szSymbol(SF_NONE) : "??Symbol"_Stz
         , sProperties.szStz()
         , pSymbol()->szWhatIs()
   );
@@ -1489,6 +1489,9 @@ Stz* Card::szSymbol(eSF eSymbol_xchk)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (! m_xSymbol.nFacets())
+    return nullptr;
+
   Stz* sz = m_xSymbol.szSF_chrSeq(eSymbol_xchk);
 
   return sz;
@@ -1779,7 +1782,7 @@ void Card::vCoord(void)
 //  strcat(md_Coord, aCK[m_eCard]->azChar());
 
   StrLib::vConcat(md_Coord,sizeof(md_Coord), "] ");
-  StrLib::vConcat(md_Coord,sizeof(md_Coord), szSymbol(SF_NONE)->azChar());
+  StrLib::vConcat(md_Coord,sizeof(md_Coord), szSymbol(SF_NONE) ? szSymbol(SF_NONE)->azChar() : "");
 
   StrLib::vConcat(md_Coord,sizeof(md_Coord), " ");
   StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eFacet()]->azChar());
