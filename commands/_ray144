@@ -55,10 +55,70 @@ Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 /transliterated
 /pipeline_def
 /keepCodeFile
+///useCodeFile="_unnamed__NODE1_2"
 /weaved
-select max(colb1), cola1 from table1 where cola1 > 450 group by cola1 ;
+select max(colf1), cola1 from table1 where cola1 > 450 group by cola1 ;
 
 /*
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      TABLE1
+  //| inflate   TABLE1
+  //| filter    " type BOOLEAN $3 450 > "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  project   "   type INTEGER as C0_colf1 $8
+  //              , type INTEGER as C1_cola1 $3 "
+      dynamic
+    | next
+
+  stage S03 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_cola1 $2
+  //              aggregates
+  //                type INTEGER as C0_COL1 ) $1 max
+  //              , type INTEGER as C1_cola1 $K1 "
+      dynamic
+    | next
+
+  stage S04 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_cola1 $2
+  //              aggregates
+  //                type INTEGER as C0_COL1 ) $1 max
+  //              , type INTEGER as C1_cola1 $K1 "
+      dynamic
+    | next
+
+  stage S05 on origin :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_cola1 $2
+  //              aggregates
+  //                type INTEGER as C0_COL1 ) $1 max
+  //              , type INTEGER as C1_cola1 $K1 "
+      dynamic
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+
 rows:
 row: ('PURPLE',457)
 row: ('orange',467)
