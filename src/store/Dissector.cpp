@@ -1579,8 +1579,9 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
 
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
 
-    // GROUPBY
-    if (pCard_Term_head->pSymbol()->bSame("GROUPBY"_Stz)) {
+    // GROUPBY or ORDGROUPBY
+    if (pCard_Term_head->pSymbol()->bSame("GROUPBY"_Stz) ||
+				pCard_Term_head->pSymbol()->bSame("ORDGROUPBY"_Stz)) {
       break;
     }
 
