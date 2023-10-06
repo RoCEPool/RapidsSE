@@ -7,8 +7,6 @@ tag default <suffix>   = "csv";
 
 _customer
 
-create index Ix_O_CUSTKEY on Orders(O_CUSTKEY);
-
 load Customer "<tpch_dir>/customer.<suffix>" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -205,6 +205,9 @@ namespace STORE
 
     void vItemStrip(void);
 
+    bool bMatches(Symbol* pSymbol_arg);
+    bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
+
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
     void vPpy_To_String(String* pString);
@@ -320,10 +323,12 @@ namespace STORE
     void vFacet_Xrf_No(i8 iXrefNo);
     void vFacet_Xrf_No(Stz* szXrefNo);
 
+    void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetPush(eSF eFacet);
     void vFacetReset(void);
     void vFacetRotate(eSF eFacet);
+    void vFacetRotateSet(eSF eFacet, Stz* szFacet);
     void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
 

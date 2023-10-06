@@ -2520,6 +2520,48 @@ void Symbol::vItemStrip(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bMatches(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
+
+    if (bMatches(pSymbol_arg, eFacet_this))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bMatches(Symbol* pSymbol_arg, eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Facet* aFacet_this = this->aFacet(eFacet);
+  if (!aFacet_this)
+    return false;
+
+  Facet* aFacet_arg = pSymbol_arg->aFacet(eFacet);
+  if (! aFacet_arg)
+    return false;
+
+  Stz* szChrSeq_this = aFacet_this->m_sChrSeq;
+  Stz* szChrSeq_arg  = aFacet_arg->m_sChrSeq;
+
+  if (szChrSeq_arg->bSame(szChrSeq_this))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bNeedsBrace(void)
@@ -4127,6 +4169,20 @@ void Symbol::vFacet_Xrf_No(Stz* szXrefNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* concat facets                                                              */
+/*----------------------------------------------------------------------------*/
+void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 nFacets_arg = pSymbol_arg->m_nFacets;
+  for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
+    Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
+    vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy facets                                                                */
 /*----------------------------------------------------------------------------*/
 void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
@@ -4205,6 +4261,17 @@ void Symbol::vFacetRotate(eSF eFacet)
 
   xaFacet[i_Facet].m_eFacet  = xFacet_tmp.m_eFacet;
   xaFacet[i_Facet].m_sChrSeq = xFacet_tmp.m_sChrSeq;
+}
+
+/*----------------------------------------------------------------------------*/
+/* rotate facet to top                                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetRotateSet(eSF eFacet, Stz* szFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetRotate(eFacet);
+  vFacetSet(0, eFacet, szFacet);
 }
 
 /*----------------------------------------------------------------------------*/
