@@ -439,6 +439,38 @@ and use the ``#`` symbol as an escape character:
 
 
 
+
+.. index::
+   single: Commands; LOG
+   single: LOG (command); syntax
+
+.. _logCmd:
+
+``LOG``
+---------
+
+Prints a string to the log file of the RapidsSE local node that the user is
+connected to. It also returns the timestamped log message back to the user
+as a result set.
+
+.. rubric:: Syntax:
+
+.. only:: html
+
+  .. image:: /rr/diagram/logStmt.png
+     :alt: ``LOG`` statement syntax
+     :align: center
+     :target: syntax-tree.html#logStmt
+
+.. only:: latex
+
+  .. image:: /rr/diagram/logStmt.png
+     :alt: ``LOG`` statement syntax
+     :align: center
+
+
+
+
 .. index::
    single: Commands; LSCOL
    single: LSCOL (command); syntax
@@ -548,35 +580,6 @@ Lists all of the tables in the default catalog and schema.
 
   .. image:: /rr/diagram/lsTblStmt.png
      :alt: ``LSTBL`` statement syntax
-     :align: center
-
-
-
-
-.. index::
-   single: Commands; PRINT
-   single: PRINT (command); syntax
-
-.. _printCmd:
-
-``PRINT``
----------
-
-Prints a string to stdout on the SE Prompt.
-
-.. rubric:: Syntax:
-
-.. only:: html
-
-  .. image:: /rr/diagram/printStmt.png
-     :alt: ``PRINT`` statement syntax
-     :align: center
-     :target: syntax-tree.html#printStmt
-
-.. only:: latex
-
-  .. image:: /rr/diagram/printStmt.png
-     :alt: ``PRINT`` statement syntax
      :align: center
 
 

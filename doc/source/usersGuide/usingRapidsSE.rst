@@ -18,54 +18,6 @@ each of the components below can be found in the :ref:`interfaces` section.
 
 
 .. index::
-   single: SE Prompt; overview
-
-SE Prompt
----------
-SE Prompt is the original mechanism for submitting commands and queries to
-RapidsSE and getting back responses. It was never intended to be a complete
-shell-like experience. Instead it is intended to be deprecated and replaced
-by the :ref:`SE Shell <seShellInterface>`.
-
-SE Prompt is started by running the command ``./prompt.sh`` in the installation
-directory of any of the nodes in the RapidsSE cluster. SE Prompt will establish
-a direct connection to the local node via the shared memory segment and it will
-use this for submitting commands and returning results. It is not possible to
-run SE Prompt across a network connection from a client machine to a server.
-
-Once started, SE Prompt will display the line prefix ``se>`` to indicate that it is
-ready to accept user input.
-
-SE Prompt does not support "up-arrow" command history or command editing other
-than simple backspaces.
-
-Commands are semicolon terminated. SE Prompt will not submit the command until
-it comes across the terminating semicolon.
-
-To exit SE Prompt, either press ``Control-C`` or enter the command ``bye;``.
-
-Here's an example of starting and exiting the SE Prompt:
-
-.. code:: console
-
-   craig@hubble:rapidsse$ ./prompt.sh
-   RapidsSE 1.0.0 (release version, pid 15863, git 3225a7b5bb386300)
-   (c) 2020 Rapids Data Technology Co. Ltd
-   se>
-   se> bye;
-
-   Good Bye!
-
-If SE Prompt is executed when the current node is not running then an error will
-be produced:
-
-.. code:: console
-
-   craig@hubble:rapidsse$ ./prompt.sh
-   ERROR: Cannot start SE Prompt - RapidsSE is not running on this node.
-
-
-.. index::
    single: SE Shell; overview
 
 SE Shell
@@ -81,8 +33,9 @@ programmatic interface. SE Shell offers a more user-friendly CLI experience by s
 * A more intuitive experience when editing commands.
 * Pretty-printing of query results for easier reading.
 
-SE Shell utilises the capabilities of the RapidsSE :ref:`JDBC Driver <jdbcInterface>` for
-submitting commands and extracting results.
+SE Shell utilises the capabilities of the RapidsSE :ref:`JDBC Driver <jdbcDriverInterface>` for
+submitting commands and extracting results. SE Shell can submit commands to a
+RapidsSE node from across the network.
 
 SE Shell is started by running ``./seShell.sh`` in the root of the RapidsSE
 installation directory. When SE Shell has started it will display the prompt
@@ -95,6 +48,15 @@ press ``<Control>``-``<C>``. This can be seen in the example below:
   rapids > exit;
   craig@machine$
 
+If SE Shell is executed when the current node is not running then an error will
+be produced:
+
+.. code:: console
+
+  craig@machine$ ./seshell.sh
+  Could not connect to SE node localhost:9123. Please check if SE node is running at the address mentioned.
+
+
 Further information on interfacing to RapidsSE with SE Shell can be found
 :ref:`here <seShellInterface>`.
 
@@ -103,7 +65,7 @@ Further information on interfacing to RapidsSE with SE Shell can be found
 
 JDBC Driver
 -----------
-The :ref:`RapidsSE JDBC Driver <jdbcInterface>` is a feature that will appear with `SE Shell`_ in
+The :ref:`RapidsSE JDBC Driver <jdbcDriverInterface>` is a feature that will appear with `SE Shell`_ in
 the near future. It allows for easy programmatic access to RapidsSE from
 Java applications for submitting commands and getting results. The RapidsSE
 JDBC Driver communicates with RapidsSE over a socket connection, and it

@@ -20,7 +20,7 @@ RapidsSE currently sports the following features:
 * Table partitioning across nodes;
 * Table indexes;
 * CLI (:ref:`SE Shell <seShellInterface>`) and programmatic
-  (:ref:`JDBC <jdbcInterface`) interfaces;
+  (:ref:`JDBC <jdbcDriverInterface>`) interfaces;
 * Data unload and reload;
 * Low-memory job management
 
