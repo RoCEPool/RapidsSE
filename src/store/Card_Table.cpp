@@ -547,7 +547,7 @@ void Card_Table::vShortForm(String* pString_m, String* pString_b)
   Stz* szSep = ""_Stz;
   if (Card_TableNm* p_tableNm = pSub_tableNm()) {
     pString_m->vCatSprint("%c.%s"_Stz,
-                          pSymbol()->cSF_char(),
+                          pSymbol()->bHasSymbol() ? pSymbol()->cSF_char() : ' ',
                           p_tableNm->szSymbol(SF_NONE));
     szSep = ","_Stz;
   }
