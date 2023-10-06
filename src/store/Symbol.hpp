@@ -133,7 +133,7 @@ namespace STORE
     i8   nFacets(void);
     bool bFormIs(eSF eSymbol);
 
-    bool bHasSymbol(void);
+    bool bHasFacets(void);
     bool bHasProperties(void);
 
     void vInc_Tbl_Syn(void);
@@ -322,7 +322,9 @@ namespace STORE
 
     void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetPush(eSF eFacet);
+    void vFacetReset(void);
     void vFacetRotate(eSF eFacet);
+    void vFacetSet(i8 i_Facet, eSF eFacet, Stz* szFacet);
     void vFacetSprint(eSF eFacet, Stz* szFormat, ...);
 
   protected:

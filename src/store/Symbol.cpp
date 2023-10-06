@@ -21,15 +21,12 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_nFacets = 0;
-  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
-    xaFacet[i_Facet].m_eFacet = SF_NONE;
-  }
+  vFacetReset();
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
 
-  RASSERT(! bHasSymbol());
+  RASSERT(!bHasFacets());
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -42,17 +39,14 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_nFacets = 0;
-  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
-    xaFacet[i_Facet].m_eFacet = SF_NONE;
-  }
+  vFacetReset();
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
 
   vFacet(eFacet, iInt);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -65,17 +59,14 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_nFacets = 0;
-  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
-    xaFacet[i_Facet].m_eFacet = SF_NONE;
-  }
+  vFacetReset();
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
 
   vFacet(eFacet, szChrSeq);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -1293,7 +1284,7 @@ void Symbol::vFacet(eSF eFacet)
     default: NEVER_REACH;
   }
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
 }
 
@@ -1311,7 +1302,7 @@ void Symbol::vFacet(eSF eFacet, char cChr)
     default: NEVER_REACH;
   }
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
 }
 
@@ -1329,7 +1320,7 @@ void Symbol::vFacet(eSF eFacet, char cChr, i8 iInt)
     default: NEVER_REACH;
   }
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
 }
 
@@ -1357,7 +1348,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
     default: NEVER_REACH;
   }
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
 }
 
@@ -1375,7 +1366,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
     default: NEVER_REACH;
   }
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
 }
 
@@ -1443,7 +1434,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     default: NEVER_REACH;
   }
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
 }
 
@@ -1473,7 +1464,7 @@ bool Symbol::bFormIs(eSF eSymbol)
 /*----------------------------------------------------------------------------*/
 /* does symbol a symbolic value?                                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bHasSymbol(void)
+bool Symbol::bHasFacets(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1482,6 +1473,7 @@ bool Symbol::bHasSymbol(void)
     return true;
   }
 
+  RASSERT(! m_nFacets);
   return false;
 }
 
@@ -1505,7 +1497,7 @@ void Symbol::vInc_Tbl_Syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   RASSERT(SF_TBL_SYN == xaFacet[0].m_eFacet);
 
@@ -2467,7 +2459,7 @@ bool Symbol::bIs_Xrf_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   if (SF_XRF_NO != xaFacet[0].m_eFacet)
     return false;
@@ -2485,7 +2477,7 @@ void Symbol::vItemStrip(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   if (! bIsItemised(xaFacet[0].m_sChrSeq))
     return;
@@ -2500,7 +2492,7 @@ bool Symbol::bNeedsBrace(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (! bHasSymbol())
+  if (!bHasFacets())
     return false;
 
   if (xaFacet[0].m_sChrSeq.bSame("between"_Stz))        return true;
@@ -2536,7 +2528,7 @@ bool Symbol::bSame(char cArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   if (*xaFacet[0].m_sChrSeq.azChar() == cArg)
     return true;
@@ -2551,7 +2543,7 @@ bool Symbol::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   if (xaFacet[0].m_sChrSeq.bSame(szArg))
     return true;
@@ -2566,7 +2558,7 @@ bool Symbol::bSame(Symbol* pArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   if (xaFacet[0].m_sChrSeq.bSame(pArg->xaFacet[0].m_sChrSeq))
     return true;
@@ -2581,7 +2573,7 @@ char Symbol::cSF_char(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   return * xaFacet[0].m_sChrSeq.azChar();
 }
@@ -2593,7 +2585,7 @@ Stz* Symbol::szSF_chrSeq(eSF eSymbol_xchk)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   if (SF_NONE != eSymbol_xchk)
     RASSERT(eSymbol_xchk = xaFacet[0].m_eFacet);
@@ -2608,7 +2600,7 @@ i8 Symbol::iSF_number(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   i8 i = xaFacet[0].m_sChrSeq.iToI8();
 
@@ -2622,7 +2614,7 @@ i8 Symbol::iSF_ordinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   i8 i_Col = StrLib::iGleanInt(xaFacet[0].m_sChrSeq.azChar());
 
@@ -2636,7 +2628,7 @@ char Symbol::cSF_tblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasSymbol());
+  RASSERT(bHasFacets());
 
   char acFirst  = xaFacet[0].m_sChrSeq.azChar()[0];
   char acSecond = xaFacet[0].m_sChrSeq.azChar()[1];
@@ -2672,8 +2664,8 @@ void Symbol::vSymbol(Symbol* pSymbol)
   if (SF_COL_TC == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Col_Tc(xaFacet[0].m_sChrSeq));
 
-  if (pSymbol->bHasSymbol())
-    RASSERT(bHasSymbol());
+  if (pSymbol->bHasFacets())
+    RASSERT(bHasFacets());
 
 }
 
@@ -2701,7 +2693,7 @@ void Symbol::vSymbolPpy(Symbol* pSymbol)
 //  if (SF_COL_TC == xaFacet[0].m_eFacet)
 //    RASSERT(Symbol::bIs_Col_Tc(xaFacet[0].m_sChrSeq));
 //
-//  RASSERT(bHasSymbol());
+//  RASSERT(bHasFacets());
 
   vSymbol(pSymbol);
   Y_vAll(pSymbol);
@@ -4165,28 +4157,14 @@ void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (pSymbol_arg->m_nFacets) {
-    xaFacet[0].m_eFacet = pSymbol_arg->xaFacet[0].m_eFacet;
-    xaFacet[0].m_sChrSeq = pSymbol_arg->xaFacet[0].m_sChrSeq;
-    m_nFacets = 1;
-  }
-  else {
-    xaFacet[0].m_eFacet  = SF_NONE;
-    xaFacet[0].m_sChrSeq = ""_Stz;
-    m_nFacets = 0;
+  vFacetReset();
+
+  m_nFacets = pSymbol_arg->m_nFacets;
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
+    xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
   }
 }
-/*----------------------------------------------------------------------------*/
-//void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
-//{
-//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-//
-//  m_nFacets = pSymbol_arg->m_nFacets;
-//  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-//    xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
-//    xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* push facet                                                                 */
@@ -4204,10 +4182,23 @@ void Symbol::vFacetPush(eSF eFacet)
     xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet - 1].m_sChrSeq;
   }
 
-  xaFacet[0].m_eFacet  = eFacet;
-  xaFacet[0].m_sChrSeq = ""_Stz;
+  vFacetSet(0,eFacet,""_Stz);
 
   RASSERT(m_nFacets);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rotate facet to top                                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetReset(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_nFacets = 0;
+  for (i8 i_Facet = 0; i_Facet < C_FACETS; i_Facet++) {
+    xaFacet[i_Facet].m_eFacet  = SF_NONE;
+    xaFacet[i_Facet].m_sChrSeq = ""_Stz;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4218,6 +4209,8 @@ void Symbol::vFacetRotate(eSF eFacet)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   i8 i_Facet = this->i_Facet(eFacet);
+  if (0 == i_Facet)
+    return;
   if (C_UNKNOWN == i_Facet) {
     vFacetPush(eFacet);
     RASSERT(m_nFacets);
@@ -4239,25 +4232,35 @@ void Symbol::vFacetRotate(eSF eFacet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set facet                                                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetSet(i8 i_Facet, eSF eFacet, Stz* szChrSeq)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(i_Facet < m_nFacets);
+  xaFacet[i_Facet].m_eFacet  = eFacet;
+  xaFacet[i_Facet].m_sChrSeq = szChrSeq;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint facet                                                               */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacetSprint(eSF eFacet, Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-
-  s256 sSymbol;
+  s256 sChrSeq;
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sSymbol.azChar(), sSymbol.nAreaBytes(), xArgs, (char*)szFormat);
+  StrLib::vSprint(sChrSeq.azChar(), sChrSeq.nAreaBytes(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
   vFacetRotate(eFacet);
-  xaFacet[0].m_eFacet = eFacet;
-  xaFacet[0].m_sChrSeq = sSymbol;
-
   RASSERT(m_nFacets);
+
+  vFacetSet(0, eFacet, sChrSeq);
 }
 
 /*============================================================================*/

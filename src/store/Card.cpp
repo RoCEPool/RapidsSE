@@ -531,7 +531,7 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
         , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
         , m_xMark1.szChrSeq()
         , m_xMark2.szChrSeq()
-        , m_xSymbol.bHasSymbol() ? szSymbol(SF_NONE) : "??Symbol"_Stz
+        , m_xSymbol.bHasFacets() ? szSymbol(SF_NONE) : "??Symbol"_Stz
         , sProperties.szStz()
         , pSymbol()->szWhatIs()
   );
@@ -1964,7 +1964,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
   s256 sNameSymbol;
 
   if (0 == iDepth) {
-    if (m_xSymbol.bHasSymbol())
+    if (m_xSymbol.bHasFacets())
       sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
@@ -1982,7 +1982,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprint("%s%lld]"_Stz,
                           Stz::szDots(iDepth - 1),
                           m_i_Child);
-    if (m_xSymbol.bHasSymbol())
+    if (m_xSymbol.bHasFacets())
       sNameSymbol.vSprintCat("%s%s %s"_Stz,
                              sName.szStz(),
                              sHiddenChildren.szStz(),
@@ -2065,7 +2065,7 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(iDepth);
 
-  if (!m_xSymbol.bHasSymbol())
+  if (!m_xSymbol.bHasFacets())
     return;
 
   if (bPrintMarks)
