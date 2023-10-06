@@ -318,6 +318,7 @@ bool Card::bIsMain(eCK eCard)
     case CK_KEYEXISTS:
     case CK_KEYNOTEXISTS:
     case CK_LIMIT:
+    case CK_ORDAGG:
     case CK_PROJECT:
     case CK_SEND:
     case CK_SCAN:

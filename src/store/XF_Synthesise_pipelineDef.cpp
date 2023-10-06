@@ -188,8 +188,8 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   RASSERT(m_pStageDef);
 
-//  if (m_pCI->G.p_OP->bIsCard(CK_KEYEXISTS))
-//    vDebugPoint();
+  if (m_pCI->G.p_OP->bIsCard(CK_ORDAGG))
+    vDebugPoint();
 
   if (m_pCI->G.p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;

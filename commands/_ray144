@@ -51,6 +51,7 @@ create index table9_pcol9 on table9(pcol9);
 
 Load TABLE9 "../DATA/Load/tbl9data.csv" ;
 
+/optimiser_trace
 /transliterated
 /pipeline_def
 /keepCodeFile
