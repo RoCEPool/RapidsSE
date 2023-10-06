@@ -1449,6 +1449,40 @@ i8 Symbol::nFacets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set facets from arg                                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_COL_NO == pSymbol_arg->xaFacet[0].m_eFacet) {
+    vFacet_Col_No(pSymbol_arg->xaFacet[0].m_sChrSeq);
+  }
+
+  vFacetCopy(pSymbol_arg);
+
+  if (SF_COL_NO == xaFacet[0].m_eFacet)
+    RASSERT(Symbol::bIs_Col_No(xaFacet[0].m_sChrSeq));
+
+  if (SF_COL_TC == xaFacet[0].m_eFacet)
+    RASSERT(Symbol::bIs_Col_Tc(xaFacet[0].m_sChrSeq));
+
+  if (pSymbol_arg->bHasFacets())
+    RASSERT(bHasFacets());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set facets and properties from arg                                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetsPpy(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacets(pSymbol_arg);
+  Y_vAll(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* true if symbol is given form                                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bFormIs(eSF eSymbol)
@@ -2639,64 +2673,6 @@ char Symbol::cSF_tblSyn(void)
     return acSecond;
   else
     return acFirst;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSymbol(Symbol* pSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_COL_NO == pSymbol->xaFacet[0].m_eFacet) {
-    vFacet_Col_No(pSymbol->xaFacet[0].m_sChrSeq);
-  }
-//  else {
-//    xaFacet[0].m_eFacet  = pSymbol->xaFacet[0].m_eFacet;
-//    xaFacet[0].m_sChrSeq = pSymbol->xaFacet[0].m_sChrSeq;
-//  }
-
-  vFacetCopy(pSymbol);
-
-  if (SF_COL_NO == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_Col_No(xaFacet[0].m_sChrSeq));
-
-  if (SF_COL_TC == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_Col_Tc(xaFacet[0].m_sChrSeq));
-
-  if (pSymbol->bHasFacets())
-    RASSERT(bHasFacets());
-
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSymbolPpy(Symbol* pSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  if (SF_COL_NO == pSymbol->xaFacet[0].m_eFacet) {
-//    vFacet_Col_No(pSymbol->xaFacet[0].m_sChrSeq);
-//  }
-////  else {
-////    xaFacet[0].m_eFacet  = pSymbol->xaFacet[0].m_eFacet;
-////    xaFacet[0].m_sChrSeq = pSymbol->xaFacet[0].m_sChrSeq;
-////  }
-//
-//  vFacetCopy(pSymbol);
-//
-//  if (SF_COL_NO == xaFacet[0].m_eFacet)
-//    RASSERT(Symbol::bIs_Col_No(xaFacet[0].m_sChrSeq));
-//
-//  if (SF_COL_TC == xaFacet[0].m_eFacet)
-//    RASSERT(Symbol::bIs_Col_Tc(xaFacet[0].m_sChrSeq));
-//
-//  RASSERT(bHasFacets());
-
-  vSymbol(pSymbol);
-  Y_vAll(pSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

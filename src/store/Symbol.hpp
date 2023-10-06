@@ -131,6 +131,9 @@ namespace STORE
     void vFacet_X(eSF eFacet, i8 iInt);
     void vFacet_X(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
+    void vFacets(Symbol* pSymbol_arg);
+    void vFacetsPpy(Symbol* pSymbol_arg);
+
     bool bFormIs(eSF eSymbol);
 
     bool bHasFacets(void);
@@ -215,9 +218,6 @@ namespace STORE
     i8   iSF_number(void);
     i8   iSF_ordinal(void);
     char cSF_tblSyn(void);
-
-    void vSymbol(Symbol* pSymbol);
-    void vSymbolPpy(Symbol* pSymbol);
 
     bool bValidate(void);
     void vValidate(void);

@@ -75,7 +75,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       pCI->G.p_projection  = pCI->G.p_indexJoin->pSub_projection();
       if ((pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_as_stripItem(p_term->pSymbol()))) {
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
-        p_term->pSymbol()->vSymbol(pCI->G.p_as->pSymbol());
+        p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
       }
       return C_CONTINUE_RECURSION;
     }
@@ -271,7 +271,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
 
   Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
-  this->pSymbol()->vSymbol(&xSymbol_stmColOdn);
+  this->pSymbol()->vFacets(&xSymbol_stmColOdn);
 
   this->vMark1(MARK_CHANGED);
 }
@@ -293,7 +293,7 @@ void Card_Term::vConvert_stmOdn_To_colOdn(CardIter* pCI)
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
     if (pSymbol_term0->bIs_Col_Tc()) {
-      pSymbol->vSymbol(pSymbol_term0);
+      pSymbol->vFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
     }
     else {
@@ -444,7 +444,7 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->pSymbol()->vSymbol(pDiffSymbol);
+  p_term_clone->pSymbol()->vFacets(pDiffSymbol);
 
   return p_term_clone;
 }
@@ -574,7 +574,7 @@ void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
 
   Symbol* pSym = pSymbol();
   if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
-    pSym->vSymbol(p_expr->pSymbol());
+    pSym->vFacets(p_expr->pSymbol());
     vMark1(MARK_CHANGED);
   }
 }

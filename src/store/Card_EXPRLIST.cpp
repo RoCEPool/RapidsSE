@@ -223,7 +223,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
   Symbol xSymbol_arg_stripped;
   Symbol xSymbol_as_stripped;
 
-  xSymbol_arg_stripped.vSymbol(pSymbol);
+  xSymbol_arg_stripped.vFacets(pSymbol);
   xSymbol_arg_stripped.vItemStrip();
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
@@ -231,7 +231,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
     if (! p_as)
       continue;
 
-    xSymbol_as_stripped.vSymbol(p_as->pSymbol());
+    xSymbol_as_stripped.vFacets(p_as->pSymbol());
     xSymbol_as_stripped.vItemStrip();
 
     if (xSymbol_as_stripped.bSame(&xSymbol_arg_stripped))
@@ -254,7 +254,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol,
   Symbol xSymbol_arg_stripped;
   Symbol xSymbol_as_stripped;
 
-  xSymbol_arg_stripped.vSymbol(pSymbol);
+  xSymbol_arg_stripped.vFacets(pSymbol);
   xSymbol_arg_stripped.vItemStrip();
 
 //for (aKid->vParent(this); aKid->bEach(CK_EXPR); /**/) {
@@ -268,7 +268,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripped(Symbol *pSymbol,
     if (! pSymbol_tblCol)
       continue;
     Stz* szTblCol_p = pSymbol_tblCol->Y_szGet(P_TblCol);
-    xSymbol_as_stripped.vSymbol(p_as->pSymbol());
+    xSymbol_as_stripped.vFacets(p_as->pSymbol());
     xSymbol_as_stripped.vItemStrip();
 
 //    vTrace("%s %s -- %s %s\n"_Stz,

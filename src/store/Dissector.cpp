@@ -578,7 +578,7 @@ Card* Dissector::pOp_Hash(void)
 //
 //  Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
 //
-//  p_hshCol->pSymbol()->vSymbol(p_term2->pSymbol());
+//  p_hshCol->pSymbol()->vFacets(p_term2->pSymbol());
 //  eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol(SF_NONE));
 //  p_hshCol->pSymbol()->Y_vColType(szCT_char[eColumnType]);
 //
@@ -662,7 +662,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
   if (p_term_first->pSymbol()->bSame("LEFT_OUTER"_Stz)) {
     Card_OuterJoin* pCard_OuterJoin = new Card_OuterJoin;
-    pCard_OuterJoin->pSymbol()->vSymbol(p_term_first->pSymbol());
+    pCard_OuterJoin->pSymbol()->vFacets(p_term_first->pSymbol());
     pCard_IndexJoin->vAppendChild(pCard_OuterJoin);
   }
   pCard_Bound->vDeleteChild(p_term_first);
@@ -674,7 +674,7 @@ Card* Dissector::pOp_IndexJoin(void)
   i8 nTerms = pCard_Bound->nChildCards();
 
   Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
-  pCard_Bound->pSymbol()->vSymbol(p_term_last->pSymbol());
+  pCard_Bound->pSymbol()->vFacets(p_term_last->pSymbol());
   pCard_Bound->vDeleteChild(p_term_last);
 
   pCard_Bounds->vAppendChild(pCard_Bound);
@@ -1319,7 +1319,7 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
 
   // use last term to set bound symbol
   Card_Term* p_term_last = pCard_Bound->pGetTerm_last();
-  pCard_Bound->pSymbol()->vSymbol(p_term_last->pSymbol());
+  pCard_Bound->pSymbol()->vFacets(p_term_last->pSymbol());
 
   // cross-check validity of bound symbol
   RASSERT(Card_Bound::bValidBoundForRelnOp(p_term_bound->pSymbol(),
@@ -1387,11 +1387,11 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
 
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn(SF_KEY_COL,ri_Expr);
-    pCard_Expr->pSymbol()->vSymbol(&xSymbol_stmColOdn);
+    pCard_Expr->pSymbol()->vFacets(&xSymbol_stmColOdn);
   }
   else {
     Symbol xSymbol_stmColOdn(SF_COL_NO,ri_Expr);
-    pCard_Expr->pSymbol()->vSymbol(&xSymbol_stmColOdn);
+    pCard_Expr->pSymbol()->vFacets(&xSymbol_stmColOdn);
   }
 
   Stz* szP_Type = this->szPopType_char(pCard_RpnTerms);

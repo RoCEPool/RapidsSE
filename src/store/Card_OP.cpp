@@ -608,7 +608,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol(SF_COL_NO,i_Expr++);
-    p_expr->pSymbol()->vSymbol(&xSymbol);
+    p_expr->pSymbol()->vFacets(&xSymbol);
     p_projection->vAppendChild(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();
