@@ -128,6 +128,8 @@ namespace STORE
     void vFacet(eSF eFacet, i8 iInt);
     void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
+    void vFacet_X(eSF eFacet, i8 iInt);
+    void vFacet_X(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     bool bFormIs(eSF eSymbol);
 

@@ -1456,8 +1456,10 @@ bool Symbol::bHasSymbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (* xaFacet[0].m_sChrSeq.azChar())
+  if (* xaFacet[0].m_sChrSeq.azChar()) {
+    //RASSERT(m_nFacets);
     return true;
+  }
 
   return false;
 }
@@ -2611,10 +2613,12 @@ void Symbol::vSymbol(Symbol* pSymbol)
   if (SF_COL_NO == pSymbol->xaFacet[0].m_eFacet) {
     vFacet_Col_No(pSymbol->xaFacet[0].m_sChrSeq);
   }
-  else {
-    xaFacet[0].m_sChrSeq = pSymbol->xaFacet[0].m_sChrSeq;
-    xaFacet[0].m_eFacet = pSymbol->xaFacet[0].m_eFacet;
-  }
+//  else {
+//    xaFacet[0].m_eFacet  = pSymbol->xaFacet[0].m_eFacet;
+//    xaFacet[0].m_sChrSeq = pSymbol->xaFacet[0].m_sChrSeq;
+//  }
+
+  vFacetCopy(pSymbol);
 
   if (SF_COL_NO == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Col_No(xaFacet[0].m_sChrSeq));
@@ -4100,12 +4104,20 @@ void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_nFacets = pSymbol_arg->m_nFacets;
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
-    xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
-  }
+  xaFacet[0].m_eFacet  = pSymbol_arg->xaFacet[0].m_eFacet;
+  xaFacet[0].m_sChrSeq = pSymbol_arg->xaFacet[0].m_sChrSeq;
 }
+/*----------------------------------------------------------------------------*/
+//void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
+//{
+//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//
+//  m_nFacets = pSymbol_arg->m_nFacets;
+//  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+//    xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
+//    xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* push facet                                                                 */
@@ -4134,8 +4146,6 @@ void Symbol::vFacetPush(eSF eFacet)
 void Symbol::vFacetRotate(eSF eFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  UNUSED(eFacet);
 
   i8 i_Facet = this->i_Facet(eFacet);
   if (C_UNKNOWN == i_Facet) {
