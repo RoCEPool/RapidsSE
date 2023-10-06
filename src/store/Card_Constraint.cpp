@@ -128,7 +128,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 
     Symbol* pSymbol = p_term->pSymbol();
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-    p_expr_col = pCI->G.p_projection->pFind_expr_By_Ordinal(pSymbol);
+    p_expr_col = pCI->G.p_projection->pFind_expr_By_ordinal(pSymbol);
 
 
 

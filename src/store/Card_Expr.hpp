@@ -42,7 +42,7 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsAggCalc(void);
     bool bIsDescending(void);
-    bool bExpressionOfSymbol(Symbol* pSymbol);
+    bool bExpressionOfSymbol(Symbol* pSymbol_arg);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);

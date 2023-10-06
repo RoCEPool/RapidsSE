@@ -103,6 +103,10 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
     vDebugPoint();
   }
 
+  if (m_pCI->G.p_OP->i_Child() == 40)
+    vDebugPoint();
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((m_pCI->G.p_indexList = m_pCI->G.p_OP->pSub_indexList())) {

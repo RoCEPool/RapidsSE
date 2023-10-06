@@ -167,7 +167,7 @@ i8 Card_EXPRLIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Of_symbol(Symbol* pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_By_symbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -182,7 +182,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Of_symbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expression which matches given $n ordinal                             */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_Ordinal(Symbol* pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_By_ordinal(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

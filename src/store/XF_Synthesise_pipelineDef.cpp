@@ -741,7 +741,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //    if (p_expr_a->nChildCards() > 1) {
 //      Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
 //      Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
-//      p_expr_p = p_projection->pFind_expr_Of_symbol(pSym_stmCol_a);
+//      p_expr_p = p_projection->pFind_expr_By_symbol(pSym_stmCol_a);
 //
 //
 //
