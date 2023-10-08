@@ -855,6 +855,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_REDUCE_NOT,              sizeof(XF_Prolog_Reduce_not),              HT_T_TINY    , FILL },
   {CN_XF_PROLOG_REVIEW_AS,               sizeof(XF_Prolog_Review_as),               HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_BOARD_TO_SQYNM,        sizeof(XF_Prolog_X_board_To_sqyNm),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_X_COLNM_TO_STMCOL,       sizeof(XF_Prolog_X_colNm_To_stmCol),       HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC,   sizeof(XF_Prolog_X_rpnCalc_To_boolCalc),   HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_SCAN_TO_FROM,          sizeof(XF_Prolog_X_scan_To_from),          HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,            sizeof(XF_Synthesise_code),            HT_T_TINY    , FILL },
