@@ -17,6 +17,9 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
+LOG ' ';
+INCLUDE 'tpch_q5.test';
+
 //------------------------------------------------------------------------------
 LOG ' ';
 INCLUDE 'case_sort1.test';

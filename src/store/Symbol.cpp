@@ -1183,14 +1183,23 @@ void Symbol::vDump(void)
   s4K sProperties;
   vPpy_To_String(sProperties);
 
-  vTrace("Symbol : %lld %s: %s {%s} %s\n"_Stz
-         , (i8)xaFacet[0].m_eFacet
-         , aSF[xaFacet[0].m_eFacet]
+  vTrace("Symbol : %s\n"_Stz
+         ,szWhatIs()
+         );
 
-         , *szSF_chrSeq(SF_NONE)->azChar() ? szSF_chrSeq(SF_NONE) : "??Symbol"_Stz
-         , sProperties.szStz()
-         , szWhatIs()
-  );
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++)
+    vTrace("%s%-12s:%lld %-18s~%lld\n"_Stz
+           ,Stz::szTab(1)
+           ,aSF[xaFacet[i_Facet].m_eFacet]
+           ,(i8)xaFacet[i_Facet].m_eFacet
+           ,*szSF_chrSeq(SF_NONE)->azChar() ? szSF_chrSeq(SF_NONE) : "??Symbol"_Stz
+           ,i_Facet
+           );
+
+  vTrace("%s{%s}\n"_Stz
+         ,Stz::szTab(1)
+         ,sProperties.szStz()
+         );
 }
 
 /*----------------------------------------------------------------------------*/
