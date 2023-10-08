@@ -134,6 +134,8 @@ void Card_BoolCalc::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
+  if (! p_pred_ROOT)
+    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -597,6 +599,9 @@ void Card_BoolCalc::vRemovePred(Card_CONJUNCTION* p_pred)
 Card_CONJUNCTION* Card_BoolCalc::pRootPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! nChildCards())
+    return nullptr;
 
   Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(pGetChild(0));
 

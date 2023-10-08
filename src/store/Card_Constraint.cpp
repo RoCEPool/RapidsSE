@@ -102,9 +102,10 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
   i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 
   Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-  RASSERT(1 == p_boolCalc->nChildCards());
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pRootPred());
+  if (! p_pred_ROOT)
+    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
