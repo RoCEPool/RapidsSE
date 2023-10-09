@@ -539,7 +539,7 @@ void Card_OP::vUpdate_constraint(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* update projection                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vUpdate_projection(CardIter* pCI)
+void Card_OP::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

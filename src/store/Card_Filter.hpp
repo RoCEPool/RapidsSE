@@ -35,7 +35,7 @@ namespace STORE
     bool bIsEmpty(void);
 
 
-    void vUpdate_projection(CardIter* pCI);
+    void vUpdate_emitted(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

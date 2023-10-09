@@ -31,7 +31,7 @@ namespace STORE
     void vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
-    void vUpdate_projection(CardIter* pCI);
+    void vUpdate_emitted(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

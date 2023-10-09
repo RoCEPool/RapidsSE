@@ -140,7 +140,7 @@ void Card_Aggreg::vSmooth(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vUpdate_projection(CardIter* pCI)
+void Card_Aggreg::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

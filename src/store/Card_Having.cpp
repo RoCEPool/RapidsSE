@@ -82,7 +82,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->G.p_having->vUpdate_projection(pCI);
+  pCI->G.p_having->vUpdate_emitted(pCI);
 
   pCI->Prior.m_pEmitted = pSub_emitted();
 
@@ -148,7 +148,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vUpdate_projection(CardIter* pCI)
+void Card_Having::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

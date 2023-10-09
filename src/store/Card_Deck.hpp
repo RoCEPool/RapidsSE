@@ -34,8 +34,8 @@ namespace STORE
 
     Card_Emitted* p_emitted_fold(void);
 
-    void vProjectionAnalysis(CardIter* pCI);
-    void vProjectionAnalysis_passThru(CardIter* pCI);
+    void vAnalyse_emitted(CardIter* pCI);
+    void vAnalyse_emitted_passThru(CardIter* pCI);
 
     void vValidate(CardIter* pCI);
   };

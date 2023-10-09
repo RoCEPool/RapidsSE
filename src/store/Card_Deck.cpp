@@ -273,9 +273,9 @@ Card_Emitted* Card_Deck::p_emitted_fold(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* initial projection analysis                                                */
+/* initial emitted analysis                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Deck::vProjectionAnalysis(CardIter* pCI)
+void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -307,7 +307,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
     if (CK_FROM == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_from->vUpdate_projection(pCI);
+      pCI->G.p_from->vUpdate_emitted(pCI);
 
       if (pCI->G.p_MainCard->pSub_emitted())
         pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
@@ -400,9 +400,9 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initial projection analysis                                                */
+/* initial emitted analysis                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
+void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -436,7 +436,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
         CK_INDEXJOIN == pCI->G.e_MainCard ||
         CK_INDEXSCAN == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-       pCI->G.p_OP->vUpdate_projection(pCI);
+      pCI->G.p_OP->vUpdate_emitted(pCI);
 
       pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
 
@@ -523,16 +523,21 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 
     switch (pCI->G.e_MainCard) {
 
-      case CK_AGGREG:  pCI->G.p_aggreg->Card_Aggreg::vUpdate_projection(pCI); break;
-      case CK_GBYAGG:  pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_projection(pCI); break;
-      case CK_HAVING:  pCI->G.p_having->Card_Having::vUpdate_projection(pCI); break;
-      case CK_ORDAGG:  pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_projection(pCI); break;
-      case CK_PROJECT: pCI->G.p_project->Card_Project::vUpdate_projection(pCI); break;
+      case CK_AGGREG:
+        pCI->G.p_aggreg->Card_Aggreg::vUpdate_emitted(pCI); break;
+      case CK_GBYAGG:
+        pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_emitted(pCI); break;
+      case CK_HAVING:
+        pCI->G.p_having->Card_Having::vUpdate_emitted(pCI); break;
+      case CK_ORDAGG:
+        pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_emitted(pCI); break;
+      case CK_PROJECT:
+        pCI->G.p_project->Card_Project::vUpdate_emitted(pCI); break;
       case CK_SORT:    break;
       case CK_FROM:
         pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
         //pCI->vPrintBoard(__LINE__);
-        pCI->G.p_from->vUpdate_projection(pCI);
+        pCI->G.p_from->vUpdate_emitted(pCI);
 
         if ((pCI->G.p_filter = pCI->G.p_from->pSub_filter())) {
           if ((pCI->G.p_stream = pCI->G.p_filter->pSub_stream())) {
@@ -545,7 +550,8 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 
         break;
 
-      case CK_WHERE:  pCI->G.p_where->Card_Where::vUpdate_projection(pCI); break;
+      case CK_WHERE:
+        pCI->G.p_where->Card_Where::vUpdate_emitted(pCI); break;
 
       default:
         if (pCI->G.p_MainCard->pSub_emitted()) {
@@ -556,7 +562,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
     }
 
 //    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
-//      pCI->G.p_filter->Card_Filter::vUpdate_projection(pCI);
+//      pCI->G.p_filter->Card_Filter::vUpdate_emitted(pCI);
 //    }
 
     if (pCI->G.p_MainCard->pSub_emitted()) {

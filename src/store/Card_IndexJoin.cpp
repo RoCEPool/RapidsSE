@@ -116,7 +116,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 //  pCI->vPrintBoard();
 
   pCI->G.p_table = pSub_table();
-  vUpdate_projection(pCI);
+  vUpdate_emitted(pCI);
   vUpdate_constraint(pCI);
 
 //  pCI->vRenumberCards();
