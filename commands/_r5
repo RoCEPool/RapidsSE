@@ -63,7 +63,7 @@ tablesizes;
 
 /optimise
 /glean_cue_from = "OT_vAppend_preliminary_indexJoin"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r5"

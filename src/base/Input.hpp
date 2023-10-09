@@ -25,9 +25,6 @@ namespace BASE
 
     b8        m_bRevertToCpp; // revert to cpp tokens after read command
 
-    b8        m_bCodeBlock;
-    b8        m_bCodeEnd;
-
     // some debugging aids
     i8        d_iDebugMode;    // debug mode?
   
@@ -110,11 +107,6 @@ namespace BASE
     void vCollectSenName(void);
     void vCollectSenString(void);
     void vCollectSenTag(void);
-
-    void vCollectCodeBlock(void);
-    void vCollectCodeEnd(void);
-    bool bIsCodeBlockBegin(void);
-    bool bIsCodeBlockEnd(char* z);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);

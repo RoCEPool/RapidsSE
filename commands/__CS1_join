@@ -14,7 +14,7 @@ CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
 /transliterated
-/glean_interactive
+/optimiser_trace
 /weaved
 select * from nation, region where n_regionkey = r_regionkey;
 

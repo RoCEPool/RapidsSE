@@ -41,6 +41,8 @@ Stz* SP_Grid::sz(Grid* pGrid)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
+                  nullptr,
                   "%lld nodes %lld "
                   "partitions/node %lld total partitions"_Stz,
                   

@@ -71,6 +71,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR ...                                         */
+/*----------------------------------------------------------------------------*/
+: output_InternalError \handler
+
+  "Operand:- EV_M_INTERNALERROR" .verbose
+  Marker[].newInternalError
+  Marker[].pipeout
+  PipeIn[].pipeToOutput
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_LOWMEMORY ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_LowMemory \handler
@@ -160,6 +174,7 @@
   find: output_LoadResult    EV_I_LOADRESULT    [op].handler!
   find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!
 
+  find: output_InternalError EV_M_INTERNALERROR [op].handler!
   find: output_LowMemory     EV_M_LOWMEMORY     [op].handler!
 
   op__loop

@@ -10,7 +10,8 @@ namespace STORE
   private:
 
     StreamDef* m_pStreamDef;
-    RowBuffer* m_pRowBuffer;
+    PdsBufferIdQueue* m_pBufferIdQueue;
+
   
     // must be last
     Footer m_xFooter;
@@ -28,6 +29,7 @@ namespace STORE
   
     RowBuffer* pDanglingRowBuffer(void);
     RowBuffer* pFullRowBuffer(void);
+    RowBuffer* pRowBuffer(void);
   
   private:
   

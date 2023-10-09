@@ -41,6 +41,8 @@ void SP_Ref::vRef(Rrf wRef)
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
+                  nullptr,
                   "%lld.%04lld+o%lld"_Stz,
                   
                   wRef.iBuffer(),

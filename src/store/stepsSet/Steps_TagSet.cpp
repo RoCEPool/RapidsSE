@@ -294,7 +294,7 @@ void Step::vTagSetReplaceStr(void)
   
   TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
 
-  s256 sValue;
+  s48K sValue;
   m_pDataStack->vPopStr(sValue,__func__);
   
   s32 sName;

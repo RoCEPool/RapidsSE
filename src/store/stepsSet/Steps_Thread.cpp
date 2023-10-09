@@ -146,6 +146,7 @@ void Step::vThreadFaultCurrentStore(void)
   ENTRY();
 
   i8 iFaultCurrent = m_pDataStack->iPopInt(__func__);
+  UNUSED(iFaultCurrent);
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)iFaultCurrent);
 #endif
@@ -161,6 +162,7 @@ void Step::vThreadFaultInjectionStore(void)
   ENTRY();
 
   i8 iFaultInjection = m_pDataStack->iPopBol(__func__);
+  UNUSED(iFaultInjection);
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)iFaultInjection);
 #endif
@@ -176,6 +178,7 @@ void Step::vThreadFaultPointStore(void)
   ENTRY();
 
   i8 iFaultPoint = m_pDataStack->iPopInt(__func__);
+  UNUSED(iFaultPoint);
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_FaultPoint,(void*)iFaultPoint);
 #endif

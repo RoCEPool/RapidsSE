@@ -7,8 +7,8 @@
 #include "Board.hpp"
 #include "CardIter.hpp"
 #include "Fold.hpp"
-#include "Smoosh.hpp"
-#include "Smooth.hpp"
+#include "XF_Flatten_Smoosh.hpp"
+#include "XF_Flatten_Smooth.hpp"
 #include "Optimiser.hpp"
 
 /*----------------------------------------------------------------------------*/

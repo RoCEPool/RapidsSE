@@ -62,7 +62,7 @@ namespace STORE
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
 
-    Dtm*  ayElmNext_dtm(void);
+    Dtm*  ayElmNext_dtm(i8* piBufRemaining = nullptr);
     Dtm*  aElmSeq_dtm(void);
     void  vElmSeq_dtm(i8 nElmSeqSize, Dtm* aElmSeq);
     void  vElmSeqSize(i8 nElmSeqSize);

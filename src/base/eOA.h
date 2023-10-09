@@ -15,17 +15,7 @@ enum eOA // optimiser actions
   /*    */ OA_ENUMS,
 };
 
-static Stz* aOA[]
-{
-  /*  0 */ "NONE"_Stz,
-
-  /*    */ "OA_DISABLE_CUEING"_Stz,
-  /*    */ "OA_REPRINT_BOARD"_Stz,
-  /*    */ "OA_CONTINUE_TRANSFORMING"_Stz,
-  /*    */ "OA_INPUT_AGAIN"_Stz,
-
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aOA[OA_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

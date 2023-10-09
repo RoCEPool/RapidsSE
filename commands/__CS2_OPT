@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* __CS2_OPT : Code Synthesizer V2 called from Optimiser                      */
+/*============================================================================*/
+_nation
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+// select * from nation;
+
+
+select * from nation; // where n_nationkey < 3;
+/*
+/////////////////////////////
+WEAVED BEFORE CODE SYNTHESIS
+/////////////////////////////
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Nation
+    | filter    " type BOOLEAN $3 3 < "
+    | next
+
+  stage S02 on all partitions :
+      project   "   type INTEGER as n_nationkey $1
+                  , type VARCHAR as n_name $2 "
+    | next
+
+  stage S03 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+
+/////////////////////////////
+WEAVED AFTER CODE SYNTHESIS
+/////////////////////////////
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan Nation
+    | dynamic  0
+    | next
+
+  stage S02 on all partitions :
+    dynamic  0
+    | next
+
+  stage S03 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+__cpp_code__
+.....
+.....
+.....
+__codeEnd__
+;
+
+*/
+

@@ -43,7 +43,7 @@ select sum(Y)
 trackMemory;
 
 /optimise
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "__flatL2_s1"

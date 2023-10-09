@@ -16,6 +16,8 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_default(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   pOptimiser->pCardCtl()->vUseDefault();
@@ -39,6 +41,8 @@ OptimiserFun __Opt_d
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_expanded(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   //pOptimiser->pCardCtl()->vUseExpanded();
@@ -63,6 +67,9 @@ OptimiserFun __Opt_e
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
+  UNUSED(pTknVec);
+
   gxOptimiserCatalog.vHelp();
   
   reOptAct = OA_INPUT_AGAIN;
@@ -97,6 +104,8 @@ OptimiserFun __Opt_h_1
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_longer(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   pOptimiser->pCardCtl()->vUseLonger();
@@ -120,21 +129,24 @@ OptimiserFun __Opt_l
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_notation(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+  UNUSED(reOptAct);
+
   Bench* pBench = pOptimiser->pBench();
   Card_Deck* pDeck = pBench->pGetBoard((i8)0)->pDeck();
 
-  CardIter xCI(pDeck);
+  Kid xKid(pDeck);
 
-  while (xCI.G_bEachMain()) {
-    s256 sShort = "";
-    StrLib::vShortHand(sShort.azChar(), xCI.G.p_MainCard->szCardNm()->azChar());
+  while (xKid.bEach()) {
+    s256 sShort = ""_Stz;
+    StrLib::vShortHand(sShort.azChar(), sShort.nAreaBytes(), xKid.pChild()->szCardNm()->azChar());
     vTrace("%s "_Stz, sShort.azChar());
 
-    Card_TableNm* pCard_TableNm = xCI.G.p_MainCard->pSub_tableNm();
+    Card_TableNm* pCard_TableNm = xKid.pChild()->pSub_tableNm();
     if(pCard_TableNm != nullptr)
     {
       Card* pTableCard = _pCard(pCard_TableNm);
-      vTrace("%s "_Stz, pTableCard->szSymbol()->azChar());
+      vTrace("%s "_Stz, pTableCard->szSymbol(SF_NONE)->azChar());
     }
   }
 
@@ -159,8 +171,10 @@ OptimiserFun __Opt_n
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_readPipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(reOptAct);
+
   s256 sFile;
-  s16KB szPipeLineStatement = "";
+  s16KB szPipeLineStatement = ""_Stz;
 
   sFile = pTknVec->pGet(1)->szChars();
 
@@ -191,6 +205,8 @@ OptimiserFun __Opt_r
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_shorter(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pTknVec);
+
   reOptAct = OA_REPRINT_BOARD;
 
   pOptimiser->pCardCtl()->vUseShorter();
@@ -217,6 +233,7 @@ bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
   vTrace("bOpt_weave\n"_Stz);
 
   UNUSED(pTknVec);
+  UNUSED(reOptAct);
 
   vTrace("%s\n"_Stz,pOptimiser->szWeave());
 
@@ -241,12 +258,15 @@ OptimiserFun __Opt_w
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_writePipeline(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
+  UNUSED(reOptAct);
+
 //  reOptAct = OA_REPRINT_BOARD;
 //
 //  pOptimiser->pCardCtl()->vUseLonger();
 
   s256 sFile;
-  s16KB sPipeLineStatement = "";
+  s16KB sPipeLineStatement = ""_Stz;
 
   sFile = pTknVec->pGet(1)->szChars();
 
@@ -272,6 +292,8 @@ OptimiserFun __Opt_wr
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_toEnd(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
+  UNUSED(pOptimiser);
+
   vTrace("bOpt_weave\n"_Stz);
 
   UNUSED(pTknVec);

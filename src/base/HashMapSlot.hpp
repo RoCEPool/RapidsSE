@@ -2,7 +2,7 @@
 /* HashMapSlot.hpp -- HashMapSlot                                             */
 /*============================================================================*/
 #pragma once
-#define C_INIT_HASHMAP_SIZE 10000
+#define C_INIT_HASHMAP_SIZE 1000
 
 namespace BASE
 {
@@ -10,9 +10,10 @@ namespace BASE
   {
   friend HashMap;
 
-  private:
+  public:
     u8 m_uNoOfSlots;
     HashMapEntry* m_pEntry[C_INIT_HASHMAP_SIZE];
+    Lock m_okSlotLock[C_INIT_HASHMAP_SIZE];
 
     // must be last
     Footer m_xFooter;

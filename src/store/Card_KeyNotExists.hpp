@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_OP.hpp"
+#include "Card_CONDITION.hpp"
 
 namespace STORE
 {
-  class Card_KeyNotExists : public Card_OP
+  class Card_KeyNotExists : public Card_CONDITION
   {
   public:
     void* operator new(size_t);
@@ -26,6 +26,7 @@ namespace STORE
 
     void vUpdate_projection(CardIter* pCI);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_KeyNotExists* _pCard_KeyNotExists(void* aAddr);

@@ -84,6 +84,7 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
+/optimise_passthru 
 pipeline Q9
 begin
 
@@ -104,19 +105,19 @@ begin
     indexJoin partsupp IxPS_PARTKEY "bound $I1 _partkey =="
     | project "
       type INTEGER as _partkey _partkey ,
-      type INTEGER as ps_suppkey J1_PS_SUPPKEY ,
-      type DECIMAL as ps_supplycost J1_PS_SUPPLYCOST"
+      type INTEGER as ps_suppkey PS_SUPPKEY ,
+      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage Gj_LINEITEM on all partitions :
     indexJoin lineitem IxL_PARTKEY "bound $I1 _partkey =="
-    | filter "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
+    | filter "type BOOLEAN L_SUPPKEY ps_suppkey =="
     | project "
-      type INTEGER as _orderkey J1_L_ORDERKEY ,
-      type DECIMAL as l_extendedprice J1_L_EXTENDEDPRICE ,
-      type DECIMAL as l_discount J1_L_DISCOUNT ,
-      type DECIMAL as l_quantity J1_L_QUANTITY ,
+      type INTEGER as _orderkey L_ORDERKEY ,
+      type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
+      type DECIMAL as l_discount L_DISCOUNT ,
+      type DECIMAL as l_quantity L_QUANTITY ,
       type DECIMAL as ps_supplycost PS_SUPPLYCOST"
     | hash "type INTEGER _orderkey"
     | combined 0
@@ -125,7 +126,7 @@ begin
   stage Gj_ORDERS on all partitions :
     indexJoin orders IxO_ORDERKEY "bound $I1 _orderkey =="
     | project "
-      type TIMESTAMP as l_orderdate J1_O_ORDERDATE ,
+      type TIMESTAMP as l_orderdate O_ORDERDATE ,
       type DECIMAL as l_quantity L_QUANTITY ,
       type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
       type DECIMAL as l_discount L_DISCOUNT ,
@@ -136,7 +137,7 @@ begin
 stage G_SUM_P on all partitions :
     gbyAgg "groupby type TIMESTAMP l_orderdate
       aggregates
-      type TIMESTAMP as l_orderdate l_orderdate ,
+      type TIMESTAMP as l_orderdate $K1 ,
       type DECIMAL as amount ) l_extendedprice 1.0  l_discount -  *  ps_supplycost l_quantity *  - sum"
     | combined 0
     | next
@@ -144,7 +145,7 @@ stage G_SUM_P on all partitions :
 stage G_SUM_N on all nodes :
     gbyAgg "groupby type TIMESTAMP l_orderdate
     aggregates
-      type TIMESTAMP as l_orderdate l_orderdate ,
+      type TIMESTAMP as l_orderdate $K1 ,
       type DECIMAL as amount ) amount sum"
     | combined 0
     | next
@@ -152,7 +153,7 @@ stage G_SUM_N on all nodes :
 stage G_SUM_O on origin :
     gbyAgg "groupby type TIMESTAMP l_orderdate
     aggregates
-      type TIMESTAMP as o_year l_orderdate ,
+      type TIMESTAMP as o_year $K1 ,
       type DECIMAL as amount ) amount sum"
     | combined 0
     | next

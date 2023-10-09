@@ -84,6 +84,8 @@ JobReport::~JobReport(void) noexcept(false)
 eEC JobReport::eAllReport(i8 iJob, Tub* pTub)
 {
   _static_
+  UNUSED(iJob);
+  UNUSED(pTub);
   
   return EC_NONE;
 }

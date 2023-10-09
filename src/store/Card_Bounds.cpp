@@ -4,15 +4,8 @@
 
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
-#include "Card_IdxCol.hpp"
-#include "Card_IdxColList.hpp"
-#include "Card_Index.hpp"
-#include "Card_Table.hpp"
-#include "Card_TablePtn.hpp"
-#include "Card_Term.hpp"
-#include "Card_PRED.hpp"
 #include "CardIter.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,7 +20,7 @@ __vDeleteFunction(Card_Bounds, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Bounds::Card_Bounds(void)
-: Card(CK_BOUNDS)
+: Card_symbol(CK_BOUNDS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -53,21 +46,37 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vCullBound(char cWithMark)
+void Card_Bounds::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI_bounds(this);
-  while (xCI_bounds.G_bEachMain()) {
-    if (xCI_bounds.G.p_MainCard->cMark1() != cWithMark)
+  Kid xKid(this);
+  while (xKid.bEach(CK_BOUND))
+    xKid.p_bound()->vConvert_colOdn_To_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card_Bounds::nCullBound(Stz* szWithMark)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nCulled = 0;
+
+  Kid xCI_bounds(this);
+  while (xCI_bounds.bEach()) {
+    if (! xCI_bounds.pChild()->bMark1(szWithMark))
       continue;
 
-    vRemoveChild(xCI_bounds.G.p_MainCard);
-    DELETE_CARD(xCI_bounds.G.p_MainCard);
+    vDeleteChild(xCI_bounds.pChild());
+    nCulled++;
     xCI_bounds.vRewind();
   }
+
+  return nCulled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,19 +86,30 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_BOUND)) {
-    if (xCI.G.p_bound->pSymbol()->Y_bHas(P_ChosenBound))
-      return xCI.G.p_bound;
+  Kid xKid(this);
+  while (xKid.bEach(CK_BOUND)) {
+    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound))
+      return _pCard_Bound(xKid.pChild());
   }
 
   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vEnsureTypes_For_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
+    xKid.p_bound()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this bounds have a bound logically equivalent to given compare?       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+bool Card_Bounds::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -115,6 +135,19 @@ bool Card_Bounds::bUsesSqyRsl(void)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

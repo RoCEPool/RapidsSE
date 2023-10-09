@@ -5,7 +5,7 @@
 #include "Card_StreamSet.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_StreamHead.hpp"
 #include "Card_StreamPer.hpp"
 #include "Card_Table.hpp"
@@ -28,7 +28,7 @@ __vDeleteFunction(Card_StreamSet, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamSet::Card_StreamSet(void)
-: Card(CK_STREAMSET)
+: Card_symbol(CK_STREAMSET, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -75,7 +75,7 @@ Card_StreamSet* Card_StreamSet::pComputeAllPermutations(Card_TableList* p_tableL
     i8 i_InvalidAtJoin = p_streamPer->iCreatePerSeq(p_tableList,
                                                     p_joinPredList,
                                                     pPermGen);
-    p_streamPrmAll->vAppend(p_streamPer);
+    p_streamPrmAll->vAppendChild(p_streamPer);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // valid permutation
@@ -113,9 +113,9 @@ void Card_StreamSet::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain())
-    xCI.G.p_streamPer->vEstStreamCost(p_tableList, p_filtPredList);
+  Kid xKid(this);
+  while (xKid.bEach())
+    xKid.p_streamPer()->vEstStreamCost(p_tableList, p_filtPredList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,13 +127,13 @@ Card_StreamPer* Card_StreamSet::pHighestCost(void)
 
   Card_StreamPer* pHighest = nullptr;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPER)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_STREAMPER)) {
     if (! pHighest)
-      pHighest = xCI.G.p_streamPer;
+      pHighest = xKid.p_streamPer();
     else
-    if (xCI.G.p_streamPer->bIsHigherCost(pHighest))
-      pHighest = xCI.G.p_streamPer;
+    if (xKid.p_streamPer()->bIsHigherCost(pHighest))
+      pHighest = xKid.p_streamPer();
   }
 
   return pHighest;
@@ -149,9 +149,9 @@ Card_StreamPer* Card_StreamSet::pJoinOrder(i8 iJoinOrder)
   i8 iPermutation;
   Card_StreamPer* p_joinPermSeq = nullptr;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPER)) {
-    p_joinPermSeq = xCI.G.p_streamPer;
+  Kid xKid(this);
+  while (xKid.bEach(CK_STREAMPER)) {
+    p_joinPermSeq = xKid.p_streamPer();
     iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
       return (p_joinPermSeq);
@@ -169,13 +169,13 @@ Card_StreamPer* Card_StreamSet::pLowestCost(void)
 
   Card_StreamPer* pLowest = nullptr;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPER)) {
+  Kid xKid(this);
+  while (xKid.bEach(CK_STREAMPER)) {
     if (! pLowest)
-      pLowest = xCI.G.p_streamPer;
+      pLowest = xKid.p_streamPer();
     else
-    if (xCI.G.p_streamPer->bIsLowerCost(pLowest))
-      pLowest = xCI.G.p_streamPer;
+    if (xKid.p_streamPer()->bIsLowerCost(pLowest))
+      pLowest = xKid.p_streamPer();
   }
 
   return pLowest;
@@ -188,12 +188,29 @@ void Card_StreamSet::vRemoveInvalid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
-    if (xCI.G.p_streamPer->pSymbol()->Y_bHas(P_Invalid))
-      xCI.G_vRemoveDeleteMain(CK_STREAMPER);
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    if (xKid.p_streamPer()->pSymbol()->Y_bHas(P_Invalid)) {
+      Card_StreamPer* p_streamPer = xKid.p_streamPer();
+      xKid.vRemove();
+      DELETE_CARD(p_streamPer);
+    }
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamSet::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

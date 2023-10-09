@@ -18,7 +18,7 @@
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 /*
 
@@ -38,6 +38,7 @@ select
   group by l_returnflag, l_linestatus
   order by l_returnflag, l_linestatus;
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -78,7 +79,7 @@ success
 // next and first
 // Need multiple threads per partition to improve performance
 //------------------------------------------------------------------------------
-
+/optimise_passthru 
 pipeline Query1
 begin
   stage S00 on origin :
@@ -93,10 +94,10 @@ begin
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
-      type DECIMAL ) as SUM_QTY L_QUANTITY sum  ,
-      type DECIMAL ) as SUM_BASE_PRICE L_EXTENDEDPRICE sum  ,
-      type DECIMAL ) as SUM_DISC_PRICE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-      type DECIMAL ) as SUM_CHARGE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
+      type DECIMAL as SUM_QTY ) L_QUANTITY sum  ,
+      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
       type INTEGER ) L_EXTENDEDPRICE count  ,
       type INTEGER ) L_QUANTITY count  ,
       type DECIMAL ) L_DISCOUNT sum  ,

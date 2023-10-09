@@ -43,14 +43,15 @@ namespace STORE
    ~IndexDef(void) noexcept(false);
 
     static eEC eSyntax(Stz* szCmd);
-    static eEC eParseTableName(Stz* szCmd, Stz* szTableNm);
+    static eEC eParseTableName(Stz* szCmd, String* psTableNm);
     static void vPostRecv(void* aIndexDef);
 
-    void    vAddColumn(Stz* szColumnNm, eCT eColumnType);
+    void    vAddColumn(Stz* szColumnNm, eCT eColumnType, bool bAscending=true);
 
     i8      nColumns(void);
     i8*     aiaColSet(void);
     void    vDetermineKeyKind(void);
+    void    vDump(i8 i_Tab=0);
     Column* pFindColumn(Stz* szColumnNm);
     Column* pFindColumn(i8 i_ColSet);
     Column* pGetColumn(i8 i_Column);
@@ -68,7 +69,7 @@ namespace STORE
     void   vIsUnique(bool bUnique);
     eKE    eKeyKind(void);
     void   vKeyKind(eKE eKeyKind);
-    void   vListContents(i8 i_Depth);
+    void   vListContents(i8 i_Tab);
     Location* pLocation(void);
     void   vPrint(void);
     void   vSetColSet(i8 iColumnNo, i8 iColumnSet);
@@ -77,6 +78,8 @@ namespace STORE
     eEC    eParse(Table* pTable, Stz* szCmd);
     void   vResetPointers(void);
     i8     iSortKeyDatum(void);
+
+    void   vValidate(void);
   
   private:
     eEC eAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm);

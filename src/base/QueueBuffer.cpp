@@ -256,6 +256,7 @@ void QueueBuffer::vVerify(void)
     iCount++;
   
   ASSERT(iCount == m_nPointers);
+  UNUSED(iCount);
 }
 
 /*============================================================================*/

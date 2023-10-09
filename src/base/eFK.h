@@ -11,41 +11,22 @@ enum eFK // failure kind
   /* 2 */ FK_ASSERT,
   /* 3 */ FK_CHECK,
   /* 4 */ FK_FATAL,
-  /* 5 */ FK_LOWMEMORY,
-  /* 6 */ FK_RASSERT,
-  /* 7 */ FK_REACHED,
-  /* 8 */ FK_THROW,
-  /* 9 */ FK_TYPE,
-  /*10 */ FK_UNIMPLEMENTED,
+  /* 5 */ FK_INTERNALERROR,
+  /* 6 */ FK_LOWMEMORY,
+  /* 7 */ FK_RASSERT,
+  /* 8 */ FK_REACHED,
+  /* 9 */ FK_THROW,
+  /*10 */ FK_TYPE,
+  /*11 */ FK_UNIMPLEMENTED,
 
-  /*11 */ FK_ASTACK,
-  /*12 */ FK_DSTACK,
-  /*13 */ FK_RSTACK,
+  /*12 */ FK_ASTACK,
+  /*13 */ FK_DSTACK,
+  /*14 */ FK_RSTACK,
   
-  /*14 */ FK_ENUMS
+  /*15 */ FK_ENUMS
 };
 
-static Stz* aFK[]
-{
-  /* 0 */ "NONE"_Stz,
-  
-  /* 1 */ "ALWAYS"_Stz,
-  /* 2 */ "ASSERT"_Stz,
-  /* 3 */ "CHECK"_Stz,
-  /* 4 */ "FATAL"_Stz,
-  /* 5 */ "LOWMEMORY"_Stz,
-  /* 6 */ "RASSERT"_Stz,
-  /* 7 */ "REACHED"_Stz,
-  /* 8 */ "THROW"_Stz,
-  /* 9 */ "TYPE"_Stz,
-  /*10 */ "UNIMPLEMENTED"_Stz,
-
-  /*11 */ "ASTACK"_Stz,
-  /*12 */ "DSTACK"_Stz,
-  /*13 */ "RSTACK"_Stz,
-
-  /*14 */ "ENUMS"_Stz
-};
+extern Stz* aFK[FK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

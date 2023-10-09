@@ -18,7 +18,7 @@ select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -35,6 +35,7 @@ select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
      group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment
      order by revenue desc limit 20;
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -83,14 +84,15 @@ end ;
 // Changed all pipe to - next and first (makes it easier)
 // Changed all Ordinal columns to Symbolic (makes it easier)
 // Changed Scans followed by AbstractJoins to concrete joins
-// Removed C_CUSTKEY J1_O_CUSTKEY ==  and
-//                   J2_L_ORDERKEY J1_O_ORDERKEY ==
+// Removed C_CUSTKEY O_CUSTKEY ==  and
+//                   L_ORDERKEY O_ORDERKEY ==
 //   from filter in stage stageMarker6349 as part of join keys
 // Moved SORT to a new stage as CodeSynthesizer does not allow
 //     aggregates and sort operators in the same stage
 // Modified DESC to ASC as DESC not yet supported
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -105,14 +107,14 @@ begin
     //scan rapidsse public orders
     //| abstractJoin " 1  "
     indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="  // J1 - Orders
-    | hash "type INTEGER J1_O_ORDERKEY"
+    | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker27165 on all partitions :
     //scan rapidsse public lineitem
     //| abstractJoin " 1  "
-    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY ==" // J2 - Lineitem
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY ==" // J2 - Lineitem
     | hash "type INTEGER C_NATIONKEY"
     | combined 0
     | next hashcast
@@ -125,24 +127,24 @@ begin
     | next
 
   stage stageMarker27171 on all partitions :
-    filter " type BOOLEAN  //C_CUSTKEY J1_O_CUSTKEY ==
-                               //J2_L_ORDERKEY J1_O_ORDERKEY ==  and
-                               J1_O_ORDERDATE DATE '1993-10-01'  >=
-                               J1_O_ORDERDATE DATE '1994-01-01'  <  and
-                               J2_L_RETURNFLAG 'R'  ==  and"
-                               //C_NATIONKEY J3_N_NATIONKEY ==  and  "
+    filter " type BOOLEAN  //C_CUSTKEY O_CUSTKEY ==
+                               //L_ORDERKEY O_ORDERKEY ==  and
+                               O_ORDERDATE DATE '1993-10-01'  >=
+                               O_ORDERDATE DATE '1994-01-01'  <  and
+                               L_RETURNFLAG 'R'  ==  and"
+                               //C_NATIONKEY N_NATIONKEY ==  and  "
 
     | gbyAgg " groupBy  type INTEGER as C_CUSTKEY C_CUSTKEY ,
                         type VARCHAR as C_NAME C_NAME ,
                         type DECIMAL as C_ACCTBAL C_ACCTBAL ,
                         type VARCHAR as C_PHONE C_PHONE ,
-                        type VARCHAR as J3_N_NAME J3_N_NAME ,
+                        type VARCHAR as N_NAME N_NAME ,
                         type VARCHAR as C_ADDRESS C_ADDRESS ,
                         type VARCHAR as C_COMMENT C_COMMENT
                         aggregates
                         type INTEGER $K1 ,
                         type VARCHAR $K2 ,
-                        type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
                         type DECIMAL $K3 ,
                         type VARCHAR $K5 ,
                         type VARCHAR $K6 ,
@@ -157,7 +159,7 @@ begin
                       type VARCHAR as C_NAME $2 ,
                       type DECIMAL as C_ACCTBAL $4 ,
                       type VARCHAR as C_PHONE $7 ,
-                      type VARCHAR as J3_N_NAME $5 ,
+                      type VARCHAR as N_NAME $5 ,
                       type VARCHAR as C_ADDRESS $6 ,
                       type VARCHAR as C_COMMENT $8
                       aggregates
@@ -176,7 +178,7 @@ begin
                       type VARCHAR as C_NAME $2 ,
                       type DECIMAL as C_ACCTBAL $4 ,
                       type VARCHAR as C_PHONE $7 ,
-                      type VARCHAR as J3_N_NAME $5 ,
+                      type VARCHAR as N_NAME $5 ,
                       type VARCHAR as C_ADDRESS $6 ,
                       type VARCHAR as C_COMMENT $8
                       aggregates
@@ -224,6 +226,7 @@ rows:
   (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
   (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
 
+/optimise_passthru 
 pipeline unnamed
     begin
 
@@ -244,22 +247,22 @@ pipeline unnamed
       indexJoin Customer IxC_CUSTKEY expr bound $I1 _custkey ==  //J1
       | project expr  type INTEGER as _custkey _custkey ,
                       type INTEGER as _orderkey _orderkey ,
-                      type VARCHAR as c_name j1_c_name ,
-                      type DECIMAL as c_acctbal J1_C_ACCTBAL ,
-                      type INTEGER as J1_C_NATIONKEY j1_c_nationkey ,
-                      type VARCHAR as c_address j1_c_address ,
-                      type VARCHAR as c_phone j1_c_phone ,
-                      type VARCHAR as c_comment j1_c_comment
+                      type VARCHAR as c_name c_name ,
+                      type DECIMAL as c_acctbal C_ACCTBAL ,
+                      type INTEGER as C_NATIONKEY c_nationkey ,
+                      type VARCHAR as c_address c_address ,
+                      type VARCHAR as c_phone c_phone ,
+                      type VARCHAR as c_comment c_comment
       | combined 0
       | next
 
  stage Gj_NATION on all partitions :
-    indexjoin Nation IxN_NATIONKEY "BOUND $I1 J1_C_NATIONKEY ==" // J2 - Nation
+    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J2 - Nation
     | project expr type INTEGER as _custkey _custkey ,
                    type INTEGER as _orderkey _orderkey ,
                    type VARCHAR as c_name c_name ,
                    type DECIMAL as c_acctbal c_acctbal ,
-                   type VARCHAR as n_name J2_n_name ,
+                   type VARCHAR as n_name n_name ,
                    type VARCHAR as c_address c_address ,
                    type VARCHAR as c_phone c_phone ,
                    type VARCHAR as c_comment c_comment
@@ -272,12 +275,12 @@ pipeline unnamed
     // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
     stage Gj_LINEITEM on all partitions :
       indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==  //J2
-      | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+      | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
       | gbyAgg expr groupby type INTEGER _custkey
                      aggregates
                      type INTEGER as _custkey $K1 ,
                      type VARCHAR as c_name c_name ,
-                     type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum ,
+                     type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
                      type DECIMAL as c_acctbal c_acctbal ,
                      type VARCHAR as n_name n_name ,
                      type VARCHAR as c_address c_address ,
@@ -353,6 +356,7 @@ sleep 4;
 success
 
 //SF0001: 93ms
+/optimise_passthru 
 pipeline Query10
 begin
 
@@ -371,12 +375,12 @@ begin
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type VARCHAR as C_NAME J1_C_NAME ,
-               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
-               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
-               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
-               type VARCHAR as C_PHONE J1_C_PHONE ,
-               type VARCHAR as C_COMMENT J1_C_COMMENT"
+               type VARCHAR as C_NAME C_NAME ,
+               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+               type INTEGER as C_NATIONKEY C_NATIONKEY ,
+               type VARCHAR as C_ADDRESS C_ADDRESS ,
+               type VARCHAR as C_PHONE C_PHONE ,
+               type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
@@ -386,7 +390,7 @@ begin
                type INTEGER as O_ORDERKEY O_ORDERKEY ,
                type VARCHAR as C_NAME C_NAME ,
                type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as N_NAME N_NAME ,
                type VARCHAR as C_ADDRESS C_ADDRESS ,
                type VARCHAR as C_PHONE C_PHONE ,
                type VARCHAR as C_COMMENT C_COMMENT"
@@ -396,11 +400,11 @@ begin
 
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
-    | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | gbyAgg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
                           type VARCHAR as C_NAME C_NAME ,
-                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum ,
+                          type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum ,
                           type DECIMAL as C_ACCTBAL C_ACCTBAL ,
                           type VARCHAR as N_NAME N_NAME ,
                           type VARCHAR as C_ADDRESS C_ADDRESS ,
@@ -470,7 +474,10 @@ rows:
   (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
   (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
 
+// TODO V2 : ORDAGG
+/*
 // with ordAgg and sort; is slower
+/optimise_passthru 
 pipeline Query10
 begin
 
@@ -494,7 +501,7 @@ begin
 
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
-    | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | combined 0
     | next
 
@@ -504,7 +511,7 @@ begin
      | next
 
    stage S03 on all partitions :
-    ordAgg  "ordGroupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum "
+    ordAgg  "ordGroupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
@@ -519,20 +526,20 @@ begin
     | next
 
   stage stageNew on origin :
-    top " TOP type DECIMAL REVENUE " 20
+    top "type DECIMAL REVENUE " 20
     | hash expr type INTEGER O_CUSTKEY
     | combined 0
     | next hashcast
 
   stage S07 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as C_NATIONKEY J1_C_NATIONKEY , type VARCHAR as C_NAME J1_C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL J1_C_ACCTBAL , type VARCHAR as C_ADDRESS J1_C_ADDRESS , type VARCHAR as C_PHONE J1_C_PHONE , type VARCHAR as C_COMMENT J1_C_COMMENT"
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME J1_N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type VARCHAR as C_NAME C_NAME , type DECIMAL as REVENUE ) REVENUE , type DECIMAL as C_ACCTBAL C_ACCTBAL , type VARCHAR as N_NAME N_NAME , type VARCHAR as C_ADDRESS C_ADDRESS , type VARCHAR as C_PHONE C_PHONE , type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
@@ -567,8 +574,10 @@ rows:
  (61,'Customer#000000061',0.00,1536.24,'PERU','9kndve4EAJxhg3veF BfXr7AqOsT39o gtqjaYE','27-626-559-8599','egular packages shall have to impress along the ')
  (98,'Customer#000000098',0.00,-551.37,'JAPAN','7yiheXNSpuEAwbswDW','22-885-845-6889','ages. furiously pending accounts are quickly carefully final foxes: busily pe')
  (13,'Customer#000000013',0.00,3857.34,'CANADA','nsXQu0oVjD7PM659uC3SRSp','13-761-547-5974','ounts sleep carefully after the close frays. carefully bold notornis use ironic requests. blithely')
+*/
 
 
+/optimise_passthru 
 pipeline Query10
 begin
 
@@ -587,10 +596,10 @@ begin
 
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
-    | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
     | gbyAgg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
-                          type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum "
+                          type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
@@ -609,7 +618,7 @@ begin
     | next
 
   stage S05 on origin :
-    top " TOP type DECIMAL REVENUE " 20
+    top "type DECIMAL REVENUE " 20
     | hash expr type INTEGER O_CUSTKEY
     | combined 0
     | next hashcast
@@ -617,13 +626,13 @@ begin
   stage S06 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
-               type INTEGER as C_NATIONKEY J1_C_NATIONKEY ,
-               type VARCHAR as C_NAME J1_C_NAME ,
+               type INTEGER as C_NATIONKEY C_NATIONKEY ,
+               type VARCHAR as C_NAME C_NAME ,
                type DECIMAL as REVENUE ) REVENUE ,
-               type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
-               type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
-               type VARCHAR as C_PHONE J1_C_PHONE ,
-               type VARCHAR as C_COMMENT J1_C_COMMENT"
+               type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+               type VARCHAR as C_ADDRESS C_ADDRESS ,
+               type VARCHAR as C_PHONE C_PHONE ,
+               type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
 
@@ -633,7 +642,7 @@ begin
                type VARCHAR as C_NAME C_NAME ,
                type DECIMAL as REVENUE ) REVENUE ,
                type DECIMAL as C_ACCTBAL C_ACCTBAL ,
-               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as N_NAME N_NAME ,
                type VARCHAR as C_ADDRESS C_ADDRESS ,
                type VARCHAR as C_PHONE C_PHONE ,
                type VARCHAR as C_COMMENT C_COMMENT"

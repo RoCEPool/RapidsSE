@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_OP.hpp"
+#include "Card_CONSTRUCTION.hpp"
 
 namespace STORE
 {
-  class Card_Flat : public Card_OP
+  class Card_Flat : public Card_CONSTRUCTION
   {
   public:
     void* operator new(size_t);
@@ -15,6 +15,9 @@ namespace STORE
   
     Card_Flat(void);
    ~Card_Flat(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 
   Card_Flat* _pCard_Flat(void* aAddr);

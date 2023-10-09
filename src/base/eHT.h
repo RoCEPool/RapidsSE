@@ -25,51 +25,8 @@ enum eHT // Heap type
   /* 13 */ HT_ENUMS
 };
 
-static Stz* aHT[]
-{
-  /*  0 */ "INVALID"_Stz,
-  
-  /*  1 */ "PERSISTENT_TINY"_Stz,
-  /*  2 */ "PERSISTENT_SMALL"_Stz,
-  /*  3 */ "PERSISTENT_MEDIUM"_Stz,
-  /*  4 */ "PERSISTENT_LARGE"_Stz,
-  
-  /*  5 */ "TRANSIENT_TINY"_Stz,
-  /*  6 */ "TRANSIENT_SMALL"_Stz,
-  /*  7 */ "TRANSIENT_MEDIUM"_Stz,
-  /*  8 */ "TRANSIENT_LARGE"_Stz,
-  /*  9 */ "TRANSIENT_DATA"_Stz,
-
-  /* 10 */ "VIRTUAL_TINY"_Stz,
-  /* 11 */ "VIRTUAL_SMALL"_Stz,
-  /* 12 */ "VIRTUAL_MEDIUM"_Stz,
-  /* 13 */ "VIRTUAL_LARGE"_Stz,
-
-  /* 14 */ "ENUMS"_Stz
-};
-
-static Stz* aHT_short[]
-{
-  /*  0 */ "I"_Stz,
-  
-  /*  1 */ "PT"_Stz,
-  /*  2 */ "PS"_Stz,
-  /*  3 */ "PM"_Stz,
-  /*  4 */ "PL"_Stz,
-  
-  /*  5 */ "T"_Stz,
-  /*  6 */ "S"_Stz,
-  /*  7 */ "M"_Stz,
-  /*  8 */ "L"_Stz,
-  /*  9 */ "D"_Stz,
-  
-  /* 10 */ "VT"_Stz,
-  /* 11 */ "VS"_Stz,
-  /* 12 */ "VM"_Stz,
-  /* 13 */ "VL"_Stz,
-
-  /* 11 */ "ENUMS"_Stz
-};
+extern Stz* aHT[HT_ENUMS];
+extern Stz* aHT_short[HT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

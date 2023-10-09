@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Scan,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Scan::Card_Scan(void)
-: Card_OP(CK_SCAN)
+: Card_OP(CK_SCAN,1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -39,22 +39,6 @@ Card_Scan::~Card_Scan(void) noexcept(false)
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
- void Card_Scan::vIndividuateFilter(CardIter* pCI) {
-
-   _static_
-
-   while (pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-     pCI->G.p_scan->vRemoveChild(pCI->G.p_filter);
-     pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_scan);
-
-     if (! pCI->G.p_filter->pSub_level()) {
-       pCI->G.p_filter->vPush(pCI->G.p_scan->pSub_level()->pDupCardRecursive());
-     }
-   }
- }
 
 /*----------------------------------------------------------------------------*/
 /* table morphs to scan                                                       */
@@ -63,20 +47,9 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 {
   _static_
 
-  pCI->G_vNewMember(CK_SCAN);
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_scan);
+    pCI->G.p_from->vCard(CK_SCAN);
 }
 
-/*----------------------------------------------------------------------------*/
-/* scan becomes table                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
-{
-  _static_
-
-  pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->G.p_scan);
-  DELETE_CARD(pCI->G.p_scan);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -88,6 +61,7 @@ void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
 void Card_Scan::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,11 +75,27 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 
    pCI->Early.m_pOP_leaf = this;
 
-   pCI->Analysis.m_pProjection_prior = pSub_projection();
+   pCI->Prior.m_pProjection = pSub_projection();
 
-   pCI->vPrintBoard();
+  // pCI->vPrintBoard();
 
    vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Scan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+ _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  Card_OP::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

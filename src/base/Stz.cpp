@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stz.cpp -- null terminated str                                             */
+/* Stz.hpp -- a read only null terminated string for mapping over char*       */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -25,14 +25,6 @@ void* Stz::operator new(size_t)
 Stz::Stz(void)
 {
   m_caChar[0] = '\0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Stz::Stz(Stz* szArg)
-{
-  StrLib::vCopy(azChar(),szArg->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,6 +93,33 @@ Stz* Stz::szPluses(i8 nPluses)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pluses                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Stz::szSpaces(i8 nSpaces)
+{
+  switch(nSpaces) {
+    case  0:  return ""_Stz;
+    case  1:  return " "_Stz;
+    case  2:  return "  "_Stz;
+    case  3:  return "   "_Stz;
+    case  4:  return "    "_Stz;
+    case  5:  return "     "_Stz;
+    case  6:  return "      "_Stz;
+    case  7:  return "       "_Stz;
+    case  8:  return "        "_Stz;
+    case  9:  return "         "_Stz;
+    case 10:  return "          "_Stz;
+    case 11:  return "           "_Stz;
+    case 12:  return "            "_Stz;
+    case 13:  return "             "_Stz;
+    case 14:  return "              "_Stz;
+    case 15:  return "               "_Stz;
+    case 16:  return "                "_Stz;
+    default:  return "(max-spaces)     "_Stz;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get tab                                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* Stz::szTab(i8 iDepth)
@@ -153,49 +172,11 @@ Stz* Stz::szHeight(i8 iHeight)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* = operator                                                                 */
-/*----------------------------------------------------------------------------*/
-void Stz::operator =(i8 iArg)
-{
-  StrLib::wToString(iArg,azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* = operator                                                                 */
-/*----------------------------------------------------------------------------*/
-void Stz::operator =(Stz* szArg)
-{
-  StrLib::vCopy(azChar(),szArg->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* = operator                                                                 */
-/*----------------------------------------------------------------------------*/
-void Stz::operator =(void* szArg)
-{
-  StrLib::wToPointer(szArg,azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* bBeginsWith: test if arg is a leading subset of the string                 */
 /*----------------------------------------------------------------------------*/
 b1 Stz::bBeginsWith(Stz* szArg)
 {
   return StrLib::bBeginsWith(azChar(), szArg->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* formatted concatenated sprint                                              */
-/*----------------------------------------------------------------------------*/
-void Stz::vCatSprint(Stz* szFormat, ...)
-{
-  va_list args;
-  
-  char* aEnd = azChar() + nLength();
-
-  va_start(args,szFormat);
-  vsprintf(aEnd,szFormat->azChar(),args);
-  va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,14 +198,6 @@ i8 Stz::iCompare(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* concat argument                                                            */
-/*----------------------------------------------------------------------------*/
-void Stz::vConcat(Stz* szArg)
-{
-  StrLib::vConcat(azChar(),szArg->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if this Stz contains given sub-string                                 */
 /*----------------------------------------------------------------------------*/
 bool Stz::bContains(Stz* szArg)
@@ -232,22 +205,6 @@ bool Stz::bContains(Stz* szArg)
   bool b = StrLib::bContains(azChar(),szArg->azChar());
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy argument                                                              */
-/*----------------------------------------------------------------------------*/
-void Stz::vCopy(Stz* szArg)
-{
-  StrLib::vCopy(azChar(),szArg->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy argument                                                              */
-/*----------------------------------------------------------------------------*/
-void Stz::vCopyLen(Stz* szArg, i8 nChars)
-{
-  StrLib::vCopyLen(azChar(),szArg->azChar(),nChars);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,20 +298,6 @@ bool Stz::bIsSomeTrue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this Stz is "$nn"                                                  */
-/*----------------------------------------------------------------------------*/
-bool Stz::bIsStreamColOrd(void)
-{
-  if (! StrLib::bIsDollar(m_caChar[0]))
-    return false;
-
-  if (! StrLib::bIsInteger(&m_caChar[1]))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* bOneOf: test if this Stz is same as one of the args (ignores case)         */
 /*----------------------------------------------------------------------------*/
 bool Stz::bOneOf(Stz* szArg, ...)
@@ -407,35 +350,6 @@ i8 Stz::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSprint: formatted sprint                                                  */
-/*----------------------------------------------------------------------------*/
-void Stz::vSprint(Stz* szFormat, ...)
-{
-  va_list args;
-  va_start(args,szFormat);
-  
-  vsprintf(azChar(),szFormat->azChar(),args);
-  
-  va_end(args);
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if this Stz is "$nn"                                                  */
-/*----------------------------------------------------------------------------*/
-char Stz::cTableSyn(void)
-{
-  if (! StrLib::bIsDollar(m_caChar[0]))
-    return '?';
-
-  if (! StrLib::bIsDollar(m_caChar[1]))
-    return '?';
-
-  char cTableSyn = m_caChar[2];
-
-  return cTableSyn;
-}
-
-/*----------------------------------------------------------------------------*/
 /* iToI8: convert arg to i8                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Stz::iToI8(void)
@@ -470,24 +384,16 @@ i8 Stz::iToI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert to lower case                                                      */
-/*----------------------------------------------------------------------------*/
-void Stz::vToLower(void)
-{
-  StrLib::vToLower(azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* _Stz literal suffix (which converts const char* to Stz*)                   */
 /*----------------------------------------------------------------------------*/
-Stz* BASE::operator "" _Stz(const char* szArg, size_t nSize)
+Stz* BASE::operator "" _Stz(const char* azArg, size_t nSize)
 {
   UNUSED(nSize);
   
-  return (Stz*)(szArg);
+  return (Stz*)(azArg);
 }
 
 /*============================================================================*/

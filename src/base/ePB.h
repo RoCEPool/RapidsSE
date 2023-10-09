@@ -15,17 +15,7 @@ enum ePB // predicate bound kind
   /*    */ PB_ENUMS,
 };
 
-static Stz* aPB[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "PB_LBOUND"_Stz,
-  /*    */ "PB_UBOUND"_Stz,
-  /*    */ "PB_RBOUND"_Stz,
-  /*    */ "PB_EBOUND"_Stz,
-  
-  /*    */ "ENUMS"_Stz,
-};
+extern Stz* aPB[PB_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

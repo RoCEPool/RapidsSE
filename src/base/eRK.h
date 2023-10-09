@@ -12,23 +12,8 @@ enum eRK // rule kind
   /* */ RK_ENUMS
 };
 
-static Stz* aRK[]
-{
-  /* */ "NONE"_Stz,
-  
-  /* */ "RK_SCAN_TO_INDEXSCAN"_Stz,
-
-  /* */ "ENUMS"_Stz
-};
-
-static Stz* aRK_short[]
-{
-  /* */ "NONE"_Stz,
-    
-  /* */ "scan-to-indexScan"_Stz,
-
-  /* */ "ENUMS"_Stz
-};
+extern Stz* aRK[RK_ENUMS];
+extern Stz* aRK_short[RK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

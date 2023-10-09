@@ -48,37 +48,16 @@ EntBuffer* STORE::_pEntBuffer(void* aAddress)
   return pEntBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_EntBufferNextEntry(void** ppEntBuffer, void* aPrevEntry) {
+  return EntBuffer::aGetNextEntry((EntBuffer **) ppEntBuffer, (Ent *) aPrevEntry);
+}
+
+
 void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry) {
-
   return EntBuffer::aGetNextEntry((EntBuffer**) ppEntBuffer, (Ent*) aPrevEntry);
-/*
-  EntBuffer* pEntBuffer = _pEntBuffer(*ppEntBuffer);
-  Ent* aCurrent = (Ent*)aPrevEntry;
-
-  tET tNextEntry = aCurrent->m_taNextEntry[0];
-
-  if (C_ENT_END_TICKET == tNextEntry)
-    return nullptr;
-
-  i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
-
-  Ent* aNextEntry = (Ent*) ((char*)pEntBuffer + 624 + iNextEntryOffset);
-
-  //Ent *aNextEntry = pEntBuffer->aNextEntry_flat((Ent*)(aPrevEntry), 0);
-
-  if (! aNextEntry ) {
-    pEntBuffer = pEntBuffer->pNextEntBuffer();
-    *ppEntBuffer = pEntBuffer;
-    if (pEntBuffer) {
-      tET tNextEntry = aCurrent->m_taNextEntry[0];
-      i8 iNextEntryOffset = (i8)(&pEntBuffer->m_xSkipRoots) * C_ENT_QUANTA;
-      aNextEntry = (Ent*) ((char*)pEntBuffer + 624 + iNextEntryOffset);
-    }
-
-  }
-
-  return aNextEntry;
-  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -928,7 +907,7 @@ EntBuffer* EntBuffer::pHigherEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pHigherLinkedBuffer());
+  return _pEntBuffer(m_tHigherBuffer.pGetDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -937,8 +916,9 @@ EntBuffer* EntBuffer::pHigherEntBuffer(void)
 void EntBuffer::vHigherEntBuffer(EntBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  LinkedBuffer::vHigherLinkedBuffer(pHigherBuffer);
+
+  m_tHigherBuffer = pHigherBuffer;
+  RASSERT(m_tHigherBuffer.pGetDataBuffer() == pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1265,7 +1245,7 @@ EntBuffer* EntBuffer::pNextEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pNextLinkedBuffer());
+  return _pEntBuffer(m_tNextBuffer.pGetDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1274,8 +1254,10 @@ EntBuffer* EntBuffer::pNextEntBuffer(void)
 void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  LinkedBuffer::vNextLinkedBuffer(pNextBuffer);
+
+  m_tNextBuffer = pNextBuffer;
+
+  RASSERT(m_tNextBuffer.pGetDataBuffer() == pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1370,7 +1352,7 @@ EntBuffer* EntBuffer::pPrevEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pPrevLinkedBuffer());
+  return _pEntBuffer(m_tPrevBuffer.pGetDataBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1379,8 +1361,9 @@ EntBuffer* EntBuffer::pPrevEntBuffer(void)
 void EntBuffer::vPrevEntBuffer(EntBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  LinkedBuffer::vPrevLinkedBuffer(pPrevBuffer);
+
+  m_tPrevBuffer = pPrevBuffer;
+  RASSERT(m_tPrevBuffer.pGetDataBuffer() == pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1565,11 +1548,13 @@ void EntBuffer::vShowEntry(Ent* aEnt)
 void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  UNUSED(bEntries);
   
   s256 sHigherBuffer;
   if (pHigherEntBuffer())
-    StrLib::wToString((i8)((EntBuffer*)pHigherEntBuffer())->m_iBufferHeight,
-                      sHigherBuffer.azChar());
+    StrLib::vToString(sHigherBuffer.azChar(),
+                      sHigherBuffer.nAreaBytes(),
+                      (i8) ((EntBuffer*) pHigherEntBuffer())->m_iBufferHeight);
   else
     sHigherBuffer = "..."_Stz;
   

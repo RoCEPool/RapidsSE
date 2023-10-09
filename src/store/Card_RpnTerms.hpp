@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_RpnTerms : public Card
+  class Card_RpnTerms : public Card_symbol<Card_RpnTerms>
   {  
   public:
     void* operator new(size_t);
@@ -17,6 +17,8 @@ namespace STORE
    ~Card_RpnTerms(void) noexcept(false);
 
     bool bIsInList(void);
+
+    Card_Term* pPop_term(void);
   };
 
   Card_RpnTerms* _pCard_RpnTerms(void* aAddr);

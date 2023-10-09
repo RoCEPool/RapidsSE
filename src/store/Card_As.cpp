@@ -4,6 +4,8 @@
 
 #include "Card_As.hpp"
 
+#include "CardIter.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -16,23 +18,8 @@ __vDeleteFunction(Card_As,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_As::Card_As(Stz* szAs)
-: Card(CK_AS,szAs)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vSymbol(szAs);
-    
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_As::Card_As(Card_As* p_as_arg)
-: Card(CK_AS, p_as_arg->szSymbol())
+Card_As::Card_As(void)
+    : Card_symbol(CK_AS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -40,7 +27,6 @@ Card_As::Card_As(Card_As* p_as_arg)
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -49,6 +35,80 @@ Card_As::~Card_As(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_As::vItemise_colNm(CardIter* pCI)
+{
+  _static_
+
+  auto bfItemise_colNm = [pCI](Card* pCard)
+  {
+    UNUSED(pCI);
+
+    //pCI->vAncestorDump(pCard);
+
+    if (! pCard->bIsCard(CK_AS))
+      return C_CONTINUE_RECURSION;
+
+    Card_As* p_as = _pCard_As(pCard);
+
+    if (! p_as->pSymbol()->bIs_As_Nm())
+      return C_CONTINUE_RECURSION;
+
+    Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
+    if (! p_expr)
+      return C_CONTINUE_RECURSION;
+
+    i8 iItemise = p_expr->iItemise();
+    p_as->pSymbol()->vSym(SF_AS_NM_itm,iItemise);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_As::vItemStrip_colNm(CardIter* pCI)
+{
+  _static_
+
+  auto bfItemStrip_colNm = [pCI](Card* pCard)
+  {
+    UNUSED(pCI);
+
+    if (! pCard->bIsCard(CK_AS))
+      return C_CONTINUE_RECURSION;
+
+    //pCI->vAncestorDump(pCard);
+
+    Card_As* p_as = _pCard_As(pCard);
+
+    if (! p_as->pSymbol()->bIs_As_Nm_itm())
+      return C_CONTINUE_RECURSION;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.pDeck->bApplyRecursive(CK_NONE,bfItemStrip_colNm);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -60,6 +120,33 @@ Card_As* Card_As::pClone(void)
   return _pCard_As(pDupCardRecursive());
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_As::bIs_SQCRLKEY(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->bSame(C_SQCRLKEY))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* validate                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_As::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pCI);
+  UNUSED(iDepth);
+  UNUSED(pParent);
+
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

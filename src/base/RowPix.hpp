@@ -6,7 +6,7 @@
 #include "eDM.h"
 
 #define C_ROWPIX_AREA    8192
-#define C_ROWPIX_COLUMNS 2
+#define C_ROWPIX_COLUMNS 16
 
 namespace BASE
 {
@@ -28,9 +28,12 @@ namespace BASE
 
     ColPix m_xaColPix[C_ROWPIX_COLUMNS]; // column pix array
     byte m_baPixArea[C_ROWPIX_AREA];     // see if this reproduces problem on Linux
-  
-//    // must be last
-//    Footer m_xFooter;
+
+    // NOTE: Cannot have footer here because this object gets
+    // allocated in the RowBox_t Wsp varying in size depending on the columns etc.
+
+    // must be last
+    //Footer m_xFooter;
 
   public:
   
@@ -39,7 +42,10 @@ namespace BASE
     void operator delete(void*);
 
     RowPix(void);
+    RowPix(RowPix* pRowPix, bool bAddPtnHash);
    ~RowPix(void) noexcept(false);
+
+    static void* aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo);
 
     ColPix* axColPix(i8 i_Col);
     ColPix* axaColPixArray(void);
@@ -59,12 +65,12 @@ namespace BASE
     void vPrint(void);
   
     void vRemovePtnHash(void);
-
-    //Footer* aFooter(void);
   };
 
   RowPix* _pRowPix(void* aAddr);
 }
+
+void* aRowPix_new(i8 nNumCols, void* pColumnInfo);
 
 /*============================================================================*/
 /* end                                                                        */

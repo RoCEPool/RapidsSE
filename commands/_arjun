@@ -1,7 +1,7 @@
 /*============================================================================*/
 /* _arjun                                                                     */
 /*============================================================================*/
-
+/*
 create table uniqueTable (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -40,7 +40,7 @@ begin
     | sink
     | stageStart
 end ;
-
+*/
 //select * from datums;
 /*
 pipeline __pageout
@@ -74,8 +74,18 @@ select c, cast(c,time) from cast_time;
 select c, cast(c, date) from cast_time;
 */
 /*
-tag default <tpch_dir> = "../TPCH/SF10" ;
+tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
+_paging
+load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem1 "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem2 "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem3 "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem4 "<tpch_dir>/lineitem.<suffix>" ;
+
+select * from lineitem;
+
+
 
 _customer
 _lineitem
@@ -121,7 +131,7 @@ unload paths
 ;
 */
 /*
-tag default <tpch_dir> = "../TPCH/SF50" ;
+tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
 
 _lineitem
@@ -136,3 +146,123 @@ dload lineitem paths
   "/mnt/disk2/data1/tpch/sf10/lineitem/lineitem.tbl"
 ;
 */
+
+tag default <tpch_dir> = "../TPCH/SF1" ;
+tag default <suffix>   = "tbl";
+_nation;
+load Nation   "<tpch_dir>/nation.<suffix>"   ;
+select * from nation;
+
+tag default <tpch_dir> = "../TPCH/SF1" ;
+tag default <suffix>   = "tbl";
+_orders
+load Orders   "<tpch_dir>/orders.<suffix>"   ;
+select * from orders;
+// Pipeline to page out row buffers
+/*
+pipeline __pageout
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+      scan nation
+      | project " type INTEGER as intCol0 $1 "
+      | combined 0
+      | next
+
+    stage stageB on all nodes :
+      pageout
+      | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;
+*/
+//select * from nation;
+
+// pipeline to page out crw buffers
+pipeline __pageout
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+      scan nation
+      | next
+
+    stage stageB on all nodes :
+      pageout
+      | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;
+
+tag default <tpch_dir> = "../TPCH/SF1" ;
+tag default <suffix>   = "tbl";
+
+_paging
+
+space;
+
+_paging
+load LineItem_1 "../TPCH/SF1/lineitem.tbl" ;
+select * from Lineitem_1 where L_ORDERKEY < 5;
+truncate Lineitem_1;
+select * from Lineitem_1 where L_ORDERKEY < 5;
+drop table LineItem_1;
+
+load LineItem_2 "../TPCH/SF1/lineitem.tbl" ;
+
+drop table LineItem_1;
+drop table LineItem_2;
+space;
+
+load LineItem_3 "../TPCH/SF1/lineitem.tbl" ;
+
+space;
+
+select * from Lineitem_1 where L_ORDERKEY < 5;
+select * from Lineitem_2;
+load LineItem_4 "../TPCH/SF1/lineitem.tbl" ;
+load LineItem_5 "../TPCH/SF1/lineitem.tbl" ;
+truncate Lineitem_1;
+space;
+
+load LineItem_6 "../TPCH/SF1/lineitem.tbl" ;
+load LineItem_7 "../TPCH/SF1/lineitem.tbl" ;
+
+select * from Lineitem_7 where L_ORDERKEY < 5;
+
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+
+select dec_col6 from datums order by dec_col6;
+

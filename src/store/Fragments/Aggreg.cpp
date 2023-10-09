@@ -3,58 +3,59 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
-#include "IndexDef.hpp"
-#include "TccStuff.h"
-#include "Pay.hpp"
-#include "Key.hpp"
-#include "Ent.hpp"
-#include "Ent_int.h"
+#include "ClangDynamic.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Code Fragments ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vAggregBegin -----------------------------------------------------------*/
+/*-- vAggregBegin ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iAggregBegin
-i8 iAggregBegin(Dynamic_T* aDynamicT) {
+// function-vAggregBegin
+void vAggregBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+  RowInfo __ROW_INFO_TO__;
+
   char* szStrArea;
 
-  __L_LABEL_LOOP__:
+  __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // AGGREG-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // FROM
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoAT.m_racStrArea;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TO
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+  //__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+  szStrArea = __ROW_INFO_TO__.m_acStrArea;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Process row ?
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
 
   // marker-end
-
-  return 0;
-
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vAggregInit -------------------------------------------------------------*/
+/*-- vAggregInitBegin --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vAggregInitBegin
 void vAggregInitBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
-  if ( aDynamicT->m_iAggregInit == 0 ) {
+  if ( aDynamicT->m_xRowInfoAT.m_bInitialize ) {
   // marker-end
   }
 
@@ -73,7 +74,7 @@ i8 iAggregInitEnd(Dynamic_T* aDynamicT) {
       return 0;
     }
 
-    aDynamicT->m_iAggregInit = 1;
+    aDynamicT->m_xRowInfoAT.m_bInitialize = false;
   }
 
   // marker-end
@@ -86,7 +87,7 @@ i8 iAggregInitEnd(Dynamic_T* aDynamicT) {
 /*-- vAggregColsBegin --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vAggregColsBegin
-i8 vAggregColsBegin(Dynamic_T* aDynamicT) {
+void vAggregColsBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
 

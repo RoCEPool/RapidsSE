@@ -13,18 +13,11 @@ enum eDK // dictionary kind
   /*  2 */ DK_FOLDER,
   /*  3 */ DK_SCHEMA,
   /*  4 */ DK_TABLE,
-  /*  5 */ DK_TENANT
+  /*  5 */ DK_TENANT,
+  /*  6 */ DK_ENUMS
 };
 
-static Stz* aDK[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "CATALOG"_Stz,
-  /*  2 */ "FOLDER"_Stz,
-  /*  3 */ "SCHEMA"_Stz,
-  /*  4 */ "TABLE"_Stz,
-  /*  5 */ "TENANT"_Stz
-};
+extern Stz* aDK[DK_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -9,10 +9,11 @@ class PhyPtn : public Gid_t<CN_PTNID>
 
   PhyPtn(void);
   PhyPtn(i8 iAsI8);
+  PhyPtn(const PhyPtn& oCopy);
 
   // auto conversion
   operator PhyPtn*(void);
-  
+
   // auto conversion
   operator i8(void);
 

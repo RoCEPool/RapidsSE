@@ -137,16 +137,6 @@ void* PsxThd::aGetStackBase(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current stack pointer                                                  */
-/*----------------------------------------------------------------------------*/
-void* PsxThd::aGetStackPointer(void)
-{
-  void* aPointer = &aPointer;
-  
-  return aPointer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stack size                                                             */
 /*----------------------------------------------------------------------------*/
 i8 PsxThd::iGetStackSize(void)
@@ -363,7 +353,7 @@ bool PsxThd::bBindThread(i8 i_Core)
 //  if (iResult == -1) {
 //    vTrace("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
 //  }
-
+  UNUSED(i_Core);
   return true;
 #endif
 }
@@ -502,7 +492,7 @@ void PsxThd::vEnableRealtime_2(void)
   }
   
 #else
-  
+
 #endif
 }
 
@@ -541,7 +531,10 @@ bool PsxThd::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
   iSleep  = xInfoExtended.pth_sleep_time;
   
 #else
-  
+  UNUSED(iUser);
+  UNUSED(iSystem);
+  UNUSED(iUsage);
+  UNUSED(iSleep);
 #endif
   
   return true;
@@ -593,7 +586,7 @@ void PsxThd::vGetPolicy(void)
   
 #ifdef WITH_APPLE
 
-  i8 iReturn = 0;
+  i8 iReturn;
 
   thread_affinity_policy_data_t current_policy;
   
@@ -608,6 +601,7 @@ void PsxThd::vGetPolicy(void)
                               (thread_policy_t)&current_policy,
                               &policy_count,
                               &get_default);
+  UNUSED(iReturn);
 #else
 
 #endif
@@ -622,15 +616,24 @@ void PsxThd::vSetOSThreadId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
-  i8 iOpSysThreadId = syscall(SYS_thread_selfid);
+  u8 uThreadId;
+  i8 iError = pthread_threadid_np(nullptr, &uThreadId);
+
+  if (iError != 0) {
+    vTrace("pthread_threadid_np() error; errno=%lld\n"_Stz,iError);
+  } else {
+    m_iOsThdId = (i8) uThreadId;
+  }
+
 #else
   i8 iOpSysThreadId = syscall(SYS_gettid);
-#endif
-  
-  if (-1 == iOpSysThreadId)
+
+  if (-1 == iOpSysThreadId) {
     vTrace("syscall(SYS_gettid) error; errno=%d\n"_Stz,errno);
-  else
+  } else {
     m_iOsThdId = iOpSysThreadId;
+  }
+#endif
 }
 
 
@@ -774,7 +777,7 @@ bool PsxThd::bSpawnThread(void* pFun(void*), void* pArg)
   
   pthread_attr_t tattr;
 
-  size_t size = C_1MB;
+  size_t size = C_10MB;
 
   /* initialized with default attributes */
   i8 rCode = pthread_attr_init(&tattr);
@@ -906,13 +909,16 @@ void PsxThd::vThreadBoost(i8 nPoints)
   
   i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iError);
+
   xSched.sched_priority += (int)nPoints;
   iError = pthread_setschedparam(m_iPsxThdId,iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iError);
+
 #else
   ASSERT(nPoints >= 0);
+  UNUSED(nPoints);
   //vTrace("Boost thread priority not implemented!\n");
 #endif
 
@@ -931,13 +937,17 @@ void PsxThd::vThreadPriority(i8 iPriority)
   
   i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iPolicy);
+  UNUSED(iError);
+
   xSched.sched_priority = (int)iPriority;
   iError = pthread_setschedparam(m_iPsxThdId,iPolicy,&xSched);
   ASSERT(! iError);
-  
+  UNUSED(iError);
+
 #else
   ASSERT(iPriority >= 0);
+  UNUSED(iPriority);
   //vTrace("Set thread priority not implemented!\n");
 #endif
 

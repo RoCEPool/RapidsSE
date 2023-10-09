@@ -5,36 +5,13 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-TextMedium* BASE::_pTextMedium(void* aAddr)
-{
-  TextMedium* pText = reinterpret_cast<TextMedium*>(aAddr);
-  
-  RASSERT_TYPE(pText,CN_TEXTMEDIUM);
-  
-  return pText;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new a Text from the heap                                                   */
-/*----------------------------------------------------------------------------*/
-void* TextMedium::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_TEXTMEDIUM);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void TextMedium::operator delete(void* pTextAddress)
-{
-  TextMedium* pTextMedium = reinterpret_cast<TextMedium*>(pTextAddress);
-  
-  Heaps::vFree(pTextMedium);
-}
+__pCastFunction(BASE,TextMedium,CN_TEXTMEDIUM)
+__aNewFunction(TextMedium,CN_TEXTMEDIUM)
+__vDeleteFunction(TextMedium,CN_TEXTMEDIUM)
+__aFooterFunction(TextMedium)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -69,7 +46,7 @@ TextMedium::TextMedium(Stz* szText)
   m_caText[0] = '\0';
 #endif
   
-  StrLib::vCopyLen(m_caText,szText->azChar(),C_TEXT_MEDIUM-1);
+  StrLib::vCopy(m_caText, sizeof(m_caText), szText->azChar());
 
   _checkInitialised_(CN_TEXTMEDIUM);
   
@@ -92,19 +69,6 @@ Stz* TextMedium::szArea(void)
   return (Stz*)&m_caText[0];
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* TextMedium::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
-
-  return &m_xFooter;
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

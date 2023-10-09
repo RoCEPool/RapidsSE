@@ -178,8 +178,6 @@ eKC Key::eMixCompare(IndexDef* pIndexDef, Key* aKey_l, Key* aKey_r)
   //aKey_r->vShow(pIndexDef);
   //vTrace("\n"_Stz);
 
-  bool bSame = false;
-
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
 
     Column *pCol = pIndexDef->pGetColumn(i_Col);
@@ -301,7 +299,7 @@ i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 /*----------------------------------------------------------------------------*/
 /* get element as str (assuming str)                                         */
 /*----------------------------------------------------------------------------*/
-i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue)
+i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue, i8 iKeyBufSize)
 {
   i8 nBytes = 0;
   Dtm* ayCursor = aElmSeq_dtm();
@@ -317,7 +315,7 @@ i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue)
     ayElm = EntWrk::ayEachElm(pCol,nBytes,(byte**)&ayCursor);
 
     if (i_Element == i_Col) {
-      nSize = StrLib::iWordFlipBack(sKeyValue, (char*)ayElm);
+      nSize = StrLib::iWordFlipBack(sKeyValue, iKeyBufSize, (char*)ayElm);
       break;
     }
   }
@@ -418,14 +416,20 @@ void Key::vShow(IndexDef* pIndexDef)
     if (0 == i_Col && bReadApi) {
       Rrf xwRef;
       xwRef = * (Rrf*)ayElm;
-      StrLib::vSprint(caLiteral,"%lld.%lld"_Stz,xwRef.iBuffer(),xwRef.iItem());
+      StrLib::vSprint(caLiteral,
+                      sizeof(caLiteral),
+                      nullptr,
+                      "%lld.%lld"_Stz,
+                      xwRef.iBuffer(),
+                      xwRef.iItem()
+                      );
     }
     else
     if (eDatum == DM_VCH) {
-      nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
+      nBytes = StrLib::iWordFlipBack(caLiteral, sizeof(caLiteral), (char*)ayElm);
     }
     else {
-      Literal::vSprint((Stz*)caLiteral,(Dtm*)ayElm,pCol);
+      Literal::vSprint(caLiteral, sizeof(caLiteral), (Dtm*)ayElm,pCol);
     }
     
     vTrace(" Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);
@@ -442,7 +446,11 @@ void Key::vShowIntKey(void)
   char caLiteral[128];
 
   i8 iInt = (i8)* (i8*)aElmSeq_dtm();
-  StrLib::vSprint(caLiteral,"%05lld"_Stz,iInt);
+  StrLib::vSprint(caLiteral,
+                  sizeof(caLiteral),
+                  nullptr,
+                  "%05lld"_Stz,
+                  iInt);
   
   vTrace(" Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);
 }

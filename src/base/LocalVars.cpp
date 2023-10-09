@@ -20,12 +20,14 @@ __aFooterFunction(LocalVars)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LocalVars::LocalVars(void)
+LocalVars::LocalVars(LocalStrs* pLocalStrs)
 : Object(CN_LOCALVARS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
-  
-  m_pLocalStrs = new LocalStrs(this);
+
+  RASSERT(pLocalStrs);
+
+  m_p_LocalStrs = pLocalStrs;
   
   m_nLocalVars = 0;
   
@@ -33,9 +35,8 @@ LocalVars::LocalVars(void)
     LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
 
     rxLocalVar.m_pLocalVars    = this;
-    rxLocalVar.m_i_LocalVar    = i_LocalVar;
     rxLocalVar.m_aDiscardPoint = nullptr;
-    rxLocalVar.m_axLocalStr     = nullptr;
+    rxLocalVar.m_axLocalStr    = nullptr;
   }
   
   _checkInitialised_(CN_LOCALVARS);
@@ -49,8 +50,8 @@ LocalVars::LocalVars(void)
 LocalVars::~LocalVars(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
-  
-  delete m_pLocalStrs;
+
+  // do not delete m_p_LocalStrs [ray]
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +81,7 @@ void LocalVars::vFramePop(void* aDiscardPoint_return)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  static i8 nCall = 0;
+//  static i8 nCall = 0;
   
   RASSERT(m_nLocalVars);
   
@@ -91,7 +92,6 @@ void LocalVars::vFramePop(void* aDiscardPoint_return)
   
   RASSERT(aDiscardPoint == aDiscardPoint_return);
   
-  i8 nDiscards = 0;
   while (m_nLocalVars) {
     //vVerify();
 
@@ -109,21 +109,18 @@ void LocalVars::vFramePop(void* aDiscardPoint_return)
 
     //vVerify();
 
-    RASSERT(! rxLocalVar.axLocalStr());
-    
     rxLocalVar.m_aDiscardPoint = nullptr;
 
     //vVerify();
 
     m_nLocalVars--;
-    nDiscards++;
   }
   
   //vVerify();
 
   RASSERT(m_nLocalVars >= 0);
   
-  nCall++;
+//  nCall++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,7 +152,6 @@ bool LocalVars::bFramePush(i8 nLocals, void* aDiscardPoint)
     LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
     
     rxLocalVar.m_aDiscardPoint = aDiscardPoint;
-    RASSERT(! rxLocalVar.axLocalStr());
   }
   
   //vVerify();
@@ -189,7 +185,7 @@ LocalStr* LocalVars::axLocalStrAllot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  LocalStr* axLocalStr = m_pLocalStrs->axAllot();
+  LocalStr* axLocalStr = m_p_LocalStrs->axAllot();
   
   return axLocalStr;
 }
@@ -201,7 +197,7 @@ void LocalVars::vLocalStrRevert(LocalStr* axLocalStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  m_pLocalStrs->vRevert(axLocalStr);
+  m_p_LocalStrs->vRevert(axLocalStr);
 }
 
 /*----------------------------------------------------------------------------*/

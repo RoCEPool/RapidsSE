@@ -52,6 +52,8 @@ Stz* SP_Charser::sz(Charser* pCharser)
   char* acRawChar = pCharser->acRawChar();
 
   StrLib::vSprint(m_caResult,
+                  sizeof(m_caResult),
+                  nullptr,
                   "R1 %s L%03lld C%02lld ; R2 %s L%03lld C%02lld [>%s<]"_Stz,
                   
                   spChar1.sz(aRegOne->m_cChar),

@@ -5,8 +5,8 @@
 #include "Card_StreamPer.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_FiltPred.hpp"
 #include "Card_FiltPredList.hpp"
 #include "Card_StreamSet.hpp"
@@ -30,7 +30,7 @@ __vDeleteFunction(Card_StreamPer, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamPer::Card_StreamPer(void)
-: Card(CK_STREAMPER)
+: Card_symbol(CK_STREAMPER, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -75,8 +75,8 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
+  Kid xKid(this);
+  while (xKid.bEach()) {
 
     nUnfiltBuff_prev_join = nUnfiltBuff_producedBy_join;
 
@@ -84,10 +84,10 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // stream head
 
     // calculate the buffers produced at the start of join sequence
-    if (xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD)) {
+    if (xKid.pChild()->bIsCard(CK_STREAMHEAD)) {
 
       // get info of stream start
-      char cTblSyn_head = xCI.G.p_streamHead->cSymbol();
+      char cTblSyn_head = xKid.p_streamHead()->pSymbol()->cSF_char();
 
       nUnfiltBuff_producedBy_join = p_tableList->nGetTableSize(cTblSyn_head) * C_EXPANSION_COEFF;
 
@@ -100,21 +100,21 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream join
 
-    if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+    if (! xKid.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
     // get info for this join
-    char cTblSyn_join = xCI.G.p_streamJoin->cSymbol();
+    char cTblSyn_join = xKid.p_streamJoin()->pSymbol()->cSF_char();
 
     eXK eJoinCast = this->eJoinCast(p_streamPtn,
                                     p_tableList,
-                                    xCI.G.p_streamJoin);
+                                    xKid.p_streamJoin());
 
     // calculate the various costs of join sequence
     i8 nBuff_joining_with = p_tableList->nGetTableSize(cTblSyn_join);
 
     nUnfiltBuff_producedBy_join =
-        xCI.G.p_streamJoin->nEstJoinCost(i_Permutation,
+        xKid.p_streamJoin()->nEstJoinCost(i_Permutation,
                                          i_Join,
                                          nUnfiltBuff_prev_join,
                                          nFilterPred_prev,
@@ -123,11 +123,11 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
         );
 
     // running sum of the network and unicast costs
-    Card_JoinEstimate* p_joinEstimate = xCI.G.p_streamJoin->pSub_joinEstimate();
+    Card_JoinEstimate* p_joinEstimate = xKid.p_streamJoin()->pSub_joinEstimate();
     Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
-    nSumNetworkCost += p_costNetwork->iSymbol();
+    nSumNetworkCost += p_costNetwork->pSymbol()->iSF_number();
     Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
-    nSumUnicastCost += p_costUnicast->iSymbol();
+    nSumUnicastCost += p_costUnicast->pSymbol()->iSF_number();
 
     nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_join);
 
@@ -136,16 +136,16 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
   // record the sum network and unicast costs
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
-  p_costNetwork->vSymbol(nSumNetworkCost);
+  p_costNetwork->SYM(SF_INT_LIT,nSumNetworkCost);
 
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
-  p_costUnicast->vSymbol(nSumUnicastCost);
+  p_costUnicast->SYM(SF_INT_LIT,nSumUnicastCost);
 
   Card_CostStream* p_costQuery = new Card_CostStream;
-  p_costQuery->vAppend(p_costNetwork);
-  p_costQuery->vAppend(p_costUnicast);
+  p_costQuery->vAppendChild(p_costNetwork);
+  p_costQuery->vAppendChild(p_costUnicast);
 
-  vInsert(p_costQuery);
+  vPushChild(p_costQuery);
 
   delete p_streamPtn;
 }
@@ -159,11 +159,11 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpPred* p_cmpPred = p_streamJoin->pSub_cmpPred();
+  Card_CmpConj* p_cmpPred = p_streamJoin->pSub_cmpPred();
   Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
   Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 
-  char cTblSyn_join  = p_streamJoin->cSymbol();
+  char cTblSyn_join  = p_streamJoin->pSymbol()->cSF_char();
   char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_join);
 
   Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
@@ -178,7 +178,7 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
   Symbol* p_Y_tblCol_prior = nullptr;
   Symbol* p_Y_idxCol_join  = nullptr;
 
-  if (Card_COL::bMatchingTblSyn(p_Y_tablePtn_prior, p_Y_term_0_cmp)) {
+  if (Card_COLUMN::bMatchingTblSyn(p_Y_tablePtn_prior, p_Y_term_0_cmp)) {
     p_Y_tblCol_prior = p_Y_term_0_cmp;
     p_Y_idxCol_join  = p_Y_term_1_cmp;
   }
@@ -215,7 +215,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iElement(i_Elm);
     Card_Table* p_table_ith = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table_ith->cSymbol();
+    char cTblSyn_ith = p_table_ith->pSymbol()->cSF_char();
 
     if ('F' == cTblSyn_ith)
       vDebugPoint();
@@ -227,13 +227,13 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       //+ table is the head of this stream permutation
 
       Card_StreamHead *p_streamHead = new Card_StreamHead;
-      p_streamHead->vSymbol(cTblSyn_ith);
-      vAppend(p_streamHead);
+      p_streamHead->SYM(SF_TBL_SYN,cTblSyn_ith);
+      vAppendChild(p_streamHead);
 
-      p_streamHead->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
+      p_streamHead->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
 
       if (p_table_ith->pSub_keyExists() || p_table_ith->pSub_keyNotExists()) {
-        p_streamHead->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
+        p_streamHead->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**CAN'T BE FIRST**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         i_InvalidAtJoin = i_Elm;
         break;
@@ -241,7 +241,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
       if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
         if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
-          p_streamHead->vAppend(new Card_Note("**BAD POS**"_Stz));
+          p_streamHead->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**BAD POS**"_Stz));
           pSymbol()->Y_vSet(P_Invalid);
           i_InvalidAtJoin = i_Elm;
           break;
@@ -256,14 +256,14 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // stream join : table is a join in this stream permutation
 
     Card_StreamJoin *p_streamJoin = new Card_StreamJoin;
-    p_streamJoin->vSymbol(cTblSyn_ith);
-    vAppend(p_streamJoin);
+    p_streamJoin->SYM(SF_TBL_SYN,cTblSyn_ith);
+    vAppendChild(p_streamJoin);
 
-    p_streamJoin->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
+    p_streamJoin->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
 
     if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
       if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
-        p_streamJoin->vAppend(new Card_Note("**BAD POS**"_Stz));
+        p_streamJoin->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**BAD POS**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         i_InvalidAtJoin = i_Elm;
         break;
@@ -275,19 +275,19 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
 
     // test each join predicate which uses the ith table to see if a join
     // can be supported at this point in the sequence
-    CardIter xCI(p_joinPredList);
-    while (xCI.G_bEachMain(CK_CMPPRED)) {
-      if (! xCI.G.p_cmpPred->bUsesTable(cTblSyn_ith))
+    Kid xKid(p_joinPredList);
+    while (xKid.bEach(CK_CMPCONJ)) {
+      if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
         continue;
 
       // have a join cmpPred which uses the ith table
 
       // get the other table in the cmpPred
-      char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
+      char cTblSyn_other = xKid.p_cmpPred()->cOtherTable(cTblSyn_ith);
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
-        p_streamJoin->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
+        p_streamJoin->vAppendChild(xKid.p_cmpPred()->pDupCardRecursive());
         break;
       }
     }
@@ -297,7 +297,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       continue;
 
     // join of ith table is not possible at this point
-    p_streamJoin->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+    p_streamJoin->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**DOESN'T FOLLOW**"_Stz));
     pSymbol()->Y_vSet(P_Invalid);
 
     i_InvalidAtJoin = i_Elm;
@@ -328,7 +328,7 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iElement(i_Item);
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table->cSymbol();
+    char cTblSyn_ith = p_table->pSymbol()->cSF_char();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -345,15 +345,15 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
 
     // test each join predicate which uses the ith table to see if a join
     // can be supported at this point in the sequence
-    CardIter xCI(p_joinPredList);
-    while (xCI.G_bEachMain(CK_CMPPRED)) {
-      if (! xCI.G.p_cmpPred->bUsesTable(cTblSyn_ith))
+    Kid xKid(p_joinPredList);
+    while (xKid.bEach(CK_CMPCONJ)) {
+      if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
         continue;
 
       // have a join cmpPred which uses the ith table
 
       // get the other table in the cmpPred
-      char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
+      char cTblSyn_other = xKid.p_cmpPred()->cOtherTable(cTblSyn_ith);
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
@@ -375,36 +375,36 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     // get the ith table of this permutation
     i8 i_Table = pPermGen->iElement(i_Item);
     Card_Table *p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table->cSymbol();
+    char cTblSyn_ith = p_table->pSymbol()->cSF_char();
 
     if (0 == i_Item) {
       Card_StreamHead *p_dataStart = new Card_StreamHead;
-      p_dataStart->vSymbol(cTblSyn_ith);
-      vAppend(p_dataStart);
+      p_dataStart->SYM(SF_TBL_SYN,cTblSyn_ith);
+      vAppendChild(p_dataStart);
     }
     else {
       Card_StreamJoin *p_joinLocus = new Card_StreamJoin;
-      p_joinLocus->vSymbol(cTblSyn_ith);
-      vAppend(p_joinLocus);
+      p_joinLocus->SYM(SF_TBL_SYN,cTblSyn_ith);
+      vAppendChild(p_joinLocus);
 
       if (i_NotValid == i_Item) {
-        p_joinLocus->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+        p_joinLocus->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**DOESN'T FOLLOW**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         break;
       }
 
-      CardIter xCI(p_joinPredList);
-      while (xCI.G_bEachMain(CK_CMPPRED)) {
-        if (! xCI.G.p_cmpPred->bUsesTable(cTblSyn_ith))
+      Kid xKid(p_joinPredList);
+      while (xKid.bEach(CK_CMPCONJ)) {
+        if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
           continue;
 
         // have a join cmpPred which uses the ith table
 
         // get the other table in the cmpPred
-        char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
+        char cTblSyn_other = xKid.p_cmpPred()->cOtherTable(cTblSyn_ith);
 
         if (bHasKnownJoin(cTblSyn_other)) {
-          p_joinLocus->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
+          p_joinLocus->vAppendChild(xKid.p_cmpPred()->pDupCardRecursive());
           break;
         }
       }
@@ -421,10 +421,10 @@ bool Card_StreamPer::bHasKnownJoin(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
-    if (xCI.G.p_MainCard->bIsSymbol(cTblSyn))
+  Kid xKid(this);
+  while (xKid.bEach()) {
+    ASSERT(xKid.pChild()->bIsCard(CK_STREAMHEAD) || xKid.pChild()->bIsCard(CK_STREAMJOIN))
+    if (xKid.pChild()->pSymbol()->bSame(cTblSyn))
       return true;
   }
 
@@ -471,101 +471,49 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
                                        char cTblSyn_locus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(cTblSyn_locus);
 
-  CardIter xCI(this);
+  Kid xKid(this);
 
-  while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+  while (xKid.bEach()) {
 
-    if (xCI.G.p_MainCard->cSymbol() == cTblSyn_prior)
+    if (xKid.pChild()->pSymbol()->cSF_char() == cTblSyn_prior)
       break;
 
-    if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+    if (! xKid.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
  }
 
-  while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+  while (xKid.bEach()) {
 
-    if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
+    if (! xKid.pChild()->bIsCard(CK_STREAMJOIN))
       continue;
 
-    xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-    if (xCI.G.p_joinCast && !xCI.G.p_joinCast->bIsSymbol("XK_UNICAST"_Stz))
+    Card_JoinCast* p_joinCast = xKid.p_streamJoin()->pSub_locusCast();
+    if (p_joinCast && ! p_joinCast->pSymbol()->bSame("XK_UNICAST"_Stz))
       return false;
 
-    if (xCI.G.p_MainCard->cSymbol() == cTblSyn_prev)
+    if (xKid.pChild()->pSymbol()->cSF_char() == cTblSyn_prev)
       break;
   }
 
   return true;
 }
+
 /*----------------------------------------------------------------------------*/
-//bool Card_StreamPer::bUnicastPermitted(char cTblSyn_l,
-//                                         char cTblSyn_prev, char cTblSyn_r)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  CardIter xCI(this);
-//  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
-//
-//    if (xCI.G.p_MainCard->cSymbol() == cTblSyn_l)
-//      break;
-//
-//    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//
-//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_joinCast && xCI.G.p_joinCast->bIsSymbol("XK_BROADCAST"_Stz))
-//        return false;
-//    }
-//  }
-//
-//  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
-//
-//    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_joinCast && xCI.G.p_joinCast->bIsSymbol("XK_BROADCAST"_Stz))
-//        return false;
-//    }
-//  }
-//
-//  return true;
-//}
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-//bool Card_StreamPer::bUnicastPermitted(char cTblSyn_l, char cTblSyn_r)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  CardIter xCI(this);
-//  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
-//
-//    if (xCI.G.p_MainCard->cSymbol() == cTblSyn_l)
-//      break;
-//
-//    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//
-//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_joinCast && ! xCI.G.p_joinCast->bIsSymbol("XK_UNICAST"_Stz))
-//        return false;
-//    }
-//  }
-//
-//  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
-//
-//    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_joinCast && ! xCI.G.p_joinCast->bIsSymbol("XK_UNICAST"_Stz))
-//        return false;
-//    }
-//  }
-//
-//  return true;
-//}
+void Card_StreamPer::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

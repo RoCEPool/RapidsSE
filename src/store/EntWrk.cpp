@@ -15,6 +15,60 @@
 __aFooterFunction(EntWrk)
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* append str key element                                                     */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkAppendElementStz(void* pEntWrk, char* sValue)
+{
+  EntWrk::vAppendElementEntStz((EntWrk*) pEntWrk, (Stz*)sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append int key element                                                     */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkAppendElementInt(void* pEntWrk, i8 iInt)
+{
+  EntWrk::vAppendElementEntInt((EntWrk*) pEntWrk, iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the entry kind in EntWrk                                               */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkEntKind(void* pEntWrk, i8 bPayLoad, i8 iKeyKind)
+{
+  EntWrk::vEntKind((EntWrk*)pEntWrk, bPayLoad, (eKE) iKeyKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload bytes in entwrk                                                */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkPayloadCreate(void* pEntWrk, i8 nPayloadBytes)
+{
+  EntWrk::vPayloadCreate((EntWrk*) pEntWrk, nPayloadBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print an EntWrk                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkPrint(void* pEntWrk, void* pIndexDef)
+{
+  EntWrk::vPrint((EntWrk*)pEntWrk, (IndexDef*)pIndexDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the EntWrk                                                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkReset(void* pEntWrk)
+{
+  EntWrk::vEntReset((EntWrk*)pEntWrk);
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* append str key element                                                     */
 /*----------------------------------------------------------------------------*/
 void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue)
@@ -410,13 +464,14 @@ void EntWrk::vAppendRef(Rrf xwArg)
 void EntWrk::vAppendStz(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  char* aDst = (char*)ayElmNext_dtm();
+
+  i8 iBufRemaining;
+  char* aDst = (char*)ayElmNext_dtm(&iBufRemaining);
 
   // Alka: entwrk reset
   //vTrace("aDst %p\n"_Stz,aDst);
-  
-  i8 nElmSize = StrLib::iWordFlip(aDst, szArg->azChar());
+
+  i8 nElmSize = StrLib::iWordFlip(aDst, iBufRemaining, szArg->azChar());
   
   vIncElmSeqSize(nElmSize);
 }
@@ -446,13 +501,17 @@ void EntWrk::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* get address where next element would be added                              */
 /*----------------------------------------------------------------------------*/
-Dtm* EntWrk::ayElmNext_dtm(void)
+Dtm* EntWrk::ayElmNext_dtm(i8* piBufRemaining)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nElmSeqSize = m_xEnt.nElmSeqSize();
 
   Dtm* ayNextElm = aAdd<Dtm*>(aElmSeq_dtm(),nElmSeqSize);
+
+  if (piBufRemaining) {
+    *piBufRemaining = (i8) sizeof(m_yaKeySpace) - nElmSeqSize;
+  }
 
   return ayNextElm;
 }

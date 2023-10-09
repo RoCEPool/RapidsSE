@@ -17,19 +17,7 @@ enum eRO // Relational Op
   /*  7 */ RO_ENUMS
 };
 
-static Stz* aRO[]
-{
-  /*  0 */ "RO_NONE"_Stz,
-  
-  /*  1 */ "<"_Stz,
-  /*  2 */ "<="_Stz,
-  /*  3 */ "=="_Stz,
-  /*  4 */ "!="_Stz,
-  /*  5 */ ">="_Stz,
-  /*  6 */ ">"_Stz,
-  
-  /*  7 */ "RO_ENUMS"_Stz
-};
+extern Stz* aRO[RO_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

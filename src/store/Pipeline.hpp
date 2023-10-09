@@ -43,6 +43,7 @@ namespace STORE
     bool m_bPulsedLimit;
     Op*  m_pOpToPulse;
     bool m_bCancelled;
+    bool m_bInternalError;
     bool m_bLowMemory;
     bool m_bNodeLossAbort;
         
@@ -70,6 +71,8 @@ namespace STORE
     void vErrored(bool bErrored);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
+    void vInternalError(bool bInternalError);
+    bool bInternalError(void);
     void vLowMemory(bool bLowMemory);
     bool bLowMemory(void);
     void vNodeLossAbort(void);

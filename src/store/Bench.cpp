@@ -7,6 +7,9 @@
 #include "Optimiser.hpp"
 #include "CardIter.hpp"
 
+#include "XC.hpp"
+#include "eOH.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -26,11 +29,11 @@ Bench::Bench(Optimiser* pOptimiser)
     
   m_pOptimiser = pOptimiser;
 
-  m_cPrefix = ' ';
+  m_iBenchNo = AM::OPTIMISER::iNextBenchNo();
 
-  m_bIsFlat = false;
-
-  m_pCI = new CardIter(this);
+  m_iXform        = 0;
+  m_eXform        = XF_NONE;
+  m_iPrint        = 0;
 
   _checkInitialised_(CN_BENCH);
   
@@ -43,11 +46,13 @@ Bench::Bench(Optimiser* pOptimiser)
 Bench::~Bench(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-  delete m_pCI;
-  vDeleteAll();
+   vDeleteAll();
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -60,22 +65,9 @@ void Bench::vAddBoard(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  //RASSERT(! pGetBoard(pBoard->eBoardKind()));
+  //RASSERT(! pGetBoard(pBoard->eBoard()));
 
   vPush(pBoard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* does given board exist?                                                    */
-/*----------------------------------------------------------------------------*/
-bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (pGetBoard(eBoard,i_SubBoard))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,64 +93,16 @@ CardCtl* Bench::pCardCtl(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear marks                                                                */
+/* end of phase                                                               */
 /*----------------------------------------------------------------------------*/
-void Bench::vClearMarks(void)
+void Bench::vEndPhase(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  i8 nBoards = this->nBoards();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board *pBoard = this->pGet(i_Board);
-
-    pBoard->vClearMarks();
-  }
+  pCI->vBoardIteration();
+  while (pCI->bEachBoard())
+    pCI->pBoard()->vEndPhase();
 }
-
-
-
-/*----------------------------------------------------------------------------*/
-/* get board of given kind                                                    */
-/*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  if (i_Board >= nBoards())
-    return nullptr;
-
-  Board *pBoard = this->pGet(i_Board);
-  ASSERT(pBoard->i_Board() == i_Board);
-  return pBoard;
-
-//  i8 nBoards = this->nBoards();
-//  for (i8 i_each = 0; i_each < nBoards; i_each++) {
-//    Board *pBoard = this->pGet(i_each);
-//
-//    if (eBoard == pBoard->eBoardKind() &&
-//        i_Board == pBoard->i_Board())
-//      return pBoard;
-//  }
-//
-//  return nullptr;
-}
-/*----------------------------------------------------------------------------*/
-//Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-//
-//  i8 nBoards = this->nBoards();
-//  for (i8 i_each = 0; i_each < nBoards; i_each++) {
-//    Board *pBoard = this->pGet(i_each);
-//
-//    if (eBoard == pBoard->eBoardKind() && (C_UNKNOWN == i_Board ||
-//                                           i_Board == pBoard->i_Board()))
-//      return pBoard;
-//  }
-//
-//  return nullptr;
-//}
-
 
 /*----------------------------------------------------------------------------*/
 /* get board                                                                  */
@@ -167,8 +111,11 @@ Board* Bench::pGetBoard(i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  Board *pBoard = this->pGet(i_Board);
+  if (i_Board >= nBoards())
+    return nullptr;
 
+  Board *pBoard = this->pGet(i_Board);
+  ASSERT(pBoard->i_Board() == i_Board);
   return pBoard;
 }
 
@@ -206,27 +153,6 @@ SubQuery* Bench::pGetSubQuery(Stz* szSubQueryNm)
   return pSubQuery;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* is the bench flat?                                                         */
-/*----------------------------------------------------------------------------*/
-bool Bench::bIsFlat(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  return m_bIsFlat;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set is the bench flat?                                                     */
-/*----------------------------------------------------------------------------*/
-void Bench::vIsFlat(bool bIsFlat)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_bIsFlat = bIsFlat;
-}
-
 /*----------------------------------------------------------------------------*/
 /* is given name a known subquery?                                            */
 /*----------------------------------------------------------------------------*/
@@ -234,8 +160,10 @@ bool Bench::bIsSubQueryNm(Stz* szSubQueryNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (Board* pBoard = pGetBoard(szSubQueryNm))
+  if (Board* pBoard = pGetBoard(szSubQueryNm)) {
+    UNUSED(pBoard);
     return true;
+  }
 
   return false;
 }
@@ -251,54 +179,237 @@ Optimiser* Bench::pOptimiser(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
 /*----------------------------------------------------------------------------*/
-char Bench::cPrefix(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  return m_cPrefix;
+/*----------------------------------------------------------------------------*/
+/* past given phase?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Bench::bPastPhase(CardIter* pCI, eOH ePhase)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  bool bPast = true;
+  pCI->vSave();
+
+  pCI->vBoardIteration();
+  while (pCI->bEachBoard())
+    if (! pCI->pBoard()->bPastPhase(ePhase))
+      bPast = false;
+
+  pCI->vRestore();
+
+  return bPast;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* begin phase                                                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vPrefix(char cPrefix)
+void Bench::vPhase(CardIter* pCI, eOH ePhase)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_cPrefix = cPrefix;
+  pCI->vSave();
+
+  pCI->vBoardIteration();
+  while (pCI->bEachBoard())
+    pCI->pBoard()->vPhase(ePhase);
+
+  pCI->vRestore();
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear marks                                                                */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vEndSeries(eBK eBoard, i8 i_Board)
+void Bench::vRenumberCards(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  RASSERT(0 == m_pCI->iTransformDepth());
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
 
-  //m_pTransforms->vXform(C_NA);
-  //m_pCardCtl->vUseXhand();
-
-  m_pCI->vPrintBench(eBoard, i_Board);
+    pBoard->vRenumberCards();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin and record transformation information                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  vXform_Inc();
+  vXfunc((Stz *) azFunc);
+  vXform(eXform);
+  vXdesc(szXdesc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szXdesc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_sXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+void Bench::vXdesc(Stz* szXdesc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sXdesc = szXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+eXF Bench::eXform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_eXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc transform number                                                       */
+/*----------------------------------------------------------------------------*/
+void Bench::vXform(eXF eXform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_eXform = eXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation number                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iXform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc transform number                                                       */
+/*----------------------------------------------------------------------------*/
+void Bench::vXform_Inc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_iXform++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation function                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szXfunc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_sXfunc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation function                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vXfunc(Stz* szXfunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sXfunc = szXfunc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szXhand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_sXhand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+void Bench::vXhand(const char* asXhand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sXhand = asXhand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get print number                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iPrint;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment and get print number                                             */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iPrint_inc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iPrint++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation number                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iBenchNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iBenchNo;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
+void Bench::vValidate(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  m_pCI->vUsingBoard(eBoard, i_Board);
-  m_pCI->vXhand(azHand);
+  if (! AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    return;
 
-  vClearMarks();
+  pCI->vSave();
+
+  i8 nBoards = this->nBoards();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board *pBoard = this->pGet(i_Board);
+    pCI->vUsingBoard(pBoard);
+    RASSERT(pCI->G.pBoard);
+
+    pBoard->pState()->vDumpSet();
+
+    RASSERT(pBoard->i_Board() == i_Board);
+
+    vTrace("Validate board [%lld] : %p\n"_Stz,i_Board,pBoard);
+
+    pBoard->vValidate(pCI);
+
+    if (pBoard->pState()->bHasName(aOH[OH_FLATTEN]))
+      break;
+  }
+
+  pCI->vRestore();
+
+
+  XC::vXC(pCI);
 }
 
 

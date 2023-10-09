@@ -129,6 +129,7 @@ success
 load Nation "../TPCH/SF_0001/nation.csv";
 success
 
+/optimise_passthru 
 pipeline Q7
 begin
 
@@ -154,7 +155,7 @@ begin
   stage Gj_ORDERS on all partitions :
     indexJoin Orders IxO_CUSTKEY expr bound $I1 _custkey ==
     | project expr
-        type INTEGER as _orderkey   J1_O_ORDERKEY ,
+        type INTEGER as _orderkey   O_ORDERKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
     | hash expr type INTEGER _orderkey
     | combined 0
@@ -166,11 +167,11 @@ begin
   stage Gs_LINEITEM on all partitions :
     indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
     | filter
-        "J1_L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
-         J1_L_SHIPDATE timestamp '1996-12-31 00:00:00' <
+        "L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
+         L_SHIPDATE timestamp '1996-12-31 00:00:00' <
          and"
     | project expr
-        type INTEGER as _suppkey    J1_L_SUPPKEY ,
+        type INTEGER as _suppkey    L_SUPPKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
     | hash expr type INTEGER _suppkey
     | combined 0
@@ -182,8 +183,8 @@ begin
   stage Gj_SUPPLIER on all partitions :
     indexJoin Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
     | filter
-        "C_NATIONKEY 6 == J1_S_NATIONKEY 7 == and
-         C_NATIONKEY 7 == J1_S_NATIONKEY 6 == and or"
+        "C_NATIONKEY 6 == S_NATIONKEY 7 == and
+         C_NATIONKEY 7 == S_NATIONKEY 6 == and or"
     | combined 0
     | next
 

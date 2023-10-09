@@ -37,8 +37,10 @@ SP_Bytes::~SP_Bytes(void) noexcept(false)
 Stz* SP_Bytes::sz(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
-  
-  MagLib::vByteMag(nBytes,(Stz*)m_caResult);
+
+  s32 sBuf;
+  MagLib::vByteMag(nBytes,sBuf);
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), sBuf.azChar());
 
   return (Stz*) &m_caResult[0];
 }

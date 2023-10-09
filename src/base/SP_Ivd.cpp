@@ -64,11 +64,15 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
 
       if (wIvd.bIsNeg() && uDays)
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL -'%lld' %s",
                         uDays,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       else
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL '%lld' %s",
                         uDays,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
@@ -79,11 +83,15 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
 
       if (wIvd.bIsNeg() && uHours)
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL -'%lld' %s",
                         uHours,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       else
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL '%lld' %s",
                         uHours,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
@@ -94,11 +102,15 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
 
       if (wIvd.bIsNeg() && uMins)
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL -'%lld' %s",
                         uMins,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       else
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL '%lld' %s",
                         uMins,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
@@ -112,12 +124,16 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
 
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld.%06lld' %s",
                           uSecs,
                           uMicros,
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld' %s",
                           uSecs,
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
@@ -125,15 +141,19 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       else {
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
-                         (Stz *) "INTERVAL '%lld.%06lld' %s",
-                         uSecs,
-                         uMicros,
-                         aIV_field[wIvd.T.m_xIvl.m_eType]);
+                          sizeof(m_caResult),
+                          nullptr,
+                          (Stz *) "INTERVAL '%lld.%06lld' %s",
+                          uSecs,
+                          uMicros,
+                          aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
-                         (Stz *) "INTERVAL '%lld' %s",
-                         uSecs,
-                         aIV_field[wIvd.T.m_xIvl.m_eType]);
+                          sizeof(m_caResult),
+                          nullptr,
+                          (Stz *) "INTERVAL '%lld' %s",
+                          uSecs,
+                          aIV_field[wIvd.T.m_xIvl.m_eType]);
       }
       break;
 
@@ -143,12 +163,16 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
 
       if (wIvd.bIsNeg() && (uDays || uHours))
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL -'%lld %lld' %s",
                         uDays,
                         uHours,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       else
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL '%lld %lld' %s",
                         uDays,
                         uHours,
@@ -162,6 +186,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
 
       if (wIvd.bIsNeg() && (uDays || uHours || uMins))
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL -'%lld %lld:%lld' %s",
                         uDays,
                         uHours,
@@ -169,6 +195,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       else
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL '%lld %lld:%lld' %s",
                         uDays,
                         uHours,
@@ -186,6 +214,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       if (wIvd.bIsNeg() && (uDays || uHours || uMins || uSecs || uMicros)) {
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld %lld:%lld:%lld.%06lld' %s",
                           uDays,
                           uHours,
@@ -195,6 +225,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld %lld:%lld:%lld' %s",
                           uDays,
                           uHours,
@@ -205,6 +237,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       else {
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL '%lld %lld:%lld:%lld.%06lld' %s",
                           uDays,
                           uHours,
@@ -214,6 +248,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL '%lld %lld:%lld:%lld' %s",
                           uDays,
                           uHours,
@@ -229,12 +265,16 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
 
       if (wIvd.bIsNeg() && (uHours || uMins))
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL -'%lld:%lld' %s",
                         uHours,
                         uMins,
                         aIV_field[wIvd.T.m_xIvl.m_eType]);
       else
         StrLib::vSprint(m_caResult,
+                        sizeof(m_caResult),
+                        nullptr,
                         (Stz *) "INTERVAL '%lld:%lld' %s",
                         uHours,
                         uMins,
@@ -250,6 +290,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       if (wIvd.bIsNeg() && (uHours || uMins || uSecs || uMicros)) {
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld:%lld:%lld.%06lld' %s",
                           uHours,
                           uMins,
@@ -258,6 +300,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld:%lld:%lld' %s",
                           uHours,
                           uMins,
@@ -267,6 +311,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       else {
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL '%lld:%lld:%lld.%06lld' %s",
                           uHours,
                           uMins,
@@ -275,6 +321,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL '%lld:%lld:%lld' %s",
                           uHours,
                           uMins,
@@ -291,6 +339,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       if (wIvd.bIsNeg() && (uMins || uSecs || uMicros)) {
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld:%lld.%06lld' %s",
                           uMins,
                           uSecs,
@@ -298,6 +348,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL -'%lld:%lld' %s",
                           uMins,
                           uSecs,
@@ -306,6 +358,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
       else {
         if (uMicros > 0)
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL '%lld:%lld.%06lld' %s",
                           uMins,
                           uSecs,
@@ -313,6 +367,8 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                           aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
+                          sizeof(m_caResult),
+                          nullptr,
                           (Stz *) "INTERVAL '%lld:%lld' %s",
                           uMins,
                           uSecs,

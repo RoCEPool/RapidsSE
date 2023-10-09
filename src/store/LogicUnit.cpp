@@ -32,6 +32,8 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 
+#include "LibInfo.hpp"
+
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "OpSpec.hpp"
@@ -47,7 +49,6 @@
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 #include "PathIdentifier.hpp"
-#include "PtnStream.hpp"
 #include "PlanOperand.hpp"
 #include "Dynamo.hpp"
 #include "Port.hpp"
@@ -62,6 +63,7 @@
 #include "Table.hpp"
 
 #include "MY.hpp"
+#include "CompileLib.hpp"
 
 extern void* C_ADR_REGION;
 
@@ -86,10 +88,9 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,   LR_AGGTYPESTACK)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
-,       m_xpCombined(this,RF_REPAIR_DELETE,      Combined::vRepair,       LR_COMBINED)
-,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepairList,  LR_CRWBUFFER)
+,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepair,  LR_CRWBUFFER)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,      CrwToRow::vRepair,       LR_CRWTOROW)
-,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepairList,  LR_CSVBUFFER)
+,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,     CsvBuffer::vRepair,  LR_CSVBUFFER)
 
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,    DataBuffer::vRepair,     LR_DATABUFFER)
 ,           m_xpDeck(this,RF_REPAIR_DELETE,          Deck::vRepair,     LR_DATABUFFER)
@@ -118,10 +119,11 @@ LogicUnit::LogicUnit(void)
 
 ,     m_xpJobMetrics(this,RF_REPAIR_DELETE,    JobMetrics::vRepair,     LR_JOBMETRICS)
 
+,          m_xpLibInfo(this,RF_REPAIR_DELETE,         LibInfo::vRepair,     LR_LIBINFO)
 ,           m_xpList(this,RF_REPAIR_DELETE,     RowSingle::vRepairList,       LR_LIST)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                         LR_MARKER)
-,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepairList,  LR_MEMORYHOG)
+,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_MEMORYHOG)
 ,        m_xpMetaGet(this,RF_REPAIR_DELETE,       MetaGet::vRepair,           LR_META)
 
 ,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,   NamedBuffer::vRepairList,LR_NAMEDBUFFER)
@@ -135,6 +137,7 @@ LogicUnit::LogicUnit(void)
 
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,        Parcel::vRepair,         LR_PARCEL)
+,      m_xpPdsCursor(this,RF_REPAIR_DELETE,        PdsCursor::vRepair,   LR_PDSCURSOR)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                         LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                       LR_PIPELINE)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,   PlanOperand::vRepair,    LR_PLANOPERAND)
@@ -142,11 +145,10 @@ LogicUnit::LogicUnit(void)
 ,            m_xpPot(this,RF_REPAIR_DELETE,           Pot::vRepair,            LR_POT)
 ,    m_xpPreExpStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,    LR_PREEXPSTACK)
 ,         m_xpPtnDef(this,RF_REPAIR_DELETE,        PtnDef::vRepair,         LR_PTNDEF)
-,      m_xpPtnStream(this,RF_REPAIR_DELETE,     PtnStream::vRepair,      LR_PTNSTREAM)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
-,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepairList,  LR_ROWBUFFER)
+,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepair,  LR_ROWBUFFER)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
 
 ,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                       LR_SENDNODE)
@@ -155,7 +157,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                         LR_SOCKET)
 ,          m_xpStage(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                          LR_STATS)
-,        m_xpStencil(this,RF_REPAIR_DELETE,       Stencil::vRepair,        LR_STENCIL)
 ,        m_xpStencil_v2(this,RF_REPAIR_DELETE,    Stencil_v2::vRepair,     LR_STENCIL)
 ,         m_xpStream(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFLFT)
@@ -173,7 +174,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
 ,           m_xpText(this,RF_REPAIR_DELETE,          Text::vRepair,          LR_TEXT)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,         Timer::vRepair,          LR_TIMER)
-,          m_xpTinyC(this,RF_REPAIR_DELETE,         TinyC::vRepair,          LR_TINYC)
 ,    m_xpToKeyHshRow(this,RF_REPAIR_DELETE,   ToKeyHshRow::vRepairList,LR_TOKEYHSHROW)
 ,    m_xpToLglPtnCrw(this,RF_REPAIR_DELETE,   ToLglPtnCrw::vRepairHashSet,LR_TOLGLPTNCRW)
 ,    m_xpToLglPtnNst(this,RF_REPAIR_DELETE,   ToLglPtnNst::vRepair,       LR_TOLGLPTNNST)
@@ -217,6 +217,8 @@ LogicUnit::LogicUnit(void)
   m_iCounter6 = 0;
   m_iCounter7 = 0;
 
+  m_oBufferId.m_pvAsAddress = nullptr;
+
   m_bRcvdChildExit = false;
   m_bRcvdEnd = false;
 
@@ -224,6 +226,7 @@ LogicUnit::LogicUnit(void)
   m_afFun1 = nullptr;
   m_afFun2 = nullptr;
   m_afFun3 = nullptr;
+  m_afFun4 = nullptr;
 
   m_sStringA  = ""_Stz;
   m_sString0  = ""_Stz;
@@ -329,12 +332,12 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpOperandOoO.bIsNull());
 
   RASSERT(m_xpParcel.bIsNull());
+  RASSERT(m_xpPdsCursor.bIsNull());
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
   RASSERT(m_xpPort.bIsNull());
   RASSERT(m_xpPot.bIsNull());
-  RASSERT(m_xpPtnStream.bIsNull());
 
   RASSERT(m_xpRecvdObject.bIsNull());
   RASSERT(m_xpRowOnce.bIsNull());
@@ -456,7 +459,7 @@ void LogicUnit::vCleanup(void)
     free(m_aTinyFunc);
     m_aTinyFunc = nullptr;
   }
-  
+
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 
@@ -591,6 +594,15 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
                            i8 nQueueLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  UNUSED(i_EnumGroup);
+  UNUSED(i_Enum);
+  UNUSED(iItem);
+  UNUSED(nNanoSecs);
+  UNUSED(iAction);
+  UNUSED(i_ActEnumGroup);
+  UNUSED(i_ActEnum);
+  UNUSED(nQueueLength);
+
 
 //  if (!m_pRluDiary)
 //    m_pRluDiary = new RluDiary;
@@ -642,7 +654,7 @@ void LogicUnit::vEnter(void)
   
   if ( AM::bRLUDiary() ) {
     m_oSince.vUpdate();
-    i8 nNanoSeconds = m_oSince.iNanoseconds();
+//    i8 nNanoSeconds = m_oSince.iNanoseconds();
   
   //  vTrace("Enter (%lld.%lld) %s %lld %lld\n"_Stz,
   //         m_xRluCommon.m_iSql,
@@ -669,7 +681,7 @@ void LogicUnit::vExit(void)
   
   if ( AM::bRLUDiary() ) {
     m_oSince.vUpdate();
-    i8 nNanoSeconds = m_oSince.iNanoseconds();
+//    i8 nNanoSeconds = m_oSince.iNanoseconds();
     
   //  vTrace("Exit (%lld.%lld) %s %lld %lld\n"_Stz,
   //         m_xRluCommon.m_iSql,

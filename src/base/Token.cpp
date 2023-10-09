@@ -33,26 +33,6 @@ Token::Token(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Token::Token(Token* pToCopy, TokenVec* pCaller)
-: Object(CN_TOKEN)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  m_p_ExoTknVec = nullptr;
-  m_i_Token     = C_UNKNOWN;
-
-  vReset();
-  
-  vCopyToken_restricted(pToCopy,pCaller);
-  
-  _checkInitialised_(CN_TOKEN);
-  
-  _postcondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Token::~Token(void) noexcept(false)
@@ -139,19 +119,6 @@ bool Token::bEndCppString(char cArg)
   if (StrLib::bIsDoubleQuote(cArg))
     return true;
   
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for start of code block                                               */
-/*----------------------------------------------------------------------------*/
-bool Token::bStartCodeBlock(char *azArg)
-{
-  _static_
-
-  if (StrLib::bBeginsWith(azArg,"__cpp_code__"))
-    return true;
-
   return false;
 }
 
@@ -302,7 +269,7 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
   char *z = azChars;
 
   i8 nIntegerDigits  = 0;
-  i8 nFractionDigits = 0;
+//  i8 nFractionDigits = 0;
   i8 nExponentDigits = 0;
 
   // we have seen a minus or a digit
@@ -373,7 +340,7 @@ eTN Token::eCollectSenNumber(char** aazCrs, Stz* szString)
     // collect digits after decimal
     while (StrLib::bIsDigit(**aazCrs)) {
       *z++ = **aazCrs;
-      nFractionDigits++;
+//      nFractionDigits++;
       (*aazCrs)++;
     }
 
@@ -1068,8 +1035,9 @@ void Token::vStripSingleQuotes(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  StrLib::vRemove(m_szChars->azChar(),'\'');
-  StrLib::vStrip(m_szChars->azChar(),'\'');
+  i8 iBufSize = m_szChars->nSize();
+  StrLib::vRemove(m_szChars->azChar(), iBufSize, '\'');
+  StrLib::vStrip(m_szChars->azChar(), iBufSize, '\'');
 }
 
 /*----------------------------------------------------------------------------*/

@@ -59,7 +59,7 @@ load nation "../tpch/sf_0001/nation.csv" ;
 
 /optimise
 /glean_cue_from = "vSeries_22_Stream_Analysis"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r_a_b_15"

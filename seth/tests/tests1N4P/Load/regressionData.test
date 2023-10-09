@@ -343,7 +343,7 @@ Load limitRow "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
 success;
 
-tableScan limitRow;
+select * from limitRow;
 rows: 1
 
 //Load limitRow "../DATA/Load/largeRow3.csv";
@@ -351,7 +351,7 @@ Load limitRow "../DATA/Load/largeRow4000B.csv";
 //failure contains: '1 invalid'
 success;
 
-tableScan limitRow;
+select * from limitRow;
 rows: 2
 
 /*

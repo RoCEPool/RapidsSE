@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_NCorrCols : public Card
+  class Card_NCorrCols : public Card_symbol<Card_NCorrCols>
   {
   public:
     void* operator new(size_t);
@@ -15,6 +15,8 @@ namespace STORE
   
     Card_NCorrCols(void);
    ~Card_NCorrCols(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_NCorrCols* _pCard_NCorrCols(void* aAddr);

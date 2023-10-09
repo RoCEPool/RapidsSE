@@ -112,6 +112,48 @@ IndexTree::~IndexTree(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) {
+  return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
+}
+extern "C" void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) {
+  return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
+}
+extern "C" void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
+}
+
+extern "C" void* aExtern_IndexTreeFindEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent) {
+  return (void*)IndexTree::aFindEntry_hint((IndexTree*) aIndexTree, (Key*) aKey, (Ent*) aEnt_recent);
+}
+extern "C" void* aExtern_IndexTreeInsertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
+  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
+}
+extern "C" void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode) {
+  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
+                                  iTopCount, piErrorCode);
+}
+extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
+  IndexTree* pIndexTree = new IndexTree(nullptr, (IndexDef*)aIndexDef, C_UNKNOWN);
+  *aiKeyKind = (i8)((IndexDef*)aIndexDef)->eKeyKind();
+  return pIndexTree;
+}
+extern "C" void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+extern "C" void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+extern "C" void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey) {
+  return IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
+}
+extern "C" void *aExtern_IndexTreePositionLT(void* aIndexTree, void* aKey) {
+  return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -353,23 +395,6 @@ PayStr* IndexTree::pAllotPayStr(Stz* szStz)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze table                                                              */
-/*----------------------------------------------------------------------------*/
-Stz* IndexTree::pAnalyze(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  s48K sAnalysis;
-  
-  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                        AM::NODE::iThisNodeId(),
-                        m_pIndex->szIndexNm(),
-                        m_pIndex->pTable()->szTableNm());
-  
-  return sAnalysis;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
 i8 IndexTree::nBufferCount(void)
@@ -406,11 +431,12 @@ void IndexTree::vCompact(void)
   // step thru each H1 buffer in the index
   
   i8 iH1BufferNo = -1;
-  
+  UNUSED(iH1BufferNo);
+
   for (EntBuffer* pH1 = pFirstH1Buffer(); pH1; pH1 = pH1->pNextEntBuffer()) {
     
     iH1BufferNo++;
-    
+
 #ifdef WITH_TRACE_INDEX_COMPACTION
      if (0 == iH1BufferNo % 10)
       vTrace("Compaction Progress: Partition %lld: H1 Buffer %lld of %lld\n"_Stz,
@@ -933,6 +959,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
       if (pBottomEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0()) {
 
         Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
+        UNUSED(aInsertedEntry);
 
         // delete the first key
         aFirstEnt = IndexTree::aIndexBegin(this, &pEntBuffer);

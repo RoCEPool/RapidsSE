@@ -5,9 +5,10 @@
 #include "Card_JoinOrder.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
+#include "CardIter.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,20 +24,7 @@ __vDeleteFunction(Card_JoinOrder,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinOrder::Card_JoinOrder(void)
-: Card(CK_JOINORDER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_JoinOrder::Card_JoinOrder(Stz* szValue)
-    : Card(CK_JOINORDER,szValue)
+: Card_symbol(CK_JOINORDER, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -57,6 +45,20 @@ Card_JoinOrder::~Card_JoinOrder(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinOrder::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
+
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

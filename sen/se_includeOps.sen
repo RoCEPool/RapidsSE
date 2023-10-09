@@ -41,7 +41,6 @@ assert::stack_0
   "OP_checkTable.sen"           include
   "OP_childSelectTest.sen"      include
   "OP_chunk.sen"                include
-  "OP_combined.sen"             include
   "OP_compactIdx.sen"           include
   "OP_compactIndexPtn.sen"      include
   "OP_compilerOpEg.sen"         include
@@ -63,7 +62,6 @@ assert::stack_0
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_docol.sen"                include
-  "OP_dynamic_v2.sen"           include
   "OP_dropCatalog.sen"          include
   "OP_dropIndex.sen"            include
   "OP_dropSchema.sen"           include
@@ -118,8 +116,6 @@ assert::stack_0
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_insDel.sen"               include
-  "OP_inflate.sen"              include
-  "OP_inflateDynamic.sen"       include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
   "OP_invoke.sen"               include
@@ -176,7 +172,6 @@ assert::stack_0
 
 "o" .verbose
 
-  "OP_optimise.sen"             include
   "OP_ordAgg.sen"               include
   "OP_output.sen"               include
 
@@ -220,9 +215,12 @@ assert::stack_0
 "s" .verbose
 
   "OP_scan.sen"                 include
+  "OP_segViolation.sen"         include
   "OP_sendSE.sen"               include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
+  "OP_sigfpe.sen"               include
+  "OP_sigill.sen"               include
   "OP_sigsegv.sen"              include
   "OP_sink.sen"                 include
   "OP_sizeIndex.sen"            include

@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_Cast : public Card
+  class Card_Cast : public Card_symbol<Card_Cast>
   {
   public:
     void* operator new(size_t);
@@ -20,6 +20,8 @@ namespace STORE
                           Symbol* p_Y_tblCol_prior,
                           Symbol* p_Y_tablePtn_join,
                           Symbol* p_Y_idxCol_join);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Cast* _pCard_Cast(void* aAddr);

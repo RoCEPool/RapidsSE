@@ -48,7 +48,7 @@ void SP::vResult(Stz* szResult)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopy(m_caResult,szResult->azChar());
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), szResult->azChar());
 }
 
 

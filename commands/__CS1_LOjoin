@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* __CS1_LOjoin: Code Synthesizer V1                                            */
+/*============================================================================*/
+create table L (l_int_col0 integer);
+create table R(r_int_col0 integer, r_vch_col1 varchar);
+create index R_idx on R(r_int_col0);
+
+load L "../DATA/Joins/L.csv";
+load R "../DATA/Joins/R.csv";
+
+/transliterated
+/optimiser_trace
+/weaved
+select * from L left outer join R on l_int_col0 = r_int_col0;
+
+/ccode pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0142 on all partitions :
+    scan rapidsse public L
+    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+// 48 rows;

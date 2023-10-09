@@ -26,7 +26,7 @@ predicateFetch terminator_cr "c1 1 =";
 rows: 2534
 
 // fetch
-tableScan terminator_cr;
+select * from terminator_cr;
 rows: 2534
 
 CLEANUP {

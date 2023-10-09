@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "TinyC.hpp"
 #include "Tub.hpp"
 #include "ePE.h"
 #include "ePL.h"
@@ -16,7 +15,7 @@
 
 namespace STORE {
 
-  static const i8 C_FLATTEN_SOURCE_V2 = C_SIZE_LARGE_OBJECT - C_1KB;
+  static const i8 C_FLATTEN_SOURCE_V2 = C_256K; //C_SIZE_LARGE_OBJECT - C_1KB;
 
   class Stencil_v2;
 
@@ -44,9 +43,7 @@ namespace STORE {
     CombinedSrc(void);
     ~CombinedSrc(void) noexcept(false);
 
-    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
-
-    void vSynthesizeCode(Stencil_v2* pStencil);
+    void vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool bLastStage);
 
     char *azCode(void);
 
@@ -56,23 +53,33 @@ namespace STORE {
 
 
   private:
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, i8 iKeyColumn);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile = nullptr);
-    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn);
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, File* pCodeFile = nullptr);
     void vAppendCodeFragmentPL(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
-    void vAppendCodeFragmentKey(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyType);
-    void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, Stz* szFunction);
+    void vAppendCodeFragmentKEY(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyColumn);
+		void vAppendCodePLToHashCols(OpSketch* pOpSketch);
+		void vAppendCodeHashCols(OpSketch* pOpSketch);
+    void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
+    void vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
     void vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile);
     void vAppendFileHeaders(void);
-    void vAppendFunctionFooter(eHK eHandlerKind);
-    void vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm);
+    void vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, bool& bHasIndexInflate);
+    void vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, Stz* szStageNm, bool bHasIndexInflate);
     void vAppendStencilTo(OpSketch* pOpSketch);
     void vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction);
-    void vAppendCodeKeyToTubCols(OpSketch* pOpSketch);
+    void vAppendCodeNullRightCols(OpSketch* pOpSketch, Stz* szFunction);
     void vAppendCodePopulatePayloadCols(OpSketch* pOpSketch);
-    void vAppendCodePayLoadToTubCols(OpSketch* pOpSketch);
+    void vAppendCodeToTubCols(OpSketch* pOpSketch);
+    void vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage = false);
+    void vAppendCodeIndexCols(OpSketch* pOpSketch);
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
     bool bOpenCodeFiles(void);
+
+    void vOperatorBegin(OpSketch* pOpSketch);
+
+    const char* azCodeLastChar();
 
     Footer *aFooter(void);
   };

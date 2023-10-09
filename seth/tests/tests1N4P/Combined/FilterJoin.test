@@ -27,6 +27,7 @@ load rt "../DATA/Joins/rightTable.csv" ;
 success
 
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -35,7 +36,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 <= "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -49,6 +50,7 @@ rows:
  (1,'C',1,'B')
  (2,'X',2,'F')
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -57,7 +59,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 < "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -70,6 +72,7 @@ rows:
  (1,'C',1,'D')
  (1,'C',1,'B')
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -78,7 +81,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 >= "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :
@@ -88,6 +91,7 @@ end ;
 rows:
  (2,'X',2,'F')
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -96,7 +100,7 @@ begin
   stage stageB on all partitions :
     scan lt
     | filter " type BOOLEAN  L_KEY 2 >= "
-    | indexJoin rt ri "BOUND $I1 $L1 == "
+    | indexJoin rt ri "BOUND $I1 $1 == "
     | combined 0
     | stageC
   stage stageC on origin :

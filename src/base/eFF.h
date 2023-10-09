@@ -18,20 +18,7 @@ enum eFF // failure kind
   /*  */ FF_ENUMS
 };
 
-static Stz* aFF[]
-{
-  /*  */ "NONE"_Stz,
-  
-  /*  */ "FF_F"_Stz,
-  /*  */ "FF_W_A_C_ro"_Stz,
-  /*  */ "FF_W_A_NC_I"_Stz,
-  /*  */ "FF_FW_A_NC_ro"_Stz,
-  /*  */ "FF_W_L_C_E"_Stz,
-  /*  */ "FF_W_L_NC_NI"_Stz,
-  /*  */ "H_A_NC_ro"_Stz,
-
-  /*  */ "ENUMS"_Stz
-};
+extern Stz* aFF[FF_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

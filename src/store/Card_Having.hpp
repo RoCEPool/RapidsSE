@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_CONDITION.hpp"
 
 namespace STORE
 {
   class CarryForward;
 
-  class Card_Having : public Card
+  class Card_Having : public Card_CONDITION
   {
   public:
     void* operator new(size_t);
@@ -24,6 +24,10 @@ namespace STORE
 
     void vSmooth(CardIter* pCI, bool bSawProject);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vUpdate_projection(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Having* _pCard_Having(void* aAddr);

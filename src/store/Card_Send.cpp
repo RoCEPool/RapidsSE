@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Send,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Send::Card_Send(void)
-: Card(CK_SEND)
+: Card_CONSTRUCTION(CK_SEND, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -40,16 +40,18 @@ Card_Send::~Card_Send(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete the <send>                                                          */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Send::vDeleteAllSend(CardIter* pCI) {
+void Card_Send::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  _static_
-
-  while (pCI->G_bEachMain(CK_SEND)) {
-    pCI->G_vRemoveDeleteMain(CK_SEND);
-  }
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

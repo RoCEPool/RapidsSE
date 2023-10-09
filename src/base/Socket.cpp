@@ -8,6 +8,7 @@
 #include "Resources.hpp"
 #include "Marker.hpp"
 #include "AM.hpp"
+#include "ExtendedText.hpp"
 
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
@@ -111,8 +112,8 @@ Object* Socket::pRecvObject(void)
   
   RASSERT(! pReceivedObject());
 
-  static i8 nPipeline = 0;
-  bool bLowMem = false;
+//  static i8 nPipeline = 0;
+//  bool bLowMem = false;
 
   m_pObject->vSetWasReceived(true);
   m_pObject->vSetPostRecvRun(false);
@@ -162,7 +163,7 @@ Object* Socket::pRecvObject(void)
 
     // handle the received reject job
     AM::JOB::vRecvdReject(m_pRejectJob);
-    nPipeline++;
+//    nPipeline++;
     vSuccess(true);
     return nullptr;
   }
@@ -243,7 +244,8 @@ Object* Socket::pRecvObject(void)
 bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
+
+
   roSysCall.vClear();
   
   eCN eClass = pObject->eGetClassNo();
@@ -255,7 +257,71 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
     m_pTotup->vAdd(eClass,nBytes);
     m_pWhyTot->vAdd(eSendWhy,nBytes);
   }
-  
+
+  if (pObject->bIsClassNo(CN_JOB)) {
+    Job* pJob = _pJob(pObject);
+
+    if (pJob->bSendCmdText()) {
+      ExtendedText *pCmdText = pJob->pCmdText();
+      RASSERT(pCmdText);
+
+      pCmdText->vVerify();
+
+      eClass = pCmdText->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = bBytesSend(pCmdText, nBytes, roSysCall);
+      RASSERT(bResult);
+
+      //RASSERT(1 == pCmdText->nTextBlocks());
+      i8 nBlocks = pCmdText->nTextBlocks();
+
+      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+        ExtendedTextBuffer *pExtTextBuffer = pCmdText->pExtTextBuffer(i_Block);
+        RASSERT(pExtTextBuffer);
+        eClass = pExtTextBuffer->eGetClassNo();
+        nBytes = gxaSizeHeap[eClass].m_nClassSize;
+        bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+        RASSERT(bResult);
+      }
+    }
+
+    if (pJob->bSendCodeBlock()) {
+      ExtendedText *pCodeBlock = pJob->pCodeBlock();
+      RASSERT(pCodeBlock);
+
+      pCodeBlock->vVerify();
+
+      eClass = pCodeBlock->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = bBytesSend(pCodeBlock, nBytes, roSysCall);
+      RASSERT(bResult);
+
+      //RASSERT(1 == pCodeBlock->nTextBlocks());
+
+      i8 nBlocks = pCodeBlock->nTextBlocks();
+      if (nBlocks > 1)
+        vDebugPoint();
+
+      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+        ExtendedTextBuffer *pExtTextBuffer = pCodeBlock->pExtTextBuffer(i_Block);
+        RASSERT(pExtTextBuffer);
+        eClass = pExtTextBuffer->eGetClassNo();
+        nBytes = gxaSizeHeap[eClass].m_nClassSize;
+        bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+        RASSERT(bResult);
+      }
+
+//      if (nBlocks) {
+//        vTrace("~~Send CodeBlock\n"_Stz);
+//        pCodeBlock->vDump();
+//        vTrace("~~~~~~~~~~~\n"_Stz);
+//        vDebugPoint();
+//      }
+
+    }
+
+  }
+
   return bResult;
 }
 
@@ -372,22 +438,91 @@ Object* Socket::pObjectRecv(eCN eClass)
     vSuccess(false);
     return nullptr;
   }
-#ifdef WITH_BUFFER_ID
-    if (1 == DataBuffer::bIsDataBuffer(eClass)) {
+
+    if (DataBuffer::bIsDataBuffer(eClass)) {
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
       i8 iPoolBufferNo = pDataBuffer->iBufferNo();
       pDataBuffer->vSetBufferNo(iPoolBufferNo);
       pDataBuffer->vSetBufferId(
-          AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
-#ifdef WITH_HASHMAP
+          AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
+
       AM::pHashMap()->vInsertKeyValue(
           (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
           (Object *) pReceivedObject);
-#endif
     }
-#endif
 
   m_pTotup->vAdd(eClass, nSize);
+
+  if (pReceivedObject->bIsClassNo(CN_JOB)) {
+    Job *pJob = _pJob(pReceivedObject);
+    //pJob->vCmdText((ExtendedText*) nullptr);
+
+    // - - - - - - - - - - - - - - - - - - - - -
+    RASSERT(pJob->bRecvCmdText());
+
+    Object* aCmdText = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
+    nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
+    bResult = bBytesRecv(aCmdText, nSize, oSysCall);
+    RASSERT(bResult);
+    ExtendedText* pCmdText = _pExtendedText(aCmdText);
+
+    //RASSERT(1 == pCmdText->nTextBlocks());
+
+    i8 nBlocks = pCmdText->nTextBlocks();
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      Object *aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+      nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+      bResult = bBytesRecv(aCmdTextBuffer, nSize, oSysCall);
+      RASSERT(bResult);
+      ExtendedTextBuffer *pCmdTextBuffer = _pExtendedTextBuffer(aCmdTextBuffer);
+
+      pCmdText->vExtTextBuffer(i_Block, pCmdTextBuffer);
+    }
+    pCmdText->vVerify();
+    pJob->vCmdText(pCmdText);
+
+//    if (nBlocks > 1) {
+//      vTrace("~~Recv CmdText\n"_Stz);
+//      pCmdText->vDump();
+//      vTrace("~~~~~~~~~~~\n"_Stz);
+//      vDebugPoint();
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - -
+
+    if (pJob->bRecvCodeBlock()) {
+      Object* aCodeBlock = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
+      nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
+      bResult = bBytesRecv(aCodeBlock, nSize, oSysCall);
+      RASSERT(bResult);
+      ExtendedText* pCodeBlock = _pExtendedText(aCodeBlock);
+
+      //RASSERT(1 == pCodeBlock->nTextBlocks());
+
+      nBlocks = pCodeBlock->nTextBlocks();
+      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+        Object *aCodeBlockBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+        nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+        bResult = bBytesRecv(aCodeBlockBuffer, nSize, oSysCall);
+        RASSERT(bResult);
+        ExtendedTextBuffer *pCodeBlockBuffer = _pExtendedTextBuffer(aCodeBlockBuffer);
+
+        pCodeBlock->vExtTextBuffer(i_Block, pCodeBlockBuffer);
+
+      }
+
+//      if (nBlocks) {
+//        vTrace("~~Recv CodeBlock\n"_Stz);
+//        pCodeBlock->vDump();
+//        vTrace("~~~~~~~~~~~\n"_Stz);
+//        vDebugPoint();
+//      }
+
+      pCodeBlock->vVerify();
+      pJob->vCodeBlock(pCodeBlock);
+    }
+
+  }
 
   return pReceivedObject;
 }

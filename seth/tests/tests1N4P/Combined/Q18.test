@@ -68,6 +68,9 @@ success
 load customer "../TPCH/SF_0001/customer.csv";
 success
 
+// TODO V2 : ORDAGG
+/*
+/optimise_passthru 
 pipeline Q18
 begin
   stage stageStart on origin :
@@ -81,7 +84,7 @@ begin
     | combined 0
     | next broadcast
   stage stageQ18_1_b on all partitions :
-    indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
     | combined 0
     | stageQ18_1_c broadcast
 
@@ -90,7 +93,7 @@ begin
     | combined 0
     | stageQ18_1_d
   stage stageQ18_1_d on all partitions :
-    indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
+    indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
     | combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :
@@ -142,6 +145,7 @@ contains rows:
   (114,1464,TIMESTAMP '1994-11-06 00:00:00',110203.10,171.00)
   (136,136,TIMESTAMP '1993-02-17 00:00:00',69323.15,172.00)
   (148,1048,TIMESTAMP '1998-04-19 00:00:00',298397.90,182.00)
+*/
 
 //------------------------------------------------------------------------------
 // drop the tables

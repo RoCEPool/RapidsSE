@@ -28,30 +28,7 @@ enum eLG // entry kind
   /*18 */ LG_ENUMS
 };
 
-static Stz* aLG[]
-{
-  /* 0 */ "NONE"_Stz,
-  
-  /* 1 */ "DDL"_Stz,
-  /* 2 */ "FYI"_Stz,
-  /* 3 */ "JOB"_Stz,
-  /* 4 */ "LCK"_Stz,
-  /* 5 */ "LOG"_Stz,
-  /* 6 */ "MGT"_Stz,
-  /* 7 */ "OPR"_Stz,
-  /* 8 */ "PRM"_Stz,
-  /* 9 */ "QUE"_Stz,
-  /*10 */ "REQ"_Stz,
-  /*11 */ "RES"_Stz,
-  /*12 */ "SSN"_Stz,
-  /*13 */ "SVC"_Stz,
-  /*14 */ "SYS"_Stz,
-  /*15 */ "THD"_Stz,
-  /*16 */ "TSK"_Stz,
-  /*17 */ "TXN"_Stz,
-  
-  /*18 */ "ENUMS"_Stz
-};
+extern Stz* aLG[LG_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

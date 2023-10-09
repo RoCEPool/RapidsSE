@@ -21,7 +21,7 @@ namespace STORE
 
     eCB   m_eCompilerType;    // The breed of compiler we're using
     s256  m_sCompilerPath;    // The path to the compiler specified
-    s256  m_sCompileCmd;      // The command used to compile the source file to the shared object
+    s2K   m_sCompileCmd;      // The command used to compile the source file to the shared object
 
     void* m_pvDynLib;         // Handle of the dynamically loaded shared object
     eEC   m_eErrCode;         // The last error code encountered or EC_NONE
@@ -43,6 +43,8 @@ namespace STORE
 
     LibInfo(bool bCollectStats=false);
     ~LibInfo(void);
+
+    static void vRepair(Object* pObject);
 
     eEC  eErrCode();
     Stz* szErrDetails();

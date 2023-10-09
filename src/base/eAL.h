@@ -12,14 +12,7 @@ enum eAL // aggregate level
   /* 4 */ AL_ENUMS
 };
 
-static Stz* aAL[]
-{
-  /* 0 */ "AL_NONE"_Stz,
-  /* 1 */ "AL_PARTITION"_Stz,
-  /* 2 */ "AL_NODE"_Stz,
-  /* 3 */ "AL_ORIGIN"_Stz,
-  /* 4 */ "AL_ENUMS"_Stz,
-};
+extern Stz* aAL[AL_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

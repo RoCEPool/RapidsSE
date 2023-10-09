@@ -7,32 +7,29 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_AREA  = 512 - (2 * sizeof(i8));
-
   class LocalStr
   {
-  public:
-  
-    LocalStrs* m_pLocalStrs;
-    i8         m_i_LclStr;
-    i8         m_i_NextFree;  // C_UNKNOWN indicates end
-    
-    SizeArea   m_xSizeArea;
+  private:
+    i8    m_i_LocalStr;
+    i8    m_i_NextFree;  // C_UNKNOWN indicates end
+
+    Text* m_pText;
 
   public:
     LocalStr(void);
    ~LocalStr(void) noexcept(false);
-  
-    // auto conversion
-    operator LocalStr*(void);
 
-    char* azArea(void);
-    Stz*  szArea(void);
+    void  vEnsureText(void);
 
-    void  vReInitialise(void);
-    SizeArea* axSizeArea(void);
-  
-    i8 jStrSize(void);  
+    void  vInitialise(i8 i_LclStr, i8 i_NextFree);
+
+    i8   i_LocalStr(void);
+
+    i8   i_NextFree(void);
+    void v_NextFree(i8 i_NextFree);
+
+    Stz* szText(void);
+    void vText(Stz* szText);
   };
 
   LocalStr* _pLocalStr(void* aAddr);

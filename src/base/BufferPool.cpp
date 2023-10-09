@@ -785,7 +785,7 @@ FreePoolBuffer* BufferPool::pToFreePoolBuffer(PoolBuffer* pBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return free space in bytes                                                 */
+/* return used space in bytes                                                 */
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::iUsedSpace(void)
 {
@@ -794,6 +794,18 @@ i8 BufferPool::iUsedSpace(void)
   i8 iUsedSpace = m_nAllocCount * C_SIZE_POOL_BUFFER;
   
   return iUsedSpace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return used space percent                                                  */
+/*----------------------------------------------------------------------------*/
+d8 BufferPool::dUsedSpacePercent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+
+  d8 dUsedSpace = DIV((d8)m_nAllocCount, (d8)m_nBuffers);
+
+  return dUsedSpace * 100;
 }
 
 /*----------------------------------------------------------------------------*/

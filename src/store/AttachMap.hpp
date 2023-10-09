@@ -42,7 +42,8 @@ namespace STORE
     s256  m_sLogRegion;
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
-  
+
+    Atomic        m_ixBenchNo;
     bool          m_bBootError;
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
@@ -53,11 +54,10 @@ namespace STORE
     i8            m_iEpoch;
     EventHandlers m_oEventHandlers;
     FileMap*      m_pFileMap;
+    Atomic        m_ixFileNo;
     Format        m_oFormat;
     Grid*         m_pGrid;
-#ifdef WITH_PAGING
     HashMap*      m_pHashMap;
-#endif
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;

@@ -13,11 +13,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Top(Stz* szRows);
+    Card_Top(void);
    ~Card_Top(void) noexcept(false);
+
+    void vColumn_Mapping(CardIter* pCI);
 
     void vComputeProjection(CardIter* pCI); // prototype
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Top* _pCard_Top(void* aAddr);

@@ -17,7 +17,7 @@ load orders   "../tpch/sf_0001/orders.csv" ;
 
 /optimise
 /glean_cue_from = "vH50_T10_Extract_subSet_Of_call"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r7_call"

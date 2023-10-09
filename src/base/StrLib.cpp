@@ -2,7 +2,102 @@
 /* StrLib.cpp -- char* string utility                                         */
 /*============================================================================*/
 
+// STRING LIBRARY PRINCIPLES & RATIONALE
+// *************************************
+//
+// These are some core principles that the string library is working towards.
+// It isn't there yet, but it should help guide us with any new APIs as well
+// as correcting the existing APIs.
+//
+// (1) All string operations must know the size of the underlying buffer.
+//     That is, no blindly writing to a char* without knowing its size
+//     and the size of the string you're writing.
+//
+// (2) The StrLib method MUST check whether a string truncation would occur.
+//     More on how this is handled in a little bit.
+//
+// (3) The StrLib methods MUST include the ability for the caller to know that
+//     a string truncation has occurred.
+//     In many cases a string truncation should never happen, but in some cases
+//     it is unavoidable (e.g. a SQL command concatenating column values) and
+//     it is the responsibility of the caller to check for truncation and then
+//     handle this error themselves.
+//
+// (4) If the caller is not checking for truncation then the system should at
+//     least record that it has happened. It could do this by writing information
+//     to the logfile about the nature of the operation and how it got there.
+//     e.g. a stack trace.
+//     This is important so that we as developers can check to see if a truncation
+//     is occurring because at the time of writing we don't have any callers
+//     actually check for truncation. Also, if it occurs at runtime then we would
+//     like to know more about this.
+//
+// (5) All source/destination strings and arguments are properly null terminated
+//     such that we can rely on strlen() as needed.
+//
+// (6) All applicable string operations should come through StrLib as opposed to
+//     naked calls to system string routines throughout the code.
+//     This allows for a common place for handling of string operations, a
+//     common methodology, interface and semantics, and a common way to handle errors.
+//
+// (7) StrLib should have consistent calling semantics. This includes things like:
+//      (a) The name of the destination buffer should be called psDst and in
+//          general it should usually be the first parameter in the function.
+//      (b) The size of the destination buffer should come immediately after the
+//           pointer to the destination buffer in the parameter list.
+//      (c) When the API is cursor based rather than buffer and size based then
+//          the next parameter after the cursor should be the last valid char
+//          in the buffer. i.e. StrLib *must* know the limit of the buffer.
+//      (d) A writable buffer should be a char* and not a Stz*. Stz should be
+//          considered a read-only data structure.
+//
+//
+// Note: All of the above is a work in progress.
+
 #include "BASE.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibLike2(char* azStr, char* azRegExp) {
+  _static_
+
+  i8 i = StrLib::iLike2(azStr, azRegExp);
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) {
+  _static_
+
+  i8 i = StrLib::iLike3(azStr, azRegExp, cEsc);
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc) {
+  _static_
+
+  return StrLib::iWordFlipBack(psDst, iDstBufSize, psSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string and get the size                 */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 iExtern_StrLibWordFlipSize(char* psSrc) {
+	_static_
+
+	s16KB sDst;
+	return StrLib::iWordFlipBack(sDst.azChar(), sizeof(sDst), psSrc);
+}
 
 /*----------------------------------------------------------------------------*/
 
@@ -35,30 +130,30 @@ static Stz* szaAscii[128] = {
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-i8 StrLib_iLike2(char* azStr, char* azRegExp) {
+i8 StrLib_iLike2(char* psSrc, char* azRegExp) {
   _static_
 
-  i8 i = StrLib::iLike2(azStr, azRegExp);
+  i8 i = StrLib::iLike2(psSrc, azRegExp);
   return i;
 }
 
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-i8 StrLib_iLike3(char* azStr, char* azRegExp, char cEsc) {
+i8 StrLib_iLike3(char* psSrc, char* azRegExp, char cEsc) {
   _static_
 
-  i8 i = StrLib::iLike3(azStr, azRegExp, cEsc);
+  i8 i = StrLib::iLike3(psSrc, azRegExp, cEsc);
   return i;
 }
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {
+i8 StrLib_iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc) {
   _static_
 
-  return StrLib::iWordFlipBack(aDst, aSrc);
+  return StrLib::iWordFlipBack(psDst, iDstBufSize, psSrc);
 }
 
 
@@ -67,70 +162,87 @@ i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allocate a workspace/string of given size                                  */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wAllocate(i8 nBytes)
-{
-  _static_
-  
-  char* w = static_cast<char*>(malloc(nBytes));
-  *w = '\0';
-  return w;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a workspace/string and initialize with given string               */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wAllocate(const char* s)
-{
-  _static_
-  
-  i8 nBytes = nSize(s);
-  
-  char* w = wAllocate(nBytes);
-  
-  vCopy(w,s);
-  
-  return w;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append character to end of workspace                                       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendChar(char** aazCrs, char cChar)
+void StrLib::vAppendChar(char** aazDstCrs, const char* azDstLastChar, char cChar, bool* pbResult)
 {
   _static_
-  
-  *(*aazCrs)++ = cChar;
-  
-  *(*aazCrs) = '\0';
+
+  char* d = *aazDstCrs;
+
+  // Check if we are out of room before even starting
+  if (d >= azDstLastChar) {
+    i8 iReqBufSize = 2; // the char + null pointer
+    i8 iDstBufSize = (d == azDstLastChar ? 1 : 0);
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+    return;
+  }
+
+  *(*aazDstCrs)++ = cChar;
+  *(*aazDstCrs) = '\0';
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* append number in decimal to workspace                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendDecimal(char** aazCrs, i8 iNumber)
+void StrLib::vAppendDecimal(char** aazDstCrs, const char* azDstLastChar, i8 iDecVal, bool* pbResult)
 {
   _static_
-  
-  if (iNumber < 0) {
-    *((*aazCrs)++) = '-';
-    
-    iNumber *= -1;
+
+  i8 iSpaceNeeded = 1; // start with the null terminator
+  i8 iDstBufSize = (byte*) azDstLastChar - (byte*) *aazDstCrs;
+
+  if (iDstBufSize < 0) {
+    iDstBufSize = 0;
   }
   
-  char* pBwd = *aazCrs;
-  char* pFwd = *aazCrs;
+  if (iDecVal < 0) {
+    ++iSpaceNeeded;
+    if (*aazDstCrs < azDstLastChar) {
+      *((*aazDstCrs)++) = '-';
+    }
+    
+    iDecVal *= -1;
+  }
   
-  
-  i8 v = iNumber;
+  char* pBwd = *aazDstCrs;
+  char* pFwd = *aazDstCrs;
+
+  i8 v = iDecVal;
   
   do
   {
-    *pBwd++ = (v % 10) + '0';
+    ++iSpaceNeeded;
+    if (pBwd < azDstLastChar) {
+      *pBwd++ = (v % 10) + '0';
+    }
+
     v /= 10;
   } while (v);
-  
+
+  // Did we run out of room?
+  if (iSpaceNeeded > iDstBufSize) {
+    if (pBwd == azDstLastChar) {
+      *pBwd = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+
+    *aazDstCrs = pBwd;
+    return;
+  }
+
+  // We had enough space to write the value backwards. Now reverse it.
   char* pEnd = pBwd;
   
   while (--pBwd > pFwd)
@@ -142,26 +254,54 @@ void StrLib::vAppendDecimal(char** aazCrs, i8 iNumber)
   
   *pEnd = '\0';
   
-  *aazCrs = pEnd;
+  *aazDstCrs = pEnd;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendHex: append number in hexadecimal to workspace                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendHex(char** aazCrs, i8 iNumber)
+void StrLib::vAppendHex(char** aazDstCrs, const char* azDstLastChar, i8 iDecVal, bool* pbResult)
 {
   _static_
+
+  i8 iSpaceNeeded = 1; // start with the null terminator
+  i8 iDstBufSize = (byte*) azDstLastChar - (byte*) *aazDstCrs;
+
+  if (iDstBufSize < 0) {
+    iDstBufSize = 0;
+  }
   
-  char* pBwd = *aazCrs;
-  char* pFwd = *aazCrs;
+  char* pBwd = *aazDstCrs;
+  char* pFwd = *aazDstCrs;
   
-  i8 v = iNumber;
+  i8 v = iDecVal;
   
   do {
-    *pBwd++ = cToHex(v % 16);
+    ++iSpaceNeeded;
+    if (pBwd < azDstLastChar) {
+      *pBwd++ = cToHex(v % 16);
+    }
+
     v /= 16;
   } while (v);
-  
+
+  // Did we run out of room?
+  if (iSpaceNeeded > iDstBufSize) {
+    if (pBwd == azDstLastChar) {
+      *pBwd = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+
+    *aazDstCrs = pBwd;
+    return;
+  }
+
+  // We had enough space to write the value backwards. Now reverse it.
   char* pEnd = pBwd;
   
   while (--pBwd > pFwd)
@@ -173,91 +313,159 @@ void StrLib::vAppendHex(char** aazCrs, i8 iNumber)
 
   *pEnd = '\0';
 
-  *aazCrs = pEnd;
+  *aazDstCrs = pEnd;
 }
 
 /*----------------------------------------------------------------------------*/
-/* vAppendPad: pad to given length                                            */
+/* vAppendPad: pad string with spaces to given length padLen only if the      */
+/* current string is shorter than nPadLen. nPadLen does not include null term.*/
+/* aazDstCrs must be pointing to the null term or the first char to be padded.*/
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendPad(char** aazCrs, const char* pString, i8 nLength)
+void StrLib::vAppendPad(char** aazDstCrs, const char* psDst, i8 iDstBufSize, i8 nPadLen, bool* pbResult)
 {
   _static_
   
-  i8 nCurLen = StrLib::nLength(pString);
-  
-  if (nCurLen >= nLength)
+  i8 nCurLen = StrLib::nLength(psDst);
+  i8 iReqBufSize = (nCurLen > nPadLen ? nCurLen : nPadLen) + 1;
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  if (nCurLen >= nPadLen)
     return;
   
-  char *z = *aazCrs;
+  char *z = *aazDstCrs;
   
-  while (nCurLen++ < nLength)
+  while (nCurLen < nPadLen && nCurLen < iDstBufSize - 1) {
+    ++nCurLen;
     *z++ = ' ';
+  }
+
   *z = '\0';
-  
-  *aazCrs = z;
+  *aazDstCrs = z;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendNull: append null character to end of workspace                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendNull(char** aazCrs)
+void StrLib::vAppendNull(char** aazDstCrs, const char* azDstLastChar, bool* pbResult)
 {
   _static_
+
+  char* d = *aazDstCrs;
+
+  if (d > azDstLastChar) {
+    bool bWillTruncate = !bCheckBufferSpace(__func__, 1, 0, pbResult);
+    UNUSED(bWillTruncate);
+    return;
+  }
   
-  *(*aazCrs)++ = '\0';
+  *(*aazDstCrs)++ = '\0';
 }
   
 /*----------------------------------------------------------------------------*/
-/* vAppendString: append string to workspace                                  */
+/* vAppendString: append string to current cursor.                            */
+/* azDstLastChar is the last valid char pointer in the buffer.                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendString(char** aazCrs, const char* pString)
+void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar,
+                           const char* pSrc, bool* pbResult)
 {
   _static_
   
-  char *z = *aazCrs;
+  char* z = *aazDstCrs;
+  const char* s = pSrc;
+
+  // Check if we are out of room before even starting
+  if (z >= azDstLastChar) {
+    i8 iReqBufSize = nLength(pSrc) + 1;
+    i8 iDstBufSize = 0;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+    return;
+  }
   
-  while (*pString)
-    *z++ = *pString++;
-  
+  while (*s && z != azDstLastChar) {
+    *z++ = *s++;
+  }
+
+  // Check if we were going to overflow
+  if (*s) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nLength(pSrc) + 1;
+    i8 iDstBufSize = azDstLastChar - *aazDstCrs;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
+
   *z = '\0';
-  
-  *aazCrs = z;
+  *aazDstCrs = z;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendString: append string to workspace with line numbers                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vAppendString(char** aazCrs, const char* pString, i8* piLineNumber)
+void StrLib::vAppendString(char** aazDstCrs, const char* azDstLastChar, const char* pSrc,
+                           i8* piLineNo, bool* pbResult)
 {
   _static_
 
-  char *z = *aazCrs;
-  bool bInQuote = false;
-  i8 iLineNumber = *piLineNumber;
+  char* z = *aazDstCrs;
+  const char* s = pSrc;
 
-  while (*pString) {
-    if (*pString == '"') {
+  bool bInQuote = false;
+  i8 iLineNumber = *piLineNo;
+
+  // Check if we are out of room before even starting
+  if (z >= azDstLastChar) {
+    i8 iReqBufSize = nLength(pSrc) + 1; // doesn't account for line numbers
+    i8 iDstBufSize = 0;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+    return;
+  }
+
+  while (*s && z != azDstLastChar) {
+    if (*s == '"') {
       if (bInQuote)
         bInQuote = false;
       else
         bInQuote = true;
     }
-    if (*pString == '\n' && !bInQuote ) {
-      //char* x = z;
-      vSprintCat((Stz*)z, "\n/* %04d */ "_Stz, iLineNumber++);
-      z += 12;
-      pString++;
-    }
-    else {
-      *z++ = *pString++;
+
+    if (*s == '\n' && !bInQuote ) {
+      s32 sBuf;
+      vSprint(sBuf.azChar(), sBuf.nAreaBytes(), pbResult, "\n/* %04d */ "_Stz, iLineNumber++);
+      vAppendString(&z, azDstLastChar, sBuf.azChar(), pbResult);
+      s++;
+
+    } else {
+      *z++ = *s++;
     }
   }
 
+  // Check if we were going to overflow
+  if (*s) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nLength(pSrc) + 1; // does not account for line numbers
+    i8 iDstBufSize = azDstLastChar - *aazDstCrs;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
+
   *z = '\0';
-
-  *aazCrs = z;
-
-  *piLineNumber = iLineNumber;
+  *aazDstCrs = z;
+  *piLineNo = iLineNumber;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,29 +485,19 @@ char* StrLib::azAscii(i8 i_Char)
 /*----------------------------------------------------------------------------*/
 /* scan backwards to find given character                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bBackward(char** ps, char* pBegin, const char c)
+bool StrLib::bBackward(char** ppsSrc, const char* psBegin, const char cUntil)
 {
   _static_
   
-  char *p = *ps;
-  
-//  do
-//  {
-//    if (*p == c)
-//    {
-//      *ps = p;
-//      return true;
-//    }
-//  } while (p-- != pBegin);
-//
+  char *p = *ppsSrc;
 
-  while (*p-- != c)
+  while (*p-- != cUntil)
   {
-    if (p <= pBegin)
+    if (p <= psBegin)
       return false;
   }
   
-  *ps = ++p;
+  *ppsSrc = ++p;
   
   return true;
 }
@@ -307,33 +505,18 @@ bool StrLib::bBackward(char** ps, char* pBegin, const char c)
 /*----------------------------------------------------------------------------*/
 /* bBeginsWith: test if arg is a leading subset of s                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bBeginsWith(char* s, const char* sArg)
+bool StrLib::bBeginsWith(const char* psSrc, const char* psArg)
 {
   _static_
-  i8 nBytes = nLength(sArg);
-  i8 iResult = iCompare(s, sArg, nBytes, C_NO_CASE);
+  i8 nBytes = nLength(psArg);
+  i8 iResult = iCompare(psSrc, psArg, nBytes, C_NO_CASE);
   return iResult == 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* burst given str into argv                                                  */
-/*----------------------------------------------------------------------------*/
-i8 StrLib::nBurstArgs(Stz* szaArgv[], Stz* szArgStr)
-{
-  _static_
-  UNUSED(szaArgv);
-  UNUSED(szArgStr);
-
-  i8 nArgs = 0;
-  
-  
-  return nArgs;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode char into a string                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* StrLib::szCharToStr(char cArg)
+Stz* StrLib::szCharToStr(unsigned char cArg)
 {
   _static_
   
@@ -342,6 +525,41 @@ Stz* StrLib::szCharToStr(char cArg)
     return szaAscii[(i8)cArg];
   else
     return ">7f"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Checks if there is sufficient buffer space & optionally sets the           */
+/* callerResult if not null. Otherwise reports the truncation in the log file.*/
+/* Returns true if everything is ok or false if a string truncation will occur*/
+/*----------------------------------------------------------------------------*/
+inline bool StrLib::bCheckBufferSpace(const char* azFuncName, i8 iReqBufSize, i8 iDstBufSize, bool* pbCallerResult)
+{
+  ASSERT(azFuncName);
+  ASSERT(iReqBufSize >= 0);
+  ASSERT(iDstBufSize >= 1);  // need at least room for a null terminator
+
+  // Is there enough space?
+  if (iDstBufSize < iReqBufSize) {
+
+    if (pbCallerResult) {
+      // (Optional) Caller is checking for and handling the error condition
+      *pbCallerResult = false;
+
+    } else {
+      // No handling of this error condition. At least log it.
+      vReportStringTruncation(azFuncName, iReqBufSize, iDstBufSize);
+    }
+
+    return false;
+  }
+
+  if (pbCallerResult) {
+    // (Optional) Caller is checking for the error condition
+    *pbCallerResult = true;
+  }
+
+  // No truncation will occur
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,95 +575,108 @@ void StrLib::vCheckIsNot(char cArg, char cIsNot) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* click arg                                                                  */
+/* click arg. Increment the ascii characters by 1 starting from the right     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vClick(char* aArg)
+void StrLib::vClick(char* psDst)
 {
   _static_
   
-  char* aChar = acLast(aArg);
+  char* pChar = acLast(psDst);
   
   for (;;) {
     
-    if ('z' == *aChar) {
-      *aChar = 'a';
-      aChar--;
+    if ('z' == *pChar) {
+      *pChar = 'a';
+      pChar--;
       continue;
     }
-    if ('Z' == *aChar) {
-      *aChar = 'A';
-      aChar--;
+    if ('Z' == *pChar) {
+      *pChar = 'A';
+      pChar--;
       continue;
     }
 
-    *aChar += 1;
+    *pChar += 1;
     break;
   }
   
 }
 
 /*----------------------------------------------------------------------------*/
-/* clip arg to given maxiumum length                                          */
+/* clip arg to given maxiumum length (not including null terminator).         */
+/* Returns true if it is resized smaller                                      */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bClip(char* aArg, i8 iMaxLen)
+bool StrLib::bClip(char* psDst, i8 iMaxLen)
 {
   _static_
   
-  i8 iCurLen = StrLib::nLength(aArg);
+  i8 iCurLen = StrLib::nLength(psDst);
   
   if (iCurLen <= iMaxLen)
     return false;
-  
-  aArg[iMaxLen] = '\0';
+
+  psDst[iMaxLen] = '\0';
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* comma seperate the integer argument                                        */
 /*----------------------------------------------------------------------------*/
-void StrLib::vComma(char* azDst, i8 iArg)
+void StrLib::vComma(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
   
   char caInteger[32];
-  vToString(caInteger,iArg);
+  vToString(caInteger, sizeof(caInteger), iArg, pbResult);
   
   char caReverse[32];
-  vReverse(caReverse,caInteger);
+  vReverse(caReverse, sizeof(caReverse), caInteger, pbResult);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   char caRevCommas[32];
 
   char* aChar = caRevCommas;
   char* aDigit = caReverse;
+
+  u8 uBytesReq = 0;
   
   i8 nDigit = 0;
   while (*aDigit) {
     if (nDigit == 3) {
-      *aChar++ = C_COMMA;
+      if (uBytesReq < sizeof(caRevCommas) - 1) {
+        *aChar++ = C_COMMA;
+      }
       nDigit = 0;
+      ++uBytesReq;
     }
-    *aChar++ = *aDigit++;
+
+    if (uBytesReq < sizeof(caRevCommas) - 1) {
+      *aChar++ = *aDigit++;
+    }
     nDigit++;
+    ++uBytesReq;
   }
   
-  if (iArg < 0)
+  if (iArg < 0 && uBytesReq < sizeof(caRevCommas) - 1)
     *aChar++ = '-';
   
   *aChar = '\0';
 
+  bool bRet = bCheckBufferSpace(__func__, uBytesReq, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vReverse(azDst,caRevCommas);
+  vReverse(psDst, sizeof(psDst), caRevCommas, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard compare of the two args                                 */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
+i8 StrLib::iCompare(const char* psArg1, const char* psArg2)
 {
   _static_
   
-  i8 iDiff = strcmp(pArg1,pArg2);
+  i8 iDiff = strcmp(psArg1, psArg2);
   
   return iDiff;
 }
@@ -453,16 +684,16 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
+i8 StrLib::iCompare(const char* psArg1, const char* psArg2, i8 iCase)
 {
   _static_
   
   i8 iDiff;
   
   if (C_NO_CASE == iCase)
-    iDiff = strcasecmp(pArg1,pArg2);
+    iDiff = strcasecmp(psArg1, psArg2);
   else
-    iDiff = strcmp(pArg1,pArg2);
+    iDiff = strcmp(psArg1, psArg2);
   
   return iDiff;
 }
@@ -470,16 +701,16 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* iCompare: standard case-insensitive compare of the two args                */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
+i8 StrLib::iCompare(const char* psArg1, const char* psArg2, i8 nBytes, i8 iCase)
 {
   _static_
   
   i8 iDiff;
   
   if (C_NO_CASE == iCase)
-    iDiff = strncasecmp(pArg1,pArg2,nBytes);
+    iDiff = strncasecmp(psArg1, psArg2, nBytes);
   else
-    iDiff = strncmp(pArg1,pArg2,nBytes);
+    iDiff = strncmp(psArg1, psArg2, nBytes);
   
   return iDiff;
 }
@@ -487,136 +718,138 @@ i8 StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate character to workspace                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* pWS, char cChar)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char cChar, bool* pbResult)
 {
   _static_
   
-  i8 i = nLength(pWS);
-  pWS[i] = cChar;
-  pWS[i+1] = '\0';
+  i8 iDstStrLen = nLength(psDst);     // how much space in the dest buffer (not including null terminator)
+  i8 iReqBufSize = iDstStrLen + 2;  // how much space required (including extra char & null terminator)
+
+  if (!bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult)) {
+    // No space to add 1 char, so we can't do this operation.
+    return;
+  }
+
+  psDst[iDstStrLen] = cChar;
+  psDst[iDstStrLen + 1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate arg onto dst string                                   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* psDst, const char* psArg)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg, bool* pbResult)
 {
   _static_
-  
-  strcat(psDst,psArg);
+
+  i8 iDstStrLen = nLength(psDst);   // how much space in the dest buffer (not including null terminator)
+  i8 iArgStrLen = nLength(psArg);   // length of the argument
+  i8 iReqBufSize = iDstStrLen + iArgStrLen + 1;  // how much space required (including extra char & null terminator)
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  // The remaining space for writing the arg string, not including the null terminator.
+  i8 iRemainingSpace = iDstBufSize - iDstStrLen - 1;
+
+  strncat(psDst,psArg, iRemainingSpace);
+}
+
+/*----------------------------------------------------------------------------*/
+/* vConcat: concatenate up to nCatLen characters of arg onto dst string       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg, i8 nCatLen, bool* pbResult)
+{
+  _static_
+
+  i8 iDstStrLen = nLength(psDst);   // how much space in the dest buffer (not including null terminator)
+  i8 iArgStrLen = nLength(psArg);   // length of the argument
+//i8 iMaxArgLen = iArgStrLen > nCatLen ? iArgStrLen : nCatLen;
+//  i8 iReqBufSize = iDstStrLen + iMaxArgLen + 1;  // how much space required (including extra char & null terminator)
+
+  // will strncat the minimum of nCatLen or nLength(psArg)
+  i8 iMinArgLen = nCatLen < iArgStrLen ? nCatLen : iArgStrLen;
+  i8 iReqBufSize = iDstStrLen + iMinArgLen + 1;  // how much space required (including extra char & null terminator)
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  strncat(psDst, psArg, nCatLen);
 }
 
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate arg1 & arg2 onto dst string                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* psDst, const char* psArg1, const char* psArg2)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, const char* psArg1, const char* psArg2, bool* pbResult)
 {
   _static_
-  
-  strcat(psDst,psArg1);
-  strcat(psDst,psArg2);
+
+  vConcat(psDst, iDstBufSize, psArg1, pbResult);
+  vConcat(psDst, iDstBufSize, psArg2, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* vConcat: concatenate i8 arg onto dst string                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vConcat(char* psDst, i8 iArg)
+void StrLib::vConcat(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
   
   char aInt[32];
-  
-  wToString(iArg,aInt);
-  vConcat(psDst,aInt);
-}
 
-/*----------------------------------------------------------------------------*/
-/* vConcat: concatenate i8 arg onto dst string                                */
-/*----------------------------------------------------------------------------*/
-void StrLib::vConcat(Stz* szDst, Stz* szArg)
-{
-  _static_
-  
-  strcat(szDst->azChar(),szArg->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* sConcat: concatenate two strings                                           */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wConcat(const char* s1, const char* s2)
-{
-  _static_
-  
-  i8 iLen1 = nLength(s1);
-  i8 iLen2 = nLength(s2);
-  
-  i8 iSize = iLen1 + iLen2 + 1;
-  
-  char* w = wAllocate(iSize);
-  
-  strcpy(w,s1);
-  strcat(w,s2);
-  
-  return w;
+  vToString(aInt, sizeof(aInt), iArg);  // This should never fail
+  vConcat(psDst, iDstBufSize, aInt, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bContains(char* s, const char cArg)
+bool StrLib::bContains(const char* psSrc, const char cArg)
 {
   _static_
   
-  char* f = strchr(s,cArg);
-  
-  if (f)
-    return true;
-  else
-    return false;
+  const char* f = strchr(psSrc, cArg);
+
+  return (f != nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bContains(char* s, const char* sArg)
+bool StrLib::bContains(const char* psSrc, const char* sArg)
 {
   _static_
-  
-  char* f = strstr(s,sArg);
-  
-  if (f)
-    return true;
-  else
-    return false;
+
+  const char* f = strstr(psSrc, sArg);
+
+  return (f != nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* copy src into dst, return bytes copied (not including '\0' terminator)     */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::nCopy(char* psDst, const char* psSrc)
+i8 StrLib::nCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
-  
-  i8 nBytes = 0;
-  
-  while ( (*psDst++ = *psSrc++))
-    nBytes++; // won't be executed when \0 is copied
-  
-  return nBytes;
-}
 
-/*----------------------------------------------------------------------------*/
-/* copy src into dst (not including '\0' terminator)                          */
-/*----------------------------------------------------------------------------*/
-i8 StrLib::nCopy_nonull(char* psDst, const char* psSrc)
-{
-  _static_
-  
+  i8 iReqBufSize = nLength(psSrc) + 1;  // how much space required (including the null terminator)
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+  // We continue whether it will truncate or not.
+
+  void* pvLastAddr = psDst + iDstBufSize - 1;
+
   i8 nBytes = 0;
   
-  while ( * psSrc ) {
-    *psDst++ = *psSrc++;
+  while ( (psDst != pvLastAddr) && (*psDst++ = *psSrc++)) {
     nBytes++; // won't be executed when \0 is copied
+  }
+
+  if (psDst == pvLastAddr) {
+    // We need to null terminate the truncated string
+    *psDst = 0;
   }
   
   return nBytes;
@@ -625,76 +858,172 @@ i8 StrLib::nCopy_nonull(char* psDst, const char* psSrc)
 /*----------------------------------------------------------------------------*/
 /* vCopy: copy src into dst                                                   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopy(char* psDst, const char* psSrc)
+void StrLib::vCopy(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
-  
-  strcpy(psDst,psSrc);
+
+  i8 iReqBufSize = nLength(psSrc) + 1;  // how much space required (including the null terminator)
+
+  bool bWillTruncate = !bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bWillTruncate);
+
+  // Note, using strncpy() instead of calling nCopy() above as strncpy() is
+  // likely optimised for more efficient copying than byte by byte.
+  // Note that strncpy() doesn't guarantee that the buffer is null terminated
+  // if length(psSrc) >= iDstBufSize. If length(psSrc) < iDstBufSize then
+  // nulls are written to the remaining bytes.
+  strncpy(psDst, psSrc, iDstBufSize);
+  psDst[iDstBufSize - 1] = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* vCopyLen: copy src into dst uptill nBytes                                  */
+/* vCopyLen: copy psSrc into psDst up till nBytes characters (not including   */
+/* the null terminator) or until the end of psSrc.                            */
+/* NOTE: The semantic on the string truncation warning is slightly different  */
+/* here because it will only warn if the truncation occurs because the buffer */
+/* is exhausted before we hit a null terminator in psSrc or we run nBytes     */
+/* down to zero.                                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopyLen(char* psDst, const char* psSrc, i8 nBytes)
+void StrLib::vCopyLen(char* psDst, i8 iDstBufSize, const char* psSrc, i8 nBytes, bool* pbResult)
 {
   _static_
-  
+  ASSERT(nBytes >= 0);
+
+  // We don't know whether nBytes is larger or smaller than length(psSrc), so
+  // we need to count the number of bytes copied as we copy them.
+
+  i8 iBytesCopied = 0;
+  i8 iBytesLeft = nBytes;
+
   char *d = psDst;
   const char *s = psSrc;
-  
-  i8 n = nBytes;
-  while (*s && n--)
+
+  // Copy bytes, ensuring we leave 1 byte at the end for the null terminator
+  while (*s && iBytesLeft-- > 0 && ++iBytesCopied < iDstBufSize)
     *d++ = *s++;
 
-  *d = '\0';
+  if (iDstBufSize > 0) {
+    // Handle corner case of iDstBufSize == 0
+    *d = '\0';
+  }
+
+  // Check if we were going to overflow. This is a subtly different semantic
+  // than vCopy() because the caller supplied a maximum number of bytes to copy.
+  // If we stopped because of that then we strictly didn't truncate the string
+  // because it is what the caller requested.
+  if (*s && iBytesLeft > 0) {
+    // We report the required and available space from before the append operation
+    i8 iSrcLen = nSize(psSrc);
+    i8 iReqBufSize = iSrcLen < nBytes + 1 ? iSrcLen : nBytes + 1;
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* vCopySplit: copy src into w1, then w2 divided at cSplit                    */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit)
+void StrLib::vCopySplit(char* psDst1, i8 iDst1BufSize,
+                        char* psDst2, i8 iDst2BufSize,
+                        const char* psSrc, char cSplit, bool* pbResult)
 {
   _static_
-  
-  const char *s = sSrc;
-  
-  char *d1 = w1;
-  while (*s && *s != cSplit)
-    *d1++ = *s++;
-  *d1 = '\0';
+
+  // We cannot tell ahead of time whether a string truncation will occur without
+  // the penalty of walking the psSrc string. So instead we report a truncation
+  // if we detect one.
+  i8 iBytesCopied = 0;
+  bool bInterimResult1 = true;
+  bool bInterimResult2 = true;
+
+  const char *s = psSrc;
+  char *d1 = psDst1;
+
+  while (*s && *s != cSplit) {
+    if (iBytesCopied < iDst1BufSize - 1) {
+      ++iBytesCopied;
+      *d1++ = *s++;
+    }
+  }
+
+  if (iDst1BufSize > 0) {
+    // Handle corner case of iDstBufSize == 0
+    *d1 = '\0';
+  }
+
+  // Check if we were going to overflow while writing to psDst1
+  if (*s && iBytesCopied == iDst1BufSize) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nSize(psSrc);
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDst1BufSize, &bInterimResult1);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
   
   if ( ! *s ) {
-    *w2 = '\0';
+    if (iDst2BufSize > 0) {
+      // Handle corner case of iDstBufSize == 0
+      *psDst2 = '\0';
+    }
     return;
   }
   
   // skip the split character
   s++;
-  
-  char* d2 = w2;
-  while (*s)
-    *d2++ = *s++;
-  *d2 = '\0';
+  vCopy(psDst2, iDst2BufSize, s, &bInterimResult2);
+
+  // If a truncation occurred on the first copy then alert the caller
+  if (pbResult) {
+    *pbResult = (bInterimResult1 && bInterimResult2);
+  }
 }
   
 /*----------------------------------------------------------------------------*/
 /* vCopyTill: copy src into dst uptill but not including ccTill               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vCopyTill(char* psDst, const char* psSrc, char ccTill)
+void StrLib::vCopyTill(char* psDst, i8 iDstBufSize, const char* psSrc, char ccTill, bool* pbResult)
 {
   _static_
-  
+
+  // We cannot tell ahead of time whether a string truncation will occur without
+  // the penalty of walking the psSrc string. So instead we report a truncation
+  // if we detect one.
+  i8 iBytesCopied = 0;
+
   char *d = psDst;
   const char *s = psSrc;
   
-  while (*s && ccTill != *s)
+  while (*s && ccTill != *s && ++iBytesCopied < iDstBufSize)
     *d++ = *s++;
-  
-  *d = '\0';
+
+  if (iDstBufSize > 0) {
+    // Handle corner case of iDstBufSize == 0
+    *d = '\0';
+  }
+
+  // Check if we were going to overflow.
+  if (*s && iBytesCopied == iDstBufSize) {
+    // We report the required and available space from before the append operation
+    i8 iReqBufSize = nSize(psSrc);
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+    UNUSED(bRet);
+
+  } else if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert digit arg to i8                                                    */
+/* convert ascii digit arg to i8                                              */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iDigitToI8(const char cDigit)
 {
@@ -706,133 +1035,131 @@ i8 StrLib::iDigitToI8(const char cDigit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vDump: dump string                                                         */
+/* vDump: escape and dump string to the log file                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
+void StrLib::vDump(const char* psSrc, i8 nMaxChars, const char* psSuffix, bool* pbResult)
 {
   _static_
-  
-  char caString[C_STRING_ARRAY];
+
+  const i8 iDstBufSize = C_STRING_ARRAY;
+  char caString[iDstBufSize];
   char *z = caString;
+  char *psDstLastChar = caString + sizeof(caString) - 1;
+
+  i8 iReqBytes = 0;
   
-  for (int i = 0; i < nMax && i < C_16KB - 1; i++)
+  for (int i = 0; i < nMaxChars; i++)
   {
-    if (isprint(s[i]))
-    {
-      *z++ = s[i];
-    }
-    else
-    if ('\n' == s[i])
-    {
-      *z++ = '\\';
-      *z++ = 'n';
-    }
-    else
-    if ('\0' == s[i])
-    {
-      *z++ = '\\';
-      *z++ = '0';
-    }
-    else
-    {
-      *z++ = '.';
+    ++iReqBytes;
+
+    if (isprint(psSrc[i])) {
+      if (z < psDstLastChar) {
+        *z++ = psSrc[i];
+      }
+
+    } else if ('\n' == psSrc[i]) {
+      ++iReqBytes;  // cater for second escaped char
+      if (z < psDstLastChar) {
+        *z++ = '\\';
+        if (z < psDstLastChar) {
+          *z++ = 'n';
+        }
+      }
+
+    } else if ('\0' == psSrc[i]) {
+      ++iReqBytes;  // cater for second escaped char
+      if (z < psDstLastChar) {
+        *z++ = '\\';
+        if (z < psDstLastChar) {
+          *z++ = '0';
+        }
+      }
+
+    } else {
+      // Non-printable character. Replace with a period.
+      if (z < psDstLastChar) {
+        *z++ = '.';
+      }
     }
     
-    if ('\0' == s[i])
+    if ('\0' == psSrc[i])
       break;
   }
-  
-  vAppendString(&z,pSuffix);
-  
-  *z = '\0';
-  
+
+  // Check for truncation
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  if (bRet) {
+    // vAppendString will null terminate what has been written
+    vAppendString(&z, psDstLastChar, psSuffix, pbResult);
+
+  } else {
+    *z = '\0';
+  }
+
   vTrace("%s"_Stz,caString);
 }
 
 /*----------------------------------------------------------------------------*/
-/* sDupe: duplicate string                                                    */
+/* bEqualTo: test if the two args match                                       */
 /*----------------------------------------------------------------------------*/
-char* StrLib::sDupe(const char* psArg)
+bool StrLib::bEqualTo(const char* psArg1, const char* psArg2)
 {
   _static_
-  
-  i8 iSize = StrLib::nSize(psArg);
 
-  char* psString = wAllocate(iSize);
+  i8 iDiff = strcmp(psArg1, psArg2);
 
-  StrLib::vCopy(psString,psArg);
-
-  return psString;
+  if (0 == iDiff)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* sDupeStripped: duplicate stripped string                                   */
+/* bEqualTo: test if the two args match up to nLen number of characters       */
 /*----------------------------------------------------------------------------*/
-char* StrLib::sDupeStripped(const char* s)
+bool StrLib::bEqualTo(const char* psArg1, i8 nLen, const char* psArg2)
 {
   _static_
-  
-  if ('"' != *s)
-    return sDupe(s);
-  
-  i8 iSize = StrLib::nSize(s) - 2;
-  
-  char* psString = wAllocate(iSize);
-  
-  char* p = psString;
-  
-  for (s++; '"' != *s; )
-  {
-    if ('\\' == *s)
-      s++;
-    *p++ = *s++;
-  }
-  *p = '\0';
-  
-  return psString;
+
+  i8 iDiff = strncmp(psArg1, psArg2, nLen);
+
+  if (0 == iDiff)
+    return true;
+  else
+    return false;
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* bEnds: test if string ends with given char                                 */
+/* bEqualTo: are two arguments equal (case or no case)                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bEachLine(char** aacInputChar, char* acOutputChar)
+bool StrLib::bEqualTo(const char* psArg1, const char* psArg2, i8 iCase)
 {
   _static_
-  
-  char* acInputChar = *aacInputChar;
-  
-  for (;;) {
-    
-    if ('\n' == *acInputChar) {
-      *acOutputChar++ = '\0';
-      acInputChar++;
-      break;
-    }
-    
-    if ('\0' == *acInputChar) {
-      if (acInputChar == *aacInputChar)
-        return false;
-      else {
-        *acOutputChar++ = '\0';
-        break;
-      }
-    }
-    
-    *acOutputChar++ = *acInputChar++;
-  }
-  
-  *aacInputChar = acInputChar;
-  return true;
+
+  i8 iDiff;
+
+  if (C_NO_CASE == iCase)
+    iDiff = strcasecmp(psArg1, psArg2);
+  else
+    iDiff = strcmp(psArg1, psArg2);
+
+  if (0 == iDiff)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* bEnds: test if string ends with given char                                 */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bEnds(const char* s, const char c)
+bool StrLib::bEnds(const char* psArg, const char c)
 {
   _static_
   
-  const char* z = acLast(s);
+  const char* z = acLast(psArg);
   
   if (c == *z)
     return true;
@@ -843,19 +1170,19 @@ bool StrLib::bEnds(const char* s, const char c)
 /*----------------------------------------------------------------------------*/
 /* bEnds: test if string ends with given substr arg                           */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bEnds(char* sArg, char* sEnd)
+bool StrLib::bEnds(const char* psArg, const char* psEnd)
 {
   _static_
   
-  i8 nLen  = nLength(sArg);
-  i8 nBack = nLength(sEnd);
+  i8 nLen  = nLength(psArg);
+  i8 nBack = nLength(psEnd);
   
   if (nBack > nLen)
     return false;
   
-  const char* sFrom = sArg + nLen - nBack;
+  const char* sFrom = psArg + nLen - nBack;
   
-  if (bEqualTo(sFrom,sEnd))
+  if (bEqualTo(sFrom, psEnd))
     return true;
   else
     return false;
@@ -864,24 +1191,35 @@ bool StrLib::bEnds(char* sArg, char* sEnd)
 /*----------------------------------------------------------------------------*/
 /* vEscape: put a '\' before any escapable char                               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vEscape(char* azDst, char* azSrc)
+void StrLib::vEscape(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
-  
-  while (*azSrc) {
 
-    char cChr = *azSrc++;
-    
-    if (bIsEscapable(cChr)) {
-      *azDst++ = '\\';
-      *azDst++ = cEscapeFor(cChr);
-    }
-    else {
-      *azDst++ = cChr;
-    }
-  }
+  i8 iReqBytes = 0;
   
-  *azDst = '\0';
+  while (*psSrc) {
+
+    char cChr = *psSrc++;
+
+    if (bIsEscapable(cChr)) { /* null term + escape char */
+      if (iReqBytes < iDstBufSize - 2) {
+        *psDst++ = '\\';
+        *psDst++ = cEscapeFor(cChr);
+      }
+      ++iReqBytes;  // for the escape char
+    }
+    else if (iReqBytes < iDstBufSize - 1) {
+      *psDst++ = cChr;
+    }
+
+    ++iReqBytes;
+  }
+
+  *psDst = '\0';
+  ++iReqBytes;
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -951,26 +1289,43 @@ char StrLib::cEscapeConvert(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vEscape: put a '\' before an '"'                                           */
+/* vEscape: put a '\' before an '"' or an existing '\'                        */
 /*----------------------------------------------------------------------------*/
-void StrLib::vEscapeDblQuote(const char* sArg, char* sEscaped)
+void StrLib::vEscapeDblQuote(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
   
-  const char* aSrc = sArg;
-  char* aDst = sEscaped;
-  
-  while (*aSrc) {
-    if ('\"' == *aSrc)
-      *aDst++ = '\\';
-    else
-    if ('\\' == *aSrc)
-      *aDst++ = '\\';
+  char* d = psDst;
+  const char* s = psSrc;
 
-    *aDst++ = *aSrc++;
+  i8 iReqBytes = 0;
+
+  while (*s) {
+
+    if ('\"' == *s) {
+      if (iReqBytes < iDstBufSize - 2) {
+        *d++ = '\\';
+      }
+      ++iReqBytes;  // for the escape char
+
+    } else if ('\\' == *s) {
+      if (iReqBytes < iDstBufSize - 2) {
+        *d++ = '\\';
+      }
+      ++iReqBytes;  // for the escape char
+    }
+
+    if (iReqBytes < iDstBufSize - 1) {
+      *d++ = *s++;
+    }
+    ++iReqBytes;
   }
   
-  *aDst = '\0';
+  *d = '\0';
+  ++iReqBytes;
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -993,25 +1348,34 @@ char StrLib::cEscapeFor(const char cArg)
 /*----------------------------------------------------------------------------*/
 /* insert cWith before any instance of cChar in azStr                         */
 /*----------------------------------------------------------------------------*/
-void StrLib::vEscapeInsert(char* azStr, char cChar, char cWith)
+void StrLib::vEscapeInsert(char* psDst, i8 iDstBufSize, char cChar, char cWith, bool* pbResult)
 {
   _static_
 
+  char* azDstCrs = psDst;
+  i8 iReqBytes = 0;
 
-  char* azCrs = azStr;
+  while (*azDstCrs) {
 
-  while (*azCrs) {
-    if (cChar != *azCrs) {
-      azCrs++;
+    if (cChar != *azDstCrs) {
+      ++iReqBytes;
+      azDstCrs++;
       continue;
     }
 
-    vTrace("vEscapeInsert: %s "_Stz,azStr);
-    vInsertChar(azCrs,cWith);
-    vTrace("-- %s \n"_Stz,azStr);
+    if (iReqBytes < iDstBufSize - 2) {
+      vInsertChar(azDstCrs, iDstBufSize - iReqBytes, cWith, pbResult);
+    }
 
-    azCrs += 2;
+    azDstCrs  += 2;
+    iReqBytes += 2;
   }
+
+  // One more needed for the null terminator which should have been moved during vInsertChar().
+  ++iReqBytes;
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1034,7 +1398,7 @@ char StrLib::cEscapeInverse(const char cArg)
 /*----------------------------------------------------------------------------*/
 /* escape character processing                                                */
 /*----------------------------------------------------------------------------*/
-char StrLib::cEscapeProcessing(char** aaSrc, char cEscapeChar)
+char StrLib::cEscapeProcessing(const char** aaSrc, char cEscapeChar)
 {
   _static_
   
@@ -1075,82 +1439,9 @@ bool StrLib::bEscapedSpecial(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bEqualTo: test if the two args match                                       */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bEqualTo(const char* s1, const char* s2)
-{
-  _static_
-  
-  i8 iDiff = strcmp(s1,s2);
-  
-  if (0 == iDiff)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* bEqualTo: test if the two args match                                       */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bEqualTo(const char* s1, i8 nLen2, const char* s2)
-{
-  _static_
-
-  i8 iDiff = strncmp(s1,s2,nLen2);
-
-  if (0 == iDiff)
-    return true;
-  else
-    return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* bEqualTo: are two arguments equal (case or no case)                        */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bEqualTo(const char* pArg1, const char* pArg2, i8 iCase)
-{
-  _static_
-  
-  i8 iDiff;
-  
-  if (C_NO_CASE == iCase)
-    iDiff = strcasecmp(pArg1,pArg2);
-  else
-    iDiff = strcmp(pArg1,pArg2);
-  
-  if (0 == iDiff)
-    return true;
-  else
-    return false;
-}
-  
-/*----------------------------------------------------------------------------*/
-/* bExtractArg: extract an argument from substr                               */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bExtractArg(char** ps, char* pArg)
-{
-  _static_
-  
-  if ( ! *ps )
-    return false;
-  
-  bool bOnce = false;
-  if (**ps && ':' != **ps)
-    bOnce = true;
-  
-  char *a = pArg;
-  while (**ps && ':' != **ps)
-    *a++ = *(*ps)++;
-  *a = '\0';
-  
-  return bOnce;
-}
-
-/*----------------------------------------------------------------------------*/
 /* bExtractBoolean: extract a boolean from substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
+bool StrLib::bExtractBoolean(char** ppsSrcCrs, i8& iBoolean)
 {
   _static_
   
@@ -1161,15 +1452,15 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
   // numeric processing
 
   // test for number
-  if (StrLib::bIsDigit(**aaSrc)) {
+  if (StrLib::bIsDigit(**ppsSrcCrs)) {
     
     // - numeric processing
     
     // collect all numeric digits
     i8 iResult = 0;
-    while (StrLib::bIsDigit(**aaSrc)) {
-      iResult = iResult * 10 + StrLib::iDigitToI8(**aaSrc);
-      (*aaSrc)++;
+    while (StrLib::bIsDigit(**ppsSrcCrs)) {
+      iResult = iResult * 10 + StrLib::iDigitToI8(**ppsSrcCrs);
+      (*ppsSrcCrs)++;
     }
 
     // a non-zero number is true
@@ -1184,20 +1475,20 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
   // true processing
   
   // test for possible true
-  if ('t' ==  **aaSrc || 'T' == **aaSrc) {
+  if ('t' ==  **ppsSrcCrs || 'T' == **ppsSrcCrs) {
 
     // - true processing
     
     iBoolean = true;
     
     // next 3 characters could be rue to make true
-    (*aaSrc)++;
-    if ('r' !=  **aaSrc && 'R' != **aaSrc) return true;  // saw only t
-    (*aaSrc)++;
-    if ('u' !=  **aaSrc && 'U' != **aaSrc) return false; // saw only tr
-    (*aaSrc)++;
-    if ('e' !=  **aaSrc && 'E' != **aaSrc) return false; // saw only tru
-    (*aaSrc)++;
+    (*ppsSrcCrs)++;
+    if ('r' !=  **ppsSrcCrs && 'R' != **ppsSrcCrs) return true;  // saw only t
+    (*ppsSrcCrs)++;
+    if ('u' !=  **ppsSrcCrs && 'U' != **ppsSrcCrs) return false; // saw only tr
+    (*ppsSrcCrs)++;
+    if ('e' !=  **ppsSrcCrs && 'E' != **ppsSrcCrs) return false; // saw only tru
+    (*ppsSrcCrs)++;
     
     return true; // saw true
   }
@@ -1206,20 +1497,20 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
   // false processing
   
   // test for possible false
-  if ('f' ==  **aaSrc || 'F' == **aaSrc) {
+  if ('f' ==  **ppsSrcCrs || 'F' == **ppsSrcCrs) {
     
     // - false processing
     
     // next 4 characters could be alse to make alse
-    (*aaSrc)++;
-    if ('a' !=  **aaSrc && 'A' != **aaSrc) return true;  // saw only f
-    (*aaSrc)++;
-    if ('l' !=  **aaSrc && 'L' != **aaSrc) return false; // saw only fa
-    (*aaSrc)++;
-    if ('s' !=  **aaSrc && 'S' != **aaSrc) return false; // saw only fal
-    (*aaSrc)++;
-    if ('e' !=  **aaSrc && 'E' != **aaSrc) return false; // saw only fals
-    (*aaSrc)++;
+    (*ppsSrcCrs)++;
+    if ('a' !=  **ppsSrcCrs && 'A' != **ppsSrcCrs) return true;  // saw only f
+    (*ppsSrcCrs)++;
+    if ('l' !=  **ppsSrcCrs && 'L' != **ppsSrcCrs) return false; // saw only fa
+    (*ppsSrcCrs)++;
+    if ('s' !=  **ppsSrcCrs && 'S' != **ppsSrcCrs) return false; // saw only fal
+    (*ppsSrcCrs)++;
+    if ('e' !=  **ppsSrcCrs && 'E' != **ppsSrcCrs) return false; // saw only fals
+    (*ppsSrcCrs)++;
     
     return true; // saw false
   }
@@ -1233,7 +1524,7 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
 /*----------------------------------------------------------------------------*/
 /* bExtractDate: extract a date from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
+bool StrLib::bExtractDate(char** ppsSrcCrs, i8& iYear, i8& iMonth, i8& iDay)
 {
   _static_
   
@@ -1242,7 +1533,7 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
   iYear = iMonth = iDay = 0;
   
   // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 4) )
     return false;
   
   // assume a leap year
@@ -1256,21 +1547,21 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
   iYear = uSubField;
   
   // skip - separator
-  if ('-' != *(*aaSrc)++)
+  if ('-' != *(*ppsSrcCrs)++)
     return false;
   
   // extract month
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 2) )
     return false;
   if (uSubField < 1 || uSubField > 12)
     return false;
   iMonth = uSubField;
   
   // skip - separator
-  if ('-' != *(*aaSrc)++) return false;
+  if ('-' != *(*ppsSrcCrs)++) return false;
   
   // extract day
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 2) )
     return false;
   if (bLeapYear) {
     if ((i8)uSubField > iDaysPerMonthLeap[iMonth-1])
@@ -1288,7 +1579,7 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
 /*----------------------------------------------------------------------------*/
 /* bExtractDate: extract a date from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
+bool StrLib::bExtractDate2(char** ppsSrcCrs, i8& iYear, i8& iMonth, i8& iDay,
                            eDC* pDateComponents, char cDateSeparator)
 {
   _static_
@@ -1300,17 +1591,17 @@ bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
     switch (eDateComponent) {
       
       case DC_DD:
-        if (! bExtractDay(aaSrc,iDay))
+        if (! bExtractDay(ppsSrcCrs, iDay))
           return false;
         break;
       
       case DC_MM:
-        if (! bExtractMonth(aaSrc,iMonth))
+        if (! bExtractMonth(ppsSrcCrs, iMonth))
           return false;
         break;
       
       case DC_YYYY:
-        if (! bExtractYear(aaSrc,iYear))
+        if (! bExtractYear(ppsSrcCrs, iYear))
           return false;
         break;
       
@@ -1320,7 +1611,7 @@ bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
     
     // skip separator after components  0 and 1
     if (i_Component < 2) {
-      if (cDateSeparator != *(*aaSrc)++)
+      if (cDateSeparator != *(*ppsSrcCrs)++)
         return false;
     }
     
@@ -1335,7 +1626,7 @@ bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
 /*----------------------------------------------------------------------------*/
 /* bExtractDay: extract a day from substr                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDay(char** aaSrc, i8& iDay)
+bool StrLib::bExtractDay(char** ppsSrcCrs, i8& iDay)
 {
   _static_
   
@@ -1343,7 +1634,7 @@ bool StrLib::bExtractDay(char** aaSrc, i8& iDay)
 
   iDay = 0;
 
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 2) )
     return false;
 
   iDay = uSubField;
@@ -1354,7 +1645,7 @@ bool StrLib::bExtractDay(char** aaSrc, i8& iDay)
 /*----------------------------------------------------------------------------*/
 /* bExtractDecimal: extract a decimal from substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
+bool StrLib::bExtractDecimal(char** ppsSrcCrs, i8& iDecimal, i8 iLength, i8 iScale)
 {
   _static_
   
@@ -1364,28 +1655,28 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
   
   // test for negative or positive sign
   bool bNegative = false;
-  if (**aaSrc && '-' == **aaSrc ) {
+  if (**ppsSrcCrs && '-' == **ppsSrcCrs ) {
     bNegative = true;
-    (*aaSrc)++;
+    (*ppsSrcCrs)++;
   }
   else
-    if (**aaSrc && '+' == **aaSrc ) {
-      (*aaSrc)++;
+    if (**ppsSrcCrs && '+' == **ppsSrcCrs ) {
+      (*ppsSrcCrs)++;
     }
   
   bool bOnce = false;
-  if (**aaSrc && (isdigit(**aaSrc) || '.' == **aaSrc))
+  if (**ppsSrcCrs && (isdigit(**ppsSrcCrs) || '.' == **ppsSrcCrs))
     bOnce = true;
   
   // ignore leading 0's
-  while (StrLib::bIsDigit(**aaSrc) && StrLib::iDigitToI8(**aaSrc) == 0) {
-    (*aaSrc)++;
+  while (StrLib::bIsDigit(**ppsSrcCrs) && StrLib::iDigitToI8(**ppsSrcCrs) == 0) {
+    (*ppsSrcCrs)++;
   }
   
   // collect leading digits (till '.')
-  while (StrLib::bIsDigit(**aaSrc)) {
-    uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
-    (*aaSrc)++;
+  while (StrLib::bIsDigit(**ppsSrcCrs)) {
+    uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**ppsSrcCrs);
+    (*ppsSrcCrs)++;
     iPrecision--;
   }
   
@@ -1393,13 +1684,13 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
   if (iPrecision < 0)
     return false;
   
-  if ('.' == **aaSrc) {
+  if ('.' == **ppsSrcCrs) {
     
-    (*aaSrc)++; // skip '.'
+    (*ppsSrcCrs)++; // skip '.'
     
-    while (StrLib::bIsDigit(**aaSrc) && iScale) {
-      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**aaSrc);
-      (*aaSrc)++;
+    while (StrLib::bIsDigit(**ppsSrcCrs) && iScale) {
+      uUnsignedResult = uUnsignedResult * 10 + StrLib::iDigitToI8(**ppsSrcCrs);
+      (*ppsSrcCrs)++;
       iScale--;
     }
   }
@@ -1412,11 +1703,11 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
     return false;
   
   // round up if there any more digits after decimal
-  if (StrLib::bIsDigit(**aaSrc)) {
-    if (StrLib::iDigitToI8(**aaSrc) >= 5)
+  if (StrLib::bIsDigit(**ppsSrcCrs)) {
+    if (StrLib::iDigitToI8(**ppsSrcCrs) >= 5)
       uUnsignedResult += 1;
-    while (StrLib::bIsDigit(**aaSrc))
-      (*aaSrc)++;
+    while (StrLib::bIsDigit(**ppsSrcCrs))
+      (*ppsSrcCrs)++;
   }
   
   // compute final result
@@ -1434,7 +1725,7 @@ bool StrLib::bExtractDecimal(char** aaSrc, i8& iDecimal, i8 iLength, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* extract value from a decimal literal                                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractDecLit(char*& az, i8& iValue, i8& nFractionDigits)
+bool StrLib::bExtractDecLit(char*& ppsSrcCrs, i8& iValue, i8& nFractionDigits)
 {
   _static_
   
@@ -1442,18 +1733,18 @@ bool StrLib::bExtractDecLit(char*& az, i8& iValue, i8& nFractionDigits)
   nFractionDigits = 0;
     
   // collect whole number part (till '.')
-  while (StrLib::bIsDigit(*az))
-    iValue = iValue * 10 + StrLib::iDigitToI8(*az++);
+  while (StrLib::bIsDigit(*ppsSrcCrs))
+    iValue = iValue * 10 + StrLib::iDigitToI8(*ppsSrcCrs++);
 
-  if ('.' != *az)
+  if ('.' != *ppsSrcCrs)
     return true;
   
   // skip '.'
-  az++;
+  ppsSrcCrs++;
 
   // collect fraction as well
-  while (StrLib::bIsDigit(*az)) {
-    iValue = iValue * 10 + StrLib::iDigitToI8(*az++);
+  while (StrLib::bIsDigit(*ppsSrcCrs)) {
+    iValue = iValue * 10 + StrLib::iDigitToI8(*ppsSrcCrs++);
     nFractionDigits++;
   }
   
@@ -1463,7 +1754,7 @@ bool StrLib::bExtractDecLit(char*& az, i8& iValue, i8& nFractionDigits)
 /*----------------------------------------------------------------------------*/
 /* bExtractFloat: extract a float from substr                                 */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
+bool StrLib::bExtractFloat(char** ppsSrcCrs, d8& dFloat)
 {
   _static_
   
@@ -1473,46 +1764,46 @@ bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
   
   // test for negative or positive sign
   bool bNegative = false;
-  if (**aaSrc && '-' == **aaSrc ) {
+  if (**ppsSrcCrs && '-' == **ppsSrcCrs ) {
     bNegative = true;
-    (*aaSrc)++;
+    (*ppsSrcCrs)++;
   }
   else
-    if (**aaSrc && '+' == **aaSrc ) {
-      (*aaSrc)++;
+    if (**ppsSrcCrs && '+' == **ppsSrcCrs ) {
+      (*ppsSrcCrs)++;
     }
   
   bool bOnce = false;
-  if (**aaSrc && (isdigit(**aaSrc) || '.' == **aaSrc))
+  if (**ppsSrcCrs && (isdigit(**ppsSrcCrs) || '.' == **ppsSrcCrs))
     bOnce = true;
   
   // collect leading portion (till '.')
-  while (StrLib::bIsDigit(**aaSrc))
-    *aChar++ = *(*aaSrc)++;
+  while (StrLib::bIsDigit(**ppsSrcCrs))
+    *aChar++ = *(*ppsSrcCrs)++;
   
   // collect trailing portion (after '.')
-  if ('.' == **aaSrc) {
-    *aChar++ = *(*aaSrc)++;
-    while (StrLib::bIsDigit(**aaSrc))
-      *aChar++ = *(*aaSrc)++;
+  if ('.' == **ppsSrcCrs) {
+    *aChar++ = *(*ppsSrcCrs)++;
+    while (StrLib::bIsDigit(**ppsSrcCrs))
+      *aChar++ = *(*ppsSrcCrs)++;
   }
   
   // test for exponent
-  if (**aaSrc && ('e' == **aaSrc || 'E' == **aaSrc) ) {
+  if (**ppsSrcCrs && ('e' == **ppsSrcCrs || 'E' == **ppsSrcCrs) ) {
     
-    *aChar++ = *(*aaSrc)++;
+    *aChar++ = *(*ppsSrcCrs)++;
     
     // test for -
-    if (**aaSrc && '-' == **aaSrc )
-      *aChar++ = *(*aaSrc)++;
+    if (**ppsSrcCrs && '-' == **ppsSrcCrs )
+      *aChar++ = *(*ppsSrcCrs)++;
     else
     // test for +
-    if (**aaSrc && '+' == **aaSrc )
-      *aChar++ = *(*aaSrc)++;
+    if (**ppsSrcCrs && '+' == **ppsSrcCrs )
+      *aChar++ = *(*ppsSrcCrs)++;
     
     // collect exponent digits
-    while (StrLib::bIsDigit(**aaSrc))
-      *aChar++ = *(*aaSrc)++;
+    while (StrLib::bIsDigit(**ppsSrcCrs))
+      *aChar++ = *(*ppsSrcCrs)++;
   }
   
   // terminate
@@ -1528,11 +1819,11 @@ bool StrLib::bExtractFloat(char** aaSrc, d8& dFloat)
 /*----------------------------------------------------------------------------*/
 /* bExtractFraction: extract an unsigned integer as a fraction from substr    */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractFraction(char** ps, u8* aU8, i8 iDigits)
+bool StrLib::bExtractFraction(char** ppsSrcCrs, u8* aU8, i8 iDigits)
 {
   _static_
   
-  char *s = *ps;
+  char *s = *ppsSrcCrs;
   
   if ( ! *s )
     return false;
@@ -1561,7 +1852,7 @@ bool StrLib::bExtractFraction(char** ps, u8* aU8, i8 iDigits)
   
   *aU8 = uFraction;
   
-  *ps = s;
+  *ppsSrcCrs = s;
   
   return bOnce;
 }
@@ -1569,11 +1860,11 @@ bool StrLib::bExtractFraction(char** ps, u8* aU8, i8 iDigits)
 /*----------------------------------------------------------------------------*/
 /* bExtractInteger: extract an integer from substr                            */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, bool bWithSign)
+bool StrLib::bExtractInteger(char** ppsSrcCrs, i8* aI8, bool bWithSign)
 {
   _static_
   
-  char *aSrc = *aaSrc;
+  char *aSrc = *ppsSrcCrs;
   
   if ( ! *aSrc )
     return false;
@@ -1615,7 +1906,7 @@ bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, bool bWithSign)
   else
     *aI8 = uUnsignedResult;
   
-  *aaSrc = aSrc;
+  *ppsSrcCrs = aSrc;
   
   return bOnce;
 }
@@ -1623,11 +1914,11 @@ bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, bool bWithSign)
 /*----------------------------------------------------------------------------*/
 /* bExtractInteger: extract an integer from substr, counting no of digits     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, i8& nDigits)
+bool StrLib::bExtractInteger(char** ppsSrcCrs, i8* aI8, i8& nDigits)
 {
   _static_
   
-  char *aSrc = *aaSrc;
+  char *aSrc = *ppsSrcCrs;
   
   if ( ! *aSrc )
     return false;
@@ -1656,7 +1947,7 @@ bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, i8& nDigits)
   
   *aI8 = uUnsignedResult;
   
-  *aaSrc = aSrc;
+  *ppsSrcCrs = aSrc;
   
   return bOnce;
 }
@@ -1664,7 +1955,7 @@ bool StrLib::bExtractInteger(char** aaSrc, i8* aI8, i8& nDigits)
 /*----------------------------------------------------------------------------*/
 /* bExtractInterval: extract an interval from substr                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractInterval(char** aaSrc, i8& iSecond, i8& iMilli)
+bool StrLib::bExtractInterval(char** ppsSrcCrs, i8& iSecond, i8& iMilli)
 {
   _static_
   
@@ -1673,15 +1964,15 @@ bool StrLib::bExtractInterval(char** aaSrc, i8& iSecond, i8& iMilli)
   iSecond = iMilli = 0;
   
   // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField) )
     return false;
   
   iSecond = uSubField;
   
   // extract fraction (assuming milliseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
-    if ( StrLib::bExtractU8(aaSrc,&uSubField) )
+  if ('.' == **ppsSrcCrs) {
+    (*ppsSrcCrs)++;
+    if ( StrLib::bExtractU8(ppsSrcCrs, &uSubField) )
       iMilli = uSubField;
   }
   
@@ -1689,29 +1980,39 @@ bool StrLib::bExtractInterval(char** aaSrc, i8& iSecond, i8& iMilli)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractItem: extract an item from substr                                  */
+/* bExtractItem: extract an item from substr until a space or comma is seen   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractItem(char** ps, char* pItem)
+bool StrLib::bExtractItem(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult )
 {
   _static_
-  
-  if ( ! *ps )
+
+  if ( ! *ppsSrcCrs )
     return false;
-  
-  char *a = pItem;
+
+  i8 iReqBytes = 0;
+
+  char *d = psDst;
   bool bOnce = false;
   
-  for ( ; **ps; (*ps)++)
+  for ( ; **ppsSrcCrs; (*ppsSrcCrs)++)
   {
-    if (' ' == **ps || ',' == **ps)
+    if (' ' == **ppsSrcCrs || ',' == **ppsSrcCrs)
       break;
 
     bOnce = true;
 
-    *a++ = **ps;
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = **ppsSrcCrs;
+    }
+
   }
-  
-  *a = '\0';
+
+  ++iReqBytes;
+  *d = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return bOnce;
 }
@@ -1719,28 +2020,37 @@ bool StrLib::bExtractItem(char** ps, char* pItem)
 /*----------------------------------------------------------------------------*/
 /* bExtractItem: extract an item from substr                                  */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
+bool StrLib::bExtractItem(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, char cDelimiter, bool* pbResult)
 {
   _static_
   
-  if ( ! *ps )
+  if ( ! *ppsSrcCrs )
     return false;
-  
-  char *a = pItem;
+
+  i8 iReqBytes = 0;
+
+  char *a = psDst;
   bool bOnce = false;
   
-  for ( ; **ps; (*ps)++)
+  for ( ; **ppsSrcCrs; (*ppsSrcCrs)++)
   {
     //if (' ' == **ps || cDelimiter == **ps)
     bOnce = true;
     
-  if (cDelimiter == **ps)
-    break;
-  
-    *a++ = **ps;
+    if (cDelimiter == **ppsSrcCrs)
+      break;
+
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *a++ = **ppsSrcCrs;
+    }
   }
-  
+
+  ++iReqBytes;
   *a = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return bOnce;
 }
@@ -1748,7 +2058,7 @@ bool StrLib::bExtractItem(char** ps, char* pItem, char cDelimiter)
 /*----------------------------------------------------------------------------*/
 /* bExtractMonth: extract a month from substr                                 */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth)
+bool StrLib::bExtractMonth(char** ppsSrcCrs, i8& iMonth)
 {
   _static_
   
@@ -1756,7 +2066,7 @@ bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth)
   
   iMonth = 0;
   
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 2) )
     return false;
   
   if (uSubField < 1 || uSubField > 12)
@@ -1768,28 +2078,36 @@ bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractName: extract a name from substr                                   */
+/* bExtractName: extract a name from substr until a '/' is hit                */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractName(char** aazCursor, char* azName)
+bool StrLib::bExtractName(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
   
-  if (! **aazCursor)
+  if (! **ppsSrcCrs)
     return false;
+
+  i8 iReqBytes = 0;
+  char *d = psDst;
   
-  char *aChar = azName;
-  
-  for ( ; **aazCursor; (*aazCursor)++) {
+  for ( ; **ppsSrcCrs; (*ppsSrcCrs)++) {
     
-    if ('/' == **aazCursor) {
-      (*aazCursor)++;
+    if ('/' == **ppsSrcCrs) {
+      (*ppsSrcCrs)++;
       break;
     }
-    
-    *aChar++ = **aazCursor;
+
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = **ppsSrcCrs;
+    }
   }
-  
-  *aChar = '\0';
+
+  ++iReqBytes;
+  *d = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return true;
 }
@@ -1797,21 +2115,38 @@ bool StrLib::bExtractName(char** aazCursor, char* azName)
 /*----------------------------------------------------------------------------*/
 /* bExtractPath: extract a path from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractPath(char** ps, char* pPath)
+bool StrLib::bExtractPath(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult )
 {
   _static_
   
-  if ( ! *ps )
+  if ( ! *ppsSrcCrs )
     return false;
   
   bool bOnce = false;
-  if (**ps && ' ' != **ps)
+  if (**ppsSrcCrs && ' ' != **ppsSrcCrs)
     bOnce = true;
-  
-  char *a = pPath;
-  while (**ps && ' ' != **ps)
-    *a++ = *(*ps++);
-  *a = '\0';
+
+  i8 iReqBytes = 0;
+
+  char* s = *ppsSrcCrs;
+  char* d = psDst;
+  while (*s && ' ' != *s) {
+
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = *s;
+    }
+    s++;
+  }
+
+  *ppsSrcCrs = s;
+  ++iReqBytes;
+  if (iDstBufSize > 0) {
+    *d = '\0';
+  }
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return bOnce;
 }
@@ -1819,21 +2154,21 @@ bool StrLib::bExtractPath(char** ps, char* pPath)
 /*----------------------------------------------------------------------------*/
 /* bExtractPort: extract a port number from substr                            */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractPort(char** ps, u2* pPort)
+bool StrLib::bExtractPort(char** ppsSrcCrs, u2* pPort)
 {
   _static_
   
-  if ( ! *ps )
+  if ( ! *ppsSrcCrs )
     return false;
   
   bool bOnce = false;
-  if (**ps && isdigit(**ps))
+  if (**ppsSrcCrs && isdigit(**ppsSrcCrs))
     bOnce = true;
   
   i8 v = 0;
-  for ( ; **ps; (*ps)++)
+  for ( ; **ppsSrcCrs; (*ppsSrcCrs)++)
   {
-    char c = **ps;
+    char c = **ppsSrcCrs;
     
     if ( ! isdigit(c) )
       break;
@@ -1847,31 +2182,44 @@ bool StrLib::bExtractPort(char** ps, u2* pPort)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractString: extract a quoted string from substr                        */
+/* bExtractQuotedString: extract a double quoted string from substr           */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractString(char** ps, char* pString)
+bool StrLib::bExtractQuotedString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
   
-  if ( ! *ps )
+  if ( ! *ppsSrcCrs )
     return false;
   
-  if ('"' != **ps)
+  if ('"' != **ppsSrcCrs)
     return false;
-  
-  char *a = pString;
-  //*a++ = *((*ps)++);
-  
-  (*ps)++;
-  for ( ; **ps; (*ps)++) {
-    if ('"' == **ps) {
-      (*ps)++;
+
+  i8 iReqBytes = 0;
+
+  char* s = *ppsSrcCrs;
+  char* d = psDst;
+
+  s++;
+  for ( ; *s; s++) {
+
+    ++iReqBytes;
+    if ('"' == *s) {
+      s++;
       break;
     }
-    *a++ = **ps;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = *s;
+    }
   }
-  
-  *a = '\0';
+
+  *ppsSrcCrs = s;
+  ++iReqBytes;
+  if (iDstBufSize > 0) {
+    *d = '\0';
+  }
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return true;
 }
@@ -1879,7 +2227,7 @@ bool StrLib::bExtractString(char** ps, char* pString)
 /*----------------------------------------------------------------------------*/
 /* bExtractTime: extract a time from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractTime(char** aaSrc,
+bool StrLib::bExtractTime(char** ppsSrcCrs,
                           i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
   _static_
@@ -1889,18 +2237,18 @@ bool StrLib::bExtractTime(char** aaSrc,
   iHour = iMinute = iSecond = iMicro = 0;
   
   // extract hour
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 2) )
     return false;
   if (uSubField > 23)
     return false;
   iHour = uSubField;
   
   // skip : separator
-  if (':' != *(*aaSrc)++)
+  if (':' != *(*ppsSrcCrs)++)
     return false;
   
   // extract minute
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 2) )
     return false;
   
   if (uSubField > 59)
@@ -1908,32 +2256,32 @@ bool StrLib::bExtractTime(char** aaSrc,
   iMinute = uSubField;
   
   // skip : separator
-  if (':' != *(*aaSrc)++)
+  if (':' != *(*ppsSrcCrs)++)
     return false;
   
   // extract second
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
+  if ( ! StrLib::bExtractU8(ppsSrcCrs, &uSubField, 2) )
     return false;
   if (uSubField > 59)
     return false;
   iSecond = uSubField;
   
   // extract fraction (assuming microseconds)
-  if ('.' == **aaSrc) {
-    (*aaSrc)++;
+  if ('.' == **ppsSrcCrs) {
+    (*ppsSrcCrs)++;
     
-    if ( StrLib::bExtractFraction(aaSrc,&uSubField,6) ) {
+    if ( StrLib::bExtractFraction(ppsSrcCrs, &uSubField, 6) ) {
       iMicro = uSubField;
     }
     
     // skip/truncate any remaining digits
-    while (bIsDigit(**aaSrc))
-      (*aaSrc)++;
+    while (bIsDigit(**ppsSrcCrs))
+      (*ppsSrcCrs)++;
   }
   
   // skip optional Z (UTC zone designator)
-  if ('Z' == **aaSrc)
-    (*aaSrc)++;
+  if ('Z' == **ppsSrcCrs)
+    (*ppsSrcCrs)++;
   
   return true;
 }
@@ -1941,7 +2289,7 @@ bool StrLib::bExtractTime(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* bExtractTimestamp: extract a timestamp from substr                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractTimestamp(char** aaSrc,
+bool StrLib::bExtractTimestamp(char** ppsSrcCrs,
                                i8& iYear, i8& iMonth,  i8& iDay,
                                i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
@@ -1949,7 +2297,7 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
     
   // - date portion
 
-  if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
+  if ( ! bExtractDate(ppsSrcCrs, iYear, iMonth, iDay) )
     return false;
   //if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
   //                             pFmt->m_eDateComponent,
@@ -1959,14 +2307,14 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
   // - time portion
   
   // skip T or space separator
-  if ( ! ('T' == **aaSrc || ' ' == **aaSrc) ) {
+  if ( ! ('T' == **ppsSrcCrs || ' ' == **ppsSrcCrs) ) {
     iHour = iMinute = iSecond = iMicro = 0;
     return true;
   }
   
-  (*aaSrc)++;
+  (*ppsSrcCrs)++;
   
-  if ( ! bExtractTime(aaSrc,iHour,iMinute,iSecond,iMicro) )
+  if ( ! bExtractTime(ppsSrcCrs, iHour, iMinute, iSecond, iMicro) )
     return false;
 
   return true;
@@ -1975,7 +2323,7 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* bExtractTimestamp: extract a timestamp from substr                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractTimestamp2(char** aaSrc,
+bool StrLib::bExtractTimestamp2(char** ppsSrcCrs,
                                 i8& iYear, i8& iMonth,  i8& iDay,
                                 i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
                                 eDC* pDateComponents, char cDateSeparator)
@@ -1985,22 +2333,22 @@ bool StrLib::bExtractTimestamp2(char** aaSrc,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date portion
   
-  if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
-                               pDateComponents,cDateSeparator) )
+  if ( ! StrLib::bExtractDate2(ppsSrcCrs, iYear, iMonth, iDay,
+                               pDateComponents, cDateSeparator) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time portion
   
   // skip T or space separator
-  if ( ! ('T' == **aaSrc || ' ' == **aaSrc) ) {
+  if ( ! ('T' == **ppsSrcCrs || ' ' == **ppsSrcCrs) ) {
     iHour = iMinute = iSecond = iMicro = 0;
     return true;
   }
   
-  (*aaSrc)++;
+  (*ppsSrcCrs)++;
   
-  if ( ! bExtractTime(aaSrc,iHour,iMinute,iSecond,iMicro) )
+  if ( ! bExtractTime(ppsSrcCrs, iHour, iMinute, iSecond, iMicro) )
     return false;
   
   return true;
@@ -2009,11 +2357,11 @@ bool StrLib::bExtractTimestamp2(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* bExtractU8: extract an unsigned integer from substr                        */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractU8(char** aaSrc, u8* aU8)
+bool StrLib::bExtractU8(char** ppsSrcCrs, u8* aU8)
 {
   _static_
   
-  char *aSrc = *aaSrc;
+  char *aSrc = *ppsSrcCrs;
   
   if ( ! *aSrc )
     return false;
@@ -2039,19 +2387,19 @@ bool StrLib::bExtractU8(char** aaSrc, u8* aU8)
   
   *aU8 = uUnsignedResult;
   
-  *aaSrc = aSrc;
+  *ppsSrcCrs = aSrc;
   
   return bOnce;
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractU8: extract an unsigned integer from substr                        */
+/* bExtractU8: extract an unsigned integer from substr up to iDigits          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
+bool StrLib::bExtractU8(char** ppsSrcCrs, u8* aU8, i8 iDigits)
 {
   _static_
   
-  char *s = *ps;
+  char *s = *ppsSrcCrs;
   
   if ( ! *s )
     return false;
@@ -2077,7 +2425,7 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
   
   *aU8 = v;
   
-  *ps = s;
+  *ppsSrcCrs = s;
   
   return bOnce;
 }
@@ -2085,8 +2433,9 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
 /*----------------------------------------------------------------------------*/
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractVarchar(char** aaSrc,
-                             char* aVarChar,
+bool StrLib::bExtractVarchar(char** ppsSrcCrs,
+                             char* psDst,
+                             i8 iDstBufLen,
                              i8 iMaxLength,
                              bool bSawLeadingEnclosed,
                              char cEnclosedBy_Leading,
@@ -2095,36 +2444,39 @@ bool StrLib::bExtractVarchar(char** aaSrc,
                              char cFieldSeparator,
                              char cRecordTerminator,
                              bool bAllowNonPrintable,
-                             i8& nChars)
+                             i8& nChars,
+                             bool* pbResult)
 {
   _static_
-  
+
   i8 iLength = 0;
-  char *aDst = (char*)aVarChar;
-  
+  char *aDst = (char*)psDst;
   bool bSawTrailingEnclosed = false;
-  
-  char cSrc = **aaSrc;
-  
+
+  if (iMaxLength >= iDstBufLen) {
+    // Report the potential truncation, limit iMaxLength and carry on
+    bCheckBufferSpace(__func__, iMaxLength, iDstBufLen, pbResult);
+    iMaxLength = iDstBufLen - 1;
+  }
+
+  char cSrc = **ppsSrcCrs;
   while (cSrc) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // special case of double enclosedBy
     
     if (cEnclosedBy_Trailing == cEnclosedBy_Leading) {
-      if (cSrc == cEnclosedBy_Leading && *(*aaSrc+1) == cEnclosedBy_Leading) {
+      if (cSrc == cEnclosedBy_Leading && *(*ppsSrcCrs + 1) == cEnclosedBy_Leading) {
         
         // skip the first enclosed character
-        (*aaSrc)++;
+        (*ppsSrcCrs)++;
        
         // append one instance of the enclosedBy character
         if (iLength++ < iMaxLength)
           *aDst++ = cSrc;
       
-        (*aaSrc)++;
-
-        cSrc = **aaSrc;
-        
+        (*ppsSrcCrs)++;
+        cSrc = **ppsSrcCrs;
         continue;
       }
       //falls thru if not the case of double enclosedBy
@@ -2156,7 +2508,7 @@ bool StrLib::bExtractVarchar(char** aaSrc,
       // we saw a leading enclodedBy so test for trailing enclosedBy
       if (cSrc == cEnclosedBy_Trailing) {
         bSawTrailingEnclosed = true;
-        (*aaSrc)++;
+        (*ppsSrcCrs)++;
         break;
       }
       //falls thru if not trailing enclosedBy
@@ -2173,25 +2525,25 @@ bool StrLib::bExtractVarchar(char** aaSrc,
     
     if (cSrc == cEscapeChar) {
       
-      if (StrLib::bEscapeConvert( *((*aaSrc)+1),
+      if (StrLib::bEscapeConvert( *((*ppsSrcCrs) + 1),
                                  cEnclosedBy_Leading, cEnclosedBy_Trailing,
                                  cEscapeChar, cFieldSeparator, cRecordTerminator)) {
         
         // skip the escape character
-        (*aaSrc)++;
+        (*ppsSrcCrs)++;
         
         // append the escaped character
         if (iLength++ < iMaxLength)
-          *aDst++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+          *aDst++ = StrLib::cEscapeConvert(*(*ppsSrcCrs)++);
         else
-          (*aaSrc)++;
+          (*ppsSrcCrs)++;
         
-        cSrc = **aaSrc;
+        cSrc = **ppsSrcCrs;
         continue;
       }
       else {
-        (*aaSrc)++;
-        cSrc = **aaSrc;
+        (*ppsSrcCrs)++;
+        cSrc = **ppsSrcCrs;
       }
     }
     
@@ -2202,18 +2554,22 @@ bool StrLib::bExtractVarchar(char** aaSrc,
     if (iLength++ < iMaxLength)
       *aDst++ = cSrc;
     
-    (*aaSrc)++;
-    cSrc = **aaSrc;
+    (*ppsSrcCrs)++;
+    cSrc = **ppsSrcCrs;
   }
   
   // terminate
   *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
-  if (iLength < iMaxLength)
+  if (iLength < iMaxLength) {
     nChars = iLength;
-  else
+
+  } else {
     nChars = iMaxLength;
+    bool bRet = bCheckBufferSpace(__func__, iLength + 1 /* null term*/, iDstBufLen, pbResult);
+    UNUSED(bRet);
+  }
   
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
@@ -2226,10 +2582,12 @@ bool StrLib::bExtractVarchar(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractVarcharDefault(char** aaSrc,
-                                    char* aVarChar,
+bool StrLib::bExtractVarcharDefault(char** ppsSrcCrs,
+                                    char* psDst,
+                                    i8 iDstBufLen,
                                     i8 iMaxLength,
-                                    i8& nChars)
+                                    i8& nChars,
+                                    bool* pbResult)
 {
   _static_
   
@@ -2241,9 +2599,14 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
   char cEscapeChar = D_ESCAPE_CHAR;
   char cFieldDelimiter = D_FIELD_DELIMITER;
 
-  char *aDst = (char*)aVarChar;
-  
-  char cSrc = **aaSrc;
+  char *aDst = (char*)psDst;
+  char cSrc = **ppsSrcCrs;
+
+  if (iMaxLength >= iDstBufLen) {
+    // Report the potential truncation, limit iMaxLength and carry on
+    bCheckBufferSpace(__func__, iMaxLength, iDstBufLen, pbResult);
+    iMaxLength = iDstBufLen - 1;
+  }
   
   while (cSrc) {
     
@@ -2278,24 +2641,24 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
     
     if (cSrc == cEscapeChar) {
       
-      if (StrLib::bEscapeConvertDefault( *((*aaSrc)+1),
+      if (StrLib::bEscapeConvertDefault( *((*ppsSrcCrs) + 1),
                                  cEscapeChar, cFieldDelimiter)) {
         
         // skip the escape character
-        (*aaSrc)++;
+        (*ppsSrcCrs)++;
         
         // append the escaped character
         if (iLength++ < iMaxLength)
-          *aDst++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+          *aDst++ = StrLib::cEscapeConvert(*(*ppsSrcCrs)++);
         else
-          (*aaSrc)++;
+          (*ppsSrcCrs)++;
         
-        cSrc = **aaSrc;
+        cSrc = **ppsSrcCrs;
         continue;
       }
       else {
-        (*aaSrc)++;
-        cSrc = **aaSrc;
+        (*ppsSrcCrs)++;
+        cSrc = **ppsSrcCrs;
       }
     }
     
@@ -2306,45 +2669,58 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
     if (iLength++ < iMaxLength)
       *aDst++ = cSrc;
     
-    (*aaSrc)++;
-    cSrc = **aaSrc;
+    (*ppsSrcCrs)++;
+    cSrc = **ppsSrcCrs;
   }
   
   // terminate
   *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
-  if (iLength < iMaxLength)
+  if (iLength < iMaxLength) {
     nChars = iLength;
-  else
+
+  } else {
     nChars = iMaxLength;
+    bool bRet = bCheckBufferSpace(__func__, iLength + 1 /* null term*/, iDstBufLen, pbResult);
+    UNUSED(bRet);
+  }
+
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word from substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractWord(char** ps, char* pWord)
+bool StrLib::bExtractWord(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
   
-  if ( ! *ps )
+  if ( ! *ppsSrcCrs )
     return false;
   
   bool bOnce = false;
-  if (**ps && isalnum(**ps))
+  if (**ppsSrcCrs && isalnum(**ppsSrcCrs))
     bOnce = true;
-  
-  char *a = pWord;
-  for ( ; **ps; (*ps)++)
+
+  i8 iReqBytes = 0;
+  char *d = psDst;
+  for ( ; **ppsSrcCrs; (*ppsSrcCrs)++)
   {
-    if ( ! isalnum(**ps) )
+    if ( ! isalnum(**ppsSrcCrs) )
       break;
-    
-    *a++ = **ps;
+
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = **ppsSrcCrs;
+    }
   }
 
-  *a = '\0';
+  ++iReqBytes;
+  *d = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 
   return bOnce;
 }
@@ -2352,33 +2728,43 @@ bool StrLib::bExtractWord(char** ps, char* pWord)
 /*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word or quoted string                              */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractWordString(char** ps, char* pWord)
+bool StrLib::bExtractWordString(char** ppsSrcCrs, char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
   
-  if ( ! *ps )
+  if ( ! *ppsSrcCrs )
     return false;
-  
-  if ('"' == **ps)
-    return bExtractString(ps,pWord);
-  
-  if ( !isalnum(**ps) && !('_' == **ps))
-    return bExtractItem(ps,pWord);
-  
+
+  if ('"' == **ppsSrcCrs)
+    return bExtractQuotedString(ppsSrcCrs, psDst, iDstBufSize, pbResult);
+
+  if (!isalnum(**ppsSrcCrs) && '_' != **ppsSrcCrs)
+    return bExtractItem(ppsSrcCrs, psDst, iDstBufSize, pbResult);
+
+  i8 iReqBytes = 0;
   bool bOnce = false;
-  if (**ps && isalnum(**ps))
+
+  if (**ppsSrcCrs && isalnum(**ppsSrcCrs))
     bOnce = true;
   
-  char *a = pWord;
-  for ( ; **ps; (*ps)++)
+  char *d = psDst;
+
+  for ( ; **ppsSrcCrs; (*ppsSrcCrs)++)
   {
-    if ( !isalnum(**ps) && !('_' == **ps) )
+    if (!isalnum(**ppsSrcCrs) && '_' != **ppsSrcCrs)
       break;
-    
-    *a++ = **ps;
+
+    ++iReqBytes;
+    if (iReqBytes < iDstBufSize) {
+      *d++ = **ppsSrcCrs;
+    }
   }
-  
-  *a = '\0';
+
+  ++iReqBytes;
+  *d = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
   
   return bOnce;
 }
@@ -2386,26 +2772,14 @@ bool StrLib::bExtractWordString(char** ps, char* pWord)
 /*----------------------------------------------------------------------------*/
 /* bExtractYear: extract a month from substr                                  */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractYear(char** aaSrc, i8& iYear)
+bool StrLib::bExtractYear(char** ppsSrcCrs, i8& iYear)
 {
   _static_
-  
-  /*
-  u8 uSubField;
-  
-  // extract year
-  if ( ! StrLib::bExtractU8(aaSrc,&uSubField, 4) )
-    return false;
-
-  iYear = uSubField;
-
-  return true;
-  */
 
   i8 nDigits;
   
   // extract year
-  if ( ! bExtractInteger(aaSrc,&iYear,nDigits) )
+  if ( ! bExtractInteger(ppsSrcCrs, &iYear, nDigits) )
     return false;
   
   if (2 == nDigits) {
@@ -2421,16 +2795,16 @@ bool StrLib::bExtractYear(char** aaSrc, i8& iYear)
 
 /*----------------------------------------------------------------------------*/
 /* iFind: find the index position of first occurrence of cArg in ps, otherwise*/
-/*        -1 is returned.                                                     */
+/*        -1 (C_UNKNOWN) is returned.                                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iFind(char* ps, const char cArg)
+i8 StrLib::iFind(const char* psSrc, const char cArg)
 {
   _static_
 
-  char* f = strchr(ps, cArg);
+  const char* f = strchr(psSrc, cArg);
 
   if (f) {
-   i8 iPos = f - ps;
+   i8 iPos = f - psSrc;
    return iPos;
 
   } else {
@@ -2441,15 +2815,15 @@ i8 StrLib::iFind(char* ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of ScanChar in substr                                    */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char cArg)
+bool StrLib::bFind(char** ppsSrc, const char cArg)
 {
   _static_
   
-  char* f = strchr(*ps,cArg);
+  char* f = strchr(*ppsSrc, cArg);
   
   if (f)
   {
-    *ps = f;
+    *ppsSrc = f;
     return true;
   }
   else
@@ -2459,17 +2833,17 @@ bool StrLib::bFind(char** ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find nth ScanChar in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char cArg, i8 iOccurence)
+bool StrLib::bFind(char** ppsSrc, const char cArg, i8 iOccurence)
 {
   _static_
   
   bool b;
   
   for (i8 i_Count = 0; i_Count < iOccurence; i_Count++) {
-    b = bFind(ps,cArg);
+    b = bFind(ppsSrc, cArg);
     if (! b)
       return false;
-    (*ps)++;
+    (*ppsSrc)++;
   }
   
   return true;
@@ -2478,15 +2852,15 @@ bool StrLib::bFind(char** ps, const char cArg, i8 iOccurence)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of arg in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char* sArg)
+bool StrLib::bFind(char** ppsSrc, const char* psArg)
 {
   _static_
   
-  char* f = strstr(*ps,sArg);
+  char* f = strstr(*ppsSrc, psArg);
   
   if (f)
   {
-    *ps = f;
+    *ppsSrc = f;
     return true;
   }
   else
@@ -2496,24 +2870,24 @@ bool StrLib::bFind(char** ps, const char* sArg)
 /*----------------------------------------------------------------------------*/
 /* bFind: find start of arg in substr                                         */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
+bool StrLib::bFind(char** ppsSrc, const char* psArg, i8 iLenArg)
 {
   _static_
   
-  char *s = *ps;
+  char *s = *ppsSrc;
   
   for (;;)
   {
-    s = strchr(s,*sArg);
+    s = strchr(s,*psArg);
     
     // end of substr?
     if (nullptr == s)
       return false;
     
     // match?
-    if (0 == strncmp(s,sArg,iLenArg))
+    if (0 == strncmp(s, psArg, iLenArg))
     {
-      *ps = s;
+      *ppsSrc = s;
       return true;
     }
     
@@ -2525,50 +2899,30 @@ bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
 /*----------------------------------------------------------------------------*/
 /* vFormatFraction: format a fraction                                         */
 /*----------------------------------------------------------------------------*/
-void StrLib::vFormatFraction(char* sDst, u8 uFraction, i8 iDigits)
+void StrLib::vFormatFraction(char* psDst, i8 iDstBufSize, u8 uFraction, i8 iDigits, bool* pbResult)
 {
   _static_
-  
-  char caFormat[16];
+
+  const i8 nFormatSize = 16;
+  char caFormat[nFormatSize];
   
   // create the format
-  sprintf(caFormat,"%%0%lldlld",iDigits);
-  
-  // sprint the number as an integer
-  sprintf(sDst,caFormat,uFraction);
-  
-  // strip off trailing zero's
-//  char *z = sDst;
-//  while (*z)
-//    z++;
-//  z--;
-//  
-//  while ('0' == *z)
-//    *z-- = '\0';
-}
+  vSprint(caFormat, nFormatSize, pbResult, "%%0%lldlld"_Stz, iDigits);
 
-/*----------------------------------------------------------------------------*/
-/* vFree: free a dynamic string                                               */
-/*----------------------------------------------------------------------------*/
-void StrLib::vFree(char** ps)
-{
-  _static_
-  
-  free(*ps);
-  
-  *ps = nullptr;
+  // sprint the number as an integer
+  vSprint(psDst, iDstBufSize, pbResult, (Stz*) caFormat, uFraction);
 }
 
 /*----------------------------------------------------------------------------*/
 /* glean an integer from given string (skip leading non-digits)               */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iGleanInt(char* azArg)
+i8 StrLib::iGleanInt(const char* psSrc)
 {
   _static_
   
   i8 iVal = 0;
   
-  char* aSrc = azArg;
+  const char* aSrc = psSrc;
 
   // skip leading non-digits
   while (*aSrc && ! bIsDigit(*aSrc))
@@ -2579,6 +2933,67 @@ i8 StrLib::iGleanInt(char* azArg)
     iVal = iVal * 10 + iDigitToI8(*aSrc++);
 
   return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find end of next line group given line separator and max bytes             */
+/*----------------------------------------------------------------------------*/
+const char* StrLib::azGroupEnd(const char* psSrc, char cItemSep, i8 nAvailBytes,
+                               i8& rnBytesInGroup, i8& rnLinesInGroup)
+{
+  _static_
+
+  ASSERT(*psSrc);
+  ASSERT(nAvailBytes);
+
+  const char* szGroupEnd = psSrc;
+  rnLinesInGroup   = 0;
+  rnBytesInGroup   = 0;
+  i8 nCrs_bytes    = 0;
+
+  for (const char* azCrs_arg = psSrc; nCrs_bytes < nAvailBytes; azCrs_arg++) {
+
+    // increment length of potential group
+    nCrs_bytes++;
+
+    if (*azCrs_arg == cItemSep || ! *azCrs_arg) {
+      // + line separator (or \0 end)
+      // add line to group
+      szGroupEnd     = azCrs_arg;
+      rnBytesInGroup = nCrs_bytes;
+      rnLinesInGroup++;
+
+      if (! *azCrs_arg)
+        break;
+    }
+
+  }
+
+  // nb. may have exited because last potential line didn't fit within max bytes
+
+  if (rnBytesInGroup) {
+    // + subset of items which fit
+
+    ASSERT(rnLinesInGroup);
+
+    // *szGroupEnd will be cItemSep or \0
+    ASSERT(*szGroupEnd == cItemSep || !*szGroupEnd);
+
+    // byte length of group is (chars of group) plus (cItemSep or \0)
+    ASSERT(szGroupEnd - psSrc + 1 == rnBytesInGroup);
+
+    // group will not be longer than nAvailBytes
+    ASSERT(rnBytesInGroup <= nAvailBytes);
+  }
+  else {
+    // - no subset of lines fits into max bytes
+
+    ASSERT(! rnLinesInGroup);
+
+    ASSERT(szGroupEnd == psSrc);
+  }
+
+  return szGroupEnd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2596,22 +3011,88 @@ i8 StrLib::iHexToInw(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert char at start of given str                                          */
+/* insert char at start of given str, shifting remaining chars down           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vInsertChar(char* azAt, char cArg)
+void StrLib::vInsertChar(char* psDst, i8 iDstBufSize, char cArg, bool* pbResult)
 {
   _static_
 
-  char* azCrs = azNullTerminator(azAt);
+  char* azCrs = azNullTerminator(psDst);
 
+  i8 iReqBytes = nDifference(azCrs, psDst) + 2;
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  if (!bRet) {
+    // Not enough room, so don't do anything
+    return;
+  }
+
+  // Starting from the last char (the null terminator),
+  // shift everything down
   *(azCrs+1) = *azCrs;
 
-  while (azCrs != azAt) {
+  while (azCrs != psDst) {
     azCrs--;
     *(azCrs+1) = *azCrs;
   }
 
-  *azAt = cArg;
+  *psDst = cArg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert str at start of given str, shifting remaining chars down and        */
+/* truncating them if they don't fit                                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vInsertStrTrimRight(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
+{
+  _static_
+
+  i8 iDstLen = nLength(psDst);
+  i8 iSrcLen = nLength(psSrc);
+
+  if (iDstLen + iSrcLen + 1 <= iDstBufSize) {
+    // There is enough space and no truncation will occur.
+    // We can just move the existing psDst contents down by iSrcLen bytes
+    // and then write psSrc at the beginning.
+    char* psMoveDst = psDst + iSrcLen;
+    MemLib::vMove(psMoveDst, psDst, iDstLen + 1, CN_STRLIB);
+
+    const char* s = psSrc;
+    char* d = psDst;
+
+    for ( ; *s; s++, d++) {
+      *d = *s;
+    }
+
+    return;
+  }
+
+  // We will need to truncate the right edge of the existing string since it
+  // won't fit. This isn't a string truncation error to be reported because
+  // it is the semantics of this function, _unless_ psSrc is too big for
+  // the buffer in the first place (then we don't know what to trim).
+
+  if (iSrcLen + 1 > iDstBufSize) {
+    bCheckBufferSpace(__func__, iSrcLen + 1, iDstBufSize, pbResult);
+    // We cannot continue here
+    return;
+  }
+
+  // Calculate how many bytes of the original string we can keep
+  i8 iExcessBytes = (iDstLen + iSrcLen + 1) - iDstBufSize;
+  ASSERT (iExcessBytes > 0);
+
+  char* psMoveDst = psDst + iSrcLen;
+  i8 iBytesToMove = iDstLen + 1 - iExcessBytes;
+  MemLib::vMove(psMoveDst, psDst, iBytesToMove, CN_STRLIB);
+  psDst[iDstBufSize - 1] = 0;
+
+  const char* s = psSrc;
+  char* d = psDst;
+
+  for ( ; *s; s++, d++) {
+    *d = *s;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2656,12 +3137,12 @@ bool StrLib::bIsAmpersand(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsAsciiName: is argument a valid name                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsAsciiName(char* azArg)
+bool StrLib::bIsAsciiName(const char* psArg)
 {
   _static_
 
   // check starting character
-  char cStartChar = *azArg;
+  char cStartChar = *psArg;
 
   if ( ! (cStartChar >= 'A' && cStartChar <= 'Z') &&
        ! (cStartChar >= 'a' && cStartChar <= 'z') &&
@@ -2670,16 +3151,16 @@ bool StrLib::bIsAsciiName(char* azArg)
 
   // check for special characters in table name
   for (char c = 33; c <= 47 ; c++)
-    if (bContains(azArg,c))
+    if (bContains(psArg, c))
       return false;
 
   for (char c = 58; c <= 64 ; c++)
-    if (bContains(azArg,c))
+    if (bContains(psArg, c))
       return false;
 
-  if (bContains(azArg,'|') ||
-      bContains(azArg,'^') ||
-      bContains(azArg,'~'))
+  if (bContains(psArg, '|') ||
+      bContains(psArg, '^') ||
+      bContains(psArg, '~'))
     return false;
 
   return true;
@@ -2753,12 +3234,12 @@ bool StrLib::bIsBlank(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsBoolean: is the string a boolean sequence ?                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsBoolean(char* ps)
+bool StrLib::bIsBoolean(const char* psArg)
 {
   _static_
   
-  if (StrLib::bEqualTo(ps,"true" ,C_NO_CASE)) return true;
-  if (StrLib::bEqualTo(ps,"false",C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(psArg, "true" , C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(psArg, "false", C_NO_CASE)) return true;
 
   return false;
 }
@@ -2831,14 +3312,14 @@ bool StrLib::bIsColon(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsCommentBlock: is arg a block comment?                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsCommentBlock(char* aaCrs)
+bool StrLib::bIsCommentBlock(const char* psArg)
 {
   _static_
   
-  if (! bIsSlash(*aaCrs))
+  if (! bIsSlash(*psArg))
     return false;
 
-  if (! bIsAsterisk(*(aaCrs + 1)))
+  if (! bIsAsterisk(*(psArg + 1)))
     return false;
   
   return true;
@@ -2847,14 +3328,14 @@ bool StrLib::bIsCommentBlock(char* aaCrs)
 /*----------------------------------------------------------------------------*/
 /* bIsCommentLine: is arg a line comment?                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsCommentLine(char* aaCrs)
+bool StrLib::bIsCommentLine(const char* psArg)
 {
   _static_
   
-  if (! bIsSlash(*aaCrs))
+  if (! bIsSlash(*psArg))
     return false;
 
-  if (! bIsSlash(*(aaCrs + 1)))
+  if (! bIsSlash(*(psArg + 1)))
     return false;
   
   return true;
@@ -2863,18 +3344,18 @@ bool StrLib::bIsCommentLine(char* aaCrs)
 /*----------------------------------------------------------------------------*/
 /* bIsDecimal: is string a decimal no ?                                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsDecimal(char* ps)
+bool StrLib::bIsDecimal(const char* psArg)
 {
   _static_
 
   bool bDecimalPoint = false;
   bool bGotDigit = false;
 
-  if ('-' == *ps || '+' == *ps)
-    (ps)++;
+  if ('-' == *psArg || '+' == *psArg)
+    (psArg)++;
 
-  for (; *ps; (ps)++) {
-    if (*ps == '.') {
+  for (; *psArg; (psArg)++) {
+    if (*psArg == '.') {
 
       // have we seen a decimal point before ?
       if (bDecimalPoint)
@@ -2884,7 +3365,7 @@ bool StrLib::bIsDecimal(char* ps)
       continue;
     }
 
-    if (!isdigit(*ps))
+    if (!isdigit(*psArg))
       return false;
 
     bGotDigit = true;
@@ -2951,11 +3432,11 @@ bool StrLib::bIsDoubleQuote(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsEmpty: does the string have zero content?                               */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsEmpty(char* ps)
+bool StrLib::bIsEmpty(const char* psArg)
 {
   _static_
 
-  return (*ps == 0);
+  return (*psArg == 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3004,17 +3485,17 @@ bool StrLib::bIsExclamation(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsFloat: is string a floating point no ? Must end in an exponent          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsFloat(char* ps) {
+bool StrLib::bIsFloat(const char* psArg) {
   _static_
 
   bool bDecimalPoint = false;
   bool bExponent = false;
 
-  if ('-' == *ps || '+' == *ps)
-    (ps)++;
+  if ('-' == *psArg || '+' == *psArg)
+    (psArg)++;
 
-  for (; *ps; (ps)++) {
-    if (*ps == '.') {
+  for (; *psArg; (psArg)++) {
+    if (*psArg == '.') {
 
       // have we seen a decimal point before ?
       if (bDecimalPoint)
@@ -3024,7 +3505,7 @@ bool StrLib::bIsFloat(char* ps) {
       continue;
     }
 
-    if (*ps == 'e' || *ps == 'E') {
+    if (*psArg == 'e' || *psArg == 'E') {
       // have we seen an exponent before?
       if (bExponent) {
         return false;
@@ -3032,21 +3513,21 @@ bool StrLib::bIsFloat(char* ps) {
 
       bExponent = true;
 
-      (ps)++;
-      if (!*ps) {
+      (psArg)++;
+      if (!*psArg) {
         bExponent = false;
         break;
       }
 
-      if ('-' == *ps || '+' == *ps)
-        (ps)++;
+      if ('-' == *psArg || '+' == *psArg)
+        (psArg)++;
       else
-        (ps)--;
+        (psArg)--;
 
       continue;
     }
 
-    if (!isdigit(*ps))
+    if (!isdigit(*psArg))
       return false;
   }
 
@@ -3099,18 +3580,18 @@ bool StrLib::bIsHex(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsInteger: is the string an integer digit sequence ?                      */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsInteger(char* ps)
+bool StrLib::bIsInteger(const char* psArg)
 {
   _static_
   
-  if ('-' == *ps)
-    (ps)++;
+  if ('-' == *psArg)
+    (psArg)++;
 
-  if ( ! *ps )
+  if ( ! *psArg )
     return false;
 
-  for ( ; *ps; (ps)++)
-    if (!isdigit(*ps))
+  for ( ; *psArg; (psArg)++)
+    if (!isdigit(*psArg))
       return false;
   
   return true;
@@ -3118,7 +3599,7 @@ bool StrLib::bIsInteger(char* ps)
 /*----------------------------------------------------------------------------*/
 /* bIsIPAddr: is the string a valid IP address ?                              */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsIPAddr(const char* ps)
+bool StrLib::bIsIPAddr(const char* psArg)
 {
   _static_
 
@@ -3127,17 +3608,17 @@ bool StrLib::bIsIPAddr(const char* ps)
   i8 iOctetCount = 0;
   bool bOctetFlag = false;
 
-  while(*ps && bIsWhite(*ps))
+  while(*psArg && bIsWhite(*psArg))
   {
-    ps++;
+    psArg++;
     continue;
   }
 
-  while(*ps)
+  while(*psArg)
   {
     i = 0;
-    while (*ps && bIsDigit(*ps)) {
-      i8 j = (*ps++ - '0');
+    while (*psArg && bIsDigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
       i = i * 10 + j;
       bOctetFlag = true;
     }
@@ -3155,11 +3636,11 @@ bool StrLib::bIsIPAddr(const char* ps)
     if(iOctetCount > 4)
       return false;
 
-    if (*ps && '.' != *ps) {
+    if (*psArg && '.' != *psArg) {
       return false;
     }
-    else if (*ps && '.' == *ps) {
-      ps++;
+    else if (*psArg && '.' == *psArg) {
+      psArg++;
       iDotCount++;
       if(iDotCount > 3)
         return false;
@@ -3341,6 +3822,7 @@ bool StrLib::bIsPlus(const char c)
     return false;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* bIsQuestion: is char a question?                                           */
 /*----------------------------------------------------------------------------*/
@@ -3394,6 +3876,20 @@ bool StrLib::bIsSlash(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is string all whitespace                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsWhiteSpaces(const char* psArg)
+{
+  _static_
+
+  for (const char* azCrs = psArg; *azCrs; azCrs++)
+    if (! bIsWhite(*azCrs))
+      return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsSignleQuote: is char a single quote?                                    */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsSingleQuote(const char c)
@@ -3407,6 +3903,30 @@ bool StrLib::bIsSingleQuote(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is argument a valid sql name?                                              */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSqlName(char* ps)
+{
+  _static_
+
+  char* az = ps;
+
+  // must start with a alpha or underscore
+  char c = *az++;
+  if (! (isalpha(c) || '_' == c))
+    return false;
+
+  // followed by zero or more: alpha, digit or underscore
+  while ((c = *az++)) {
+    if (! (bIsAlphaDigit(c) || '_' == c))
+      return false;
+  }
+
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* bIsTilde: is char a tilde?                                                 */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsTilde(const char c)
@@ -3417,6 +3937,37 @@ bool StrLib::bIsTilde(const char c)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsTypical: is char a typical char?                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTypical(const char c)
+{
+  _static_
+
+  if ('\n' == c)
+    return true;
+
+  if (c >= ' ' && c <= '~')
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsTypical: is char a typical string?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTypical(const char* psArg)
+{
+  _static_
+
+  for (const char* azTest = psArg; *azTest; azTest++)
+    if (! StrLib::bIsTypical(*azTest))
+      return false;
+
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3475,52 +4026,30 @@ bool StrLib::bIsX(const char c)
 /*----------------------------------------------------------------------------*/
 /* sLast: return address of last char in arg                                  */
 /*----------------------------------------------------------------------------*/
-char* StrLib::acLast(const char* s)
+char* StrLib::acLast(const char* psSrc)
 {
   _static_
   
-  i8 nLen  = nLength(s);
+  i8 nLen  = nLength(psSrc);
   
-  const char* z = s + nLen - 1;
+  const char* z = psSrc + nLen - 1;
   
   return (char*)z;
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSkipLeading: skip leading sequence                                        */
+/* iLength: get length in bytes of psSrc (not including terminating null)     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
+i8 StrLib::nLength(const char* psSrc, const char cTerm, i8 iMax)
 {
   _static_
   
-  // skip leading spaces first
-  while (' ' == **ps)
-    (*ps)++;
-  
-  // do we see the leading enclose character?
-  if (cEnclosedBy_Leading == **ps) {
-    // skip the leading enclose character
-    (*ps)++;
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* iLength: get length in bytes of arg (not including terminating null)       */
-/*----------------------------------------------------------------------------*/
-i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
-{
-  _static_
-  
-  if (! *s)
+  if (! *psSrc)
     return 0;
   
   i8 iLen = 1;
   
-  for (const char* p = s; iLen < iMax; iLen++)
+  for (const char* p = psSrc; iLen < iMax; iLen++)
     if (! *p || *p++ == cTerm)
       break;
   
@@ -3528,20 +4057,20 @@ i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iLength: get length in bytes of arg (not including terminating null)       */
+/* iLength: get length in bytes of psSrc (not including terminating null)     */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
+i8 StrLib::nLengthNonBlank(const char* psSrc, const char cTerm, i8 iMax)
 {
   _static_
   
-  if (! *s)
+  if (! *psSrc)
     return 0;
   
   i8 iLen = 1;
   
-  const char* acNonBlank = s;
+  const char* acNonBlank = psSrc;
   
-  for (const char* p = s; iLen < iMax; iLen++) {
+  for (const char* p = psSrc; iLen < iMax; iLen++) {
     if (*p && ' ' != *p)
       acNonBlank = p;
     
@@ -3549,7 +4078,7 @@ i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
       break;
   }
   
-  i8 iLenNonBlank = (acNonBlank == s) ? 0 : acNonBlank - s + 1;
+  i8 iLenNonBlank = (acNonBlank == psSrc) ? 0 : acNonBlank - psSrc + 1;
   
   return iLenNonBlank;
 }
@@ -3557,7 +4086,7 @@ i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iLike2(char* azStr, char* azRegExp)
+i8 StrLib::iLike2(const char* psSrc, const char* psRegExp, bool* pbResult)
 {
   /*
 
@@ -3569,20 +4098,16 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
 
    */
 
-  s256 sEscapedRegExp = azRegExp;
-  StrLib::vInsertChar(sEscapedRegExp.azChar(),'^');
-  StrLib::vEscapeInsert(sEscapedRegExp.azChar(),'*','\\');
+  s256 sEscapedRegExp = psRegExp;
+  StrLib::vInsertChar(sEscapedRegExp.azChar(), sEscapedRegExp.nAreaBytes(), '^', pbResult);
+  StrLib::vEscapeInsert(sEscapedRegExp.azChar(), sEscapedRegExp.nAreaBytes(), '*', '\\', pbResult);
 
   s256 sMatchRegExp;
   char *r = sEscapedRegExp.azChar();
   char *R = sMatchRegExp.azChar();
 
-//  s256 sMatchRegExp;
-//  char *r = azRegExp;
-//  char *R = sMatchRegExp.azChar();
-
   // handle empty string and empty regular expression
-  if (*azStr == '\0' && *r == '\0') {
+  if (*psSrc == '\0' && *r == '\0') {
     return true;
   }
 
@@ -3591,29 +4116,48 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
     return false;
   }
 
+  i8 iReqBytes = 0;
+  i8 iDstBufSize = sMatchRegExp.nAreaBytes();
+
   // iterate the regular expression
+  // Need to be careful - because '%' is translated to '.*' the output
+  // buffer may get overwritten or truncated.
   while (*r) {
 
     if (*r == '%') {
       // replace '%' with '.*'
-      *R++ = '.';
-      *R++ = '*';
+      iReqBytes+=2;
+
+      if (iReqBytes < iDstBufSize - 1) {
+        *R++ = '.';
+        *R++ = '*';
+      }
     }
     else if (*r == '_') {
       // replace '_' with '.'
-      *R++ = '.';
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = '.';
+      }
     }
     else {
-      *R++ = *r;
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = *r;
+      }
     }
 
     r++;
   }
 
   // null terminate the new regular expression
+  ++iReqBytes;
   *R++ = '\0';
 
-  bool bDidMatch = bMatch(azStr, sMatchRegExp.azChar());
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  bool bDidMatch = bMatch(psSrc, sMatchRegExp.azChar());
 
   return bDidMatch;
 }
@@ -3622,7 +4166,7 @@ i8 StrLib::iLike2(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string (with escape character)   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iLike3(char* azStr, char* azRegExp, char cEsc)
+i8 StrLib::iLike3(const char* psSrc, const char* psRegExp, char cEsc, bool* pbResult)
 {
   /*
 
@@ -3636,11 +4180,11 @@ i8 StrLib::iLike3(char* azStr, char* azRegExp, char cEsc)
 
   s256 sMatchRegExp;
 
-  char *r = azRegExp;
+  const char *r = psRegExp;
   char *R = sMatchRegExp.azChar();
 
   // handle empty string and empty regular expression
-  if (*azStr == '\0' && *r == '\0') {
+  if (*psSrc == '\0' && *r == '\0') {
     return true;
   }
 
@@ -3649,41 +4193,62 @@ i8 StrLib::iLike3(char* azStr, char* azRegExp, char cEsc)
     return false;
   }
 
+  i8 iReqBytes = 0;
+  i8 iDstBufSize = sMatchRegExp.nAreaBytes();
+
   // iterate the regular expression
   while (*r) {
 
     // escape character
     if (*r == cEsc) {
       r++;
-     *R++ = *r;
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = *r;
+      }
     }
 
     // replace '%' with '.*'
     else if (*r == '%') {
-      *R++ = '.';
-      *R++ = '*';
+      iReqBytes+=2;
+
+      if (iReqBytes < iDstBufSize - 1) {
+        *R++ = '.';
+        *R++ = '*';
+      }
     }
 
     // replace '_' with '.'
     else if (*r == '_') {
-      *R++ = '.';
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = '.';
+      }
     }
-    else
-      *R++ = *r;
+    else {
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *R++ = *r;
+      }
+    }
 
     r++;
   }
 
   // null terminate the new regular expression
+  ++iReqBytes;
   *R++ = '\0';
 
-  return bMatch(azStr, sMatchRegExp.azChar());
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  return bMatch(psSrc, sMatchRegExp.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
 /* match: search for regexp anywhere in given string                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatch(char* azStr, char* azRegExp)
+bool StrLib::bMatch(const char* psSrc, const char* psRegExp)
 {
   /*
   
@@ -3697,15 +4262,15 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 
    */
   
-  if (azRegExp[0] == '^')
-    return bMatchHere(azStr,azRegExp+1);
+  if (psRegExp[0] == '^')
+    return bMatchHere(psSrc, psRegExp + 1);
   
   do { /* must look even if string is empty */
     
-    if (bMatchHere(azStr,azRegExp))
+    if (bMatchHere(psSrc, psRegExp))
       return true;
     
-  } while (*azStr++ != '\0');
+  } while (*psSrc++ != '\0');
   
   return false;
 }
@@ -3713,7 +4278,7 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 /* bMatchHere: search for regexp at beginning of string                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatchHere(char* azStr, char* azRegExp) {
+bool StrLib::bMatchHere(const char* azStr, const char* azRegExp) {
   //vTrace("bMatchHere: %s : %s\n"_Stz,azStr,azRegExp);
 
   if (azRegExp[0] == '\0' && *azStr == '\0')
@@ -3738,7 +4303,7 @@ bool StrLib::bMatchHere(char* azStr, char* azRegExp) {
 /*----------------------------------------------------------------------------*/
 /* bMatchStar: search for c*regexp at beginning of string                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
+bool StrLib::bMatchStar(const char* azStr, const char* azRegExp, char cChr)
 {
   do { /* a * matches zero or more instances */
     
@@ -3751,35 +4316,15 @@ bool StrLib::bMatchStar(char* azStr, char* azRegExp, char cChr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sNew: new a string from formatted args                                     */
-/*----------------------------------------------------------------------------*/
-char* StrLib::sNew(const char* sFormat, ...)
-{
-  _static_
-  
-  char w[C_STRING_ARRAY];
-  
-  va_list args;
-  
-  va_start(args,sFormat);
-  vsprintf(w,sFormat,args);
-  va_end(args);
-  
-  char* s = sDupe(w);
-  
-  return s;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ptr to null terminator                                                 */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azNullTerminator(char* s)
+char* StrLib::azNullTerminator(char* psSrc)
 {
   _static_
   
-  i8 nLen  = nLength(s);
+  i8 nLen  = nLength(psSrc);
   
-  char* z = s + nLen;
+  char* z = psSrc + nLen;
   
   return z;
 }
@@ -3787,18 +4332,18 @@ char* StrLib::azNullTerminator(char* s)
 /*----------------------------------------------------------------------------*/
 /* iOccurrence: get no of occurrence of given char                            */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iOccurrence(char* ps, const char cArg)
+i8 StrLib::iOccurrence(char* psSrc, const char cArg)
 {
   _static_
   
   i8 iCount = 0;
   
-  while(*ps) {
-    ps = strchr(ps,cArg);
-    if ( ! ps )
+  while(*psSrc) {
+    psSrc = strchr(psSrc, cArg);
+    if ( ! psSrc )
       break;
     iCount++;
-    ps++;
+    psSrc++;
   }
   
   return iCount;
@@ -3807,12 +4352,12 @@ i8 StrLib::iOccurrence(char* ps, const char cArg)
 /*----------------------------------------------------------------------------*/
 /* bOneOf: is given word one of the words in the given set?                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bOneOf(char** asaSet, char* sWord)
+bool StrLib::bOneOf(char** ppsSrcSet, const char* psArg)
 {
   _static_
   
-  for (char** saTest = asaSet; *saTest; saTest++) {
-    if (bSame(*saTest,sWord))
+  for (char** saTest = ppsSrcSet; *saTest; saTest++) {
+    if (bSame(*saTest, psArg))
       return true;
   }
   
@@ -3822,17 +4367,23 @@ bool StrLib::bOneOf(char** asaSet, char* sWord)
 /*----------------------------------------------------------------------------*/
 /* vPad: pad string to given length with char                                 */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
+void StrLib::vPad(char* psDst, i8 iDstBufSize, i8 iToLength, const char cWith, bool* pbResult)
 {
   _static_
   
-  i8 iCurrLength = nLength(azDst);
+  i8 iCurrLength = nLength(psDst);
   
   if (iCurrLength >= iToLength)
     return;
-  
-  char* z = azNullTerminator(azDst);
-  i8 nChars = iToLength - iCurrLength;
+
+  bool bRet = bCheckBufferSpace(__func__, iToLength + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+  // Continue, even if there is truncation
+
+  i8 iMaxChars = iToLength > iDstBufSize - 1 ? iDstBufSize - 1 : iToLength;
+
+  char* z = azNullTerminator(psDst);
+  i8 nChars = iMaxChars - iCurrLength;
   
   for (i8 iChar = 0; iChar < nChars; iChar++)
     *z++ = cWith;
@@ -3841,16 +4392,18 @@ void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put given stz onto dst at offset                                           */
+/* put given cChr into dst at offset                                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPut(char* azDst, i8 iAt, char cChr)
+void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char cChr, bool* pbResult)
 {
   _static_
-  
-  char* acEnd = StrLib::acLast(azDst);
-  UNUSED(acEnd);
 
-  char* acDst = azDst + iAt;
+  bool bRet = bCheckBufferSpace(__func__, iAt + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  //ASSERT(iAt < nLength(psDst));
+
+  char* acDst = psDst + iAt;
   
   if (*acDst)
     *acDst = cChr;
@@ -3859,16 +4412,34 @@ void StrLib::vPut(char* azDst, i8 iAt, char cChr)
 /*----------------------------------------------------------------------------*/
 /* put given stz onto dst at offset                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vPut(char* azDst, i8 iAt, char* azSrc)
+void StrLib::vPut(char* psDst, i8 iDstBufSize, i8 iAt, char* psSrc, bool* pbResult)
 {
   _static_
-  
-  char* acEnd = StrLib::acLast(azDst);
-  UNUSED(acEnd);
-  char* acDst = azDst + iAt;
-  
-  while (*azSrc && *acDst)
-    *acDst++ = *azSrc++;
+
+  i8 iSrcLen = nLength(psSrc);
+  bool bRet = bCheckBufferSpace(__func__, iAt + iSrcLen + 1, iDstBufSize, pbResult);
+  UNUSED(bRet);
+
+  char* psNull = azNullTerminator(psDst);
+  ASSERT(psDst + iAt <= psNull);
+
+  i8 iMaxBytes = iDstBufSize - iAt - 1;
+  if (iMaxBytes > iSrcLen) {
+    iMaxBytes = iSrcLen;
+  }
+
+  char* d = psDst + iAt;
+  char* s = psSrc;
+
+  while (*s && *d)
+    *d++ = *s++;
+
+  // Does it need to be null terminated?
+  // This would occur if the psSrc string overwrote the existing null terminator.
+  if (/* psDst + iAt <= psNull && */
+      psDst + iAt + iSrcLen > psNull) {
+    *d = 0;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3876,17 +4447,25 @@ void StrLib::vPut(char* azDst, i8 iAt, char* azSrc)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* remove any leading character                                               */
+/* remove any leading occurrences of a given character                        */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemove(char *w, const char cLeading)
+void StrLib::vRemove(char* psDst, i8 iDstBufSize, const char cLeading, bool* pbResult)
 {
   _static_
+
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  if (*w != cLeading || cLeading == '\0')
+  if (*psDst != cLeading || cLeading == '\0')
     return;
   
-  char* pTo = w;
-  char* pFrom = w;
+  char* pTo = psDst;
+  char* pFrom = psDst;
   while (*pFrom == cLeading)
     pFrom++;
   
@@ -3898,79 +4477,99 @@ void StrLib::vRemove(char *w, const char cLeading)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove any occurance of given character                                    */
+/* remove any occurrence of given character                                   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveChar(char* azDst, char* azSrc, const char cChr)
+void StrLib::vRemoveChar(char* psDst, i8 iDstBufSize, char* psSrc, const char cChr, bool* pbResult)
 {
   _static_
   
-  char* azTo = azDst;
-  char* azFrom = azSrc;
+  char* azTo = psDst;
+  char* azFrom = psSrc;
+  i8 iReqBytes = 0;
   
   while (*azFrom) {
-    if (cChr == *azFrom)
+    if (cChr == *azFrom) {
       azFrom++;
-    else
-      *azTo++ = *azFrom++;
+
+    } else {
+      ++iReqBytes;
+      if (iReqBytes < iDstBufSize) {
+        *azTo++ = *azFrom;
+      }
+      azFrom++;
+    }
   }
 
+  ++iReqBytes;
   *azTo = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
   
 /*----------------------------------------------------------------------------*/
-/* remove prefix from arg (where prefix is introduced by given char)          */
+/* remove all characters from the start of the string up to & including cSep  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemovePrefix(char *azArg, char cIntro)
+void StrLib::vRemovePrefix(char* psDst, i8 iDstBufSize, char cSep, bool* pbResult)
 {
   _static_
-  
-  char* azPrefixEnds = azArg;
-  
-  // find the byte where the prefix ends
-  if (! bFind(&azPrefixEnds,cIntro))
+
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
+
+  i8 i_Sep = iFind(psDst, cSep);
+  if (C_UNKNOWN == i_Sep)
     return;
-  
-  // copy latter portion to the beginning of the string
-  strcpy(azArg,azPrefixEnds + 1);
+
+  vShuffleLeft(psDst, iDstBufSize, i_Sep + 1, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove suffix from arg (where suffix is introduced by given char)          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveSuffix(char *azArg, char cIntro)
+void StrLib::vRemoveSuffix(char* psDst, i8 iDstBufSize, char cSep, bool* pbResult)
 {
   _static_
+
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  char* azSuffix = azArg + nLength(azArg) - 1;
+  char* psSuffix = psDst + nLength(psDst) - 1;
   
   // find the byte where the suffix is introduced
-  if (! bBackward(&azSuffix,azArg,cIntro))
+  if (! bBackward(&psSuffix, psDst, cSep))
     return;
   
   // terminate azArg at the suffix introduction
-  *azSuffix = '\0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove tail from arg                                                       */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTail(char* azArg, const char* pTail)
-{
-  _static_
-
-  i8 nChars = nLength(pTail);
-
-  vRemoveTailBy(azArg,nChars);
+  *psSuffix = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove tail by nChars                                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTailBy(char* azArg, i8 nChars)
+void StrLib::vRemoveTailBy(char* psDst, i8 iDstBufSize, i8 nChars, bool* pbResult)
 {
   _static_
+  UNUSED(iDstBufSize);
 
-  char* z = azNullTerminator(azArg);
+  // Check for string underflow
+  i8 iDstSize = nLength(psDst) + 1;
+
+  bool bRet = bCheckBufferSpace(__func__, nChars, iDstSize, pbResult);
+  if (!bRet) {
+    // We cannot continue otherwise we will underflow the string.
+    return;
+  }
+
+  char* z = azNullTerminator(psDst);
   char* y = z - nChars;
 
   *y = '\0';
@@ -3978,183 +4577,62 @@ void StrLib::vRemoveTailBy(char* azArg, i8 nChars)
 
 
 /*----------------------------------------------------------------------------*/
-/* remove tail int digits from arg                                            */
+/* remove integer digits from the tail of psDst                               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTailInt(char *azArg)
+void StrLib::vRemoveTailInt(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
+
+  // This will never overflow, but keeping the parameter interface consistent
+  // with other methods.
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  char* azTail = azArg + nLength(azArg) - 1;
+  char* azTail = psDst + nLength(psDst) - 1;
   
-  while (StrLib::bIsDigit(*azTail))
+  while (azTail >= psDst && StrLib::bIsDigit(*azTail))
     *azTail-- = '\0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace sub-string                                                         */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
-{
-  _static_
-  
-  //note: this function does the replacement within the given string
-  //      therefore it must be large enough to handle expancesion
-  
-  // is this in tbe string?
-  char* pSubstr = pString;
-  if ( ! bFind(&pSubstr,pThis) )
-    return false;
-  
-  // compute lengths and difference
-  i8 iLenThis = nLength(pThis);
-  i8 iLenThat = nLength(pThat);
-  i8 iLenDiff = abs((int)iLenThis - (int)iLenThat);
-  
-  // which of 3 variants is it?
-  if (iLenThis == iLenThat)
-  {
-    // (1) replacing same length
-    
-    // simply copy this into string at that substr
-    while (*pThat)
-      *pSubstr++ = *pThat++;
-  }
-  else
-  if (iLenThis < iLenThat)
-  {
-    // (2) replacing with longer
-    
-    // shuffle to the right to make space
-  char* pFrom  = pSubstr + nLength(pSubstr) ;//- 1;
-    char* pTo    = pFrom   + iLenDiff;
-    char* pLimit = pSubstr + iLenThis;
-    while (pFrom >= pLimit)
-      *pTo-- = *pFrom--;
-
-    // copy this into string at that substr
-    while (*pThat)
-      *pSubstr++ = *pThat++;
-  }
-  else
-  {
-    // (3) replacing with shorter
-    
-    // shuffle to the left to close space
-    char* pFrom = pSubstr + iLenThis;
-    char* pTo   = pFrom - iLenDiff;
-    while (*pFrom)
-      *pTo++ = *pFrom++;
-    *pTo = '\0';
-    
-    // copy this into string at that substr
-    while (*pThat)
-      *pSubstr++ = *pThat++;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace sub-string                                                         */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bReplace(char *pDst, const char* pSrc,
-                      const char *pThis, const char *pThat)
-{
-  _static_
-  
-  bool bReplaced = false;
-  
-NextIteration:
-  
-  // scan source string looking for matches
-  while (*pSrc) {
-  
-    // non-matching case
-    if (*pSrc != *pThis) {
-      // just copy one src char to dst
-      *pDst++ = *pSrc++;
-      continue;
-    }
-    
-    // mark start of possible match & replace
-    const char* pMatch   = pSrc;
-    const char* pReplace = pThis;
-    
-    // attempt to collect matching chars from src
-    while (*pReplace) {
-      
-      // false match?
-      if (*pSrc != *pReplace) {
-        // false match, therefore copy the unmatching chars
-        do {
-          *pDst++ = *pMatch++;
-        } while (pMatch < pSrc);
-        goto NextIteration;
-      }
-      
-      // matching so far...
-      pSrc++;
-      pReplace++;
-    }
-    
-    // copy the replacement substring
-    for (const char* pCopy = pThat; *pCopy; )
-      *pDst++ = *pCopy++;
-    
-    // a replacement has been made
-    bReplaced = true;
-  }
-  
-  *pDst = '\0';
-  
-  return bReplaced;
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace tail of string                                                     */
-/*----------------------------------------------------------------------------*/
-void StrLib::vReplaceTail(char* azArg, char* azTail)
-{
-  _static_
-  
-  i8 iLen_arg  = StrLib::nLength(azArg);
-  i8 iLen_tail = StrLib::nLength(azTail);
-  
-  //            01234567
-  //            abcdefgh
-  //                 ...
-  //            8 - 3 = 5
-  StrLib::vCopy(azArg + iLen_arg - iLen_tail,azTail);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove till given char                                                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill)
+void StrLib::vRemoveTill(char* psDst, i8 iDstBufSize, const char cTill,
+                         bool bRemoveTheTill, bool* pbResult)
 {
   _static_
 
-  char* azSrc = azArg;
+  UNUSED(iDstBufSize);
+
+  char* azSrc = psDst;
   while (*azSrc && *azSrc != cTill)
     azSrc++;
 
-  if (! *azSrc)
+  if (! *azSrc) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
 
   if (bRemoveTheTill)
     azSrc++;
 
-  vShuffleLeft(azArg,azSrc);
+  vShuffleLeft(psDst, iDstBufSize, azSrc, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove leading token                                                       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRemoveToken(char* azArg)
+void StrLib::vRemoveToken(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
 
-  char* azRight = azArg;
+  UNUSED(iDstBufSize);
+
+  char* azRight = psDst;
 
   // skip leading whitespace
   while (*azRight) {
@@ -4166,8 +4644,12 @@ void StrLib::vRemoveToken(char* azArg)
   }
 
   // something still to process?
-  if (! *azRight)
+  if (! *azRight) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
 
   // skip token
   while (*azRight) {
@@ -4186,68 +4668,254 @@ void StrLib::vRemoveToken(char* azArg)
   }
 
   // something still to process?
-  if (! *azRight)
+  if (! *azRight) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
 
-  vShuffleLeft(azArg,azRight);
+  vShuffleLeft(psDst, iDstBufSize, azRight, pbResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace first occurrence of psThis with psThat in pDst                     */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bReplace(char *psDst, i8 iDstBufSize, const char *psThis,
+                      const char *psThat, bool* pbResult)
+{
+  _static_
+  
+  //note: this function does the replacement within the given string
+  //      therefore it must be large enough to handle expansion
+  
+  // is this in tbe string?
+  char* pSubstr = psDst;
+  if ( ! bFind(&pSubstr, psThis) ) {
+    if (pbResult) {
+      *pbResult = true;
+    }
+    return false;
+  }
+  
+  // compute lengths and difference
+  i8 iLenDst  = nLength(psDst);
+  i8 iLenThis = nLength(psThis);
+  i8 iLenThat = nLength(psThat);
+  i8 iLenDiff = abs((int)iLenThis - (int)iLenThat);
+  
+  // which of 3 variants is it?
+  if (iLenThis == iLenThat)
+  {
+    // (1) replacing same length. No overflow can occur
+    if (pbResult) {
+      *pbResult = true;
+    }
+    
+    // simply copy pThat into string at that pSubstr
+    while (*psThat)
+      *pSubstr++ = *psThat++;
+  }
+  else
+  if (iLenThis < iLenThat)
+  {
+    // (2) replacing with longer
+
+    // Check for buffer overflow/truncation
+    i8 iReqBytes = iLenDst + 1 + iLenDiff;
+    bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+
+    if (!bRet) {
+      return false;
+    }
+
+    // shuffle to the right to make space
+    char* pFrom  = pSubstr + nLength(pSubstr) ;
+    char* pTo    = pFrom   + iLenDiff;
+    char* pLimit = pSubstr + iLenThis;
+    while (pFrom >= pLimit)
+      *pTo-- = *pFrom--;
+
+    // copy pThat into string at pSubstr
+    while (*psThat)
+      *pSubstr++ = *psThat++;
+  }
+  else
+  {
+    // (3) replacing with shorter. No overflow can occur.
+    if (pbResult) {
+      *pbResult = true;
+    }
+    
+    // shuffle to the left to close space
+    char* pFrom = pSubstr + iLenThis;
+    char* pTo   = pFrom - iLenDiff;
+    while (*pFrom)
+      *pTo++ = *pFrom++;
+    *pTo = '\0';
+    
+    // copy this into string at that substr
+    while (*psThat)
+      *pSubstr++ = *psThat++;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace all occurrences in psSrc of psThis with psThat and write to psDst  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bReplace(char *pDst, i8 iDstBufSize, const char* psSrc,
+                      const char *psThis, const char *psThat, bool* pbResult)
+{
+  _static_
+  
+  bool bReplaced = false;
+  i8 iReqBytes = 0;
+  
+NextIteration:
+  
+  // scan source string looking for matches
+  while (*psSrc) {
+  
+    // non-matching case
+    if (*psSrc != *psThis) {
+      // just copy one src char to dst
+      if (++iReqBytes < iDstBufSize) {
+        *pDst++ = *psSrc;
+      }
+      psSrc++;
+      continue;
+    }
+    
+    // mark start of possible match & replace
+    const char* pMatch   = psSrc;
+    const char* pReplace = psThis;
+    
+    // attempt to collect matching chars from src
+    while (*pReplace) {
+      
+      // false match?
+      if (*psSrc != *pReplace) {
+        // false match, therefore copy the unmatching chars
+        do {
+          if (++iReqBytes < iDstBufSize) {
+            *pDst++ = *pMatch;
+          }
+          pMatch++;
+        } while (pMatch < psSrc);
+        goto NextIteration;
+      }
+      
+      // matching so far...
+      psSrc++;
+      pReplace++;
+    }
+    
+    // copy the replacement substring
+    for (const char* pCopy = psThat; *pCopy; ) {
+      if (++iReqBytes < iDstBufSize) {
+        *pDst++ = *pCopy;
+      }
+      pCopy++;
+    }
+    
+    // a replacement has been made
+    bReplaced = true;
+  }
+
+  ++iReqBytes;
+  *pDst = '\0';
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
+  
+  return bReplaced;
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace tail of string, keeping string length the same                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vReplaceTail(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
+{
+  _static_
+  
+  i8 iLen_dst  = StrLib::nLength(psDst);
+  i8 iLen_tail = StrLib::nLength(psSrc);
+
+  // Check for underflow.
+  // We use iLen_dst here because we are trying to keep the string length the
+  // same, so it may underflow and write before the start of the string.
+  UNUSED(iDstBufSize);
+  bool bRet = bCheckBufferSpace(__func__, iLen_tail + 1, iLen_dst + 1, pbResult);
+  if (!bRet) {
+    return;
+  }
+  
+  //            01234567
+  //            abcdefgh
+  //                 ...
+  //            8 - 3 = 5
+  StrLib::vCopy(psDst + iLen_dst - iLen_tail, iLen_tail + 1, psSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Record internally that a string truncation has occurred                    */
+/*----------------------------------------------------------------------------*/
+inline void StrLib::vReportStringTruncation(const char* azFuncName, i8 iReqBufSize, i8 iDstBufSize)
+{
+  vTrace("Warning: Unhandled string truncation occurred in function %s.\n"
+         "Destination buffer required %lld bytes, only had %lld bytes.\n"
+         "Call stack follows.\n"_Stz,
+         azFuncName,
+         iReqBufSize,
+         iDstBufSize);
+  vThreadCallStackDump();
 }
 
 /*----------------------------------------------------------------------------*/
 /* reverse a string                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vReverse(char* azDst, char* azSrc)
+void StrLib::vReverse(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
 {
   _static_
-  
-  char* acSrc = azSrc + strlen(azSrc) - 1;
-  char* acDst = azDst;
 
-  while (acSrc >= azSrc)
+  i8 iSrcLen = nLength(psSrc);
+  char* acSrc = psSrc + iSrcLen - 1;
+  char* acDst = psDst;
+
+  i8 iReqBufSize = iSrcLen + 1;
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+
+  if (!bRet) {
+    if (iDstBufSize <= 0) {
+      return;
+    }
+
+    // Truncation will occur unless we adjust the acSrc pointer
+    acSrc = psSrc + iDstBufSize - 1;
+  }
+
+  while (acSrc >= psSrc)
     *acDst++ = *acSrc--;
   
   *acDst = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
-/* add src substr to right side of destination                                */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRight(char* azDst, char* azSrc, i8 i_At)
-{
-  _static_
-  
-  vPad(azDst, i_At,' ');
-  
-  char* azDst_into = azDst + i_At - strlen(azSrc) + 1;
-  nCopy_nonull(azDst_into,azSrc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* rotate a string by given number of characters                              */
-/*----------------------------------------------------------------------------*/
-void StrLib::vRotate(char* zArg, i8 nBy)
-{
-  _static_
-  
-  i8 nLen = nLength(zArg);
-  ASSERT(nBy < nLen);
-  
-  char caFront[nBy];
-  
-  MemLib::vCopy(caFront,zArg,nBy,CN_NONE);
-  
-  MemLib::vMove(zArg,zArg+nBy,nBy,CN_NONE);
-  
-  MemLib::vCopy(zArg + nLen - nBy,caFront,nBy,CN_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
 /* ruler                                                                      */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRuler(char* azDst, i8 iLength)
+void StrLib::vRuler(char* psDst, i8 iDstBufSize, i8 iLength, bool* pbResult)
 {
   _static_
-  
-  char* azPut = azDst;
+
+  bool bRet = bCheckBufferSpace(__func__, iLength + 1, iDstBufSize, pbResult);
+  if (!bRet) {
+    // continue but truncate
+    iLength = iDstBufSize - 1;
+  }
+
+  char* azPut = psDst;
   char  cDigit;
   
   for (i8 i_Char = 0; i_Char < iLength; i_Char++) {
@@ -4265,11 +4933,27 @@ void StrLib::vRuler(char* azDst, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* are two arguments equal (no case)                                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSame(const char* pArg1, const char* pArg2)
+bool StrLib::bSame(const char cArg1, const char cArg2)
+{
+  _static_
+
+  char c1_lower = cToLower(cArg1);
+  char c2_lower = cToLower(cArg2);
+
+  if (c1_lower == c2_lower)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are two arguments equal (no case)                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bSame(const char* psArg1, const char* psArg2)
 {
   _static_
   
-  i8 iDiff = strcasecmp(pArg1,pArg2);
+  i8 iDiff = strcasecmp(psArg1, psArg2);
   
   if (0 == iDiff)
     return true;
@@ -4280,94 +4964,126 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
 /*----------------------------------------------------------------------------*/
 /* Given a word, convert it to a short hand notation                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vShortHand(char *azDst, const char *azSrc)
+void StrLib::vShortHand(char *psDst, i8 iDstBufSize, const char *psSrc, bool* pbResult)
 {
   _static_
 
-  char cStart = *azSrc;
-  if(cStart >= 97 && cStart <= 122)
+  i8 iReqBytes = 0;
+
+  char cStart = *psSrc;
+  if(cStart >= 97 && cStart <= 122) // 'a' and 'z'
   {
     // indexJoin -> iJ
-    *azDst = cStart;
+    if (++iReqBytes < iDstBufSize) {
+      *psDst = cStart;
+    }
 
-    azSrc++;
+    psSrc++;
 
-    while(*azSrc != '\0')
+    while(*psSrc != '\0')
     {
-      if(*azSrc >= 65 && *azSrc <= 90)
+      if(*psSrc >= 65 && *psSrc <= 90) // 'A' and 'Z'
       {
-        azDst++;
-        *azDst = *azSrc;
-        azDst++;
-        *azDst = '\0';
+        if (++iReqBytes < iDstBufSize) {
+          psDst++;
+          *psDst = *psSrc;
+        }
+
+        ++iReqBytes;
+        psDst++;
+        *psDst = '\0';
+
+        bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+        UNUSED(bRet);
         return;
       }
-      azSrc++;
+      psSrc++;
     }
-  } else if(cStart >= 65 && cStart <= 90)
+  } else if(cStart >= 65 && cStart <= 90) // 'A' and 'Z'
   {
     // if the first char is caps
     // IndexJoin -> IJ
     // INDEXJOIN -> I
-    *azDst = cStart;
+    if (++iReqBytes < iDstBufSize) {
+      *psDst = cStart;
+    }
 
-    azSrc++;
+    psSrc++;
 
     // search for the next caps letter
     bool bSmall = 0;
-    while(*azSrc >= 97 && *azSrc <= 122 && *azSrc != '\0')
+    while(*psSrc >= 97 && *psSrc <= 122 && *psSrc != '\0')
     {
-      azSrc++;
+      psSrc++;
       bSmall = 1;
     }
 
     // Add the next caps char if we found at lease one small char before
-    if(*azSrc != '\0' && bSmall == 1)
+    if(*psSrc != '\0' && bSmall == 1 && ++iReqBytes < iDstBufSize)
     {
-      azDst++;
-      *azDst = *azSrc;
+      psDst++;
+      *psDst = *psSrc;
     }
-    azDst++;
-    *azDst = '\0';
+
+    ++iReqBytes;
+    psDst++;
+    *psDst = '\0';
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+    UNUSED(bRet);
     return;
+
   } else
   {
-    *azDst = '\0';
+    ++iReqBytes;
+    *psDst = '\0';
+
+    bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+    UNUSED(bRet);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* shuffle substring left                                                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vShuffleLeft(char* azDst, const char* azSrc)
+void StrLib::vShuffleLeft(char* psDst, i8 iDstBufSize, const char* psSrc, bool* pbResult)
 {
   _static_
+
+  i8 iReqBytes = 0;
 
   for (;;) {
-    char cCopied = (*azDst++ = *azSrc++);
+    char cCopied = *psSrc;
+    if (++iReqBytes < iDstBufSize) {
+      *psDst++ = *psSrc++;
+    }
+
     if (! cCopied)
-      return;
+      break;
   }
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBytes, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* shuffle substring left                                                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
+void StrLib::vShuffleLeft(char* psDst, i8 iDstBufSize, i8 i_Right, bool* pbResult)
 {
   _static_
 
-  vShuffleLeft(azDst, azDst + i_Right);
+  vShuffleLeft(psDst, iDstBufSize, psDst + i_Right, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of arg                                                   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::nSize(const char* s)
+i8 StrLib::nSize(const char* psArg)
 {
   _static_
   
-  i8 nBytes = strlen(s) + 1;
+  i8 nBytes = strlen(psArg) + 1;
 
   return nBytes;
 }
@@ -4375,38 +5091,38 @@ i8 StrLib::nSize(const char* s)
 /*----------------------------------------------------------------------------*/
 /* skip line comment                                                          */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipCommentLine(char** aaCrs)
+void StrLib::vSkipCommentLine(char** ppsCrs)
 {
   _static_
   
-  RASSERT(bIsSlash(**aaCrs));
-  (*aaCrs)++;
-  RASSERT(bIsSlash(**aaCrs));
-  (*aaCrs)++;
+  RASSERT(bIsSlash(**ppsCrs));
+  (*ppsCrs)++;
+  RASSERT(bIsSlash(**ppsCrs));
+  (*ppsCrs)++;
 
-  while (! bIsNull(**aaCrs)) {
-    if (bIsNewLine(**aaCrs)) {
-      (*aaCrs)++;
+  while (! bIsNull(**ppsCrs)) {
+    if (bIsNewLine(**ppsCrs)) {
+      (*ppsCrs)++;
       break;
     }
-    (*aaCrs)++;
+    (*ppsCrs)++;
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* skip white space and comments                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipCommentsEtc(char **aazCrs)
+void StrLib::vSkipCommentsEtc(char **ppsCrs)
 {
   _static_
   
   for (;;) {
-    StrLib::vSkipWhite(aazCrs);
-    if (! **aazCrs)
+    StrLib::vSkipWhite(ppsCrs);
+    if (! **ppsCrs)
       return;
 
-    if (StrLib::bIsCommentLine(*aazCrs)) {
-      StrLib::vSkipCommentLine(aazCrs);
+    if (StrLib::bIsCommentLine(*ppsCrs)) {
+      StrLib::vSkipCommentLine(ppsCrs);
       continue;
     }
   
@@ -4415,69 +5131,91 @@ void StrLib::vSkipCommentsEtc(char **aazCrs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip non digit sequence in substr                                          */
+/* skip over digit sequence in substr                                         */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipDigits(char** aaSrc)
+void StrLib::vSkipDigits(char** ppsCrs)
 {
   _static_
   
-  char *aSrc = *aaSrc;
+  char *aSrc = *ppsCrs;
   
   for ( ; *aSrc; aSrc++)
     if ( ! isdigit(*aSrc) )
       break;
 
-  *aaSrc = aSrc;
+  *ppsCrs = aSrc;
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip till end of line                                                      */
+/* skip till end of line. Return false if we hit a null terminator            */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipEOL(char** ps)
+bool StrLib::bSkipEOL(char** ppsCrs)
 {
   _static_
   
-  while (**ps && '\n' != **ps)
-    (*ps)++;
-  (*ps)++;
+  while (**ppsCrs && '\n' != **ppsCrs)
+    (*ppsCrs)++;
+  (*ppsCrs)++;
   
-  if (**ps)
+  if (**ppsCrs)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSkipLeading: skip leading sequence                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bSkipLeading(char** ppsCrs, char cEnclosedBy_Leading)
+{
+  _static_
+
+  // skip leading spaces first
+  while (' ' == **ppsCrs)
+    (*ppsCrs)++;
+
+  // do we see the leading enclose character?
+  if (cEnclosedBy_Leading == **ppsCrs) {
+    // skip the leading enclose character
+    (*ppsCrs)++;
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* skip non-alphanumeric sequence in substr                                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipNonAlnum(char** ps)
+bool StrLib::bSkipNonAlnum(char** ppsCrs)
 {
   _static_
   
-  for ( ; **ps; (*ps)++)
-    if (isalnum(**ps))
+  for ( ; **ppsCrs; (*ppsCrs)++)
+    if (isalnum(**ppsCrs))
       break;
   
-  if (**ps)
+  if (**ppsCrs)
     return true;
   else
     return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* skip digit sequence in substr                                              */
+/* skip non digit sequence in substr                                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipNonDigit(char** ps)
+bool StrLib::bSkipNonDigit(char** ppsCrs)
 {
   _static_
   
-  char *s = *ps;
+  char *s = *ppsCrs;
   
   for ( ; *s; s++)
     if (isdigit(*s))
       break;
   
-  *ps = s;
+  *ppsCrs = s;
   
   if (*s)
     return true;
@@ -4488,37 +5226,37 @@ bool StrLib::bSkipNonDigit(char** ps)
 /*----------------------------------------------------------------------------*/
 /* skip spaces                                                                */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipSpaces(char** ps)
+void StrLib::vSkipSpaces(char** ppsCrs)
 {
   _static_
   
-  while (' ' == **ps)
-    (*ps)++;
+  while (' ' == **ppsCrs)
+    (*ppsCrs)++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* skip trailing sequence                                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading,
+bool StrLib::bSkipTrailing(char** ppsCrs, bool bSawEnclosedBy_Leading,
                            char cEnclosedBy_Trailing)
 {
   _static_
   
   // skip any blanks
-  while (' ' == **ps)
-    (*ps)++;
+  while (' ' == **ppsCrs)
+    (*ppsCrs)++;
   
   // if no leading enclosed then we have a valid end of the field
   if (! bSawEnclosedBy_Leading)
     return true;
   
   // test we see the trailing enclosed
-  if (cEnclosedBy_Trailing == **ps) {
+  if (cEnclosedBy_Trailing == **ppsCrs) {
     // skip trailing enclosed
-    (*ps)++;
+    (*ppsCrs)++;
     //skip any blanks
-    while (' ' == **ps)
-      (*ps)++;
+    while (' ' == **ppsCrs)
+      (*ppsCrs)++;
     return true;
   }
 
@@ -4529,126 +5267,206 @@ bool StrLib::bSkipTrailing(char** ps,  bool bSawEnclosedBy_Leading,
 /*----------------------------------------------------------------------------*/
 /* skip whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSkipWhite(char** ps)
+void StrLib::vSkipWhite(char** ppsCrs)
 {
   _static_
   
-  for ( ; **ps; (*ps)++)
-    if (!bIsWhite(**ps))
+  for ( ; **ppsCrs; (*ppsCrs)++)
+    if (!bIsWhite(**ppsCrs))
       break;
 }
 
 /*----------------------------------------------------------------------------*/
 /* split src into string and integer components                               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSplitSeries(char* azStr, char* azInt, char* azSrc)
+void StrLib::vSplitSeries(char* psDstStr, i8 iDstStrSize,
+                          char* psDstInt, i8 iDstIntSize,
+                          const char* psSrc, bool* pbResult)
 {
   _static_
+
+  if (iDstStrSize > 0) {
+    *psDstStr = '\0';
+  }
+
+  if (iDstIntSize > 0) {
+    *psDstInt = '\0';
+  }
+
+  i8 iReqStrBytes = 0;
+  i8 iReqIntBytes = 0;
+
+  const char* aSrc = psSrc;
+  char* aStr = psDstStr;
+  char* aInt = psDstInt;
   
-  *azStr = '\0';
-  *azInt = '\0';
-  
-  char* aSrc = azSrc;
-  char* aStr = azStr;
-  char* aInt = azInt;
-  
-  while (*aSrc && ! isdigit(*aSrc))
-    *aStr++ = *aSrc++;
+  while (*aSrc && ! isdigit(*aSrc)) {
+    if (++iReqStrBytes < iDstStrSize) {
+      *aStr++ = *aSrc;
+    }
+    aSrc++;
+  }
+  ++iReqStrBytes;
   *aStr = '\0';
   
-  while (*aSrc && isdigit(*aSrc))
-    *aInt++ = *aSrc++;
+  while (*aSrc && isdigit(*aSrc)) {
+    if (++iReqIntBytes < iDstIntSize) {
+      *aInt++ = *aSrc;
+    }
+    aSrc++;
+  }
+  ++iReqIntBytes;
   *aInt = '\0';
+
+  bool bRes1 = true;
+  bool bRes2 = true;
+
+  bool bRet;
+  bRet = bCheckBufferSpace(__func__, iReqStrBytes, iDstStrSize, &bRes1);
+  bRet = bCheckBufferSpace(__func__, iReqIntBytes, iDstIntSize, &bRes2);
+  UNUSED(bRet);
+
+  if (pbResult) {
+    *pbResult = (bRes1 && bRes2);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, Stz* szFormat, ...)
+void StrLib::vSprint(char* psDst, i8 iDstBufSize, bool* pbResult, Stz* szFormat, ...)
 {
   _static_
   
   va_list args;
-  
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
   va_start(args,szFormat);
-  vsprintf(sDst,szFormat->azChar(),args);
+  i8 iReqBufSize = 1 + vsnprintf(psDst, iDstBufSize, szFormat->azChar(), args);
   va_end(args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(Stz* sDst, Stz* szFormat, ...)
+void StrLib::vSprint(Stz* psDst, i8 iDstBufSize, bool* pbResult, Stz* szFormat, ...)
 {
   _static_
   
   va_list args;
-  
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
+
   va_start(args,szFormat);
-  vsprintf(sDst->azChar(),szFormat->azChar(),args);
+  i8 iReqBufSize = 1 + vsnprintf(psDst->azChar(), iDstBufSize, szFormat->azChar(), args);
   va_end(args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted sprint                                                           */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, va_list args, const char* sFormat)
+void StrLib::vSprint(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult)
 {
   _static_
-  
-  vsprintf(sDst,sFormat,args);
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
+  i8 iReqBufSize = 1 + vsnprintf(psDst, iDstBufSize, sFormat, args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprintCat(Stz* sDst, Stz* sFormat, ...)
+void StrLib::vSprintCat(Stz* psDst, i8 iDstBufSize, bool* pbResult, Stz* sFormat, ...)
 {
   _static_
   
   va_list args;
-  
-  char* sEnd = sDst->azChar() + nLength(sDst->azChar());
-  
+
+  i8 nStrLen = nLength(psDst->azChar());
+  char* sEnd = psDst->azChar() + nStrLen;
+  i8 nBufRemaining = iDstBufSize - nStrLen;
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
+
   va_start(args,sFormat);
-  vsprintf(sEnd,sFormat->azChar(),args);
+  i8 iReqBufSize = nStrLen + 1 + vsnprintf(sEnd, nBufRemaining, sFormat->azChar(), args);
   va_end(args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprintCat(char* sDst, va_list args, const char* sFormat)
+void StrLib::vSprintCat(char* psDst, i8 iDstBufSize, va_list args, const char* sFormat, bool* pbResult)
 {
   _static_
-  
-  char* sEnd = sDst + nLength(sDst);
-  
-  vsprintf(sEnd,sFormat,args);
+
+  // Note:vsnprintf() returns the number of chars that would have been printed
+  // (not including the null terminator). So if this is larger than iDstBufSize
+  // then a truncation has occurred.
+
+  i8 nStrLen = nLength(psDst);
+  char* sEnd = psDst + nStrLen;
+  i8 nBufRemaining = iDstBufSize - nStrLen;
+
+  i8 iReqBufSize = nStrLen + 1 + vsnprintf(sEnd, nBufRemaining, sFormat, args);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqBufSize, iDstBufSize, pbResult);
+  UNUSED(bRet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* test last char and remove                                                 */
 /*----------------------------------------------------------------------------*/
-void StrLib::vStrip(char* s, char cTrailing)
+void StrLib::vStrip(char* psDst, i8 iDstBufSize, char cTrailing, bool* pbResult)
 {
   _static_
+
+  // This will never overflow
+  UNUSED(iDstBufSize);
+
+  i8 nBytes = nLength(psDst);
   
-  i8 nBytes = strlen(s);
-  
-  if ( ! nBytes )
+  if ( ! nBytes ) {
+    if (pbResult) {
+      *pbResult = true;
+    }
     return;
+  }
   
   i8 iOffset = nBytes - 1;
   
-  if (s[iOffset] == cTrailing)
-    s[iOffset] = '\0';
+  if (psDst[iOffset] == cTrailing)
+    psDst[iOffset] = '\0';
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the sub-path of src                                                    */
+/* get the sub-path of src (the substr after last '/') and copy it to psDst   */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSubPath(char* azDst, char* azSrc)
+void StrLib::vSubPath(char* azDst, i8 iDstBufSize, char* azSrc, bool* pbResult)
 {
   _static_
   
@@ -4657,12 +5475,12 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
   ps = StrLib::acLast(azSrc);
   
   StrLib::bBackward(&ps,azSrc,'/');
-  bool bBackSlash = StrLib::bBackward(&ps,azSrc,'/');
+  bool bSlash = StrLib::bBackward(&ps, azSrc, '/');
   
-  if (bBackSlash)
-    StrLib::vCopy(azDst,ps+1);
+  if (bSlash)
+    StrLib::vCopy(azDst, iDstBufSize, ps+1, pbResult);
   else
-    StrLib::vCopy(azDst,azSrc);
+    StrLib::vCopy(azDst, iDstBufSize, azSrc, pbResult);
 }
 
 
@@ -4673,17 +5491,20 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bTailIs(const char *z, char *ss)
+bool StrLib::bTailIs(const char *psArg, char *psTail)
 {
   _static_
 
-  i8 nSS_len  = nLength(ss);
+  i8 nTail_len  = nLength(psTail);
 
-  const char* y = z - nSS_len;
+  const char* y = psArg - nTail_len;
 
-  //vTrace("%s %lld ]%s[\n"_Stz,ss,nSS_len,y);
+  if (y < psArg) {
+    // underflow psDst string
+    return false;
+  }
 
-  if (bEqualTo(y,nSS_len,ss))
+  if (bEqualTo(y, nTail_len, psTail))
     return true;
 
   return false;
@@ -4692,15 +5513,15 @@ bool StrLib::bTailIs(const char *z, char *ss)
 /*----------------------------------------------------------------------------*/
 /* find tab location in given arg                                             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
+char* StrLib::aczTabLoc(char* psArg, i8 i_Tab, char cPad)
 {
   _static_
 
-  char* aczLoc = acLast(azArg);
+  char* aczLoc = acLast(psArg);
 
-  i8 nTab = nDifference(azArg,aczLoc);
+  i8 nTab = nDifference(psArg, aczLoc);
   
-  while (aczLoc > azArg && nTab > i_Tab) {
+  while (aczLoc > psArg && nTab > i_Tab) {
     if (cPad != *aczLoc) {
       aczLoc++;
       aczLoc++;
@@ -4716,42 +5537,38 @@ char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
 /*----------------------------------------------------------------------------*/
 /* convert arg to bcd                                                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iToBcd(const char* s)
+i8 StrLib::iToBcd(const char* psArg)
 {
   _static_
-  
-  //i8 i = atoll(s);
-
-  //return i;
   
   i8 i = 0;
   bool bNegative = false;
   
-  if (*s && '-' == *s) {
+  if ('-' == *psArg) {
     bNegative = true;
-    s++;
+    psArg++;
   }
   
   // skip leading 0's
-  while (*s && '0' == *s)
-    s++;
+  while ('0' == *psArg)
+    psArg++;
   
-  if (*s && ('x' == *s || 'X' == *s)) {
-    s++;
-    while (*s && bIsHex(*s)) {
-      i8 j = iHexToInw(*s++);
+  if ('x' == *psArg || 'X' == *psArg) {
+    psArg++;
+    while (*psArg && bIsHex(*psArg)) {
+      i8 j = iHexToInw(*psArg++);
       i = i * 16 + j;
     }
   }
   else {
-    while (*s && bIsDigit(*s)) {
-      i8 j = (*s++ - '0');
+    while (bIsDigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
       i = i * 10 + j;
     }
-    if (*s && '.' == *s) {
-      s++;
-      while (*s && bIsDigit(*s)) {
-        i8 j = (*s++ - '0');
+    if ('.' == *psArg) {
+      psArg++;
+      while (bIsDigit(*psArg)) {
+        i8 j = (*psArg++ - '0');
         i = i * 10 + j;
       }
     }
@@ -4766,15 +5583,15 @@ i8 StrLib::iToBcd(const char* s)
 /*----------------------------------------------------------------------------*/
 /* convert arg to boolean                                                     */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bToBool(const char* s)
+bool StrLib::bToBool(const char* psArg)
 {
   _static_
   
-  if (StrLib::bEqualTo(s,"true" ,C_NO_CASE)) return true;
-  if (StrLib::bEqualTo(s,"1"    ,C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(psArg, "true" , C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(psArg, "1"    , C_NO_CASE)) return true;
   
-  if (StrLib::bEqualTo(s,"false",C_NO_CASE)) return false;
-  if (StrLib::bEqualTo(s,"0"    ,C_NO_CASE)) return false;
+  if (StrLib::bEqualTo(psArg, "false", C_NO_CASE)) return false;
+  if (StrLib::bEqualTo(psArg, "0"    , C_NO_CASE)) return false;
   
   return false;
 }
@@ -4782,12 +5599,19 @@ bool StrLib::bToBool(const char* s)
 /*----------------------------------------------------------------------------*/
 /* convert arg to flt                                                         */
 /*----------------------------------------------------------------------------*/
-d8 StrLib::dToFlt(const char* s)
+d8 StrLib::dToFlt(const char* psArg, bool* pbResult)
 {
   _static_
   
-  d8 d = atof(s);
-  
+//  d8 d = atof(psArg);
+
+  char* psEndPtr = nullptr;
+  d8 d = strtod(psArg, &psEndPtr);
+
+  if (pbResult) {
+    *pbResult = !(d == 0 && psEndPtr == psArg);
+  }
+
   return d;
 }
 
@@ -4811,36 +5635,32 @@ char StrLib::cToHex(i8 i)
 /*----------------------------------------------------------------------------*/
 /* convert arg to i8                                                          */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iToI8(const char* s)
+i8 StrLib::iToI8(const char* psArg)
 {
   _static_
-  
-  //i8 i = atoll(s);
-
-  //return i;
   
   i8 i = 0;
   bool bNegative = false;
   
-  if (*s && '-' == *s) {
+  if ('-' == *psArg) {
     bNegative = true;
-    s++;
+    psArg++;
   }
   
   // skip leading 0's
-  while (*s && '0' == *s)
-    s++;
+  while ('0' == *psArg)
+    psArg++;
   
-  if (*s && ('x' == *s || 'X' == *s)) {
-    s++;
-    while (*s && bIsHex(*s)) {
-      i8 j = iHexToInw(*s++);
+  if ('x' == *psArg || 'X' == *psArg) {
+    psArg++;
+    while (bIsHex(*psArg)) {
+      i8 j = iHexToInw(*psArg++);
       i = i * 16 + j;
     }
   }
   else {
-    while (*s && bIsDigit(*s)) {
-      i8 j = (*s++ - '0');
+    while (bIsDigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
       i = i * 10 + j;
     }
   }
@@ -4854,7 +5674,7 @@ i8 StrLib::iToI8(const char* s)
 /*----------------------------------------------------------------------------*/
 /* convert arg to i8 with overflow checking                                   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
+i8 StrLib::iToI8(const char* psArg, bool* bInvalidValue, bool* bOverflowed)
 {
   _static_
 
@@ -4864,32 +5684,32 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
   *bInvalidValue = false;
   *bOverflowed = false;
 
-  if (!*s) {
+  if (!*psArg) {
     *bInvalidValue = true;
     return -1;
   }
 
-  if (*s && '-' == *s) {
+  if ('-' == *psArg) {
     bNegative = true;
-    s++;
+    psArg++;
   }
 
-  if (!*s || (!bIsDigit(*s) && *s != 'x' && *s != 'X')) {
+  if (!*psArg || (!bIsDigit(*psArg) && *psArg != 'x' && *psArg != 'X')) {
     *bInvalidValue = true;
     return -1;
   }
 
   // skip leading 0's
-  while (*s && '0' == *s)
-    s++;
+  while ('0' == *psArg)
+    psArg++;
 
-  if (*s && ('x' == *s || 'X' == *s)) {
+  if ('x' == *psArg || 'X' == *psArg) {
     const i8 iLimit = C_I8_MAX / 16;
     const i8 iModulus = bNegative ? -(C_I8_MIN % 16) : C_I8_MAX % 16;
 
-    s++;
-    while (*s && bIsHex(*s)) {
-      i8 j = iHexToInw(*s++);
+    psArg++;
+    while (bIsHex(*psArg)) {
+      i8 j = iHexToInw(*psArg++);
 
       if (i > iLimit || (i == iLimit && j > iModulus) ) {
         *bOverflowed = true;
@@ -4903,8 +5723,8 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
     const i8 iLimit = C_I8_MAX / 10;
     const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
 
-    while (*s && bIsDigit(*s)) {
-      i8 j = (*s++ - '0');
+    while (bIsDigit(*psArg)) {
+      i8 j = (*psArg++ - '0');
 
       if (i > iLimit || (i == iLimit && j > iModulus) ) {
         *bOverflowed = true;
@@ -4922,7 +5742,7 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert arg to lower case                                                  */
+/* convert ascii arg to lower case                                            */
 /*----------------------------------------------------------------------------*/
 char StrLib::cToLower(char c)
 {
@@ -4938,18 +5758,30 @@ char StrLib::cToLower(char c)
 /*----------------------------------------------------------------------------*/
 /* convert arg to lower case                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToLower(char* s)
+void StrLib::vToLower(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
+
+  // Note: While the iDstBufSize and pbResult parameters seem unnecessary,
+  // they are needed for when we support non-English characters. In that scenario
+  // the uppercase version of a string can be a different size from the
+  // original string with a different number of bytes or a different number
+  // of characters.
   
-  while (*s) {
-    *s = (char)tolower((unsigned char)*s);
-    s++;
+  while (*psDst) {
+    *psDst = (char)tolower((unsigned char)*psDst);
+    psDst++;
+  }
+
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert arg to upper case                                                  */
+/* convert ascii arg to upper case                                            */
 /*----------------------------------------------------------------------------*/
 char StrLib::cToUpper(char c)
 {
@@ -4965,142 +5797,207 @@ char StrLib::cToUpper(char c)
 /*----------------------------------------------------------------------------*/
 /* convert arg to upper case                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToUpper(char* s)
+void StrLib::vToUpper(char* psDst, i8 iDstBufSize, bool* pbResult)
 {
   _static_
 
-  while (*s) {
-    *s = (char)toupper((unsigned char)*s);
-    s++;
+  // Note: While the iDstBufSize and pbResult parameters seem unnecessary,
+  // they are needed for when we support non-English characters. In that scenario
+  // the uppercase version of a string can be a different size from the
+  // original string with a different number of bytes or a different number
+  // of characters.
+
+  while (*psDst) {
+    *psDst = (char)toupper((unsigned char)*psDst);
+    psDst++;
+  }
+
+  UNUSED(iDstBufSize);
+
+  if (pbResult) {
+    *pbResult = true;
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove prefix / suffix from arg (where suffix is introduced by given char) */
 /*----------------------------------------------------------------------------*/
-void StrLib::vTopTail(char *azArg, char cIntro)
+void StrLib::vTopTail(char *psDst, i8 iDstBufSize, char cIntro, bool* pbResult)
 {
   _static_
   
-  vRemovePrefix(azArg,cIntro);
-  vRemoveSuffix(azArg,cIntro);
+  vRemovePrefix(psDst, iDstBufSize, cIntro, pbResult);
+  vRemoveSuffix(psDst, iDstBufSize, cIntro, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToPointer(void* pArg, char* wArg)
+void StrLib::vToPointer(char* psDst, i8 iDstBufSize, const void* pvArg, bool* pbResult)
 {
   _static_
-  
-  i8 i = reinterpret_cast<i8>(pArg);
-  
-  *wArg++ = '0';
-  *wArg++ = 'x';
-  
-  char* w = wArg;
-  
-  char *p = w, *q = w;
+  ASSERT(iDstBufSize > 1);
+
+  i8 iArg = reinterpret_cast<i8>(pvArg);
+
+  i8 iSpaceNeeded = 3; // start with the null terminator and the "0x"
+
+  if (iSpaceNeeded <= iDstBufSize) {
+    *psDst++ = '0';
+    *psDst++ = 'x';
+  }
+
+  char *p = psDst, *q = psDst;
   do {
-    *p++ = cToHex(i%16); //(i % 16) + '0';
-    i /= 16ll;
-  } while (i);
-  
-  
+    ++iSpaceNeeded;
+    if (iSpaceNeeded <= iDstBufSize) {
+      *p++ = cToHex(iArg % 16); //(i % 16) + '0';
+    }
+
+    iArg /= 16ll;
+  } while (iArg);
+
+  if (iSpaceNeeded > iDstBufSize) {
+    // Try to put a value into the destination buffer
+    if (iDstBufSize >= 4) {
+      psDst[0] = '0'; psDst[2] = 'x'; psDst[3] = '0'; psDst[4] = 0;
+    } else {
+      psDst[0] = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+    return;
+  }
+
+  // We have enough space. Now reverse the string that was generated.
+
   *p = '\0';
   while (--p > q) {
     char c = *p;
     *p = *q;
     *q++ = c;
   }
-  
-  return w;
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToString(bool b, char* w)
+void StrLib::vToString(char* psDst, i8 iDstBufSize, bool bArg, bool* pbResult)
 {
   _static_
 
-  if (b)
-    vAppendString(&w,"true");
+  if (bArg)
+    vCopy(psDst, iDstBufSize, "true", pbResult);
   else
-    vAppendString(&w,"false");
-
-  return w;
+    vCopy(psDst, iDstBufSize, "false", pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given float into its char/str form                                 */
+/* convert given integer into its char/str form                               */
 /*----------------------------------------------------------------------------*/
-void StrLib::vToString(char* psDst, i8 iArg)
+void StrLib::vToString(char* psDst, i8 iDstBufSize, i8 iArg, bool* pbResult)
 {
   _static_
-  
-  wToString(iArg,psDst);
+  ASSERT(iDstBufSize > 1);
+
+  i8 iSpaceNeeded = 1; // start with the null terminator
+  bool bNegative = false;
+
+  if (iArg < 0) {
+    iArg = -iArg;
+    bNegative = true;
+    ++iSpaceNeeded; // Account for the negative now
+  }
+
+  char *p = psDst, *q = psDst;
+  do {
+    ++iSpaceNeeded;
+    if (iSpaceNeeded <= iDstBufSize) {
+      *p++ = (iArg % 10) + '0';
+    }
+
+    iArg /= 10ll;
+  } while (iArg);
+
+  if (iSpaceNeeded > iDstBufSize) {
+    // Try to put a value into the destination buffer
+    if (iDstBufSize > 1) {
+      psDst[0] = '0';
+      psDst[1] = 0;
+    } else if (iDstBufSize == 1) {
+      psDst[0] = 0;
+    }
+
+    if (pbResult) {
+      *pbResult = false;
+    } else {
+      vReportStringTruncation(__func__, iSpaceNeeded, iDstBufSize);
+    }
+    return;
+  }
+
+  // We have enough space. Now reverse the string that was generated.
+
+  if (bNegative)
+    *p++ = '-';
+
+  *p = '\0';
+  while (--p > q) {
+    char c = *p;
+    *p = *q;
+    *q++ = c;
+  }
+
+  if (pbResult) {
+    *pbResult = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given float into its char/str form                                 */
 /*----------------------------------------------------------------------------*/
-char* StrLib::wToString(d8 d, char* w)
+void StrLib::vToString(char* psDst, i8 iDstBufSize, d8 dArg, bool* pbResult)
 {
   _static_
   
   char caFloat[32];
   
-  snprintf(caFloat,sizeof(caFloat),"%g",d);
-  
-  vAppendString(&w,caFloat);
-  
-  return w;
-}
+  i8 iRet = snprintf(caFloat, sizeof(caFloat), "%g", dArg);
 
-/*----------------------------------------------------------------------------*/
-/* convert given integer into its char/str form                               */
-/*----------------------------------------------------------------------------*/
-char* StrLib::wToString(i8 i, char* w)
-{
-  _static_
-  
-  bool bNegative = false;
-  
-  if (i < 0) {
-    i = -i;
-    bNegative = true;
+  bool bHasTruncated = !bCheckBufferSpace(__func__, iRet+1, sizeof(caFloat), pbResult);
+
+  if (bHasTruncated && pbResult) {
+    // Caller will handle it
+    return;
   }
-  
-  char *p = w, *q = w;
-  do {
-    *p++ = (i % 10) + '0';
-    i /= 10ll;
-  } while (i);
-  
-  if (bNegative)
-    *p++ = '-';
-  
-  *p = '\0';
-  while (--p > q) {
-    char c = *p;
-    *p = *q;
-    *q++ = c;
-  }
-  
-  return w;
+
+  vCopy(psDst, iDstBufSize, caFloat, pbResult);
 }
 
 /*----------------------------------------------------------------------------*/
 /* trim trailing char's                                                       */
 /*----------------------------------------------------------------------------*/
-void StrLib::vTrim(char* azArg, char cTrim)
+void StrLib::vTrim(char* psDst, i8 iDstBufSize, char cTrim, bool* pbResult)
 {
   _static_
+
+  // This will never overflow or underflow
+  UNUSED(iDstBufSize);
+  if (pbResult) {
+    *pbResult = true;
+  }
   
-  char* acEnd = StrLib::acLast(azArg);
+  char* acEnd = StrLib::acLast(psDst);
   
-  while (acEnd >= azArg) {
+  while (acEnd >= psDst) {
     if (cTrim == *acEnd)
       *acEnd-- = '\0';
     else
@@ -5147,46 +6044,51 @@ bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iWordFlip(char* aDst, char* aSrc)
+i8 StrLib::iWordFlip(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
 {
   _static_
   
-  i8 iLenSrc  = nLength(aSrc);
-  //vTrace("Flipping %s\n"_Stz, aSrc);
-  
+  i8 iSrcLen  = nLength(psSrc);
+
   i8 iRoundUp = 0;
-  i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
+  i8 iRemainder = iSrcLen % C_BYTES_PER_WORD;
   if (iRemainder)
     iRoundUp = C_BYTES_PER_WORD - iRemainder;
   
-  i8 iDstSize = iLenSrc + iRoundUp;
-  ASSERT(0 == iDstSize % C_BYTES_PER_WORD);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 iSrcLen = StrLib::nSize(aSrc);
-  MemLib::vZero(aDst,iDstSize,CN_KEY);
-  MemLib::vCopy(aDst, aSrc, iSrcLen, CN_KEY);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  w8* aWrd = (w8*)aDst;
-  for (i8 nWords = iDstSize / C_BYTES_PER_WORD; nWords; nWords--)
-    MemLib::vWordFlip(aWrd++);
-  
-  if (iLenSrc == iDstSize) {
-     MemLib::vZero(aWrd,8,CN_KEY);
-    iDstSize += C_BYTES_PER_WORD;
+  i8 iReqDstSize = iSrcLen + iRoundUp;
+  ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+  if (!bRet) {
+    return iReqDstSize;
   }
   
-  //MemLib::vDumpWords(aDst, iDstSize);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  return iDstSize;
+  i8 iSrcSize = StrLib::nSize(psSrc);
+  MemLib::vZero(psDst, iReqDstSize, CN_KEY);
+  MemLib::vCopy(psDst, psSrc, iSrcSize, CN_KEY);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  w8* aWrd = (w8*)psDst;
+  for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--)
+    MemLib::vWordFlip(aWrd++);
+  
+  if (iSrcLen == iReqDstSize) {
+    iReqDstSize += C_BYTES_PER_WORD;
+    bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+    if (bRet) {
+      MemLib::vZero(aWrd, 8, CN_KEY);
+    }
+  }
+
+  return iReqDstSize;
 }
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
+i8 StrLib::iWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc, bool* pbResult)
 {
   _static_
   
@@ -5194,29 +6096,34 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
   //vTrace("WORDFLIPBACK\n"_Stz);
   //MemLib::vDumpWords(aSrc, 16);
   
-  i8 iLenSrc = StrLib::nSize(aSrc);
+  i8 iSrcSize = StrLib::nSize(psSrc);
   
   i8 iRoundUp = 0;
-  i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
+  i8 iRemainder = iSrcSize % C_BYTES_PER_WORD;
   if (iRemainder)
     iRoundUp = C_BYTES_PER_WORD - iRemainder;
   
-  i8 iDstSize = iLenSrc + iRoundUp;
-  ASSERT(0 == iDstSize % C_BYTES_PER_WORD);
+  i8 iReqDstSize = iSrcSize + iRoundUp;
+  ASSERT(0 == iReqDstSize % C_BYTES_PER_WORD);
+
+  bool bRet = bCheckBufferSpace(__func__, iReqDstSize, iDstBufSize, pbResult);
+  if (!bRet) {
+    return iReqDstSize;
+  }
   
-  MemLib::vZero(aDst,iDstSize,CN_KEY);
-  MemLib::vCopy(aDst, aSrc, iDstSize, CN_KEY);
+  MemLib::vZero(psDst, iReqDstSize, CN_KEY);
+  MemLib::vCopy(psDst, psSrc, iReqDstSize, CN_KEY);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  w8* aWrd = (w8*)aDst;
-  for (i8 nWords = iDstSize / C_BYTES_PER_WORD; nWords; nWords--)
+  w8* aWrd = (w8*)psDst;
+  for (i8 nWords = iReqDstSize / C_BYTES_PER_WORD; nWords; nWords--)
     MemLib::vWordFlip(aWrd++);
   
   
   //vTrace("\nAFTER BACK : %s\n"_Stz, aDst);
   //MemLib::vDumpWords(aSrc, iDstSize);
   
-  return iDstSize;
+  return iReqDstSize;
 }
 
 /*============================================================================*/

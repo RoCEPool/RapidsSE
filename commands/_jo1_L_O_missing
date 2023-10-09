@@ -15,7 +15,7 @@ drop index Orders IxO_ORDERKEY    ;
 drop index Orders IxO_ORDERDATE   ;
 
 /joWrite
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_jo1_L_O_missing"

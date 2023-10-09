@@ -24,7 +24,6 @@ CardCtl::CardCtl(void)
 
   m_bCued = false;
   m_bCueDisabled = false;
-  m_bTrace = false;
 
   vReset();
 
@@ -46,6 +45,12 @@ CardCtl::CardCtl(void)
 //
 //  MemLib::vCopy(m_xaCardCtl_save,    m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
 
+  m_iPrintNo = 0;
+
+  m_pCardHistory = nullptr;
+  if (AM::JOB::bHasTag(C_CARD_HISTORY))
+    m_pCardHistory = new CardHistory;
+
   _checkInitialised_(CN_CARDCTL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
@@ -57,6 +62,9 @@ CardCtl::CardCtl(void)
 CardCtl::~CardCtl(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  if (m_pCardHistory)
+    delete m_pCardHistory;
 }
 
 
@@ -65,29 +73,13 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* print bench ?                                                              */
+/* get card history                                                           */
 /*----------------------------------------------------------------------------*/
-bool CardCtl::bBenchPrint(void)
+CardHistory* CardCtl::pCardHistory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print board ?                                                              */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bBoardPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
-    return true;
-
-  return false;
+  return m_pCardHistory;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,8 +247,8 @@ void CardCtl::vPrintBelow(i8 iBelow, va_list xVarArgs)
   m_xaCardCtl[iBelow].m_bPrintBelow = true;
 
   for (;;) {
-    iBelow = (i8)va_arg(xVarArgs,eCK);
-    if (CK_NONE == iBelow)
+    iBelow = va_arg(xVarArgs,i8);
+    if (CK_NONE == (eCK) iBelow)
       return;
     m_xaCardCtl[iBelow].m_bPrintBelow = true;
   }
@@ -290,34 +282,6 @@ void CardCtl::vPrintByKind(i8 i_Card, bool bPrintByKind)
 
   for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
     m_xaCardCtl[i_Card].m_bPrintByKind = bPrintByKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get szHorizExclude for card                                                */
-/*----------------------------------------------------------------------------*/
-Stz* CardCtl::szHorizExclude(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  Stz* szHorizExclude = m_xaCardCtl[i_Card].m_sHideHeat;
-
-  return szHorizExclude;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set szHorizExclude for card                                                */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vHorizExclude(i8 i_Card, Stz* szHorizExclude)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (i_Card) {
-    m_xaCardCtl[i_Card].m_sHideHeat = szHorizExclude;
-    return;
-  }
-
-  for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
-    m_xaCardCtl[i_Card].m_sHideHeat = szHorizExclude;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,6 +339,27 @@ void CardCtl::vPrintNo(i8 i_Card, bool bPrintNo)
   for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
     m_xaCardCtl[i_Card].m_bPrintNo = bPrintNo;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get print                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 CardCtl::iPrintNo(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  return m_iPrintNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment print                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintNoInc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
+
+  m_iPrintNo++;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get bPrintValue for card                                                   */
@@ -491,7 +476,7 @@ void CardCtl::vPrintSubCards(i8 i_Card, bool bPrintSubCards)
 /*----------------------------------------------------------------------------*/
 /* set bPrintSubCards for card                                                */
 /*----------------------------------------------------------------------------*/
-void CardCtl::vPrintSubCards(bool bPrintSubCards, ...)
+void CardCtl::vPrintSubCards(i8 bPrintSubCards, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
@@ -579,7 +564,6 @@ void CardCtl::vReset(void)
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
 
     m_xaCardCtl[i_Card].m_bHeatNext = false;
-    m_xaCardCtl[i_Card].m_sHideHeat = C_NA;
 
     m_xaCardCtl[i_Card].m_bPrintBelow      = false;
     m_xaCardCtl[i_Card].m_bPrintByKind     = false;
@@ -594,10 +578,10 @@ void CardCtl::vReset(void)
     m_xaCardCtl[i_Card].m_bPrune     = false;
   }
 
-  vPrintValue(CK_ANDPRED, false);
-  vPrintProperties(CK_ANDPRED, false);
+  vPrintValue(CK_ANDCONJ, false);
+  vPrintProperties(CK_ANDCONJ, false);
 
-  //vPrintProperties(CK_CMPPRED, false);
+  //vPrintProperties(CK_CMPCONJ, false);
 
 
 //  vPrintByKind(CK_KEY,true);
@@ -606,8 +590,8 @@ void CardCtl::vReset(void)
   vPrintName(CK_NOTE,false);
   vPrintProperties(CK_NOTE,false);
 
-  vPrintValue(CK_ORPRED, false);
-  vPrintProperties(CK_ORPRED, false);
+  vPrintValue(CK_ORCONJ, false);
+  vPrintProperties(CK_ORCONJ, false);
 
 //  vPrintByKind(CK_PROJECTION,true);
 //  vPrintSubCards(CK_PROJECTION, false);
@@ -615,7 +599,6 @@ void CardCtl::vReset(void)
   vHeatNext(CK_SECTION, true);
 
   vHeatNext(CK_STAGE, true);
-  vHorizExclude(CK_STAGE, P_HideHeat);
 
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);
@@ -772,48 +755,6 @@ void CardCtl::vShowSettings(i8 i_Card)
   vTrace("  m_bPrintPptName    %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintPptName    ? "true" : "false");
   vTrace("  m_bPrintSubCards   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubCards   ? "true" : "false");
   vTrace("  m_bPrintSubShort   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubShort   ? "true" : "false");
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cued                                                                   */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bTrace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  return m_bTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cued                                                                   */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vTraceing(bool bTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_bTrace = bTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cued                                                                   */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bTracing(Stz* szXhand, Stz* szXform)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (m_bTrace)
-    return true;
-
-  if (! AM::JOB::bHasTag(C_GLEAN_TRACE))
-    return false;
-
-  Stz* szTagTrace = AM::JOB::szTagValue(C_GLEAN_TRACE);
-  if (   (szTagTrace->bSame(szXhand) && szXform->bSame(C_NA))
-         || (szXform && szTagTrace->bSame(szXform))) {
-    return true;
-  }
-
-  return false;
 }
 
 

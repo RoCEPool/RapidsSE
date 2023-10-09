@@ -13,6 +13,7 @@
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
@@ -54,6 +55,9 @@ void Step::vApiForkChild(void)
 {
   ENTRY();
 
+  ExtendedText* pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
+  RASSERT(! pCodeBlock);
+
   s48K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
@@ -73,18 +77,16 @@ void Step::vApiForkChild(void)
 
 
   TagSet* pJobTags = pOuterJobOfTask()->pJobTags();
-  //pJobTags->vContentDump();
+
+  pCmdTagSet->vCopy(pJobTags);
 
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
-  if (pJobTags->bHasName(C_TAG_CCODE))
-    pCmdTagSet->vInsert(C_TAG_CCODE);
+  if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
+      pCmdTagSet->bHasName(C_TAG_WAIT))
+    pCmdTagSet->vDelete(C_TAG_WAIT);
 
-  if (pJobTags->bHasName(C_TAG_JOBMETRICS))
-    pCmdTagSet->vInsert(C_TAG_JOBMETRICS);
 
-  if (pJobTags->bHasName(C_TAG_PIPELINENAME))
-    pCmdTagSet->vInsert(C_TAG_PIPELINENAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
@@ -116,6 +118,7 @@ void Step::vApiForkChild(void)
 
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
+                                   pCodeBlock,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
                                    true,
@@ -192,6 +195,7 @@ void Step::vApiForkDemon(void)
   bool bIsPipeline;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
+                                  nullptr,
                                   tParentId,tOriginId,tDistId,
                                   pOuterJob,
                                   false,
@@ -343,7 +347,6 @@ void Step::vApiReapableJobTagsFetch(void)
 {
   ENTRY();
 
-  TagSet* pTagSet = nullptr;
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   m_pDataStack->vPushPtr(pJob->pJobTags());

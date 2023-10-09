@@ -75,7 +75,8 @@ HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort, bool bIsBroadcas
                    sizeof(broadcastPermission)) < 0) {
 
       char acErrMsg[1024];
-      snprintf(acErrMsg, 1024, "Heartbeat setsockopt(SO_BROADCAST) failed: %s", strerror(errno));
+      StrLib::vSprint(acErrMsg, sizeof(acErrMsg), nullptr,
+                      "Heartbeat setsockopt(SO_BROADCAST) failed: %s"_Stz, strerror(errno));
       throw Heartbeat_RTE(acErrMsg);
     }
 
@@ -90,7 +91,8 @@ HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort, bool bIsBroadcas
                    sizeof(iface)) != 0) {
 
       char acErrMsg[1024];
-      snprintf(acErrMsg, 1024, "Heartbeat setsockopt(IP_MULTICAST_IF) failed: %s", strerror(errno));
+      StrLib::vSprint(acErrMsg, sizeof(acErrMsg), nullptr,
+                      "Heartbeat setsockopt(IP_MULTICAST_IF) failed: %s"_Stz, strerror(errno));
       throw Heartbeat_RTE(acErrMsg);
     }
   }
@@ -143,8 +145,9 @@ HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort, bool bIsBroadcas
     int status;
     if ((status = getaddrinfo(m_sAddr.c_str(), nullptr, nullptr, &m_pMulticastAddr)) != 0) {
       char acErrMsg[1024];
-      snprintf(acErrMsg, 1024, "HeartbeatRcv error resolving heartbeat address %s: %s\n",
-               m_sAddr.c_str(),gai_strerror(status));
+      StrLib::vSprint(acErrMsg, sizeof(acErrMsg), nullptr,
+                      "HeartbeatRcv error resolving heartbeat address %s: %s\n"_Stz,
+                      m_sAddr.c_str(),gai_strerror(status));
       throw Heartbeat_RTE(acErrMsg);
     }
   }
@@ -160,7 +163,8 @@ HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort, bool bIsBroadcas
   int reuse = 1;
   if (setsockopt(m_iSocket, SOL_SOCKET, SO_REUSEADDR, (const char *) &reuse, sizeof(reuse)) < 0) {
     char acErrMsg[1024];
-    snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(SO_REUSEADDR) failed: %s", strerror(errno));
+    StrLib::vSprint(acErrMsg, sizeof(acErrMsg), nullptr,
+                    "HeartbeatRcv setsockopt(SO_REUSEADDR) failed: %s"_Stz, strerror(errno));
     close(m_iSocket);
     throw Heartbeat_RTE(acErrMsg);
   }
@@ -168,7 +172,8 @@ HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort, bool bIsBroadcas
   reuse = 1;
   if (setsockopt(m_iSocket, SOL_SOCKET, SO_REUSEPORT, (const char *) &reuse, sizeof(reuse)) < 0) {
     char acErrMsg[1024];
-    snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(SO_REUSEPORT) failed: %s", strerror(errno));
+    StrLib::vSprint(acErrMsg, sizeof(acErrMsg), nullptr,
+                    "HeartbeatRcv setsockopt(SO_REUSEPORT) failed: %s"_Stz, strerror(errno));
     close(m_iSocket);
     throw Heartbeat_RTE(acErrMsg);
   }
@@ -179,7 +184,8 @@ HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort, bool bIsBroadcas
     if (setsockopt(m_iSocket, SOL_SOCKET, SO_BROADCAST, (void*) &iBroadcastPermission,
                    sizeof(iBroadcastPermission)) < 0) {
       char acErrMsg[1024];
-      snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(SO_BROADCAST) failed: %s", strerror(errno));
+      StrLib::vSprint(acErrMsg, sizeof(acErrMsg), nullptr,
+                      "HeartbeatRcv setsockopt(SO_BROADCAST) failed: %s"_Stz, strerror(errno));
       close(m_iSocket);
       throw Heartbeat_RTE(acErrMsg);
     }
@@ -221,7 +227,8 @@ HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort, bool bIsBroadcas
                    sizeof(xMulticastRequest)) != 0 ) {
 
       char acErrMsg[1024];
-      snprintf(acErrMsg, 1024, "HeartbeatRcv setsockopt(IP_ADD_MEMBERSHIP) failed: %s", strerror(errno));
+      StrLib::vSprint(acErrMsg, sizeof(acErrMsg), nullptr,
+                      "HeartbeatRcv setsockopt(IP_ADD_MEMBERSHIP) failed: %s"_Stz, strerror(errno));
       close(m_iSocket);
       throw Heartbeat_RTE(acErrMsg);
     }

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
 
 #define BITWISE_OR(a,b)  ((a) | (b))  EndDefine // bitwise or
 #define BITWISE_XOR(a,b) ((a) ^ (b))  EndDefine // bitwise xor

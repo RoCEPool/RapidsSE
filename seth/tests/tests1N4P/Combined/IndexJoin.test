@@ -30,6 +30,8 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
+
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -74,7 +76,8 @@ success
 create index R_idx on R(r_int_col0);
 success
 
-// left outer join
+// join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -84,7 +87,7 @@ begin
   stage stageMarker0142 on all partitions :
     scan rapidsse public L
     | indexJoin R R_idx " BOUND $I1 l_int_col0 ==" //J1
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -95,6 +98,7 @@ end ;
 rows: 0
 
 // left outer join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -104,7 +108,7 @@ begin
   stage stageMarker0142 on all partitions :
     scan rapidsse public L
     | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -130,6 +134,7 @@ load R "../DATA/Joins/R.csv";
 success
 
 // join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -139,7 +144,7 @@ begin
   stage stageMarker0142 on all partitions :
     scan rapidsse public L
     | indexJoin R R_idx " BOUND $I1 l_int_col0 ==" //J1
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -194,6 +199,7 @@ rows:
  (5,5,'a')
 
 // left outer join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -203,7 +209,7 @@ begin
   stage stageMarker0142 on all partitions :
     scan rapidsse public L
     | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -321,6 +327,7 @@ create table part (
 success
 
 // no data in lineitem and orders
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -330,8 +337,8 @@ begin
   stage stageMarker0374 on all partitions :
     scan lineitem
     | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
-    | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
-                  type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                  type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -344,6 +351,7 @@ load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 // no data in orders
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -353,8 +361,8 @@ begin
   stage stageMarker0374 on all partitions :
     scan lineitem
     | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
-    | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
-                  type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                  type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -371,6 +379,7 @@ success
 load part "../TPCH/SF_0001/part.csv";
 success
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -380,8 +389,8 @@ begin
   stage stageMarker0374 on all partitions :
     scan lineitem
     | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
-    | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
-                  type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                  type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -392,6 +401,7 @@ end ;
 
 rows: 5996
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -401,7 +411,7 @@ begin
   stage stageMarker0374 on all partitions :
     scan lineitem
     | indexJoin Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
-    | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
     | stageLast
@@ -413,6 +423,7 @@ end ;
 
 rows: 1160
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -423,7 +434,7 @@ begin
     scan lineitem
     | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
     | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
-    | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | filter " type BOOLEAN  O_CUSTKEY 140  >  "
     | combined 0
     | stageLast
@@ -436,6 +447,7 @@ end ;
 rows: 36
 
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -446,7 +458,7 @@ begin
     scan lineitem
     | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
     | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
-    | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -457,6 +469,7 @@ end ;
 
 rows: 76
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -470,8 +483,8 @@ begin
     | combined 0
     | next broadcast
   stage stageB on all partitions :
-    indexJoin lineitem lineitem_part "bound $I1 $L1 =="
-    | aggreg " type integer as SUM_PARTKEY ) J1_L_PARTKEY sum"
+    indexJoin lineitem lineitem_part "bound $I1 $1 =="
+    | aggreg " type integer as SUM_PARTKEY ) L_PARTKEY sum"
     | combined 0
     | next
   stage stageC on all nodes :
@@ -490,6 +503,7 @@ end ;
 
 rows: (3240)
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -503,7 +517,7 @@ begin
     | combined 0
     | next broadcast
   stage stageB on all partitions :
-    indexJoin lineitem lineitem_part "bound $I1 $L1 =="
+    indexJoin lineitem lineitem_part "bound $I1 $1 =="
     | gbyAgg " groupBy type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
     | combined 0
     | next
@@ -525,6 +539,7 @@ rows:
   (53,820.00,30)
   (55,773.00,30)
 
+/optimise_passthru 
 pipeline unnamed
 begin
 
@@ -539,11 +554,11 @@ begin
       | combined 0
       | next broadcast
   stage stageB on all partitions :
-    indexJoin lineitem lineitem_part "bound $I1 $L1 =="
+    indexJoin lineitem lineitem_part "bound $I1 $1 =="
     | gbyAgg " groupBy type integer P_PARTKEY
                  aggregates type INTEGER as P_PARTKEY $K1 ,
-                 type DECIMAL as SUM_EXT )  J1_L_EXTENDEDPRICE sum  ,
-                 type INTEGER as CNT_EXT )  J1_L_EXTENDEDPRICE count"
+                 type DECIMAL as SUM_EXT )  L_EXTENDEDPRICE sum  ,
+                 type INTEGER as CNT_EXT )  L_EXTENDEDPRICE count"
     | combined 0
     | next
   stage stageC on all nodes :

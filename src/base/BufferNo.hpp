@@ -20,9 +20,9 @@ namespace BASE
   
     static i8          iToBufferNo(Object* pObject);
 
+    static DataBuffer* pToDataBuffer(i8 iBufferNo);
+
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
-  
-    static LinkedBuffer* pToLinkedBuffer(i8 iBufferNo);
   
     static PoolBuffer* pToPoolBuffer(i8 iBufferNo);
 
@@ -32,7 +32,7 @@ namespace BASE
     void operator =(Object* pObject); // assignment
   
     i8 iGetBuffer(void);
-    LinkedBuffer* pGetLinkedBuffer(void);
+    DataBuffer* pGetDataBuffer(void);
     PoolBuffer* pGetPoolBuffer(void);
 
 

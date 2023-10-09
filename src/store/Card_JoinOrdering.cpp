@@ -5,7 +5,7 @@
 #include "Card_JoinOrdering.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_JoinOrder.hpp"
 #include "Card_Table.hpp"
@@ -26,7 +26,7 @@ __vDeleteFunction(Card_JoinOrdering, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinOrdering::Card_JoinOrdering(void)
-: Card(CK_JOINORDERING)
+: Card_symbol(CK_JOINORDERING, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -131,39 +131,40 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   }
 
   // the join sequence
-  CardIter xCI(this);
-  if (xCI.G_bEachMain(CK_JOINORDER)) {
-    char cHeadTable = xCI.G.p_joinOrder->cSymbol();
+  Kid xKid(this);
+  if (xKid.bEach(CK_JOINORDER)) {
+    char cHeadTable = xKid.p_joinOrder()->pSymbol()->cSF_char();
     s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
 
     if (bNumbers)
       pString->vCatSprint("NetCost %5s UniCost %5s : %8s"_Stz,
-                          p_costNetwork->szSymbol(),
-                          p_costUnicast->szSymbol(),
+                          p_costNetwork->szSymbol(SF_NONE),
+                          p_costUnicast->szSymbol(SF_NONE),
                           sHeadTable.szStz());
     else
       pString->vSprint("%s"_Stz,sHeadTable.szStz());
   }
 
-  while (xCI.G_bEachMain(CK_JOINORDER)) {
-    char cNextTable = xCI.G.p_joinOrder->cSymbol();
+  while (xKid.bEach(CK_JOINORDER)) {
+    Card_JoinOrder* p_joinOrder = xKid.p_joinOrder();
+    char cNextTable = p_joinOrder->pSymbol()->cSF_char();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
-    xCI.G.p_joinEstimate = xCI.G.p_joinOrder->pSub_joinEstimate();
-    xCI.G.p_joinCast = xCI.G.p_joinEstimate->pSub_locusCast();
-    xCI.G.p_costUnicast = xCI.G.p_joinEstimate->pSub_costUnicast();
-    xCI.G.p_costNetwork = xCI.G.p_joinEstimate->pSub_costNetwork();
-    xCI.G.p_costJoining = xCI.G.p_joinEstimate->pSub_costJoining();
-    s32 sCast = xCI.G.p_joinCast->szSymbol();
-    StrLib::vShuffleLeft(sCast.azChar(),3);
+    Card_JoinEstimate* p_joinEstimate = p_joinOrder->pSub_joinEstimate();
+    Card_JoinCast* p_joinCast = p_joinEstimate->pSub_locusCast();
+    Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
+    Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
+    Card_CostJoining* p_costJoining = p_joinEstimate->pSub_costJoining();
+    s32 sCast = p_joinCast->szSymbol(SF_NONE);
+    StrLib::vShuffleLeft(sCast.azChar(), sCast.nAreaBytes(), 3);
 
     if (bNumbers)
       pString->vCatSprint(" %5s %9s %8s (%5s)"_Stz,
                           sCast.bSame("UNICAST"_Stz)
-                            ? xCI.G.p_costUnicast->szSymbol()
-                            : xCI.G.p_costNetwork->szSymbol(),
+                            ? p_costUnicast->szSymbol(SF_NONE)
+                            : p_costNetwork->szSymbol(SF_NONE),
                           sCast.szStz(),
                           sNextTable.szStz(),
-                          xCI.G.p_costJoining->szSymbol());
+                          p_costJoining->szSymbol(SF_NONE));
     else
       pString->vCatSprint(" %s %s"_Stz,sCast.szStz(),
                           sNextTable.szStz());
@@ -174,7 +175,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
 //  Card_CostNetwork* p_costNetwork = p_costQuery->pSub_costNetwork();
 //  Card_CostUnicast* p_costUnicast = p_costQuery->pSub_costUnicast();
 //
-//  pString->vCatSprint(", %lld, %lld"_Stz, p_costNetwork->iValue(), p_costUnicast->iSymbol());
+//  pString->vCatSprint(", %lld, %lld"_Stz, p_costNetwork->iValue(), p_costUnicast->pSymbol()->iSF_number());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,38 +188,53 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
   Card* pAfter = nullptr;
 
   {
-    CardIter xCI_deck(pDeck);
-    if (xCI_deck.G_bEachMain(CK_FOLD))
-      pAfter = xCI_deck.G.p_fold;
+    Kid xCI_deck(pDeck);
+    if (xCI_deck.bEach(CK_FOLD))
+      pAfter = xCI_deck.p_fold();
 
     if (! pAfter) {
-      xCI_deck.vRestart();
-      if (xCI_deck.G_bEachMain(CK_CORRELATION))
-        pAfter = xCI_deck.G.p_correlation;
+      xCI_deck.vEnded();
+      xCI_deck.vBeginEach_forward();
+      if (xCI_deck.bEach(CK_CORRELATION))
+        pAfter = xCI_deck.p_correlation();
     }
   }
 
-  CardIter xCI_joinOrder(this);
-  while (xCI_joinOrder.G_bEachMain(CK_JOINORDER)) {
+  Kid xCI_joinOrder(this);
+  while (xCI_joinOrder.bEach(CK_JOINORDER)) {
 
-    Stz* szTableSyn = xCI_joinOrder.G.p_joinOrder->szSymbol();
+    Stz* szTableSyn = xCI_joinOrder.p_joinOrder()->szSymbol(SF_NONE);
 
     i8 i_Table = C_UNKNOWN;
-    Card_Table* p_table =
-        _pCard_Table(pDeck->pFindChild(CK_TABLE,szTableSyn,i_Table));
+    Card_From* p_from =
+        _pCard_From(pDeck->pFindChildWithSub(CK_FROM,CK_TABLE,szTableSyn,i_Table));
 
-    pDeck->vRemoveChild(p_table);
+    pDeck->vRemoveChild(p_from);
 
     if (pAfter)
-      pDeck->vInsertAfter(p_table,pAfter);
+      pDeck->vInsertChildAfter(p_from,pAfter);
     else
-      pDeck->vPush(p_table);
+      pDeck->vPushChild(p_from);
 
-    pAfter = p_table;
+    pAfter = p_from;
   }
 
 }
 
-//*===========================================================================*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinOrdering::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
+
+/*===========================================================================*/
 /* end                                                                        */
 /*============================================================================*/

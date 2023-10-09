@@ -11,13 +11,9 @@ enum eSC // system call
   /* 1  */ SC_SUCCESS = 1,  // success status
 };
 
-static Stz* aSC[]
-{
-  /* -2 */ "NOTSET"_Stz,
-  /* -1 */ "ERROR"_Stz,
-  /* 0  */ "FAILURE"_Stz,
-  /* 1  */ "SUCCESS"_Stz
-};
+const i8 C_SC_ENUMS = 4;
+
+extern Stz* aSC[C_SC_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,19 +3,21 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_Section : public Card
+  class Card_Section : public Card_symbol<Card_Section>
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
     Card_Section(void);
-    Card_Section(Stz* szComment);
    ~Card_Section(void) noexcept(false);
+
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Section* _pCard_Section(void* aAddr);

@@ -26,7 +26,6 @@ namespace BASE
     void  operator delete(void*);
     
     Token(void);
-    Token(Token* pToCopy, TokenVec* pCaller);
    ~Token(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -37,7 +36,6 @@ namespace BASE
     static bool bStartCppString(char cArg);
     static bool bEndCppString(char cArg);
 
-    static bool bStartCodeBlock(char* azArg);
     static bool bStartSenInteger(char cArg);
     static bool bStartSenName(char cArg);
     static bool bStartSenString(char cArg);

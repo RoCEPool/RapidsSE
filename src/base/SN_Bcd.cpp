@@ -70,6 +70,7 @@ i8 SN_Bcd::i(char** aacCrs, Format* pFmt)
 
   bool bResult = StrLib::bExtractDecimal(aacCrs, iMantissa, iPrecision + iScale, iScale);
   ASSERT(bResult);
+  UNUSED(bResult);
 
   m_wDtm.m_wBcd.T.m_iMantissa  = iMantissa;
   m_wDtm.m_wBcd.T.m_iScale = iScale;

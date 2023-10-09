@@ -18,7 +18,7 @@ load supplier "../tpch/sf_0001/supplier.csv" ;
 
 /optimise
 /glean_cue_from = "vS60_T10_Produce_maybeIndexJoin_Under_filter"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "r_ba_FROM"

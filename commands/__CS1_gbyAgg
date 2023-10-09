@@ -4,9 +4,10 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-explain stage transliterate select sum(n_nationKey) from nation group by n_regionKey;
+//explain stage transliterate select sum(n_nationKey) from nation group by n_regionKey;
 
-/ccode pipeline unamed
+/optimise_passthru
+pipeline unamed
 begin
  stage stageStart on origin :
    start
@@ -15,7 +16,7 @@ begin
 
  stage stageMarker0541 on all partitions :
    scan rapidsse public Nation
-   | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+   | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max 1 + "
    | combined 0
    | next
 

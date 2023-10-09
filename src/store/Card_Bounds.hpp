@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_Bounds : public Card
+  class Card_Bounds : public Card_symbol<Card_Bounds>
   {
   public:
     void* operator new(size_t);
@@ -16,10 +16,17 @@ namespace STORE
     Card_Bounds(void);
    ~Card_Bounds(void) noexcept(false);
 
-    void vCullBound(char cWithMark);
+    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+
+    i8 nCullBound(Stz* szWithMark);
     Card_Bound* pFindChosenBound(void);
-    bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
+
+    void vEnsureTypes_For_stmOdn(CardIter *pCI);
+
+    bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
     bool bUsesSqyRsl(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

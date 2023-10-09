@@ -96,7 +96,10 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     
     Column* pCol = pIndexDef->pGetColumn(0);
     
-    StrLib::vSprint((Stz*)m_caResult,"IntElm0 %s %lld"_Stz,
+    StrLib::vSprint((Stz*)m_caResult,
+                    sizeof(m_caResult),
+                    nullptr,
+                    "IntElm0 %s %lld"_Stz,
                     aDM[pCol->eDatum()],
                     *(i8*)aKey);
     return;
@@ -107,7 +110,11 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
   Dtm* ayCursor = aKey->aElmSeq_dtm();
   
 
-  StrLib::vSprint((Stz*)m_caResult,"Key[%lldB]; "_Stz,aKey->nElmSeqSize());
+  StrLib::vSprint((Stz*)m_caResult,
+                  sizeof(m_caResult),
+                  nullptr,
+                  "Key[%lldB]; "_Stz,
+                  aKey->nElmSeqSize());
 
   i8 nIdxCols = pIndexDef->nColumns();
   for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
@@ -119,20 +126,23 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
     eDM eDatum = pCol->eDatum();
     
     if (eDatum == DM_VCH)
-      nElmBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
+      nElmBytes = StrLib::iWordFlipBack(caLiteral, sizeof(caLiteral), (char*)ayElm);
     else
-      Literal::vSprint((Stz*)caLiteral,ayElm,pCol);
+      Literal::vSprint(caLiteral, sizeof(caLiteral),ayElm,pCol);
  
     if (i_IdxCol)
-      StrLib::vConcat(m_caResult,", ");
+      StrLib::vConcat(m_caResult, sizeof(m_caResult), ", ");
 
-    StrLib::vSprint((Stz*)caElm,"Elm[%lld %s %lldB] %s"_Stz,
+    StrLib::vSprint((Stz*)caElm,
+                    sizeof(caElm),
+                    nullptr,
+                    "Elm[%lld %s %lldB] %s"_Stz,
                     i_IdxCol,
                     aDM[pCol->eDatum()],
                     nElmBytes,
                     caLiteral);
     
-    StrLib::vConcat(m_caResult,caElm);
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), caElm);
   }
 
 }

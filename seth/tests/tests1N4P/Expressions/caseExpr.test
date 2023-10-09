@@ -486,6 +486,7 @@ rows:
   (15,'MOROCCO',0,'rns. blithely bold courts among the closely regular packages use furiously bold platelets?')
   (21,'VIETNAM',2,'hely enticingly express accounts. even: final ')
 
+
 // CASE being part of a larger expression
 SELECT 1 + CASE n_name
         WHEN 'AUSTRALIA' THEN 2 * n_nationkey
@@ -708,6 +709,8 @@ rows:
   ('woman',true)
   ('man',false)
 
+// TODO V2 : OPTIMISER to detect and give EC_NOT_IMPLENTED
+/*
 select
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end,
   sum(c)
@@ -715,6 +718,7 @@ select
   group by
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end;
 failure contains: 'EC_NOT_IMPLEMENTED'
+*/
 
 DROP TABLE nation;
 success

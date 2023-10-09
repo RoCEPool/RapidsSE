@@ -139,10 +139,26 @@ void Step::vOptimiserWeave(void)
 {
   ENTRY();
     
-  Stz* szOptPlineStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
+  Stz* szOptStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
+  UNUSED(szOptStmt);
 
-  m_pDataStack->vPushStz(szOptPlineStmt);
-  
+  //m_pJob->vCmdText(szOptStmt);
+
+  // CAREFUL RAY
+  ExtendedText* pCmdText = m_pJob->pCmdText();
+  m_pJob->vCmdText((ExtendedText*)nullptr);
+  delete pCmdText;
+
+  m_pJob->vCmdText(m_pLogicUnit->m_xpOptimiser->pOptStmt());
+  m_pLogicUnit->m_xpOptimiser->vOptStmt((ExtendedText*)nullptr);
+
+  ExtendedText* pCodeBlock = m_pLogicUnit->m_xpOptimiser->pCodeBlock();
+  if (pCodeBlock) {
+    m_pLogicUnit->m_xpOptimiser->vCodeBlock(nullptr);
+  }
+
+  m_pJob->vCodeBlock(pCodeBlock);
+
   EXIT();
 }
 

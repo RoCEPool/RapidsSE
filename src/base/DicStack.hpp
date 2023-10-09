@@ -66,7 +66,7 @@ namespace BASE
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm, Stz* szIndexNm);
     Dic*  pTop(void);
-    void  vToPathStr(Stz* szPath);
+    void  vToPathStr(String* psPath);
 
     Footer* aFooter(void);
   };

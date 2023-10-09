@@ -14,7 +14,7 @@
 
 #include "Pot.hpp"
 #include "Tub.hpp"
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "Dynamic.hpp"
 
 #include "EntWrk.hpp"
@@ -24,12 +24,10 @@
 #include "PtnDef.hpp"
 #include "MetaGet.hpp"
 #include "StreamDefRht.hpp"
-#include "Stencil.hpp"
 #include "Stencil_v2.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
-#include "InflateSet.h"
 #include "InfoSet.hpp"
 #include "VertexSpec.hpp"
 #include "NamedBuffer.hpp"
@@ -44,6 +42,8 @@
 #include "Vertex.hpp"
 #include "Deck.hpp"
 #include "Port.hpp"
+
+#include "LibInfo.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -85,10 +85,9 @@ namespace STORE
 
     REG<AdaptorWL,      CN_ADAPTORWL     > m_xpAdaptorWL;
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
-    REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
+    REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
 
-    REG<Combined,       CN_COMBINED      > m_xpCombined;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
     REG<CrwToRow,       CN_CRWTOROW      > m_xpCrwToRow;
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
@@ -119,7 +118,8 @@ namespace STORE
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
-  
+
+    REG<LibInfo,        CN_LIBINFO       > m_xpLibInfo;
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
 
     REG<Operand,        CN_NONE          > m_xpMarker;
@@ -137,6 +137,7 @@ namespace STORE
 
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
+    REG<PdsCursor,      CN_PDSCURSOR     > m_xpPdsCursor;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
@@ -144,7 +145,6 @@ namespace STORE
     REG<Pot,            CN_POT           > m_xpPot;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
     REG<PtnDef,         CN_PTNDEF        > m_xpPtnDef;
-    REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
@@ -157,7 +157,6 @@ namespace STORE
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
-    REG<Stencil,        CN_STENCIL       > m_xpStencil;
     REG<Stencil_v2,     CN_STENCIL_V2    > m_xpStencil_v2;
     REG<Stream,         CN_STREAM        > m_xpStream;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
@@ -175,7 +174,6 @@ namespace STORE
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<Text,           CN_TEXT          > m_xpText;
     REG<Timer,          CN_TIMER         > m_xpTimer;
-    REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToKeyHshRow,    CN_TOKEYHSHROW   > m_xpToKeyHshRow;
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
     REG<ToLglPtnNst,    CN_TOLGLPTNNST   > m_xpToLglPtnNst;
@@ -204,6 +202,8 @@ namespace STORE
     i8   m_iCounter6;   // counter
     i8   m_iCounter7;   // counter
 
+    BufferId   m_oBufferId;   // bufferId
+
     bool m_bRcvdChildExit;
     bool m_bRcvdEnd;
 
@@ -211,6 +211,7 @@ namespace STORE
     bool (*m_afFun1)(void*);
     bool (*m_afFun2)(void*);
     bool (*m_afFun3)(void*);
+    bool (*m_afFun4)(void*);
 
     s4K  m_sStringA;    // string
     s256 m_sString0;    // string
@@ -245,7 +246,7 @@ namespace STORE
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 
-    RowPix     m_oRowPix;    // condensed stream def
+    //RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
     EntWrk     m_oEntWrkPL;
     EntWrk     m_oEntWrkJ;

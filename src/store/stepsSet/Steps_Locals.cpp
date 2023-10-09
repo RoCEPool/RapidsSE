@@ -10,6 +10,7 @@
 
 #include "TagConstants.h"
 #include "LocalVars.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -118,6 +119,16 @@ void Step::vLocalsTo(void)
   
   if (szTerm->bSame("AggTimer[]"_Stz)) {
     pCurrentWord->vEncodeCall("AggTimer[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("BufferId[]"_Stz)) {
+    pCurrentWord->vEncodeCall("BufferId[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("CodeBlock[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CodeBlock[].set"_Stz);
     EXIT();
     return;
   }
@@ -236,6 +247,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Fun4[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Fun4[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Grid[]"_Stz)) {
     pCurrentWord->vEncodeCall("Grid[].set"_Stz);
     EXIT();
@@ -281,6 +297,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("LibInfo[]"_Stz)) {
+    pCurrentWord->vEncodeCall("LibInfo[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Marker[]"_Stz)) {
     pCurrentWord->vEncodeCall("Marker[].set"_Stz);
     EXIT();
@@ -316,6 +337,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("PdsCursor[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PdsCursor[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PipeIn[]"_Stz)) {
     pCurrentWord->vEncodeCall("PipeIn[].set"_Stz);
     EXIT();
@@ -348,11 +374,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Pot[]"_Stz)) {
     pCurrentWord->vEncodeCall("Pot[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("PtnStream[]"_Stz)) {
-    pCurrentWord->vEncodeCall("PtnStream[].set"_Stz);
     EXIT();
     return;
   }
@@ -471,7 +492,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  
   else if (szTerm->bSame("Vertex[]"_Stz)) {
     pCurrentWord->vEncodeCall("Vertex[].set"_Stz);
     EXIT();
@@ -566,9 +586,10 @@ void Step::vLocalsFramePush(void)
   i8 nLocals = m_pDataStack->iPopInt(__func__);
   RASSERT(nLocals > 0 && nLocals <= 24);
   
-    if (! m_pLocalVars)
-    m_pLocalVars = new LocalVars;
-  
+  if (! m_pLocalVars)
+    m_pLocalVars = new LocalVars(m_pLocalStrs);
+
+
   TypeValueArea* axDiscardPoint = m_pReturnStack->aTopVal();
   
   RASSERT(0 == m_pReturnStack->nValues() ||

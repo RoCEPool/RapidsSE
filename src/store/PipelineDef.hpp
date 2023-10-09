@@ -4,13 +4,17 @@
 #pragma once
 
 #include "StageDef.hpp"
+#include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class PipelineDef : public ListNL_t<StageDef>
+  class PipelineDef : public Object
+                    , public ListExo2_t<StageDef>
   {
   public:
     s32  m_sPipelineNm;
+
+    s256 m_sFileNm;
 
     s48K m_sCodeBlock;
 
@@ -22,10 +26,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    PipelineDef(void);
+    PipelineDef(Stz* szPipelineNm);
 
     ~PipelineDef(void) noexcept(false);
 
+    void vCollapseOps(void);
+    void vDump(i8 i_Tab=0);
+
+    Stz* szPipelineNm(void);
+    void vPipelineNm(Stz* szPipelineNm);
+
+    void vValidate(void);
 
   protected:
     Footer* aFooter(void);

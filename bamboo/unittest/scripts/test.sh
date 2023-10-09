@@ -32,7 +32,10 @@ readonly DEBUG=0
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
 # Defaulting to 45 minutes.
-readonly SETH_TIMEOUT="2700"
+//readonly SETH_TIMEOUT="2700"
+
+// ALKA: increased timeout as added new tests
+readonly SETH_TIMEOUT="3600"
 
 # Maximum disk space utilisation % that we will accept on the current partition
 # before we forcibly stop the tests. This is trying to catch situations where
@@ -290,7 +293,9 @@ do
 
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
+    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
     echo "${SE_PROMPT_PID}" | xargs -r kill -9
     exit 1
   fi
@@ -322,7 +327,9 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
+    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
     kill -9 "${SE_PROMPT_PID}" || true
     exit 1
   fi
@@ -342,7 +349,9 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
+    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
     kill -9 "${SE_PROMPT_PID}" || true
     exit 1;
   fi

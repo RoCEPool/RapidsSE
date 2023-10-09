@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* Card_NotConj.hpp -- Not Predicate                                          */
+/*============================================================================*/
+#pragma once
+
+#include "Card_CONJUNCTION.hpp"
+
+namespace STORE
+{
+  class Card_NotConj : public Card_CONJUNCTION
+  {  
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Card_NotConj(void);
+   ~Card_NotConj(void) noexcept(false);
+
+    void vEnsureTypesFor_stmOdn(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+  };
+
+  Card_NotConj* _pCard_NotConj(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

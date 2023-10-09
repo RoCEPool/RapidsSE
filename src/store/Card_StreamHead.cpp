@@ -5,9 +5,10 @@
 #include "Card_StreamHead.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
+#include "CardIter.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +24,7 @@ __vDeleteFunction(Card_StreamHead, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamHead::Card_StreamHead(void)
-: Card(CK_STREAMHEAD)
+: Card_symbol(CK_STREAMHEAD, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -44,6 +45,20 @@ Card_StreamHead::~Card_StreamHead(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamHead::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
+
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

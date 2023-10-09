@@ -13,11 +13,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Limit(Stz* szRows);
+    Card_Limit(void);
    ~Card_Limit(void) noexcept(false);
 
     void vComputeProjection(CardIter* pCI); // prototype
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Limit* _pCard_Limit(void* aAddr);

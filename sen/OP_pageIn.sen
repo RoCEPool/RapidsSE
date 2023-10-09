@@ -11,7 +11,7 @@
 
   PipeIn[]\clear to InfoSet[]
 
-  //C_TDEF_PAGEINREQUEST infoSetRow:getFirstRow
+  C_TDEF_PAGEINREQUEST infoSetRow:getFirstRow
 
   // extract the values
   0 InfoSet[].colVal@ locals| pTaskPtr   |

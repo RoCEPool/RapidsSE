@@ -30,7 +30,7 @@ select sum(l_extendedprice * (1 - l_discount) ) as revenue
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -113,6 +113,7 @@ end ;
 */
 
 // SF10: 56secs
+/optimise_passthru 
 pipeline unamed
  begin
    stage stageStart on origin :
@@ -156,6 +157,7 @@ rows:
 
 // added filters earlier
 // SF10: 2.9 secs
+/optimise_passthru 
 pipeline unamed
  begin
    stage stageStart on origin :
@@ -176,7 +178,7 @@ pipeline unamed
    stage stageMarker2362 on all partitions :
      indexJoin part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
      | project " type INTEGER as l_partkey l_partkey , type DECIMAL as l_quantity l_quantity , type DECIMAL as l_discount l_discount , type DECIMAL as l_extendedprice l_extendedprice  , type VARCHAR as l_shipmode l_shipmode , type VARCHAR as l_shipinstruct l_shipinstruct ,
-                 type INTEGER as p_size j1_p_size , type VARCHAR as p_brand j1_p_brand , type varchar as p_container j1_p_container"
+                 type INTEGER as p_size p_size , type VARCHAR as p_brand p_brand , type varchar as p_container p_container"
      | filter " type BOOLEAN
                   P_BRAND 'Brand#12'  ==
                   }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
@@ -227,6 +229,7 @@ rows:
 
 // best performance SF10: 258ms
 // changed join order and broadcast
+/optimise_passthru 
 pipeline Query19
 begin
  stage S00 on origin :
@@ -253,12 +256,12 @@ begin
 
  stage S02 on all partitions :
    indexJoin lineitem IxL_PARTKEY "BOUND $I1 p_partkey ==" //J1
-   | project " type INTEGER as L_PARTKEY j1_l_partkey ,
-               type DECIMAL as L_QUANTITY J1_L_QUANTITY ,
-               type DECIMAL as L_DISCOUNT J1_L_DISCOUNT ,
-               type DECIMAL as l_extendedprice j1_l_extendedprice  ,
-               type VARCHAR as L_SHIPMODE J1_L_SHIPMODE ,
-               type VARCHAR as L_SHIPINSTRUCT J1_L_SHIPINSTRUCT ,
+   | project " type INTEGER as L_PARTKEY l_partkey ,
+               type DECIMAL as L_QUANTITY L_QUANTITY ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL as l_extendedprice l_extendedprice  ,
+               type VARCHAR as L_SHIPMODE L_SHIPMODE ,
+               type VARCHAR as L_SHIPINSTRUCT L_SHIPINSTRUCT ,
                type INTEGER as P_SIZE P_SIZE ,
                type VARCHAR as P_BRAND P_BRAND ,
                type varchar as P_CONTAINER P_CONTAINER"

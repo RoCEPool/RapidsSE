@@ -5,10 +5,9 @@
 
 #include "Board.hpp"
 
-
 namespace STORE
 {
-  class MakeFlat;
+  class XF_Flatten;
   class Fold;
 
   class Bench : public Object
@@ -17,12 +16,18 @@ namespace STORE
   private:
     Optimiser* m_pOptimiser;
 
-    char m_cPrefix;
+    i8   m_iBenchNo;
 
-    bool m_bIsFlat;
+    i8          m_iXform;
+    s32         m_sXhand;
+    s256        m_sXfunc;
+    s256        m_sXdesc;
+    i8          m_iPrint;
+
+    eXF         m_eXform;
+
 
   public:
-    CardIter*    m_pCI;
 
     // must be last
     Footer m_xFooter;
@@ -39,23 +44,40 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBoard(Board* pBoard);
-    bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
-    void vClearMarks(void);
-    Board* pGetBoard(eBK eBoard, i8 i_Board);
+    void vEndPhase(CardIter* pCI);
+
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
-    bool bIsFlat(void);
-    void vIsFlat(bool bIsFlat);
     bool bIsSubQueryNm(Stz* szSubQueryNm);
     Optimiser* pOptimiser(void);
-    char cPrefix(void);
-    void vPrefix(char cPrefix);
 
-    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
-    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
+    bool bPastPhase(CardIter* pCI, eOH ePhase);
+
+    void vPhase(CardIter* pCI, eOH ePhase);
+
+    void vRenumberCards(void);
+
+
+    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
+
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szXdesc);
+    eXF  eXform(void);
+    void vXform(eXF eXform);
+    i8   iXform(void);
+    void vXform_Inc(void);
+    Stz* szXfunc(void);
+    void vXfunc(Stz* szXfunc);
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
+    i8   iPrint(void);
+    i8   iPrint_inc(void);
+    i8   iBenchNo(void);
+
+    void vValidate(CardIter* pCI);
 
   private:
     Footer* aFooter(void);

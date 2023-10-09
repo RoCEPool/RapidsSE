@@ -11,6 +11,7 @@
 #include "eYX.h"
 
 #include "Grid.hpp"
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"

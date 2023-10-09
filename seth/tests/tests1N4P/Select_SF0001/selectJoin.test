@@ -20,6 +20,7 @@ select o_orderkey, avg(l_extendedprice)
 ;
 rows: 56
 
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 4-way Join
 select count(*)

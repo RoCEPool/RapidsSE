@@ -7,10 +7,11 @@
 #include "CardIter.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -25,7 +26,7 @@ __vDeleteFunction(Card_FiltPred,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_FiltPred::Card_FiltPred(void)
-: Card(CK_FILTPRED)
+: Card_symbol(CK_FILTPRED, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -51,7 +52,18 @@ Card_FiltPred::~Card_FiltPred(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_FiltPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,8 +3,8 @@
 /*============================================================================*/
 
 /*============================================================================*/
-/* OT_RPL_SCAN_BY_INDEXSCAN                                                   */
-/* OT_RPL_GBYAGG_BY_ORDAGG                                                    */
+/* OT_SCAN_TO_INDEXSCAN                                                   */
+/* OT_GBYAGG_TO_ORDAGG                                                    */
 /* OT_CUT_SORT                                                                */
 /*============================================================================*/
 
@@ -23,7 +23,7 @@ load Orders   "../tpch/sf_0001/orders.csv"   ;
 
 /optimise
 /glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
-/glean_interactive
+/optimiser_trace
 /transliterated
 /weaved
 /pipelineName = "_OT_1"

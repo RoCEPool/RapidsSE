@@ -13,15 +13,7 @@ enum ePT // tail processing
   /*   */ PT_ENUMS
 };
 
-static Stz* aPT[]
-{
-  /* 0 */ "NONE"_Stz,
-  
-  /*   */ "PT_OUTPUT"_Stz
-  /*   */ "PT_REPORT"_Stz
-
-  /*   */ "ENUMS"_Stz
-};
+extern Stz* aPT[PT_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

@@ -10,6 +10,8 @@
 #include "Shell.hpp"
 #include "SysCall.hpp"
 
+#include "ExtendedText.hpp"
+
 using namespace STORE;
 
 static Stz* C_QUERYLIBS_PATH = "../queryLibs"_Stz;
@@ -32,8 +34,13 @@ static Stz* C_LIB_EXT = "dylib"_Stz;
 static eCB C_DEFAULT_COMPILER = CB_NONE;
 static Stz* C_DEFAULT_COMPILER_PATH = nullptr;
 
-static Stz* C_GCC_COMPILER_FLAGS = "-g -Wl,--unresolved-symbols=ignore-all -I../src -O3 -fpic -shared"_Stz;
-static Stz* C_CLANG_COMPILER_FLAGS = "-g -Wl,-undefined,dynamic_lookup -I../src -O3 -fpic -shared"_Stz;
+static Stz* C_GCC_COMPILER_FLAGS = "-g -Wall -Wextra -Wno-unused-function -Wl,--unresolved-symbols=ignore-all  -Werror=return-type -I../src -O3 -fpic -shared"_Stz;
+
+#ifdef WITH_DEBUG_VERSION
+  static Stz* C_CLANG_COMPILER_FLAGS = "-DWITH_DEBUG_VERSION -g -Wall -Wextra -Wno-unused-function -Wl,-undefined,dynamic_lookup -Werror=return-type -I../src -O0 -fpic -shared"_Stz;
+#else
+  static Stz* C_CLANG_COMPILER_FLAGS = "-g -Wall -Wextra -Wno-unused-function -Wl,-undefined,dynamic_lookup -Werror=return-type -I../src -O3 -fpic -shared"_Stz;
+#endif
 
 static Stz* C_TCC_PATH = "../thirdparty/tcc/bin/tcc"_Stz;
 
@@ -134,7 +141,7 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz
   ASSERT(!szCompiler || !szCompiler->bIsEmpty());
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -171,6 +178,162 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz
 
   // Execute the compile command
   if (!bCompileSrc(pLibInfo)) {
+    return false;
+  }
+
+  // Check that the library exists
+  ASSERT(File::bExists(pLibInfo->m_sDynLibPath.szStz()));
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uCompileNanos = Hardware::uReadClock() - uStartTime;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Compiler source code to a dynamic library. Returns true on success.        */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bCompile(ExtendedText* pSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler)
+{
+  ASSERT(pSource);
+  ASSERT(szDynLibNm);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
+  ASSERT(!szCompiler || !szCompiler->bIsEmpty());
+  pLibInfo->vClearErrors();
+
+  u8 uStartTime = 0;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
+  // Choose or validate a compiler, if necessary
+  if (!bValidateCompiler(szCompiler, pLibInfo)) {
+    return false;
+  }
+
+  // Save the base name
+  pLibInfo->m_sBaseName.vCopy(szDynLibNm);
+
+  // Come up with file path for the source file and output file
+  pLibInfo->m_sSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.%s"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz(), C_LIB_EXT);
+  pLibInfo->m_sLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+
+  // Write the source file to disk
+  if (!bWriteSrcToFile(pSource, pLibInfo)) {
+    return false;
+  }
+
+  // Build the compile command
+  switch (pLibInfo->m_eCompilerType) {
+    case CB_GCC:        vBuildGccCompileCommand(pLibInfo);    break;
+    case CB_CLANG:      vBuildClangCompileCommand(pLibInfo);  break;
+    case CB_TCC:        vBuildTccCompileCommand(pLibInfo);    break;
+    case CB_SCL_GCC:    vBuildSclGccCompileCommand(pLibInfo); break;
+    case CB_SCL_CLANG:  vBuildSclClangCompileCommand(pLibInfo); break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Execute the compile command
+
+  if (!bCompileSrc(pLibInfo)) {
+
+    // On failure save the src/log file in a different name
+    // so that they don't get deleted and are copied across
+
+    s256 sNewSrcFilePath;
+    s256 sNewLogFilePath;
+
+    sNewSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+    sNewLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+
+    bool bResult = File::bRename(pLibInfo->m_sSrcFilePath, sNewSrcFilePath);
+    if ( ! bResult )
+      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sSrcFilePath.azChar());
+
+    bResult = File::bRename(pLibInfo->m_sLogFilePath, sNewLogFilePath);
+    if ( ! bResult )
+      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sLogFilePath.azChar());
+
+    return false;
+  }
+
+  // Check that the library exists
+  ASSERT(File::bExists(pLibInfo->m_sDynLibPath.szStz()));
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uCompileNanos = Hardware::uReadClock() - uStartTime;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Compiler source code to a dynamic library. Returns true on success.        */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bCompileFile(Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler)
+{
+  ASSERT(szDynLibNm);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
+  ASSERT(!szCompiler || !szCompiler->bIsEmpty());
+  pLibInfo->vClearErrors();
+
+  u8 uStartTime = 0;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
+  // Choose or validate a compiler, if necessary
+  if (!bValidateCompiler(szCompiler, pLibInfo)) {
+    return false;
+  }
+
+  // Save the base name
+  pLibInfo->m_sBaseName.vCopy(szDynLibNm);
+
+  // Come up with file path for the source file and output file
+  pLibInfo->m_sSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.%s"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz(), C_LIB_EXT);
+  pLibInfo->m_sLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+
+  // Build the compile command
+  switch (pLibInfo->m_eCompilerType) {
+    case CB_GCC:        vBuildGccCompileCommand(pLibInfo);    break;
+    case CB_CLANG:      vBuildClangCompileCommand(pLibInfo);  break;
+    case CB_TCC:        vBuildTccCompileCommand(pLibInfo);    break;
+    case CB_SCL_GCC:    vBuildSclGccCompileCommand(pLibInfo); break;
+    case CB_SCL_CLANG:  vBuildSclClangCompileCommand(pLibInfo); break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Execute the compile command
+
+  if (!bCompileSrc(pLibInfo)) {
+
+//    // On failure save the src/log file in a different name
+//    // so that they don't get deleted and are copied across
+//
+//    s256 sNewSrcFilePath;
+//    s256 sNewLogFilePath;
+//
+//    sNewSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+//    sNewLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+//
+//    bool bResult = File::bRename(pLibInfo->m_sSrcFilePath, sNewSrcFilePath);
+//    if ( ! bResult )
+//      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sSrcFilePath.azChar());
+//
+//    bResult = File::bRename(pLibInfo->m_sLogFilePath, sNewLogFilePath);
+//    if ( ! bResult )
+//      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sLogFilePath.azChar());
+
     return false;
   }
 
@@ -227,7 +390,7 @@ void* CompileLib::pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo)
   ASSERT(szSymbolNm);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -260,7 +423,7 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
   ASSERT(pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -285,13 +448,13 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
 /*----------------------------------------------------------------------------*/
 /* Delete a shared object library & associated files. Returns true on success.*/
 /*----------------------------------------------------------------------------*/
-void CompileLib::vDelete(LibInfo* pLibInfo)
+void CompileLib::vDelete(LibInfo* pLibInfo, bool bDeleteFile)
 {
   ASSERT(pLibInfo);
   ASSERT(!pLibInfo->m_pvDynLib);
   pLibInfo->vClearErrors();
 
-  u8 uStartTime;
+  u8 uStartTime = 0;
   if (pLibInfo->m_bCollectStats) {
     uStartTime = Hardware::uReadClock();
   }
@@ -312,14 +475,16 @@ void CompileLib::vDelete(LibInfo* pLibInfo)
   Shell::iExecute(sCmd.szStz(), oSysCall);
 #endif
 
-  // Remove log file, if exists
-  if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sLogFilePath.szStz(), true);
-  }
+  if (bDeleteFile) {
+    // Remove log file, if exists
+    if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
+      File::bRemove(pLibInfo->m_sLogFilePath.szStz(), true);
+    }
 
-  // Remove source file, if exists
-  if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+    // Remove source file, if exists
+    if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
+      File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+    }
   }
 
   if (pLibInfo->m_bCollectStats) {
@@ -334,7 +499,7 @@ void CompileLib::vTest(Stz* szCompiler)
 {
   static Stz* szSrc =
 "#include <stdio.h>\n"
-"#include \"primitives/BaseTypes_tcc.h\"\n"
+"#include \"primitives/BaseTypes_general.h\"\n"
 "\n"
 "// Declaration of a function inside SE\n"
 "// We either need to supply a basic implementation, or we need\n"
@@ -499,7 +664,7 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     if      (szCompiler->bContains("g++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
       // We actually need to compile with gcc, so fix this in the compiler path
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "g++", "gcc");
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), pLibInfo->m_sCompilerPath.nAreaBytes(), "g++", "gcc");
 
     } else if (szCompiler->bContains("gcc"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
@@ -508,7 +673,7 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     } else if (szCompiler->bContains("clang++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;
       // We actually need to compile with clang, so fix this in the compiler path
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "clang++", "clang");
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), pLibInfo->m_sCompilerPath.nAreaBytes(), "clang++", "clang");
 
     } else if (szCompiler->bContains("clang"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;
@@ -597,7 +762,14 @@ bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
   if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     delete pSrcFile;
@@ -607,12 +779,84 @@ bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
   if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
     pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
 
-    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
     pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
 
     pSrcFile->vClose();
     delete pSrcFile;
     return false;
+  }
+
+  pSrcFile->vClose();
+  delete pSrcFile;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Write the source string to a file as designated in pLibInfo                */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
+{
+  ASSERT(pSource);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_sSrcFilePath.bIsEmpty());
+
+  File* pSrcFile = new File(pLibInfo);
+  if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
+    pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+
+#ifdef WITH_APPLE
+    int result;
+#else
+    char* result;
+#endif
+    result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    UNUSED(result);
+
+    pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
+
+    delete pSrcFile;
+    return false;
+  }
+
+//  vTrace("~~pSource\n"_Stz);
+//  pSource->vDump();
+//  vTrace("~~~~~~~~~~~\n"_Stz);
+
+  i8 nBlocks = pSource->nTextBlocks();
+  for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+    Stz *szSource = pSource->szTextBlock(i_Block);
+
+//    if (nBlocks > 1) {
+//      vTrace("~~szSource\n"_Stz);
+//      vTrace("%s\n"_Stz,szSource);
+//      vTrace("~~~~~~~~~~~\n"_Stz);
+//    }
+
+    if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
+      pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+
+#ifdef WITH_APPLE
+      int result;
+#else
+      char* result;
+#endif
+      result = strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+      UNUSED(result);
+
+      pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
+
+      pSrcFile->vClose();
+      delete pSrcFile;
+      return false;
+    }
   }
 
   pSrcFile->vClose();

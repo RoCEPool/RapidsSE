@@ -6,7 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_JoinCast.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_JoinEstimate.hpp"
 #include "Card_CostJoining.hpp"
 #include "Card_CostNetwork.hpp"
@@ -16,6 +16,7 @@
 #include "Card_Term.hpp"
 
 #include "eXK.h"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -30,7 +31,7 @@ __vDeleteFunction(Card_StreamJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamJoin::Card_StreamJoin(void)
-: Card(CK_STREAMJOIN)
+: Card_symbol(CK_STREAMJOIN, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -207,29 +208,43 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_JoinCast* p_joinCast = new Card_JoinCast;
-  p_joinCast->vSymbol(aXK[eJoinCast]);
+  p_joinCast->SYM(SF_XK_CAST,aXK[eJoinCast]);
 
   Card_CostUnicast*  p_costUnicast  = new Card_CostUnicast;
   Card_CostNetwork*  p_costNetwork  = new Card_CostNetwork;
   Card_CostJoining*  p_costJoining  = new Card_CostJoining;
 
-  p_costUnicast->vSymbol(nBuff_popped_by_unicast);
-  p_costNetwork->vSymbol(nBuff_recv_over_network);
-  p_costJoining->vSymbol(nUnfiltBuff_produced_by_join);
+  p_costUnicast->SYM(SF_INT_LIT,nBuff_popped_by_unicast);
+  p_costNetwork->SYM(SF_INT_LIT,nBuff_recv_over_network);
+  p_costJoining->SYM(SF_INT_LIT,nUnfiltBuff_produced_by_join);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_JoinEstimate* p_joinEstimate = new Card_JoinEstimate;
 
-  p_joinEstimate->vAppend(p_joinCast);
-  p_joinEstimate->vAppend(p_costNetwork);
-  p_joinEstimate->vAppend(p_costUnicast);
-  p_joinEstimate->vAppend(p_costJoining);
+  p_joinEstimate->vAppendChild(p_joinCast);
+  p_joinEstimate->vAppendChild(p_costNetwork);
+  p_joinEstimate->vAppendChild(p_costUnicast);
+  p_joinEstimate->vAppendChild(p_costJoining);
 
-  vAppend(p_joinEstimate);
+  vAppendChild(p_joinEstimate);
 
   return nUnfiltBuff_produced_by_join;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

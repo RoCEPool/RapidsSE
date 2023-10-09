@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card_OP.hpp"
+#include "CarryForward.hpp"
 
 namespace STORE
 {
@@ -16,11 +17,13 @@ namespace STORE
     Card_Sort(void);
    ~Card_Sort(void) noexcept(false);
 
-    void vCut_sort(CardIter* pCI);
+    void vColumn_Mapping(CardIter* pCI);
 
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
 
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Sort* _pCard_Sort(void* aAddr);

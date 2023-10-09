@@ -158,17 +158,12 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-void CrwBuffer::vRepairList(Object* pObject)
+void CrwBuffer::vRepair(Object* pObject)
 {
   _static_
   CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
-  CrwBuffer* pNextCrwBuffer;
 
-  while (pCrwBuffer) {
-    pNextCrwBuffer = pCrwBuffer->pNextCrwBuffer();
-    AM::vDeleteOperand(pCrwBuffer,nullptr);
-    pCrwBuffer = pNextCrwBuffer;
-  }
+  AM::vDeleteOperand(pCrwBuffer,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,7 +235,7 @@ void CrwBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   DataBuffer::vTable_dbuff(pTable);
-  vStreamDef(pTable->pStreamDef());
+  vStreamDef(pTable == nullptr ? nullptr : pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,40 +256,6 @@ RowTray* CrwBuffer::pRowTray(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return & m_oRowTray;
-}
-
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* analyze this buffer                                                        */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-    
-  CrwBuffer* pNextBuffer = this;
-
-  do {
-    
-    nBuffers++;
-    nRows += (pNextBuffer->nRows());
-
-    jSumRowBytes += pNextBuffer->nAllotedBytes();
-    
-//    if (bDetailed)
-//      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
-//                           AM::NODE::szNodeNm(),
-//                           pNextBuffer->m_tLglPtn,
-//                           iBuffers,
-//                           pNextBuffer->nRows());
-    
-    pNextBuffer = pNextBuffer->pNextCrwBuffer();
-    
-  } while (pNextBuffer);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,8 +468,8 @@ void CrwBuffer::vInflateRows(StreamDef* pStreamDef)
 void CrwBuffer::vInflateRows(Tub* pTub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  UNUSED(pTub);
 
-//    #include "TccStuff.h"
 //
 //    #include "vFLAT_Structures.h"
 //    #include "vFLAT_PreliminaryCrwOld.h"
@@ -517,40 +478,6 @@ void CrwBuffer::vInflateRows(Tub* pTub)
 //    #include "vFLAT_InflateColumn.h"
 //    #include "vFLAT_SkipColumn.h"
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* get length of list of buffers                                               */
-/*----------------------------------------------------------------------------*/
-i8 CrwBuffer::iLengthList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  i8 iLength = 0;
-  for (CrwBuffer* pLn = this; pLn; pLn = pLn->pNextCrwBuffer())
-    iLength++;
-  
-  return iLength;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* CrwBuffer::pNextCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return _pCrwBuffer(this->pNextLinkedBuffer());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vNextCrwBuffer(CrwBuffer* pNextBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  LinkedBuffer::vNextLinkedBuffer(pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -578,26 +505,6 @@ void CrwBuffer::vOperandDump(i8 iDetail)
 
   if (iDetail >= 2)
     vShow();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* CrwBuffer::pPrevCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return _pCrwBuffer(this->pPrevLinkedBuffer());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vPrevCrwBuffer(CrwBuffer* pPrevBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  vPrevLinkedBuffer(pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,26 +595,6 @@ i8 CrwBuffer::nHeadSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore the buffer after being received over a socket                      */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  RASSERT( ! pNextLinkedBuffer() );
-  RASSERT( ! pPrevLinkedBuffer() );
-  
-  // set the table to nullptr (this pointer is not valid any more)
-  vTable(nullptr);
-  
-  // get the pool buffer no
-  i8 i_PoolBuffer = iBufferNo();
-  
-  // restore the bufferNo
-  m_iBufferNo = i_PoolBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* restore the nub the row buffer                                             */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vRestoreNub(void)
@@ -716,17 +603,6 @@ void CrwBuffer::vRestoreNub(void)
   
   m_oRowTray.vRestoreNub();
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore the table of the row buffer                                        */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vRestoreTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  //RASSERT( ! m_pTable );
-  vTable(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -778,9 +654,6 @@ void CrwBuffer::vShow(void)
          m_oRowTray.pNub()->nHeads(),
          m_oRowTray.pNub()->nTails(),
          m_oRowTray.pNub()->nFreeAllotableBytes());
-  
-  vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
-         pPrevLinkedBuffer(),pNextLinkedBuffer());
 
   vTrace("  partition: %lld \n"_Stz, m_tLglPtn.iAsI8());
   
@@ -825,7 +698,7 @@ void CrwBuffer::vToCsv(Tub* pTub)
     vGetRow_single(hvRowSingle, i_Row);
     
     hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
-    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
+    StrLib::vConcat(hvRecord->az(), hvRecord->iStrBufSize(), '\n');           //! sub-optimal
     nSize = hvRecord->sz()->nSize();
     
     if (pCsvBuffer->nFreeBytes() < nSize + 1) {
@@ -834,125 +707,11 @@ void CrwBuffer::vToCsv(Tub* pTub)
     }
     
     szRecord = pCsvBuffer->szAllotRecord(nSize - 1);
-    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nSize - 1);
+    StrLib::vCopy(szRecord->azChar(), nSize, hvRecord->sz()->azChar());
   }
   
   if (szRecord)
     ((char*)szRecord)[nSize-1] = '\0';
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate a CsvBuffer from a crw buffer with a csv row                      */
-/*----------------------------------------------------------------------------*/
-CsvBuffer* CrwBuffer::pToCsvBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  StreamDef* pStreamDef = this->pStreamDef_dbuff();
-  
-  CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
-  CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
-  
-  HV_Record hvRecord(pStreamDef->pRowPix());
-  HV_RowSingle hvRowSingle(pStreamDef);
-  
-  i8 nRows = this->nRows();
-  i8 nBytes = 1;
-  Stz* szRecord = nullptr;
-  
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    // get the inflated compact row
-    vGetRow_single(hvRowSingle, i_Row);
-    
-    // append the row to the record
-    hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
-    
-    StrLib::vConcat(hvRecord->az(),'\n');           //! sub-optimal
-    
-    nBytes = hvRecord->sz()->nSize();
-    
-    if (pCsvBuffer->nFreeBytes() < nBytes + 1) {
-      CsvBuffer* pNewCsvBuffer = new CsvBuffer;
-      pCsvBuffer->vNextLinkedBuffer(pNewCsvBuffer);
-      pCsvBuffer = pNewCsvBuffer;
-    }
-    
-    szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(szRecord->azChar(),hvRecord->sz()->azChar(),nBytes - 1);
-  }
-  
-  if (szRecord)
-    ((char*)szRecord)[nBytes-1] = '\0';
-  
-  return pFirstCsvBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate a SrtBuffer from entry buffer                                     */
-/*----------------------------------------------------------------------------*/
-//SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-//  
-//  i8 nRowRefs = 1;
-//  
-//  HV_RowSingle hvRowSingle(pTable()->pStreamDef(),C_ALL);
-//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tLglPtn);
-//  
-//  i8 nRows = nRows();
-//  
-//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-//    
-//    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet();
-//    
-//    if ( ! pSrtSet ) {
-//      
-//      // create a new SrtBuffer
-//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_tLglPtn);
-//      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
-//      pSrtBuffer = pNewSrtBuffer;
-//      pSrtSet = pSrtBuffer->aAllotSrtSet();
-//      
-//    }
-//    RASSERT(pSrtSet);
-//    
-//    // get compact row
-//    Crw* aCrw = (Crw*)aGetHead(i_Row);
-//    
-//    // set the rowData in the srtSet
-//    pSrtSet->vRowRef(0, (i8)aCrw);
-//    
-//    // get the key from the row
-//    RowInflator::vInflate_OneColumn_into_RowSingle(hvRowSingle, aCrw, iKeyCol);
-//    
-//    // set the key in the srtSet
-//    pSrtSet->vKey(hvRowSingle->m_waColVal[iKeyCol].m_iWrd);
-//  }
-//  
-//  return pSrtBuffer;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* truncate this buffer by removing all entries                               */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vTruncate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-
-  CrwBuffer* pNextBuffer;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pNextBuffer = this->pNextCrwBuffer();
-  
-  while (pNextBuffer) {
-    CrwBuffer* pThisBuffer = pNextBuffer;
-    pNextBuffer = pNextBuffer->pNextCrwBuffer();
-    delete pThisBuffer;
-  }
-  delete this;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -981,25 +740,19 @@ bool CrwBuffer::bValidCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the structure of this row buffer                                    */
+/* verify the rows of this buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bVerify(void)
+bool CrwBuffer::bVerifyRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify the contents of this buffer
-  
-  bool bValid;
-  
-  bValid = bVerifyNextPrev();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyRows();
-  if (! bValid)
-    return false;
-  
+
+  i8 nRows = this->nRows();
+
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    Crw* aRowCacheLine = (Crw*)aGetHead(i_Row);
+    RASSERT(aRowCacheLine);
+  }
+
   return true;
 }
 
@@ -1013,58 +766,6 @@ void CrwBuffer::vVerifyFault(const char* azFunc, const char* azFilePath, i8 iLin
   vTrace("CrwBuffer::VerifyFault: %s %s lld\n"_Stz,azFunc,azFilePath,iLineNo);
   RASSERT(0);
   return;
-}
-
-/*----------------------------------------------------------------------------*/
-/* verify the rows of this buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool CrwBuffer::bVerifyRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  i8 nRows = this->nRows();
-  
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    Crw* aRowCacheLine = (Crw*)aGetHead(i_Row);
-    RASSERT(aRowCacheLine);
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* verify the next, previous pointers                                         */
-/*----------------------------------------------------------------------------*/
-bool CrwBuffer::bVerifyNextPrev(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  /*
-   Any buffer should have a next whose prev point back to it; any prev should
-   point forward to it; a child buffer should point back to its parent
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pPrevLinkedBuffer()) {
-    CrwBuffer* pPrevBuffer = _pCrwBuffer(this->pPrevLinkedBuffer());
-    if (pPrevBuffer->pNextLinkedBuffer() != this) {
-      vVerifyFault(__func__,__FILE__,__LINE__);
-      return false;
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pNextLinkedBuffer()) {
-    CrwBuffer* pNextBuffer = _pCrwBuffer(this->pNextLinkedBuffer());
-    if (pNextBuffer->pPrevLinkedBuffer() != this) {
-      vVerifyFault(__func__,__FILE__,__LINE__);
-      return false;
-    }
-  }
-  
-  return true;
 }
 
 /*============================================================================*/

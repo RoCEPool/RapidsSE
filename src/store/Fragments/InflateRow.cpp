@@ -3,9 +3,11 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+//#include "Combined.hpp"
 #include "IndexDef.hpp"
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
+#include "ClangDynamic.h"
+#include "ClangStuff.h"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
@@ -22,45 +24,39 @@
 void vInflateRowBegin(Dynamic_T* aDynamicT) {
 
   i8* paW;
-  i8 i_CurrentRow;
+  i8  i_CurrentRow;
   i8* piColumn;
 
   // marker-start
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-ROW
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
-  L_InflateRowT:
-
+  __L_LABEL__:
 
   paW = &aDynamicT->m_aW[0];
 
   i_CurrentRow = -1;
 
-  L_AdvanceNextRow:
+  __L_LABEL_LOOP__:
 
-   aDynamicT->m_iJoinedRows = 0;
+  aDynamicT->m_iJoinedRows = 0;
 
-   // process the row
-   aDynamicT->m_iProcessRow = 1;
+  // process the row
+  aDynamicT->m_iProcessRow = 1;
 
-   i_CurrentRow++;
-   if (i_CurrentRow  >= aDynamicT->m_nRows) {
-     goto L_Return;
-   }
+  i_CurrentRow++;
+  if (i_CurrentRow  >= aDynamicT->m_nRows) {
+    goto L_Return;
+  }
 
-   // get the next row (should be able to add rowsize)
-#ifdef WITH_TINYC
-   aDynamicT->m_xRowInfoIT.m_aRowCellArray = aRowBuffer_GetCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the next row (should be able to add rowsize)
+#ifdef WITH_CLANG
+  aDynamicT->m_xRowInfoIT.m_aRowCellArray = aExtern_RowBufferCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
 #endif
 
-   aDynamicT->m_xRowInfoIT.m_racStrArea = aDynamicT->m_xRowInfoIT.m_racStrAreaSav;
+  aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
 
-   piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   // marker-end
   L_Return:
@@ -92,7 +88,24 @@ void vInflateRowCol(Dynamic_T* aDynamicT) {
   // marker-end
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- vInflateRowReturn -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vInflateRowReturn
+void vInflateRowReturn(Dynamic_T* aDynamicT) {
 
+  char* szStrArea;
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
+
+  // marker-end
+
+  return;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

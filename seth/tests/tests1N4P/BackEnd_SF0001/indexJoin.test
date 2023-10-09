@@ -17,6 +17,7 @@ success;
 // INDEX JOIN
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -29,7 +30,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -47,6 +48,7 @@ rows: 1500
 // INDEX JOIN
 // select * from orders join customer on orders.o_custkey = customer.c_custkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -59,7 +61,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -75,6 +77,7 @@ rows: 1500
 //------------------------------------------------------------------------------
 // LEFT OUTER INDEX JOIN
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -87,7 +90,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -104,6 +107,7 @@ rows: 1501
 // LEFT OUTER INDEX JOIN
 // select * from orders left_outer join customer on customer.c_custkey = orders.o_custkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -116,7 +120,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -134,6 +138,7 @@ rows: 1500
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -148,7 +153,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -165,6 +170,7 @@ rows: 1220
 // select * from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -179,7 +185,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -196,6 +202,7 @@ rows: 1497
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -210,7 +217,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -228,6 +235,7 @@ rows: 1221
 // select * from orders left_outer join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -242,7 +250,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -259,6 +267,7 @@ rows: 1497
 // select * from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -271,7 +280,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -289,6 +298,7 @@ rows: 1497
 // select * from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -301,7 +311,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -319,6 +329,7 @@ rows: 1220
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -331,7 +342,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -349,6 +360,7 @@ rows: 1497
 // select * from orders left_outer join customer on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -361,7 +373,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -379,6 +391,7 @@ rows: 1220
 // select * from customer join orders on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -391,7 +404,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -409,6 +422,7 @@ rows: 1218
 // select * from orders join customer on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -421,7 +435,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -439,6 +453,7 @@ rows: 1218
 // select * from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -451,7 +466,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -469,6 +484,7 @@ rows: 1218
 // select * from orders left outer join customer on customer.c_custkey = orders.o_custkey
 //    where customer.c_nationkey >= 4 and orders.o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -481,7 +497,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -499,6 +515,7 @@ rows: 1218
 // select c_custkey, c_nationkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -514,7 +531,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -541,6 +558,7 @@ contains rows :
 // select o_orderkey, o_custkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -556,7 +574,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -573,6 +591,7 @@ rows : 1497
 // select c_custkey, c_nationkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -588,7 +607,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -605,6 +624,7 @@ rows : 1221
 // select o_orderkey, o_custkey from orders left_outer join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -620,7 +640,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -636,6 +656,8 @@ rows : 1497
 // LEFT FILTER & PROJECT & POST PROJECT
 // select c_custkey, c_nationkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
+
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -651,7 +673,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | project "type integer $1 , type integer $2 , type integer $4"
     | combined 0
     | stageD
@@ -670,6 +692,7 @@ contains rows :
 // LEFT FILTER & PROJECT & POST PROJECT
 // select o_custkey, c_custkey, c_nationkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -685,7 +708,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
@@ -704,6 +727,7 @@ contains rows :
 // LEFT OUTER WITH LEFT FILTER & PROJECT & POST PROJECT
 // select c_custkey, c_nationkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -719,7 +743,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageD
@@ -736,6 +760,7 @@ rows : 1221
 // LEFT OUTER WITH LEFT FILTER & PROJECT & POST PROJECT
 // select o_custkey, c_custkey, c_nationkey from orders inner join customer on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -751,7 +776,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $L2 =="
+    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
@@ -771,6 +796,7 @@ contains rows :
 // select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -783,7 +809,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
@@ -812,6 +838,7 @@ contains rows:
 // select c_custkey, o_orderkey, o_custkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //   where o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -824,7 +851,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
@@ -843,6 +870,7 @@ rows: 1497
 // select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //      where c_nationkey >= 4 and o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -856,7 +884,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
@@ -875,6 +903,7 @@ rows: 1218
 // select c_custkey, o_orderkey, o_custkey from customer left_outer join orders on customer.c_custkey = orders.o_custkey
 //      where c_nationkey >= 4 and o_orderkey >= 4;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -888,7 +917,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
@@ -902,6 +931,7 @@ end ;
 
 rows: 1218
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -915,7 +945,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $L1 =="
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0

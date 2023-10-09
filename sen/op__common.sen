@@ -706,48 +706,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* compile source code in tinyC                                               */
+/* find functions in DynamicLibrary                                            */
 /*----------------------------------------------------------------------------*/
-: TinyC[].compileCode params| pStencil |
+: LibInfo[].findFunctions
 
-  TinyC[].new
+    //[op].stageNm@ "finding functions for stage %v" str.format .
 
-  pStencil TinyC[].compile if
-    1 TinyC[].symbols
-    TinyC[].relocate assert
-    "iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
-    "iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
-    "iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
-    "iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
-    true
-  else
-    false
-  then
-
-  TinyC[].delete
+    "iCrwHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun0[]
+    "iRowHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun1[]
+    "iIndexHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun2[]
+    "iEosHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun3[]
+    "iStreamDef_" [op].stageNm@ str.cat LibInfo[].find to Fun4[]
 ;
 
-/*----------------------------------------------------------------------------*/
-/* compile source code in tinyC                                               */
-/*----------------------------------------------------------------------------*/
-: TinyC[].compileCode_v2 params| pStencil |
-
-  TinyC[].new
-
-  pStencil TinyC[].compile_v2 if
-    1 TinyC[].symbols
-    TinyC[].relocate assert
-    "iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
-    "iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
-    "iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
-    "iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
-    true
-  else
-    false
-  then
-
-  TinyC[].delete
-;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

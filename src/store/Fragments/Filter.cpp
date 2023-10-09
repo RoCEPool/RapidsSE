@@ -5,7 +5,8 @@
 #include "BASE.h"
 #include "Dynamic.hpp"
 #include "IndexDef.hpp"
-#include "TccStuff.h"
+#include "ClangStuff.h"
+#include "ClangDynamic.h"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
@@ -23,16 +24,15 @@ void vFilterBegin(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
+	RowInfo __ROW_INFO_FROM__;
 
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FILTER-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 __L_LABEL__:
+
+	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
+	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -42,10 +42,10 @@ __L_LABEL__:
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iFilterEnd --------------------------------------------------------------*/
+/*-- vFilterEnd --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iFilterEnd
-i8 iFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
+// function-vFilterEnd
+void vFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
 
   // marker-start
   if (bFilterResult && bFilterResult != C_DATUM_NULL) {
@@ -54,6 +54,7 @@ i8 iFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
     aDynamicT->m_iProcessRow = 0;
   }
   // marker-end
+
 }
 
 

@@ -37,7 +37,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
 
   for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
 
-    hvRowSingle->vSet(
+    hvRowSingle->vSym(
                       
       C_VARGS_BEGIN,
                       

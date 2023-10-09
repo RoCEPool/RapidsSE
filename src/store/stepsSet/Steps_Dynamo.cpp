@@ -34,28 +34,12 @@
 void Step::vAddSteps_Dynamo(void)
 {
   vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
-  vAddStep("Dynamo[].code@"_Stz,    &Step::vDynamoCodeFetch);
   vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
   vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
+	vAddStep("Dynamo[].fileName@"_Stz,&Step::vDynamoFileNameFetch);
   vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
-  vAddStep("Dynamo[].hasCode"_Stz,  &Step::vDynamoHasCode);
+  vAddStep("Dynamo[].name@"_Stz,    &Step::vDynamoNameFetch);
   vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Dynamo[].code@ -- fetch the code string                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vDynamoCodeFetch(void)
-{
-  ENTRY();
-
-  s48K szCode;
-
-  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  szCode = pDynamo->szCode();
-  m_pDataStack->vPushStr(szCode);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,27 +48,21 @@ void Step::vDynamoCodeFetch(void)
 void Step::vDynamoCompile(void)
 {
   ENTRY();
-    
-  s48K sPipelineStmt;
-  m_pDataStack->vPopStr(sPipelineStmt,__func__);
-      
+
+  s1M sCmdText;
+  m_pJob->pCmdText()->bRetrieve(sCmdText);
+
+  Stz* szPipelineStmt = sCmdText.szStz();
+  //vTraceM("%s\n"_Stz,szPipelineStmt);
+
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  VertexSpec* pPipeSpec = pDynamo->pCompile(sPipelineStmt);
+  VertexSpec* pPipeSpec = pDynamo->pCompile(szPipelineStmt);
     
   if (pPipeSpec) {
     if (AM::TRACE::bVerbose(C_VB_PIPESPEC)) {
       SP_PipeSpec spPipeSpec(pPipeSpec);
       vTraceM("%s\n"_Stz,spPipeSpec.sz());
     }
-
-//    if ( ! pDynamo->szCode()->bSame(""_Stz)) {
-//      TinyC* pTinyC = new TinyC;
-//      m_pLogicUnit->m_xpTinyC = pTinyC;
-//      pTinyC->vBegin();
-//      pTinyC->vAcquire(pTinyC,TinyC::vTinyError);
-//      bool bClean = pTinyC->bCompile((char*)pDynamo->szCode());
-//      RASSERT(bClean);
-//    }
 
     m_pDataStack->vPushPtr(pPipeSpec);
     m_pDataStack->vPushInt(EC_NONE);
@@ -109,6 +87,23 @@ void Step::vDynamoDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Dynamo[].fileName@ -- fetch the file name of the dynamo pipeline           */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoFileNameFetch(void)
+{
+	ENTRY();
+
+	s4K sFileNm;
+
+	Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
+	sFileNm.vSprint("%s_%s_%lld"_Stz,
+	  pDynamo->szName(), AM::GRID::pGetThisNode()->szNodeNm(), AM::FILE::iNextFileNo());
+	m_pDataStack->vPushStr(sFileNm);
+
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Dynamo[].get -- get dynamo                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vDynamoGet(void)
@@ -124,17 +119,18 @@ void Step::vDynamoGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Dynamo[].hasCode -- does the dynamo have code ?                            */
+/* Dynamo[].name@ -- fetch the name of the dynamo pipeline                    */
 /*----------------------------------------------------------------------------*/
-void Step::vDynamoHasCode(void)
+void Step::vDynamoNameFetch(void)
 {
   ENTRY();
 
+  s4K szName;
+
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  if (pDynamo->szCode()->bSame(""_Stz))
-    m_pDataStack->vPushInt(false);
-  else
-    m_pDataStack->vPushInt(true);
+  szName = pDynamo->szName();
+  m_pDataStack->vPushStr(szName);
+
   EXIT();
 }
 

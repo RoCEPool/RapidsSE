@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* _r_Q15 -- TCPH query 15 test                                               */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index S_idx0  on Supplier (S_SUPPKEY  );
+create index RV_idx0 on RevenueV (RV_SUPPKEY );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/optimiser_trace
+/transliterated
+/weaved
+/pipelineName = "_r_Q15"
+select
+	s_suppkey,
+	s_name,
+	s_address,
+	s_phone,
+	rv_revenue
+from
+	Supplier,
+	RevenueV
+where
+	S_SUPPKEY = RV_SUPPKEY
+	and rv_revenue = (select max(rv_revenue)
+                        from RevenueV)
+order by
+	s_suppkey;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

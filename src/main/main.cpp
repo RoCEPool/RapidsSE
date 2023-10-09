@@ -11,6 +11,7 @@
 //#include "Heart.h"
 #include "Engine.hpp"
 #include "Mersenne.hpp"
+#include "EnumValidator.hpp"
 
 // Since trace file is opened before the attach map is ready
 // we use globals instead of saving it to the attach map
@@ -74,8 +75,12 @@ int main(int argc, char* argv[])
 //  printf("sizeof(RowBuffer) %lld\n",(i8)sizeof(RowBuffer));
 //  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
 
-
-  printf("sizeof(Ent) %lld\n",(i8)sizeof(Ent));
+#ifdef WITH_DEBUG_VERSION
+  printf("sizeof(Ent) %lld\n",   (i8)sizeof(Ent));
+  printf("sizeof(Object) %lld\n",(i8)sizeof(Object));
+  printf("sizeof(Header) %lld\n",(i8)sizeof(Header));
+  printf("sizeof(Footer) %lld\n",(i8)sizeof(Footer));
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -177,6 +182,10 @@ int main(int argc, char* argv[])
   // Set the default clock type for Hardware::iReadClock().
   // This needs to be done after IntLib::vInitGlobals() above.
   Hardware::vChooseClockType();
+
+  // Check that the Stz arrays associated with enums that frequently changed are
+  // properly initialised
+  EnumValidator::vValidateEnumStzArrays();
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

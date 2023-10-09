@@ -7,7 +7,8 @@ enum eCS // comment style
 {
   CS_NONE=0,
   CS_BLOCK,
-  CS_LINE
+  CS_LINE,
+  CS_ENUMS
 };
 
 /*============================================================================*/

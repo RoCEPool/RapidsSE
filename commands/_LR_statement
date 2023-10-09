@@ -5,7 +5,7 @@ begin
 
     stage stageB on all partitions :
       scan L
-      | indexJoin R Ri "BOUND $I1 $L1 =="
+      | indexJoin R Ri "BOUND $I1 $1 =="
       | combined 0
       | next
 

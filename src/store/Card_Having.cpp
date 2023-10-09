@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Having,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(void)
-: Card(CK_HAVING)
+: Card_CONDITION(CK_HAVING, 1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,7 +65,7 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
   bool bBump = ! bSawProject;
 
   vCorrect_After_Inject(pCI, bBump);
-  pCI->G.pDeck->vRenumberRecursive();
+ // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,9 +82,12 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->G.p_having->vUpdate_projection(pCI);
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->Prior.m_pProjection = pSub_projection();
+
+
+ // pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,23 +118,22 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn_ro = [pCI,bBump](Card *pCard)
+  auto bLambdaFn_ro = [pCI](Card *pCard)
   {
-    if (MARK_AT != pCard->cMark1())
+    if (! pCard->bMark1(MARK_AT))
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));
     pCard->vRemoveChild(p_term_1);
-    Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vSetStreamOrdinal(1);
-    pCI->G_vAppendNewChild(pCard, CK_TERM, "$1"_Stz);
+    Symbol x_Symbol_stmCol1(SF_COL_NO,1);
+    pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
 
     Card_Expr* p_expr_found =
-        pCI->Analysis.m_pProjection_prior->pGetExpr(0);
+        pCI->Prior.m_pProjection->pGetExpr(0);
 
     RASSERT(p_expr_found->szP_Type());
 
-    pCI->G.p_term->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
+    pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 
     DELETE_CARD(p_term_1);
 
@@ -140,7 +142,39 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_ro);
+  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPCONJ, bLambdaFn_ro);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vUpdate_projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_stream = pCI->G.p_having->pSub_stream())) {
+    if ((pCI->G.p_projection = pCI->G.p_stream->pSub_projection())) {
+
+      pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
+      pCI->G.p_stream->vAppendChild(pCI->Prior.m_pProjection->pPropagate(pCI));
+    }
+  }
+
+  pCI->Prior.m_pProjection = pSub_projection();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
+
+  vValidate_mustHave(CK_LEVEL,CK_NONE);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
 }
 
 /*============================================================================*/

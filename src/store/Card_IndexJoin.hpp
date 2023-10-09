@@ -20,13 +20,14 @@ namespace STORE
 
     static void vMorph_table_To_indexJoin(CardIter* pCI);
 
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_add_transients(CardIter* pCI);
 
     void vEarlyProject_recurse_add(CardIter* pCI);
     void vEarlyProject_root(CardIter* pCI);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_IndexJoin* _pCard_IndexJoin(void* aAddr);

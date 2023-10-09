@@ -25,7 +25,7 @@ select o_year,
 
 */
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 /*
 
@@ -143,7 +143,8 @@ end ;
 //orders->customer->nation->region->lineitem->part->supplier->nation
 //SF1: 563ms
 //SF10 : 7.1s
-/time pipeline Q8
+/time /optimise_passthru 
+pipeline Q8
 begin
   stage stageStart on origin :
     start
@@ -158,34 +159,34 @@ begin
 
   stage stageMarkerB on all partitions :
     indexJoin customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
-    | project "type INTEGER as C_NATIONKEY J1_C_NATIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
+    | project "type INTEGER as C_NATIONKEY C_NATIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
     | combined 0
     | next
 
   stage stageMarkerC on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type integer as N_REGIONKEY J1_N_REGIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
+    | project "type integer as N_REGIONKEY N_REGIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
     | combined 0
     | next
 
   stage stageMarkerD on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | filter "type BOOLEAN J1_R_NAME 'AMERICA' =="
-    | project "type integer as R_REGIONKEY J1_R_REGIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
+    | filter "type BOOLEAN R_NAME 'AMERICA' =="
+    | project "type integer as R_REGIONKEY R_REGIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage stageMarkerE on all partitions :
     indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
-    | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY , type INTEGER as L_PARTKEY J1_L_PARTKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice J1_l_extendedprice , type DECIMAL as l_discount J1_l_discount"
+    | project "type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice l_extendedprice , type DECIMAL as l_discount l_discount"
     | hash "type INTEGER L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage stageMarkerF on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
-    | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED TIN' =="
+    | filter "type BOOLEAN P_TYPE 'ECONOMY ANODIZED TIN' =="
     | project "type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice l_extendedprice , type DECIMAL as l_discount l_discount"
     | hash "type INTEGER L_SUPPKEY"
     | combined 0
@@ -193,13 +194,13 @@ begin
 
   stage stageMarkerG on all partitions :
     indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
-    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice l_extendedprice , type DECIMAL as l_discount l_discount"
+    | project "type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice l_extendedprice , type DECIMAL as l_discount l_discount"
     | combined 0
     | next
 
   stage stageMarkerH on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-    | project "type INTEGER as N_NATIONKEY J1_N_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , type VARCHAR as NATION J1_N_NAME"
+    | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , type VARCHAR as NATION N_NAME"
     | combined 0
     | next
 
@@ -240,6 +241,7 @@ success
 //SF1: 427ms
 //SF10 : 4.7s
 
+/optimise_passthru 
 pipeline Q8
 begin
   stage S00 on origin :
@@ -256,39 +258,39 @@ begin
 
   stage S02 on all partitions :
     indexJoin nation IxN_REGIONKEY "BOUND $I1 R_REGIONKEY =="
-    | project "type INTEGER as N_NATIONKEY J1_N_NATIONKEY"
+    | project "type INTEGER as N_NATIONKEY N_NATIONKEY"
     | combined 0
     | next
 
   stage S03 on all partitions :
     indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
-    | project "type INTEGER as C_CUSTKEY J1_C_CUSTKEY"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY"
     | combined 0
     | next
 
   stage S04 on all partitions :
     indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
-    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-01-01' >=  J1_O_ORDERDATE DATE '1996-12-31' <= and"
-    | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
-               type INTEGER as O_YEAR J1_O_ORDERDATE extract_year"
+    | filter "type BOOLEAN O_ORDERDATE DATE '1995-01-01' >=  O_ORDERDATE DATE '1996-12-31' <= and"
+    | project "type integer as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER as O_YEAR O_ORDERDATE extract_year"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage S05 on all partitions :
     indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
-    | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
-               type INTEGER as L_PARTKEY J1_L_PARTKEY ,
+    | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
+               type INTEGER as L_PARTKEY L_PARTKEY ,
                type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as l_extendedprice J1_l_extendedprice ,
-               type DECIMAL as l_discount J1_l_discount"
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
     | hash "type INTEGER L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage S06 on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
-    | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED TIN' =="
+    | filter "type BOOLEAN P_TYPE 'ECONOMY ANODIZED TIN' =="
     | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as l_extendedprice l_extendedprice ,
@@ -299,7 +301,7 @@ begin
 
   stage S07 on all partitions :
     indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
-    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as l_extendedprice l_extendedprice ,
                type DECIMAL as l_discount l_discount"
@@ -310,7 +312,7 @@ begin
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
-               type VARCHAR as NATION J1_N_NAME"
+               type VARCHAR as NATION N_NAME"
     | combined 0
     | next
 
@@ -362,6 +364,7 @@ success
 
 
 // customer->
+/optimise_passthru 
 pipeline Query8
 begin
   stage S00 on origin :
@@ -377,40 +380,40 @@ begin
 
   stage S02 on all partitions :
     indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
-    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as N_REGIONKEY N_REGIONKEY"
     | combined 0
     | next
 
   stage S03 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | filter "type BOOLEAN J1_R_NAME 'AMERICA' =="
+    | filter "type BOOLEAN R_NAME 'AMERICA' =="
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY"
     | combined 0
     | next
 
   stage S04 on all partitions :
     indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
-    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-01-01' >=  J1_O_ORDERDATE DATE '1996-12-31' <= and"
-    | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
-               type INTEGER as O_YEAR J1_O_ORDERDATE extract_year"
+    | filter "type BOOLEAN O_ORDERDATE DATE '1995-01-01' >=  O_ORDERDATE DATE '1996-12-31' <= and"
+    | project "type integer as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER as O_YEAR O_ORDERDATE extract_year"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage S05 on all partitions :
     indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
-    | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
-               type INTEGER as L_PARTKEY J1_L_PARTKEY ,
+    | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
+               type INTEGER as L_PARTKEY L_PARTKEY ,
                type INTEGER as O_YEAR O_YEAR ,
-               type DECIMAL as l_extendedprice J1_l_extendedprice ,
-               type DECIMAL as l_discount J1_l_discount"
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
     | hash "type INTEGER L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage S06 on all partitions :
     indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
-    | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED TIN' =="
+    | filter "type BOOLEAN P_TYPE 'ECONOMY ANODIZED TIN' =="
     | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as l_extendedprice l_extendedprice ,
@@ -421,7 +424,7 @@ begin
 
   stage S07 on all partitions :
     indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
-    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as l_extendedprice l_extendedprice ,
                type DECIMAL as l_discount l_discount"
@@ -432,7 +435,7 @@ begin
     indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | project "type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
-               type VARCHAR as NATION J1_N_NAME"
+               type VARCHAR as NATION N_NAME"
     | combined 0
     | next
 

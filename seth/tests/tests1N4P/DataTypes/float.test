@@ -66,7 +66,6 @@ rows: 0
 select flt_col9 from datums where flt_col9 <= null;
 rows: 0
 
-//------------------------------------------------------------------------------
 select flt_col9, flt_col9 / 2 from datums order by flt_col9;
 rows:
   (5.111111e+00,2.55555e+00)

@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
-#include "CarryForward.hpp"
+#include "Card_symbol.hpp"
+#include "Card_CONDITION.hpp"
 
 namespace STORE
 {
   class CarryForward;
 
-  class Card_Where : public Card_OP
+  class Card_Where : public Card_CONDITION // todo [Ray A 147]
   {
   public:
     void* operator new(size_t);
@@ -23,14 +23,16 @@ namespace STORE
     static void vDeleteEmpyWhere(CardIter* pCI);
     static void vMarkWherePredWrtTable(CardIter* pCI);
     static void vMoveWherePredsToTableFilter(CardIter* pCI);
-    static void vMove_All_on_To_where(CardIter* pCI);
 
-    static Card_Where* pNewWhereConstruct(void);
+    static Card_Where* pNewWhereAssembly(void);
 
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    void vEarlyProject_add_transients(CardIter* pCI);
-    void vEarlyProject_recurse_passthru(CardIter* pCI);
+   void vEarlyProject_add_transients(CardIter* pCI);
+    void vEarlyProject_recurse_update(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vUpdate_projection(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

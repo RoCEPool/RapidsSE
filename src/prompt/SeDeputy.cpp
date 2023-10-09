@@ -8,6 +8,7 @@
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "SeApi.hpp"
 #include "Output.hpp"
@@ -204,6 +205,7 @@ void SeDeputy::vDeputyLoop(void)
 
       m_eError = Api::eForkJobChild(tChildJobId,
                                     pInpTknVec, pInpTagSet,
+                                    nullptr,
                                     tParentId, tOriginId, tDistId,
                                     m_pRootJob,
                                     true, /* update parent */
@@ -229,7 +231,7 @@ void SeDeputy::vDeputyLoop(void)
 
       iEnd = Hardware::iReadTsc(&uProc_end);
       if (uProc_end == uProc_start) {
-        vTrace("Ticks %lld\n"_Stz, iEnd-iStart);
+        vTrace("Ticks %lld (%lldms)\n"_Stz, iEnd-iStart, TickingDevice::iToMsec(iEnd-iStart));
      }
 
 
@@ -253,6 +255,15 @@ void SeDeputy::vDeputyLoop(void)
 
     catch (LowMemory xLowMemory) {
       m_eError = EC_LOW_MEMORY;
+      if ( ! bPromptSignalled) {
+        m_pSePrompt->vMutexLock(this);
+        m_pSePrompt->vMutexSignalAndUnlock(this);
+      }
+    }
+
+    catch (InternalError xInternalError) {
+      vTrace("got Internal Error\n"_Stz);
+      m_eError = EC_INTERNAL_ERROR;
       if ( ! bPromptSignalled) {
         m_pSePrompt->vMutexLock(this);
         m_pSePrompt->vMutexSignalAndUnlock(this);

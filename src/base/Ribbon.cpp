@@ -18,20 +18,17 @@ __aFooterFunction(Ribbon)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 nMaxLanesAcross)
+Ribbon::Ribbon(CardCtl* pCardCtl, i8 nMaxLanesAcross)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   m_pLaneTabs = new IntSet(C_RIBBON_MAX_LANES);
   vInitTabs(0, C_RIBBON_LANE_WIDTH + C_RIBBON_LANE_GAP);
 
-  m_pCtl = pCtl;
-  m_pSurface = pSurface;
+  m_pCardCtl = pCardCtl;
+
 
   m_nMaxLanesAcross = nMaxLanesAcross;
-  m_jRibbonWidth = C_UNKNOWN;
-
-  m_nTitleLines = 0;
 
   m_i_Heat = 0;
   m_i_Lane = 0;
@@ -74,17 +71,17 @@ i8 Ribbon::i_Char(void)
 /*----------------------------------------------------------------------------*/
 /* get ctl                                                                    */
 /*----------------------------------------------------------------------------*/
-Object* Ribbon::pCtl(void)
+CardCtl* Ribbon::pCardCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  return m_pCtl;
+  return m_pCardCtl;
 }
 
 /*----------------------------------------------------------------------------*/
 /* draw horizontal line using given char                                      */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vDrawH(char cChr, bool bTop)
+void Ribbon::vDrawH(char cChr,  i8 i_Line)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -94,12 +91,15 @@ void Ribbon::vDrawH(char cChr, bool bTop)
 
   pDrawnLine->vPut(0,cChr,nTimes);
 
-  if (bTop) {
-    vInsertBefore(pDrawnLine, pHead());
-    m_nTitleLines++;
-  }
-  else {
+  if (C_UNKNOWN == i_Line) {
     vAppend(pDrawnLine);
+  }
+//  else if (0 == i_Line) {
+//    vInsertBefore(pDrawnLine, pHead());
+//    m_nTitleLines++;
+//  }
+  else {
+    vInsertBefore(pDrawnLine, pGet(i_Line));
   }
 }
 
@@ -112,7 +112,7 @@ void Ribbon::vDrawV(i8 i_FromLine, i8 i_Char, Stz* szBar)
   
   i8 nLines = nItems();
   for (i8 i_Line = i_FromLine; i_Line < nLines; i_Line++) {
-    vPutText(i_Line,i_Char,szBar);
+    vPutOther(i_Line,i_Char,szBar);
   }
 }
 
@@ -148,20 +148,6 @@ void Ribbon::vHeatSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   m_i_Heat = m_i_Line;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert chars vertically                                                    */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vInsertCharsV(BASE::i8 i_FromLine, BASE::i8 i_Char, char cChar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  i8 nLines = nItems();
-  for (i8 i_Line = i_FromLine; i_Line < nLines; i_Line++) {
-    RibbonLine* pRibbonLine = pGet(i_Line);
-    pRibbonLine->vInsert(i_Char,cChar);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,14 +208,14 @@ void Ribbon::vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon)
     RibbonLine* pSubLine = pSubRibbon->pGet(i_RibbonLine);
     
     Stz* szSubText = pSubLine->szText();
-    vPutText(i_Line++,i_Char,szSubText);
+    vPutOther(i_Line++,i_Char,szSubText);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* print all the lines of this ribbon                                         */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPrintRibbon(void)
+void Ribbon::vPrintRibbon(Stz* szQueryNm, i8 iBenchNo, eOH ePhase, i8 iPrintNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
@@ -241,117 +227,38 @@ void Ribbon::vPrintRibbon(void)
   for (i8 i_RibbonLine = 0; i_RibbonLine < nLines; i_RibbonLine++) {
     RibbonLine* pRibbonLine = pGet(i_RibbonLine);
     
-    Stz* szText = pRibbonLine->szText();
-    vTrace("%s\n"_Stz,szText);
-  }
-}
+    Stz* szText_ribbon = pRibbonLine->szText();
+    if (C_UNKNOWN != iPrintNo)
 
-/*----------------------------------------------------------------------------*/
-/* sprint at current coord                                                    */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSprint(Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  char zText[1024];
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(zText,xArgs,(char*)szFormat);
-  va_end(xArgs);
-
-  vPutText(m_i_Line++,m_i_Char,(Stz*)zText);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint at current coord                                                    */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vSprintList(StzList* pStzList, i8 nWidth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  s256 sPiece;
-
-  StzIter* pStzIter = pStzList->pNewIter();
-
-  while (pStzIter->bHasNext()) {
-
-    Stz *szText = pStzIter->pNext();
-
-    if (0 == sPiece.nLength()) {
-      sPiece = szText;
-      continue;
-    }
-    else if (sPiece.nLength() + 1 + szText->nLength() > nWidth) {
-      vPutText(m_i_Line++, m_i_Char, sPiece.szStz());
-      sPiece = szText;
-      continue;
-    }
+      vTrace("%lld %s %2lld %s %2lld %s\n"_Stz,
+             iBenchNo,
+             szQueryNm,
+             iPrintNo,
+             aOH_short[ePhase],
+             i_RibbonLine+1,
+             szText_ribbon);
     else
-      sPiece.vCatSprint(" %s"_Stz,szText);
+      vTrace("%s\n"_Stz, szText_ribbon);
   }
-
-  if (sPiece.nLength()) {
-    vPutText(m_i_Line++, m_i_Char, sPiece.szStz());
-    sPiece = "";
-  }
-
-
-  delete pStzIter;
 }
 
 /*----------------------------------------------------------------------------*/
 /* sprint at current coord                                                    */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vSprintRight(Stz* szFormat, ...)
+void Ribbon::vSprintSnippet(bool bRight, Stz* szFormat, ...)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_RIBBON, _FOOTER_);
 
-  char zText[1024];
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(zText,xArgs,(char*)szFormat);
+
+  if (bRight)
+    vSprintSnippetRight(xArgs, (char*)szFormat);
+  else
+    vSprintSnippetLeft(xArgs, (char*)szFormat);
+
   va_end(xArgs);
-
-  char zRightText[1024];
-
-  StrLib::vSprint(zRightText,m_sRightFormat.szStz(),(Stz*)zText);
-
-  vPutText(m_i_Line++,m_i_Char,(Stz*)zRightText);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get surface                                                                */
-/*----------------------------------------------------------------------------*/
-Object* Ribbon::pSurface(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  return m_pSurface;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of title lines                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Ribbon::nTitleLines(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  return m_nTitleLines;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of title lines                                                  */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vTitleLines(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  m_nTitleLines = m_i_Line;
-
-  vHeatSet();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,7 +295,6 @@ i8 Ribbon::nRibbonWidth(i8 i_FromLine)
       nMaxWidth = nWidthLine;
   }
 
-  m_jRibbonWidth = nMaxWidth;
   return nMaxWidth;
 }
 
@@ -422,39 +328,74 @@ void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put some text                                                              */
+/* put some data                                                              */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText)
+void Ribbon::vPutData(i8 i_Line, i8 i_Char, Stz* szData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  vSufficientLines(i_Line);
-  
-  RibbonLine* pRibbonLine = pGet(i_Line);
+  vPutText(i_Line, i_Char, szData);
+//  if (m_pCardCtl->pCardHistory())
+//    m_pCardCtl->pCardHistory()->vAddLine(szData);
+}
 
-  pRibbonLine->vPut(i_Char,szText);
+/*----------------------------------------------------------------------------*/
+/* put some other                                                             */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vPutOther(i8 i_Line, i8 i_Char, Stz* szOther)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  vPutText(i_Line, i_Char, szOther);
 }
 
 /*----------------------------------------------------------------------------*/
 /* put some text                                                              */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPutTextRight(Stz* szText, i8 i_Line, i8 i_Char)
+void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   vSufficientLines(i_Line);
-  
+
   RibbonLine* pRibbonLine = pGet(i_Line);
 
-  i8 i_Right;
-  if (C_UNKNOWN == i_Char) {
-    RASSERT(C_UNKNOWN != m_jRibbonWidth);
-    i_Right = m_jRibbonWidth - StrLib::nSize((char*)szText) + 1;
-  }
-  else
-    i_Right = i_Char;
+  pRibbonLine->vPut(i_Char, szText2);
+}
 
-  pRibbonLine->vPut(i_Right,szText);
+/*----------------------------------------------------------------------------*/
+/* formatted concatenated sprint                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vSprintSnippetLeft(va_list args, const char* sFormat)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  const i8 nBufSize = 1024;
+  char zData[nBufSize];
+
+  StrLib::vSprint(zData, nBufSize, args, sFormat);
+
+  vPutData(m_i_Line++,m_i_Char,(Stz*)zData);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* formatted concatenated sprint                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vSprintSnippetRight(va_list args, const char* sFormat)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  const i8 nBufSize = 1024;
+  char zData[nBufSize];
+
+  StrLib::vSprint(zData, nBufSize, args, sFormat);
+
+  char zDataRight[nBufSize];
+
+  StrLib::vSprint(zDataRight, nBufSize, nullptr, m_sRightFormat.szStz(), (Stz*)zData);
+
+  vPutData(m_i_Line++,m_i_Char,(Stz*)zDataRight);
 }
 
 /*----------------------------------------------------------------------------*/

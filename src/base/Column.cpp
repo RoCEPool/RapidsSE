@@ -63,7 +63,7 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eCT Column::eColumn(Stz* szType)
 {
-  i8 nEntries = sizeof(aCT) / sizeof (Stz*);
+  i8 nEntries = CT_ENUMS;
   
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
     
@@ -258,6 +258,16 @@ void Column::vColumnNm(Stz* aColumnName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column name                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Column::iColNmBufSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+  return m_sColumnNm.nAreaBytes();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
 eCT Column::eColumnType(void)
@@ -437,7 +447,7 @@ void Column::vListContents(i8 i_Depth)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
   vTrace("%sColumn %02lld %s type %s"
-         " length %lld scale %lld datum %s %s %s\n"_Stz,
+         " length %lld scale %lld datum %s %s %s %s\n"_Stz,
          Stz::szTab(i_Depth),
 
          m_iColumnNo,
@@ -447,7 +457,8 @@ void Column::vListContents(i8 i_Depth)
          m_iColumnScale,
          aDM[m_eDatum],
          m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
-         m_bIsPtnKey ? "partitionKey"_Stz : ""_Stz);
+         m_bIsPtnKey ? "partitionKey"_Stz : ""_Stz,
+         m_bIsAscending ? "" : "descending");
 }
 
 /*----------------------------------------------------------------------------*/

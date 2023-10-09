@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* Card_CONDITION.hpp -- Abstract Condition                                        */
+/*============================================================================*/
+#pragma once
+
+#include "Card_OP.hpp"
+#include "Card_CONJUNCTION.hpp"
+
+namespace STORE
+{
+  class Card_CONDITION : public Card_OP
+  {
+  public:
+    Card_CONDITION(eCK eCard, i8 iFixedDepth);
+   ~Card_CONDITION(void) noexcept(false);
+
+   void vAddTransients(CardIter* pCI);
+   void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+   void vConvert_stmOdn_To_colOdn(CardIter* pCI);
+
+
+  };
+
+  Card_CONDITION* _pCard_CONDITION(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

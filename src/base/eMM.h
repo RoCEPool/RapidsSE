@@ -13,15 +13,7 @@ enum eMM // meta member
   /*    */ MM_ENUMS
 };
 
-static Stz* aMM[]
-{
-  /*  0 */ "NONE"_Stz,
-  
-  /*    */ "MM_SIMPLE"_Stz,
-  /*    */ "MM_COMPLEX"_Stz,
-  
-  /*    */ "ENUMS"_Stz
-};
+extern Stz* aMM[MM_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

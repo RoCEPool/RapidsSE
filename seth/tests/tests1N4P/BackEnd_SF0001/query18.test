@@ -31,7 +31,7 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
 
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -121,6 +121,7 @@ end ;
 
 */
 
+/optimise_passthru 
 pipeline Query18
 begin
    stage S00 on origin :
@@ -136,19 +137,19 @@ begin
      | next broadcast
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
-     | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
-                type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
-                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
-                type DECIMAL as O_TOTALPRICE J1_O_TOTALPRICE ,
+     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
                 type DECIMAL as SUM_QTY SUM_QTY "
      | combined 0
      | next
 
    stage S03 on all partitions :
-     indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
-     | project "type VARCHAR as C_NAME J1_C_NAME ,
-                type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
+     | project "type VARCHAR as C_NAME C_NAME ,
+                type INTEGER as C_CUSTKEY C_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
                 type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
@@ -319,6 +320,7 @@ ordered rows:
  ('Customer#000000080',80,680,  DATE '1993-06-08',259281.51,154.00)
 
 // same
+/optimise_passthru 
 pipeline Query18
 begin
    stage S00 on origin :
@@ -334,19 +336,19 @@ begin
      | next broadcast
 
    stage S02 on all partitions :
-     indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
-     | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
-                type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
-                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
-                type DECIMAL as O_TOTALPRICE J1_O_TOTALPRICE ,
+     indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
                 type DECIMAL as SUM_QTY SUM_QTY "
      | combined 0
      | next
 
    stage S03 on all partitions :
-     indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
-     | project "type VARCHAR as C_NAME J1_C_NAME ,
-                type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+     indexJoin customer IxC_CUSTKEY "bound $I1 $1 =="
+     | project "type VARCHAR as C_NAME C_NAME ,
+                type INTEGER as C_CUSTKEY C_CUSTKEY ,
                 type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type DATE as O_ORDERDATE O_ORDERDATE ,
                 type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,

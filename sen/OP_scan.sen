@@ -44,112 +44,39 @@
   // pipe out the pulse marker
   PipeIn[].pipeOut
 
-  // pipe out a new a stream def
-  //Table[] StreamDefOut[].newFromTable
-  //StreamDefOut[].pipeOut
-
   // grab table ptn read lock
   TablePtn[].grabRead_yieldLoop
 
   // set counter0 to true to indicate lock held
   true to counter0[]
 
-  // new a partition stream for access crw buffer
-  TablePtn[] ptnStream::new to ptnStream[]
+  // get the root BufferId pds cursor from this TablePtn
 
-  // open partition stream to access the crw buffers
-  ptnStream[] ptnStream.open if
+  TablePtn[].rootPdsCursor to PdsCursor[]
+  begin
+    PdsCursor[].currIsNotNull
+  while
+    PdsCursor[].getItemAddr TablePtn[].extractBufferId to BufferId[]
 
-    // pipe in EV_M_NEXTBUFFER
-    Marker[].newNextBufferMarker
-    Marker[].pipeBackIn
+    BufferId[].pipeOut
 
-    //"scan_RowCrwBuffer_next" word::find LogicUnit[].handler!
-    //true LogicUnit[].callAgain!
+    PdsCursor[].next
+  repeat
 
-  else
-    // unable to open partition stream (this would be unusual)
 
-    // delete partition stream
-    ptnStream[] ptnStream.delete
-    nullptr to ptnStream[]
+  // Finished sending all bufferIds to the next op
+  // drop table ptn lock
+  TablePtn[].dropRead
 
-    // drop table ptn lock
-    TablePtn[].dropRead
+  // set counter0 to 0 to indicate lock released
+  false to counter0[]
 
-    // set counter0 to 0 to indicate lock released
-    false to counter0[]
+  // send an eos marker (there was no data)
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
-    // send an eos marker (there was no data)
-    Marker[].newEosMarker
-    Marker[].pipeOut
-
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_NEXTBUFFER...                                             */
-/*----------------------------------------------------------------------------*/
-// ": scan_NextBuffer" .
-
-: scan_NextBuffer \handler
-
-  debug::flag@ if "(Revised) scan_NextBuffer handler" . then
-
-  // read next buffer from ptn stream
-  ptnStream[] ptnStream.read to DataBuffer[]
- 
-  DataBuffer[].isNotNull if
-    // read a next crw buffer
-
-    // pipe out the read crw buffer
-    DataBuffer[].pipeOut
-
-    // requeue EV_M_NEXTBUFFER
-    Pipein[].pipeBackin
-
-    // call this handler again to process next buffer
-    //true LogicUnit[].callAgain!
- 
-  else
-    // no more crw buffers
-    Pipein[].delete
-
-    // close and delete partition stream
-    ptnStream[] ptnStream.close
-    ptnStream[] ptnStream.delete
-    nullptr to ptnStream[]
- 
-    // drop partition lock
-    TablePtn[].dropRead
-
-    // set counter0 to false to indicate lock released
-    false to counter0[]
-
-    // pipe out an eos marker
-    Marker[].newEosMarker
-    Marker[].pipeOut
-
-  then
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
-  // check for rate metering
- 
-  0 locals| rateSecs |
-
-  // "<rateSecs>" [job].tagSet@ tagSet.hasName if
-  "<rateSecs>" [op].tagSet@ tagSet.hasName if
-    <rateSecs> >int to rateSecs
-  then
-
-  rateSecs if
-    rateSecs "Scan Pausing for %v secs" str.format .
-    rateSecs [task].sleepSsec
-    "Scan awake" .
-  then
+  Marker[].newEndMarker
+  Marker[].pipeOut
 
   true
 ;
@@ -167,12 +94,26 @@
 
     // pipe out a new a stream def
     Table[] StreamDefOut[].newFromTable
-    StreamDefOut[].pipeOut
+    StreamDefOut[] to Pipein[]
+    nullptr to StreamDefOut[]
+    Pipein[].pipeOut
   then
 
   //[args].developer if
   //  1 debug::flag!
   //then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+// ": scan_EndMarker" .
+
+: scan_EndMarker \handler
+
+  PipeIn[].delete
 
   true
 ;
@@ -195,8 +136,8 @@
   find: scan_CancellingMarker  EV_M_CANCELLING [op].handler!
   find: scan_Cleaning          EV_M_CLEANING   [op].handler!
   find: scan_DataPulse         EV_M_DATAPULSE  [op].handler!
-  find: scan_NextBuffer        EV_M_NEXTBUFFER [op].handler!
   find: scan_StartMarker       EV_M_START      [op].handler!
+  find: scan_EndMarker         EV_M_END        [op].handler!
 
   op__loop
 

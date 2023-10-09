@@ -344,8 +344,6 @@ Word* Dic::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  bool bTrace = false;
-
   if (szWordNm->nLength() > 31)
     return nullptr;
 

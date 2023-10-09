@@ -25,13 +25,14 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy);
 
     void vComputeProjection(CardIter* pCI); // prototype
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     Card_Projection* pCraft_projection_early(CardIter* pCI);
 
-    void vDerive_Projection_Key(CardIter* pCI);
+    void vDedupe_as(void);
+
+    void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_given_leaf(CardIter* pCI);
-    void vEarlyProject_needed_recurse(CardIter* pCI);
+    void vEarlyProject_recurse_needed(CardIter* pCI);
     void vEarlyProject_root(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
@@ -39,6 +40,8 @@ namespace STORE
     void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);
 
     void vUpdate_projection_off_running(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Project* _pCard_Project(void* aAddr);

@@ -9,7 +9,7 @@
 #include "Steps.hpp"
 
 #include "eYX.h"
-
+#include "ExtendedText.hpp"
 #include "Grid.hpp"
 #include "Api.hpp"
 #include "Stream.hpp"
@@ -24,6 +24,7 @@
 #include "JobList.hpp"
 
 #include "TagConstants.h"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -43,6 +44,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
+  vAddStep("[job].cmdPrint"_Stz,         &Step::vJobCmdPrint);
+  vAddStep("[job].CodeBlock@"_Stz,       &Step::vJobCodeBlockFetch);
+
   vAddStep("[job].disableAllocate"_Stz,  &Step::vJobDisableAllocate);
   vAddStep("[job].disableJobMetrics"_Stz, &Step::vJobDisableJobMetrics);
   vAddStep("[job].disableObjectTracker"_Stz,&Step::vJobDisableObjectTracker);
@@ -57,8 +61,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
 
-  vAddStep("[job].labelObjectTracker"_Stz,&Step::vJobLabelObjectTracker);
+  vAddStep("[job].hasCodeBlock"_Stz,     &Step::vJobHasCodeBlock);
+
   vAddStep("[job].jobList@"_Stz,         &Step::vJobListFetch);
+
+  vAddStep("[job].labelObjectTracker"_Stz,&Step::vJobLabelObjectTracker);
 
   vAddStep("[job].masterJobId"_Stz,      &Step::vJobMasterJobId);
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
@@ -472,6 +479,35 @@ void Step::vJobAssertStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [Job.Cmd].print -- print cmd[]                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCmdPrint(void)
+{
+  ENTRY();
+
+  if (m_pJob->szCmdText())
+    vTrace("%s\n"_Stz,(m_pJob->szCmdText()));
+  else
+    vTrace("<NO CMD TEXT>\n"_Stz);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].codeBlock@ -- fetch the code block                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCodeBlockFetch(void)
+{
+  ENTRY();
+
+  ExtendedText* pCodeBlock = m_pJob->pCodeBlock();
+
+  m_pDataStack->vPushPtr(pCodeBlock);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].disableAllocate -- disable memory allocation for the job             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDisableAllocate(void)
@@ -644,6 +680,21 @@ void Step::vJobGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].hasCodeBlock -- does the job have code ?                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobHasCodeBlock(void)
+{
+  ENTRY();
+
+  Job* pJob = * m_pJob;
+  if (pJob->pCodeBlock())
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].labelObjectTracker -- Give this object tracker a label               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobLabelObjectTracker(void)
@@ -654,6 +705,8 @@ void Step::vJobLabelObjectTracker(void)
   m_pDataStack->vPopStr(sEntry,__func__);
 
   Job* pJob = * m_pJob;
+  UNUSED(pJob);
+
   m_pJob->vLabelObjectTracker(sEntry);
 
   EXIT();
@@ -906,6 +959,8 @@ void Step::vJobPrintObjectTracker(void)
   ENTRY();
 
   Job* pJob = * m_pJob;
+  UNUSED(pJob);
+
   m_pJob->vObjectTrackerDump();
 
   EXIT();
@@ -1478,7 +1533,6 @@ void Step::vJobUpdateParent(void)
   // this could be a prompt thread
 
   eEC eErrorCode = EC_NONE;
-  Job* pParentJob;
   Job* pJob = pOuterJobOfTask();
 
   if ( ! pJob->bUpdateParent() )

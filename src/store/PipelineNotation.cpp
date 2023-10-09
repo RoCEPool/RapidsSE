@@ -54,19 +54,18 @@ void PipelineNotation::vPipelineNotation(Stz* szPipelineStatement)
 /*----------------------------------------------------------------------------*/
 /* Extract the pipeline from a file                                           */
 /*----------------------------------------------------------------------------*/
-void PipelineNotation::vPipelineFromFile(Stz* pFilename, Stz* sDstStr)
+void PipelineNotation::vPipelineFromFile(Stz* szFilename, String* psDstStr)
 {
   _static_
 
   File* pFile = new(C_VIA_MALLOC) File(nullptr);
 
-  if (! pFile->bOpenRead(pFilename)) {
+  if (! pFile->bOpenRead(szFilename)) {
     vTrace("No such file\n"_Stz);
     return;
   }
 
   s256 sLine;
-  int i_Line = 0;
   while (pFile->bReadLine(sLine)) {
     if (StrLib::bEqualTo(sLine.azChar(), "// pipeline begin"))
     {
@@ -76,7 +75,7 @@ void PipelineNotation::vPipelineFromFile(Stz* pFilename, Stz* sDstStr)
           break;
         }
         sLine.vAppend('\n');
-        sDstStr->vConcat(sLine);
+        psDstStr->vConcat(sLine);
       }
       break;
     }
@@ -100,8 +99,8 @@ void PipelineNotation::vPipelineToFile(Stz* pFilename, Stz* sSrcStr)
     return;
   }
 
-  s256 sBegin = "\n// pipeline begin\n";
-  s256 sEnd = "\n// pipeline end\n";
+  s256 sBegin = "\n// pipeline begin\n"_Stz;
+  s256 sEnd = "\n// pipeline end\n"_Stz;
 
   pFile->bWriteBytes(sBegin.szStz(), sBegin.nLength());
   pFile->bWriteBytes(sSrcStr, sSrcStr->nLength());

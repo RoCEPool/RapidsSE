@@ -36,7 +36,6 @@
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
 
@@ -84,12 +83,8 @@
 
 #define WITH_STAGESET EndDefine       //
 
-//#define WITH_HASHMAP EndDefine             // code for hashmap compiled in
-//#define WITH_HASHMAP_DEBUG EndDefine       // enable debug for hashmap
-
-//#define WITH_BUFFER_ID EndDefine
-
-//#define WITH_PAGE_FILE EndDefine
+//#define WITH_PAGING_DEBUG EndDefine
+//#define WITH_PAGING EndDefine
 
 //#define WITH_PAGING EndDefine
 

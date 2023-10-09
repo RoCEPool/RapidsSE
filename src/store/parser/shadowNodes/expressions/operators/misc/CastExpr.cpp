@@ -418,6 +418,7 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
             return bFoundInteger;
           }
           // TODO: Support casting an INTERVAL SECOND to a DECIMAL.
+          break;
 
         default:
           break;
@@ -441,6 +442,7 @@ QueryNode* CastExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode*
   ASSERT(Expr::bIsOfType(pExpr));
   ASSERT(Expr::xTypeId(pExpr, pRootNode).bIsValid());
   ASSERT(S_pTypeMap->xLookup(Expr::xTypeId(pExpr, pRootNode), xTargetTypeId).bIsValid());
+  UNUSED(pRootNode);
 
   QueryNode* pExprCopy = pExpr->pDeepCopy(true);
   QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, xTargetTypeId);

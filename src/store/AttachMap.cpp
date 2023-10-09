@@ -83,9 +83,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_xHeaps.vInit();
 
   m_pFileMap        = new FileMap();
-#ifdef WITH_HASHMAP
   m_pHashMap        = new HashMap();
-#endif
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
@@ -395,6 +393,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_iOptimiserLvl    = pCmdLineArgs->m_xSysArgs.m_iOptimiserLvl;
   m_xSysArgs.m_bProgress        = pCmdLineArgs->m_xSysArgs.m_bProgress;
   m_xSysArgs.m_nPtnsPerNode     = pCmdLineArgs->m_xSysArgs.m_nPtnsPerNode;
+  m_xSysArgs.m_aRegionAddr      = pCmdLineArgs->m_xSysArgs.m_aRegionAddr;
   m_xSysArgs.m_sRegionName      = pCmdLineArgs->m_xSysArgs.m_sRegionName;
   m_xSysArgs.m_iRegionSize      = pCmdLineArgs->m_xSysArgs.m_iRegionSize;
   m_xSysArgs.m_bRLUDiary        = pCmdLineArgs->m_xSysArgs.m_bRLUDiary;

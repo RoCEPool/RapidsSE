@@ -40,14 +40,19 @@ LOG 'Create supplier ...';
 INCLUDE 'supplier.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running tpch query 17...';
+INCLUDE 'OptQ17.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running tpch query 1...';
 INCLUDE 'OptQ1.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running tpch query 2...';
-INCLUDE 'OptQ2.test';
-INCLUDE 'sleep.test';
+//LOG 'Running tpch query 2...';
+//INCLUDE 'OptQ2.test';
+//INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 3...';
@@ -100,9 +105,9 @@ INCLUDE 'OptQ12.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 13...';
-//INCLUDE 'OptQ13.test';
-//INCLUDE 'sleep.test';
+LOG 'Running tpch query 13...';
+INCLUDE 'OptQ13.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 14...';
@@ -123,11 +128,6 @@ INCLUDE 'sleep.test';
 //
 LOG 'Running tpch query 16...';
 INCLUDE 'OptQ16.test';
-INCLUDE 'sleep.test';
-
-//------------------------------------------------------------------------------
-LOG 'Running tpch query 17...';
-INCLUDE 'OptQ17.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------

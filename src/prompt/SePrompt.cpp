@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 
 #include "CmdLineArgs.hpp"
@@ -280,6 +281,11 @@ void SePrompt::vPromptLoop(void)
     }
     catch (LowMemory xLowMemory) {
       vTrace("error: Prompt got low memory exception\n"_Stz);
+      RASSERT(0);
+      continue;
+    }
+    catch (InternalError xInternalError) {
+      vTrace("error: Prompt got Internal Error exception\n"_Stz);
       RASSERT(0);
       continue;
     }
@@ -762,10 +768,10 @@ void SePrompt::vPrintPrompt(void)
   i8 nSize        = gpAttachMap->m_xSysArgs.m_iRegionSize;
   
   s32 sSize;
-  MagLib::vByteMag(nSize,sSize.szStz());
+  MagLib::vByteMag(nSize,sSize);
   
   s32 sL3;
-  MagLib::vByteMag(Hardware::iL3Cache(),sL3.szStz());
+  MagLib::vByteMag(Hardware::iL3Cache(),sL3);
   
   s32 sCpuFreq;
   MagLib::vHzMag(Hardware::iCpuFrequency(),sCpuFreq);
@@ -828,7 +834,7 @@ bool SePrompt::bPromptFunction(eEC* eErrorCode)
 // rdtscp timer
 //  oTimer.vStart();
 //  (pPromptDesc->m_fPrompt)(this);
-//  oTimer.vUpdate();
+//  oTimer.vSym();
 //
 //  if (m_pInpTagSet->bHasName(C_TAG_TIME))
 //    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());

@@ -12,7 +12,7 @@ namespace BASE
     static bool bToCell(Dtm* aCell, Column* pCol,
                         char** aazCrs, Format* pFmt);
 
-    static void vSprint(Stz* szTgt, Dtm* avSrc, Column* pCol);
+    static void vSprint(char* psDst, i8 iDstBufSize, Dtm* avSrc, Column* pCol);
 
    private:
     static bool bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces);

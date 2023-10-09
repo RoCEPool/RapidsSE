@@ -1,88 +1,6 @@
 /*============================================================================*/
-/* _alka                                                                      */
+/* _alka1                                                                     */
 /*============================================================================*/
-
-create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
-create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
-create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-create index A_COL0  on A (A_COL0  );
-create index A_COL1  on A (A_COL1  );
-create index A_COL2  on A (A_COL2  );
-
-create index B_COL0  on B (B_COL0  );
-create index B_COL1  on B (B_COL1  );
-create index B_COL2  on B (B_COL2  );
-
-create index C_COL0  on C (C_COL0  );
-create index C_COL1  on C (C_COL1  );
-create index C_COL2  on C (C_COL2  );
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-load A "../DATA/Select/select.csv";
-load B "../DATA/Select/select.csv";
-load C "../DATA/Select/select.csv";
-
-
-/joWrite
-/glean_interactive
-/transliterated
-/weaved
-/pipelineName = "_alka"
-/joinOrder
-select count(*)
- from A
-  join B on A.A_COL0 = B.B_COL0
-  join C on B.B_COL0 = C.C_COL1
-;
-
-/*
-Expected result:
-rows: ('C HASHCAST B UNICAST A')
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-create table datums (
-  int_col0   INTEGER NOT NULL,
-  int_col1   INTEGER,
-  bol_col2   BOOLEAN,
-  bol_col3   BOOLEAN,
-  dte_col4   DATE,
-  dte_col5   DATE,
-  dec_col6   DECIMAL(19,2),
-  dec_col7   DECIMAL(19,2),
-  flt_col8   FLOAT,
-  flt_col9   FLOAT,
-  tme_col10  TIME,
-  tme_col11  TIME,
-  tsp_col12  TIMESTAMP,
-  tsp_col13  TIMESTAMP,
-  vch_col14  VARCHAR(32),
-  vch_col15  VARCHAR(32)
-);
-
-load datums "../DATA/DataTypes/dataTypes.csv" ;
 
 create table TABLE1 (
   pcol1   INTEGER NOT NULL,
@@ -97,52 +15,41 @@ create table TABLE1 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
+
+create index TABLE1_PCOL1 on table1(pcol1);
+
+create index TABLE1_COLA1 on table1(cola1);
+
+create index TABLE1_COLB1 on table1(colb1);
+
+create index TABLE1_UCOL on table1(ucol);
+
+create index TABLE1_UCOLVC on table1(ucolvc);
+
+select colc1, extract(year from colc1) from table1 where ucol / 5 between 50 and 100;
+
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-create table TABLE3 (
-  pcol3   INTEGER NOT NULL,
-  scol3   INTEGER NOT NULL,
-  tcol3   INTEGER NOT NULL,
-  unicol3 INTEGER NOT NULL,
-  cola2   INTEGER,
-  cola1   INTEGER,
-  ucol    INTEGER,
-  cola3   INTEGER,
-  colb3   VARCHAR(25),
-  colc3   TIMESTAMP
-);
-
-Load TABLE3 "../DATA/Load/tbl3data.csv" ;
-
-create table TABLE4 (
-  pcol4   INTEGER NOT NULL,
-  scol4   INTEGER NOT NULL,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5),
-  cola4   INTEGER,
-  colb4   VARCHAR(10),
-  colc4   TIMESTAMP,
-  cole4   DECIMAL(15, 2)
-);
-Load TABLE4 "../DATA/Load/tbl4data.csv" ;
-
-create table TABLE9 (
-  pcol9   INTEGER NOT NULL,
-  scol9   INTEGER NOT NULL,
-  tcol9   INTEGER NOT NULL,
-  colb9   VARCHAR(20),
-  cold9   FLOAT,
-  cole9   DECIMAL,
-  colf9   INTEGER,
-  colg9   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
-Load TABLE9 "../DATA/Load/tbl9data.csv";
-
-
-//explain stage transliterate select dec_col6 from datums;
-//explain stage transliterate select min(dec_col6) from datums;
-explain stage transliterate select min(dec_col6) from datums group by int_col0;
-
+/keepCodeFile
+/weaved
+/pipeline_def
+select colb1, colc1, extract(day from colc1) from table1 where
+  colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1);
+/*
+unordered rows:
+  ('green',  TIMESTAMP '2015-02-01 00:00:00.0', 1)
+  ('indigo', TIMESTAMP '2015-03-03 00:00:00.0', 3)
+  ('green',  TIMESTAMP '2015-02-12 00:00:00.0', 12)
+  ('indigo', TIMESTAMP '2015-05-14 00:00:00.0', 14)
+  ('indigo', TIMESTAMP '2015-07-14 00:00:00.0', 14)
+  ('violet', TIMESTAMP '2015-12-15 00:00:00.0', 15)
+  ('violet', TIMESTAMP '2015-01-16 00:00:00.0', 16)
+  ('green',  TIMESTAMP '2015-01-19 00:00:00.0', 19)
+  ('yellow', TIMESTAMP '2015-10-19 00:00:00.0', 19)
+  ('pink',   TIMESTAMP '2015-03-19 00:00:00.0', 19)
+  ('green',  TIMESTAMP '2015-10-21 00:00:00.0', 21)
+  ('violet', TIMESTAMP '2015-09-22 00:00:00.0', 22)
+  ('violet', TIMESTAMP '2015-09-23 00:00:00.0', 23)
+  ('green',  TIMESTAMP '2015-07-26 00:00:00.0', 26)
+  ('indigo', TIMESTAMP '2015-03-26 00:00:00.0', 26)
 */

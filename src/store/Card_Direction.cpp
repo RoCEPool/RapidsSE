@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Direction.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -16,12 +17,10 @@ __vDeleteFunction(Card_Direction,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Direction::Card_Direction(Stz* szDirn)
-: Card(CK_DIRECTION,szDirn)
+Card_Direction::Card_Direction(void)
+: Card_symbol(CK_DIRECTION, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vSymbol(szDirn);
 
   _checkInitialised_(CN_CARD);
   
@@ -48,11 +47,25 @@ bool Card_Direction::bIsEqual(Card_Direction* p_direction_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (!this->bIsSymbol(p_direction_arg->szSymbol()))
+  if (!this->bSameSymbol(p_direction_arg->pSymbol()))
     return false;
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Direction::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

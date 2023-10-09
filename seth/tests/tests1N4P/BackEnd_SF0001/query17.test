@@ -13,7 +13,7 @@ select sum(l_extendedprice) / 7.0 as avg_yearly
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -100,6 +100,7 @@ end ;
 // SF10: executes in 194ms
 // modified MED BOX to MED BAG for SF0001
 
+/optimise_passthru 
 pipeline Query17
 begin
   stage S00 on origin :
@@ -118,8 +119,8 @@ begin
     indexJoin lineitem IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | ordagg " ordgroupBy type integer P_PARTKEY
                aggregates type integer as P_PARTKEY $K1 ,
-                          type DECIMAL )  J1_L_QUANTITY sum  ,
-                          type INTEGER )  J1_L_QUANTITY count  "
+                          type DECIMAL )  L_QUANTITY sum  ,
+                          type INTEGER )  L_QUANTITY count  "
     | combined 0
     | next
 
@@ -146,9 +147,9 @@ begin
     | next broadcast
 
   stage S06 on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
-    | filter " type BOOLEAN  J1_L_QUANTITY AV <  "
-    | aggreg " type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  "
+    indexJoin lineitem IxL_PARTKEY "bound $I1 $1 =="
+    | filter " type BOOLEAN  L_QUANTITY AV <  "
+    | aggreg " type decimal as avg_yearly ) L_EXTENDEDPRICE sum  "
     | combined 0
     | next
 

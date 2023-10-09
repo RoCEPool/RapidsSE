@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-   class Card_StreamHead : public Card
+   class Card_StreamHead : public Card_symbol<Card_StreamHead>
   {
   public:
     void* operator new(size_t);
@@ -15,6 +15,8 @@ namespace STORE
   
     Card_StreamHead(void);
    ~Card_StreamHead(void) noexcept(false);
+
+     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
    };
 
   Card_StreamHead* _pCard_StreamHead(void* aAddr);

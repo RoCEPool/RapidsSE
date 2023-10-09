@@ -5,81 +5,10 @@
 
 #include "Board.hpp"
 
+#include "Kid.hpp"
 
 namespace STORE
 {
-  class Kid //: public Object
-  {
-  private:
-    Card*  m_pParent;
-    i8     m_i_Child;
-  public:
-
-    bool   m_bActive;
-
-  private:
-//    // must be last
-//    Footer m_xFooter;
-
-  public:
-//    void* operator new(size_t);
-//    void  operator delete(void*);
-
-    Kid(void);
-    Kid(Card* pParent);
-   ~Kid(void) noexcept(false);
-
-    void vBeginForward(void);
-    void vBeginReverse(void);
-
-    void vFirst(void);
-    void vLast(void);
-    void vNext(void);
-    void vPrev(void);
-    bool bEach(void);
-    bool bEach_reverse(void);
-    bool bEach(eCK eCard);
-    bool bEach_reverse(eCK eCard);
-
-    Card* pParent(void);
-    Card* pChild(void);
-    Card* pChild(i8 i_Child);
-    eCK   eChild(void);
-    i8    i_Child(void);
-
-    Card_Bound*  p_bound(void);
-    Card_Expr*   p_expr(void);
-    Card_IdxCol* p_idxCol(void);
-    Card_Index*  p_index(void);
-    Card_OP*     p_OP(void);
-    Card_Table*  p_table(void);
-    Card_Term*   p_term(void);
-
-    i8 iGetOdn(void);
-
-    Card* pFirstChild(void);
-    Card* pNextChild(void);
-    Card* pPrevChild(void);
-    Card* pLastChild(void);
-
-    bool bIsFirst(void);
-    bool bIsLast(void);
-
-    void vForward(void);
-    void vReverse(void);
-
-    bool bInRange(void);
-    i8   nChildren(void);
-
-    void vParent(Card*  pParent);
-    void vChild(i8 i_Child);
-    void vReset(void);
-
-//  private:
-//
-//    Footer* aFooter(void);
-  };
-
   class CardIterMembers : public Object
   {
     friend class CardIter;
@@ -94,11 +23,12 @@ namespace STORE
 
   // - - - - - - - - - - - - -
   public:
-    bool   m_bRecursed;
+    i8     m_i_RecursionDepth;
     bool   m_bDontDescend;
 
     // - - - - - - - - - - - - -
 
+    char   md_Coord[256];
     Card * p_MainCard;
     eCK    e_MainCard;
     i8     i_MainCard;
@@ -113,7 +43,7 @@ namespace STORE
 
     Card_AbsJoin *       p_absJoin;
     Card_Aggreg *        p_aggreg;
-    Card_AndPred *       p_andPred;
+    Card_AndConj *       p_andConj;
     Card_As *            p_as;
 
     Card_BoolCalc *      p_boolCalc;
@@ -121,7 +51,8 @@ namespace STORE
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
-    Card_CmpPred *       p_cmpPred;
+    Card_Cast *          p_cast;
+    Card_CmpConj *       p_cmpConj;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
     Card_Correlation *   p_correlation;
@@ -129,6 +60,7 @@ namespace STORE
     Card_CostNetwork *   p_costNetwork;
     Card_CostStream *    p_costQuery;
     Card_CostUnicast *   p_costUnicast;
+    Card_Count *         p_count;
     Card_CrossJoin *     p_crossJoin;
 
     Card_Direction *     p_direction;
@@ -140,14 +72,15 @@ namespace STORE
     Card_FiltPredList *  p_filtPredList;
     Card_Flat *          p_flat;
     Card_Fold *          p_fold;
-    Card_FoldElist *     p_foldElist;
     Card_From *          p_from;
 
     Card_GbyAgg *        p_gbyAgg;
 
     Card_Hash *          p_hash;
+    Card_Hashing *       p_hashing;
     Card_Having *        p_having;
     Card_HshCol *        p_hshCol;
+    Card_HshColList *    p_hshColList;
 
     Card_IdxCol *        p_idxCol;
     Card_IdxColList *    p_idxColList;
@@ -164,24 +97,28 @@ namespace STORE
     Card_JoinPredList *  p_joinPredList;
 
     Card_Key *           p_key;
+    Card_KeyCells *      p_keyCells;
     Card_KeyExists *     p_keyExists;
     Card_KeyNotExists *  p_keyNotExists;
 
     Card_Level *         p_level;
     Card_Limit *         p_limit;
 
+    Card_Map *           p_map;
+    Card_Mapping *       p_mapping;
+
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
-    Card_Cast *          p_cast;
     Card_Note *          p_note;
-    Card_NotPred *       p_notPred;
+    Card_NotConj *       p_notConj;
 
     Card_On *            p_on;
     Card_OrdAgg *        p_ordAgg;
-    Card_OrPred *        p_orPred;
+    Card_OrConj *        p_orConj;
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 
+    Card_PayloadCells *  p_payloadCells;
     Card_Project *       p_project;
     Card_Projection *    p_projection;
 
@@ -193,16 +130,20 @@ namespace STORE
     Card_Section *       p_section;
     Card_Send *          p_send;
     Card_Sort *          p_sort;
+    Card_Spare *         p_spare;
     Card_Stage *         p_stage;
+    Card_Stream *        p_stream;
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;
     Card_StreamKey *     p_streamKey;
     Card_StreamPer *     p_streamPer;
     Card_StreamPtn *     p_streamPtn;
     Card_StreamSet *     p_streamSet;
+    Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
 
     Card_Table *         p_table;
+    Card_TableInfo *     p_tableInfo;
     Card_TableList *     p_tableList;
     Card_TableNm *       p_tableNm;
     Card_TablePtn *      p_tablePtn;
@@ -217,7 +158,7 @@ namespace STORE
 
     Card*                p_NEW;
     Card_OP *            p_OP;
-    Card_PRED *          p_PRED;
+    Card_CONJUNCTION *   p_CONJ;
 
   private:
     // must be last
@@ -238,7 +179,6 @@ namespace STORE
   } ;
 
   Kid* _pKid(void* aAddr);
-
 }
 
 /*============================================================================*/

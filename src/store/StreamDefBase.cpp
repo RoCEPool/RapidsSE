@@ -8,6 +8,7 @@
 
 #include "eCX.h"
 #include "ReservedWords.hpp"
+#include "Symbol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -102,7 +103,7 @@ eCT StreamDefBase::eColumn(Stz* szType)
 {
   _static_
   
-  i8 nEntries = sizeof(aCT) / sizeof (Stz*);
+  i8 nEntries = CT_ENUMS;
 
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
 
@@ -124,7 +125,7 @@ eDM StreamDefBase::eDatum(Stz* szType)
 {
   _static_
   
-  i8 nEntries = sizeof(aDM) / sizeof (Stz*);
+  i8 nEntries = DM_ENUMS;
 
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
 
@@ -305,6 +306,25 @@ void StreamDefBase::vDirection(i8 i_Order, eSD eDirection)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vDump(i8 i_Tab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    vTrace("%sCol [%lld] : $%lld %s (%s)\n"_Stz,
+           Stz::szTab(i_Tab),
+           i_Col,
+
+           i_Col + 1,
+           m_xaColumn[i_Col].szColNm(),
+           aCT[m_xaColumn[i_Col].eColumnType()]);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* find column with given name                                                */
 /*----------------------------------------------------------------------------*/
 Column* StreamDefBase::pFindColumn(Stz* szColumnNm)
@@ -319,6 +339,31 @@ Column* StreamDefBase::pFindColumn(Stz* szColumnNm)
       return pColumn;
   }
   
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find column with given name                                                */
+/*----------------------------------------------------------------------------*/
+Column* StreamDefBase::pFindColumn_stripItemise(Stz* szColumnNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  s32 szColNm_arg = szColumnNm;
+  Symbol::vItemStrip(szColNm_arg);
+
+  s32 szColNm_tst;
+  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
+
+    Column* pColumn = & m_xaColumn[i_Column];
+
+    szColNm_tst = pColumn->szColNm();
+    Symbol::vItemStrip(szColNm_tst);
+
+    if (szColNm_tst.bSame(szColNm_arg))
+      return pColumn;
+  }
+
   return nullptr;
 }
 
@@ -545,6 +590,10 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
                                 * ( m_nColumns + (bAddKeyHash ? 1 : 0) );
   pRowPixDst->m_nTotalChars = 0;
 
+  i8 iBufSpaceRemaining = (i8) (sizeof(pRowPixDst->m_xaColPix) +
+                                sizeof(pRowPixDst->m_baPixArea) -
+                                pRowPixDst->m_nNameOffset);
+
   char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
   char* azColNmDst = azNames;
 
@@ -566,9 +615,10 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_bNullable = (u8)pColumn->bIsNullable();
     axColPixDst->m_bPtnKey   = (u8)pColumn->bIsPtnKey();
     axColPixDst->m_uSpare    = (u8)0;
-    
-    StrLib::vCopy(azColNmDst,pColumn->szColNm()->azChar());
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, pColumn->szColNm()->azChar());
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;
@@ -600,9 +650,10 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_bNullable = (u8)false;
     axColPixDst->m_bPtnKey   = (u8)false;
     axColPixDst->m_uSpare    = (u8)0;
-    
-    StrLib::vCopy(azColNmDst,"__keyHash");
+
+    StrLib::vCopy(azColNmDst, iBufSpaceRemaining, "__keyHash");
     nNameSize = StrLib::nSize(azColNmDst);
+    iBufSpaceRemaining -= nNameSize;
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
     axColPixDst->m_uName = nStzOfs;
@@ -655,27 +706,27 @@ void StreamDefBase::vToRowPix(RowPix* pRowPixDst, bool bAddKeyHash)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vToMetadata(Stz* sMetadata)
+void StreamDefBase::vToMetadata(String* psMetadata)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  sMetadata->vCopy("metadata: ("_Stz);
+  psMetadata->vCopy("metadata: ("_Stz);
   
   i8 i_DefSet = 0;
     
   if (i_DefSet != 0)
-    sMetadata->vConcat(","_Stz);
+    psMetadata->vConcat(","_Stz);
 
   for (i8 i_DefColumn = 0; i_DefColumn < m_nColumns; i_DefColumn++) {
 
     if (i_DefColumn != 0)
-      sMetadata->vConcat(","_Stz);
+      psMetadata->vConcat(","_Stz);
 
-    sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                          aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+    psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
+                           aCT[m_xaColumn[i_DefColumn].eColumnType()]);
   }
 
-  sMetadata->vConcat(")"_Stz);
+  psMetadata->vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1372,7 +1423,8 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
 eEC StreamDefBase::eParseReplicated(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+  UNUSED(pTknVec);
+
   m_bReplicated = true;
   
   return EC_NONE;

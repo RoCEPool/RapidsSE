@@ -532,6 +532,7 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
+  UNUSED(pSeApi);
 
   // The callback lambda for qualifying columns
   auto fColumnVisitor = [pSubqueryNode, &sSubqueryPath, pRootNode, pMetadataNode]

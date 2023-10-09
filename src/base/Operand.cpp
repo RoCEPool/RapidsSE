@@ -120,7 +120,7 @@ Operand* Operand::pDuplicateOperand(void)
                                              nullptr);
     return pMarker;
   }
-  
+
   Operand* pDuplicate = (Operand*)this->pMemoryCopy();
   
   return pDuplicate;

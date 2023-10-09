@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* ExtendedTextBuffer.hpp -- Extended Text Buffer                              */
+/*============================================================================*/
+#pragma once
+
+#include "BASE.h"
+
+namespace STORE
+{
+  class ExtendedTextBuffer : public Object
+  {
+  public:
+
+    String_t< (C_4KB - 256) > m_sTextBlock;
+
+  protected:
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    ExtendedTextBuffer(void);
+   ~ExtendedTextBuffer(void) noexcept(false);
+
+    i8 nAreaBytes(void);
+
+    bool bConcat(Stz* szSubStr);
+    bool bConcat(Stz* szSubStr, i8 nLen);
+
+    i8 nFreeBytes(void);
+
+    Stz* szTextBlock(void);
+
+  protected:
+    Footer* aFooter(void);
+  };
+
+  ExtendedTextBuffer* _pExtendedTextBuffer(void* aAddr);
+
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

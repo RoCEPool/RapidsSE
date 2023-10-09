@@ -7,10 +7,12 @@
 #include "CardIter.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_CmpConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
+#include "Card_IndexList.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -25,7 +27,7 @@ __vDeleteFunction(Card_JoinPredList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinPredList::Card_JoinPredList(void)
-: Card(CK_JOINPREDLIST)
+: Card_symbol(CK_JOINPREDLIST, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -55,14 +57,11 @@ Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
 
   Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
 
-  CardIter xCI(p_deck);
-  while (xCI.G_bEachMain(CK_TABLE)) {
-    if (! (xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList()) )
-      continue;
-    if (! (xCI.G.p_filter = xCI.G.p_MainCard->pSub_filter()) )
-      continue;
+  Kid xKid(p_deck);
+  while (xKid.bEach(CK_FROM,CK_TABLE,CK_INDEXLIST,CK_FILTER)) {
 
-    p_joinPredList->vBuildList(xCI.G.p_filter,xCI.G.p_indexList);
+    p_joinPredList->vBuildList(_pCard_Filter(xKid.pSub3()),
+                               _pCard_IndexList(xKid.pSub2()));
   }
 
   return p_joinPredList;
@@ -75,16 +74,17 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
 {
   _static_
 
-  CardIter xCI(p_deck);
-  while (xCI.G_bEachMain(CK_TABLE)) {
-    if ((xCI.G.p_indexList = xCI.G.p_table->pSub_indexList()) &&
-        xCI.G.p_indexList->nChildCards())
+  Kid xKid(p_deck);
+  while (xKid.bEach(CK_TABLE)) {
+    Card_IndexList* p_indexList;
+    if ( (p_indexList = xKid.p_table()->pSub_indexList()) &&
+        p_indexList->nChildCards())
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+      pString->vSprint("Tables: %s"_Stz,xKid.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
     else
-      pString->vCatSprint(", %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+      pString->vCatSprint(", %s"_Stz,xKid.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
   }
 
 }
@@ -104,7 +104,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   auto bfConcat = [this, p_indexList](Card *pCard_cmpPred) {
-    Card_CmpPred* p_cmpPred_tst = _pCard_CmpPred(pCard_cmpPred);
+    Card_CmpConj* p_cmpPred_tst = _pCard_CmpConj(pCard_cmpPred);
 
     if (! p_cmpPred_tst->bIsEqOp())
       return C_CONTINUE_RECURSION;
@@ -117,8 +117,8 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
     if (!p_indexList->bHasEquivalentBound(p_cmpPred_tst))
       return C_CONTINUE_RECURSION;
 
-    Card_CmpPred* p_cmpPred_new = p_cmpPred_tst->pClone();
-    this->vAppend(p_cmpPred_new);
+    Card_CmpConj* p_cmpPred_new = p_cmpPred_tst->pClone();
+    this->vAppendChild(p_cmpPred_new);
 
     return C_CONTINUE_RECURSION;
   };
@@ -126,8 +126,22 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  p_boolCalc->bApplyRecursive(CK_CMPPRED, bfConcat);
+  p_boolCalc->bApplyRecursive(CK_CMPCONJ, bfConcat);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinPredList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pParent);
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

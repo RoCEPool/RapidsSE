@@ -50,6 +50,7 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey,
   b1 bResult = GraphNav::bGetPathAndDepth(pSqlOp, pRootNode, sSqlOpPath, iDepth, true, false);
 
   ASSERT(bResult);
+  UNUSED(bResult);
   ASSERT(sSqlOpPath.nLength() > 0);
   ASSERT(sSqlOpPath.bBeginsWith("/"_Stz));
 
@@ -133,6 +134,7 @@ QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
   b1 bResult = GraphNav::bGetPathAndDepth(pSqlOp, pRootNode, sSqlOpPath, iDepth, true, false);
 
   ASSERT(bResult);
+  UNUSED(bResult);
   ASSERT(sSqlOpPath.nLength() > 0);
   ASSERT(sSqlOpPath.bBeginsWith("/"_Stz));
 

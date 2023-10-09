@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_JoinOrdering : public Card
+  class Card_JoinOrdering : public Card_symbol<Card_JoinOrdering>
   {
   public:
     void* operator new(size_t);
@@ -24,6 +24,8 @@ namespace STORE
     void vJoinOrderString(String* pString, Card_TableList* p_tableList,
                           bool bNumbers=false);
     void vReorder(Card_Deck* pDeck);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_JoinOrdering* _pCard_JoinOrdering(void* aAddr);

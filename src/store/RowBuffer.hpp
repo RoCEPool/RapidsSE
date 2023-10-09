@@ -34,7 +34,7 @@ namespace STORE
 
     static void*      aGetCellArray(RowBuffer* pRowBuffer, i8 iRow);
     static RowBuffer* pToRowBuffer(void* aAddr);
-    static void       vRepairList(Object* pObject);
+    static void       vRepair(Object* pObject);
     static RowBuffer* pRefdRowBuffer(Rrf& xRef);
     static void       vPostRecv(void* aRowBuffer);
 
@@ -51,11 +51,6 @@ namespace STORE
     bool bDepositColumns(Row* pRow, va_list xVarArgs);
     void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
 
-    RowBuffer* pNextRowBuffer(void);
-    void       vNextRowBuffer(RowBuffer* pNextBuffer);
-    RowBuffer* pPrevRowBuffer(void);
-    void       vPrevRowBuffer(RowBuffer* pPrevBuffer);
-
     void vPrintRows(File* pFile, Stz* szLabel);
     void vPrintRows(StreamDef* pStreamDef);
   
@@ -66,7 +61,6 @@ namespace STORE
     char* azStrArea(void);
   
     void vToCsv(Tub* pTub);
-    CsvBuffer* pToCsvBuffer(void);
     void vTruncate(void);
 
     bool bVerify(void);

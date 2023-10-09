@@ -61,6 +61,7 @@ namespace BASE
   
     Stz* szColNm(void);
     void vColumnNm(Stz* sColumnNm);
+    i8   iColNmBufSize(void);
   
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);

@@ -15,7 +15,7 @@ trackMemory;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/glean_interactive
+/optimiser_trace
 /weaved
 /pipelineName = "_tpchQ5_debug"
 select

@@ -22,7 +22,6 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Simple column aliases
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 -- Columns are named appropriately
 -- With the AS keyword
 SELECT n_nationkey AS nationkey, n_name AS name FROM nation;
@@ -33,6 +32,7 @@ rows:
 SELECT n_nationkey nationkey, n_name name FROM nation;
 rows:
   ['nationkey', 'name']
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,6 +57,7 @@ success
 --   ['region', 'nationcount']
 
 -- HAVING clause
+
 EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
 FROM nation
 GROUP BY region

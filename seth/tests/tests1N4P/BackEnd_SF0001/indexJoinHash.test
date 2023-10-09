@@ -17,6 +17,7 @@ success;
 // INDEX JOIN
 // select * from orders join lineitem on lineitem.l_orderkey = orders.o_orderkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -31,7 +32,7 @@ begin
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    indexJoin lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -44,13 +45,11 @@ end ;
 
 rows: 5996
 
-
-// TODO: Uncomment once LEFTOUTER JOINS ARE ENABLED
-/*
 //------------------------------------------------------------------------------
 // LEFT OUTER INDEX JOIN
 // select * from orders left outer join lineitem on lineitem.l_orderkey = orders.o_orderkey;
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -65,7 +64,7 @@ begin
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin lineitem IxL_ORDERKEY "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin lineitem IxL_ORDERKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -77,7 +76,6 @@ begin
 end ;
 
 rows: 5997
-*/
 
 MemoryLeaks;
 rows: 0

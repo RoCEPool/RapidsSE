@@ -185,7 +185,7 @@ void Step::vInputPushVecAsStr(void)
   
   s48K sAsStr;
   
-  pTknVec->vVecToString(sAsStr.szStz(),0,false);
+  pTknVec->vVecToString(sAsStr,0,false);
   
   m_pDataStack->vPushStz(sAsStr.szStz());
 

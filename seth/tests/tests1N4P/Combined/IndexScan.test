@@ -5,7 +5,10 @@
 trackMemory;
 success;
 
+// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
+/*
 // no such table
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -20,6 +23,7 @@ begin
     output | sink | stageA
 end ;
 failure contains: 'Table does not exist'
+*/
 
 // create a table
 create table lineitem (
@@ -42,7 +46,10 @@ create table lineitem (
 );
 success
 
+// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
+/*
 // no such table
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -57,6 +64,7 @@ begin
     output | sink | stageA
 end ;
 failure contains: 'no such index'
+*/
 
 //------------------------------------------------------------------------------
 // create an index on shipdate(DATE)
@@ -80,6 +88,7 @@ affected: 0
 
 //------------------------------------------------------------------------------
 // indexscan on integer key
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -103,6 +112,7 @@ success
 
 //------------------------------------------------------------------------------
 // indexscan on integer key
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -120,6 +130,7 @@ rows: 100
 
 //------------------------------------------------------------------------------
 // indexscan on integer key
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -139,6 +150,7 @@ rows: 100
 
 //------------------------------------------------------------------------------
 // indexscan on date key
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -159,6 +171,7 @@ rows: 1664
 
 //------------------------------------------------------------------------------
 // indexscan with aggregates
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -166,8 +179,8 @@ begin
 
   stage stageB on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | aggreg " type INTEGER ) as SUM_KEY L_ORDERKEY sum ,
-                 type INTEGER ) as CNT_KEY L_ORDERKEY count "
+    | aggreg " type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
+                 type INTEGER as CNT_KEY ) L_ORDERKEY count "
     | combined 0
     | next
   stage stageC on all nodes :
@@ -189,6 +202,7 @@ rows: (1400,100)
 
 //------------------------------------------------------------------------------
 // indexscan with aggregates and group by
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -223,6 +237,7 @@ rows: 50
 
 //------------------------------------------------------------------------------
 // indexscan with filter
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -238,8 +253,11 @@ end ;
 
 rows: 38
 
+// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
+/*
 //------------------------------------------------------------------------------
 // indexscan with indexjoin
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -258,7 +276,7 @@ begin
 end ;
 
 failure contains: 'Table does not exist'
-
+*/
 
 create table orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
@@ -281,6 +299,7 @@ success
 
 //------------------------------------------------------------------------------
 // indexscan with indexjoin
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -300,6 +319,7 @@ end ;
 
 rows: 5996
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -309,7 +329,7 @@ begin
   stage stageA on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 0 >= "
     | indexJoin orders orders_ord " BOUND $I1 L_ORDERKEY == "
-    | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
     | next

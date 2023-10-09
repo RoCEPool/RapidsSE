@@ -61,7 +61,7 @@ Stz* NmlStr::szAdd(Stz* szArg)
   
   Stz* szNew = (Stz*)m_xWsp.ayAllot(nSize);
   
-  StrLib::vCopy(szNew->azChar(),szArg->azChar());
+  StrLib::vCopy(szNew->azChar(), nSize, szArg->azChar());
   
   //vDump();
   

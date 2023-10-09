@@ -19,7 +19,7 @@ __vDeleteFunction(Card_KeyNotExists,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyNotExists::Card_KeyNotExists(void)
-: Card_OP(CK_KEYNOTEXISTS)
+: Card_CONDITION(CK_KEYNOTEXISTS, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -47,9 +47,10 @@ void Card_KeyNotExists::vMorph_table_To_keyNotExists(STORE::CardIter *pCI)
 {
   _static_
 
-  pCI->G.p_keyNotExists = pCI->G.p_table->pSub_keyNotExists();
+  if ((pCI->G.p_keyNotExists = pCI->G.p_table->pSub_keyNotExists()))
+    pCI->G.p_from->vDeleteChild(pCI->G.p_keyNotExists);
 
-  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyNotExists);
+  pCI->G.p_keyNotExists = _pCard_KeyNotExists(pCI->G.p_from->pCard(CK_KEYNOTEXISTS));
 
   // todo: this should be in index list
   pCI->G.p_index = pCI->G.p_keyNotExists->pSub_index();
@@ -71,6 +72,7 @@ void Card_KeyNotExists::vMorph_table_To_keyNotExists(STORE::CardIter *pCI)
 void Card_KeyNotExists::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  UNUSED(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,9 +85,9 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Analysis.m_pProjection_prior = pSub_projection();
+    pCI->Prior.m_pProjection = pSub_projection();
 
-    pCI->vPrintBoard();
+   // pCI->vPrintBoard();
     return;
 
 
@@ -103,28 +105,28 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
-  pCI->vPrintBoard();
+ // pCI->vRenumberCards();
+ // pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_projection();
 
-  pCI->vPrintBoard();
+ // pCI->vPrintBoard();
 
   vDebugPoint();
 }
@@ -155,14 +157,14 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (!pCI->Early.m_pNeeded_later->pFindExpr(pCI->G.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_symbol(pCI->G.p_term->pSymbol())) {
 
     //pCI->Early.m_pNeeded_later->vDump();
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->G.p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone();
-      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
 
@@ -182,15 +184,36 @@ void Card_KeyNotExists::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ( (pCI->G.p_projection = pSub_projection()) ) {
-    vDeleteChild(pCI->G.p_projection);
+    vDeleteSub(pCI->G.p_projection);
   }
 
-  if (pCI->Analysis.m_pProjection_prior) {
-    pCI->G.p_projection = pCI->Analysis.m_pProjection_prior->pClone();
-    vAppend(pCI->G.p_projection);
+  if (pCI->Prior.m_pProjection) {
+    vEnsure_stream(pCI);
+    pCI->G.p_projection = pCI->Prior.m_pProjection->pClone();
+    pCI->G.p_stream->vAppendChild(pCI->G.p_projection);
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_KeyNotExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  UNUSED(pParent);
+
+  if (1 == iDepth) {
+    vValidate_mustHave(CK_LEVEL, CK_TABLE, CK_CONSTRAINT, CK_NONE);
+    RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+    RASSERT(pSub_bound());
+  }
+
+  Card::vValidate(pCI,iDepth,pParent);
+  if (1 == iDepth)
+    Card_OP::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
+  vValidationPassed();
+}
 
 /*============================================================================*/
 /* end                                                                        */

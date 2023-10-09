@@ -20,7 +20,7 @@
     freeSpaceStr  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild  api:executeCheck
+  nullptr api::forkChild  api:executeCheck
 
 ;
 

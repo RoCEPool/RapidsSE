@@ -10,16 +10,10 @@ enum eCX // column pix indicating what the columncell contains
   /* 2 */ CX_IDXREF,     // index refence
   /* 3 */ CX_ROWID,      // row id
   /* 4 */ CX_ROWNO,      // row number
+  /* 5 */ CX_ENUMS
 };
 
-static Stz* aCX[]
-{
-  /* 0 */ "CX_USERCOL"_Stz,
-  /* 1 */ "CX_PTNHASH"_Stz,
-  /* 2 */ "CX_IDXREF"_Stz,
-  /* 3 */ "CX_ROWID"_Stz,
-  /* 4 */ "CX_ROWNO"_Stz,
-};
+extern Stz* aCX[CX_ENUMS];
 
 /*============================================================================*/
 /* end                                                                        */

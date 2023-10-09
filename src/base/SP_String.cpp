@@ -143,12 +143,12 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
   
-  StrLib::vSprint(m_caFormat,"%%%llds"_Stz,iLength);
+  StrLib::vSprint(m_caFormat,sizeof(m_caResult),nullptr,"%%%llds"_Stz,iLength);
 
-  StrLib::vSprint(m_caResult,(Stz*)m_caFormat,szString);
+  StrLib::vSprint(m_caResult,sizeof(m_caResult),nullptr,(Stz*)m_caFormat,szString);
   
   if (StrLib::bClip(m_caResult,iLength))
-    StrLib::vReplaceTail(m_caResult,(char*)"..."_Stz);
+    StrLib::vReplaceTail(m_caResult, sizeof(m_caResult), "...");
 
   return (Stz*) &m_caResult[0];
 }
@@ -177,25 +177,25 @@ Stz* SP_String::szSample(Stz* szString, Stz* szCursor, i8 iAfter, i8 iBefore)
   
   i8 nBytes = nDifference(szStart,szCursor);
   
-  StrLib::vCopyLen(caSubStrBefore,szStart->azChar(),nBytes);
-  StrLib::vEscape(caEscapedBefore,caSubStrBefore);
+  StrLib::vCopyLen(caSubStrBefore, sizeof(caSubStrBefore), szStart->azChar(), nBytes);
+  StrLib::vEscape(caEscapedBefore, sizeof(caEscapedBefore), caSubStrBefore);
   
-  StrLib::vCopy(m_caResult,caEscapedBefore);
+  StrLib::vCopy(m_caResult, sizeof(m_caResult), caEscapedBefore);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   char caSubStrAfter[1024];
   char caEscapedAfter[1024];
 
-  StrLib::vCopyLen(caSubStrAfter,szCursor->azChar(),iAfter);
-  StrLib::vEscape(caEscapedAfter,caSubStrAfter);
+  StrLib::vCopyLen(caSubStrAfter, sizeof(caSubStrAfter), szCursor->azChar(), iAfter);
+  StrLib::vEscape(caEscapedAfter, sizeof(caEscapedAfter), caSubStrAfter);
   
-  StrLib::vConcat(m_caResult,caEscapedAfter);
+  StrLib::vConcat(m_caResult, sizeof(m_caResult), caEscapedAfter);
 
   if (StrLib::nSize(szCursor->azChar()) < iAfter)
-    StrLib::vConcat(m_caResult,"\\0");
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), "\\0");
   else
-    StrLib::vConcat(m_caResult,"...");
+    StrLib::vConcat(m_caResult, sizeof(m_caResult), "...");
 
   return (Stz*) &m_caResult[0];
 }

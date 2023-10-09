@@ -48,6 +48,8 @@ void JoinOptimisation::vOptimiseJoins(PlanNode *pRootNode)
   PlanNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
+  UNUSED(pRootNode);
+  UNUSED(pPlanNode);
 
   // NOTE: Currently nothing to do here as we are now taking care of join
   //       types in the optimiser.

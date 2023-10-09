@@ -55,6 +55,9 @@ CarryForward::CarryForward(void)
   Having.m_bSeen                 = false;
   Having.m_bCorrect_After_Inject = false;
 
+  Sort.m_bSeen                 = false;
+  Sort.m_bCorrect_After_Inject = false;
+
   Unproject.m_bSeen               = false;
   Unproject.m_bUnproject_foldExpr = false;
 
@@ -192,13 +195,13 @@ void CarryForward::vSetSeen(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 
-  pCI->vRestart();
+  pCI->vBeginEach();
 
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
 
   // Table*
-  while (pCI->G_bIsNextMain(CK_TABLE) && pCI->G_bEachMain(CK_TABLE)) {
+  while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     Table.m_bSeen = true;
     Table.m_nTables++;
   }
@@ -218,7 +221,6 @@ void CarryForward::vSetSeen(CardIter* pCI)
   }
 
   // [project]
-  bool bSawProject_postAgg = false;
   if (pCI->G_bIsNextMain(CK_PROJECT) && pCI->G_bEachMain(CK_PROJECT)) {
     Project_postAgg.m_bSeen = true;
   }
@@ -226,6 +228,11 @@ void CarryForward::vSetSeen(CardIter* pCI)
   // Having
   if (pCI->G_bIsNextMain(CK_HAVING) && pCI->G_bEachMain(CK_HAVING)) {
     Having.m_bSeen = true;
+  }
+
+  // Sort
+  if (pCI->G_bIsNextMain(CK_SORT) && pCI->G_bEachMain(CK_SORT)) {
+    Sort.m_bSeen = true;
   }
 
 }

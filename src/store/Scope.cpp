@@ -4,6 +4,7 @@
 
 #include "Scope.hpp"
 
+#include "Symbol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -51,9 +52,11 @@ Scope::~Scope(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is table in scope?                                                         */
 /*----------------------------------------------------------------------------*/
-bool Scope::bInScope(char cTblSyn)
+bool Scope::bInScope(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCOPE,_FOOTER_);
+
+  char cTblSyn = pSymbol->cSF_tblSyn();
 
   i8 i_Table = C_UNKNOWN;
   if (cTblSyn >= 'a' && cTblSyn <= 'j')
@@ -72,9 +75,11 @@ bool Scope::bInScope(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* set table in scope                                                         */
 /*----------------------------------------------------------------------------*/
-void Scope::vInScope(char cTblSyn, bool bInScope)
+void Scope::vInScope(Symbol* pSymbol, bool bInScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCOPE,_FOOTER_);
+
+  char cTblSyn = pSymbol->cSF_char();
 
   i8 i_Table = C_UNKNOWN;
   if (cTblSyn >= 'a' && cTblSyn <= 'j')

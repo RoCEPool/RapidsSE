@@ -36,10 +36,11 @@
 
   0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
+  nullptr to LibInfo[]
+
   Tub[].delete
   Pot[].delete
-  Stencil[].delete
-  combined[].delete
+  dynamic[].delete
 
   EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -58,7 +59,7 @@
   //"OP_dynamic got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Fun0[] 0 combined[].execute not if
+  CrwBuffer[] Fun0[] 0 dynamic[].execute not if
     to errorCode
 
     // cleanup
@@ -96,7 +97,7 @@
   CrwBuffer[].delete
 
   // pipeout all completed Tub[]/Pot[]
-  combined[].hashRows@ if
+  dynamic[].hashRows@ if
     Pot[].pipeOutCompletedPtns
   else
     Tub[].pipeOutCompleted
@@ -114,20 +115,29 @@
 
   //"OP_dynamic got a DATAPULSE" .
 
+  // pipeout DATAPULSE
   Pipein[].pipeout
-/*
-  // if index is set then must be an indexScan OP
-  combined[].IndexT to Index[]
-  Index[].isNull not if
 
-    // execute the indexScan and dynamicOp's
-    nullptr Fun2[] 0 combined[].execute assert
+  // execute function to generate the streamDefOut
+  nullptr Fun4[] 0 Dynamic[].execute assert
 
-    // execute EOS handling
-    nullptr Fun3[] 1 combined[].execute assert
+  // get streamDefOut from Dynamic
+  Dynamic[].streamDefOut to StreamDefOut[]
+
+  // pipeout the streamDefOut
+  StreamDefOut[].pipeout
+
+  // is there an indexScan OP ?
+  Dynamic[].IsIndexScan@ if
+
+    // execute the indexScan handler function
+    nullptr Fun2[] 0 Dynamic[].execute assert
+
+    // execute the EOS handler function
+    nullptr Fun3[] 1 Dynamic[].execute assert
 
     // pipeout all Tub[]/Pot[]
-    combined[].hashRows@ if
+    Dynamic[].hashRows@ if
       Pot[].pipeOutRemainderPtns
     else
       Tub[].pipeOutRemainder
@@ -136,7 +146,7 @@
     Marker[].newEosMarker
     Marker[].pipeOut
   then
-*/
+
   true
 ;
 
@@ -149,7 +159,7 @@
 
  0 locals| errorCode |
 
-  nullptr Fun3[] 0 combined[].execute not if
+  nullptr Fun3[] 0 dynamic[].execute not if
     to errorCode
     Pipein[].delete
     Tub[].deleteAllBuffers
@@ -160,7 +170,7 @@
   then
 
   // pipeout all Tub[]/Pot[]
-  combined[].hashRows@ if
+  dynamic[].hashRows@ if
     Pot[].pipeOutRemainderPtns
   else
     Tub[].pipeOutRemainder
@@ -197,7 +207,7 @@
   //"OP_dynamic got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Fun1[] 0 combined[].execute not if
+  RowBuffer[] Fun1[] 0 dynamic[].execute not if
     to errorCode
 
     // cleanup
@@ -235,7 +245,7 @@
   RowBuffer[].delete
 
   // pipeout all completed Tub[]/Pot[]
-  combined[].hashRows@ if
+  dynamic[].hashRows@ if
     Pot[].pipeOutCompletedPtns
   else
     Tub[].pipeOutCompleted
@@ -251,41 +261,8 @@
 
   0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  // synthesize the code for the combined OP's
-  Combined[] Stencil_v2[].setup
-/*
-  // set up the function pointers
-  Fun0[].setup not if
-    EC_NO_SUCH_FUNCTION op__execErr
-    Pipein[].delete
-    true
-    exit
-  then
-
-  Fun1[].setup not if
-    EC_NO_SUCH_FUNCTION op__execErr
-    Pipein[].delete
-    true
-    exit
-  then
-
-  Fun2[].setup not if
-    EC_NO_SUCH_FUNCTION op__execErr
-    Pipein[].delete
-    true
-    exit
-  then
-
-  Fun3[].setup not if
-    EC_NO_SUCH_FUNCTION op__execErr
-    Pipein[].delete
-    true
-    exit
-  then
-*/
-
-  // pipeout the streamDef
-  Pipein[].pipeout
+  // delete the streamDef
+  Pipein[].delete
 
   true
 ;
@@ -297,15 +274,17 @@
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
+  //"OP_DYNAMIC executing" .
+
   Tub[].new
   Pot[].new
-  Stencil_v2[].new
-  combined[].new
+  dynamic[].new
 
-  //"iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
-  //"iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
-  //"iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
-  //"iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
+  LibInfo[].findFunctions
+
+  Fun2[].isNotNull if
+    true dynamic[].IsIndexScan!
+  then
 
   // pipeout the start marker
   Pipein[].pipeout

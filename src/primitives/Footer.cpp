@@ -13,8 +13,13 @@
 /*----------------------------------------------------------------------------*/
 Footer::Footer(void)
 {
+#ifdef WITH_DEBUG_VERSION
   u4 uProcId;
   m_iWhenAllocated = Hardware::iReadTsc(&uProcId);
+#else
+  m_iWhenAllocated = C_UNKNOWN;
+#endif
+
   m_uFooter = C_FOOTER;
 }
 
@@ -54,17 +59,24 @@ eEC Footer::eValidFooter(void)
 /*----------------------------------------------------------------------------*/
 void Footer::vSetFooter(void)
 {
+#ifdef WITH_DEBUG_VERSION
   u4 uProcId;
   m_iWhenAllocated = Hardware::iReadTsc(&uProcId);
+#else
+  m_iWhenAllocated = C_UNKNOWN;
+#endif
+
   m_uFooter = C_FOOTER;
 }
 
 /*----------------------------------------------------------------------------*/
 /* sprint the header into readable form                                       */
 /*----------------------------------------------------------------------------*/
-void Footer::vSprint(Stz* szHeader)
+void Footer::vSprint(Stz* szHeader, i8 nBufSize)
 {
   StrLib::vSprint(szHeader,
+                  nBufSize,
+                  nullptr,
                   "Footer: %c%c%c%c%c%c%c%c (%s)"_Stz,
                   m_caFooter[0],
                   m_caFooter[1],

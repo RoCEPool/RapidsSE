@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "SubCall.hpp"
+#include "Symbol.hpp"
 
 namespace STORE
 {
@@ -28,8 +29,8 @@ namespace STORE
 
   public:
 
-    bool bInScope(char cTblSyn);
-    void vInScope(char cTblSyn, bool bInScope);
+    bool bInScope(Symbol* pSymbol);
+    void vInScope(Symbol* pSymbol, bool bInScope);
 
     Footer* aFooter(void);
   };

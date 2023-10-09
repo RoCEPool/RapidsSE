@@ -38,6 +38,7 @@ success
 //------------------------------------------------------------------------------
 // PROJECT
 //------------------------------------------------------------------------------
+/optimise_passthru
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -48,7 +49,7 @@ begin
     scan rapidsse public Nation
     | filter " type BOOLEAN  $1 2  <  "
     | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | dynamic_v2 0
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
@@ -62,6 +63,8 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXSCAN -
 //------------------------------------------------------------------------------
+
+/optimise_passthru
 pipeline _unnamed_
 begin
 
@@ -73,7 +76,7 @@ begin
   stage S01 on all partitions :
     indexScan Nation IxN_NATIONKEY "UBOUND $I1 2 < "
     | project   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
-    | dynamic_v2  0
+    | combined 0
     | next
 
   stage S02 on origin :
@@ -87,9 +90,83 @@ rows:
   (0,'ALGERIA',0,' haggle. carefully final deposits detect slyly agai')
   (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
 
+/optimise_passthru
+pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 > "
+    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | combined  0
+    | next hashcast
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
+rows:
+  (3,'CANADA',1,'eas hang ironic, silent packages. slyly regular packages are furiously over the tithes. fluffily bold')
+  (4,'EGYPT',4,'y above the carefully unusual theodolites. final dugouts are quickly across the furiously regular d')
+  (5,'ETHIOPIA',0,'ven packages wake quickly. regu')
+  (6,'FRANCE',3,'refully final requests. regular, ironi')
+  (7,'GERMANY',3,'l platelets. regular accounts x-ray: unusual, regular acco')
+  (8,'INDIA',2,'ss excuses cajole slyly across the packages. deposits print aroun')
+  (9,'INDONESIA',2,' slyly express asymptotes. regular deposits haggle slyly. carefully ironic hockey players sleep blithely. carefull')
+  (10,'IRAN',4,'efully alongside of the slyly final dependencies. ')
+  (11,'IRAQ',4,'nic deposits boost atop the quickly final requests? quickly regula')
+  (12,'JAPAN',2,'ously. final, express gifts cajole a')
+  (13,'JORDAN',4,'ic deposits are blithely about the carefully regular pa')
+  (14,'KENYA',0,' pending excuses haggle furiously deposits. pending, express pinto beans wake fluffily past t')
+  (15,'MOROCCO',0,'rns. blithely bold courts among the closely regular packages use furiously bold platelets?')
+  (16,'MOZAMBIQUE',0,'s. ironic, unusual asymptotes wake blithely r')
+  (17,'PERU',1,'platelets. blithely pending dependencies use fluffily across the even pinto beans. carefully silent accoun')
+  (18,'CHINA',2,'c dependencies. furiously express notornis sleep slyly regular accounts. ideas sleep. depos')
+  (19,'ROMANIA',3,'ular asymptotes are about the furious multipliers. express dependencies nag above the ironically ironic account')
+  (20,'SAUDI ARABIA',4,'ts. silent requests haggle. closely express packages sleep across the blithely')
+  (21,'VIETNAM',2,'hely enticingly express accounts. even, final ')
+  (22,'RUSSIA',3,' requests against the platelets use never according to the quickly regular pint')
+  (23,'UNITED KINGDOM',3,'eans boost carefully special requests. accounts are. carefull')
+  (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. quickly silent platelets breach ironic accounts. unusual pinto be')
+
+/optimise_passthru
+pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
+    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | combined 0
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
+rows:
+  (2,'BRAZIL',1,'y alongside of the pending deposits. carefully special packages are about the ironic forges. slyly special ')
+  (3,'CANADA',1,'eas hang ironic, silent packages. slyly regular packages are furiously over the tithes. fluffily bold')
+  (4,'EGYPT',4,'y above the carefully unusual theodolites. final dugouts are quickly across the furiously regular d')
+  (5,'ETHIOPIA',0,'ven packages wake quickly. regu')
+
+
 //------------------------------------------------------------------------------
 // INDEXJOIN -
 //------------------------------------------------------------------------------
+/optimise_passthru
 pipeline _unnamed_
 begin
 
@@ -100,13 +177,14 @@ begin
 
   stage S01 on all partitions :
      scan      Nation
-   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-   | dynamic_v2  0
-   | next
+   | project "type INTEGER N_NATIONKEY , type VARCHAR N_NAME , type INTEGER N_REGIONKEY"
+   | hash "type INTEGER $3"
+   | combined 0
+   | next hashcast
 
   stage S02 on all partitions :
      indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
-   | dynamic_v2  0
+   | combined 0
    | next
 
   stage S04 on origin :
@@ -115,6 +193,7 @@ begin
    | first
 
 end ;
+
 rows:
   (0,'ALGERIA',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
   (1,'ARGENTINA',1,1,'AMERICA','hs use ironic, even requests. s')
@@ -142,10 +221,161 @@ rows:
   (23,'UNITED KINGDOM',3,3,'EUROPE','ly final courts cajole furiously final excuse')
   (24,'UNITED STATES',1,1,'AMERICA','hs use ironic, even requests. s')
 
+//------------------------------------------------------------------------------
+// INDEXSCAN + INDEXJOIN
+//------------------------------------------------------------------------------
+
+/optimise_passthru
+pipeline _unnamed_
+  begin
+
+  stage S00 on origin :
+    start
+    | pulse     once
+    | next
+
+  stage S02 on all partitions :
+    indexScan Nation IxN_NATIONKEY "LBOUND $I1 14 >"
+    | hash "type INTEGER $3"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+    | combined  0
+    | next
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+  end ;
+rows:
+  (15,'MOROCCO',0,'rns. blithely bold courts among the closely regular packages use furiously bold platelets?',0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (16,'MOZAMBIQUE',0,'s. ironic, unusual asymptotes wake blithely r',0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (17,'PERU',1,'platelets. blithely pending dependencies use fluffily across the even pinto beans. carefully silent accoun',1,'AMERICA','hs use ironic, even requests. s')
+  (18,'CHINA',2,'c dependencies. furiously express notornis sleep slyly regular accounts. ideas sleep. depos',2,'ASIA','ges. thinly even pinto beans ca')
+  (19,'ROMANIA',3,'ular asymptotes are about the furious multipliers. express dependencies nag above the ironically ironic account',3,'EUROPE','ly final courts cajole furiously final excuse')
+  (20,'SAUDI ARABIA',4,'ts. silent requests haggle. closely express packages sleep across the blithely',4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (21,'VIETNAM',2,'hely enticingly express accounts. even, final ',2,'ASIA','ges. thinly even pinto beans ca')
+  (22,'RUSSIA',3,' requests against the platelets use never according to the quickly regular pint',3,'EUROPE','ly final courts cajole furiously final excuse')
+  (23,'UNITED KINGDOM',3,'eans boost carefully special requests. accounts are. carefull',3,'EUROPE','ly final courts cajole furiously final excuse')
+  (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. quickly silent platelets breach ironic accounts. unusual pinto be',1,'AMERICA','hs use ironic, even requests. s')
+
+
+/optimise_passthru
+pipeline _unnamed_
+  begin
+
+  stage S00 on origin :
+    start
+    | pulse     once
+    | next
+
+  stage S02 on all partitions :
+    indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
+    | hash "type INTEGER $3"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+    | combined  0
+    | next
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+  end ;
+rows:
+  (2,'BRAZIL',1,'y alongside of the pending deposits. carefully special packages are about the ironic forges. slyly special ',1,'AMERICA','hs use ironic, even requests. s')
+  (3,'CANADA',1,'eas hang ironic, silent packages. slyly regular packages are furiously over the tithes. fluffily bold',1,'AMERICA','hs use ironic, even requests. s')
+  (4,'EGYPT',4,'y above the carefully unusual theodolites. final dugouts are quickly across the furiously regular d',4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (5,'ETHIOPIA',0,'ven packages wake quickly. regu',0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+
+//------------------------------------------------------------------------------
+// SEMI-JOIN
+//------------------------------------------------------------------------------
+/optimise_passthru
+pipeline __CS2_semiJoin
+begin
+
+ stage S00 on origin :
+     start
+   | pulse     once
+   | next
+
+ stage S01 on all partitions :
+     scan Nation
+   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | hash "type INTEGER $3"
+   | combined  0
+   | next hashcast
+
+ stage S02 on all partitions :
+     keyExists Region IxR_REGIONKEY
+              " BOUND $I1 $3 == "
+              "type BOOLEAN R_REGIONKEY N_NATIONKEY =="
+   | combined  0
+   | next
+
+ stage S04 on origin :
+     output
+   | sink
+   | first
+
+end ;
+
+rows:
+ (0,'ALGERIA',0)
+ (1,'ARGENTINA',1)
+ (4,'EGYPT',4)
+
+ 
+ /optimise_passthru
+ pipeline __CS2_semiJoin
+ begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan Nation
+    | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+    | hash "type INTEGER $3"
+    | combined  0
+    | next hashcast
+
+  stage S02 on all partitions :
+      keyExists Region IxR_REGIONKEY
+               " BOUND $I1 $3 == "
+               "type BOOLEAN R_NAME 'ASIA' =="
+    | combined  0
+    | next
+
+  stage S04 on origin :
+      output
+    | sink
+    | first
+
+ end ;
+
+ rows:
+  (8,'INDIA',2)
+  (9,'INDONESIA',2)
+  (12,'JAPAN',2)
+  (18,'CHINA',2)
+  (21,'VIETNAM',2)
 
 //------------------------------------------------------------------------------
 // AGGREGATE - INTEGER
 //------------------------------------------------------------------------------
+/weaved
+
+/optimise_passthru
 pipeline unamed
 begin
   stage S00 on origin :
@@ -156,15 +386,15 @@ begin
     scan rapidsse public Nation
     | filter " type BOOLEAN  $1 5  <  "
     | aggreg " type INTEGER )  $1 sum  "
-    | dynamic_v2 0
+    | combined 0
     | next
   stage S02 on all nodes :
     aggreg " type INTEGER )  $1 sum  "
-    | dynamic_v2 0
+    | combined 0
     | next
   stage S03 on origin :
     aggreg " type INTEGER )  $1 sum  "
-    | dynamic_v2 0
+    | combined 0
     | next
   stage S04 on origin :
     output
@@ -178,6 +408,8 @@ rows:
 //------------------------------------------------------------------------------
 // AGGREGATE - VARCHAR
 //------------------------------------------------------------------------------
+
+/optimise_passthru
 pipeline unamed
 begin
  stage S00 on origin :
@@ -187,15 +419,15 @@ begin
  stage S01 on all partitions :
    scan rapidsse public Nation
    | aggreg " type VARCHAR )  $2 max  "
-   | dynamic_v2 0
+   | combined 0
    | next
  stage S02 on all nodes :
    aggreg " type VARCHAR )  $1 max  "
-   | dynamic_v2 0
+   | combined 0
    | next
  stage S03 on origin :
    aggreg " type VARCHAR )  $1 max  "
-   | dynamic_v2 0
+   | combined 0
    | next
  stage S04 on origin :
    output
@@ -208,6 +440,8 @@ rows:
 //------------------------------------------------------------------------------
 // GROUP BY AGGREGATE - INTEGER
 //------------------------------------------------------------------------------
+
+/optimise_passthru
 pipeline unamed
 begin
  stage S01 on origin :
@@ -218,17 +452,17 @@ begin
  stage S02 on all partitions :
    scan rapidsse public Nation
    | gbyagg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | dynamic_v2 0
+   | combined 0
    | next
 
  stage S03 on all nodes :
    gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | dynamic_v2 0
+   | combined 0
    | next
 
  stage S04 on origin :
    gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | dynamic_v2 0
+   | combined 0
    | next
 
  stage S06 on origin :
@@ -246,6 +480,8 @@ rows:
 //------------------------------------------------------------------------------
 // GROUP BY AGGREGATE - VARCHAR
 //------------------------------------------------------------------------------
+ 
+ /optimise_passthru
  pipeline unamed
  begin
    stage S01 on origin :
@@ -256,17 +492,17 @@ rows:
    stage S02 on all partitions :
      scan rapidsse public Nation
      | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
-     | dynamic_v2 0
+     | combined 0
      | next
 
    stage S03 on all nodes :
      gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
-     | dynamic_v2 0
+     | combined 0
      | next
 
    stage S04 on origin :
      gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
-     | dynamic_v2 0
+     | combined 0
      | next
 
    stage S05 on origin :
@@ -285,6 +521,8 @@ rows:
 //------------------------------------------------------------------------------
 // GROUP BY AGGREGATE - KEY VARCHAR
 //------------------------------------------------------------------------------
+
+/optimise_passthru
 pipeline unamed
 begin
   stage S00 on origin :
@@ -295,17 +533,17 @@ begin
   stage S01 on all partitions :
     scan rapidsse public Nation
     | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
-    | dynamic_v2 0
+    | combined 0
     | next
 
   stage S02 on all nodes :
     gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
-    | dynamic_v2 0
+    | combined 0
     | next
 
   stage S03 on origin :
     gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
-    | dynamic_v2 0
+    | combined 0
     | next
 
   stage S04 on origin :
@@ -344,6 +582,7 @@ rows:
 // PROJECT - ROW BUFFER
 //------------------------------------------------------------------------------
 
+/optimise_passthru
 pipeline unamed
 begin
   stage S00 on origin :
@@ -354,12 +593,12 @@ begin
   stage S01 on all partitions :
     scan rapidsse public Nation
     | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | dynamic_v2 0
+    | combined 0
     | next
 
   stage S02 on all partitions :
     project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | dynamic_v2 0
+    | combined 0
     | next
 
   stage S03 on origin :
@@ -397,6 +636,8 @@ rows:
 //------------------------------------------------------------------------------
 // SORT - INTEGER
 //------------------------------------------------------------------------------
+
+/optimise_passthru
 pipeline unamed
 begin
  stage S00 on origin :
@@ -408,7 +649,7 @@ begin
    scan rapidsse public Nation
    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
    | sort " type INTEGER as n_nationkey $1 ASC  "
-   | dynamic_v2 0
+   | combined 0
    | next
 
  stage S02 on origin :
@@ -446,6 +687,8 @@ rows:
 //------------------------------------------------------------------------------
 // SORT - VARCHAR
 //------------------------------------------------------------------------------
+
+/optimise_passthru
 pipeline unamed
 begin
  stage S00 on origin :
@@ -457,7 +700,7 @@ begin
    scan rapidsse public Nation
    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
    | sort " type VARCHAR as n_name $2 ASC  "
-   | dynamic_v2 0
+   | combined 0
    | next
 
  stage S02 on origin :
@@ -492,12 +735,163 @@ rows:
   (24,'UNITED STATES')
   (21,'VIETNAM')
 
+
+create table L (l_int_col0 integer);
+create table R(r_int_col0 integer, r_vch_col1 varchar);
+create index L_idx on L(l_int_col0);
+create index R_idx on R(r_int_col0);
+
+load L "../DATA/Joins/L.csv";
+load R "../DATA/Joins/R.csv";
+
+//------------------------------------------------------------------------------
+// LEFT OUTER JOIN
+//------------------------------------------------------------------------------
+/*
+// LEFT_OUTER with scan
+
+/optimise_passthru
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0142 on all partitions :
+    scan rapidsse public L
+    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+rows: 48
+
+
+// LEFT_OUTER with indexscan
+
+/optimise_passthru
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0142 on all partitions :
+    indexScan L L_idx "LBOUND $I1 2 >"
+    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+rows: 39
+*/
+
+//------------------------------------------------------------------------------
+// HASH CAST
+//------------------------------------------------------------------------------
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create table orders (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     CHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       DATE NOT NULL,
+O_ORDERPRIORITY   CHAR(15) NOT NULL,
+O_CLERK           CHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+) ;
+success
+
+create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
+success
+
+create index IxO_ORDERKEY  on Orders   (O_ORDERKEY);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+load orders "../TPCH/SF_0001/orders.csv";
+success
+
+/optimise_passthru
+pipeline unnamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Lineitem
+    | project "type INTEGER $1"
+    | hash "type INTEGER $1"
+    | combined  0
+    | next hashcast
+
+  stage S02 on all partitions :
+      indexJoin orders IxO_ORDERKEY " BOUND $I1 $1 == "
+    | project "type INTEGER $1 , type INTEGER $2"
+    | combined  0
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+rows: 5996
+
 //------------------------------------------------------------------------------
 // drop the tables
+
+drop table L;
+success
+
+drop table R;
+success
+
 drop table nation;
 success
 
 drop table region;
+success
+
+drop table lineitem;
+success
+
+drop table orders;
 success
 
 MemoryLeaks;
@@ -505,10 +899,22 @@ rows: 0
 
 CLEANUP {
 
+  drop table L;
+  success
+
+  drop table R;
+  success
+
   drop table nation;
   mute
 
   drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table orders;
   mute
 
   bye;

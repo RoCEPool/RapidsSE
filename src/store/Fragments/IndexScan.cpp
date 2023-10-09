@@ -5,7 +5,9 @@
 #include "BASE.h"
 #include "Dynamic.hpp"
 #include "IndexDef.hpp"
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
+#include "ClangDynamic.h"
+#include "ClangStuff.h"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
@@ -24,104 +26,42 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   i8 i_CurrentRow;
   i8*   paW;
 
+  char* __INDEXNAME__;
+  IndexInfo __INDEX_INFO__;
+	RowInfo __ROW_INFO_TO__;
+
+	char* szStrArea;
+
   __L_LABEL_LOOP__:
 
   // marker-start
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INDEXSCAN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   __L_LABEL__:
 
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+	__ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+	szStrArea = __ROW_INFO_TO__.m_acStrArea;
+
   paW = &aDynamicT->m_aW[0];
 
-  i_CurrentRow = -1;
+    strcpy(&aDynamicT->m_xIndexInfoT.m_cTableName[0], "__TABLENAME__");
+    strcpy(&aDynamicT->m_xIndexInfoT.m_cIndexName[0], "__INDEXNAME__");
 
-  // position at beginning of the index
-  aDynamicT->m_xIndexInfoT.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
-        aDynamicT->m_xIndexInfoT.m_aIndexTree, &aDynamicT->m_xIndexInfoT.m_aEntBuffer);
+  #ifdef WITH_CLANG
+    aDynamicT->m_xIndexInfoT.m_aTable = aExtern_FindTable(aDynamicT->m_xIndexInfoT.m_cTableName);
+    aDynamicT->m_xIndexInfoT.m_aIndex = aExtern_FindIndex(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_cIndexName);
+    aDynamicT->m_xIndexInfoT.m_aIndexDef = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoT.m_aIndex);
+    aDynamicT->m_xIndexInfoT.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_aIndex);
+  #endif
 
-  if ( ! aDynamicT->m_xIndexInfoT.m_aEntInt )
-    goto L_Return;
-
-  // marker-end
-
-  L_Return:
-  return;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexUpperCheck --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexUpperCheck
-void vIndexUpperCheck(Dynamic_T* aDynamicT) {
-
-  // marker-start
-
-  /// position at upper bound
-  aDynamicT->m_xIndexInfoT.m_aEntUpper =  (struct Ent_int *)aIndexTree_positionLT(
-      aDynamicT->m_xIndexInfoT.m_aIndexTree, aDynamicT->m_xIndexInfoT.m_aEntKey);
-
-  L_IndexScanDeref:
-
-  // reached upper bound ?
-  if (aDynamicT->m_xIndexInfoT.m_aEntInt == aDynamicT->m_xIndexInfoT.m_aEntUpper) {
-    goto L_Return;
-  }
-
-  // process the row
-  aDynamicT->m_iProcessRow = 1;
+    i_CurrentRow = -1;
 
   // marker-end
 
   L_Return:
   return;
 
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexScanReturn --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexScanReturn
-void vIndexScanReturn(Dynamic_T* aDynamicT) {
-
-  void* aHeadLine;
-  void* aHeadLineSav;
-  void* aSubReturnLabel;
-
-  // marker-start
-  goto L__IndexScanRet;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-CRW-RET
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  L__IndexScanRet:
-
-  aHeadLine = aHeadLineSav;
-
-  goto __L_LABEL_NEXT__;
-
-  __L_LABEL_LOOP__:
-
-  // move to next entry
-  aDynamicT->m_xIndexInfoT.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
-      &aDynamicT->m_xIndexInfoT.m_aEntBuffer, aDynamicT->m_xIndexInfoT.m_aEntInt);
-  goto L_IndexScanDeref;
-
-  // marker-end
-
-  __L_LABEL_NEXT__:
-  L_IndexScanDeref:
-
-  return;
 }
 
 /*============================================================================*/

@@ -51,7 +51,7 @@ rows:
   (*, 'botTbl', '1MB');
   
 // check no of rows
-tableScan bolTbl;
+select * from bolTbl;
 rows: 102
 
 // dump index bol_idx1

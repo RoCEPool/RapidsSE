@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stz.hpp -- null terminated string                                          */
+/* Stz.hpp -- a read only null terminated string for mapping over char*       */
 /*============================================================================*/
 #pragma once
 
@@ -22,44 +22,31 @@ namespace BASE
   public:
     void* operator new(size_t);
   
-  //Stz() = default;
     Stz(void);
-    Stz(Stz* szArg);
    ~Stz(void) noexcept(false);
   
     static Stz* szDots(i8 nDots);
     static Stz* szPluses(i8 nPluses);
+    static Stz* szSpaces(i8 nSpaces);
     static Stz* szTab(i8 iDepth);
     static Stz* szHeight(i8 iHeight);
 
-    void operator =(i8);
-    void operator =(Stz*);
-    void operator =(void*);
-
     b1    bBeginsWith(Stz* szArg);
-    void  vCatSprint(Stz* szFormat, ...);
     char* azChar(void);
     i8    iCompare(Stz* szArg);
-    void  vConcat(Stz* szArg);
     bool  bContains(Stz* szArg);
-    void  vCopy(Stz* szArg);
-    void  vCopyLen(Stz* szArg, i8 nBytes);
     bool  bEqual(Stz* szArg);
     bool  bGreater(Stz* szArg);
     bool  bIsEmpty(void);
     bool  bIsInteger(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
-    bool  bIsStreamColOrd(void);
     i8    nLength(void);
     bool  bOneOf(Stz* szArg, ...);
     i8    iOrdinal(void);
     bool  bSame(Stz* szArg);
     i8    nSize(void);
-    void  vSprint(Stz* szFormat, ...);
-    char  cTableSyn(void);
     i8    iToI8(void);
-    void  vToLower(void);
   };
   
   // user defined string literal

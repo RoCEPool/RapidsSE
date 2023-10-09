@@ -147,7 +147,7 @@ namespace STORE
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopOoO(void);
-    Operand* pPopOoOLeft(void);
+    Operand* pPopOoOLeft(bool* pbPageIn);
     Operand* pPopRight(void);
     LglPtn  tLglPtn(void);
     Operand* pPopLeft(void);
@@ -175,7 +175,7 @@ namespace STORE
     Task* pTask(void);
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);
-    void vToCmdStr(Stz* szCmdStr);
+    void vToCmdStr(String* psCmdStr);
 
     void vUnspawnTask(void);
     void vVerifyOpComposition(void);

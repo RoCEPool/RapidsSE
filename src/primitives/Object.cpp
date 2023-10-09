@@ -54,7 +54,8 @@ bool Object::bInspect(Object* pObject)
 void Object::vRepair(Object* pObject)
 {
   _static_
-  
+  UNUSED(pObject);
+
   // DO NOTHING
 }
 
@@ -125,20 +126,18 @@ Object* Object::pMemoryCopy(void)
   //TODO: If Object derives from DataBuffer, we should not overwrite DataBuffer's members
   // when we do a memcpy. Below code extracts the buffer no from the pool buffer that
   // the object lives in and then set that rowbuffer member which was overwritten.
-#ifdef WITH_BUFFER_ID
-  if (1 == DataBuffer::bIsDataBuffer(eClass)) {
+
+  if (DataBuffer::bIsDataBuffer(eClass)) {
     DataBuffer* pDataBuffer = _pDataBuffer(pCopy);
     i8 iPoolBufferNo = pDataBuffer->iBufferNo();
     pDataBuffer->vSetBufferNo(iPoolBufferNo);
     pDataBuffer->vSetBufferId(
-        AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
-#ifdef WITH_HASHMAP
+        AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
+
     AM::pHashMap()->vInsertKeyValue(
         (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
         (Object *) pCopy);
-#endif
   }
-#endif
 
   return pCopy;
 }

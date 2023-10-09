@@ -183,8 +183,6 @@ namespace STORE {
   class Pipeline;
   class PipelineNotation;
   class LglPtnMap;
-  class PtnStm_cursor;
-  class PtnStream;
 
   class RejectJob;
   class Row;
@@ -319,6 +317,12 @@ namespace OBLIQUE
     {
     public:
       static void vSignalHandler(i8 iSignal);
+    };
+
+    class FILE
+    {
+    public:
+      static i8 iNextFileNo(void);
     };
 
     class GRID
@@ -492,12 +496,16 @@ namespace OBLIQUE
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
     };
 
+    class OPTIMISER
+    {
+    public:
+      static i8 iNextBenchNo(void);
+    };
     class PAGING
     {
     public:
       static InfoSet* pToPageIn(Task* pTask, BufferId oBufferId);
     };
-  
     class PARCEL
     {
     public:
@@ -597,7 +605,7 @@ namespace OBLIQUE
     class STR
     {
     public:
-      static void vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags);
+      static void vReplaceTags(String* psDst, Stz* szSrc, TagSet* pTags);
     };
 
     class SYSARGS
@@ -618,6 +626,7 @@ namespace OBLIQUE
       static i8   iOptimiserLvl(void);
       static void vOptimiserLvl(i8 iOptimiserLvl);
       static i8   nPtnsPerNode(void);
+      static void* aRegionAddr(void);
       static bool bSysMetrics(void);
       static void vSysMetrics(bool bJobMetrics);
       static TagSet* pTagSet(void);
@@ -648,7 +657,8 @@ namespace OBLIQUE
     public:
       static DicStack* pDicStack(void);
       static void vRetire(Task* pTask);
-      static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
+      static void vTriggerBidingOperand(Task* pTaskBiding, Task* pTriggeringTask);
+      static void vTriggerBidingPageIn(Task* pTaskBiding, Task* pTriggeringTask);
     };
   
     class THREAD
@@ -748,9 +758,7 @@ namespace OBLIQUE
 
     static JobList* pDemonJobs(void);
     static JobList* pExitedJobs(void);
-#ifdef WITH_PAGING
     static HashMap* pHashMap(void);
-#endif
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);
@@ -778,7 +786,6 @@ namespace OBLIQUE
     static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
-    static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);

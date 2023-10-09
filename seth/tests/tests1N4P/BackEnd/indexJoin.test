@@ -34,6 +34,7 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -46,7 +47,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -58,6 +59,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -70,7 +72,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -84,6 +86,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -97,7 +100,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -107,6 +110,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru /optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -120,7 +124,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -132,6 +136,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -144,7 +149,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -156,6 +161,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -168,7 +174,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -182,6 +188,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -193,7 +200,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -205,6 +212,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -216,7 +224,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -230,6 +238,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -244,7 +253,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -255,6 +264,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -269,7 +279,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -282,6 +292,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -294,7 +305,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "BOUND $I1 $L1 == "
+    indexJoin T2 T2_idx "BOUND $I1 $1 == "
     | filter "type boolean $6 500 >= "
     | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
@@ -308,6 +319,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -320,7 +332,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "LEFTOUTER BOUND $I1 $L1 == "
+    indexJoin T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter "type boolean $6 500 >= "
     | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
@@ -336,6 +348,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -349,7 +362,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter "type boolean $4 500 >= "
     | project "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | combined 0
@@ -363,6 +376,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -376,7 +390,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $4 500 >= "
     | project "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | combined 0
@@ -425,6 +439,7 @@ success
 create index T2_idx on T2 (a);
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -437,7 +452,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin T2 T2_idx "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -450,6 +465,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -462,7 +478,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -484,6 +500,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -498,7 +515,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin T2 T2_idx "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -511,6 +528,7 @@ end ;
 rows: 0
 
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -524,7 +542,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -541,6 +559,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -553,7 +572,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -565,6 +584,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -577,7 +597,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -591,6 +611,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -602,7 +623,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -614,6 +635,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -625,7 +647,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -639,6 +661,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -653,7 +676,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -665,6 +688,7 @@ end ;
 rows: 0
 
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -679,7 +703,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -698,6 +722,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -710,7 +735,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 == "
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -723,6 +748,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -735,7 +761,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 == "
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -750,6 +776,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -762,7 +789,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -775,6 +802,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -787,7 +815,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -832,6 +860,7 @@ success
 create index T2_idx on T2 (a);
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -844,7 +873,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -856,6 +885,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -868,7 +898,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -882,6 +912,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -895,7 +926,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -905,6 +936,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -918,7 +950,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -930,6 +962,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -942,7 +975,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -954,6 +987,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -966,7 +1000,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -980,6 +1014,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -991,7 +1026,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1003,6 +1038,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1014,7 +1050,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1028,6 +1064,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1042,7 +1079,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1053,6 +1090,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1067,7 +1105,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1080,6 +1118,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1092,7 +1131,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 == "
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1105,6 +1144,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1117,7 +1157,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 == "
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1132,6 +1172,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1144,7 +1185,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -1157,6 +1198,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1169,7 +1211,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -1221,6 +1263,7 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1233,7 +1276,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1251,6 +1294,7 @@ rows:
   (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
   (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1263,7 +1307,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1284,6 +1328,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1297,7 +1342,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -1310,6 +1355,7 @@ rows:
   (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
   (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1323,7 +1369,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 ==" | stageD
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -1340,6 +1386,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1352,7 +1399,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1366,6 +1413,7 @@ rows:
   (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
   (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1378,7 +1426,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1394,6 +1442,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1405,7 +1454,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1418,6 +1467,7 @@ end ;
 rows:
  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1429,7 +1479,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1444,6 +1494,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1458,7 +1509,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1472,6 +1523,7 @@ rows:
   (7,'T-ROW7',7,7347,null,'J-ROW7')
   (1,'T-ROW1',1,181,111,'J-ROW1')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1486,7 +1538,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1504,6 +1556,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1516,7 +1569,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 == "
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1531,6 +1584,7 @@ rows:
   (3,303,33993,'T-ROW3',3,'J-ROW3a')
   (7,727,7377,'T-ROW7',7,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1543,7 +1597,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 == "
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1560,6 +1614,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1572,7 +1627,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -1586,6 +1641,7 @@ end ;
 rows:
   (7,'T-ROW7',7,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1598,7 +1654,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
