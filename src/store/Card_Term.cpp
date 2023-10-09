@@ -276,6 +276,56 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   this->vMark1(MARK_CHANGED);
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert table-column term to stream-column                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vConvert_colOdn_To_stmOdn_X(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol_term = this->pSymbol();
+  if (! pSymbol_term->bIs_Col_Tc())
+    return;
+
+  Symbol* pSymbol_this = pSymbol();
+
+  // find scalar expression of this symbol
+  i8 nCols_arrived = 0;
+  if (pCI->X.m_pExprList_a) {
+    nCols_arrived = pCI->X.m_pExprList_a->nChildCards();
+    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_symbol(pSymbol_this)) {
+      Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
+      pSymbol_this->vFacet(SF_COL_NO, szStmCol_expr_a);
+      this->vMark1(MARK_CHANGED);
+      return;
+    }
+  }
+
+  if (pCI->X.m_pExprList_i) {
+    if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_By_symbol(pSymbol_this)) {
+      i8 iInjOdn = p_expr_scalar_i->pSymbol()->iSF_ordinal();
+      i8 iStmOdn = nCols_arrived + iInjOdn;
+      pSymbol_this->vFacet(SF_COL_NO, iStmOdn);
+      this->vMark1(MARK_CHANGED);
+      return;
+    }
+  }
+
+  if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
+    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_By_symbol(pSymbol_this)) {
+      Symbol *pSymbol_k = p_expr_scalar_k->pFirstKeyCol();
+      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_symbol(pSymbol_k)) {
+        Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
+        pSymbol_this->vFacet(SF_COL_NO, szStmCol_expr_a);
+        this->vMark1(MARK_CHANGED);
+      }
+      return;
+    }
+  }
+
+  // not converted
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */

@@ -28,6 +28,7 @@ namespace STORE
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
     void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+    void vConvert_colOdn_To_stmOdn_X(CardIter* pCI);
     void vConvert_stmOdn_To_colOdn(CardIter* pCI);
     void vEnsureTypeFor_stmOdn(CardIter* pCI);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);

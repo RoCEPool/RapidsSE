@@ -63,7 +63,9 @@ namespace STORE
     } StreamOrder;
 
     struct {
-      Card_EXPRLIST * m_pExprList;
+      Card_EXPRLIST * m_pExprList_a;
+      Card_EXPRLIST * m_pExprList_i;
+      Card_EXPRLIST * m_pExprList_k;
     } X;
 
     i8 m_nAncestors;
