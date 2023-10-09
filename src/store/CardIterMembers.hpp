@@ -133,6 +133,7 @@ namespace STORE
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 
+    Card_Payload *       p_payload;
     Card_PayloadCells *  p_payloadCells;
     Card_Project *       p_project;
     Card_Projection *    p_projection;

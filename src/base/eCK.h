@@ -95,6 +95,7 @@ enum eCK : i8 // card kind
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
 
+  /* */ CK_PAYLOAD,
   /* */ CK_PAYLOADCELLS,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,

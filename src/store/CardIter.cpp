@@ -1400,6 +1400,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
 
+    case CK_PAYLOAD:          return G.p_payload;
     case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
@@ -1428,7 +1429,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STREAMSET:        return G.p_streamSet;
     case CK_SUBQUERY:         return G.p_subQuery;
     case CK_SUBSET:           return G.p_subSet;
-    case CK_SYNTHESIS:       return G.p_synthesis;
+    case CK_SYNTHESIS:        return G.p_synthesis;
 
     case CK_TABLE:            return G.p_table;
     case CK_TABLEINFO:        return G.p_tableInfo;
@@ -1644,6 +1645,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_OUTERCOLNM:       G.p_outerColNm        = _pCard_OuterColNm(pCard); break;
     case CK_OUTERJOIN:        G.p_outerJoin         = _pCard_OuterJoin(pCard); break;
 
+    case CK_PAYLOAD:          G.p_payload           = _pCard_Payload(pCard); break;
     case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
     case CK_PROJECT:          G.p_project           = _pCard_Project(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1678,7 +1680,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STREAMSET:        G.p_streamSet         = _pCard_StreamSet(pCard); break;
     case CK_SUBQUERY:         G.p_subQuery          = _pCard_SubQuery(pCard); break;
     case CK_SUBSET:           G.p_subSet            = _pCard_SubSet(pCard); break;
-    case CK_SYNTHESIS: G.p_synthesis        = _pCard_Synthesis(pCard); break;
+    case CK_SYNTHESIS:        G.p_synthesis         = _pCard_Synthesis(pCard); break;
 
     case CK_TABLE:            G.p_table             = _pCard_Table(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1875,6 +1877,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_outerColNm       = nullptr;
   G.p_outerJoin        = nullptr;
 
+  G.p_payload          = nullptr;
   G.p_payloadCells     = nullptr;
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
@@ -1903,7 +1906,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_streamJoin       = nullptr;
   G.p_subQuery         = nullptr;
   G.p_subSet           = nullptr;
-  G.p_synthesis       = nullptr;
+  G.p_synthesis        = nullptr;
 
   G.p_table            = nullptr;
   G.p_tableInfo        = nullptr;
@@ -2656,6 +2659,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_OUTERCOLNM:   G.p_outerColNm->vValidate(this, iDepth, pCard);  break;
       case CK_OUTERJOIN:    G.p_outerJoin->vValidate(this, iDepth, pCard);  break;
 
+      case CK_PAYLOAD:      G.p_payload->vValidate(this, iDepth, pCard);  break;
       case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
       case CK_PROJECTION:   G.p_projection->vValidate(this, iDepth, pCard);  break;
@@ -2684,7 +2688,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_STREAMSET:  G.p_streamSet->vValidate(this, iDepth, pCard);  break;
       case CK_SUBQUERY:   G.p_subQuery->vValidate(this, iDepth, pCard);  break;
       case CK_SUBSET:     G.p_subSet->vValidate(this, iDepth, pCard);  break;
-      case CK_SYNTHESIS: G.p_synthesis->vValidate(this, iDepth, pCard);  break;
+      case CK_SYNTHESIS:  G.p_synthesis->vValidate(this, iDepth, pCard);  break;
 
       case CK_TABLE:     G.p_table->vValidate(this, iDepth, pCard);  break;
       case CK_TABLEINFO: G.p_tableInfo->vValidate(this, iDepth, pCard);  break;

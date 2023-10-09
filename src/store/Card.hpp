@@ -113,6 +113,7 @@ namespace STORE
   class Card_OuterColNm;
   class Card_OuterJoin;
 
+  class Card_Payload;
   class Card_PayloadCells;
   class Card_Project;
   class Card_Projection;
@@ -472,6 +473,7 @@ namespace STORE
     Card_On*            pSub_on(void);
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
+    Card_Payload*       pSub_payload(void);
     Card_PayloadCells*  pSub_payloadCells(void);
     Card_Projection*    pSub_projection(void);
     Card_RelnOp*        pSub_relnOp(void);
