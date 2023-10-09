@@ -671,7 +671,7 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_OUTERCOLNM:   pCI->G.p_outerColNm->vValidate(pCI, 1, this); break;
       case CK_OUTERJOIN:    pCI->G.p_outerJoin->vValidate(pCI, 1, this); break;
 
-      case CK_PAYLOADCELLS: pCI->G.p_payloadCells->vValidate(pCI, 1, this); break;
+      case CK_PAYLOAD: pCI->G.p_payload->vValidate(pCI, 1, this); break;
       case CK_PROJECT:      pCI->G.p_project->vValidate(pCI, 1, this); break;
       case CK_PROJECTION:   pCI->G.p_projection->vValidate(pCI, 1, this); break;
 

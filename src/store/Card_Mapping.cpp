@@ -55,7 +55,7 @@ void Card_Mapping::vToColMap(ColMap* pColMap)
     pColMap->vAdd(i_EmittedCol, false, i_Cell);
   }
 
-  for (Kid xPayloadCells(pSub_payloadCells()); xPayloadCells.bEach(CK_MAP); /**/) {
+  for (Kid xPayloadCells(pSub_payload()); xPayloadCells.bEach(CK_MAP); /**/) {
     Card_Map* p_map = xPayloadCells.p_map();
 
     i8 i_EmittedCol = p_map->pSymbol()->Y_iGet(P_EmittedCol);

@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_PayloadCells.cpp -- Payload Cells                                     */
+/* Card_Payload.cpp -- Payload Cells                                     */
 /*============================================================================*/
 
-#include "Card_PayloadCells.hpp"
+#include "Card_Payload.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_PayloadCells,CK_PAYLOADCELLS)
-__aNewFunction(Card_PayloadCells,CN_CARD)
-__vDeleteFunction(Card_PayloadCells,CN_CARD)
+__pCastFunction_Card(STORE, Card_Payload, CK_PAYLOAD)
+__aNewFunction(Card_Payload, CN_CARD)
+__vDeleteFunction(Card_Payload, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_PayloadCells::Card_PayloadCells(void)
-: Card_CELLS(CK_PAYLOADCELLS,C_UNKNOWN)
+Card_Payload::Card_Payload(void)
+: Card_EXPRLIST(CK_PAYLOAD, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_PayloadCells::Card_PayloadCells(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_PayloadCells::~Card_PayloadCells(void) noexcept(false)
+Card_Payload::~Card_Payload(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -42,7 +42,7 @@ Card_PayloadCells::~Card_PayloadCells(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_PayloadCells::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_Payload::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

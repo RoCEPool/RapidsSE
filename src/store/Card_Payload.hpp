@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_PayloadCells.hpp -- Payload Cells                                     */
+/* Card_Payload.hpp -- Payload Cells                                     */
 /*============================================================================*/
 #pragma once
 
-#include "Card_CELLS.hpp"
+#include "Card_EXPRLIST.hpp"
 
 namespace STORE
 {
-  class Card_PayloadCells : public Card_CELLS
+  class Card_Payload : public Card_EXPRLIST
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_PayloadCells(void);
-   ~Card_PayloadCells(void) noexcept(false);
+    Card_Payload(void);
+   ~Card_Payload(void) noexcept(false);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_PayloadCells* _pCard_PayloadCells(void* aAddr);
+  Card_Payload* _pCard_Payload(void* aAddr);
 }
 
 /*============================================================================*/

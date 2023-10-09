@@ -133,7 +133,7 @@ namespace STORE
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 
-    Card_PayloadCells *  p_payloadCells;
+    Card_Payload *       p_payload;
     Card_Project *       p_project;
     Card_Projection *    p_projection;
 
@@ -161,7 +161,7 @@ namespace STORE
     Card_StreamSet *     p_streamSet;
     Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
-    Card_Synthesis *    p_synthesis;
+    Card_Synthesis *     p_synthesis;
 
     Card_Table *         p_table;
     Card_TableInfo *     p_tableInfo;
