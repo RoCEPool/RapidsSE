@@ -62,6 +62,10 @@ namespace STORE
       Card_Projection * m_pProjection_running;
     } StreamOrder;
 
+    struct {
+      Card_EXPRLIST * m_pExprList;
+    } X;
+
     i8 m_nAncestors;
     Card* m_apAncestry[C_CARD_ANCESTRY];
 
