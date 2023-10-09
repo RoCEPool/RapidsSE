@@ -174,7 +174,7 @@ class JobRunner:
                     self.current_test_runner.hard_stop_jmeter_test()
 
             # If we have had an abnormal exit and there is a test in progress then we need to
-            # mark it as failed and add its result.
+            # mark it as failed and add its result. 
             if errmsg is not None:
                 with self.test_runner_lock:
                     if self.current_test_runner is not None:
