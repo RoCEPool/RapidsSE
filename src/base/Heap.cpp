@@ -122,7 +122,7 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 //    iCountObjects[i_Index] = 0;
 //  }
   
-//  pHeap->vAnalyse(iCountObjects);
+//  pHeap->vAnalyse_injected(iCountObjects);
 //  
 //  vTrace("%s  Objects:\n"_Stz, aTab);
 //  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {

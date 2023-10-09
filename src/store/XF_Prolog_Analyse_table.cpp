@@ -50,7 +50,7 @@ void XF_Prolog_Analyse_table::vAnalyse(CardIter* pCI)
 	try {
 		pXF_table_Analysis = new XF_Prolog_Analyse_table(pCI);
 
-		pXF_table_Analysis->vXF_table_Analysis(&pCI->m_xSymbol_tableSyn);
+    pXF_table_Analysis->vXF_Analyse_table(&pCI->m_xSymbol_tableSyn);
 
 		delete pXF_table_Analysis;
 	}
@@ -65,7 +65,7 @@ void XF_Prolog_Analyse_table::vAnalyse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(CardIter* pCI)
+void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(CardIter* pCI)
 {
   _static_
 
@@ -74,7 +74,7 @@ void XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(CardIter* pCI)
 	try {
     pXF_table_Analysis = new XF_Prolog_Analyse_table(pCI);
 
-    pXF_table_Analysis->vXF_table_Analysis_passThru(&pCI->m_xSymbol_tableSyn);
+    pXF_table_Analysis->vXF_Analyse_table_passThru(&pCI->m_xSymbol_tableSyn);
 
     delete pXF_table_Analysis;
 	}
@@ -96,7 +96,7 @@ void XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_table::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
+void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 
@@ -144,7 +144,7 @@ void XF_Prolog_Analyse_table::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(Symbol* pSymbol_tableSyn)
+void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_TABLE, _FOOTER_);
 

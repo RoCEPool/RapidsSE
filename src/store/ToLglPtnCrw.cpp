@@ -100,7 +100,7 @@ void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
 
    LglPtn tLglPtn = pRowBuffer->tLglPtn();
    //i8 iBktNo = pRowBuffer->iBucketNo();
-   //vTrace("ToBktCrw::vConvert PtnID:%lld Bkt:%lld\n"_Stz, tLglPtn.iAsI8(), iBktNo);
+   //vTrace("ToBktCrw::vEnsure PtnID:%lld Bkt:%lld\n"_Stz, tLglPtn.iAsI8(), iBktNo);
   //pRowBuffer->pRowBuffer()->vDumpNst();
   
   m_pCrwBuffer = m_oLglBufSet.pBuffer(tLglPtn.iAsI8()) ?

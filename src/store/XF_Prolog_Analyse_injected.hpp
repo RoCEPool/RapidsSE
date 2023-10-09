@@ -21,10 +21,10 @@ namespace STORE
    ~XF_Prolog_Analyse_injected(void) noexcept(false);
 
     static void vAnalyse(CardIter* pCI);
-    static void vAnalyse_passThru(CardIter* pCI);
+    static void vAnalyse_injected_passThru(CardIter* pCI);
 
-    void vAnalyse(void);
-    void vAnalyse_passThru(void);
+    void vAnalyse_injected(void);
+    void vAnalyse_injected_passThru(void);
 
   private:
     Footer* aFooter(void);

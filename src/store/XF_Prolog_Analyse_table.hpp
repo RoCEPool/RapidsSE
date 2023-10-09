@@ -21,10 +21,10 @@ namespace STORE
    ~XF_Prolog_Analyse_table(void) noexcept(false);
 
     static void vAnalyse(CardIter* pCI);
-    static void vXF_table_Analysis_passThru(CardIter* pCI);
+    static void vXF_Analyse_table_passThru(CardIter* pCI);
 
-    void vXF_table_Analysis(Symbol* pSymbol_tableSyn);
-    void vXF_table_Analysis_passThru(Symbol* pSymbol_tableSyn);
+    void vXF_Analyse_table(Symbol* pSymbol_tableSyn);
+    void vXF_Analyse_table_passThru(Symbol* pSymbol_tableSyn);
 
   private:
     Footer* aFooter(void);

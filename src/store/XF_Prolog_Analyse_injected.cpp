@@ -45,7 +45,7 @@ void XF_Prolog_Analyse_injected::vAnalyse(CardIter* pCI)
 
   XF_Prolog_Analyse_injected* pXF_projection_Analysis = new XF_Prolog_Analyse_injected(pCI);
 
-  pXF_projection_Analysis->vAnalyse();
+  pXF_projection_Analysis->vAnalyse_injected();
 
   delete pXF_projection_Analysis;
 }
@@ -53,13 +53,13 @@ void XF_Prolog_Analyse_injected::vAnalyse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_injected::vAnalyse_passThru(CardIter* pCI)
+void XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(CardIter* pCI)
 {
   _static_
 
   XF_Prolog_Analyse_injected* pXF_projection_Analysis = new XF_Prolog_Analyse_injected(pCI);
 
-  pXF_projection_Analysis->vAnalyse_passThru();
+  pXF_projection_Analysis->vAnalyse_injected_passThru();
 
   delete pXF_projection_Analysis;
 }
@@ -72,7 +72,7 @@ void XF_Prolog_Analyse_injected::vAnalyse_passThru(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* projection analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_injected::vAnalyse(void)
+void XF_Prolog_Analyse_injected::vAnalyse_injected(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INJECTED, _FOOTER_);
 
@@ -90,11 +90,11 @@ void XF_Prolog_Analyse_injected::vAnalyse(void)
 /*----------------------------------------------------------------------------*/
 /* projection analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_injected::vAnalyse_passThru(void)
+void XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INJECTED, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_PROJECTION, "vAnalyse_emitted_passThru"_Stz);
+  m_pCI->vTransform(__func__, XF_PROLOG_ANALYSE_EMITTED, "vAnalyse_emitted_passThru"_Stz);
 
   m_pCI->vBeginEach();
   while (m_pCI->G_bEachMainWithSub(CK_SCAN, CK_TABLE)) {

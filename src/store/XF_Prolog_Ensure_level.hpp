@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Ensure_level(CardIter* pCI);
    ~XF_Prolog_Ensure_level(void) noexcept(false);
 
-    static void vConvert(CardIter* pCI);
+    static void vEnsure(CardIter* pCI);
 
     void vEnsure(void);
 

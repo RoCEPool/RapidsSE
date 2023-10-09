@@ -68,9 +68,9 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PASSTHRU_TWEAK_INDEXSCAN"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYEXISTS"_Stz,
   /* */ "XF_PASSTHRU_TWEAK_KEYNOTEXITS"_Stz,
+  /* */ "XF_PROLOG_ANALYSE_EMITTED"_Stz,
   /* */ "XF_PROLOG_ANALYSE_INDEX"_Stz,
   /* */ "XF_PROLOG_ANALYSE_INJECTION"_Stz,
-  /* */ "XF_PROLOG_ANALYSE_PROJECTION"_Stz,
   /* */ "XF_PROLOG_ANALYSE_SUBQUERY"_Stz,
   /* */ "XF_PROLOG_ANALYSE_TABLE"_Stz,
   /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,
@@ -150,8 +150,8 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_INDEXSCAN
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYEXISTS
   /* */ "<to be supplied>"_Stz, // XF_PASSTHRU_TWEAK_KEYNOTEXITS
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_EMITTED
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_INDEX
-  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_PROJECTION
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_TABLE
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_LEVEL

@@ -45,7 +45,7 @@ void XF_Prolog_Analyse_index::vAnalyse(CardIter* pCI)
 
   XF_Prolog_Analyse_index* pXF_index_Analysis = new XF_Prolog_Analyse_index(pCI);
 
-  pXF_index_Analysis->vXF_index_Analysis();
+  pXF_index_Analysis->vXF_Analyse_index();
 
   delete pXF_index_Analysis;
 }
@@ -59,7 +59,7 @@ void XF_Prolog_Analyse_index::vXF_index_Analysis_passThru(CardIter* pCI)
 
   XF_Prolog_Analyse_index* pXF_index_Analysis = new XF_Prolog_Analyse_index(pCI);
 
-  pXF_index_Analysis->vXF_index_Analysis_passThru();
+  pXF_index_Analysis->vXF_Analyse_index_passThru();
 
   delete pXF_index_Analysis;
 }
@@ -72,7 +72,7 @@ void XF_Prolog_Analyse_index::vXF_index_Analysis_passThru(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* index analysis                                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_index::vXF_index_Analysis(void)
+void XF_Prolog_Analyse_index::vXF_Analyse_index(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 
@@ -97,7 +97,7 @@ void XF_Prolog_Analyse_index::vXF_index_Analysis(void)
 /*----------------------------------------------------------------------------*/
 /* index analysis                                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_index::vXF_index_Analysis_passThru(void)
+void XF_Prolog_Analyse_index::vXF_Analyse_index_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_INDEX, _FOOTER_);
 

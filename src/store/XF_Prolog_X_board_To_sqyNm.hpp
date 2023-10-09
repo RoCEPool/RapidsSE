@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_X_board_To_sqyNm(CardIter* pCI);
    ~XF_Prolog_X_board_To_sqyNm(void) noexcept(false);
 
-    static void vProlog(CardIter* pCI);
+    static void vConvert(CardIter* pCI);
 
     void vProlog(void);
 

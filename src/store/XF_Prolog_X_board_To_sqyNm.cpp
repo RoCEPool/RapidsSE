@@ -39,7 +39,7 @@ XF_Prolog_X_board_To_sqyNm::~XF_Prolog_X_board_To_sqyNm(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_board_To_sqyNm::vProlog(CardIter* pCI)
+void XF_Prolog_X_board_To_sqyNm::vConvert(CardIter* pCI)
 {
   _static_
 

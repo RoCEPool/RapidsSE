@@ -149,7 +149,7 @@ void XF::vTransform(void)
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard())                      //
-    XF_Prolog_X_board_To_sqyNm::vProlog(m_pCI);    //
+    XF_Prolog_X_board_To_sqyNm::vConvert(m_pCI);   //
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
@@ -158,13 +158,13 @@ void XF::vTransform(void)
     XF_Prolog_Move_on::vMove(m_pCI);               //
     XF_Prolog_Erase_construction::vErase(m_pCI);   //
     XF_Prolog_X_scan_To_from::vConvert(m_pCI);     //
-    XF_Prolog_Ensure_level::vConvert(m_pCI);       //
+    XF_Prolog_Ensure_level::vEnsure(m_pCI);        //
     XF_Prolog_Reduce_not::vReduce(m_pCI);          //
                                                    //
     // meta analysis                               //
     XF_Prolog_Analyse_table::vAnalyse(m_pCI);      //
     XF_Prolog_Analyse_injected::vAnalyse(m_pCI);   //
-    XF_Prolog_Analyse_emitted::vAnalyse(m_pCI); //
+    XF_Prolog_Analyse_emitted::vAnalyse(m_pCI);    //
     XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
                                                    //
     // preliminary conversions                     //
@@ -275,14 +275,14 @@ void XF::vTransform_passThru(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard())
-    XF_Prolog_X_board_To_sqyNm::vProlog(m_pCI);
+    XF_Prolog_X_board_To_sqyNm::vConvert(m_pCI);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
 
-    XF_Prolog_Analyse_table::vXF_table_Analysis_passThru(m_pCI);
-    XF_Prolog_Analyse_injected::vAnalyse_passThru(m_pCI);   //
-    XF_Prolog_Analyse_emitted::vXF_projection_Analysis_passThru(m_pCI);
+    XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(m_pCI);
+    XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(m_pCI);   //
+    XF_Prolog_Analyse_emitted::vXF_Analyse_emitted_passThru(m_pCI);
 
     XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
