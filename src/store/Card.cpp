@@ -2809,13 +2809,13 @@ Card_OuterJoin* Card::pSub_outerJoin(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Payload.hpp"
-Card_Payload* Card::pSub_payload(void)
+#include "Card_PayloadCells.hpp"
+Card_PayloadCells* Card::pSub_payloadCells(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Payload* p_payloadCells =
-      _pCard_Payload(pFindSubCard(CK_PAYLOAD));
+  Card_PayloadCells* p_payloadCells =
+      _pCard_PayloadCells(pFindSubCard(CK_PAYLOADCELLS));
   return p_payloadCells;
 }
 

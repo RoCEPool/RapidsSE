@@ -98,7 +98,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
   /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
 
-  /* */ "CK_PAYLOAD"_Stz,      // CK_PAYLOAD
+  /* */ "CK_PAYLOADCELLS"_Stz, // CK_PAYLOADCELLS
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
@@ -244,7 +244,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 
-  /* */ "payload"_Stz,         // CK_PAYLOAD
+  /* */ "payloadCells"_Stz,    // CK_PAYLOADCELLS
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
 

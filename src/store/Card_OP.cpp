@@ -428,7 +428,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
 
   pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_MAPPING);
   pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
-  pCI->G_vAppendNewChild(pCI->G.p_mapping, CK_PAYLOAD);
+  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the key
