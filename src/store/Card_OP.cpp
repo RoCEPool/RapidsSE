@@ -607,7 +607,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr = new Card_Expr;
-    Symbol xSymbol(SF_COL_NO,i_Expr++);
+    Symbol xSymbol(SF_STMCOL, i_Expr++);
     p_expr->pSymbol()->vFacets(&xSymbol);
     p_emitted->vAppendChild(p_expr);
 
@@ -621,7 +621,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     p_rpnCalc->pSymbol()->Y_vColType(szCT_char[eColumnType]);
     p_expr->pSymbol()->Y_vColType(szCT_char[eColumnType]);
 
-    Card_Term *p_term = (new Card_Term) -> SYM(SF_COL_TC,cTblSyn, i_Col + 1);
+    Card_Term *p_term = (new Card_Term) -> SYM(SF_TBLCOL, cTblSyn, i_Col + 1);
     p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

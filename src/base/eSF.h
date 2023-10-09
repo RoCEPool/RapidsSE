@@ -25,8 +25,8 @@ enum eSF // symbol facet
   /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
   /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
-  /* */ SF_COL_NO,      // Column Number       : $n
-  /* */ SF_COL_TC,      // (table) Column No   : $c.n
+  /* */ SF_STMCOL,      // Stream Column No    : $n
+  /* */ SF_TBLCOL,      // Table Column No     : $t.c
   /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
   /* */ SF_COMMA,       // comma               : ,
   /* */ SF_CROSS,       // Cross               : CROSS

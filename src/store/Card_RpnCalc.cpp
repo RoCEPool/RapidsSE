@@ -401,7 +401,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
   Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
   p_rpnCalc_reduced->vColType(this);
 
-  Card_Term* p_term =(new Card_Term) -> SYM(SF_COL_NO,i_Expr + 1);
+  Card_Term* p_term =(new Card_Term) -> SYM(SF_STMCOL, i_Expr + 1);
   p_term->vColType(this);
 
   p_rpnCalc_reduced->vAppendChild(p_term);
@@ -434,8 +434,8 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
   p_rpnCalc_propagated->vColType(this);
 
   eSF eSymbol = Symbol::eEvalSymbol(p_expr_encasing->szSymbol(SF_NONE));
-  RASSERT(SF_COL_NO == eSymbol);
-  Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_COL_NO,p_expr_encasing->szSymbol(SF_NONE));
+  RASSERT(SF_STMCOL == eSymbol);
+  Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_STMCOL, p_expr_encasing->szSymbol(SF_NONE));
   p_term_propagated->vColType(this);
 
   p_rpnCalc_propagated->vAppendChild(p_term_propagated);

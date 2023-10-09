@@ -64,7 +64,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   i8 iStmColNo = pStmColumn->iColumnNo();
 
   Card_TablePtn* p_tablePtn = new Card_TablePtn;
-  p_tablePtn->SYM(SF_COL_TC,cTableSyn, iStmColNo + 1);
+  p_tablePtn->SYM(SF_TBLCOL, cTableSyn, iStmColNo + 1);
 
   return p_tablePtn;
 }

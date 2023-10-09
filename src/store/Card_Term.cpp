@@ -162,7 +162,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 
   i8 iStmColOdn = pSymbol()->iSF_ordinal();
 
- SYM(SF_COL_NO,iStmColOdn + nBy);
+ SYM(SF_STMCOL, iStmColOdn + nBy);
 
   if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
@@ -200,7 +200,7 @@ void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
   if (pCI->Prior.m_pEmitted) {
 
     if (Card_Expr *p_expr_col = pCI->Prior.m_pEmitted->pFind_expr_By_symbol(pSymbol_term)) {
-      pSymbol_term->vFacet(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
+      pSymbol_term->vFacet(SF_STMCOL, p_expr_col->szSymbol(SF_NONE));
       vMark1(MARK_CHANGED);
       return;
     }
@@ -211,7 +211,7 @@ void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
         RASSERT(pSymbol_key->bIs_Key_Col());
 
         if (Card_Expr *p_expr_col_ind = pCI->Prior.m_pEmitted->pFind_expr_By_symbol(pSymbol_key)) {
-          pSymbol_term->vFacet(SF_COL_NO, p_expr_col_ind->szSymbol(SF_NONE));
+          pSymbol_term->vFacet(SF_STMCOL, p_expr_col_ind->szSymbol(SF_NONE));
           vMark1(MARK_CHANGED);
           return;
         }
@@ -221,7 +221,7 @@ void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
     if (pCI->G.p_OP->bIsCard(CK_INDEXJOIN)) {
       if ((pCI->G.p_arriving = pCI->G.p_OP->pSub_arriving())) {
         if (Card_Expr *p_expr_col = pCI->G.p_arriving->pFind_expr_By_symbol(pSymbol_term)) {
-          pSymbol_term->vFacet(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
+          pSymbol_term->vFacet(SF_STMCOL, p_expr_col->szSymbol(SF_NONE));
           vMark1(MARK_CHANGED);
           return;
         }
@@ -270,7 +270,7 @@ void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
   i8 i_Col = this->iGetOdn();
   i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
 
-  Symbol xSymbol_stmColOdn(SF_COL_NO, i_ColOdn);
+  Symbol xSymbol_stmColOdn(SF_STMCOL, i_ColOdn);
   this->pSymbol()->vFacets(&xSymbol_stmColOdn);
 
   this->vMark1(MARK_CHANGED);
@@ -295,7 +295,7 @@ void Card_Term::vConvert_tblCol_To_stmCol_X(CardIter* pCI)
     nCols_arrived = pCI->X.m_pExprList_a->nChildCards();
     if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_symbol(pSymbol_this)) {
       Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
-      pSymbol_this->vFacet(SF_COL_NO, szStmCol_expr_a);
+      pSymbol_this->vFacet(SF_STMCOL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
       return;
     }
@@ -305,7 +305,7 @@ void Card_Term::vConvert_tblCol_To_stmCol_X(CardIter* pCI)
     if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_By_symbol(pSymbol_this)) {
       i8 iInjOdn = p_expr_scalar_i->pSymbol()->iSF_ordinal();
       i8 iStmOdn = nCols_arrived + iInjOdn;
-      pSymbol_this->vFacet(SF_COL_NO, iStmOdn);
+      pSymbol_this->vFacet(SF_STMCOL, iStmOdn);
       this->vMark1(MARK_CHANGED);
       return;
     }
@@ -316,7 +316,7 @@ void Card_Term::vConvert_tblCol_To_stmCol_X(CardIter* pCI)
       Symbol *pSymbol_k = p_expr_scalar_k->pFirstKeyCol();
       if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_symbol(pSymbol_k)) {
         Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
-        pSymbol_this->vFacet(SF_COL_NO, szStmCol_expr_a);
+        pSymbol_this->vFacet(SF_STMCOL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
       }
       return;
@@ -349,7 +349,7 @@ void Card_Term::vConvert_stmOdn_To_colOdn(CardIter* pCI)
     else {
       eSF eSymbol = pSymbol->eFacet();
       switch (eSymbol) {
-        case SF_COL_NO:
+        case SF_STMCOL:
           break;
 
         default:

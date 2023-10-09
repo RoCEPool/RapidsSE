@@ -1390,7 +1390,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
     pCard_Expr->pSymbol()->vFacets(&xSymbol_stmColOdn);
   }
   else {
-    Symbol xSymbol_stmColOdn(SF_COL_NO,ri_Expr);
+    Symbol xSymbol_stmColOdn(SF_STMCOL, ri_Expr);
     pCard_Expr->pSymbol()->vFacets(&xSymbol_stmColOdn);
   }
 

@@ -162,8 +162,8 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Case(szChrSeq))         return SF_CASE;
   if (bIs_Cast(szChrSeq))         return SF_CAST;
   if (bIs_CastType(szChrSeq))     return SF_CASTTYPE;
-  if (bIs_Col_No(szChrSeq))       return SF_COL_NO;
-  if (bIs_Col_Tc(szChrSeq))       return SF_COL_TC;
+  if (bIs_Col_No(szChrSeq))       return SF_STMCOL;
+  if (bIs_Col_Tc(szChrSeq))       return SF_TBLCOL;
   if (bIs_Col_Type(szChrSeq))     return SF_COL_TYPE;
   if (bIs_Comma(szChrSeq))        return SF_COMMA;
   if (bIs_Cross(szChrSeq))        return SF_CROSS;
@@ -1324,7 +1324,7 @@ void Symbol::vFacet(eSF eFacet, char cChr, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_COL_TC:    vFacet_Col_Tc(cChr,iInt);    break;
+    case SF_TBLCOL:    vFacet_Col_Tc(cChr, iInt);    break;
 
     default: NEVER_REACH;
   }
@@ -1344,7 +1344,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
     case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
-    case SF_COL_NO:     vFacet_Col_No(iInt);     break;
+    case SF_STMCOL:     vFacet_Col_No(iInt);     break;
     case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt); break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
@@ -1401,8 +1401,8 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
     case SF_COL_NM:      vFacet_Col_Nm(szChrSeq);      break;
     case SF_COL_NM_syn:  vFacet_Col_Nm_syn(szChrSeq);  break;
-    case SF_COL_NO:      vFacet_Col_No(szChrSeq);      break;
-    case SF_COL_TC:      vFacet_Col_Tc(szChrSeq);      break;
+    case SF_STMCOL:      vFacet_Col_No(szChrSeq);      break;
+    case SF_TBLCOL:      vFacet_Col_Tc(szChrSeq);      break;
     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
@@ -1464,7 +1464,7 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_COL_NO == pSymbol_arg->xaFacet[0].m_eFacet) {
+  if (SF_STMCOL == pSymbol_arg->xaFacet[0].m_eFacet) {
     vFacet_Col_No(pSymbol_arg->xaFacet[0].m_sChrSeq);
   }
 
@@ -1474,10 +1474,10 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
   vFacetCopy(pSymbol_arg);
 #endif
 
-  if (SF_COL_NO == xaFacet[0].m_eFacet)
+  if (SF_STMCOL == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Col_No(xaFacet[0].m_sChrSeq));
 
-  if (SF_COL_TC == xaFacet[0].m_eFacet)
+  if (SF_TBLCOL == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Col_Tc(xaFacet[0].m_sChrSeq));
 
   if (pSymbol_arg->bHasFacets())
@@ -1821,7 +1821,7 @@ bool Symbol::bIs_Col_No(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_COL_NO != xaFacet[0].m_eFacet)
+  if (SF_STMCOL != xaFacet[0].m_eFacet)
     return false;
 
   if (bIs_Col_No(xaFacet[0].m_sChrSeq)) {
@@ -1838,7 +1838,7 @@ bool Symbol::bIs_Col_Tc(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_COL_TC != xaFacet[0].m_eFacet)
+  if (SF_TBLCOL != xaFacet[0].m_eFacet)
     return false;
 
   if (bIs_Col_Tc(xaFacet[0].m_sChrSeq))
@@ -2753,8 +2753,8 @@ bool Symbol::bValidate(void)
     case SF_CASTTYPE:    b = bIs_CastType();    break;
     case SF_COL_NM:      b = bIs_Col_Nm();      break;
     case SF_COL_NM_syn:  b = bIs_Col_Nm_syn();  break;
-    case SF_COL_NO:      b = bIs_Col_No();      break;
-    case SF_COL_TC:      b = bIs_Col_Tc();      break;
+    case SF_STMCOL: b = bIs_Col_No();      break;
+    case SF_TBLCOL: b = bIs_Col_Tc();      break;
     case SF_COL_TYPE:    b = bIs_Col_Type();    break;
     case SF_COMMA:       b = bIs_Comma();       break;
     case SF_CROSS:       b = bIs_Cross();       break;
@@ -3413,7 +3413,7 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NO == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STMCOL == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm);
 
@@ -3478,17 +3478,17 @@ void Symbol::vFacet_Col_No(i8 iStmColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NO == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STMCOL == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
 
   if (bIs_Col_Tc()) {
-     Y_vSet(P_TblCol, szSF_chrSeq(SF_COL_TC));
+     Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
   }
   else
   if (bIs_Key_Col()) {
     Y_vSet(P_KeyCol, szSF_chrSeq(SF_KEY_COL));
   }
 
-  vFacetSprint(SF_COL_NO,"$%lld"_Stz, iStmColOdn);
+  vFacetSprint(SF_STMCOL, "$%lld"_Stz, iStmColOdn);
 
   RASSERT(bIs_Col_No());
 }
@@ -3502,8 +3502,8 @@ void Symbol::vFacet_Col_No(Stz* szColNo)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
           SF_COL_NM == xaFacet[0].m_eFacet ||
-          SF_COL_NO == xaFacet[0].m_eFacet ||
-          SF_COL_TC == xaFacet[0].m_eFacet ||
+          SF_STMCOL == xaFacet[0].m_eFacet ||
+          SF_TBLCOL == xaFacet[0].m_eFacet ||
 
           SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
           SF_PARENTHESIS == xaFacet[0].m_eFacet ||
@@ -3512,10 +3512,10 @@ void Symbol::vFacet_Col_No(Stz* szColNo)
           );
 
   if (bIs_Col_Tc()) {
-    Y_vSet(P_TblCol, szSF_chrSeq(SF_COL_TC));
+    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
   }
 
-  vFacetSprint(SF_COL_NO,"%s"_Stz,szColNo);
+  vFacetSprint(SF_STMCOL, "%s"_Stz, szColNo);
 
   RASSERT(bIs_Col_No());
 }
@@ -3529,7 +3529,7 @@ void Symbol::vFacet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_TC,"$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+  vFacetSprint(SF_TBLCOL, "$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 
   RASSERT(bIs_Col_Tc());
 }
@@ -3541,9 +3541,9 @@ void Symbol::vFacet_Col_Tc(Stz* szColTc)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet || SF_COL_TC == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet || SF_TBLCOL == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_TC,"%s"_Stz,szColTc);
+  vFacetSprint(SF_TBLCOL, "%s"_Stz, szColTc);
 
   RASSERT(bIs_Col_Tc());
 }
