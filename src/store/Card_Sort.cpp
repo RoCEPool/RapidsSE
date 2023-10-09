@@ -48,15 +48,15 @@ void Card_Sort::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Key(pCI));
-  pCI->G.p_projection->vDelete_streamKey(pCI);
+  pCI->G.p_emitted->vDelete_streamKey(pCI);
 
 
   pCI->G.p_streamKey = pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
-  pCI->G.p_projection->vAppendChild(pCI->StreamOrder.m_pStreamKey_running);
+  pCI->G.p_emitted->vAppendChild(pCI->StreamOrder.m_pStreamKey_running);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
+  pCI->StreamOrder.m_pProjection_running = pCI->G.p_emitted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,8 +71,8 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   vEnsure_stream(pCI);
 
-  if ((pCI->G.p_projection = pCI->G.p_sort->pSub_emitted()))
-    pCI->G.p_sort->vDeleteSub(pCI->G.p_projection);
+  if ((pCI->G.p_emitted = pCI->G.p_sort->pSub_emitted()))
+    pCI->G.p_sort->vDeleteSub(pCI->G.p_emitted);
 
   Card_Emitted* p_projection_sort =  pCI->Prior.m_pProjection->pPropagate(pCI);
   for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {

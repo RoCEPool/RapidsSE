@@ -68,12 +68,12 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
     return;
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_emitted();
+  pCI->G.p_emitted = pSub_emitted();
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = this;
   pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later  = pCI->G.p_emitted->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -98,9 +98,9 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_emitted();
+  pCI->G.p_emitted = pSub_emitted();
 
-  pCI->Prior.m_pProjection = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 
@@ -121,11 +121,11 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
     }
   }
 
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted())) {
+  if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
 
     if (pCI->Prior.m_pProjection) {
-      pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
-      pCI->G.p_projection->vRenumberAll_expr();
+      pCI->G.p_emitted->vEnsureTypes_For_stmColOdn(pCI);
+      pCI->G.p_emitted->vRenumberAll_expr();
     }
 
   }

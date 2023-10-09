@@ -95,7 +95,7 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
     Kid xKid(pCI->G.p_indexList);
     while (xKid.bEach(CK_INDEX)) {
       pCI->G.p_idxColList = xKid.p_index()->pSub_idxColList();
-      pCI->G.p_idxColList->vAffix_tblColOdn(pCI->G.p_projection);
+      pCI->G.p_idxColList->vAffix_tblColOdn(pCI->G.p_emitted);
     }
   }
 }

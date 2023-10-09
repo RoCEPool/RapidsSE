@@ -1346,6 +1346,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_DIRECTION:        return G.p_direction;
     case CK_DISPOSITION:      return G.p_disposition;
 
+    case CK_EMITTED:          return G.p_emitted;
     case CK_EXPR:             return G.p_expr;
 
     case CK_FILTER:           return G.p_filter;
@@ -1403,7 +1404,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_PAYLOAD:          return G.p_payload;
     case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_PROJECT:          return G.p_project;
-    case CK_EMITTED:       return G.p_projection;
 
     case CK_RELNOP:           return G.p_relnOp;
     case CK_REQUIRED:         return G.p_required;
@@ -1577,6 +1577,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_DIRECTION:        G.p_direction         = _pCard_Direction(pCard); break;
     case CK_DISPOSITION:      G.p_disposition       = _pCard_Disposition(pCard); break;
 
+    case CK_EMITTED:          G.p_emitted           = _pCard_Emitted(pCard); break;
     case CK_EXPR:             G.p_expr              = _pCard_Expr(pCard); break;
 
     case CK_FILTER:           G.p_filter            = _pCard_Filter(pCard);
@@ -1649,7 +1650,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
     case CK_PROJECT:          G.p_project           = _pCard_Project(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_EMITTED: G.p_projection        = _pCard_Emitted(pCard); break;
 
     case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
     case CK_REQUIRED:         G.p_required          = _pCard_Required(pCard); break;
@@ -1822,6 +1822,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_direction        = nullptr;
   G.p_disposition      = nullptr;
 
+  G.p_emitted          = nullptr;
   G.p_expr             = nullptr;
 
   G.p_filter           = nullptr;
@@ -1880,7 +1881,6 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_payload          = nullptr;
   G.p_payloadCells     = nullptr;
   G.p_project          = nullptr;
-  G.p_projection       = nullptr;
 
   G.p_relnOp           = nullptr;
   G.p_required         = nullptr;
@@ -2605,6 +2605,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_DIRECTION:    G.p_direction->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:  G.p_disposition->vValidate(this, iDepth, pCard);  break;
 
+      case CK_EMITTED:      G.p_emitted->vValidate(this, iDepth, pCard);  break;
       case CK_EXPR:         G.p_expr->vValidate(this, iDepth, pCard);  break;
 
       case CK_FILTER:       G.p_filter->vValidate(this, iDepth, pCard);  break;
@@ -2662,7 +2663,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_PAYLOAD:      G.p_payload->vValidate(this, iDepth, pCard);  break;
       case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
-      case CK_EMITTED:   G.p_projection->vValidate(this, iDepth, pCard);  break;
 
       case CK_RELNOP:     G.p_relnOp->vValidate(this, iDepth, pCard);  break;
       case CK_REQUIRED:   G.p_required->vValidate(this, iDepth, pCard);  break;

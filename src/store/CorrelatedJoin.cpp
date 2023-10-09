@@ -109,7 +109,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // get final SQ:<op>/<projection>
 
   if (CK_PROJECT == pCI->G.e_MainCard || CK_GBYAGG == pCI->G.e_MainCard)
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
+    pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
   else
     NEVER_REACH
 
@@ -299,7 +299,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     eAL e_Level = (eAL) pCI->G.p_level->pSymbol()->Y_iGet(P_Level);
 
     pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream();
-    pCI->G.p_projection = pCI->G.p_stream->pSub_emitted();
+    pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted();
 
     pCI->G.p_key = new Card_Key;
     pCI->G.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -349,17 +349,17 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     }
 
     pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
-    pCI->G.p_projection->vPushChild(pCI->G.p_expr);
+    pCI->G.p_emitted->vPushChild(pCI->G.p_expr);
 
 
     if (AL_PARTITION != e_Level) {
-      pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
+      pCI->G.p_emitted->vBump_stmOdn_In_rpnCalc(pCI);
       //pCI->G.p_key->Y_vCut(P_ProjBump);
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBumped);
     }
 
     pCI->G.p_key->vRenumberAll_expr();
-    pCI->G.p_projection->vRenumberAll_expr();
+    pCI->G.p_emitted->vRenumberAll_expr();
 
     if (pCI->G_bEachMain_NONE()) {
       if (! pCI->G.p_MainCard->bIsCard(CK_AGGREG)) {
@@ -384,12 +384,12 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
   RASSERT(pCI->G.p_key->szP_Type());
 
-  pCI->G.p_projection = pCI->G.p_project->pSub_emitted();
-  pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
+  pCI->G.p_emitted = pCI->G.p_project->pSub_emitted();
+  pCI->G.p_emitted->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
 
 
   // push <project>/_SQCRLKEY_
-  pCI->G_vPushNewChild(pCI->G.p_projection, CK_EXPR);
+  pCI->G_vPushNewChild(pCI->G.p_emitted, CK_EXPR);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, szAs));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
@@ -408,11 +408,11 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 //  pCI->G.p_project->vRemoveChild(pCI->G.p_stream);
 //  DELETE_CARD(pCI->G.p_stream);
 //
-//  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_projection);
+//  pCI->G.p_stream = Card_Stream::pDerive_Of_projection(pCI->G.p_emitted);
 //  pCI->G.p_project->vAppendChild(pCI->G.p_stream);
 
-//  pCI->G.p_projection->Y_vCut(P_Restream);
-//  pCI->G.p_projection->Y_vSet(P_Restreamed);
+//  pCI->G.p_emitted->Y_vCut(P_Restream);
+//  pCI->G.p_emitted->Y_vSet(P_Restreamed);
 
 //  i8 nStmCol = pCI->G.p_stream->pSub_stmColList()->nChildCards();
 //  pCI->G.p_stream->Y_vSet(P_OdnLo,(i8)1);
@@ -421,12 +421,12 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   // bump all $n in <project>/<projElist>/<expr>/<rpnCalc>
   //   now that __SQ1IGBKY1 has been added
 
-  //i8 nBumpBy = pCI->G.p_projection->Y_iGet(P_ProjBump);
+  //i8 nBumpBy = pCI->G.p_emitted->Y_iGet(P_ProjBump);
 
-//  pCI->G.p_projection->Y_vSet(P_ProjBumped,(i8)nBumpBy);
-//  pCI->G.p_projection->Y_vCut(P_ProjBump);
+//  pCI->G.p_emitted->Y_vSet(P_ProjBumped,(i8)nBumpBy);
+//  pCI->G.p_emitted->Y_vCut(P_ProjBump);
 
-  pCI->G.p_projection->vRenumberAll_expr();
+  pCI->G.p_emitted->vRenumberAll_expr();
 }
 
 /*----------------------------------------------------------------------------*/

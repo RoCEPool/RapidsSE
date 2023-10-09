@@ -317,7 +317,7 @@ void Card_Emitted::vMapColumns(CardIter* pCI)
   i8 i_EmittedCol = 0;
   i8 nExpr_key = 0;
 
-  for (Kid xProjection(pCI->G.p_projection); xProjection.bEach(CK_EXPR); /**/) {
+  for (Kid xProjection(pCI->G.p_emitted); xProjection.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_projection = xProjection.p_expr();
 
     i_EmittedCol++;

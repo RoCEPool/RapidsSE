@@ -107,10 +107,10 @@ void XF_Flatten_X_stmCol_To_tblCol::vConvert_stmColOdn_To_tblColOdn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projection
 
-  if ((m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_emitted())) {
+  if ((m_pCI->G.p_emitted = m_pCI->G.p_MainCard->pSub_emitted())) {
     if (m_pCI->Prior.m_pProjection)
-      m_pCI->G.p_projection->vConvert_stmOdn_To_colOdn(m_pCI);
-    m_pCI->Prior.m_pProjection = m_pCI->G.p_projection;
+      m_pCI->G.p_emitted->vConvert_stmOdn_To_colOdn(m_pCI);
+    m_pCI->Prior.m_pProjection = m_pCI->G.p_emitted;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

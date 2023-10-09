@@ -52,7 +52,7 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->G.p_projection->vDelete_streamKey(pCI);
+  pCI->G.p_emitted->vDelete_streamKey(pCI);
 
 
   if (pCI->StreamOrder.m_pStreamKey_running) {
@@ -64,11 +64,11 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   pCI->G.p_index->vAdd_streamKey_exprs(pCI);
 
-  pCI->G.p_projection->vAppendChild(pCI->G.p_streamKey);
+  pCI->G.p_emitted->vAppendChild(pCI->G.p_streamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
+  pCI->StreamOrder.m_pProjection_running = pCI->G.p_emitted;
   pCI->StreamOrder.m_pStreamKey_running  = pCI->G.p_streamKey;
 }
 
@@ -229,12 +229,12 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
     return;
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_emitted();
+  pCI->G.p_emitted = pSub_emitted();
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = this;
   pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later  = pCI->G.p_emitted->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -259,9 +259,9 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_emitted();
+  pCI->G.p_emitted = pSub_emitted();
 
-  pCI->Prior.m_pProjection = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 

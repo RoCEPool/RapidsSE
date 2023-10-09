@@ -79,6 +79,7 @@ namespace STORE
     Card_Direction *     p_direction;
     Card_Disposition *   p_disposition;
 
+    Card_Emitted *       p_emitted;
     Card_Expr *          p_expr;
 
     Card_Filter *        p_filter;
@@ -136,7 +137,6 @@ namespace STORE
     Card_Payload *       p_payload;
     Card_PayloadCells *  p_payloadCells;
     Card_Project *       p_project;
-    Card_Emitted *    p_projection;
 
     Card_RelnOp *        p_relnOp;
     Card_Required *      p_required;

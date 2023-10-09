@@ -128,8 +128,8 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     Card_Expr* p_expr_col;
 
     Symbol* pSymbol = p_term->pSymbol();
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
-    p_expr_col = pCI->G.p_projection->pFind_expr_By_ordinal(pSymbol);
+    pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+    p_expr_col = pCI->G.p_emitted->pFind_expr_By_ordinal(pSymbol);
 
 
 
@@ -142,8 +142,8 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     else {
 
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
-      i8 nExprs = pCI->G.p_projection->nChildCards();
+      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+      i8 nExprs = pCI->G.p_emitted->nChildCards();
       i8 i_Odn = p_term->iGetOdn();
       i8 i_Col_base0 = i_Odn - nExprs - 1;
 
@@ -207,8 +207,8 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 //    else {
 //
 //      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-//      pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
-//      i8 nExprs = pCI->G.p_projection->nChildCards();
+//      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+//      i8 nExprs = pCI->G.p_emitted->nChildCards();
 //      i8 i_Odn = p_term->iGetOdn();
 //      i8 i_Col_base0 = i_Odn - nExprs - 1;
 //
@@ -254,8 +254,8 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_projection);
-  pCI->G.p_projection->vDump(__func__);
+  RASSERT(pCI->G.p_emitted);
+  pCI->G.p_emitted->vDump(__func__);
 
   for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
     Card_Term* p_term = xRpnCalc.p_term();
@@ -264,7 +264,7 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
 
     //vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol(SF_NONE));
 
-    Card_Expr* p_expr = pCI->G.p_projection->pFindExprOfAs(p_term->pSymbol());
+    Card_Expr* p_expr = pCI->G.p_emitted->pFindExprOfAs(p_term->pSymbol());
     if (p_expr) {
       //p_expr->vDump(__func__);
 

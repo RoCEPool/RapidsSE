@@ -72,8 +72,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
          (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
       //pCI->G.p_indexJoin->vDump(__func__);
 
-      pCI->G.p_projection  = pCI->G.p_indexJoin->pSub_emitted();
-      if ((pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_as_stripItem(p_term->pSymbol()))) {
+      pCI->G.p_emitted  = pCI->G.p_indexJoin->pSub_emitted();
+      if ((pCI->G.p_expr = pCI->G.p_emitted->pFind_expr_By_as_stripItem(p_term->pSymbol()))) {
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
         p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
       }
@@ -235,7 +235,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   // probably introduced into this stream by the operator
 
   i8 nCols_injectedByThisCard;
-  pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
+  pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
   if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
       pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
     nCols_injectedByThisCard = 0;
@@ -258,7 +258,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   else
   if (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
       pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
-    nCols_injectedByThisCard = pCI->G.p_projection->nChildCards();
+    nCols_injectedByThisCard = pCI->G.p_emitted->nChildCards();
   }
   else {
     return;

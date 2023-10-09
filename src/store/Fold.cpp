@@ -274,7 +274,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
     if (pCI->G.p_MainCard->pSub_emitted())
       pCI->Prior.m_pProjection =
-          pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
+          pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
 
     if (pCI->G_bIsNextMain(CK_FOLD))
       break;
@@ -417,7 +417,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
     if (pCI->G.p_MainCard->pSub_emitted())
       pCI->Prior.m_pProjection =
-          pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
+          pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
 
     if (pCI->G_bIsNextMain(CK_FOLD))
       break;

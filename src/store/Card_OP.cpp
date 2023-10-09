@@ -424,7 +424,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_emitted();
+  pCI->G.p_emitted = pSub_emitted();
 
   pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_MAPPING);
   pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
@@ -438,7 +438,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // map the columns of the projection
 
-  pCI->G.p_projection->vMapColumns(pCI);
+  pCI->G.p_emitted->vMapColumns(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -514,7 +514,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (pCI->G.p_projection = pSub_emitted()))
+  if (! (pCI->G.p_emitted = pSub_emitted()))
     return false;
 
   return true;
@@ -587,9 +587,9 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Prior.m_pProjection) {
-//    p_projection = pCI->Prior.m_pProjection->pClone();
+//    p_emitted = pCI->Prior.m_pProjection->pClone();
     p_projection = pCI->Prior.m_pProjection->pReducedCopy(pCI);
-    //p_projection->vDump(__func__ );
+    //p_emitted->vDump(__func__ );
   }
   else {
     p_projection = new Card_Emitted(pCI->iXform());

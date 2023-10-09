@@ -153,9 +153,9 @@ void Card_Having::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_stream = pCI->G.p_having->pSub_stream())) {
-    if ((pCI->G.p_projection = pCI->G.p_stream->pSub_emitted())) {
+    if ((pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted())) {
 
-      pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
+      pCI->G.p_stream->vDeleteChild(pCI->G.p_emitted);
       pCI->G.p_stream->vAppendChild(pCI->Prior.m_pProjection->pPropagate(pCI));
     }
   }
