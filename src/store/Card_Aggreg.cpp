@@ -48,8 +48,8 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Emitted* p_projection = pSub_emitted())
-    p_projection->vBump_Rightwards(nBumpBy);
+  if (Card_Emitted* p_emitted = pSub_emitted())
+    p_emitted->vBump_Rightwards(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/

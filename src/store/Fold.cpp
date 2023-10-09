@@ -190,9 +190,9 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
     if (CK_FOLD == pCI->G.e_MainCard)
       break;
 
-    if (Card_Emitted* p_projection = pCI->G.p_MainCard->pSub_emitted()) {
+    if (Card_Emitted* p_emitted = pCI->G.p_MainCard->pSub_emitted()) {
       //pCI->vPrintBoard(__LINE__);
-      pCI->Prior.m_pProjection = p_projection;
+      pCI->Prior.m_pProjection = p_emitted;
     }
   }
 

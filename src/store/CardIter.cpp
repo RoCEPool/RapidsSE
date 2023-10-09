@@ -1194,10 +1194,10 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
 
     //pMain->vDump();
 
-    if (Card_Emitted* p_projection = pMain->pSub_emitted()) {
-      i8 nChildren_prj = p_projection->nChildCards();
+    if (Card_Emitted* p_emitted = pMain->pSub_emitted()) {
+      i8 nChildren_prj = p_emitted->nChildCards();
       for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
-        Card *pChild_prj = p_projection->pGetChild(i_Child);
+        Card *pChild_prj = p_emitted->pGetChild(i_Child);
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
@@ -1232,10 +1232,10 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card *pMain = this->G.pDeck->pGetChild(i_Main);
 
-    if (Card_Emitted* p_projection = pMain->pSub_emitted()) {
-      i8 nChildren_prj = p_projection->nChildCards();
+    if (Card_Emitted* p_emitted = pMain->pSub_emitted()) {
+      i8 nChildren_prj = p_emitted->nChildCards();
       for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
-        Card *pChild_prj = p_projection->pGetChild(i_Child);
+        Card *pChild_prj = p_emitted->pGetChild(i_Child);
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
@@ -2047,8 +2047,8 @@ void CardIter::vSnapPriorProjection(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (Card_Emitted* p_projection = G.p_OP->pSub_emitted())
-    Prior.m_pProjection = p_projection;
+  if (Card_Emitted* p_emitted = G.p_OP->pSub_emitted())
+    Prior.m_pProjection = p_emitted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2336,13 +2336,13 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emitted* p_projection_prior = pResolvePrior_projection();
-  if (! p_projection_prior)
+  Card_Emitted* p_emitted_prior = pResolvePrior_projection();
+  if (! p_emitted_prior)
     return nullptr;
 
-  //RASSERT(p_projection_prior == this->Prior.m_pProjection);
+  //RASSERT(p_emitted_prior == this->Prior.m_pProjection);
 
-  Card_Expr* p_expr_resolved = p_projection_prior->pResolve_expr(p_term);
+  Card_Expr* p_expr_resolved = p_emitted_prior->pResolve_expr(p_term);
   return p_expr_resolved;
 }
 
@@ -2367,9 +2367,9 @@ Card_Emitted* CardIter::pResolvePrior_projection(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emitted* p_projection_prior = Card_Emitted::pResolvePriorProjection(this);
+  Card_Emitted* p_emitted_prior = Card_Emitted::pResolvePriorProjection(this);
 
-  return p_projection_prior;
+  return p_emitted_prior;
 }
 
 /*----------------------------------------------------------------------------*/

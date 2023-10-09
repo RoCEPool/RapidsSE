@@ -69,8 +69,8 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   Card_Stream* p_stream = new Card_Stream;
   p_project_unproject->vAppendChild(p_stream);
 
-  Card_Emitted* p_projection_unproject = new Card_Emitted(pCI->iXform());
-  p_stream->vAppendChild(p_projection_unproject);
+  Card_Emitted* p_emitted_unproject = new Card_Emitted(pCI->iXform());
+  p_stream->vAppendChild(p_emitted_unproject);
 
   i8 i_Col = 0;
   i8 nChildren_projection = pCI->G.p_emitted->nChildCards();
@@ -93,14 +93,14 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
 
-    p_projection_unproject->vAppendChild(p_expr_simple);
+    p_emitted_unproject->vAppendChild(p_expr_simple);
 
    // pCI->vPrintBoard(__LINE__);
 
     vDebugPoint();
   }
 
-  p_projection_unproject->vRenumberAll_expr();
+  p_emitted_unproject->vRenumberAll_expr();
 }
 
 
@@ -115,8 +115,8 @@ void Card_Project::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Emitted* p_projection = pSub_emitted())
-    p_projection->vBump_Rightwards(nBumpBy);
+  if (Card_Emitted* p_emitted = pSub_emitted())
+    p_emitted->vBump_Rightwards(nBumpBy);
 }
 
 
@@ -136,7 +136,7 @@ Card_Emitted* Card_Project::pCraft_projection_early(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_projection_early = new Card_Emitted(pCI->iXform());
+  Card_Emitted* p_emitted_early = new Card_Emitted(pCI->iXform());
 
   //pCI->Early.m_pNeeded_later->vDump();
 
@@ -157,17 +157,17 @@ Card_Emitted* Card_Project::pCraft_projection_early(CardIter* pCI)
     Card_Expr* p_expr_clone = p_expr_needed->pClone();
 
     if (! p_expr_clone->pSub_as()) {
-      Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM_syn,p_projection_early->nChildCards());
+      Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM_syn,p_emitted_early->nChildCards());
       p_expr_clone->vAppendChild(p_as_new);
     }
 
-    p_projection_early->vAppendChild(p_expr_clone);
+    p_emitted_early->vAppendChild(p_expr_clone);
   }
 
 
-  p_projection_early->vRenumberAll_expr();
+  p_emitted_early->vRenumberAll_expr();
 
-  return p_projection_early;
+  return p_emitted_early;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,8 +177,8 @@ void Card_Project::vDedupe_as(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_Emitted* p_projection = pSub_emitted())
-    p_projection->vDedupe_as();
+  if (Card_Emitted* p_emitted = pSub_emitted())
+    p_emitted->vDedupe_as();
 
 }
 

@@ -59,8 +59,8 @@ Card_Emitted* Card_Emitted::pResolvePriorProjection(CardIter* pCI)
   xKid.vReposition(pCI->G.i_MainCard);
 
   while (xKid.bEach_reverse()) {
-    if (Card_Emitted* p_projection = xKid.pChild()->pSub_emitted())
-      return p_projection;
+    if (Card_Emitted* p_emitted = xKid.pChild()->pSub_emitted())
+      return p_emitted;
   }
 
   return nullptr;
@@ -132,17 +132,17 @@ Card_Emitted* Card_Emitted::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vCorrectStmOdn(Card_Emitted* p_projection_prior)
+void Card_Emitted::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     if (Card_BoolCalc* p_boolCalc = xKid.p_expr()->pSub_boolCalc())
-      p_boolCalc->vCorrectStmOdn(p_projection_prior);
+      p_boolCalc->vCorrectStmOdn(p_emitted_prior);
     else
     if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
-      p_rpnCalc->vCorrectStmOdn(p_projection_prior);
+      p_rpnCalc->vCorrectStmOdn(p_emitted_prior);
   }
 
 }
@@ -364,17 +364,17 @@ void Card_Emitted::vMapColumns(CardIter* pCI)
 Card_Emitted* Card_Emitted::pPropagate(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Emitted *p_projection_propagated = new Card_Emitted(pCI->iXform());
+  Card_Emitted *p_emitted_propagated = new Card_Emitted(pCI->iXform());
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     Card_Expr *p_expr_propagated = xKid.p_expr()->pPropagate();
-    p_projection_propagated->vAppendChild(p_expr_propagated);
+    p_emitted_propagated->vAppendChild(p_expr_propagated);
   }
 
-  p_projection_propagated->vRenumberAll_expr();
+  p_emitted_propagated->vRenumberAll_expr();
 
-  return p_projection_propagated;
+  return p_emitted_propagated;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,15 +463,15 @@ Card_Emitted* Card_Emitted::pReducedCopy(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_projection_reduced = new Card_Emitted(pCI->iXform());
+  Card_Emitted* p_emitted_reduced = new Card_Emitted(pCI->iXform());
 
   i8 i_Expr = 0;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_copy = xKid.p_expr()->pReducedCopy(i_Expr++);
-    p_projection_reduced->vAppendChild(p_expr_copy);
+    p_emitted_reduced->vAppendChild(p_expr_copy);
   }
 
-  return p_projection_reduced;
+  return p_emitted_reduced;
 }
 
 /*----------------------------------------------------------------------------*/

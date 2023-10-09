@@ -50,8 +50,8 @@ void Card_GbyAgg::vBump_Rightwards(i8 nBumpBy)
   if (Card_Key* p_key = pSub_key())
     p_key->vBump_Rightwards(nBumpBy);
 
-  if (Card_Emitted* p_projection = pSub_emitted())
-    p_projection->vBump_Rightwards(nBumpBy);
+  if (Card_Emitted* p_emitted = pSub_emitted())
+    p_emitted->vBump_Rightwards(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -49,10 +49,10 @@ Card_Hash::~Card_Hash(void) noexcept(false)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
-                              Card_Emitted* p_projection_prev)
+                              Card_Emitted* p_emitted_prev)
 {
   _static_
-  UNUSED(p_projection_prev);
+  UNUSED(p_emitted_prev);
 
   Card_Hash* p_hash = new Card_Hash;
 
@@ -71,8 +71,8 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
   Card_Term* p_card_term = p_expr->pGetTerm(0)->pClone();
   p_hshCol->vAppendChild(p_card_term);
 
-  if (p_projection_prev)
-    p_stream->vAppendChild(p_projection_prev->pClone());
+  if (p_emitted_prev)
+    p_stream->vAppendChild(p_emitted_prev->pClone());
 
   return p_hash;
 }

@@ -123,18 +123,18 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCorrectStmOdn(Card_Emitted* p_projection_prior)
+void Card_OP::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! p_projection_prior)
+  if (! p_emitted_prior)
     return;
 
   if (Card_Filter* p_filter = pSub_filter())
-    p_filter->vCorrectStmOdn(p_projection_prior);
+    p_filter->vCorrectStmOdn(p_emitted_prior);
 
-  if (Card_Emitted* p_projection = pSub_emitted())
-    p_projection->vCorrectStmOdn(p_projection_prior);
+  if (Card_Emitted* p_emitted = pSub_emitted())
+    p_emitted->vCorrectStmOdn(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -543,11 +543,11 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_projection;
+  Card_Emitted* p_emitted;
 
   if (CK_PROJECT == eCard() && pCI->Prior.m_pProjection) {
-    p_projection = pSub_emitted();
-    p_projection->vEnsureTypes_For_stmColOdn(pCI);
+    p_emitted = pSub_emitted();
+    p_emitted->vEnsureTypes_For_stmColOdn(pCI);
     return;
   }
 
@@ -557,20 +557,20 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   vEnsure_stream(pCI);
 
 
-  if ((p_projection = pSub_emitted()))
-    pCI->G.p_stream->vDeleteChild(p_projection);
+  if ((p_emitted = pSub_emitted()))
+    pCI->G.p_stream->vDeleteChild(p_emitted);
 
 
-  Card_Emitted* p_projection_needed;
-  if ((p_projection_needed = pSub_emitted()))
-    vRemoveChild(p_projection_needed);
+  Card_Emitted* p_emitted_needed;
+  if ((p_emitted_needed = pSub_emitted()))
+    vRemoveChild(p_emitted_needed);
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_projection = _pCard_Emitted(pCI->Prior.m_pProjection->pDupCardRecursive());
-    pCI->G.p_stream->vAppendChild(p_projection);
-    pCI->Prior.m_pProjection = p_projection;
-    if (p_projection_needed)
-      vAppendChild(p_projection_needed);
+    p_emitted = _pCard_Emitted(pCI->Prior.m_pProjection->pDupCardRecursive());
+    pCI->G.p_stream->vAppendChild(p_emitted);
+    pCI->Prior.m_pProjection = p_emitted;
+    if (p_emitted_needed)
+      vAppendChild(p_emitted_needed);
     return;
   }
 
@@ -588,11 +588,11 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   if (pCI->Prior.m_pProjection) {
 //    p_emitted = pCI->Prior.m_pProjection->pClone();
-    p_projection = pCI->Prior.m_pProjection->pReducedCopy(pCI);
+    p_emitted = pCI->Prior.m_pProjection->pReducedCopy(pCI);
     //p_emitted->vDump(__func__ );
   }
   else {
-    p_projection = new Card_Emitted(pCI->iXform());
+    p_emitted = new Card_Emitted(pCI->iXform());
   }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
@@ -600,7 +600,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   // todo: [ray A 145]
   char cTblSyn = bIsCard(CK_TABLE) ? pSymbol()->cSF_char() : pSub_table()->pSymbol()->cSF_char();
 
-  i8 i_Expr = p_projection->nExpr() + 1;
+  i8 i_Expr = p_emitted->nExpr() + 1;
 
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -609,7 +609,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol(SF_COL_NO,i_Expr++);
     p_expr->pSymbol()->vFacets(&xSymbol);
-    p_projection->vAppendChild(p_expr);
+    p_emitted->vAppendChild(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();
 
@@ -629,12 +629,12 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_term->pSymbol()->Y_vColType(szCT_char[eColumnType]);
   }
 
-  pCI->G.p_stream->vAppendChild(p_projection);
+  pCI->G.p_stream->vAppendChild(p_emitted);
 
-  pCI->Prior.m_pProjection = p_projection;
+  pCI->Prior.m_pProjection = p_emitted;
 
-  if (p_projection_needed)
-    vAppendChild(p_projection_needed);
+  if (p_emitted_needed)
+    vAppendChild(p_emitted_needed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1614,8 +1614,8 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Emitted* p_projection = pSub_emitted();
-  if (! p_projection)
+  Card_Emitted* p_emitted = pSub_emitted();
+  if (! p_emitted)
     return nullptr;
 
   Card_Key* p_key = nullptr;
@@ -1631,7 +1631,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
   ColMap* pColMap = ppColMap? *ppColMap : nullptr;
 
   StreamDef* pStreamDef_emitted =
-      p_projection->pToStreamDef(pColMap, p_key, this);
+      p_emitted->pToStreamDef(pColMap, p_key, this);
 
 
   if (CK_GBYAGG == eCard()) {

@@ -74,17 +74,17 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if ((pCI->G.p_emitted = pCI->G.p_sort->pSub_emitted()))
     pCI->G.p_sort->vDeleteSub(pCI->G.p_emitted);
 
-  Card_Emitted* p_projection_sort =  pCI->Prior.m_pProjection->pPropagate(pCI);
+  Card_Emitted* p_emitted_sort =  pCI->Prior.m_pProjection->pPropagate(pCI);
   for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
     Card_Expr* p_expr_key = xKey_sort.p_expr();
 
     Symbol* pSym_expr_x = p_expr_key->pFirstStmCol();
-    Card_Expr* p_expr_prj = p_projection_sort->pDecodeExpr(pSym_expr_x);
+    Card_Expr* p_expr_prj = p_emitted_sort->pDecodeExpr(pSym_expr_x);
 
     p_expr_prj->pGetTerm(0)->pSymbol()->vFacets(p_expr_key->pSymbol());
   }
 
-  pCI->G.p_stream->vAppendChild(p_projection_sort);
+  pCI->G.p_stream->vAppendChild(p_emitted_sort);
 
   pCI->Prior.m_pProjection = pSub_emitted();
 

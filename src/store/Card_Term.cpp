@@ -615,7 +615,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /* correct stmOdn                                                             */
 /*----------------------------------------------------------------------------*/
 
-void Card_Term::vCorrectStmOdn(Card_Emitted* p_projection_prior)
+void Card_Term::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -623,7 +623,7 @@ void Card_Term::vCorrectStmOdn(Card_Emitted* p_projection_prior)
     return;
 
   Symbol* pSym = pSymbol();
-  if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
+  if (Card_Expr* p_expr = p_emitted_prior->pFindExprOfSymbol(pSym)) {
     pSym->vFacets(p_expr->pSymbol());
     vMark1(MARK_CHANGED);
   }

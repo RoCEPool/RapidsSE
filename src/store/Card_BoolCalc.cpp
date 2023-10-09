@@ -240,16 +240,16 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCorrectStmOdn(Card_Emitted* p_projection_prior)
+void Card_BoolCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [p_projection_prior](Card* p_card)
+  auto bLambdaFn = [p_emitted_prior](Card* p_card)
   {
     if (p_card->pSymbol()->bIs_Col_No())
-      _pCard_Term(p_card)->vCorrectStmOdn(p_projection_prior);
+      _pCard_Term(p_card)->vCorrectStmOdn(p_emitted_prior);
 
     return C_CONTINUE_RECURSION;
   };

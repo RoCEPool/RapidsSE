@@ -68,7 +68,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
-void Card_IdxColList::vAffix_tblColOdn(Card_Emitted* p_projection)
+void Card_IdxColList::vAffix_tblColOdn(Card_Emitted* p_emitted)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -76,7 +76,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Emitted* p_projection)
   while (xKid.bEach(CK_IDXCOL)) {
     Stz* szColNm = xKid.p_idxCol()->szSymbol(SF_NONE);
 
-    Kid xCI_p(p_projection);
+    Kid xCI_p(p_emitted);
     xCI_p.vEnded();
     xCI_p.vBegin_reverse();
     while (xCI_p.bEach_reverse(CK_EXPR)) {

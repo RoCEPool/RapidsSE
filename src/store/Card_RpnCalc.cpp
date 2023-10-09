@@ -148,12 +148,12 @@ void Card_RpnCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vCorrectStmOdn(Card_Emitted* p_projection_prior)
+void Card_RpnCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    xKid.p_term()->vCorrectStmOdn(p_projection_prior);
+    xKid.p_term()->vCorrectStmOdn(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/

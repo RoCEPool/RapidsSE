@@ -23,7 +23,7 @@ namespace STORE
     void vAs_Review(CardIter* pCI);
 
     Card_Emitted* pClone(void);
-    void vCorrectStmOdn(Card_Emitted* p_projection_prior);
+    void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDedupe_as(void);
     void vDelete_streamKey(CardIter* pCI);

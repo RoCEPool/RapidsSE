@@ -551,11 +551,11 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   }
 
   Card_Injected*   p_injected   = pSubCard->pSub_injected();
-  Card_Emitted* p_projection = pSubCard->pSub_emitted();
+  Card_Emitted* p_emitted = pSubCard->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfAddDescriptors = [pColInj, p_projection] (Card* pCard_expr_i) {
+  auto bfAddDescriptors = [pColInj, p_emitted] (Card* pCard_expr_i) {
 
     // injected related
     Card_Expr*  p_expr_i = _pCard_Expr(pCard_expr_i);
@@ -567,10 +567,10 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     // projected related
     Card_Expr *p_prior_expr_p = nullptr;
 
-    Kid xKid(p_projection);
+    Kid xKid(p_emitted);
     for (;;) {
       Card_Expr *p_expr_p =
-          p_projection->pFind_expr_By_as_stripped(pSym_as_i, szTblCol_i, &xKid);
+          p_emitted->pFind_expr_By_as_stripped(pSym_as_i, szTblCol_i, &xKid);
       if (! p_expr_p)
         return C_CONTINUE_RECURSION;
 
@@ -635,11 +635,11 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   Card_Arriving*   p_arriving   = pSubCard->pSub_arriving();
-  Card_Emitted* p_projection = pSubCard->pSub_emitted();
+  Card_Emitted* p_emitted = pSubCard->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfAddDescriptors = [this, pColPpg, p_projection](Card *pCard_expr_a) {
+  auto bfAddDescriptors = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
 
     if (m_pStageDef->i_Stage() == 7) {
       vDebugPoint();
@@ -662,7 +662,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       Card_Expr* p_expr_p;
 
       p_expr_p =
-          p_projection->pFind_expr_By_as_stripItem(pSym_as_a);
+          p_emitted->pFind_expr_By_as_stripItem(pSym_as_a);
 
       if (p_expr_p) {
 
@@ -675,9 +675,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         return C_CONTINUE_RECURSION;
       }
 
-      Kid xKid(p_projection);
+      Kid xKid(p_emitted);
       p_expr_p =
-            p_projection->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
+            p_emitted->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
 
       if (! p_expr_p)
         return C_CONTINUE_RECURSION;
@@ -694,7 +694,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       Symbol*    pSym_expr_a = p_expr_a->pSymbol();
 
       Card_Expr* p_expr_p =
-          p_projection->pDecodeExpr(pSym_expr_a);
+          p_emitted->pDecodeExpr(pSym_expr_a);
 
       if (! p_expr_p)
         return C_CONTINUE_RECURSION;

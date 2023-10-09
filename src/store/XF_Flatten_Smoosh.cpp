@@ -90,7 +90,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
 
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_FROM));
-  Card_Emitted* p_projection_table = pCI->G.p_from->pSub_emitted();
+  Card_Emitted* p_emitted_table = pCI->G.p_from->pSub_emitted();
 
   pCI->vBeginEachReverse();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
@@ -109,7 +109,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
       pCI->G.p_cmpConj->pSymbol()->bSame("notExists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyNotExists);
 
-  pCI->Prior.m_pProjection = p_projection_table;
+  pCI->Prior.m_pProjection = p_emitted_table;
   pCI->G.p_cmpConj->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
@@ -131,7 +131,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   Card_Term* p_term_sqyarg = _pCard_Term(p_from_exists->pFindSymbolRecursive(CK_TERM,&xPrmOrd,p_parent));
 
   Card_Expr* p_expr_found =
-      p_projection_table->pGetExpr(p_term_sqyarg->iGetOdn() - 1);
+      p_emitted_table->pGetExpr(p_term_sqyarg->iGetOdn() - 1);
 
   //p_expr_found->vDump();
   Card_Term* p_term_found = p_expr_found->pGetTerm(0);

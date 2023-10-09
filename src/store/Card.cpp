@@ -2385,9 +2385,9 @@ Card_Emitted* Card::pSub_emitted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_projection =
+  Card_Emitted* p_emitted =
       _pCard_Emitted(pFindSubCard(CK_EMITTED));
-  return p_projection;
+  return p_emitted;
 }
 
 /*----------------------------------------------------------------------------*/
