@@ -468,7 +468,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         }
         else
-        if (xKid.pChild()->bIsCard(CK_TERM) && xKid.pChild()->pSymbol()->bIs_Col_Tc()) {
+        if (xKid.pChild()->bIsCard(CK_TERM) && xKid.pChild()->pSymbol()->bIs_TblCol()) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
@@ -479,7 +479,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term);
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol(SF_NONE);
-          RASSERT(Symbol::bIs_Col_Tc(szProjectedCol));
+          RASSERT(Symbol::bIs_TblCol(szProjectedCol));
           xKid.pChild()->pSymbol()->vFacet(SF_TBLCOL, szProjectedCol);  // TODO: hack!!
 
           DELETE_CARD(p_term);

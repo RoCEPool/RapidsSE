@@ -181,7 +181,7 @@ void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol_term = this->pSymbol();
-  RASSERT(pSymbol_term->bIs_Col_Tc());
+  RASSERT(pSymbol_term->bIs_TblCol());
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,7 +240,7 @@ void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
       pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
     nCols_injectedByThisCard = 0;
 
-//    RASSERT(this->pSymbol()->bIs_Col_Tc());
+//    RASSERT(this->pSymbol()->bIs_TblCol());
 //    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
 //    return;
   }
@@ -251,7 +251,7 @@ void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
 
 //    nCols_injectedByThisCard = pCI->Prior.m_pEmitted->nChildCards();
 
-//    RASSERT(this->pSymbol()->bIs_Col_Tc());
+//    RASSERT(this->pSymbol()->bIs_TblCol());
 //    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
 //    return;
   }
@@ -284,7 +284,7 @@ void Card_Term::vConvert_tblCol_To_stmCol_X(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol_term = this->pSymbol();
-  if (! pSymbol_term->bIs_Col_Tc())
+  if (!pSymbol_term->bIs_TblCol())
     return;
 
   Symbol* pSymbol_this = pSymbol();
@@ -335,14 +335,14 @@ void Card_Term::vConvert_stmOdn_To_colOdn(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol = this->pSymbol();
-  RASSERT(pSymbol->bIs_Col_No());
+  RASSERT(pSymbol->bIs_StmCol());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Card_Expr* p_expr_prior = pCI->Prior.m_pEmitted->pDecodeExpr(pSymbol)) {
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
-    if (pSymbol_term0->bIs_Col_Tc()) {
+    if (pSymbol_term0->bIs_TblCol()) {
       pSymbol->vFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
     }
@@ -519,7 +519,7 @@ bool Card_Term::bIsColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bIs_Col_Tc())
+  if (pSymbol()->bIs_TblCol())
     return true;
 
   return false;
@@ -556,7 +556,7 @@ bool Card_Term::bIsStmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIs_Col_No();
+  bool b = pSymbol()->bIs_StmCol();
 
   return b;
 }
@@ -663,7 +663,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           pParent->eCard() == CK_RPNCALC);
 
   if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
-    if (m_xSymbol.bIs_Col_No() || m_xSymbol.bIs_Col_Tc()) {
+    if (m_xSymbol.bIs_StmCol() || m_xSymbol.bIs_TblCol()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {
           vDump(__func__);
@@ -674,7 +674,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   }
   else
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMITTED]) ) {
-    if ( m_xSymbol.bIs_Col_Tc()) {
+    if (m_xSymbol.bIs_TblCol()) {
       if (! m_xSymbol.Y_bHas(P_Type)) {
         if (! pCI->G.p_call) {
           vDump(__func__);
@@ -686,7 +686,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 
 //  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
-//    if (m_xSymbol.bIs_Col_Tc() && ! pCI->pAncestorFind(CK_INJECTED)) {
+//    if (m_xSymbol.bIs_TblCol() && ! pCI->pAncestorFind(CK_INJECTED)) {
 //      vDump(__func__);
 //      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
 //    }

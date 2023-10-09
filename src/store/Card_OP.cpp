@@ -708,8 +708,8 @@ void Card_OP::vRpnCrossJoin(String* psRpnExpr, Card_CrossJoin* pCard_CrossJoin)
 
     Card_Term* p_term = _pCard_Term(pChildCard);
 
-    if (p_term->pSymbol()->bIs_Col_No() ||
-        p_term->pSymbol()->bIs_Col_Tc()) {
+    if (p_term->pSymbol()->bIs_StmCol() ||
+        p_term->pSymbol()->bIs_TblCol()) {
 
       if (!p_term->pSymbol()->Y_bHas(P_Type)) {
         p_term->vDump(__func__);
@@ -892,8 +892,8 @@ void Card_OP::vRpnIndexJoin(String* psRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 
     Card_Term* p_term = _pCard_Term(pSubCard);
 
-    if (p_term->pSymbol()->bIs_Col_No() ||
-        p_term->pSymbol()->bIs_Col_Tc()) {
+    if (p_term->pSymbol()->bIs_StmCol() ||
+        p_term->pSymbol()->bIs_TblCol()) {
 
       if (!p_term->pSymbol()->Y_bHas(P_Type)) {
         p_term->vDump(__func__);
@@ -986,8 +986,8 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
 
         Card_Term* p_term = _pCard_Term(pSubCard);
 
-        if (p_term->pSymbol()->bIs_Col_No() ||
-            p_term->pSymbol()->bIs_Col_Tc()) {
+        if (p_term->pSymbol()->bIs_StmCol() ||
+            p_term->pSymbol()->bIs_TblCol()) {
 
           if (!p_term->pSymbol()->Y_bHas(P_Type)) {
             p_term->vDump(__func__);
@@ -1054,8 +1054,8 @@ void Card_OP::vRpnKeyExists(String* psRpnExpr, Card_KeyExists* pCard_KeyExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Col_No() ||
-          p_term->pSymbol()->bIs_Col_Tc()) {
+      if (p_term->pSymbol()->bIs_StmCol() ||
+          p_term->pSymbol()->bIs_TblCol()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
           p_term->vDump(__func__);
@@ -1145,8 +1145,8 @@ void Card_OP::vRpnKeyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExi
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Col_No() ||
-          p_term->pSymbol()->bIs_Col_Tc()) {
+      if (p_term->pSymbol()->bIs_StmCol() ||
+          p_term->pSymbol()->bIs_TblCol()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
           p_term->vDump(__func__);
@@ -1451,8 +1451,8 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
         psRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_TERM:
-        if (pSubCard->pSymbol()->bIs_Col_No() ||
-            pSubCard->pSymbol()->bIs_Col_Tc()) {
+        if (pSubCard->pSymbol()->bIs_StmCol() ||
+            pSubCard->pSymbol()->bIs_TblCol()) {
 
           if (!pSubCard->pSymbol()->Y_bHas(P_Type)) {
             //p_part->vDump();
@@ -1552,8 +1552,8 @@ void Card_OP::vTerm(String* psRpnExpr, Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCard_Term->pSymbol()->bIs_Col_No() ||
-      pCard_Term->pSymbol()->bIs_Col_Tc()) {
+  if (pCard_Term->pSymbol()->bIs_StmCol() ||
+      pCard_Term->pSymbol()->bIs_TblCol()) {
 
     if (!pCard_Term->pSymbol()->Y_bHas(P_Type)) {
       pCard_Term->vDump(__func__);

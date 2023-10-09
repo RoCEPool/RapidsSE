@@ -118,7 +118,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (!p_term->pSymbol()->bIs_Col_No())
+    if (!p_term->pSymbol()->bIs_StmCol())
       return C_CONTINUE_RECURSION;
 
 
@@ -194,7 +194,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 //      return C_CONTINUE_RECURSION;
 //
 //    Card_Term* p_term = _pCard_Term(p_pred);
-//    if (!p_term->pSymbol()->bIs_Col_No())
+//    if (!p_term->pSymbol()->bIs_StmCol())
 //      return C_CONTINUE_RECURSION;
 //
 //    Stz* szColNm = nullptr;

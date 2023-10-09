@@ -40,7 +40,7 @@ bool Card_COLUMN::bIsReplicated(Symbol* aCol)
   if (! aCol)
     return false;
 
-  if (!aCol->bIs_Col_Tc())
+  if (!aCol->bIs_TblCol())
     return false;
 
   char cTblSyn = aCol->cSF_tblSyn();

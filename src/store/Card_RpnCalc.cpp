@@ -81,7 +81,7 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
 
-    if (xKid.p_term()->pSymbol()->bIs_Col_No()) {
+    if (xKid.p_term()->pSymbol()->bIs_StmCol()) {
       xKid.p_term()->vBump_stmOdn(nBumpBy);
       xKid.p_term()->vMark1(MARK_CHANGED);
     }
@@ -122,7 +122,7 @@ void Card_RpnCalc::vConvert_tblCol_To_stmCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (! xKid.p_term()->pSymbol()->bIs_Col_Tc())
+    if (!xKid.p_term()->pSymbol()->bIs_TblCol())
       continue;
 
     xKid.p_term()->vConvert_tblCol_To_stmCol(pCI);
@@ -138,7 +138,7 @@ void Card_RpnCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (! xKid.p_term()->pSymbol()->bIs_Col_No())
+    if (!xKid.p_term()->pSymbol()->bIs_StmCol())
       continue;
 
     xKid.p_term()->vConvert_stmOdn_To_colOdn(pCI);
@@ -393,7 +393,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (bIsScalarCol() &&
-      (bIs_SQCRLKEY || pGetTerm(0)->pSymbol()->bIs_Col_Tc())) {
+      (bIs_SQCRLKEY || pGetTerm(0)->pSymbol()->bIs_TblCol())) {
     Card_RpnCalc* p_rpnCalc_reduced = pClone();
     return p_rpnCalc_reduced;
   }

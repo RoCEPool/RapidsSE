@@ -243,10 +243,10 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (pTerm_0->pSymbol()->bIs_Col_Tc()) {
+  if (pTerm_0->pSymbol()->bIs_TblCol()) {
     // + term_0 is $c.n
 
-    if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
+    if (pTerm_1->pSymbol()->bIs_TblCol()) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -267,7 +267,7 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIs_Col_Tc()) {
+  if (pTerm_1->pSymbol()->bIs_TblCol()) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
@@ -364,8 +364,8 @@ bool Card_CONJUNCTION::bMaybeJoinPred(void)
   Card_Term* pTerm_0 = pGetTerm(0);
   Card_Term* pTerm_1 = pGetTerm(1);
 
-  if (pTerm_0->pSymbol()->bIs_Col_Tc() &&
-      pTerm_1->pSymbol()->bIs_Col_Tc())
+  if (pTerm_0->pSymbol()->bIs_TblCol() &&
+      pTerm_1->pSymbol()->bIs_TblCol())
     // + term_0 and term_1 are $c.n
     return true;
 

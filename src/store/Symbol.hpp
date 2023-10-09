@@ -57,8 +57,8 @@ namespace STORE
     static bool bIs_Cast(Stz* szChrSeq);            // CAST
     static bool bIs_CastType(Stz* szChrSeq);        // CASTTYPE
     static bool bIs_Col_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_Col_No(Stz* szChrSeq);          // $n
-    static bool bIs_Col_Tc(Stz* szChrSeq);          // $c.n
+    static bool bIs_StmCol(Stz* szChrSeq);          // $n
+    static bool bIs_TblCol(Stz* szChrSeq);          // $c.n
     static bool bIs_Col_Type(Stz* szChrSeq);        // BOOLEAN, ... VARCHAR
     static bool bIs_Comma(Stz* szChrSeq);           // ,
     static bool bIs_Cross(Stz* szChrSeq);           // CROSS
@@ -158,8 +158,8 @@ namespace STORE
     bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Col_Nm_dis(void);      // C_n
     bool bIs_Col_Nm_syn(void);      // C_n
-    bool bIs_Col_No(void);          // $n
-    bool bIs_Col_Tc(void);          // $c.n
+    bool bIs_StmCol(void);          // $n
+    bool bIs_TblCol(void);          // $t.c
     bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
     bool bIs_Comma(void);           // ,
     bool bIs_Cross(void);           // CROSS
@@ -273,10 +273,10 @@ namespace STORE
     void vFacet_Col_Nm_dis(i8 i_Child);
     void vFacet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
     void vFacet_Col_Nm_syn(Stz* szColNm_syn);
-    void vFacet_Col_No(Stz* szColNo);
-    void vFacet_Col_No(i8 iStmColOdn);
-    void vFacet_Col_Tc(char cTblSyn, i8 iTblColOdn);
-    void vFacet_Col_Tc(Stz* szColTc);
+    void vFacet_StmCol(Stz* szStmCol);
+    void vFacet_StmCol(i8 iStmCol);
+    void vFacet_TblCol(char cTblSyn, i8 iTblCol);
+    void vFacet_TblCol(Stz* szTblCol);
     void vFacet_Col_Type(Stz* szColType);
     void vFacet_Comma(Stz* szComma);
     void vFacet_Cross(Stz* szCross);
