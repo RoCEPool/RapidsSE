@@ -1,0 +1,85 @@
+--------------------------------------------------------------------------------
+-- tpch query1
+--------------------------------------------------------------------------------
+
+/optimise_passthru
+pipeline Query1
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public lineitem
+    | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
+    | gbyAgg " GroupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+      aggregates
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) L_QUANTITY sum  ,
+      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
+      type INTEGER ) L_EXTENDEDPRICE count  ,
+      type INTEGER ) L_QUANTITY count  ,
+      type DECIMAL ) L_DISCOUNT sum  ,
+      type INTEGER ) L_DISCOUNT count  ,
+      type INTEGER ) countAll  "
+    | combined 0
+    | next
+
+  stage S02 on all nodes :
+    gbyAgg " GroupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+      aggregates
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum ,
+      type INTEGER ) $7 sum ,
+      type INTEGER ) $8 sum ,
+      type DECIMAL ) $9 sum ,
+      type INTEGER ) $10 sum ,
+      type INTEGER ) $11 sum "
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    gbyAgg " GroupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+      aggregates
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum ,
+      type INTEGER ) $7 sum ,
+      type INTEGER ) $8 sum ,
+      type DECIMAL ) $9 sum ,
+      type INTEGER ) $10 sum ,
+      type INTEGER as COUNT_ORDER ) $11 sum"
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY SUM_QTY ,
+      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL as AVG_QTY SUM_QTY $8 casttype DECIMAL CAST  / ,
+      type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / ,
+      type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / ,
+      type INTEGER as COUNT_ORDER COUNT_ORDER "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    output
+    | sink
+    | first
+end ;
