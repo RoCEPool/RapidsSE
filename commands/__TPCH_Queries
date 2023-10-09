@@ -11,6 +11,7 @@ QUERY 1
 //SF1:    2703ms       //
 /////////////////////////
 
+/optimise_passthru
 /time pipeline Query1
 begin
   stage S00 on origin :
@@ -47,6 +48,7 @@ begin
 end ;
 
 /* JMETER
+/optimise_passthru
 pipeline Query1
 begin
   stage S00 on origin :
@@ -139,6 +141,7 @@ QUERY 2
 //SF10:   280ms        //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query2
 begin
   stage S00 on origin :
@@ -238,6 +241,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query2
 begin
   stage S00 on origin :
@@ -386,6 +390,7 @@ QUERY 3
 //sf10:  2201ms        //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query3
 begin
   stage S00 on origin :
@@ -446,6 +451,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query3
 begin
   stage S00 on origin :
@@ -522,7 +528,7 @@ QUERY 4
 //      indexScan:  1982   //
 /////////////////////////////
 
-
+/optimise_passthru
 /time /jobMetrics pipeline Query4
 begin
   stage S00 on origin :
@@ -561,6 +567,7 @@ begin
 end ;
 
 /* JMETER
+/optimise_passthru
 pipeline Query4
 begin
 
@@ -622,6 +629,7 @@ QUERY 5
 //SF10:   4977ms       //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query5
 begin
   stage stageStart on origin :
@@ -699,6 +707,7 @@ begin
 end ;
 
 /* JMETER
+/optimise_passthru
 pipeline Query5
 begin
   stage stageStart on origin :
@@ -805,6 +814,7 @@ QUERY 6
 //SF10:  709ms         //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query6
  begin
    stage S00 on origin :
@@ -837,6 +847,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query6
  begin
    stage S00 on origin :
@@ -878,6 +889,7 @@ QUERY 7
 //SF10:   4288ms       //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query7
 begin
    stage S00 on origin :
@@ -948,6 +960,7 @@ begin
 end ;
 
 /* JMETER
+/optimise_passthru
 pipeline Query7
 begin
    stage S00 on origin :
@@ -1062,6 +1075,7 @@ QUERY 8
 //SF10:     4866ms     //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Q8
 begin
   stage S00 on origin :
@@ -1151,6 +1165,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Q8
 begin
   stage S00 on origin :
@@ -1275,6 +1290,7 @@ QUERY 9
 //SF10:     24770ms    //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query9
   begin
   stage S00 on origin :
@@ -1349,6 +1365,7 @@ QUERY 9
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query9
   begin
   stage S00 on origin :
@@ -1458,6 +1475,7 @@ QUERY 10
 //SF10:   4666ms       //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query10
 begin
 
@@ -1528,6 +1546,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query10
 begin
 
@@ -1628,6 +1647,7 @@ QUERY 11
 //SF10:  1.6s          //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query11
 begin
   stage S00 on origin :
@@ -1708,6 +1728,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query11
 begin
   stage S00 on origin :
@@ -1802,6 +1823,8 @@ end ;
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 QUERY 12
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/optimise_passthru
 /time /jobMetrics pipeline Query12
  begin
    stage S00 on origin :
@@ -1847,6 +1870,7 @@ QUERY 12
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query12
  begin
    stage S00 on origin :
@@ -1895,6 +1919,7 @@ pipeline Query12
 QUERY 13
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/optimise_passthru
 /time /jobMetrics pipeline Query13
 begin
   stage S00 on origin :
@@ -1934,6 +1959,7 @@ begin
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query13
 begin
   stage S00 on origin :
@@ -1983,6 +2009,7 @@ begin
 QUERY 14
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/optimise_passthru
 /time /jobMetrics pipeline Query14
 begin
   stage S00 on origin :
@@ -2026,6 +2053,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query14
 begin
   stage S00 on origin :
@@ -2077,6 +2105,7 @@ end ;
 QUERY 15
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/optimise_passthru
 /time /jobMetrics pipeline Query15
  begin
    stage S01 on origin :
@@ -2119,6 +2148,7 @@ QUERY 15
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query15
  begin
    stage S01 on origin :
@@ -2170,6 +2200,7 @@ pipeline Query15
 QUERY 16
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/optimise_passthru
 /time /jobMetrics pipeline Query16
 begin
   stage S00 on origin :
@@ -2237,6 +2268,7 @@ begin
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query16
 begin
   stage S00 on origin :
@@ -2370,6 +2402,7 @@ QUERY 17
 //SF10:  447ms         //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query17
 begin
   stage S00 on origin :
@@ -2430,6 +2463,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query17
 begin
   stage S00 on origin :
@@ -2509,6 +2543,7 @@ QUERY 18
 //SF10:  1262ms        //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query18
  begin
    stage S00 on origin :
@@ -2564,6 +2599,7 @@ QUERY 18
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query18
 begin
    stage S00 on origin :
@@ -2669,6 +2705,7 @@ QUERY 19
 //SF10:  609ms         //
 /////////////////////////
 
+/optimise_passthru
 /time /jobMetrics pipeline Query19
 begin
  stage S00 on origin :
@@ -2713,6 +2750,7 @@ end ;
 
 /* JMETER
 
+/optimise_passthru
 pipeline Query19
 begin
  stage S00 on origin :
