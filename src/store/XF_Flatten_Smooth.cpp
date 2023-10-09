@@ -103,7 +103,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
      // pCI->vPrintBoard(__LINE__);
 
     }
-    pCI->Prior.m_pProjection = pCI->G.p_gbyAgg->pSub_projection();
+    pCI->Prior.m_pProjection = pCI->G.p_gbyAgg->pSub_emitted();
   }
 
   // [project (avg)]
@@ -135,13 +135,13 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCarryForward->Project_postAgg.m_bSeen &&  pCI->G.p_having) {
     pCI->G.p_project->vInject_foldExpr(pCI);
     pCI->G.p_having->vAcclimate_foldExpr(pCI);
-    pCI->G.p_projection = pCI->G.p_project->pSub_projection();
+    pCI->G.p_projection = pCI->G.p_project->pSub_emitted();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
    // pCI->vPrintBoard(__LINE__);
   }
   else
   if (pCarryForward->Unproject.m_bUnproject_foldExpr) {
-    pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
+    pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_emitted();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
    // pCI->vPrintBoard(__LINE__);
     vDebugPoint();

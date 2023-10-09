@@ -68,7 +68,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
-void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
+void Card_IdxColList::vAffix_tblColOdn(Card_Emitted* p_projection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

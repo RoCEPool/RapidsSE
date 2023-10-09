@@ -136,7 +136,7 @@ namespace STORE
     Card_Payload *       p_payload;
     Card_PayloadCells *  p_payloadCells;
     Card_Project *       p_project;
-    Card_Projection *    p_projection;
+    Card_Emitted *    p_projection;
 
     Card_RelnOp *        p_relnOp;
     Card_Required *      p_required;

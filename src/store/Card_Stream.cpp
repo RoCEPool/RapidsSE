@@ -44,9 +44,9 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_CROSSJOIN,CK_NONE));
-  pCI->Next.m_pProjection = pCI->Next.m_pProject->pSub_projection();
+  pCI->Next.m_pProjection = pCI->Next.m_pProject->pSub_emitted();
 
-  if ((pCI->G.p_projection = pCI->G.p_stream->pSub_projection()))
+  if ((pCI->G.p_projection = pCI->G.p_stream->pSub_emitted()))
     pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,7 +86,7 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
 
     // <op>/<stream> ; <op>/<stream>/<projection>
     //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
-    pCI->G.p_projection = pCI->G.p_stream->pSub_projection();
+    pCI->G.p_projection = pCI->G.p_stream->pSub_emitted();
 
     // <op>/<stream>/<projection> -> <arriving>
     pCI->G.p_arriving = (Card_Arriving *) pCI->G.p_projection->pClone();
@@ -121,7 +121,7 @@ void Card_Stream::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_PROJECTION,CK_NONE);
+    vValidate_mustHave(CK_EMITTED, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

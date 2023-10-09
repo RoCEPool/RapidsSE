@@ -90,7 +90,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
 
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_FROM));
-  Card_Projection* p_projection_table = pCI->G.p_from->pSub_projection();
+  Card_Emitted* p_projection_table = pCI->G.p_from->pSub_emitted();
 
   pCI->vBeginEachReverse();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));

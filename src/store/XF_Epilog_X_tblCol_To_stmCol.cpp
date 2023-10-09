@@ -126,7 +126,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
     m_pCI->G.p_filter->vConvert_colOdn_To_stmOdn(m_pCI);
   }
 
-  if ((m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_projection())) {
+  if ((m_pCI->G.p_projection = m_pCI->G.p_MainCard->pSub_emitted())) {
     m_pCI->G.p_projection->vConvert_colOdn_To_stmOdn(m_pCI);
   }
 

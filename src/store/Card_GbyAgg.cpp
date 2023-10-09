@@ -50,7 +50,7 @@ void Card_GbyAgg::vBump_Rightwards(i8 nBumpBy)
   if (Card_Key* p_key = pSub_key())
     p_key->vBump_Rightwards(nBumpBy);
 
-  if (Card_Projection* p_projection = pSub_projection())
+  if (Card_Emitted* p_projection = pSub_emitted())
     p_projection->vBump_Rightwards(nBumpBy);
 }
 
@@ -93,7 +93,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Prior.m_pProjection = pSub_projection();
+    pCI->Prior.m_pProjection = pSub_emitted();
 
    // pCI->vPrintBoard();
     return;
@@ -102,7 +102,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   // get the root needed form of gbyAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
@@ -131,7 +131,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
@@ -150,7 +150,7 @@ void Card_GbyAgg::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_key = pCI->G.p_gbyAgg->pSub_key();
   pCI->G.p_key->vBump_stmOdn_In_rpnCalc(pCI);
 
-  pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
+  pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_emitted();
   pCI->G.p_projection->vBump_keyOdn_In_rpnCalc(pCI);
   pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);
 
@@ -206,7 +206,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
     pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->Prior.m_pProjection = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_emitted();
 
  // pCI->vRenumberCards();
 }
@@ -253,7 +253,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
     }
   }
 
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted())) {
 
     if (pCI->Prior.m_pProjection) {
       pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);

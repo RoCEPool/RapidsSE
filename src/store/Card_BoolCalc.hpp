@@ -24,7 +24,7 @@ namespace STORE
     void vConvert_colOdn_To_stmOdn(CardIter* pCI);
     void vConvert_stmOdn_To_colOdn(CardIter* pCI);
     void vCopyMarkedPredsToTable(CardIter* pCI);
-    void vCorrectStmOdn(Card_Projection* p_projection_prior);
+    void vCorrectStmOdn(Card_Emitted* p_projection_prior);
     i8 nCullPred(Stz* szWithMark);
     bool bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);

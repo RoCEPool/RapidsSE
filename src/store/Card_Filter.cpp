@@ -82,17 +82,17 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
-  if (! pCI->G.p_MainCard->pSub_projection())
+  if (!pCI->G.p_MainCard->pSub_emitted())
     pCI->G.p_MainCard->vDump(__func__);
 
-  RASSERT(pCI->G.p_MainCard->pSub_projection());
+  RASSERT(pCI->G.p_MainCard->pSub_emitted());
 
   pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
 
 
   pCI->G.p_filter->vEnsure_stream(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_projection()->pClone());
+  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_emitted()->pClone());
 
   pCI->G.pDeck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_MainCard);
 
@@ -153,7 +153,7 @@ void Card_Filter::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vCorrectStmOdn(Card_Projection* p_projection_prior)
+void Card_Filter::vCorrectStmOdn(Card_Emitted* p_projection_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -243,7 +243,7 @@ void Card_Filter::vUpdate_projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
+  if ((pCI->G.p_projection = pCI->G.p_filter->pSub_emitted())) {
 
     pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
     pCI->G.p_filter->vAppendChild(pCI->Prior.m_pProjection->pClone());

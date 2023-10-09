@@ -41,6 +41,7 @@ enum eCK : i8 // card kind
   /* */ CK_DIRECTION,
   /* */ CK_DISPOSITION,
 
+  /* */ CK_EMITTED,
   /* */ CK_EXPR,
 
   /* */ CK_FILTER,
@@ -98,7 +99,6 @@ enum eCK : i8 // card kind
   /* */ CK_PAYLOAD,
   /* */ CK_PAYLOADCELLS,
   /* */ CK_PROJECT,
-  /* */ CK_PROJECTION,
 
   /* */ CK_RELNOP,
   /* */ CK_REQUIRED,

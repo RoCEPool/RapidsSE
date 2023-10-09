@@ -68,7 +68,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
     return;
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = this;
@@ -98,7 +98,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
@@ -121,7 +121,7 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
     }
   }
 
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted())) {
 
     if (pCI->Prior.m_pProjection) {
       pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);

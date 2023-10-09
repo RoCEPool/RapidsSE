@@ -88,7 +88,7 @@ void ShortForm::vAdd(CardIter* pCI)
 
   if ((pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected()))
     pCI->G.p_injected->vShortForm(m_axOp[m_nOps].m_sInjected);
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted()))
     pCI->G.p_projection->vShortForm(m_axOp[m_nOps].m_sProjection);
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key()))
     pCI->G.p_key->vShortForm(m_axOp[m_nOps].m_sKey);

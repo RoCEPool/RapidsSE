@@ -34,12 +34,12 @@ namespace STORE
     } Early;
 
     struct {
-      Card_Projection * m_pProjection;
+      Card_Emitted * m_pProjection;
     } Prior;
 
     struct {
       Card_Project *    m_pProject;
-      Card_Projection * m_pProjection;
+      Card_Emitted * m_pProjection;
     } Next;
 
     struct {
@@ -59,7 +59,7 @@ namespace STORE
 
     struct {
      Card_StreamKey *  m_pStreamKey_running;
-      Card_Projection * m_pProjection_running;
+      Card_Emitted * m_pProjection_running;
     } StreamOrder;
 
     struct {
@@ -202,7 +202,7 @@ namespace STORE
     void vRenumberCards(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Expr* pResolvePrior_expr_prior(Card_Term* p_term);
-    Card_Projection* pResolvePrior_projection(void);
+    Card_Emitted* pResolvePrior_projection(void);
     void vRestore(void);
     Card* pRewindChild(void);
     bool G_bRewindMain(void);

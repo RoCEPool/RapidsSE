@@ -1194,7 +1194,7 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
 
     //pMain->vDump();
 
-    if (Card_Projection* p_projection = pMain->pSub_projection()) {
+    if (Card_Emitted* p_projection = pMain->pSub_emitted()) {
       i8 nChildren_prj = p_projection->nChildCards();
       for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
         Card *pChild_prj = p_projection->pGetChild(i_Child);
@@ -1232,7 +1232,7 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card *pMain = this->G.pDeck->pGetChild(i_Main);
 
-    if (Card_Projection* p_projection = pMain->pSub_projection()) {
+    if (Card_Emitted* p_projection = pMain->pSub_emitted()) {
       i8 nChildren_prj = p_projection->nChildCards();
       for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
         Card *pChild_prj = p_projection->pGetChild(i_Child);
@@ -1403,7 +1403,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_PAYLOAD:          return G.p_payload;
     case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_PROJECT:          return G.p_project;
-    case CK_PROJECTION:       return G.p_projection;
+    case CK_EMITTED:       return G.p_projection;
 
     case CK_RELNOP:           return G.p_relnOp;
     case CK_REQUIRED:         return G.p_required;
@@ -1649,7 +1649,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PAYLOADCELLS:     G.p_payloadCells      = _pCard_PayloadCells(pCard); break;
     case CK_PROJECT:          G.p_project           = _pCard_Project(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
-    case CK_PROJECTION:       G.p_projection        = _pCard_Projection(pCard); break;
+    case CK_EMITTED: G.p_projection        = _pCard_Emitted(pCard); break;
 
     case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
     case CK_REQUIRED:         G.p_required          = _pCard_Required(pCard); break;
@@ -2047,7 +2047,7 @@ void CardIter::vSnapPriorProjection(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (Card_Projection* p_projection = G.p_OP->pSub_projection())
+  if (Card_Emitted* p_projection = G.p_OP->pSub_emitted())
     Prior.m_pProjection = p_projection;
 }
 
@@ -2336,7 +2336,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Projection* p_projection_prior = pResolvePrior_projection();
+  Card_Emitted* p_projection_prior = pResolvePrior_projection();
   if (! p_projection_prior)
     return nullptr;
 
@@ -2363,11 +2363,11 @@ Card_Expr* CardIter::pResolvePrior_expr_prior(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* resolve prior projection (find right-to-left)                              */
 /*----------------------------------------------------------------------------*/
-Card_Projection* CardIter::pResolvePrior_projection(void)
+Card_Emitted* CardIter::pResolvePrior_projection(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Projection* p_projection_prior = Card_Projection::pResolvePriorProjection(this);
+  Card_Emitted* p_projection_prior = Card_Emitted::pResolvePriorProjection(this);
 
   return p_projection_prior;
 }
@@ -2662,7 +2662,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_PAYLOAD:      G.p_payload->vValidate(this, iDepth, pCard);  break;
       case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
-      case CK_PROJECTION:   G.p_projection->vValidate(this, iDepth, pCard);  break;
+      case CK_EMITTED:   G.p_projection->vValidate(this, iDepth, pCard);  break;
 
       case CK_RELNOP:     G.p_relnOp->vValidate(this, iDepth, pCard);  break;
       case CK_REQUIRED:   G.p_required->vValidate(this, iDepth, pCard);  break;

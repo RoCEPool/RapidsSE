@@ -55,6 +55,7 @@ namespace STORE
   class Card_Decision;
   class Card_Direction;
 
+  class Card_Emitted;
   class Card_EXPRLIST;
   class Card_Expr;
 
@@ -116,7 +117,6 @@ namespace STORE
   class Card_Payload;
   class Card_PayloadCells;
   class Card_Project;
-  class Card_Projection;
 
   class Card_RelnOp;
   class Card_Required;
@@ -440,6 +440,7 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
+    Card_Emitted*       pSub_emitted(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);
     Card_FiltPredList*  pSub_filtPredList(void);
@@ -475,7 +476,6 @@ namespace STORE
     Card_OuterJoin*     pSub_outerJoin(void);
     Card_Payload*       pSub_payload(void);
     Card_PayloadCells*  pSub_payloadCells(void);
-    Card_Projection*    pSub_projection(void);
     Card_RelnOp*        pSub_relnOp(void);
     Card_Required*      pSub_required(void);
     Card_RowCount*      pSub_rowCount(void);

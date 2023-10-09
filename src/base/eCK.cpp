@@ -44,6 +44,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
   /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
+  /* */ "CK_EMITTED"_Stz,      // CK_EMITTED
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
@@ -101,7 +102,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_PAYLOAD"_Stz,      // CK_PAYLOAD
   /* */ "CK_PAYLOADCELLS"_Stz, // CK_PAYLOADCELLS
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
-  /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
   /* */ "CK_RQUIRED"_Stz,      // CK_REQUIRED
@@ -191,6 +191,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "direction"_Stz,       // CK_DIRECTION
   /* */ "disp"_Stz,            // CK_DISPOSITION
 
+  /* */ "emitted"_Stz,         // CK_EMITTED
   /* */ "expr"_Stz,            // CK_EXPR
 
   /* */ "filter"_Stz,          // CK_FILTER
@@ -248,7 +249,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "payload"_Stz,         // CK_PAYLOAD
   /* */ "payloadCells"_Stz,    // CK_PAYLOADCELLS
   /* */ "project"_Stz,         // CK_PROJECT
-  /* */ "projection"_Stz,      // CK_PROJECTION
 
   /* */ "relnOp"_Stz,          // CK_RELNOP
   /* */ "required"_Stz,        // CK_REQUIRED

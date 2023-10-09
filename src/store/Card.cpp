@@ -2380,6 +2380,19 @@ Card_Direction* Card::pSub_direction(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Emitted.hpp"
+Card_Emitted* Card::pSub_emitted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Emitted* p_projection =
+      _pCard_Emitted(pFindSubCard(CK_EMITTED));
+  return p_projection;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Expr.hpp"
 Card_Expr* Card::pSub_expr(void)
 {
@@ -2830,19 +2843,6 @@ Card_PayloadCells* Card::pSub_payloadCells(void)
   Card_PayloadCells* p_payloadCells =
       _pCard_PayloadCells(pFindSubCard(CK_PAYLOADCELLS));
   return p_payloadCells;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-#include "Card_Projection.hpp"
-Card_Projection* Card::pSub_projection(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Projection* p_projection =
-      _pCard_Projection(pFindSubCard(CK_PROJECTION));
-  return p_projection;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -22,7 +22,7 @@ namespace STORE
     Card_RpnCalc* pClone(void);
     void vConvert_colOdn_To_stmOdn(CardIter* pCI);
     void vConvert_stmOdn_To_colOdn(CardIter* pCI);
-    void vCorrectStmOdn(Card_Projection* p_projection_prior);
+    void vCorrectStmOdn(Card_Emitted* p_projection_prior);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstKeyCol(void);

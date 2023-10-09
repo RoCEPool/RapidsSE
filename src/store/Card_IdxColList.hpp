@@ -17,7 +17,7 @@ namespace STORE
    ~Card_IdxColList(void) noexcept(false);
 
     void vAdd_streamKey_exprs(CardIter* pCI);
-    void vAffix_tblColOdn(Card_Projection* p_projection);
+    void vAffix_tblColOdn(Card_Emitted* p_projection);
     Card_IdxCol* pGetIdxCol_byIdxColOdn(Stz* szIdxColOdn);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

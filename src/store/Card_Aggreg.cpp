@@ -4,7 +4,7 @@
 
 #include "Card_Aggreg.hpp"
 
-#include "Card_Projection.hpp"
+#include "Card_Emitted.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +48,7 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Projection* p_projection = pSub_projection())
+  if (Card_Emitted* p_projection = pSub_emitted())
     p_projection->vBump_Rightwards(nBumpBy);
 }
 
@@ -86,7 +86,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
   pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
 
   if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
@@ -118,7 +118,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 
@@ -144,7 +144,7 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted())) {
 
     if (pCI->Prior.m_pProjection) {
       pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);

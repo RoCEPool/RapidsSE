@@ -90,7 +90,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Prior.m_pProjection = pSub_projection();
+    pCI->Prior.m_pProjection = pSub_emitted();
 
    // pCI->vPrintBoard();
     return;
@@ -131,7 +131,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Prior.m_pProjection = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_emitted();
 
  // pCI->vPrintBoard();
 
@@ -191,7 +191,7 @@ void Card_KeyExists::vUpdate_projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ( (pCI->G.p_projection = pSub_projection()) ) {
+  if ( (pCI->G.p_projection = pSub_emitted()) ) {
     vDeleteSub(pCI->G.p_projection);
   }
 

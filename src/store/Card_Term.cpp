@@ -72,7 +72,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
          (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
       //pCI->G.p_indexJoin->vDump(__func__);
 
-      pCI->G.p_projection  = pCI->G.p_indexJoin->pSub_projection();
+      pCI->G.p_projection  = pCI->G.p_indexJoin->pSub_emitted();
       if ((pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_as_stripItem(p_term->pSymbol()))) {
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
         p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
@@ -235,7 +235,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
   // probably introduced into this stream by the operator
 
   i8 nCols_injectedByThisCard;
-  pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+  pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
   if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
       pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
     nCols_injectedByThisCard = 0;
@@ -615,7 +615,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /* correct stmOdn                                                             */
 /*----------------------------------------------------------------------------*/
 
-void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
+void Card_Term::vCorrectStmOdn(Card_Emitted* p_projection_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

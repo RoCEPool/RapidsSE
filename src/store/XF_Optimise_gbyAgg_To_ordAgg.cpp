@@ -85,8 +85,8 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
         break;
 
       default:
-        if (m_pCI->G.p_MainCard->pSub_projection()) {
-          m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
+        if (m_pCI->G.p_MainCard->pSub_emitted()) {
+          m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_emitted();
           m_pCI->StreamOrder.m_pStreamKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_streamKey();
         }
         break;

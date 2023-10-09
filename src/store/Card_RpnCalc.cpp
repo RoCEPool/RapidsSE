@@ -148,7 +148,7 @@ void Card_RpnCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
+void Card_RpnCalc::vCorrectStmOdn(Card_Emitted* p_projection_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

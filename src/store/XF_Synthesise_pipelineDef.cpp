@@ -551,7 +551,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   }
 
   Card_Injected*   p_injected   = pSubCard->pSub_injected();
-  Card_Projection* p_projection = pSubCard->pSub_projection();
+  Card_Emitted* p_projection = pSubCard->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -635,7 +635,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   Card_Arriving*   p_arriving   = pSubCard->pSub_arriving();
-  Card_Projection* p_projection = pSubCard->pSub_projection();
+  Card_Emitted* p_projection = pSubCard->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -724,7 +724,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 //
 //  Card_Arriving *p_arriving = pSubCard->pSub_arriving();
-//  Card_Projection *p_projection = pSubCard->pSub_projection();
+//  Card_Emitted *p_projection = pSubCard->pSub_emitted();
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //

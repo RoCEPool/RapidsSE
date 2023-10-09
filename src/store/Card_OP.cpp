@@ -123,7 +123,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
+void Card_OP::vCorrectStmOdn(Card_Emitted* p_projection_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -133,7 +133,7 @@ void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
   if (Card_Filter* p_filter = pSub_filter())
     p_filter->vCorrectStmOdn(p_projection_prior);
 
-  if (Card_Projection* p_projection = pSub_projection())
+  if (Card_Emitted* p_projection = pSub_emitted())
     p_projection->vCorrectStmOdn(p_projection_prior);
 }
 
@@ -424,7 +424,7 @@ void Card_OP::vMapColumns(CardIter *pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   pCI->G_vAppendNewChild(CK_SYNTHESIS, CK_MAPPING);
   pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
@@ -514,7 +514,7 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (pCI->G.p_projection = pSub_projection()))
+  if (! (pCI->G.p_projection = pSub_emitted()))
     return false;
 
   return true;
@@ -543,10 +543,10 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Projection* p_projection;
+  Card_Emitted* p_projection;
 
   if (CK_PROJECT == eCard() && pCI->Prior.m_pProjection) {
-    p_projection = pSub_projection();
+    p_projection = pSub_emitted();
     p_projection->vEnsureTypes_For_stmColOdn(pCI);
     return;
   }
@@ -557,16 +557,16 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   vEnsure_stream(pCI);
 
 
-  if ((p_projection = pSub_projection()))
+  if ((p_projection = pSub_emitted()))
     pCI->G.p_stream->vDeleteChild(p_projection);
 
 
-  Card_Projection* p_projection_needed;
-  if ((p_projection_needed = pSub_projection()))
+  Card_Emitted* p_projection_needed;
+  if ((p_projection_needed = pSub_emitted()))
     vRemoveChild(p_projection_needed);
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_projection = _pCard_Projection(pCI->Prior.m_pProjection->pDupCardRecursive());
+    p_projection = _pCard_Emitted(pCI->Prior.m_pProjection->pDupCardRecursive());
     pCI->G.p_stream->vAppendChild(p_projection);
     pCI->Prior.m_pProjection = p_projection;
     if (p_projection_needed)
@@ -592,7 +592,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     //p_projection->vDump(__func__ );
   }
   else {
-    p_projection = new Card_Projection(pCI->iXform());
+    p_projection = new Card_Emitted(pCI->iXform());
   }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
@@ -648,8 +648,8 @@ void Card_OP::vRpnAggreg(String* psRpnExpr, Card_Aggreg* pCard_Aggreg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_Projection* pCard_Projection =
-      _pCard_Projection(pCard_Aggreg->pFindSubCard(CK_PROJECTION));
+  Card_Emitted* pCard_Projection =
+      _pCard_Emitted(pCard_Aggreg->pFindSubCard(CK_EMITTED));
 
   if (! pCard_Projection)
     return;
@@ -781,8 +781,8 @@ void Card_OP::vRpnGbyAgg(String* psRpnExpr, Card_GbyAgg* pCard_GbyAgg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Card_Projection* pCard_Projection =
-      _pCard_Projection(pCard_GbyAgg->pFindSubCard(CK_PROJECTION));
+  Card_Emitted* pCard_Projection =
+      _pCard_Emitted(pCard_GbyAgg->pFindSubCard(CK_EMITTED));
 
   if (! pCard_Projection)
     return;
@@ -1246,8 +1246,8 @@ void Card_OP::vRpnOrdAgg(String* psRpnExpr, Card_OrdAgg* pCard_OrdAgg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Card_Projection* pCard_Projection =
-      _pCard_Projection(pCard_OrdAgg->pFindSubCard(CK_PROJECTION));
+  Card_Emitted* pCard_Projection =
+      _pCard_Emitted(pCard_OrdAgg->pFindSubCard(CK_EMITTED));
 
   if (! pCard_Projection)
     return;
@@ -1282,8 +1282,8 @@ void Card_OP::vRpnProject(String* psRpnExpr, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Projection* pCard_Projection =
-      _pCard_Projection(pCard_Project->pFindSubCard(CK_PROJECTION));
+  Card_Emitted* pCard_Projection =
+      _pCard_Emitted(pCard_Project->pFindSubCard(CK_EMITTED));
 
   i8 nSubCards = pCard_Projection->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1614,7 +1614,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Projection* p_projection = pSub_projection();
+  Card_Emitted* p_projection = pSub_emitted();
   if (! p_projection)
     return nullptr;
 

@@ -78,7 +78,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                              //             %1
 
   pCI->vClearRestart();
-  while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_PROJECTION,CK_FILTER))
+  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_EMITTED, CK_FILTER))
    if (bIdentify_Correlation_Key_Predicate(pCI))
      break;
   RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)
@@ -109,7 +109,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // get final SQ:<op>/<projection>
 
   if (CK_PROJECT == pCI->G.e_MainCard || CK_GBYAGG == pCI->G.e_MainCard)
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+    pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
   else
     NEVER_REACH
 
@@ -168,11 +168,11 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   pCI->vForwards(false);
-  while (! pCI->G.p_MainCard->pSub_projection())
+  while (!pCI->G.p_MainCard->pSub_emitted())
     pCI->G_bEachMain_reverse_NONE();
   pCI->vForwards(true);
 
-  pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();
+  pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_emitted();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
@@ -299,7 +299,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     eAL e_Level = (eAL) pCI->G.p_level->pSymbol()->Y_iGet(P_Level);
 
     pCI->G.p_stream = pCI->G.p_gbyAgg->pSub_stream();
-    pCI->G.p_projection = pCI->G.p_stream->pSub_projection();
+    pCI->G.p_projection = pCI->G.p_stream->pSub_emitted();
 
     pCI->G.p_key = new Card_Key;
     pCI->G.p_key->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -384,7 +384,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
   RASSERT(pCI->G.p_key->szP_Type());
 
-  pCI->G.p_projection = pCI->G.p_project->pSub_projection();
+  pCI->G.p_projection = pCI->G.p_project->pSub_emitted();
   pCI->G.p_projection->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
 
 

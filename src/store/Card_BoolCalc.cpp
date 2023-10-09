@@ -240,7 +240,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
+void Card_BoolCalc::vCorrectStmOdn(Card_Emitted* p_projection_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

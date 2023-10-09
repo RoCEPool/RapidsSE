@@ -20,12 +20,12 @@ namespace STORE
 
     static void vUnproject_foldExpr(CardIter* pCI,
                                     CarryForward* pCarryForward);
-    //static Card_Project* pNew_project(Card_Projection* p_prjection);
+    //static Card_Project* pNew_project(Card_Emitted* p_prjection);
 
     void vBump_Rightwards(i8 nBumpBy);
 
     void vComputeProjection(CardIter* pCI); // prototype
-    Card_Projection* pCraft_projection_early(CardIter* pCI);
+    Card_Emitted* pCraft_projection_early(CardIter* pCI);
 
     void vDedupe_as(void);
 

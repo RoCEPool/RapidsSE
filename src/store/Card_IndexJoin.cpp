@@ -85,7 +85,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
       pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Prior.m_pProjection = pSub_projection();
+    pCI->Prior.m_pProjection = pSub_emitted();
 
    // pCI->vPrintBoard();
     return;
@@ -131,7 +131,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Prior.m_pProjection = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_emitted();
 
 
 
@@ -229,7 +229,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
     return;
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = this;
@@ -259,7 +259,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_projection = pSub_emitted();
 
   pCI->Prior.m_pProjection = pCI->G.p_projection;
 

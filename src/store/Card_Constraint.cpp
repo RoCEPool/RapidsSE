@@ -128,7 +128,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     Card_Expr* p_expr_col;
 
     Symbol* pSymbol = p_term->pSymbol();
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+    pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
     p_expr_col = pCI->G.p_projection->pFind_expr_By_ordinal(pSymbol);
 
 
@@ -142,7 +142,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     else {
 
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+      pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
       i8 nExprs = pCI->G.p_projection->nChildCards();
       i8 i_Odn = p_term->iGetOdn();
       i8 i_Col_base0 = i_Odn - nExprs - 1;
@@ -207,7 +207,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 //    else {
 //
 //      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-//      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
+//      pCI->G.p_projection = pCI->G.p_MainCard->pSub_emitted();
 //      i8 nExprs = pCI->G.p_projection->nChildCards();
 //      i8 i_Odn = p_term->iGetOdn();
 //      i8 i_Col_base0 = i_Odn - nExprs - 1;

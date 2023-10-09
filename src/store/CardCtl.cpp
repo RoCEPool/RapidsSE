@@ -593,8 +593,8 @@ void CardCtl::vReset(void)
   vPrintValue(CK_ORCONJ, false);
   vPrintProperties(CK_ORCONJ, false);
 
-//  vPrintByKind(CK_PROJECTION,true);
-//  vPrintSubCards(CK_PROJECTION, false);
+//  vPrintByKind(CK_EMITTED,true);
+//  vPrintSubCards(CK_EMITTED, false);
 
   vHeatNext(CK_SECTION, true);
 

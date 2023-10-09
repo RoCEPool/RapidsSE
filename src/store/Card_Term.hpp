@@ -31,7 +31,7 @@ namespace STORE
     void vConvert_colOdn_To_stmOdn_X(CardIter* pCI);
     void vConvert_stmOdn_To_colOdn(CardIter* pCI);
     void vEnsureTypeFor_stmOdn(CardIter* pCI);
-    void vCorrectStmOdn(Card_Projection* p_projection_prior);
+    void vCorrectStmOdn(Card_Emitted* p_projection_prior);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
