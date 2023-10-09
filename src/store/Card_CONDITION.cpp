@@ -70,7 +70,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert all colOdn to stmOdn                                               */
 /*----------------------------------------------------------------------------*/
-void Card_CONDITION::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_CONDITION::vConvert_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

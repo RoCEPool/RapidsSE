@@ -119,7 +119,7 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_EXPRLIST::vConvert_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
