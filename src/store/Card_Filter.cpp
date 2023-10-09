@@ -246,7 +246,7 @@ void Card_Filter::vUpdate_projection(CardIter* pCI)
   if ((pCI->G.p_emitted = pCI->G.p_filter->pSub_emitted())) {
 
     pCI->G.p_filter->vDeleteChild(pCI->G.p_emitted);
-    pCI->G.p_filter->vAppendChild(pCI->Prior.m_pProjection->pClone());
+    pCI->G.p_filter->vAppendChild(pCI->Prior.m_pEmitted->pClone());
 
   }
 }

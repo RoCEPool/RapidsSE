@@ -197,9 +197,9 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pCI->Prior.m_pProjection) {
+  if (pCI->Prior.m_pEmitted) {
 
-    if (Card_Expr *p_expr_col = pCI->Prior.m_pProjection->pFind_expr_By_symbol(pSymbol_term)) {
+    if (Card_Expr *p_expr_col = pCI->Prior.m_pEmitted->pFind_expr_By_symbol(pSymbol_term)) {
       pSymbol_term->vFacet(SF_COL_NO, p_expr_col->szSymbol(SF_NONE));
       vMark1(MARK_CHANGED);
       return;
@@ -210,7 +210,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
         Symbol *pSymbol_key = p_expr_col_key->pSymbol();
         RASSERT(pSymbol_key->bIs_Key_Col());
 
-        if (Card_Expr *p_expr_col_ind = pCI->Prior.m_pProjection->pFind_expr_By_symbol(pSymbol_key)) {
+        if (Card_Expr *p_expr_col_ind = pCI->Prior.m_pEmitted->pFind_expr_By_symbol(pSymbol_key)) {
           pSymbol_term->vFacet(SF_COL_NO, p_expr_col_ind->szSymbol(SF_NONE));
           vMark1(MARK_CHANGED);
           return;
@@ -249,7 +249,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
       pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
     nCols_injectedByThisCard = 0;
 
-//    nCols_injectedByThisCard = pCI->Prior.m_pProjection->nChildCards();
+//    nCols_injectedByThisCard = pCI->Prior.m_pEmitted->nChildCards();
 
 //    RASSERT(this->pSymbol()->bIs_Col_Tc());
 //    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
@@ -339,7 +339,7 @@ void Card_Term::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Expr* p_expr_prior = pCI->Prior.m_pProjection->pDecodeExpr(pSymbol)) {
+  if (Card_Expr* p_expr_prior = pCI->Prior.m_pEmitted->pDecodeExpr(pSymbol)) {
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
     if (pSymbol_term0->bIs_Col_Tc()) {
@@ -378,7 +378,7 @@ void Card_Term::vEnsureTypeFor_stmOdn(CardIter* pCI)
     p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
   else
   if (bIsStmOdn())
-    p_expr_found = pCI->Prior.m_pProjection->pGetExpr(iOdn - 1);
+    p_expr_found = pCI->Prior.m_pEmitted->pGetExpr(iOdn - 1);
   else
     return;
 

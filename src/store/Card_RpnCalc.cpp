@@ -176,8 +176,8 @@ void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
       p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
     else
     if (xTerm.p_term()->bIsStmOdn()) {
-      //pCI->Prior.m_pProjection->vDump(__func__);
-      p_expr_found = pCI->Prior.m_pProjection->pGetExpr(iOdn - 1);
+      //pCI->Prior.m_pEmitted->vDump(__func__);
+      p_expr_found = pCI->Prior.m_pEmitted->pGetExpr(iOdn - 1);
     }
     else
       continue;

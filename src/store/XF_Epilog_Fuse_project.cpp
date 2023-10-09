@@ -103,7 +103,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
     if (CK_INDEXJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emitted())
-        m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_emitted();
+        m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
@@ -113,7 +113,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
-      m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_emitted();
+      m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
@@ -129,7 +129,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
 
     if (CK_CROSSJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emitted())
-        m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_emitted();
+        m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
@@ -139,7 +139,7 @@ void XF_Epilog_Fuse_project::vFuse(void)
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
       m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
-      m_pCI->Prior.m_pProjection = m_pCI->G.p_MainCard->pSub_emitted();
+      m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 

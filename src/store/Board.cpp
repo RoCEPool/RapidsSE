@@ -106,7 +106,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
 
   Card_Expr* p_expr_found =
-      pCI->Prior.m_pProjection->pGetExpr(0);
+      pCI->Prior.m_pEmitted->pGetExpr(0);
 
   pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 

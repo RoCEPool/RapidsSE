@@ -423,17 +423,17 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol  = nullptr;
 
-  Prior.m_pProjection  = nullptr;
+  Prior.m_pEmitted  = nullptr;
 
   Next.m_pProject      = nullptr;
-  Next.m_pProjection   = nullptr;
+  Next.m_pEmitted   = nullptr;
 
   Early.m_pOP_root     = nullptr;
   Early.m_pOP_leaf     = nullptr;
   Early.m_pNeeded_later = nullptr;
 
-  StreamOrder.m_pStreamKey_running  = nullptr;
-  StreamOrder.m_pProjection_running = nullptr;
+  StreamOrder.m_pStreamKey  = nullptr;
+  StreamOrder.m_pEmitted = nullptr;
 
   X.m_pExprList_a = nullptr;
   X.m_pExprList_i = nullptr;
@@ -2048,7 +2048,7 @@ void CardIter::vSnapPriorProjection(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (Card_Emitted* p_emitted = G.p_OP->pSub_emitted())
-    Prior.m_pProjection = p_emitted;
+    Prior.m_pEmitted = p_emitted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2340,7 +2340,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   if (! p_emitted_prior)
     return nullptr;
 
-  //RASSERT(p_emitted_prior == this->Prior.m_pProjection);
+  //RASSERT(p_emitted_prior == this->Prior.m_pEmitted);
 
   Card_Expr* p_expr_resolved = p_emitted_prior->pResolve_expr(p_term);
   return p_expr_resolved;
@@ -2353,10 +2353,10 @@ Card_Expr* CardIter::pResolvePrior_expr_prior(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (! this->Prior.m_pProjection)
+  if (! this->Prior.m_pEmitted)
     return nullptr;
 
-  Card_Expr* p_expr_resolved = this->Prior.m_pProjection->pResolve_expr(p_term);
+  Card_Expr* p_expr_resolved = this->Prior.m_pEmitted->pResolve_expr(p_term);
   return p_expr_resolved;
 }
 

@@ -44,7 +44,7 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_CROSSJOIN,CK_NONE));
-  pCI->Next.m_pProjection = pCI->Next.m_pProject->pSub_emitted();
+  pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emitted();
 
   if ((pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted()))
     pCI->G.p_stream->vDeleteChild(pCI->G.p_emitted);
@@ -53,7 +53,7 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
   // no arrived columns, only injected
 
   if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
-     pCI->G.p_stream->vAppendChild(pCI->Next.m_pProjection->pClone());
+     pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
     return;
   }
 
@@ -62,14 +62,14 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
 
   // index join
 
-  pCI->G.p_CARD = pCI->Prior.m_pProjection->pDupCardRecursive();
+  pCI->G.p_CARD = pCI->Prior.m_pEmitted->pDupCardRecursive();
   pCI->G.p_CARD->vCard(CK_ARRIVING);
   if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey()))
     pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
 
   pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
 
-  pCI->G.p_stream->vAppendChild(pCI->Next.m_pProjection->pClone());
+  pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
     pCI->G.p_stream->vAppendChild(pCI->G.p_arriving);
   }
   else {
-    pCI->G.p_CARD = pCI->Prior.m_pProjection->pDupCardRecursive();
+    pCI->G.p_CARD = pCI->Prior.m_pEmitted->pDupCardRecursive();
     pCI->G.p_CARD->vCard(CK_ARRIVING);
 
     if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {

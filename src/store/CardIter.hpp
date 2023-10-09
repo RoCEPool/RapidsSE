@@ -34,12 +34,12 @@ namespace STORE
     } Early;
 
     struct {
-      Card_Emitted * m_pProjection;
+      Card_Emitted * m_pEmitted;
     } Prior;
 
     struct {
-      Card_Project *    m_pProject;
-      Card_Emitted * m_pProjection;
+      Card_Project * m_pProject;
+      Card_Emitted * m_pEmitted;
     } Next;
 
     struct {
@@ -58,8 +58,8 @@ namespace STORE
     } Sqy;
 
     struct {
-     Card_StreamKey *  m_pStreamKey_running;
-      Card_Emitted * m_pProjection_running;
+      Card_StreamKey * m_pStreamKey;
+      Card_Emitted *   m_pEmitted;
     } StreamOrder;
 
     struct {

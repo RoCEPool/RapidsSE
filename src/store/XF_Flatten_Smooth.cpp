@@ -103,7 +103,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
      // pCI->vPrintBoard(__LINE__);
 
     }
-    pCI->Prior.m_pProjection = pCI->G.p_gbyAgg->pSub_emitted();
+    pCI->Prior.m_pEmitted = pCI->G.p_gbyAgg->pSub_emitted();
   }
 
   // [project (avg)]

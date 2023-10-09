@@ -65,12 +65,12 @@ void Card_GbyAgg::vDerive_streamKey(CardIter* pCI)
   RASSERT(bPeg_Key(pCI));
   pCI->G.p_emitted->vDelete_streamKey(pCI);
 
-  pCI->StreamOrder.m_pStreamKey_running = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
-  pCI->G.p_emitted->vAppendChild(pCI->StreamOrder.m_pStreamKey_running);
+  pCI->StreamOrder.m_pStreamKey = Card_StreamKey::pTo_streamKey(pCI->G.p_key);
+  pCI->G.p_emitted->vAppendChild(pCI->StreamOrder.m_pStreamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pProjection_running = pCI->G.p_emitted;
+  pCI->StreamOrder.m_pEmitted = pCI->G.p_emitted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Prior.m_pProjection = pSub_emitted();
+    pCI->Prior.m_pEmitted = pSub_emitted();
 
    // pCI->vPrintBoard();
     return;
@@ -123,7 +123,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  vCorrectStmOdn(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 
@@ -133,7 +133,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_emitted = pSub_emitted();
 
-  pCI->Prior.m_pProjection = pCI->G.p_emitted;
+  pCI->Prior.m_pEmitted = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 
@@ -174,12 +174,12 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
   if (AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
     return false;
 
-  if (! pCI->StreamOrder.m_pStreamKey_running)
+  if (! pCI->StreamOrder.m_pStreamKey)
     return false;
 
   pCI->G.p_key = pSub_key();
 
-  if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pStreamKey_running))
+  if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pStreamKey))
     return false;
 
   vCard(CK_ORDAGG);
@@ -206,7 +206,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
     pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->Prior.m_pProjection = pSub_emitted();
+  pCI->Prior.m_pEmitted = pSub_emitted();
 
  // pCI->vRenumberCards();
 }
@@ -247,7 +247,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->Prior.m_pProjection) {
+    if (pCI->Prior.m_pEmitted) {
       pCI->G.p_key->vTypes_For_stmColOdn(pCI);
       pCI->G.p_key->vRenumberAll_expr();
     }
@@ -255,7 +255,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
 
-    if (pCI->Prior.m_pProjection) {
+    if (pCI->Prior.m_pEmitted) {
       pCI->G.p_emitted->vEnsureTypes_For_stmColOdn(pCI);
       pCI->G.p_emitted->vRenumberAll_expr();
     }

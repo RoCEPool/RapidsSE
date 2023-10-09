@@ -41,14 +41,9 @@ namespace STORE
 
     void vShortForm(String* pString);
 
-    //    StreamDef* pToStreamDef(ColMap* pColMap,
-//                            Card_Key* p_key,
-//                            Card* p_OP);
-//
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
   private:
-
 
   };
 

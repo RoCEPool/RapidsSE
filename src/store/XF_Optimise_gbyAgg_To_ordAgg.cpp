@@ -71,8 +71,8 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
   m_pCI->vClearRestart();
 
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
   while (m_pCI->G_bEachMain_NONE()) {
 
@@ -86,8 +86,8 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
 
       default:
         if (m_pCI->G.p_MainCard->pSub_emitted()) {
-          m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_emitted();
-          m_pCI->StreamOrder.m_pStreamKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_streamKey();
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+          m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;
     }

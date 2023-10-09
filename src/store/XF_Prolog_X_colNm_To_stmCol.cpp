@@ -65,10 +65,10 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
   m_pCI->vTransform(__func__, XF_PROLOG_X_COLNM_TO_STMCOL, "transform column-name to stream-column"_Stz);
 
   for (m_pCI->vClearRestart(); m_pCI->G_bEachMain_NONE(); m_pCI->vSnapPriorProjection()) {
-    if (! m_pCI->Prior.m_pProjection)
+    if (! m_pCI->Prior.m_pEmitted)
       continue;
 
-    //m_pCI->Prior.m_pProjection->vDump(__func__);
+    //m_pCI->Prior.m_pEmitted->vDump(__func__);
     vConvert_colNm_To_stmCol();
   }
 
@@ -90,7 +90,7 @@ void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
   if (m_pCI->G.p_OP->pSymbol()->Y_bHas(P_BreakPt))
     vDebugPoint();
 
-  RASSERT(m_pCI->Prior.m_pProjection);
+  RASSERT(m_pCI->Prior.m_pEmitted);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -105,7 +105,7 @@ void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
     //p_term_colNm->vDump(__func__);
 
     if (Card_Expr* p_expr_found =
-        pCI->Prior.m_pProjection->pFind_expr_By_as(p_term_colNm->pSymbol())) {
+        pCI->Prior.m_pEmitted->pFind_expr_By_as(p_term_colNm->pSymbol())) {
       //p_expr_found->vDump(__func__);
       p_term_colNm->pSymbol()->vFacetsPpy(p_expr_found->pSymbol());
       if (Symbol* pSymbol_found = p_expr_found->pFirstTblCol()) {

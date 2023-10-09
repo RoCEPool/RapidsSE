@@ -55,8 +55,8 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
   pCI->G.p_emitted->vDelete_streamKey(pCI);
 
 
-  if (pCI->StreamOrder.m_pStreamKey_running) {
-    pCI->G.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey_running->pDupCardRecursive());
+  if (pCI->StreamOrder.m_pStreamKey) {
+    pCI->G.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey->pDupCardRecursive());
   }
   else {
     pCI->G.p_streamKey = new Card_StreamKey;
@@ -68,8 +68,8 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pProjection_running = pCI->G.p_emitted;
-  pCI->StreamOrder.m_pStreamKey_running  = pCI->G.p_streamKey;
+  pCI->StreamOrder.m_pEmitted = pCI->G.p_emitted;
+  pCI->StreamOrder.m_pStreamKey  = pCI->G.p_streamKey;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +85,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
       pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Prior.m_pProjection = pSub_emitted();
+    pCI->Prior.m_pEmitted = pSub_emitted();
 
    // pCI->vPrintBoard();
     return;
@@ -122,8 +122,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 //  pCI->vRenumberCards();
 //  pCI->vPrintBoard();
 
-  //pCI->Prior.m_pProjection->vDump(__func__);
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  //pCI->Prior.m_pEmitted->vDump(__func__);
+  vCorrectStmOdn(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 
@@ -131,7 +131,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Prior.m_pProjection = pSub_emitted();
+  pCI->Prior.m_pEmitted = pSub_emitted();
 
 
 
@@ -251,7 +251,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  vCorrectStmOdn(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 
@@ -261,7 +261,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_emitted = pSub_emitted();
 
-  pCI->Prior.m_pProjection = pCI->G.p_emitted;
+  pCI->Prior.m_pEmitted = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 

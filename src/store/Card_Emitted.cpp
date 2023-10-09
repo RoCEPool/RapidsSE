@@ -270,12 +270,12 @@ void Card_Emitted::vDerive_streamKey(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! pCI->StreamOrder.m_pStreamKey_running)
+  if (! pCI->StreamOrder.m_pStreamKey)
     return;
 
-  i8 nKeyExpr = pCI->StreamOrder.m_pStreamKey_running->nChildCards();
+  i8 nKeyExpr = pCI->StreamOrder.m_pStreamKey->nChildCards();
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
-    Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey_running->pGetExpr(i_RunKeyExpr);
+    Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGetExpr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGetTerm(0);
     Card_Expr* p_expr_prjCol = pFind_expr_By_symbol(p_term_runkey->pSymbol());
@@ -501,200 +501,11 @@ void Card_Emitted::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCopy("p:"_Stz);
+  pString->vCopy("e:"_Stz);
   Card_EXPRLIST::vShortForm(pString);
   //pString->vConcat("}"_Stz);
 
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* convert to streamDef                                                       */
-/*----------------------------------------------------------------------------*/
-//StreamDef* Card_Emitted::pToStreamDef(ColMap* pColMap,
-//                                         Card_Key* p_key,
-//                                         Card* p_OP)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  StreamDef* pStreamDef = new StreamDef;
-//
-//  s32 sColNm;
-//  s32 sColNm_mapped;
-//  eCT eColType;
-//
-//
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  if (CK_GBYAGG == p_OP->eCard()) {
-//
-//    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-//      Card_Expr *p_expr = xProjection.p_expr();
-//
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      p_key->vX();
-//
-//      eColType = p_expr->eColumnType();
-//      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-//    }
-//
-//    return pStreamDef;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  if (CK_SORT == p_OP->eCard()) {
-//
-//    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-//      Card_Expr *p_expr = xProjection.p_expr();
-//
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      p_key->vX();
-//
-//      eColType = p_expr->eColumnType();
-//      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-//    }
-//
-//    return pStreamDef;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  if (CK_TOP == p_OP->eCard()) {
-//
-//    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-//      Card_Expr *p_expr = xProjection.p_expr();
-//
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      p_key->vX();
-//
-//      eColType = p_expr->eColumnType();
-//      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-//    }
-//
-//    return pStreamDef;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  i8 i_EmittedCol = 1;
-//  UNUSED(i_EmittedCol);
-//  if (CK_PROJECT == p_OP->eCard()) {
-//    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-//      Card_Expr *p_expr = xProjection.p_expr();
-//
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      eColType = p_expr->eColumnType();
-//      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-//
-//    }
-//
-//    return pStreamDef;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//
-//  i_EmittedCol = 1;
-//  if (CK_SCAN == p_OP->eCard()) {
-//    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-//      Card_Expr *p_expr = xProjection.p_expr();
-//
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      eColType = p_expr->eColumnType();
-//      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-//    }
-//
-//    return pStreamDef;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  RASSERT(CK_GBYAGG != p_OP->eCard());
-//  i_EmittedCol = 1;
-//
-//
-//  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-//    Card_Expr *p_expr = xProjection.p_expr();
-//
-//    if (CK_PROJECT == p_OP->eCard()) {
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      sColNm_mapped = sColNm;
-//
-//    }
-//    else
-//    if (CK_SORT == p_OP->eCard()) {
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      sColNm_mapped = sColNm;
-//
-//    }
-//    else {
-//      if (p_expr->pSub_as())
-//        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
-//      else
-//        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
-//
-//      sColNm_mapped = sColNm;
-//    }
-//
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // stream def column
-//
-//    eColType = p_expr->eColumnType();
-//
-//    pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // col map (gbyagg) column
-//
-//    if (pColMap) {
-//      RASSERT(p_key);
-//
-//      if (p_expr->pSymbol()->Y_bHas(P_Key))
-//        pColMap->vBifurcate(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
-//                      false,
-//                      p_expr->pSymbol()->Y_iGet(P_Cell));
-//      else
-//        pColMap->vBifurcate(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
-//                      true,
-//                      p_expr->pSymbol()->Y_iGet(P_Cell));
-//
-//
-//    }
-//  }
-//
-//  return pStreamDef;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */

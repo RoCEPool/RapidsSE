@@ -90,7 +90,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  vCorrectStmOdn(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 
@@ -100,7 +100,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_emitted = pSub_emitted();
 
-  pCI->Prior.m_pProjection = pCI->G.p_emitted;
+  pCI->Prior.m_pEmitted = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 
@@ -115,7 +115,7 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->Prior.m_pProjection) {
+    if (pCI->Prior.m_pEmitted) {
       pCI->G.p_key->vTypes_For_stmColOdn(pCI);
       pCI->G.p_key->vRenumberAll_expr();
     }
@@ -123,7 +123,7 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
 
-    if (pCI->Prior.m_pProjection) {
+    if (pCI->Prior.m_pEmitted) {
       pCI->G.p_emitted->vEnsureTypes_For_stmColOdn(pCI);
       pCI->G.p_emitted->vRenumberAll_expr();
     }

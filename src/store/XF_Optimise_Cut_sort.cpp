@@ -71,19 +71,19 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
   m_pCI->vClearRestart();
 
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
   while (m_pCI->G_bEachMain_NONE()) {
 
     switch (m_pCI->G.e_MainCard) {
 
       case CK_SORT:
-        if (! m_pCI->StreamOrder.m_pStreamKey_running)
+        if (! m_pCI->StreamOrder.m_pStreamKey)
          break;
 
         m_pCI->G.p_key = m_pCI->G.p_sort->pSub_key();
-        if (! m_pCI->StreamOrder.m_pStreamKey_running->bIsEquivalentTo(m_pCI->G.p_key))
+        if (! m_pCI->StreamOrder.m_pStreamKey->bIsEquivalentTo(m_pCI->G.p_key))
           break;
 
         m_pCI->vRemoveDeleteCurr(CK_SORT);
@@ -101,8 +101,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
 
       default:
         if (m_pCI->G.p_MainCard->pSub_emitted()) {
-          m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_emitted();
-          m_pCI->StreamOrder.m_pStreamKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_streamKey();
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+          m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;
     }

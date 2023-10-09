@@ -172,7 +172,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
     pCI->G_bEachMain_reverse_NONE();
   pCI->vForwards(true);
 
-  pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_emitted();
+  pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
@@ -462,7 +462,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           xKid.pChild()->pSymbol()->vFacets(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
-              pCI->Prior.m_pProjection->pGetExpr(0);
+              pCI->Prior.m_pEmitted->pGetExpr(0);
 
           xKid.pChild()->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 
@@ -559,7 +559,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
 
 
           Card_Expr* p_expr_found =
-              pCI->Prior.m_pProjection->pGetExpr(1);
+              pCI->Prior.m_pEmitted->pGetExpr(1);
 
            p_term_new->pSymbol()->Y_vColType(p_expr_found->szP_Type());
 
