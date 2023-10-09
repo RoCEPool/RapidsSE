@@ -75,9 +75,9 @@ void Card_CONDITION::vConvert_tblCol_To_stmCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-    pCI->G.p_boolCalc->vConvert_colOdn_To_stmOdn(pCI);
+    pCI->G.p_boolCalc->vConvert_tblCol_To_stmCol(pCI);
   else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vConvert_colOdn_To_stmOdn(pCI);
+    pCI->G.p_rpnCalc->vConvert_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

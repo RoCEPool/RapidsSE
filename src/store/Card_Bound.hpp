@@ -22,7 +22,7 @@ namespace STORE
 
     static bool bValidBoundForRelnOp(Symbol* pBound, Symbol* pRelnOp);
 
-    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+    void vConvert_tblCol_To_stmCol(CardIter* pCI);
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
     bool bEquivalent(Card_CmpConj* p_cmpPred);

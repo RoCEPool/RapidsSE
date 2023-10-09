@@ -176,7 +176,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* convert table-column term to stream-column                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_Term::vConvert_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -279,7 +279,7 @@ void Card_Term::vConvert_colOdn_To_stmOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert table-column term to stream-column                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vConvert_colOdn_To_stmOdn_X(CardIter* pCI)
+void Card_Term::vConvert_tblCol_To_stmCol_X(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

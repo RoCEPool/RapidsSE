@@ -125,7 +125,7 @@ void Card_EXPRLIST::vConvert_tblCol_To_stmCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vConvert_colOdn_To_stmOdn(pCI);
+    xKid.p_expr()->vConvert_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

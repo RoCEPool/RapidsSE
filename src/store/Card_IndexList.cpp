@@ -82,7 +82,7 @@ void Card_IndexList::vConvert_tblCol_To_stmCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_INDEX))
-    xKid.p_index()->vConvert_colOdn_To_stmOdn(pCI);
+    xKid.p_index()->vConvert_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

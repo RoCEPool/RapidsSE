@@ -52,7 +52,7 @@ void Card_HshColList::vConvert_tblCol_To_stmCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_HSHCOL)) {
-    xKid.p_hshCol()->vConvert_colOdn_To_stmOdn(pCI);
+    xKid.p_hshCol()->vConvert_tblCol_To_stmCol(pCI);
   }
 }
 

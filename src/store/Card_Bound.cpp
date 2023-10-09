@@ -163,7 +163,7 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
 /*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_Bound::vConvert_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -172,7 +172,7 @@ void Card_Bound::vConvert_colOdn_To_stmOdn(CardIter* pCI)
     if (! xKid.p_term()->pSymbol()->bIs_Col_Tc())
       continue;
 
-    xKid.p_term()->vConvert_colOdn_To_stmOdn(pCI);
+    xKid.p_term()->vConvert_tblCol_To_stmCol(pCI);
   }
 }
 
