@@ -22,7 +22,7 @@ namespace STORE
 
     static void vConvert(CardIter* pCI);
 
-    void vConvert_stmCol_to_colNm(void);
+    void vX_stmCol_to_colNm(void);
 
   private:
     Footer* aFooter(void);

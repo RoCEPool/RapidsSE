@@ -97,11 +97,11 @@ void XF_Flatten_X_stmCol_To_tblCol::vConvert_stmColOdn_To_tblColOdn(void)
 
   if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
     if (m_pCI->Prior.m_pEmitted)
-      m_pCI->G.p_key->vConvert_stmOdn_To_colOdn(m_pCI);
+      m_pCI->G.p_key->vX_stmOdn_To_colOdn(m_pCI);
   }
 
   if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
-    m_pCI->G.p_filter->vConvert_stmOdn_To_colOdn(m_pCI);
+    m_pCI->G.p_filter->vX_stmOdn_To_colOdn(m_pCI);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -109,7 +109,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vConvert_stmColOdn_To_tblColOdn(void)
 
   if ((m_pCI->G.p_emitted = m_pCI->G.p_MainCard->pSub_emitted())) {
     if (m_pCI->Prior.m_pEmitted)
-      m_pCI->G.p_emitted->vConvert_stmOdn_To_colOdn(m_pCI);
+      m_pCI->G.p_emitted->vX_stmOdn_To_colOdn(m_pCI);
     m_pCI->Prior.m_pEmitted = m_pCI->G.p_emitted;
   }
 
@@ -118,7 +118,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vConvert_stmColOdn_To_tblColOdn(void)
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
     if (m_pCI->Prior.m_pEmitted)
-      m_pCI->G.p_constraint->vConvert_stmOdn_To_colOdn(m_pCI);
+      m_pCI->G.p_constraint->vX_stmOdn_To_colOdn(m_pCI);
   }
 }
 

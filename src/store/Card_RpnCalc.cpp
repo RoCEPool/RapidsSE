@@ -116,7 +116,7 @@ Card_RpnCalc* Card_RpnCalc::pClone(void)
 /*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vConvert_tblCol_To_stmCol(CardIter* pCI)
+void Card_RpnCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -125,14 +125,14 @@ void Card_RpnCalc::vConvert_tblCol_To_stmCol(CardIter* pCI)
     if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       continue;
 
-    xKid.p_term()->vConvert_tblCol_To_stmCol(pCI);
+    xKid.p_term()->vX_tblCol_To_stmCol(pCI);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
+void Card_RpnCalc::vX_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -141,7 +141,7 @@ void Card_RpnCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
     if (!xKid.p_term()->pSymbol()->bIs_Stm_Col())
       continue;
 
-    xKid.p_term()->vConvert_stmOdn_To_colOdn(pCI);
+    xKid.p_term()->vX_stmOdn_To_colOdn(pCI);
   }
 }
 

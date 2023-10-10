@@ -227,7 +227,7 @@ Card_Expr* Card_Expr::pClone(void)
 /*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vConvert_tblCol_To_stmCol(CardIter* pCI)
+void Card_Expr::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -235,10 +235,10 @@ void Card_Expr::vConvert_tblCol_To_stmCol(CardIter* pCI)
   pCI->vAncestorPush(this);
 
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vConvert_tblCol_To_stmCol(pCI);
+    p_boolCalc->vX_tblCol_To_stmCol(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vConvert_tblCol_To_stmCol(pCI);
+    p_rpnCalc->vX_tblCol_To_stmCol(pCI);
 
   pCI->vAncestorPop();
   RASSERT(pCI->nAncestors() == nAncestors);
@@ -247,15 +247,15 @@ void Card_Expr::vConvert_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vConvert_stmOdn_To_colOdn(CardIter* pCI)
+void Card_Expr::vX_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vConvert_stmOdn_To_colOdn(pCI);
+    p_boolCalc->vX_stmOdn_To_colOdn(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vConvert_stmOdn_To_colOdn(pCI);
+    p_rpnCalc->vX_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

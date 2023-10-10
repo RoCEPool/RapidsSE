@@ -23,8 +23,8 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy);
 
     Card_Expr* pContains(Card_Expr* p_expr_arg);
-    void vConvert_tblCol_To_stmCol(CardIter* pCI);
-    void vConvert_stmOdn_To_colOdn(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_stmOdn_To_colOdn(CardIter* pCI);
 
     Card_Expr* pDecodeExpr(Symbol* pSymbol);
 

@@ -22,7 +22,7 @@ namespace STORE
 
     static void vConvert(CardIter* pCI);
 
-    void vProlog(void);
+    void vX_board_To_sqyNm(void);
 
   private:
     Footer* aFooter(void);

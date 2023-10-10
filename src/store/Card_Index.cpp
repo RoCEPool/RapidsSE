@@ -151,12 +151,12 @@ void Card_Index::vAdd_streamKey_exprs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vConvert_tblCol_To_stmCol(CardIter* pCI)
+void Card_Index::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Bounds* p_bounds = pSub_bounds())
-    p_bounds->vConvert_tblCol_To_stmCol(pCI);
+    p_bounds->vX_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
