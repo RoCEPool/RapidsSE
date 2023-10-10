@@ -45,7 +45,7 @@ void XF_Epilog_Add_inflate::vBifurcate(CardIter* pCI)
 
   XF_Epilog_Add_inflate* pXF_stage_cast = new XF_Epilog_Add_inflate(pCI);
 
-  pXF_stage_cast->vAdd();
+  pXF_stage_cast->vBifurcate_inflate();
 
   delete pXF_stage_cast;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Add_inflate::vBifurcate(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Add_inflate::vAdd(void)
+void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ADD_INFLATE, _FOOTER_);
 

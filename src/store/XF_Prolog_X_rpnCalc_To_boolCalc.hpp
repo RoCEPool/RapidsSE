@@ -22,7 +22,7 @@ namespace STORE
 
     static void vConvert(CardIter* pCI);
 
-    void vXF_rpnCalc_To_boolCalc(void);
+    void vX_rpnCalc_To_boolCalc(void);
 
   private:
     Footer* aFooter(void);

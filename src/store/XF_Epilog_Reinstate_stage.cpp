@@ -45,7 +45,7 @@ void XF_Epilog_Reinstate_stage::vReinstate(CardIter* pCI)
 
   XF_Epilog_Reinstate_stage* pXF_Reinstate_stage = new XF_Epilog_Reinstate_stage(pCI);
 
-  pXF_Reinstate_stage->vReinstate();
+  pXF_Reinstate_stage->vReinstate_stage();
 
   delete pXF_Reinstate_stage;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Reinstate_stage::vReinstate(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* reinstate stages                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Reinstate_stage::vReinstate(void)
+void XF_Epilog_Reinstate_stage::vReinstate_stage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_REINSTATE_STAGE, _FOOTER_);
 

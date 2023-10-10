@@ -22,7 +22,7 @@ namespace STORE
 
     static void vBifurcate(CardIter* pCI);
 
-    void vAdd(void);
+    void vBifurcate_inflate(void);
 
   private:
     Footer* aFooter(void);

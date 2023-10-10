@@ -45,7 +45,7 @@ void XF_Epilog_Itemise_Columns::vItemise(CardIter* pCI)
 
   XF_Epilog_Itemise_Columns* pXF_Dedupe_colNm = new XF_Epilog_Itemise_Columns(pCI);
 
-  pXF_Dedupe_colNm->vItemise();
+  pXF_Dedupe_colNm->vItemise_Columns();
 
   delete pXF_Dedupe_colNm;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Itemise_Columns::vItemise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* de-duplicate as (column names)                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Itemise_Columns::vItemise(void)
+void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_ITEMISE_COLUMNS, _FOOTER_);
 

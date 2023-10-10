@@ -22,7 +22,7 @@ namespace STORE
 
     static void vAppend(CardIter* pCI);
 
-    void vAppend(void);
+    void vAppend_synthesis(void);
 
   private:
     Footer* aFooter(void);

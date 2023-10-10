@@ -22,7 +22,7 @@ namespace STORE
 
     static void vPromote(CardIter* pCI);
 
-    void vPromote(void);
+    void vPromote_filter(void);
 
   private:
     Footer* aFooter(void);

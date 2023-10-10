@@ -22,7 +22,7 @@ namespace STORE
 
     static void vEnsure(CardIter* pCI);
 
-    void vEnsure(void);
+    void vEnsure_level(void);
 
   private:
     Footer* aFooter(void);

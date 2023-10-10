@@ -50,7 +50,7 @@ void XF_Prolog_X_scan_To_from::vConvert(CardIter* pCI)
 
   XF_Prolog_X_scan_To_from* pXF_scan_Becomes_table = new XF_Prolog_X_scan_To_from(pCI);
 
-  pXF_scan_Becomes_table->vXF_scan_To_table();
+  pXF_scan_Becomes_table->vX_scan_To_from();
 
   delete pXF_scan_Becomes_table;
 }
@@ -63,7 +63,7 @@ void XF_Prolog_X_scan_To_from::vConvert(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* scan to table                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_scan_To_from::vXF_scan_To_table(void)
+void XF_Prolog_X_scan_To_from::vX_scan_To_from(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_SCAN_TO_FROM, _FOOTER_);
 

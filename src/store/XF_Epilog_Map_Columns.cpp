@@ -45,7 +45,7 @@ void XF_Epilog_Map_Columns::vMap(CardIter* pCI)
 
   XF_Epilog_Map_Columns* pXF_Column_Mapping = new XF_Epilog_Map_Columns(pCI);
 
-  pXF_Column_Mapping->vMap();
+  pXF_Column_Mapping->vMap_Columns();
 
   delete pXF_Column_Mapping;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Map_Columns::vMap(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* column mapping                                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Map_Columns::vMap(void)
+void XF_Epilog_Map_Columns::vMap_Columns(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_MAP_COLUMNS, _FOOTER_);
 

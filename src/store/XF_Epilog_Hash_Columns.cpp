@@ -45,7 +45,7 @@ void XF_Epilog_Hash_Columns::vHash(CardIter* pCI)
 
   XF_Epilog_Hash_Columns* pXF_Column_Hashing = new XF_Epilog_Hash_Columns(pCI);
 
-  pXF_Column_Hashing->vHash();
+  pXF_Column_Hashing->vHash_Columns();
 
   delete pXF_Column_Hashing;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Hash_Columns::vHash(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* column mapping                                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Hash_Columns::vHash(void)
+void XF_Epilog_Hash_Columns::vHash_Columns(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
 
@@ -144,7 +144,7 @@ void XF_Epilog_Hash_Columns::vHash(void)
   m_pCI->vEndTransform();
 }
 /*----------------------------------------------------------------------------*/
-//void XF_Epilog_Hash_Columns::vHash(void)
+//void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_HASH_COLUMNS, _FOOTER_);
 //

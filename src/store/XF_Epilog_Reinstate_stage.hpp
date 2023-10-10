@@ -22,7 +22,7 @@ namespace STORE
 
     static void vReinstate(CardIter* pCI);
 
-    void vReinstate(void);
+    void vReinstate_stage(void);
 
   private:
     Footer* aFooter(void);

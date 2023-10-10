@@ -45,7 +45,7 @@ void XF_Epilog_Fuse_project::vFuse(CardIter* pCI)
 
   XF_Epilog_Fuse_project* pFuse_project = new XF_Epilog_Fuse_project(pCI);
 
-  pFuse_project->vFuse();
+  pFuse_project->vFuse_project();
 
   delete pFuse_project;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Fuse_project::vFuse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* fuse <scan> <project/projection> -> <scan/projection>                      */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Fuse_project::vFuse(void)
+void XF_Epilog_Fuse_project::vFuse_project(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 

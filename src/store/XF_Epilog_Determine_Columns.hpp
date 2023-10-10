@@ -22,7 +22,7 @@ namespace STORE
 
     static void vDetermine(CardIter* pCI);
 
-    void vDeterime(void);
+    void vDeterime_Columns(void);
 
   private:
     Footer* aFooter(void);

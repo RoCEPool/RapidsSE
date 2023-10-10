@@ -45,7 +45,7 @@ void XF_Prolog_Review_as::vReview(CardIter* pCI)
 
   XF_Prolog_Review_as* pXF_as_Review = new XF_Prolog_Review_as(pCI);
 
-  pXF_as_Review->vXF_as_Review();
+  pXF_as_Review->vReview_as();
 
   delete pXF_as_Review;
 }
@@ -58,7 +58,7 @@ void XF_Prolog_Review_as::vReview(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Review_as::vXF_as_Review(void)
+void XF_Prolog_Review_as::vReview_as(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_REVIEW_AS, _FOOTER_);
 

@@ -22,7 +22,7 @@ namespace STORE
 
     static void vAnalyse(CardIter* pCI);
 
-    void vXF_subQuery_Analysis(void);
+    void vAnalyse_subQuery(void);
 
   private:
     void vAnalysis_Of_from_call(CardIter* pCI);

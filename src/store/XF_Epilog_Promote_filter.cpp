@@ -49,7 +49,7 @@ void XF_Epilog_Promote_filter::vPromote(CardIter* pCI)
 
   XF_Epilog_Promote_filter* pXF_Individuate_filter = new XF_Epilog_Promote_filter(pCI);
 
-  pXF_Individuate_filter->vPromote();
+  pXF_Individuate_filter->vPromote_filter();
 
   delete pXF_Individuate_filter;
 }
@@ -62,7 +62,7 @@ void XF_Epilog_Promote_filter::vPromote(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Promote_filter::vPromote(void)
+void XF_Epilog_Promote_filter::vPromote_filter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_PROMOTE_FILTER, _FOOTER_);
 

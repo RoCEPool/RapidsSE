@@ -46,7 +46,7 @@ void XF_Prolog_X_rpnCalc_To_boolCalc::vConvert(CardIter* pCI)
 
   XF_Prolog_X_rpnCalc_To_boolCalc* pXF_rpnCalc_To_boolCalc = new XF_Prolog_X_rpnCalc_To_boolCalc(pCI);
 
-  pXF_rpnCalc_To_boolCalc->vXF_rpnCalc_To_boolCalc();
+  pXF_rpnCalc_To_boolCalc->vX_rpnCalc_To_boolCalc();
 
   delete pXF_rpnCalc_To_boolCalc;
 }
@@ -59,7 +59,7 @@ void XF_Prolog_X_rpnCalc_To_boolCalc::vConvert(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* all $n become $c.n                                                         */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(void)
+void XF_Prolog_X_rpnCalc_To_boolCalc::vX_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_RPNCALC_TO_BOOLCALC, _FOOTER_);
 

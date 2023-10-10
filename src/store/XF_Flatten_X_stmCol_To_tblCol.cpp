@@ -45,7 +45,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vFlatten(CardIter* m_pCI)
 
   XF_Flatten_X_stmCol_To_tblCol* pXF_stmCol_To_tblCol = new XF_Flatten_X_stmCol_To_tblCol(m_pCI);
 
-  pXF_stmCol_To_tblCol->vXF_stmCol_To_tblCol();
+  pXF_stmCol_To_tblCol->vX_stmCol_To_tblCol();
 
   delete pXF_stmCol_To_tblCol;
 }
@@ -58,7 +58,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vFlatten(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /* all $n become $c.n                                                         */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_X_stmCol_To_tblCol::vXF_stmCol_To_tblCol(void)
+void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, _FOOTER_);
 

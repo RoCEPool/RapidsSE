@@ -45,7 +45,7 @@ void XF_Epilog_Append_synthesis::vAppend(CardIter* pCI)
 
   XF_Epilog_Append_synthesis* pEpilog_Collapse_op = new XF_Epilog_Append_synthesis(pCI);
 
-  pEpilog_Collapse_op->vAppend();
+  pEpilog_Collapse_op->vAppend_synthesis();
 
   delete pEpilog_Collapse_op;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_Append_synthesis::vAppend(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add synthesis                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Append_synthesis::vAppend(void)
+void XF_Epilog_Append_synthesis::vAppend_synthesis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_APPEND_SYNTHESIS, _FOOTER_);
 

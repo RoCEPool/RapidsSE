@@ -22,7 +22,7 @@ namespace STORE
 
     static void vAdd(CardIter* pCI);
 
-    void vAdd(void);
+    void vAdd_hash_cast(void);
 
   private:
     Footer* aFooter(void);

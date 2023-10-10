@@ -47,7 +47,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse(CardIter* pCI)
 
   XF_Prolog_Analyse_subQuery* pXF_subQuery_Analysis = new XF_Prolog_Analyse_subQuery(pCI);
 
-  pXF_subQuery_Analysis->vXF_subQuery_Analysis();
+  pXF_subQuery_Analysis->vAnalyse_subQuery();
 
   delete pXF_subQuery_Analysis;
 }
@@ -60,7 +60,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* subQuery analysis                                                          */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_subQuery::vXF_subQuery_Analysis(void)
+void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 

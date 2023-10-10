@@ -22,7 +22,7 @@ namespace STORE
 
     static void vFuse(CardIter* pCI);
 
-    void vFuse(void);
+    void vFuse_project(void);
 
   private:
     Footer* aFooter(void);

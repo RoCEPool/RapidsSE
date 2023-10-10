@@ -45,7 +45,7 @@ void XF_Prolog_Ensure_level::vEnsure(CardIter* pCI)
 
   XF_Prolog_Ensure_level* pXF_Add_level = new XF_Prolog_Ensure_level(pCI);
 
-  pXF_Add_level->vEnsure();
+  pXF_Add_level->vEnsure_level();
 
   delete pXF_Add_level;
 }
@@ -58,7 +58,7 @@ void XF_Prolog_Ensure_level::vEnsure(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* ensure each op has a level                                                 */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Ensure_level::vEnsure(void)
+void XF_Prolog_Ensure_level::vEnsure_level(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ENSURE_LEVEL, _FOOTER_);
 

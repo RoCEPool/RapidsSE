@@ -241,7 +241,7 @@ void XF::vTransform(void)
   XF_Epilog_Fuse_project::vFuse(m_pCI);                // scan, indexScan, IndexJoin ?<= Project ; adds <arriving>
   XF_Epilog_Append_synthesis::vAppend(m_pCI);          // adds <synthesis>
   XF_Epilog_Map_Columns::vMap(m_pCI);                  // gbyAgg, sort, top
-//XF_Epilog_Craft_StreamDef::vItemise(m_pCI);          //
+//XF_Epilog_Craft_StreamDef::vItemise_Columns(m_pCI);          //
   XF_Epilog_Determine_Columns::vDetermine(m_pCI);      // nil
   XF_Epilog_Hash_Columns::vHash(m_pCI);                //
                                                        //
@@ -261,7 +261,7 @@ void XF::vTransform(void)
   XF_Synthesise_pipelineDef::vSynthesise(m_pCI);       //
   XF_Synthesise_code::vSynthesise(m_pCI);              //
                                                        //
-//XF_Epilog_ItemStrip_colNm::vItemise(m_pCI);
+//XF_Epilog_ItemStrip_colNm::vItemise_Columns(m_pCI);
                                                        //
   m_pCI->vEndPhase();                                  //
 }

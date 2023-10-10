@@ -22,7 +22,7 @@ namespace STORE
 
     static void vMap(CardIter* pCI);
 
-    void vMap(void);
+    void vMap_Columns(void);
 
   private:
     Footer* aFooter(void);

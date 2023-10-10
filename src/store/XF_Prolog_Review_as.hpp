@@ -22,7 +22,7 @@ namespace STORE
 
     static void vReview(CardIter* pCI);
 
-    void vXF_as_Review(void);
+    void vReview_as(void);
 
   private:
     Footer* aFooter(void);
