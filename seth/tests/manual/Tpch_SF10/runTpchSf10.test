@@ -2,11 +2,11 @@
 -- Run TPC-H SF1
 --------------------------------------------------------------------------------
 
-INCLUDE FILE 'setup.test'
-success
+INCLUDE FILE 'setup.test';
 
-INCLUDE FILE 'queries.test'
-success
+SET OPTION round=2;
+INCLUDE FILE 'queries.test';
+UNSET OPTION round;
 
 --------------------------------------------------------------------------------
 -- CLEANUP
