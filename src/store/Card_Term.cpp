@@ -493,6 +493,9 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+#ifdef Z_FACETS
+  vX_tblCol_To_stmCol_X(pCI);
+#else
   Symbol* pSymbol_term = this->pSymbol();
   RASSERT(pSymbol_term->bIs_Tbl_Col());
 
@@ -587,25 +590,27 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
   this->pSymbol()->vFacets(&xSymbol_stmCol);
 
   this->vMark1(MARK_CHANGED);
+
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert table-column term to stream-column                                 */
+/* convert this table-column term to stream-column                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vX_tblCol_To_stmCol_X(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol_term = this->pSymbol();
-  if (!pSymbol_term->bIs_Tbl_Col())
+  Symbol* pSymbol_this = this->pSymbol();
+  if (! pSymbol_this->bIs_Tbl_Col())
     return;
 
-  Symbol* pSymbol_this = pSymbol();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can scalar expression of this symbol be found in ARRIVED ?
 
-  // find scalar expression of this symbol
-  i8 nCols_arrived = 0;
+  i8 nCols_a = 0;
   if (pCI->X.m_pExprList_a) {
-    nCols_arrived = pCI->X.m_pExprList_a->nChildCards();
+    nCols_a = pCI->X.m_pExprList_a->nChildCards();
     if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_symbol(pSymbol_this)) {
       Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
       pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);
@@ -614,15 +619,8 @@ void Card_Term::vX_tblCol_To_stmCol_X(CardIter* pCI)
     }
   }
 
-  if (pCI->X.m_pExprList_i) {
-    if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_By_symbol(pSymbol_this)) {
-      i8 iInjOdn = p_expr_scalar_i->pSymbol()->iSF_ordinal();
-      i8 iStmCol = nCols_arrived + iInjOdn;
-      pSymbol_this->vFacet(SF_STM_COL, iStmCol);
-      this->vMark1(MARK_CHANGED);
-      return;
-    }
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can scalar expression of this symbol be found in KEY ?
 
   if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
     if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_By_symbol(pSymbol_this)) {
@@ -632,6 +630,19 @@ void Card_Term::vX_tblCol_To_stmCol_X(CardIter* pCI)
         pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
       }
+      return;
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can scalar expression of this symbol be found in INJECTED ?
+
+  if (pCI->X.m_pExprList_i) {
+    if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_By_symbol(pSymbol_this)) {
+      i8 iInjOdn = p_expr_scalar_i->pSymbol()->iSF_ordinal();
+      i8 iStmCol = nCols_a + iInjOdn;
+      pSymbol_this->vFacet(SF_STM_COL, iStmCol);
+      this->vMark1(MARK_CHANGED);
       return;
     }
   }

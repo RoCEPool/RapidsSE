@@ -87,7 +87,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_stmCol(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert tblCol to stmCol                                             */
+/* tblCol to stmCol                                                           */
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
 {
@@ -106,6 +106,10 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
   if (m_pCI->G.p_OP->i_Child() == 40)
     vDebugPoint();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->X.m_pExprList_i = m_pCI->G.p_OP->pSub_injected();
+  m_pCI->X.m_pExprList_k = m_pCI->G.p_OP->pSub_key();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -138,6 +142,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->vSnapPriorProjection();
+  m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

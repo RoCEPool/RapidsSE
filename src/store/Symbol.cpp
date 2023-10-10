@@ -1367,16 +1367,15 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
     case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
-    case SF_STM_COL:
-      vFacet_Stm_Col(iInt);     break;
     case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt); break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
     case SF_PAY_COL:    vFacet_Pay_Col(iInt);    break;
+    case SF_PRM_COL:    vFacet_Prm_Col(iInt);    break;
     case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
-    case SF_PRM_COL:    vFacet_Prm_Col(iInt);    break;
+    case SF_STM_COL:    vFacet_Stm_Col(iInt);     break;
     case SF_XRF_NO:     vFacet_Xrf_No(iInt);     break;
 
     default: NEVER_REACH;
@@ -4013,7 +4012,8 @@ void Symbol::vFacet_Stm_Col(i8 iStmCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
+  eSF eFacet = xaFacet[0].m_eFacet;
+  RASSERT(SF_NONE == eFacet || SF_STM_COL == eFacet || SF_TBL_COL == eFacet || SF_KEY_COL == eFacet);
 
   if (bIs_Tbl_Col()) {
     Y_vSet(P_TblCol, szSF_chrSeq(SF_TBL_COL));
