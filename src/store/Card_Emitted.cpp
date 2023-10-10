@@ -481,12 +481,12 @@ Card_Expr* Card_Emitted::pResolve_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (p_term->pSymbol()->bIs_StmCol()) {
+  if (p_term->pSymbol()->bIs_Stm_Col()) {
     Card_Expr *p_expr_prior = this->pDecodeExpr(p_term->pSymbol());
     return p_expr_prior;
   }
   else
-  if (p_term->pSymbol()->bIs_TblCol()) {
+  if (p_term->pSymbol()->bIs_Tbl_Col()) {
     Card_Expr *p_expr_prior = this->pFind_expr_By_symbol(p_term->pSymbol());
     return p_expr_prior;
   }

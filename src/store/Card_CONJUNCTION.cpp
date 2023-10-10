@@ -243,10 +243,10 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (pTerm_0->pSymbol()->bIs_TblCol()) {
+  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
     // + term_0 is $c.n
 
-    if (pTerm_1->pSymbol()->bIs_TblCol()) {
+    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -267,7 +267,7 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIs_TblCol()) {
+  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
@@ -364,8 +364,8 @@ bool Card_CONJUNCTION::bMaybeJoinPred(void)
   Card_Term* pTerm_0 = pGetTerm(0);
   Card_Term* pTerm_1 = pGetTerm(1);
 
-  if (pTerm_0->pSymbol()->bIs_TblCol() &&
-      pTerm_1->pSymbol()->bIs_TblCol())
+  if (pTerm_0->pSymbol()->bIs_Tbl_Col() &&
+      pTerm_1->pSymbol()->bIs_Tbl_Col())
     // + term_0 and term_1 are $c.n
     return true;
 
@@ -396,7 +396,7 @@ void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     }
     else {
       //x_Symbol_stmCol1.vSet_Col_No(1);
-      p_term_one->SYM(SF_STMCOL, (i8)1);
+      p_term_one->SYM(SF_STM_COL, (i8)1);
     }
 
     Card_Expr* p_expr_found =
@@ -425,7 +425,7 @@ void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
       p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
     }
     else {
-      Symbol x_Symbol_stmCol1(SF_STMCOL, 1);
+      Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
       p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
     }
 
@@ -450,7 +450,7 @@ void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
 
-    Symbol x_Symbol_stmCol1(SF_STMCOL, 1);
+    Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
     if (p_term)
       x_Symbol_stmCol1.vFacetsPpy(p_term->pSymbol());
     p_term_head->pSymbol()->vFacetsPpy(&x_Symbol_stmCol1);

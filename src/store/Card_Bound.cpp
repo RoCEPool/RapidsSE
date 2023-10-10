@@ -59,7 +59,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
 
   Symbol xSymbol_idxColOdn(SF_IDX_COL,1);
 
-  if (pTerm_0->pSymbol()->bIs_TblCol()) {
+  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
@@ -68,7 +68,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
       p_bound->vAppendChild(p_term);
     }
     else
-    if (pTerm_1->pSymbol()->bIs_TblCol()) {
+    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
       char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
@@ -81,7 +81,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIs_TblCol()) {
+  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
     char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
@@ -169,7 +169,7 @@ void Card_Bound::vConvert_tblCol_To_stmCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_TblCol())
+    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       continue;
 
     xKid.p_term()->vConvert_tblCol_To_stmCol(pCI);

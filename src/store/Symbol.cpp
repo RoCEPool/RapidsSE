@@ -162,8 +162,8 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Case(szChrSeq))         return SF_CASE;
   if (bIs_Cast(szChrSeq))         return SF_CAST;
   if (bIs_CastType(szChrSeq))     return SF_CASTTYPE;
-  if (bIs_StmCol(szChrSeq))       return SF_STMCOL;
-  if (bIs_TblCol(szChrSeq))       return SF_TBLCOL;
+  if (bIs_Stm_Col(szChrSeq))       return SF_STM_COL;
+  if (bIs_Tbl_Col(szChrSeq))       return SF_TBL_COL;
   if (bIs_Col_Type(szChrSeq))     return SF_COL_TYPE;
   if (bIs_Comma(szChrSeq))        return SF_COMMA;
   if (bIs_Cross(szChrSeq))        return SF_CROSS;
@@ -916,7 +916,7 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szChrSeq)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_StmCol(Stz* szChrSeq)
+bool Symbol::bIs_Stm_Col(Stz* szChrSeq)
 {
   _static_
 
@@ -961,7 +961,7 @@ bool Symbol::bIs_String(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_TblCol(Stz* szChrSeq)
+bool Symbol::bIs_Tbl_Col(Stz* szChrSeq)
 {
   _static_
 
@@ -1154,8 +1154,8 @@ bool Symbol::bPossibleNm(Stz* szChrSeq)
   if (ST_NONE != SketchTkn::eEvalSketch(szChrSeq))
     return false;
 
-  if (bIs_StmCol(szChrSeq))   return false;
-  if (bIs_TblCol(szChrSeq))   return false;
+  if (bIs_Stm_Col(szChrSeq))   return false;
+  if (bIs_Tbl_Col(szChrSeq))   return false;
   if (bIs_Sqy_Prm(szChrSeq))  return false;
   if (bIs_Sqy_Rsl(szChrSeq))  return false;
 
@@ -1346,8 +1346,8 @@ void Symbol::vFacet(eSF eFacet, char cChr, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_TBLCOL:
-      vFacet_TblCol(cChr, iInt);    break;
+    case SF_TBL_COL:
+      vFacet_Tbl_Col(cChr, iInt);    break;
 
     default: NEVER_REACH;
   }
@@ -1367,7 +1367,8 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
     case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
-    case SF_STMCOL:     vFacet_StmCol(iInt);     break;
+    case SF_STM_COL:
+      vFacet_Stm_Col(iInt);     break;
     case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt); break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
@@ -1425,8 +1426,10 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
     case SF_COL_NM:      vFacet_Col_Nm(szChrSeq);      break;
     case SF_COL_NM_syn:  vFacet_Col_Nm_syn(szChrSeq);  break;
-    case SF_STMCOL:      vFacet_StmCol(szChrSeq);      break;
-    case SF_TBLCOL:      vFacet_TblCol(szChrSeq);      break;
+    case SF_STM_COL:
+      vFacet_Stm_Col(szChrSeq);      break;
+    case SF_TBL_COL:
+      vFacet_Tbl_Col(szChrSeq);      break;
     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
@@ -1489,8 +1492,8 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_STMCOL == pSymbol_arg->xaFacet[0].m_eFacet) {
-    vFacet_StmCol(pSymbol_arg->xaFacet[0].m_sChrSeq);
+  if (SF_STM_COL == pSymbol_arg->xaFacet[0].m_eFacet) {
+    vFacet_Stm_Col(pSymbol_arg->xaFacet[0].m_sChrSeq);
   }
 
 #ifdef Z_FACETS
@@ -1499,11 +1502,11 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
   vFacetCopy(pSymbol_arg);
 #endif
 
-  if (SF_STMCOL == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_StmCol(xaFacet[0].m_sChrSeq));
+  if (SF_STM_COL == xaFacet[0].m_eFacet)
+    RASSERT(Symbol::bIs_Stm_Col(xaFacet[0].m_sChrSeq));
 
-  if (SF_TBLCOL == xaFacet[0].m_eFacet)
-    RASSERT(Symbol::bIs_TblCol(xaFacet[0].m_sChrSeq));
+  if (SF_TBL_COL == xaFacet[0].m_eFacet)
+    RASSERT(Symbol::bIs_Tbl_Col(xaFacet[0].m_sChrSeq));
 
   if (pSymbol_arg->bHasFacets())
     RASSERT(bHasFacets());
@@ -2367,14 +2370,14 @@ bool Symbol::bIs_Stg_Nm(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_StmCol(void)
+bool Symbol::bIs_Stm_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_STMCOL != xaFacet[0].m_eFacet)
+  if (SF_STM_COL != xaFacet[0].m_eFacet)
     return false;
 
-  if (bIs_StmCol(xaFacet[0].m_sChrSeq)) {
+  if (bIs_Stm_Col(xaFacet[0].m_sChrSeq)) {
     return true;
   }
 
@@ -2415,14 +2418,14 @@ bool Symbol::bIs_String(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_TblCol(void)
+bool Symbol::bIs_Tbl_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_TBLCOL != xaFacet[0].m_eFacet)
+  if (SF_TBL_COL != xaFacet[0].m_eFacet)
     return false;
 
-  if (bIs_TblCol(xaFacet[0].m_sChrSeq))
+  if (bIs_Tbl_Col(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -2794,8 +2797,8 @@ bool Symbol::bValidate(void)
     case SF_CASTTYPE:    b = bIs_CastType();    break;
     case SF_COL_NM:      b = bIs_Col_Nm();      break;
     case SF_COL_NM_syn:  b = bIs_Col_Nm_syn();  break;
-    case SF_STMCOL:      b = bIs_StmCol();      break;
-    case SF_TBLCOL:      b = bIs_TblCol();      break;
+    case SF_STM_COL: b = bIs_Stm_Col();      break;
+    case SF_TBL_COL: b = bIs_Tbl_Col();      break;
     case SF_COL_TYPE:    b = bIs_Col_Type();    break;
     case SF_COMMA:       b = bIs_Comma();       break;
     case SF_CROSS:       b = bIs_Cross();       break;
@@ -2865,8 +2868,8 @@ Stz* Symbol::szWhatIs(void)
   if (bIs_As_Nm_syn())    return "SyntheticAs"_Stz;
   if (bIs_Bol_Fn())       return "BoolFn"_Stz;
   if (bIs_Bound())        return "Bound"_Stz;
-  if (bIs_StmCol())       return "StreamOrdinal"_Stz;
-  if (bIs_TblCol())       return "ColumnOrdinal"_Stz;
+  if (bIs_Stm_Col())       return "StreamOrdinal"_Stz;
+  if (bIs_Tbl_Col())       return "ColumnOrdinal"_Stz;
   if (bIs_Comma())        return "Comma"_Stz;
   if (bIs_Idx_Col())      return "IndexColumn"_Stz;
   if (bIs_Key_Col())      return "KeyOrdinal"_Stz;
@@ -3455,7 +3458,7 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STMCOL == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm);
 
@@ -4006,36 +4009,36 @@ void Symbol::vFacet_Stg_Nm(i8 iStgNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given column number                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_StmCol(i8 iStmCol)
+void Symbol::vFacet_Stm_Col(i8 iStmCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STMCOL == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
 
-  if (bIs_TblCol()) {
-    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
+  if (bIs_Tbl_Col()) {
+    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBL_COL));
   }
   else
   if (bIs_Key_Col()) {
     Y_vSet(P_KeyCol, szSF_chrSeq(SF_KEY_COL));
   }
 
-  vFacetSprint(SF_STMCOL, "$%lld"_Stz, iStmCol);
+  vFacetSprint(SF_STM_COL, "$%lld"_Stz, iStmCol);
 
-  RASSERT(bIs_StmCol());
+  RASSERT(bIs_Stm_Col());
 }
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given column nuber                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_StmCol(Stz* szStmCol)
+void Symbol::vFacet_Stm_Col(Stz* szStmCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
           SF_COL_NM == xaFacet[0].m_eFacet ||
-          SF_STMCOL == xaFacet[0].m_eFacet ||
-          SF_TBLCOL == xaFacet[0].m_eFacet ||
+          SF_STM_COL == xaFacet[0].m_eFacet ||
+          SF_TBL_COL == xaFacet[0].m_eFacet ||
 
           SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
           SF_PARENTHESIS == xaFacet[0].m_eFacet ||
@@ -4043,13 +4046,13 @@ void Symbol::vFacet_StmCol(Stz* szStmCol)
           SF_XRF_NO == xaFacet[0].m_eFacet
   );
 
-  if (bIs_TblCol()) {
-    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
+  if (bIs_Tbl_Col()) {
+    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBL_COL));
   }
 
-  vFacetSprint(SF_STMCOL, "%s"_Stz, szStmCol);
+  vFacetSprint(SF_STM_COL, "%s"_Stz, szStmCol);
 
-  RASSERT(bIs_StmCol());
+  RASSERT(bIs_Stm_Col());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4083,29 +4086,29 @@ void Symbol::vFacet_String(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_TblCol(char cTblSyn, i8 iTblCol)
+void Symbol::vFacet_Tbl_Col(char cTblSyn, i8 iTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_TBLCOL, "$%c.%lld"_Stz, cTblSyn, iTblCol);
+  vFacetSprint(SF_TBL_COL, "$%c.%lld"_Stz, cTblSyn, iTblCol);
 
-  RASSERT(bIs_TblCol());
+  RASSERT(bIs_Tbl_Col());
 }
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_TblCol(Stz* szTblCol)
+void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet || SF_TBLCOL == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet || SF_TBL_COL == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_TBLCOL, "%s"_Stz, szTblCol);
+  vFacetSprint(SF_TBL_COL, "%s"_Stz, szTblCol);
 
-  RASSERT(bIs_TblCol());
+  RASSERT(bIs_Tbl_Col());
 }
 
 /*----------------------------------------------------------------------------*/

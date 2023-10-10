@@ -25,8 +25,6 @@ enum eSF // symbol facet
   /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
   /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
-  /* */ SF_STMCOL,      // Stream Column No    : $n
-  /* */ SF_TBLCOL,      // Table Column No     : $t.c
   /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
   /* */ SF_COMMA,       // comma               : ,
   /* */ SF_CROSS,       // Cross               : CROSS
@@ -69,9 +67,11 @@ enum eSF // symbol facet
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NO,      // Stage No            : Sn
+  /* */ SF_STM_COL,     // Stream Column No    : $n
   /* */ SF_STR_FN,      // String Function     : SUBSTRING2 ... SUBSTRING3
   /* */ SF_STR_LIT,     // String              : 'abc'
 
+  /* */ SF_TBL_COL,     // Table Column No     : $t.c
   /* */ SF_TBL_NM,      // Table Name          : bIsName
   /* */ SF_TBL_SYN,     // Table Synonym       : c
   /* */ SF_TBL_SYN_rep, // " (replicated)      : C

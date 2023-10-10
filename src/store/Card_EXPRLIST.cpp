@@ -79,7 +79,7 @@ void Card_EXPRLIST::vBump_stmOdn_In_rpnCalc(CardIter* )
     while (xCI2.bEach(CK_TERM)) {
 //      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
 
-      if (xCI2.p_term()->pSymbol()->bIs_StmCol()) {
+      if (xCI2.p_term()->pSymbol()->bIs_Stm_Col()) {
         xCI2.p_term()->vBump_stmOdn();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
@@ -186,7 +186,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_ordinal(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(pSymbol->bIs_StmCol());
+  RASSERT(pSymbol->bIs_Stm_Col());
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     if (xKid.p_expr()->pSymbol()->bSame(pSymbol))

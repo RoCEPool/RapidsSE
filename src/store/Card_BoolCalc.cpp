@@ -102,7 +102,7 @@ void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
     if (bSkipFoldExpr && p_term->pSymbol()->bSame("$1"_Stz))
       return C_CONTINUE_RECURSION;
 
-    if (p_term->pSymbol()->bIs_StmCol()) {
+    if (p_term->pSymbol()->bIs_Stm_Col()) {
       p_term->vBump_stmOdn(nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }
@@ -149,7 +149,7 @@ void Card_BoolCalc::vConvert_tblCol_To_stmCol(CardIter* pCI)
 
     Card_Term* p_term = _pCard_Term(p_pred);
     Symbol* pSymbol = p_term->pSymbol();
-    if (!pSymbol->bIs_TblCol())
+    if (!pSymbol->bIs_Tbl_Col())
       return C_CONTINUE_RECURSION;
 
     p_term->vConvert_tblCol_To_stmCol(pCI);
@@ -184,7 +184,7 @@ void Card_BoolCalc::vConvert_stmOdn_To_colOdn(CardIter* pCI)
 
     Card_Term* p_term = _pCard_Term(p_pred);
     Symbol* pSymbol = p_term->pSymbol();
-    if (!pSymbol->bIs_StmCol())
+    if (!pSymbol->bIs_Stm_Col())
       return C_CONTINUE_RECURSION;
 
     p_term->vConvert_stmOdn_To_colOdn(pCI);
@@ -248,7 +248,7 @@ void Card_BoolCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 
   auto bLambdaFn = [p_emitted_prior](Card* p_card)
   {
-    if (p_card->pSymbol()->bIs_StmCol())
+    if (p_card->pSymbol()->bIs_Stm_Col())
       _pCard_Term(p_card)->vCorrectStmOdn(p_emitted_prior);
 
     return C_CONTINUE_RECURSION;

@@ -84,9 +84,9 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Emitted* p_emitted)
         Stz* szPrjCol = xCI_p.p_expr()->pGetTerm(0)->szSymbol(SF_NONE);
 
         eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
-        RASSERT(SF_TBLCOL == eSymbol);
+        RASSERT(SF_TBL_COL == eSymbol);
 
-        xKid.p_idxCol()->SYM(SF_TBLCOL, szPrjCol);
+        xKid.p_idxCol()->SYM(SF_TBL_COL, szPrjCol);
         xKid.p_idxCol()->vMark1(MARK_CHANGED);
       }
     }

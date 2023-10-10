@@ -91,10 +91,10 @@ namespace STORE
     static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
     static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szChrSeq);          // Sn
-    static bool bIs_StmCol(Stz* szChrSeq);          // $n
+    static bool bIs_Stm_Col(Stz* szChrSeq);         // $n
     static bool bIs_Str_Fn(Stz* szChrSeq);          // SUBSTRING2 ... SUBSTRING3
     static bool bIs_String(Stz* szChrSeq);          // 'abc'
-    static bool bIs_TblCol(Stz* szChrSeq);          // $c.n
+    static bool bIs_Tbl_Col(Stz* szChrSeq);         // $c.n
     static bool bIs_Tbl_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szChrSeq);         // $c
     static bool bIs_Tbl_Syn_rep(Stz* szChrSeq);     // $C
@@ -192,10 +192,10 @@ namespace STORE
     bool bIs_Sqy_Rsl(void);         // __n
     bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
     bool bIs_Stg_Nm(void);          // Sn
-    bool bIs_StmCol(void);          // $n
+    bool bIs_Stm_Col(void);         // $n
     bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
     bool bIs_String(void);          // 'abc''
-    bool bIs_TblCol(void);          // $t.c
+    bool bIs_Tbl_Col(void);         // $t.c
     bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Tbl_Syn_rep(void);     // c
@@ -310,12 +310,12 @@ namespace STORE
     void vFacet_Sqy_Op(Stz* szSqyOp);
     void vFacet_Stg_Cast(Stz* szStgCast);
     void vFacet_Stg_Nm(i8 iStgNo);
-    void vFacet_StmCol(Stz* szStmCol);
-    void vFacet_StmCol(i8 iStmCol);
+    void vFacet_Stm_Col(Stz* szStmCol);
+    void vFacet_Stm_Col(i8 iStmCol);
     void vFacet_Str_Fn(Stz* szStrFn);
     void vFacet_String(Stz* szString);
-    void vFacet_TblCol(Stz* szTblCol);
-    void vFacet_TblCol(char cTblSyn, i8 iTblCol);
+    void vFacet_Tbl_Col(Stz* szTblCol);
+    void vFacet_Tbl_Col(char cTblSyn, i8 iTblCol);
     void vFacet_Tbl_Nm(Stz* szTblNm);
     void vFacet_Tbl_Syn(Stz* szTblSyn);
     void vFacet_Tbl_Syn(char cTblSyn);

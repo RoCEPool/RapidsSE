@@ -315,7 +315,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     else {
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STMCOL, "$1"_Stz));
+      pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
       pCI->G.p_term->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
 
@@ -392,8 +392,8 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   pCI->G_vPushNewChild(pCI->G.p_emitted, CK_EXPR);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, szAs));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STMCOL, "$1"_Stz));
-  Symbol x_Symbol_stmCol1(SF_STMCOL, 1);
+  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
+  Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
 
 
   pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
@@ -458,7 +458,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         if (xKid.pChild()->pSymbol()->bIs_Sqy_Prm()) {
 
-          Symbol x_Symbol_stmCol1(SF_STMCOL, 1);
+          Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
           xKid.pChild()->pSymbol()->vFacets(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
@@ -468,7 +468,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         }
         else
-        if (xKid.pChild()->bIsCard(CK_TERM) && xKid.pChild()->pSymbol()->bIs_TblCol()) {
+        if (xKid.pChild()->bIsCard(CK_TERM) && xKid.pChild()->pSymbol()->bIs_Tbl_Col()) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
@@ -479,8 +479,8 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term);
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol(SF_NONE);
-          RASSERT(Symbol::bIs_TblCol(szProjectedCol));
-          xKid.pChild()->pSymbol()->vFacet(SF_TBLCOL, szProjectedCol);  // TODO: hack!!
+          RASSERT(Symbol::bIs_Tbl_Col(szProjectedCol));
+          xKid.pChild()->pSymbol()->vFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
 
           DELETE_CARD(p_term);
         }
@@ -554,7 +554,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
         if (pCI->m_pBench->bIsSubQueryNm(xKid.pChild()->szSymbol(SF_NONE))) {
           Card* p_arg = xKid.pPrev();
 
-          Card_Term* p_term_new = (new Card_Term) ->SYM(SF_STMCOL, "$2"_Stz);
+          Card_Term* p_term_new = (new Card_Term) ->SYM(SF_STM_COL, "$2"_Stz);
           p_pred->vInsertChildAfter(p_term_new,xKid.pChild());
 
 
