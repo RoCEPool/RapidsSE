@@ -183,6 +183,7 @@ eSF Symbol::eEvalSymbol(Stz* szChrSeq)
   if (bIs_Negate(szChrSeq))       return SF_NEGATE;
   if (bIs_Null(szChrSeq))         return SF_NULL;
   if (bIs_Parenthesis(szChrSeq))  return SF_PARENTHESIS;
+  if (bIs_Pay_Col(szChrSeq))      return SF_PAY_COL;
   if (bIs_Prm_Col(szChrSeq))      return SF_PRM_COL;
   if (bIs_Rln_Op(szChrSeq))       return SF_RLN_OP;
   if (bIs_Sqy_Prm(szChrSeq))      return SF_PRM_COL;
@@ -766,6 +767,27 @@ bool Symbol::bIs_Parenthesis(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a payload symbol? (i.e. $Pn)                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Pay_Col(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+
+  if ('$' == acFirst
+      && ('P' == acSecond || 'P' == acSecond)
+      && StrLib::bIsDigit(acThird)
+      && ! acFourth)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Ppe_Nm(Stz* szArg)
@@ -1345,12 +1367,12 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
     case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
-    case SF_STMCOL:
-      vFacet_StmCol(iInt);     break;
+    case SF_STMCOL:     vFacet_StmCol(iInt);     break;
     case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt); break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
+    case SF_PAY_COL:    vFacet_Pay_Col(iInt);    break;
     case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
     case SF_PRM_COL:    vFacet_Prm_Col(iInt);    break;
@@ -1403,10 +1425,8 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
     case SF_COL_NM:      vFacet_Col_Nm(szChrSeq);      break;
     case SF_COL_NM_syn:  vFacet_Col_Nm_syn(szChrSeq);  break;
-    case SF_STMCOL:
-      vFacet_StmCol(szChrSeq);      break;
-    case SF_TBLCOL:
-      vFacet_TblCol(szChrSeq);      break;
+    case SF_STMCOL:      vFacet_StmCol(szChrSeq);      break;
+    case SF_TBLCOL:      vFacet_TblCol(szChrSeq);      break;
     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
@@ -1429,6 +1449,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_NULL:        vFacet_Null(szChrSeq);        break;
     case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
     case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
+    case SF_PAY_COL:     vFacet_Pay_Col(szChrSeq);     break;
     case SF_PPE_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
     case SF_PRM_COL:     vFacet_Prm_Col(szChrSeq);     break;
     case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
@@ -2220,6 +2241,22 @@ bool Symbol::bIs_Parenthesis(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a pay symbol? (i.e. $Pn)                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Pay_Col(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_PAY_COL != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Pay_Col(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a index name?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Ppe_Nm(void)
@@ -2757,8 +2794,8 @@ bool Symbol::bValidate(void)
     case SF_CASTTYPE:    b = bIs_CastType();    break;
     case SF_COL_NM:      b = bIs_Col_Nm();      break;
     case SF_COL_NM_syn:  b = bIs_Col_Nm_syn();  break;
-    case SF_STMCOL: b = bIs_StmCol();      break;
-    case SF_TBLCOL: b = bIs_TblCol();      break;
+    case SF_STMCOL:      b = bIs_StmCol();      break;
+    case SF_TBLCOL:      b = bIs_TblCol();      break;
     case SF_COL_TYPE:    b = bIs_Col_Type();    break;
     case SF_COMMA:       b = bIs_Comma();       break;
     case SF_CROSS:       b = bIs_Cross();       break;
@@ -2778,6 +2815,7 @@ bool Symbol::bValidate(void)
     case SF_NULL:        b = bIs_Null();        break;
     case SF_MTH_OP:      b = bIs_Mth_Op();      break;
     case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
+    case SF_PAY_COL:     b = bIs_Pay_Col();     break;
     case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
     case SF_PRM_COL:     b = bIs_Prm_Col();     break;
     case SF_RLN_OP:      b = bIs_Rln_Op();      break;
@@ -3807,13 +3845,13 @@ void Symbol::vFacet_Ivl_Fn(Stz* szIvlFn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Key_Col(i8 iKeyOdn)
+void Symbol::vFacet_Key_Col(i8 iKeyCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_KEY_COL,"$K%lld"_Stz, iKeyOdn);
+  vFacetSprint(SF_KEY_COL, "$K%lld"_Stz, iKeyCol);
 
   RASSERT(bIs_Key_Col());
 }
@@ -3900,6 +3938,34 @@ void Symbol::vFacet_Parenthesis(Stz* szParenthesis)
   vFacetSprint(SF_PARENTHESIS,"%s"_Stz,szParenthesis);
 
   RASSERT(bIs_Parenthesis());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given key-column                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Pay_Col(i8 iPayCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_PAY_COL == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_PAY_COL, "$P%lld"_Stz, iPayCol);
+
+  RASSERT(bIs_Pay_Col());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given key-column                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Pay_Col(Stz* szPayCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_PAY_COL,"%s"_Stz,szPayCol);
+
+  RASSERT(bIs_Pay_Col());
 }
 
 /*----------------------------------------------------------------------------*/

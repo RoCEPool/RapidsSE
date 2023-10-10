@@ -82,6 +82,7 @@ namespace STORE
     static bool bIs_Note(Stz* szChrSeq);            // ...any...
     static bool bIs_Null(Stz* szChrSeq);            // NULL
     static bool bIs_Parenthesis(Stz* szChrSeq);     // ( or )
+    static bool bIs_Pay_Col(Stz* szChrSeq);         // $Pn
     static bool bIs_Ppe_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Prm_Col(Stz* szChrSeq);         // %n
     static bool bIs_Rln_Op(Stz* szChrSeq);          // <, <=, ... >
@@ -183,6 +184,7 @@ namespace STORE
     bool bIs_Note(void);            // ...any...
     bool bIs_Null(void);            // NULL
     bool bIs_Parenthesis(void);     // ( or )
+    bool bIs_Pay_Col(void);         // $Pn
     bool bIs_Ppe_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Prm_Col(void);         // %n
     bool bIs_Rln_Op(void);          // <, <=, ... >
@@ -295,13 +297,15 @@ namespace STORE
     void vFacet_Interval_DT(Stz* szInterval_DT);
     void vFacet_Interval_YM(Stz* szInterval_YM);
     void vFacet_Ivl_Fn(Stz* szIvlFn);
-    void vFacet_Key_Col(i8 iKeyOdn);
+    void vFacet_Key_Col(i8 iKeyCol);
     void vFacet_Key_Col(Stz* szKeyCol);
     void vFacet_Mth_Op(Stz* szMthOp);
     void vFacet_Negate(Stz* szNegate);
     void vFacet_Note(Stz* szNote);
     void vFacet_Null(Stz* szNull);
     void vFacet_Parenthesis(Stz* szParenthesis);
+    void vFacet_Pay_Col(i8 iPayCol);
+    void vFacet_Pay_Col(Stz* szPayCol);
     void vFacet_Ppe_Nm(Stz* szPpeNm);
     void vFacet_Prm_Col(i8 iOrdinal);
     void vFacet_Prm_Col(Stz* szPrmCol);
