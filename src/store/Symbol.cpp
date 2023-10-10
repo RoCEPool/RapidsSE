@@ -405,44 +405,6 @@ bool Symbol::bIs_Col_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a stream-column?  (i.e. $n)                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_StmCol(Stz* szChrSeq)
-{
-  _static_
-
-  char acFirst  = szChrSeq->azChar()[0];
-  char acSecond = szChrSeq->azChar()[1];
-
-  if ('$' == acFirst &&
-      StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_TblCol(Stz* szChrSeq)
-{
-  _static_
-
-  char acFirst  = szChrSeq->azChar()[0];
-  char acSecond = szChrSeq->azChar()[1];
-  char acThird  = szChrSeq->azChar()[2];
-  char acFourth = szChrSeq->azChar()[3];
-
-  if ('$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '.' == acThird
-      && StrLib::bIsDigit(acFourth))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Type(Stz* szArg)
@@ -952,6 +914,23 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szChrSeq)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_StmCol(Stz* szChrSeq)
+{
+  _static_
+
+  char acFirst  = szChrSeq->azChar()[0];
+  char acSecond = szChrSeq->azChar()[1];
+
+  if ('$' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a string function?                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Str_Fn(Stz* szArg)
@@ -974,6 +953,27 @@ bool Symbol::bIs_String(Stz* szArg)
   char acFirst  = szArg->azChar()[0];
 
   if ('\'' == acFirst)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a table-column (i.e. $c.n)                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_TblCol(Stz* szChrSeq)
+{
+  _static_
+
+  char acFirst  = szChrSeq->azChar()[0];
+  char acSecond = szChrSeq->azChar()[1];
+  char acThird  = szChrSeq->azChar()[2];
+  char acFourth = szChrSeq->azChar()[3];
+
+  if ('$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '.' == acThird
+      && StrLib::bIsDigit(acFourth))
     return true;
   else
     return false;
@@ -1840,39 +1840,6 @@ bool Symbol::bIs_Col_Nm_syn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a stream-column?  (i.e. $n)                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_StmCol(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_STMCOL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_StmCol(xaFacet[0].m_sChrSeq)) {
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_TblCol(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_TBLCOL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_TblCol(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Type(void)
@@ -2398,6 +2365,23 @@ bool Symbol::bIs_Stg_Nm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_StmCol(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_STMCOL != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_StmCol(xaFacet[0].m_sChrSeq)) {
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a string function?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Str_Fn(void)
@@ -2423,6 +2407,22 @@ bool Symbol::bIs_String(void)
     return false;
 
   if (bIs_String(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a table-column (i.e. $c.n)                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_TblCol(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_TBLCOL != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_TblCol(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -3514,83 +3514,6 @@ void Symbol::vFacet_Col_Nm_syn(Stz* szColNm_syn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given column number                                     */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_StmCol(i8 iStmCol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STMCOL == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
-
-  if (bIs_TblCol()) {
-     Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
-  }
-  else
-  if (bIs_Key_Col()) {
-    Y_vSet(P_KeyCol, szSF_chrSeq(SF_KEY_COL));
-  }
-
-  vFacetSprint(SF_STMCOL, "$%lld"_Stz, iStmCol);
-
-  RASSERT(bIs_StmCol());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given column nuber                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_StmCol(Stz* szStmCol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
-          SF_COL_NM == xaFacet[0].m_eFacet ||
-          SF_STMCOL == xaFacet[0].m_eFacet ||
-          SF_TBLCOL == xaFacet[0].m_eFacet ||
-
-          SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
-          SF_PARENTHESIS == xaFacet[0].m_eFacet ||
-          SF_PRM_COL == xaFacet[0].m_eFacet ||
-          SF_XRF_NO == xaFacet[0].m_eFacet
-          );
-
-  if (bIs_TblCol()) {
-    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
-  }
-
-  vFacetSprint(SF_STMCOL, "%s"_Stz, szStmCol);
-
-  RASSERT(bIs_StmCol());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given table-column                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_TblCol(char cTblSyn, i8 iTblCol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_TBLCOL, "$%c.%lld"_Stz, cTblSyn, iTblCol);
-
-  RASSERT(bIs_TblCol());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given table-column                                      */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_TblCol(Stz* szTblCol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet || SF_TBLCOL == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_TBLCOL, "%s"_Stz, szTblCol);
-
-  RASSERT(bIs_TblCol());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given comma                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Comma(Stz* szComma)
@@ -4081,6 +4004,55 @@ void Symbol::vFacet_Stg_Nm(i8 iStgNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given column number                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_StmCol(i8 iStmCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STMCOL == xaFacet[0].m_eFacet || SF_KEY_COL == xaFacet[0].m_eFacet);
+
+  if (bIs_TblCol()) {
+    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
+  }
+  else
+  if (bIs_Key_Col()) {
+    Y_vSet(P_KeyCol, szSF_chrSeq(SF_KEY_COL));
+  }
+
+  vFacetSprint(SF_STMCOL, "$%lld"_Stz, iStmCol);
+
+  RASSERT(bIs_StmCol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column nuber                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_StmCol(Stz* szStmCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
+          SF_COL_NM == xaFacet[0].m_eFacet ||
+          SF_STMCOL == xaFacet[0].m_eFacet ||
+          SF_TBLCOL == xaFacet[0].m_eFacet ||
+
+          SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
+          SF_PARENTHESIS == xaFacet[0].m_eFacet ||
+          SF_PRM_COL == xaFacet[0].m_eFacet ||
+          SF_XRF_NO == xaFacet[0].m_eFacet
+  );
+
+  if (bIs_TblCol()) {
+    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBLCOL));
+  }
+
+  vFacetSprint(SF_STMCOL, "%s"_Stz, szStmCol);
+
+  RASSERT(bIs_StmCol());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given string fn                                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Str_Fn(Stz* szBolFn)
@@ -4106,6 +4078,34 @@ void Symbol::vFacet_String(Stz* szString)
   vFacetSprint(SF_STR_LIT,"%s"_Stz,szString);
 
   RASSERT(bIs_String());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_TblCol(char cTblSyn, i8 iTblCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_TBLCOL, "$%c.%lld"_Stz, cTblSyn, iTblCol);
+
+  RASSERT(bIs_TblCol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-column                                      */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_TblCol(Stz* szTblCol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet || SF_TBLCOL == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_TBLCOL, "%s"_Stz, szTblCol);
+
+  RASSERT(bIs_TblCol());
 }
 
 /*----------------------------------------------------------------------------*/

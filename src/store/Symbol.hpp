@@ -57,8 +57,6 @@ namespace STORE
     static bool bIs_Cast(Stz* szChrSeq);            // CAST
     static bool bIs_CastType(Stz* szChrSeq);        // CASTTYPE
     static bool bIs_Col_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
-    static bool bIs_StmCol(Stz* szChrSeq);          // $n
-    static bool bIs_TblCol(Stz* szChrSeq);          // $c.n
     static bool bIs_Col_Type(Stz* szChrSeq);        // BOOLEAN, ... VARCHAR
     static bool bIs_Comma(Stz* szChrSeq);           // ,
     static bool bIs_Cross(Stz* szChrSeq);           // CROSS
@@ -93,8 +91,10 @@ namespace STORE
     static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
     static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szChrSeq);          // Sn
+    static bool bIs_StmCol(Stz* szChrSeq);          // $n
     static bool bIs_Str_Fn(Stz* szChrSeq);          // SUBSTRING2 ... SUBSTRING3
     static bool bIs_String(Stz* szChrSeq);          // 'abc'
+    static bool bIs_TblCol(Stz* szChrSeq);          // $c.n
     static bool bIs_Tbl_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szChrSeq);         // $c
     static bool bIs_Tbl_Syn_rep(Stz* szChrSeq);     // $C
@@ -159,8 +159,6 @@ namespace STORE
     bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Col_Nm_dis(void);      // C_n
     bool bIs_Col_Nm_syn(void);      // C_n
-    bool bIs_StmCol(void);          // $n
-    bool bIs_TblCol(void);          // $t.c
     bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
     bool bIs_Comma(void);           // ,
     bool bIs_Cross(void);           // CROSS
@@ -191,11 +189,13 @@ namespace STORE
     bool bIs_Sqy_Nm(void);          // __sq%02lld
     bool bIs_Sqy_Op(void);          // exists, in, notExists, notIn
     bool bIs_Sqy_Prm(void);         // %n
-    bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
     bool bIs_Sqy_Rsl(void);         // __n
-    bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
+    bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
     bool bIs_Stg_Nm(void);          // Sn
+    bool bIs_StmCol(void);          // $n
+    bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
     bool bIs_String(void);          // 'abc''
+    bool bIs_TblCol(void);          // $t.c
     bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
     bool bIs_Tbl_Syn_rep(void);     // c
@@ -275,10 +275,6 @@ namespace STORE
     void vFacet_Col_Nm_dis(i8 i_Child);
     void vFacet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
     void vFacet_Col_Nm_syn(Stz* szColNm_syn);
-    void vFacet_StmCol(Stz* szStmCol);
-    void vFacet_StmCol(i8 iStmCol);
-    void vFacet_TblCol(char cTblSyn, i8 iTblCol);
-    void vFacet_TblCol(Stz* szTblCol);
     void vFacet_Col_Type(Stz* szColType);
     void vFacet_Comma(Stz* szComma);
     void vFacet_Cross(Stz* szCross);
@@ -289,43 +285,47 @@ namespace STORE
     void vFacet_Fld_Nm(Stz* szFldNm);
     void vFacet_Flt_Lit(Stz* szFltLit);
     void vFacet_GroupBy(Stz* szGroupBy);
-    void vFacet_Idx_Col(i8 iIdxColOdn);
     void vFacet_Idx_Col(Stz* szIdxCol);
+    void vFacet_Idx_Col(i8 iIdxColOdn);
     void vFacet_Idx_Nm(Stz* szIdxNm);
-    void vFacet_Int_Lit(i8 iIntLit);
     void vFacet_Int_Lit(Stz* szIntLit);
+    void vFacet_Int_Lit(i8 iIntLit);
     void vFacet_Interval_DT(Stz* szInterval_DT);
     void vFacet_Interval_YM(Stz* szInterval_YM);
     void vFacet_Ivl_Fn(Stz* szIvlFn);
-    void vFacet_Key_Col(i8 iKeyCol);
     void vFacet_Key_Col(Stz* szKeyCol);
+    void vFacet_Key_Col(i8 iKeyCol);
     void vFacet_Mth_Op(Stz* szMthOp);
     void vFacet_Negate(Stz* szNegate);
     void vFacet_Note(Stz* szNote);
     void vFacet_Null(Stz* szNull);
     void vFacet_Parenthesis(Stz* szParenthesis);
-    void vFacet_Pay_Col(i8 iPayCol);
     void vFacet_Pay_Col(Stz* szPayCol);
+    void vFacet_Pay_Col(i8 iPayCol);
     void vFacet_Ppe_Nm(Stz* szPpeNm);
-    void vFacet_Prm_Col(i8 iOrdinal);
     void vFacet_Prm_Col(Stz* szPrmCol);
+    void vFacet_Prm_Col(i8 iOrdinal);
     void vFacet_Rln_Op(Stz* szRlnOp);
     void vFacet_Sqy_Nm(i8 iSqyNo);
     void vFacet_Sqy_Op(Stz* szSqyOp);
     void vFacet_Stg_Cast(Stz* szStgCast);
     void vFacet_Stg_Nm(i8 iStgNo);
+    void vFacet_StmCol(Stz* szStmCol);
+    void vFacet_StmCol(i8 iStmCol);
     void vFacet_Str_Fn(Stz* szStrFn);
     void vFacet_String(Stz* szString);
+    void vFacet_TblCol(Stz* szTblCol);
+    void vFacet_TblCol(char cTblSyn, i8 iTblCol);
     void vFacet_Tbl_Nm(Stz* szTblNm);
-    void vFacet_Tbl_Syn(char cTblSyn);
     void vFacet_Tbl_Syn(Stz* szTblSyn);
+    void vFacet_Tbl_Syn(char cTblSyn);
     void vFacet_Tbl_Syn_rep(void);
     void vFacet_Then(Stz* szThen);
     void vFacet_Type(Stz* szType);
     void vFacet_When(Stz* szWhen);
     void vFacet_Xk_Cast(Stz* szXkCast);
-    void vFacet_Xrf_No(i8 iXrefNo);
     void vFacet_Xrf_No(Stz* szXrefNo);
+    void vFacet_Xrf_No(i8 iXrefNo);
 
     void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCopy(Symbol* pSymbol_arg);
