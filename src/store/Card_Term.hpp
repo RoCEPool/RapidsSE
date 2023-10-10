@@ -35,10 +35,10 @@ namespace STORE
     i8   iGetOdn(void);
     char cGetTblSyn(void);
     bool bIsColNm(void);    // name
-    bool bIsColOdn(void);   // $c.n
+    bool bIsTblCol(void);   // $c.n
     bool bIsKeyOdn(void);   // $Kn
     bool bIsPrmOdn(void);   // %n
-    bool bIsStmOdn(void);   // $n
+    bool bIsStmCol(void);   // $n
     bool bIsValOdn(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 

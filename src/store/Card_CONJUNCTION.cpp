@@ -143,13 +143,13 @@ Stz* Card_CONJUNCTION::szGetBoardNmInTerm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CONJUNCTION::pGetFirstTerm_tblColOdn(void)
+Card_Term* Card_CONJUNCTION::pGetFirstTerm_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (xKid.p_term()->bIsColOdn())
+    if (xKid.p_term()->bIsTblCol())
       return xKid.p_term();
 
   return nullptr;
@@ -219,8 +219,8 @@ bool Card_CONJUNCTION::bIsCorrPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsPrmOdn() && (p_term_1->bIsStmOdn() || p_term_1->bIsColOdn())) ||
-      (p_term_1->bIsPrmOdn() && (p_term_0->bIsStmOdn() || p_term_0->bIsColOdn())))
+  if ((p_term_0->bIsPrmOdn() && (p_term_1->bIsStmCol() || p_term_1->bIsTblCol())) ||
+      (p_term_1->bIsPrmOdn() && (p_term_0->bIsStmCol() || p_term_0->bIsTblCol())))
     return true;
 
   return false;
@@ -298,8 +298,8 @@ bool Card_CONJUNCTION::bIsJoinPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsStmOdn() || p_term_0->bIsColOdn()) &&
-      (p_term_1->bIsStmOdn() || p_term_1->bIsColOdn()))
+  if ((p_term_0->bIsStmCol() || p_term_0->bIsTblCol()) &&
+      (p_term_1->bIsStmCol() || p_term_1->bIsTblCol()))
     return true;
 
   return false;

@@ -143,7 +143,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
     if (xTerm.p_term()->bIsKeyOdn())
       p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
     else
-    if (xTerm.p_term()->bIsStmOdn()) {
+    if (xTerm.p_term()->bIsStmCol()) {
       //pCI->Prior.m_pEmitted->vDump(__func__);
       p_expr_found = pCI->Prior.m_pEmitted->pGetExpr(iOdn - 1);
     }
@@ -206,7 +206,7 @@ Symbol* Card_RpnCalc::pFirstStmCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsStmOdn())
+    if (xKid.p_term()->bIsStmCol())
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -220,7 +220,7 @@ Symbol* Card_RpnCalc::pFirstTblCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsColOdn())
+    if (xKid.p_term()->bIsTblCol())
       return xKid.p_term()->pSymbol();
 
   return nullptr;

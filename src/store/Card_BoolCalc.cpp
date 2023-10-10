@@ -352,7 +352,7 @@ bool Card_BoolCalc::bIsScalarCol(void) {
     return false;
 
   Card_Term *p_term_0 = _pCard_Term(p_card_0);
-  if (!p_term_0->bIsColOdn())
+  if (!p_term_0->bIsTblCol())
     return false;
 
   return true;

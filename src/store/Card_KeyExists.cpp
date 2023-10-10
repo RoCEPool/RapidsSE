@@ -151,7 +151,7 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
   pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
   pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
   //pCI->G.p_bound->vDump();
-  pCI->G.p_term      = pCI->G.p_bound->pGet_tblColOdn();
+  pCI->G.p_term      = pCI->G.p_bound->pGet_tblCol();
 
   RASSERT(pCI->G.p_term);
   //pCI->G.p_term->vDump();

@@ -153,7 +153,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
   pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
   //pCI->G.p_bound->vDump();
-  pCI->G.p_term      = pCI->G.p_bound->pGet_tblCol();
+  pCI->G.p_term      = pCI->G.p_bound->pGet_IfNot_idxCol();
 
   RASSERT(pCI->G.p_term);
   //pCI->G.p_term->vDump();
@@ -161,7 +161,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   if (!pCI->Early.m_pNeeded_later->pFind_expr_By_symbol(pCI->G.p_term->pSymbol())) {
 
-    if (pCI->G.p_term->bIsStmOdn()) {
+    if (pCI->G.p_term->bIsStmCol()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
       p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_term->pSymbol()->Y_szColType());

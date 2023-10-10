@@ -302,7 +302,7 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* get $n or $t.c of ebound                                                   */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Bound::pGet_tblCol(void)
+Card_Term* Card_Bound::pGet_IfNot_idxCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -317,12 +317,12 @@ Card_Term* Card_Bound::pGet_tblCol(void)
 /*----------------------------------------------------------------------------*/
 /* get $t.c of ebound                                                         */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Bound::pGet_tblColOdn(void)
+Card_Term* Card_Bound::pGet_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsColOdn())
+    if (xKid.p_term()->bIsTblCol())
       return xKid.p_term();
 
   return nullptr;
@@ -336,7 +336,7 @@ bool Card_Bound::bUsesSqyRsl(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    if (xKid.p_term()->bIsStmOdn() && 1 == xKid.p_term()->iGetOdn())
+    if (xKid.p_term()->bIsStmCol() && 1 == xKid.p_term()->iGetOdn())
       return true;
   }
 

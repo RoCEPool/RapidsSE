@@ -191,7 +191,7 @@ void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
   if (bIsKeyOdn())
     p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
   else
-  if (bIsStmOdn())
+  if (bIsStmCol())
     p_expr_found = pCI->Prior.m_pEmitted->pGetExpr(iOdn - 1);
   else
     return;
@@ -327,19 +327,6 @@ bool Card_Term::bIsColNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a column-value ordinal? $n.c                                  */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bIs_Tbl_Col())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this term a key ordinal? $Kn                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsKeyOdn(void)
@@ -366,7 +353,7 @@ bool Card_Term::bIsPrmOdn(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a stream-value ordinal? $n                                    */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsStmOdn(void)
+bool Card_Term::bIsStmCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -376,16 +363,29 @@ bool Card_Term::bIsStmOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this term a column-value ordinal? $n.c                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsTblCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->bIs_Tbl_Col())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term a value ordinal? $n or $c.n                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsValOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsStmOdn())
+  if (bIsStmCol())
     return true;
   else
-  if (bIsColOdn())
+  if (bIsTblCol())
     return true;
 
   return false;
@@ -433,7 +433,7 @@ void Card_Term::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! bIsStmOdn())
+  if (!bIsStmCol())
     return;
 
   Symbol* pSym = pSymbol();

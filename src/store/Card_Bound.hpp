@@ -38,8 +38,8 @@ namespace STORE
 
     Card_Term* pGet_idxColOdn(void);
 
+    Card_Term* pGet_IfNot_idxCol(void);
     Card_Term* pGet_tblCol(void);
-    Card_Term* pGet_tblColOdn(void);
 
     void vShortForm(String* pString_b, Stz* szSep);
 

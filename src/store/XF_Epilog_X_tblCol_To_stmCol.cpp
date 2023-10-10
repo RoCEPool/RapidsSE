@@ -87,7 +87,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_stmCol(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert tblColOdn to stmCol                                             */
+/* convert tblCol to stmCol                                             */
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
 {
