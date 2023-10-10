@@ -19,13 +19,13 @@ namespace STORE
    ~Card_BoolCalc(void) noexcept(false);
 
     Card_CmpConj* pCmpPred_whichCallsSubQuery(CardIter* pCI);
-    void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     i8 nCullPred(Stz* szWithMark);
     bool bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark);
-    void vEnsureTypesFor_stmOdn(CardIter* pCI);
+    void vEnsureTypesFor_stmCol(CardIter* pCI);
     Card_CONJUNCTION* pFindRemove_CorrPred(void);
     bool bIsBraced(void);
     bool bIsCompound(void);

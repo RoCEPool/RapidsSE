@@ -156,7 +156,7 @@ void Card_Term::vBumpKeyOdn(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vBump_stmOdn(i8 nBy)
+void Card_Term::vBump_stmCol(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -176,7 +176,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vEnsureTypeFor_stmOdn(CardIter* pCI)
+void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -426,7 +426,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* correct stmOdn                                                             */
+/* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
 
 void Card_Term::vCorrectStmOdn(Card_Emitted* p_emitted_prior)

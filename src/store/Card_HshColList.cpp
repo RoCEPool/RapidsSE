@@ -44,7 +44,7 @@ Card_HshColList::~Card_HshColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_HshColList::vX_tblCol_To_stmCol(CardIter* pCI)
 {

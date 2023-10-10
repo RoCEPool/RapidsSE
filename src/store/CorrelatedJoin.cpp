@@ -176,7 +176,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  pCI->G.p_boolCalc->vBump_stmOdn(2);
+  pCI->G.p_boolCalc->vBump_stmCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
@@ -353,7 +353,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
 
 
     if (AL_PARTITION != e_Level) {
-      pCI->G.p_emitted->vBump_stmOdn_In_rpnCalc(pCI);
+      pCI->G.p_emitted->vBump_stmCol_In_rpnCalc(pCI);
       //pCI->G.p_key->Y_vCut(P_ProjBump);
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBumped);
     }
@@ -385,7 +385,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   RASSERT(pCI->G.p_key->szP_Type());
 
   pCI->G.p_emitted = pCI->G.p_project->pSub_emitted();
-  pCI->G.p_emitted->vBump_stmOdn_In_rpnCalc(pCI);// TODO: ,nBumpBy);
+  pCI->G.p_emitted->vBump_stmCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
 
 
   // push <project>/_SQCRLKEY_

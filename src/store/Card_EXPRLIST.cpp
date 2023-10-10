@@ -63,7 +63,7 @@ void Card_EXPRLIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_stmOdn_In_rpnCalc(CardIter* )
+void Card_EXPRLIST::vBump_stmCol_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -80,7 +80,7 @@ void Card_EXPRLIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 //      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
 
       if (xCI2.p_term()->pSymbol()->bIs_Stm_Col()) {
-        xCI2.p_term()->vBump_stmOdn();
+        xCI2.p_term()->vBump_stmCol();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }
@@ -98,7 +98,7 @@ void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vBump_stmOdn(nBumpBy);
+    xKid.p_expr()->vBump_stmCol(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,7 +289,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
     if (bIsKeyExpr)
       xKid.p_expr()->vRenumberForm_keyOdn(i_Expr++);
     else
-      xKid.p_expr()->vRenumberForm_stmOdn(i_Expr++);
+      xKid.p_expr()->vRenumberForm_stmCol(i_Expr++);
   }
 }
 
@@ -497,7 +497,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert stmOdn to colOdn                                                   */
+/* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vX_stmCol_To_tblCol(CardIter* pCI)
 {
@@ -509,7 +509,7 @@ void Card_EXPRLIST::vX_stmCol_To_tblCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vX_tblCol_To_stmCol(CardIter* pCI)
 {

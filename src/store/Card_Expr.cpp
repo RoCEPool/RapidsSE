@@ -183,15 +183,15 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of_key(Card_Expr* p_expr_key)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_Expr::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
+    p_boolCalc->vBump_stmCol(nBumpBy, bSkipFoldExpr);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
+    p_rpnCalc->vBump_stmCol(nBumpBy, bSkipFoldExpr);
 
 }
 
@@ -225,7 +225,7 @@ Card_Expr* Card_Expr::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert stmOdn to colOdn                                                   */
+/* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vX_stmCol_To_tblCol(CardIter* pCI)
 {
@@ -239,7 +239,7 @@ void Card_Expr::vX_stmCol_To_tblCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vX_tblCol_To_stmCol(CardIter* pCI)
 {
@@ -311,13 +311,13 @@ void Card_Expr::vDeconstruct(Card_As*&      rp_as,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsureTypes_For_stmOdn(CardIter* pCI)
+void Card_Expr::vEnsureTypes_For_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->G.p_rpnCalc = pSub_rpnCalc();
 
-  pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+  pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -699,7 +699,7 @@ void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberForm_stmOdn(BASE::i8 i_Expr)
+void Card_Expr::vRenumberForm_stmCol(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

@@ -161,7 +161,7 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Bound::vX_tblCol_To_stmCol(CardIter* pCI)
 {
@@ -185,7 +185,7 @@ bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpPred)
 
   Symbol* pBnd_rlnOpr = pSymbol();
   Symbol* pBnd_idxOdn = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxOdn);
-  Symbol* pBnd_stmOdn = pGetChild(1)->pSymbol();
+  Symbol* pBnd_stmCol = pGetChild(1)->pSymbol();
 
   Symbol* pCmp_rlnOpr = p_cmpPred->pSymbol();
   Symbol* pCmp_arg_0  = p_cmpPred->pGetChild(0)->pSymbol();
@@ -194,8 +194,8 @@ bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpPred)
   if (! pCmp_rlnOpr->bSame(pBnd_rlnOpr))
     return false;
 
-  if (pBnd_stmOdn->bSame(pCmp_arg_0) ||
-      pBnd_stmOdn->bSame(pCmp_arg_1))
+  if (pBnd_stmCol->bSame(pCmp_arg_0) ||
+      pBnd_stmCol->bSame(pCmp_arg_1))
     return true;
 
   return false;
@@ -204,12 +204,12 @@ bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vEnsureTypes_For_stmOdn(CardIter *pCI)
+void Card_Bound::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vEnsureTypeFor_stmOdn(pCI);
+    xKid.p_term()->vEnsureTypeFor_stmCol(pCI);
   }
 
 }
@@ -302,7 +302,7 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* get $n or $t.c of ebound                                                   */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Bound::pGet_colOdn(void)
+Card_Term* Card_Bound::pGet_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

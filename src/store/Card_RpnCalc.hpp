@@ -17,11 +17,11 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_RpnCalc* pClone(void);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
-    void vEnsureTypesFor_stmOdn(CardIter* pCI);
+    void vEnsureTypesFor_stmCol(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);

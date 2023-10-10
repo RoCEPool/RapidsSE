@@ -25,7 +25,7 @@ namespace STORE
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
     static Card_Expr* pProj_Simple_expr_Of_key(Card_Expr* p_expr_key);
 
-    void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_Expr* pClone(void);
     void vX_tblCol_To_stmCol(CardIter* pCI);
@@ -33,7 +33,7 @@ namespace STORE
     Card_Expr* pCraft_expr_early(CardIter* pCI, i8 i_Expr=0);
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
-    void vEnsureTypes_For_stmOdn(CardIter* pCI);
+    void vEnsureTypes_For_stmCol(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);
@@ -55,7 +55,7 @@ namespace STORE
     Card_Expr *pReducedCopy(i8 i_Expr);
 
     void vRenumberForm_keyOdn(i8 i_Expr);
-    void vRenumberForm_stmOdn(i8 i_Expr);
+    void vRenumberForm_stmCol(i8 i_Expr);
 
     bool bSameAs(Card_Expr* pExpr_arg);
 

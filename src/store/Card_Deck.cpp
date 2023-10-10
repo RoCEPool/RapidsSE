@@ -330,7 +330,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-        pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+        pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
       Card_Emitted* p_emitted_clone = pCI->Prior.m_pEmitted->pClone();
@@ -460,7 +460,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-        pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+        pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 
       pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pEmitted->pClone());
 

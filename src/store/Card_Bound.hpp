@@ -24,7 +24,7 @@ namespace STORE
 
     void vX_tblCol_To_stmCol(CardIter* pCI);
 
-    void vEnsureTypes_For_stmOdn(CardIter *pCI);
+    void vEnsureTypes_For_stmCol(CardIter *pCI);
     bool bEquivalent(Card_CmpConj* p_cmpPred);
 
     Card_Term* pGetTerm(i8 i_Term);
@@ -38,7 +38,7 @@ namespace STORE
 
     Card_Term* pGet_idxColOdn(void);
 
-    Card_Term* pGet_colOdn(void);
+    Card_Term* pGet_tblCol(void);
     Card_Term* pGet_tblColOdn(void);
 
     void vShortForm(String* pString_b, Stz* szSep);

@@ -88,7 +88,7 @@ void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
+    p_expr->vBump_stmCol(nBumpBy, bSkipFoldExpr);
 
 }
 
@@ -284,10 +284,10 @@ void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-    pCI->G.p_boolCalc->vEnsureTypesFor_stmOdn(pCI);
+    pCI->G.p_boolCalc->vEnsureTypesFor_stmCol(pCI);
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+    pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

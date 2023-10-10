@@ -73,7 +73,7 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_RpnCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(bSkipFoldExpr);
@@ -82,7 +82,7 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
   while (xKid.bEach(CK_TERM)) {
 
     if (xKid.p_term()->pSymbol()->bIs_Stm_Col()) {
-      xKid.p_term()->vBump_stmOdn(nBumpBy);
+      xKid.p_term()->vBump_stmCol(nBumpBy);
       xKid.p_term()->vMark1(MARK_CHANGED);
     }
   }
@@ -127,7 +127,7 @@ void Card_RpnCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
+void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -724,7 +724,7 @@ Stz* Card_RpnCalc::szP_Type(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert stmOdn to colOdn                                                   */
+/* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 {
@@ -740,7 +740,7 @@ void Card_RpnCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 {

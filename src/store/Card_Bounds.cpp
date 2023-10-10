@@ -46,7 +46,7 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Bounds::vX_tblCol_To_stmCol(CardIter* pCI)
 {
@@ -98,12 +98,12 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vEnsureTypes_For_stmOdn(CardIter *pCI)
+void Card_Bounds::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
-    xKid.p_bound()->vEnsureTypes_For_stmOdn(pCI);
+    xKid.p_bound()->vEnsureTypes_For_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -149,7 +149,7 @@ void Card_Index::vAdd_streamKey_exprs(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Index::vX_tblCol_To_stmCol(CardIter* pCI)
 {
@@ -254,12 +254,12 @@ Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vEnsureTypes_For_stmOdn(CardIter *pCI)
+void Card_Index::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_bounds = pSub_bounds()))
-    pCI->G.p_bounds->vEnsureTypes_For_stmOdn(pCI);
+    pCI->G.p_bounds->vEnsureTypes_For_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

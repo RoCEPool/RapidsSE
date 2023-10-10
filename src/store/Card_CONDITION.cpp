@@ -68,7 +68,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert all stmOdn to colOdn                                               */
+/* convert all stmCol to tblCol                                               */
 /*----------------------------------------------------------------------------*/
 void Card_CONDITION::vX_stmCol_To_tblCol(CardIter* pCI)
 {
@@ -81,7 +81,7 @@ void Card_CONDITION::vX_stmCol_To_tblCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert all colOdn to stmOdn                                               */
+/* convert all tblCol to stmCol                                               */
 /*----------------------------------------------------------------------------*/
 void Card_CONDITION::vX_tblCol_To_stmCol(CardIter* pCI)
 {
