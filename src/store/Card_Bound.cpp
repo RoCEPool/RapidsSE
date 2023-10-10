@@ -57,12 +57,12 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
 
   Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szSymbol(SF_NONE));
 
-  Symbol xSymbol_idxColOdn(SF_IDX_COL,1);
+  Symbol xSymbol_idxCol(SF_IDX_COL,1);
 
   if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
-      p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
+      p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
       p_bound->vAppendChild(p_term);
       p_term = pTerm_1->pClone();
       p_bound->vAppendChild(p_term);
@@ -71,7 +71,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
     if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
       char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
-        p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
+        p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
         p_bound->vAppendChild(p_term);
         p_term = pTerm_0->pClone();
         p_bound->vAppendChild(p_term);
@@ -84,7 +84,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
   if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
     char cTblSyn_term_1 = pTerm_1->pSymbol()->cSF_tblSyn();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
-      p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxColOdn);
+      p_term = (new Card_Term) ->SYMPPY(&xSymbol_idxCol);
       p_bound->vAppendChild(p_term);
       p_term = pTerm_0->pClone();
       p_bound->vAppendChild(p_term);
@@ -184,7 +184,7 @@ bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpPred)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pBnd_rlnOpr = pSymbol();
-  Symbol* pBnd_idxOdn = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxOdn);
+  Symbol* pBnd_idxCol = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxCol);
   Symbol* pBnd_stmCol = pGetChild(1)->pSymbol();
 
   Symbol* pCmp_rlnOpr = p_cmpPred->pSymbol();
@@ -286,7 +286,7 @@ bool Card_Bound::bIsUBound(void)
 /*----------------------------------------------------------------------------*/
 /* get $In of ebound                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Bound::pGet_idxColOdn(void)
+Card_Term* Card_Bound::pGet_idxCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

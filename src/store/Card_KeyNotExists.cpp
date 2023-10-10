@@ -116,7 +116,7 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   vUpdate_emitted(pCI);
 
-  vCorrectStmOdn(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 

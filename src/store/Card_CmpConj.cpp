@@ -391,7 +391,7 @@ bool Card_CmpConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
   Kid xKid(p_bounds);
   while (xKid.bEach(CK_BOUND)) {
 
-//    Stz* sz_bnd_idxColOdn = xKid.G.p_bound->pGetChild(0)->szSymbol(SF_NONE);
+//    Stz* sz_bnd_idxCol = xKid.G.p_bound->pGetChild(0)->szSymbol(SF_NONE);
     Stz* sz_bnd_stmCol = xKid.p_bound()->pGetChild(1)->szSymbol(SF_NONE);
     Stz* sz_bnd_rlnOpr    = xKid.p_bound()->szSymbol(SF_NONE);
 

@@ -123,7 +123,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
+void Card_OP::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -131,10 +131,10 @@ void Card_OP::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
     return;
 
   if (Card_Filter* p_filter = pSub_filter())
-    p_filter->vCorrectStmOdn(p_emitted_prior);
+    p_filter->vCorrectStmCol(p_emitted_prior);
 
   if (Card_Emitted* p_emitted = pSub_emitted())
-    p_emitted->vCorrectStmOdn(p_emitted_prior);
+    p_emitted->vCorrectStmCol(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/

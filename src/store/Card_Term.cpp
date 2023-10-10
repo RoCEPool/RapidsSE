@@ -136,13 +136,13 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vBumpKeyOdn(i8 nBy)
+void Card_Term::vBumpKeyCol(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = pSymbol()->iSF_ordinal();
+  i8 iKeyCol = pSymbol()->iSF_ordinal();
 
-  this->SYM(SF_KEY_COL,iKeyOdn + nBy);
+  this->SYM(SF_KEY_COL,iKeyCol + nBy);
 
   if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
@@ -160,9 +160,9 @@ void Card_Term::vBump_stmCol(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = pSymbol()->iSF_ordinal();
+  i8 iStmCol = pSymbol()->iSF_ordinal();
 
- SYM(SF_STM_COL, iStmColOdn + nBy);
+ SYM(SF_STM_COL, iStmCol + nBy);
 
   if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
@@ -188,7 +188,7 @@ void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
 
   i8 iOdn = iGetOdn();
 
-  if (bIsKeyOdn())
+  if (bIsKeyCol())
     p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
   else
   if (bIsStmCol())
@@ -329,7 +329,7 @@ bool Card_Term::bIsColNm(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a key ordinal? $Kn                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsKeyOdn(void)
+bool Card_Term::bIsKeyCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -429,7 +429,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
 
-void Card_Term::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
+void Card_Term::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -617,8 +617,8 @@ void Card_Term::vX_tblCol_To_stmCol_X(CardIter* pCI)
   if (pCI->X.m_pExprList_i) {
     if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_By_symbol(pSymbol_this)) {
       i8 iInjOdn = p_expr_scalar_i->pSymbol()->iSF_ordinal();
-      i8 iStmOdn = nCols_arrived + iInjOdn;
-      pSymbol_this->vFacet(SF_STM_COL, iStmOdn);
+      i8 iStmCol = nCols_arrived + iInjOdn;
+      pSymbol_this->vFacet(SF_STM_COL, iStmCol);
       this->vMark1(MARK_CHANGED);
       return;
     }

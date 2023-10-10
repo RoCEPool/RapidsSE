@@ -36,7 +36,7 @@ namespace STORE
     bool bIsLBound(void);
     bool bIsUBound(void);
 
-    Card_Term* pGet_idxColOdn(void);
+    Card_Term* pGet_idxCol(void);
 
     Card_Term* pGet_IfNot_idxCol(void);
     Card_Term* pGet_tblCol(void);

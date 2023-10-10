@@ -123,7 +123,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 

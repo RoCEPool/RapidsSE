@@ -123,7 +123,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 //  pCI->vPrintBoard();
 
   //pCI->Prior.m_pEmitted->vDump(__func__);
-  vCorrectStmOdn(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 
@@ -251,7 +251,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Prior.m_pEmitted);
 
  // pCI->vPrintBoard();
 

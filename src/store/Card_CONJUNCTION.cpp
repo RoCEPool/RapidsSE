@@ -250,8 +250,8 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
-      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)) ||
-          p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)) ||
+          p_index->bTblCol_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
         return true;
 
       return false;
@@ -260,7 +260,7 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
       // + only term_0 is $c.n
 
       // ? is term_0:$c.n an index column
-      if (p_index->bTblColOdn_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)))
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)))
         return true;
 
       return false;
@@ -271,7 +271,7 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
-    if (p_index->bTblColOdn_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
+    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
       return true;
 
     return false;

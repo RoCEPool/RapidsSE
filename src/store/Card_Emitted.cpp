@@ -132,17 +132,17 @@ Card_Emitted* Card_Emitted::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
+void Card_Emitted::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     if (Card_BoolCalc* p_boolCalc = xKid.p_expr()->pSub_boolCalc())
-      p_boolCalc->vCorrectStmOdn(p_emitted_prior);
+      p_boolCalc->vCorrectStmCol(p_emitted_prior);
     else
     if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
-      p_rpnCalc->vCorrectStmOdn(p_emitted_prior);
+      p_rpnCalc->vCorrectStmCol(p_emitted_prior);
   }
 
 }
@@ -171,7 +171,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
     while (xCI_rpnCalc.bEach(CK_TERM)) {
       // only interested in columns
 
-      if (xCI_rpnCalc.p_term()->bIsKeyOdn()) {
+      if (xCI_rpnCalc.p_term()->bIsKeyCol()) {
         RASSERT(pCI->G.p_streamKey);
 
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pDecodeExpr(xCI_rpnCalc.p_term()->pSymbol());

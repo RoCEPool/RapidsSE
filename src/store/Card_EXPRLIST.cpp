@@ -52,7 +52,7 @@ void Card_EXPRLIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
     while ((xCI2.bEach(CK_TERM))) {
 
       if (xCI2.p_term()->pSymbol()->bIs_Key_Col()) {
-        xCI2.p_term()->vBumpKeyOdn();
+        xCI2.p_term()->vBumpKeyCol();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }

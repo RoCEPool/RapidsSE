@@ -27,7 +27,7 @@ namespace STORE
     bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
     bool bUsesSqlRsl(void);
     void vSet_Choose_index(void);
-    bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
+    bool bTblCol_IsKeyIn_index(Stz* szTblCol);
 
     Index*    pGetIndex(Card_TableNm* p_tableNm);
 

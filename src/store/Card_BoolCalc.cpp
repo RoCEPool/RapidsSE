@@ -168,7 +168,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
+void Card_BoolCalc::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -177,7 +177,7 @@ void Card_BoolCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
   auto bLambdaFn = [p_emitted_prior](Card* p_card)
   {
     if (p_card->pSymbol()->bIs_Stm_Col())
-      _pCard_Term(p_card)->vCorrectStmOdn(p_emitted_prior);
+      _pCard_Term(p_card)->vCorrectStmCol(p_emitted_prior);
 
     return C_CONTINUE_RECURSION;
   };
@@ -372,7 +372,7 @@ bool Card_BoolCalc::bIsScalarKey(void) {
     return false;
 
   Card_Term *p_term_0 = _pCard_Term(p_card_0);
-  if (!p_term_0->bIsKeyOdn())
+  if (!p_term_0->bIsKeyCol())
     return false;
 
   return true;

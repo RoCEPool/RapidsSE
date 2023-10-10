@@ -23,12 +23,12 @@ namespace STORE
     static void vItemise_colNm(CardIter* pCI);
     static void vItemStrip_colNm(CardIter* pCI);
 
-    void vBumpKeyOdn(i8 nBy=1);
+    void vBumpKeyCol(i8 nBy=1);
     void vBump_stmCol(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
      void vEnsureTypeFor_stmCol(CardIter* pCI);
-    void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
+    void vCorrectStmCol(Card_Emitted* p_emitted_prior);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
@@ -36,7 +36,7 @@ namespace STORE
     char cGetTblSyn(void);
     bool bIsColNm(void);    // name
     bool bIsTblCol(void);   // $c.n
-    bool bIsKeyOdn(void);   // $Kn
+    bool bIsKeyCol(void);   // $Kn
     bool bIsPrmOdn(void);   // %n
     bool bIsStmCol(void);   // $n
     bool bIsValOdn(void);   // $n or $c.n

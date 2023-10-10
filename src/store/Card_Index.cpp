@@ -212,7 +212,7 @@ void Card_Index::vSet_Choose_index(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
+bool Card_Index::bTblCol_IsKeyIn_index(Stz* szTblCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -222,7 +222,7 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   while (xKid.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xKid.pChild()->pSymbol()->bSame(szTblColOdn))
+    if (xKid.pChild()->pSymbol()->bSame(szTblCol))
       return true;
   }
 

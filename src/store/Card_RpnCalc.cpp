@@ -116,12 +116,12 @@ Card_RpnCalc* Card_RpnCalc::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
+void Card_RpnCalc::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    xKid.p_term()->vCorrectStmOdn(p_emitted_prior);
+    xKid.p_term()->vCorrectStmCol(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +140,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
 
     i8 iOdn = xTerm.iGetOdn();
 
-    if (xTerm.p_term()->bIsKeyOdn())
+    if (xTerm.p_term()->bIsKeyCol())
       p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
     else
     if (xTerm.p_term()->bIsStmCol()) {
@@ -192,7 +192,7 @@ Symbol* Card_RpnCalc::pFirstKeyCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsKeyOdn())
+    if (xKid.p_term()->bIsKeyCol())
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -331,7 +331,7 @@ bool Card_RpnCalc::bIsScalarKey(void)
     return false;
 
   Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->bIsKeyOdn())
+  if (! p_term_0->bIsKeyCol())
     return false;
 
   return true;
