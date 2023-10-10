@@ -21,14 +21,13 @@ namespace STORE
     Card_CmpConj* pCmpPred_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_stmCol_To_tblCol(CardIter* pCI);
     void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     i8 nCullPred(Stz* szWithMark);
     bool bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     Card_CONJUNCTION* pFindRemove_CorrPred(void);
+    bool bIsBraced(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
@@ -44,8 +43,9 @@ namespace STORE
     bool bYank_PRED(Stz* szWithMark, Card_CONJUNCTION*& p_pred_yanked);
     bool bYank_PRED(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_pred_yanked);
 
+    void vX_stmCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
-    bool bIsBraced(void);
 
     Stz* szP_Type(void);
 

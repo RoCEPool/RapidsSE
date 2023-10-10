@@ -1386,12 +1386,12 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   Card_Expr* pCard_Expr = new Card_Expr;
 
   if (bIsKeyExpr) {
-    Symbol xSymbol_stmColOdn(SF_KEY_COL,ri_Expr);
-    pCard_Expr->pSymbol()->vFacets(&xSymbol_stmColOdn);
+    Symbol xSymbol_stmCol(SF_KEY_COL,ri_Expr);
+    pCard_Expr->pSymbol()->vFacets(&xSymbol_stmCol);
   }
   else {
-    Symbol xSymbol_stmColOdn(SF_STM_COL, ri_Expr);
-    pCard_Expr->pSymbol()->vFacets(&xSymbol_stmColOdn);
+    Symbol xSymbol_stmCol(SF_STM_COL, ri_Expr);
+    pCard_Expr->pSymbol()->vFacets(&xSymbol_stmCol);
   }
 
   Stz* szP_Type = this->szPopType_char(pCard_RpnTerms);

@@ -28,7 +28,7 @@ namespace STORE
     void vDedupe_as(void);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
-    void vEnsureTypes_For_stmColOdn(CardIter* pCI);
+    void vEnsureTypes_For_stmCol(CardIter* pCI);
     Card_Emitted* pPropagate(CardIter* pCI);
     Card_Expr* pFindExprOfAs(Symbol* pSymbol);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);

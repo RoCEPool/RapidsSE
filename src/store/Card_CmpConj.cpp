@@ -392,7 +392,7 @@ bool Card_CmpConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
   while (xKid.bEach(CK_BOUND)) {
 
 //    Stz* sz_bnd_idxColOdn = xKid.G.p_bound->pGetChild(0)->szSymbol(SF_NONE);
-    Stz* sz_bnd_stmColOdn = xKid.p_bound()->pGetChild(1)->szSymbol(SF_NONE);
+    Stz* sz_bnd_stmCol = xKid.p_bound()->pGetChild(1)->szSymbol(SF_NONE);
     Stz* sz_bnd_rlnOpr    = xKid.p_bound()->szSymbol(SF_NONE);
 
     Stz* sz_cmp_rlnOpr    = this->szSymbol(SF_NONE);
@@ -405,9 +405,9 @@ bool Card_CmpConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
     // todo: need bounds to be bndTyp , etc
     // anyways...
 
-    if (sz_cmp_arg_0->bSame(sz_bnd_stmColOdn))
+    if (sz_cmp_arg_0->bSame(sz_bnd_stmCol))
       return true;
-    if (sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
+    if (sz_cmp_arg_1->bSame(sz_bnd_stmCol))
       return true;
 
   }

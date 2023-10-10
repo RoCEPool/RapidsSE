@@ -95,7 +95,7 @@ void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
+void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -172,7 +172,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 
 }
 /*----------------------------------------------------------------------------*/
-//void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
+//void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 //
@@ -279,7 +279,7 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vEnsureTypes_For_stmColOdn(CardIter *pCI)
+void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -547,7 +547,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
   if (CK_PROJECT == eCard() && pCI->Prior.m_pEmitted) {
     p_emitted = pSub_emitted();
-    p_emitted->vEnsureTypes_For_stmColOdn(pCI);
+    p_emitted->vEnsureTypes_For_stmCol(pCI);
     return;
   }
 

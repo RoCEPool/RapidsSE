@@ -22,18 +22,18 @@ namespace STORE
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
 
-    void vX_tblCol_To_stmCol(CardIter* pCI);
-
     void vDeleteAll_bounds(void);
 
     Card_Index* pFindChosenIndex(void);
 
     bool bHas_cmpPred_In_bounds(Card_CmpConj* p_cmpPred);
 
-    void vTypes_For_stmColOdn(CardIter* pCI);
+    void vTypes_For_stmCol(CardIter* pCI);
 
     bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
     bool bUsesSqyRsl(void);
+
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

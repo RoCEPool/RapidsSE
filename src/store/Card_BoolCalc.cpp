@@ -127,78 +127,6 @@ eCT Card_BoolCalc::eColumnType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
-  if (! p_pred_ROOT)
-    return;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bfTo_stmOdn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
-  {
-    if (bUpwards)
-      return C_CONTINUE_RECURSION;
-
-    if (! p_pred->bIsCard(CK_TERM))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term* p_term = _pCard_Term(p_pred);
-    Symbol* pSymbol = p_term->pSymbol();
-    if (!pSymbol->bIs_Tbl_Col())
-      return C_CONTINUE_RECURSION;
-
-    p_term->vX_tblCol_To_stmCol(pCI);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bfTo_stmOdn);
-  UNUSED(bIgnore);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vX_stmCol_To_tblCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
-  {
-    if (bUpwards)
-      return C_CONTINUE_RECURSION;
-
-    if (! p_pred->bIsCard(CK_TERM))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term* p_term = _pCard_Term(p_pred);
-    Symbol* pSymbol = p_term->pSymbol();
-    if (!pSymbol->bIs_Stm_Col())
-      return C_CONTINUE_RECURSION;
-
-    p_term->vX_stmCol_To_tblCol(pCI);
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
-  UNUSED(bIgnore);
-}
-
-/*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
@@ -743,6 +671,78 @@ Stz* Card_BoolCalc::szP_Type(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return szCT_char[CT_BOOLEAN];
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vX_stmCol_To_tblCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    Symbol* pSymbol = p_term->pSymbol();
+    if (!pSymbol->bIs_Stm_Col())
+      return C_CONTINUE_RECURSION;
+
+    p_term->vX_stmCol_To_tblCol(pCI);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  UNUSED(bIgnore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
+  if (! p_pred_ROOT)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfTo_stmOdn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_pred);
+    Symbol* pSymbol = p_term->pSymbol();
+    if (!pSymbol->bIs_Tbl_Col())
+      return C_CONTINUE_RECURSION;
+
+    p_term->vX_tblCol_To_stmCol(pCI);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bfTo_stmOdn);
+  UNUSED(bIgnore);
 }
 
 /*----------------------------------------------------------------------------*/

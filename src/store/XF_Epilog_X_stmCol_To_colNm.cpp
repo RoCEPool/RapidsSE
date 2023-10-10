@@ -73,7 +73,7 @@ void XF_Epilog_X_stmCol_To_colNm::vX_stmCol_to_colNm(void)
 //      continue;
 
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      m_pCI->G.p_constraint->vConvert_stmColOdn_To_stmColNm(m_pCI);
+      m_pCI->G.p_constraint->vConvert_stmCol_To_stmColNm(m_pCI);
   }
 
   m_pCI->vEndTransform();

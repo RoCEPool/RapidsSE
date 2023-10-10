@@ -27,10 +27,7 @@ namespace STORE
     void vBump_stmOdn(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_tblCol_To_stmCol_X(CardIter* pCI);
-    void vX_stmCol_To_tblCol(CardIter* pCI);
-    void vEnsureTypeFor_stmOdn(CardIter* pCI);
+     void vEnsureTypeFor_stmOdn(CardIter* pCI);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
@@ -46,6 +43,10 @@ namespace STORE
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     void vShortForm(String* pString, Stz* szSep);
+
+    void vX_stmCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol_X(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

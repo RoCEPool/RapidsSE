@@ -22,7 +22,7 @@ namespace STORE
 
     bool bIsEqual(Card_Payload* p_key_arg);
 
-    void vTypes_For_stmColOdn(CardIter *pCI);
+    void vTypes_For_stmCol(CardIter *pCI);
 
     void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
 

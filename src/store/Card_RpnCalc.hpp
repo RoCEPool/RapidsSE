@@ -20,8 +20,6 @@ namespace STORE
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_RpnCalc* pClone(void);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_stmCol_To_tblCol(CardIter* pCI);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
@@ -44,6 +42,9 @@ namespace STORE
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolCalc* pTo_boolCalc(CardIter* pCI);
     Stz* szP_Type(void);
+    void vX_stmCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

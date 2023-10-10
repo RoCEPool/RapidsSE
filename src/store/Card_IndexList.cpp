@@ -74,18 +74,6 @@ Card_IndexList* Card_IndexList::pDerive(Table* pTable)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_IndexList::vX_tblCol_To_stmCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_INDEX))
-    xKid.p_index()->vX_tblCol_To_stmCol(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete all bounds (within this indexList)                                  */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vDeleteAll_bounds(void)
@@ -220,12 +208,24 @@ bool Card_IndexList::bUsesSqyRsl(void)
 /*----------------------------------------------------------------------------*/
 /* ensure types for all stream-columns                                        */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vTypes_For_stmColOdn(CardIter *pCI)
+void Card_IndexList::vTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/)
     xKid.p_index()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vX_tblCol_To_stmCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_INDEX))
+    xKid.p_index()->vX_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

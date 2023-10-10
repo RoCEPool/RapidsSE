@@ -153,7 +153,7 @@ bool Card_Payload::bIsEqual(Card_Payload* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Payload::vTypes_For_stmColOdn(CardIter *pCI)
+void Card_Payload::vTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -321,7 +321,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
         if (pCI->Prior.m_pEmitted) {
-          pCI->G.p_constraint->vEnsureTypes_For_stmColOdn(pCI);
+          pCI->G.p_constraint->vEnsureTypes_For_stmCol(pCI);
         }
       }
 
@@ -371,7 +371,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Prior.m_pEmitted) {
-        pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_key->vTypes_For_stmCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
       }
     }
@@ -380,7 +380,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       if (pCI->Prior.m_pEmitted) {
         //pCI->G.p_emitted->vDump(__func__);
-        pCI->G.p_emitted->vEnsureTypes_For_stmColOdn(pCI);
+        pCI->G.p_emitted->vEnsureTypes_For_stmCol(pCI);
         //pCI->G.p_emitted->vDump(__func__);
         pCI->G.p_emitted->vRenumberAll_expr();
         //pCI->G.p_emitted->vDump(__func__);
@@ -392,7 +392,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
       if (pCI->Prior.m_pEmitted) {
-        pCI->G.p_constraint->vEnsureTypes_For_stmColOdn(pCI);
+        pCI->G.p_constraint->vEnsureTypes_For_stmCol(pCI);
       }
     }
 
@@ -425,7 +425,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Prior.m_pEmitted) {
-          pCI->G.p_indexList->vTypes_For_stmColOdn(pCI);
+          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
         }
       }
 
@@ -442,7 +442,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Prior.m_pEmitted) {
-          pCI->G.p_indexList->vTypes_For_stmColOdn(pCI);
+          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
         }
       }
 
@@ -481,7 +481,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Prior.m_pEmitted) {
-        pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_key->vTypes_For_stmCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
       }
     }
@@ -489,7 +489,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
     if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
 
       if (pCI->Prior.m_pEmitted) {
-        pCI->G.p_emitted->vEnsureTypes_For_stmColOdn(pCI);
+        pCI->G.p_emitted->vEnsureTypes_For_stmCol(pCI);
         pCI->G.p_emitted->vRenumberAll_expr();
       }
 

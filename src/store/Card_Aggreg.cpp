@@ -147,7 +147,7 @@ void Card_Aggreg::vUpdate_emitted(CardIter* pCI)
   if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
 
     if (pCI->Prior.m_pEmitted) {
-      pCI->G.p_emitted->vEnsureTypes_For_stmColOdn(pCI);
+      pCI->G.p_emitted->vEnsureTypes_For_stmCol(pCI);
       pCI->G.p_emitted->vRenumberAll_expr();
     }
 

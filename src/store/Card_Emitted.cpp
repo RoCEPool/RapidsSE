@@ -296,7 +296,7 @@ void Card_Emitted::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vEnsureTypes_For_stmColOdn(CardIter *pCI)
+void Card_Emitted::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

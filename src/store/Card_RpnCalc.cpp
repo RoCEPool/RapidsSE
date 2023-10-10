@@ -114,38 +114,6 @@ Card_RpnCalc* Card_RpnCalc::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vX_tblCol_To_stmCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
-      continue;
-
-    xKid.p_term()->vX_tblCol_To_stmCol(pCI);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert stmOdn to colOdn                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vX_stmCol_To_tblCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Stm_Col())
-      continue;
-
-    xKid.p_term()->vX_stmCol_To_tblCol(pCI);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vCorrectStmOdn(Card_Emitted* p_emitted_prior)
@@ -753,6 +721,38 @@ Stz* Card_RpnCalc::szP_Type(void)
     return szP_Type;
 
   return szCT_char[CT_NONE];
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert stmOdn to colOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vX_stmCol_To_tblCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    if (!xKid.p_term()->pSymbol()->bIs_Stm_Col())
+      continue;
+
+    xKid.p_term()->vX_stmCol_To_tblCol(pCI);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert colOdn to stmOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vX_tblCol_To_stmCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_TERM)) {
+    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
+      continue;
+
+    xKid.p_term()->vX_tblCol_To_stmCol(pCI);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
