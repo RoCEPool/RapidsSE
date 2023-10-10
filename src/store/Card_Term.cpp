@@ -580,10 +580,10 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // term is introduced
 
-  i8 i_Col = this->iGetOdn();
-  i8 i_ColOdn = nCols_injectedByThisCard + i_Col;
+  i8 iCol = this->iGetOdn();
+  i8 iStmCol = nCols_injectedByThisCard + iCol;
 
-  Symbol xSymbol_stmCol(SF_STM_COL, i_ColOdn);
+  Symbol xSymbol_stmCol(SF_STM_COL, iStmCol);
   this->pSymbol()->vFacets(&xSymbol_stmCol);
 
   this->vMark1(MARK_CHANGED);

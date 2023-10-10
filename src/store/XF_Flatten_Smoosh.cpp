@@ -146,8 +146,8 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
 
   //Card_Term::bReplaceValueOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
-  Symbol xSymbol_prmOdn(SF_PRM_COL,1);
-  p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmOdn, p_term_sqarg->pSymbol());
+  Symbol xSymbol_prmCol(SF_PRM_COL, 1);
+  p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmCol, p_term_sqarg->pSymbol());
 
   delete p_term_sqarg;
 

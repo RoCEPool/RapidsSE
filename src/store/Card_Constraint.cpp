@@ -144,8 +144,8 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
       pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
       i8 nExprs = pCI->G.p_emitted->nChildCards();
-      i8 i_Odn = p_term->iGetOdn();
-      i8 i_Col_base0 = i_Odn - nExprs - 1;
+      i8 iOdn = p_term->iGetOdn();
+      i8 i_Col_base0 = iOdn - nExprs - 1;
 
       if (i_Col_base0 >= 0)
         szColNm = pCI->G.p_table->szColNm(i_Col_base0);
