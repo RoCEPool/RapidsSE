@@ -235,6 +235,7 @@ extern Stz* MARK_CHANGED;
 extern Stz* MARK_COMPARE;
 extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
+extern Stz* MARK_FOUND;
 extern Stz* MARK_NOT;
 extern Stz* MARK_OR;
 extern Stz* MARK_UNVALID;

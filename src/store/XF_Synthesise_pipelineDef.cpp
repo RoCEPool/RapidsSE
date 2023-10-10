@@ -508,8 +508,8 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 
   Card* p_OP_curr = m_pCI->G.p_OP;
 
-  if (! p_OP_curr->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_INDEXSCAN,
-                          CK_KEYEXISTS, CK_KEYNOTEXISTS, CK_SCAN, CK_INFLATE, CK_NONE))
+  if (! p_OP_curr->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_INDEXSCAN, CK_INFLATE,
+                          CK_KEYEXISTS, CK_KEYNOTEXISTS, CK_SCAN, CK_NONE))
     return;
 
   eCK eCard_OP = p_OP_curr->eCard();
@@ -531,7 +531,11 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
       CK_INDEXJOIN == eCard_OP ||
       CK_CROSSJOIN == eCard_OP ||
       CK_INDEXSCAN == eCard_OP) {
+#ifdef Z_FACETS
+    vCraftColInj_FACETS(pColInj, p_OP_curr);
+#else
     vCraftColInj(pColInj, p_OP_curr);
+#endif
   }
 
   pColInj->vValidate();
@@ -554,41 +558,109 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
   Card_Emitted* p_emitted = pSubCard->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add colInj descriptors
 
   auto bfAddDescriptors = [pColInj, p_emitted] (Card* pCard_expr_i) {
 
-    // injected related
+    // get details of column injected
     Card_Expr*  p_expr_i = _pCard_Expr(pCard_expr_i);
     Card_As*      p_as_i = p_expr_i->pSub_as();
     Symbol*    pSym_as_i = p_as_i->pSymbol();
     i8        i_CrwCol_i = pSym_as_i->iSF_ordinal();
     Stz*      szTblCol_i = p_expr_i->pFirstTblCol()->szSF_chrSeq(SF_NONE);
 
-    // projected related
-    Card_Expr *p_prior_expr_p = nullptr;
+    // is the injected column emitted?
+    Card_Expr *p_prior_expr_e = nullptr;
 
     Kid xKid(p_emitted);
     for (;;) {
-      Card_Expr *p_expr_p =
+      Card_Expr *p_expr_e =
           p_emitted->pFind_expr_By_as_stripped(pSym_as_i, szTblCol_i, &xKid);
-      if (! p_expr_p)
+      if (! p_expr_e)
         return C_CONTINUE_RECURSION;
 
       // assemble descriptor
-      Card_As *p_as_p   = p_expr_p->pSub_as();
+      Card_As *p_as_p   = p_expr_e->pSub_as();
       Symbol *pSym_as_p = p_as_p->pSymbol();
       Stz *szSym_as_p   = pSym_as_p->szSF_chrSeq(SF_NONE);
-      Stz *szTblCol_p   = p_expr_p->pFirstStmCol()->Y_szGet(P_TblCol);
+      Stz *szTblCol_p   = p_expr_e->pFirstStmCol()->Y_szGet(P_TblCol);
       i8 i_StructCell_p = pSym_as_p->iSF_ordinal();
 
       pColInj->vAdd(i_CrwCol_i, i_StructCell_p,
                     szSym_as_p, szTblCol_i, szTblCol_p);
 
-      if (p_prior_expr_p) {
+      if (p_prior_expr_e) {
         pColInj->vRepeatsPrior();
         vDebugPoint();
       }
-      p_prior_expr_p = p_expr_p;
+      p_prior_expr_e = p_expr_e;
+    }
+    NEVER_REACH
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_injected->bApplyRecursive(CK_EXPR, bfAddDescriptors);
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft the columns injected to emitted map for given card                   */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  if (m_pStageDef->i_Stage() == 0) {
+    vDebugPoint();
+    if (m_pOpDef->i_Op() == 0)
+      vDebugPoint();
+  }
+
+  Card_Injected* p_injected = pSubCard->pSub_injected();
+  Card_Emitted*   p_emitted = pSubCard->pSub_emitted();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add colInj descriptors
+
+  auto bfAddDescriptors = [pColInj, p_emitted] (Card* pCard_expr_i) {
+
+    // get details of column injected (e.g. $b.1)
+    Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
+    Card_As*       p_as_i = p_expr_i->pSub_as();
+    Symbol*     pSym_as_i = p_as_i->pSymbol();
+    i8         i_CrwCol_i = pSym_as_i->iSF_ordinal();
+    Symbol* pSym_tblCol_i = p_expr_i->pFirstTblCol();
+    Stz*       szTblCol_i = pSym_tblCol_i->szSF_chrSeq(SF_NONE);
+    //pSym_tblCol_i->vDump();
+
+    // test if the injected column is actually emitted?
+    // n.b. it may be emitted more than once
+    Card_Expr *p_prior_expr_e = nullptr;
+
+    Kid xKid(p_emitted);
+    for (;;) {
+      Card_Expr *p_expr_e =
+          p_emitted->pFind_expr_By_symbol(pSym_tblCol_i,&xKid);
+      if (! p_expr_e)
+        return C_CONTINUE_RECURSION;
+
+      // -- injected column is actually emitted --
+      //p_expr_e->vDump(__func__);
+
+      // get details of emitted column
+      i8 i_StructCell_e = p_expr_e->pSymbol()->iSF_ordinal() - 1;
+      Card_As*   p_as_e = p_expr_e->pSub_as();
+      Symbol* pSym_as_e = p_as_e->pSymbol();
+
+      // add descriptor
+      pColInj->vAdd(i_CrwCol_i, i_StructCell_e, pSym_as_e->szSF_chrSeq(SF_NONE),
+                    szTblCol_i, pSym_as_e->szSF_chrSeq(SF_NONE));
+
+      if (p_prior_expr_e) {
+        pColInj->vRepeatsPrior();
+        vDebugPoint();
+      }
+      p_prior_expr_e = p_expr_e;
     }
     NEVER_REACH
   };

@@ -95,6 +95,7 @@ Stz* MARK_CHANGED    = "`"_Stz;
 Stz* MARK_COMPARE    = "="_Stz;
 Stz* MARK_DELETED    = "Z"_Stz;
 Stz* MARK_DUPLICATE  = "D"_Stz;
+Stz* MARK_FOUND      = "+"_Stz;
 Stz* MARK_NOT        = "!"_Stz;
 Stz* MARK_OR         = "|"_Stz;
 Stz* MARK_UP         = "^"_Stz;
@@ -1287,7 +1288,7 @@ void Card::vPrintCardRecursive(CardIter* pCI,
   else
     vPrintCard_bySettings(pRibbon, iDepth);
 
-  if (this->bMark1(MARK_CHANGED))
+  if (this->bMark1(MARK_CHANGED) || this->bMark1(MARK_FOUND))
     vMark1(MARK_BLANK);
 
   if (pCardCtl->bPrune(m_eCard))

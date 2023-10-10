@@ -142,7 +142,8 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->vSnapPriorProjection();
-  m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emitted();
+  if (m_pCI->G.p_OP->pSub_emitted())
+    m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

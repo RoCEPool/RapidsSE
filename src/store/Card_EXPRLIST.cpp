@@ -156,6 +156,21 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_symbol(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find expression which expresses the given symbol                           */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_By_symbol(Symbol* pSymbol, Kid* aKid)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  while (aKid->bEach(CK_EXPR)) {
+    if (aKid->p_expr()->bExpressionOfSymbol(pSymbol))
+      return aKid->p_expr();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find expression which matches given $n ordinal                             */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pFind_expr_By_ordinal(Symbol* pSymbol)
