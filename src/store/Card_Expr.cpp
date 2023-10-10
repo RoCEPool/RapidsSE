@@ -688,7 +688,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
+void Card_Expr::vRenumberForm_KeyCol(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

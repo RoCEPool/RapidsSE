@@ -190,7 +190,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //           $b.1
   //                               // __subquery0002
 
-  vConvert_CrlPrmOdn_Into_StmCol(pCI, pCI->G.p_boolCalc);
+  vConvert_CrlSqyPrm_Into_StmCol(pCI, pCI->G.p_boolCalc);
 
   vConvert_SubQryCall_Into_StmCol(pCI, pCI->G.p_boolCalc);
 
@@ -336,12 +336,12 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
 
 
-      Symbol xSymbol_keyOdn(SF_KEY_COL,1);
+      Symbol xSymbol_KeyCol(SF_KEY_COL,1);
 
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, C_SQCRLKEY));
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_keyOdn);
+      pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
       pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
       pCI->G.p_term->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
@@ -432,7 +432,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmCol(CardIter* pCI, Card_BoolCalc *p_boolCalc)
+void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc *p_boolCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 

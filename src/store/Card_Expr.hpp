@@ -54,7 +54,7 @@ namespace STORE
                       Card_Term*  p_term_0);
     Card_Expr *pReducedCopy(i8 i_Expr);
 
-    void vRenumberForm_keyOdn(i8 i_Expr);
+    void vRenumberForm_KeyCol(i8 i_Expr);
     void vRenumberForm_stmCol(i8 i_Expr);
 
     bool bSameAs(Card_Expr* pExpr_arg);

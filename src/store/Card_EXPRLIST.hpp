@@ -18,7 +18,7 @@ namespace STORE
     Card_EXPRLIST(eCK eCard, i8 iFixedDepth);
    ~Card_EXPRLIST(void) noexcept(false);
 
-    void vBump_keyOdn_In_rpnCalc(CardIter* pCI);
+    void vBump_KeyCol_In_rpnCalc(CardIter* pCI);
     void vBump_stmCol_In_rpnCalc(CardIter* pCI);
     void vBump_Rightwards(i8 nBumpBy);
 

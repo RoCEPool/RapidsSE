@@ -3659,13 +3659,13 @@ void Symbol::vFacet_GroupBy(Stz* szGroupBy)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given index-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Idx_Col(i8 iIdxColOdn)
+void Symbol::vFacet_Idx_Col(i8 iIdxCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_IDX_COL,"$I%lld"_Stz, iIdxColOdn);
+  vFacetSprint(SF_IDX_COL,"$I%lld"_Stz, iIdxCol);
 
   RASSERT(bIs_Idx_Col());
 }

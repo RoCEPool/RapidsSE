@@ -37,7 +37,7 @@ namespace STORE
     bool bIsColNm(void);    // name
     bool bIsTblCol(void);   // $c.n
     bool bIsKeyCol(void);   // $Kn
-    bool bIsPrmOdn(void);   // %n
+    bool bIsSqyPrm(void);   // %n
     bool bIsStmCol(void);   // $n
     bool bIsValOdn(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);

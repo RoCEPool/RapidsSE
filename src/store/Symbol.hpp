@@ -286,7 +286,7 @@ namespace STORE
     void vFacet_Flt_Lit(Stz* szFltLit);
     void vFacet_GroupBy(Stz* szGroupBy);
     void vFacet_Idx_Col(Stz* szIdxCol);
-    void vFacet_Idx_Col(i8 iIdxColOdn);
+    void vFacet_Idx_Col(i8 iIdxCol);
     void vFacet_Idx_Nm(Stz* szIdxNm);
     void vFacet_Int_Lit(Stz* szIntLit);
     void vFacet_Int_Lit(i8 iIntLit);

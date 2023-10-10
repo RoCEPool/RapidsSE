@@ -341,7 +341,7 @@ bool Card_Term::bIsKeyCol(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a parameter ordinal? %n                                       */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsPrmOdn(void)
+bool Card_Term::bIsSqyPrm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

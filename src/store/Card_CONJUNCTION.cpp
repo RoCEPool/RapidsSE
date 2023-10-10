@@ -219,8 +219,8 @@ bool Card_CONJUNCTION::bIsCorrPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsPrmOdn() && (p_term_1->bIsStmCol() || p_term_1->bIsTblCol())) ||
-      (p_term_1->bIsPrmOdn() && (p_term_0->bIsStmCol() || p_term_0->bIsTblCol())))
+  if ((p_term_0->bIsSqyPrm() && (p_term_1->bIsStmCol() || p_term_1->bIsTblCol())) ||
+      (p_term_1->bIsSqyPrm() && (p_term_0->bIsStmCol() || p_term_0->bIsTblCol())))
     return true;
 
   return false;

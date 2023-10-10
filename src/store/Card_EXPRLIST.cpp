@@ -35,7 +35,7 @@ Card_EXPRLIST::~Card_EXPRLIST(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
+void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);
@@ -287,7 +287,7 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
   i8 i_Expr = 1;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     if (bIsKeyExpr)
-      xKid.p_expr()->vRenumberForm_keyOdn(i_Expr++);
+      xKid.p_expr()->vRenumberForm_KeyCol(i_Expr++);
     else
       xKid.p_expr()->vRenumberForm_stmCol(i_Expr++);
   }

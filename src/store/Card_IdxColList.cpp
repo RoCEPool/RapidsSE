@@ -96,11 +96,11 @@ void Card_IdxColList::vAffix_tblCol(Card_Emitted* p_emitted)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol* Card_IdxColList::pGetIdxCol_byIdxColOdn(Stz* szIdxColOdn)
+Card_IdxCol* Card_IdxColList::pGetIdxCol_byIdxCol(Stz* szIdxCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_IdxCol = StrLib::iGleanInt(szIdxColOdn->azChar()) - 1;
+  i8 i_IdxCol = StrLib::iGleanInt(szIdxCol->azChar()) - 1;
 
   if (i_IdxCol < 0 || i_IdxCol >= nChildCards())
     return nullptr;
