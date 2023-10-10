@@ -45,7 +45,7 @@ void XF_Epilog_X_stmCol_To_colNm::vConvert(CardIter* pCI)
 
   XF_Epilog_X_stmCol_To_colNm* pXF_stmCol_to_colNm = new XF_Epilog_X_stmCol_To_colNm(pCI);
 
-  pXF_stmCol_to_colNm->vConvert_stmCol_to_colNm();
+  pXF_stmCol_to_colNm->vX_stmCol_to_colNm();
 
   delete pXF_stmCol_to_colNm;
 }
@@ -58,7 +58,7 @@ void XF_Epilog_X_stmCol_To_colNm::vConvert(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* stream-column to column-name                                               */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_X_stmCol_To_colNm::vConvert_stmCol_to_colNm(void)
+void XF_Epilog_X_stmCol_To_colNm::vX_stmCol_to_colNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_X_STMCOL_TO_COLNM, _FOOTER_);
 

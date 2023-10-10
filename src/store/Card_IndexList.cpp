@@ -76,13 +76,13 @@ Card_IndexList* Card_IndexList::pDerive(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vConvert_tblCol_To_stmCol(CardIter* pCI)
+void Card_IndexList::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_INDEX))
-    xKid.p_index()->vConvert_tblCol_To_stmCol(pCI);
+    xKid.p_index()->vX_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

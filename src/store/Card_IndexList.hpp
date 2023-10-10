@@ -22,7 +22,7 @@ namespace STORE
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
 
-    void vConvert_tblCol_To_stmCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
     void vDeleteAll_bounds(void);
 

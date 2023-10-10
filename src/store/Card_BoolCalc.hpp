@@ -21,8 +21,8 @@ namespace STORE
     Card_CmpConj* pCmpPred_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
-    void vConvert_tblCol_To_stmCol(CardIter* pCI);
-    void vConvert_stmOdn_To_colOdn(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_stmOdn_To_colOdn(CardIter* pCI);
     void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     i8 nCullPred(Stz* szWithMark);

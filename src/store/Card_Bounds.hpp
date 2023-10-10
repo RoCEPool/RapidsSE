@@ -16,7 +16,7 @@ namespace STORE
     Card_Bounds(void);
    ~Card_Bounds(void) noexcept(false);
 
-    void vConvert_tblCol_To_stmCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
     i8 nCullBound(Stz* szWithMark);
     Card_Bound* pFindChosenBound(void);
