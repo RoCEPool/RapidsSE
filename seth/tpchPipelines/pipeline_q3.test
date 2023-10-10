@@ -4,7 +4,7 @@
 
 // NOTE : CHANGE GBYAGG IN STAGE S04 to ORDAGG
 
-/pipeline_def
+/optimise_passthru
 pipeline Query3
 begin
   stage S00 on origin :
