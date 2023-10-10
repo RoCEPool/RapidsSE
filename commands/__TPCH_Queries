@@ -242,8 +242,6 @@ end ;
 /* JMETER
 
 /optimise_passthru
-/weaved
-/pipeline_def
 pipeline Query2
 begin
   stage S00 on origin :
@@ -423,7 +421,8 @@ begin
   stage S04 on all partitions :
     indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter "type BOOLEAN L_SHIPDATE DATE '1995-03-15' >"
-    | ordAgg " ordGroupBy type INTEGER L_ORDERKEY aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1. L_DISCOUNT -  *  sum  , type DATE as O_ORDERDATE  O_ORDERDATE , type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY "
+    //| ordAgg " ordGroupBy type INTEGER L_ORDERKEY aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1. L_DISCOUNT -  *  sum  , type DATE as O_ORDERDATE  O_ORDERDATE , type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY "
+    | gbyAgg " groupBy type INTEGER L_ORDERKEY aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1. L_DISCOUNT -  *  sum  , type DATE as O_ORDERDATE  O_ORDERDATE , type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY "
     | combined 0
     | next
 
@@ -434,13 +433,13 @@ begin
      | next
 
    stage S06 on all nodes :
-     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
      | limit 10
      | combined 0
      | next
 
    stage S07 on origin :
-     sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+     sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
      | limit 10
      | combined 0
      | next
@@ -454,6 +453,7 @@ end ;
 /* JMETER
 
 /optimise_passthru
+/pipeline_def
 pipeline Query3
 begin
   stage S00 on origin :
@@ -486,7 +486,8 @@ begin
   stage S04 on all partitions :
     indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter "type BOOLEAN L_SHIPDATE DATE '1995-03-15' >"
-    | ordAgg " ordGroupBy type INTEGER L_ORDERKEY
+    //| ordAgg " ordGroupBy type INTEGER L_ORDERKEY
+    | gbyAgg " groupBy type INTEGER L_ORDERKEY
                aggregates type INTEGER as L_ORDERKEY $K1 ,
                           type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1. L_DISCOUNT -  *  sum  ,
                           type DATE as O_ORDERDATE  O_ORDERDATE ,
@@ -495,19 +496,19 @@ begin
     | next
 
   stage S05 on all partitions :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
   stage S06 on all nodes :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
 
   stage S07 on origin :
-    sort " type DECIMAL REVENUE ASC , type DATE O_ORDERDATE ASC  "
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
     | limit 10
     | combined 0
     | next
@@ -548,17 +549,17 @@ begin
 
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY ==" "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | aggreg "groupby type VARCHAR O_ORDERPRIORITY  aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) countAll"
+    | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY  aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) countAll"
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg "groupby type VARCHAR O_ORDERPRIORITY aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY aggregates type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg "groupby type VARCHAR O_ORDERPRIORITY aggregates  type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY aggregates  type VARCHAR as O_ORDERPRIORITY $K1 , type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
     | combined 0
     | next
 
@@ -591,7 +592,7 @@ begin
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | aggreg "groupby type VARCHAR O_ORDERPRIORITY
+    | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
               aggregates
               type VARCHAR as O_ORDERPRIORITY $K1 ,
               type INTEGER as ORDER_COUNT ) countAll"
@@ -599,7 +600,7 @@ begin
     | next
 
   stage S03 on all nodes :
-    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
             type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
@@ -607,7 +608,7 @@ begin
     | next
 
   stage S04 on origin :
-    aggreg "groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
             type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
@@ -634,33 +635,33 @@ QUERY 5
 /optimise_passthru
 /time /jobMetrics pipeline Query5
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage S00 on all partitions :
+  stage S01 on all partitions :
     scan rapidsse public Orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >= !f O_ORDERDATE DATE '1995-01-01'  <  and  "
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 
-  stage S01 on all partitions :
+  stage S02 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY , type INTEGER as C_NATIONKEY C_NATIONKEY"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
-  stage S02 on all partitions :
+  stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
     | project "type INTEGER as C_NATIONKEY C_NATIONKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT"
     | hash "type INTEGER L_SUPPKEY"
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions :
+  stage S04 on all partitions :
     indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
     | filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type INTEGER as S_NATIONKEY S_NATIONKEY"
@@ -668,56 +669,58 @@ begin
     | combined 0
     | next hashcast
 
-  stage S04 on all partitions :
+  stage S05 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
     | hash "type INTEGER N_REGIONKEY"
     | combined 0
     | next hashcast
 
-  stage S05 on all partitions :
+  stage S06 on all partitions :
     indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
     | filter " type BOOLEAN R_NAME 'ASIA'  ==  "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type VARCHAR as N_NAME N_NAME"
     | combined 0
     | next
 
-  stage S06 on all partitions :
+  stage S07 on all partitions :
     gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME aggregates type VARCHAR as N_NAME $K1 , type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
-  stage S07 on all nodes :
-    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME aggregates type VARCHAR as N_NAME $K1 , type DECIMAL as REVENUE ) REVENUE sum  "
-    | combined 0
-    | next
-
-  stage S08 on origin :
+  stage S08 on all nodes :
     gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME aggregates type VARCHAR as N_NAME $K1 , type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
   stage S09 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME aggregates type VARCHAR as N_NAME $K1 , type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
   stage S10 on origin :
+    sort " type DECIMAL REVENUE ASC  "
+    | combined 0
+    | next
+
+  stage S11 on origin :
     output
     | sink
     | first
 end ;
 
 /* JMETER
+/pipeline_def
+/weaved
 /optimise_passthru
 pipeline Query5
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
     | next
 
-  stage S00 on all partitions :
+  stage S01 on all partitions :
     scan rapidsse public Orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
                             O_ORDERDATE DATE '1995-01-01'  <  and  "
@@ -726,7 +729,7 @@ begin
     | combined 0
     | next
 
-  stage S01 on all partitions :
+  stage S02 on all partitions :
     indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
                type INTEGER as C_NATIONKEY C_NATIONKEY"
@@ -734,7 +737,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S02 on all partitions :
+  stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
     | project "type INTEGER as C_NATIONKEY C_NATIONKEY ,
                    type INTEGER as L_SUPPKEY L_SUPPKEY ,
@@ -744,7 +747,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S03 on all partitions :
+  stage S04 on all partitions :
     indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
     | filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -754,7 +757,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S04 on all partitions :
+  stage S05 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
                type DECIMAL as L_DISCOUNT L_DISCOUNT ,
@@ -764,7 +767,7 @@ begin
     | combined 0
     | next hashcast
 
-  stage S05 on all partitions :
+  stage S06 on all partitions :
     indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
     | filter " type BOOLEAN R_NAME 'ASIA'  ==  "
     | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
@@ -773,33 +776,33 @@ begin
     | combined 0
     | next
 
-  stage S06 on all partitions :
+  stage S07 on all partitions :
     gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
-  stage S07 on all nodes :
+  stage S08 on all nodes :
     gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
-  stage S08 on origin :
+  stage S09 on origin :
     gbyAgg " GroupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
              type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
-  stage S09 on origin :
+  stage S10 on origin :
     sort " type DECIMAL REVENUE ASC  "
     | combined 0
     | next
 
-  stage S10 on origin :
+  stage S11 on origin :
     output
     | sink
     | first
@@ -826,18 +829,18 @@ QUERY 6
 
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
-     | filter " type BOOLEAN  }  0.04 0.06 L_DISCOUNT between L_QUANTITY 24. < and"
-     | project " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
+     | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
+     | aggreg " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next
 
    stage S02 on all nodes :
-     project " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
    stage S03 on origin :
-     project " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
@@ -859,18 +862,18 @@ pipeline Query6
 
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
-     | filter " type BOOLEAN  }  0.04 0.06 L_DISCOUNT between L_QUANTITY 24. < and"
-     | project " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
+     | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
+     | aggreg " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next
 
    stage S02 on all nodes :
-     project " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
    stage S03 on origin :
-     project " type DECIMAL as REVENUE ) REVENUE sum  "
+     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
      | combined 0
      | next
 
@@ -1355,7 +1358,7 @@ QUERY 9
     | next
 
   stage S10 on origin :
-    sort "type VARCHAR as NATION NATION ASC , type INTEGER as O_YEAR O_YEAR ASC"
+    sort "type VARCHAR as NATION NATION ASC , type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 
@@ -1456,7 +1459,7 @@ pipeline Query9
 
   stage S10 on origin :
     sort "type VARCHAR as NATION NATION ASC ,
-          type INTEGER as O_YEAR O_YEAR ASC"
+          type INTEGER as O_YEAR O_YEAR DESC"
     | combined 0
     | next
 
@@ -1502,22 +1505,22 @@ begin
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
-    | aggreg  "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
+    | gbyAgg  "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum "
+    gbyAgg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
-    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum"
+    gbyAgg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
-  stage stageNew on origin :
-    top " TOP type DECIMAL REVENUE " 20
+  stage S06 on origin :
+    top " type DECIMAL REVENUE " 20
     | hash expr type INTEGER O_CUSTKEY
     | combined 0
     | next hashcast
@@ -1534,7 +1537,7 @@ begin
     | combined 0
     | next
 
-  stage S06 on origin :
+  stage S09 on origin :
     sort " type DECIMAL REVENUE ASC  "
     | combined 0
     | next
@@ -1549,6 +1552,8 @@ end ;
 /* JMETER
 
 /optimise_passthru
+/pipeline_def
+/weaved
 pipeline Query10
 begin
 
@@ -1575,28 +1580,28 @@ begin
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN L_RETURNFLAG 'R' =="
-    | aggreg  "groupby    type INTEGER O_CUSTKEY
+    | gbyAgg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
                           type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    aggreg "groupby    type INTEGER O_CUSTKEY
+    gbyAgg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
-    aggreg "groupby    type INTEGER O_CUSTKEY
+    gbyAgg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
-  stage stageNew on origin :
-    top " TOP type DECIMAL REVENUE " 20
+  stage S06 on origin :
+    top " type DECIMAL REVENUE " 20
     | hash expr type INTEGER O_CUSTKEY
     | combined 0
     | next hashcast
@@ -1627,7 +1632,7 @@ begin
     | combined 0
     | next
 
-  stage S06 on origin :
+  stage S09 on origin :
     sort " type DECIMAL REVENUE ASC  "
     | combined 0
     | next

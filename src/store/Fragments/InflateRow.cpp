@@ -26,11 +26,16 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
   i8* paW;
   i8  i_CurrentRow;
   i8* piColumn;
+	void* aSubReturnLabel;
 
   // marker-start
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
+
+	// dummy initialization of return label
+	// (caters to cases when no columns being inflated)
+	aSubReturnLabel = && __L_LABEL__;
 
   paW = &aDynamicT->m_aW[0];
 
