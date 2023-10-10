@@ -16,7 +16,7 @@ namespace STORE
 
    void vAddTransients(CardIter* pCI);
    void vX_tblCol_To_stmCol(CardIter* pCI);
-   void vX_stmOdn_To_colOdn(CardIter* pCI);
+   void vX_stmCol_To_tblCol(CardIter* pCI);
 
     void vShortForm(String* p_string);
 

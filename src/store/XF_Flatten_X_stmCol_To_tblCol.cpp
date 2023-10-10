@@ -73,55 +73,39 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
         continue;
     }
 
-    vConvert_stmColOdn_To_tblColOdn();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // conversions prior to projection
+
+    if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
+      if (m_pCI->Prior.m_pEmitted)
+        m_pCI->G.p_key->vX_stmCol_To_tblCol(m_pCI);
+    }
+
+    if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
+      m_pCI->G.p_filter->vX_stmCol_To_tblCol(m_pCI);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // projection
+
+    if ((m_pCI->G.p_emitted = m_pCI->G.p_MainCard->pSub_emitted())) {
+      if (m_pCI->Prior.m_pEmitted)
+        m_pCI->G.p_emitted->vX_stmCol_To_tblCol(m_pCI);
+      m_pCI->Prior.m_pEmitted = m_pCI->G.p_emitted;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // conversions after projection
+
+    if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+      if (m_pCI->Prior.m_pEmitted)
+        m_pCI->G.p_constraint->vX_stmCol_To_tblCol(m_pCI);
+    }
+
   }
 
   m_pCI->vEndTransform();
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert any stmCol in this op to table columns                             */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_X_stmCol_To_tblCol::vConvert_stmColOdn_To_tblColOdn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, _FOOTER_);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversions prior to projection
-
-  if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-    if (m_pCI->Prior.m_pEmitted)
-      m_pCI->G.p_key->vX_stmOdn_To_colOdn(m_pCI);
-  }
-
-  if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
-    m_pCI->G.p_filter->vX_stmOdn_To_colOdn(m_pCI);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // projection
-
-  if ((m_pCI->G.p_emitted = m_pCI->G.p_MainCard->pSub_emitted())) {
-    if (m_pCI->Prior.m_pEmitted)
-      m_pCI->G.p_emitted->vX_stmOdn_To_colOdn(m_pCI);
-    m_pCI->Prior.m_pEmitted = m_pCI->G.p_emitted;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversions after projection
-
-  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
-    if (m_pCI->Prior.m_pEmitted)
-      m_pCI->G.p_constraint->vX_stmOdn_To_colOdn(m_pCI);
-  }
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

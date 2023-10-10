@@ -132,7 +132,7 @@ void Card_RpnCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert stmOdn to colOdn                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vX_stmOdn_To_colOdn(CardIter* pCI)
+void Card_RpnCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -141,7 +141,7 @@ void Card_RpnCalc::vX_stmOdn_To_colOdn(CardIter* pCI)
     if (!xKid.p_term()->pSymbol()->bIs_Stm_Col())
       continue;
 
-    xKid.p_term()->vX_stmOdn_To_colOdn(pCI);
+    xKid.p_term()->vX_stmCol_To_tblCol(pCI);
   }
 }
 

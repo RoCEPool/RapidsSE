@@ -21,7 +21,7 @@ namespace STORE
     eCT  eColumnType(void);
     Card_RpnCalc* pClone(void);
     void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_stmOdn_To_colOdn(CardIter* pCI);
+    void vX_stmCol_To_tblCol(CardIter* pCI);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);

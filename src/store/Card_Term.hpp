@@ -29,7 +29,7 @@ namespace STORE
     Card_Term* pClone(Symbol* pDiffSymbol);
     void vX_tblCol_To_stmCol(CardIter* pCI);
     void vX_tblCol_To_stmCol_X(CardIter* pCI);
-    void vX_stmOdn_To_colOdn(CardIter* pCI);
+    void vX_stmCol_To_tblCol(CardIter* pCI);
     void vEnsureTypeFor_stmOdn(CardIter* pCI);
     void vCorrectStmOdn(Card_Emitted* p_emitted_prior);
     ePB  eEvalBound(void);

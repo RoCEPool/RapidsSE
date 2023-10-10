@@ -166,7 +166,7 @@ void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vX_stmOdn_To_colOdn(CardIter* pCI)
+void Card_BoolCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -187,7 +187,7 @@ void Card_BoolCalc::vX_stmOdn_To_colOdn(CardIter* pCI)
     if (!pSymbol->bIs_Stm_Col())
       return C_CONTINUE_RECURSION;
 
-    p_term->vX_stmOdn_To_colOdn(pCI);
+    p_term->vX_stmCol_To_tblCol(pCI);
 
     return C_CONTINUE_RECURSION;
   };

@@ -24,7 +24,7 @@ namespace STORE
 
     Card_Expr* pContains(Card_Expr* p_expr_arg);
     void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_stmOdn_To_colOdn(CardIter* pCI);
+    void vX_stmCol_To_tblCol(CardIter* pCI);
 
     Card_Expr* pDecodeExpr(Symbol* pSymbol);
 

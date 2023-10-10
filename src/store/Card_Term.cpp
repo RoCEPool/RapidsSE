@@ -174,6 +174,38 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert term (if stream-column) to table-column                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol = this->pSymbol();
+  RASSERT(pSymbol->bIs_Stm_Col());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (Card_Expr* p_expr_prior = pCI->Prior.m_pEmitted->pDecodeExpr(pSymbol)) {
+    Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
+
+    if (pSymbol_term0->bIs_Tbl_Col()) {
+      pSymbol->vFacets(pSymbol_term0);
+      vMark1(MARK_CHANGED);
+    }
+    else {
+      eSF eSymbol = pSymbol->eFacet();
+      switch (eSymbol) {
+        case SF_STM_COL:
+          break;
+
+        default:
+          vDebugPoint();
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert table-column term to stream-column                                 */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
@@ -326,38 +358,6 @@ void Card_Term::vX_tblCol_To_stmCol_X(CardIter* pCI)
   // not converted
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* convert term (if stream-column) to table-column                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vX_stmOdn_To_colOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* pSymbol = this->pSymbol();
-  RASSERT(pSymbol->bIs_Stm_Col());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (Card_Expr* p_expr_prior = pCI->Prior.m_pEmitted->pDecodeExpr(pSymbol)) {
-    Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
-
-    if (pSymbol_term0->bIs_Tbl_Col()) {
-      pSymbol->vFacets(pSymbol_term0);
-      vMark1(MARK_CHANGED);
-    }
-    else {
-      eSF eSymbol = pSymbol->eFacet();
-      switch (eSymbol) {
-        case SF_STM_COL:
-          break;
-
-        default:
-          vDebugPoint();
-      }
-    }
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */

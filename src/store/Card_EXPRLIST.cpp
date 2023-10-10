@@ -117,6 +117,18 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert stmOdn to colOdn                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vX_stmCol_To_tblCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xKid(this);
+  while (xKid.bEach(CK_EXPR))
+    xKid.p_expr()->vX_stmCol_To_tblCol(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert colOdn to stmOdn                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vX_tblCol_To_stmCol(CardIter* pCI)
@@ -126,18 +138,6 @@ void Card_EXPRLIST::vX_tblCol_To_stmCol(CardIter* pCI)
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
     xKid.p_expr()->vX_tblCol_To_stmCol(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert stmOdn to colOdn                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vX_stmOdn_To_colOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Kid xKid(this);
-  while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
