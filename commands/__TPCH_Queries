@@ -1677,17 +1677,17 @@ begin
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | project " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
     | combined 0
     | next broadcast
 
@@ -1758,17 +1758,17 @@ begin
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | project " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
     | combined 0
     | next broadcast
 
@@ -1807,7 +1807,7 @@ begin
   stage S10 on origin :
     gbyAgg " GroupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
-                        type DECIMAL as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL as VALUE ) VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
@@ -1840,7 +1840,7 @@ QUERY 12
      | next
 
    stage S01 on all partitions :
-     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 >= DATE '1994-01-01' UBOUND $I1 DATE '1995-01-01'  <"
+     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01'  <"
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
      | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
@@ -1886,7 +1886,7 @@ pipeline Query12
      | next
 
    stage S01 on all partitions :
-     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 >= DATE '1994-01-01' UBOUND $I1 DATE '1995-01-01'  <"
+     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01'  <"
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
      | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
@@ -1901,17 +1901,26 @@ pipeline Query12
      | next
 
    stage S03 on all partitions :
-     gbyAgg " GroupBy  type VARCHAR as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR $K1 , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE L_SHIPMODE
+              aggregates type VARCHAR $K1 ,
+                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
+                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
      | combined 0
      | next
 
    stage S04 on all nodes :
-     gbyAgg " GroupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
+     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE $1
+              aggregates type VARCHAR $K1 ,
+                         type INTEGER )  $2 sum  ,
+                         type INTEGER )  $3 sum  "
      | combined 0
      | next
 
    stage S05 on origin :
-     gbyAgg " GroupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
+     gbyAgg " GroupBy type VARCHAR as L_SHIPMODE $1
+              aggregates  type VARCHAR $K1 ,
+                          type INTEGER as high_line_count )  $2 sum  ,
+                          type INTEGER as low_line_count )  $3 sum  "
      | combined 0
      | next
 
