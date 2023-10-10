@@ -3049,6 +3049,167 @@ begin
     | first
 end ;
 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+QUERY 20
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/////////////////////////
+//SF001:               //
+//SF1:                 //
+//SF10:                //
+/////////////////////////
+
+
+// NOTE: CHANGED KEY NOT EXISTS to KEY EXISTS for SF0001 data
+
+/time
+/optimise_passthru
+pipeline Query22
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan Customer
+    | filter " type BOOLEAN  C_ACCTBAL 0.00  > }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
+    | aggreg " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
+    | combined 0
+    | next
+
+  stage S02 on all nodes :
+    aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project " type DECIMAL as acctbal $2 $1 casttype DECIMAL CAST  /  "
+    | combined 0
+    | next broadcast
+
+  stage S05 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "bound $I1"
+    | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in C_ACCTBAL acctbal  >  and "
+    | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY ==" "type BOOLEAN O_CUSTKEY 0 >"
+    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
+    | combined 0
+    | next
+
+ stage S07 on all partitions :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S08 on all nodes :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    sort " type VARCHAR as cntrycode $1 ASC  "
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+end ;
+
+
+/* JMETER
+// NOTE: CHANGED KEY NOT EXISTS to KEY EXISTS for SF0001 data
+
+/optimise_passthru
+pipeline Query22
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan Customer
+    | filter " type BOOLEAN  C_ACCTBAL 0.00  >
+               }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
+    | aggreg " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
+    | combined 0
+    | next
+
+  stage S02 on all nodes :
+    aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project " type DECIMAL as acctbal $2 $1 casttype DECIMAL CAST  /  "
+    | combined 0
+    | next broadcast
+
+  stage S05 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "bound $I1"
+    | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in
+              C_ACCTBAL acctbal  >  and "
+    | project " type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as cntrycode C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL C_ACCTBAL "
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+                   "type BOOLEAN O_CUSTKEY 0 >"
+    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
+    | combined 0
+    | next
+
+ stage S07 on all partitions :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S08 on all nodes :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    sort " type VARCHAR as cntrycode $1 ASC  "
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+end ;
+*/
+
 MemoryLeaks;
 
 metricsCtl disable;
