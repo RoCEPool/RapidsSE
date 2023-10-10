@@ -2,7 +2,7 @@
 -- tpch query13
 --------------------------------------------------------------------------------
 
-// NOTE: Chanfe gbyAgg to OrdAgg
+// NOTE: Change gbyAgg to OrdAgg
 
 /optimise_passthru
 pipeline Query13
