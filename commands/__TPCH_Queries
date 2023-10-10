@@ -2129,39 +2129,39 @@ QUERY 15
 /optimise_passthru
 /time /jobMetrics pipeline Query15
  begin
-   stage S01 on origin :
+   stage S00 on origin :
      start
      | pulse once
      | next
 
-   stage S02 on all partitions :
+   stage S01 on all partitions :
      indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
      | gbyAgg " GroupBy  type INTEGER as l_suppkey $3 aggregates  type INTEGER $K1 , type DECIMAL )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
-   stage S03 on all nodes :
+   stage S02 on all nodes :
      gbyAgg " GroupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
      | combined 0
      | next
 
-   stage S04 on origin :
+   stage S03 on origin :
      gbyAgg " GroupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER as supplier_no $K1 , type DECIMAL )  $2 sum  "
      | combined 0
      | next
 
-   stage S05 on origin :
-     top "TOP type DECIMAL $2" 1
+   stage S04 on origin :
+     top "type DECIMAL $2" 1
      | hash "type INTEGER supplier_no"
      | combined 0
      | next hashcast
 
-   stage S06 on all partitions :
+   stage S05 on all partitions :
      indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
      | combined 0
      | next
 
-   stage S07 on origin :
+   stage S06 on origin :
      output
      | sink
      | first
@@ -2169,15 +2169,17 @@ QUERY 15
 
 /* JMETER
 
+/pipeline_def
+/weaved
 /optimise_passthru
 pipeline Query15
  begin
-   stage S01 on origin :
+   stage S00 on origin :
      start
      | pulse once
      | next
 
-   stage S02 on all partitions :
+   stage S01 on all partitions :
      indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1993-01-01' >= UBOUND $I1 DATE '1993-04-01' <"
      | gbyAgg " GroupBy    type INTEGER as l_suppkey $3
                 aggregates type INTEGER $K1 ,
@@ -2185,32 +2187,32 @@ pipeline Query15
      | combined 0
      | next
 
-   stage S03 on all nodes :
+   stage S02 on all nodes :
      gbyAgg " GroupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER $K1 ,
                          type DECIMAL )  $2 sum  "
      | combined 0
      | next
 
-   stage S04 on origin :
+   stage S03 on origin :
      gbyAgg " GroupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER as supplier_no $K1 ,
                          type DECIMAL )  $2 sum  "
      | combined 0
      | next
 
-   stage S05 on origin :
-     top "TOP type DECIMAL $2" 1
+   stage S04 on origin :
+     top "type DECIMAL $2" 1
      | hash "type INTEGER supplier_no"
      | combined 0
      | next hashcast
 
-   stage S06 on all partitions :
+   stage S05 on all partitions :
      indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
      | combined 0
      | next
 
-   stage S07 on origin :
+   stage S06 on origin :
      output
      | sink
      | first
