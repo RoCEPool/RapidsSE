@@ -2,6 +2,8 @@
 -- tpch query9
 --------------------------------------------------------------------------------
 
+// Optimiser vValidate fails as the indexDef_sort is null (_ray154)
+
 /optimise_passthru
 pipeline Query9
   begin
