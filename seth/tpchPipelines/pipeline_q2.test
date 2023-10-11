@@ -2,6 +2,12 @@
 -- tpch query2
 --------------------------------------------------------------------------------
 
+// NOTE : S03 arriving is the emitted of S01
+
+// PARAMETERS
+
+/pipeline_def
+/weaved
 /optimise_passthru
 pipeline Query2
 begin
