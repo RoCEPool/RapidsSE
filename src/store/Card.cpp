@@ -510,7 +510,7 @@ Stz* Card::szCoord(void)
 /*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
+void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -542,7 +542,7 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
-    pGetChild(i_Sub)->vDump(azFunc, iDepth + 1);
+    pGetChild(i_Sub)->vDump(azFunc, nullptr, iDepth + 1);
 
   if (0 == iDepth)
     vTrace("$$\n"_Stz);

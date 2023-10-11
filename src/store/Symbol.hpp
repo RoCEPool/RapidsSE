@@ -209,7 +209,7 @@ namespace STORE
 
     void vItemStrip(void);
 
-    bool bMatches(Symbol* pSymbol_arg);
+    bool bMatches(Symbol* pSymbol_arg, eSF* aeFacet=nullptr);
     bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing

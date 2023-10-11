@@ -32,7 +32,7 @@ namespace STORE
     Card_Expr* pFind_expr_By_as_stripItem(Symbol* pSymbol);
     Card_Expr* pFind_expr_By_as_stripped(Symbol* pSymbol, Stz* szTblCol, Kid* aKid);
     Card_Expr* pFind_expr_By_ordinal(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_symbol(Symbol* pSymbol);
+    Card_Expr* pFind_expr_By_term(Symbol* pSymbol, eSF* aeFacet=nullptr);
     Card_Expr* pFind_expr_By_symbol(Symbol* pSymbol, Kid* aKid);
 
     Card_Expr* pGetExpr(i8 i_Expr);

@@ -2593,17 +2593,22 @@ void Symbol::vItemStrip(void)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bMatches(Symbol* pSymbol_arg)
+bool Symbol::bMatches(Symbol* pSymbol_arg, eSF* aeFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     eSF eFacet_this = xaFacet[i_Facet].m_eFacet;
 
-    if (bMatches(pSymbol_arg, eFacet_this))
+    if (bMatches(pSymbol_arg, eFacet_this)) {
+      if (aeFacet)
+        *aeFacet = eFacet_this;
       return true;
+    }
   }
 
+  if (aeFacet)
+    *aeFacet = SF_NONE;
   return false;
 }
 

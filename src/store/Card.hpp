@@ -317,7 +317,7 @@ namespace STORE
     void vColType(Card* pCard_arg);
     Stz* szCoord(void);
 
-    void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
+    void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     Card* pDupCard(void);
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);

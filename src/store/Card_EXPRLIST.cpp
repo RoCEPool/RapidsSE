@@ -143,12 +143,12 @@ i8 Card_EXPRLIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_symbol(Symbol* pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_By_term(Symbol* pSymbol, eSF* aeFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->bExpressionOfSymbol(pSymbol))
+    if (xKid.p_expr()->bExpressionOfSymbol(pSymbol,aeFacet))
       return xKid.p_expr();
   }
 

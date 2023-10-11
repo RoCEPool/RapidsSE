@@ -806,10 +806,11 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
+
   Card_Arriving* p_arriving = pSubCard->pSub_arriving();
   Card_Emitted*  p_emitted  = pSubCard->pSub_emitted();
 
-  p_emitted->vDump(__func__);
+  p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
 
   if (m_pStageDef->i_Stage() == 2) {
     vDebugPoint();
@@ -827,6 +828,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
 
   auto bfAddDescriptors = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
 
+    eSF eVia;
+
     // arriving related
     Card_Expr*   p_expr_a = _pCard_Expr(pCard_expr_a);
     Card_As*       p_as_a = p_expr_a->pSub_as();
@@ -834,9 +837,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
     Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
     //Stz*       szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
 
-    p_expr_a->vDump(__func__);
+    p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
 
-    if (m_pStageDef->i_Stage() == 1) {
+    if (m_pStageDef->i_Stage() == 2) {
       vDebugPoint();
       if (m_pOpDef->i_Op() == 0)
         vDebugPoint();
@@ -849,6 +852,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
       Card_Expr *p_expr_e =
           p_emitted->pFind_expr_By_as(pSym_as_a);
       if (p_expr_e) {
+        p_expr_e->vDump(__func__,"--FOUND emitted expr by as--"_Stz);
+
         pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->szSymbol(SF_NONE),
@@ -859,8 +864,11 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
       }
 
       p_expr_e =
-          p_emitted->pFind_expr_By_symbol(pSym_stmCol_a);
+          p_emitted->pFind_expr_By_term(pSym_stmCol_a,&eVia);
       if (p_expr_e) {
+        s256 sHow;
+        sHow.vSprint("--FOUND emitted expr of term via %s--"_Stz,aSF[eVia]);
+        p_expr_e->vDump(__func__,sHow);
         pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->szSymbol(SF_NONE),
@@ -925,7 +933,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
 //    if (p_expr_a->nChildCards() > 1) {
 //      Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
 //      Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
-//      p_expr_p = p_emitted->pFind_expr_By_symbol(pSym_stmCol_a);
+//      p_expr_p = p_emitted->pFind_expr_By_term(pSym_stmCol_a);
 //
 //
 //

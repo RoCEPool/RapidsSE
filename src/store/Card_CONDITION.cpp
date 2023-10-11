@@ -49,7 +49,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
     if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_By_symbol(p_term->pSymbol()))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_By_term(p_term->pSymbol()))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {

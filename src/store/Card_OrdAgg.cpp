@@ -56,7 +56,7 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(__func__,0,(Stz*)__func__);
+  vDump(__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

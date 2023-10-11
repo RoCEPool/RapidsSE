@@ -528,17 +528,18 @@ bool Card_Expr::bIsScalarKey(void)
 /*----------------------------------------------------------------------------*/
 /* is this an expression of given symbol ?                                    */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol_arg)
+bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol_arg, eSF* aeFacet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
 
 #ifdef Z_FACETS
-  if (pSymbol_0->bMatches(pSymbol_arg))
+  if (pSymbol_0->bMatches(pSymbol_arg,aeFacet))
     return true;
   return false;
 #else
+  UNUSED(aeFacet);
   if (pSymbol_0->bSame(pSymbol_arg)) {
     return true;
   }
