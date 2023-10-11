@@ -499,7 +499,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 0) {
+  if (m_pStageDef->i_Stage() == 2) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -610,14 +610,17 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 0) {
+  Card_Injected* p_injected = pSubCard->pSub_injected();
+  Card_Emitted*   p_emitted = pSubCard->pSub_emitted();
+
+  p_emitted->vDump(__func__);
+
+  if (m_pStageDef->i_Stage() == 2) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
   }
 
-  Card_Injected* p_injected = pSubCard->pSub_injected();
-  Card_Emitted*   p_emitted = pSubCard->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colInj descriptor(s) for given injected expr_i

@@ -1425,10 +1425,6 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
     case SF_COL_NM:      vFacet_Col_Nm(szChrSeq);      break;
     case SF_COL_NM_syn:  vFacet_Col_Nm_syn(szChrSeq);  break;
-    case SF_STM_COL:
-      vFacet_Stm_Col(szChrSeq);      break;
-    case SF_TBL_COL:
-      vFacet_Tbl_Col(szChrSeq);      break;
     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
@@ -1457,8 +1453,10 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
     case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
     case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
+    case SF_STM_COL:     vFacet_Stm_Col(szChrSeq);     break;
     case SF_STR_FN:      vFacet_Str_Fn(szChrSeq);      break;
     case SF_STR_LIT:     vFacet_String(szChrSeq);      break;
+    case SF_TBL_COL:     vFacet_Tbl_Col(szChrSeq);     break;
     case SF_TBL_NM:      vFacet_Tbl_Nm(szChrSeq);      break;
     case SF_TBL_SYN:     vFacet_Tbl_Syn(szChrSeq);     break;
     case SF_THEN:        vFacet_Then(szChrSeq);        break;
@@ -4135,7 +4133,10 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet || SF_TBL_COL == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
+          SF_COL_NM == xaFacet[0].m_eFacet ||
+              SF_STM_COL == xaFacet[0].m_eFacet ||
+              SF_TBL_COL == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_TBL_COL, "%s"_Stz, szTblCol);
 
