@@ -122,6 +122,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
     m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
+    m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
   }
 
   m_pCI->vClearRestart();

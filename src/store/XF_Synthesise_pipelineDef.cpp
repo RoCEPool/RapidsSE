@@ -701,7 +701,11 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
   ColPpg* pColPpg = new ColPpg(nArriving);
   m_pOpDef->vColPpg(pColPpg);
 
+#ifdef Z_FACETS
+  vCraftColPpg_FACETS(pColPpg, m_pCI->G.p_OP);
+#else
   vCraftColPpg(pColPpg, m_pCI->G.p_OP);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -795,6 +799,109 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
 }
+/*----------------------------------------------------------------------------*/
+/* craft the columns propagated for given card                                */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  Card_Arriving* p_arriving = pSubCard->pSub_arriving();
+  Card_Emitted*  p_emitted  = pSubCard->pSub_emitted();
+
+  p_emitted->vDump(__func__);
+
+  if (m_pStageDef->i_Stage() == 2) {
+    vDebugPoint();
+    if (m_pOpDef->i_Op() == 0)
+      vDebugPoint();
+  }
+
+  //
+  // is the arriving expression in the emitted
+  //
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add colPpg descriptor(s) for given arriving expr_a
+
+
+  auto bfAddDescriptors = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
+
+    // arriving related
+    Card_Expr*   p_expr_a = _pCard_Expr(pCard_expr_a);
+    Card_As*       p_as_a = p_expr_a->pSub_as();
+    Symbol*     pSym_as_a = p_as_a->pSymbol();
+    Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
+    //Stz*       szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
+
+    p_expr_a->vDump(__func__);
+
+    if (m_pStageDef->i_Stage() == 1) {
+      vDebugPoint();
+      if (m_pOpDef->i_Op() == 0)
+        vDebugPoint();
+    }
+
+    if (p_expr_a->bIsScalarCol()) {
+      // + scalar
+
+      // find emitted expression of arriving as
+      Card_Expr *p_expr_e =
+          p_emitted->pFind_expr_By_as(pSym_as_a);
+      if (p_expr_e) {
+        pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
+                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
+                      p_expr_e->szSymbol(SF_NONE),
+                      pSym_stmCol_a->szSF_chrSeq(SF_NONE),
+                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+
+        return C_CONTINUE_RECURSION;
+      }
+
+      p_expr_e =
+          p_emitted->pFind_expr_By_symbol(pSym_stmCol_a);
+      if (p_expr_e) {
+        pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
+                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
+                      p_expr_e->szSymbol(SF_NONE),
+                      pSym_stmCol_a->szSF_chrSeq(SF_NONE),
+                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+
+        return C_CONTINUE_RECURSION;
+      }
+
+      return C_CONTINUE_RECURSION;
+    }
+
+    else {
+      // - computed
+      Symbol*    pSym_expr_a = p_expr_a->pSymbol();
+
+      Card_Expr* p_expr_e =
+          p_emitted->pDecodeExpr(pSym_expr_a);
+
+      if (p_expr_e) {
+
+//      p_emitted->vDump(__func__);
+//      p_expr_a->vDump(__func__);
+//      p_expr_e->vDump(__func__);
+
+        pColPpg->vAdd(pSym_expr_a->iSF_ordinal() - 1,
+                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
+                      p_expr_e->szSymbol(SF_NONE),
+                      pSym_expr_a->szSF_chrSeq(SF_NONE),
+                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+        return C_CONTINUE_RECURSION;
+      }
+      return C_CONTINUE_RECURSION;
+    }
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
+}
+
 /*----------------------------------------------------------------------------*/
 //void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 //{
