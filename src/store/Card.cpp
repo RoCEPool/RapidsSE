@@ -521,6 +521,9 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
       vTrace("^^Card Dump [%s]\n"_Stz,azFunc);
   }
 
+  s4K sFacets;
+  m_xSymbol.vFacets_To_String(sFacets);
+
   s4K sProperties;
   m_xSymbol.vPpy_To_String(sProperties);
 
@@ -532,7 +535,7 @@ void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
         , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
         , m_xMark1.szChrSeq()
         , m_xMark2.szChrSeq()
-        , m_xSymbol.bHasFacets() ? szSymbol(SF_NONE) : "??Symbol"_Stz
+        , m_xSymbol.bHasFacets() ? sFacets.szStz() : "??Symbol"_Stz
         , sProperties.szStz()
         , pSymbol()->szWhatIs()
   );

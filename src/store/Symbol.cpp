@@ -1523,6 +1523,23 @@ void Symbol::vFacetsPpy(Symbol* pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get facets as single string                                                */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacets_To_String(String* pString)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  pString->vReset();
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (i_Facet)
+      pString->vConcat(" "_Stz);
+    pString->vCatSprint("%s~%lld"_Stz,xaFacet[i_Facet].m_sChrSeq.szStz(),i_Facet);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* true if symbol is given form                                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bFormIs(eSF eSymbol)

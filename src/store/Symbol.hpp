@@ -135,6 +135,8 @@ namespace STORE
     void vFacets(Symbol* pSymbol_arg);
     void vFacetsPpy(Symbol* pSymbol_arg);
 
+    void vFacets_To_String(String* pString);
+
     bool bFormIs(eSF eSymbol);
 
     bool bHasFacets(void);

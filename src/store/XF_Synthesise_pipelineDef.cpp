@@ -620,7 +620,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
   Card_Emitted*   p_emitted = pSubCard->pSub_emitted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add colInj descriptors
+  // add colInj descriptor(s) for given injected expr_i
 
   auto bfAddDescriptors = [pColInj, p_emitted] (Card* pCard_expr_i) {
 
@@ -645,7 +645,9 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
         return C_CONTINUE_RECURSION;
 
       // -- injected column is actually emitted --
-      //p_expr_e->vDump(__func__);
+      // e.g. expr $1 as C0_C_CUSTKEY
+
+      p_expr_e->vDump(__func__);
 
       // get details of emitted column
       i8 i_StructCell_e = p_expr_e->pSymbol()->iSF_ordinal() - 1;
