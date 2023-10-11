@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* _ray_scan_indexJoin_indexJoin                                              */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+_orders
+_lineitem
+
+create index Ix_C_CUSTKEY  on Customer(C_CUSTKEY);
+create index Ix_O_CUSTKEY  on Orders(O_CUSTKEY);
+create index Ix_L_ORDERKEY on Lineitem(L_ORDERKEY);
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+load Orders   "<tpch_dir>/orders.<suffix>" ;
+load Lineitem "<tpch_dir>/lineitem.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_scan_indexJoin_indexJoin"
+select C_CUSTKEY
+  from Customer,
+       Orders,
+       Lineitem
+ where
+       Customer.C_CUSTKEY = Orders.O_CUSTKEY
+   and
+       Orders.O_ORDERKEY = Lineitem.L_ORDERKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+drop table Orders;
+drop table Lineitem;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
