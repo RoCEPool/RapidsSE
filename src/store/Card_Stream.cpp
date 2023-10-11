@@ -39,7 +39,7 @@ Card_Stream::~Card_Stream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* fuse next projection into this op                                          */
 /*----------------------------------------------------------------------------*/
-void Card_Stream::vFuseNext_projection(CardIter *pCI)
+void Card_Stream::vFuse_project_Viable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -74,7 +74,7 @@ void Card_Stream::vFuseNext_projection(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* fuse same projection into this op                                          */
 /*----------------------------------------------------------------------------*/
-void Card_Stream::vFuseSame_projection(CardIter *pCI)
+void Card_Stream::vFuse_project_NoViable(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -99,7 +99,7 @@ void Card_Stream::vFuseSame_projection(CardIter *pCI)
     pCI->G.p_stream->vAppendChild(pCI->G.p_arriving);
   }
   else {
-    // arrived is prior emitted
+    // <arriving> is prior <emitted>
     pCI->G.p_CARD = pCI->Prior.m_pEmitted->pDupCardRecursive();
     pCI->G.p_CARD->vCard(CK_ARRIVING);
     if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {

@@ -56,9 +56,47 @@ void XF_Epilog_Fuse_project::vFuse(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* fuse <scan> <project/projection> -> <scan/projection>                      */
+/* fuse <OP injecting> <project/emitted> -> <OP/stream/emitted>               */
 /*----------------------------------------------------------------------------*/
 void XF_Epilog_Fuse_project::vFuse_project(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
+
+  m_pCI->vTransform(__func__, XF_EPILOG_FUSE_PROJECT, "fuse project"_Stz);
+
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain_NONE()) {
+
+    // test for injecting op
+    if (! m_pCI->G.p_MainCard->bIsOne(CK_SCAN, CK_INDEXSCAN, CK_INDEXJOIN, CK_CROSSJOIN, CK_NONE))
+      goto L_UPDATE_PRIOR_EMITTED;
+
+    m_pCI->Next.m_pProject = _pCard_Project(m_pCI->pNextChildIf(CK_PROJECT));
+
+    m_pCI->G.p_stream = m_pCI->G.p_MainCard->pSub_stream();
+
+    // test for viable next <project>
+    if (! m_pCI->Next.m_pProject ||
+        m_pCI->Next.m_pProject->bIsCompound() ||
+        m_pCI->Next.m_pProject->bIsLiterals()) {
+      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
+
+      goto L_UPDATE_PRIOR_EMITTED;
+    }
+
+    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
+    m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
+
+    L_UPDATE_PRIOR_EMITTED:
+    if (m_pCI->G.p_MainCard->pSub_emitted())
+      m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+  }
+
+  m_pCI->vEndTransform();
+}
+/*----------------------------------------------------------------------------*/
+void XF_Epilog_Fuse_project::vFuse_project__(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_FUSE_PROJECT, _FOOTER_);
 
@@ -71,12 +109,12 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
-      m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
+      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
       continue;
     }
 
     m_pCI->G.p_stream = m_pCI->G.p_scan->pSub_stream();
-    m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
+    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
@@ -88,12 +126,12 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
-      m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
+      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
       continue;
     }
 
     m_pCI->G.p_stream = m_pCI->G.p_indexScan->pSub_stream();
-    m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
+    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
@@ -112,14 +150,14 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
-      m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
+      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
       m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
     // can fuse next projection
     m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
-    m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
+    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
     m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
@@ -139,14 +177,14 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
         m_pCI->Next.m_pProject->bIsCompound() ||
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
-      m_pCI->G.p_stream->vFuseSame_projection(m_pCI);
+      m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
       m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
     // can fuse next projection
     m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
-    m_pCI->G.p_stream->vFuseNext_projection(m_pCI);
+    m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
   }
