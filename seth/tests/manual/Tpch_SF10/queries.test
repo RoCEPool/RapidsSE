@@ -658,7 +658,7 @@ ordered rows:
 --------------------------------------------------------------------------------
 -- Q10
 --------------------------------------------------------------------------------
-/*
+
 LOG 'Running Q10';
 success
 
@@ -716,7 +716,7 @@ ordered rows:
   (  314272, 'Customer#000314272', 682212.6365, 5127.92, 'UNITED STATES', 'sfg9XaV58yPqF7Wo0Akpif42GFh6'         , '34-674-752-5199', 'fix carefully deposits. even packages haggle. fluffily unusual platelets h'                                          )
   ( 1472980, 'Customer#001472980', 677765.9180, 6003.36, 'IRAQ',          'iie M4kwzvAwMV Hpvv'                  , '21-506-776-4657', 's use slyly thinly final deposits. ironic pinto beans poach furiously bl'                                            )
   ( 1486201, 'Customer#001486201', 674878.4539, -276.92, 'JORDAN',        'TJhgKueFwrrtXLtenhlw sC2N'            , '23-611-797-4750', 'ag. deposits along the blithely express instructions w'                                                              )
-*/
+
 
 --------------------------------------------------------------------------------
 -- Q11
