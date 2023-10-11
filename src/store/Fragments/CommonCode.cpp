@@ -1289,7 +1289,7 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
 #endif
 
     szDstStz = (char*)aDynamicT->m_aiPayload[__INDEX_COLUMN__];
-    strncpy(szDstStz, szSrcStz, 1024); // todo: discuss with Alka
+    strncpy(szDstStz, szSrcStz, nSrcSize); // todo: discuss with Alka
   }
   // marker-end
 }
