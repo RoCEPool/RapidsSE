@@ -631,7 +631,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
     i8         i_CrwCol_i = pSym_as_i->iSF_ordinal();
     Symbol* pSym_tblCol_i = p_expr_i->pFirstTblCol();
     Stz*       szTblCol_i = pSym_tblCol_i->szSF_chrSeq(SF_NONE);
-    //pSym_tblCol_i->vDump();
+    pSym_tblCol_i->vDump();
 
     // test if the injected column is actually emitted?
     // n.b. it may be emitted more than once
@@ -655,8 +655,8 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
       Symbol* pSym_as_e = p_as_e->pSymbol();
 
       // add descriptor
-      pColInj->vAdd(i_CrwCol_i, i_StructCell_e, pSym_as_e->szSF_chrSeq(SF_NONE),
-                    szTblCol_i, pSym_as_e->szSF_chrSeq(SF_NONE));
+      pColInj->vAdd(i_CrwCol_i, i_StructCell_e, pSym_as_e->szSF_chrSeq(SF_AS_NM_itm),
+                    szTblCol_i, pSym_as_e->szSF_chrSeq(SF_AS_NM));
 
       if (p_prior_expr_e) {
         pColInj->vRepeatsPrior();

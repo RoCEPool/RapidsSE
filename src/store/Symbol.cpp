@@ -2736,10 +2736,24 @@ Stz* Symbol::szSF_chrSeq(eSF eSymbol_xchk)
 
   RASSERT(bHasFacets());
 
+#ifdef Z_FACETS
+  if (SF_NONE == eSymbol_xchk)
+    return xaFacet[0].m_sChrSeq.szStz();
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (eSymbol_xchk == xaFacet[i_Facet].m_eFacet)
+      return xaFacet[i_Facet].m_sChrSeq.szStz();
+  }
+
+  NEVER_REACH
+
+#else
+
   if (SF_NONE != eSymbol_xchk)
     RASSERT(eSymbol_xchk = xaFacet[0].m_eFacet);
 
   return xaFacet[0].m_sChrSeq.szStz();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2813,8 +2827,6 @@ bool Symbol::bValidate(void)
     case SF_CASTTYPE:    b = bIs_CastType();    break;
     case SF_COL_NM:      b = bIs_Col_Nm();      break;
     case SF_COL_NM_syn:  b = bIs_Col_Nm_syn();  break;
-    case SF_STM_COL: b = bIs_Stm_Col();      break;
-    case SF_TBL_COL: b = bIs_Tbl_Col();      break;
     case SF_COL_TYPE:    b = bIs_Col_Type();    break;
     case SF_COMMA:       b = bIs_Comma();       break;
     case SF_CROSS:       b = bIs_Cross();       break;
@@ -2842,8 +2854,10 @@ bool Symbol::bValidate(void)
     case SF_SQY_OP:      b = bIs_Sqy_Op();      break;
     case SF_STG_NO:      b = bIs_Stg_Nm();      break;
     case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
+    case SF_STM_COL:     b = bIs_Stm_Col();     break;
     case SF_STR_FN:      b = bIs_Str_Fn();      break;
     case SF_STR_LIT:     b = bIs_String();      break;
+    case SF_TBL_COL:     b = bIs_Tbl_Col();     break;
     case SF_TBL_NM:      b = bIs_Tbl_Nm();      break;
     case SF_TBL_SYN:     b = bIs_Tbl_Syn();     break;
     case SF_TBL_SYN_rep: b = bIs_Tbl_Syn_rep(); break;
