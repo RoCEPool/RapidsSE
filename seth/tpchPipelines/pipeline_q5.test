@@ -2,6 +2,8 @@
 -- tpch query5
 --------------------------------------------------------------------------------
 
+// NOTE : S03 arriving is the emitted of S01 (_ray152)
+
 /optimise_passthru
 pipeline Query5
 begin
