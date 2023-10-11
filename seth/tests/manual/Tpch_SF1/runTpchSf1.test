@@ -4,9 +4,9 @@
 
 INCLUDE FILE 'setup.test';
 
-SET OPTION round=2;
+SET OPTION decimalrounding=2;
 INCLUDE FILE 'queries.test';
-UNSET OPTION round;
+UNSET OPTION decimalrounding;
 
 --------------------------------------------------------------------------------
 -- CLEANUP
