@@ -2,6 +2,8 @@
 -- tpch query7
 --------------------------------------------------------------------------------
 
+// NOTE: S04 ColPpg is incorrect. Shows 1 column being propogated but actually there are 2.
+
 /optimise_passthru
 pipeline Query7
 begin
