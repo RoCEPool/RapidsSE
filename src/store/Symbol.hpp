@@ -114,6 +114,9 @@ namespace STORE
 
     // - - - - - -
 
+    void vDeleteFacet(eSF eFacet);
+    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
+
     void vDump(void);
 
     eRO  eEvalRelnOp(void);
@@ -123,6 +126,7 @@ namespace STORE
     Facet* aFacet(i8 i_Facet);
     eSF  eFacet(i8 i_Facet=0);
     i8   i_Facet(eSF eFacet);
+    i8   i_Facet(eSF eFacet, char cTblSyn);
     void vFacet(eSF eFacet);
     void vFacet(eSF eFacet, char cChr);
     void vFacet(eSF eFacet, char cChr, i8 iInt);
@@ -331,6 +335,7 @@ namespace STORE
 
     void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCopy(Symbol* pSymbol_arg);
+    void vFacetCut(i8 i_Facet_cut);
     void vFacetPush(eSF eFacet);
     void vFacetReset(void);
     void vFacetRotate(eSF eFacet);

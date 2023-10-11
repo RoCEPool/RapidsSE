@@ -24,7 +24,7 @@ load Lineitem "<tpch_dir>/lineitem.<suffix>" ;
 /pipeline_def
 /weaved
 /pipelineName = "_ray_scan_indexJoin_indexJoin"
-select C_CUSTKEY
+select L_ORDERKEY
   from Customer,
        Orders,
        Lineitem

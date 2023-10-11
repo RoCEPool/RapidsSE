@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//#define Z_FACETS
+#define Z_FACETS
 
 #include "BASE.h"
 

@@ -1196,6 +1196,38 @@ eCT Symbol::eTo_eCT_char(Stz* szType)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* delete facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vDeleteFacet(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 i_Facet_cut = i_Facet(eFacet);
+  if (C_UNKNOWN == i_Facet_cut)
+    return;
+
+  vFacetCut(i_Facet_cut);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 i_Facet_also = i_Facet(eAlsoFacet,cTblSyn);
+  if (C_UNKNOWN == i_Facet_also)
+    return;
+
+  i8 i_Facet_cut = i_Facet(eFacet);
+  if (C_UNKNOWN == i_Facet_cut)
+    return;
+
+  vFacetCut(i_Facet_cut);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
 void Symbol::vDump(void)
@@ -1296,6 +1328,22 @@ i8 Symbol::i_Facet(eSF eFacet)
 
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (eFacet == xaFacet[i_Facet].m_eFacet)
+      return i_Facet;
+  }
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan for symbol facet                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::i_Facet(eSF eFacet, char cTblSyn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (eFacet  == xaFacet[i_Facet].m_eFacet &&
+        '$'     == xaFacet[i_Facet].m_sChrSeq.azChar()[0] &&
+        cTblSyn == xaFacet[i_Facet].m_sChrSeq.azChar()[1])
       return i_Facet;
   }
   return C_UNKNOWN;
@@ -4319,6 +4367,23 @@ void Symbol:: vFacetCopy(Symbol* pSymbol_arg)
     xaFacet[i_Facet].m_eFacet  = pSymbol_arg->xaFacet[i_Facet].m_eFacet;
     xaFacet[i_Facet].m_sChrSeq = pSymbol_arg->xaFacet[i_Facet].m_sChrSeq;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut facet                                                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetCut(i8 i_Facet_cut)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(i_Facet_cut < m_nFacets);
+
+  for (i8 i_Facet = i_Facet_cut + 1; i_Facet < m_nFacets; i_Facet++) {
+    xaFacet[i_Facet - 1].m_eFacet  = xaFacet[i_Facet].m_eFacet;
+    xaFacet[i_Facet - 1].m_sChrSeq = xaFacet[i_Facet].m_sChrSeq;
+  }
+
+  m_nFacets--;
 }
 
 /*----------------------------------------------------------------------------*/
