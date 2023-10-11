@@ -494,7 +494,7 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 #ifdef Z_FACETS
-  vX_tblCol_To_stmCol_X(pCI);
+  vX_tblCol_To_stmCol_FACETS(pCI);
 #else
   Symbol* pSymbol_term = this->pSymbol();
   RASSERT(pSymbol_term->bIs_Tbl_Col());
@@ -597,7 +597,7 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert this table-column term to stream-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vX_tblCol_To_stmCol_X(CardIter* pCI)
+void Card_Term::vX_tblCol_To_stmCol_FACETS(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -635,8 +635,12 @@ void Card_Term::vX_tblCol_To_stmCol_X(CardIter* pCI)
   // can scalar expression of this symbol be found in KEY ?
 
   if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
+    pCI->X.m_pExprList_k->vDump(__func__);
+    pSymbol_this->vDump();
     if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_By_symbol(pSymbol_this)) {
       Symbol *pSymbol_k = p_expr_scalar_k->pFirstKeyCol();
+      if (! pSymbol_k)
+        return;
       if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_symbol(pSymbol_k)) {
         Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
         pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);

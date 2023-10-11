@@ -46,7 +46,7 @@ namespace STORE
 
     void vX_stmCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_tblCol_To_stmCol_X(CardIter* pCI);
+    void vX_tblCol_To_stmCol_FACETS(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
