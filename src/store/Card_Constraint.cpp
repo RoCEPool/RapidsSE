@@ -99,6 +99,9 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  vResolve_colNm_From_colSym(pCI);
+  return;
+
   i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 
   Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
@@ -118,7 +121,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (!p_term->pSymbol()->bIs_Stm_Col())
+    if (! p_term->pSymbol()->bIs_Stm_Col())
       return C_CONTINUE_RECURSION;
 
 
@@ -289,6 +292,143 @@ void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
     pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 }
+
+/*----------------------------------------------------------------------------*/
+/* resolve column name from column symbol ($n or $t.c)                        */
+/*----------------------------------------------------------------------------*/
+void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+
+  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+
+  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pRootPred());
+  if (! p_pred_ROOT)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+    if (! p_pred->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+    Card_Term* p_term = _pCard_Term(p_pred);
+    if (! p_term->bIsColSym())
+      return C_CONTINUE_RECURSION;
+
+    Stz* szColNm = nullptr;
+
+    Card_Expr* p_expr_resolved;
+
+    Symbol* pSymbol = p_term->pSymbol();
+    pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected();
+    p_expr_resolved = pCI->G.p_injected->pFind_expr_By_term(pSymbol);
+
+    if (p_expr_resolved) {
+      Card_As* p_as = p_expr_resolved->pSub_as();
+      szColNm = p_as->szSymbol(SF_NONE);
+    }
+    else {
+      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+      i8 nExprs = pCI->G.p_emitted->nChildCards();
+      i8 iOdn = p_term->iGetOdn();
+      i8 i_Col_base0 = iOdn - nExprs - 1;
+
+      if (i_Col_base0 >= 0)
+        szColNm = pCI->G.p_table->szColNm(i_Col_base0);
+
+      vDebugPoint();
+    }
+
+    if (szColNm) {
+      p_term->SYM(SF_COL_NM,szColNm);
+      p_term->vMark1(MARK_CHANGED);
+    }
+    else {
+      vDebugPoint();
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  UNUSED(bIgnore);
+
+}
+/*----------------------------------------------------------------------------*/
+//void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+//
+//  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+//
+//  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pRootPred());
+//  if (! p_pred_ROOT)
+//    return;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
+//  {
+//    if (bUpwards)
+//      return C_CONTINUE_RECURSION;
+//    if (! p_pred->bIsCard(CK_TERM))
+//      return C_CONTINUE_RECURSION;
+//    Card_Term* p_term = _pCard_Term(p_pred);
+//    if (! p_term->bIsColSym())
+//      return C_CONTINUE_RECURSION;
+//
+//    Stz* szColNm = nullptr;
+//
+//    Card_Expr* p_expr_col;
+//
+//    Symbol* pSymbol = p_term->pSymbol();
+//    pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+//    p_expr_col = pCI->G.p_emitted->pFind_expr_By_term(pSymbol);
+//
+//    if (p_expr_col) {
+//      Card_As* p_as = p_expr_col->pSub_as();
+//      szColNm = p_as->szSymbol(SF_NONE);
+//    }
+//    else {
+//      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+//      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+//      i8 nExprs = pCI->G.p_emitted->nChildCards();
+//      i8 iOdn = p_term->iGetOdn();
+//      i8 i_Col_base0 = iOdn - nExprs - 1;
+//
+//      if (i_Col_base0 >= 0)
+//        szColNm = pCI->G.p_table->szColNm(i_Col_base0);
+//
+//      vDebugPoint();
+//    }
+//
+//    if (szColNm) {
+//      p_term->SYM(SF_COL_NM,szColNm);
+//      p_term->vMark1(MARK_CHANGED);
+//    }
+//    else {
+//      vDebugPoint();
+//    }
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+//  UNUSED(bIgnore);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

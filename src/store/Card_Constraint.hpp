@@ -26,6 +26,8 @@ namespace STORE
 
     void vEnsureTypes_For_stmCol(CardIter *pCI);
 
+    void vResolve_colNm_From_colSym(CardIter* pCI);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
   };

@@ -3538,7 +3538,7 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet);
+  //RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm);
 
