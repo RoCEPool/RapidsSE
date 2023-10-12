@@ -52,10 +52,8 @@ namespace STORE
     void vCraftIndexDefs(void);
     void vCraftStreamDefs(void);
     void vCraftColInj(void);
-    void vCraftColInj(ColInj* pColInj, Card *pSubCard);
     void vCraftColInj_FACETS(ColInj* pColInj, Card *pSubCard);
     void vCraftColPpg(void);
-    void vCraftColPpg(ColPpg* pColPpg, Card *pSubCard);
     void vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubCard);
 
   protected:
