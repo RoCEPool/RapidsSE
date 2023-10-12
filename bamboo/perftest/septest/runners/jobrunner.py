@@ -451,10 +451,14 @@ class JobRunner:
             if test_result.test_passed is False:
                 collect_logs = True
 
-            if self.archive_metrics or test_result.test_passed is False:
-                self.__compress_test_artifact_dir(test_result.test_id, test_result.test_path)
+            if test_result.test_skipped is True:
+                continue
 
-            self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
+            if os.path.exists(test_result.test_path):
+                if self.archive_metrics or test_result.test_passed is False:
+                    self.__compress_test_artifact_dir(test_result.test_id, test_result.test_path)
+
+                self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
 
         # Need to gather SE logs if any test fails.
         if collect_logs:
