@@ -13,6 +13,7 @@ __TPCH_SCHEMA;
 /weaved
 /optimise_passthru
 /pipelineName = "_ray153"
+/keepCodeFile
 /optimise_passthru
 pipeline Query7
 begin
@@ -23,7 +24,7 @@ begin
 
    stage S01 on all partitions :
      scan nation
-     | filter "type BOOLEAN N_NAME 'FRANCE' == N_NAME 'GERMANY' == OR"
+     | filter "type BOOLEAN N_NAME 'IRAN' == N_NAME 'GERMANY' == OR"
      | project "type INTEGER as N_NATIONKEY N_NATIONKEY ,
                 type VARCHAR as N2_N_NAME N_NAME"
      | combined 0
@@ -66,8 +67,8 @@ begin
 
    stage S06 on all partitions :
      indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
-     | filter "type BOOLEAN N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
-                            N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
+     | filter "type BOOLEAN N_NAME 'IRAN' == N2_N_NAME 'GERMANY' == and
+                            N_NAME 'GERMANY' == N2_N_NAME 'IRAN' == and or"
      | project "type VARCHAR as N1_N_NAME N_NAME ,
                 type VARCHAR as N2_N_NAME N2_N_NAME ,
                 type INTEGER as L_YEAR L_YEAR ,
