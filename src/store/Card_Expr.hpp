@@ -28,13 +28,13 @@ namespace STORE
     void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_Expr* pClone(void);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_stmCol_To_tblCol(CardIter* pCI);
     Card_Expr* pCraft_expr_early(CardIter* pCI, i8 i_Expr=0);
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
+    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypes_For_stmCol(CardIter* pCI);
-    void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
+    void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
+    Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);
     Symbol* pFirstTblCol(void);
@@ -63,6 +63,9 @@ namespace STORE
 
 
     Stz* szP_Type(void);
+
+    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_stmCol_To_tblCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

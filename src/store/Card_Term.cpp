@@ -327,6 +327,29 @@ bool Card_Term::bIsColNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this term a value ordinal? $n or $c.n                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsColSym(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+#ifdef Z_FACETS
+  if (pSymbol()->bHasFacet(SF_STM_COL))
+    return true;
+  if (pSymbol()->bHasFacet(SF_TBL_COL))
+    return true;
+  return false;
+#else
+  if (bIsStmCol())
+    return true;
+  else
+  if (bIsTblCol())
+    return true;
+  return false;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term a key ordinal? $Kn                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsKeyCol(void)
@@ -376,22 +399,6 @@ bool Card_Term::bIsTblCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a value ordinal? $n or $c.n                                   */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsValOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsStmCol())
-    return true;
-  else
-  if (bIsTblCol())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
@@ -428,7 +435,6 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-
 void Card_Term::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -441,6 +447,17 @@ void Card_Term::vCorrectStmCol(Card_Emitted* p_emitted_prior)
     pSym->vFacets(p_expr->pSymbol());
     vMark1(MARK_CHANGED);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete facet if                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Symbol* pSym = pSymbol();
+  pSym->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/

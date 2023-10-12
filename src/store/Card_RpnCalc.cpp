@@ -127,6 +127,18 @@ void Card_RpnCalc::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
+    xTerm.p_term()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure all terms have a type                                               */
+/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -159,7 +171,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
+void Card_RpnCalc::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -170,18 +182,32 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
   // an rpnCalc is a linear sequence of terms, some of which are columns
   for (Kid x_term(this); x_term.bEach(CK_TERM); /**/) {
 
-     if (!x_term.p_term()->bIsValOdn())
+     if (!x_term.p_term()->bIsColSym())
       continue;
 
-    Card_Term* p_term_valOdn = x_term.p_term();
+    Card_Term* p_term_ColSym = x_term.p_term();
 
-    Card_Expr* p_expr_valOdn = new Card_Expr(p_term_valOdn->pSymbol());
-    p_expr_valOdn->pSymbol()->Y_vColType(p_term_valOdn->pSymbol()->Y_szColType());
+    Card_Expr* p_expr_ColSym = new Card_Expr(p_term_ColSym->pSymbol());
+    p_expr_ColSym->pSymbol()->Y_vColType(p_term_ColSym->pSymbol()->Y_szColType());
 
-    p_subSet->vAppendChild(p_expr_valOdn);
+    p_subSet->vAppendChild(p_expr_ColSym);
   }
 
   pCI->G.p_subSet = p_subSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return first key col in this rpn sequence                                  */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_RpnCalc::pFirstColSym(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->bIsColSym())
+      return xKid.p_term()->pSymbol();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,7 +322,7 @@ bool Card_RpnCalc::bIsLiterals(void)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (xKid.p_term()->bIsValOdn())
+    if (xKid.p_term()->bIsColSym())
       return false;
   }
 
@@ -314,7 +340,7 @@ bool Card_RpnCalc::bIsScalarCol(void)
     return false;
 
   Card_Term* p_term_0 = pGetTerm(0);
-  if (! p_term_0->bIsValOdn())
+  if (! p_term_0->bIsColSym())
     return false;
 
   return true;

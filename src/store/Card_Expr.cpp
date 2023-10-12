@@ -225,40 +225,6 @@ Card_Expr* Card_Expr::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert stmCol to tblCol                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vX_stmCol_To_tblCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vX_stmCol_To_tblCol(pCI);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vX_stmCol_To_tblCol(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert tblCol to stmCol                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vX_tblCol_To_stmCol(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nAncestors = pCI->nAncestors();
-  pCI->vAncestorPush(this);
-
-  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vX_tblCol_To_stmCol(pCI);
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vX_tblCol_To_stmCol(pCI);
-
-  pCI->vAncestorPop();
-  RASSERT(pCI->nAncestors() == nAncestors);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
@@ -311,6 +277,20 @@ void Card_Expr::vDeconstruct(Card_As*&      rp_as,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    p_rpnCalc->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Expr::vEnsureTypes_For_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -323,7 +303,7 @@ void Card_Expr::vEnsureTypes_For_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
+void Card_Expr::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -334,13 +314,25 @@ void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
   // an expr is an rpnCalc (shouldn't be boolCalc)
   if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
 
-    pCI->G.p_rpnCalc->vFactorAll_valOdn_IntoDistinct_expr(pCI);
+    pCI->G.p_rpnCalc->vFactorAll_ColSym_IntoDistinct_expr(pCI);
     p_subSet->vTransferChildren(pCI->G.p_subSet);
 
     DELETE_CARD(pCI->G.p_subSet);
   }
 
   pCI->G.p_subSet = p_subSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first col symbol                                                       */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pFirstColSym(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* p_colSym = pSub_rpnCalc()->pFirstColSym();
+
+  return p_colSym;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -756,6 +748,40 @@ Stz* Card_Expr::szP_Type(void)
 
   return szP_Type;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert stmCol to tblCol                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vX_stmCol_To_tblCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vX_stmCol_To_tblCol(pCI);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    p_rpnCalc->vX_stmCol_To_tblCol(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert tblCol to stmCol                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vX_tblCol_To_stmCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nAncestors = pCI->nAncestors();
+  pCI->vAncestorPush(this);
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    p_boolCalc->vX_tblCol_To_stmCol(pCI);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    p_rpnCalc->vX_tblCol_To_stmCol(pCI);
+
+  pCI->vAncestorPop();
+  RASSERT(pCI->nAncestors() == nAncestors);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1599,6 +1599,18 @@ bool Symbol::bFormIs(eSF eSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does symbol have given facet?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasFacet(eSF eFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (C_UNKNOWN == i_Facet(eFacet))
+    return false;
+
+  return true;
+}
+/*----------------------------------------------------------------------------*/
 /* does symbol a symbolic value?                                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bHasFacets(void)

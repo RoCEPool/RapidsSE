@@ -129,6 +129,18 @@ Card_Expr* Card_EXPRLIST::pDecodeExpr(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xCI_this(this);
+  while (xCI_this.bEach(CK_EXPR))
+    xCI_this.p_expr()->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of expr in this projection                                      */
 /*----------------------------------------------------------------------------*/
 i8 Card_EXPRLIST::nExpr(void)

@@ -29,17 +29,18 @@ namespace STORE
     Card_Term* pClone(Symbol* pDiffSymbol);
      void vEnsureTypeFor_stmCol(CardIter* pCI);
     void vCorrectStmCol(Card_Emitted* p_emitted_prior);
+    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
     i8   iGetOdn(void);
     char cGetTblSyn(void);
     bool bIsColNm(void);    // name
-    bool bIsTblCol(void);   // $c.n
+    bool bIsColSym(void);   // $n or $c.n
     bool bIsKeyCol(void);   // $Kn
     bool bIsSqyPrm(void);   // %n
     bool bIsStmCol(void);   // $n
-    bool bIsValOdn(void);   // $n or $c.n
+    bool bIsTblCol(void);   // $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
 
     void vShortForm(String* pString, Stz* szSep);

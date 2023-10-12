@@ -185,7 +185,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
         p_needed->vAppendChild(p_expr_key->pClone());
       }
       else
-      if (xCI_rpnCalc.p_term()->bIsValOdn()) {
+      if (xCI_rpnCalc.p_term()->bIsColSym()) {
 
         // which we haven't already added
         if (p_needed->pFind_expr_By_term(xCI_rpnCalc.p_term()->pSymbol()))
@@ -212,7 +212,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
         Kid xCI_rpnCalc(xCI_key.pSub1());
         while (xCI_rpnCalc.bEach(CK_TERM)) {
           // only interested in columns
-          if (!xCI_rpnCalc.p_term()->bIsValOdn())
+          if (!xCI_rpnCalc.p_term()->bIsColSym())
             continue;
           // which we haven't already added
           if (p_needed->pFind_expr_By_term(xCI_rpnCalc.p_term()->pSymbol()))

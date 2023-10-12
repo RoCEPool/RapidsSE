@@ -52,6 +52,8 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no arrived columns (only injected), emitted is next emitted
 
+  // <scan> or <indexScan>
+
   if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
      pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
     return;
@@ -60,15 +62,23 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // arrived (and injected) columns, emitted is next emitted
 
-  // index join
+  // <indexJoin> or <crossJoin>
 
+  // restate <OP/arriving>   todo: is this necessary?
   pCI->G.p_CARD = pCI->Prior.m_pEmitted->pDupCardRecursive();
   pCI->G.p_CARD->vCard(CK_ARRIVING);
   if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey()))
     pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
   pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
 
+  //
   pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
+
+  // delete any SF_STM_COL facet with SF_TBL_COL of this op's table
+  pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted();
+  pCI->G.p_table = pCI->G.p_OP->pSub_table();
+  char cTblSyn = pCI->G.p_table->pSymbol()->cSF_tblSyn();
+  pCI->G.p_emitted->vDeleteFacetIf(SF_STM_COL,SF_TBL_COL,cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/

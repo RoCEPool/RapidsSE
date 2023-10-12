@@ -682,7 +682,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 8) {
+  if (m_pStageDef->i_Stage() == 2) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -834,8 +834,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
     Card_Expr*   p_expr_a = _pCard_Expr(pCard_expr_a);
     Card_As*       p_as_a = p_expr_a->pSub_as();
     Symbol*     pSym_as_a = p_as_a->pSymbol();
-    Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
-    //Stz*       szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
+    Symbol* pSym_colSym_a = p_expr_a->pFirstColSym();
 
     p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
 
@@ -857,22 +856,22 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
         pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->szSymbol(SF_NONE),
-                      pSym_stmCol_a->szSF_chrSeq(SF_NONE),
+                      pSym_colSym_a->szSF_chrSeq(SF_NONE),
                       p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
 
         return C_CONTINUE_RECURSION;
       }
 
       p_expr_e =
-          p_emitted->pFind_expr_By_term(pSym_stmCol_a,&eVia);
+          p_emitted->pFind_expr_By_term(pSym_colSym_a, &eVia);
       if (p_expr_e) {
         s256 sHow;
         sHow.vSprint("--FOUND emitted expr of term via %s--"_Stz,aSF[eVia]);
         p_expr_e->vDump(__func__,sHow);
-        pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
+        pColPpg->vAdd(pSym_colSym_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->szSymbol(SF_NONE),
-                      pSym_stmCol_a->szSF_chrSeq(SF_NONE),
+                      pSym_colSym_a->szSF_chrSeq(SF_NONE),
                       p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
 
         return C_CONTINUE_RECURSION;

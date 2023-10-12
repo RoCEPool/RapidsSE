@@ -265,6 +265,28 @@ bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete facet if                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  auto fvDeleteFacetIf = [eFacet,eAlsoFacet,cTblSyn](Card* pCard_term)
+  {
+    Card_Term* p_term = _pCard_Term(pCard_term);
+
+    p_term->vDeleteFacetIf(eFacet,eAlsoFacet,cTblSyn);
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,fvDeleteFacetIf);
+  UNUSED(bIgnore);
+}
+
+/*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
@@ -322,7 +344,7 @@ bool Card_BoolCalc::bIsLiterals(void)
   {
     Card_Term* p_term = _pCard_Term(p_card);
 
-    if (p_term->bIsValOdn()) {
+    if (p_term->bIsColSym()) {
       bLiterals = true;
       return C_TERMINATE_RECURSION;
     }

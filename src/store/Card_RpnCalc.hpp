@@ -21,8 +21,10 @@ namespace STORE
     eCT  eColumnType(void);
     Card_RpnCalc* pClone(void);
     void vCorrectStmCol(Card_Emitted* p_emitted_prior);
+    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
-    void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
+    void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
+    Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);
     Symbol* pFirstTblCol(void);

@@ -175,7 +175,7 @@ void Card_Payload::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
   // key is a set of expr
   for (Kid x_expr(this); x_expr.bEach(CK_EXPR); /**/) {
 
-    x_expr.p_expr()->vFactorAll_valOdn_IntoDistinct_expr(pCI);
+    x_expr.p_expr()->vFactorAll_ColSym_IntoDistinct_expr(pCI);
     p_subSet->vTransferChildren(pCI->G.p_subSet);
 
     DELETE_CARD(pCI->G.p_subSet);
