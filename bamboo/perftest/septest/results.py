@@ -106,8 +106,9 @@ def summarise_to_string(results: [TestResult]) -> str:
         if test_result.test_skipped:
             tests_skipped += 1
 
-        if test_result.test_passed:
+        elif test_result.test_passed:
             tests_passed += 1
+
         else:
             tests_failed += 1
             failed_test_names.append(test_result.test_name)

@@ -18,7 +18,7 @@ namespace Parser
     /*  8 */ TM_ENUMS
   };
 
-  static Stz* aTM[]
+  static const Stz* aTM[]
   {
       /*  0 */ "NONE"_Stz,
       /*  1 */ "TM_ALL_NUMERICS"_Stz,
