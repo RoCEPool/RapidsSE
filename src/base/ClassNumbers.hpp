@@ -514,7 +514,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ENUMS,
   };
 
-extern Stz* aCN[CN_ENUMS];
+extern Stz* aCN[CN_ENUMS+1];
 
 class ClassNumbers
 {
