@@ -18,7 +18,7 @@ INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
 LOG ' ';
-INCLUDE 'tpch_q4.test';
+INCLUDE 'tpch_q5.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';

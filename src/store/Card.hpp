@@ -202,7 +202,6 @@ extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
 extern Stz* P_SubQryCall;
 extern Stz* P_Synthetic;
-extern Stz* P_TblCol;
 extern Stz* P_Type;
 extern Stz* P_Unproject;
 

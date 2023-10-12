@@ -64,7 +64,6 @@ Stz* P_Smoothed     = "bSmoothed"_Stz;
 Stz* P_StageTopo    = "eStageTopo"_Stz;
 Stz* P_SubQryCall   = "bSubQryCall"_Stz;
 Stz* P_Synthetic    = "bSynthetic"_Stz;
-Stz* P_TblCol       = "szTblCol"_Stz;
 Stz* P_Type         = "szType"_Stz;
 Stz* P_Unproject    = "bUnproject"_Stz;
 

@@ -4096,14 +4096,6 @@ void Symbol::vFacet_Stm_Col(i8 iStmCol)
   eSF eFacet = xaFacet[0].m_eFacet;
   RASSERT(SF_NONE == eFacet || SF_STM_COL == eFacet || SF_TBL_COL == eFacet || SF_KEY_COL == eFacet);
 
-  if (bIs_Tbl_Col()) {
-    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBL_COL));
-  }
-  else
-  if (bIs_Key_Col()) {
-    Y_vSet(P_KeyCol, szSF_chrSeq(SF_KEY_COL));
-  }
-
   vFacetSprint(SF_STM_COL, "$%lld"_Stz, iStmCol);
 
   RASSERT(bIs_Stm_Col());
@@ -4126,10 +4118,6 @@ void Symbol::vFacet_Stm_Col(Stz* szStmCol)
           SF_PRM_COL == xaFacet[0].m_eFacet ||
           SF_XRF_NO == xaFacet[0].m_eFacet
   );
-
-  if (bIs_Tbl_Col()) {
-    Y_vSet(P_TblCol, szSF_chrSeq(SF_TBL_COL));
-  }
 
   vFacetSprint(SF_STM_COL, "%s"_Stz, szStmCol);
 
