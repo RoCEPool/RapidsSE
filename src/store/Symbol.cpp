@@ -1541,11 +1541,7 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
     vFacet_Stm_Col(pSymbol_arg->xaFacet[0].m_sChrSeq);
   }
 
-#ifdef Z_FACETS
   vFacetConcat(pSymbol_arg);
-#else
-  vFacetCopy(pSymbol_arg);
-#endif
 
   if (SF_STM_COL == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Stm_Col(xaFacet[0].m_sChrSeq));
@@ -2799,7 +2795,6 @@ Stz* Symbol::szSF_chrSeq(eSF eSymbol_xchk)
 
   RASSERT(bHasFacets());
 
-#ifdef Z_FACETS
   if (SF_NONE == eSymbol_xchk)
     return xaFacet[0].m_sChrSeq.szStz();
 
@@ -2809,14 +2804,6 @@ Stz* Symbol::szSF_chrSeq(eSF eSymbol_xchk)
   }
 
   NEVER_REACH
-
-#else
-
-  if (SF_NONE != eSymbol_xchk)
-    RASSERT(eSymbol_xchk = xaFacet[0].m_eFacet);
-
-  return xaFacet[0].m_sChrSeq.szStz();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

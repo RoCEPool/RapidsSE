@@ -526,52 +526,10 @@ bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol_arg, eSF* aeFacet)
 
   Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
 
-#ifdef Z_FACETS
   if (pSymbol_0->bMatches(pSymbol_arg,aeFacet))
     return true;
   return false;
-#else
-  UNUSED(aeFacet);
-  if (pSymbol_0->bSame(pSymbol_arg)) {
-    return true;
-  }
-
-  if (pSymbol_0->Y_bHas(P_TblCol) &&
-      pSymbol_0->Y_szGet(P_TblCol)->bSame(pSymbol_arg->szSF_chrSeq(SF_NONE))) {
-    return true;
-  }
-
-  return false;
-#endif
 }
-/*----------------------------------------------------------------------------*/
-//bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol_arg)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
-//
-//  if (pSymbol_0->bSame(pSymbol_arg)) {
-//#ifdef Z_FACETS
-//    RASSERT(pSymbol_0->bMatches(pSymbol_arg));
-//#endif
-//    return true;
-//  }
-//
-//  if (pSymbol_0->Y_bHas(P_TblCol) &&
-//      pSymbol_0->Y_szGet(P_TblCol)->bSame(pSymbol_arg->szSF_chrSeq(SF_NONE))) {
-//#ifdef Z_FACETS
-//    RASSERT(pSymbol_0->bMatches(pSymbol_arg));
-//#endif
-//    return true;
-//  }
-//
-//#ifdef Z_FACETS
-//  RASSERT(! pSymbol_0->bMatches(pSymbol_arg));
-//  //RASSERT(! pSymbol_arg->bMatches(pSymbol_0));
-//#endif
-//  return false;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* does expression have term ?                                                */

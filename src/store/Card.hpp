@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#define Z_FACETS
-
 #include "BASE.h"
 
 #include "eAL.h"

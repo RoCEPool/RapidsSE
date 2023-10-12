@@ -531,11 +531,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
       CK_INDEXJOIN == eCard_OP ||
       CK_CROSSJOIN == eCard_OP ||
       CK_INDEXSCAN == eCard_OP) {
-#ifdef Z_FACETS
     vCraftColInj_FACETS(pColInj, p_OP_curr);
-#else
-    vCraftColInj(pColInj, p_OP_curr);
-#endif
   }
 
   pColInj->vValidate();
@@ -639,11 +635,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
   ColPpg* pColPpg = new ColPpg(nArriving);
   m_pOpDef->vColPpg(pColPpg);
 
-#ifdef Z_FACETS
   vCraftColPpg_FACETS(pColPpg, m_pCI->G.p_OP);
-#else
-  vCraftColPpg(pColPpg, m_pCI->G.p_OP);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -755,66 +747,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
 
   p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
 }
-
-/*----------------------------------------------------------------------------*/
-//void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
-//
-//  Card_Arriving *p_arriving = pSubCard->pSub_arriving();
-//  Card_Emitted *p_emitted = pSubCard->pSub_emitted();
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  auto bfAddDescriptors = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
-//
-//    Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
-//    Card_Expr* p_expr_p = nullptr;
-//
-//    p_emitted->vDump(__func__);
-//    p_expr_a->vDump(__func__);
-//    vDebugPoint();
-//
-//
-//    if (p_expr_a->nChildCards() > 1) {
-//      Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
-//      Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
-//      p_expr_p = p_emitted->pFind_expr_By_term(pSym_stmCol_a);
-//
-//
-//
-//
-//
-//    }
-//    else {
-//      Symbol* pSym_stmCol_a = p_expr_a->pFirstStmCol();
-//      Stz*    szTblCol_a = pSym_stmCol_a->Y_szGet(P_TblCol);
-//      Kid xKid(p_emitted);
-//      p_expr_p = p_emitted->pFind_expr_By_as_stripped(pSym_stmCol_a, szTblCol_a, &xKid);
-//
-//      if (p_expr_p) {
-//        p_expr_p->vDump(__func__);
-//
-//        if (m_pStageDef->i_Stage() == 5) {
-//          vDebugPoint();
-//          if (m_pOpDef->i_Op() == 0)
-//            vDebugPoint();
-//        }
-//
-//        pColPpg->vAdd(pSym_stmCol_a->iSF_ordinal() - 1,
-//                      p_expr_p->pSymbol()->iSF_ordinal() - 1,
-//                      p_expr_p->szSymbol(SF_NONE),
-//                      pSym_stmCol_a->szSF_chrSeq(SF_NONE),
-//                      p_expr_p->pSymbol()->szSF_chrSeq(SF_NONE));
-//      }
-//    }
-//    return C_CONTINUE_RECURSION;
-//  };
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
-//}
 
 /*============================================================================*/
 /* end                                                                        */

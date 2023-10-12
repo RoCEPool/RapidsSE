@@ -333,20 +333,11 @@ bool Card_Term::bIsColSym(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-#ifdef Z_FACETS
   if (pSymbol()->bHasFacet(SF_STM_COL))
     return true;
   if (pSymbol()->bHasFacet(SF_TBL_COL))
     return true;
   return false;
-#else
-  if (bIsStmCol())
-    return true;
-  else
-  if (bIsTblCol())
-    return true;
-  return false;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,105 +501,7 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-#ifdef Z_FACETS
   vX_tblCol_To_stmCol_FACETS(pCI);
-#else
-  Symbol* pSymbol_term = this->pSymbol();
-  RASSERT(pSymbol_term->bIs_Tbl_Col());
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is the expression synthetic?
-  if (Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))) {
-    if (Card_As* p_as = p_expr->pSub_as()) {
-      if (p_as->pSymbol()->Y_bHas(P_Synthetic)) {
-        //p_expr->vDump(__func__);
-        vDebugPoint();
-      }
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pCI->Prior.m_pEmitted) {
-
-    if (Card_Expr *p_expr_col = pCI->Prior.m_pEmitted->pFind_expr_By_term(pSymbol_term)) {
-      pSymbol_term->vFacet(SF_STM_COL, p_expr_col->szSymbol(SF_NONE));
-      vMark1(MARK_CHANGED);
-      return;
-    }
-
-    if (pCI->G.p_key) {
-      if (Card_Expr *p_expr_col_key = pCI->G.p_key->pFind_expr_By_term(pSymbol_term)) {
-        Symbol *pSymbol_key = p_expr_col_key->pSymbol();
-        RASSERT(pSymbol_key->bIs_Key_Col());
-
-        if (Card_Expr *p_expr_col_ind = pCI->Prior.m_pEmitted->pFind_expr_By_term(pSymbol_key)) {
-          pSymbol_term->vFacet(SF_STM_COL, p_expr_col_ind->szSymbol(SF_NONE));
-          vMark1(MARK_CHANGED);
-          return;
-        }
-      }
-    }
-
-    if (pCI->G.p_OP->bIsCard(CK_INDEXJOIN)) {
-      if ((pCI->G.p_arriving = pCI->G.p_OP->pSub_arriving())) {
-        if (Card_Expr *p_expr_col = pCI->G.p_arriving->pFind_expr_By_term(pSymbol_term)) {
-          pSymbol_term->vFacet(SF_STM_COL, p_expr_col->szSymbol(SF_NONE));
-          vMark1(MARK_CHANGED);
-          return;
-        }
-      }
-    }
-
-
-  }
-
-  // arrives here as col_tc is not in prior projection
-  // probably introduced into this stream by the operator
-
-  i8 nCols_injectedByThisCard;
-  pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-  if (pCI->G.p_MainCard->bIsCard(CK_SCAN) ||
-      pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)) {
-    nCols_injectedByThisCard = 0;
-
-//    RASSERT(this->pSymbol()->bIs_Tbl_Col());
-//    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
-//    return;
-  }
-  else
-  if (pCI->G.p_MainCard->bIsCard(CK_CROSSJOIN) ||
-      pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN)) {
-    nCols_injectedByThisCard = 0;
-
-//    nCols_injectedByThisCard = pCI->Prior.m_pEmitted->nChildCards();
-
-//    RASSERT(this->pSymbol()->bIs_Tbl_Col());
-//    this->pSymbol()->Y_vSet(P_TblCol, szSymbol(SF_NONE));
-//    return;
-  }
-  else
-  if (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) ||
-      pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)) {
-    nCols_injectedByThisCard = pCI->G.p_emitted->nChildCards();
-  }
-  else {
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // term is introduced
-
-  i8 iCol = this->iGetOdn();
-  i8 iStmCol = nCols_injectedByThisCard + iCol;
-
-  Symbol xSymbol_stmCol(SF_STM_COL, iStmCol);
-  this->pSymbol()->vFacets(&xSymbol_stmCol);
-
-  this->vMark1(MARK_CHANGED);
-
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
