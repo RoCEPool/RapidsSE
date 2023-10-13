@@ -263,8 +263,7 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
 
     eCT  Y_eColType(void);
-    Stz* Y_szColType_stz(void);
-    void Y_vColType(eCT eColType);
+     void Y_vColType(eCT eColType);
 
   private:
     void vFacet_Agg_Fn(Stz* szAggFn);
