@@ -2980,8 +2980,6 @@ Stz* Symbol::szWhatIs(void)
   return "??WhatIs"_Stz;
 }
 
-#define Z_COLTYPE
-
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
@@ -2989,19 +2987,7 @@ eCT Symbol::Y_eColType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-#ifdef Z_COLTYPE
   return m_eColType;
-#else
-  Stz* szType = Y_szColType();
-  if (! szType)
-    return CT_NONE;
-
-  eCT eColumnType = eTo_eCT_char(szType);
-
-  RASSERT(eColumnType == m_eColType);
-
-  return m_eColType;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3011,17 +2997,8 @@ Stz* Symbol::Y_szColType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-#ifdef Z_COLTYPE
-   Stz* szColType = szCT_char[m_eColType];
-  return szColType;
-#else
-  Stz* sz = Y_szGet(P_Type);
-
   Stz* szColType = szCT_char[m_eColType];
-  RASSERT(szColType->bSame(sz));
-
   return szColType;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3031,14 +3008,7 @@ void Symbol:: Y_vColType(eCT eColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-#ifdef Z_COLTYPE
   m_eColType = eColType;
-#else
-  m_eColType = eColType;
-
-  Stz* szColType = aCT[eColType];
-  Y_vSet(P_Type,szColType);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3048,19 +3018,11 @@ void Symbol:: Y_vColType(Stz* szColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-#ifdef Z_COLTYPE
   m_eColType = eTo_eCT_char(szColType);
   if (CT_NONE == m_eColType)
     m_eColType = eTo_eCT_str(szColType);
 
   RASSERT(CT_NONE != m_eColType);
-#else
-  m_eColType = eTo_eCT_char(szColType);
-  if (CT_NONE == m_eColType)
-    m_eColType = eTo_eCT_str(szColType);
-
-  Y_vSet(P_Type,szColType);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
