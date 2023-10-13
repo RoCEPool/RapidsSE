@@ -102,9 +102,9 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(this->szColType());
+  RASSERT(CT_NONE != this->eColType());
 
-  if (!szColType()->bSame(p_key_arg->szColType()))
+  if (eColType() != p_key_arg->eColType())
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -216,21 +216,6 @@ eCT Card_Key::eColType(void)
     eColType = p_expr->eColType();
 
   return eColType;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Key::szColType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szColType = nullptr;
-
-  if (Card_Expr* p_expr = pSub_expr())
-    szColType = p_expr->szColType();
-
-  return szColType;
 }
 
 /*----------------------------------------------------------------------------*/

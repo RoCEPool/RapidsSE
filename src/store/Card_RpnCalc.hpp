@@ -44,8 +44,7 @@ namespace STORE
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolCalc* pTo_boolCalc(CardIter* pCI);
     eCT  eColType(void);
-    Stz* szColType(void);
-    void vX_stmCol_To_tblCol(CardIter* pCI);
+     void vX_stmCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_stmCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

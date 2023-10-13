@@ -28,7 +28,6 @@ namespace STORE
 
     void vMapColumns(CardIter *pCI);
     eCT  eColType(void);
-    Stz* szColType(void);
 
     void vShortForm(String* pString);
 

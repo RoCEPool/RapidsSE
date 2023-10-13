@@ -3023,18 +3023,6 @@ void Symbol:: Y_vColType(eCT eColType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol:: Y_vColType_stz(Stz* szColType)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_eColType = eTo_eCT_str(szColType);
-
-  RASSERT(CT_NONE != m_eColType);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vAll(Symbol* pSymbol_arg)

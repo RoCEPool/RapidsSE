@@ -709,25 +709,6 @@ eCT Card_Expr::eColType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Expr::szColType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szColType = nullptr;
-
-  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    szColType = p_boolCalc->szColType();
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    szColType = p_rpnCalc->szColType();
-
-  return szColType;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vX_stmCol_To_tblCol(CardIter* pCI)

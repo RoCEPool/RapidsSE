@@ -49,7 +49,6 @@ namespace STORE
 
 
     eCT  eColType(void);
-    Stz* szColType(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

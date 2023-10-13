@@ -744,17 +744,6 @@ eCT Card_RpnCalc::eColType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card_RpnCalc::szColType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szColType = pSymbol()->Y_szColType_stz();
-  return szColType;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vX_stmCol_To_tblCol(CardIter* pCI)

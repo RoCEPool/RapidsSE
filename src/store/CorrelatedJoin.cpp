@@ -382,7 +382,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   // pre-fold sq <project>
 
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
-  RASSERT(pCI->G.p_key->szColType());
+  RASSERT(CT_NONE != pCI->G.p_key->eColType());
 
   pCI->G.p_emitted = pCI->G.p_project->pSub_emitted();
   pCI->G.p_emitted->vBump_stmCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);

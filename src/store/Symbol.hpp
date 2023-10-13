@@ -266,7 +266,6 @@ namespace STORE
     Stz* Y_szColType_char(void);
     Stz* Y_szColType_stz(void);
     void Y_vColType(eCT eColType);
-    void Y_vColType_stz(Stz* szColType);
 
   private:
     void vFacet_Agg_Fn(Stz* szAggFn);
