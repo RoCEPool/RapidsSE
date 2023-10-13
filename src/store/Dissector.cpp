@@ -301,7 +301,7 @@ Card* Dissector::pOp_Aggreg(void)
   Card_Stream* p_stream = new Card_Stream;
   pCard_Aggreg->vAppendChild(p_stream);
 
-  Card_Emitted* pCard_Projection = pPopProjection(pCard_RpnTerms);
+  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
   p_stream->vAppendChild(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -537,7 +537,7 @@ Card* Dissector::pOp_GbyAgg(void)
   Card_Stream* p_stream = new Card_Stream;
   pCard_Aggreg->vAppendChild(p_stream);
 
-  Card_Emitted* pCard_Projection = pPopProjection(pCard_RpnTerms);
+  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
   p_stream->vAppendChild(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -951,7 +951,7 @@ Card* Dissector::pOp_OrdAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-  Card_Emitted* pCard_Projection = pPopProjection(pCard_RpnTerms);
+  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
   pCard_OrdAgg->vAppendChild(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1016,7 +1016,7 @@ Card* Dissector::pOp_Project(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projElist : project expression list
 
-  Card_Emitted* pCard_Projection = pPopProjection(pCard_RpnTerms);
+  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
   pCard_Stream->vAppendChild(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1394,7 +1394,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
     pCard_Expr->pSymbol()->vFacets(&xSymbol_stmCol);
   }
 
-  Stz* szColType = this->szPopType_char(pCard_RpnTerms);
+  eCT eColType = this->ePopType(pCard_RpnTerms);
 
 
   // [ AS <as> ]
@@ -1411,8 +1411,8 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
   pCard_Expr->vAppendChild(pCard_RpnCalc);
 
-  pCard_RpnCalc->pSymbol()->Y_vColType(szColType);
-  pCard_Expr->pSymbol()->Y_vColType(szColType);
+  pCard_RpnCalc->pSymbol()->Y_vColType(eColType);
+  pCard_Expr->pSymbol()->Y_vColType(eColType);
 
 
   // [ AS <as> ]
@@ -1560,7 +1560,7 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirectio
 /*----------------------------------------------------------------------------*/
 /* pop projection                                                             */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
+Card_Emitted* Dissector::pPopEmitted(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -1633,6 +1633,56 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
   }
 
   return pCard_RpnCalc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop type (single char form)                                                */
+/*----------------------------------------------------------------------------*/
+eCT Dissector::ePopType(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  // TYPE
+  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
+  Stz* szTerm = pCard_Term->szSymbol(SF_NONE);
+  RASSERT(szTerm->bSame("TYPE"_Stz));
+
+  delete pCard_Term;
+  pCard_Term = nullptr;
+
+  // column type (e.g. BOOLEAN)
+  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPopChild());
+
+  eCT eType = Symbol::eTo_eCT_str(pCard_Term_type->szSymbol(SF_NONE));
+
+  delete pCard_Term_type;
+
+  return eType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop type (single char form)                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Dissector::szPopType(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  // TYPE
+  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
+  Stz* szTerm = pCard_Term->szSymbol(SF_NONE);
+  RASSERT(szTerm->bSame("TYPE"_Stz));
+
+  delete pCard_Term;
+  pCard_Term = nullptr;
+
+  // column type (e.g. BOOLEAN)
+  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPopChild());
+
+  Stz* szType = aCT[Symbol::eTo_eCT_str(pCard_Term_type->szSymbol(SF_NONE))];
+
+  delete pCard_Term_type;
+
+  return szType;
 }
 
 /*----------------------------------------------------------------------------*/
