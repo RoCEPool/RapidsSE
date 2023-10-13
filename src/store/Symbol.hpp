@@ -261,7 +261,6 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Object* pObject);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
-    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
     eCT  Y_eColType(void);
     Stz* Y_szColType_char(void);

@@ -569,24 +569,6 @@ Card* Dissector::pOp_Hash(void)
   Card_Level* p_level = new Card_Level(eLevel);
   pCard_Hash->vAppendChild(p_level);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // calcExpr : calculation expression list
-
-//  Card_HshCol* p_hshCol = new Card_HshCol;
-//
-//  Card_Term* p_term = _pCard_Term(pCard_RpnTerms->pGet(1));
-//
-//  Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
-//
-//  p_hshCol->pSymbol()->vFacets(p_term2->pSymbol());
-//  eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol(SF_NONE));
-//  p_hshCol->pSymbol()->Y_vColType(szCT_char[eColumnType]);
-//
-//  Card_Term* p_term_hsh = p_term2->pClone();
-//  p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
-//  p_hshCol->vAppendChild(p_term_hsh);
-//  p_hshCol->pSymbol()->Y_vSet(P_BreakPt);
-
   Card_HshColList* p_hshColList = pPopHshColList(pCard_RpnTerms);
   pCard_Hash->vAppendChild(p_hshColList);
 
@@ -1488,7 +1470,7 @@ Card_HshCol* Dissector::pPopHshCol(Card_RpnTerms* pCard_RpnTerms)
   delete p_term1;
 
   Card_Term* p_term_hsh = _pCard_Term(pCard_RpnTerms->pPopChild());
-  p_term_hsh->pSymbol()->Y_vColType(szCT_char[eColumnType]);
+  p_term_hsh->pSymbol()->Y_vColType(eColumnType);
   p_hshCol->vAppendChild(p_term_hsh);
 
   return p_hshCol;

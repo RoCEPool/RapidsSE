@@ -3203,12 +3203,10 @@ bool Symbol::Y_bHas(Stz* szPpyNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties) {
-    RASSERT(!szPpyNm->bSame(P_Type) || ! bHasType());
     return false;
   }
 
   bool bHas = m_pProperties->bHasName(szPpyNm);
-  RASSERT(!szPpyNm->bSame(P_Type) || bHasType() == bHas);
   return bHas;
 }
 
@@ -3329,11 +3327,6 @@ void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, szPpy);
-
-  if (szPpyNm->bSame(P_Type)) {
-    //RASSERT(!szPpy->bSame(""_Stz));
-    RASSERT(!szPpy->bSame("!"_Stz));
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3355,27 +3348,6 @@ void Symbol::Y_vSet(Stz* szPpyNm, Symbol* pSymbol)
     Y_vSet(szPpyNm, pSymbol->Y_szGet(szPpyNm));
   else
     NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint card property                                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  s256 sPpy;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sPpy.azChar(), sPpy.nAreaBytes(), xArgs, (char*)szFormat);
-  va_end(xArgs);
-
-  Y_vSet(szPpyNm, sPpy);
-
-
-  if (szPpyNm->bSame(P_Type))
-    RASSERT(! sPpy.bSame("!"_Stz));
 }
 
 
