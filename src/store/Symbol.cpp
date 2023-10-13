@@ -2993,17 +2993,6 @@ eCT Symbol::Y_eColType(void)
 /*----------------------------------------------------------------------------*/
 /* get type                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::Y_szColType_char(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Stz* szColType = szCT_char[m_eColType];
-  return szColType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
 Stz* Symbol::Y_szColType_stz(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
