@@ -824,7 +824,7 @@ void Card_OP::vRpnHash(String* psOpArgs, Card_Hash* pCard_Hash)
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   psOpArgs->vCatSprint("type %s %s"_Stz,
-                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szColType())],
+                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szColType_char())],
                        p_term->szSymbol(SF_NONE));
 }
 
@@ -1500,7 +1500,7 @@ void Card_OP::vExpr(String* psRpnExpr, Card_Expr* pCard_Expr)
   }
 
   psRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szColType())]);
+                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szColType_char())]);
 
   if (p_as)
     vAs(psRpnExpr, p_as);

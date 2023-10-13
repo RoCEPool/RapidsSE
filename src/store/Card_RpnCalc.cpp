@@ -95,7 +95,7 @@ eCT Card_RpnCalc::eColumnType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Stz *szType = pSymbol()->Y_szColType()) {
+  if (Stz *szType = pSymbol()->Y_szColType_char()) {
     eCT eColType = Symbol::eTo_eCT_char(szType);
     return eColType;
   }
@@ -188,7 +188,7 @@ void Card_RpnCalc::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
     Card_Term* p_term_ColSym = x_term.p_term();
 
     Card_Expr* p_expr_ColSym = new Card_Expr(p_term_ColSym->pSymbol());
-    p_expr_ColSym->pSymbol()->Y_vColType(p_term_ColSym->pSymbol()->Y_szColType());
+    p_expr_ColSym->pSymbol()->Y_vColType(p_term_ColSym->pSymbol()->Y_eColType());
 
     p_subSet->vAppendChild(p_expr_ColSym);
   }
@@ -742,7 +742,7 @@ Stz* Card_RpnCalc::szColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szColType = pSymbol()->Y_szColType();
+  Stz* szColType = pSymbol()->Y_szColType_char();
   if (szColType)
     return szColType;
 

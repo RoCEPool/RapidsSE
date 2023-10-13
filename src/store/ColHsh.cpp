@@ -102,26 +102,11 @@ void ColHsh::vUpdate(Card_Hashing* p_hashing)
     Symbol* pSymbol = p_term->pSymbol();
 
     vAdd(p_term->iGetOdn() - 1,
-         Symbol::eTo_eCT_char(pSymbol->Y_szColType()),
+         Symbol::eTo_eCT_char(pSymbol->Y_szColType_char()),
          pSymbol->Y_szGet(P_HashOf));
 
   }
 }
-/*----------------------------------------------------------------------------*/
-//void ColHsh::vUpdate(Card_Hashing* p_hashing)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_COLHSH, _FOOTER_);
-//
-//  UNUSED(p_hashing);
-//
-//  Card_Term* p_term = p_hashing->pSub_term();
-//
-//  Symbol* pSymbol = p_term->pSymbol();
-//
-//  vBifurcate(p_term->iGetOdn() - 1,
-//       Symbol::eTo_eCT_char(pSymbol->Y_szColType()),
-//       pSymbol->Y_szGet(P_HashOf));
-//}
 
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
