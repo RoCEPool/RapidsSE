@@ -131,7 +131,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     Card_Expr* p_expr_found =
         pCI->Prior.m_pEmitted->pGetExpr(0);
 
-    RASSERT(p_expr_found->szColType());
+    RASSERT(CT_NONE != p_expr_found->eColType());
 
     pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->eColType());
 

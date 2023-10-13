@@ -88,7 +88,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
-  RASSERT(pExpr_corr->szColType());
+  RASSERT(CT_NONE != pExpr_corr->eColType());
 
   Card_Expr*    p_expr_gby = new Card_Expr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
@@ -111,7 +111,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
   _static_
 
-  RASSERT(p_expr_gby->szColType());
+  RASSERT(CT_NONE != p_expr_gby->eColType());
 
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
@@ -142,7 +142,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   //p_expr->vDump();
 
-  RASSERT(p_expr->szColType());
+  RASSERT(CT_NONE != p_expr->eColType());
 
   Symbol xSymbol_Dn(SF_STM_COL, i_Col);
 

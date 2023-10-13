@@ -27,6 +27,7 @@ namespace STORE
     void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
 
     void vMapColumns(CardIter *pCI);
+    eCT  eColType(void);
     Stz* szColType(void);
 
     void vShortForm(String* pString);

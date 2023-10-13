@@ -206,6 +206,21 @@ void Card_Payload::vMapColumns(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eCT Card_Payload::eColType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCT eColType = CT_NONE;
+
+  if (Card_Expr* p_expr = pSub_expr())
+    eColType = p_expr->eColType();
+
+  return eColType;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* Card_Payload::szColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
