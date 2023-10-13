@@ -79,8 +79,8 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
   p_expr_new->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->Y_vColType(p_expr->szColType());
-  p_expr_new->pSymbol()->Y_vColType(p_expr->szColType());
+  p_rpnCalc->pSymbol()->Y_vColType(p_expr->eColType());
+  p_expr_new->pSymbol()->Y_vColType(p_expr->eColType());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol(SF_NONE));
@@ -201,6 +201,21 @@ void Card_Key::vMapColumns(CardIter *pCI)
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eCT Card_Key::eColType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCT eColType = CT_NONE;
+
+  if (Card_Expr* p_expr = pSub_expr())
+    eColType = p_expr->eColType();
+
+  return eColType;
 }
 
 /*----------------------------------------------------------------------------*/

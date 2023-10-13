@@ -97,9 +97,9 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_expr_gby->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->Y_vColType(pExpr_corr->szColType());
-  p_term->pSymbol()->Y_vColType(pExpr_corr->szColType());
-  p_expr_gby->pSymbol()->Y_vColType(pExpr_corr->szColType());
+  p_rpnCalc->pSymbol()->Y_vColType(pExpr_corr->eColType());
+  p_term->pSymbol()->Y_vColType(pExpr_corr->eColType());
+  p_expr_gby->pSymbol()->Y_vColType(pExpr_corr->eColType());
 
   return p_expr_gby;
 }
@@ -125,9 +125,9 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_expr->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->Y_vColType(p_expr_gby->szColType());
-  p_term->pSymbol()->Y_vColType(p_expr_gby->szColType());
-  p_expr->pSymbol()->Y_vColType(p_expr_gby->szColType());
+  p_rpnCalc->pSymbol()->Y_vColType(p_expr_gby->eColType());
+  p_term->pSymbol()->Y_vColType(p_expr_gby->eColType());
+  p_expr->pSymbol()->Y_vColType(p_expr_gby->eColType());
 
   return p_expr;
 }
@@ -149,10 +149,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   Card_Expr* p_expr_simple = new Card_Expr;
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->pSymbol()->Y_vColType(p_expr->szColType());
+  p_rpnCalc->pSymbol()->Y_vColType(p_expr->eColType());
 
   Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  p_term->pSymbol()->Y_vColType(p_expr->szColType());
+  p_term->pSymbol()->Y_vColType(p_expr->eColType());
   //p_term->vDump();
 
   p_rpnCalc->vAppendChild(p_term);
@@ -664,7 +664,7 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!szColType()->bSame(p_expr_arg->szColType()))
+  if (eColType() != p_expr_arg->eColType())
     return false;
 
   Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
@@ -689,6 +689,25 @@ void Card_Expr::vShortForm(String* pString, Stz* szSep)
     p_rpnCalc->vShortForm(pString,szSep);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eCT Card_Expr::eColType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCT eColType = CT_NONE;
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    eColType = p_boolCalc->eColType();
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    eColType = p_rpnCalc->eColType();
+
+  return eColType;
+}
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/

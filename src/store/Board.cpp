@@ -108,10 +108,10 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   Card_Expr* p_expr_found =
       pCI->Prior.m_pEmitted->pGetExpr(0);
 
-  pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->szColType());
+  pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->eColType());
 
-  pCI->G.p_rpnCalc->pSymbol()->Y_vColType(p_expr_found->szColType());
-  pCI->G.p_expr->pSymbol()->Y_vColType(p_expr_found->szColType());
+  pCI->G.p_rpnCalc->pSymbol()->Y_vColType(p_expr_found->eColType());
+  pCI->G.p_expr->pSymbol()->Y_vColType(p_expr_found->eColType());
 
 }
 

@@ -3025,7 +3025,7 @@ void Symbol:: Y_vColType(eCT eColType)
 /*----------------------------------------------------------------------------*/
 /* get type                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol:: Y_vColType(Stz* szColType)
+void Symbol:: Y_vColType_stz(Stz* szColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
