@@ -26,6 +26,8 @@ namespace STORE
     i8 m_nFacets;
     Facet xaFacet[C_FACETS];
 
+    eCT m_eColType;
+
     TagSet* m_pProperties;
 
   protected:
@@ -262,6 +264,7 @@ namespace STORE
 
     eCT  Y_eColType(void);
     Stz* Y_szColType(void);
+    void Y_vColType(eCT eColType);
     void Y_vColType(Stz* szColType);
 
   private:

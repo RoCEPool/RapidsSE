@@ -22,6 +22,8 @@ Symbol::Symbol(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
+
+  m_eColType = CT_NONE;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -2976,6 +2978,8 @@ eCT Symbol::Y_eColType(void)
 
   eCT eColumnType = eTo_eCT_char(szType);
 
+  RASSERT(eColumnType == m_eColType);
+
   return eColumnType;
 }
 
@@ -2992,11 +2996,26 @@ Stz* Symbol::Y_szColType(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol:: Y_vColType(eCT eColType)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_eColType = eColType;
+
+  Stz* szColType = aCT[eColType];
+  Y_vSet(P_Type,szColType);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get type                                                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol:: Y_vColType(Stz* szColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_eColType = eTo_eCT_char(szColType);
 
   Y_vSet(P_Type,szColType);
 }

@@ -102,4 +102,4 @@ begin
     | first
 end ;
 
-_tpcdrop;
+_tpchDrop;
