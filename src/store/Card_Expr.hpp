@@ -62,7 +62,7 @@ namespace STORE
     void vShortForm(String* pString, Stz* szSep);
 
 
-    Stz* szP_Type(void);
+    Stz* szColType(void);
 
     void vX_tblCol_To_stmCol(CardIter* pCI);
     void vX_stmCol_To_tblCol(CardIter* pCI);

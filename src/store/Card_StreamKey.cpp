@@ -71,9 +71,9 @@ bool Card_StreamKey::bIsEquivalentTo(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(this->szP_Type());
+  RASSERT(this->szColType());
 
-  if (! szP_Type()->bSame(p_key_arg->szP_Type()))
+  if (!szColType()->bSame(p_key_arg->szColType()))
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

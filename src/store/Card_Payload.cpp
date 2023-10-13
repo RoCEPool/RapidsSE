@@ -79,8 +79,8 @@ void Card_Payload::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
   p_expr_new->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->Y_vColType(p_expr->szP_Type());
-  p_expr_new->pSymbol()->Y_vColType(p_expr->szP_Type());
+  p_rpnCalc->pSymbol()->Y_vColType(p_expr->szColType());
+  p_expr_new->pSymbol()->Y_vColType(p_expr->szColType());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol(SF_NONE));
@@ -102,9 +102,9 @@ bool Card_Payload::bIsEqual(Card_Payload* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(this->szP_Type());
+  RASSERT(this->szColType());
 
-  if (! szP_Type()->bSame(p_key_arg->szP_Type()))
+  if (!szColType()->bSame(p_key_arg->szColType()))
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -206,16 +206,16 @@ void Card_Payload::vMapColumns(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card_Payload::szP_Type(void)
+Stz* Card_Payload::szColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szP_Type = nullptr;
+  Stz* szColType = nullptr;
 
   if (Card_Expr* p_expr = pSub_expr())
-    szP_Type = p_expr->szP_Type();
+    szColType = p_expr->szColType();
 
-  return szP_Type;
+  return szColType;
 }
 
 /*----------------------------------------------------------------------------*/

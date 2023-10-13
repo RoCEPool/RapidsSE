@@ -183,7 +183,7 @@ void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
   Card_Expr *p_expr_found;
 
   // rpnCalc is a set of terms
-  if (pSymbol()->Y_bHas(P_Type))
+  if (pSymbol()->bHasType())
     return;
 
   i8 iOdn = iGetOdn();
@@ -583,7 +583,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
     if (m_xSymbol.bIs_Stm_Col() || m_xSymbol.bIs_Tbl_Col()) {
-      if (! m_xSymbol.Y_bHas(P_Type)) {
+      if (! m_xSymbol.bHasType()) {
         if (! pCI->G.p_call) {
           vDump(__func__);
           vValidationFailed("Type Missing : %p"_Stz,this);
@@ -594,7 +594,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   else
   if (pCI->G.pBoard->pState()->bHasName(aXF[XF_PROLOG_ANALYSE_EMITTED]) ) {
     if (m_xSymbol.bIs_Tbl_Col()) {
-      if (! m_xSymbol.Y_bHas(P_Type)) {
+      if (! m_xSymbol.bHasType()) {
         if (! pCI->G.p_call) {
           vDump(__func__);
           vValidationFailed("Type Missing : %p"_Stz,this);

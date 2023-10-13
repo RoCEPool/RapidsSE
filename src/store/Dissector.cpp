@@ -1394,7 +1394,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
     pCard_Expr->pSymbol()->vFacets(&xSymbol_stmCol);
   }
 
-  Stz* szP_Type = this->szPopType_char(pCard_RpnTerms);
+  Stz* szColType = this->szPopType_char(pCard_RpnTerms);
 
 
   // [ AS <as> ]
@@ -1411,8 +1411,8 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
   pCard_Expr->vAppendChild(pCard_RpnCalc);
 
-  pCard_RpnCalc->pSymbol()->Y_vColType(szP_Type);
-  pCard_Expr->pSymbol()->Y_vColType(szP_Type);
+  pCard_RpnCalc->pSymbol()->Y_vColType(szColType);
+  pCard_Expr->pSymbol()->Y_vColType(szColType);
 
 
   // [ AS <as> ]

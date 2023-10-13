@@ -316,12 +316,12 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
-      pCI->G.p_term->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
+      pCI->G.p_term->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szColType());
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
 
-      pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
-      pCI->G.p_term->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
-      pCI->G.p_expr->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szP_Type());
+      pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szColType());
+      pCI->G.p_term->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szColType());
+      pCI->G.p_expr->pSymbol()->Y_vColType(pCI->Sqy.m_pExpr_corr->szColType());
 
     }
     // TODO: hack...
@@ -343,9 +343,9 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
-      pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
-      pCI->G.p_term->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
-      pCI->G.p_expr->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
+      pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_key->szColType());
+      pCI->G.p_term->pSymbol()->Y_vColType(pCI->G.p_key->szColType());
+      pCI->G.p_expr->pSymbol()->Y_vColType(pCI->G.p_key->szColType());
     }
 
     pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -382,7 +382,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   // pre-fold sq <project>
 
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
-  RASSERT(pCI->G.p_key->szP_Type());
+  RASSERT(pCI->G.p_key->szColType());
 
   pCI->G.p_emitted = pCI->G.p_project->pSub_emitted();
   pCI->G.p_emitted->vBump_stmCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
@@ -396,9 +396,9 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
 
 
-  pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
-  pCI->G.p_term->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
-  pCI->G.p_expr->pSymbol()->Y_vColType(pCI->G.p_key->szP_Type());
+  pCI->G.p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_key->szColType());
+  pCI->G.p_term->pSymbol()->Y_vColType(pCI->G.p_key->szColType());
+  pCI->G.p_expr->pSymbol()->Y_vColType(pCI->G.p_key->szColType());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added
@@ -464,7 +464,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
           Card_Expr* p_expr_found =
               pCI->Prior.m_pEmitted->pGetExpr(0);
 
-          xKid.pChild()->pSymbol()->Y_vColType(p_expr_found->szP_Type());
+          xKid.pChild()->pSymbol()->Y_vColType(p_expr_found->szColType());
 
         }
         else
@@ -561,7 +561,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
           Card_Expr* p_expr_found =
               pCI->Prior.m_pEmitted->pGetExpr(1);
 
-           p_term_new->pSymbol()->Y_vColType(p_expr_found->szP_Type());
+           p_term_new->pSymbol()->Y_vColType(p_expr_found->szColType());
 
 
           p_pred->vRemoveChild(p_arg);

@@ -688,7 +688,7 @@ bool Card_BoolCalc::bYank_PRED(Stz* szWithMark, Card* p_test,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card_BoolCalc::szP_Type(void)
+Stz* Card_BoolCalc::szColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

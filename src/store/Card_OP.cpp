@@ -711,10 +711,10 @@ void Card_OP::vRpnCrossJoin(String* psRpnExpr, Card_CrossJoin* pCard_CrossJoin)
     if (p_term->pSymbol()->bIs_Stm_Col() ||
         p_term->pSymbol()->bIs_Tbl_Col()) {
 
-      if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+      if (!p_term->pSymbol()->bHasType()) {
         p_term->vDump(__func__);
         pChildCard->vDump(__func__);
-        RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+        RASSERT(p_term->pSymbol()->bHasType());
       }
     }
 
@@ -895,10 +895,10 @@ void Card_OP::vRpnIndexJoin(String* psRpnExpr, Card_IndexJoin* pCard_IndexJoin)
     if (p_term->pSymbol()->bIs_Stm_Col() ||
         p_term->pSymbol()->bIs_Tbl_Col()) {
 
-      if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+      if (!p_term->pSymbol()->bHasType()) {
         p_term->vDump(__func__);
         pSubCard->vDump(__func__);
-        RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+        RASSERT(p_term->pSymbol()->bHasType());
       }
     }
 
@@ -989,10 +989,10 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
         if (p_term->pSymbol()->bIs_Stm_Col() ||
             p_term->pSymbol()->bIs_Tbl_Col()) {
 
-          if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+          if (!p_term->pSymbol()->bHasType()) {
             p_term->vDump(__func__);
             pSubCard->vDump(__func__);
-            RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+            RASSERT(p_term->pSymbol()->bHasType());
           }
         }
 
@@ -1057,10 +1057,10 @@ void Card_OP::vRpnKeyExists(String* psRpnExpr, Card_KeyExists* pCard_KeyExists)
       if (p_term->pSymbol()->bIs_Stm_Col() ||
           p_term->pSymbol()->bIs_Tbl_Col()) {
 
-        if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+        if (!p_term->pSymbol()->bHasType()) {
           p_term->vDump(__func__);
           pSubCard->vDump(__func__);
-          RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+          RASSERT(p_term->pSymbol()->bHasType());
         }
       }
 
@@ -1148,10 +1148,10 @@ void Card_OP::vRpnKeyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExi
       if (p_term->pSymbol()->bIs_Stm_Col() ||
           p_term->pSymbol()->bIs_Tbl_Col()) {
 
-        if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+        if (!p_term->pSymbol()->bHasType()) {
           p_term->vDump(__func__);
           pSubCard->vDump(__func__);
-          RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+          RASSERT(p_term->pSymbol()->bHasType());
         }
       }
 
@@ -1364,7 +1364,7 @@ void Card_OP::vRpnTop(String* psRpnExpr, Card_Top* pCard_Top)
   Card_Key *pCard_key = pCard_Top->pSub_key();
   Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
 
-  eCT eColumnType = Symbol::eTo_eCT_char(pCard_Calc->szP_Type());
+  eCT eColumnType = Symbol::eTo_eCT_char(pCard_Calc->szColType());
 
   Stz* szColType = aCT[eColumnType];
 
@@ -1454,10 +1454,10 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
         if (pSubCard->pSymbol()->bIs_Stm_Col() ||
             pSubCard->pSymbol()->bIs_Tbl_Col()) {
 
-          if (!pSubCard->pSymbol()->Y_bHas(P_Type)) {
+          if (!pSubCard->pSymbol()->bHasType()) {
             //p_part->vDump();
             //pSubCard->vDump();
-            RASSERT(pSubCard->pSymbol()->Y_bHas(P_Type));
+            RASSERT(pSubCard->pSymbol()->bHasType());
           }
         }
         psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol(SF_NONE));
@@ -1518,9 +1518,9 @@ void Card_OP::vRpnCalc(String* psRpnExpr, Card_RpnCalc* pCard_RpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!pCard_RpnCalc->pSymbol()->Y_bHas(P_Type)) {
+  if (!pCard_RpnCalc->pSymbol()->bHasType()) {
     pCard_RpnCalc->vDump(__func__);
-    RASSERT(pCard_RpnCalc->pSymbol()->Y_bHas(P_Type));
+    RASSERT(pCard_RpnCalc->pSymbol()->bHasType());
   }
 
   i8 nSubCards = pCard_RpnCalc->nItems();
@@ -1555,9 +1555,9 @@ void Card_OP::vTerm(String* psRpnExpr, Card_Term* pCard_Term)
   if (pCard_Term->pSymbol()->bIs_Stm_Col() ||
       pCard_Term->pSymbol()->bIs_Tbl_Col()) {
 
-    if (!pCard_Term->pSymbol()->Y_bHas(P_Type)) {
+    if (!pCard_Term->pSymbol()->bHasType()) {
       pCard_Term->vDump(__func__);
-      RASSERT(pCard_Term->pSymbol()->Y_bHas(P_Type));
+      RASSERT(pCard_Term->pSymbol()->bHasType());
     }
   }
 

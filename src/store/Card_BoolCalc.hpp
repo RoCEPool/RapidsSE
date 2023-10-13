@@ -48,7 +48,7 @@ namespace STORE
     void vX_tblCol_To_stmCol(CardIter* pCI);
 
 
-    Stz* szP_Type(void);
+    Stz* szColType(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

@@ -147,7 +147,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
 
   // rpnCalc is a set of terms
   for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
-    if (xTerm.p_term()->pSymbol()->Y_bHas(P_Type))
+    if (xTerm.p_term()->pSymbol()->bHasType())
       continue;
 
     i8 iOdn = xTerm.iGetOdn();
@@ -738,13 +738,13 @@ void Card_RpnCalc::vTransfer(STORE::Card_RpnCalc *p_rpnCalc, eSF eSymbol_limit)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card_RpnCalc::szP_Type(void)
+Stz* Card_RpnCalc::szColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szP_Type = pSymbol()->Y_szColType();
-  if (szP_Type)
-    return szP_Type;
+  Stz* szColType = pSymbol()->Y_szColType();
+  if (szColType)
+    return szColType;
 
   return szCT_char[CT_NONE];
 }

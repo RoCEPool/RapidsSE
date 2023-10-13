@@ -43,7 +43,7 @@ namespace STORE
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolCalc* pTo_boolCalc(CardIter* pCI);
-    Stz* szP_Type(void);
+    Stz* szColType(void);
     void vX_stmCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_stmCol(CardIter* pCI);
 
