@@ -1545,6 +1545,8 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
 
   vFacetConcat(pSymbol_arg);
 
+  m_eColType = pSymbol_arg->m_eColType;
+
   if (SF_STM_COL == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Stm_Col(xaFacet[0].m_sChrSeq));
 
@@ -1635,6 +1637,19 @@ bool Symbol::bHasProperties(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have a type?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (CT_NONE == m_eColType)
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2980,7 +2995,7 @@ eCT Symbol::Y_eColType(void)
 
   RASSERT(eColumnType == m_eColType);
 
-  return eColumnType;
+  return m_eColType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2991,6 +3006,9 @@ Stz* Symbol::Y_szColType(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   Stz* sz = Y_szGet(P_Type);
+
+  //Stz* szColType = aCT[m_eColType];
+  //RASSERT(szColType->bSame(sz));
 
   return sz;
 }
@@ -3016,10 +3034,11 @@ void Symbol:: Y_vColType(Stz* szColType)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_eColType = eTo_eCT_char(szColType);
+  if (CT_NONE == m_eColType)
+    m_eColType = eTo_eCT_str(szColType);
 
   Y_vSet(P_Type,szColType);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
@@ -3187,10 +3206,14 @@ bool Symbol::Y_bHas(Stz* szPpyNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_pProperties) {
+    RASSERT(!szPpyNm->bSame(P_Type) || ! bHasType());
     return false;
+  }
 
-  return m_pProperties->bHasName(szPpyNm);
+  bool bHas = m_pProperties->bHasName(szPpyNm);
+  RASSERT(!szPpyNm->bSame(P_Type) || bHasType() == bHas);
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/

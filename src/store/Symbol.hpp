@@ -148,6 +148,7 @@ namespace STORE
     bool bHasFacet(eSF eFacet);
     bool bHasFacets(void);
     bool bHasProperties(void);
+    bool bHasType(void);
 
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
