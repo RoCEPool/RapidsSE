@@ -95,12 +95,9 @@ eCT Card_RpnCalc::eColumnType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Stz *szType = pSymbol()->Y_szColType_char()) {
-    eCT eColType = Symbol::eTo_eCT_char(szType);
-    return eColType;
-  }
+  eCT eColType = pSymbol()->Y_eColType();
 
-  return CT_NONE;
+  return eColType;
 }
 
 /*----------------------------------------------------------------------------*/
