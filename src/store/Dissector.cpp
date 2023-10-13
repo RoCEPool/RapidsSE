@@ -1325,11 +1325,11 @@ Card_Constraint* Dissector::pPopConstraint(Card_RpnTerms* pCard_RpnTerms)
 
   Card_Constraint* pCard_Constraint = new Card_Constraint;
 
-  Stz* szType = szPopType_char(pCard_RpnTerms);
+  eCT eColType = ePopType(pCard_RpnTerms);
 
   Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
 
-  pCard_RpnCalc->pSymbol()->Y_vColType(szType);
+  pCard_RpnCalc->pSymbol()->Y_vColType(eColType);
 
   pCard_Constraint->vAppendChild(pCard_RpnCalc);
 
@@ -1640,56 +1640,6 @@ eCT Dissector::ePopType(Card_RpnTerms* pCard_RpnTerms)
   delete pCard_Term_type;
 
   return eType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop type (single char form)                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Dissector::szPopType(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  // TYPE
-  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
-  Stz* szTerm = pCard_Term->szSymbol(SF_NONE);
-  RASSERT(szTerm->bSame("TYPE"_Stz));
-
-  delete pCard_Term;
-  pCard_Term = nullptr;
-
-  // column type (e.g. BOOLEAN)
-  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPopChild());
-
-  Stz* szType = aCT[Symbol::eTo_eCT_str(pCard_Term_type->szSymbol(SF_NONE))];
-
-  delete pCard_Term_type;
-
-  return szType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop type (single char form)                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  // TYPE
-  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
-  Stz* szTerm = pCard_Term->szSymbol(SF_NONE);
-  RASSERT(szTerm->bSame("TYPE"_Stz));
-
-  delete pCard_Term;
-  pCard_Term = nullptr;
-
-  // column type (e.g. BOOLEAN)
-  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPopChild());
-
-  Stz* szType = szCT_char[Symbol::eTo_eCT_str(pCard_Term_type->szSymbol(SF_NONE))];
-
-  delete pCard_Term_type;
-
-  return szType;
 }
 
 

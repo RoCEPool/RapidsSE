@@ -3029,9 +3029,7 @@ void Symbol:: Y_vColType(Stz* szColType)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_eColType = eTo_eCT_char(szColType);
-  if (CT_NONE == m_eColType)
-    m_eColType = eTo_eCT_str(szColType);
+  m_eColType = eTo_eCT_str(szColType);
 
   RASSERT(CT_NONE != m_eColType);
 }
