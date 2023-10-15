@@ -492,7 +492,7 @@ void Card::vColType(Card* pCard_arg)
 
   //pCard_arg->vDump(__func__);
 
-  m_xSymbol.Y_vColType(pCard_arg->pSymbol()->Y_eColType());
+  m_xSymbol.vColType(pCard_arg->pSymbol()->eColType());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -102,7 +102,7 @@ void ColHsh::vUpdate(Card_Hashing* p_hashing)
     Symbol* pSymbol = p_term->pSymbol();
 
     vAdd(p_term->iGetOdn() - 1,
-         pSymbol->Y_eColType(),
+         pSymbol->eColType(),
          pSymbol->Y_szGet(P_HashOf));
 
   }

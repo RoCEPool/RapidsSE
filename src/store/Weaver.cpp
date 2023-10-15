@@ -491,7 +491,7 @@ void Weaver::vArgHash(String* psOpArgs, Card_Hash* pCard_Hash)
   Card_Term* p_term = pCard_Hash->pSub_term();
 
   psOpArgs->vCatSprint("\"type %s %s\""_Stz,
-                       aCT[p_term->pSymbol()->Y_eColType()],
+                       aCT[p_term->pSymbol()->eColType()],
                        p_term->szSymbol(SF_NONE));
 }
 

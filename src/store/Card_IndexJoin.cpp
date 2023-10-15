@@ -164,7 +164,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (pCI->G.p_term->bIsStmCol()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-      p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_term->pSymbol()->Y_eColType());
+      p_rpnCalc->pSymbol()->vColType(pCI->G.p_term->pSymbol()->eColType());
       p_expr_stmCol->vAppendChild(p_rpnCalc);
       p_rpnCalc->vAppendChild(pCI->G.p_term->pDupCardRecursive());
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_stmCol);

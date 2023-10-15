@@ -72,15 +72,15 @@ Card_Injected* Card_Injected::pNew_injected(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->pSymbol()->Y_vColType(eColumnType);
-    p_expr->pSymbol()->Y_vColType(eColumnType);
+    p_rpnCalc->pSymbol()->vColType(eColumnType);
+    p_expr->pSymbol()->vColType(eColumnType);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
     p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->Y_vColType(eColumnType);
+    p_term->pSymbol()->vColType(eColumnType);
   }
 
   return p_injected;

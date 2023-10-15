@@ -1329,7 +1329,7 @@ Card_Constraint* Dissector::pPopConstraint(Card_RpnTerms* pCard_RpnTerms)
 
   Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
 
-  pCard_RpnCalc->pSymbol()->Y_vColType(eColType);
+  pCard_RpnCalc->pSymbol()->vColType(eColType);
 
   pCard_Constraint->vAppendChild(pCard_RpnCalc);
 
@@ -1393,8 +1393,8 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
   pCard_Expr->vAppendChild(pCard_RpnCalc);
 
-  pCard_RpnCalc->pSymbol()->Y_vColType(eColType);
-  pCard_Expr->pSymbol()->Y_vColType(eColType);
+  pCard_RpnCalc->pSymbol()->vColType(eColType);
+  pCard_Expr->pSymbol()->vColType(eColType);
 
 
   // [ AS <as> ]
@@ -1470,7 +1470,7 @@ Card_HshCol* Dissector::pPopHshCol(Card_RpnTerms* pCard_RpnTerms)
   delete p_term1;
 
   Card_Term* p_term_hsh = _pCard_Term(pCard_RpnTerms->pPopChild());
-  p_term_hsh->pSymbol()->Y_vColType(eColumnType);
+  p_term_hsh->pSymbol()->vColType(eColumnType);
   p_hshCol->vAppendChild(p_term_hsh);
 
   return p_hshCol;

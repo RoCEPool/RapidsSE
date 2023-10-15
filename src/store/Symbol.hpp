@@ -116,6 +116,9 @@ namespace STORE
 
     // - - - - - -
 
+    eCT  eColType(void);
+    void vColType(eCT eColType);
+
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
@@ -261,9 +264,6 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Object* pObject);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
-
-    eCT  Y_eColType(void);
-     void Y_vColType(eCT eColType);
 
   private:
     void vFacet_Agg_Fn(Stz* szAggFn);

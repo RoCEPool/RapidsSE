@@ -97,9 +97,9 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_expr_gby->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->Y_vColType(pExpr_corr->eColType());
-  p_term->pSymbol()->Y_vColType(pExpr_corr->eColType());
-  p_expr_gby->pSymbol()->Y_vColType(pExpr_corr->eColType());
+  p_rpnCalc->pSymbol()->vColType(pExpr_corr->eColType());
+  p_term->pSymbol()->vColType(pExpr_corr->eColType());
+  p_expr_gby->pSymbol()->vColType(pExpr_corr->eColType());
 
   return p_expr_gby;
 }
@@ -125,9 +125,9 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_expr->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->Y_vColType(p_expr_gby->eColType());
-  p_term->pSymbol()->Y_vColType(p_expr_gby->eColType());
-  p_expr->pSymbol()->Y_vColType(p_expr_gby->eColType());
+  p_rpnCalc->pSymbol()->vColType(p_expr_gby->eColType());
+  p_term->pSymbol()->vColType(p_expr_gby->eColType());
+  p_expr->pSymbol()->vColType(p_expr_gby->eColType());
 
   return p_expr;
 }
@@ -149,10 +149,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   Card_Expr* p_expr_simple = new Card_Expr;
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->pSymbol()->Y_vColType(p_expr->eColType());
+  p_rpnCalc->pSymbol()->vColType(p_expr->eColType());
 
   Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  p_term->pSymbol()->Y_vColType(p_expr->eColType());
+  p_term->pSymbol()->vColType(p_expr->eColType());
   //p_term->vDump();
 
   p_rpnCalc->vAppendChild(p_term);

@@ -404,7 +404,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s256 sTerm = szSymbol(SF_NONE);
-  s32 sType_short = szCT_char[pSymbol()->Y_eColType()];
+  s32 sType_short = szCT_char[pSymbol()->eColType()];
 
   pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
