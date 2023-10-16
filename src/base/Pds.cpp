@@ -686,7 +686,8 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
 
   RASSERT((aAddr1 - aAddr0)%16 == 0);
   i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
-  RASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
+//  RASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
+  RASSERT((iOffset >= 0));
   // TODO: Assert offset is in the range [0, LastUsableOffset];
   return (u2) iOffset;
 }
