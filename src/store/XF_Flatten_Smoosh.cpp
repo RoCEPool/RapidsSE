@@ -99,7 +99,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
 
   pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
-  pCI->G.p_cmpConj = pCI->G.p_boolCalc->pCmpPred_whichCallsSubQuery(pCI);
+  pCI->G.p_cmpConj = pCI->G.p_boolCalc->pCmpConj_whichCallsSubQuery(pCI);
 
   if (pCI->G.p_cmpConj->pSymbol()->bSame("in"_Stz) ||
       pCI->G.p_cmpConj->pSymbol()->bSame("exists"_Stz))

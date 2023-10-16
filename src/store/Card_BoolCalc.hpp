@@ -18,17 +18,17 @@ namespace STORE
     Card_BoolCalc(void);
    ~Card_BoolCalc(void) noexcept(false);
 
-    Card_CmpConj* pCmpPred_whichCallsSubQuery(CardIter* pCI);
-    void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
+    Card_CmpConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
+    void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_CONJUNCTION* pConj_root(void);
     void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmCol(Card_Emitted* p_emitted_prior);
     i8 nCullPred(Stz* szWithMark);
-    bool bCullPred(Card_CONJUNCTION* p_pred, Stz* szWithMark);
+    bool bCullPred(Card_CONJUNCTION* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
-    Card_CONJUNCTION* pFindRemove_CorrPred(void);
+    Card_CONJUNCTION* pFindRemove_conj_corr(void);
     bool bIsBraced(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
@@ -36,16 +36,16 @@ namespace STORE
     bool bIsScalarKey(void);
     bool bHasTerm(Symbol* pSymbol);
     void vMarkWrt_table(CardIter* pCI);
-    void vPush_CrlKeyPred_As_CrlKeyTest(Card_CONJUNCTION* p_PRED);
-    void vPushPred(Card_CONJUNCTION* p_pred_toBeAdded);
-    void vRemovePred(Card_CONJUNCTION* p_pred);
+    void vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION* p_conj);
+    void vPushConj(Card_CONJUNCTION* p_conj_toBeAdded);
+    void vRemove_conj(Card_CONJUNCTION* p_conj);
     void vShortForm(String* pString);
 
-    bool bYank_PRED(Stz* szWithMark, Card_CONJUNCTION*& p_pred_yanked);
-    bool bYank_PRED(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_pred_yanked);
+    bool bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked);
+    bool bYank_conj(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_conj_yanked);
 
-    void vX_stmCol_To_tblCol(CardIter* pCI);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_stmCol_To_tblCol(CardIter* p_conj);
+    void vX_tblCol_To_stmCol(CardIter* p_conj);
 
 
     eCT  eColType(void);

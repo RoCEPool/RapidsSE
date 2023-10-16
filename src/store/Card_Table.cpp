@@ -253,7 +253,7 @@ void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_PRED)
 
   if ((pCI->G.p_filter = this->pSub_filter())) {
     pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushPred(p_PRED);
+    pCI->G.p_boolCalc->vPushConj(p_PRED);
   }
   else {
     pCI->G_vAppendNewChild(this,CK_FILTER);

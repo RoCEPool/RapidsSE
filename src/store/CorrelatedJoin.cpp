@@ -148,7 +148,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   Card_CONJUNCTION* p_PRED_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_FILTER,CK_BOOLCALC))
-    if (pCI->G.p_boolCalc->bYank_PRED(MARK_AT, p_PRED_corr))
+    if (pCI->G.p_boolCalc->bYank_conj(MARK_AT, p_PRED_corr))
       break;
   RASSERT(p_PRED_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
 
@@ -181,7 +181,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
 
-  pCI->G.p_boolCalc->vPush_CrlKeyPred_As_CrlKeyTest(p_PRED_corr);
+  pCI->G.p_boolCalc->vPush_CrlKeyConj_As_CrlKeyTest(p_PRED_corr);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
@@ -604,7 +604,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
-  Card_CONJUNCTION* p_pred_corr = p_boolCalc->pFindRemove_CorrPred();
+  Card_CONJUNCTION* p_pred_corr = p_boolCalc->pFindRemove_conj_corr();
   if (! p_pred_corr)
     return;
 
