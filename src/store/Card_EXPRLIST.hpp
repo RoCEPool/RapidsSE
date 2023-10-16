@@ -30,8 +30,8 @@ namespace STORE
     Card_Expr* pFind_expr_Same_stmCol(Symbol* pSymbol_stmCol);
     Card_Expr* pFind_expr_Via_as(Symbol* pSymbol);
     Card_Expr* pFind_expr_Via_as_stripItem(Symbol* pSymbol);
-    Card_Expr* pFind_expr_Via_term(Symbol* pSymbol, eSF* aeFacet=nullptr);
-    Card_Expr* pFind_expr_Via_term(Symbol* pSymbol, Kid* aKid);
+    Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet= nullptr);
+    Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid);
 
     Card_Expr* pGetExpr(i8 i_Expr);
     Card_Expr* pGetExpr(Symbol* pSymbol_ordinal);

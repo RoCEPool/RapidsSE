@@ -205,12 +205,12 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_as_stripItem(Symbol *pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_term(Symbol* pSymbol, eSF* aeFacet)
+Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->bExpressionOfSymbol(pSymbol,aeFacet))
+    if (xKid.p_expr()->bMatching_term0(pSymbol, aeFacet))
       return xKid.p_expr();
   }
 
@@ -220,12 +220,12 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_term(Symbol* pSymbol, eSF* aeFacet)
 /*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_term(Symbol* pSymbol, Kid* aKid)
+Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   while (aKid->bEach(CK_EXPR)) {
-    if (aKid->p_expr()->bExpressionOfSymbol(pSymbol))
+    if (aKid->p_expr()->bMatching_term0(pSymbol))
       return aKid->p_expr();
   }
 

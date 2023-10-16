@@ -88,7 +88,7 @@ void Card_Emitted::vAdjust_Wrt_key(Card_Key* p_key)
 
     Symbol* pSymbol_expr_sole = xKid.p_expr()->pGetSymbol(0);
 
-    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term(pSymbol_expr_sole);
+    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term0(pSymbol_expr_sole);
     if (! p_expr_sole_key)
       continue;
 
@@ -179,7 +179,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
 
         vDebugPoint();
 
-        if (p_needed->pFind_expr_Via_term(pSymbol_tblCol))
+        if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol))
           continue;
 
         p_needed->vAppendChild(p_expr_key->pClone());
@@ -188,7 +188,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->bIsColSym()) {
 
         // which we haven't already added
-        if (p_needed->pFind_expr_Via_term(xCI_rpnCalc.p_term()->pSymbol()))
+        if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
           continue;
 
         if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
@@ -215,7 +215,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
           if (!xCI_rpnCalc.p_term()->bIsColSym())
             continue;
           // which we haven't already added
-          if (p_needed->pFind_expr_Via_term(xCI_rpnCalc.p_term()->pSymbol()))
+          if (p_needed->pFind_expr_Via_term0(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
@@ -278,7 +278,7 @@ void Card_Emitted::vDerive_streamKey(CardIter *pCI)
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGetExpr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGetTerm(0);
-    Card_Expr* p_expr_prjCol = pFind_expr_Via_term(p_term_runkey->pSymbol());
+    Card_Expr* p_expr_prjCol = pFind_expr_Via_term0(p_term_runkey->pSymbol());
 
     if (p_expr_prjCol) {
 
@@ -487,7 +487,7 @@ Card_Expr* Card_Emitted::pResolve_expr(Card_Term* p_term)
   }
   else
   if (p_term->pSymbol()->bIs_Tbl_Col()) {
-    Card_Expr *p_expr_prior = this->pFind_expr_Via_term(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pFind_expr_Via_term0(p_term->pSymbol());
     return p_expr_prior;
   }
 

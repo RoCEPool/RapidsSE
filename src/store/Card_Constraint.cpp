@@ -326,7 +326,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
     Symbol* pSymbol = p_term->pSymbol();
     pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected();
-    p_expr_resolved = pCI->G.p_injected->pFind_expr_Via_term(pSymbol);
+    p_expr_resolved = pCI->G.p_injected->pFind_expr_Via_term0(pSymbol);
 
     if (p_expr_resolved) {
       Card_As* p_as = p_expr_resolved->pSub_as();
@@ -393,7 +393,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //
 //    Symbol* pSymbol = p_term->pSymbol();
 //    pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-//    p_expr_col = pCI->G.p_emitted->pFind_expr_Via_term(pSymbol);
+//    p_expr_col = pCI->G.p_emitted->pFind_expr_Via_term0(pSymbol);
 //
 //    if (p_expr_col) {
 //      Card_As* p_as = p_expr_col->pSub_as();

@@ -520,7 +520,7 @@ bool Card_Expr::bIsScalarKey(void)
 /*----------------------------------------------------------------------------*/
 /* is this an expression of given symbol ?                                    */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol_arg, eSF* aeFacet)
+bool Card_Expr::bMatching_term0(Symbol* pSymbol_arg, eSF* aeFacet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
