@@ -425,7 +425,7 @@ namespace STORE
     Card_Caller*        pSub_caller(void);
     Card_CallOp*        pSub_callOp(void);
     Card_Clause*        pSub_clause(void);
-    Card_CmpConj*       pSub_cmpPred(void);
+    Card_CmpConj*       pSub_cmpConj(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CorrCols*      pSub_corrCols(void);
     Card_Correlation*   pSub_correlation(void);

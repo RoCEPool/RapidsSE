@@ -30,7 +30,7 @@ namespace STORE
     bool bIsSqyOp(void);
     bool bMaybeFilterPred(CardIter* pCI);
     bool bMaybeJoinPred(void);
-    void vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term=nullptr);
+    void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
     Card_CmpConj* pPredFindBound(Index* pIndex, ePB eBound);
     bool bPredHasBounds (Index* pIndex);
     bool bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);

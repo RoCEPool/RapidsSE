@@ -376,7 +376,7 @@ bool Card_CONJUNCTION::bMaybeJoinPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
+void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -386,23 +386,23 @@ void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     SYM(SF_RLN_OP,"=="_Stz);
 
-    Card_Term* p_term_one = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szSymbol(SF_NONE))); //temp
+    Card_Term* p_term1 = _pCard_Term(pGetChild(1));
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term1->szSymbol(SF_NONE))); //temp
 
     Symbol x_Symbol_stmCol1;
     if (p_term) {
       x_Symbol_stmCol1.vFacets(p_term->pSymbol());
-      p_term_one->pSymbol()->vFacets(&x_Symbol_stmCol1);
+      p_term1->pSymbol()->vFacets(&x_Symbol_stmCol1);
     }
     else {
       //x_Symbol_stmCol1.vSet_Col_No(1);
-      p_term_one->SYM(SF_STM_COL, (i8)1);
+      p_term1->SYM(SF_STM_COL, (i8)1);
     }
 
     Card_Expr* p_expr_found =
         pCI->Prior.m_pEmitted->pGet_expr((i8) 0);
 
-    p_term_one->pSymbol()->vColType(p_expr_found->eColType());
+    p_term1->pSymbol()->vColType(p_expr_found->eColType());
 
    // pCI->vPrintBoard(__LINE__);
     return;

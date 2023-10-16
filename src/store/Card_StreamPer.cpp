@@ -159,7 +159,7 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpConj* p_cmpPred = p_streamJoin->pSub_cmpPred();
+  Card_CmpConj* p_cmpPred = p_streamJoin->pSub_cmpConj();
   Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
   Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 

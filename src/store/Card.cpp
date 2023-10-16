@@ -2227,7 +2227,7 @@ Card_Clause* Card::pSub_clause(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_CmpConj.hpp"
-Card_CmpConj* Card::pSub_cmpPred(void)
+Card_CmpConj* Card::pSub_cmpConj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
