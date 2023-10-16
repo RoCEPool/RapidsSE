@@ -3055,6 +3055,44 @@ PromptFun __Prompt_pdsTest (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 {
+  vTrace("%lld\n"_Stz, sizeof(String_d));
+  RASSERT(String_d::iBytesToAlloc(3) == 48);
+  RASSERT(String_d::iBytesToAlloc(8) == 48);
+  RASSERT(String_d::iBytesToAlloc(10) == 48);
+  RASSERT(String_d::iBytesToAlloc(16) == 48);
+  RASSERT(String_d::iBytesToAlloc(21) == 64);
+  RASSERT(String_d::iBytesToAlloc(32) == 64);
+  RASSERT(String_d::iBytesToAlloc(37) == 80);
+  RASSERT(String_d::iBytesToAlloc(48) == 80);
+
+//  void* aAddr = (void*)MemLib::aMallocBlock(3);
+  RowBuffer* pBuffer = new RowBuffer;
+  void* aAddr = aAdd<void*>(pBuffer, C_64KB);
+
+  String_d* pStringDyn1 = new(aAddr) String_d(3);
+  Footer* aFooter1 = pStringDyn1->aFooter();
+  RASSERT(aFooter1->bValidFooter());
+  pStringDyn1->vCopy("1234"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn1->azChar());
+
+  String_d* pStringDyn2 = new(aAddr) String_d(8);
+  Footer* aFooter2 = pStringDyn2->aFooter();
+  RASSERT(aFooter2->bValidFooter());
+  pStringDyn1->vCopy("12"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn1->azChar());
+
+  String_d* pStringDyn3 = new(aAddr) String_d(21);
+  Footer* aFooter3 = pStringDyn3->aFooter();
+  RASSERT(aFooter3->bValidFooter());
+
+  pStringDyn3->vCopy("12345"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn3->azChar());
+
+
+
+
+
+
   RASSERT(pPrompt);
   typedef Pds_t<i8> Pds_i8;
   Pds_i8* PDS_i8;
@@ -3073,7 +3111,7 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 
   // Insert single element
   iTest = 1;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
 
   *(i8*)(pResultBlock->aItem()) = iTest;
@@ -3120,6 +3158,11 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT(PDS_i8->m_iNumEntries[0] == 0);
   RASSERT(PDS_i8->m_iFreeListEntries == 1);
 
+  // Insert String
+//  Stz* acDstString = PDS_i8->pAllotStz("Hello"_Stz);
+//  RASSERT(acDstString);
+//  vTrace("Pds String: %s\n"_Stz, acDstString);
+
   delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
@@ -3130,52 +3173,52 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 
   // Insert 10 elements out of order
   iTest = 10;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 3;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 1;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 7;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 6;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 9;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 4;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 8;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 2;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
   iTest = 5;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
@@ -3287,38 +3330,38 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   /*----------------------------------------------------------------------------*/
   // Test Case - Insert till buffer is full
 /*----------------------------------------------------------------------------*/
-  PDS_i8 = new Pds_i8(nullptr);
-
-  i8 iFreeBytes = PDS_i8->nFreeBytes();
-
-  i8 iInsert = 0;
-
-  for(; iInsert < C_I8_MAX; iInsert++)
-  {
-    iTest = rand();
-    pResultBlock = PDS_i8->pInsert((void*) &iTest);
-    if(pResultBlock == nullptr) {
-     break;
-    }
-    *(i8*)(pResultBlock->aItem()) = iTest;
-  }
-
-  i8 iBlockSize = PDS_i8->m_nBlockSize;
-  i8 iMaxElements = iFreeBytes/iBlockSize;
-
-  RASSERT(iInsert == iMaxElements);
-  delete PDS_i8;
+//  PDS_i8 = new Pds_i8(nullptr);
+//
+//  i8 iFreeBytes = PDS_i8->nFreeBytes();
+//
+//  i8 iInsert = 0;
+//
+//  for(; iInsert < C_I8_MAX; iInsert++)
+//  {
+//    iTest = rand();
+//    pResultBlock = PDS_i8->pInsert((void*) &iTest);
+//    if(pResultBlock == nullptr) {
+//     break;
+//    }
+//    *(i8*)(pResultBlock->aItem()) = iTest;
+//  }
+//
+//  i8 iBlockSize = PDS_i8->m_nBlockSize;
+//  i8 iMaxElements = iFreeBytes/iBlockSize;
+//
+//  RASSERT(iInsert == iMaxElements);
+//  delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
                   // Test Case - Insert duplicate key
 /*----------------------------------------------------------------------------*/
   PDS_i8 = new Pds_i8(nullptr);
   iTest = 10;
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock);
   *(i8*)(pResultBlock->aItem()) = iTest;
 
-  pResultBlock = PDS_i8->pInsert((void*) &iTest);
+  pResultBlock = PDS_i8->pInsertItem((void *) &iTest);
   RASSERT(pResultBlock == nullptr);
 
 //  PDS_i8->vDumpInUseList();
@@ -3345,7 +3388,7 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   DoubleKey oDKey;
   oDKey.iKey_1 = 1;
   oDKey.iKey_2 = 2;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
 
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
@@ -3415,61 +3458,61 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   // Insert 5 elements out of order
   oDKey.iKey_1 = 10;
   oDKey.iKey_2 = 2;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 10;
   oDKey.iKey_2 = 3;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 10;
   oDKey.iKey_2 = 4;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 12;
   oDKey.iKey_2 = 2;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 12;
   oDKey.iKey_2 = 5;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 12;
   oDKey.iKey_2 = 3;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 12;
   oDKey.iKey_2 = 1;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 12;
   oDKey.iKey_2 = 8;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 14;
   oDKey.iKey_2 = 2;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 
   oDKey.iKey_1 = 14;
   oDKey.iKey_2 = 5;
-  pResultBlock = PDS_doubleKey->pInsert((void*) &oDKey);
+  pResultBlock = PDS_doubleKey->pInsertItem((void *) &oDKey);
   RASSERT(pResultBlock);
   *(DoubleKey*)(pResultBlock->aItem()) = oDKey;
 

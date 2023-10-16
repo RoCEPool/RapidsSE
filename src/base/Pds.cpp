@@ -47,7 +47,7 @@ void Pds::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(i8 nBytes, CompareFunc fpCompare)
+Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
     : Object(CN_PDS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
@@ -88,6 +88,26 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
     m_iNumEntries[i_Level] = 0;
   }
 
+  if (pRowPix) {
+    m_oRowPix.vCopyRowPix(pRowPix);
+    i8 nCols = m_oRowPix.m_nColumns;
+    i8 iTotalStzArea = 0;
+
+    // Calculate total size of string area needed per row
+    for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+      eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+      if (DM_VCH == eDatum) {
+        i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+        if (nBytes) {
+          iTotalStzArea += String_d::iBytesToAlloc(nBytes);
+        }
+      }
+    }
+
+    // Set size of StzSet area
+    vStzSetSize(iTotalStzArea);
+  }
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
 
@@ -102,6 +122,28 @@ Pds::~Pds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Allot space for Stz of fixed size, return dst str addr                     */
+/*----------------------------------------------------------------------------*/
+void* Pds::aAllotStzSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(iStzSetSize());
+
+  if (nFreeBytes() < iStzSetSize())
+    return nullptr;
+
+  void* aStzSet = (void*) m_xWsp.aAllotTail();
+
+  if(aStzSet == nullptr)
+    return nullptr;
+
+  RASSERT(DoubleWord::bOnDoubleWordBoundary(aStzSet));
+
+  return aStzSet;
+}
 
 /*----------------------------------------------------------------------------*/
 /* remove key from in use skip list and move to free list                     */
@@ -255,7 +297,7 @@ void Pds::vDumpInUseList(void) {
 /*----------------------------------------------------------------------------*/
 /* Insert Key                                                                 */
 /*----------------------------------------------------------------------------*/
-SkipListBlock* Pds::pInsert(void* pKey)
+SkipListBlock* Pds::pInsertItem(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -475,13 +517,51 @@ SkipListBlock* Pds::pFirstBlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get the first block after the root block                                   */
+/*----------------------------------------------------------------------------*/
+i8 Pds::nFreeBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  return m_xWsp.nFreeBytes();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pds::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  return m_iNumEntries[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Number of elements at a particular level in this Skip List                 */
 /*----------------------------------------------------------------------------*/
 i8 Pds::iNumEntries(i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   RASSERT(iLevel >= 0 && iLevel < C_MAX_LVL_LEVELS);
   return m_iNumEntries[iLevel];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the size of the StringSet tail area                                    */
+/*----------------------------------------------------------------------------*/
+void Pds::vStzSetSize(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  m_xWsp.vTailSize(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the size of the StringSet tail area                                    */
+/*----------------------------------------------------------------------------*/
+i8 Pds::iStzSetSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  return m_xWsp.m_nTailSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -567,7 +647,7 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
     m_iFreeListEntries--;
     RASSERT(m_iFreeListEntries >= 0);
   } else {
-    pAllocBlock = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
+    pAllocBlock = m_xWsp.aAllotHead(m_nBlockSize);
   }
 
   if (! pAllocBlock) {
@@ -604,9 +684,9 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
   char* aAddr0 = reinterpret_cast<char*>(this);
   char* aAddr1 = reinterpret_cast<char*>(aAddress);
 
-  ASSERT((aAddr1 - aAddr0)%16 == 0);
+  RASSERT((aAddr1 - aAddr0)%16 == 0);
   i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
-  ASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
+  RASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
   // TODO: Assert offset is in the range [0, LastUsableOffset];
   return (u2) iOffset;
 }

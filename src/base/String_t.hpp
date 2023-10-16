@@ -620,7 +620,7 @@ void String_t<AREA>::vMaxValue(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vCopy(m_caCharArea,"Z");
+  StrLib::vCopy(m_caCharArea, AREA, "Z");
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -633,7 +633,7 @@ void String_t<AREA>::vMidValue(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vCopy(m_caCharArea,"M");
+  StrLib::vCopy(m_caCharArea, AREA, "M");
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -646,7 +646,7 @@ void String_t<AREA>::vMinValue(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vCopy(m_caCharArea,"A");
+  StrLib::vCopy(m_caCharArea, AREA, "A");
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

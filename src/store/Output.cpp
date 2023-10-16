@@ -529,6 +529,11 @@ bool Output::bProcessOperand(Operand* pOperand)
       if ( ! m_bHasError ) {
         m_ixRowsProcessed += pRowBuffer->nRows();
         vTrace("\n"_Stz);
+
+//        PdsRowHelper* pPdsOfRows = new PdsRowHelper;
+//        pPdsOfRows->vCopyRows(pRowBuffer);
+//        pPdsOfRows->vPrintRows(nullptr, nullptr);
+
         pRowBuffer->vPrintRows(m_pFileOut, nullptr);
       }
       AM::vDeleteOperand(pOperand, nullptr);

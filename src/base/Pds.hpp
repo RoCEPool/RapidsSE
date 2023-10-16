@@ -10,9 +10,9 @@ namespace BASE
 {
   typedef i8 (*CompareFunc)(void* pKey_l, void* pKey_r);
 
-  class Pds : public Object,
-              public InternalHeap_t<SkipListBlock>
+  class Pds : public Object
   {
+    static const i8 C_WSP_INTERNALHEAP = C_SIZE_LARGE_OBJECT - C_10KB;
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
   public:
@@ -30,6 +30,10 @@ namespace BASE
 
     // Save the last usable offset for asserts
 
+    RowPix m_oRowPix;
+
+    PdsConvergentHeap_t<C_WSP_INTERNALHEAP,SkipListBlock,Stz> m_xWsp;
+
     // must be last
     Footer m_xFooter;
 
@@ -37,23 +41,25 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Pds(i8 nBytes, CompareFunc fpCompare);
+    Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
     ~Pds(void) noexcept(false);
 
-
-
-    // Note: Only the public functions grab a lock
     // public:
 //    SkipListBlock*  pAppendWithSynthKey(void);
+    void*           aAllotStzSet(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
     void            vDumpInUseList(void);
-    SkipListBlock*  pInsert(void* pKey);
+    SkipListBlock*  pInsertItem(void* pKey);
     SkipListBlock*  pFind(void* pKey);
     SkipListBlock*  pFindLessThan(void* pKey);
     SkipListBlock*  pFindGreaterThan(void* pKey);
     SkipListBlock*  pFirstBlock(void);
+    i8              nFreeBytes(void);
+    i8              nItems(void);
     i8              iNumEntries(i8 iLevel);
+    void            vStzSetSize(i8 nBytes);
+    i8              iStzSetSize(void);
     void            vValidate(void);
     bool            bVerify(void);
 
