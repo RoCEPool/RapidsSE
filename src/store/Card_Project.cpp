@@ -143,7 +143,7 @@ Card_Emitted* Card_Project::pCraft_projection_early(CardIter* pCI)
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
-//    if (! p_expr_needed->pGetTerm(0)->bIsTblCol()) {
+//    if (! p_expr_needed->pGet_term(0)->bIsTblCol()) {
 //      this->vDump(__func__ );
 //      pCI->Prior.m_pEmitted->vDump(__func__);
 //      p_expr_needed->vDump(__func__);

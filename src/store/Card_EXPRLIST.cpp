@@ -125,8 +125,8 @@ Card_Term* Card_EXPRLIST::pDecode_term0_Same_expr_stmCol(Symbol* pSymbol_stmCol)
 
   RASSERT(pSymbol_stmCol->bIs_Stm_Col());
 
-  if (Card_Expr* p_expr_stmCol = pGetExpr(pSymbol_stmCol)) {
-    Card_Term* p_term0 = p_expr_stmCol ->pGetTerm(0);
+  if (Card_Expr* p_expr_stmCol = pGet_expr(pSymbol_stmCol)) {
+    Card_Term* p_term0 = p_expr_stmCol->pGet_term(0);
     return p_term0;
   }
 
@@ -252,7 +252,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid)
 /*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pGetExpr(i8 i_Expr)
+Card_Expr* Card_EXPRLIST::pGet_expr(i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -264,7 +264,7 @@ Card_Expr* Card_EXPRLIST::pGetExpr(i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /* get expr relating to term                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pGetExpr(Symbol* pSymbol_ordinal)
+Card_Expr* Card_EXPRLIST::pGet_expr(Symbol* pSymbol_ordinal)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -333,7 +333,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       p_key->vX();
 
@@ -354,7 +354,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       p_key->vX();
 
@@ -375,7 +375,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       p_key->vX();
 
@@ -397,7 +397,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -418,7 +418,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -440,7 +440,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       sColNm_mapped = sColNm;
 
@@ -450,7 +450,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       sColNm_mapped = sColNm;
 
@@ -459,7 +459,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
       else
-        sColNm = p_expr->pGetTerm(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
 
       sColNm_mapped = sColNm;
     }

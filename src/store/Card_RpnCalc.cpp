@@ -150,11 +150,11 @@ void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
     i8 iOdn = xTerm.iGetOdn();
 
     if (xTerm.p_term()->bIsKeyCol())
-      p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
+      p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
     else
     if (xTerm.p_term()->bIsStmCol()) {
       //pCI->Prior.m_pEmitted->vDump(__func__);
-      p_expr_found = pCI->Prior.m_pEmitted->pGetExpr(iOdn - 1);
+      p_expr_found = pCI->Prior.m_pEmitted->pGet_expr(iOdn - 1);
     }
     else
       continue;

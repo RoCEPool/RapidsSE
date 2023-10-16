@@ -374,7 +374,7 @@ Symbol* Card_Expr::pFirstTblCol(void)
 /*----------------------------------------------------------------------------*/
 /* get symbol of given term                                                   */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pGetSymbol(i8 i_Term)
+Symbol* Card_Expr::pGet_Symbol(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -390,13 +390,25 @@ Symbol* Card_Expr::pGetSymbol(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /* get given term                                                             */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Expr::pGetTerm(i8 i_Term)
+Card_Term* Card_Expr::pGet_term(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
 
   return p_term_i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get term 0                                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Expr::pGet_term0(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* p_term0 = pSub_rpnCalc()->pGetTerm(0);
+
+  return p_term0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +445,7 @@ bool Card_Expr::bIsDescending(void)
 bool Card_Expr::bIsExpressionOfKey(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol *pSymbol_0 = pGetSymbol(0);
+  Symbol *pSymbol_0 = pGet_Symbol(0);
 
   if (pSymbol_0->bIs_Key_Col())
     return true;
@@ -524,7 +536,7 @@ bool Card_Expr::bMatching_term0(Symbol* pSymbol_arg, eSF* aeFacet)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
+  Symbol* pSymbol_0 = pGet_term(0)->pSymbol();
 
   if (pSymbol_0->bMatches(pSymbol_arg,aeFacet))
     return true;

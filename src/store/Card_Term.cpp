@@ -189,10 +189,10 @@ void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
   i8 iOdn = iGetOdn();
 
   if (bIsKeyCol())
-    p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
+    p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
   else
   if (bIsStmCol())
-    p_expr_found = pCI->Prior.m_pEmitted->pGetExpr(iOdn - 1);
+    p_expr_found = pCI->Prior.m_pEmitted->pGet_expr(iOdn - 1);
   else
     return;
 

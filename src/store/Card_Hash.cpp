@@ -68,7 +68,7 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
   Card_HshCol* p_hshCol = new Card_HshCol;
   p_hshColList->vAppendChild(p_hshCol);
 
-  Card_Term* p_card_term = p_expr->pGetTerm(0)->pClone();
+  Card_Term* p_card_term = p_expr->pGet_term(0)->pClone();
   p_hshCol->vAppendChild(p_card_term);
 
   if (p_emitted_prev)

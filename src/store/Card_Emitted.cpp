@@ -86,7 +86,7 @@ void Card_Emitted::vAdjust_Wrt_key(Card_Key* p_key)
     if (! xKid.p_expr()->bIsScalarCol())
       continue;
 
-    Symbol* pSymbol_expr_sole = xKid.p_expr()->pGetSymbol(0);
+    Symbol* pSymbol_expr_sole = xKid.p_expr()->pGet_Symbol(0);
 
     Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term0(pSymbol_expr_sole);
     if (! p_expr_sole_key)
@@ -107,10 +107,10 @@ void Card_Emitted::vAs_Review(CardIter* pCI)
     Card_Expr *p_expr_prj = xProjection.p_expr();
 
     if (p_expr_prj->bIsScalarKey()) {
-      Symbol* pSymbol_key_term = p_expr_prj->pGetTerm(0)->pSymbol();
+      Symbol* pSymbol_key_term = p_expr_prj->pGet_term(0)->pSymbol();
 
       if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
-        Card_Expr *p_expr_key = pCI->G.p_key->pGetExpr(pSymbol_key_term);
+        Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(pSymbol_key_term);
 
         p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol(SF_NONE));
         p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
@@ -174,7 +174,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->bIsKeyCol()) {
         RASSERT(pCI->G.p_streamKey);
 
-        Card_Expr* p_expr_key = pCI->G.p_streamKey->pGetExpr(xCI_rpnCalc.p_term()->pSymbol());
+        Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());
         Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
 
         vDebugPoint();
@@ -275,9 +275,9 @@ void Card_Emitted::vDerive_streamKey(CardIter *pCI)
 
   i8 nKeyExpr = pCI->StreamOrder.m_pStreamKey->nChildCards();
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
-    Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGetExpr(i_RunKeyExpr);
+    Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGet_expr(i_RunKeyExpr);
 
-    Card_Term* p_term_runkey = p_expr_runkey->pGetTerm(0);
+    Card_Term* p_term_runkey = p_expr_runkey->pGet_term(0);
     Card_Expr* p_expr_prjCol = pFind_expr_Via_term0(p_term_runkey->pSymbol());
 
     if (p_expr_prjCol) {
@@ -482,7 +482,7 @@ Card_Expr* Card_Emitted::pResolve_expr(Card_Term* p_term)
   _precondition_( _MAGIC_, _FOOTER_);
 
   if (p_term->pSymbol()->bIs_Stm_Col()) {
-    Card_Expr *p_expr_prior = this->pGetExpr(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pGet_expr(p_term->pSymbol());
     return p_expr_prior;
   }
   else

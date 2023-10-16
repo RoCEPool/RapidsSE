@@ -35,8 +35,8 @@ namespace STORE
     Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet= nullptr);
     Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid);
 
-    Card_Expr* pGetExpr(i8 i_Expr);
-    Card_Expr* pGetExpr(Symbol* pSymbol_ordinal);
+    Card_Expr* pGet_expr(i8 i_Expr);
+    Card_Expr* pGet_expr(Symbol* pSymbol_ordinal);
 
     void vRenumberAll_expr(void);
 

@@ -462,7 +462,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
           xKid.pChild()->pSymbol()->vFacets(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
-              pCI->Prior.m_pEmitted->pGetExpr((i8)0);
+              pCI->Prior.m_pEmitted->pGet_expr((i8) 0);
 
           xKid.pChild()->pSymbol()->vColType(p_expr_found->eColType());
 
@@ -478,7 +478,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
 
           Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term);
           //p_expr_otr->vDump();
-          Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol(SF_NONE);
+          Stz* szProjectedCol = p_expr_otr->pGet_term(0)->szSymbol(SF_NONE);
           RASSERT(Symbol::bIs_Tbl_Col(szProjectedCol));
           xKid.pChild()->pSymbol()->vFacet(SF_TBL_COL, szProjectedCol);  // TODO: hack!!
 
@@ -559,7 +559,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
 
 
           Card_Expr* p_expr_found =
-              pCI->Prior.m_pEmitted->pGetExpr(1);
+              pCI->Prior.m_pEmitted->pGet_expr(1);
 
           p_term_new->pSymbol()->vColType(p_expr_found->eColType());
 

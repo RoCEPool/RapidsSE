@@ -81,7 +81,7 @@ void Card_IdxColList::vAffix_tblCol(Card_Emitted* p_emitted)
     xCI_p.vBegin_reverse();
     while (xCI_p.bEach_reverse(CK_EXPR)) {
       if (xCI_p.p_expr()->pSub_as()->pSymbol()->bSame(szColNm)) {
-        Stz* szPrjCol = xCI_p.p_expr()->pGetTerm(0)->szSymbol(SF_NONE);
+        Stz* szPrjCol = xCI_p.p_expr()->pGet_term(0)->szSymbol(SF_NONE);
 
         eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
         RASSERT(SF_TBL_COL == eSymbol);

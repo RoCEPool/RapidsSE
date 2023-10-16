@@ -400,7 +400,7 @@ void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     }
 
     Card_Expr* p_expr_found =
-        pCI->Prior.m_pEmitted->pGetExpr((i8)0);
+        pCI->Prior.m_pEmitted->pGet_expr((i8) 0);
 
     p_term_one->pSymbol()->vColType(p_expr_found->eColType());
 
@@ -430,7 +430,7 @@ void Card_CONJUNCTION::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     }
 
     Card_Expr* p_expr_found =
-        pCI->Prior.m_pEmitted->pGetExpr((i8)0);
+        pCI->Prior.m_pEmitted->pGet_expr((i8) 0);
 
     p_term_head->pSymbol()->vColType(p_expr_found->eColType());
 

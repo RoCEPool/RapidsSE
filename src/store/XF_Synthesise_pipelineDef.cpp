@@ -724,7 +724,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
       Symbol*    pSym_expr_a = p_expr_a->pSymbol();
 
       Card_Expr* p_expr_e =
-          p_emitted->pGetExpr(pSym_expr_a);
+          p_emitted->pGet_expr(pSym_expr_a);
 
       if (p_expr_e) {
 
