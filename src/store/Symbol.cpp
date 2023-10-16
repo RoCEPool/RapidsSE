@@ -4067,8 +4067,10 @@ void Symbol::vFacet_Stm_Col(i8 iStmCol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  eSF eFacet = xaFacet[0].m_eFacet;
-  RASSERT(SF_NONE == eFacet || SF_STM_COL == eFacet || SF_TBL_COL == eFacet || SF_KEY_COL == eFacet);
+  if (m_nFacets) {
+    eSF eFacet = xaFacet[0].m_eFacet;
+    RASSERT(SF_NONE == eFacet || SF_STM_COL == eFacet || SF_TBL_COL == eFacet || SF_KEY_COL == eFacet);
+  }
 
   vFacetSprint(SF_STM_COL, "$%lld"_Stz, iStmCol);
 

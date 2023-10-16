@@ -61,11 +61,14 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
 
+  if(pCI->G_bIsNextMain(CK_SUBQUERY))
+    RASSERT(pCI->pAdvanceChild());
+
   // Table*
   while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     if (pCarryForward->Table.m_bSeen) {
       pCI->G.p_from->vSmooth(pCI, pCarryForward);
-     // pCI->vPrintBoard(__LINE__);
+      pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -74,6 +77,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   // [Where]
   if (pCI->G_bIsNextMain(CK_WHERE) && pCI->G_bEachMain(CK_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
+      pCI->Prior.m_pEmitted->vDump(__func__,"Smooth where"_Stz);
       pCI->G.p_where->vSmooth(pCI, pCarryForward);
      // pCI->vPrintBoard(__LINE__);
     }

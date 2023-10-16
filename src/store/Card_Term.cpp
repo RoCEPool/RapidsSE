@@ -464,20 +464,21 @@ void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol = this->pSymbol();
-  RASSERT(pSymbol->bIs_Stm_Col());
+  Symbol* pSymbol_this = this->pSymbol();
+  RASSERT(pSymbol_this->bIs_Stm_Col());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Term* p_term0 = pCI->Prior.m_pEmitted->pDecode_term0_Same_expr_stmCol(pSymbol)) {
+  if (Card_Term* p_term0 = pCI->Prior.m_pEmitted->pDecode_term0_Same_expr_stmCol(pSymbol_this)) {
     Symbol* pSymbol_term0 = p_term0->pSymbol();
 
     if (pSymbol_term0->bIs_Tbl_Col()) {
-      pSymbol->vFacets(pSymbol_term0);
+      pSymbol_this->vDeleteFacet(SF_STM_COL);
+      pSymbol_this->vFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
     }
     else {
-      eSF eSymbol = pSymbol->eFacet();
+      eSF eSymbol = pSymbol_this->eFacet();
       switch (eSymbol) {
         case SF_STM_COL:
           break;
