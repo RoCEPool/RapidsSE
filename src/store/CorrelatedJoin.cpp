@@ -259,7 +259,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
 
   pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
   Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolCalc->pGetChild(0));
-  bool bIgnore = p_PRED->bPredRecursive(bMarkCorrPred);
+  bool bIgnore = p_PRED->bConjRecursive(bMarkCorrPred);
   UNUSED(bIgnore);
 
   return bIsCorrPred;
@@ -538,7 +538,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
 
       RASSERT(p_pred->bIsBoolFn() ||
               p_pred->bIsRelnOp() ||
-              p_pred->bIsSubQueryOp());
+                  p_pred->bIsSqyOp());
 
       RASSERT(!p_pred->pSymbol()->Y_bHas(P_CrlKeyPred));
 

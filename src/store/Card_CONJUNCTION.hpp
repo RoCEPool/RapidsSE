@@ -27,13 +27,13 @@ namespace STORE
     bool bIsIndexBounds_v3(Card_Index* p_index);
     bool bIsJoinPred(void);
     bool bIsRelnOp(void);
-    bool bIsSubQueryOp(void);
+    bool bIsSqyOp(void);
     bool bMaybeFilterPred(CardIter* pCI);
     bool bMaybeJoinPred(void);
     void vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term=nullptr);
     Card_CmpConj* pPredFindBound(Index* pIndex, ePB eBound);
     bool bPredHasBounds (Index* pIndex);
-    bool bPredRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
+    bool bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
     Symbol* pTable_WhichTableFor_Pred(CardIter* pCI);
     void vShortForm(String* pString);
 

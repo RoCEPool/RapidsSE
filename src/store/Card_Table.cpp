@@ -337,7 +337,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
   Card_BoolCalc* p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
   RASSERT(1 == p_boolCalc->nChildCards());
-  Card_CONJUNCTION* p_pred_root = p_boolCalc->pRootPred();
+  Card_CONJUNCTION* p_pred_root = p_boolCalc->pConj_root();
 
   Kid xKid(pCI->G.p_indexList);
   while (xKid.bEach(CK_INDEX)) {
@@ -381,7 +381,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool bIgnore = p_pred_root->bPredRecursive(bLambdaFn);
+    bool bIgnore = p_pred_root->bConjRecursive(bLambdaFn);
     UNUSED(bIgnore);
   }
 }

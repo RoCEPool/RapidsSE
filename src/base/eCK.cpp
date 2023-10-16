@@ -173,7 +173,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "callOp"_Stz,          // CK_CALLOP
   /* */ "cast"_Stz,            // CK_CAST
   /* */ "clause"_Stz,          // CK_CLAUSE
-  /* */ "cmpPred"_Stz,         // CK_CMPCONJ
+  /* */ "cmpConj"_Stz,         // CK_CMPCONJ
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "corrCols"_Stz,        // CK_CORRCOLS

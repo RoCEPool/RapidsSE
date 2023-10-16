@@ -603,7 +603,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         }
         p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
         p_cmpPred->vTransferChildren(p_TermSeries);
-        RASSERT(p_cmpPred->bIsSubQueryOp())
+        RASSERT(p_cmpPred->bIsSqyOp())
         p_boolCalc->vAppendChild(p_cmpPred);
         p_cmpPred = nullptr;
         DELETE_CARD(p_term_next);
@@ -617,7 +617,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppendChild(p_cmpPred);
-          RASSERT(p_cmpPred->bIsSubQueryOp())
+          RASSERT(p_cmpPred->bIsSqyOp())
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);
           //p_boolCalc->vDump(0,"BOOLFN/IN"_Stz);
@@ -626,7 +626,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred = new Card_CmpConj;
           p_cmpPred->SYM(SF_SQY_OP,"in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
-          RASSERT(p_cmpPred->bIsSubQueryOp())
+          RASSERT(p_cmpPred->bIsSqyOp())
           p_boolCalc->vAppendChild(p_cmpPred);
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);
@@ -657,7 +657,7 @@ Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpPred = new Card_CmpConj;
           p_cmpPred->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
           p_cmpPred->vTransferChildren(p_TermSeries);
-          RASSERT(p_cmpPred->bIsSubQueryOp())
+          RASSERT(p_cmpPred->bIsSqyOp())
           p_boolCalc->vAppendChild(p_cmpPred);
           p_cmpPred = nullptr;
           DELETE_CARD(p_term_next);

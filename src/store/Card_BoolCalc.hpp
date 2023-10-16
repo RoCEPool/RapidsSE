@@ -21,6 +21,7 @@ namespace STORE
     Card_CmpConj* pCmpPred_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
+    Card_CONJUNCTION* pConj_root(void);
     void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmCol(Card_Emitted* p_emitted_prior);
     i8 nCullPred(Stz* szWithMark);
@@ -38,7 +39,6 @@ namespace STORE
     void vPush_CrlKeyPred_As_CrlKeyTest(Card_CONJUNCTION* p_PRED);
     void vPushPred(Card_CONJUNCTION* p_pred_toBeAdded);
     void vRemovePred(Card_CONJUNCTION* p_pred);
-    Card_CONJUNCTION* pRootPred(void);
     void vShortForm(String* pString);
 
     bool bYank_PRED(Stz* szWithMark, Card_CONJUNCTION*& p_pred_yanked);

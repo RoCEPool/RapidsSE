@@ -49,7 +49,8 @@ namespace STORE
       s32        m_sSqyNm;
       s32        m_sSqyArg;
       Card_Term* m_pTerm_corrCol;
-      Card_Term* m_pTerm_sqCall;
+      Card_Term* m_pTerm_sqyCall;
+      Card_CONJUNCTION* m_pConj_sqyCall;
       Card_Correlation* m_pCorrelation;
       i8         m_i_FoldCard;
       Card_Expr* m_pExpr_fold;

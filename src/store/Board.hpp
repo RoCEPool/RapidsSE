@@ -203,7 +203,7 @@ namespace STORE
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
-    static bool bFindAndMarkSubQryCall(CardIter* pCI);
+    static bool bFindAndMarkSubQryCall(CardIter* p_conj);
 
     Bench* pBench(void);
     i8   i_Board(void);

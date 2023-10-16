@@ -106,7 +106,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 
   Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pRootPred());
+  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
   if (! p_pred_ROOT)
     return;
 
@@ -170,7 +170,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 
 }
@@ -232,7 +232,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+//  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
 //  UNUSED(bIgnore);
 //
 //}
@@ -304,7 +304,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pRootPred());
+  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
   if (! p_pred_ROOT)
     return;
 
@@ -358,7 +358,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 
 }
@@ -371,7 +371,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //
 //  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
 //
-//  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pRootPred());
+//  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
 //  if (! p_pred_ROOT)
 //    return;
 //
@@ -425,7 +425,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+//  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
 //  UNUSED(bIgnore);
 //
 //}

@@ -71,9 +71,9 @@ Card_CmpConj* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pConj_root();
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 
   return pCmpPred;
@@ -86,7 +86,7 @@ void Card_BoolCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pConj_root();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -112,7 +112,7 @@ void Card_BoolCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 }
 
@@ -200,7 +200,7 @@ i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
   if (! this->nChildCards())
     return 0;
 
-  Card_CONJUNCTION* pCard_pred = this->pRootPred();
+  Card_CONJUNCTION* pCard_pred = this->pConj_root();
 
   while (pCard_pred) {
 
@@ -546,7 +546,7 @@ void Card_BoolCalc::vRemovePred(Card_CONJUNCTION* p_pred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION* Card_BoolCalc::pRootPred(void)
+Card_CONJUNCTION* Card_BoolCalc::pConj_root(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -702,7 +702,7 @@ void Card_BoolCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pConj_root();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -726,7 +726,7 @@ void Card_BoolCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 }
 
@@ -737,7 +737,7 @@ void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_pred_ROOT = this->pRootPred();
+  Card_CONJUNCTION* p_pred_ROOT = this->pConj_root();
   if (! p_pred_ROOT)
     return;
 
@@ -763,7 +763,7 @@ void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bfTo_stmCol);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bfTo_stmCol);
   UNUSED(bIgnore);
 }
 

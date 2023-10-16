@@ -321,7 +321,7 @@ bool Card_CONJUNCTION::bIsRelnOp(void)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a subquery operator?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsSubQueryOp(void)
+bool Card_CONJUNCTION::bIsSqyOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -525,7 +525,7 @@ bool Card_CONJUNCTION::bPredHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* visit all sub-cards of pred and apply lambda function                      */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bPredRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply)
+bool Card_CONJUNCTION::bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -552,7 +552,7 @@ bool Card_CONJUNCTION::bPredRecursive(std::function<bool(Card_CONJUNCTION* p_pre
   i8 nSubCards = nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = pGetChild(i_Child);
-    bContinue = static_cast<Card_CONJUNCTION *>(pSubCard)->bPredRecursive(bfApply);
+    bContinue = static_cast<Card_CONJUNCTION *>(pSubCard)->bConjRecursive(bfApply);
     if (! bContinue)
       return false;
   }

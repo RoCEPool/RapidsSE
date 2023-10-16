@@ -146,53 +146,52 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolCalc->pConj_root();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI,&bFoundCall](Card_CONJUNCTION* p_pred, bool bUpwards)
+  auto bfMarkSqyCall = [pCI,&bFoundCall](Card_CONJUNCTION* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (! (pCI->Sqy.m_pTerm_sqCall = p_pred->pGetTerm_boardNm(pCI)))
+    if (! (pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm_boardNm(pCI)))
       return C_CONTINUE_RECURSION;
 
-    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqCall->szSymbol(SF_NONE);
-    p_pred->vMark1(MARK_AT);
+    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqyCall->szSymbol(SF_NONE);
+    pCI->Sqy.m_pConj_sqyCall = p_conj;
+    pCI->Sqy.m_pConj_sqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
-    if (p_pred->pSymbol()->bSame("exists"_Stz) ||
-        p_pred->pSymbol()->bSame("notExists"_Stz)) {
+    if (p_conj->pSymbol()->bSame("exists"_Stz) ||
+        p_conj->pSymbol()->bSame("notExists"_Stz)) {
 
-      RASSERT(p_pred->bIsSubQueryOp());
+      RASSERT(p_conj->bIsSqyOp());
 
-      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(0)->szSymbol(SF_NONE);
-      pCI->Sqy.m_sSqyNm  = p_pred->pGetTerm(1)->szSymbol(SF_NONE);
+      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(0)->szSymbol(SF_NONE);
+      pCI->Sqy.m_sSqyNm  = p_conj->pGetTerm(1)->szSymbol(SF_NONE);
       return C_TERMINATE_RECURSION;
     }
 
-    if (p_pred->pSymbol()->bSame("in"_Stz) || p_pred->pSymbol()->bSame("notIn"_Stz)) {
-      RASSERT(p_pred->bIsSubQueryOp());
-      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(2)->szSymbol(SF_NONE);
+    if (p_conj->pSymbol()->bSame("in"_Stz) || p_conj->pSymbol()->bSame("notIn"_Stz)) {
+      RASSERT(p_conj->bIsSqyOp());
+      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(2)->szSymbol(SF_NONE);
       return C_TERMINATE_RECURSION;
     }
 
-    RASSERT(p_pred->bIsRelnOp());
+    RASSERT(p_conj->bIsRelnOp());
 
     return C_TERMINATE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bfMarkSqyCall);
   UNUSED(bIgnore);
 
-  if (bFoundCall)
-    return true;
-  return false;
+  return bFoundCall;
 }
 
 

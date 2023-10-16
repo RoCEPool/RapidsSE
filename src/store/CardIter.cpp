@@ -47,7 +47,8 @@ CardIter::CardIter(Bench* pBench)
   Sqy.m_pCorrelation = nullptr;
   Sqy.m_i_SubQuery   = C_UNKNOWN;
   Sqy.m_pSubQuery    = nullptr;
-  Sqy.m_pTerm_sqCall = nullptr;
+  Sqy.m_pTerm_sqyCall = nullptr;
+  Sqy.m_pConj_sqyCall = nullptr;
 
   // the M iterator - - - - - - - - - - - - - - - - - - - - - -
 

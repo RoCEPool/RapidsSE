@@ -185,7 +185,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
     if ( ! szSubBoardNm || !m_pCI->G_bIsBoardNm(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
-    p_pred->pSymbol()->Y_vSet(P_SubQryCall);
+    p_pred->pSymbol()->Y_vSet(P_SqyCall);
 
     Board* pSubBoard = m_pCI->m_pBench->pGetBoard(szSubBoardNm);
     SubQuery* pSubQuery = pSubBoard->pSubQuery();
@@ -200,7 +200,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 }
 
@@ -235,7 +235,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 
     RASSERT(p_pred->bIsCard(CK_CMPCONJ));
 
-    p_pred->pSymbol()->Y_vSet(P_SubQryCall);
+    p_pred->pSymbol()->Y_vSet(P_SqyCall);
 
     Stz* szValue_pred = p_pred->szSymbol(SF_NONE);
 
@@ -251,7 +251,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
       return C_CONTINUE_RECURSION;
     }
 
-    RASSERT(p_pred->bIsSubQueryOp());
+    RASSERT(p_pred->bIsSqyOp());
 
     eQO eSubQryOp = p_pred->pSymbol()->eEvalSubQryOp();
     RASSERT(QO_NONE != eSubQryOp);
@@ -264,7 +264,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 }
 
