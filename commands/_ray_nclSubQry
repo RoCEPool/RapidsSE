@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _ray_nclSubQry -- non-correlated sub-query                                 */
+/*============================================================================*/
+
+// --initial _ray_nclSubQry
+
+_ray_create
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_nclSubQry"
+select L_ORDERKEY, l_quantity
+  from Lineitem
+ where l_quantity < (select avg(l_quantity)
+                       from Lineitem)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryLeaks;
+
+_ray_drop
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
