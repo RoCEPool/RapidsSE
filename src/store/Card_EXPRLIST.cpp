@@ -117,6 +117,23 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return term0 of <expr> with term0 matching given $n stream-column          */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_EXPRLIST::pDecode_term0_Same_expr_stmCol(Symbol* pSymbol_stmCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(pSymbol_stmCol->bIs_Stm_Col());
+
+  if (Card_Expr* p_expr_stmCol = pGetExpr(pSymbol_stmCol)) {
+    Card_Term* p_term0 = p_expr_stmCol ->pGetTerm(0);
+    return p_term0;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)

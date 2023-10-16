@@ -469,8 +469,8 @@ void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Expr* p_expr_prior = pCI->Prior.m_pEmitted->pGetExpr(pSymbol)) {
-    Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
+  if (Card_Term* p_term0 = pCI->Prior.m_pEmitted->pDecode_term0_Same_expr_stmCol(pSymbol)) {
+    Symbol* pSymbol_term0 = p_term0->pSymbol();
 
     if (pSymbol_term0->bIs_Tbl_Col()) {
       pSymbol->vFacets(pSymbol_term0);
