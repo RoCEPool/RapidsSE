@@ -88,7 +88,7 @@ void Card_Emitted::vAdjust_Wrt_key(Card_Key* p_key)
 
     Symbol* pSymbol_expr_sole = xKid.p_expr()->pGetSymbol(0);
 
-    Card_Expr* p_expr_sole_key = p_key->pFind_expr_By_term(pSymbol_expr_sole);
+    Card_Expr* p_expr_sole_key = p_key->pFind_expr_Via_term(pSymbol_expr_sole);
     if (! p_expr_sole_key)
       continue;
 
@@ -110,7 +110,7 @@ void Card_Emitted::vAs_Review(CardIter* pCI)
       Symbol* pSymbol_key_term = p_expr_prj->pGetTerm(0)->pSymbol();
 
       if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
-        Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
+        Card_Expr *p_expr_key = pCI->G.p_key->pGetExpr(pSymbol_key_term);
 
         p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol(SF_NONE));
         p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
@@ -174,12 +174,12 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->bIsKeyCol()) {
         RASSERT(pCI->G.p_streamKey);
 
-        Card_Expr* p_expr_key = pCI->G.p_streamKey->pDecodeExpr(xCI_rpnCalc.p_term()->pSymbol());
+        Card_Expr* p_expr_key = pCI->G.p_streamKey->pGetExpr(xCI_rpnCalc.p_term()->pSymbol());
         Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
 
         vDebugPoint();
 
-        if (p_needed->pFind_expr_By_term(pSymbol_tblCol))
+        if (p_needed->pFind_expr_Via_term(pSymbol_tblCol))
           continue;
 
         p_needed->vAppendChild(p_expr_key->pClone());
@@ -188,7 +188,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
       if (xCI_rpnCalc.p_term()->bIsColSym()) {
 
         // which we haven't already added
-        if (p_needed->pFind_expr_By_term(xCI_rpnCalc.p_term()->pSymbol()))
+        if (p_needed->pFind_expr_Via_term(xCI_rpnCalc.p_term()->pSymbol()))
           continue;
 
         if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
@@ -215,7 +215,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
           if (!xCI_rpnCalc.p_term()->bIsColSym())
             continue;
           // which we haven't already added
-          if (p_needed->pFind_expr_By_term(xCI_rpnCalc.p_term()->pSymbol()))
+          if (p_needed->pFind_expr_Via_term(xCI_rpnCalc.p_term()->pSymbol()))
             continue;
 
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term()))
@@ -278,7 +278,7 @@ void Card_Emitted::vDerive_streamKey(CardIter *pCI)
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pStreamKey->pGetExpr(i_RunKeyExpr);
 
     Card_Term* p_term_runkey = p_expr_runkey->pGetTerm(0);
-    Card_Expr* p_expr_prjCol = pFind_expr_By_term(p_term_runkey->pSymbol());
+    Card_Expr* p_expr_prjCol = pFind_expr_Via_term(p_term_runkey->pSymbol());
 
     if (p_expr_prjCol) {
 
@@ -327,7 +327,7 @@ void Card_Emitted::vMapColumns(CardIter* pCI)
       nExpr_key++;
 
       Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
-      Card_Map* p_map_keyCell = pCI->G.p_keyCells->pDecodeMap(pSymbol_keyCol);
+      Card_Map* p_map_keyCell = pCI->G.p_keyCells->pGetMap(pSymbol_keyCol);
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
       i_Cell_key = pSymbol_keyCol->iSF_ordinal();
@@ -482,12 +482,12 @@ Card_Expr* Card_Emitted::pResolve_expr(Card_Term* p_term)
   _precondition_( _MAGIC_, _FOOTER_);
 
   if (p_term->pSymbol()->bIs_Stm_Col()) {
-    Card_Expr *p_expr_prior = this->pDecodeExpr(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pGetExpr(p_term->pSymbol());
     return p_expr_prior;
   }
   else
   if (p_term->pSymbol()->bIs_Tbl_Col()) {
-    Card_Expr *p_expr_prior = this->pFind_expr_By_term(p_term->pSymbol());
+    Card_Expr *p_expr_prior = this->pFind_expr_Via_term(p_term->pSymbol());
     return p_expr_prior;
   }
 

@@ -577,7 +577,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
     Kid xKid(p_emitted);
     for (;;) {
       Card_Expr *p_expr_e =
-          p_emitted->pFind_expr_By_symbol(pSym_tblCol_i,&xKid);
+          p_emitted->pFind_expr_Via_term(pSym_tblCol_i, &xKid);
       if (! p_expr_e)
         return C_CONTINUE_RECURSION;
 
@@ -688,7 +688,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
 
       // find emitted expression of arriving as
       Card_Expr *p_expr_e =
-          p_emitted->pFind_expr_By_as(pSym_as_a);
+          p_emitted->pFind_expr_Via_as(pSym_as_a);
       if (p_expr_e) {
         p_expr_e->vDump(__func__,"--FOUND emitted expr by as--"_Stz);
 
@@ -702,7 +702,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
       }
 
       p_expr_e =
-          p_emitted->pFind_expr_By_term(pSym_colSym_a, &eVia);
+          p_emitted->pFind_expr_Via_term(pSym_colSym_a, &eVia);
       if (p_expr_e) {
         s256 sHow;
         sHow.vSprint("--FOUND emitted expr of term via %s--"_Stz,aSF[eVia]);
@@ -724,7 +724,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
       Symbol*    pSym_expr_a = p_expr_a->pSymbol();
 
       Card_Expr* p_expr_e =
-          p_emitted->pDecodeExpr(pSym_expr_a);
+          p_emitted->pGetExpr(pSym_expr_a);
 
       if (p_expr_e) {
 

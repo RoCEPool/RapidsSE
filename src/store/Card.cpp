@@ -523,7 +523,7 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
   m_xSymbol.vFacets_To_String(sFacets);
 
   s4K sProperties;
-  m_xSymbol.vPpy_To_String(sProperties);
+  m_xSymbol.Y_vTo_String(sProperties);
 
   vTrace("  %p %18s %s%s : %s%s %s {%s} %s\n"_Stz
         , this
@@ -768,7 +768,7 @@ Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eOfCard == m_eCard && bSameSymbol(pSymbol)) {
+  if (eOfCard == m_eCard && bSymbol_Same(pSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -1451,7 +1451,7 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 /*----------------------------------------------------------------------------*/
 /* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
-bool Card::bSameSymbol(Symbol* pSymbol)
+bool Card::bSymbol_Same(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1512,7 +1512,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
 
   auto bfUpdateSymbol = [pSymbol, pWith, &bReplaced](Card *pCard)
   {
-    if (! pCard->bSameSymbol(pSymbol))
+    if (!pCard->bSymbol_Same(pSymbol))
       return C_CONTINUE_RECURSION;
 
     pCard->m_xSymbol.vFacetsPpy(pWith);

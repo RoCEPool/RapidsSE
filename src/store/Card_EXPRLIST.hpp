@@ -7,7 +7,6 @@
 
 #include "ColMap.hpp"
 
-
 namespace STORE
 {
   class Kid;
@@ -24,18 +23,18 @@ namespace STORE
 
     Card_Expr* pContains(Card_Expr* p_expr_arg);
 
-    Card_Expr* pDecodeExpr(Symbol* pSymbol);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
     i8 nExpr(void);
 
-    Card_Expr* pFind_expr_By_as(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_as_stripItem(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_ordinal(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_term(Symbol* pSymbol, eSF* aeFacet=nullptr);
-    Card_Expr* pFind_expr_By_symbol(Symbol* pSymbol, Kid* aKid);
+    Card_Expr* pFind_expr_Same_stmCol(Symbol* pSymbol_stmCol);
+    Card_Expr* pFind_expr_Via_as(Symbol* pSymbol);
+    Card_Expr* pFind_expr_Via_as_stripItem(Symbol* pSymbol);
+    Card_Expr* pFind_expr_Via_term(Symbol* pSymbol, eSF* aeFacet=nullptr);
+    Card_Expr* pFind_expr_Via_term(Symbol* pSymbol, Kid* aKid);
 
     Card_Expr* pGetExpr(i8 i_Expr);
+    Card_Expr* pGetExpr(Symbol* pSymbol_ordinal);
 
     void vRenumberAll_expr(void);
 

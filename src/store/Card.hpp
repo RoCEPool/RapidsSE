@@ -379,7 +379,7 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSameSymbol(Symbol* pSymbol);
+    bool bSymbol_Same(Symbol* pSymbol);
     bool bSameSymbol(Card* pArg);
 
     Symbol* pSymbol(void);

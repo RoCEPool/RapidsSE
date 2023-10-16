@@ -462,7 +462,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
           xKid.pChild()->pSymbol()->vFacets(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
-              pCI->Prior.m_pEmitted->pGetExpr(0);
+              pCI->Prior.m_pEmitted->pGetExpr((i8)0);
 
           xKid.pChild()->pSymbol()->vColType(p_expr_found->eColType());
 

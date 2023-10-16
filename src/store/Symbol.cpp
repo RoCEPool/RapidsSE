@@ -1257,7 +1257,7 @@ void Symbol::vDump(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   s4K sProperties;
-  vPpy_To_String(sProperties);
+  Y_vTo_String(sProperties);
 
   vTrace("Symbol : %s\n"_Stz
          ,szWhatIs()
@@ -2754,19 +2754,6 @@ bool Symbol::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert properties to string                                               */
-/*----------------------------------------------------------------------------*/
-void Symbol::vPpy_To_String(String* pString)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (m_pProperties)
-    m_pProperties->vToString(pString);
-  else
-    pString->vCopy("nil"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSame(char cArg)
@@ -3312,6 +3299,19 @@ void Symbol::Y_vSet(Stz* szPpyNm, Symbol* pSymbol)
     Y_vSet(szPpyNm, pSymbol->Y_szGet(szPpyNm));
   else
     NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert properties to string                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::Y_vTo_String(String* pString)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (m_pProperties)
+    m_pProperties->vToString(pString);
+  else
+    pString->vCopy("nil"_Stz);
 }
 
 

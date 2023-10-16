@@ -211,7 +211,7 @@ namespace STORE
     bool bIs_Tbl_Col(void);         // $t.c
     bool bIs_Tbl_Nm(void);          // Sn
     bool bIs_Tbl_Syn(void);         // c
-    bool bIs_Tbl_Syn_rep(void);     // c
+    bool bIs_Tbl_Syn_rep(void);     // C
     bool bIs_Then(void);            // THEN
     bool bIs_Type(void);            // TYPE
     bool bIs_When(void);            // WHEN
@@ -224,8 +224,6 @@ namespace STORE
     bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
-
-    void vPpy_To_String(String* pString);
 
     bool bSame(char cArg);
     bool bSame(Stz* szChrSeq);
@@ -264,6 +262,7 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Object* pObject);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
+    void Y_vTo_String(String* pString);
 
   private:
     void vFacet_Agg_Fn(Stz* szAggFn);

@@ -73,7 +73,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       //pCI->G.p_indexJoin->vDump(__func__);
 
       pCI->G.p_emitted  = pCI->G.p_indexJoin->pSub_emitted();
-      if ((pCI->G.p_expr = pCI->G.p_emitted->pFind_expr_By_as_stripItem(p_term->pSymbol()))) {
+      if ((pCI->G.p_expr = pCI->G.p_emitted->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
         p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
       }
@@ -469,7 +469,7 @@ void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Expr* p_expr_prior = pCI->Prior.m_pEmitted->pDecodeExpr(pSymbol)) {
+  if (Card_Expr* p_expr_prior = pCI->Prior.m_pEmitted->pGetExpr(pSymbol)) {
     Symbol* pSymbol_term0 = p_expr_prior->pGetTerm(0)->pSymbol();
 
     if (pSymbol_term0->bIs_Tbl_Col()) {
@@ -517,7 +517,7 @@ void Card_Term::vX_tblCol_To_stmCol_FACETS(CardIter* pCI)
   // is scalar expression of this symbol in INJECTED ?
 
   if (pCI->X.m_pExprList_i) {
-    if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_By_term(pSymbol_this)) {
+    if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_Via_term(pSymbol_this)) {
       this->vMark1(MARK_FOUND);
       return;
     }
@@ -528,7 +528,7 @@ void Card_Term::vX_tblCol_To_stmCol_FACETS(CardIter* pCI)
 
   if (pCI->X.m_pExprList_a) {
     //nCols_a = pCI->X.m_pExprList_a->nChildCards();
-    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_term(pSymbol_this)) {
+    if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term(pSymbol_this)) {
       Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
       pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
@@ -542,11 +542,11 @@ void Card_Term::vX_tblCol_To_stmCol_FACETS(CardIter* pCI)
   if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
     pCI->X.m_pExprList_k->vDump(__func__);
     pSymbol_this->vDump();
-    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_By_term(pSymbol_this)) {
+    if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Via_term(pSymbol_this)) {
       Symbol *pSymbol_k = p_expr_scalar_k->pFirstKeyCol();
       if (! pSymbol_k)
         return;
-      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_By_term(pSymbol_k)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term(pSymbol_k)) {
         Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
         pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);

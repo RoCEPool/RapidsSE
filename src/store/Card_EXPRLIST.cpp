@@ -117,18 +117,6 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get expr relating to term                                                  */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pDecodeExpr(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Expr* p_expr = _pCard_Expr(pGetChild_bySym(pSymbol));
-
-  return p_expr;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_EXPRLIST::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
@@ -153,46 +141,16 @@ i8 Card_EXPRLIST::nExpr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find expression which expresses the given symbol                           */
+/* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_term(Symbol* pSymbol, eSF* aeFacet)
+Card_Expr* Card_EXPRLIST::pFind_expr_Same_stmCol(Symbol* pSymbol_stmCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(pSymbol_stmCol->bIs_Stm_Col());
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->bExpressionOfSymbol(pSymbol,aeFacet))
-      return xKid.p_expr();
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find expression which expresses the given symbol                           */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_symbol(Symbol* pSymbol, Kid* aKid)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  while (aKid->bEach(CK_EXPR)) {
-    if (aKid->p_expr()->bExpressionOfSymbol(pSymbol))
-      return aKid->p_expr();
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find expression which matches given $n ordinal                             */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_ordinal(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(pSymbol->bIs_Stm_Col());
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    if (xKid.p_expr()->pSymbol()->bSame(pSymbol))
+    if (xKid.p_expr()->pSymbol()->bSame(pSymbol_stmCol))
       return xKid.p_expr();
   }
 
@@ -202,13 +160,13 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_ordinal(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_as(Symbol *pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_Via_as(Symbol *pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     Card_As* p_as = xKid.p_expr()->pSub_as();
-    if (p_as && p_as->bSameSymbol(pSymbol))
+    if (p_as && p_as->bSymbol_Same(pSymbol))
       return xKid.p_expr();
 
   }
@@ -219,7 +177,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as(Symbol *pSymbol)
 /*----------------------------------------------------------------------------*/
 /* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
+Card_Expr* Card_EXPRLIST::pFind_expr_Via_as_stripItem(Symbol *pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -245,6 +203,36 @@ Card_Expr* Card_EXPRLIST::pFind_expr_By_as_stripItem(Symbol *pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find expression which expresses the given symbol                           */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_Via_term(Symbol* pSymbol, eSF* aeFacet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->bExpressionOfSymbol(pSymbol,aeFacet))
+      return xKid.p_expr();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find expression which expresses the given symbol                           */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_Via_term(Symbol* pSymbol, Kid* aKid)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  while (aKid->bEach(CK_EXPR)) {
+    if (aKid->p_expr()->bExpressionOfSymbol(pSymbol))
+      return aKid->p_expr();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pGetExpr(i8 i_Expr)
@@ -256,6 +244,17 @@ Card_Expr* Card_EXPRLIST::pGetExpr(i8 i_Expr)
   return p_expr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get expr relating to term                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pGetExpr(Symbol* pSymbol_ordinal)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr* p_expr = _pCard_Expr(pGetChild_bySym(pSymbol_ordinal));
+
+  return p_expr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
