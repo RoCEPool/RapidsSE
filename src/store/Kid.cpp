@@ -101,7 +101,7 @@ void Kid::vBegin_reverse(void)
   _nonProper_
 
   vChildReset();
-  m_i_Child = m_pParent->nChildCards() - 1;
+  m_i_Child = m_pParent->nChildCards();
 
   m_bBegun    = true;
   m_bForwards = false;
