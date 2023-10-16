@@ -496,16 +496,6 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vX_tblCol_To_stmCol_FACETS(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert this table-column term to stream-column                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vX_tblCol_To_stmCol_FACETS(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
   Symbol* pSymbol_this = this->pSymbol();
   if (! pSymbol_this->bIs_Tbl_Col())
     return;
