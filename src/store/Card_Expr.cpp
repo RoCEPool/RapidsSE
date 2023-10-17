@@ -311,7 +311,7 @@ void Card_Expr::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
 
   Card_SubSet* p_subSet = new Card_SubSet;
 
-  // an expr is an rpnCalc (shouldn't be boolCalc)
+  // an expr is an rpnCalc (shouldn't be boolPred)
   if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
 
     pCI->G.p_rpnCalc->vFactorAll_ColSym_IntoDistinct_expr(pCI);

@@ -567,7 +567,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           pParent->eCard() == CK_HSHCOL || // todo: NO!
 
           pParent->eCard() == CK_ANDCONJ ||
-          pParent->eCard() == CK_BOUND || // todo: is a bound a boolCalc?
+          pParent->eCard() == CK_BOUND || // todo: is a bound a boolPred?
           pParent->eCard() == CK_BOOLPRED ||
           pParent->eCard() == CK_CMPCONJ ||
           pParent->eCard() == CK_HASHING ||

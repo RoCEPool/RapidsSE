@@ -68,11 +68,11 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // identify correlation key predicate in SQ:<table>/<filter>/<boolCalc>//<cmpPred>
+  // identify correlation key predicate in SQ:<table>/<filter>/<boolPred>//<cmpPred>
   //
 
   //   v                          //  ]filter
-  // T T A A A P F T T W A A A    //  .]boolCalc
+  // T T A A A P F T T W A A A    //  .]boolPred
   //   f                          //  ..]cmpPred ==
   //   p                          //           $d.2  ((pCI->m_pTerm_corrCol))
   //                              //             %1
@@ -141,7 +141,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->vClearRestart();
 
   // v                             //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolCalc
+  // T A A A P F T T T W A A A     //  .]boolPred
   // s                             //  ..]cmpPred ==
   // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
   //                               //             %1
@@ -156,7 +156,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->G.p_from->vDeleteFilterIfEmpty(pCI->G.p_filter);
 
   //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolCalc
+  // T A A A P F T T T W A A A     //  .]boolPred
   // s                 f           //  ..]cmpPred ==
   // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
   //                               //             %1
@@ -179,12 +179,12 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->G.p_boolPred->vBump_stmCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
+  // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
 
   pCI->G.p_boolPred->vPush_CrlKeyConj_As_CrlKeyTest(p_conj_corr);
 
   //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolCalc
+  // T A A A P F T T T W A A A     //  .]boolPred
   // s                 f           //  ..]roPred <
   // f                 bc          //           $a.5
   //                               //           $b.1
@@ -202,7 +202,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->vClearRestart();
 
   //                   v           //  ]filter
-  // T A A A P F T T T W A A A     //  .]boolCalc
+  // T A A A P F T T T W A A A     //  .]boolPred
   // s                 f           //  ..]cmpPred ==
   // f                 bc          //           $d.2  ((pCI->m_pTerm_corrCol))
   //             b <-  cp          //             %1
@@ -233,7 +233,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pre-fold identify the <table>/<filter>/<boolCalc>/<cmpPred> which is correlated by parameter
+  // pre-fold identify the <table>/<filter>/<boolPred>/<cmpPred> which is correlated by parameter
   bool bIsCorrPred = false;
 
   auto bMarkCorrPred = [pCI,&bIsCorrPred](Card_CONJUNCTION* p_conj, bool bUpwards)

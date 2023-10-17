@@ -98,7 +98,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED)) {
-      vAnalysis_Of_where_boolCalc(m_pCI);
+      vAnalysis_Of_where_boolPred(m_pCI);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -106,7 +106,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
 
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLPRED)) {
-      vAnalysis_Of_having_boolCalc(m_pCI);
+      vAnalysis_Of_having_boolPred(m_pCI);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -159,7 +159,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
+void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
@@ -207,7 +207,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
+void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 

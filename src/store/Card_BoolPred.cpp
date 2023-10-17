@@ -300,7 +300,7 @@ void Card_BoolPred::vEnsureTypesFor_stmCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect <boolCalc>> and mark any <conj> which could be moved               */
+/* inspect <boolPred>> and mark any <conj> which could be moved               */
 /*----------------------------------------------------------------------------*/
 Card_CONJUNCTION* Card_BoolPred::pFindRemove_conj_corr(void)
 {
@@ -318,7 +318,7 @@ Card_CONJUNCTION* Card_BoolPred::pFindRemove_conj_corr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a compound boolCalc                                                */
+/* is this a compound boolPred                                                */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bIsCompound(void)
 {
@@ -331,7 +331,7 @@ bool Card_BoolPred::bIsCompound(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a compound boolCalc                                                */
+/* is this a compound boolPred                                                */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bIsLiterals(void)
 {
@@ -361,7 +361,7 @@ bool Card_BoolPred::bIsLiterals(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this boolCalc a simple expression of a column                           */
+/* is this boolPred a simple expression of a column                           */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bIsScalarCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -381,7 +381,7 @@ bool Card_BoolPred::bIsScalarCol(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this boolCalc a simple expression of a key                              */
+/* is this boolPred a simple expression of a key                              */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bIsScalarKey(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -430,7 +430,7 @@ bool Card_BoolPred::bHasTerm(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect <boolCalc>> and mark any <conj> which could be moved               */
+/* inspect <boolPred>> and mark any <conj> which could be moved               */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vMarkWrt_table(CardIter* pCI)
 {

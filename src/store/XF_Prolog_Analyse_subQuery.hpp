@@ -26,8 +26,8 @@ namespace STORE
 
   private:
     void vAnalysis_Of_from_call(CardIter* pCI);
-    void vAnalysis_Of_having_boolCalc(CardIter* pCI);
-    void vAnalysis_Of_where_boolCalc(CardIter*  pCI);
+    void vAnalysis_Of_having_boolPred(CardIter* m_pCI);
+    void vAnalysis_Of_where_boolPred(CardIter*  m_pCI);
 
     Footer* aFooter(void);
   };

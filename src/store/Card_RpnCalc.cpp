@@ -476,7 +476,7 @@ void Card_RpnCalc::vShortForm(String* pString, Stz* szSep)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert <rpnCalc> to <boolCalc>                                            */
+/* convert <rpnCalc> to <boolPred>                                            */
 /*----------------------------------------------------------------------------*/
 Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
 {
@@ -519,7 +519,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
     switch (eTerm_next) {
 
       case TE_AND:
-        // <boolCalc> = <and>/<boolCalc>
+        // <boolPred> = <and>/<boolPred>
         p_childB = p_boolPred->pPopChild_tail();
         p_childA = p_boolPred->pPopChild_tail();
 
@@ -536,7 +536,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
         break;
 
       case TE_OR:
-        // <boolCalc> = <or>/<boolCalc>
+        // <boolPred> = <or>/<boolPred>
         p_childB = p_boolPred->pPopChild_tail();
         p_childA = p_boolPred->pPopChild_tail();
 
@@ -566,7 +566,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
         break;
 
       case TE_RELNOP:
-        // <boolCalc> = <cmpPred><termSeries><boolCalc>
+        // <boolPred> = <cmpPred><termSeries><boolPred>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpConj = new Card_CmpConj;
         {
@@ -595,7 +595,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
 
       case TE_EXISTS:
       case TE_NOTEXISTS:
-        // <boolCalc> = <exists><boolCalc>
+        // <boolPred> = <exists><boolPred>
         p_cmpConj = new Card_CmpConj;
         {
           eSF eSymbol = Symbol::eEvalSymbol(p_term_next->szSymbol(SF_NONE));
@@ -611,7 +611,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
         break;
 
       case TE_IN:
-        // <boolCalc> = <in><boolCalc>
+        // <boolPred> = <in><boolPred>
         if (p_TermSeries->bIsInList()) {
           p_cmpConj = new Card_CmpConj;
           p_cmpConj->SYM(SF_SQY_OP,p_term_next->szSymbol(SF_NONE));
@@ -635,7 +635,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
         break;
 
       case TE_NOTIN:
-        // <boolCalc> = <in><boolCalc>
+        // <boolPred> = <in><boolPred>
         if (p_TermSeries->bIsInList()) {
           p_cmpConj = new Card_CmpConj;
           p_cmpConj->SYM(SF_SQY_OP,"in"_Stz);
@@ -696,7 +696,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
 
   if (p_TermSeries->nItems()) {
     RASSERT(0 == p_boolPred->nChildCards());
-    //p_boolPred->vDump(0,"boolCalc"_Stz);
+    //p_boolPred->vDump(0,"boolPred"_Stz);
     //p_TermSeries->vDump(0,"termSeries"_Stz);
 
     p_cmpConj = new Card_CmpConj;

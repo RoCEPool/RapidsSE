@@ -215,7 +215,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   vOuterQuery(pCI->pBoard()->pSubQuery());
 
-  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vBeginEachReverse();
   if (pCI->G_bEachMainWithSub_reverse_foldBreak_b(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
@@ -308,7 +308,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
   CarryForward* pCarryForward = new CarryForward;
 
-  // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
+  // 1) find W_A_C_ro subquery call in mq:<where>/<boolPred>
 
   RASSERT(pCI->G_bEachMain(CK_CALL));
   vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szSymbol(SF_NONE));
@@ -370,7 +370,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   pCI->vBeginEach();
 
-  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
@@ -475,7 +475,7 @@ i8 Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   vOuterQuery(pCI->pBoard()->pSubQuery());
 
-  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  // 1) find H_A_NC_ro subquery call in mq:<having>/<boolPred>/<roPred>
   pCI->vClearRestart();
   if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
