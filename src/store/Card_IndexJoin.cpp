@@ -85,7 +85,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
       pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Prior.m_pEmitted = pSub_emitted();
+    pCI->Flux.m_pArriving = pSub_emitted();
 
    // pCI->vPrintBoard();
     return;
@@ -122,8 +122,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 //  pCI->vRenumberCards();
 //  pCI->vPrintBoard();
 
-  //pCI->Prior.m_pEmitted->vDump(__func__);
-  vCorrectStmCol(pCI->Prior.m_pEmitted);
+  //pCI->Flux.m_pArriving->vDump(__func__);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -131,7 +131,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Prior.m_pEmitted = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emitted();
 
 
 
@@ -251,7 +251,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -261,7 +261,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_emitted = pSub_emitted();
 
-  pCI->Prior.m_pEmitted = pCI->G.p_emitted;
+  pCI->Flux.m_pArriving = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 

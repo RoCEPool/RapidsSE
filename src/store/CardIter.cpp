@@ -424,7 +424,7 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol  = nullptr;
 
-  Prior.m_pEmitted  = nullptr;
+  Flux.m_pArriving  = nullptr;
 
   Next.m_pProject      = nullptr;
   Next.m_pEmitted   = nullptr;
@@ -2049,7 +2049,7 @@ void CardIter::vSnapPriorProjection(void)
   _precondition_(_MAGIC_, _FOOTER_);
 
   if (Card_Emitted* p_emitted = G.p_OP->pSub_emitted())
-    Prior.m_pEmitted = p_emitted;
+    Flux.m_pArriving = p_emitted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2341,7 +2341,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   if (! p_emitted_prior)
     return nullptr;
 
-  //RASSERT(p_emitted_prior == this->Prior.m_pEmitted);
+  //RASSERT(p_emitted_prior == this->Flux.m_pArriving);
 
   Card_Expr* p_expr_resolved = p_emitted_prior->pResolve_expr(p_term);
   return p_expr_resolved;
@@ -2354,10 +2354,10 @@ Card_Expr* CardIter::pResolvePrior_expr_prior(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (! this->Prior.m_pEmitted)
+  if (! this->Flux.m_pArriving)
     return nullptr;
 
-  Card_Expr* p_expr_resolved = this->Prior.m_pEmitted->pResolve_expr(p_term);
+  Card_Expr* p_expr_resolved = this->Flux.m_pArriving->pResolve_expr(p_term);
   return p_expr_resolved;
 }
 

@@ -109,7 +109,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
       pCI->G.p_cmpConj->pSymbol()->bSame("notExists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyNotExists);
 
-  pCI->Prior.m_pEmitted = p_emitted_table;
+  pCI->Flux.m_pArriving = p_emitted_table;
   pCI->G.p_cmpConj->vMorph_sqlOp_To_EQ(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);

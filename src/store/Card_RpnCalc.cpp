@@ -153,8 +153,8 @@ void Card_RpnCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
       p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
     else
     if (xTerm.p_term()->bIsStmCol()) {
-      //pCI->Prior.m_pEmitted->vDump(__func__);
-      p_expr_found = pCI->Prior.m_pEmitted->pGet_expr(iOdn - 1);
+      //pCI->Flux.m_pArriving->vDump(__func__);
+      p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
     }
     else
       continue;

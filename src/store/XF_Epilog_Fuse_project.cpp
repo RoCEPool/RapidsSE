@@ -90,7 +90,7 @@ void XF_Epilog_Fuse_project::vFuse_project(void)
 
     L_UPDATE_PRIOR_EMITTED:
     if (m_pCI->G.p_MainCard->pSub_emitted())
-      m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emitted();
   }
 
   m_pCI->vEndTransform();
@@ -141,7 +141,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 
     if (CK_INDEXJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emitted())
-        m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
@@ -151,7 +151,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_indexJoin->pSub_stream();
       m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
-      m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
@@ -160,7 +160,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
     m_pCI->G.p_stream->vFuse_project_Viable(m_pCI);
     m_pCI->G.pDeck->vDeleteChild(m_pCI->Next.m_pProject);
     m_pCI->G.p_OP->pSymbol()->Y_vSet(P_FusedProject);
-    m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+    m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emitted();
   }
 
   m_pCI->vClearRestart();
@@ -168,7 +168,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
 
     if (CK_CROSSJOIN != m_pCI->G.e_MainCard) {
       if (m_pCI->G.p_MainCard->pSub_emitted())
-        m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+        m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 
@@ -178,7 +178,7 @@ void XF_Epilog_Fuse_project::vFuse_project__(void)
         m_pCI->Next.m_pProject->bIsLiterals()) {
       m_pCI->G.p_stream = m_pCI->G.p_crossJoin->pSub_stream();
       m_pCI->G.p_stream->vFuse_project_NoViable(m_pCI);
-      m_pCI->Prior.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_MainCard->pSub_emitted();
       continue;
     }
 

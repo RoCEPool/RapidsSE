@@ -285,18 +285,18 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
       pCI->G.p_table->vDeleteChild(pCI->G.p_emitted);
 
   pCI->vBeginEach();
-  pCI->Prior.m_pEmitted = pCI->G.p_emitted = nullptr;
+  pCI->Flux.m_pArriving = pCI->G.p_emitted = nullptr;
 
   while (pCI->G_bEachMain_NONE()) {
 
-//    if (pCI->Prior.m_pEmitted)
-//      pCI->Prior.m_pEmitted->vDump(__func__);
+//    if (pCI->Flux.m_pArriving)
+//      pCI->Flux.m_pArriving->vDump(__func__);
 
     if (CK_PROJECT == pCI->G.e_MainCard)
       vDebugPoint();
 
-//    if (pCI->Prior.m_pEmitted) {
-//      pCI->Prior.m_pEmitted->vDump(__func__);
+//    if (pCI->Flux.m_pArriving) {
+//      pCI->Flux.m_pArriving->vDump(__func__);
 //      vDebugPoint();
 //    }
 
@@ -310,7 +310,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
       pCI->G.p_from->vUpdate_emitted(pCI);
 
       if (pCI->G.p_MainCard->pSub_emitted())
-        pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
+        pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emitted();
 
         // todo: fix...
 //      pCI->G.p_emitted = pCI->G.p_table->pSub_emitted();
@@ -320,7 +320,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
      // pCI->vPrintBoard();
 
       if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
-        if (pCI->Prior.m_pEmitted) {
+        if (pCI->Flux.m_pArriving) {
           pCI->G.p_constraint->vEnsureTypes_For_stmCol(pCI);
         }
       }
@@ -333,7 +333,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
-      Card_Emitted* p_emitted_clone = pCI->Prior.m_pEmitted->pClone();
+      Card_Emitted* p_emitted_clone = pCI->Flux.m_pArriving->pClone();
       //p_emitted_clone->vDump(__func__ );
       pCI->G.p_stream->vAppendChild(p_emitted_clone);
 
@@ -341,11 +341,11 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
     }
 
 //    if (CK_LIMIT == pCI->G.e_MainCard || CK_SORT == pCI->G.e_MainCard) {
-//      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pEmitted->pClone());
+//      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
 //    }
 //    if (CK_SORT == pCI->G.e_MainCard) {
 //      Card_Emitted* p_emitted_propagated =
-//          pCI->Prior.m_pEmitted->pPropagate();
+//          pCI->Flux.m_pArriving->pPropagate();
 //      p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 //
 //      pCI->G.p_MainCard->vAppendChild(p_emitted_propagated);
@@ -353,7 +353,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_TOP,CK_NONE)) {
       pCI->G.p_OP->vEnsure_stream(pCI);
-      pCI->G.p_emitted = pCI->Prior.m_pEmitted->pPropagate(pCI);
+      pCI->G.p_emitted = pCI->Flux.m_pArriving->pPropagate(pCI);
 
       pCI->G.p_stream->vAppendChild(pCI->G.p_emitted);
     }
@@ -363,14 +363,14 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
       pCI->G.p_OP->vEnsure_stream(pCI);
 
       Card_Emitted* p_emitted_propagated =
-          pCI->Prior.m_pEmitted->pPropagate(pCI);
+          pCI->Flux.m_pArriving->pPropagate(pCI);
       p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
       pCI->G.p_stream->vAppendChild(p_emitted_propagated);
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-      if (pCI->Prior.m_pEmitted) {
+      if (pCI->Flux.m_pArriving) {
         pCI->G.p_key->vTypes_For_stmCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
       }
@@ -378,7 +378,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
 
-      if (pCI->Prior.m_pEmitted) {
+      if (pCI->Flux.m_pArriving) {
         //pCI->G.p_emitted->vDump(__func__);
         pCI->G.p_emitted->vEnsureTypes_For_stmCol(pCI);
         //pCI->G.p_emitted->vDump(__func__);
@@ -387,11 +387,11 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         vDebugPoint();
       }
 
-      pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
+      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emitted();
     }
 
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
-      if (pCI->Prior.m_pEmitted) {
+      if (pCI->Flux.m_pArriving) {
         pCI->G.p_constraint->vEnsureTypes_For_stmCol(pCI);
       }
     }
@@ -412,7 +412,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
       pCI->G.p_table->vDeleteChild(pCI->G.p_emitted);
 
   pCI->vBeginEach();
-  pCI->Prior.m_pEmitted = pCI->G.p_emitted = nullptr;
+  pCI->Flux.m_pArriving = pCI->G.p_emitted = nullptr;
 
   while (pCI->G_bEachMain_NONE()) {
 
@@ -421,10 +421,10 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
     if (CK_KEYEXISTS == pCI->G.e_MainCard ||
         CK_KEYNOTEXISTS == pCI->G.e_MainCard) {
 
-      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pEmitted->pPropagate(pCI));
+      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pPropagate(pCI));
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
-        if (pCI->Prior.m_pEmitted) {
+        if (pCI->Flux.m_pArriving) {
           pCI->G.p_indexList->vTypes_For_stmCol(pCI);
         }
       }
@@ -438,10 +438,10 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
       pCI->G.p_OP->vUpdate_emitted(pCI);
 
-      pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
+      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emitted();
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
-        if (pCI->Prior.m_pEmitted) {
+        if (pCI->Flux.m_pArriving) {
           pCI->G.p_indexList->vTypes_For_stmCol(pCI);
         }
       }
@@ -462,25 +462,25 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 
-      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pEmitted->pClone());
+      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
 
       //continue;
     }
 
     if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_NONE)) {
-      pCI->G.p_MainCard->vAppendChild(pCI->Prior.m_pEmitted->pClone());
+      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
     }
     else
     if (CK_SORT == pCI->G.e_MainCard || CK_TOP == pCI->G.e_MainCard) {
       Card_Emitted* p_emitted_propagated =
-          pCI->Prior.m_pEmitted->pPropagate(pCI);
+          pCI->Flux.m_pArriving->pPropagate(pCI);
       p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
       pCI->G.p_MainCard->vAppendChild(p_emitted_propagated);
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-      if (pCI->Prior.m_pEmitted) {
+      if (pCI->Flux.m_pArriving) {
         pCI->G.p_key->vTypes_For_stmCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
       }
@@ -488,12 +488,12 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
     if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
 
-      if (pCI->Prior.m_pEmitted) {
+      if (pCI->Flux.m_pArriving) {
         pCI->G.p_emitted->vEnsureTypes_For_stmCol(pCI);
         pCI->G.p_emitted->vRenumberAll_expr();
       }
 
-      pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
+      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emitted();
     }
 
   }
@@ -513,7 +513,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 
 
   pCI->vBeginEach();
-  pCI->Prior.m_pEmitted = pCI->G.p_emitted = nullptr;
+  pCI->Flux.m_pArriving = pCI->G.p_emitted = nullptr;
 
   while (pCI->G_bEachMain_NONE()) {
 
@@ -566,7 +566,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 //    }
 
     if (pCI->G.p_MainCard->pSub_emitted()) {
-      pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
+      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emitted();
     }
 
     //pCI->vPrintBoard(__LINE__);

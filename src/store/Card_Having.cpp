@@ -84,7 +84,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_having->vUpdate_emitted(pCI);
 
-  pCI->Prior.m_pEmitted = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emitted();
 
 
  // pCI->vRenumberCards();
@@ -129,7 +129,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
 
     Card_Expr* p_expr_found =
-        pCI->Prior.m_pEmitted->pGet_expr((i8) 0);
+        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
     RASSERT(CT_NONE != p_expr_found->eColType());
 
@@ -156,11 +156,11 @@ void Card_Having::vUpdate_emitted(CardIter* pCI)
     if ((pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted())) {
 
       pCI->G.p_stream->vDeleteChild(pCI->G.p_emitted);
-      pCI->G.p_stream->vAppendChild(pCI->Prior.m_pEmitted->pPropagate(pCI));
+      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pPropagate(pCI));
     }
   }
 
-  pCI->Prior.m_pEmitted = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emitted();
 }
 
 /*----------------------------------------------------------------------------*/

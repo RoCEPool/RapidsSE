@@ -355,7 +355,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     }
 
     Card_Expr* p_expr_found =
-        pCI->Prior.m_pEmitted->pGet_expr((i8) 0);
+        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
     p_term1->pSymbol()->vColType(p_expr_found->eColType());
 
@@ -385,7 +385,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     }
 
     Card_Expr* p_expr_found =
-        pCI->Prior.m_pEmitted->pGet_expr((i8) 0);
+        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
     p_term_head->pSymbol()->vColType(p_expr_found->eColType());
 

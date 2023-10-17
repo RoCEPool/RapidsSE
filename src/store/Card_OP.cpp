@@ -545,7 +545,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
   Card_Emitted* p_emitted;
 
-  if (CK_PROJECT == eCard() && pCI->Prior.m_pEmitted) {
+  if (CK_PROJECT == eCard() && pCI->Flux.m_pArriving) {
     p_emitted = pSub_emitted();
     p_emitted->vEnsureTypes_For_stmCol(pCI);
     return;
@@ -566,9 +566,9 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     vRemoveChild(p_emitted_needed);
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_emitted = _pCard_Emitted(pCI->Prior.m_pEmitted->pDupCardRecursive());
+    p_emitted = _pCard_Emitted(pCI->Flux.m_pArriving->pDupCardRecursive());
     pCI->G.p_stream->vAppendChild(p_emitted);
-    pCI->Prior.m_pEmitted = p_emitted;
+    pCI->Flux.m_pArriving = p_emitted;
     if (p_emitted_needed)
       vAppendChild(p_emitted_needed);
     return;
@@ -586,9 +586,9 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
   Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol(SF_NONE));
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  if (pCI->Prior.m_pEmitted) {
-//    p_emitted = pCI->Prior.m_pEmitted->pClone();
-    p_emitted = pCI->Prior.m_pEmitted->pReducedCopy(pCI);
+  if (pCI->Flux.m_pArriving) {
+//    p_emitted = pCI->Flux.m_pArriving->pClone();
+    p_emitted = pCI->Flux.m_pArriving->pReducedCopy(pCI);
     //p_emitted->vDump(__func__ );
   }
   else {
@@ -631,7 +631,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
   pCI->G.p_stream->vAppendChild(p_emitted);
 
-  pCI->Prior.m_pEmitted = p_emitted;
+  pCI->Flux.m_pArriving = p_emitted;
 
   if (p_emitted_needed)
     vAppendChild(p_emitted_needed);

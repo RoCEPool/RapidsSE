@@ -77,7 +77,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
     // conversions prior to projection
 
     if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-      if (m_pCI->Prior.m_pEmitted)
+      if (m_pCI->Flux.m_pArriving)
         m_pCI->G.p_key->vX_stmCol_To_tblCol(m_pCI);
     }
 
@@ -89,16 +89,16 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
     // projection
 
     if ((m_pCI->G.p_emitted = m_pCI->G.p_MainCard->pSub_emitted())) {
-      if (m_pCI->Prior.m_pEmitted)
+      if (m_pCI->Flux.m_pArriving)
         m_pCI->G.p_emitted->vX_stmCol_To_tblCol(m_pCI);
-      m_pCI->Prior.m_pEmitted = m_pCI->G.p_emitted;
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_emitted;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // conversions after projection
 
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
-      if (m_pCI->Prior.m_pEmitted)
+      if (m_pCI->Flux.m_pArriving)
         m_pCI->G.p_constraint->vX_stmCol_To_tblCol(m_pCI);
     }
 

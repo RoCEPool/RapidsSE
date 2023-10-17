@@ -233,7 +233,7 @@ void Card_Filter::vUpdate_emitted(CardIter* pCI)
   if ((pCI->G.p_emitted = pCI->G.p_filter->pSub_emitted())) {
 
     pCI->G.p_filter->vDeleteChild(pCI->G.p_emitted);
-    pCI->G.p_filter->vAppendChild(pCI->Prior.m_pEmitted->pClone());
+    pCI->G.p_filter->vAppendChild(pCI->Flux.m_pArriving->pClone());
 
   }
 }

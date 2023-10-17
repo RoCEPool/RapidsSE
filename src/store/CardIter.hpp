@@ -34,8 +34,8 @@ namespace STORE
     } Early;
 
     struct {
-      Card_Emitted * m_pEmitted;
-    } Prior;
+      Card_Emitted * m_pArriving;
+    } Flux;
 
     struct {
       Card_Project * m_pProject;

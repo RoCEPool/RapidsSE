@@ -118,7 +118,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
   }
 
   if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
-    if (m_pCI->Prior.m_pEmitted)
+    if (m_pCI->Flux.m_pArriving)
       m_pCI->G.p_key->vX_tblCol_To_stmCol(m_pCI);
   }
 
@@ -135,7 +135,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
   }
 
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
-    if (m_pCI->Prior.m_pEmitted)
+    if (m_pCI->Flux.m_pArriving)
       m_pCI->G.p_hshColList->vX_tblCol_To_stmCol(m_pCI);
   }
 
@@ -148,7 +148,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vConvertTblCol(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
-    if (m_pCI->Prior.m_pEmitted)
+    if (m_pCI->Flux.m_pArriving)
       m_pCI->G.p_constraint->vX_tblCol_To_stmCol(m_pCI);
   }
 

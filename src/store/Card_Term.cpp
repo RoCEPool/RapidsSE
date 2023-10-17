@@ -193,7 +193,7 @@ void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
     p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
   else
   if (bIsStmCol())
-    p_expr_found = pCI->Prior.m_pEmitted->pGet_expr(iOdn - 1);
+    p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
   else
     return;
 
@@ -472,7 +472,7 @@ void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Term* p_term0 = pCI->Prior.m_pEmitted->pDecode_term0_Same_expr_stmCol(pSymbol_this)) {
+  if (Card_Term* p_term0 = pCI->Flux.m_pArriving->pDecode_term0_Same_expr_stmCol(pSymbol_this)) {
     Symbol* pSymbol_term0 = p_term0->pSymbol();
 
     if (pSymbol_term0->bIs_Tbl_Col()) {

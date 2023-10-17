@@ -65,7 +65,7 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
   // <indexJoin> or <crossJoin>
 
   // restate <OP/arriving>   todo: is this necessary?
-  pCI->G.p_CARD = pCI->Prior.m_pEmitted->pDupCardRecursive();
+  pCI->G.p_CARD = pCI->Flux.m_pArriving->pDupCardRecursive();
   pCI->G.p_CARD->vCard(CK_ARRIVING);
   if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey()))
     pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
@@ -110,7 +110,7 @@ void Card_Stream::vFuse_project_NoViable(CardIter *pCI)
   }
   else {
     // <arriving> is prior <emitted>
-    pCI->G.p_CARD = pCI->Prior.m_pEmitted->pDupCardRecursive();
+    pCI->G.p_CARD = pCI->Flux.m_pArriving->pDupCardRecursive();
     pCI->G.p_CARD->vCard(CK_ARRIVING);
     if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {
       pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);

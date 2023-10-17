@@ -145,13 +145,13 @@ Card_Emitted* Card_Project::pCraft_projection_early(CardIter* pCI)
 
 //    if (! p_expr_needed->pGet_term(0)->bIsTblCol()) {
 //      this->vDump(__func__ );
-//      pCI->Prior.m_pEmitted->vDump(__func__);
+//      pCI->Flux.m_pArriving->vDump(__func__);
 //      p_expr_needed->vDump(__func__);
 //      NEVER_REACH;
 //      //continue;
 //    }
 
-    if (! pCI->Prior.m_pEmitted->pContains(p_expr_needed))
+    if (! pCI->Flux.m_pArriving->pContains(p_expr_needed))
       continue;
 
     Card_Expr* p_expr_clone = p_expr_needed->pClone();
@@ -243,7 +243,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
@@ -256,7 +256,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   //vInsertChildBefore(pCI->G.p_emitted,pCI->G.p_needed);
 
-  pCI->Prior.m_pEmitted = pCI->G.p_emitted;
+  pCI->Flux.m_pArriving = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 
@@ -354,7 +354,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -364,7 +364,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_emitted = pSub_emitted();
 
-  pCI->Prior.m_pEmitted = pCI->G.p_emitted;
+  pCI->Flux.m_pArriving = pCI->G.p_emitted;
 
  // pCI->vPrintBoard();
 
@@ -385,7 +385,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
     pCI->G.p_project->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->Prior.m_pEmitted = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emitted();
 
 }
 
@@ -402,7 +402,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);
   }
 
-  pCI->Prior.m_pEmitted = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emitted();
 
 }
 

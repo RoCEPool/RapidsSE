@@ -158,7 +158,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vCorrectStmCol(pCI->Prior.m_pEmitted);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
@@ -209,7 +209,7 @@ void Card_Where::vUpdate_emitted(CardIter* pCI)
   if ((pCI->G.p_stream = pCI->G.p_where->pSub_stream())) {
     if ((pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted())) {
       pCI->G.p_stream->vDeleteChild(pCI->G.p_emitted);
-      pCI->G.p_stream->vAppendChild(pCI->Prior.m_pEmitted->pClone());
+      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pClone());
     }
   }
 }
