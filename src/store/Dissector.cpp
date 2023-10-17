@@ -1396,6 +1396,10 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   pCard_RpnCalc->pSymbol()->vColType(eColType);
   pCard_Expr->pSymbol()->vColType(eColType);
 
+  if (bIsKeyExpr && pCard_Expr->pSub_rpnCalc()->nChildCards() == 1) {
+    Card_Term* p_term_0 = pCard_Expr->pGet_term0();
+    p_term_0->pSymbol()->vColType(eColType);
+  }
 
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();

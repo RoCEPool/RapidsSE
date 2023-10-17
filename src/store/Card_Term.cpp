@@ -87,7 +87,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     }
     else
     if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
-      i8 iItemise = p_rpnCalc->iItemise();
+      Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
+      i8 iItemise = p_expr->iItemise();
       p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
       return C_CONTINUE_RECURSION;
     }
@@ -396,10 +397,12 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!pSymbol()->Y_bHas(P_Column)) {
-    vPrintCard_bySettings(pRibbon, iDepth);
-    return;
-  }
+  UNUSED(iDepth);
+
+//  if (!pSymbol()->Y_bHas(P_Column)) {
+//    vPrintCard_bySettings(pRibbon, iDepth);
+//    return;
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

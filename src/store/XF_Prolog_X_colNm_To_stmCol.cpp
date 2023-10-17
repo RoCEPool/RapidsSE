@@ -68,6 +68,9 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
     if (! m_pCI->Prior.m_pEmitted)
       continue;
 
+    if (m_pCI->G.p_OP->bIsCard(CK_GBYAGG) &&
+        m_pCI->G.p_OP->pSub_level()->pSymbol()->Y_iGet(P_Level) != AL_PARTITION)
+      continue;
     //m_pCI->Prior.m_pEmitted->vDump(__func__);
     vConvert_colNm_To_stmCol();
   }

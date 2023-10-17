@@ -28,6 +28,9 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
+/optimiser_trace
+/weaved
+/pipeline_def
 /optimise_passthru 
 pipeline unnamed
  begin
@@ -56,6 +59,9 @@ pipeline unnamed
 
  rows: (6000)
 
+/optimiser_trace
+/weaved
+/pipeline_def
 /optimise_passthru 
 pipeline unnamed
  begin
@@ -85,7 +91,7 @@ pipeline unnamed
                  type INTEGER as COL3 ) COL3 sum ,
                  type INTEGER as COL4 ) COL4 sum ,
                  type INTEGER as COL5 ) COL5 sum ,
-                 type INTEGER as COL6 ) COL5 sum"
+                 type INTEGER as COL6 ) COL6 sum"
       | combined 0
       | next
    stage stageC on origin :
@@ -127,6 +133,9 @@ pipeline unnamed
    (143,154,155,22290,22680,22304,22304)
    ( 23, 34, 35,21690,22080,21704,21704)
 
+/optimiser_trace
+/weaved
+/pipeline_def
 /optimise_passthru 
 pipeline unnamed
  begin
