@@ -53,7 +53,7 @@
 #include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_X_board_To_sqyNm.hpp"
 #include "XF_Prolog_X_colNm_To_stmCol.hpp"
-#include "XF_Prolog_X_rpnCalc_To_boolCalc.hpp"
+#include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
 #include "XF_Synthesise_code.hpp"
 #include "XF_Synthesise_pipelineDef.hpp"
@@ -168,7 +168,7 @@ void XF::vTransform(void)
     XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
                                                    //
     // preliminary conversions                     //
-    XF_Prolog_X_rpnCalc_To_boolCalc::vConvert(m_pCI); //
+    XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
     XF_Prolog_Review_as::vReview(m_pCI);           //
   }                                                //
                                                    //
@@ -334,7 +334,7 @@ void XF::vTransform_passThru(void)
     }
     m_pCI->vEndTransform();
 
-    XF_Prolog_X_rpnCalc_To_boolCalc::vConvert(m_pCI);
+    XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI);
 
     vDebugPoint();
   }
