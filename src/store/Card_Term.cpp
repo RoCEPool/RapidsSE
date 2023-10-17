@@ -414,7 +414,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   if (m_xSymbol.nFacets()) {
     for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
       Facet* aFacet = m_xSymbol.aFacet(i_Facet);
-      pRibbon->vSprintSnippet(true,"%16s~%lld %s"_Stz,
+      pRibbon->vSprintSnippet(true,"%17s~%lld%s"_Stz,
                               aFacet->m_sChrSeq.azChar(),
                               i_Facet,
                               sType_short.szStz());

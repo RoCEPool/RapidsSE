@@ -36,6 +36,7 @@ namespace STORE
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
     bool bNeedsBrace(void);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     Card_RpnCalc* pPropagate(Card_Expr* p_expr_encasing);
     Card_RpnCalc *pReducedCopy(i8 i_Expr,  bool bIs_SQCRLKEY);
     Card_RpnCalc *pReducedCopy_key(void);

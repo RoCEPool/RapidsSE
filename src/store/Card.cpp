@@ -1837,6 +1837,10 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
+    case CK_RPNCALC:
+      _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth);
+      break;
+
     case CK_TABLE:
       _pCard_Table(this)->vPrint(pRibbon, iDepth);
       break;

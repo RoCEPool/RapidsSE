@@ -377,6 +377,24 @@ bool Card_RpnCalc::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  s32 sType_short = szCT_char[pSymbol()->eColType()];
+
+  pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s"_Stz,
+                          cMark1(),
+                          cMark2(),
+                          Stz::szDots(iDepth - 1),
+                          m_i_Child,
+                          szCardNm(),
+                          sType_short.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
 /* return a reduced copy of this rpnCalc                                      */
 /*----------------------------------------------------------------------------*/
 Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
