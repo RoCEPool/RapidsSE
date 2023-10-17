@@ -2136,7 +2136,7 @@ Card_As* Card::pSub_as(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_BoolPred.hpp"
-Card_BoolPred* Card::pSub_boolCalc(void)
+Card_BoolPred* Card::pSub_boolPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

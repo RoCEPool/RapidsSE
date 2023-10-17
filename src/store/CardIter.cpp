@@ -1322,7 +1322,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_ARRIVING:         return G.p_arriving;
     case CK_AS:               return G.p_as;
 
-    case CK_BOOLCALC:         return G.p_boolCalc;
+    case CK_BOOLCALC:         return G.p_boolPred;
     case CK_BOUND:            return G.p_bound;
     case CK_BOUNDS:           return G.p_bounds;
 
@@ -1545,7 +1545,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_ARRIVING:         G.p_arriving         = _pCard_Arriving(pCard); break;
     case CK_AS:               G.p_as               = _pCard_As(pCard); break;
 
-    case CK_BOOLCALC:         G.p_boolCalc         = _pCard_BoolPred(pCard); break;
+    case CK_BOOLCALC:         G.p_boolPred         = _pCard_BoolPred(pCard); break;
     case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
     case CK_BOUNDS:           G.p_bounds           = _pCard_Bounds(pCard); break;
 
@@ -1801,7 +1801,7 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_arriving         = nullptr;
   G.p_as               = nullptr;
 
-  G.p_boolCalc         = nullptr;
+  G.p_boolPred         = nullptr;
   G.p_bound            = nullptr;
   G.p_bounds           = nullptr;
 
@@ -2581,7 +2581,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_ARRIVING:     G.p_arriving->vValidate(this, iDepth, pCard);  break;
       case CK_AS:           G.p_as->vValidate(this, iDepth, pCard);  break;
 
-      case CK_BOOLCALC:     G.p_boolCalc->vValidate(this, iDepth, pCard);  break;
+      case CK_BOOLCALC:     G.p_boolPred->vValidate(this, iDepth, pCard);  break;
       case CK_BOUND:        G.p_bound->vValidate(this, iDepth, pCard);  break;
       case CK_BOUNDS:       G.p_bounds->vValidate(this, iDepth, pCard);  break;
 

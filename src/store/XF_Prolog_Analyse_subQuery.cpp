@@ -163,7 +163,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolPred->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -211,7 +211,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolPred->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

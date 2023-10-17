@@ -148,7 +148,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   Card_CONJUNCTION* p_conj_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_FILTER,CK_BOOLCALC))
-    if (pCI->G.p_boolCalc->bYank_conj(MARK_AT, p_conj_corr))
+    if (pCI->G.p_boolPred->bYank_conj(MARK_AT, p_conj_corr))
       break;
   RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
 
@@ -176,12 +176,12 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  pCI->G.p_boolCalc->vBump_stmCol(2);
+  pCI->G.p_boolPred->vBump_stmCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
 
-  pCI->G.p_boolCalc->vPush_CrlKeyConj_As_CrlKeyTest(p_conj_corr);
+  pCI->G.p_boolPred->vPush_CrlKeyConj_As_CrlKeyTest(p_conj_corr);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
@@ -190,9 +190,9 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //           $b.1
   //                               // __subquery0002
 
-  vConvert_CrlSqyPrm_Into_StmCol(pCI, pCI->G.p_boolCalc);
+  vConvert_CrlSqyPrm_Into_StmCol(pCI, pCI->G.p_boolPred);
 
-  vConvert_SubQryCall_Into_StmCol(pCI, pCI->G.p_boolCalc);
+  vConvert_SubQryCall_Into_StmCol(pCI, pCI->G.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the correlation predicate to table as a bounds
@@ -209,8 +209,8 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolCalc);
-  vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolCalc);
+  //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolPred);
+  vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolPred);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -257,8 +257,8 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolCalc->pGetChild(0));
+  pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolPred->pGetChild(0));
   bool bIgnore = p_conj->bConjRecursive(bMarkCorrPred);
   UNUSED(bIgnore);
 

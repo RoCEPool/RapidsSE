@@ -54,7 +54,7 @@ namespace STORE
     Card_Arriving *      p_arriving;
     Card_As *            p_as;
 
-    Card_BoolPred *      p_boolCalc;
+    Card_BoolPred *      p_boolPred;
     Card_Bound *         p_bound;
     Card_Bounds *        p_bounds;
 

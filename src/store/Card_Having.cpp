@@ -97,7 +97,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_boolCalc = pSub_boolCalc();
+  pCI->G.p_boolPred = pSub_boolPred();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -114,7 +114,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn_cmp);
+    pCI->G.p_boolPred->bApplyRecursive_term(bLambdaFn_cmp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -142,7 +142,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPCONJ, bLambdaFn_ro);
+  pCI->G.p_boolPred->bApplyRecursive(CK_CMPCONJ, bLambdaFn_ro);
 }
 
 /*----------------------------------------------------------------------------*/

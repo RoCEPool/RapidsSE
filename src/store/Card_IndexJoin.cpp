@@ -208,8 +208,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   if (! (pCI->G.p_filter = pSub_filter()))
     return;
 
-  if ((pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc()))
-    pCI->G.p_boolCalc->bApplyRecursive_term(bLambda);
+  if ((pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
+    pCI->G.p_boolPred->bApplyRecursive_term(bLambda);
 
 }
 /*----------------------------------------------------------------------------*/

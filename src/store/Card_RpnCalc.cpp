@@ -532,7 +532,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_childA  = nullptr;
         p_childB  = nullptr;
         DELETE_CARD(p_term_next);
-        //p_boolCalc->vDump(0,"AND"_Stz);
+        //p_boolPred->vDump(0,"AND"_Stz);
         break;
 
       case TE_OR:
@@ -549,7 +549,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_childA = nullptr;
         p_childB = nullptr;
         DELETE_CARD(p_term_next);
-        //p_boolCalc->vDump(0,"OR"_Stz);
+        //p_boolPred->vDump(0,"OR"_Stz);
         break;
 
       case TE_NOT:
@@ -562,7 +562,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_notPred = nullptr;
         p_childA  = nullptr;
         DELETE_CARD(p_term_next);
-        //p_boolCalc->vDump(0,"NOT"_Stz);
+        //p_boolPred->vDump(0,"NOT"_Stz);
         break;
 
       case TE_RELNOP:
@@ -586,11 +586,11 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_cmpConj->vCard(CK_CMPCONJ);
           RASSERT(p_cmpConj->bIsRelnOp())
         }
-        //p_boolCalc->vPushChild(p_cmpConj);
+        //p_boolPred->vPushChild(p_cmpConj);
         p_boolCalc->vAppendChild(p_cmpConj);
         p_cmpConj = nullptr;
         DELETE_CARD(p_term_next);
-        //p_boolCalc->vDump(0,"COMPARE"_Stz);
+        //p_boolPred->vDump(0,"COMPARE"_Stz);
         break;
 
       case TE_EXISTS:
@@ -607,7 +607,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_boolCalc->vAppendChild(p_cmpConj);
         p_cmpConj = nullptr;
         DELETE_CARD(p_term_next);
-        //p_boolCalc->vDump(0,"EXISTS"_Stz);
+        //p_boolPred->vDump(0,"EXISTS"_Stz);
         break;
 
       case TE_IN:
@@ -620,7 +620,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           RASSERT(p_cmpConj->bIsSqyOp())
           p_cmpConj = nullptr;
           DELETE_CARD(p_term_next);
-          //p_boolCalc->vDump(0,"BOOLFN/IN"_Stz);
+          //p_boolPred->vDump(0,"BOOLFN/IN"_Stz);
         }
         else {
           p_cmpConj = new Card_CmpConj;
@@ -630,7 +630,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_boolCalc->vAppendChild(p_cmpConj);
           p_cmpConj = nullptr;
           DELETE_CARD(p_term_next);
-          //p_boolCalc->vDump(0,"IN"_Stz);
+          //p_boolPred->vDump(0,"IN"_Stz);
         }
         break;
 
@@ -651,7 +651,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_boolCalc->vAppendChild(p_notPred);
           p_notPred = nullptr;
           p_childA  = nullptr;
-          //p_boolCalc->vDump(0,"BOOLFN/NOTIN"_Stz);
+          //p_boolPred->vDump(0,"BOOLFN/NOTIN"_Stz);
         }
         else {
           p_cmpConj = new Card_CmpConj;
@@ -661,7 +661,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
           p_boolCalc->vAppendChild(p_cmpConj);
           p_cmpConj = nullptr;
           DELETE_CARD(p_term_next);
-          //p_boolCalc->vDump(0,"NOTIN"_Stz);
+          //p_boolPred->vDump(0,"NOTIN"_Stz);
         }
         break;
 
@@ -673,7 +673,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
         p_boolCalc->vAppendChild(p_cmpConj);
         p_cmpConj = nullptr;
         DELETE_CARD(p_term_next);
-        //p_boolCalc->vDump(0,"BOOLFN"_Stz);
+        //p_boolPred->vDump(0,"BOOLFN"_Stz);
         break;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -696,7 +696,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
 
   if (p_TermSeries->nItems()) {
     RASSERT(0 == p_boolCalc->nChildCards());
-    //p_boolCalc->vDump(0,"boolCalc"_Stz);
+    //p_boolPred->vDump(0,"boolCalc"_Stz);
     //p_TermSeries->vDump(0,"termSeries"_Stz);
 
     p_cmpConj = new Card_CmpConj;
@@ -708,7 +708,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
   RASSERT(0 == p_TermSeries->nChildCards());
   delete p_TermSeries;
 
-  //p_boolCalc->vDump();
+  //p_boolPred->vDump();
 
   return p_boolCalc;
 }

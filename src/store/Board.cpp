@@ -138,7 +138,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find and mark possible call to subquery referenced in pCI->G.p_boolCalc    */
+/* find and mark possible call to subquery referenced in pCI->G.p_boolPred    */
 /*----------------------------------------------------------------------------*/
 bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 {
@@ -146,7 +146,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolCalc->pConj_root();
+  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolPred->pConj_root();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

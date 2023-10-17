@@ -42,6 +42,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
+  m_eColType = CT_NONE;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -62,6 +63,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
+  m_eColType = CT_NONE;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);

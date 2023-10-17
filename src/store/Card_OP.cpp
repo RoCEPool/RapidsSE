@@ -731,7 +731,7 @@ void Card_OP::vRpnFilter(String* psRpnExpr, Card_Filter* pCard_Filter)
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card* pCard_test = pCard_Filter->pSub_boolCalc();
+  Card* pCard_test = pCard_Filter->pSub_boolPred();
   if (CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
     vBoolCalc(psRpnExpr, pCard_CalcBool);
@@ -837,7 +837,7 @@ void Card_OP::vRpnHaving(String* psRpnExpr, Card_Having* pCard_Having)
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card* pCard_test = pCard_Having->pSub_boolCalc();
+  Card* pCard_test = pCard_Having->pSub_boolPred();
   if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
     vBoolCalc(psRpnExpr, pCard_CalcBool);
@@ -930,7 +930,7 @@ void Card_OP::vRpnIndexJoin_constraint(String* psRpnExpr, Card_IndexJoin* pCard_
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
     vBoolCalc(psRpnExpr, pCard_CalcBool);
@@ -1094,7 +1094,7 @@ void Card_OP::vRpnKeyExists_constraint(String* psRpnExpr, Card_KeyExists* pCard_
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
     vBoolCalc(psRpnExpr, pCard_CalcBool);
@@ -1185,7 +1185,7 @@ void Card_OP::vRpnKeyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists* 
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
     vBoolCalc(psRpnExpr, pCard_CalcBool);
@@ -1382,7 +1382,7 @@ void Card_OP::vRpnWhere(String* psRpnExpr, Card_Where* pCard_Where)
 
   psRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
-  Card* pCard_test = pCard_Where->pSub_boolCalc();
+  Card* pCard_test = pCard_Where->pSub_boolPred();
   if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
     vBoolCalc(psRpnExpr, pCard_CalcBool);

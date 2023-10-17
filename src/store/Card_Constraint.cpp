@@ -91,7 +91,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 
   i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 
-  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolPred();
 
   Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
   if (! p_conj_ROOT)
@@ -168,10 +168,10 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 //
 //  i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 //
-//  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-//  RASSERT(1 == p_boolCalc->nChildCards());
+//  Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
+//  RASSERT(1 == p_boolPred->nChildCards());
 //
-//  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+//  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pGetChild(0));
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
@@ -231,7 +231,7 @@ i8 Card_Constraint::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolPred* p_boolCalc = pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pSub_boolPred();
   i8 nCulled = p_boolCalc->nCullConj(szWithMark);
 
   return nCulled;
@@ -244,8 +244,8 @@ void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-    pCI->G.p_boolCalc->vEnsureTypesFor_stmCol(pCI);
+  if ((pCI->G.p_boolPred = pSub_boolPred()))
+    pCI->G.p_boolPred->vEnsureTypesFor_stmCol(pCI);
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
     pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
@@ -260,7 +260,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 
-  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolPred();
 
   Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
   if (! p_conj_ROOT)
@@ -327,9 +327,9 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //
 //  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 //
-//  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+//  Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
 //
-//  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
+//  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pConj_root());
 //  if (! p_conj_ROOT)
 //    return;
 //

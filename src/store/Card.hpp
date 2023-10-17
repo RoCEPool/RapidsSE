@@ -418,7 +418,7 @@ namespace STORE
     Card_Aggreg*        pSub_aggreg(void);
     Card_Arriving*      pSub_arriving(void);
     Card_As*            pSub_as(void);
-    Card_BoolPred*      pSub_boolCalc(void);
+    Card_BoolPred*      pSub_boolPred(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
     Card_Cast*          pSub_cast(void);

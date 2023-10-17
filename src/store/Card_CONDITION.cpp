@@ -64,7 +64,7 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSub_boolCalc()->bApplyRecursive_term(bLambda);
+  pSub_boolPred()->bApplyRecursive_term(bLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,8 +74,8 @@ void Card_CONDITION::vX_stmCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-    pCI->G.p_boolCalc->vX_stmCol_To_tblCol(pCI);
+  if ((pCI->G.p_boolPred = pSub_boolPred()))
+    pCI->G.p_boolPred->vX_stmCol_To_tblCol(pCI);
   else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
     pCI->G.p_rpnCalc->vX_stmCol_To_tblCol(pCI);
 }
@@ -87,8 +87,8 @@ void Card_CONDITION::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-    pCI->G.p_boolCalc->vX_tblCol_To_stmCol(pCI);
+  if ((pCI->G.p_boolPred = pSub_boolPred()))
+    pCI->G.p_boolPred->vX_tblCol_To_stmCol(pCI);
   else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
     pCI->G.p_rpnCalc->vX_tblCol_To_stmCol(pCI);
 }
@@ -100,7 +100,7 @@ void Card_CONDITION::vShortForm(String* p_string)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolCalc())
+  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
     p_boolCalc->vShortForm(p_string);
 }
 
