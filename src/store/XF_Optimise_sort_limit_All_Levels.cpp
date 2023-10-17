@@ -73,7 +73,7 @@ bool XF_Optimise_sort_limit_All_Levels::bOptimise(void)
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_SORT_LIMIT_ALL_LEVELS]);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;

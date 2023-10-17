@@ -67,7 +67,7 @@ void XF_Epilog_ItemStrip_colNm::vItemStrip(void)
   Card_As::vItemStrip_colNm(m_pCI);
   Card_Term::vItemStrip_colNm(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

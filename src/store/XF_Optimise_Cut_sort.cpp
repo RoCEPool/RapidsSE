@@ -108,7 +108,7 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
     }
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
 }

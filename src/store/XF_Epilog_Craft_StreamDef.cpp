@@ -68,7 +68,7 @@ void XF_Epilog_Craft_StreamDef::vCraft(void)
   while (m_pCI->G_bEachMain_NONE()) {
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

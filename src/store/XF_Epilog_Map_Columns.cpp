@@ -79,7 +79,7 @@ void XF_Epilog_Map_Columns::vMap_Columns(void)
     m_pCI->G.p_OP->vMapColumns(m_pCI);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

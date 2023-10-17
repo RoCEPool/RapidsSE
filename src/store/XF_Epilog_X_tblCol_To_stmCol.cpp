@@ -78,7 +78,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_stmCol(void)
     vDebugPoint();
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 

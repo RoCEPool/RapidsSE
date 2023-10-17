@@ -88,7 +88,7 @@ void XF_Epilog_Promote_filter::vPromote_filter(void)
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

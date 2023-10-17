@@ -141,7 +141,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 /*----------------------------------------------------------------------------*/
 //void XF_Epilog_Hash_Columns::vHash_Columns(void)
@@ -202,7 +202,7 @@ void XF_Epilog_Hash_Columns::vHash_Columns(void)
 //
 //  }
 //
-//  m_pCI->vEndTransform();
+//  m_pCI->vEndTransform(__LINE__);
 //}
 
 /*============================================================================*/

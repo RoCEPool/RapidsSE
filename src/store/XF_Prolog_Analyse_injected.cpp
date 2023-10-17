@@ -84,7 +84,7 @@ void XF_Prolog_Analyse_injected::vAnalyse_injected(void)
     m_pCI->G.p_from->vAnalyse_injected(m_pCI);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +111,7 @@ void XF_Prolog_Analyse_injected::vAnalyse_injected_passThru(void)
     m_pCI->G.p_indexJoin->vAnalyse_injected(m_pCI);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

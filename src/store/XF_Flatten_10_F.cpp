@@ -108,7 +108,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
     }
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   delete pSmooth;
   delete pCarryForward;

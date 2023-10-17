@@ -92,7 +92,7 @@ void XF_Prolog_Erase_construction::vProlog(void)
     m_pCI->G_vRemoveDeleteMain(CK_STAGE);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

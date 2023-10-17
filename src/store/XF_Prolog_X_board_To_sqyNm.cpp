@@ -91,7 +91,7 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
   bool b = m_pCI->G.pDeck->bApplyRecursive(CK_NONE, bfTo_sqyNm);
   UNUSED(b);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

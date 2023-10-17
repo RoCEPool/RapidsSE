@@ -87,7 +87,7 @@ void XF_Epilog_Add_inflate::vBifurcate_inflate(void)
 
     }
   }
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

@@ -93,7 +93,7 @@ bool XF_Optimise_gbyAgg_To_ordAgg::bOptimise(void)
     }
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
 }

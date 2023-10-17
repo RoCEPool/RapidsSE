@@ -72,7 +72,7 @@ void XF_Epilog_Reinstate_stage::vReinstate_stage(void)
 
   Card_Stage::vReinstate_stages(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

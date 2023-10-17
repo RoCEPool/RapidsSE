@@ -75,7 +75,7 @@ bool XF_Optimise_Reduce_gbyAgg_key::bOptimise(void)
 
   ///m_pCI->pBoard()->pState()->vInsert(aOT[OT_REDUCE_GBYAGG_KEY]);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;

@@ -93,7 +93,7 @@ void XF_Prolog_X_rpnCalc_To_boolPred::vX_rpnCalc_To_boolPred(void)
 //    m_pCI->G_vDeleteMember(m_pCI->G.p_rpnCalc);
 //  }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

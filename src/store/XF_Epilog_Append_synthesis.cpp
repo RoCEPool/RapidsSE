@@ -72,7 +72,7 @@ void XF_Epilog_Append_synthesis::vAppend_synthesis(void)
     m_pCI->G_vAppendNewChild(m_pCI->G.p_MainCard, CK_SYNTHESIS);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

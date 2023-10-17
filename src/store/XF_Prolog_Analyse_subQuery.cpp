@@ -134,7 +134,7 @@ void XF_Prolog_Analyse_subQuery::vAnalyse_subQuery(void)
   }
 
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

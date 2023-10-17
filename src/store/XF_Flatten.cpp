@@ -337,7 +337,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
   else
     NEVER_REACH;
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

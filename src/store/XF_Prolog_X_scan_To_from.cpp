@@ -73,7 +73,7 @@ void XF_Prolog_X_scan_To_from::vX_scan_To_from(void)
   while (m_pCI->G_bEachMain(CK_SCAN))
     m_pCI->G.p_scan->vCard(CK_FROM);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
 }
 

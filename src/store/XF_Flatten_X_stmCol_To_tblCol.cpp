@@ -104,7 +104,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
 
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

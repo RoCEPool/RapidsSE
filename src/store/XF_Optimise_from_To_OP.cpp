@@ -75,7 +75,7 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
 
   bOptRun = true;
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
 }

@@ -76,7 +76,7 @@ void XF_Epilog_X_stmCol_To_colNm::vX_stmCol_to_colNm(void)
       m_pCI->G.p_constraint->vConvert_stmCol_To_stmColNm(m_pCI);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

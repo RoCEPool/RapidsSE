@@ -138,7 +138,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
     m_pCI->G.p_table->vAppendChild(m_pCI->G.p_tableInfo);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
 //  m_pCI->vClearRestart();
 //  Card_Table::vProduceTablePtns(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

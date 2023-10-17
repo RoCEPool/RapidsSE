@@ -1142,7 +1142,7 @@ void CardIter::vEndPhase(void)
 /*----------------------------------------------------------------------------*/
 /* end of transformation                                                      */
 /*----------------------------------------------------------------------------*/
-void CardIter::vEndTransform(void)
+void CardIter::vEndTransform(i8 iLineNo)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -1163,7 +1163,7 @@ void CardIter::vEndTransform(void)
       xDeck.pChild()->vEnsureLast(CK_NEEDED);
     }
 
-    vPrintBoard();
+    vPrintBoard(iLineNo);
 
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
       ShortForm *pShortForm = new ShortForm(this);
@@ -2036,7 +2036,10 @@ void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
 
 
   s256 sWhere;
-  sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXfunc());
+  if (C_UNKNOWN == iLineNo)
+    sWhere.vCatSprint("%s :: %s"_Stz, aXF[m_pBench->eXform()],szXfunc());
+  else
+    sWhere.vCatSprint("%s :: %s:%lld"_Stz, aXF[m_pBench->eXform()], szXfunc(), iLineNo);
 
   vTrace("%s\n"_Stz, sWhere.azChar());
 }

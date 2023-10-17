@@ -66,7 +66,7 @@ void XF_Epilog_Add_hash_cast::vAdd_hash_cast(void)
 
   m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

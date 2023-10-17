@@ -74,7 +74,7 @@ void XF_Prolog_Ensure_level::vEnsure_level(void)
     m_pCI->G.p_MainCard->vPushChild(p_level);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

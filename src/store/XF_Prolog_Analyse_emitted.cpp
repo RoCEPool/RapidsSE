@@ -80,7 +80,7 @@ void XF_Prolog_Analyse_emitted::vXF_Analyse_emitted(void)
 
   m_pCI->G.pDeck->vAnalyse_emitted(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ void XF_Prolog_Analyse_emitted::vXF_projection_Analysis_passThru(void)
 
   m_pCI->G.pDeck->vAnalyse_emitted_passThru(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

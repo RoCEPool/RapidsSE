@@ -90,7 +90,7 @@ void XF_Prolog_Review_as::vReview_as(void)
    // m_pCI->vPrintBoard(__LINE__);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

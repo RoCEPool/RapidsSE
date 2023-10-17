@@ -68,7 +68,7 @@ void XF_Epilog_Determine_Columns::vDeterime_Columns(void)
   while (m_pCI->G_bEachMain_NONE()) {
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

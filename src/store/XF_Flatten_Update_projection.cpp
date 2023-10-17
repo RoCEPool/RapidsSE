@@ -67,7 +67,7 @@ void XF_Flatten_Update_projection::vXF_Update_projection(void)
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
  // m_pCI->vRenumberCards();
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

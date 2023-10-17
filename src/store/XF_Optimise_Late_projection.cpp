@@ -73,7 +73,7 @@ bool XF_Optimise_Late_projection::bOptimise(void)
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_LATE_PROJECTION]);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;

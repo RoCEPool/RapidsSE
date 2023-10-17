@@ -84,7 +84,7 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

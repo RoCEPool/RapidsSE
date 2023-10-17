@@ -121,7 +121,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     DELETE_CARD(m_pCI->G.p_on);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

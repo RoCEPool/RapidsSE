@@ -67,7 +67,7 @@ void XF_Epilog_Itemise_Columns::vItemise_Columns(void)
   Card_As::vItemise_colNm(m_pCI);
   Card_Term::vItemise_colNm(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

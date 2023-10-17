@@ -75,7 +75,7 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
     vConvert_colNm_To_stmCol();
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

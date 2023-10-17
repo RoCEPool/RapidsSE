@@ -86,7 +86,7 @@ void XF_Flatten_Left_subQuery::vRemove_LeftMost(void)
     }
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +103,7 @@ void XF_Flatten_Left_subQuery::vRotate_Next(void)
     m_pCI->G.pDeck->vRotateFirst(xDeck.pChild());
   }
 
-  //m_pCI->vEndTransform();
+  //m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

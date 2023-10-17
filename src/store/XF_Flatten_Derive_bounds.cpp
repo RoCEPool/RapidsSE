@@ -68,7 +68,7 @@ void XF_Flatten_Derive_bounds::vXF_Derive_bounds(void)
 
   m_pCI->G.pDeck->vMarksClearRecursive();
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

@@ -106,7 +106,7 @@ void XF_Prolog_Reduce_not::vXF_not_Ops(void)
 
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

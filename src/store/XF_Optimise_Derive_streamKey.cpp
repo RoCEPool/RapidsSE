@@ -77,7 +77,7 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
     bOptRun = true;
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;

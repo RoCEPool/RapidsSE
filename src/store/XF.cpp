@@ -294,14 +294,14 @@ void XF::vTransform_passThru(void)
     while (m_pCI->G_bEachMainWith2Sub(CK_SORT, CK_KEY, CK_EMITTED)) {
       m_pCI->G.p_emitted->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
-    m_pCI->vEndTransform();
+    m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_TOP, "adjust top"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWith2Sub(CK_TOP, CK_KEY, CK_EMITTED)) {
       m_pCI->G.p_emitted->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
-    m_pCI->vEndTransform();
+    m_pCI->vEndTransform(__LINE__);
 
 
 
@@ -311,28 +311,28 @@ void XF::vTransform_passThru(void)
       m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
-    m_pCI->vEndTransform();
+    m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_INDEXSCAN, "tweak index scan"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
       m_pCI->G.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
-    m_pCI->vEndTransform();
+    m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYEXISTS, "tweak key exists"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
       m_pCI->G.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
-    m_pCI->vEndTransform();
+    m_pCI->vEndTransform(__LINE__);
     m_pCI->vTransform(__func__, XF_PASSTHRU_TWEAK_KEYNOTEXISTS, "tweak key not exists"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_KEYNOTEXISTS)) {
       m_pCI->G.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_keyNotExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
-    m_pCI->vEndTransform();
+    m_pCI->vEndTransform(__LINE__);
 
     XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI);
 

@@ -90,7 +90,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index(void)
   m_pCI->vClearRestart();
   Card_Table::vAffixTableColOrd(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 
@@ -137,7 +137,7 @@ void XF_Prolog_Analyse_index::vXF_Analyse_index_passThru(void)
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/
