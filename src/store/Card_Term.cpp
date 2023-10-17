@@ -80,8 +80,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
     else
-    if (Card_BoolPred* p_boolCalc = _pCard_BoolPred(pCI->pAncestorFind(CK_BOOLCALC))) {
-      i8 iItemise = p_boolCalc->iItemise();
+    if (Card_BoolPred* p_boolPred = _pCard_BoolPred(pCI->pAncestorFind(CK_BOOLPRED))) {
+      i8 iItemise = p_boolPred->iItemise();
       p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
       return C_CONTINUE_RECURSION;
     }
@@ -568,7 +568,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
           pParent->eCard() == CK_ANDCONJ ||
           pParent->eCard() == CK_BOUND || // todo: is a bound a boolCalc?
-          pParent->eCard() == CK_BOOLCALC ||
+          pParent->eCard() == CK_BOOLPRED ||
           pParent->eCard() == CK_CMPCONJ ||
           pParent->eCard() == CK_HASHING ||
           pParent->eCard() == CK_NOTCONJ ||

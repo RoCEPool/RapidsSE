@@ -187,8 +187,8 @@ void Card_Expr::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    p_boolCalc->vBump_stmCol(nBumpBy, bSkipFoldExpr);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vBump_stmCol(nBumpBy, bSkipFoldExpr);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vBump_stmCol(nBumpBy, bSkipFoldExpr);
@@ -281,8 +281,8 @@ void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    p_boolCalc->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vDeleteFacetIf(eFacet, eAlsoFacet, cTblSyn);
@@ -461,8 +461,8 @@ bool Card_Expr::bIsCompound(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   bool bCompound = false;
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred()) {
-    bCompound = p_boolCalc->bIsCompound();
+  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
+    bCompound = p_boolPred->bIsCompound();
   }
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
@@ -480,8 +480,8 @@ bool Card_Expr::bIsLiterals(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   bool bCompound = false;
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred()) {
-    bCompound = p_boolCalc->bIsLiterals();
+  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
+    bCompound = p_boolPred->bIsLiterals();
   }
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
@@ -499,8 +499,8 @@ bool Card_Expr::bIsScalarCol(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   bool bScalarCol = false;
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred()) {
-    bScalarCol = p_boolCalc->bIsScalarCol();
+  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
+    bScalarCol = p_boolPred->bIsScalarCol();
   }
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
@@ -518,8 +518,8 @@ bool Card_Expr::bIsScalarKey(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   bool bScalarKey = false;
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred()) {
-    bScalarKey = p_boolCalc->bIsScalarKey();
+  if (Card_BoolPred* p_boolPred = pSub_boolPred()) {
+    bScalarKey = p_boolPred->bIsScalarKey();
   }
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
@@ -552,8 +552,8 @@ bool Card_Expr::bHasTerm(Symbol* pSymbol)
 
   bool bHas = false;
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    bHas = p_boolCalc->bHasTerm(pSymbol);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    bHas = p_boolPred->bHasTerm(pSymbol);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     bHas = p_rpnCalc->bHasTerm(pSymbol);
@@ -694,8 +694,8 @@ void Card_Expr::vShortForm(String* pString, Stz* szSep)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    p_boolCalc->vShortForm(pString);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vShortForm(pString);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vShortForm(pString,szSep);
@@ -711,8 +711,8 @@ eCT Card_Expr::eColType(void)
 
   eCT eColType = CT_NONE;
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    eColType = p_boolCalc->eColType();
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    eColType = p_boolPred->eColType();
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     eColType = p_rpnCalc->eColType();
@@ -727,8 +727,8 @@ void Card_Expr::vX_stmCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    p_boolCalc->vX_stmCol_To_tblCol(pCI);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vX_stmCol_To_tblCol(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vX_stmCol_To_tblCol(pCI);
@@ -744,8 +744,8 @@ void Card_Expr::vX_tblCol_To_stmCol(CardIter* pCI)
   i8 nAncestors = pCI->nAncestors();
   pCI->vAncestorPush(this);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    p_boolCalc->vX_tblCol_To_stmCol(pCI);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vX_tblCol_To_stmCol(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vX_tblCol_To_stmCol(pCI);

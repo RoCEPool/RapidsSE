@@ -144,8 +144,8 @@ void Card_Filter::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    p_boolCalc->vCorrectStmCol(p_emitted_prior);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vCorrectStmCol(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,8 +155,8 @@ i8 Card_Filter::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolPred* p_boolCalc = pSub_boolPred();
-  i8 nCulled = p_boolCalc->nCullConj(szWithMark);
+  Card_BoolPred* p_boolPred = pSub_boolPred();
+  i8 nCulled = p_boolPred->nCullConj(szWithMark);
 
   return nCulled;
 }
@@ -215,7 +215,7 @@ bool Card_Filter::bIsEmpty(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolPred* pCard_calcBool =
-      _pCard_BoolPred(this->pFindSubCard(CK_BOOLCALC));
+      _pCard_BoolPred(this->pFindSubCard(CK_BOOLPRED));
 
   if (0 == pCard_calcBool->nChildCards())
     return true;
@@ -246,7 +246,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_BOOLCALC,CK_NONE);
+  vValidate_mustHave(CK_BOOLPRED, CK_NONE);
 
   if (iDepth > 2) {
    // pCI->vPrintBoard();

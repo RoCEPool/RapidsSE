@@ -72,10 +72,10 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
     Card_Filter* p_filter = _pCard_Filter(xKid.pSub1());
 
-    Card_BoolPred* p_boolCalc = p_filter->pSub_boolPred();
+    Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
 
     nFilters = 0;
-    p_boolCalc->bApplyRecursive(CK_CMPCONJ, bLambda);
+    p_boolPred->bApplyRecursive(CK_CMPCONJ, bLambda);
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;

@@ -71,7 +71,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
   m_pCI->vBeginEachReverse();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
     m_pCI->G.p_boolPred->vMarkWrt_table(m_pCI);
   }
 
@@ -83,7 +83,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vClearRestart();
   m_pCI->vBeginEachReverse();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
     m_pCI->G.p_boolPred->vCopyMarkedConjToTable(m_pCI);
   }
 
@@ -92,7 +92,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vClearRestart();
   m_pCI->vBeginEachReverse();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLCALC)) {
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
     m_pCI->G.p_boolPred->nCullConj(MARK_AT);
   }
 

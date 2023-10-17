@@ -147,7 +147,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               //             %1
 
   Card_CONJUNCTION* p_conj_corr = nullptr;
-  while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_FILTER,CK_BOOLCALC))
+  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_FILTER, CK_BOOLPRED))
     if (pCI->G.p_boolPred->bYank_conj(MARK_AT, p_conj_corr))
       break;
   RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
@@ -175,7 +175,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->Prior.m_pEmitted = pCI->G.p_MainCard->pSub_emitted();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
-  RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
+  RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED));
   pCI->G.p_boolPred->vBump_stmCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -208,7 +208,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //             b <-  cp          //             %1
 
   RASSERT(pCI->G_bEachMain(CK_FOLD));
-  RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
+  RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED));
   //Board::vMove_corrPred_To_mq_table_As_bounds(pCI, pCI->G.p_boolPred);
   vMove_corrPred_To_table_filter(pCI, pCI->G.p_boolPred);
 
@@ -432,7 +432,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolCalc)
+void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
@@ -506,7 +506,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(p_boolPred->pGetChild(0));
 
   vResolve(p_conj, vResolve);
 }
@@ -514,7 +514,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolCalc)
+void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
@@ -592,7 +592,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(p_boolPred->pGetChild(0));
 
   vResolve(p_conj, vResolve);
 }
@@ -600,11 +600,11 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred *p_boolCalc)
+void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred *p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_corr = p_boolCalc->pFindRemove_conj_corr();
+  Card_CONJUNCTION* p_conj_corr = p_boolPred->pFindRemove_conj_corr();
   if (! p_conj_corr)
     return;
 

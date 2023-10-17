@@ -18,7 +18,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_BoolPred, CK_BOOLCALC)
+__pCastFunction_Card(STORE, Card_BoolPred, CK_BOOLPRED)
 __aNewFunction(Card_BoolPred, CN_CARD)
 __vDeleteFunction(Card_BoolPred, CN_CARD)
 
@@ -27,7 +27,7 @@ __vDeleteFunction(Card_BoolPred, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_BoolPred::Card_BoolPred(void)
-: Card_TERMLIST(CK_BOOLCALC, C_UNKNOWN)
+: Card_TERMLIST(CK_BOOLPRED, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -612,7 +612,7 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  auto bYank = [](Card_BoolPred* p_boolCalc,
+  auto bYank = [](Card_BoolPred* p_boolPred,
                   Stz* szWithMark,
                   Card* p_test,
                   Card_CONJUNCTION*& p_conj_yanked,
@@ -623,7 +623,7 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
     if (Card_CONJUNCTION::bIsConj(p_test)) {
       if (p_test->bMark1(szWithMark)) {
         p_conj_yanked = static_cast<Card_CONJUNCTION*>(p_test);
-        p_boolCalc->vRemove_conj(p_conj_yanked);
+        p_boolPred->vRemove_conj(p_conj_yanked);
         RASSERT(p_conj_yanked);
         return true;
       }
@@ -631,7 +631,7 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
 
     Kid xKid(p_test);
     while (xKid.bEach()) {
-      if (bYank(p_boolCalc,szWithMark,xKid.pChild(),p_conj_yanked,bYank)) {
+      if (bYank(p_boolPred,szWithMark,xKid.pChild(),p_conj_yanked,bYank)) {
         RASSERT(p_conj_yanked);
         return true;
       }

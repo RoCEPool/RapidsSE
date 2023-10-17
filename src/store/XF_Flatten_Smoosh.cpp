@@ -154,14 +154,14 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
  // pCI->vPrintBoard();
 
   pCI->vClearRestart();
-  if (pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
+  if (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED)) {
     pCI->G.p_boolPred->nCullConj(MARK_AT);
   }
 
  // pCI->vPrintBoard();
 
   pCI->vClearRestart();
-  pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
+  pCI->G_vDeleteWhenEmptySub(CK_WHERE, CK_BOOLPRED);
 
  // pCI->vRenumberCards();
  // pCI->vPrintBoard(__LINE__);

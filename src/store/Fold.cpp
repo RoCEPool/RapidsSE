@@ -217,7 +217,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   pCI->vBeginEachReverse();
-  if (pCI->G_bEachMainWithSub_reverse_foldBreak_b(eCardWithSQ, CK_BOOLCALC)) {
+  if (pCI->G_bEachMainWithSub_reverse_foldBreak_b(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
       NEVER_REACH
@@ -371,7 +371,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   pCI->vBeginEach();
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
-  if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
+  if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
       NEVER_REACH
@@ -477,7 +477,7 @@ i8 Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
   pCI->vClearRestart();
-  if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
+  if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLPRED)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);
       NEVER_REACH

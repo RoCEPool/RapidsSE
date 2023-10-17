@@ -100,8 +100,8 @@ void Card_CONDITION::vShortForm(String* p_string)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolPred* p_boolCalc = pSub_boolPred())
-    p_boolCalc->vShortForm(p_string);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vShortForm(p_string);
 }
 
 

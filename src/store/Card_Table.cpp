@@ -257,8 +257,8 @@ void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_conj)
   }
   else {
     pCI->G_vAppendNewChild(this,CK_FILTER);
-    pCI->G_vAppendNewChild(pCI->G.p_filter,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_BOOLCALC,p_conj);
+    pCI->G_vAppendNewChild(pCI->G.p_filter, CK_BOOLPRED);
+    pCI->G_vAppendChild(CK_BOOLPRED, p_conj);
   }
 }
 
@@ -335,9 +335,9 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
     vDebugPoint();
 
 
-  Card_BoolPred* p_boolCalc = pCI->G.p_filter->pSub_boolPred();
-  RASSERT(1 == p_boolCalc->nChildCards());
-  Card_CONJUNCTION* p_conj_root = p_boolCalc->pConj_root();
+  Card_BoolPred* p_boolPred = pCI->G.p_filter->pSub_boolPred();
+  RASSERT(1 == p_boolPred->nChildCards());
+  Card_CONJUNCTION* p_conj_root = p_boolPred->pConj_root();
 
   Kid xKid(pCI->G.p_indexList);
   while (xKid.bEach(CK_INDEX)) {

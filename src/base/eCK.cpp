@@ -17,7 +17,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_ARRIVING"_Stz,     // CK_ARRIVING
   /* */ "CK_AS"_Stz,           // CK_AS
 
-  /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+  /* */ "CK_BOOLPRED"_Stz,     // CK_BOOLPRED
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
@@ -164,7 +164,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "arriving"_Stz,        // CK_ARRIVING
   /* */ "as"_Stz,              // CK_AS
 
-  /* */ "boolCalc"_Stz,        // CK_BOOLCALC
+  /* */ "boolCalc"_Stz,        // CK_BOOLPRED
   /* */ "bound"_Stz,           // CK_BOUND
   /* */ "bounds"_Stz,          // CK_BOUNDS
 

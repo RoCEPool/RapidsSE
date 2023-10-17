@@ -2140,9 +2140,9 @@ Card_BoolPred* Card::pSub_boolPred(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolPred* p_boolCalc =
-      _pCard_BoolPred(pFindSubCard(CK_BOOLCALC));
-  return p_boolCalc;
+  Card_BoolPred* p_boolPred =
+      _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
+  return p_boolPred;
 }
 
 /*----------------------------------------------------------------------------*/
