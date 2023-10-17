@@ -478,7 +478,7 @@ void Card_RpnCalc::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
+Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

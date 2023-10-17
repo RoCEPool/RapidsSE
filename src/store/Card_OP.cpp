@@ -734,7 +734,7 @@ void Card_OP::vRpnFilter(String* psRpnExpr, Card_Filter* pCard_Filter)
   Card* pCard_test = pCard_Filter->pSub_boolPred();
   if (CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolCalc(psRpnExpr, pCard_CalcBool);
+    vBoolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_rpnCalc();
@@ -840,7 +840,7 @@ void Card_OP::vRpnHaving(String* psRpnExpr, Card_Having* pCard_Having)
   Card* pCard_test = pCard_Having->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolCalc(psRpnExpr, pCard_CalcBool);
+    vBoolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Having->pSub_rpnCalc();
@@ -933,7 +933,7 @@ void Card_OP::vRpnIndexJoin_constraint(String* psRpnExpr, Card_IndexJoin* pCard_
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolCalc(psRpnExpr, pCard_CalcBool);
+    vBoolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
@@ -1097,7 +1097,7 @@ void Card_OP::vRpnKeyExists_constraint(String* psRpnExpr, Card_KeyExists* pCard_
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolCalc(psRpnExpr, pCard_CalcBool);
+    vBoolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
@@ -1188,7 +1188,7 @@ void Card_OP::vRpnKeyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists* 
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolCalc(psRpnExpr, pCard_CalcBool);
+    vBoolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
@@ -1385,7 +1385,7 @@ void Card_OP::vRpnWhere(String* psRpnExpr, Card_Where* pCard_Where)
   Card* pCard_test = pCard_Where->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolCalc(psRpnExpr, pCard_CalcBool);
+    vBoolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Where->pSub_rpnCalc();
@@ -1409,14 +1409,14 @@ void Card_OP::vAs(String* psRpnExpr, Card_As* pCard_As)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <calcBool>                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vBoolCalc(String* psRpnExpr, Card_BoolPred* pCard_BoolCalc)
+void Card_OP::vBoolPred(String* psRpnExpr, Card_BoolPred* pCard_BoolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCard_BoolCalc->bIsBraced())
+  if (pCard_BoolPred->bIsBraced())
     psRpnExpr->vConcat(" }"_Stz);
 
-  vBoolPart(psRpnExpr, pCard_BoolCalc, 0);
+  vBoolPart(psRpnExpr, pCard_BoolPred, 0);
 }
 
 /*----------------------------------------------------------------------------*/

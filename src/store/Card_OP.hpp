@@ -71,7 +71,7 @@ namespace STORE
     void vRpnWhere       (String* psRpnExpr, Card_Where*     pCard_Where);
 
     void vAs          (String* psRpnExpr, Card_As*        pCard_As);
-    void vBoolCalc    (String* psRpnExpr, Card_BoolPred*  pCard_BoolCalc);
+    void vBoolPred    (String* psRpnExpr, Card_BoolPred*  pCard_BoolPred);
     void vBoolPart    (String* psRpnExpr, Card*           p_part, i8 i);
     void vExpr        (String* psRpnExpr, Card_Expr*      pCard_Expr);
     void vRpnCalc     (String* psRpnExpr, Card_RpnCalc*   pCard_RpnCalc);

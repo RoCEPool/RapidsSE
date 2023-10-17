@@ -164,7 +164,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "arriving"_Stz,        // CK_ARRIVING
   /* */ "as"_Stz,              // CK_AS
 
-  /* */ "boolCalc"_Stz,        // CK_BOOLPRED
+  /* */ "boolPred"_Stz,        // CK_BOOLPRED
   /* */ "bound"_Stz,           // CK_BOUND
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
