@@ -163,29 +163,29 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [m_pCI](Card_CONJUNCTION *p_pred, bool bUpwards)
+  auto bLambdaFn = [m_pCI](Card_CONJUNCTION *p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (p_pred->bIsCard(CK_TERM))
+    if (p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Stz* szValue_term = p_pred->szSymbol(SF_NONE);
+    Stz* szValue_term = p_conj->szSymbol(SF_NONE);
     eRO eRelnOp = RelOp::eDecode(szValue_term);
 
     if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
 
-    Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(m_pCI);
+    Stz* szSubBoardNm = p_conj->szGetBoardNmInTerm(m_pCI);
     if ( ! szSubBoardNm || !m_pCI->G_bIsBoardNm(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
-    p_pred->pSymbol()->Y_vSet(P_SqyCall);
+    p_conj->pSymbol()->Y_vSet(P_SqyCall);
 
     Board* pSubBoard = m_pCI->m_pBench->pGetBoard(szSubBoardNm);
     SubQuery* pSubQuery = pSubBoard->pSubQuery();
@@ -200,7 +200,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 }
 
@@ -211,19 +211,19 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolCalc->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [m_pCI](Card_CONJUNCTION *p_pred, bool bUpwards)
+  auto bLambdaFn = [m_pCI](Card_CONJUNCTION *p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (p_pred->bIsCard(CK_TERM))
+    if (p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Stz *szSubBoardNm = p_pred->szGetBoardNmInTerm(m_pCI);
+    Stz *szSubBoardNm = p_conj->szGetBoardNmInTerm(m_pCI);
     if (! szSubBoardNm || !m_pCI->G_bIsBoardNm(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
@@ -233,15 +233,15 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    RASSERT(p_pred->bIsCard(CK_CMPCONJ));
+    RASSERT(p_conj->bIsCard(CK_CMPCONJ));
 
-    p_pred->pSymbol()->Y_vSet(P_SqyCall);
+    p_conj->pSymbol()->Y_vSet(P_SqyCall);
 
-    Stz* szValue_pred = p_pred->szSymbol(SF_NONE);
+    Stz* szValue_conj = p_conj->szSymbol(SF_NONE);
 
-    if (p_pred->bIsRelnOp()) {
+    if (p_conj->bIsRelnOp()) {
 
-      eRO eRelnOp = RelOp::eDecode(szValue_pred);
+      eRO eRelnOp = RelOp::eDecode(szValue_conj);
       RASSERT(RO_NONE != eRelnOp);
 
       pSubQuery->vCaller(m_pCI->G.i_Board);
@@ -251,9 +251,9 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
       return C_CONTINUE_RECURSION;
     }
 
-    RASSERT(p_pred->bIsSqyOp());
+    RASSERT(p_conj->bIsSqyOp());
 
-    eQO eSubQryOp = p_pred->pSymbol()->eEvalSubQryOp();
+    eQO eSubQryOp = p_conj->pSymbol()->eEvalSubQryOp();
     RASSERT(QO_NONE != eSubQryOp);
 
     pSubQuery->vCaller(m_pCI->G.i_Board);
@@ -264,7 +264,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 }
 

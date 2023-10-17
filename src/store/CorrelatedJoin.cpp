@@ -146,11 +146,11 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
   //                               //             %1
 
-  Card_CONJUNCTION* p_PRED_corr = nullptr;
+  Card_CONJUNCTION* p_conj_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_FROM,CK_FILTER,CK_BOOLCALC))
-    if (pCI->G.p_boolCalc->bYank_conj(MARK_AT, p_PRED_corr))
+    if (pCI->G.p_boolCalc->bYank_conj(MARK_AT, p_conj_corr))
       break;
-  RASSERT(p_PRED_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
+  RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
 
   // tidy up empty SQ:<table>/<filter>
   pCI->G.p_from->vDeleteFilterIfEmpty(pCI->G.p_filter);
@@ -181,7 +181,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>
 
-  pCI->G.p_boolCalc->vPush_CrlKeyConj_As_CrlKeyTest(p_PRED_corr);
+  pCI->G.p_boolCalc->vPush_CrlKeyConj_As_CrlKeyTest(p_conj_corr);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
@@ -236,30 +236,30 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
   // pre-fold identify the <table>/<filter>/<boolCalc>/<cmpPred> which is correlated by parameter
   bool bIsCorrPred = false;
 
-  auto bMarkCorrPred = [pCI,&bIsCorrPred](Card_CONJUNCTION* p_pred, bool bUpwards)
+  auto bMarkCorrPred = [pCI,&bIsCorrPred](Card_CONJUNCTION* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (!p_pred->bIsCorrConj())
+    if (!p_conj->bIsCorrConj())
       return C_CONTINUE_RECURSION;
 
-    //p_pred->vDump();
+    //p_conj->vDump();
     bIsCorrPred = true;
 
-    Card_Term* pTerm_corrCol = static_cast<Card_CmpConj *>(p_pred)->pGetCorrCol();
+    Card_Term* pTerm_corrCol = static_cast<Card_CmpConj *>(p_conj)->pGetCorrCol();
     pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
 
-    p_pred->vMark1(MARK_AT);
-    p_pred->pSymbol()->Y_vSet(P_CrlKeyPred);
+    p_conj->vMark1(MARK_AT);
+    p_conj->pSymbol()->Y_vSet(P_CrlKeyPred);
     return C_TERMINATE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-  Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolCalc->pGetChild(0));
-  bool bIgnore = p_PRED->bConjRecursive(bMarkCorrPred);
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolCalc->pGetChild(0));
+  bool bIgnore = p_conj->bConjRecursive(bMarkCorrPred);
   UNUSED(bIgnore);
 
   return bIsCorrPred;
@@ -439,20 +439,20 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vResolve = [pCI](Card_CONJUNCTION* p_pred,
+  auto vResolve = [pCI](Card_CONJUNCTION* p_conj,
                         auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (!Card_CONJUNCTION::bIsConj(p_pred))
+    if (!Card_CONJUNCTION::bIsConj(p_conj))
       return; /* this effectively declares resolve as void */
 
-    if (p_pred->bIsCard(CK_CMPCONJ)) {
+    if (p_conj->bIsCard(CK_CMPCONJ)) {
 
-      if (!p_pred->pSymbol()->Y_bHas(P_CrlKeyTest))
+      if (!p_conj->pSymbol()->Y_bHas(P_CrlKeyTest))
         return;
 
-      RASSERT(p_pred->pSymbol()->bSame("=="_Stz));
+      RASSERT(p_conj->pSymbol()->bSame("=="_Stz));
 
-      Kid xKid(p_pred);
+      Kid xKid(p_conj);
       while (xKid.bEach()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
@@ -491,8 +491,8 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
       return;
     }
     else
-    if (p_pred->bIsCard(CK_ANDCONJ) || p_pred->bIsCard(CK_ORCONJ)) {
-      Kid xKid(p_pred);
+    if (p_conj->bIsCard(CK_ANDCONJ) || p_conj->bIsCard(CK_ORCONJ)) {
+      Kid xKid(p_conj);
       while (xKid.bEach()) {
         RASSERT(Card_CONJUNCTION::bIsConj(xKid.pChild()));
         vResolve((Card_CONJUNCTION*)xKid.pChild(), vResolve);
@@ -506,9 +506,9 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
 
-  vResolve(p_PRED, vResolve);
+  vResolve(p_conj, vResolve);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,29 +521,29 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  auto vResolve = [pCI](Card_CONJUNCTION* p_pred,
+  auto vResolve = [pCI](Card_CONJUNCTION* p_conj,
                         auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (!Card_CONJUNCTION::bIsConj(p_pred))
+    if (!Card_CONJUNCTION::bIsConj(p_conj))
       return; /* this effectively declares resolve as void */
 
-//    if (p_pred->bIsCard(CK_CMPCONJ)) {
+//    if (p_conj->bIsCard(CK_CMPCONJ)) {
 //      return;
 //    }
 //    else
-    if (p_pred->bIsCard(CK_CMPCONJ)) {
+    if (p_conj->bIsCard(CK_CMPCONJ)) {
 
-      if (! p_pred->bContains_callToSubQuery(pCI))
+      if (! p_conj->bContains_callToSubQuery(pCI))
         return;
 
-      RASSERT(p_pred->bIsBoolFn() ||
-              p_pred->bIsRelnOp() ||
-                  p_pred->bIsSqyOp());
+      RASSERT(p_conj->bIsBoolFn() ||
+              p_conj->bIsRelnOp() ||
+                  p_conj->bIsSqyOp());
 
-      RASSERT(!p_pred->pSymbol()->Y_bHas(P_CrlKeyPred));
+      RASSERT(!p_conj->pSymbol()->Y_bHas(P_CrlKeyPred));
 
-      p_pred->vCard(CK_CMPCONJ);
-      Kid xKid(p_pred);
+      p_conj->vCard(CK_CMPCONJ);
+      Kid xKid(p_conj);
       while (xKid.bEach()) {
         if (Card_CONJUNCTION::bIsConj(xKid.pChild())) {
           vResolve(static_cast<Card_CONJUNCTION*>(xKid.pChild()), vResolve);
@@ -555,7 +555,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
           Card* p_arg = xKid.pPrev();
 
           Card_Term* p_term_new = (new Card_Term) ->SYM(SF_STM_COL, "$2"_Stz);
-          p_pred->vInsertChildAfter(p_term_new,xKid.pChild());
+          p_conj->vInsertChildAfter(p_term_new,xKid.pChild());
 
 
           Card_Expr* p_expr_found =
@@ -564,21 +564,21 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
           p_term_new->pSymbol()->vColType(p_expr_found->eColType());
 
 
-          p_pred->vRemoveChild(p_arg);
+          p_conj->vRemoveChild(p_arg);
           DELETE_CARD(p_arg);
 
           Card* pChild = xKid.pChild();
-          p_pred->vRemoveChild(pChild);
+          p_conj->vRemoveChild(pChild);
           DELETE_CARD(pChild);
 
-          p_pred->pSymbol()->Y_vSet(P_CrlRslTest);
+          p_conj->pSymbol()->Y_vSet(P_CrlRslTest);
         }
       }
       return;
     }
     else
-    if (p_pred->bIsCard(CK_ANDCONJ) || p_pred->bIsCard(CK_ORCONJ)) {
-      Kid xKid(p_pred);
+    if (p_conj->bIsCard(CK_ANDCONJ) || p_conj->bIsCard(CK_ORCONJ)) {
+      Kid xKid(p_conj);
       while (xKid.bEach()) {
         RASSERT(Card_CONJUNCTION::bIsConj(xKid.pChild()));
         vResolve(static_cast<Card_CONJUNCTION*>(xKid.pChild()), vResolve);
@@ -592,9 +592,9 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
 
-  vResolve(p_PRED, vResolve);
+  vResolve(p_conj, vResolve);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,18 +604,18 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
-  Card_CONJUNCTION* p_pred_corr = p_boolCalc->pFindRemove_conj_corr();
-  if (! p_pred_corr)
+  Card_CONJUNCTION* p_conj_corr = p_boolCalc->pFindRemove_conj_corr();
+  if (! p_conj_corr)
     return;
 
-  //p_pred_corr->vDump();
+  //p_conj_corr->vDump();
 
-  Card_Term* p_term_tblCol = p_pred_corr->pGetFirstTerm_tblCol();
+  Card_Term* p_term_tblCol = p_conj_corr->pGetFirstTerm_tblCol();
   char cTblSyn = p_term_tblCol->cGetTblSyn();
 
   Card_OP* p_OP = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 
-  p_OP->vAdd_Pred_Under_filter(p_pred_corr);
+  p_OP->vAdd_Conj_Under_filter(p_conj_corr);
 }
 
 

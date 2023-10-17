@@ -2231,9 +2231,9 @@ Card_CmpConj* Card::pSub_cmpConj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CmpConj* p_predCmp =
+  Card_CmpConj* p_conjCmp =
       _pCard_CmpConj(pFindSubCard(CK_CMPCONJ));
-  return p_predCmp;
+  return p_conjCmp;
 }
 
 /*----------------------------------------------------------------------------*/

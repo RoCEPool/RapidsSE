@@ -179,7 +179,7 @@ void Card_Bound::vX_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this bound logically equivalent to given compare?                       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpPred)
+bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -187,9 +187,9 @@ bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpPred)
   Symbol* pBnd_idxCol = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxCol);
   Symbol* pBnd_stmCol = pGetChild(1)->pSymbol();
 
-  Symbol* pCmp_rlnOpr = p_cmpPred->pSymbol();
-  Symbol* pCmp_arg_0  = p_cmpPred->pGetChild(0)->pSymbol();
-  Symbol* pCmp_arg_1  = p_cmpPred->pGetChild(1)->pSymbol();
+  Symbol* pCmp_rlnOpr = p_cmpConj->pSymbol();
+  Symbol* pCmp_arg_0  = p_cmpConj->pGetChild(0)->pSymbol();
+  Symbol* pCmp_arg_1  = p_cmpConj->pGetChild(1)->pSymbol();
 
   if (! pCmp_rlnOpr->bSame(pBnd_rlnOpr))
     return false;

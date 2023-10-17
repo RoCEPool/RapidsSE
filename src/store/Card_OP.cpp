@@ -81,7 +81,7 @@ bool Card_OP::bIsOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vAdd_Pred_Under_filter(Card_CONJUNCTION *p_CONJ)
+void Card_OP::vAdd_Conj_Under_filter(Card_CONJUNCTION *p_CONJ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

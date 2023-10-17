@@ -23,7 +23,7 @@ namespace STORE
     Card_CmpConj* pClone(void);
     Card_CmpConj* pCmpPredFindBound(Index* pIndex, ePB eBound);
     bool bCmpPredHasBounds(Index* pIndex);
-    bool bCoPtnWith(Card_CmpConj* p_cmpPred_arg);
+    bool bCoPtnWith(Card_CmpConj* p_cmpConj_arg);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
 
     Card_Term* pGetCorrCol(void);
@@ -33,10 +33,10 @@ namespace STORE
     void vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b);
     Card_Term* pGetTerm_0(void);
     Card_Term* pGetTerm_1(void);
-    bool bIsEq(Card_CmpConj* p_cmpPred_arg);
+    bool bIsEq(Card_CmpConj* p_cmpConj_arg);
     bool bIsEqOp(void);
     char cOtherTable(char cTblSyn);
-    bool bOverlapsWith(Card_CmpConj* p_cmpPred_arg);
+    bool bOverlapsWith(Card_CmpConj* p_cmpConj_arg);
     bool bSubsetOf_bounds(Card_Bounds* p_bounds);
     bool bUsesTable(char cTblSyn);
     bool bUsesTables(char cTblSyn_a, char cTblSyn_b);

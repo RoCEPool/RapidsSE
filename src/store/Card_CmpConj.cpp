@@ -125,7 +125,7 @@ bool Card_CmpConj::bCmpPredHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this predCmp co-partitionable with given arg?                           */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpConj::bCoPtnWith(Card_CmpConj* p_cmpPred_arg)
+bool Card_CmpConj::bCoPtnWith(Card_CmpConj* p_cmpConj_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -134,9 +134,9 @@ bool Card_CmpConj::bCoPtnWith(Card_CmpConj* p_cmpPred_arg)
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
   char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
 
-  Card_Term* p_term_arg_0 = _pCard_Term(p_cmpPred_arg->pGetChild(0));
+  Card_Term* p_term_arg_0 = _pCard_Term(p_cmpConj_arg->pGetChild(0));
   char cTableSyn_arg_0 = p_term_arg_0->szSymbol(SF_NONE)->azChar()[1];
-  Card_Term* p_term_arg_1 = _pCard_Term(p_cmpPred_arg->pGetChild(1));
+  Card_Term* p_term_arg_1 = _pCard_Term(p_cmpConj_arg->pGetChild(1));
   char cTableSyn_arg_1 = p_term_arg_1->szSymbol(SF_NONE)->azChar()[1];
 
   bool bAreCoPtn = false;
@@ -299,7 +299,7 @@ Card_Term* Card_CmpConj::pGetTerm_1(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpConj::bIsEq(Card_CmpConj* p_cmpPred_arg)
+bool Card_CmpConj::bIsEq(Card_CmpConj* p_cmpConj_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -308,9 +308,9 @@ bool Card_CmpConj::bIsEq(Card_CmpConj* p_cmpPred_arg)
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
   char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
 
-  Card_Term* p_term_arg_0 = _pCard_Term(p_cmpPred_arg->pGetChild(0));
+  Card_Term* p_term_arg_0 = _pCard_Term(p_cmpConj_arg->pGetChild(0));
   char cTableSyn_arg_0 = p_term_arg_0->szSymbol(SF_NONE)->azChar()[1];
-  Card_Term* p_term_arg_1 = _pCard_Term(p_cmpPred_arg->pGetChild(1));
+  Card_Term* p_term_arg_1 = _pCard_Term(p_cmpConj_arg->pGetChild(1));
   char cTableSyn_arg_1 = p_term_arg_1->szSymbol(SF_NONE)->azChar()[1];
 
   if (cTableSyn_this_0 == cTableSyn_arg_0 &&
@@ -354,7 +354,7 @@ char Card_CmpConj::cOtherTable(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpConj::bOverlapsWith(Card_CmpConj* p_PredCmp_arg)
+bool Card_CmpConj::bOverlapsWith(Card_CmpConj* p_conjCmp_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -363,9 +363,9 @@ bool Card_CmpConj::bOverlapsWith(Card_CmpConj* p_PredCmp_arg)
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
   char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
 
-  Card_Term* p_term_arg_0 = _pCard_Term(p_PredCmp_arg->pGetChild(0));
+  Card_Term* p_term_arg_0 = _pCard_Term(p_conjCmp_arg->pGetChild(0));
   char cTableSyn_arg_0 = p_term_arg_0->szSymbol(SF_NONE)->azChar()[1];
-  Card_Term* p_term_arg_1 = _pCard_Term(p_PredCmp_arg->pGetChild(1));
+  Card_Term* p_term_arg_1 = _pCard_Term(p_conjCmp_arg->pGetChild(1));
   char cTableSyn_arg_1 = p_term_arg_1->szSymbol(SF_NONE)->azChar()[1];
 
   if (   cTableSyn_this_0 == cTableSyn_arg_0

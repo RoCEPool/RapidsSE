@@ -21,8 +21,8 @@ namespace STORE
 
     static void vCullMarkedCmpConj(CardIter* pCI);
     static void vDeleteEmpyWhere(CardIter* pCI);
-    static void vMarkWherePredWrtTable(CardIter* pCI);
-    static void vMoveWherePredsToTableFilter(CardIter* pCI);
+    static void vMarkWhereConjWrtTable(CardIter* pCI);
+    static void vMoveWhereConjToTableFilter(CardIter* pCI);
 
     static Card_Where* pNewWhereAssembly(void);
 

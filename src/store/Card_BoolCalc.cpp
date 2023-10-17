@@ -57,12 +57,12 @@ Card_CmpConj* Card_BoolCalc::pCmpConj_whichCallsSubQuery(CardIter* pCI)
 
   Card_CmpConj* pCmpConj = nullptr;
 
-  auto bLambdaFn = [&pCmpConj,pCI](Card_CONJUNCTION* p_pred, bool bUpwards)
+  auto bLambdaFn = [&pCmpConj,pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
   {
     UNUSED(bUpwards);
 
-    if (p_pred->bContains_callToSubQuery(pCI)) {
-      pCmpConj = _pCard_CmpConj(p_pred);
+    if (p_conj->bContains_callToSubQuery(pCI)) {
+      pCmpConj = _pCard_CmpConj(p_conj);
       return C_TERMINATE_RECURSION;
     }
 
@@ -127,9 +127,9 @@ eCT Card_BoolCalc::eColumnType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to assign <predCmp> after <scan>/<absJoin>*/
+/* inspect all <filter> and attempt to assign <conjCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
+void Card_BoolCalc::vCopyMarkedConjToTable(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -151,7 +151,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(CardIter* pCI)
     if (! p_table)
       continue;
 
-    ((Card_OP*)pMainCard)->vAdd_Pred_Under_filter((Card_CONJUNCTION*) p_conj->pDupCardRecursive());
+    ((Card_OP *) pMainCard)->vAdd_Conj_Under_filter((Card_CONJUNCTION *) p_conj->pDupCardRecursive());
 
     // todo: is this needed?
     Card_Filter* p_filter = pMainCard->pSub_filter();
@@ -189,7 +189,7 @@ void Card_BoolCalc::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
+/* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Card_BoolCalc::nCullConj(Stz* szWithMark)
 {
@@ -219,7 +219,7 @@ i8 Card_BoolCalc::nCullConj(Stz* szWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
+/* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
 {
@@ -256,8 +256,8 @@ bool Card_BoolCalc::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
 
   i8 nChildren = p_conj->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_CONJUNCTION* pCard_pred_child = static_cast<Card_CONJUNCTION*>(p_conj->pGetChild(i_Child));
-    if (this->bCullConj(pCard_pred_child, szWithMark))
+    Card_CONJUNCTION* pCard_conj_child = static_cast<Card_CONJUNCTION*>(p_conj->pGetChild(i_Child));
+    if (this->bCullConj(pCard_conj_child, szWithMark))
       return true;
   }
 
@@ -293,14 +293,14 @@ void Card_BoolCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pGetChild(0));
 
-  if (p_PRED)
-    p_PRED->vEnsureTypesFor_stmCol(pCI);
+  if (p_conj)
+    p_conj->vEnsureTypesFor_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect <boolCalc>> and mark any <pred> which could be moved               */
+/* inspect <boolCalc>> and mark any <conj> which could be moved               */
 /*----------------------------------------------------------------------------*/
 Card_CONJUNCTION* Card_BoolCalc::pFindRemove_conj_corr(void)
 {
@@ -430,7 +430,7 @@ bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect <boolCalc>> and mark any <pred> which could be moved               */
+/* inspect <boolCalc>> and mark any <conj> which could be moved               */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 {
@@ -506,18 +506,18 @@ void Card_BoolCalc::vPushConj(Card_CONJUNCTION* p_conj_toBeAdded)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* p_pred_oldTop = static_cast<Card_CONJUNCTION*>(this->pPopChild());
+  Card_CONJUNCTION* p_conj_oldTop = static_cast<Card_CONJUNCTION*>(this->pPopChild());
   RASSERT(! this->nChildCards());
 
   Card_AndConj* p_andPred_new = new Card_AndConj;
-  p_andPred_new->vAppendChild(p_pred_oldTop);
+  p_andPred_new->vAppendChild(p_conj_oldTop);
   p_andPred_new->vAppendChild(p_conj_toBeAdded);
 
   this->vPushChild(p_andPred_new);
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
+/* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vRemove_conj(Card_CONJUNCTION* p_conj)
 {
@@ -553,9 +553,9 @@ Card_CONJUNCTION* Card_BoolCalc::pConj_root(void)
   if (! nChildCards())
     return nullptr;
 
-  Card_CONJUNCTION* p_PRED = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pGetChild(0));
 
-  return p_PRED;
+  return p_conj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -597,7 +597,7 @@ bool Card_BoolCalc::bIsBraced(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
+/* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked)
 {
@@ -615,29 +615,29 @@ bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
   auto bYank = [](Card_BoolCalc* p_boolCalc,
                   Stz* szWithMark,
                   Card* p_test,
-                  Card_CONJUNCTION*& p_pred_yanked,
+                  Card_CONJUNCTION*& p_conj_yanked,
                   auto&& bYank /*oddity permits recursive lambda*/)
   {
     //p_test->vDump();
 
     if (Card_CONJUNCTION::bIsConj(p_test)) {
       if (p_test->bMark1(szWithMark)) {
-        p_pred_yanked = static_cast<Card_CONJUNCTION*>(p_test);
-        p_boolCalc->vRemove_conj(p_pred_yanked);
-        RASSERT(p_pred_yanked);
+        p_conj_yanked = static_cast<Card_CONJUNCTION*>(p_test);
+        p_boolCalc->vRemove_conj(p_conj_yanked);
+        RASSERT(p_conj_yanked);
         return true;
       }
     }
 
     Kid xKid(p_test);
     while (xKid.bEach()) {
-      if (bYank(p_boolCalc,szWithMark,xKid.pChild(),p_pred_yanked,bYank)) {
-        RASSERT(p_pred_yanked);
+      if (bYank(p_boolCalc,szWithMark,xKid.pChild(),p_conj_yanked,bYank)) {
+        RASSERT(p_conj_yanked);
         return true;
       }
     }
 
-    RASSERT(! p_pred_yanked);
+    RASSERT(! p_conj_yanked);
     return false;
   };
 
@@ -657,7 +657,7 @@ bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given predicate                                                     */
+/* remove given conjunction                                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card* p_test,
                                Card_CONJUNCTION*& p_conj_yanked)
@@ -737,8 +737,8 @@ void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_pred_conj = this->pConj_root();
-  if (! p_pred_conj)
+  Card_CONJUNCTION* p_conj_conj = this->pConj_root();
+  if (! p_conj_conj)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -763,7 +763,7 @@ void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_conj->bConjRecursive(bfTo_stmCol);
+  bool bIgnore = p_conj_conj->bConjRecursive(bfTo_stmCol);
   UNUSED(bIgnore);
 }
 

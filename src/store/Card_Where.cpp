@@ -74,7 +74,7 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* mark where predicate with respect to table                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
+void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
 
   _static_
 
@@ -88,14 +88,14 @@ void Card_Where::vMarkWherePredWrtTable(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* move where predicate to table filter                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vMoveWherePredsToTableFilter(CardIter* pCI) {
+void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI) {
 
   _static_
 
   pCI->vBeginEachReverse();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
-    pCI->G.p_boolCalc->vCopyMarkedPredsToTable(pCI);
+    pCI->G.p_boolCalc->vCopyMarkedConjToTable(pCI);
   }
 }
 

@@ -65,13 +65,13 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
   m_pCI->vTransform(__func__, XF_FLATTEN_PREDICATE_PULL_UP, "use @c to move predicates"_Stz);
 
   // @ mark where predicates wrt. table
-  Card_Where::vMarkWherePredWrtTable(m_pCI);
+  Card_Where::vMarkWhereConjWrtTable(m_pCI);
 
 //  m_pCI->vRenumberCards();
 //  m_pCI->vPrintBoard(__LINE__);
 
   // move @ marked where predicates to table filter
-  Card_Where::vMoveWherePredsToTableFilter(m_pCI);
+  Card_Where::vMoveWhereConjToTableFilter(m_pCI);
 
 //  m_pCI->vRenumberCards();
 //  m_pCI->vPrintBoard(__LINE__);

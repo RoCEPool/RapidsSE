@@ -25,7 +25,7 @@ namespace STORE
     void vX_tblCol_To_stmCol(CardIter* pCI);
 
     void vEnsureTypes_For_stmCol(CardIter *pCI);
-    bool bEquivalent(Card_CmpConj* p_cmpPred);
+    bool bEquivalent(Card_CmpConj* p_cmpConj);
 
     Card_Term* pGetTerm(i8 i_Term);
     Card_Term* pGetTerm_last(void);

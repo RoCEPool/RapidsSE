@@ -159,12 +159,12 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpConj* p_cmpPred = p_streamJoin->pSub_cmpConj();
-  Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
-  Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
+  Card_CmpConj* p_cmpConj = p_streamJoin->pSub_cmpConj();
+  Card_Term* p_term_0_cmp = p_cmpConj->pGetTerm_0();
+  Card_Term* p_term_1_cmp = p_cmpConj->pGetTerm_1();
 
   char cTblSyn_join  = p_streamJoin->pSymbol()->cSF_char();
-  char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_join);
+  char cTblSyn_prior = p_cmpConj->cOtherTable(cTblSyn_join);
 
   Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
   Card_TablePtn* p_tablePtn_join  = p_tableList->pGetTablePtn(cTblSyn_join);

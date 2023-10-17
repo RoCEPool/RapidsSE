@@ -44,16 +44,16 @@ Card_AndConj::~Card_AndConj(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpConj* Card_AndConj::pAndPredFindBound(Index* pIndex, ePB eBound)
+Card_CmpConj* Card_AndConj::pAndConjFindBound(Index* pIndex, ePB eBound)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-Card_CONJUNCTION* pSubPred0 = (Card_CONJUNCTION*)this->pGet(0);
-if (Card_CmpConj* pFound = pSubPred0->pPredFindBound(pIndex, eBound))
+Card_CONJUNCTION* pSubConj0 = (Card_CONJUNCTION*)this->pGet(0);
+if (Card_CmpConj* pFound = pSubConj0->pPredFindBound(pIndex, eBound))
 return pFound;
 
-Card_CONJUNCTION* pSubPred1 = (Card_CONJUNCTION*)this->pGet(1);
-if (Card_CmpConj* pFound = pSubPred1->pPredFindBound(pIndex, eBound))
+Card_CONJUNCTION* pSubConj1 = (Card_CONJUNCTION*)this->pGet(1);
+if (Card_CmpConj* pFound = pSubConj1->pPredFindBound(pIndex, eBound))
 return pFound;
 
 return nullptr;
@@ -66,12 +66,12 @@ bool Card_AndConj::bAndPredHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* pSubPred0 = (Card_CONJUNCTION*)this->pGet(0);
-  if (pSubPred0->bConjHasBounds(pIndex))
+  Card_CONJUNCTION* pSubConj0 = (Card_CONJUNCTION*)this->pGet(0);
+  if (pSubConj0->bConjHasBounds(pIndex))
     return true;
 
-  Card_CONJUNCTION* pSubPred1 = (Card_CONJUNCTION*)this->pGet(1);
-  if (pSubPred1->bConjHasBounds(pIndex))
+  Card_CONJUNCTION* pSubConj1 = (Card_CONJUNCTION*)this->pGet(1);
+  if (pSubConj1->bConjHasBounds(pIndex))
     return true;
 
   return false;

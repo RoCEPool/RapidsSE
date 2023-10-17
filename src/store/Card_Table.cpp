@@ -247,18 +247,18 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_PRED)
+void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_conj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_filter = this->pSub_filter())) {
     pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushConj(p_PRED);
+    pCI->G.p_boolCalc->vPushConj(p_conj);
   }
   else {
     pCI->G_vAppendNewChild(this,CK_FILTER);
     pCI->G_vAppendNewChild(pCI->G.p_filter,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_BOOLCALC,p_PRED);
+    pCI->G_vAppendChild(CK_BOOLCALC,p_conj);
   }
 }
 
@@ -267,7 +267,7 @@ void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_PRED)
 /*----------------------------------------------------------------------------*/
 void Card_Table::vBounds_AddConj(Card_Index* p_index,
                                  Card_Bounds* p_bounds,
-                                 Card_CONJUNCTION *p_PRED)
+                                 Card_CONJUNCTION *p_conj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -275,15 +275,15 @@ void Card_Table::vBounds_AddConj(Card_Index* p_index,
 
   Card_Bound* p_bound;
   Card_CONJUNCTION* p_childPRED;
-  if (p_PRED->bIsCard(CK_ANDCONJ)) {
-    p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(0);
+  if (p_conj->bIsCard(CK_ANDCONJ)) {
+    p_childPRED = (Card_CONJUNCTION*)p_conj->pGetChild(0);
     this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
-    p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(1);
+    p_childPRED = (Card_CONJUNCTION*)p_conj->pGetChild(1);
     this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
   }
   else
-  if (p_PRED->bIsCard(CK_CMPCONJ)) {
-    p_bound = Card_Bound::pCreateFrom_CONJ(p_PRED, cTblSyn);
+  if (p_conj->bIsCard(CK_CMPCONJ)) {
+    p_bound = Card_Bound::pCreateFrom_CONJ(p_conj, cTblSyn);
     p_bounds->vAppendChild(p_bound);
   }
   else {
@@ -337,7 +337,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
   Card_BoolCalc* p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
   RASSERT(1 == p_boolCalc->nChildCards());
-  Card_CONJUNCTION* p_pred_root = p_boolCalc->pConj_root();
+  Card_CONJUNCTION* p_conj_root = p_boolCalc->pConj_root();
 
   Kid xKid(pCI->G.p_indexList);
   while (xKid.bEach(CK_INDEX)) {
@@ -348,15 +348,15 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
     //p_index->vDump(__func__);
 
-    auto bLambdaFn = [this, p_index](Card_CONJUNCTION *p_pred_Of_filter, bool bUpwards)
+    auto bLambdaFn = [this, p_index](Card_CONJUNCTION *p_conj_Of_filter, bool bUpwards)
     {
       if (bUpwards)
         return C_CONTINUE_RECURSION;
 
-      if (! p_pred_Of_filter->bIsCard(CK_CMPCONJ))
+      if (! p_conj_Of_filter->bIsCard(CK_CMPCONJ))
         return C_CONTINUE_RECURSION;
 
-      if (!p_pred_Of_filter->bIsIndexBounds_v3(p_index))
+      if (!p_conj_Of_filter->bIsIndexBounds_v3(p_index))
         return C_CONTINUE_RECURSION;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -368,10 +368,10 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       }
 
       char cTblSyn = this->pSymbol()->cSF_char();
-      Card_Bound *p_bound = Card_Bound::pCreateFrom_CONJ(p_pred_Of_filter, cTblSyn);
+      Card_Bound *p_bound = Card_Bound::pCreateFrom_CONJ(p_conj_Of_filter, cTblSyn);
       p_bounds->vAppendChild(p_bound);
 
-      p_pred_Of_filter->vMark1(MARK_UP);
+      p_conj_Of_filter->vMark1(MARK_UP);
 
 //      if (p_bound->bIsEBound())
 //        p_index->vSet_Choose_index();
@@ -381,7 +381,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool bIgnore = p_pred_root->bConjRecursive(bLambdaFn);
+    bool bIgnore = p_conj_root->bConjRecursive(bLambdaFn);
     UNUSED(bIgnore);
   }
 }
@@ -479,12 +479,12 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Table::bScopeContains_Conj(Card_CONJUNCTION* p_pred,
+bool Card_Table::bScopeContains_Conj(Card_CONJUNCTION* p_conj,
                                      Scope* pScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(p_pred);
+  Kid xKid(p_conj);
   while (xKid.bEach(CK_TERM)) {
     if (! this->bScopeContains_term(xKid.p_term(), pScope))
       return false;

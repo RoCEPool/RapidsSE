@@ -178,13 +178,13 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /* does this index-list have a bound logically equivalent to given compare?   */
 /*----------------------------------------------------------------------------*/
-bool Card_IndexList::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
+bool Card_IndexList::bHasEquivalentBound(Card_CmpConj* p_cmpConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xIndexList(this);
   while (xIndexList.bEach(CK_INDEX)) {
-    if (xIndexList.p_index()->bHasEquivalentBound(p_cmpPred))
+    if (xIndexList.p_index()->bHasEquivalentBound(p_cmpConj))
       return true;
   }
   return false;

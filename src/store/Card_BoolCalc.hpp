@@ -22,7 +22,7 @@ namespace STORE
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_CONJUNCTION* pConj_root(void);
-    void vCopyMarkedPredsToTable(CardIter* pCI);
+    void vCopyMarkedConjToTable(CardIter* pCI);
     void vCorrectStmCol(Card_Emitted* p_emitted_prior);
     i8 nCullConj(Stz* szWithMark);
     bool bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);

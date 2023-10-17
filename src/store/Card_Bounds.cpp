@@ -109,13 +109,13 @@ void Card_Bounds::vEnsureTypes_For_stmCol(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* does this bounds have a bound logically equivalent to given compare?       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bounds::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
+bool Card_Bounds::bHasEquivalentBound(Card_CmpConj* p_cmpConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xBounds(this);
   while (xBounds.bEach(CK_BOUND)) {
-    if (xBounds.p_bound()->bEquivalent(p_cmpPred))
+    if (xBounds.p_bound()->bEquivalent(p_cmpConj))
       return true;
   }
 

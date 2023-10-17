@@ -104,21 +104,21 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   auto bfConcat = [this, p_indexList](Card *pCard_cmpPred) {
-    Card_CmpConj* p_cmpPred_tst = _pCard_CmpConj(pCard_cmpPred);
+    Card_CmpConj* p_cmpConj_tst = _pCard_CmpConj(pCard_cmpPred);
 
-    if (! p_cmpPred_tst->bIsEqOp())
+    if (! p_cmpConj_tst->bIsEqOp())
       return C_CONTINUE_RECURSION;
 
-    Card_Term* p_term_0 = p_cmpPred_tst->pGetTerm(0);
-    Card_Term* p_term_1 = p_cmpPred_tst->pGetTerm(1);
+    Card_Term* p_term_0 = p_cmpConj_tst->pGetTerm(0);
+    Card_Term* p_term_1 = p_cmpConj_tst->pGetTerm(1);
     if ( ! (p_term_0->bIsTblCol() && p_term_1->bIsTblCol()))
       return C_CONTINUE_RECURSION;
 
-    if (!p_indexList->bHasEquivalentBound(p_cmpPred_tst))
+    if (!p_indexList->bHasEquivalentBound(p_cmpConj_tst))
       return C_CONTINUE_RECURSION;
 
-    Card_CmpConj* p_cmpPred_new = p_cmpPred_tst->pClone();
-    this->vAppendChild(p_cmpPred_new);
+    Card_CmpConj* p_cmpConj_new = p_cmpConj_tst->pClone();
+    this->vAppendChild(p_cmpConj_new);
 
     return C_CONTINUE_RECURSION;
   };

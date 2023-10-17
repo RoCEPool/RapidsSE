@@ -430,7 +430,7 @@ Card_CmpConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
       return _pCard_OrConj(this)->pOrPredFindBound(pIndex, eBound);
 
     case CK_ANDCONJ:
-      return _pCard_AndConj(this)->pAndPredFindBound(pIndex, eBound);
+      return _pCard_AndConj(this)->pAndConjFindBound(pIndex, eBound);
 
     case CK_CMPCONJ:
       return _pCard_CmpConj(this)->pCmpPredFindBound(pIndex, eBound);
