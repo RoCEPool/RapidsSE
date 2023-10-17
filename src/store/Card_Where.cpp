@@ -179,7 +179,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
-  if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_Eq) {
+  if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_EQ) {
 //    pCI->G.p_cmpConj = pCI->G.p_where->pSub_cmpConj();
 //    pCI->G.p_cmpConj->vMorph_sqlOp_To_EQ(pCI);
     pCI->Sqy.m_pConj_sqyCall->vMorph_sqlOp_To_EQ(pCI);
@@ -192,6 +192,10 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     // replace sqCall with sqResult
     pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NM);
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_STM_COL, (i8)1);
+
+    Card_Expr* p_expr_0 = pCI->Flux.m_pArriving->pGet_expr((i8) 0);
+    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vColType(p_expr_0->eColType());
+
   }
 
   pCI->G.p_where->vUpdate_emitted(pCI);
