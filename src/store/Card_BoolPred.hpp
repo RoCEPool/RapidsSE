@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_BoolCalc.hpp -- Boolean Calculation                                   */
+/* Card_BoolPred.hpp -- Boolean Predicate                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,14 +9,14 @@
 
 namespace STORE
 {
-  class Card_BoolCalc : public Card_TERMLIST
+  class Card_BoolPred : public Card_TERMLIST
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_BoolCalc(void);
-   ~Card_BoolCalc(void) noexcept(false);
+    Card_BoolPred(void);
+   ~Card_BoolPred(void) noexcept(false);
 
     Card_CmpConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
@@ -54,7 +54,7 @@ namespace STORE
 
   };
 
-  Card_BoolCalc* _pCard_BoolCalc(void* aAddr);
+  Card_BoolPred* _pCard_BoolPred(void* aAddr);
 }
 
 /*============================================================================*/

@@ -4,7 +4,7 @@
 
 #include "Card_StreamJoin.hpp"
 
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_JoinCast.hpp"
 #include "Card_CmpConj.hpp"
 #include "Card_JoinEstimate.hpp"

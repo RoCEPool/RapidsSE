@@ -80,7 +80,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
     else
-    if (Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(pCI->pAncestorFind(CK_BOOLCALC))) {
+    if (Card_BoolPred* p_boolCalc = _pCard_BoolPred(pCI->pAncestorFind(CK_BOOLCALC))) {
       i8 iItemise = p_boolCalc->iItemise();
       p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
       return C_CONTINUE_RECURSION;

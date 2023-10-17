@@ -42,7 +42,7 @@ namespace STORE
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
-    Card_BoolCalc* pTo_boolCalc(CardIter* pCI);
+    Card_BoolPred* pTo_boolCalc(CardIter* pCI);
     eCT  eColType(void);
      void vX_stmCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_stmCol(CardIter* pCI);

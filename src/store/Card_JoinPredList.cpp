@@ -6,7 +6,7 @@
 
 #include "CardIter.hpp"
 
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_CmpConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
@@ -125,7 +125,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = p_filter->pSub_boolCalc();
   p_boolCalc->bApplyRecursive(CK_CMPCONJ, bfConcat);
 }
 

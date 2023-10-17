@@ -4,7 +4,7 @@
 
 #include "Card_CostStream.hpp"
 
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_CmpConj.hpp"
 #include "Card_CostNetwork.hpp"
 #include "Card_CostUnicast.hpp"

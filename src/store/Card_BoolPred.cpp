@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_BoolCalc.cpp -- Boolean Calculation                                   */
+/* Card_BoolPred.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 
 #include "Card_CONJUNCTION.hpp"
 #include "Card_CmpConj.hpp"
@@ -18,15 +18,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_BoolCalc, CK_BOOLCALC)
-__aNewFunction(Card_BoolCalc, CN_CARD)
-__vDeleteFunction(Card_BoolCalc, CN_CARD)
+__pCastFunction_Card(STORE, Card_BoolPred, CK_BOOLCALC)
+__aNewFunction(Card_BoolPred, CN_CARD)
+__vDeleteFunction(Card_BoolPred, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_BoolCalc::Card_BoolCalc(void)
+Card_BoolPred::Card_BoolPred(void)
 : Card_TERMLIST(CK_BOOLCALC, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -39,7 +39,7 @@ Card_BoolCalc::Card_BoolCalc(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
+Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -51,7 +51,7 @@ Card_BoolCalc::~Card_BoolCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpConj* Card_BoolCalc::pCmpConj_whichCallsSubQuery(CardIter* pCI)
+Card_CmpConj* Card_BoolPred::pCmpConj_whichCallsSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -82,7 +82,7 @@ Card_CmpConj* Card_BoolCalc::pCmpConj_whichCallsSubQuery(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_BoolPred::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -119,7 +119,7 @@ void Card_BoolCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_BoolCalc::eColumnType(void)
+eCT Card_BoolPred::eColumnType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -129,7 +129,7 @@ eCT Card_BoolCalc::eColumnType(void)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <conjCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCopyMarkedConjToTable(CardIter* pCI)
+void Card_BoolPred::vCopyMarkedConjToTable(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -168,7 +168,7 @@ void Card_BoolCalc::vCopyMarkedConjToTable(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vCorrectStmCol(Card_Emitted* p_emitted_prior)
+void Card_BoolPred::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -191,7 +191,7 @@ void Card_BoolCalc::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Card_BoolCalc::nCullConj(Stz* szWithMark)
+i8 Card_BoolPred::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -221,7 +221,7 @@ i8 Card_BoolCalc::nCullConj(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
+bool Card_BoolPred::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -267,7 +267,7 @@ bool Card_BoolCalc::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* delete facet if                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -289,7 +289,7 @@ void Card_BoolCalc::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
+void Card_BoolPred::vEnsureTypesFor_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -302,7 +302,7 @@ void Card_BoolCalc::vEnsureTypesFor_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <conj> which could be moved               */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION* Card_BoolCalc::pFindRemove_conj_corr(void)
+Card_CONJUNCTION* Card_BoolPred::pFindRemove_conj_corr(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -320,7 +320,7 @@ Card_CONJUNCTION* Card_BoolCalc::pFindRemove_conj_corr(void)
 /*----------------------------------------------------------------------------*/
 /* is this a compound boolCalc                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bIsCompound(void)
+bool Card_BoolPred::bIsCompound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -333,7 +333,7 @@ bool Card_BoolCalc::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* is this a compound boolCalc                                                */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bIsLiterals(void)
+bool Card_BoolPred::bIsLiterals(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -363,7 +363,7 @@ bool Card_BoolCalc::bIsLiterals(void)
 /*----------------------------------------------------------------------------*/
 /* is this boolCalc a simple expression of a column                           */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bIsScalarCol(void) {
+bool Card_BoolPred::bIsScalarCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (nChildCards() > 1)
@@ -383,7 +383,7 @@ bool Card_BoolCalc::bIsScalarCol(void) {
 /*----------------------------------------------------------------------------*/
 /* is this boolCalc a simple expression of a key                              */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bIsScalarKey(void) {
+bool Card_BoolPred::bIsScalarKey(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (nChildCards() > 1)
@@ -404,7 +404,7 @@ bool Card_BoolCalc::bIsScalarKey(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
+bool Card_BoolPred::bHasTerm(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -432,7 +432,7 @@ bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <conj> which could be moved               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
+void Card_BoolPred::vMarkWrt_table(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -484,7 +484,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION *p_conj)
+void Card_BoolPred::vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION *p_conj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -502,7 +502,7 @@ void Card_BoolCalc::vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION *p_conj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vPushConj(Card_CONJUNCTION* p_conj_toBeAdded)
+void Card_BoolPred::vPushConj(Card_CONJUNCTION* p_conj_toBeAdded)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -519,7 +519,7 @@ void Card_BoolCalc::vPushConj(Card_CONJUNCTION* p_conj_toBeAdded)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vRemove_conj(Card_CONJUNCTION* p_conj)
+void Card_BoolPred::vRemove_conj(Card_CONJUNCTION* p_conj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -546,7 +546,7 @@ void Card_BoolCalc::vRemove_conj(Card_CONJUNCTION* p_conj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION* Card_BoolCalc::pConj_root(void)
+Card_CONJUNCTION* Card_BoolPred::pConj_root(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -561,7 +561,7 @@ Card_CONJUNCTION* Card_BoolCalc::pConj_root(void)
 /*----------------------------------------------------------------------------*/
 /* short form                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vShortForm(String* pString)
+void Card_BoolPred::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -576,7 +576,7 @@ void Card_BoolCalc::vShortForm(String* pString)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bIsBraced(void)
+bool Card_BoolPred::bIsBraced(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -599,7 +599,7 @@ bool Card_BoolCalc::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked)
+bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -612,7 +612,7 @@ bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  auto bYank = [](Card_BoolCalc* p_boolCalc,
+  auto bYank = [](Card_BoolPred* p_boolCalc,
                   Stz* szWithMark,
                   Card* p_test,
                   Card_CONJUNCTION*& p_conj_yanked,
@@ -659,7 +659,7 @@ bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card* p_test,
+bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card* p_test,
                                Card_CONJUNCTION*& p_conj_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -688,7 +688,7 @@ bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card* p_test,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_BoolCalc::eColType(void)
+eCT Card_BoolPred::eColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -698,7 +698,7 @@ eCT Card_BoolCalc::eColType(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vX_stmCol_To_tblCol(CardIter* pCI)
+void Card_BoolPred::vX_stmCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -733,7 +733,7 @@ void Card_BoolCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_BoolPred::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -770,7 +770,7 @@ void Card_BoolCalc::vX_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_BoolPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);

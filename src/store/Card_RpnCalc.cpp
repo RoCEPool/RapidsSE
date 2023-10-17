@@ -4,7 +4,7 @@
 
 #include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
 #include "Card_RpnTerms.hpp"
 #include "Card_AndConj.hpp"
@@ -478,13 +478,13 @@ void Card_RpnCalc::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
-Card_BoolCalc* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
+Card_BoolPred* Card_RpnCalc::pTo_boolCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
 
-  Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
+  Card_BoolPred* p_boolCalc = new Card_BoolPred;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the rpn calc have a when in it?

@@ -2135,13 +2135,13 @@ Card_As* Card::pSub_as(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_BoolCalc.hpp"
-Card_BoolCalc* Card::pSub_boolCalc(void)
+#include "Card_BoolPred.hpp"
+Card_BoolPred* Card::pSub_boolCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* p_boolCalc =
-      _pCard_BoolCalc(pFindSubCard(CK_BOOLCALC));
+  Card_BoolPred* p_boolCalc =
+      _pCard_BoolPred(pFindSubCard(CK_BOOLCALC));
   return p_boolCalc;
 }
 

@@ -22,7 +22,7 @@
 #include "Card_Arriving.hpp"
 #include "Card_As.hpp"
 
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 

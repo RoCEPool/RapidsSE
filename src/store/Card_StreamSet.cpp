@@ -4,7 +4,7 @@
 
 #include "Card_StreamSet.hpp"
 
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_CmpConj.hpp"
 #include "Card_StreamHead.hpp"
 #include "Card_StreamPer.hpp"

@@ -6,7 +6,7 @@
 
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_CmpConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
@@ -91,7 +91,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 
   i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 
-  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
 
   Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
   if (! p_conj_ROOT)
@@ -168,7 +168,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 //
 //  i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 //
-//  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+//  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
 //  RASSERT(1 == p_boolCalc->nChildCards());
 //
 //  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
@@ -231,7 +231,7 @@ i8 Card_Constraint::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* p_boolCalc = pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pSub_boolCalc();
   i8 nCulled = p_boolCalc->nCullConj(szWithMark);
 
   return nCulled;
@@ -260,7 +260,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 
-  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
 
   Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
   if (! p_conj_ROOT)
@@ -327,7 +327,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //
 //  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 //
-//  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+//  Card_BoolPred* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
 //
 //  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pConj_root());
 //  if (! p_conj_ROOT)

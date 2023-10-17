@@ -6,7 +6,7 @@
 
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_CmpConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
@@ -112,7 +112,7 @@ void Card_Filter::vAddConj(Card_CONJUNCTION *p_conj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_BoolCalc* p_calcBool = this->pSub_boolCalc();
+  Card_BoolPred* p_calcBool = this->pSub_boolCalc();
 
   if (0 == p_calcBool->nChildCards()) {
     p_calcBool->vAppendChild(p_conj);
@@ -144,7 +144,7 @@ void Card_Filter::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+  if (Card_BoolPred* p_boolCalc = pSub_boolCalc())
     p_boolCalc->vCorrectStmCol(p_emitted_prior);
 }
 
@@ -155,7 +155,7 @@ i8 Card_Filter::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* p_boolCalc = pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pSub_boolCalc();
   i8 nCulled = p_boolCalc->nCullConj(szWithMark);
 
   return nCulled;
@@ -214,8 +214,8 @@ bool Card_Filter::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* pCard_calcBool =
-      _pCard_BoolCalc(this->pFindSubCard(CK_BOOLCALC));
+  Card_BoolPred* pCard_calcBool =
+      _pCard_BoolPred(this->pFindSubCard(CK_BOOLCALC));
 
   if (0 == pCard_calcBool->nChildCards())
     return true;

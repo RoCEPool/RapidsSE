@@ -8,7 +8,7 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_Filter.hpp"
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
 #include "Card_Index.hpp"
 #include "Card_CmpConj.hpp"
@@ -335,7 +335,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
     vDebugPoint();
 
 
-  Card_BoolCalc* p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
+  Card_BoolPred* p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
   RASSERT(1 == p_boolCalc->nChildCards());
   Card_CONJUNCTION* p_conj_root = p_boolCalc->pConj_root();
 

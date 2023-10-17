@@ -1545,7 +1545,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_ARRIVING:         G.p_arriving         = _pCard_Arriving(pCard); break;
     case CK_AS:               G.p_as               = _pCard_As(pCard); break;
 
-    case CK_BOOLCALC:         G.p_boolCalc         = _pCard_BoolCalc(pCard); break;
+    case CK_BOOLCALC:         G.p_boolCalc         = _pCard_BoolPred(pCard); break;
     case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
     case CK_BOUNDS:           G.p_bounds           = _pCard_Bounds(pCard); break;
 
