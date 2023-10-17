@@ -50,6 +50,7 @@ namespace STORE
     bool bIsScalarKey(void);
     bool bIsExpressionOfKey(void);
     bool bHasTerm(Symbol* pSymbol);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     Card_Expr* pPropagate(void);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);

@@ -600,6 +600,7 @@ void CardCtl::vReset(void)
 
   vHeatNext(CK_STAGE, true);
 
+  vPrintByKind(CK_EXPR,true);
   vPrintByKind(CK_RPNCALC,true);
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);
