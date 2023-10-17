@@ -409,12 +409,15 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   s256 sTerm = szSymbol(SF_NONE);
   s32 sType_short = szCT_char[pSymbol()->eColType()];
 
-  pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
+  //pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
   if (m_xSymbol.nFacets()) {
     for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {
       Facet* aFacet = m_xSymbol.aFacet(i_Facet);
-      pRibbon->vSprintSnippet(true,"%18s~%lld"_Stz, aFacet->m_sChrSeq.azChar(),i_Facet);
+      pRibbon->vSprintSnippet(true,"%16s~%lld %s"_Stz,
+                              aFacet->m_sChrSeq.azChar(),
+                              i_Facet,
+                              sType_short.szStz());
     }
   }
 
