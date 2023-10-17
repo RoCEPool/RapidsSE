@@ -547,7 +547,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
   Card_Injected* p_injected = pSubCard->pSub_injected();
   Card_Emitted*   p_emitted = pSubCard->pSub_emitted();
 
-  p_emitted->vDump(__func__);
+  //p_emitted->vDump(__func__);
 
   if (m_pStageDef->i_Stage() == 2) {
     vDebugPoint();
@@ -568,7 +568,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
     i8         i_CrwCol_i = pSym_as_i->iSF_ordinal();
     Symbol* pSym_tblCol_i = p_expr_i->pFirstTblCol();
     Stz*       szTblCol_i = pSym_tblCol_i->szSF_chrSeq(SF_NONE);
-    pSym_tblCol_i->vDump();
+    //pSym_tblCol_i->vDump();
 
     // test if the injected column is actually emitted?
     // n.b. it may be emitted more than once
@@ -584,7 +584,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
       // -- injected column is actually emitted --
       // e.g. expr $1 as C0_C_CUSTKEY
 
-      p_expr_e->vDump(__func__);
+      //p_expr_e->vDump(__func__);
 
       // get details of emitted column
       i8 i_StructCell_e = p_expr_e->pSymbol()->iSF_ordinal() - 1;
@@ -649,7 +649,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
   Card_Arriving* p_arriving = pSubCard->pSub_arriving();
   Card_Emitted*  p_emitted  = pSubCard->pSub_emitted();
 
-  p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
+  //p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
 
   if (m_pStageDef->i_Stage() == 2) {
     vDebugPoint();
@@ -675,7 +675,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
     Symbol*     pSym_as_a = p_as_a->pSymbol();
     Symbol* pSym_colSym_a = p_expr_a->pFirstColSym();
 
-    p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
+    //p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
 
     if (m_pStageDef->i_Stage() == 2) {
       vDebugPoint();
@@ -690,7 +690,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
       Card_Expr *p_expr_e =
           p_emitted->pFind_expr_Via_as(pSym_as_a);
       if (p_expr_e) {
-        p_expr_e->vDump(__func__,"--FOUND emitted expr by as--"_Stz);
+        //p_expr_e->vDump(__func__,"--FOUND emitted expr by as--"_Stz);
 
         pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
@@ -706,7 +706,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
       if (p_expr_e) {
         s256 sHow;
         sHow.vSprint("--FOUND emitted expr of term via %s--"_Stz,aSF[eVia]);
-        p_expr_e->vDump(__func__,sHow);
+        //p_expr_e->vDump(__func__,sHow);
         pColPpg->vAdd(pSym_colSym_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->szSymbol(SF_NONE),

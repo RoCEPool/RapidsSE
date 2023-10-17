@@ -476,6 +476,7 @@ i8 Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   vOuterQuery(pCI->pBoard()->pSubQuery());
 
   // 1) find H_A_NC_ro subquery call in mq:<having>/<boolCalc>/<roPred>
+  pCI->vClearRestart();
   if (pCI->G_bEachMainWithSub(eCardWithSQ, CK_BOOLCALC)) {
     if (! Board::bFindAndMarkSubQryCall(pCI)) {
       vTrace("DID NOT FIND %s SubQuery call\n"_Stz,szFold);

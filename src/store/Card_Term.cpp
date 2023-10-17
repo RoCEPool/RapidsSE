@@ -531,8 +531,8 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
   // can scalar expression of this symbol be found in KEY ?
 
   if (pCI->X.m_pExprList_a && pCI->X.m_pExprList_k) {
-    pCI->X.m_pExprList_k->vDump(__func__);
-    pSymbol_this->vDump();
+    //pCI->X.m_pExprList_k->vDump(__func__);
+    //pSymbol_this->vDump();
     if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Via_term0(pSymbol_this)) {
       Symbol *pSymbol_k = p_expr_scalar_k->pFirstKeyCol();
       if (! pSymbol_k)
