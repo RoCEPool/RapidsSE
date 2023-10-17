@@ -277,17 +277,17 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // can be supported at this point in the sequence
     Kid xKid(p_joinPredList);
     while (xKid.bEach(CK_CMPCONJ)) {
-      if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
+      if (!xKid.p_cmpConj()->bUsesTable(cTblSyn_ith))
         continue;
 
       // have a join cmpPred which uses the ith table
 
       // get the other table in the cmpPred
-      char cTblSyn_other = xKid.p_cmpPred()->cOtherTable(cTblSyn_ith);
+      char cTblSyn_other = xKid.p_cmpConj()->cOtherTable(cTblSyn_ith);
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
-        p_streamJoin->vAppendChild(xKid.p_cmpPred()->pDupCardRecursive());
+        p_streamJoin->vAppendChild(xKid.p_cmpConj()->pDupCardRecursive());
         break;
       }
     }
@@ -347,13 +347,13 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     // can be supported at this point in the sequence
     Kid xKid(p_joinPredList);
     while (xKid.bEach(CK_CMPCONJ)) {
-      if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
+      if (!xKid.p_cmpConj()->bUsesTable(cTblSyn_ith))
         continue;
 
       // have a join cmpPred which uses the ith table
 
       // get the other table in the cmpPred
-      char cTblSyn_other = xKid.p_cmpPred()->cOtherTable(cTblSyn_ith);
+      char cTblSyn_other = xKid.p_cmpConj()->cOtherTable(cTblSyn_ith);
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
@@ -395,16 +395,16 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
 
       Kid xKid(p_joinPredList);
       while (xKid.bEach(CK_CMPCONJ)) {
-        if (! xKid.p_cmpPred()->bUsesTable(cTblSyn_ith))
+        if (!xKid.p_cmpConj()->bUsesTable(cTblSyn_ith))
           continue;
 
         // have a join cmpPred which uses the ith table
 
         // get the other table in the cmpPred
-        char cTblSyn_other = xKid.p_cmpPred()->cOtherTable(cTblSyn_ith);
+        char cTblSyn_other = xKid.p_cmpConj()->cOtherTable(cTblSyn_ith);
 
         if (bHasKnownJoin(cTblSyn_other)) {
-          p_joinLocus->vAppendChild(xKid.p_cmpPred()->pDupCardRecursive());
+          p_joinLocus->vAppendChild(xKid.p_cmpConj()->pDupCardRecursive());
           break;
         }
       }

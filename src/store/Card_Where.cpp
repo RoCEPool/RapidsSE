@@ -44,14 +44,14 @@ Card_Where::~Card_Where(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cull marked cmp predicate                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vCullMarkedCmpPred(CardIter* pCI) {
+void Card_Where::vCullMarkedCmpConj(CardIter* pCI) {
 
   _static_
 
   pCI->vBeginEachReverse();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC)) {
-    pCI->G.p_boolCalc->nCullPred(MARK_AT);
+    pCI->G.p_boolCalc->nCullConj(MARK_AT);
   }
 }
 

@@ -191,7 +191,7 @@ void Card_BoolCalc::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
+i8 Card_BoolCalc::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -204,7 +204,7 @@ i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
 
   while (pCard_conj) {
 
-    if (! bCullPred(pCard_conj, szWithMark))
+    if (!bCullConj(pCard_conj, szWithMark))
       break;
 
     nCulled++;
@@ -221,7 +221,7 @@ i8 Card_BoolCalc::nCullPred(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_conj, Stz* szWithMark)
+bool Card_BoolCalc::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -257,7 +257,7 @@ bool Card_BoolCalc::bCullPred(Card_CONJUNCTION* p_conj, Stz* szWithMark)
   i8 nChildren = p_conj->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card_CONJUNCTION* pCard_pred_child = static_cast<Card_CONJUNCTION*>(p_conj->pGetChild(i_Child));
-    if (this->bCullPred(pCard_pred_child, szWithMark))
+    if (this->bCullConj(pCard_pred_child, szWithMark))
       return true;
   }
 
@@ -456,7 +456,7 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       pCI->vDontDescend(true);
       if (((Card_CONJUNCTION *)p_card)->bContains_callToSubQuery(pCI))
         continue;
-      Symbol* pWhichTable = ((Card_CONJUNCTION *)p_card)->pTable_WhichTableFor_Pred(pCI);
+      Symbol* pWhichTable = ((Card_CONJUNCTION *) p_card)->pTable_WhichTableFor_Conj(pCI);
       if (pWhichTable) {
         p_card->vMark1(MARK_AT);
         p_card->vMark2(pWhichTable->cSF_char());
@@ -620,7 +620,7 @@ bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
   {
     //p_test->vDump();
 
-    if (Card_CONJUNCTION::bIsPRED(p_test)) {
+    if (Card_CONJUNCTION::bIsConj(p_test)) {
       if (p_test->bMark1(szWithMark)) {
         p_pred_yanked = static_cast<Card_CONJUNCTION*>(p_test);
         p_boolCalc->vRemove_conj(p_pred_yanked);
@@ -664,7 +664,7 @@ bool Card_BoolCalc::bYank_conj(Stz* szWithMark, Card* p_test,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_CONJUNCTION::bIsPRED(p_test)) {
+  if (Card_CONJUNCTION::bIsConj(p_test)) {
     if (p_test->bMark1(szWithMark)) {
       p_conj_yanked = static_cast<Card_CONJUNCTION*>(p_test);
       this->vRemove_conj(p_conj_yanked);

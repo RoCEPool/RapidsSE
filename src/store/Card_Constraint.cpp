@@ -50,19 +50,6 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* cull non-used bounds                                                        */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMain_NONE()) {
-    if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint()))
-      pCI->G.p_constraint->nCullPred(MARK_AT);
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -240,43 +227,14 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Constraint::nCullPred(Stz* szWithMark)
+i8 Card_Constraint::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolCalc* p_boolCalc = pSub_boolCalc();
-  i8 nCulled = p_boolCalc->nCullPred(szWithMark);
+  i8 nCulled = p_boolCalc->nCullConj(szWithMark);
 
   return nCulled;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vDisambiguate(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(pCI->G.p_emitted);
-  pCI->G.p_emitted->vDump(__func__);
-
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
-    Card_Term* p_term = xRpnCalc.p_term();
-    if (! p_term->bIsColNm())
-      continue;
-
-    //vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol(SF_NONE));
-
-    Card_Expr* p_expr = pCI->G.p_emitted->pFindExprOfAs(p_term->pSymbol());
-    if (p_expr) {
-      //p_expr->vDump(__func__);
-
-      i8 i_Child = p_expr->pSymbol()->iSF_ordinal() - 1;
-      p_term->SYM(SF_AS_NM_syn, i_Child, p_term->pSymbol());
-    }
-  }
-
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

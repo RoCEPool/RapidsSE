@@ -265,7 +265,7 @@ void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_PRED)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vBounds_AddPred(Card_Index* p_index,
+void Card_Table::vBounds_AddConj(Card_Index* p_index,
                                  Card_Bounds* p_bounds,
                                  Card_CONJUNCTION *p_PRED)
 {
@@ -277,13 +277,13 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
   Card_CONJUNCTION* p_childPRED;
   if (p_PRED->bIsCard(CK_ANDCONJ)) {
     p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(0);
-    this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
+    this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
     p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(1);
-    this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
+    this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
   }
   else
   if (p_PRED->bIsCard(CK_CMPCONJ)) {
-    p_bound = Card_Bound::pCreateFrom_PRED(p_PRED, cTblSyn);
+    p_bound = Card_Bound::pCreateFrom_CONJ(p_PRED, cTblSyn);
     p_bounds->vAppendChild(p_bound);
   }
   else {
@@ -368,7 +368,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       }
 
       char cTblSyn = this->pSymbol()->cSF_char();
-      Card_Bound *p_bound = Card_Bound::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
+      Card_Bound *p_bound = Card_Bound::pCreateFrom_CONJ(p_pred_Of_filter, cTblSyn);
       p_bounds->vAppendChild(p_bound);
 
       p_pred_Of_filter->vMark1(MARK_UP);
@@ -479,7 +479,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Table::bScopeContains_Pred(Card_CONJUNCTION* p_pred,
+bool Card_Table::bScopeContains_Conj(Card_CONJUNCTION* p_pred,
                                      Scope* pScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

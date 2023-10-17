@@ -167,7 +167,7 @@ Card_Term* Card_CmpConj::pGetCorrCol(void)
 //  if (2 != nChildren)
 //    return nullptr;
 
-  RASSERT(bIsCorrPred());
+  RASSERT(bIsCorrConj());
 
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
@@ -190,20 +190,17 @@ void Card_CmpConj::vEnsureTypesFor_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xCmpPred(this);
-  while (xCmpPred.bEach()) {
-    Card* pCard = xCmpPred.pChild();
+  Kid xCmpConj(this);
+  while (xCmpConj.bEach()) {
+    Card* pCard = xCmpConj.pChild();
     eCK eCard = pCard->eCard();
 
     switch (eCard) {
 
       case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_CMPCONJ:
-        _pCard_CmpConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_NOTCONJ:
-        _pCard_NotConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_ORCONJ:
-        _pCard_OrConj(pCard)->vEnsureTypesFor_stmCol(pCI);  break;
+      case CK_CMPCONJ: _pCard_CmpConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
+      case CK_NOTCONJ: _pCard_NotConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
+      case CK_ORCONJ:  _pCard_OrConj(pCard)->vEnsureTypesFor_stmCol(pCI);  break;
 
       case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmCol(pCI);     break;
 

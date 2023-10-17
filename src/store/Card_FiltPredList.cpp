@@ -59,7 +59,7 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
   auto bLambda = [&nFilters] (Card* p_card) {
 
-    if (!_pCard_CmpConj(p_card)->bIsJoinPred())
+    if (!_pCard_CmpConj(p_card)->bIsJoinConj())
       nFilters++;
 
     return C_CONTINUE_RECURSION;

@@ -24,8 +24,8 @@ namespace STORE
     Card_CONJUNCTION* pConj_root(void);
     void vCopyMarkedPredsToTable(CardIter* pCI);
     void vCorrectStmCol(Card_Emitted* p_emitted_prior);
-    i8 nCullPred(Stz* szWithMark);
-    bool bCullPred(Card_CONJUNCTION* p_conj, Stz* szWithMark);
+    i8 nCullConj(Stz* szWithMark);
+    bool bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
     Card_CONJUNCTION* pFindRemove_conj_corr(void);

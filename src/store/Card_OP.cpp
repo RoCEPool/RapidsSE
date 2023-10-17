@@ -81,7 +81,7 @@ bool Card_OP::bIsOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vAdd_Pred_Under_filter(Card_CONJUNCTION *p_PRED)
+void Card_OP::vAdd_Pred_Under_filter(Card_CONJUNCTION *p_CONJ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -92,7 +92,7 @@ void Card_OP::vAdd_Pred_Under_filter(Card_CONJUNCTION *p_PRED)
     UNUSED(p_boolCalc);
   }
 
-  p_filter->vAddPred(p_PRED);
+  p_filter->vAddConj(p_CONJ);
 }
 
 /*----------------------------------------------------------------------------*/

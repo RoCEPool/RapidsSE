@@ -16,7 +16,7 @@ namespace STORE
     Card_Bound(void);
    ~Card_Bound(void) noexcept(false);
 
-    static Card_Bound*    pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
+    static Card_Bound*    pCreateFrom_CONJ(Card_CONJUNCTION* p_CONJ,
                                            char cTblSyn_boundedTo);
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 

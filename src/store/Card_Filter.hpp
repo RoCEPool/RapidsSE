@@ -17,17 +17,16 @@ namespace STORE
     Card_Filter(void);
    ~Card_Filter(void) noexcept(false);
 
-    static void vCullUsedBounds(CardIter* pCI);
     static void vDeleteEmptyFilters(CardIter* pCI);
     static void vIndividuate_filter(CardIter* pCI);
     static Card_Filter* pNew(Card_Constraint* p_constraint);
 
-    void vAddPred(Card_CONJUNCTION *p_PRED);
+    void vAddConj(Card_CONJUNCTION *p_PRED);
 
     void vComputeProjection(CardIter* pCI); // prototype
     void vCorrectStmCol(Card_Emitted* p_emitted_prior);
 
-    i8 nCullPred(Stz* szWithMark);
+    i8 nCullConj(Stz* szWithMark);
 
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);

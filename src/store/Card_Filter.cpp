@@ -49,19 +49,6 @@ Card_Filter::~Card_Filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* cull non-used bounds                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vCullUsedBounds(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMain_NONE()) {
-    if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      pCI->G.p_filter->nCullPred(MARK_AT);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete empty filters                                                       */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
@@ -121,7 +108,7 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vAddPred(Card_CONJUNCTION *p_PRED)
+void Card_Filter::vAddConj(Card_CONJUNCTION *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -164,12 +151,12 @@ void Card_Filter::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Filter::nCullPred(Stz* szWithMark)
+i8 Card_Filter::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolCalc* p_boolCalc = pSub_boolCalc();
-  i8 nCulled = p_boolCalc->nCullPred(szWithMark);
+  i8 nCulled = p_boolCalc->nCullConj(szWithMark);
 
   return nCulled;
 }

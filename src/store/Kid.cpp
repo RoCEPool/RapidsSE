@@ -550,7 +550,7 @@ Card_CONJUNCTION* Kid::p_CONJUNCTION(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpConj* Kid::p_cmpPred(void)
+Card_CmpConj* Kid::p_cmpConj(void)
 {
   _nonProper_
 

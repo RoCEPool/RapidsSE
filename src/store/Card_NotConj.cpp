@@ -44,20 +44,17 @@ void Card_NotConj::vEnsureTypesFor_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xNotPred(this);
-  while (xNotPred.bEach()) {
-    Card* pCard = xNotPred.pChild();
+  Kid xNotConj(this);
+  while (xNotConj.bEach()) {
+    Card* pCard = xNotConj.pChild();
     eCK eCard = pCard->eCard();
 
     switch (eCard) {
 
       case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_CMPCONJ:
-        _pCard_CmpConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_NOTCONJ:
-        _pCard_NotConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_ORCONJ:
-        _pCard_OrConj(pCard)->vEnsureTypesFor_stmCol(pCI);  break;
+      case CK_CMPCONJ: _pCard_CmpConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
+      case CK_NOTCONJ: _pCard_NotConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
+      case CK_ORCONJ:  _pCard_OrConj(pCard)->vEnsureTypesFor_stmCol(pCI);  break;
 
       case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmCol(pCI);     break;
 

@@ -241,7 +241,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (! p_pred->bIsCorrPred())
+    if (!p_pred->bIsCorrConj())
       return C_CONTINUE_RECURSION;
 
     //p_pred->vDump();
@@ -442,7 +442,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
   auto vResolve = [pCI](Card_CONJUNCTION* p_pred,
                         auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (! Card_CONJUNCTION::bIsPRED(p_pred))
+    if (!Card_CONJUNCTION::bIsConj(p_pred))
       return; /* this effectively declares resolve as void */
 
     if (p_pred->bIsCard(CK_CMPCONJ)) {
@@ -494,7 +494,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolCalc
     if (p_pred->bIsCard(CK_ANDCONJ) || p_pred->bIsCard(CK_ORCONJ)) {
       Kid xKid(p_pred);
       while (xKid.bEach()) {
-        RASSERT(Card_CONJUNCTION::bIsPRED(xKid.pChild()));
+        RASSERT(Card_CONJUNCTION::bIsConj(xKid.pChild()));
         vResolve((Card_CONJUNCTION*)xKid.pChild(), vResolve);
       }
     }
@@ -524,7 +524,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
   auto vResolve = [pCI](Card_CONJUNCTION* p_pred,
                         auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (! Card_CONJUNCTION::bIsPRED(p_pred))
+    if (!Card_CONJUNCTION::bIsConj(p_pred))
       return; /* this effectively declares resolve as void */
 
 //    if (p_pred->bIsCard(CK_CMPCONJ)) {
@@ -545,7 +545,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
       p_pred->vCard(CK_CMPCONJ);
       Kid xKid(p_pred);
       while (xKid.bEach()) {
-        if (Card_CONJUNCTION::bIsPRED(xKid.pChild())) {
+        if (Card_CONJUNCTION::bIsConj(xKid.pChild())) {
           vResolve(static_cast<Card_CONJUNCTION*>(xKid.pChild()), vResolve);
           continue;
         }
@@ -580,7 +580,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolCal
     if (p_pred->bIsCard(CK_ANDCONJ) || p_pred->bIsCard(CK_ORCONJ)) {
       Kid xKid(p_pred);
       while (xKid.bEach()) {
-        RASSERT(Card_CONJUNCTION::bIsPRED(xKid.pChild()));
+        RASSERT(Card_CONJUNCTION::bIsConj(xKid.pChild()));
         vResolve(static_cast<Card_CONJUNCTION*>(xKid.pChild()), vResolve);
       }
     }
