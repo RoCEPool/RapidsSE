@@ -25,7 +25,6 @@ namespace STORE
   class Card_Address;
   class Card_Aggreg;
   class Card_AndConj;
-  class Card_Arriving;
   class Card_As;
 
   class Card_BoolPred;
@@ -416,7 +415,6 @@ namespace STORE
 
     Card_Address*       pSub_address(void);
     Card_Aggreg*        pSub_aggreg(void);
-    Card_Arriving*      pSub_arriving(void);
     Card_As*            pSub_as(void);
     Card_BoolPred*      pSub_boolPred(void);
     Card_Bound*         pSub_bound(void);

@@ -446,9 +446,6 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
   // arriving
 
   if (p_OP->bIsCard(CK_INDEXJOIN)) {
-//    Card_Arriving* p_arriving = p_OP->pSub_arriving();
-//    m_pOpDef->m_pStreamDef_arriving =
-//        p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
     m_pOpDef->m_pStreamDef_arriving =
         m_pCI->Flux.m_pArriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
@@ -458,19 +455,12 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
 
   else
-//if (p_OP->bIsCard(CK_INDEXJOIN) || p_OP->bIsCard(CK_INDEXSCAN) || p_OP->bIsCard(CK_SCAN)) {
   if (p_OP->bIsCard(CK_INDEXJOIN)) {
-//    Card_Arriving* p_arriving = p_OP->pSub_arriving();
-//    m_pOpDef->m_pStreamDef_arriving =
-//        p_arriving->pToStreamDef(nullptr, nullptr, p_OP);
     m_pOpDef->m_pStreamDef_arriving =
         m_pCI->Flux.m_pArriving->pToStreamDef(nullptr, nullptr, p_OP);
   }
   else
   if (p_OP->bIsCard(CK_INFLATE)) {
-//    Card_Injected* p_injected = p_OP->pSub_injected();
-//    m_pOpDef->m_pStreamDef_arriving =
-//        p_injected->pToStreamDef(nullptr, nullptr, p_OP);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -631,10 +621,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(void)
   if (! m_pCI->G.p_OP->bIsOne(CK_CROSSJOIN, CK_INDEXJOIN, CK_NONE))
     return;
 
-//  m_pCI->G.p_arriving = m_pCI->G.p_OP->pSub_arriving();
-//  if (! m_pCI->G.p_arriving)
-//    return;
-
   if (! m_pCI->Flux.m_pArriving)
     return;
 
@@ -655,8 +641,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-
-  //Card_Arriving* p_arriving = pSubCard->pSub_arriving();
   Card_Emitted* p_arriving = m_pCI->Flux.m_pArriving;
   Card_Emitted* p_emitted  = pSubCard->pSub_emitted();
 

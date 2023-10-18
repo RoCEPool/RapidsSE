@@ -64,13 +64,6 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
 
   // <indexJoin> or <crossJoin>
 
-  // restate <OP/arriving>   todo: is this necessary?
-//  pCI->G.p_CARD = pCI->Flux.m_pArriving->pDupCardRecursive();
-//  pCI->G.p_CARD->vCard(CK_ARRIVING);
-//  if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey()))
-//    pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
-//  pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
-
   //
   pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
 
@@ -91,33 +84,6 @@ void Card_Stream::vFuse_project_NoViable(CardIter *pCI)
   RASSERT(pCI->G.p_OP->bIsOne(CK_CROSSJOIN,CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_NONE));
   //RASSERT(! pCI->G.p_emitted);
 
-//  if (pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_NONE)) {
-//
-//    // <op>/<stream> ; <op>/<stream>/<projection>
-//    //pCI->G.p_stream = pCI->G.p_OP->pSub_stream();
-//    pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted();
-//
-//    // <op>/<stream>/<projection> -> <arriving>
-//    pCI->G.p_arriving = (Card_Arriving *) pCI->G.p_emitted->pClone();
-//    pCI->G.p_arriving->vCard(CK_ARRIVING);
-//
-//    if ((pCI->G.p_streamKey = pCI->G.p_arriving->pSub_streamKey())) {
-//      pCI->G.p_arriving->vDeleteChild(pCI->G.p_streamKey);
-//    }
-//
-//    // <project>/<stream> -> <project>/<stream>/<arriving>
-//    pCI->G.p_stream->vAppendChild(pCI->G.p_arriving);
-//  }
-//  else {
-//    // <arriving> is prior <emitted>
-//    pCI->G.p_CARD = pCI->Flux.m_pArriving->pDupCardRecursive();
-//    pCI->G.p_CARD->vCard(CK_ARRIVING);
-//    if ((pCI->G.p_streamKey = pCI->G.p_CARD->pSub_streamKey())) {
-//      pCI->G.p_CARD->vDeleteChild(pCI->G.p_streamKey);
-//    }
-//    pCI->G.p_stream->vAppendChild(pCI->G.p_CARD);
-//
-//  }
 }
 
 /*----------------------------------------------------------------------------*/

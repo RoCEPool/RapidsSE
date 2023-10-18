@@ -51,7 +51,6 @@ namespace STORE
     Card_Address *       p_address;
     Card_Aggreg *        p_aggreg;
     Card_AndConj *       p_andConj;
-    Card_Arriving *      p_arriving;
     Card_As *            p_as;
 
     Card_BoolPred *      p_boolPred;

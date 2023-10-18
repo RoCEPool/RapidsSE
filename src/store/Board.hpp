@@ -19,7 +19,6 @@
 #include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
-#include "Card_Arriving.hpp"
 #include "Card_As.hpp"
 
 #include "Card_BoolPred.hpp"
