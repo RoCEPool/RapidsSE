@@ -54,7 +54,7 @@ namespace STORE
     void vCraftColInj(void);
     void vCraftColInj_FACETS(ColInj* pColInj, Card *pSubCard);
     void vCraftColPpg(void);
-    void vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubCard);
+    void vCraftColPpg(ColPpg* pColPpg, Card *pSubCard);
 
   protected:
     Footer* aFooter(void);
