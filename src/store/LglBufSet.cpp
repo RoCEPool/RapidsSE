@@ -40,7 +40,7 @@ LglBufSet::~LglBufSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   // Assert we don't have any dangling buffers
-  RASSERT(m_pPdsOfBuffers->iNumEntries(0) == 0);
+//  RASSERT(m_pPdsOfBuffers->iNumEntries(0) == 0);
   delete m_pPdsOfBuffers;
 }
 

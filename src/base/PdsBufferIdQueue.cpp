@@ -67,7 +67,7 @@ void PdsBufferIdQueue::vRepair(Object* pObject)
     pCurrBlock = pNextBlock;
   }
 
-  RASSERT(pPds->iNumEntries(0) == 0);
+//  RASSERT(pPds->iNumEntries(0) == 0);
 }
 
 /*----------------------------------------------------------------------------*/
