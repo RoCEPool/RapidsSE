@@ -2047,7 +2047,7 @@ void CardIter::vPrintBoard(i8 iLineNo, bool bForce)
 /*----------------------------------------------------------------------------*/
 /* capture prior projection                                                   */
 /*----------------------------------------------------------------------------*/
-void CardIter::vSnapPriorProjection(void)
+void CardIter::vSnapFluxArriving(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 

@@ -5,8 +5,8 @@ LOG ' ';
 LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
-//LOG ' ';
-//INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
+LOG 'AggregExpr.test';
+INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
@@ -20,7 +20,7 @@ INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
 //------------------------------------------------------------------------------
-LOG 'Fold:';
+LOG ' ';
 INCLUDE 'r_FOLD_10_F.test';
 INCLUDE 'r_FOLD_24_W_A_C_ro.test';
 INCLUDE 'r_FOLD_32_W_A_NC_I.test';

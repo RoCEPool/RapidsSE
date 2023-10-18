@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF.cpp -- Make Simpler                                            */
+/* XF.cpp -- Make Simpler                                                     */
 /*============================================================================*/
 
 #include "XF.hpp"
@@ -52,6 +52,7 @@
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_X_board_To_sqyNm.hpp"
+#include "XF_Prolog_X_colNm_By_stmCol.hpp"
 #include "XF_Prolog_X_colNm_To_stmCol.hpp"
 #include "XF_Prolog_X_rpnCalc_To_boolPred.hpp"
 #include "XF_Prolog_X_scan_To_from.hpp"
@@ -287,6 +288,7 @@ void XF::vTransform_passThru(void)
     XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
     // todo: needs discussion with Alka re constraint
+    XF_Prolog_X_colNm_By_stmCol::vXF_colNm_By_stmCol(m_pCI);
     XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);

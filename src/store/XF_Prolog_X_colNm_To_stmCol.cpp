@@ -64,7 +64,7 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_X_COLNM_TO_STMCOL, "transform column-name to stream-column"_Stz);
 
-  for (m_pCI->vClearRestart(); m_pCI->G_bEachMain_NONE(); m_pCI->vSnapPriorProjection()) {
+  for (m_pCI->vClearRestart(); m_pCI->G_bEachMain_NONE(); m_pCI->vSnapFluxArriving()) {
     if (! m_pCI->Flux.m_pArriving)
       continue;
 
@@ -72,7 +72,7 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
         m_pCI->G.p_OP->pSub_level()->pSymbol()->Y_iGet(P_Level) != AL_PARTITION)
       continue;
     //m_pCI->Flux.m_pArriving->vDump(__func__);
-    vConvert_colNm_To_stmCol();
+    vX_colNm_To_stmCol();
   }
 
   m_pCI->vEndTransform(__LINE__);
@@ -86,7 +86,7 @@ void XF_Prolog_X_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
 /*----------------------------------------------------------------------------*/
 /* convert colNm to stmCol                                                    */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_X_colNm_To_stmCol::vConvert_colNm_To_stmCol(void)
+void XF_Prolog_X_colNm_To_stmCol::vX_colNm_To_stmCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_X_COLNM_TO_STMCOL, _FOOTER_);
 
