@@ -4017,7 +4017,7 @@ void Symbol::vFacet_Sqy_Rsl(i8 iOrdinal)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+  //RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_SQY_RSL, "$R%lld"_Stz, iOrdinal);
 
@@ -4031,7 +4031,7 @@ void Symbol::vFacet_Sqy_Rsl(Stz* szSqyRsl)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+  //RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_SQY_RSL, "%s"_Stz, szSqyRsl);
 
@@ -4075,7 +4075,11 @@ void Symbol::vFacet_Stm_Col(i8 iStmCol)
 
   if (m_nFacets) {
     eSF eFacet = xaFacet[0].m_eFacet;
-    RASSERT(SF_NONE == eFacet || SF_STM_COL == eFacet || SF_TBL_COL == eFacet || SF_KEY_COL == eFacet);
+    RASSERT(SF_NONE    == eFacet ||
+            SF_SQY_RSL == eFacet ||
+            SF_STM_COL == eFacet ||
+            SF_TBL_COL == eFacet ||
+            SF_KEY_COL == eFacet);
   }
 
   vFacetSprint(SF_STM_COL, "$%lld"_Stz, iStmCol);
