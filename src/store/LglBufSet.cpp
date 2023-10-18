@@ -60,7 +60,7 @@ void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
   LglBufSetItem oItem;
 
   oItem.iLglPtn = tLglPtn.iAsI8() + 1;
-  oItem.iSynthKey = m_iSynthKey++;
+  oItem.iSynthKey = ++m_iSynthKey;
   oItem.oBufferId = pDataBuffer->oGetBufferId();
 
   RASSERT(oItem.oBufferId.m_iAsI8 != 0);
