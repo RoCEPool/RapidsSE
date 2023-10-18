@@ -649,7 +649,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   Card_Arriving* p_arriving = pSubCard->pSub_arriving();
   Card_Emitted*  p_emitted  = pSubCard->pSub_emitted();
 
-  p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+    p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
 
   if (m_pStageDef->i_Stage() == 1) {
     vDebugPoint();
@@ -678,7 +679,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     Symbol* pInSym_a;
     Symbol* pOutSym_e;
 
-    p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
+    if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+      p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
 
     if (m_pStageDef->i_Stage() == 3) {
       vDebugPoint();
@@ -699,23 +701,26 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         // 1) ARRIVING TERM: $t.c
         sHow.vSprint("--FOUND emitted expr for arriving $t.c: %s~%s--"_Stz,
                      pTermSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        p_expr_e->vDump(__func__, sHow);
+        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+          p_expr_e->vDump(__func__, sHow);
         pInSym_a = pTermSym_a;
       }
       else
       if ((p_expr_e = p_emitted->pFind_expr_Via_term0(pExprSym_a, &eViaFacet))) {
-        // 3) ARRIVING EXPR: $n
+        // 2) ARRIVING EXPR: $n
         sHow.vSprint("--FOUND emitted expr for arriving $n; %s~%s--"_Stz,
                      pExprSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        p_expr_e->vDump(__func__, sHow);
+        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+          p_expr_e->vDump(__func__, sHow);
         pInSym_a = pExprSym_a;
       }
       else
       if ((p_expr_e = p_emitted->pFind_expr_Via_term0(pAsSym_a, &eViaFacet))) {
-        // 2) ARRIVING AS: Nm | C_Nn  [ nm ]
+        // 3) ARRIVING AS: Nm | C_Nn  [ nm ]
         sHow.vSprint("--FOUND emitted expr for arriving Nm: %s~%s--"_Stz,
                      pAsSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        p_expr_e->vDump(__func__, sHow);
+        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+          p_expr_e->vDump(__func__, sHow);
         pInSym_a = pAsSym_a;
       }
        else {

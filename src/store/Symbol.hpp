@@ -309,9 +309,12 @@ namespace STORE
     void vFacet_Ppe_Nm(Stz* szPpeNm);
     void vFacet_Rln_Op(Stz* szRlnOp);
     void vFacet_Sqy_Nm(i8 iSqyNo);
+    void vFacet_Sqy_Nm(Stz* szSqyNm);
     void vFacet_Sqy_Op(Stz* szSqyOp);
     void vFacet_Sqy_Prm(i8 iOrdinal);
     void vFacet_Sqy_Prm(Stz* szSqyPrm);
+    void vFacet_Sqy_Rsl(i8 iOrdinal);
+    void vFacet_Sqy_Rsl(Stz* szSqyRsl);
     void vFacet_Stg_Cast(Stz* szStgCast);
     void vFacet_Stg_Nm(i8 iStgNo);
     void vFacet_Stm_Col(Stz* szStmCol);
