@@ -8,18 +8,19 @@ __TPCH_SCHEMA;
 
 /*
 // NOTE:
-In stage S03 StreamDef_arriving
-: StreamDef_arriving 0x204940a00040
-            Col [0] : $1 C0_O_CUSTKEY (INTEGER)
-            Col [1] : $2 C1_O_ORDERKEY (INTEGER)
-
-should be:
-StreamDef_arriving 0x204940a00040
+In stage S02
+ : StreamDef_emitted 0x20485f100040
             Col [0] : $1 C0_O_ORDERKEY (INTEGER)
             Col [1] : $2 C1_C_NATIONKEY (INTEGER)
 
+: ColPpg 0x2048724a0040
+             nArriving 2
+             m_axCol[0] : m_i_CellIn [1] -> m_i_StructCell [0] $1 ($2 $1) ...................> I THINK THIS IS INCOREECT
+             m_axCol[1] : m_i_CellIn [0] -> m_i_StructCell [0] $1 ($1 $1)
+ : ColInj 0x204873410040
+     nCrwCols 8
+     m_axCol[0] : m_i_CrwCol [3] -> m_i_StructCell [1] C1_C_NATIONKEY ($b.4 C_NATIONKEY)
 
-   Things start to go wrong from this point onwards.
          
 */
 
