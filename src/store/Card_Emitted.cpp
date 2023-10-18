@@ -112,7 +112,7 @@ void Card_Emitted::vAs_Review(CardIter* pCI)
       if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
         Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(pSymbol_key_term);
 
-        p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol(SF_NONE));
+        p_expr_prj->pSub_as()->SYM(SF_AS_NM, p_expr_key->pSub_as()->szFacet(SF_NONE));
         p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
       }
     }

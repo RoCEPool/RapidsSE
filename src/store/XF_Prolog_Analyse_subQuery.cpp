@@ -148,7 +148,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_from_call(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Stz* szBoardNm = m_pCI->G.p_call->szSymbol(SF_NONE);
+  Stz* szBoardNm = m_pCI->G.p_call->szFacet(SF_NONE);
   Board* pBoard = m_pCI->m_pBench->pGetBoard(szBoardNm);
   SubQuery *pSubQuery = pBoard->pSubQuery();
   pSubQuery->vCaller(m_pCI->G.i_Board);
@@ -175,7 +175,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
     if (p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Stz* szValue_term = p_conj->szSymbol(SF_NONE);
+    Stz* szValue_term = p_conj->szFacet(SF_NONE);
     eRO eRelnOp = RelOp::eDecode(szValue_term);
 
     if (RO_NONE == eRelnOp)
@@ -237,7 +237,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
     p_conj->pSymbol()->Y_vSet(P_SqyCall);
 
-    Stz* szValue_conj = p_conj->szSymbol(SF_NONE);
+    Stz* szValue_conj = p_conj->szFacet(SF_NONE);
 
     if (p_conj->bIsRelnOp()) {
 

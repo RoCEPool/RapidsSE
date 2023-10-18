@@ -127,7 +127,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
     //p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
     if (p_expr_col) {
       Card_As* p_as = p_expr_col->pSub_as();
-      szColNm = p_as->szSymbol(SF_NONE);
+      szColNm = p_as->szFacet(SF_NONE);
     }
     else {
 
@@ -192,7 +192,7 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 //    Card_Expr* p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
 //    if (p_expr_col) {
 //      Card_As* p_as = p_expr_col->pSub_as();
-//      szColNm = p_as->szSymbol(SF_NONE);
+//      szColNm = p_as->szFacet(SF_NONE);
 //    }
 //    else {
 //
@@ -288,7 +288,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
     if (p_expr_resolved) {
       Card_As* p_as = p_expr_resolved->pSub_as();
-      szColNm = p_as->szSymbol(SF_NONE);
+      szColNm = p_as->szFacet(SF_NONE);
     }
     else {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
@@ -355,7 +355,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //
 //    if (p_expr_col) {
 //      Card_As* p_as = p_expr_col->pSub_as();
-//      szColNm = p_as->szSymbol(SF_NONE);
+//      szColNm = p_as->szFacet(SF_NONE);
 //    }
 //    else {
 //      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();

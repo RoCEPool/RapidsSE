@@ -611,6 +611,21 @@ Card_SubSet* Card::pDupSubCardsRecursive(i8 i_From, i8 i_Till)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get facet symbol                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szFacet(eSF eFacet_xchk)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! m_xSymbol.nFacets())
+    return nullptr;
+
+  Stz* szChrSeq = m_xSymbol.szSF_chrSeq(eFacet_xchk);
+
+  return szChrSeq;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find parent of given sub-card                                              */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindParentRecursive(Card* pSubCard)
@@ -1485,21 +1500,6 @@ Symbol* Card::pSymbol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card symbol                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szSymbol(eSF eSymbol_xchk)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (! m_xSymbol.nFacets())
-    return nullptr;
-
-  Stz* sz = m_xSymbol.szSF_chrSeq(eSymbol_xchk);
-
-  return sz;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find sub card with given symbol and replace                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
@@ -1784,7 +1784,7 @@ void Card::vCoord(void)
 //  strcat(md_Coord, aCK[m_eCard]->azChar());
 
   StrLib::vConcat(md_Coord,sizeof(md_Coord), "] ");
-  StrLib::vConcat(md_Coord,sizeof(md_Coord), szSymbol(SF_NONE) ? szSymbol(SF_NONE)->azChar() : "");
+  StrLib::vConcat(md_Coord, sizeof(md_Coord), szFacet(SF_NONE) ? szFacet(SF_NONE)->azChar() : "");
 
   StrLib::vConcat(md_Coord,sizeof(md_Coord), " ");
   StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eFacet()]->azChar());
@@ -1878,12 +1878,12 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
     else
     if (nSubs == 1) {
       Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintSnippet(true,"%s"_Stz, pSub_0->szSymbol(SF_NONE));
+      pRibbon->vSprintSnippet(true,"%s"_Stz, pSub_0->szFacet(SF_NONE));
     }
     else {
       Card *pSub_0 = pChild->pGetChild(0);
       Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintSnippet(true,"%s == %s"_Stz, pSub_0->szSymbol(SF_NONE), pSub_1->szSymbol(SF_NONE));
+      pRibbon->vSprintSnippet(true, "%s == %s"_Stz, pSub_0->szFacet(SF_NONE), pSub_1->szFacet(SF_NONE));
     }
 
   }
@@ -1978,7 +1978,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
-                          szSymbol(SF_NONE),
+                          szFacet(SF_NONE),
                           nItems());
     else
       sNameSymbol.vSprint("%s%s *%lld"_Stz,
@@ -1996,7 +1996,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprintCat("%s%s %s"_Stz,
                              sName.szStz(),
                              sHiddenChildren.szStz(),
-                             szSymbol(SF_NONE));
+                             szFacet(SF_NONE));
     else
       sNameSymbol.vSprintCat("%s%s"_Stz,
                              sName.szStz(),
@@ -2041,22 +2041,25 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
         Stz* szDecode = szDecodeEnum(szName, iPpy);
         if (szDecode)
-          pRibbon->vSprintSnippet(true,"%s"_Stz,szDecode);
+          pRibbon->vSprintSnippet(true,"}%s"_Stz,szDecode);
         else
         if (bPrintPptName)
-          pRibbon->vSprintSnippet(true,"%s=%lld"_Stz, szName, iPpy);
+          pRibbon->vSprintSnippet(true,"}%s=%lld"_Stz, szName, iPpy);
         else
-          pRibbon->vSprintSnippet(true,"%lld"_Stz, iPpy);
+          pRibbon->vSprintSnippet(true,"}%lld"_Stz, iPpy);
         break;
       }
 
       case TN_STRING: {
         Stz* szName  = pSymbol()->Y_szPpyNm(i_Property);
         Stz* szPpy = pSymbol()->Y_szGet(i_Property);
-        if (bPrintPptName)
-          pRibbon->vSprintSnippet(true,"%s=%s"_Stz, szName, szPpy);
+        if (szPpy->bSame("y"_Stz))
+          pRibbon->vSprintSnippet(true,"}%s"_Stz, szName);
         else
-          pRibbon->vSprintSnippet(true,"%s"_Stz, szPpy);
+        if (bPrintPptName)
+          pRibbon->vSprintSnippet(true,"}%s=%s"_Stz, szName, szPpy);
+        else
+          pRibbon->vSprintSnippet(true,"}%s"_Stz, szPpy);
         break;
       }
 
@@ -2079,12 +2082,12 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks)
-    pRibbon->vSprintSnippet(true,"%s%s%18s"_Stz,
-                              this->szMark1(),
-                              this->szMark2(),
-                              szSymbol(SF_NONE));
+    pRibbon->vSprintSnippet(true, "%s%s%18s"_Stz,
+                            this->szMark1(),
+                            this->szMark2(),
+                            szFacet(SF_NONE));
   else
-    pRibbon->vSprintSnippet(true,"  %s"_Stz, szSymbol(SF_NONE));
+    pRibbon->vSprintSnippet(true, "  %s"_Stz, szFacet(SF_NONE));
 
   if (m_xSymbol.nFacets()) {
     for (i8 i_Facet = 0; i_Facet < m_xSymbol.nFacets(); i_Facet++) {

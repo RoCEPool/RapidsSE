@@ -174,7 +174,7 @@ void XF_Synthesise_pipelineDef::vCraftStageDef(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
-                             m_pCI->G.p_stage->szSymbol(SF_NONE),
+                             m_pCI->G.p_stage->szFacet(SF_NONE),
                              m_pCI->G.p_stage);
   m_pPipelineDef->vAppend(m_pStageDef);
 }
@@ -269,12 +269,12 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_CAST:
-      m_pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szFacet(SF_NONE)));
       break;
 
     case CK_CROSSJOIN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
@@ -297,8 +297,8 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_INDEXJOIN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
 
       if (p_OP->pSub_constraint()) {
@@ -308,20 +308,20 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_INDEXSCAN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
     case CK_INFLATE:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Inflate(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       break;
 
     case CK_KEYEXISTS:
       p_OP->vRpnKeyExists_constraint(sConstraint, _pCard_KeyExists(p_OP));
 
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_indexNm()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_indexNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
@@ -329,8 +329,8 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
     case CK_KEYNOTEXISTS:
       p_OP->vRpnKeyNotExists_constraint(sConstraint, _pCard_KeyNotExists(p_OP));
 
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szFacet(SF_NONE)));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
@@ -348,7 +348,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_SCAN:
-      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szFacet(SF_NONE)));
       break;
 
     case CK_SEND:
@@ -360,7 +360,7 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
 
     case CK_TOP:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
-      m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szSymbol(SF_NONE)));
+      m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szFacet(SF_NONE)));
       break;
 
     case CK_WHERE:
@@ -694,7 +694,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
 
         pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
-                      p_expr_e->szSymbol(SF_NONE),
+                      p_expr_e->szFacet(SF_NONE),
                       pSym_colSym_a->szSF_chrSeq(SF_NONE),
                       p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
 
@@ -709,7 +709,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
         //p_expr_e->vDump(__func__,sHow);
         pColPpg->vAdd(pSym_colSym_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
-                      p_expr_e->szSymbol(SF_NONE),
+                      p_expr_e->szFacet(SF_NONE),
                       pSym_colSym_a->szSF_chrSeq(SF_NONE),
                       p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
 
@@ -734,7 +734,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
 
         pColPpg->vAdd(pSym_expr_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
-                      p_expr_e->szSymbol(SF_NONE),
+                      p_expr_e->szFacet(SF_NONE),
                       pSym_expr_a->szSF_chrSeq(SF_NONE),
                       p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
         return C_CONTINUE_RECURSION;

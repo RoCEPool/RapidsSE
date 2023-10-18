@@ -271,7 +271,7 @@ i8 Card_Term::iGetOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_Ord = StrLib::iGleanInt(this->szSymbol(SF_NONE)->azChar());
+  i8 i_Ord = StrLib::iGleanInt(this->szFacet(SF_NONE)->azChar());
 
   return i_Ord;
 }
@@ -283,7 +283,7 @@ char Card_Term::cGetTblSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->szSymbol(SF_NONE);
+  Stz* szTerm = this->szFacet(SF_NONE);
 
   char cSyn = szTerm->azChar()[1];
 
@@ -406,7 +406,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  s256 sTerm = szSymbol(SF_NONE);
+  s256 sTerm = szFacet(SF_NONE);
   s32 sType_short = szCT_char[pSymbol()->eColType()];
 
   //pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
@@ -462,8 +462,8 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pString->vCatSprint("%s%s"_Stz,szSep,
-                      szSymbol(SF_NONE));
+  pString->vCatSprint("%s%s"_Stz, szSep,
+                      szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -529,7 +529,7 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
   if (pCI->X.m_pExprList_a) {
     //nCols_a = pCI->X.m_pExprList_a->nChildCards();
     if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(pSymbol_this)) {
-      Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
+      Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
       pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);
       this->vMark1(MARK_CHANGED);
       return;
@@ -547,7 +547,7 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
       if (! pSymbol_k)
         return;
       if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(pSymbol_k)) {
-        Stz* szStmCol_expr_a = p_expr_scalar_a->szSymbol(SF_NONE);
+        Stz* szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
         pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);
       }

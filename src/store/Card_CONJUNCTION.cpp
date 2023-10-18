@@ -75,7 +75,7 @@ bool Card_CONJUNCTION::bContains_callToSubQuery(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (pCI->m_pBench->bIsSubQueryNm(xKid.p_term()->szSymbol(SF_NONE)))
+    if (pCI->m_pBench->bIsSubQueryNm(xKid.p_term()->szFacet(SF_NONE)))
       return true;
 
   return false;
@@ -132,7 +132,7 @@ Stz* Card_CONJUNCTION::szGetBoardNmInTerm(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Term* p_term = pGetTerm_boardNm(pCI))
-    return p_term->szSymbol(SF_NONE);
+    return p_term->szFacet(SF_NONE);
 
   return nullptr;
 }
@@ -178,7 +178,7 @@ Card_Term* Card_CONJUNCTION::pGetTerm_boardNm(CardIter* pCI)
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
 
-    Stz* szValue_term = xKid.p_term()->szSymbol(SF_NONE);
+    Stz* szValue_term = xKid.p_term()->szFacet(SF_NONE);
     if (pCI->G_bIsBoardNm(szValue_term))
       return xKid.p_term();
   }
@@ -247,8 +247,8 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)) ||
-          p_index->bTblCol_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)) ||
+          p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
         return true;
 
       return false;
@@ -257,7 +257,7 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
       // + only term_0 is $c.n
 
       // ? is term_0:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szSymbol(SF_NONE)))
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)))
         return true;
 
       return false;
@@ -268,7 +268,7 @@ bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
-    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szSymbol(SF_NONE)) )
+    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
       return true;
 
     return false;
@@ -342,7 +342,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term1 = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term1->szSymbol(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term1->szFacet(SF_NONE))); //temp
 
     Symbol x_Symbol_stmCol1;
     if (p_term) {
@@ -368,7 +368,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -399,7 +399,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
@@ -587,7 +587,7 @@ void Card_CONJUNCTION::vShortForm(String* pString)
   }
   else
   if (bIsCard(CK_CMPCONJ)) {
-    pString->vCatSprint(" %s"_Stz,szSymbol(SF_NONE));
+    pString->vCatSprint(" %s"_Stz, szFacet(SF_NONE));
   }
   else
   if (bIsCard(CK_NOTCONJ)) {

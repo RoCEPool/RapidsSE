@@ -318,6 +318,7 @@ namespace STORE
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
+    Stz* szFacet(eSF eFacet_xchk);
     Card* pFindCardRecursive(eCK eOfCard);
     Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
@@ -383,7 +384,6 @@ namespace STORE
     bool bSameSymbol(Card* pArg);
 
     Symbol* pSymbol(void);
-    Stz* szSymbol(eSF eSymbol_xchk);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 

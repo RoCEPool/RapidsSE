@@ -74,14 +74,14 @@ void Card_IdxColList::vAffix_tblCol(Card_Emitted* p_emitted)
 
   Kid xKid(this);
   while (xKid.bEach(CK_IDXCOL)) {
-    Stz* szColNm = xKid.p_idxCol()->szSymbol(SF_NONE);
+    Stz* szColNm = xKid.p_idxCol()->szFacet(SF_NONE);
 
     Kid xCI_p(p_emitted);
     xCI_p.vEnded();
     xCI_p.vBegin_reverse();
     while (xCI_p.bEach_reverse(CK_EXPR)) {
       if (xCI_p.p_expr()->pSub_as()->pSymbol()->bSame(szColNm)) {
-        Stz* szPrjCol = xCI_p.p_expr()->pGet_term(0)->szSymbol(SF_NONE);
+        Stz* szPrjCol = xCI_p.p_expr()->pGet_term(0)->szFacet(SF_NONE);
 
         eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
         RASSERT(SF_TBL_COL == eSymbol);

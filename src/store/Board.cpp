@@ -101,7 +101,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, "_SQ1RESULT_"_Stz));
+  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, "__RESULT1"_Stz));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
 
@@ -111,6 +111,8 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G.p_term->pSymbol()->vColType(p_expr_found->eColType());
 
   pCI->G.p_rpnCalc->pSymbol()->vColType(p_expr_found->eColType());
+
+  pCI->G.p_expr-> SYM(SF_STM_COL,(i8)1);
   pCI->G.p_expr->pSymbol()->vColType(p_expr_found->eColType());
 
 }
@@ -160,7 +162,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     if (! (pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm_boardNm(pCI)))
       return C_CONTINUE_RECURSION;
 
-    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqyCall->szSymbol(SF_NONE);
+    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_NONE);
     pCI->Sqy.m_pConj_sqyCall = p_conj;
     pCI->Sqy.m_pConj_sqyCall->vMark1(MARK_AT);
     bFoundCall = true;
@@ -170,14 +172,14 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
       RASSERT(p_conj->bIsSqyOp());
 
-      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(0)->szSymbol(SF_NONE);
-      pCI->Sqy.m_sSqyNm  = p_conj->pGetTerm(1)->szSymbol(SF_NONE);
+      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(0)->szFacet(SF_NONE);
+      pCI->Sqy.m_sSqyNm  = p_conj->pGetTerm(1)->szFacet(SF_NONE);
       return C_TERMINATE_RECURSION;
     }
 
     if (p_conj->pSymbol()->bSame("in"_Stz) || p_conj->pSymbol()->bSame("notIn"_Stz)) {
       RASSERT(p_conj->bIsSqyOp());
-      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(2)->szSymbol(SF_NONE);
+      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(2)->szFacet(SF_NONE);
       return C_TERMINATE_RECURSION;
     }
 

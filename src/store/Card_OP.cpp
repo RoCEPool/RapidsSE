@@ -583,7 +583,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     vDebugPoint();
   }
 
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Flux.m_pArriving) {
@@ -682,7 +682,7 @@ void Card_OP::vRpnCombined(String* psRpnExpr, Card_Combined* pCard_Combined)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  psRpnExpr->vCatSprint("%s"_Stz, pCard_Combined->szSymbol(SF_NONE));
+  psRpnExpr->vCatSprint("%s"_Stz, pCard_Combined->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -718,7 +718,7 @@ void Card_OP::vRpnCrossJoin(String* psRpnExpr, Card_CrossJoin* pCard_CrossJoin)
       }
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
   }
 }
 
@@ -825,7 +825,7 @@ void Card_OP::vRpnHash(String* psOpArgs, Card_Hash* pCard_Hash)
 
   psOpArgs->vCatSprint("type %s %s"_Stz,
                        aCT[p_term->pSymbol()->eColType()],
-                       p_term->szSymbol(SF_NONE));
+                       p_term->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -902,10 +902,10 @@ void Card_OP::vRpnIndexJoin(String* psRpnExpr, Card_IndexJoin* pCard_IndexJoin)
       }
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
   }
 
-  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -996,12 +996,12 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
           }
         }
 
-        psRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
+        psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
       }
 
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
   }
 }
 
@@ -1064,10 +1064,10 @@ void Card_OP::vRpnKeyExists(String* psRpnExpr, Card_KeyExists* pCard_KeyExists)
         }
       }
 
-      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
+      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
 
   }
 }
@@ -1155,10 +1155,10 @@ void Card_OP::vRpnKeyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotExi
         }
       }
 
-      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol(SF_NONE));
+      psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
     }
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_bound->szFacet(SF_NONE));
   }
 
 }
@@ -1204,7 +1204,7 @@ void Card_OP::vRpnLimit(String* psRpnExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  psRpnExpr->vCatSprint(" %s"_Stz, pCard_Limit->szSymbol(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, pCard_Limit->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1348,7 +1348,7 @@ void Card_OP::vRpnSort(String* psRpnExpr, Card_Sort* pCard_Sort)
 
     Card* p_direction = pCard_Expr->pSub_direction();
 
-    psRpnExpr->vCatSprint(" %s"_Stz, p_direction->szSymbol(SF_NONE));
+    psRpnExpr->vCatSprint(" %s"_Stz, p_direction->szFacet(SF_NONE));
 
   }
 
@@ -1403,7 +1403,7 @@ void Card_OP::vAs(String* psRpnExpr, Card_As* pCard_As)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  psRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szSymbol(SF_NONE));
+  psRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1440,7 +1440,7 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
         break;
       case CK_CMPCONJ:
         vBoolPart(psRpnExpr, _pCard_CmpConj(pSubCard), 0);
-        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol(SF_NONE));
+        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
         break;
       case CK_NOTCONJ:
         vBoolPart(psRpnExpr, _pCard_NotConj(pSubCard), 0);
@@ -1460,7 +1460,7 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
             RASSERT(pSubCard->pSymbol()->bHasType());
           }
         }
-        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol(SF_NONE));
+        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
         break;
       default:
         NEVER_REACH
@@ -1561,7 +1561,7 @@ void Card_OP::vTerm(String* psRpnExpr, Card_Term* pCard_Term)
     }
   }
 
-  psRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szSymbol(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/

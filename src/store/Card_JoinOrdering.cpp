@@ -138,8 +138,8 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
 
     if (bNumbers)
       pString->vCatSprint("NetCost %5s UniCost %5s : %8s"_Stz,
-                          p_costNetwork->szSymbol(SF_NONE),
-                          p_costUnicast->szSymbol(SF_NONE),
+                          p_costNetwork->szFacet(SF_NONE),
+                          p_costUnicast->szFacet(SF_NONE),
                           sHeadTable.szStz());
     else
       pString->vSprint("%s"_Stz,sHeadTable.szStz());
@@ -154,17 +154,17 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
     Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
     Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
     Card_CostJoining* p_costJoining = p_joinEstimate->pSub_costJoining();
-    s32 sCast = p_joinCast->szSymbol(SF_NONE);
+    s32 sCast = p_joinCast->szFacet(SF_NONE);
     StrLib::vShuffleLeft(sCast.azChar(), sCast.nAreaBytes(), 3);
 
     if (bNumbers)
       pString->vCatSprint(" %5s %9s %8s (%5s)"_Stz,
                           sCast.bSame("UNICAST"_Stz)
-                            ? p_costUnicast->szSymbol(SF_NONE)
-                            : p_costNetwork->szSymbol(SF_NONE),
+                            ? p_costUnicast->szFacet(SF_NONE)
+                            : p_costNetwork->szFacet(SF_NONE),
                           sCast.szStz(),
                           sNextTable.szStz(),
-                          p_costJoining->szSymbol(SF_NONE));
+                          p_costJoining->szFacet(SF_NONE));
     else
       pString->vCatSprint(" %s %s"_Stz,sCast.szStz(),
                           sNextTable.szStz());
@@ -203,7 +203,7 @@ void Card_JoinOrdering::vReorder(Card_Deck* pDeck)
   Kid xCI_joinOrder(this);
   while (xCI_joinOrder.bEach(CK_JOINORDER)) {
 
-    Stz* szTableSyn = xCI_joinOrder.p_joinOrder()->szSymbol(SF_NONE);
+    Stz* szTableSyn = xCI_joinOrder.p_joinOrder()->szFacet(SF_NONE);
 
     i8 i_Table = C_UNKNOWN;
     Card_From* p_from =

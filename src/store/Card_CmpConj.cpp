@@ -92,7 +92,7 @@ Card_CmpConj* Card_CmpConj::pCmpPredFindBound(Index* pIndex, ePB eBound)
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->szSymbol(SF_NONE);
+  Stz* szTerm0 = pTerm0->szFacet(SF_NONE);
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return nullptr;
@@ -114,7 +114,7 @@ bool Card_CmpConj::bCmpPredHasBounds(Index* pIndex)
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->szSymbol(SF_NONE);
+  Stz* szTerm0 = pTerm0->szFacet(SF_NONE);
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return false;
@@ -130,14 +130,14 @@ bool Card_CmpConj::bCoPtnWith(Card_CmpConj* p_cmpConj_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
 
   Card_Term* p_term_arg_0 = _pCard_Term(p_cmpConj_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_arg_1 = _pCard_Term(p_cmpConj_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
 
   bool bAreCoPtn = false;
 
@@ -243,7 +243,7 @@ char Card_CmpConj::cGetTable_a(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_a = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_a = p_term_this_a->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_a = p_term_this_a->szFacet(SF_NONE)->azChar()[1];
 
   return cTableSyn_this_a;
 }
@@ -256,7 +256,7 @@ char Card_CmpConj::cGetTable_b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_b = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_b = p_term_this_b->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_b = p_term_this_b->szFacet(SF_NONE)->azChar()[1];
 
   return cTableSyn_this_b;
 }
@@ -304,14 +304,14 @@ bool Card_CmpConj::bIsEq(Card_CmpConj* p_cmpConj_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
 
   Card_Term* p_term_arg_0 = _pCard_Term(p_cmpConj_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_arg_1 = _pCard_Term(p_cmpConj_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
 
   if (cTableSyn_this_0 == cTableSyn_arg_0 &&
       cTableSyn_this_1 == cTableSyn_arg_1)
@@ -341,9 +341,9 @@ char Card_CmpConj::cOtherTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
 
   if (cTableSyn_this_0 == cTblSyn)
     return cTableSyn_this_1;
@@ -359,14 +359,14 @@ bool Card_CmpConj::bOverlapsWith(Card_CmpConj* p_conjCmp_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
 
   Card_Term* p_term_arg_0 = _pCard_Term(p_conjCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_arg_1 = _pCard_Term(p_conjCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
 
   if (   cTableSyn_this_0 == cTableSyn_arg_0
       || cTableSyn_this_0 == cTableSyn_arg_1
@@ -388,13 +388,13 @@ bool Card_CmpConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
   Kid xKid(p_bounds);
   while (xKid.bEach(CK_BOUND)) {
 
-//    Stz* sz_bnd_idxCol = xKid.G.p_bound->pGetChild(0)->szSymbol(SF_NONE);
-    Stz* sz_bnd_stmCol = xKid.p_bound()->pGetChild(1)->szSymbol(SF_NONE);
-    Stz* sz_bnd_rlnOpr    = xKid.p_bound()->szSymbol(SF_NONE);
+//    Stz* sz_bnd_idxCol = xKid.G.p_bound->pGetChild(0)->szFacet(SF_NONE);
+    Stz* sz_bnd_stmCol = xKid.p_bound()->pGetChild(1)->szFacet(SF_NONE);
+    Stz* sz_bnd_rlnOpr    = xKid.p_bound()->szFacet(SF_NONE);
 
-    Stz* sz_cmp_rlnOpr    = this->szSymbol(SF_NONE);
-    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szSymbol(SF_NONE);
-    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szSymbol(SF_NONE);
+    Stz* sz_cmp_rlnOpr    = this->szFacet(SF_NONE);
+    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szFacet(SF_NONE);
+    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szFacet(SF_NONE);
 
     if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
       continue;
@@ -421,9 +421,9 @@ bool Card_CmpConj::bUsesTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szSymbol(SF_NONE)->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
 
   if (cTableSyn_this_0 == cTblSyn || cTableSyn_this_1 == cTblSyn)
     return true;

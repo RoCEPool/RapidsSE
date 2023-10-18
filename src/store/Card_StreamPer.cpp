@@ -230,7 +230,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       p_streamHead->SYM(SF_TBL_SYN,cTblSyn_ith);
       vAppendChild(p_streamHead);
 
-      p_streamHead->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
+      p_streamHead->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM, p_table_ith->pSub_tableNm()->szFacet(SF_NONE)));
 
       if (p_table_ith->pSub_keyExists() || p_table_ith->pSub_keyNotExists()) {
         p_streamHead->vAppendChild((new Card_Note) ->SYM(SF_NOTE,"**CAN'T BE FIRST**"_Stz));
@@ -259,7 +259,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     p_streamJoin->SYM(SF_TBL_SYN,cTblSyn_ith);
     vAppendChild(p_streamJoin);
 
-    p_streamJoin->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM,p_table_ith->pSub_tableNm()->szSymbol(SF_NONE)));
+    p_streamJoin->vAppendChild((new Card_TableNm) ->SYM(SF_TBL_NM, p_table_ith->pSub_tableNm()->szFacet(SF_NONE)));
 
     if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
       if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {

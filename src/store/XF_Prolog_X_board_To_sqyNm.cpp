@@ -74,10 +74,10 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bfTo_sqyNm = [](Card* p_card) {
-    if (! Symbol::bIs_Sqy_Nm(p_card->szSymbol(SF_NONE)))
+    if (! Symbol::bIs_Sqy_Nm(p_card->szFacet(SF_NONE)))
       return C_CONTINUE_RECURSION;
 
-    i8 iSqyNo = StrLib::iGleanInt(p_card->szSymbol(SF_NONE)->azChar());
+    i8 iSqyNo = StrLib::iGleanInt(p_card->szFacet(SF_NONE)->azChar());
 
     p_card->pSymbol()->vDeleteFacet(SF_COL_NM);
     Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);

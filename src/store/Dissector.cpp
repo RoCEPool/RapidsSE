@@ -1238,7 +1238,7 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* pCard_RpnTerms)
 
   // <name>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
-  Stz* szAsNm = pCard_Term->szSymbol(SF_NONE);
+  Stz* szAsNm = pCard_Term->szFacet(SF_NONE);
 
   Card_As* pCard_As = (new Card_As) ->SYM(SF_AS_NM,szAsNm);
   delete pCard_Term;
@@ -1345,7 +1345,7 @@ Card_Direction* Dissector::pPopDirection(Card_RpnTerms* pCard_RpnTerms)
 
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
-  Stz* szDirn = pCard_Term->szSymbol(SF_NONE);
+  Stz* szDirn = pCard_Term->szFacet(SF_NONE);
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* pCard_Direction = (new Card_Direction) ->SYM(SF_DIRECTION, szDirn);
@@ -1430,7 +1430,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
   if (! pCard_Expr->pSub_as()) {
     Card_As *pCard_As;
     if (pCard_Expr->pSub_rpnCalc()->nChildCards() == 1) {
-      Stz* AsNm = pCard_Expr->pGet_term(0)->szSymbol(SF_NONE);
+      Stz* AsNm = pCard_Expr->pGet_term(0)->szFacet(SF_NONE);
       if (Symbol::bIs_Col_Nm(AsNm)) {
         pCard_As = (new Card_As)->SYM(SF_AS_NM, AsNm);
       }
@@ -1470,7 +1470,7 @@ Card_HshCol* Dissector::pPopHshCol(Card_RpnTerms* pCard_RpnTerms)
   delete p_card_type;
 
   Card_Term* p_term1 = _pCard_Term(pCard_RpnTerms->pPopChild());
-  eCT eColumnType = Symbol::eTo_eCT_str(p_term1->szSymbol(SF_NONE));
+  eCT eColumnType = Symbol::eTo_eCT_str(p_term1->szFacet(SF_NONE));
   delete p_term1;
 
   Card_Term* p_term_hsh = _pCard_Term(pCard_RpnTerms->pPopChild());
@@ -1630,7 +1630,7 @@ eCT Dissector::ePopType(Card_RpnTerms* pCard_RpnTerms)
 
   // TYPE
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPopChild());
-  Stz* szTerm = pCard_Term->szSymbol(SF_NONE);
+  Stz* szTerm = pCard_Term->szFacet(SF_NONE);
   RASSERT(szTerm->bSame("TYPE"_Stz));
 
   delete pCard_Term;
@@ -1639,7 +1639,7 @@ eCT Dissector::ePopType(Card_RpnTerms* pCard_RpnTerms)
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPopChild());
 
-  eCT eType = Symbol::eTo_eCT_str(pCard_Term_type->szSymbol(SF_NONE));
+  eCT eType = Symbol::eTo_eCT_str(pCard_Term_type->szFacet(SF_NONE));
 
   delete pCard_Term_type;
 

@@ -77,7 +77,7 @@ void Card_EXPRLIST::vBump_stmCol_In_rpnCalc(CardIter* )
 
     Kid xCI2(p_rpnCalc);
     while (xCI2.bEach(CK_TERM)) {
-//      Stz *szTerm = xCI2.G.p_term->szSymbol(SF_NONE);
+//      Stz *szTerm = xCI2.G.p_term->szFacet(SF_NONE);
 
       if (xCI2.p_term()->pSymbol()->bIs_Stm_Col()) {
         xCI2.p_term()->vBump_stmCol();
@@ -331,9 +331,9 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       p_key->vX();
 
@@ -352,9 +352,9 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       p_key->vX();
 
@@ -373,9 +373,9 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       p_key->vX();
 
@@ -395,9 +395,9 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -416,9 +416,9 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -438,9 +438,9 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
     if (CK_PROJECT == p_OP->eCard()) {
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       sColNm_mapped = sColNm;
 
@@ -448,18 +448,18 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     else
     if (CK_SORT == p_OP->eCard()) {
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       sColNm_mapped = sColNm;
 
     }
     else {
       if (p_expr->pSub_as())
-        sColNm = p_expr->pSub_as()->szSymbol(SF_NONE);
+        sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       else
-        sColNm = p_expr->pGet_term(0)->szSymbol(SF_NONE);
+        sColNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
 
       sColNm_mapped = sColNm;
     }

@@ -246,7 +246,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
 
   vPreStage();
   vTabStage();
-  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szSymbol(SF_NONE), aYG_weave[eStageTopo]);
+  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szFacet(SF_NONE), aYG_weave[eStageTopo]);
   vEolStage();
 
   m_i_Stage++;
@@ -412,8 +412,8 @@ void Weaver::vArgCast(String* psOpArgs, Card_Cast* pCard_Next)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  if (pCard_Next->szSymbol(SF_NONE))
-    psOpArgs->vCatSprint("%s"_Stz, pCard_Next->szSymbol(SF_NONE));
+  if (pCard_Next->szFacet(SF_NONE))
+    psOpArgs->vCatSprint("%s"_Stz, pCard_Next->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,8 +433,8 @@ void Weaver::vArgCrossJoin(String* psOpArgs, Card_CrossJoin* pCard_CrossJoin)
   pCard_CrossJoin->vRpnCrossJoin(sRpnExpr,pCard_CrossJoin);
 
   psOpArgs->vCatSprint("%s %s \"%s \""_Stz
-      , p_tableNm->szSymbol(SF_NONE)
-      , p_indexNm->szSymbol(SF_NONE)
+      , p_tableNm->szFacet(SF_NONE)
+      , p_indexNm->szFacet(SF_NONE)
       , sRpnExpr.szStz());
 
 }
@@ -493,7 +493,7 @@ void Weaver::vArgHash(String* psOpArgs, Card_Hash* pCard_Hash)
 
   psOpArgs->vCatSprint("\"type %s %s\""_Stz,
                        aCT[p_term->pSymbol()->eColType()],
-                       p_term->szSymbol(SF_NONE));
+                       p_term->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,7 +534,7 @@ void Weaver::vArgIndexJoin(String* psOpArgs, Card_IndexJoin* pCard_IndexJoin)
   pCard_IndexJoin->vRpnIndexJoin(sRpnExpr, pCard_IndexJoin);
 
   psOpArgs->vCatSprint("%s %s \"%s \""_Stz,
-                       p_tableNm->szSymbol(SF_NONE), p_indexNm->szSymbol(SF_NONE), sRpnExpr.szStz());
+                       p_tableNm->szFacet(SF_NONE), p_indexNm->szFacet(SF_NONE), sRpnExpr.szStz());
 
   if (pCard_IndexJoin->pSub_constraint()) {
     s4K sRpnConstraint;
@@ -567,7 +567,7 @@ void Weaver::vArgIndexScan(String* psOpArgs, Card_IndexScan* pCard_IndexScan)
 
   pCard_IndexScan->vRpnIndexScan(sRpnExpr, pCard_IndexScan);
   
-  psOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szSymbol(SF_NONE), p_indexNm->szSymbol(SF_NONE));
+  psOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szFacet(SF_NONE), p_indexNm->szFacet(SF_NONE));
   psOpArgs->vCatSprint("                \"%s \""_Stz, sRpnExpr.szStz());
 
 }
@@ -587,7 +587,7 @@ void Weaver::vArgInflate(String* psOpArgs, Card_Inflate* pCard_Inflate)
 
   Card_TableNm* p_tableNm = pCard_Inflate->pSub_tableNm();
 
-  Stz* szTableNm = p_tableNm->szSymbol(SF_NONE);
+  Stz* szTableNm = p_tableNm->szFacet(SF_NONE);
   //m_i_Op_stage++;
 
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
@@ -620,8 +620,8 @@ void Weaver::vArgKeyExists(String* psOpArgs, Card_KeyExists* pCard_KeyExists)
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
   psOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      , p_tableNm->szSymbol(SF_NONE)
-      , p_indexNm->szSymbol(SF_NONE)
+      , p_tableNm->szFacet(SF_NONE)
+      , p_indexNm->szFacet(SF_NONE)
       , sRpnExpr.szStz()
       , sRpnConstraint.szStz());
 }
@@ -646,8 +646,8 @@ void Weaver::vArgKeyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNotE
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
   psOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      , p_tableNm->szSymbol(SF_NONE)
-      , p_indexNm->szSymbol(SF_NONE)
+      , p_tableNm->szFacet(SF_NONE)
+      , p_indexNm->szFacet(SF_NONE)
       , sRpnExpr.szStz()
       , sRpnConstraint.szStz());
 }
@@ -716,7 +716,7 @@ void Weaver::vArgScan(String* psOpArgs, Card_Scan* pCard_Scan)
 
   Card_TableNm* p_tableNm = pCard_Scan->pSub_tableNm();
   
-  Stz* szTableNm = p_tableNm->szSymbol(SF_NONE);
+  Stz* szTableNm = p_tableNm->szFacet(SF_NONE);
   //m_i_Op_stage++;
   
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
@@ -732,12 +732,12 @@ void Weaver::vArgSend(String* psOpArgs, Card_Send* pCard_send)
 //  pCard_Send->vDump(__func__ );
 
   if (XK_BROADCAST == (eXK)pCard_send->pSymbol()->Y_iGet(P_SendKind))
-    psOpArgs->vCatSprint("%s broadcast"_Stz, pCard_send->szSymbol(SF_NONE));
+    psOpArgs->vCatSprint("%s broadcast"_Stz, pCard_send->szFacet(SF_NONE));
   else
   if (XK_HASHCAST == (eXK)pCard_send->pSymbol()->Y_iGet(P_SendKind))
-    psOpArgs->vCatSprint("%s hashcast"_Stz, pCard_send->szSymbol(SF_NONE));
+    psOpArgs->vCatSprint("%s hashcast"_Stz, pCard_send->szFacet(SF_NONE));
   else
-    psOpArgs->vCatSprint("%s"_Stz, pCard_send->szSymbol(SF_NONE));
+    psOpArgs->vCatSprint("%s"_Stz, pCard_send->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -768,7 +768,7 @@ void Weaver::vArgTable(String* psOpArgs, Card_Table* pCard_Table)
 
   Card_TableNm* p_tableNm = pCard_Table->pSub_tableNm();
 
-  Stz* szTableNm = p_tableNm->szSymbol(SF_NONE);
+  Stz* szTableNm = p_tableNm->szFacet(SF_NONE);
 
 
   psOpArgs->vCatSprint("%s"_Stz, szTableNm);
@@ -789,7 +789,7 @@ void Weaver::vArgTop(String* psOpArgs, Card_Top* pCard_op)
 
   psOpArgs->vCatSprint("\"%s\" %s"_Stz,
                        sRpnExpr.szStz(),
-                       pCard_op->pSub_count()->szSymbol(SF_NONE));
+                       pCard_op->pSub_count()->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -408,8 +408,8 @@ void ChildCards::vOntoStzList(StzList* pStzList)
   i8 nSubCards = nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
     Card* p_child = pGetChild(i_Sub);
-    if (p_child->szSymbol(SF_NONE))
-      pStzList->vAppend(p_child->szSymbol(SF_NONE));
+    if (p_child->szFacet(SF_NONE))
+      pStzList->vAppend(p_child->szFacet(SF_NONE));
   }
 }
 

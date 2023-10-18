@@ -115,7 +115,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
   while (m_pCI->G_bEachMainWith2Sub(CK_FROM, CK_TABLE, CK_TABLENM)) {
 
     Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+    Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
     m_pCI->G.p_from->pSymbol()->Y_vSet(P_Pointer,pTable);
 
     i8 jTableSize;

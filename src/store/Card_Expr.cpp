@@ -57,7 +57,7 @@ Card_Expr::Card_Expr(Card_As*      p_as_arg,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_As  *    p_as      = (new Card_As) ->SYM(SF_AS_NM,p_as_arg->szSymbol(SF_NONE));
+  Card_As  *    p_as      = (new Card_As) ->SYM(SF_AS_NM, p_as_arg->szFacet(SF_NONE));
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 
@@ -570,13 +570,13 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   s32 sType_short = szCT_char[pSymbol()->eColType()];
 
-  pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s %s"_Stz,
+  pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,
                           cMark1(),
                           cMark2(),
                           Stz::szDots(iDepth - 1),
                           m_i_Child,
                           szCardNm(),
-                          szSymbol(SF_NONE),
+                          szFacet(SF_NONE),
                           sType_short.szStz());
 }
 
@@ -603,7 +603,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   if (p_as)
     p_expr_propagation->vAppendChild(p_as->pClone());
   else {
-    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,this->szSymbol(SF_NONE));
+    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM, this->szFacet(SF_NONE));
     p_expr_propagation->vAppendChild(p_as_new);
   }
 
