@@ -810,7 +810,7 @@ bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
+/* is value a __subquery or $Qn like name?                                    */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Sqy_Nm(BASE::Stz *szArg)
 {
@@ -819,8 +819,16 @@ bool Symbol::bIs_Sqy_Nm(BASE::Stz *szArg)
   if (! szArg)
     return false;
 
-  if (StrLib::bBeginsWith(szArg->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szArg->azChar(), "__sq"))
+  if (StrLib::bBeginsWith(szArg->azChar(), "__subquery"))
+    return true;
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+
+  if ('$' == acFirst
+      && 'Q' == acSecond
+      && StrLib::bIsDigit(acThird))
     return true;
 
   return false;
@@ -4015,7 +4023,7 @@ void Symbol::vFacet_Sqy_Nm(i8 iSqyNo)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_SQY_NM,"__sq%02lld"_Stz, iSqyNo);
+  vFacetSprint(SF_SQY_NM,"$Q%lld"_Stz, iSqyNo);
 
   RASSERT(bIs_Sqy_Nm());
 }
