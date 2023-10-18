@@ -188,9 +188,8 @@ eSF Symbol::eEvalSymbol(Stz* szArg)
   if (bIs_Null(szArg))         return SF_NULL;
   if (bIs_Parenthesis(szArg))  return SF_PARENTHESIS;
   if (bIs_Pay_Col(szArg))      return SF_PAY_COL;
-  if (bIs_Prm_Col(szArg))      return SF_PRM_COL;
   if (bIs_Rln_Op(szArg))       return SF_RLN_OP;
-  if (bIs_Sqy_Prm(szArg))      return SF_PRM_COL;
+  if (bIs_Sqy_Prm(szArg))      return SF_SQY_PRM;
   if (bIs_Sqy_Op(szArg))       return SF_SQY_OP;
   if (bIs_Sqy_Rsl(szArg))      return SF_SQY_NM;
   if (bIs_Stg_Cast(szArg))     return SF_STG_CAST;
@@ -767,23 +766,6 @@ bool Symbol::bIs_Ppe_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a parameter-column?  (i.e. %n)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Prm_Col(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-
-  if ('%' == acFirst &&
-      StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(Stz* szArg)
@@ -791,19 +773,6 @@ bool Symbol::bIs_Rln_Op(Stz* szArg)
   _static_
 
   if (RO_NONE != eEvalRelnOp(szArg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szArg)
-{
-  _static_
-
-  if (StrLib::bBeginsWith(szArg->azChar(), C_SQCRLKEY->azChar()))
     return true;
 
   return false;
@@ -1452,7 +1421,8 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
     case SF_PAY_COL:    vFacet_Pay_Col(iInt);    break;
-    case SF_PRM_COL:    vFacet_Prm_Col(iInt);    break;
+    case SF_SQY_PRM:
+      vFacet_Sqy_Prm(iInt);    break;
     case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
     case SF_STM_COL:    vFacet_Stm_Col(iInt);     break;
@@ -1529,7 +1499,8 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
     case SF_PAY_COL:     vFacet_Pay_Col(szChrSeq);     break;
     case SF_PPE_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
-    case SF_PRM_COL:     vFacet_Prm_Col(szChrSeq);     break;
+    case SF_SQY_PRM:
+      vFacet_Sqy_Prm(szChrSeq);     break;
     case SF_RLN_OP:      vFacet_Rln_Op(szChrSeq);      break;
     case SF_SQY_OP:      vFacet_Sqy_Op(szChrSeq);      break;
     case SF_STG_CAST:    vFacet_Stg_Cast(szChrSeq);    break;
@@ -2360,22 +2331,6 @@ bool Symbol::bIs_Ppe_Nm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a parameter column?                                                */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Prm_Col(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_PRM_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Prm_Col(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Rln_Op(void)
@@ -2932,10 +2887,10 @@ bool Symbol::bValidate(void)
     case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
     case SF_PAY_COL:     b = bIs_Pay_Col();     break;
     case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
-    case SF_PRM_COL:     b = bIs_Prm_Col();     break;
     case SF_RLN_OP:      b = bIs_Rln_Op();      break;
     case SF_SQY_NM:      b = bIs_Sqy_Nm();      break;
     case SF_SQY_OP:      b = bIs_Sqy_Op();      break;
+    case SF_SQY_PRM:     b = bIs_Sqy_Prm();     break;
     case SF_STG_NO:      b = bIs_Stg_Nm();      break;
     case SF_STG_CAST:    b = bIs_Stg_Cast();    break;
     case SF_STM_COL:     b = bIs_Stm_Col();     break;
@@ -3973,34 +3928,6 @@ void Symbol::vFacet_Ppe_Nm(Stz* szPpeNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Prm_Col(i8 iOrdinal)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_PRM_COL,"%%%lld"_Stz, iOrdinal);
-
-  RASSERT(bIs_Sqy_Prm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given parameter column                                  */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Prm_Col(Stz* szPrmCol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_PRM_COL,"%s"_Stz,szPrmCol);
-
-  RASSERT(bIs_Sqy_Prm());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given relational op                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Rln_Op(Stz* szRlnOp)
@@ -4040,6 +3967,34 @@ void Symbol::vFacet_Sqy_Op(Stz* szSqyOp)
   vFacetSprint(SF_SQY_OP,"%s"_Stz,szSqyOp);
 
   RASSERT(bIs_Sqy_Op());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given parameter column                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Sqy_Prm(i8 iOrdinal)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_SQY_PRM, "%%%lld"_Stz, iOrdinal);
+
+  RASSERT(bIs_Sqy_Prm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given parameter column                                  */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Sqy_Prm(Stz* szSqyPrm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_SQY_PRM, "%s"_Stz, szSqyPrm);
+
+  RASSERT(bIs_Sqy_Prm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4101,7 +4056,7 @@ void Symbol::vFacet_Stm_Col(Stz* szStmCol)
 
           SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
           SF_PARENTHESIS == xaFacet[0].m_eFacet ||
-          SF_PRM_COL == xaFacet[0].m_eFacet ||
+          SF_SQY_PRM == xaFacet[0].m_eFacet ||
           SF_XRF_NO == xaFacet[0].m_eFacet
   );
 

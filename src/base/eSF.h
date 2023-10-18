@@ -58,12 +58,12 @@ enum eSF // symbol facet
   /* */ SF_PARENTHESIS, // Parenthesis         : (, )
   /* */ SF_PAY_COL,     // Key Column no       : $Pn
   /* */ SF_PPE_NM,      // PipeName            : bIsName
-  /* */ SF_PRM_COL,     // Parameter Column    : %n
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
   /* */ SF_SQY_NM,      // SubQuery Nm         : __sq<n>
   /* */ SF_SQY_OP,      // SubQuery Op         :
+  /* */ SF_SQY_PRM,     // Parameter Column    : %n
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NO,      // Stage No            : Sn

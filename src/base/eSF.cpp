@@ -60,12 +60,12 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_PARENTHESIS"_Stz,
   /* */ "SF_PAY_COL"_Stz,
   /* */ "SF_PPE_NM"_Stz,
-  /* */ "SF_PRM_COL"_Stz,
 
   /* */ "SF_RLN_OP"_Stz,
 
   /* */ "SF_SQY_NM"_Stz,
   /* */ "SF_SQY_OP"_Stz,
+  /* */ "SF_SQY_PRM"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
   /* */ "SF_STG_CAST"_Stz,
   /* */ "SF_STG_NO"_Stz,
