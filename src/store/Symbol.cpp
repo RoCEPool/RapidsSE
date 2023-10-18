@@ -119,14 +119,14 @@ i8 Symbol::iOrdDiff(Stz* szSeq1, Stz* szSeq2)
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
-eQO Symbol::eEvalSubQryOp(Stz* szChrSeq)
+eQO Symbol::eEvalSubQryOp(Stz* szArg)
 {
   _static_
 
-       if (szChrSeq->bSame("exists"_Stz))    return QO_EXISTS_OP;
-  else if (szChrSeq->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
-  else if (szChrSeq->bSame("in"_Stz))        return QO_IN_OP;
-  else if (szChrSeq->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+       if (szArg->bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (szArg->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (szArg->bSame("in"_Stz))        return QO_IN_OP;
+  else if (szArg->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
 
   else return QO_NONE;
 }
@@ -152,54 +152,54 @@ eRO Symbol::eEvalRelnOp(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* evaluate symbol form of given arg                                          */
 /*----------------------------------------------------------------------------*/
-eSF Symbol::eEvalSymbol(Stz* szChrSeq)
+eSF Symbol::eEvalSymbol(Stz* szArg)
 {
   _static_
 
-  if (bIs_Agg_Fn(szChrSeq))       return SF_AGG_FN;
-  if (bIs_As(szChrSeq))           return SF_AS;
-  if (bIs_Bol_Fn(szChrSeq))       return SF_BOL_FN;
-  if (bIs_Bol_Lit(szChrSeq))      return SF_BOL_LIT;
-  if (bIs_Bol_Op(szChrSeq))       return SF_BOL_OP;
-  if (bIs_Bound(szChrSeq))        return SF_BOUND;
-  if (bIs_Brace(szChrSeq))        return SF_BRACE;
-  if (bIs_Case(szChrSeq))         return SF_CASE;
-  if (bIs_Cast(szChrSeq))         return SF_CAST;
-  if (bIs_CastType(szChrSeq))     return SF_CASTTYPE;
-  if (bIs_Stm_Col(szChrSeq))       return SF_STM_COL;
-  if (bIs_Tbl_Col(szChrSeq))       return SF_TBL_COL;
-  if (bIs_Col_Type(szChrSeq))     return SF_COL_TYPE;
-  if (bIs_Comma(szChrSeq))        return SF_COMMA;
-  if (bIs_Cross(szChrSeq))        return SF_CROSS;
-  if (bIs_Dcm_Lit(szChrSeq))      return SF_DCM_LIT;
-  if (bIs_Direction(szChrSeq))    return SF_DIRECTION;
-  if (bIs_Else(szChrSeq))         return SF_ELSE;
-  if (bIs_EndIf(szChrSeq))        return SF_ENDIF;
-  if (bIs_Flt_Lit(szChrSeq))      return SF_FLT_LIT;
-  if (bIs_GroupBy(szChrSeq))      return SF_GROUPBY;
-  if (bIs_Idx_Col(szChrSeq))      return SF_IDX_COL;
-  if (bIs_Int_Lit(szChrSeq))      return SF_INT_LIT;
-  if (bIs_Interval_DT(szChrSeq))  return SF_INTERVAL_DT;
-  if (bIs_Interval_YM(szChrSeq))  return SF_INTERVAL_YM;
-  if (bIs_Ivl_Fn(szChrSeq))       return SF_IVL_FN;
-  if (bIs_Key_Col(szChrSeq))      return SF_KEY_COL;
-  if (bIs_Mth_Op(szChrSeq))       return SF_MTH_OP;
-  if (bIs_Negate(szChrSeq))       return SF_NEGATE;
-  if (bIs_Null(szChrSeq))         return SF_NULL;
-  if (bIs_Parenthesis(szChrSeq))  return SF_PARENTHESIS;
-  if (bIs_Pay_Col(szChrSeq))      return SF_PAY_COL;
-  if (bIs_Prm_Col(szChrSeq))      return SF_PRM_COL;
-  if (bIs_Rln_Op(szChrSeq))       return SF_RLN_OP;
-  if (bIs_Sqy_Prm(szChrSeq))      return SF_PRM_COL;
-  if (bIs_Sqy_Op(szChrSeq))       return SF_SQY_OP;
-  if (bIs_Sqy_Rsl(szChrSeq))      return SF_SQY_NM;
-  if (bIs_Stg_Cast(szChrSeq))     return SF_STG_CAST;
-  if (bIs_Str_Fn(szChrSeq))       return SF_STR_FN;
-  if (bIs_String(szChrSeq))       return SF_STR_LIT;
-  if (bIs_Then(szChrSeq))         return SF_THEN;
-  if (bIs_Type(szChrSeq))         return SF_TYPE;
-  if (bIs_When(szChrSeq))         return SF_WHEN;
-  if (bIs_Xrf_No(szChrSeq))       return SF_XRF_NO;
+  if (bIs_Agg_Fn(szArg))       return SF_AGG_FN;
+  if (bIs_As(szArg))           return SF_AS;
+  if (bIs_Bol_Fn(szArg))       return SF_BOL_FN;
+  if (bIs_Bol_Lit(szArg))      return SF_BOL_LIT;
+  if (bIs_Bol_Op(szArg))       return SF_BOL_OP;
+  if (bIs_Bound(szArg))        return SF_BOUND;
+  if (bIs_Brace(szArg))        return SF_BRACE;
+  if (bIs_Case(szArg))         return SF_CASE;
+  if (bIs_Cast(szArg))         return SF_CAST;
+  if (bIs_CastType(szArg))     return SF_CASTTYPE;
+  if (bIs_Stm_Col(szArg))       return SF_STM_COL;
+  if (bIs_Tbl_Col(szArg))       return SF_TBL_COL;
+  if (bIs_Col_Type(szArg))     return SF_COL_TYPE;
+  if (bIs_Comma(szArg))        return SF_COMMA;
+  if (bIs_Cross(szArg))        return SF_CROSS;
+  if (bIs_Dcm_Lit(szArg))      return SF_DCM_LIT;
+  if (bIs_Direction(szArg))    return SF_DIRECTION;
+  if (bIs_Else(szArg))         return SF_ELSE;
+  if (bIs_EndIf(szArg))        return SF_ENDIF;
+  if (bIs_Flt_Lit(szArg))      return SF_FLT_LIT;
+  if (bIs_GroupBy(szArg))      return SF_GROUPBY;
+  if (bIs_Idx_Col(szArg))      return SF_IDX_COL;
+  if (bIs_Int_Lit(szArg))      return SF_INT_LIT;
+  if (bIs_Interval_DT(szArg))  return SF_INTERVAL_DT;
+  if (bIs_Interval_YM(szArg))  return SF_INTERVAL_YM;
+  if (bIs_Ivl_Fn(szArg))       return SF_IVL_FN;
+  if (bIs_Key_Col(szArg))      return SF_KEY_COL;
+  if (bIs_Mth_Op(szArg))       return SF_MTH_OP;
+  if (bIs_Negate(szArg))       return SF_NEGATE;
+  if (bIs_Null(szArg))         return SF_NULL;
+  if (bIs_Parenthesis(szArg))  return SF_PARENTHESIS;
+  if (bIs_Pay_Col(szArg))      return SF_PAY_COL;
+  if (bIs_Prm_Col(szArg))      return SF_PRM_COL;
+  if (bIs_Rln_Op(szArg))       return SF_RLN_OP;
+  if (bIs_Sqy_Prm(szArg))      return SF_PRM_COL;
+  if (bIs_Sqy_Op(szArg))       return SF_SQY_OP;
+  if (bIs_Sqy_Rsl(szArg))      return SF_SQY_NM;
+  if (bIs_Stg_Cast(szArg))     return SF_STG_CAST;
+  if (bIs_Str_Fn(szArg))       return SF_STR_FN;
+  if (bIs_String(szArg))       return SF_STR_LIT;
+  if (bIs_Then(szArg))         return SF_THEN;
+  if (bIs_Type(szArg))         return SF_TYPE;
+  if (bIs_When(szArg))         return SF_WHEN;
+  if (bIs_Xrf_No(szArg))       return SF_XRF_NO;
 
   return SF_NONE;
 }
@@ -799,11 +799,11 @@ bool Symbol::bIs_Rln_Op(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szChrSeq)
+bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szArg)
 {
   _static_
 
-  if (StrLib::bBeginsWith(szChrSeq->azChar(), C_SQCRLKEY->azChar()))
+  if (StrLib::bBeginsWith(szArg->azChar(), C_SQCRLKEY->azChar()))
     return true;
 
   return false;
@@ -812,15 +812,15 @@ bool Symbol::bIs_Sqy_Crl_Key(BASE::Stz *szChrSeq)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Sqy_Nm(BASE::Stz *szChrSeq)
+bool Symbol::bIs_Sqy_Nm(BASE::Stz *szArg)
 {
   _static_
 
-  if (! szChrSeq)
+  if (! szArg)
     return false;
 
-  if (StrLib::bBeginsWith(szChrSeq->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szChrSeq->azChar(), "__sq"))
+  if (StrLib::bBeginsWith(szArg->azChar(), "__subquery") ||
+      StrLib::bBeginsWith(szArg->azChar(), "__sq"))
     return true;
 
   return false;
@@ -903,12 +903,12 @@ bool Symbol::bIs_Stg_Cast(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Stg_Nm(BASE::Stz *szChrSeq)
+bool Symbol::bIs_Stg_Nm(BASE::Stz *szArg)
 {
   _static_
 
-  char acFirst  = szChrSeq->azChar()[0];
-  char acSecond = szChrSeq->azChar()[1];
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
 
   if ('S' == acFirst
       && StrLib::bIsDigit(acSecond))
@@ -920,12 +920,12 @@ bool Symbol::bIs_Stg_Nm(BASE::Stz *szChrSeq)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Stm_Col(Stz* szChrSeq)
+bool Symbol::bIs_Stm_Col(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szChrSeq->azChar()[0];
-  char acSecond = szChrSeq->azChar()[1];
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
 
   if ('$' == acFirst &&
       StrLib::bIsDigit(acSecond))
@@ -965,14 +965,14 @@ bool Symbol::bIs_String(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Tbl_Col(Stz* szChrSeq)
+bool Symbol::bIs_Tbl_Col(Stz* szArg)
 {
   _static_
 
-  char acFirst  = szChrSeq->azChar()[0];
-  char acSecond = szChrSeq->azChar()[1];
-  char acThird  = szChrSeq->azChar()[2];
-  char acFourth = szChrSeq->azChar()[3];
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
 
   if ('$' == acFirst
       && StrLib::bIsAlpha(acSecond)
@@ -997,7 +997,7 @@ bool Symbol::bIs_Tbl_Nm(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol a table synonym?  (i.e. $c)                               */
+/* is this a symbol a table synonym?  (i.e. c)                                */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 {
@@ -1014,7 +1014,7 @@ bool Symbol::bIs_Tbl_Syn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol a table synonym?  (i.e. $c)                               */
+/* is this a symbol a table synonym?  (i.e. C)                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
 {
@@ -1023,7 +1023,7 @@ bool Symbol::bIs_Tbl_Syn_rep(Stz* szArg)
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
 
-  if (   StrLib::bIsAlpha(acFirst)
+  if (   StrLib::bIsUpperCase(acFirst)
          && '\0' == acSecond)
     return true;
 

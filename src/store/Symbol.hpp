@@ -44,8 +44,8 @@ namespace STORE
     static i8   iOrdDiff(Stz* szSeq1, Stz* szSeq2);
 
     static eRO  eEvalRelnOp(Stz* szSymbol);
-    static eQO  eEvalSubQryOp(Stz* szSymbol);
-    static eSF  eEvalSymbol(Stz* szSymbol);
+    static eQO  eEvalSubQryOp(Stz* szArg);
+    static eSF  eEvalSymbol(Stz* szArg);
 
     static bool bIs_Agg_Fn(Stz* szChrSeq);          // avg, count, ... sum
     static bool bIs_As(Stz* szChrSeq);              // AS
@@ -86,17 +86,17 @@ namespace STORE
     static bool bIs_Ppe_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Prm_Col(Stz* szChrSeq);         // %n
     static bool bIs_Rln_Op(Stz* szChrSeq);          // <, <=, ... >
-    static bool bIs_Sqy_Crl_Key(Stz* szChrSeq);     // _SQCRLKEY_
-    static bool bIs_Sqy_Nm(Stz* szChrSeq);          // __subqueryN
+    static bool bIs_Sqy_Crl_Key(Stz* szArg);     // _SQCRLKEY_
+    static bool bIs_Sqy_Nm(Stz* szArg);          // __subqueryN
     static bool bIs_Sqy_Op(Stz* szChrSeq);          // exists, in, notExists, notIn
     static bool bIs_Sqy_Prm(Stz* szChrSeq);         // %n
     static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
     static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
-    static bool bIs_Stg_Nm(Stz* szChrSeq);          // Sn
-    static bool bIs_Stm_Col(Stz* szChrSeq);         // $n
+    static bool bIs_Stg_Nm(Stz* szArg);          // Sn
+    static bool bIs_Stm_Col(Stz* szArg);         // $n
     static bool bIs_Str_Fn(Stz* szChrSeq);          // SUBSTRING2 ... SUBSTRING3
     static bool bIs_String(Stz* szChrSeq);          // 'abc'
-    static bool bIs_Tbl_Col(Stz* szChrSeq);         // $c.n
+    static bool bIs_Tbl_Col(Stz* szArg);         // $c.n
     static bool bIs_Tbl_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Tbl_Syn(Stz* szChrSeq);         // $c
     static bool bIs_Tbl_Syn_rep(Stz* szChrSeq);     // $C
