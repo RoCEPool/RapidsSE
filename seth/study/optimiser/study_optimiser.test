@@ -5,8 +5,8 @@ LOG ' ';
 LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
-LOG 'AggregExpr.test';
-INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
+//LOG 'AggregExpr.test';
+//INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
@@ -18,6 +18,9 @@ INCLUDE 'create_part.test';
 INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
+
+LOG ' ';
+INCLUDE 'tpch_q5.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';

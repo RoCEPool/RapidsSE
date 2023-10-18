@@ -649,9 +649,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
   Card_Arriving* p_arriving = pSubCard->pSub_arriving();
   Card_Emitted*  p_emitted  = pSubCard->pSub_emitted();
 
-  //p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
+  p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
 
-  if (m_pStageDef->i_Stage() == 2) {
+  if (m_pStageDef->i_Stage() == 1) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();
@@ -665,56 +665,80 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
   // add colPpg descriptor(s) for given arriving expr_a
 
 
-  auto bfAddDescriptors = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
+  auto bfAddPropagatedArriving = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
 
-    eSF eVia;
+    eSF eViaFacet;
+    s256 sHow;
 
     // arriving related
-    Card_Expr*   p_expr_a = _pCard_Expr(pCard_expr_a);
-    Card_As*       p_as_a = p_expr_a->pSub_as();
-    Symbol*     pSym_as_a = p_as_a->pSymbol();
-    Symbol* pSym_colSym_a = p_expr_a->pFirstColSym();
+    Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
+    Symbol*  pExprSym_a = p_expr_a->pSymbol();
+    Card_As*     p_as_a = p_expr_a->pSub_as();
+    Symbol*    pAsSym_a = p_as_a->pSymbol();
 
-    //p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
+    i8 i_CellIn;
+    i8 i_CellOut;
+    Card_Expr* p_expr_e;
 
-    if (m_pStageDef->i_Stage() == 2) {
+    Symbol* pInSym_a;
+    Symbol* pOutSym_e;
+
+    p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
+
+    if (m_pStageDef->i_Stage() == 3) {
       vDebugPoint();
       if (m_pOpDef->i_Op() == 0)
         vDebugPoint();
     }
 
+
     if (p_expr_a->bIsScalarCol()) {
       // + scalar
 
-      // find emitted expression of arriving as
-      Card_Expr *p_expr_e =
-          p_emitted->pFind_expr_Via_as(pSym_as_a);
-      if (p_expr_e) {
-        //p_expr_e->vDump(__func__,"--FOUND emitted expr by as--"_Stz);
+      bool bTermSym_a_Is_tblCol = false;
+      Symbol*  pTermSym_a = p_expr_a->pGet_term0()->pSymbol();
+      if (pTermSym_a && pTermSym_a->bIs_Tbl_Col())
+        bTermSym_a_Is_tblCol = true;
 
-        pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
-                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
-                      p_expr_e->szFacet(SF_NONE),
-                      pSym_colSym_a->szSF_chrSeq(SF_NONE),
-                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
-
+      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emitted->pFind_expr_Via_term0(pTermSym_a, &eViaFacet))) {
+        // 1) ARRIVING TERM: $t.c
+        sHow.vSprint("--FOUND emitted expr for arriving $t.c: %s~%s--"_Stz,
+                     pTermSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
+        p_expr_e->vDump(__func__, sHow);
+        pInSym_a = pTermSym_a;
+      }
+      else
+      if ((p_expr_e = p_emitted->pFind_expr_Via_term0(pExprSym_a, &eViaFacet))) {
+        // 3) ARRIVING EXPR: $n
+        sHow.vSprint("--FOUND emitted expr for arriving $n; %s~%s--"_Stz,
+                     pExprSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
+        p_expr_e->vDump(__func__, sHow);
+        pInSym_a = pExprSym_a;
+      }
+      else
+      if ((p_expr_e = p_emitted->pFind_expr_Via_term0(pAsSym_a, &eViaFacet))) {
+        // 2) ARRIVING AS: Nm | C_Nn  [ nm ]
+        sHow.vSprint("--FOUND emitted expr for arriving Nm: %s~%s--"_Stz,
+                     pAsSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
+        p_expr_e->vDump(__func__, sHow);
+        pInSym_a = pAsSym_a;
+      }
+       else {
+        // not propagated
+        vTrace("--NOT-FOUND expr\n"_Stz);
         return C_CONTINUE_RECURSION;
       }
 
-      p_expr_e =
-          p_emitted->pFind_expr_Via_term0(pSym_colSym_a, &eVia);
-      if (p_expr_e) {
-        s256 sHow;
-        sHow.vSprint("--FOUND emitted expr of term via %s--"_Stz,aSF[eVia]);
-        //p_expr_e->vDump(__func__,sHow);
-        pColPpg->vAdd(pSym_colSym_a->iSF_ordinal() - 1,
-                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
-                      p_expr_e->szFacet(SF_NONE),
-                      pSym_colSym_a->szSF_chrSeq(SF_NONE),
-                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+      i_CellIn  = p_expr_a->pSymbol()->iSF_ordinal() - 1;
+      i_CellOut = p_expr_e->pSymbol()->iSF_ordinal() - 1;
 
-        return C_CONTINUE_RECURSION;
-      }
+      pOutSym_e = p_expr_e->pGet_term0()->pSymbol();
+
+      pColPpg->vAdd(i_CellIn,
+                    i_CellOut,
+                    p_expr_e->szFacet(SF_NONE),
+                    pInSym_a->szSF_chrSeq(SF_NONE),
+                    pOutSym_e->szSF_chrSeq(SF_NONE));
 
       return C_CONTINUE_RECURSION;
     }
@@ -739,14 +763,122 @@ void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubC
                       p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
         return C_CONTINUE_RECURSION;
       }
-      return C_CONTINUE_RECURSION;
+
+      NEVER_REACH;
     }
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
+  p_arriving->bApplyRecursive(CK_EXPR, bfAddPropagatedArriving);
 }
+/*----------------------------------------------------------------------------*/
+//void XF_Synthesise_pipelineDef::vCraftColPpg_FACETS(ColPpg* pColPpg, Card *pSubCard)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+//
+//
+//  Card_Arriving* p_arriving = pSubCard->pSub_arriving();
+//  Card_Emitted*  p_emitted  = pSubCard->pSub_emitted();
+//
+//  //p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
+//
+//  if (m_pStageDef->i_Stage() == 2) {
+//    vDebugPoint();
+//    if (m_pOpDef->i_Op() == 0)
+//      vDebugPoint();
+//  }
+//
+//  //
+//  // is the arriving expression in the emitted
+//  //
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // add colPpg descriptor(s) for given arriving expr_a
+//
+//
+//  auto bfAddDescriptors = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
+//
+//    eSF eVia;
+//
+//    // arriving related
+//    Card_Expr*   p_expr_a = _pCard_Expr(pCard_expr_a);
+//    Card_As*       p_as_a = p_expr_a->pSub_as();
+//    Symbol*     pSym_as_a = p_as_a->pSymbol();
+//    Symbol* pSym_colSym_a = p_expr_a->pFirstColSym();
+//
+//    //p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
+//
+//    if (m_pStageDef->i_Stage() == 2) {
+//      vDebugPoint();
+//      if (m_pOpDef->i_Op() == 0)
+//        vDebugPoint();
+//    }
+//
+//    if (p_expr_a->bIsScalarCol()) {
+//      // + scalar
+//
+//      // find emitted expression of arriving as
+//      Card_Expr *p_expr_e =
+//          p_emitted->pFind_expr_Via_as(pSym_as_a);
+//      if (p_expr_e) {
+//        //p_expr_e->vDump(__func__,"--FOUND emitted expr by as--"_Stz);
+//
+//        pColPpg->vAdd(p_expr_a->pSymbol()->iSF_ordinal() - 1,
+//                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
+//                      p_expr_e->szFacet(SF_NONE),
+//                      pSym_colSym_a->szSF_chrSeq(SF_NONE),
+//                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+//
+//        return C_CONTINUE_RECURSION;
+//      }
+//
+//      p_expr_e =
+//          p_emitted->pFind_expr_Via_term0(pSym_colSym_a, &eVia);
+//      if (p_expr_e) {
+//        s256 sHow;
+//        sHow.vSprint("--FOUND emitted expr of term via %s--"_Stz,aSF[eVia]);
+//        //p_expr_e->vDump(__func__,sHow);
+//        pColPpg->vAdd(pSym_colSym_a->iSF_ordinal() - 1,
+//                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
+//                      p_expr_e->szFacet(SF_NONE),
+//                      pSym_colSym_a->szSF_chrSeq(SF_NONE),
+//                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+//
+//        return C_CONTINUE_RECURSION;
+//      }
+//
+//      return C_CONTINUE_RECURSION;
+//    }
+//
+//    else {
+//      // - computed
+//      Symbol*    pSym_expr_a = p_expr_a->pSymbol();
+//
+//      Card_Expr* p_expr_e =
+//          p_emitted->pGet_expr(pSym_expr_a);
+//
+//      if (p_expr_e) {
+//
+////      p_emitted->vDump(__func__);
+////      p_expr_a->vDump(__func__);
+////      p_expr_e->vDump(__func__);
+//
+//        pColPpg->vAdd(pSym_expr_a->iSF_ordinal() - 1,
+//                      p_expr_e->pSymbol()->iSF_ordinal() - 1,
+//                      p_expr_e->szFacet(SF_NONE),
+//                      pSym_expr_a->szSF_chrSeq(SF_NONE),
+//                      p_expr_e->pSymbol()->szSF_chrSeq(SF_NONE));
+//        return C_CONTINUE_RECURSION;
+//      }
+//      return C_CONTINUE_RECURSION;
+//    }
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  p_arriving->bApplyRecursive(CK_EXPR, bfAddDescriptors);
+//}
 
 /*============================================================================*/
 /* end                                                                        */

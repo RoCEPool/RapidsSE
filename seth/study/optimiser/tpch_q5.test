@@ -7,6 +7,10 @@ LOG 'TPC-H Q5...';
 trackMemory;
 success
 
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
 /pipelineName = "OptQ5"
 select
   n_name,
