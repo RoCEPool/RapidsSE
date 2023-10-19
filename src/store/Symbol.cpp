@@ -1609,6 +1609,22 @@ bool Symbol::bHasFacet(eSF eFacet)
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have given facet?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasFacet(Stz* szChrSeq)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (xaFacet[i_Facet].m_sChrSeq.bSame(szChrSeq))
+      return true;
+  }
+
+  return false;
+}
+
 /*----------------------------------------------------------------------------*/
 /* does symbol a symbolic value?                                              */
 /*----------------------------------------------------------------------------*/
@@ -2725,10 +2741,13 @@ bool Symbol::bSame(char cArg)
 
   RASSERT(bHasFacets());
 
-  if (*xaFacet[0].m_sChrSeq.azChar() == cArg)
+  if (*xaFacet[0].m_sChrSeq.azChar() == cArg) {
+    if (m_nFacets > 1)
+      vDebugPoint();
     return true;
-  else
-    return false;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2740,8 +2759,11 @@ bool Symbol::bSame(Stz* szArg)
 
   RASSERT(bHasFacets());
 
-  if (xaFacet[0].m_sChrSeq.bSame(szArg))
+  if (xaFacet[0].m_sChrSeq.bSame(szArg)) {
+    if (m_nFacets > 1)
+      vDebugPoint();
     return true;
+  }
 
   return false;
 }
@@ -2755,8 +2777,11 @@ bool Symbol::bSame(Symbol* pArg)
 
   RASSERT(bHasFacets());
 
-  if (xaFacet[0].m_sChrSeq.bSame(pArg->xaFacet[0].m_sChrSeq))
+  if (xaFacet[0].m_sChrSeq.bSame(pArg->xaFacet[0].m_sChrSeq)) {
+    if (m_nFacets > 1)
+      vDebugPoint();
     return true;
+  }
 
   return false;
 }

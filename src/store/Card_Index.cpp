@@ -222,7 +222,7 @@ bool Card_Index::bTblCol_IsKeyIn_index(Stz* szTblCol)
   while (xKid.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xKid.pChild()->pSymbol()->bSame(szTblCol))
+    if (xKid.pChild()->pSymbol()->bHasFacet(szTblCol))
       return true;
   }
 

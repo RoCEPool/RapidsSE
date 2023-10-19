@@ -215,7 +215,7 @@ Card* ChildCards::pFindChild(eCK eCard, i8& i_Child)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pFindChild(eCK eCard, Stz* szValue, i8& i_Child)
+Card* ChildCards::pFindChild(eCK eCard, Stz* szFacet, i8& i_Child)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -226,7 +226,7 @@ Card* ChildCards::pFindChild(eCK eCard, Stz* szValue, i8& i_Child)
   for (i_Child = 0; i_Child < nChildren; i_Child++) {
     Card* pChildCard = pGetChild(i_Child, eChildCard);
 
-    if (eCard == pChildCard->eCard() && pChildCard->pSymbol()->bSame(szValue)) {
+    if (eCard == pChildCard->eCard() && pChildCard->pSymbol()->bHasFacet(szFacet)) {
       pFoundCard = pChildCard;
       break;
     }

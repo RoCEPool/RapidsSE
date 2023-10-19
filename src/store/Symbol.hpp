@@ -147,6 +147,7 @@ namespace STORE
     bool bFormIs(eSF eSymbol);
 
     bool bHasFacet(eSF eFacet);
+    bool bHasFacet(Stz* szChrSeq);
     bool bHasFacets(void);
     bool bHasProperties(void);
     bool bHasType(void);
