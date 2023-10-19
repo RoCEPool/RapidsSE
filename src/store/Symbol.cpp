@@ -2739,11 +2739,9 @@ bool Symbol::bSame(char cArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+  RASSERT(1 == nFacets());
 
   if (*xaFacet[0].m_sChrSeq.azChar() == cArg) {
-    if (m_nFacets > 1)
-      vDebugPoint();
     return true;
   }
 
@@ -2757,11 +2755,9 @@ bool Symbol::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+  RASSERT(1 == nFacets());
 
   if (xaFacet[0].m_sChrSeq.bSame(szArg)) {
-    if (m_nFacets > 1)
-      vDebugPoint();
     return true;
   }
 
@@ -2775,11 +2771,9 @@ bool Symbol::bSame(Symbol* pArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+  RASSERT(1 == nFacets());
 
   if (xaFacet[0].m_sChrSeq.bSame(pArg->xaFacet[0].m_sChrSeq)) {
-    if (m_nFacets > 1)
-      vDebugPoint();
     return true;
   }
 
@@ -4248,6 +4242,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   char cTableSyn_actual = cSF_char();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
+  vFacetReset();
   vFacetSprint(SF_TBL_SYN_rep,"%c"_Stz, cTableSyn_actual);
 
   RASSERT(bIs_Tbl_Syn_rep());
