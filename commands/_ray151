@@ -65,13 +65,14 @@ begin
 
   stage S04 on all partitions :
     indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
-    | filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
-    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
-               type INTEGER as S_NATIONKEY S_NATIONKEY"
+    //| filter " type BOOLEAN C_NATIONKEY S_NATIONKEY == "
+    //| project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+    //           type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+    //           type INTEGER as S_NATIONKEY S_NATIONKEY"
     | hash "type INTEGER S_NATIONKEY"
     | combined 0
     | next hashcast
+/*
 
   stage S05 on all partitions :
     indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
@@ -117,7 +118,7 @@ begin
     sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
-
+*/
   stage S11 on origin :
     output
     | sink
