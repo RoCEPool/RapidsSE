@@ -154,6 +154,7 @@ void HashMap::vDeleteKey(void* pKey)
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
+//      vTrace("Deleting %p, No. Entries: %llu\n"_Stz, pKey, m_uNoOfEntries);
 #ifdef WITH_PAGING
       // Arjun Hack:check if this databuffer is part of m_pOutputQueue
       // If it is, it should not be locked
@@ -178,8 +179,8 @@ void HashMap::vDeleteKey(void* pKey)
       delete pIter;
       // Assert before decrement
       // since unsigned underflow could occur
-      ASSERT(1 <= m_uNoOfEntries);
-      m_uNoOfEntries--;
+//      ASSERT(1 <= m_uNoOfEntries);
+//      m_uNoOfEntries--;
       m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
 
 //      if ( pPrevIter != nullptr )
@@ -327,8 +328,9 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
   HashMapEntry* pEntry = new HashMapEntry(pKey, pValue);
   pEntry->m_pNext = pDummyEntry->m_pNext;
   pDummyEntry->m_pNext = pEntry;
-  m_uNoOfEntries++;
+//  m_uNoOfEntries++;
   m_pHashMapSlot->m_okSlotLock[uIndex].vDropWrite();
+//  vTrace("Inserted %p, No. Entries: %llu\n"_Stz, pKey, m_uNoOfEntries);
 
 //  vInsertEntryAtIndex(pTmpEntry, uIndex);
 
