@@ -47,6 +47,7 @@
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
+#include "XF_Prolog_Ensure_colType.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
@@ -170,6 +171,7 @@ void XF::vTransform(void)
     XF_Prolog_Analyse_injected::vAnalyse(m_pCI);   //
     XF_Prolog_Analyse_emitted::vAnalyse(m_pCI);    //
     XF_Prolog_Analyse_index::vAnalyse(m_pCI);      //
+    XF_Prolog_Ensure_colType::vEnsure(m_pCI);      //
                                                    //
     // preliminary conversions                     //
     XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
