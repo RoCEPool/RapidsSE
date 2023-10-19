@@ -191,11 +191,11 @@ bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpConj)
   Symbol* pCmp_arg_0  = p_cmpConj->pGetChild(0)->pSymbol();
   Symbol* pCmp_arg_1  = p_cmpConj->pGetChild(1)->pSymbol();
 
-  if (! pCmp_rlnOpr->bSame(pBnd_rlnOpr))
+  if (! pCmp_rlnOpr->bMatches(pBnd_rlnOpr))
     return false;
 
-  if (pBnd_stmCol->bSame(pCmp_arg_0) ||
-      pBnd_stmCol->bSame(pCmp_arg_1))
+  if (pBnd_stmCol->bMatches(pCmp_arg_0) ||
+      pBnd_stmCol->bMatches(pCmp_arg_1))
     return true;
 
   return false;

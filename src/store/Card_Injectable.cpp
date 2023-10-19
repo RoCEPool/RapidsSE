@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Injected.cpp -- Injected Columns                                      */
+/* Card_Injectable.cpp -- Injectable Columns                                  */
 /*============================================================================*/
 
-#include "Card_Injected.hpp"
+#include "Card_Injectable.hpp"
 #include "CardIter.hpp"
 
 #include "Table.hpp"
@@ -11,17 +11,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Injected, CK_INJECTED)
-__aNewFunction(Card_Injected, CN_CARD)
-__vDeleteFunction(Card_Injected, CN_CARD)
+__pCastFunction_Card(STORE, Card_Injectable, CK_INJECTABLE)
+__aNewFunction(Card_Injectable, CN_CARD)
+__vDeleteFunction(Card_Injectable, CN_CARD)
 
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Injected::Card_Injected(void)
-: Card_EXPRLIST(CK_INJECTED, 2)
+Card_Injectable::Card_Injectable(void)
+: Card_EXPRLIST(CK_INJECTABLE, 2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -33,7 +33,7 @@ Card_Injected::Card_Injected(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Injected::~Card_Injected(void) noexcept(false)
+Card_Injectable::~Card_Injectable(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,9 +43,9 @@ Card_Injected::~Card_Injected(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new Card_Injected based on streamDef of table                              */
+/* new Card_Injectable based on streamDef of table                              */
 /*----------------------------------------------------------------------------*/
-Card_Injected* Card_Injected::pNew_injected(CardIter* pCI)
+Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
 {
   _static_;
 
@@ -54,7 +54,7 @@ Card_Injected* Card_Injected::pNew_injected(CardIter* pCI)
 
   char cTblSyn = pCI->G.p_table->pSymbol()->cSF_char();
 
-  Card_Injected* p_injected = new Card_Injected;
+  Card_Injectable* p_injected = new Card_Injectable;
 
   i8 nCols = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -93,7 +93,7 @@ Card_Injected* Card_Injected::pNew_injected(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* short form                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Injected::vShortForm(String* pString)
+void Card_Injectable::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -106,7 +106,7 @@ void Card_Injected::vShortForm(String* pString)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Injected::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_Injectable::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

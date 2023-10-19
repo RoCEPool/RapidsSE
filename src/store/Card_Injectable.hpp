@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Injected.hpp -- Injected columns                                      */
+/* Card_Injectable.hpp -- Injectable columns                                  */
 /*============================================================================*/
 #pragma once
 
@@ -8,23 +8,23 @@
 
 namespace STORE
 {
-  class Card_Injected : public Card_EXPRLIST
+  class Card_Injectable : public Card_EXPRLIST
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Injected(void);
-   ~Card_Injected(void) noexcept(false);
+    Card_Injectable(void);
+   ~Card_Injectable(void) noexcept(false);
 
-    static Card_Injected* pNew_injected(CardIter* pCI);
+    static Card_Injectable* pNew_injected(CardIter* pCI);
 
     void vShortForm(String* pString);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
-  Card_Injected* _pCard_Injected(void* aAddr);
+  Card_Injectable* _pCard_Injectable(void* aAddr);
 }
 
 /*============================================================================*/

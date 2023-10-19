@@ -4,7 +4,7 @@
 
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
-#include "Fold.hpp"
+#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Smoosh.hpp"
 
@@ -86,7 +86,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   // fold of exists subQuery
 
 
-  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
 
   pFold->vFold_basic(m_pCI,"W_L_NC_NI_join"_Stz,CK_WHERE);
 

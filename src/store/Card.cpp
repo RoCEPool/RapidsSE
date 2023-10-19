@@ -2601,13 +2601,13 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Injected.hpp"
-Card_Injected* Card::pSub_injected(void)
+#include "Card_Injectable.hpp"
+Card_Injectable* Card::pSub_injected(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Injected* p_injected =
-      _pCard_Injected(pFindSubCard(CK_INJECTED));
+  Card_Injectable* p_injected =
+      _pCard_Injectable(pFindSubCard(CK_INJECTABLE));
   return p_injected;
 }
 

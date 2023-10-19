@@ -69,7 +69,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
   /* */ "CK_INFLATE"_Stz,      // CK_INFLATE
-  /* */ "CK_INJECTED"_Stz,     // CK_INJECTED
+  /* */ "CK_INJECTABLE"_Stz,     // CK_INJECTABLE
 
   /* */ "CK_JOINCAST"_Stz,     // CK_JOINCAST
   /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
@@ -215,7 +215,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
   /* */ "inflate"_Stz,         // CK_INFLATE
-  /* */ "injected"_Stz,        // CK_INJECTED
+  /* */ "injectable"_Stz,      // CK_INJECTABLE
 
   /* */ "joinCast"_Stz,        // CK_JOINCAST
   /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE

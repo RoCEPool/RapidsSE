@@ -1609,6 +1609,22 @@ bool Symbol::bHasFacet(eSF eFacet)
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* does symbol have given facet?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasFacet(Stz* szChrSeq)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (xaFacet[i_Facet].m_sChrSeq.bSame(szChrSeq))
+      return true;
+  }
+
+  return false;
+}
+
 /*----------------------------------------------------------------------------*/
 /* does symbol a symbolic value?                                              */
 /*----------------------------------------------------------------------------*/
@@ -2723,12 +2739,13 @@ bool Symbol::bSame(char cArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+  RASSERT(1 == nFacets());
 
-  if (*xaFacet[0].m_sChrSeq.azChar() == cArg)
+  if (*xaFacet[0].m_sChrSeq.azChar() == cArg) {
     return true;
-  else
-    return false;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2738,10 +2755,11 @@ bool Symbol::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+  RASSERT(1 == nFacets());
 
-  if (xaFacet[0].m_sChrSeq.bSame(szArg))
+  if (xaFacet[0].m_sChrSeq.bSame(szArg)) {
     return true;
+  }
 
   return false;
 }
@@ -2753,10 +2771,11 @@ bool Symbol::bSame(Symbol* pArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(bHasFacets());
+  RASSERT(1 == nFacets());
 
-  if (xaFacet[0].m_sChrSeq.bSame(pArg->xaFacet[0].m_sChrSeq))
+  if (xaFacet[0].m_sChrSeq.bSame(pArg->xaFacet[0].m_sChrSeq)) {
     return true;
+  }
 
   return false;
 }
@@ -4223,6 +4242,7 @@ void Symbol::vFacet_Tbl_Syn_rep(void)
   char cTableSyn_actual = cSF_char();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
+  vFacetReset();
   vFacetSprint(SF_TBL_SYN_rep,"%c"_Stz, cTableSyn_actual);
 
   RASSERT(bIs_Tbl_Syn_rep());

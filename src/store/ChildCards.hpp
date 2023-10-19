@@ -40,7 +40,7 @@ namespace STORE
     i8    iFindChild(Card* pChild);
     Card* pFindChild(eCK eCard);
     Card* pFindChild(eCK eCard, i8& i_Child);
-    Card* pFindChild(eCK eCard, Stz* szValue, i8& i_Child);
+    Card* pFindChild(eCK eCard, Stz* szFacet, i8& i_Child);
     Card* pFindChildWithSub(eCK eChild, eCK eSub, Stz* szValue, i8& i_Child);
     Card* pFindSubCard(eCK eCard);
     Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);

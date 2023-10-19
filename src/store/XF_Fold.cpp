@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Fold.cpp -- Fold                                                           */
+/* XF_Fold.cpp -- XF_Fold                                                           */
 /*============================================================================*/
 
-#include "Fold.hpp"
+#include "XF_Fold.hpp"
 
 #include "CardIter.hpp"
 #include "CarryForward.hpp"
@@ -11,18 +11,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Fold, CN_FOLD)
-__aNewFunction(Fold, CN_FOLD)
-__vDeleteFunction(Fold, CN_FOLD)
-__aFooterFunction(Fold)
+__pCastFunction(STORE, XF_Fold, CN_XF_FOLD)
+__aNewFunction(XF_Fold, CN_XF_FOLD)
+__vDeleteFunction(XF_Fold, CN_XF_FOLD)
+__aFooterFunction(XF_Fold)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fold::Fold(i8 i_depth)
-: Object(CN_FOLD)
+XF_Fold::XF_Fold(i8 i_depth)
+: Object(CN_XF_FOLD)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_i_depth      = i_depth;
   m_p_deck       = nullptr;
@@ -33,16 +33,16 @@ Fold::Fold(i8 i_depth)
   m_p_fold       = nullptr;
   m_pOuterQuery  = nullptr;
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Fold::Fold(i8 i_depth, Card_Deck* p_deck)
-: Object(CN_FOLD)
+XF_Fold::XF_Fold(i8 i_depth, Card_Deck* p_deck)
+: Object(CN_XF_FOLD)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_i_depth      = i_depth;
   m_p_deck       = p_deck;
@@ -53,15 +53,15 @@ Fold::Fold(i8 i_depth, Card_Deck* p_deck)
   m_p_fold       = nullptr;
   m_pOuterQuery  = nullptr;
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Fold::~Fold(void) noexcept(false)
+XF_Fold::~XF_Fold(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 }
 
 
@@ -72,9 +72,9 @@ Fold::~Fold(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Correlation* Fold::p_correlation(void)
+Card_Correlation* XF_Fold::p_correlation(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   return m_p_correlation;
 }
@@ -82,9 +82,9 @@ Card_Correlation* Fold::p_correlation(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Fold::v_correlation(Card_Correlation* p_correlation)
+void XF_Fold::v_correlation(Card_Correlation* p_correlation)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_p_correlation = p_correlation;
 }
@@ -92,9 +92,9 @@ void Fold::v_correlation(Card_Correlation* p_correlation)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Fold::v_deck(Card_Deck* p_deck)
+void XF_Fold::v_deck(Card_Deck* p_deck)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_p_deck = p_deck;
 }
@@ -102,9 +102,9 @@ void Fold::v_deck(Card_Deck* p_deck)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Fold::i_depth(void)
+i8 XF_Fold::i_depth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   return m_i_depth;
 }
@@ -112,9 +112,9 @@ i8 Fold::i_depth(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Fold* Fold::p_fold(void)
+Card_Fold* XF_Fold::p_fold(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   return m_p_fold;
 }
@@ -122,9 +122,9 @@ Card_Fold* Fold::p_fold(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Fold::v_fold(Card_Fold* p_fold)
+void XF_Fold::v_fold(Card_Fold* p_fold)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_p_fold = p_fold;
 }
@@ -132,9 +132,9 @@ void Fold::v_fold(Card_Fold* p_fold)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-SubQuery* Fold::pOuterQuery(void)
+SubQuery* XF_Fold::pOuterQuery(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   return m_pOuterQuery;
 }
@@ -142,9 +142,9 @@ SubQuery* Fold::pOuterQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Fold::vOuterQuery(SubQuery* pOuterQuery)
+void XF_Fold::vOuterQuery(SubQuery* pOuterQuery)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_pOuterQuery = pOuterQuery;
 }
@@ -152,9 +152,9 @@ void Fold::vOuterQuery(SubQuery* pOuterQuery)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-SubQuery* Fold::pSubQuery(void)
+SubQuery* XF_Fold::pSubQuery(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   return m_pSubQuery;
 }
@@ -162,9 +162,9 @@ SubQuery* Fold::pSubQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Fold::vSubQuery(SubQuery* pSubQuery)
+void XF_Fold::vSubQuery(SubQuery* pSubQuery)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FOLD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   m_pSubQuery = pSubQuery;
 }
@@ -179,9 +179,9 @@ void Fold::vSubQuery(SubQuery* pSubQuery)
 /*----------------------------------------------------------------------------*/
 /* Derive correlated fold projection                                          */
 /*----------------------------------------------------------------------------*/
-void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
+void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   pCI->vBeginEach();
 
@@ -207,11 +207,11 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fold a non-correlated sub-query (before outer-query)                       */
+/* XF_Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
-void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
+void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   vOuterQuery(pCI->pBoard()->pSubQuery());
 
@@ -300,11 +300,11 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fold a from                                                                */
+/* XF_Fold a from                                                                */
 /*----------------------------------------------------------------------------*/
-CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
+CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   CarryForward* pCarryForward = new CarryForward;
 
@@ -356,12 +356,12 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
 
 
 /*----------------------------------------------------------------------------*/
-/* Fold a non-correlated sub-query (before outer-query)                       */
+/* XF_Fold a non-correlated sub-query (before outer-query)                       */
 /*----------------------------------------------------------------------------*/
-CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
-                                      eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh)
+CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
+                                         eCK eCardWithSQ, eQO eWhatOp, eSM eSmoosh)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
   UNUSED(eSmoosh);
 
   CarryForward* pCarryForward = new CarryForward;
@@ -469,9 +469,9 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 /*----------------------------------------------------------------------------*/
 /* count number of tables in sub-query                                        */
 /*----------------------------------------------------------------------------*/
-i8 Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
+i8 XF_Fold::nTables_In_SubQuery(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FOLD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FOLD, _FOOTER_);
 
   vOuterQuery(pCI->pBoard()->pSubQuery());
 

@@ -248,16 +248,18 @@ eTE Card_Term::eEvalTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-       if (pSymbol()->bSame("and"_Stz))        return TE_AND;
-  else if (pSymbol()->bSame("or"_Stz))         return TE_OR;
-  else if (pSymbol()->bSame("not"_Stz))        return TE_NOT;
-  else if (pSymbol()->bSame("}"_Stz))          return TE_EXECUTE;
-  else if (pSymbol()->bSame("exists"_Stz))     return TE_EXISTS;
-  else if (pSymbol()->bSame("in"_Stz))         return TE_IN;
-  else if (pSymbol()->bSame("notExists"_Stz))  return TE_NOTEXISTS;
-  else if (pSymbol()->bSame("notIn"_Stz))      return TE_NOTIN;
+  if (1 == pSymbol()->nFacets()) {
+         if (pSymbol()->bSame("and"_Stz)) return TE_AND;
+    else if (pSymbol()->bSame("or"_Stz)) return TE_OR;
+    else if (pSymbol()->bSame("not"_Stz)) return TE_NOT;
+    else if (pSymbol()->bSame("}"_Stz)) return TE_EXECUTE;
+    else if (pSymbol()->bSame("exists"_Stz)) return TE_EXISTS;
+    else if (pSymbol()->bSame("in"_Stz)) return TE_IN;
+    else if (pSymbol()->bSame("notExists"_Stz)) return TE_NOTEXISTS;
+    else if (pSymbol()->bSame("notIn"_Stz)) return TE_NOTIN;
+  }
 
-  else if (pSymbol()->bIs_Rln_Op())     return TE_RELNOP;
+       if (pSymbol()->bIs_Rln_Op())     return TE_RELNOP;
   else if (pSymbol()->bIs_Bol_Fn())     return TE_BOOLFN;
 
   else return TE_OTHER;
@@ -605,7 +607,7 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 
 //  if (pCI->G.pBoard->pState()->bHasName(aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL])) {
-//    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_INJECTED)) {
+//    if (m_xSymbol.bIs_Tbl_Col() && ! pCI->pAncestorFind(CK_INJECTABLE)) {
 //      vDump(__func__);
 //      vValidationFailed("Validation %s : %p"_Stz, aXF[XF_EPILOG_X_TBLCOL_TO_STMCOL], this);
 //    }

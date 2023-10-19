@@ -113,7 +113,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
   /* */ CN_FLTVAL,
-  /* */ CN_FOLD,
   /* */ CN_FORMAT,
   /* */ CN_FREEPOOLBUFFER,
   /* */ CN_FREECHUNK,
@@ -482,6 +481,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_FLATTEN_SMOOTH,
   /* */ CN_XF_FLATTEN_UPDATE_PROJECTION,
   /* */ CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL,
+  /* */ CN_XF_FOLD,
   /* */ CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG,
   /* */ CN_XF_OPTIMISE_CULL_BOUND,
   /* */ CN_XF_OPTIMISE_CUT_SORT,
@@ -628,7 +628,6 @@ static Stz* aCN[]
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
-  /* */ "FOLD"_Stz,                 // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEPOOLBUFFER"_Stz,       // CN_FREEPOOLBUFFER
   /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK
@@ -997,6 +996,7 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN_SMOOSH"_Stz,                 // CN_XF_FLATTEN_SMOOSH
   /* */ "XF_FLATTEN_SMOOTH"_Stz,                 // CN_XF_FLATTEN_SMOOTH
   /* */ "XF_FLATTEN_UPDATE_PROJECTION"_Stz,      // CN_XF_FLATTEN_UPDATE_PROJECTION
+  /* */ "XF_FOLD"_Stz,                           // CN_XF_FOLD
   /* */ "XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG"_Stz, // CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG
   /* */ "XF_OPTIMISE_CULL_NONUSED_BOUND"_Stz,    // CN_XF_OPTIMISE_CULL_BOUND
   /* */ "XF_OPTIMISE_CUT_SORT"_Stz,              // CN_XF_OPTIMISE_CUT_SORT
