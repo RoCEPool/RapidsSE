@@ -304,7 +304,7 @@ SkipListBlock* Pds::pInsertItem(void* pKey)
   // try to allocate a block as mini-Heap may be full
   SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
   if(pNewSLBlock == nullptr) {
-//    RASSERT(0);
+    RASSERT(0);
     return nullptr;
   }
 
@@ -651,7 +651,7 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
   }
 
   if (! pAllocBlock) {
-//    vTrace("Unable to allocate new entry in PDS SkipList\n"_Stz);
+    vTrace("Unable to allocate new entry in PDS SkipList\n"_Stz);
     return nullptr;
   }
 
