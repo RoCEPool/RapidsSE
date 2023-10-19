@@ -104,7 +104,7 @@ void Card_OP::vAnalyse_injected(CardIter* pCI)
 
   UNUSED(pCI);
 
-  pCI->G.p_injected = Card_Injected::pNew_injected(pCI);
+  pCI->G.p_injected = Card_Injectable::pNew_injected(pCI);
 
   vAppendChild(pCI->G.p_injected);
 }

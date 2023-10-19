@@ -74,7 +74,7 @@
 #include "Card_IndexNm.hpp"
 #include "Card_IndexScan.hpp"
 #include "Card_Inflate.hpp"
-#include "Card_Injected.hpp"
+#include "Card_Injectable.hpp"
 
 #include "Card_JoinCast.hpp"
 #include "Card_JoinEstimate.hpp" //

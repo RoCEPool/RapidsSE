@@ -540,7 +540,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_Injected* p_injected = pSubCard->pSub_injected();
+  Card_Injectable* p_injected = pSubCard->pSub_injected();
   Card_Emitted*   p_emitted = pSubCard->pSub_emitted();
 
   //p_emitted->vDump(__func__);

@@ -66,7 +66,7 @@ enum eCK : i8 // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
   /* */ CK_INFLATE,
-  /* */ CK_INJECTED,
+  /* */ CK_INJECTABLE,
 
   /* */ CK_JOINCAST,
   /* */ CK_JOINESTIMATE,
