@@ -51,6 +51,7 @@
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Review_as.hpp"
+#include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_board_To_sqyNm.hpp"
 #include "XF_Prolog_X_colNm_By_stmCol.hpp"
 #include "XF_Prolog_X_colNm_To_stmCol.hpp"
@@ -149,8 +150,10 @@ void XF::vTransform(void)
   m_pCI->vPhase(OH_PROLOG);                        //
                                                    //
   m_pCI->vBoardIteration();                        //
-  while (m_pCI->bEachBoard())                      //
+  while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_X_board_To_sqyNm::vConvert(m_pCI);   //
+    XF_Prolog_Validate_Board::vValidate(m_pCI);    //
+  }                                                //
                                                    //
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
@@ -275,8 +278,10 @@ void XF::vTransform_passThru(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
   m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard())
+  while (m_pCI->bEachBoard()) {
     XF_Prolog_X_board_To_sqyNm::vConvert(m_pCI);
+    XF_Prolog_Validate_Board::vValidate(m_pCI);
+  }
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
