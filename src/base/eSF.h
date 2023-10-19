@@ -35,7 +35,7 @@ enum eSF // symbol facet
   /* */ SF_ELSE,        // Else                : ELSE
   /* */ SF_ENDIF,       // EndIf               : ENDIF
 
-  /* */ SF_FLD_NM,      // Fold Name           :
+  /* */ SF_FLD_NM,      // XF_Fold Name           :
   /* */ SF_FLT_LIT,     // Float Literal       : StrLib::bIsFloat()
 
   /* */ SF_GROUPBY,     // GroupBy             : GROUPBY

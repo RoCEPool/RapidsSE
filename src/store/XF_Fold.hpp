@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Fold.hpp -- Fold                                                           */
+/* XF_Fold.hpp -- XF_Fold                                                           */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace STORE
 {
   class CarryForward;
 
-  class Fold : public Object
+  class XF_Fold : public Object
   {
   private:
 
@@ -32,9 +32,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Fold(i8 i_depth);
-    Fold(i8 i_depth, Card_Deck* p_deck);
-   ~Fold(void) noexcept(false);
+    XF_Fold(i8 i_depth);
+    XF_Fold(i8 i_depth, Card_Deck* p_deck);
+   ~XF_Fold(void) noexcept(false);
 
     Card_Correlation* p_correlation(void);
     void v_correlation(Card_Correlation* p_correlation);
@@ -71,7 +71,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Fold* _pFold(void* aAddr);
+  XF_Fold* _pXF_Fold(void* aAddr);
 }
 
 /*============================================================================*/
