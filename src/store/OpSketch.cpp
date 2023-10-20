@@ -268,6 +268,21 @@ bool OpSketch::bIsPayload(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check column mapping and see if given emitted column is a payload          */
+/*----------------------------------------------------------------------------*/
+bool OpSketch::bIsEmittedColPayload(i8 i_emittedCol)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	for (i8 i_Col = 0; i_Col < m_pColMap->m_nCols; i_Col++) {
+		if (m_pColMap->m_axCols[i_Col].m_i_EmittedCol == i_emittedCol)
+		  return m_pColMap->m_axCols[i_Col].m_bPayload;
+	}
+	RASSERT(0);
+	return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy the InitStack                                                         */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vCopyInitStack(TypedStack* pInitStack)

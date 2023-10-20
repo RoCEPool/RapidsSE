@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _ray153                                                                    */
+/* _ray154                                                                    */
 /*============================================================================*/
 
-// pipeline_q7.test
+// pipeline_q9.test
 
 __TPCH_SCHEMA;
 
@@ -70,7 +70,7 @@ pipeline Query9
     | next
 
   stage S07 on all partitions :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                     type VARCHAR as NATION $K1 ,
@@ -80,7 +80,7 @@ pipeline Query9
     | next
 
   stage S08 on all nodes :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -90,7 +90,7 @@ pipeline Query9
     | next
 
   stage S09 on origin :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -111,4 +111,4 @@ pipeline Query9
     | first
   end ;
 
-_tpcdrop;
+_tpchdrop;

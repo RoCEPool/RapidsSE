@@ -127,6 +127,7 @@ namespace STORE
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);
 
     void vTable(Table* pTable);
+		bool bIsEmittedColPayload(i8 i_emittedCol);
     bool bIsPayload(i8 i_Col);
     void vIndex(Index* pIndex);
     void vIndexDef(IndexDef* pIndexDef);
