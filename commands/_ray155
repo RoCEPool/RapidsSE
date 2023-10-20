@@ -10,9 +10,8 @@ __TPCH_SCHEMA;
 /pipeline_def
 /weaved
 /pipelineName = "_ray155"
+/keepCodeFile
 /optimise_passthru
-/pipeline_def
-/weaved
 pipeline Query10
 begin
 
@@ -77,7 +76,7 @@ begin
                type VARCHAR as C_COMMENT C_COMMENT"
     | combined 0
     | next
-
+/*
   stage S08 on all partitions :
     indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
     | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
@@ -92,10 +91,10 @@ begin
     | next
 
   stage S09 on origin :
-    sort " type DECIMAL REVENUE ASC  "
+    sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
-
+*/
   stage S10 on origin :
     output
     | sink
@@ -103,3 +102,4 @@ begin
 end ;
 
 _tpchDrop;
+
