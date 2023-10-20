@@ -333,6 +333,7 @@
 #include "ColInj.hpp"
 #include "ShortForm.hpp"
 #include "ColPpg.hpp"
+#include "MatrixPrint.hpp"
 
 
 #include "graph/PlanConstants.hpp"
@@ -539,6 +540,7 @@ SizeHeap gxaSizeHeap[]
   {CN_MARKER,                   sizeof(Marker),             HT_T_TINY    , FILL },
   {CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    , FILL },
   {CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    , FILL },
+  {CN_MATRIXPRINT,              sizeof(MatrixPrint),        HT_T_LARGE   , FILL },
   {CN_MEDIUMPERSISTENT,         sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
   {CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
   {CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   , FILL },

@@ -190,6 +190,7 @@ enum eCN : u2 // Class Number
   /* */ CN_MARKER,
   /* */ CN_MARKERCHAIN,
   /* */ CN_MARKERMGR,
+  /* */ CN_MATRIXPRINT,
   /* */ CN_MEDIUMPERSISTENT,
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
@@ -707,6 +708,7 @@ static Stz* aCN[]
   /* */ "MARKER"_Stz,               // CN_MARKER
   /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
   /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR
+  /* */ "MATRIXPRINT"_Stz,          // CN_MATRIXPRINT
   /* */ "MEDIUMPERSISTENT"_Stz,     // CN_MEDIUMPERSISTENT
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
