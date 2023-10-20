@@ -1,0 +1,76 @@
+/*============================================================================*/
+/* XF_Prolog_Validate_Board.cpp -- Add Level                                              */
+/*============================================================================*/
+
+#include "XF_Prolog_Validate_Board.hpp"
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE, XF_Prolog_Validate_Board, CN_XF_PROLOG_VALIDATE_BOARD)
+__aNewFunction(XF_Prolog_Validate_Board, CN_XF_PROLOG_VALIDATE_BOARD)
+__vDeleteFunction(XF_Prolog_Validate_Board, CN_XF_PROLOG_VALIDATE_BOARD)
+__aFooterFunction(XF_Prolog_Validate_Board)
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+XF_Prolog_Validate_Board::XF_Prolog_Validate_Board(CardIter* pCI)
+: XF_PROLOG(CN_XF_PROLOG_VALIDATE_BOARD, pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+
+  _checkInitialised_(CN_XF_PROLOG_VALIDATE_BOARD);
+  
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+XF_Prolog_Validate_Board::~XF_Prolog_Validate_Board(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Prolog_Validate_Board::vValidate(CardIter* pCI)
+{
+  _static_
+
+  XF_Prolog_Validate_Board* pXF_Validate = new XF_Prolog_Validate_Board(pCI);
+
+  pXF_Validate->vValidate();
+
+  delete pXF_Validate;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* ensure each op has a level                                                 */
+/*----------------------------------------------------------------------------*/
+void XF_Prolog_Validate_Board::vValidate(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_VALIDATE_BOARD, _FOOTER_);
+
+  m_pCI->vTransform(__func__, XF_PROLOG_VALIDATE_BOARD, "validate boards"_Stz);
+
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachMain_NONE()) {
+  }
+
+  m_pCI->vEndTransform(__LINE__);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

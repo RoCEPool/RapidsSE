@@ -73,11 +73,13 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_PROLOG_ANALYSE_INJECTION"_Stz,
   /* */ "XF_PROLOG_ANALYSE_SUBQUERY"_Stz,
   /* */ "XF_PROLOG_ANALYSE_TABLE"_Stz,
+  /* */ "XF_PROLOG_ENSURE_COLTYPE"_Stz,
   /* */ "XF_PROLOG_ENSURE_LEVEL"_Stz,
   /* */ "XF_PROLOG_ERASE_CONSTRUCTION"_Stz,
   /* */ "XF_PROLOG_MOVE_ON"_Stz,
   /* */ "XF_PROLOG_REDUCE_NOT"_Stz,
   /* */ "XF_PROLOG_REVIEW_AS"_Stz,
+  /* */ "XF_PROLOG_VALIDATE_BOARD"_Stz,
   /* */ "XF_PROLOG_X_BOARD_TO_SQYNM"_Stz,
   /* */ "XF_PROLOG_X_COLNM_TO_STMCOL"_Stz,
   /* */ "XF_PROLOG_X_RPNCALC_TO_BOOLPRED"_Stz,
@@ -154,11 +156,13 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_INDEX
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_SUBQUERY
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ANALYSE_TABLE
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_COLTYPE
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ENSURE_LEVEL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_ERASE_CONSTRUCTION
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_MOVE_ON
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_REDUCE_NOT
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_REVIEW_AS
+  /* */ "<to be supplied>"_Stz, // XF_PROLOG_VALIDATE_BOARD
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_BOARD_TO_SQYNM
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_COLNM_TO_STMCOL
   /* */ "<to be supplied>"_Stz, // XF_PROLOG_X_RPNCALC_TO_BOOLPRED

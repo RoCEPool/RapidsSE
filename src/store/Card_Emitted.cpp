@@ -40,6 +40,9 @@ Card_Emitted::Card_Emitted(i8 iCrossRef)
 Card_Emitted::~Card_Emitted(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->Y_bHas(P_BreakPt))
+    vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

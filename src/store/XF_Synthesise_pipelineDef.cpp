@@ -434,7 +434,7 @@ void XF_Synthesise_pipelineDef::vCraftStreamDefs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  if (m_pStageDef->i_Stage() == 7) {
+  if (m_pStageDef->i_Stage() == 6) {
     vDebugPoint();
     if (m_pOpDef->i_Op() == 0)
       vDebugPoint();

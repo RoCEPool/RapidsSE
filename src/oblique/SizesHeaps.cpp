@@ -307,12 +307,14 @@
 #include "XF_Prolog_Analyse_emitted.hpp"
 #include "XF_Prolog_Analyse_subQuery.hpp"
 #include "XF_Prolog_Analyse_table.hpp"
+#include "XF_Prolog_Ensure_colType.hpp"
 #include "XF_Prolog_Ensure_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
 #include "XF_Flatten_Predicate_Pull_Up.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Review_as.hpp"
+#include "XF_Prolog_Validate_Board.hpp"
 #include "XF_Prolog_X_board_To_sqyNm.hpp"
 #include "XF_Prolog_X_colNm_By_stmCol.hpp"
 #include "XF_Prolog_X_colNm_To_stmCol.hpp"
@@ -331,6 +333,7 @@
 #include "ColInj.hpp"
 #include "ShortForm.hpp"
 #include "ColPpg.hpp"
+#include "MatrixPrint.hpp"
 
 
 #include "graph/PlanConstants.hpp"
@@ -537,6 +540,7 @@ SizeHeap gxaSizeHeap[]
   {CN_MARKER,                   sizeof(Marker),             HT_T_TINY    , FILL },
   {CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    , FILL },
   {CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    , FILL },
+  {CN_MATRIXPRINT,              sizeof(MatrixPrint),        HT_T_LARGE   , FILL },
   {CN_MEDIUMPERSISTENT,         sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
   {CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
   {CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
@@ -850,11 +854,13 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_PROLOG_ANALYSE_INJECTED,      sizeof(XF_Prolog_Analyse_injected),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_SUBQUERY,      sizeof(XF_Prolog_Analyse_subQuery),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_TABLE,         sizeof(XF_Prolog_Analyse_table),         HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ENSURE_COLTYPE,        sizeof(XF_Prolog_Ensure_colType),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ENSURE_LEVEL,          sizeof(XF_Prolog_Ensure_level),          HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),    HT_T_TINY    , FILL },
   {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },
   {CN_XF_PROLOG_REDUCE_NOT,            sizeof(XF_Prolog_Reduce_not),            HT_T_TINY    , FILL },
   {CN_XF_PROLOG_REVIEW_AS,             sizeof(XF_Prolog_Review_as),             HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_VALIDATE_BOARD,        sizeof(XF_Prolog_Validate_Board),        HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_BOARD_TO_SQYNM,      sizeof(XF_Prolog_X_board_To_sqyNm),      HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_BY_STMCOL,     sizeof(XF_Prolog_X_colNm_By_stmCol),     HT_T_TINY    , FILL },
   {CN_XF_PROLOG_X_COLNM_TO_STMCOL,     sizeof(XF_Prolog_X_colNm_To_stmCol),     HT_T_TINY    , FILL },

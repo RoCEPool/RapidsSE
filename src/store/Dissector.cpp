@@ -301,8 +301,10 @@ Card* Dissector::pOp_Aggreg(void)
   Card_Stream* p_stream = new Card_Stream;
   pCard_Aggreg->vAppendChild(p_stream);
 
-  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
-  p_stream->vAppendChild(pCard_Projection);
+  Card_Emitted* p_emitted = pPopEmitted(pCard_RpnTerms);
+  p_emitted->pSymbol()->Y_vSet(P_BreakPt);
+
+  p_stream->vAppendChild(p_emitted);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1558,7 +1560,6 @@ Card_Emitted* Dissector::pPopEmitted(Card_RpnTerms* pCard_RpnTerms)
   if (pCard_Term_head->pSymbol()->bSame("AGGREGATES"_Stz)) {
     pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPopChild());
     delete pCard_Term_head;
-
   }
 
   i8 i_Expr = 1;
