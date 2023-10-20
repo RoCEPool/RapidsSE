@@ -1382,7 +1382,7 @@ void CombinedSrc::vAppendCodePLToHashCols(OpSketch* pOpSketch)
 
 		Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_StreamCol);
 
-		bool bIsPayload = pOpSketch->bIsPayload(i_StreamCol);
+		bool bIsPayload = pOpSketch->bIsEmittedColPayload(i_StreamCol+1);
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// payload column
