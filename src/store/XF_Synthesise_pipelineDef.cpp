@@ -289,6 +289,8 @@ void XF_Synthesise_pipelineDef::vCraftArgDefs(void)
       break;
 
     case CK_HASH:
+      if (m_pStageDef->i_Stage() == 5 && m_pOpDef->i_Op() == 1)
+        vDebugPoint();
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       m_pOpDef->m_pColHsh = new ColHsh;
       m_pOpDef->m_pColHsh->vUpdate(_pCard_Hash(p_OP)->pSub_hashing());

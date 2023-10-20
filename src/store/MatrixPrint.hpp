@@ -34,8 +34,8 @@ namespace STORE
     MatrixPrint(void);
    ~MatrixPrint(void) noexcept(false);
 
-    void vHeading(Stz* szHeader0, ...);
-    void vRow(Stz* szCol0, ...);
+    void vHeader(Stz* szHeading, ...);
+    void vRow(Stz* szValue, ...);
 
     void vDump(i8 i_Tab=0);
 
@@ -43,6 +43,7 @@ namespace STORE
 
   private:
     i8   nColumns(void);
+    void vConcatDashes(String* pOutput, i8 i_Col);
     void vConcatHeading(String* pOutput, i8 i_Col);
     void vConcatValue(String* pOutput, i8 i_Row, i8 i_Col);
 
@@ -50,6 +51,9 @@ namespace STORE
 
     void vPutHeading(Stz* szHeading, i8 i_Col);
     void vPutValue(Stz* szValue, i8 i_Row, i8 i_Col);
+
+    void vResetHeader(void);
+    void vResetRows(void);
 
     void vWidth(Stz* szArg, i8 i_Col);
 

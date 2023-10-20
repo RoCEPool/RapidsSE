@@ -52,21 +52,41 @@ MatrixPrint::~MatrixPrint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add header                                                                 */
 /*----------------------------------------------------------------------------*/
-void MatrixPrint::vHeading(Stz* szHeader0, ...)
+void MatrixPrint::vHeader(Stz* szHeading, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
 
-  UNUSED(szHeader0);
+  va_list args;
+  va_start(args, szHeading);
+
+  i8 i_Col = 0;
+  while (szHeading) {
+    vPutHeading(szHeading, i_Col);
+    szHeading = va_arg(args, Stz*);
+    i_Col++;
+  }
+
+  va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add row                                                                    */
 /*----------------------------------------------------------------------------*/
-void MatrixPrint::vRow(Stz* szCol0, ...)
+void MatrixPrint::vRow(Stz* szValue, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
 
-  UNUSED(szCol0);
+  va_list args;
+  va_start(args,szValue);
+
+  i8 i_Col = 0;
+  while (szValue) {
+    vPutValue(szValue,m_nRows,i_Col);
+    szValue = va_arg(args,Stz*);
+    i_Col++;
+  }
+
+  va_end(args);
 
   m_nRows++;
 }
@@ -83,40 +103,51 @@ void MatrixPrint::vDump(i8 i_Tab)
 
   i8 nCols = nColumns();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // heading
+
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    if (i_Col)
+      sOutput.vConcat(" "_Stz);
     vConcatHeading(sOutput, i_Col);
   }
+  sOutput.vConcat("\n"_Stz);
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    if (i_Col)
+      sOutput.vConcat(" "_Stz);
+    vConcatDashes(sOutput, i_Col);
+  }
+  sOutput.vConcat("\n"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // rows
 
   for (i8 i_Row = 0; i_Row < m_nRows; i_Row++) {
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+      if (i_Col)
+        sOutput.vConcat(" "_Stz);
       vConcatValue(sOutput, i_Row, i_Col);
     }
-
+    sOutput.vConcat("\n"_Stz);
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // trace
   vTrace("%s"_Stz,sOutput.szStz());
 
   vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
+/* reset                                                                      */
 /*----------------------------------------------------------------------------*/
 void MatrixPrint::vReset(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
 
-  for (i8 i_Col = 0; i_Col < C_MATRIXPRINT_COL; i_Col++) {
-    m_iaWidth[i_Col]  = 0;
-    m_saHeader[i_Col] = ""_Stz;
-  }
-
-  m_nRows = 0;
-  for (i8 i_Row = 0; i_Row < C_MATRIXPRINT_ROW; i_Row++) {
-    for (i8 i_Col = 0; i_Col < C_MATRIXPRINT_COL; i_Col++) {
-      m_xaRow[i_Row].m_asCol[i_Col] = ""_Stz;
-    }
-  }
+  vResetHeader();
+  vResetRows();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +155,28 @@ void MatrixPrint::vReset(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append heading                                                             */
+/* determine number of columns                                                */
+/*----------------------------------------------------------------------------*/
+i8 MatrixPrint::nColumns(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
+
+  return 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat heading                                                             */
+/*----------------------------------------------------------------------------*/
+void MatrixPrint::vConcatDashes(String* pOutput, i8 i_Col)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
+
+  for (i8 nDashes =  m_iaWidth[i_Col]; nDashes; nDashes--)
+    pOutput->vConcat("-"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat heading                                                             */
 /*----------------------------------------------------------------------------*/
 void MatrixPrint::vConcatHeading(String* pOutput, i8 i_Col)
 {
@@ -139,7 +191,7 @@ void MatrixPrint::vConcatHeading(String* pOutput, i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append column value                                                        */
+/* concat column value                                                        */
 /*----------------------------------------------------------------------------*/
 void MatrixPrint::vConcatValue(String* pOutput, i8 i_Row, i8 i_Col)
 {
@@ -151,16 +203,6 @@ void MatrixPrint::vConcatValue(String* pOutput, i8 i_Row, i8 i_Col)
   vFormat(sFormat,i_Col);
 
   pOutput->vCatSprint(sFormat.szStz(), szValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* determine number of columns                                                */
-/*----------------------------------------------------------------------------*/
-i8 MatrixPrint::nColumns(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
-
-  return 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,6 +237,35 @@ void MatrixPrint::vPutValue(Stz* szValue, i8 i_Row, i8 i_Col)
   m_xaRow[i_Row].m_asCol[i_Col] = szValue;
 
   vWidth(szValue, i_Col);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void MatrixPrint::vResetHeader(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
+
+  for (i8 i_Col = 0; i_Col < C_MATRIXPRINT_COL; i_Col++) {
+    m_iaWidth[i_Col]  = 0;
+    m_saHeader[i_Col] = ""_Stz;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void MatrixPrint::vResetRows(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MATRIXPRINT, _FOOTER_);
+
+  m_nRows = 0;
+  for (i8 i_Row = 0; i_Row < C_MATRIXPRINT_ROW; i_Row++) {
+    for (i8 i_Col = 0; i_Col < C_MATRIXPRINT_COL; i_Col++) {
+      m_xaRow[i_Row].m_asCol[i_Col] = ""_Stz;
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
