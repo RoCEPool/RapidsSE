@@ -72,7 +72,7 @@ pipeline Query9
     | next
 
   stage S08 on all nodes :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -82,7 +82,7 @@ pipeline Query9
     | next
 
   stage S09 on origin :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
