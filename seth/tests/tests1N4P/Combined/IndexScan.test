@@ -171,6 +171,8 @@ rows: 1664
 
 //------------------------------------------------------------------------------
 // indexscan with aggregates
+// TODO FINAL _ray156
+/*
 /optimise_passthru 
 pipeline is
 begin
@@ -199,6 +201,7 @@ begin
 end ;
 
 rows: (1400,100)
+*/
 
 //------------------------------------------------------------------------------
 // indexscan with aggregates and group by

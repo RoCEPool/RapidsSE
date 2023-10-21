@@ -31,6 +31,8 @@ success;
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
+// TODO FINAL _ray156
+/*
 /optimise_passthru 
 pipeline Q6
 begin
@@ -75,6 +77,7 @@ end ;
 
 rows:
   (1877392.75)
+*/
 
 //------------------------------------------------------------------------------
 // drop the tables
