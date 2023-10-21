@@ -171,7 +171,7 @@ void Engine::vPreliminary(void)
   // Segmentation Violation
   //signal(SIGSEGV, Engine::vSignalHandler);
 
-  vRegisterSignalHandler();
+//  vRegisterSignalHandler();
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vTrace("Init H/W counters...\n"_Stz);
@@ -1704,7 +1704,7 @@ void Engine::vSignalHandler(int iSignal)
 
 void Engine::vSignalHandler(int iSignal)
 {
-  vRegisterSignalHandler();
+//  vRegisterSignalHandler();
 
 
   vTrace("Engine::vSignalHandler:\n"
