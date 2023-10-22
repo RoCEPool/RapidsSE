@@ -93,7 +93,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   // XF_Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
 
   m_pCI->vBeginEach();
-  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_EMITTED));
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_EMIT));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;

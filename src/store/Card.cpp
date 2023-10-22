@@ -1837,25 +1837,11 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
   switch (m_eCard) {
 
-    case CK_EMITTED:
-      _pCard_Emitted(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    case CK_EXPR:
-      _pCard_Expr(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    case CK_RPNCALC:
-      _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    case CK_TABLE:
-      _pCard_Table(this)->vPrint(pRibbon, iDepth);
-      break;
-
-    case CK_TERM:
-      _pCard_Term(this)->vPrint(pRibbon, iDepth);
-      break;
+    case CK_EMIT:    _pCard_Emit(this)->vPrint(pRibbon, iDepth);    break;
+    case CK_EXPR:    _pCard_Expr(this)->vPrint(pRibbon, iDepth);    break;
+    case CK_RPNCALC: _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth); break;
+    case CK_TABLE:   _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
+    case CK_TERM:    _pCard_Term(this)->vPrint(pRibbon, iDepth);    break;
 
     default:
       vPrintCard_bySettings(pRibbon, iDepth);
@@ -2384,13 +2370,13 @@ Card_Direction* Card::pSub_direction(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Emitted.hpp"
-Card_Emitted* Card::pSub_emitted(void)
+#include "Card_Emit.hpp"
+Card_Emit* Card::pSub_emitted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_emitted =
-      _pCard_Emitted(pFindSubCard(CK_EMITTED));
+  Card_Emit* p_emitted =
+      _pCard_Emit(pFindSubCard(CK_EMIT));
   return p_emitted;
 }
 

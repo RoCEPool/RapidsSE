@@ -168,7 +168,7 @@ void Card_BoolPred::vCopyMarkedConjToTable(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vCorrectStmCol(Card_Emitted* p_emitted_prior)
+void Card_BoolPred::vCorrectStmCol(Card_Emit* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

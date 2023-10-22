@@ -7,7 +7,7 @@
 #include "Card_HshCol.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Term.hpp"
-#include "Card_Emitted.hpp"
+#include "Card_Emit.hpp"
 #include "CardIter.hpp"
 
 
@@ -49,7 +49,7 @@ Card_Hash::~Card_Hash(void) noexcept(false)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
-                              Card_Emitted* p_emitted_prev)
+                              Card_Emit* p_emitted_prev)
 {
   _static_
   UNUSED(p_emitted_prev);

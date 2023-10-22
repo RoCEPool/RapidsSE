@@ -52,7 +52,7 @@ namespace STORE
   class Card_Decision;
   class Card_Direction;
 
-  class Card_Emitted;
+  class Card_Emit;
   class Card_EXPRLIST;
   class Card_Expr;
 
@@ -435,7 +435,7 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
-    Card_Emitted*       pSub_emitted(void);
+    Card_Emit*       pSub_emitted(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);
     Card_FiltPredList*  pSub_filtPredList(void);

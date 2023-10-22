@@ -50,7 +50,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   Card_OP*         p_OP_prev          = nullptr;
   Card_Project*    p_project_prior    = nullptr;
-  Card_Emitted* p_emitted_prior = nullptr;
+  Card_Emit* p_emitted_prior = nullptr;
   Card_Cast*       p_cast_prior       = nullptr;
   Card_Combined*   p_combined_prior   = nullptr;
 
@@ -124,7 +124,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
                                          Card_Project*    p_project_prev,
                                          Card_Combined*   p_combined_prev,
                                          Card_Cast*       p_cast_prev,
-                                         Card_Emitted* p_emitted_prev,
+                                         Card_Emit* p_emitted_prev,
                                          Card_OP*         p_OP_curr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -214,7 +214,7 @@ Card_Expr* Card_Deck::p_expr_fold(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_Emitted* p_emitted_fold = this-> p_emitted_fold())
+  if (Card_Emit* p_emitted_fold = this-> p_emitted_fold())
     return p_emitted_fold->pSub_expr();
 
   return nullptr;
@@ -257,14 +257,14 @@ Card_Fold* Card_Deck::p_fold(void)
 /*----------------------------------------------------------------------------*/
 /* find project before fold (reverse)                                         */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Card_Deck::p_emitted_fold(void)
+Card_Emit* Card_Deck::p_emitted_fold(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Fold = this->i_Fold();
   for (i8 i_Main = i_Fold - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pGetChild(i_Main);
-    if (Card_Emitted* p_emitted = pMain->pSub_emitted())
+    if (Card_Emit* p_emitted = pMain->pSub_emitted())
       return p_emitted;
   }
 
@@ -333,7 +333,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
-      Card_Emitted* p_emitted_clone = pCI->Flux.m_pArriving->pClone();
+      Card_Emit* p_emitted_clone = pCI->Flux.m_pArriving->pClone();
       //p_emitted_clone->vDump(__func__ );
       pCI->G.p_stream->vAppendChild(p_emitted_clone);
 
@@ -344,7 +344,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 //      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
 //    }
 //    if (CK_SORT == pCI->G.e_MainCard) {
-//      Card_Emitted* p_emitted_propagated =
+//      Card_Emit* p_emitted_propagated =
 //          pCI->Flux.m_pArriving->pPropagate();
 //      p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 //
@@ -362,7 +362,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       pCI->G.p_OP->vEnsure_stream(pCI);
 
-      Card_Emitted* p_emitted_propagated =
+      Card_Emit* p_emitted_propagated =
           pCI->Flux.m_pArriving->pPropagate(pCI);
       p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
@@ -479,7 +479,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
     }
     else
     if (CK_SORT == pCI->G.e_MainCard || CK_TOP == pCI->G.e_MainCard) {
-      Card_Emitted* p_emitted_propagated =
+      Card_Emit* p_emitted_propagated =
           pCI->Flux.m_pArriving->pPropagate(pCI);
       p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
@@ -574,7 +574,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 //    }
 //    else
 //    if (CK_SORT == pCI->G.e_MainCard || CK_TOP == pCI->G.e_MainCard) {
-//      Card_Emitted* p_emitted_propagated =
+//      Card_Emit* p_emitted_propagated =
 //          pCI->Flux.m_pArriving->pPropagate(pCI);
 //      p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 //
@@ -610,7 +610,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->vBeginEach();
-  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_STREAM, CK_EMITTED))
+  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_STREAM, CK_EMIT))
     pCI->G.p_stream->vDeleteChild(pCI->G.p_emitted);
 
 
@@ -781,7 +781,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_PAYLOADCELLS: pCI->G.p_payloadCells->vValidate(pCI, 1, this); break;
       case CK_PROJECT:      pCI->G.p_project->vValidate(pCI, 1, this); break;
-      case CK_EMITTED:   pCI->G.p_emitted->vValidate(pCI, 1, this); break;
+      case CK_EMIT:   pCI->G.p_emitted->vValidate(pCI, 1, this); break;
 
       case CK_ROWCOUNT:     pCI->G.p_rowCount->vValidate(pCI, 1, this); break;
       case CK_ROWSIZE:      pCI->G.p_rowSize->vValidate(pCI, 1, this); break;

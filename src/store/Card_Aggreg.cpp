@@ -4,7 +4,7 @@
 
 #include "Card_Aggreg.hpp"
 
-#include "Card_Emitted.hpp"
+#include "Card_Emit.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +48,7 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Emitted* p_emitted = pSub_emitted())
+  if (Card_Emit* p_emitted = pSub_emitted())
     p_emitted->vBump_Rightwards(nBumpBy);
 }
 

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Emitted.cpp -- Projection                                          */
+/* Card_Emit.cpp -- Emit                                                      */
 /*============================================================================*/
 
-#include "Card_Emitted.hpp"
+#include "Card_Emit.hpp"
 
 #include "Card_RpnCalc.hpp"
 
@@ -13,17 +13,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Emitted, CK_EMITTED)
-__aNewFunction(Card_Emitted, CN_CARD)
-__vDeleteFunction(Card_Emitted, CN_CARD)
+__pCastFunction_Card(STORE, Card_Emit, CK_EMIT)
+__aNewFunction(Card_Emit, CN_CARD)
+__vDeleteFunction(Card_Emit, CN_CARD)
 
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Emitted::Card_Emitted(i8 iCrossRef)
-: Card_EXPRLIST(CK_EMITTED, 3)
+Card_Emit::Card_Emit(i8 iCrossRef)
+: Card_EXPRLIST(CK_EMIT, 3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -37,7 +37,7 @@ Card_Emitted::Card_Emitted(i8 iCrossRef)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Emitted::~Card_Emitted(void) noexcept(false)
+Card_Emit::~Card_Emit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -52,7 +52,7 @@ Card_Emitted::~Card_Emitted(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* resolve (right-left) projection prior to main card                         */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Card_Emitted::pResolvePriorProjection(CardIter* pCI)
+Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
 {
   _static_
 
@@ -62,7 +62,7 @@ Card_Emitted* Card_Emitted::pResolvePriorProjection(CardIter* pCI)
   xKid.vReposition(pCI->G.i_MainCard);
 
   while (xKid.bEach_reverse()) {
-    if (Card_Emitted* p_emitted = xKid.pChild()->pSub_emitted())
+    if (Card_Emit* p_emitted = xKid.pChild()->pSub_emitted())
       return p_emitted;
   }
 
@@ -76,7 +76,7 @@ Card_Emitted* Card_Emitted::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* adjust this projection given key                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vAdjust_Wrt_key(Card_Key* p_key)
+void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -102,7 +102,7 @@ void Card_Emitted::vAdjust_Wrt_key(Card_Key* p_key)
 /*----------------------------------------------------------------------------*/
 /* review synthetic as -- e.g. can COL1/$K1 -> l_returnFlag/$K1               */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vAs_Review(CardIter* pCI)
+void Card_Emit::vAs_Review(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -125,17 +125,17 @@ void Card_Emitted::vAs_Review(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Card_Emitted::pClone(void)
+Card_Emit* Card_Emit::pClone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return _pCard_Emitted(pDupCardRecursive());
+  return _pCard_Emit(pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vCorrectStmCol(Card_Emitted* p_emitted_prior)
+void Card_Emit::vCorrectStmCol(Card_Emit* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -152,7 +152,7 @@ void Card_Emitted::vCorrectStmCol(Card_Emitted* p_emitted_prior)
 /*----------------------------------------------------------------------------*/
 /* craft factored-column-set this projection needs for early-projects         */
 /*----------------------------------------------------------------------------*/
-Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
+Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -239,7 +239,7 @@ Card_Needed* Card_Emitted::pCraftRoot_needed(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vDedupe_as(void)
+void Card_Emit::vDedupe_as(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -255,7 +255,7 @@ void Card_Emitted::vDedupe_as(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vDelete_streamKey(CardIter* pCI)
+void Card_Emit::vDelete_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -268,7 +268,7 @@ void Card_Emitted::vDelete_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* derive the key of this projection (of running key)                         */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vDerive_streamKey(CardIter *pCI)
+void Card_Emit::vDerive_streamKey(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -298,7 +298,7 @@ void Card_Emitted::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Emit::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -309,7 +309,7 @@ void Card_Emitted::vEnsureTypes_For_stmCol(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Emitted::pFindExprOfSymbol(Symbol* pSymbol)
+Card_Expr* Card_Emit::pFindExprOfSymbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -323,7 +323,7 @@ Card_Expr* Card_Emitted::pFindExprOfSymbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* is this a compound projection?                                             */
 /*----------------------------------------------------------------------------*/
-bool Card_Emitted::bIsCompound(void)
+bool Card_Emit::bIsCompound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -337,7 +337,7 @@ bool Card_Emitted::bIsCompound(void)
 /*----------------------------------------------------------------------------*/
 /* is this a literals projection?                                             */
 /*----------------------------------------------------------------------------*/
-bool Card_Emitted::bIsLiterals(void)
+bool Card_Emit::bIsLiterals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -355,7 +355,7 @@ bool Card_Emitted::bIsLiterals(void)
 /*----------------------------------------------------------------------------*/
 /* map columns of projection onto cells                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vMapColumns(CardIter* pCI)
+void Card_Emit::vMapColumns(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -409,7 +409,7 @@ void Card_Emitted::vMapColumns(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vPrint(Ribbon* pRibbon, i8 iDepth)
+void Card_Emit::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -435,10 +435,10 @@ void Card_Emitted::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* propagate this projection                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Card_Emitted::pPropagate(CardIter* pCI) {
+Card_Emit* Card_Emit::pPropagate(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Emitted *p_emitted_propagated = new Card_Emitted(pCI->iXform());
+  Card_Emit *p_emitted_propagated = new Card_Emit(pCI->iXform());
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
@@ -455,11 +455,11 @@ Card_Emitted* Card_Emitted::pPropagate(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* return a reduced copy of this projection                                   */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Card_Emitted::pReducedCopy(CardIter* pCI)
+Card_Emit* Card_Emit::pReducedCopy(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_emitted_reduced = new Card_Emitted(pCI->iXform());
+  Card_Emit* p_emitted_reduced = new Card_Emit(pCI->iXform());
 
   i8 i_Expr = 0;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
@@ -473,7 +473,7 @@ Card_Emitted* Card_Emitted::pReducedCopy(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* resolve prior expr of given term (find right-to-left)                      */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Emitted::pResolve_expr(Card_Term* p_term)
+Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -493,7 +493,7 @@ Card_Expr* Card_Emitted::pResolve_expr(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* short form                                                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vShortForm(String* pString)
+void Card_Emit::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -506,7 +506,7 @@ void Card_Emitted::vShortForm(String* pString)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Emitted::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_Emit::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

@@ -78,7 +78,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                              //             %1
 
   pCI->vClearRestart();
-  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_EMITTED, CK_FILTER))
+  while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_EMIT, CK_FILTER))
    if (bIdentify_Correlation_Key_Predicate(pCI))
      break;
   RASSERT(pCI->Sqy.m_pTerm_corrCol); // eg $d.2 (L_PARTKEY)

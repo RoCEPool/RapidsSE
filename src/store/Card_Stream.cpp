@@ -94,7 +94,7 @@ void Card_Stream::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (pCI->pBoard()->pState()->bHasName(aOH[OH_PROLOG]))
-    vValidate_mustHave(CK_EMITTED, CK_NONE);
+    vValidate_mustHave(CK_EMIT, CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

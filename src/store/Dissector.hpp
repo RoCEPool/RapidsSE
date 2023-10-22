@@ -81,7 +81,7 @@ namespace STORE
     Card_HshColList* pPopHshColList (Card_RpnTerms* pCard_RpnTerms);
     Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms,
                                      bool bEnsureDirection);
-    Card_Emitted*    pPopEmitted    (Card_RpnTerms* pCard_RpnTerms);
+    Card_Emit*    pPopEmitted    (Card_RpnTerms* pCard_RpnTerms);
     Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
     eCT              ePopType       (Card_RpnTerms* pCard_RpnTerms);
 

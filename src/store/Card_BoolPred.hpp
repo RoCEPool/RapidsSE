@@ -23,7 +23,7 @@ namespace STORE
     eCT  eColumnType(void);
     Card_CONJUNCTION* pConj_root(void);
     void vCopyMarkedConjToTable(CardIter* pCI);
-    void vCorrectStmCol(Card_Emitted* p_emitted_prior);
+    void vCorrectStmCol(Card_Emit* p_emitted_prior);
     i8 nCullConj(Stz* szWithMark);
     bool bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);

@@ -6,7 +6,7 @@
 
 #include "Card_As.hpp"
 #include "Card_Level.hpp"
-#include "Card_Emitted.hpp"
+#include "Card_Emit.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
 
@@ -69,7 +69,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   Card_Stream* p_stream = new Card_Stream;
   p_project_unproject->vAppendChild(p_stream);
 
-  Card_Emitted* p_emitted_unproject = new Card_Emitted(pCI->iXform());
+  Card_Emit* p_emitted_unproject = new Card_Emit(pCI->iXform());
   p_stream->vAppendChild(p_emitted_unproject);
 
   i8 i_Col = 0;
@@ -115,7 +115,7 @@ void Card_Project::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Emitted* p_emitted = pSub_emitted())
+  if (Card_Emit* p_emitted = pSub_emitted())
     p_emitted->vBump_Rightwards(nBumpBy);
 }
 
@@ -132,11 +132,11 @@ void Card_Project::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* craft projection for early project                                         */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Card_Project::pCraft_projection_early(CardIter* pCI)
+Card_Emit* Card_Project::pCraft_projection_early(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_emitted_early = new Card_Emitted(pCI->iXform());
+  Card_Emit* p_emitted_early = new Card_Emit(pCI->iXform());
 
   //pCI->Early.m_pNeeded_later->vDump();
 
@@ -177,7 +177,7 @@ void Card_Project::vDedupe_as(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_Emitted* p_emitted = pSub_emitted())
+  if (Card_Emit* p_emitted = pSub_emitted())
     p_emitted->vDedupe_as();
 
 }

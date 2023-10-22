@@ -43,7 +43,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
   /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
-  /* */ "CK_EMITTED"_Stz,      // CK_EMITTED
+  /* */ "CK_EMIT"_Stz,      // CK_EMIT
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
@@ -189,7 +189,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "direction"_Stz,       // CK_DIRECTION
   /* */ "disp"_Stz,            // CK_DISPOSITION
 
-  /* */ "emit"_Stz,            // CK_EMITTED
+  /* */ "emit"_Stz,            // CK_EMIT
   /* */ "expr"_Stz,            // CK_EXPR
 
   /* */ "filter"_Stz,          // CK_FILTER

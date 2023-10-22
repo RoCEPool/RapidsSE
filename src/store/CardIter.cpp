@@ -1195,7 +1195,7 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
 
     //pMain->vDump();
 
-    if (Card_Emitted* p_emitted = pMain->pSub_emitted()) {
+    if (Card_Emit* p_emitted = pMain->pSub_emitted()) {
       i8 nChildren_prj = p_emitted->nChildCards();
       for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
         Card *pChild_prj = p_emitted->pGetChild(i_Child);
@@ -1233,7 +1233,7 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card *pMain = this->G.pDeck->pGetChild(i_Main);
 
-    if (Card_Emitted* p_emitted = pMain->pSub_emitted()) {
+    if (Card_Emit* p_emitted = pMain->pSub_emitted()) {
       i8 nChildren_prj = p_emitted->nChildCards();
       for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
         Card *pChild_prj = p_emitted->pGetChild(i_Child);
@@ -1346,7 +1346,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_DIRECTION:        return G.p_direction;
     case CK_DISPOSITION:      return G.p_disposition;
 
-    case CK_EMITTED:          return G.p_emitted;
+    case CK_EMIT:          return G.p_emitted;
     case CK_EXPR:             return G.p_expr;
 
     case CK_FILTER:           return G.p_filter;
@@ -1576,7 +1576,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_DIRECTION:        G.p_direction         = _pCard_Direction(pCard); break;
     case CK_DISPOSITION:      G.p_disposition       = _pCard_Disposition(pCard); break;
 
-    case CK_EMITTED:          G.p_emitted           = _pCard_Emitted(pCard); break;
+    case CK_EMIT:             G.p_emitted           = _pCard_Emit(pCard); break;
     case CK_EXPR:             G.p_expr              = _pCard_Expr(pCard); break;
 
     case CK_FILTER:           G.p_filter            = _pCard_Filter(pCard);
@@ -2048,7 +2048,7 @@ void CardIter::vSnapFluxArriving(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (Card_Emitted* p_emitted = G.p_OP->pSub_emitted())
+  if (Card_Emit* p_emitted = G.p_OP->pSub_emitted())
     Flux.m_pArriving = p_emitted;
 }
 
@@ -2337,7 +2337,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emitted* p_emitted_prior = pResolvePrior_projection();
+  Card_Emit* p_emitted_prior = pResolvePrior_projection();
   if (! p_emitted_prior)
     return nullptr;
 
@@ -2364,11 +2364,11 @@ Card_Expr* CardIter::pResolvePrior_expr_prior(Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* resolve prior projection (find right-to-left)                              */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* CardIter::pResolvePrior_projection(void)
+Card_Emit* CardIter::pResolvePrior_projection(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emitted* p_emitted_prior = Card_Emitted::pResolvePriorProjection(this);
+  Card_Emit* p_emitted_prior = Card_Emit::pResolvePriorProjection(this);
 
   return p_emitted_prior;
 }
@@ -2605,7 +2605,7 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_DIRECTION:    G.p_direction->vValidate(this, iDepth, pCard);  break;
       case CK_DISPOSITION:  G.p_disposition->vValidate(this, iDepth, pCard);  break;
 
-      case CK_EMITTED:      G.p_emitted->vValidate(this, iDepth, pCard);  break;
+      case CK_EMIT:      G.p_emitted->vValidate(this, iDepth, pCard);  break;
       case CK_EXPR:         G.p_expr->vValidate(this, iDepth, pCard);  break;
 
       case CK_FILTER:       G.p_filter->vValidate(this, iDepth, pCard);  break;

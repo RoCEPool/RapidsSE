@@ -123,7 +123,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCorrectStmCol(Card_Emitted* p_emitted_prior)
+void Card_OP::vCorrectStmCol(Card_Emit* p_emitted_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -133,7 +133,7 @@ void Card_OP::vCorrectStmCol(Card_Emitted* p_emitted_prior)
   if (Card_Filter* p_filter = pSub_filter())
     p_filter->vCorrectStmCol(p_emitted_prior);
 
-  if (Card_Emitted* p_emitted = pSub_emitted())
+  if (Card_Emit* p_emitted = pSub_emitted())
     p_emitted->vCorrectStmCol(p_emitted_prior);
 }
 
@@ -543,7 +543,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emitted* p_emitted;
+  Card_Emit* p_emitted;
 
   if (CK_PROJECT == eCard() && pCI->Flux.m_pArriving) {
     p_emitted = pSub_emitted();
@@ -561,12 +561,12 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     pCI->G.p_stream->vDeleteChild(p_emitted);
 
 
-  Card_Emitted* p_emitted_needed;
+  Card_Emit* p_emitted_needed;
   if ((p_emitted_needed = pSub_emitted()))
     vRemoveChild(p_emitted_needed);
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_emitted = _pCard_Emitted(pCI->Flux.m_pArriving->pDupCardRecursive());
+    p_emitted = _pCard_Emit(pCI->Flux.m_pArriving->pDupCardRecursive());
     pCI->G.p_stream->vAppendChild(p_emitted);
     pCI->Flux.m_pArriving = p_emitted;
     if (p_emitted_needed)
@@ -592,7 +592,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     //p_emitted->vDump(__func__ );
   }
   else {
-    p_emitted = new Card_Emitted(pCI->iXform());
+    p_emitted = new Card_Emit(pCI->iXform());
   }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
@@ -648,8 +648,8 @@ void Card_OP::vRpnAggreg(String* psRpnExpr, Card_Aggreg* pCard_Aggreg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_Emitted* pCard_Projection =
-      _pCard_Emitted(pCard_Aggreg->pFindSubCard(CK_EMITTED));
+  Card_Emit* pCard_Projection =
+      _pCard_Emit(pCard_Aggreg->pFindSubCard(CK_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -781,8 +781,8 @@ void Card_OP::vRpnGbyAgg(String* psRpnExpr, Card_GbyAgg* pCard_GbyAgg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Card_Emitted* pCard_Projection =
-      _pCard_Emitted(pCard_GbyAgg->pFindSubCard(CK_EMITTED));
+  Card_Emit* pCard_Projection =
+      _pCard_Emit(pCard_GbyAgg->pFindSubCard(CK_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -1246,8 +1246,8 @@ void Card_OP::vRpnOrdAgg(String* psRpnExpr, Card_OrdAgg* pCard_OrdAgg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  Card_Emitted* pCard_Projection =
-      _pCard_Emitted(pCard_OrdAgg->pFindSubCard(CK_EMITTED));
+  Card_Emit* pCard_Projection =
+      _pCard_Emit(pCard_OrdAgg->pFindSubCard(CK_EMIT));
 
   if (! pCard_Projection)
     return;
@@ -1282,13 +1282,13 @@ void Card_OP::vRpnProject(String* psRpnExpr, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Emitted* pCard_Projection =
-      _pCard_Emitted(pCard_Project->pFindSubCard(CK_EMITTED));
+  Card_Emit* pCard_Emit =
+      _pCard_Emit(pCard_Project->pFindSubCard(CK_EMIT));
 
-  i8 nSubCards = pCard_Projection->nItems();
+  i8 nSubCards = pCard_Emit->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
 
-    Card* pSubCard = pCard_Projection->pGet(i_Child);
+    Card* pSubCard = pCard_Emit->pGet(i_Child);
     eCK eSubCard = pSubCard->eCard();
 
     if (CK_EXPR != eSubCard)
@@ -1614,7 +1614,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Emitted* p_emitted = pSub_emitted();
+  Card_Emit* p_emitted = pSub_emitted();
   if (! p_emitted)
     return nullptr;
 

@@ -78,7 +78,7 @@ namespace STORE
     Card_Direction *     p_direction;
     Card_Disposition *   p_disposition;
 
-    Card_Emitted *       p_emitted;
+    Card_Emit *       p_emitted;
     Card_Expr *          p_expr;
 
     Card_Filter *        p_filter;

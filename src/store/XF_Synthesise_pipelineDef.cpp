@@ -543,7 +543,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   Card_Injectable* p_injected = pSubCard->pSub_injected();
-  Card_Emitted*   p_emitted = pSubCard->pSub_emitted();
+  Card_Emit*   p_emitted = pSubCard->pSub_emitted();
 
   //p_emitted->vDump(__func__);
 
@@ -643,8 +643,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
-  Card_Emitted* p_arriving = m_pCI->Flux.m_pArriving;
-  Card_Emitted* p_emitted  = pSubCard->pSub_emitted();
+  Card_Emit* p_arriving = m_pCI->Flux.m_pArriving;
+  Card_Emit* p_emitted  = pSubCard->pSub_emitted();
 
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
     p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);

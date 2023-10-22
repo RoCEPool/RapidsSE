@@ -301,7 +301,7 @@ Card* Dissector::pOp_Aggreg(void)
   Card_Stream* p_stream = new Card_Stream;
   pCard_Aggreg->vAppendChild(p_stream);
 
-  Card_Emitted* p_emitted = pPopEmitted(pCard_RpnTerms);
+  Card_Emit* p_emitted = pPopEmitted(pCard_RpnTerms);
   p_emitted->pSymbol()->Y_vSet(P_BreakPt);
 
   p_stream->vAppendChild(p_emitted);
@@ -539,7 +539,7 @@ Card* Dissector::pOp_GbyAgg(void)
   Card_Stream* p_stream = new Card_Stream;
   pCard_Aggreg->vAppendChild(p_stream);
 
-  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
+  Card_Emit* pCard_Projection = pPopEmitted(pCard_RpnTerms);
   p_stream->vAppendChild(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -935,7 +935,7 @@ Card* Dissector::pOp_OrdAgg(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
+  Card_Emit* pCard_Projection = pPopEmitted(pCard_RpnTerms);
   pCard_OrdAgg->vAppendChild(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1000,7 +1000,7 @@ Card* Dissector::pOp_Project(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projElist : project expression list
 
-  Card_Emitted* pCard_Projection = pPopEmitted(pCard_RpnTerms);
+  Card_Emit* pCard_Projection = pPopEmitted(pCard_RpnTerms);
   pCard_Stream->vAppendChild(pCard_Projection);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1548,11 +1548,11 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirectio
 /*----------------------------------------------------------------------------*/
 /* pop projection                                                             */
 /*----------------------------------------------------------------------------*/
-Card_Emitted* Dissector::pPopEmitted(Card_RpnTerms* pCard_RpnTerms)
+Card_Emit* Dissector::pPopEmitted(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_Emitted* pCard_Projection = new Card_Emitted(0);
+  Card_Emit* pCard_Projection = new Card_Emit(0);
 
   i8 iCardNo = 0;
 

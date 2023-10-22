@@ -24,7 +24,7 @@ namespace STORE
     void vAddConj(Card_CONJUNCTION *p_PRED);
 
     void vComputeProjection(CardIter* pCI); // prototype
-    void vCorrectStmCol(Card_Emitted* p_emitted_prior);
+    void vCorrectStmCol(Card_Emit* p_emitted_prior);
 
     i8 nCullConj(Stz* szWithMark);
 
