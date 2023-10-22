@@ -307,6 +307,52 @@ void Card_Emitted::vEnsureTypes_For_stmCol(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Emitted::pFindExprOfSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bHasTerm(pSymbol))
+      return xKid.p_expr();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a compound projection?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card_Emitted::bIsCompound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bIsCompound())
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a literals projection?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card_Emitted::bIsLiterals(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bLiterals = true;
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (! xKid.p_expr()->bIsLiterals()) {
+      bLiterals = false;
+      break;
+    }
+
+  return bLiterals;
+}
+
+/*----------------------------------------------------------------------------*/
 /* map columns of projection onto cells                                       */
 /*----------------------------------------------------------------------------*/
 void Card_Emitted::vMapColumns(CardIter* pCI)
@@ -361,6 +407,32 @@ void Card_Emitted::vMapColumns(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Emitted::vPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(iDepth);
+
+  s32 sName;
+
+  sName.vSprint("%s%lld]"_Stz,
+                Stz::szDots(iDepth - 1),
+                m_i_Child);
+
+  sName.vSprintCat("%s"_Stz,
+                   szCardNm());
+
+  pRibbon->vSprintSnippet(false,"%c%c%s %p"_Stz,
+                          cMark1(),
+                          cMark2(),
+                          sName.szStz(),
+                          ((char *) this) - (char *) AM::SYSARGS::aRegionAddr());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* propagate this projection                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Emitted* Card_Emitted::pPropagate(CardIter* pCI) {
@@ -379,84 +451,6 @@ Card_Emitted* Card_Emitted::pPropagate(CardIter* pCI) {
   return p_emitted_propagated;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Emitted::pFindExprOfAs(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Expr* p_expr = nullptr;
-
-  Card* pParent;
-  Card_As* p_as = _pCard_As(pFindSymbolRecursive(CK_AS,pSymbol,pParent));
-
-  if (p_as) {
-    p_expr = _pCard_Expr(pParent);
-  }
-
-  return p_expr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Emitted::pFindExprOfSymbol(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    if (xKid.p_expr()->bHasTerm(pSymbol))
-      return xKid.p_expr();
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Emitted::bHasTerm(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    if (xKid.p_expr()->bHasTerm(pSymbol))
-      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a compound projection?                                             */
-/*----------------------------------------------------------------------------*/
-bool Card_Emitted::bIsCompound(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    if (xKid.p_expr()->bIsCompound())
-      return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a literals projection?                                             */
-/*----------------------------------------------------------------------------*/
-bool Card_Emitted::bIsLiterals(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bLiterals = true;
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    if (! xKid.p_expr()->bIsLiterals()) {
-      bLiterals = false;
-      break;
-    }
-
-  return bLiterals;
-}
 
 /*----------------------------------------------------------------------------*/
 /* return a reduced copy of this projection                                   */

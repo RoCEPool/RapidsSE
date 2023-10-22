@@ -189,7 +189,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "direction"_Stz,       // CK_DIRECTION
   /* */ "disp"_Stz,            // CK_DISPOSITION
 
-  /* */ "emitted"_Stz,         // CK_EMITTED
+  /* */ "emit"_Stz,            // CK_EMITTED
   /* */ "expr"_Stz,            // CK_EXPR
 
   /* */ "filter"_Stz,          // CK_FILTER

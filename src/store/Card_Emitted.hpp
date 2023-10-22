@@ -29,13 +29,12 @@ namespace STORE
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
     void vEnsureTypes_For_stmCol(CardIter* pCI);
-    Card_Emitted* pPropagate(CardIter* pCI);
-    Card_Expr* pFindExprOfAs(Symbol* pSymbol);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
-    bool bHasTerm(Symbol* pSymbol);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     void vMapColumns(CardIter* pCI);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
+    Card_Emitted* pPropagate(CardIter* pCI);
     Card_Emitted* pReducedCopy(CardIter* pCI);
     Card_Expr* pResolve_expr(Card_Term* p_term);
 
