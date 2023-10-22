@@ -141,6 +141,11 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
+    if (m_pCI->Flux.m_pArriving)
+      m_pCI->G.p_constraint->vX_tblCol_To_stmCol(m_pCI);
+  }
+
   m_pCI->vSnapFluxArriving();
   if (m_pCI->G.p_OP->pSub_emitted())
     m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emitted();
