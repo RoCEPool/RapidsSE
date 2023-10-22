@@ -86,7 +86,9 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
     else
-    if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
+		// getting build error on AWS. ALka changed this : 22/10/23
+    //if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
+		if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
       Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
       i8 iItemise = p_expr->iItemise();
       p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
