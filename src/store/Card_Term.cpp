@@ -524,7 +524,9 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
   // is scalar expression of this symbol in INJECTED ?
 
   if (pCI->X.m_pExprList_i) {
-    if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
+		// ALKA changed 22/10/23 (compilation error on linux)
+    //if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
+		if (pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
       this->vMark1(MARK_FOUND);
       return;
     }
