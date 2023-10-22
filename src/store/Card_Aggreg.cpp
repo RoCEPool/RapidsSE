@@ -48,8 +48,8 @@ void Card_Aggreg::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Emit* p_emitted = pSub_emitted())
-    p_emitted->vBump_Rightwards(nBumpBy);
+  if (Card_Emit* p_emit = pSub_emit())
+    p_emit->vBump_Rightwards(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,8 +86,8 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
-  pCI->G.p_emitted = pSub_emitted();
-  pCI->Early.m_pNeeded_later  = pCI->G.p_emitted->pCraftRoot_needed(pCI);
+  pCI->G.p_emit = pSub_emit();
+  pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
 
   if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
     DELETE_CARD(pCI->Early.m_pNeeded_later);
@@ -118,9 +118,9 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_emitted = pSub_emitted();
+  pCI->G.p_emit = pSub_emit();
 
-  pCI->Flux.m_pArriving = pCI->G.p_emitted;
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard();
 
@@ -144,11 +144,11 @@ void Card_Aggreg::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted())) {
+  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
 
     if (pCI->Flux.m_pArriving) {
-      pCI->G.p_emitted->vEnsureTypes_For_stmCol(pCI);
-      pCI->G.p_emitted->vRenumberAll_expr();
+      pCI->G.p_emit->vEnsureTypes_For_stmCol(pCI);
+      pCI->G.p_emit->vRenumberAll_expr();
     }
 
   }

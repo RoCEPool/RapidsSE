@@ -130,8 +130,8 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
     m_pCI->G.p_filter->vX_tblCol_To_stmCol(m_pCI);
   }
 
-  if ((m_pCI->G.p_emitted = m_pCI->G.p_MainCard->pSub_emitted())) {
-    m_pCI->G.p_emitted->vX_tblCol_To_stmCol(m_pCI);
+  if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
+    m_pCI->G.p_emit->vX_tblCol_To_stmCol(m_pCI);
   }
 
   if ((m_pCI->G.p_hshColList = m_pCI->G.p_MainCard->pSub_hshColList())) {
@@ -147,8 +147,8 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
   }
 
   m_pCI->vSnapFluxArriving();
-  if (m_pCI->G.p_OP->pSub_emitted())
-    m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emitted();
+  if (m_pCI->G.p_OP->pSub_emit())
+    m_pCI->X.m_pExprList_a = m_pCI->G.p_OP->pSub_emit();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

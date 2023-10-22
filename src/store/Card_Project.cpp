@@ -73,14 +73,14 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   p_stream->vAppendChild(p_emitted_unproject);
 
   i8 i_Col = 0;
-  i8 nChildren_projection = pCI->G.p_emitted->nChildCards();
+  i8 nChildren_projection = pCI->G.p_emit->nChildCards();
   for (i8 i_expr_projection = 0;
        i_expr_projection < nChildren_projection;
        i_expr_projection++) {
 
     i_Col++;
 
-    pCI->G.p_expr = _pCard_Expr(pCI->G.p_emitted->pGetChild(i_expr_projection));
+    pCI->G.p_expr = _pCard_Expr(pCI->G.p_emit->pGetChild(i_expr_projection));
     if (pCI->G.p_expr->pSymbol()->bSame("$1"_Stz))
       continue;
 
@@ -115,8 +115,8 @@ void Card_Project::vBump_Rightwards(i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_Emit* p_emitted = pSub_emitted())
-    p_emitted->vBump_Rightwards(nBumpBy);
+  if (Card_Emit* p_emit = pSub_emit())
+    p_emit->vBump_Rightwards(nBumpBy);
 }
 
 
@@ -177,8 +177,8 @@ void Card_Project::vDedupe_as(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card_Emit* p_emitted = pSub_emitted())
-    p_emitted->vDedupe_as();
+  if (Card_Emit* p_emit = pSub_emit())
+    p_emit->vDedupe_as();
 
 }
 
@@ -191,11 +191,11 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
 
   // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
   RASSERT(bPeg_Projection(pCI));
-  pCI->G.p_emitted->vDelete_streamKey(pCI);
+  pCI->G.p_emit->vDelete_streamKey(pCI);
 
   // derive new <project>/<projection>/<key>
   pCI->G.p_streamKey = new Card_StreamKey;
-  pCI->G.p_emitted->vDerive_streamKey(pCI);
+  pCI->G.p_emit->vDerive_streamKey(pCI);
 
   if (! pCI->G.p_streamKey->nChildCards()) {
 
@@ -203,11 +203,11 @@ void Card_Project::vDerive_streamKey(CardIter* pCI)
     pCI->G.p_streamKey = nullptr;
     return;
   }
-  pCI->G.p_emitted->vAppendChild(pCI->G.p_streamKey);
+  pCI->G.p_emit->vAppendChild(pCI->G.p_streamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->G.p_emitted;
+  pCI->StreamOrder.m_pEmitted = pCI->G.p_emit;
   pCI->StreamOrder.m_pStreamKey = pCI->G.p_streamKey;
 }
 
@@ -250,13 +250,13 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   vEnsure_stream(pCI);
 
-  pCI->G.p_emitted = pCraft_projection_early(pCI);
+  pCI->G.p_emit = pCraft_projection_early(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_emitted);
+  pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
 
-  //vInsertChildBefore(pCI->G.p_emitted,pCI->G.p_needed);
+  //vInsertChildBefore(pCI->G.p_emit,pCI->G.p_needed);
 
-  pCI->Flux.m_pArriving = pCI->G.p_emitted;
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard();
 
@@ -285,10 +285,10 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_rpnCalc->vAppendChild(pCI->G.p_term);
 
-  pCI->G.p_emitted = pSub_emitted();
+  pCI->G.p_emit = pSub_emit();
 
-  pCI->G.p_emitted->vPushChild(pCI->G.p_expr);
-  pCI->G.p_emitted->vRenumberAll_expr();
+  pCI->G.p_emit->vPushChild(pCI->G.p_expr);
+  pCI->G.p_emit->vRenumberAll_expr();
 
 }
 
@@ -299,7 +299,7 @@ bool Card_Project::bIsCompound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSub_emitted()->bIsCompound())
+  if (pSub_emit()->bIsCompound())
     return true;
 
   return false;
@@ -312,7 +312,7 @@ bool Card_Project::bIsLiterals(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pSub_emitted()->bIsLiterals())
+  if (pSub_emit()->bIsLiterals())
     return true;
 
   return false;
@@ -331,12 +331,12 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_emitted = pSub_emitted();
+  pCI->G.p_emit = pSub_emit();
 
   // get the root needed form of projection
   pCI->Early.m_pOP_root = this;
   pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->G.p_emitted->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
 //  Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -362,9 +362,9 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_emitted = pSub_emitted();
+  pCI->G.p_emit = pSub_emit();
 
-  pCI->Flux.m_pArriving = pCI->G.p_emitted;
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard();
 
@@ -385,7 +385,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
     pCI->G.p_project->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->Flux.m_pArriving = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emit();
 
 }
 
@@ -402,7 +402,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);
   }
 
-  pCI->Flux.m_pArriving = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emit();
 
 }
 

@@ -100,8 +100,8 @@ bool XF_Optimise_Cut_sort::bOptimise(void)
         break;
 
       default:
-        if (m_pCI->G.p_MainCard->pSub_emitted()) {
-          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_MainCard->pSub_emitted();
+        if (m_pCI->G.p_MainCard->pSub_emit()) {
+          m_pCI->StreamOrder.m_pEmitted = m_pCI->G.p_MainCard->pSub_emit();
           m_pCI->StreamOrder.m_pStreamKey = m_pCI->StreamOrder.m_pEmitted->pSub_streamKey();
         }
         break;

@@ -301,10 +301,10 @@ Card* Dissector::pOp_Aggreg(void)
   Card_Stream* p_stream = new Card_Stream;
   pCard_Aggreg->vAppendChild(p_stream);
 
-  Card_Emit* p_emitted = pPopEmitted(pCard_RpnTerms);
-  p_emitted->pSymbol()->Y_vSet(P_BreakPt);
+  Card_Emit* p_emit = pPopEmitted(pCard_RpnTerms);
+  p_emit->pSymbol()->Y_vSet(P_BreakPt);
 
-  p_stream->vAppendChild(p_emitted);
+  p_stream->vAppendChild(p_emit);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

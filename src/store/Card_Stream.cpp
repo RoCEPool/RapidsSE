@@ -44,10 +44,10 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->G.p_OP->bIsOne(CK_SCAN,CK_INDEXSCAN,CK_INDEXJOIN,CK_CROSSJOIN,CK_NONE));
-  pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emitted();
+  pCI->Next.m_pEmitted = pCI->Next.m_pProject->pSub_emit();
 
-  if ((pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted()))
-    pCI->G.p_stream->vDeleteChild(pCI->G.p_emitted);
+  if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit()))
+    pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no arrived columns (only injected), emitted is next emitted
@@ -68,10 +68,10 @@ void Card_Stream::vFuse_project_Viable(CardIter *pCI)
   pCI->G.p_stream->vAppendChild(pCI->Next.m_pEmitted->pClone());
 
   // delete any SF_STM_COL facet with SF_TBL_COL of this op's table
-  pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted();
+  pCI->G.p_emit = pCI->G.p_stream->pSub_emit();
   pCI->G.p_table = pCI->G.p_OP->pSub_table();
   char cTblSyn = pCI->G.p_table->pSymbol()->cSF_tblSyn();
-  pCI->G.p_emitted->vDeleteFacetIf(SF_STM_COL,SF_TBL_COL,cTblSyn);
+  pCI->G.p_emit->vDeleteFacetIf(SF_STM_COL,SF_TBL_COL,cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +82,7 @@ void Card_Stream::vFuse_project_NoViable(CardIter *pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   RASSERT(pCI->G.p_OP->bIsOne(CK_CROSSJOIN,CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_NONE));
-  //RASSERT(! pCI->G.p_emitted);
+  //RASSERT(! pCI->G.p_emit);
 
 }
 

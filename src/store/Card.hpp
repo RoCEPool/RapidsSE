@@ -435,7 +435,7 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
-    Card_Emit*       pSub_emitted(void);
+    Card_Emit*       pSub_emit(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);
     Card_FiltPredList*  pSub_filtPredList(void);

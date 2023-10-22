@@ -69,17 +69,17 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
-  if (!pCI->G.p_MainCard->pSub_emitted())
+  if (!pCI->G.p_MainCard->pSub_emit())
     pCI->G.p_MainCard->vDump(__func__);
 
-  RASSERT(pCI->G.p_MainCard->pSub_emitted());
+  RASSERT(pCI->G.p_MainCard->pSub_emit());
 
   pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
 
 
   pCI->G.p_filter->vEnsure_stream(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_emitted()->pClone());
+  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_emit()->pClone());
 
   pCI->G.pDeck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_MainCard);
 
@@ -230,9 +230,9 @@ void Card_Filter::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_emitted = pCI->G.p_filter->pSub_emitted())) {
+  if ((pCI->G.p_emit = pCI->G.p_filter->pSub_emit())) {
 
-    pCI->G.p_filter->vDeleteChild(pCI->G.p_emitted);
+    pCI->G.p_filter->vDeleteChild(pCI->G.p_emit);
     pCI->G.p_filter->vAppendChild(pCI->Flux.m_pArriving->pClone());
 
   }

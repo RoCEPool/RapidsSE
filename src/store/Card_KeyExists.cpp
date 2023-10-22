@@ -90,7 +90,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Flux.m_pArriving = pSub_emitted();
+    pCI->Flux.m_pArriving = pSub_emit();
 
    // pCI->vPrintBoard();
     return;
@@ -131,7 +131,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Flux.m_pArriving = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emit();
 
  // pCI->vPrintBoard();
 
@@ -191,14 +191,14 @@ void Card_KeyExists::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ( (pCI->G.p_emitted = pSub_emitted()) ) {
-    vDeleteSub(pCI->G.p_emitted);
+  if ( (pCI->G.p_emit = pSub_emit()) ) {
+    vDeleteSub(pCI->G.p_emit);
   }
 
   if (pCI->Flux.m_pArriving) {
     vEnsure_stream(pCI);
-    pCI->G.p_emitted = pCI->Flux.m_pArriving->pClone();
-    pCI->G.p_stream->vAppendChild(pCI->G.p_emitted);
+    pCI->G.p_emit = pCI->Flux.m_pArriving->pClone();
+    pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
   }
 }
 

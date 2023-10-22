@@ -118,8 +118,8 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
     Card_Expr* p_expr_col;
 
     Symbol* pSymbol = p_term->pSymbol();
-    pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-    p_expr_col = pCI->G.p_emitted->pFind_expr_Same_stmCol(pSymbol);
+    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+    p_expr_col = pCI->G.p_emit->pFind_expr_Same_stmCol(pSymbol);
 
 
 
@@ -132,8 +132,8 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
     else {
 
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-      i8 nExprs = pCI->G.p_emitted->nChildCards();
+      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+      i8 nExprs = pCI->G.p_emit->nChildCards();
       i8 iOdn = p_term->iGetOdn();
       i8 i_Col_base0 = iOdn - nExprs - 1;
 
@@ -197,8 +197,8 @@ void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 //    else {
 //
 //      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-//      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-//      i8 nExprs = pCI->G.p_emitted->nChildCards();
+//      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+//      i8 nExprs = pCI->G.p_emit->nChildCards();
 //      i8 i_Odn = p_term->iGetOdn();
 //      i8 i_Col_base0 = i_Odn - nExprs - 1;
 //
@@ -292,8 +292,8 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     }
     else {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-      i8 nExprs = pCI->G.p_emitted->nChildCards();
+      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+      i8 nExprs = pCI->G.p_emit->nChildCards();
       i8 iOdn = p_term->iGetOdn();
       i8 i_Col_base0 = iOdn - nExprs - 1;
 
@@ -350,8 +350,8 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //    Card_Expr* p_expr_col;
 //
 //    Symbol* pSymbol = p_term->pSymbol();
-//    pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-//    p_expr_col = pCI->G.p_emitted->pFind_expr_Via_term0(pSymbol);
+//    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+//    p_expr_col = pCI->G.p_emit->pFind_expr_Via_term0(pSymbol);
 //
 //    if (p_expr_col) {
 //      Card_As* p_as = p_expr_col->pSub_as();
@@ -359,8 +359,8 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 //    }
 //    else {
 //      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-//      pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
-//      i8 nExprs = pCI->G.p_emitted->nChildCards();
+//      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+//      i8 nExprs = pCI->G.p_emit->nChildCards();
 //      i8 iOdn = p_term->iGetOdn();
 //      i8 i_Col_base0 = iOdn - nExprs - 1;
 //

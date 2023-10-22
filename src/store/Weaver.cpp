@@ -371,7 +371,7 @@ void Weaver::vOp(Card* pCard, bool bCommented)
 
   if (CK_INFLATE ==eCard && pCard->pSymbol()->Y_bHas(P_FusedProject)) {
     Card_Project *p_project = new Card_Project(CK_PROJECT);
-    p_project->vAppendChild(_pCard_Inflate(pCard)->pSub_emitted()->pDupCardRecursive());
+    p_project->vAppendChild(_pCard_Inflate(pCard)->pSub_emit()->pDupCardRecursive());
     vOp(p_project, true);
     delete p_project;
   }

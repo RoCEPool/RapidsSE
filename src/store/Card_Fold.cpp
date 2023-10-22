@@ -96,7 +96,7 @@ void Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* 
   p_rpnCalc_new->vAppendChild(p_term_new);
   p_expr_new->vColType(p_rpnCalc_new);
 
-  pCI->G.p_emitted->vPushChild(p_expr_new);
+  pCI->G.p_emit->vPushChild(p_expr_new);
 }
 
 

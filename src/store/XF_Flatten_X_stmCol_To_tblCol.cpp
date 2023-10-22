@@ -88,10 +88,10 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // projection
 
-    if ((m_pCI->G.p_emitted = m_pCI->G.p_MainCard->pSub_emitted())) {
+    if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
       if (m_pCI->Flux.m_pArriving)
-        m_pCI->G.p_emitted->vX_stmCol_To_tblCol(m_pCI);
-      m_pCI->Flux.m_pArriving = m_pCI->G.p_emitted;
+        m_pCI->G.p_emit->vX_stmCol_To_tblCol(m_pCI);
+      m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

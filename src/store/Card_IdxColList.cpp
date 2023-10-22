@@ -55,7 +55,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 
     pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->G.p_expr = pCI->G.p_emitted->pFind_expr_Via_term0(pCI->G.p_idxCol->pSymbol());
+     pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_term0(pCI->G.p_idxCol->pSymbol());
     if (!pCI->G.p_expr)
       continue;
 
@@ -68,7 +68,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
-void Card_IdxColList::vAffix_tblCol(Card_Emit* p_emitted)
+void Card_IdxColList::vAffix_tblCol(Card_Emit* p_emit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -76,7 +76,7 @@ void Card_IdxColList::vAffix_tblCol(Card_Emit* p_emitted)
   while (xKid.bEach(CK_IDXCOL)) {
     Stz* szColNm = xKid.p_idxCol()->szFacet(SF_NONE);
 
-    Kid xCI_p(p_emitted);
+    Kid xCI_p(p_emit);
     xCI_p.vEnded();
     xCI_p.vBegin_reverse();
     while (xCI_p.bEach_reverse(CK_EXPR)) {

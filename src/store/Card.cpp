@@ -2371,13 +2371,13 @@ Card_Direction* Card::pSub_direction(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Emit.hpp"
-Card_Emit* Card::pSub_emitted(void)
+Card_Emit* Card::pSub_emit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emit* p_emitted =
+  Card_Emit* p_emit =
       _pCard_Emit(pFindSubCard(CK_EMIT));
-  return p_emitted;
+  return p_emit;
 }
 
 /*----------------------------------------------------------------------------*/

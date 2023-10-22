@@ -52,7 +52,7 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->G.p_emitted->vDelete_streamKey(pCI);
+  pCI->G.p_emit->vDelete_streamKey(pCI);
 
 
   if (pCI->StreamOrder.m_pStreamKey) {
@@ -64,11 +64,11 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   pCI->G.p_index->vAdd_streamKey_exprs(pCI);
 
-  pCI->G.p_emitted->vAppendChild(pCI->G.p_streamKey);
+  pCI->G.p_emit->vAppendChild(pCI->G.p_streamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pEmitted = pCI->G.p_emitted;
+  pCI->StreamOrder.m_pEmitted = pCI->G.p_emit;
   pCI->StreamOrder.m_pStreamKey  = pCI->G.p_streamKey;
 }
 
@@ -85,7 +85,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
       pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Flux.m_pArriving = pSub_emitted();
+    pCI->Flux.m_pArriving = pSub_emit();
 
    // pCI->vPrintBoard();
     return;
@@ -131,7 +131,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Flux.m_pArriving = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emit();
 
 
 
@@ -229,12 +229,12 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
     return;
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_emitted = pSub_emitted();
+  pCI->G.p_emit = pSub_emit();
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = this;
   pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->G.p_emitted->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -259,9 +259,9 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_emitted = pSub_emitted();
+  pCI->G.p_emit = pSub_emit();
 
-  pCI->Flux.m_pArriving = pCI->G.p_emitted;
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard();
 

@@ -190,9 +190,9 @@ void XF_Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
     if (CK_FOLD == pCI->G.e_MainCard)
       break;
 
-    if (Card_Emit* p_emitted = pCI->G.p_MainCard->pSub_emitted()) {
+    if (Card_Emit* p_emit = pCI->G.p_MainCard->pSub_emit()) {
       //pCI->vPrintBoard(__LINE__);
-      pCI->Flux.m_pArriving = p_emitted;
+      pCI->Flux.m_pArriving = p_emit;
     }
   }
 
@@ -272,9 +272,9 @@ void XF_Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   pCI->vClearRestart();
   while (pCI->G_bEachMain_NONE()) {
 
-    if (pCI->G.p_MainCard->pSub_emitted())
+    if (pCI->G.p_MainCard->pSub_emit())
       pCI->Flux.m_pArriving =
-          pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+          pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
     if (pCI->G_bIsNextMain(CK_FOLD))
       break;
@@ -415,9 +415,9 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   pCI->vClearRestart();
   while (pCI->G_bEachMain_NONE()) {
 
-    if (pCI->G.p_MainCard->pSub_emitted())
+    if (pCI->G.p_MainCard->pSub_emit())
       pCI->Flux.m_pArriving =
-          pCI->G.p_emitted = pCI->G.p_MainCard->pSub_emitted();
+          pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
 
     if (pCI->G_bIsNextMain(CK_FOLD))
       break;

@@ -543,9 +543,9 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   Card_Injectable* p_injected = pSubCard->pSub_injected();
-  Card_Emit*   p_emitted = pSubCard->pSub_emitted();
+  Card_Emit*   p_emit = pSubCard->pSub_emit();
 
-  //p_emitted->vDump(__func__);
+  //p_emit->vDump(__func__);
 
   if (m_pStageDef->i_Stage() == 2) {
     vDebugPoint();
@@ -557,7 +557,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colInj descriptor(s) for given injected expr_i
 
-  auto bfAddDescriptors = [pColInj, p_emitted] (Card* pCard_expr_i) {
+  auto bfAddDescriptors = [pColInj, p_emit] (Card* pCard_expr_i) {
 
     // get details of column injected (e.g. $b.1)
     Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
@@ -572,10 +572,10 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
     // n.b. it may be emitted more than once
     Card_Expr *p_prior_expr_e = nullptr;
 
-    Kid xKid(p_emitted);
+    Kid xKid(p_emit);
     for (;;) {
       Card_Expr *p_expr_e =
-          p_emitted->pFind_expr_Via_term0(pSym_tblCol_i, &xKid);
+          p_emit->pFind_expr_Via_term0(pSym_tblCol_i, &xKid);
       if (! p_expr_e)
         return C_CONTINUE_RECURSION;
 
@@ -644,10 +644,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
   Card_Emit* p_arriving = m_pCI->Flux.m_pArriving;
-  Card_Emit* p_emitted  = pSubCard->pSub_emitted();
+  Card_Emit* p_emit  = pSubCard->pSub_emit();
 
   if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    p_emitted->vDump(__func__,"--EMITTED by SubCard--"_Stz);
+    p_emit->vDump(__func__,"--EMITTED by SubCard--"_Stz);
 
   if (m_pStageDef->i_Stage() == 1) {
     vDebugPoint();
@@ -658,7 +658,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add colPpg descriptor(s) for given arriving expr_a
 
-  auto bfAddPropagatedArriving = [this, pColPpg, p_emitted](Card *pCard_expr_a) {
+  auto bfAddPropagatedArriving = [this, pColPpg, p_emit](Card *pCard_expr_a) {
 
     eSF eViaFacet;
     s256 sHow;
@@ -694,7 +694,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       if (pTermSym_a && pTermSym_a->bIs_Tbl_Col())
         bTermSym_a_Is_tblCol = true;
 
-      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emitted->pFind_expr_Via_term0(pTermSym_a, &eViaFacet))) {
+      if (bTermSym_a_Is_tblCol && (p_expr_e = p_emit->pFind_expr_Via_term0(pTermSym_a, &eViaFacet))) {
         // 1) ARRIVING TERM: $t.c
         sHow.vSprint("--FOUND emitted expr for arriving $t.c: %s~%s--"_Stz,
                      pTermSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
@@ -703,7 +703,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pInSym_a = pTermSym_a;
       }
       else
-      if ((p_expr_e = p_emitted->pFind_expr_Via_term0(pExprSym_a, &eViaFacet))) {
+      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pExprSym_a, &eViaFacet))) {
         // 2) ARRIVING EXPR: $n
         sHow.vSprint("--FOUND emitted expr for arriving $n; %s~%s--"_Stz,
                      pExprSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
@@ -712,7 +712,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         pInSym_a = pExprSym_a;
       }
       else
-      if ((p_expr_e = p_emitted->pFind_expr_Via_term0(pAsSym_a, &eViaFacet))) {
+      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pAsSym_a, &eViaFacet))) {
         // 3) ARRIVING AS: Nm | C_Nn  [ nm ]
         sHow.vSprint("--FOUND emitted expr for arriving Nm: %s~%s--"_Stz,
                      pAsSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
@@ -743,9 +743,9 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     else {
       // - computed
 
-      if ((p_expr_e = p_emitted->pGet_expr(pExprSym_a))) {
+      if ((p_expr_e = p_emit->pGet_expr(pExprSym_a))) {
 
-//      p_emitted->vDump(__func__);
+//      p_emit->vDump(__func__);
 //      p_expr_a->vDump(__func__);
 //      p_expr_e->vDump(__func__);
 

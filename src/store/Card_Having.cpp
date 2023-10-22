@@ -84,7 +84,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_having->vUpdate_emitted(pCI);
 
-  pCI->Flux.m_pArriving = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emit();
 
 
  // pCI->vRenumberCards();
@@ -153,14 +153,14 @@ void Card_Having::vUpdate_emitted(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_stream = pCI->G.p_having->pSub_stream())) {
-    if ((pCI->G.p_emitted = pCI->G.p_stream->pSub_emitted())) {
+    if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit())) {
 
-      pCI->G.p_stream->vDeleteChild(pCI->G.p_emitted);
+      pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
       pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pPropagate(pCI));
     }
   }
 
-  pCI->Flux.m_pArriving = pSub_emitted();
+  pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/

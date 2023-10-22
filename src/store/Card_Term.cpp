@@ -72,8 +72,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
          (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
       //pCI->G.p_indexJoin->vDump(__func__);
 
-      pCI->G.p_emitted  = pCI->G.p_indexJoin->pSub_emitted();
-      if ((pCI->G.p_expr = pCI->G.p_emitted->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
+      pCI->G.p_emit  = pCI->G.p_indexJoin->pSub_emit();
+      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
         p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
       }

@@ -301,14 +301,14 @@ void XF::vTransform_passThru(void)
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_SORT, "adjust sort"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWith2Sub(CK_SORT, CK_KEY, CK_EMIT)) {
-      m_pCI->G.p_emitted->vAdjust_Wrt_key(m_pCI->G.p_key);
+      m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 
     m_pCI->vTransform(__func__, XF_PASSTHRU_ADJUST_TOP, "adjust top"_Stz);
     m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWith2Sub(CK_TOP, CK_KEY, CK_EMIT)) {
-      m_pCI->G.p_emitted->vAdjust_Wrt_key(m_pCI->G.p_key);
+      m_pCI->G.p_emit->vAdjust_Wrt_key(m_pCI->G.p_key);
     }
     m_pCI->vEndTransform(__LINE__);
 

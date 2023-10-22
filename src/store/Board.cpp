@@ -89,13 +89,13 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 {
   _static_
 
-  pCI->G.p_emitted = nullptr;
+  pCI->G.p_emit = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if ((pCI->G.p_emitted = pMain->pSub_emitted()))
+    if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
   }
-  if (! pCI->G.p_emitted)
+  if (! pCI->G.p_emit)
     return;
 
 
@@ -125,18 +125,18 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   _static_
 
 
-  pCI->G.p_emitted = nullptr;
+  pCI->G.p_emit = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if ((pCI->G.p_emitted = pMain->pSub_emitted()))
+    if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
   }
-  if (! pCI->G.p_emitted)
+  if (! pCI->G.p_emit)
     return;
 
   pCI->G.p_stream = new Card_Stream;
   pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
-  pCI->G.p_stream->vAppendChild(pCI->G.p_emitted->pDupCardRecursive());
+  pCI->G.p_stream->vAppendChild(pCI->G.p_emit->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/

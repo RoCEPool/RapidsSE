@@ -62,8 +62,8 @@ Card_Emit* Card_Emit::pResolvePriorProjection(CardIter* pCI)
   xKid.vReposition(pCI->G.i_MainCard);
 
   while (xKid.bEach_reverse()) {
-    if (Card_Emit* p_emitted = xKid.pChild()->pSub_emitted())
-      return p_emitted;
+    if (Card_Emit* p_emit = xKid.pChild()->pSub_emit())
+      return p_emit;
   }
 
   return nullptr;
@@ -365,7 +365,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
   i8 i_EmittedCol = 0;
   i8 nExpr_key = 0;
 
-  for (Kid xProjection(pCI->G.p_emitted); xProjection.bEach(CK_EXPR); /**/) {
+  for (Kid xProjection(pCI->G.p_emit); xProjection.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_projection = xProjection.p_expr();
 
     i_EmittedCol++;

@@ -73,8 +73,8 @@ void XF_Prolog_Review_as::vReview_as(void)
       case CK_GBYAGG:
         //m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
         m_pCI->G.p_key = m_pCI->G.p_gbyAgg->pSub_key();
-        m_pCI->G.p_emitted = m_pCI->G.p_gbyAgg->pSub_emitted();
-        m_pCI->G.p_emitted->vAs_Review(m_pCI);
+        m_pCI->G.p_emit = m_pCI->G.p_gbyAgg->pSub_emit();
+        m_pCI->G.p_emit->vAs_Review(m_pCI);
         break;
 
       case CK_INDEXJOIN:  break;
