@@ -86,7 +86,9 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
     else
-    if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
+		// getting build error on AWS. ALka changed this : 22/10/23
+    //if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
+		if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
       Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
       i8 iItemise = p_expr->iItemise();
       p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
@@ -522,7 +524,9 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
   // is scalar expression of this symbol in INJECTED ?
 
   if (pCI->X.m_pExprList_i) {
-    if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
+		// ALKA changed 22/10/23 (compilation error on linux)
+    //if (Card_Expr *p_expr_scalar_i = pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
+		if (pCI->X.m_pExprList_i->pFind_expr_Via_term0(&xTblCol_sym)) {
       this->vMark1(MARK_FOUND);
       return;
     }

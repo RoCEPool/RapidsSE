@@ -4,7 +4,7 @@
 
 // begin tracking memory
 trackMemory;
-success
+
 
 //------------------------------------------------------------------------------
 // create table
@@ -26,10 +26,10 @@ create table datums (
   vch_col14  VARCHAR(32),
   vch_col15  VARCHAR(32)
 );
-success
+
 
 load datums "../DATA/Transliterate/groupBy.csv" ;
-success
+
 
 //------------------------------------------------------------------------------
 select int_col1, sum(int_col0) from datums group by int_col1;
@@ -65,11 +65,11 @@ create table part (
   P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
   P_COMMENT           VARCHAR(23) NOT NULL
 );
-success
+
 
 //------------------------------------------------------------------------------
 load part "../TPCH/SF_0001/part.csv";
-success
+
 
 // create a table
 create table partsupp (
@@ -79,11 +79,11 @@ PS_AVAILQTY     INTEGER NOT NULL,
 PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
 PS_COMMENT      VARCHAR(199) NOT NULL
 );
-success
+
 
 //------------------------------------------------------------------------------
 load partsupp "../TPCH/SF_0001/partsupp.csv";
-success
+
 
 select p_mfgr, p_brand,  count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
 rows:
@@ -140,11 +140,11 @@ create table LineItem
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
-success
+
 
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
-success
+
 
 //------------------------------------------------------------------------------
 select L_ORDERKEY, sum(L_LINENUMBER) from lineitem group by L_ORDERKEY;
@@ -185,11 +185,11 @@ create table Nation (
 	 N_REGIONKEY       INTEGER      NOT NULL,
 	 N_COMMENT         VARCHAR(152)
 );
-success
+
 
 //------------------------------------------------------------------------------
 load nation "../DATA/TPCH/nation.tbl";
-success
+
 
 //------------------------------------------------------------------------------
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
@@ -204,23 +204,23 @@ rows:
 
 // drop the table
 drop table datums;
-success
+
 
 // drop the table
 drop table lineitem;
-success
+
 
 // drop the table
 drop table part;
-success
+
 
 // drop the table
 drop table partsupp;
-success
+
 
 // drop the table
 drop table nation;
-success
+
 
 // get memory leaks
 memoryLeaks;

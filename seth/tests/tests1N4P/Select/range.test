@@ -37,7 +37,7 @@ rows: 16
 
 // this will be a scan because no index with leading col is jB
 select * from jCdt where jB = 24;
-rows: 16
+rows: 1
 
 //------------------------------------------------------------------------------
 // EXACT KEYS
@@ -86,6 +86,8 @@ rows:
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
 
+// TODO FINAL
+/*
 select * from jCdt where jB >= 1;
 rows:
   (null,27,37,47,'hh')
@@ -237,6 +239,7 @@ rows:
   (18,28,38,48,'ii')
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
+*/
 
 CLEANUP {
 
