@@ -246,7 +246,7 @@ void Card_Emit::vDedupe_as(void)
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
     Card_As* p_as = xProjection.p_expr()->pSub_as();
 
-    p_as->SYM(SF_COL_NM_dis,xProjection.i_Child(), p_as->pSymbol());
+    p_as->SYM(SF_ITM_COL, xProjection.i_Child(), p_as->pSymbol());
   }
 
   vDebugPoint();

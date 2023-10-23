@@ -103,7 +103,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     else
     if (Card_BoolPred* p_boolPred = _pCard_BoolPred(pCI->pAncestorFind(CK_BOOLPRED))) {
       i8 iItemise = p_boolPred->iItemise();
-      p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
+      p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
     else
@@ -112,7 +112,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 		if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
       Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
       i8 iItemise = p_expr->iItemise();
-      p_term->pSymbol()->vFacet(SF_COL_NM_dis, iItemise);
+      p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
 

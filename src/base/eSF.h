@@ -23,7 +23,6 @@ enum eSF // symbol facet
   /* */ SF_CAST,        // Cast                : CAST
   /* */ SF_CASTTYPE,    // CastType            : CASTTYPE
   /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
-  /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
   /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
   /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
   /* */ SF_COMMA,       // comma               : ,
@@ -45,6 +44,7 @@ enum eSF // symbol facet
   /* */ SF_INT_LIT,     // Integer Literal     : StrLib::bIsInteger()
   /* */ SF_INTERVAL_DT, // INTERVAL_DT         : INTERVAL_DT
   /* */ SF_INTERVAL_YM, // INTERVAL_YM         : INTERVAL_YM
+  /* */ SF_ITM_COL,     // Itemised Col Name   : Cn_<col_nm>
   /* */ SF_IVL_FN,      // Interval Function   : extract_year etc
 
   /* */ SF_KEY_COL,     // Key Column no       : $Kn

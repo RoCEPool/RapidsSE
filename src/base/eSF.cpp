@@ -25,7 +25,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_CAST"_Stz,
   /* */ "SF_CASTTYPE"_Stz,
   /* */ "SF_COL_NM"_Stz,
-  /* */ "SF_COL_NM_dis"_Stz,
   /* */ "SF_COL_NM_syn"_Stz,
   /* */ "SF_COL_TYPE"_Stz,
   /* */ "SF_COMMA"_Stz,
@@ -47,6 +46,7 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_INT_LIT"_Stz,
   /* */ "SF_INTERVAL_DT"_Stz,
   /* */ "SF_INTERVAL_YM"_Stz,
+  /* */ "SF_ITM_COL"_Stz,
   /* */ "SF_IVL_FN"_Stz,
 
   /* */ "SF_KEY_COL"_Stz,

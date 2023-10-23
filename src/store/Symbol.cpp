@@ -1413,7 +1413,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
     case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
-    case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt); break;
+    case SF_ITM_COL: vFacet_Col_Nm_dis(iInt); break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
@@ -1441,7 +1441,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
 
   switch (eFacet) {
 
-    case SF_COL_NM_dis: vFacet_Col_Nm_dis(iInt,pSymbol); break;
+    case SF_ITM_COL: vFacet_Col_Nm_dis(iInt, pSymbol); break;
 
     default: NEVER_REACH;
   }
