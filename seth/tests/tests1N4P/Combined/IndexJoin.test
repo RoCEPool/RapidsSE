@@ -326,8 +326,6 @@ create table part (
 );
 success
 
-// TODO FUSE : _ray143
-/*
 // no data in lineitem and orders
 /optimise_passthru 
 pipeline unnamed
@@ -587,7 +585,6 @@ end ;
 rows:
   (53,1280922.83,30)
   (55,1052334.91,30)
-*/
 
 //------------------------------------------------------------------------------
 // drop the tables
