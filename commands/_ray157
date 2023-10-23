@@ -6,7 +6,7 @@ __TPCH_SCHEMA
 
 // NOTE: Expr in TOP at stage S05 has $b.7
 
-//weaved
+/weaved
 /optimiser_trace
 /pipeline_def
 /pipelineName = "_ray157"

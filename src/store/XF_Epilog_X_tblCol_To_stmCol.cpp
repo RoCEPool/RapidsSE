@@ -67,11 +67,15 @@ void XF_Epilog_X_tblCol_To_stmCol::vX_tblCol_To_stmCol(void)
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
 
-    if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
-      if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
-        continue;
-    }
+    if (m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
 
+      if ((m_pCI->G.p_level = m_pCI->G.p_MainCard->pSub_level())) {
+        if (AL_PARTITION != m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level)) {
+          m_pCI->vSnapFluxArriving();
+          continue;
+        }
+      }
+    }
     vTo_stmCol();
 
 //    m_pCI->vPrintBoard(__LINE__);
@@ -98,7 +102,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
     vDebugPoint();
   }
 
-  if (m_pCI->G.p_OP->bIsCard(CK_INDEXJOIN)) {
+  if (m_pCI->G.p_MainCard->bIsCard(CK_TOP)) {
     //m_pCI->G.p_OP->vDump(__func__);
     vDebugPoint();
   }
