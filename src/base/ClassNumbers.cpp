@@ -259,6 +259,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "PDS"_Stz,                  // CN_PDS
           "PDSBUFFERIDQUEUE"_Stz,     // CN_PDSBUFFERIDQUEUE
     /* */ "PDSCURSOR"_Stz,            // CN_PDSCURSOR
+    /* */ "PDSCONVERGENTHEAP_t"_Stz,  // CN_PDSCONVERGENTHEAP_t
     /* */ "PERMGEN"_Stz,              // CN_PERMGEN
     /* */ "PERMIT"_Stz,               // CN_PERMIT
     /* */ "PERUSE"_Stz,               // CN_PERUSE

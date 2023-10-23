@@ -239,6 +239,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PDS,
   /* */ CN_PDSBUFFERIDQUEUE,
   /* */ CN_PDSCURSOR,
+  /* */ CN_PDSCONVERGENTHEAP_t,
   /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,

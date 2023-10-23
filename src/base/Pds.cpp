@@ -52,7 +52,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  ASSERT(CacheLine::bOnCacheLineBoundary(this));
+  RASSERT(CacheLine::bOnCacheLineBoundary(this));
 
   // Assert that there is enough bytes for the default key (i8)
   RASSERT(nBytes >= C_MIN_KEY_LEN);
@@ -262,7 +262,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
   // try to allocate a block as mini-Heap may be full
   SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
   if(pNewSLBlock == nullptr) {
-//    RASSERT(0);
+    RASSERT(0);
     return nullptr;
   }
 
@@ -475,6 +475,23 @@ SkipListBlock* Pds::pFirstBlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Number of free bytes                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pds::nFreeBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  return m_xWsp.nFreeBytes();
+}
+/*----------------------------------------------------------------------------*/
+/* Number of elements in this Skip List                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pds::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  return m_iNumEntries[0];
+}
+
+/*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
 /*----------------------------------------------------------------------------*/
 i8 Pds::iNumEntries(i8 iLevel)
@@ -567,7 +584,7 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
     m_iFreeListEntries--;
     RASSERT(m_iFreeListEntries >= 0);
   } else {
-    pAllocBlock = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
+    pAllocBlock = m_xWsp.aAllotHead(m_nBlockSize);
   }
 
   if (! pAllocBlock) {
@@ -604,9 +621,9 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
   char* aAddr0 = reinterpret_cast<char*>(this);
   char* aAddr1 = reinterpret_cast<char*>(aAddress);
 
-  ASSERT((aAddr1 - aAddr0)%16 == 0);
+  RASSERT((aAddr1 - aAddr0)%16 == 0);
   i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
-  ASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
+  RASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
   // TODO: Assert offset is in the range [0, LastUsableOffset];
   return (u2) iOffset;
 }

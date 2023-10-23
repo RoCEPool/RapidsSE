@@ -10,9 +10,9 @@ namespace BASE
 {
   typedef i8 (*CompareFunc)(void* pKey_l, void* pKey_r);
 
-  class Pds : public Object,
-              public InternalHeap_t<SkipListBlock>
+  class Pds : public Object
   {
+    static const i8 C_WSP_INTERNALHEAP = C_SIZE_LARGE_OBJECT - C_2KB;
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
   public:
@@ -29,6 +29,7 @@ namespace BASE
 //    i8 m_iSyntheticKey; // Synthetic key used when we only append to the Skip List
 
     // Save the last usable offset for asserts
+    PdsConvergentHeap_t<C_WSP_INTERNALHEAP,SkipListBlock,Stz> m_xWsp;
 
     // must be last
     Footer m_xFooter;
@@ -53,6 +54,8 @@ namespace BASE
     SkipListBlock*  pFindLessThan(void* pKey);
     SkipListBlock*  pFindGreaterThan(void* pKey);
     SkipListBlock*  pFirstBlock(void);
+    i8              nFreeBytes(void);
+    i8              nItems(void);
     i8              iNumEntries(i8 iLevel);
     void            vValidate(void);
     bool            bVerify(void);
