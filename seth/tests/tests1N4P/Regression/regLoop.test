@@ -53,14 +53,12 @@ INCLUDE 'alias.test';
 LOG 'aliasSelAll.test ...';
 INCLUDE 'aliasSelAll.test';
 
-// TODO FINAL _ray158
-/*
 LOG 'between.test ...';
 INCLUDE 'between.test';
 
 LOG 'case.test ...';
 INCLUDE 'case.test';
-*/
+
 
 LOG 'cast.test ...';
 INCLUDE 'cast.test';

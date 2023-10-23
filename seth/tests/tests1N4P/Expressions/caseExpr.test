@@ -452,8 +452,6 @@ rows:
   (null)
 
 // CASE in a WHERE clause
-// TODO FINAL
-/*
 SELECT *
 FROM nation
 WHERE CASE
@@ -487,7 +485,6 @@ rows:
   (14,'KENYA',0,' pending excuses haggle furiously deposits. pending: express pinto beans wake fluffily past t')
   (15,'MOROCCO',0,'rns. blithely bold courts among the closely regular packages use furiously bold platelets?')
   (21,'VIETNAM',2,'hely enticingly express accounts. even: final ')
-*/
 
 // CASE being part of a larger expression
 SELECT 1 + CASE n_name
@@ -608,15 +605,12 @@ success
 load caseExpr "../DATA/Expressions/caseExpr.csv";
 success
 
-// TODO FINAL
-/*
 select * from caseExpr where case  when true then d<0  end;
 rows:
  ('zzs','L14',43772.00,-44.76,2023-02-01 00:00:00,false,1)
  ('xfs','M15',58777.34,-143.10,2023-01-01 00:00:00,true,0)
  ('xfs','N16',59752.31,-241.43,2022-03-07 21:04:00,true,0)
  ('xfs','O17',64234.87,-339.77,2021-01-02 12:58:00,false,1)
-*/
 
 select case
   when f then 'woman'
