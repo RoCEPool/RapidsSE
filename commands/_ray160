@@ -4,6 +4,9 @@
 
 __TPCH_SCHEMA;
 
+
+// NOTE: Expr in S02 has O_COMMENT. Should have been C9_O_CMMENT
+
 /weaved
 /pipeline_def
 /optimiser_trace

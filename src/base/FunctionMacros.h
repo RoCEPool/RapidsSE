@@ -75,6 +75,8 @@
 #define _PSH_VCH(szArg1)     \
   *paW++ = (i8)szArg1;
 
+// strncpy(szDstArea, szArg1, nSrcSize);
+
 #define _ALLOC_VCH(szDstArea)                   \
 {                                               \
   szArg1 = (char*)*(--paW);                     \
@@ -82,8 +84,16 @@
     *paW++ = C_DATUM_NULL;                      \
   }                                             \
   else {                                        \
-    nSrcSize = strlen(szArg1) + 1;              \
-    strncpy(szDstArea, szArg1, nSrcSize);       \
+    nSrcSize = strlen(szArg1);                  \
+    char *d = szDstArea;                        \
+    const char *s = szArg1;                     \
+                                                \
+	 i8 iBytesToCopy = nSrcSize;                  \
+   while (iBytesToCopy--)                       \
+     *d++ = *s++;                               \
+                                                \
+    *d = '\0';                                  \
+                                                \
     *paW++ = (i8)szDstArea;                     \
     szDstArea += nSrcSize + 1;                  \
   }                                             \
