@@ -148,6 +148,9 @@ RowBuffer* ToKeyHshRow::pRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   RowBuffer* pRowBuffer = _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
+  if (m_pCurrRowBuffer != pRowBuffer) {
+    m_pBufferIdQueue->vDump();
+  }
   RASSERT(m_pCurrRowBuffer == pRowBuffer);
   return m_pCurrRowBuffer;
 }
@@ -200,6 +203,11 @@ void ToKeyHshRow::vNewRowBuffer(void)
   pNewRowBuffer->vInitPix(m_pStreamDef,true);
 
   m_pBufferIdQueue->vAddBuffer(pNewRowBuffer);
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
+  if (pNewRowBuffer != pRowBuffer) {
+    m_pBufferIdQueue->vDump();
+  }
+  RASSERT(pNewRowBuffer == pRowBuffer);
 
   m_pCurrRowBuffer = pNewRowBuffer;
   return;

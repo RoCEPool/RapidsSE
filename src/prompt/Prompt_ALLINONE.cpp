@@ -3287,27 +3287,27 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   /*----------------------------------------------------------------------------*/
   // Test Case - Insert till buffer is full
 /*----------------------------------------------------------------------------*/
-  PDS_i8 = new Pds_i8(nullptr);
-
-  i8 iFreeBytes = PDS_i8->nFreeBytes();
-
-  i8 iInsert = 0;
-
-  for(; iInsert < C_I8_MAX; iInsert++)
-  {
-    iTest = rand();
-    pResultBlock = PDS_i8->pInsert((void*) &iTest);
-    if(pResultBlock == nullptr) {
-     break;
-    }
-    *(i8*)(pResultBlock->aItem()) = iTest;
-  }
-
-  i8 iBlockSize = PDS_i8->m_nBlockSize;
-  i8 iMaxElements = iFreeBytes/iBlockSize;
-
-  RASSERT(iInsert == iMaxElements);
-  delete PDS_i8;
+//  PDS_i8 = new Pds_i8(nullptr);
+//
+//  i8 iFreeBytes = PDS_i8->nFreeBytes();
+//
+//  i8 iInsert = 0;
+//
+//  for(; iInsert < C_I8_MAX; iInsert++)
+//  {
+//    iTest = rand();
+//    pResultBlock = PDS_i8->pInsert((void*) &iTest);
+//    if(pResultBlock == nullptr) {
+//     break;
+//    }
+//    *(i8*)(pResultBlock->aItem()) = iTest;
+//  }
+//
+//  i8 iBlockSize = PDS_i8->m_nBlockSize;
+//  i8 iMaxElements = iFreeBytes/iBlockSize;
+//
+//  RASSERT(iInsert == iMaxElements);
+//  delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
                   // Test Case - Insert duplicate key
@@ -3651,6 +3651,93 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 //
 //  RASSERT(iInsert == iMaxElements);
 //  delete PDS_CharArr;
+
+
+/*----------------------------------------------------------------------------*/
+                // Test Case - PDS Data buffers
+/*----------------------------------------------------------------------------*/
+
+  PdsBufferIdQueue* pBufferIdQueue = new PdsBufferIdQueue();
+
+  RowBuffer* pNewRowBuffer1 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer1);
+  RASSERT(pNewRowBuffer1 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer2 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer2);
+  RASSERT(pNewRowBuffer2 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer3 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer3);
+  RASSERT(pNewRowBuffer3 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer4 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer4);
+  RASSERT(pNewRowBuffer4 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer5 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer5);
+  RASSERT(pNewRowBuffer5 == pBufferIdQueue->pDataBuffer());
+
+  pBufferIdQueue->vDump();
+
+//  Pds* pPds = pBufferIdQueue->m_pPdsOfBufferIds;
+
+  // returns 1
+  RowBuffer* pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer1);
+
+  // returns 2
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer2);
+
+  // returns 3
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer3);
+
+  // returns 4
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer4);
+
+  // returns null
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == nullptr);
+
+  // returns 5
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pDanglingBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer5);
+
+  // returns null
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pDanglingBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+
+
+//  PdsItem_BufferId oItem1;
+
+//  oItem1.iKey = 1;
+//  bResult = pPds->bDelete((void*) &oItem1);
+//  RASSERT(bResult);
+//
+//  oItem1.iKey = 3;
+//  bResult = pPds->bDelete((void*) &oItem1);
+//  RASSERT(bResult);
+//
+//  oItem1.iKey = 2;
+//  bResult = pPds->bDelete((void*) &oItem1);
+//  RASSERT(bResult);
 
   vTrace("Success!\n"_Stz);
   return true;

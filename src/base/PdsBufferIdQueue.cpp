@@ -174,6 +174,45 @@ DataBuffer* PdsBufferIdQueue::pDataBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Print Pds chain                                                            */
+/*----------------------------------------------------------------------------*/
+void PdsBufferIdQueue::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDSBUFFERIDQUEUE,_FOOTER_);
+
+  vTrace("Format: SynthKey(BufferId)(DataBufferAddr)-->\n"_Stz);
+
+  vTrace("In Use List\n"_Stz);
+  vTrace("=================================================="
+         "===================================================\n"_Stz);
+  vTrace("| %5s | %6s | %s\n"_Stz, "Level", "# Ents", "Items");
+
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+
+
+  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+    SkipListBlock* pCursor = (SkipListBlock*) m_pPdsOfBufferIds->pGetAddrFromOffset(m_pPdsOfBufferIds->m_uInUseRootOffset);
+
+    vTrace("| %5lld | %6lld | "_Stz, i_Level, m_pPdsOfBufferIds->m_iNumEntries[i_Level]);
+
+    for(i8 iNumEntries = 0; iNumEntries < m_pPdsOfBufferIds->m_iNumEntries[i_Level] + 1; iNumEntries++) {
+      PdsItem_BufferId oItem;
+      oItem = *(PdsItem_BufferId*)(pCursor->aItem());
+      vTrace("%lld(%p)(%p)-->"_Stz, oItem.iKey, oItem.oBufferId.m_pvAsAddress, AM::pHashMap()->pValueAt(oItem.oBufferId.m_pvAsAddress));
+
+      pCursor = m_pPdsOfBufferIds->pNextSLBlock(pCursor, i_Level);
+      if(pCursor == nullptr) {
+        break;
+      }
+    }
+    vTrace("END\n"_Stz);
+    vTrace("--------------------------------------------------"
+           "--------------------------------------------------\n"_Stz);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this tub empty?                                                         */
 /*----------------------------------------------------------------------------*/
 bool PdsBufferIdQueue::bIsEmpty(void)
