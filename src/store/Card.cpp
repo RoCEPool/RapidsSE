@@ -869,6 +869,19 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card a conjunction?                                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsConj(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsOne(CK_ANDCONJ,CK_CMPCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this card a main card                                                   */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsMain(void)

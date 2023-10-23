@@ -240,7 +240,7 @@ Stz* aCK_short[CK_ENUMS]
 
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
-  /* */ "orPred"_Stz,          // CK_ORCONJ
+  /* */ "orConj"_Stz,          // CK_ORCONJ
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 

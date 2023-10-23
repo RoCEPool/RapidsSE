@@ -23,11 +23,16 @@ create index TABLE1_UCOL on table1(ucol);
 create index TABLE1_UCOLVC on table1(ucolvc);
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
+/transliterated
 /weaved
 /pipeline_def
 /optimiser_trace
 /pipelineName = "_ray161"
-select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
+select sum(cola1), avg(ucol), colb1, ucolvc
+  from table1
+ group by colb1, ucolvc
+having colb1 = 'black' or ucolvc = 'aaa'
+ order by colb1, ucolvc;
 
 
 /*

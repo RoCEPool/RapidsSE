@@ -1257,7 +1257,7 @@ void Symbol::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO Symbol::eEvalRelnOp(void)
+eRO Symbol::eEvalRlnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1269,7 +1269,7 @@ eRO Symbol::eEvalRelnOp(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
-eQO Symbol::eEvalSubQryOp(void)
+eQO Symbol::eEvalSqyOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

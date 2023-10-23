@@ -333,9 +333,9 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
-      Card_Emit* p_emitted_clone = pCI->Flux.m_pArriving->pClone();
-      //p_emitted_clone->vDump(__func__ );
-      pCI->G.p_stream->vAppendChild(p_emitted_clone);
+      Card_Emit* p_emit = pCI->Flux.m_pArriving->pPropagate(pCI);
+      //p_emit->vDump(__func__ );
+      pCI->G.p_stream->vAppendChild(p_emit);
 
       //continue;
     }

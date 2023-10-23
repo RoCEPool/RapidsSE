@@ -172,12 +172,11 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (p_conj->bIsCard(CK_TERM))
+    if (! p_conj->bIsCard(CK_CMPCONJ))
       return C_CONTINUE_RECURSION;
 
     Stz* szValue_term = p_conj->szFacet(SF_NONE);
     eRO eRelnOp = RelOp::eDecode(szValue_term);
-
     if (RO_NONE == eRelnOp)
       return C_CONTINUE_RECURSION;
 
@@ -253,7 +252,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
     RASSERT(p_conj->bIsSqyOp());
 
-    eQO eSubQryOp = p_conj->pSymbol()->eEvalSubQryOp();
+    eQO eSubQryOp = p_conj->pSymbol()->eEvalSqyOp();
     RASSERT(QO_NONE != eSubQryOp);
 
     pSubQuery->vCaller(m_pCI->G.i_Board);

@@ -122,8 +122,8 @@ namespace STORE
 
     void vDump(void);
 
-    eRO  eEvalRelnOp(void);
-    eQO  eEvalSubQryOp(void);
+    eRO  eEvalRlnOp(void);
+    eQO  eEvalSqyOp(void);
 
     Facet* aFacet(eSF eFacet);
     Facet* aFacet(i8 i_Facet);
