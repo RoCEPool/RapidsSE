@@ -170,7 +170,6 @@ namespace STORE
     bool bIs_Cast(void);            // CAST
     bool bIs_CastType(void);        // CASTTYPE
     bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
-    bool bIs_Col_Nm_syn(void);      // C_n
     bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
     bool bIs_Comma(void);           // ,
     bool bIs_Cross(void);           // CROSS
@@ -278,7 +277,6 @@ namespace STORE
     void vFacet_Cast(Stz* szCast);
     void vFacet_CastType(Stz* szCastType);
     void vFacet_Col_Nm(Stz* szColNm);
-    void vFacet_Col_Nm_syn(Stz* szColNm_syn);
     void vFacet_Col_Type(Stz* szColType);
     void vFacet_Comma(Stz* szComma);
     void vFacet_Cross(Stz* szCross);

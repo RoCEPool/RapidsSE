@@ -25,7 +25,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_CAST"_Stz,
   /* */ "SF_CASTTYPE"_Stz,
   /* */ "SF_COL_NM"_Stz,
-  /* */ "SF_COL_NM_syn"_Stz,
   /* */ "SF_COL_TYPE"_Stz,
   /* */ "SF_COMMA"_Stz,
   /* */ "SF_CROSS"_Stz,

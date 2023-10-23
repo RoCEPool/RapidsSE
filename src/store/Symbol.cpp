@@ -1513,7 +1513,6 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CAST:        vFacet_Cast(szChrSeq);        break;
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
     case SF_COL_NM:      vFacet_Col_Nm(szChrSeq);      break;
-    case SF_COL_NM_syn:  vFacet_Col_Nm_syn(szChrSeq);  break;
     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
@@ -1804,9 +1803,6 @@ bool Symbol::bIs_As_Nm_syn(void)
   if (SF_AS_NM != xaFacet[0].m_eFacet)
     return false;
 
-  if (! Y_bHas(P_Synthetic))
-    return false;
-
   return true;
 }
 
@@ -1952,22 +1948,6 @@ bool Symbol::bIs_Col_Nm(void)
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm_syn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (! bIs_Col_Nm())
-    return false;
-
-  if (! Y_bHas(P_Synthetic))
-    return false;
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2926,7 +2906,6 @@ bool Symbol::bValidate(void)
     case SF_CAST:        b = bIs_Cast();        break;
     case SF_CASTTYPE:    b = bIs_CastType();    break;
     case SF_COL_NM:      b = bIs_Col_Nm();      break;
-    case SF_COL_NM_syn:  b = bIs_Col_Nm_syn();  break;
     case SF_COL_TYPE:    b = bIs_Col_Type();    break;
     case SF_COMMA:       b = bIs_Comma();       break;
     case SF_CROSS:       b = bIs_Cross();       break;
@@ -3385,8 +3364,6 @@ void Symbol::vFacet_As_Nm(Stz* szAsNm)
 
   vFacetSprint(SF_AS_NM,"%s"_Stz,szAsNm);
 
-  Y_vCut(P_Synthetic);
-
   RASSERT(bIs_As_Nm());
 }
 
@@ -3415,7 +3392,6 @@ void Symbol::vFacet_As_Nm_syn(i8 iAsNo)
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_AS_NM,"COL%lld"_Stz, iAsNo);
-  Y_vSet(P_Synthetic);
 
   RASSERT(bIs_As_Nm_syn());
 }
@@ -3545,22 +3521,6 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
 
   RASSERT(bIs_Col_Nm());
   RASSERT(!bIs_Itm_Col());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given disambiguated-column-name                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Col_Nm_syn(Stz* szColNm_syn)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm_syn);
-
-  Y_vSet(P_Synthetic);
-
-  RASSERT(bIs_Col_Nm_syn());
 }
 
 /*----------------------------------------------------------------------------*/

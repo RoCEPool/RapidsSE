@@ -23,7 +23,6 @@ enum eSF // symbol facet
   /* */ SF_CAST,        // Cast                : CAST
   /* */ SF_CASTTYPE,    // CastType            : CASTTYPE
   /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
-  /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
   /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
   /* */ SF_COMMA,       // comma               : ,
   /* */ SF_CROSS,       // Cross               : CROSS

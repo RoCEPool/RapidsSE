@@ -100,29 +100,6 @@ void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
 }
 
 /*----------------------------------------------------------------------------*/
-/* review synthetic as -- e.g. can COL1/$K1 -> l_returnFlag/$K1               */
-/*----------------------------------------------------------------------------*/
-void Card_Emit::vAs_Review(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xProjection(this); xProjection.bEach(); /**/) {
-    Card_Expr *p_expr_prj = xProjection.p_expr();
-
-    if (p_expr_prj->bIsScalarKey()) {
-      Symbol* pSymbol_key_term = p_expr_prj->pGet_term(0)->pSymbol();
-
-      if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
-        Card_Expr *p_expr_key = pCI->G.p_key->pGet_expr(pSymbol_key_term);
-
-        p_expr_prj->pSub_as()->SYM(SF_AS_NM, p_expr_key->pSub_as()->szFacet(SF_NONE));
-        p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
-      }
-    }
-  }
-
-}
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Emit* Card_Emit::pClone(void)
