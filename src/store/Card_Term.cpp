@@ -65,7 +65,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (p_term->pSymbol()->szSF_chrSeq(SF_NONE)->bSame("O_COMMENT"_Stz))
       vDebugPoint();
 
-    if (! pCard->pSymbol()->bIs_Col_Nm())
+    if (!pCard->pSymbol()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
     if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
@@ -80,7 +80,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
         return C_CONTINUE_RECURSION;
       }
 
-      if (p_term->pSymbol()->bIs_Col_Nm()) {
+      if (p_term->pSymbol()->bIs_Nmd_Col()) {
         Symbol xSym_term_nm;
         xSym_term_nm.vFacet(SF_AS_NM, p_term->szFacet(SF_NONE));
 
@@ -141,7 +141,7 @@ void Card_Term::vItemStrip_colNm(CardIter* pCI)
 
     //pCI->vAncestorDump(pCard);
 
-    if (! pCard->pSymbol()->bIs_Col_Nm())
+    if (!pCard->pSymbol()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
     return C_CONTINUE_RECURSION;
@@ -346,7 +346,7 @@ bool Card_Term::bIsColNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bIs_Col_Nm())
+  if (pSymbol()->bIs_Nmd_Col())
     return true;
 
   return false;

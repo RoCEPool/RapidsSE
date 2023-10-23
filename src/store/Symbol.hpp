@@ -58,7 +58,6 @@ namespace STORE
     static bool bIs_Case(Stz* szChrSeq);            // CASE
     static bool bIs_Cast(Stz* szChrSeq);            // CAST
     static bool bIs_CastType(Stz* szChrSeq);        // CASTTYPE
-    static bool bIs_Col_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Col_Type(Stz* szChrSeq);        // BOOLEAN, ... VARCHAR
     static bool bIs_Comma(Stz* szChrSeq);           // ,
     static bool bIs_Cross(Stz* szChrSeq);           // CROSS
@@ -79,6 +78,7 @@ namespace STORE
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
     static bool bIs_Negate(Stz* szChrSeq);          // NULL
+    static bool bIs_Nmd_Col(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_None(Stz* szChrSeq);            // <none>
     static bool bIs_Note(Stz* szChrSeq);            // ...any...
     static bool bIs_Null(Stz* szChrSeq);            // NULL
@@ -168,7 +168,6 @@ namespace STORE
     bool bIs_Case(void);            // CASE
     bool bIs_Cast(void);            // CAST
     bool bIs_CastType(void);        // CASTTYPE
-    bool bIs_Col_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Col_Type(void);        // BOOLEAN, ... VARCHAR
     bool bIs_Comma(void);           // ,
     bool bIs_Cross(void);           // CROSS
@@ -189,6 +188,7 @@ namespace STORE
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_Negate(void);          // NEGATE
+    bool bIs_Nmd_Col(void);         // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_None(void);            //
     bool bIs_Note(void);            // ...any...
     bool bIs_Null(void);            // NULL
@@ -275,7 +275,6 @@ namespace STORE
     void vFacet_Case(Stz* szCase);
     void vFacet_Cast(Stz* szCast);
     void vFacet_CastType(Stz* szCastType);
-    void vFacet_Col_Nm(Stz* szColNm);
     void vFacet_Col_Type(Stz* szColType);
     void vFacet_Comma(Stz* szComma);
     void vFacet_Cross(Stz* szCross);
@@ -300,6 +299,7 @@ namespace STORE
     void vFacet_Key_Col(i8 iKeyCol);
     void vFacet_Mth_Op(Stz* szMthOp);
     void vFacet_Negate(Stz* szNegate);
+    void vFacet_Nmd_Col(Stz* szColNm);
     void vFacet_Note(Stz* szNote);
     void vFacet_Null(Stz* szNull);
     void vFacet_Parenthesis(Stz* szParenthesis);

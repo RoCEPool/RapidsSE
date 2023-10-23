@@ -253,7 +253,7 @@ bool Symbol::bIs_As_Nm(Stz* szArg)
 {
   _static_
 
-  if (! bIs_Col_Nm(szArg))
+  if (!bIs_Nmd_Col(szArg))
     return false;
 
   return true;
@@ -367,46 +367,6 @@ bool Symbol::bIs_CastType(Stz* szArg)
   if (szArg->bSame("CASTTYPE"_Stz))      return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a column name?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm(Stz* szArg)
-{
-  _static_
-
-  if (! bPossibleNm(szArg))
-    return false;
-
-  if (bIs_As(szArg))          return false;
-  if (bIs_Bol_Fn(szArg))      return false;
-  if (bIs_Bol_Lit(szArg))     return false;
-  if (bIs_Bol_Op(szArg))      return false;
-  if (bIs_Bound(szArg))       return false;
-  if (bIs_Case(szArg))        return false;
-  if (bIs_Cast(szArg))        return false;
-  if (bIs_CastType(szArg))    return false;
-  if (bIs_Col_Type(szArg))    return false;
-  if (bIs_Cross(szArg))       return false;
-  if (bIs_Direction(szArg))   return false;
-  if (bIs_Else(szArg))        return false;
-  if (bIs_EndIf(szArg))       return false;
-  if (bIs_GroupBy(szArg))     return false;
-  if (bIs_Interval_DT(szArg)) return false;
-  if (bIs_Interval_YM(szArg)) return false;
-  if (bIs_Ivl_Fn(szArg))      return false;
-  if (bIs_Negate(szArg))      return false;
-  if (bIs_Null(szArg))        return false;
-  if (bIs_Sqy_Nm(szArg))      return false;
-  if (bIs_Sqy_Op(szArg))      return false;
-  if (bIs_Stg_Cast(szArg))    return false;
-  if (bIs_Str_Fn(szArg))      return false;
-  if (bIs_Then(szArg))        return false;
-  if (bIs_Type(szArg))        return false;
-  if (bIs_When(szArg))        return false;
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -719,6 +679,46 @@ bool Symbol::bIs_Negate(Stz* szArg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a column name?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Nmd_Col(Stz* szChrSeq)
+{
+  _static_
+
+  if (! bPossibleNm(szChrSeq))
+    return false;
+
+  if (bIs_As(szChrSeq))          return false;
+  if (bIs_Bol_Fn(szChrSeq))      return false;
+  if (bIs_Bol_Lit(szChrSeq))     return false;
+  if (bIs_Bol_Op(szChrSeq))      return false;
+  if (bIs_Bound(szChrSeq))       return false;
+  if (bIs_Case(szChrSeq))        return false;
+  if (bIs_Cast(szChrSeq))        return false;
+  if (bIs_CastType(szChrSeq))    return false;
+  if (bIs_Col_Type(szChrSeq))    return false;
+  if (bIs_Cross(szChrSeq))       return false;
+  if (bIs_Direction(szChrSeq))   return false;
+  if (bIs_Else(szChrSeq))        return false;
+  if (bIs_EndIf(szChrSeq))       return false;
+  if (bIs_GroupBy(szChrSeq))     return false;
+  if (bIs_Interval_DT(szChrSeq)) return false;
+  if (bIs_Interval_YM(szChrSeq)) return false;
+  if (bIs_Ivl_Fn(szChrSeq))      return false;
+  if (bIs_Negate(szChrSeq))      return false;
+  if (bIs_Null(szChrSeq))        return false;
+  if (bIs_Sqy_Nm(szChrSeq))      return false;
+  if (bIs_Sqy_Op(szChrSeq))      return false;
+  if (bIs_Stg_Cast(szChrSeq))    return false;
+  if (bIs_Str_Fn(szChrSeq))      return false;
+  if (bIs_Then(szChrSeq))        return false;
+  if (bIs_Type(szChrSeq))        return false;
+  if (bIs_When(szChrSeq))        return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1512,8 +1512,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CASE:        vFacet_Case(szChrSeq);        break;
     case SF_CAST:        vFacet_Cast(szChrSeq);        break;
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
-    case SF_NMD_COL:      vFacet_Col_Nm(szChrSeq);      break;
-    case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
+     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
     case SF_DCM_LIT:     vFacet_Dcm_Lit(szChrSeq);     break;
@@ -1530,10 +1529,11 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_INTERVAL_DT: vFacet_Interval_DT(szChrSeq); break;
     case SF_INTERVAL_YM: vFacet_Interval_YM(szChrSeq); break;
     case SF_KEY_COL:     vFacet_Key_Col(szChrSeq);     break;
+    case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
     case SF_NEGATE:      vFacet_Negate(szChrSeq);      break;
+    case SF_NMD_COL:     vFacet_Nmd_Col(szChrSeq);     break;
     case SF_NOTE:        vFacet_Note(szChrSeq);        break;
     case SF_NULL:        vFacet_Null(szChrSeq);        break;
-    case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
     case SF_PARENTHESIS: vFacet_Parenthesis(szChrSeq); break;
     case SF_PAY_COL:     vFacet_Pay_Col(szChrSeq);     break;
     case SF_PPE_NM:      vFacet_Ppe_Nm(szChrSeq);      break;
@@ -1922,22 +1922,6 @@ bool Symbol::bIs_CastType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a column name?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NMD_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Col_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Type(void)
@@ -2252,6 +2236,22 @@ bool Symbol::bIs_Negate(void)
     return false;
 
   if (bIs_Negate(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a column name?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Nmd_Col(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (SF_NMD_COL != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_Nmd_Col(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -2892,7 +2892,6 @@ bool Symbol::bValidate(void)
     case SF_BRACE:       b = bIs_Brace();       break;
     case SF_CAST:        b = bIs_Cast();        break;
     case SF_CASTTYPE:    b = bIs_CastType();    break;
-    case SF_NMD_COL: b = bIs_Col_Nm();      break;
     case SF_COL_TYPE:    b = bIs_Col_Type();    break;
     case SF_COMMA:       b = bIs_Comma();       break;
     case SF_CROSS:       b = bIs_Cross();       break;
@@ -2908,9 +2907,10 @@ bool Symbol::bValidate(void)
     case SF_INTERVAL_YM: b = bIs_Interval_YM(); break;
     case SF_IVL_FN:      b = bIs_Ivl_Fn();      break;
     case SF_KEY_COL:     b = bIs_Key_Col();     break;
+    case SF_MTH_OP:      b = bIs_Mth_Op();      break;
+    case SF_NMD_COL:     b = bIs_Nmd_Col();      break;
     case SF_NOTE:        b = bIs_Note();        break;
     case SF_NULL:        b = bIs_Null();        break;
-    case SF_MTH_OP:      b = bIs_Mth_Op();      break;
     case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
     case SF_PAY_COL:     b = bIs_Pay_Col();     break;
     case SF_PPE_NM:      b = bIs_Ppe_Nm();      break;
@@ -3495,21 +3495,6 @@ void Symbol::vFacet_CastType(Stz* szCastType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given column-name                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Col_Nm(Stz* szColNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  //RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_NMD_COL, "%s"_Stz, szColNm);
-
-  RASSERT(bIs_Col_Nm());
-  RASSERT(!bIs_Itm_Col());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given comma                                             */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Comma(Stz* szComma)
@@ -3843,6 +3828,21 @@ void Symbol::vFacet_Negate(Stz* szNegate)
   vFacetSprint(SF_NEGATE,"%s"_Stz,szNegate);
 
   RASSERT(bIs_Negate());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Nmd_Col(Stz* szColNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  //RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_NMD_COL, "%s"_Stz, szColNm);
+
+  RASSERT(bIs_Nmd_Col());
+  RASSERT(!bIs_Itm_Col());
 }
 
 /*----------------------------------------------------------------------------*/

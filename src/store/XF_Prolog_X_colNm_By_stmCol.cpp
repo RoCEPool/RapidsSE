@@ -101,7 +101,7 @@ void XF_Prolog_X_colNm_By_stmCol::vX_colNm_By_stmCol(void)
   auto fb_colNm_By_stmCol = [pCI](Card* pCard)
   {
     Card_Term* p_term_colNm = _pCard_Term(pCard);
-    if (! p_term_colNm->pSymbol()->bIs_Col_Nm())
+    if (!p_term_colNm->pSymbol()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
     //p_term_colNm->vDump(__func__);
