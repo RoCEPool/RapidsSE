@@ -2217,10 +2217,10 @@ bool Symbol::bIs_Itm_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (! bIs_Itm_Col(xaFacet[0].m_sChrSeq))
+  if (SF_ITM_COL != xaFacet[0].m_eFacet)
     return false;
 
-  if (! Y_bHas(P_DisamCol))
+  if (! bIs_Itm_Col(xaFacet[0].m_sChrSeq))
     return false;
 
   return true;
@@ -3543,8 +3543,6 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
 
   vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm);
 
-  Y_vCut(P_DisamCol);
-
   RASSERT(bIs_Col_Nm());
   RASSERT(!bIs_Itm_Col());
 }
@@ -3814,8 +3812,6 @@ void Symbol::vFacet_Itm_Col(i8 i_Child)
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
 
-  Y_vSet(P_DisamCol);
-
   RASSERT(bIs_Itm_Col());
 }
 
@@ -3829,8 +3825,6 @@ void Symbol::vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol)
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, pSymbol->xaFacet[0].m_sChrSeq.szStz());
-
-  Y_vSet(P_DisamCol);
 
   RASSERT(bIs_Itm_Col());
 }

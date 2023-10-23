@@ -40,7 +40,6 @@ Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
 Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
 Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
 Stz* P_DebugOption  = "szDebugOption"_Stz;
-Stz* P_DisamCol     = "bDisamCol"_Stz;
 Stz* P_Early        = "bEarly"_Stz;
 Stz* P_EmittedCol   = "i_EmittedCol"_Stz;
 Stz* P_FixedPos     = "bFixedPos"_Stz;
