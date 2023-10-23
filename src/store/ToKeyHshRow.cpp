@@ -198,6 +198,10 @@ void ToKeyHshRow::vNewRowBuffer(void)
 
   //  create a new buffer
   RowBuffer* pNewRowBuffer = new RowBuffer;
+  if (pNewRowBuffer->oGetBufferId().m_bIdFlag != 1) {
+    vTrace("%s\n"_Stz, __func__ );
+    m_pBufferIdQueue->vDump();
+  }
 
   // initialise the row slab inside the new row buffer
   pNewRowBuffer->vInitPix(m_pStreamDef,true);

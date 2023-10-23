@@ -60,6 +60,11 @@ void PdsBufferIdQueue::vRepair(Object* pObject)
 
     PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
 
+    if (oBufferIdStruct.oBufferId.m_bIdFlag != 1) {
+      vTrace("%s\n"_Stz, __func__ );
+      pPdsBufferIdQueue->vDump();
+    }
+
     DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
     pPds->bDelete((void*)&oBufferIdStruct.iKey);
     AM::vDeleteOperand(pDataBuffer,nullptr);
@@ -113,6 +118,11 @@ DataBuffer* PdsBufferIdQueue::pCompletedBuffer(void)
 
   PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
 
+  if (oBufferIdStruct.oBufferId.m_bIdFlag != 1) {
+    vTrace("%s\n"_Stz, __func__ );
+    vDump();
+  }
+
   DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
 
   m_pPdsOfBufferIds->bDelete((void*)&oBufferIdStruct.iKey);
@@ -136,6 +146,11 @@ DataBuffer* PdsBufferIdQueue::pDanglingBuffer(void)
   RASSERT(pCurrBlock != nullptr);
 
   PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pCurrBlock->aItem();
+
+  if (oBufferIdStruct.oBufferId.m_bIdFlag != 1) {
+    vTrace("%s\n"_Stz, __func__ );
+    vDump();
+  }
 
   DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
 
@@ -164,6 +179,11 @@ DataBuffer* PdsBufferIdQueue::pDataBuffer(void)
 
   if(pSearchBlock != nullptr) {
     PdsItem_BufferId oBufferIdStruct = *(PdsItem_BufferId*) pSearchBlock->aItem();
+
+    if (oBufferIdStruct.oBufferId.m_bIdFlag != 1) {
+      vTrace("%s\n"_Stz, __func__ );
+      vDump();
+    }
 
     DataBuffer* pDataBuffer = _pDataBuffer(BufferId::aAddressFromId(oBufferIdStruct.oBufferId));
     return pDataBuffer;

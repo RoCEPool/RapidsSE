@@ -535,7 +535,8 @@ void Pds::vValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  // Validate free list
+  // Validate in use list
+
   u2 uOffset = m_uInUseRootOffset;
   for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
 
@@ -772,7 +773,10 @@ i8 Pds::iIntCompare(void* aItem_l, void* aItem_r)
   i8 iKey_l = *(i8*) aItem_l;
   i8 iKey_r = *(i8*) aItem_r;
 
-  // do the node names match?
+  // Key value of 0 is used for the dummy root blocks
+  RASSERT(iKey_r != 0);
+
+  // do the node keys match?
   if (iKey_l == iKey_r)
     return 0;
 
