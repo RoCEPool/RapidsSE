@@ -183,7 +183,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_as(Symbol *pSymbol)
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     Card_As* p_as = xKid.p_expr()->pSub_as();
-    if (p_as && p_as->bSymbol_Same(pSymbol))
+    if (p_as && p_as->pSymbol()->bMatches(pSymbol))
       return xKid.p_expr();
 
   }
@@ -212,7 +212,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_as_stripItem(Symbol *pSymbol)
     xSymbol_as_stripped.vFacets(p_as->pSymbol());
     xSymbol_as_stripped.vItemStrip();
 
-    if (xSymbol_as_stripped.bSame(&xSymbol_arg_stripped))
+    if (xSymbol_as_stripped.bMatches(&xSymbol_arg_stripped))
       return xKid.p_expr();
   }
 

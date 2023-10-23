@@ -4,6 +4,7 @@
 
 __TPCH_SCHEMA;
 
+/transliterated
 /weaved
 /pipeline_def
 /optimiser_trace
@@ -35,4 +36,4 @@ rows:
 
 */
 
-_dropTpch;
+_tpchDrop;
