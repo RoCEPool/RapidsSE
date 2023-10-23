@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* _ray161                                                                    */
+/*============================================================================*/
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_COLA1 on table1(cola1);
+create index TABLE1_COLB1 on table1(colb1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc);
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+/weaved
+/pipeline_def
+/optimiser_trace
+/pipelineName = "_ray161"
+select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
+
+
+/*
+
+ordered rows:
+  (95, 662, 'GREEN', 'aaa')
+  (235, 158, 'black', 'bbb')
+  (5, 123, 'black', 'iii')
+  (124, 144, 'black', 'mmm')
+  (175, 764, 'maroon', 'aaa')
+  (141, 31, 'orange', 'aaa')
+*/
+
+drop table table1;
