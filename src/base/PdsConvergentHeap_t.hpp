@@ -229,8 +229,10 @@ bool PdsConvergentHeap_t<AREA,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 
   if (nFreeBytes() >= nSizeBytes)
     return true;
-  else
+  else {
+    RASSERT(0);
     return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
