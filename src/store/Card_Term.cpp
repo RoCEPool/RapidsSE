@@ -76,20 +76,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
         p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
-        return C_CONTINUE_RECURSION;
       }
-
-      if (p_term->pSymbol()->bHasFacet(SF_COL_NM)) {
-        Symbol oSym_as;
-        oSym_as.vFacet(SF_AS_NM, p_term->szFacet(SF_COL_NM));
-
-        if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as(&oSym_as))) {
-          pCI->G.p_as = pCI->G.p_expr->pSub_as();
-          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
-          return C_CONTINUE_RECURSION;
-        }
-      }
-
       return C_CONTINUE_RECURSION;
     }
     else
