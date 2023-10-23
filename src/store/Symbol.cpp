@@ -1413,7 +1413,8 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
     case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
-    case SF_ITM_COL: vFacet_Col_Nm_dis(iInt); break;
+    case SF_ITM_COL:
+      vFacet_Itm_Col(iInt); break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
@@ -1441,7 +1442,8 @@ void Symbol::vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol)
 
   switch (eFacet) {
 
-    case SF_ITM_COL: vFacet_Col_Nm_dis(iInt, pSymbol); break;
+    case SF_ITM_COL:
+      vFacet_Itm_Col(iInt, pSymbol); break;
 
     default: NEVER_REACH;
   }
@@ -1915,22 +1917,6 @@ bool Symbol::bIs_Col_Nm(void)
 /*----------------------------------------------------------------------------*/
 /* is this symbol a comma separator?                                          */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Col_Nm_dis(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (! bIs_Col_Nm())
-    return false;
-
-  if (! Y_bHas(P_DisamCol))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
-/*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Col_Nm_syn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -2182,6 +2168,22 @@ bool Symbol::bIs_Interval_YM(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Itm_Col(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! bIs_Col_Nm())
+    return false;
+
+  if (! Y_bHas(P_DisamCol))
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3504,39 +3506,7 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
   Y_vCut(P_DisamCol);
 
   RASSERT(bIs_Col_Nm());
-  RASSERT(! bIs_Col_Nm_dis());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given disambiguated-column-name                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Col_Nm_dis(i8 i_Child)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_COL_NM,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
-
-  Y_vSet(P_DisamCol);
-
-  RASSERT(bIs_Col_Nm_dis());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given disambiguated-column-name                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_COL_NM,"C%lld_%s"_Stz, i_Child, pSymbol->xaFacet[0].m_sChrSeq.szStz());
-
-  Y_vSet(P_DisamCol);
-
-  RASSERT(bIs_Col_Nm_dis());
+  RASSERT(!bIs_Itm_Col());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3791,6 +3761,38 @@ void Symbol::vFacet_Interval_YM(Stz* szInterval_YM)
   vFacetSprint(SF_INTERVAL_YM,"%s"_Stz,szInterval_YM);
 
   RASSERT(bIs_Interval_YM());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given itemised-column-name                              */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Itm_Col(i8 i_Child)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_COL_NM,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
+
+  Y_vSet(P_DisamCol);
+
+  RASSERT(bIs_Itm_Col());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given itemised-column-name                              */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_COL_NM,"C%lld_%s"_Stz, i_Child, pSymbol->xaFacet[0].m_sChrSeq.szStz());
+
+  Y_vSet(P_DisamCol);
+
+  RASSERT(bIs_Itm_Col());
 }
 
 /*----------------------------------------------------------------------------*/
