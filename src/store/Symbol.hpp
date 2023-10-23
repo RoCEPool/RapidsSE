@@ -264,9 +264,9 @@ namespace STORE
   private:
     void vFacet_Agg_Fn(Stz* szAggFn);
     void vFacet_As(Stz* szAs);
+    void vFacet_As_Nm(i8 iAsNo);
     void vFacet_As_Nm(Stz* szAsNm);
     void vFacet_As_Nm_itm(i8 iAsNo);
-    void vFacet_As_Nm(i8 iAsNo);
     void vFacet_Bol_Fn(Stz* szBolFn);
     void vFacet_Bol_Lit(Stz* szBolLit);
     void vFacet_Bol_Op(Stz* szBolOp);

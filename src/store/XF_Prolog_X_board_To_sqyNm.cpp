@@ -79,7 +79,7 @@ void XF_Prolog_X_board_To_sqyNm::vX_board_To_sqyNm(void)
 
     i8 iSqyNo = StrLib::iGleanInt(p_card->szFacet(SF_NONE)->azChar());
 
-    p_card->pSymbol()->vDeleteFacet(SF_COL_NM);
+    p_card->pSymbol()->vDeleteFacet(SF_NMD_COL);
     Symbol xSymbol_sqyNm(SF_SQY_NM, iSqyNo);
     p_card->pSymbol()->vFacets(&xSymbol_sqyNm);
 

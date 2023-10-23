@@ -170,7 +170,7 @@ void Dissector::vStage(i8 i_StageSpec)
       m_pBoard->pDeck()->vAppendChild(p_paramList);
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(), pParamsSpec->pGet(0)->iParamNmBufSize(), ' ');
-      p_param->SYM(SF_COL_NM,pParamsSpec->pGet(0)->szParamNm());
+      p_param->SYM(SF_NMD_COL, pParamsSpec->pGet(0)->szParamNm());
       p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppendChild(p_param);
     }
@@ -1736,7 +1736,7 @@ Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
 
     eSF eSymbol = Symbol::eEvalSymbol(sDissectedVal);
     if (SF_NONE == eSymbol)
-      eSymbol = SF_COL_NM;
+      eSymbol = SF_NMD_COL;
     Card_Term* p_term = (new Card_Term) ->SYM(eSymbol,sDissectedVal);
 
     p_rpnTerms->vAppendChild(p_term);

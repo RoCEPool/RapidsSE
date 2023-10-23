@@ -571,9 +571,9 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
       return;
     }
 
-    if (pSymbol_this->bHasFacet(SF_COL_NM)) {
+    if (pSymbol_this->bHasFacet(SF_NMD_COL)) {
       Symbol xAsNm_sym;
-      xAsNm_sym.vFacet(SF_AS_NM, pSymbol_this->szSF_chrSeq(SF_COL_NM));
+      xAsNm_sym.vFacet(SF_AS_NM, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
 
       if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Via_as(&xAsNm_sym)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);

@@ -24,7 +24,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_CASE"_Stz,
   /* */ "SF_CAST"_Stz,
   /* */ "SF_CASTTYPE"_Stz,
-  /* */ "SF_COL_NM"_Stz,
   /* */ "SF_COL_TYPE"_Stz,
   /* */ "SF_COMMA"_Stz,
   /* */ "SF_CROSS"_Stz,
@@ -53,6 +52,7 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_MTH_OP"_Stz,
 
   /* */ "SF_NEGATE"_Stz,
+  /* */ "SF_NMD_COL"_Stz,
   /* */ "SF_NOTE"_Stz,
   /* */ "SF_NULL"_Stz,
 

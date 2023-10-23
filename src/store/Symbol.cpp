@@ -1512,7 +1512,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CASE:        vFacet_Case(szChrSeq);        break;
     case SF_CAST:        vFacet_Cast(szChrSeq);        break;
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
-    case SF_COL_NM:      vFacet_Col_Nm(szChrSeq);      break;
+    case SF_NMD_COL:      vFacet_Col_Nm(szChrSeq);      break;
     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
@@ -1928,7 +1928,7 @@ bool Symbol::bIs_Col_Nm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (SF_COL_NM != xaFacet[0].m_eFacet)
+  if (SF_NMD_COL != xaFacet[0].m_eFacet)
     return false;
 
   if (bIs_Col_Nm(xaFacet[0].m_sChrSeq))
@@ -2892,7 +2892,7 @@ bool Symbol::bValidate(void)
     case SF_BRACE:       b = bIs_Brace();       break;
     case SF_CAST:        b = bIs_Cast();        break;
     case SF_CASTTYPE:    b = bIs_CastType();    break;
-    case SF_COL_NM:      b = bIs_Col_Nm();      break;
+    case SF_NMD_COL: b = bIs_Col_Nm();      break;
     case SF_COL_TYPE:    b = bIs_Col_Type();    break;
     case SF_COMMA:       b = bIs_Comma();       break;
     case SF_CROSS:       b = bIs_Cross();       break;
@@ -3503,7 +3503,7 @@ void Symbol::vFacet_Col_Nm(Stz* szColNm)
 
   //RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_STM_COL == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_NM,"%s"_Stz,szColNm);
+  vFacetSprint(SF_NMD_COL, "%s"_Stz, szColNm);
 
   RASSERT(bIs_Col_Nm());
   RASSERT(!bIs_Itm_Col());
@@ -3754,7 +3754,7 @@ void Symbol::vFacet_Itm_Col(i8 i_Child)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_NMD_COL == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
 
@@ -4098,7 +4098,7 @@ void Symbol::vFacet_Stm_Col(Stz* szStmCol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
-          SF_COL_NM == xaFacet[0].m_eFacet ||
+          SF_NMD_COL == xaFacet[0].m_eFacet ||
           SF_STM_COL == xaFacet[0].m_eFacet ||
           SF_TBL_COL == xaFacet[0].m_eFacet ||
 
@@ -4163,7 +4163,7 @@ void Symbol::vFacet_Tbl_Col(Stz* szTblCol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
-          SF_COL_NM == xaFacet[0].m_eFacet ||
+          SF_NMD_COL == xaFacet[0].m_eFacet ||
               SF_STM_COL == xaFacet[0].m_eFacet ||
               SF_TBL_COL == xaFacet[0].m_eFacet);
 

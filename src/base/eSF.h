@@ -22,7 +22,6 @@ enum eSF // symbol facet
   /* */ SF_CASE,        // Case                : CASE
   /* */ SF_CAST,        // Cast                : CAST
   /* */ SF_CASTTYPE,    // CastType            : CASTTYPE
-  /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
   /* */ SF_COMMA,       // comma               : ,
   /* */ SF_CROSS,       // Cross               : CROSS
@@ -51,6 +50,7 @@ enum eSF // symbol facet
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
 
   /* */ SF_NEGATE,      // Negate              : NEGATE
+  /* */ SF_NMD_COL,     // Named Column        : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_NOTE,        // Note Literal        : ...any...
   /* */ SF_NULL,        // Null                : NULL
 
