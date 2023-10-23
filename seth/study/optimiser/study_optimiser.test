@@ -5,8 +5,8 @@ LOG ' ';
 LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
-//LOG 'AggregExpr.test';
-//INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
+LOG 'AggregExpr.test';
+INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';

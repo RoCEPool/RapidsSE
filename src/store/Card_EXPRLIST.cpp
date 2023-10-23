@@ -212,7 +212,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_as_stripItem(Symbol *pSymbol)
     xSymbol_as_stripped.vFacets(p_as->pSymbol());
     xSymbol_as_stripped.vItemStrip();
 
-    if (xSymbol_as_stripped.bSame(&xSymbol_arg_stripped))
+    if (xSymbol_as_stripped.bMatches(&xSymbol_arg_stripped))
       return xKid.p_expr();
   }
 

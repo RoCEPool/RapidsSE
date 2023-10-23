@@ -35,4 +35,4 @@ rows:
 
 */
 
-_dropTpch;
+_tpchDrop;
