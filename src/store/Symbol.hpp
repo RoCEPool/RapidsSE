@@ -74,6 +74,7 @@ namespace STORE
     static bool bIs_Int_Lit(Stz* szChrSeq);         // StrLib::bIsInteger()
     static bool bIs_Interval_DT(Stz* szChrSeq);     // INTERVAL_DT
     static bool bIs_Interval_YM(Stz* szChrSeq);     // INTERVAL_YM
+    static bool bIs_Itm_Col(Stz* szChrSeq);         // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /

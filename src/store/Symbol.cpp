@@ -613,6 +613,46 @@ bool Symbol::bIs_Interval_YM(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a column name?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_Itm_Col(Stz* szArg)
+{
+  _static_
+
+  if (! bPossibleNm(szArg))
+    return false;
+
+  if (bIs_As(szArg))          return false;
+  if (bIs_Bol_Fn(szArg))      return false;
+  if (bIs_Bol_Lit(szArg))     return false;
+  if (bIs_Bol_Op(szArg))      return false;
+  if (bIs_Bound(szArg))       return false;
+  if (bIs_Case(szArg))        return false;
+  if (bIs_Cast(szArg))        return false;
+  if (bIs_CastType(szArg))    return false;
+  if (bIs_Col_Type(szArg))    return false;
+  if (bIs_Cross(szArg))       return false;
+  if (bIs_Direction(szArg))   return false;
+  if (bIs_Else(szArg))        return false;
+  if (bIs_EndIf(szArg))       return false;
+  if (bIs_GroupBy(szArg))     return false;
+  if (bIs_Interval_DT(szArg)) return false;
+  if (bIs_Interval_YM(szArg)) return false;
+  if (bIs_Ivl_Fn(szArg))      return false;
+  if (bIs_Negate(szArg))      return false;
+  if (bIs_Null(szArg))        return false;
+  if (bIs_Sqy_Nm(szArg))      return false;
+  if (bIs_Sqy_Op(szArg))      return false;
+  if (bIs_Stg_Cast(szArg))    return false;
+  if (bIs_Str_Fn(szArg))      return false;
+  if (bIs_Then(szArg))        return false;
+  if (bIs_Type(szArg))        return false;
+  if (bIs_When(szArg))        return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol an interval function?                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Ivl_Fn(Stz* szArg)
@@ -2177,7 +2217,7 @@ bool Symbol::bIs_Itm_Col(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (! bIs_Col_Nm())
+  if (! bIs_Itm_Col(xaFacet[0].m_sChrSeq))
     return false;
 
   if (! Y_bHas(P_DisamCol))
@@ -3772,7 +3812,7 @@ void Symbol::vFacet_Itm_Col(i8 i_Child)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_COL_NM == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_NM,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
+  vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
 
   Y_vSet(P_DisamCol);
 
@@ -3788,7 +3828,7 @@ void Symbol::vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_COL_NM,"C%lld_%s"_Stz, i_Child, pSymbol->xaFacet[0].m_sChrSeq.szStz());
+  vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, pSymbol->xaFacet[0].m_sChrSeq.szStz());
 
   Y_vSet(P_DisamCol);
 
