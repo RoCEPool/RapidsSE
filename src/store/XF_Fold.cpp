@@ -311,7 +311,7 @@ CarryForward* XF_Fold::pFold_from(Stz* szFold, CardIter* pCI)
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolPred>
 
   RASSERT(pCI->G_bEachMain(CK_CALL));
-  vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
+  //vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szFacet(SF_NONE));
  // pCI->vPrintBoard(__LINE__);
 
   pCI->G_vNewMember(CK_FOLD, Symbol(SF_FLD_NM,szFold));
