@@ -51,4 +51,4 @@ rows:
   ('iii', 491, 81, 6)
 */
 
-_tpchdrop;
+drop table TABLE1;
