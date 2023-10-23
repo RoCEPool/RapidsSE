@@ -2656,10 +2656,12 @@ void Symbol::vItemStrip(void)
 
   RASSERT(bHasFacets());
 
-  if (! bIsItemised(xaFacet[0].m_sChrSeq))
-    return;
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    if (!bIsItemised(xaFacet[i_Facet].m_sChrSeq))
+      continue;
 
-  vItemStrip(xaFacet[0].m_sChrSeq);
+    vItemStrip(xaFacet[i_Facet].m_sChrSeq);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
