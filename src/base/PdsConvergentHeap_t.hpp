@@ -109,7 +109,7 @@ HEAD* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aAllotHead(i8 nBytes)
                         allot head -->          <-- allot tails
    */
 
-  byte* ayAllottedHead = ayLatterHead() + 1;
+  byte* ayAllottedHead = ayLatterHead();
 
   RASSERT(DoubleWord::bOnDoubleWordBoundary(ayAllottedHead));
   vTakeHead(nBytes);
@@ -278,10 +278,10 @@ byte* PdsConvergentHeap_t<AREA,HEAD,TAIL>::ayLatterHead(void)
 {
   ASSERT(bStructurallyValid());
 
-  if(m_nUsedHead == 0)
-    return &m_yaByteArea[0] - 1;
+//  if(m_nUsedHead == 0)
+//    return &m_yaByteArea[0] - 1;
 
-  byte* ayLastByte = &m_yaByteArea[m_nUsedHead - 1];
+  byte* ayLastByte = &m_yaByteArea[m_nUsedHead];
 
   return ayLastByte;
 }
