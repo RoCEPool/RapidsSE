@@ -1452,8 +1452,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
   switch (eFacet) {
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
-    case SF_AS_NM_syn:
-      vFacet_As_Nm(iInt);  break;
+    case SF_AS_NM:      vFacet_As_Nm(iInt);      break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;

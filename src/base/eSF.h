@@ -11,7 +11,6 @@ enum eSF // symbol facet
   /* */ SF_AS,          // As                  : AS
   /* */ SF_AS_NM,       // As Name             : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_AS_NM_itm,   // As Name (itemised)  : Cn_<col_nm>
-  /* */ SF_AS_NM_syn,   // As Name (synthetic) : __COLn
 
   /* */ SF_BOL_FN,      // Boolean Function    : BETWEEN, CASE ... MATCHTRAILING
   /* */ SF_BOL_LIT,     // Boolean Literal     : FALSE, TRUE

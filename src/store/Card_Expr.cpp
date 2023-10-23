@@ -249,7 +249,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   if (p_as)
     p_expr_early->vAppendChild(p_as->pClone());
   else {
-    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM_syn,i_Expr);
+    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,i_Expr);
     p_expr_early->vAppendChild(p_as_new);
   }
 

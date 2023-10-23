@@ -157,7 +157,7 @@ Card_Emit* Card_Project::pCraft_projection_early(CardIter* pCI)
     Card_Expr* p_expr_clone = p_expr_needed->pClone();
 
     if (! p_expr_clone->pSub_as()) {
-      Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM_syn,p_emitted_early->nChildCards());
+      Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,p_emitted_early->nChildCards());
       p_expr_clone->vAppendChild(p_as_new);
     }
 

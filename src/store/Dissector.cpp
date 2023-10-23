@@ -1437,11 +1437,11 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* p_rpnTerms,
         p_as = (new Card_As)->SYM(SF_AS_NM, AsNm);
       }
       else {
-        p_as = (new Card_As)->SYM(SF_AS_NM_syn, ri_Expr);
+        p_as = (new Card_As)->SYM(SF_AS_NM, ri_Expr);
       }
     }
     else {
-      p_as = (new Card_As)->SYM(SF_AS_NM_syn, ri_Expr);
+      p_as = (new Card_As)->SYM(SF_AS_NM, ri_Expr);
     }
     p_expr->vPushChild(p_as);
   }
