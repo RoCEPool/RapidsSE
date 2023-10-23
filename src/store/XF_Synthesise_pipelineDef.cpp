@@ -722,7 +722,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
       }
        else {
         // not propagated
-        vTrace("--NOT-FOUND expr\n"_Stz);
+        //vTrace("--NOT-FOUND expr\n"_Stz);
         return C_CONTINUE_RECURSION;
       }
 

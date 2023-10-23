@@ -65,10 +65,10 @@ void Card_As::vItemise_colNm(CardIter* pCI)
     if (! p_expr)
       return C_CONTINUE_RECURSION;
 
-    p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
+    //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
     i8 iItemise = p_expr->iItemise();
     p_as->pSymbol()->vFacet(SF_AS_NM_itm,iItemise);
-    p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
+    //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
 
     return C_CONTINUE_RECURSION;
   };

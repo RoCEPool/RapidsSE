@@ -5,8 +5,8 @@ LOG ' ';
 LOG '** Optimiser Study **';
 
 //------------------------------------------------------------------------------
-LOG 'AggregExpr.test';
-INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
+//LOG 'operator.test';
+//INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
@@ -19,8 +19,6 @@ INCLUDE 'create_partsupp.test';
 INCLUDE 'create_region.test';
 INCLUDE 'create_supplier.test';
 
-LOG ' ';
-INCLUDE 'tpch_q5.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
@@ -53,7 +51,7 @@ INCLUDE 'tpch_q9.test';
 INCLUDE 'tpch_q10.test';
 INCLUDE 'tpch_q11.test';
 INCLUDE 'tpch_q12.test';
-//INCLUDE 'tpch_q13.test';
+INCLUDE 'tpch_q13.test';
 INCLUDE 'tpch_q14.test';
 //INCLUDE 'tpch_q15.test';
 INCLUDE 'tpch_q16.test';
@@ -82,10 +80,10 @@ LOG 'Double Checking:';
 
 LOG 'AggregExpr.test';
 INCLUDE '../../tests/tests1N4P/Combined/AggregExpr.test';
-/////////LOG 'IndexJoin.test';
-/////////INCLUDE '../../tests/tests1N4P/Combined/IndexJoin.test';
-/////////LOG 'operator.test';
-/////////INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
+LOG 'IndexJoin.test';
+INCLUDE '../../tests/tests1N4P/Combined/IndexJoin.test';
+LOG 'operator.test';
+INCLUDE '../../tests/tests1N4P/CombinedV2/operator.test';
 
 LOG 'End Double Checking';
 
