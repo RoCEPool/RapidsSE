@@ -11,6 +11,7 @@ __TPCH_SCHEMA
 /pipeline_def
 /pipelineName = "_ray157"
 /optimise_passthru
+/keepCodeFile
 pipeline Q3
 begin
 
@@ -25,13 +26,13 @@ begin
 
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $1 =="
-    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN L_SHIPDATE DATE '1995-03-15' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
        aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) L_DISCOUNT sum
     | combined 0
     | next
-
+/*
 stage S03 on all nodes :
     top "type DECIMAL Revenue" 10
     | combined 0
@@ -41,7 +42,7 @@ stage S04 on origin :
     top "type DECIMAL Revenue" 10
     | combined 0
     | next
-
+*/
   stage S05 on origin :
     output
     | sink
