@@ -160,7 +160,6 @@ namespace STORE
     bool bIs_As(void);              // AS
     bool bIs_As_Nm(void);           //
     bool bIs_As_Nm_itm(void);       // Cn_<nm>
-    bool bIs_As_Nm_syn(void);       // __COLn
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
     bool bIs_Bol_Lit(void);         // FALSE, TRUE
     bool bIs_Bol_Op(void);          // and, not, or
@@ -267,7 +266,7 @@ namespace STORE
     void vFacet_As(Stz* szAs);
     void vFacet_As_Nm(Stz* szAsNm);
     void vFacet_As_Nm_itm(i8 iAsNo);
-    void vFacet_As_Nm_syn(i8 iAsNo);
+    void vFacet_As_Nm(i8 iAsNo);
     void vFacet_Bol_Fn(Stz* szBolFn);
     void vFacet_Bol_Lit(Stz* szBolLit);
     void vFacet_Bol_Op(Stz* szBolOp);

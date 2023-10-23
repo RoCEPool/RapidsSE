@@ -1452,11 +1452,11 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
   switch (eFacet) {
 
     case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
-    case SF_AS_NM_syn:  vFacet_As_Nm_syn(iInt);  break;
-    case SF_ITM_COL:
-      vFacet_Itm_Col(iInt); break;
+    case SF_AS_NM_syn:
+      vFacet_As_Nm(iInt);  break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
+    case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
     case SF_KEY_COL:    vFacet_Key_Col(iInt);    break;
     case SF_PAY_COL:    vFacet_Pay_Col(iInt);    break;
     case SF_SQY_PRM:    vFacet_Sqy_Prm(iInt);    break;
@@ -1791,19 +1791,6 @@ bool Symbol::bIs_As_Nm_itm(void)
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_As_Nm_syn(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_AS_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2975,7 +2962,6 @@ Stz* Symbol::szWhatIs(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (bIs_Agg_Fn())       return "AggOp"_Stz;
-  if (bIs_As_Nm_syn())    return "SyntheticAs"_Stz;
   if (bIs_Bol_Fn())       return "BoolFn"_Stz;
   if (bIs_Bound())        return "Bound"_Stz;
   if (bIs_Stm_Col())       return "StreamOrdinal"_Stz;
@@ -3370,6 +3356,20 @@ void Symbol::vFacet_As_Nm(Stz* szAsNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given synthetic-as no                                   */
 /*----------------------------------------------------------------------------*/
+void Symbol::vFacet_As_Nm(i8 iAsNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_AS_NM,"COL%lld"_Stz, iAsNo);
+
+  RASSERT(bIs_As_Nm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given synthetic-as no                                   */
+/*----------------------------------------------------------------------------*/
 void Symbol::vFacet_As_Nm_itm(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -3380,20 +3380,6 @@ void Symbol::vFacet_As_Nm_itm(i8 iAsNo)
   Y_vSet(P_Itemised);
 
   RASSERT(bIs_As_Nm_itm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given synthetic-as no                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_As_Nm_syn(i8 iAsNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_AS_NM,"COL%lld"_Stz, iAsNo);
-
-  RASSERT(bIs_As_Nm_syn());
 }
 
 /*----------------------------------------------------------------------------*/
