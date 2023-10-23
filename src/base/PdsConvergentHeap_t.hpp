@@ -278,6 +278,9 @@ byte* PdsConvergentHeap_t<AREA,HEAD,TAIL>::ayLatterHead(void)
 {
   ASSERT(bStructurallyValid());
 
+  if(m_nUsedHead == 0)
+    return &m_yaByteArea[0] - 1;
+
   byte* ayLastByte = &m_yaByteArea[m_nUsedHead - 1];
 
   return ayLastByte;

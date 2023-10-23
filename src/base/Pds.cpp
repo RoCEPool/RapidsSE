@@ -80,7 +80,9 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   // Note: Dummy root blocks have garbage values in their Item section
   // Could this cause a problem?
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
+  RASSERT(m_uFreeListRootOffset != 0);
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
+  RASSERT(m_uInUseRootOffset != 0);
 
   // Reset the number of entries in both the lists
   m_iFreeListEntries = 0;
@@ -497,9 +499,9 @@ i8 Pds::nItems(void)
 void* Pds::aLastUsableAddr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-//  void* pLastAddress = aAdd<void*>(this, )
-//  vTrace("%lld %p %p\n"_Stz, sizeof(m_xWsp), this, &m_xWsp);
-  void* pLastUsableAddr = aAdd<void*>(&m_xWsp, sizeof(m_xWsp) - m_nBlockSize);
+  void* pLastUsableAddr = aAdd<void*>(&(m_xWsp.m_yaByteArea[0]), (C_WSP_INTERNALHEAP - m_nBlockSize));
+  RASSERT(DoubleWord::bOnDoubleWordBoundary(pLastUsableAddr));
+
   return pLastUsableAddr;
 }
 
