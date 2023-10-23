@@ -56,6 +56,8 @@ namespace BASE
     SkipListBlock*  pFirstBlock(void);
     i8              nFreeBytes(void);
     i8              nItems(void);
+    void*           aLastUsableAddr(void);
+    i8              iLastUsableOffset(void);
     i8              iNumEntries(i8 iLevel);
     void            vValidate(void);
     bool            bVerify(void);

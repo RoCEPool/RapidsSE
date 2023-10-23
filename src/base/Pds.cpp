@@ -492,6 +492,31 @@ i8 Pds::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Last usable address in this Pds                                            */
+/*----------------------------------------------------------------------------*/
+void* Pds::aLastUsableAddr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+//  void* pLastAddress = aAdd<void*>(this, )
+//  vTrace("%lld %p %p\n"_Stz, sizeof(m_xWsp), this, &m_xWsp);
+  void* pLastUsableAddr = aAdd<void*>(&m_xWsp, sizeof(m_xWsp) - m_nBlockSize);
+  return pLastUsableAddr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Number of elements in this Skip List                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pds::iLastUsableOffset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  void* pLastUsableAddr = aLastUsableAddr();
+  char* aAddr0 = reinterpret_cast<char*>(this);
+  char* aAddr1 = reinterpret_cast<char*>(pLastUsableAddr);
+  return aAddr1 - aAddr0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
 /*----------------------------------------------------------------------------*/
 i8 Pds::iNumEntries(i8 iLevel)
@@ -623,7 +648,11 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
 
   RASSERT((aAddr1 - aAddr0)%16 == 0);
   i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
-  RASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
+
+  if(! ((iOffset >= 0) && (iOffset <= iLastUsableOffset()))){
+    vTrace("Addr:%p Offset:%lld No. entries:%lld\n"_Stz, aAddress, iOffset, m_iNumEntries[0]);
+  }
+  RASSERT((iOffset >= 0) && (iOffset <= iLastUsableOffset()));
   // TODO: Assert offset is in the range [0, LastUsableOffset];
   return (u2) iOffset;
 }
