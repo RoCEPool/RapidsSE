@@ -5,7 +5,7 @@
 #include "Card_CostJoining.hpp"
 
 #include "Card_BoolPred.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_CostNetwork.hpp"
 #include "Card_CostUnicast.hpp"
 #include "Card_TableSize.hpp"

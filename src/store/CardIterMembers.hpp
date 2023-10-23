@@ -61,7 +61,6 @@ namespace STORE
     Card_Caller *        p_caller;
     Card_CallOp *        p_callOp;
     Card_Cast *          p_cast;
-    Card_CmpConj *       p_cmpConj;
     Card_Clause *        p_clause;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
@@ -139,6 +138,7 @@ namespace STORE
 
     Card_RelnOp *        p_relnOp;
     Card_Required *      p_required;
+    Card_RlnConj *       p_rlnConj;
     Card_RowCount *      p_rowCount;
     Card_RowSize *       p_rowSize;
     Card_RpnCalc *       p_rpnCalc;

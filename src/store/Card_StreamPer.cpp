@@ -5,8 +5,8 @@
 #include "Card_StreamPer.hpp"
 
 #include "Card_BoolPred.hpp"
-#include "Card_CmpConj.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_FiltPred.hpp"
 #include "Card_FiltPredList.hpp"
 #include "Card_StreamSet.hpp"
@@ -159,12 +159,12 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpConj* p_cmpConj = p_streamJoin->pSub_cmpConj();
-  Card_Term* p_term_0_cmp = p_cmpConj->pGetTerm_0();
-  Card_Term* p_term_1_cmp = p_cmpConj->pGetTerm_1();
+  Card_RlnConj* p_rlnConj = p_streamJoin->pSub_cmpConj();
+  Card_Term* p_term_0_cmp = p_rlnConj->pGetTerm_0();
+  Card_Term* p_term_1_cmp = p_rlnConj->pGetTerm_1();
 
   char cTblSyn_join  = p_streamJoin->pSymbol()->cSF_char();
-  char cTblSyn_prior = p_cmpConj->cOtherTable(cTblSyn_join);
+  char cTblSyn_prior = p_rlnConj->cOtherTable(cTblSyn_join);
 
   Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
   Card_TablePtn* p_tablePtn_join  = p_tableList->pGetTablePtn(cTblSyn_join);
@@ -276,18 +276,18 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // test each join predicate which uses the ith table to see if a join
     // can be supported at this point in the sequence
     Kid xKid(p_joinPredList);
-    while (xKid.bEach(CK_CMPCONJ)) {
-      if (!xKid.p_cmpConj()->bUsesTable(cTblSyn_ith))
+    while (xKid.bEach(CK_RLNCONJ)) {
+      if (!xKid.p_rlnConj()->bUsesTable(cTblSyn_ith))
         continue;
 
       // have a join cmpPred which uses the ith table
 
       // get the other table in the cmpPred
-      char cTblSyn_other = xKid.p_cmpConj()->cOtherTable(cTblSyn_ith);
+      char cTblSyn_other = xKid.p_rlnConj()->cOtherTable(cTblSyn_ith);
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
-        p_streamJoin->vAppendChild(xKid.p_cmpConj()->pDupCardRecursive());
+        p_streamJoin->vAppendChild(xKid.p_rlnConj()->pDupCardRecursive());
         break;
       }
     }
@@ -346,14 +346,14 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     // test each join predicate which uses the ith table to see if a join
     // can be supported at this point in the sequence
     Kid xKid(p_joinPredList);
-    while (xKid.bEach(CK_CMPCONJ)) {
-      if (!xKid.p_cmpConj()->bUsesTable(cTblSyn_ith))
+    while (xKid.bEach(CK_RLNCONJ)) {
+      if (!xKid.p_rlnConj()->bUsesTable(cTblSyn_ith))
         continue;
 
       // have a join cmpPred which uses the ith table
 
       // get the other table in the cmpPred
-      char cTblSyn_other = xKid.p_cmpConj()->cOtherTable(cTblSyn_ith);
+      char cTblSyn_other = xKid.p_rlnConj()->cOtherTable(cTblSyn_ith);
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
@@ -394,17 +394,17 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
       }
 
       Kid xKid(p_joinPredList);
-      while (xKid.bEach(CK_CMPCONJ)) {
-        if (!xKid.p_cmpConj()->bUsesTable(cTblSyn_ith))
+      while (xKid.bEach(CK_RLNCONJ)) {
+        if (!xKid.p_rlnConj()->bUsesTable(cTblSyn_ith))
           continue;
 
         // have a join cmpPred which uses the ith table
 
         // get the other table in the cmpPred
-        char cTblSyn_other = xKid.p_cmpConj()->cOtherTable(cTblSyn_ith);
+        char cTblSyn_other = xKid.p_rlnConj()->cOtherTable(cTblSyn_ith);
 
         if (bHasKnownJoin(cTblSyn_other)) {
-          p_joinLocus->vAppendChild(xKid.p_cmpConj()->pDupCardRecursive());
+          p_joinLocus->vAppendChild(xKid.p_rlnConj()->pDupCardRecursive());
           break;
         }
       }

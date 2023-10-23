@@ -25,7 +25,7 @@ namespace STORE
 
     void vShortForm(String* pString_b);
 
-    bool bHasEquivalentBound(Card_CmpConj* p_cmpConj);
+    bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

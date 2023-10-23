@@ -99,18 +99,18 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
 
   pCI->G.p_boolPred = pCI->G.p_where->pSub_boolPred();
-  pCI->G.p_cmpConj = pCI->G.p_boolPred->pCmpConj_whichCallsSubQuery(pCI);
+  pCI->G.p_rlnConj = pCI->G.p_boolPred->pCmpConj_whichCallsSubQuery(pCI);
 
-  if (pCI->G.p_cmpConj->pSymbol()->bSame("in"_Stz) ||
-      pCI->G.p_cmpConj->pSymbol()->bSame("exists"_Stz))
+  if (pCI->G.p_rlnConj->pSymbol()->bSame("in"_Stz) ||
+      pCI->G.p_rlnConj->pSymbol()->bSame("exists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyExists);
   else
-  if (pCI->G.p_cmpConj->pSymbol()->bSame("notIn"_Stz) ||
-      pCI->G.p_cmpConj->pSymbol()->bSame("notExists"_Stz))
+  if (pCI->G.p_rlnConj->pSymbol()->bSame("notIn"_Stz) ||
+      pCI->G.p_rlnConj->pSymbol()->bSame("notExists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyNotExists);
 
   pCI->Flux.m_pArriving = p_emitted_table;
-  pCI->G.p_cmpConj->vMorph_sqlOp_To_EQ(pCI, pCI->G.p_term);
+  pCI->G.p_rlnConj->vMorph_sqlOp_To_EQ(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
 

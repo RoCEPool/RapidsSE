@@ -1330,7 +1330,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_CALLOP:           return G.p_callOp;
     case CK_CAST:             return G.p_cast;
     case CK_CLAUSE:           return G.p_clause;
-    case CK_CMPCONJ:          return G.p_cmpConj;
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
     case CK_CORRCOLS:         return G.p_corrCols;
@@ -1407,6 +1406,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_RELNOP:           return G.p_relnOp;
     case CK_REQUIRED:         return G.p_required;
+    case CK_RLNCONJ:          return G.p_rlnConj;
     case CK_ROWCOUNT:         return G.p_rowCount;
     case CK_ROWSIZE:          return G.p_rowSize;
     case CK_RPNCALC:          return G.p_rpnCalc;
@@ -1554,8 +1554,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CAST:             G.p_cast              = _pCard_Cast(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
     case CK_CLAUSE:           G.p_clause            = _pCard_Clause(pCard); break;
-    case CK_CMPCONJ:          G.p_cmpConj           = _pCard_CmpConj(pCard);
-                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
 
     case CK_COMBINED:         G.p_combined          = _pCard_Combined(pCard);
                               G.p_OP                = (Card_OP*)pCard; break;
@@ -1652,6 +1650,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 
     case CK_RELNOP:           G.p_relnOp            = _pCard_RelnOp(pCard); break;
     case CK_REQUIRED:         G.p_required          = _pCard_Required(pCard); break;
+    case CK_RLNCONJ:          G.p_rlnConj           = _pCard_RlnConj(pCard);
+                              G.p_CONJ              = (Card_CONJUNCTION*)pCard; break;
     case CK_ROWCOUNT:         G.p_rowCount          = _pCard_RowCount(pCard); break;
     case CK_ROWSIZE:          G.p_rowSize           = _pCard_RowSize(pCard); break;
     case CK_RPNCALC:          G.p_rpnCalc           = _pCard_RpnCalc(pCard); break;
@@ -1804,7 +1804,7 @@ void CardIter::vNullMembers(bool bNull_OP)
 
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
-  G.p_cmpConj          = nullptr;
+  G.p_rlnConj          = nullptr;
   G.p_combined         = nullptr;
   G.p_constraint       = nullptr;
   G.p_corrCols         = nullptr;
@@ -2588,7 +2588,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_CALLER:       G.p_caller->vValidate(this, iDepth, pCard);  break;
       case CK_CALLOP:       G.p_callOp->vValidate(this, iDepth, pCard);  break;
       case CK_CAST:         G.p_cast->vValidate(this, iDepth, pCard);  break;
-      case CK_CMPCONJ:      G.p_cmpConj->vValidate(this, iDepth, pCard);  break;
       case CK_CLAUSE:       G.p_clause->vValidate(this, iDepth, pCard);  break;
       case CK_COMBINED:     G.p_combined->vValidate(this, iDepth, pCard);  break;
       case CK_CONSTRAINT:   G.p_constraint->vValidate(this, iDepth, pCard);  break;
@@ -2664,11 +2663,12 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_PAYLOADCELLS: G.p_payloadCells->vValidate(this, iDepth, pCard);  break;
       case CK_PROJECT:      G.p_project->vValidate(this, iDepth, pCard);  break;
 
-      case CK_RELNOP:     G.p_relnOp->vValidate(this, iDepth, pCard);  break;
-      case CK_REQUIRED:   G.p_required->vValidate(this, iDepth, pCard);  break;
-      case CK_ROWCOUNT:   G.p_rowCount->vValidate(this, iDepth, pCard);  break;
-      case CK_ROWSIZE:    G.p_rowSize->vValidate(this, iDepth, pCard);  break;
-      case CK_RPNCALC:    G.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
+      case CK_RELNOP:       G.p_relnOp->vValidate(this, iDepth, pCard);  break;
+      case CK_REQUIRED:     G.p_required->vValidate(this, iDepth, pCard);  break;
+      case CK_RLNCONJ:      G.p_rlnConj->vValidate(this, iDepth, pCard);  break;
+      case CK_ROWCOUNT:     G.p_rowCount->vValidate(this, iDepth, pCard);  break;
+      case CK_ROWSIZE:      G.p_rowSize->vValidate(this, iDepth, pCard);  break;
+      case CK_RPNCALC:      G.p_rpnCalc->vValidate(this, iDepth, pCard);  break;
 
       case CK_SCAN:       G.p_scan->vValidate(this, iDepth, pCard);  break;
       case CK_SECTION:    G.p_section->vValidate(this, iDepth, pCard);  break;

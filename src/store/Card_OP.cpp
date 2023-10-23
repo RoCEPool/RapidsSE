@@ -1438,17 +1438,17 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
         vBoolPart(psRpnExpr, _pCard_AndConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" and"_Stz);
         break;
-      case CK_CMPCONJ:
-        vBoolPart(psRpnExpr, _pCard_CmpConj(pSubCard), 0);
-        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
-        break;
-      case CK_NOTCONJ:
+       case CK_NOTCONJ:
         vBoolPart(psRpnExpr, _pCard_NotConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" not"_Stz);
         break;
       case CK_ORCONJ:
         vBoolPart(psRpnExpr, _pCard_OrConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" or"_Stz);
+        break;
+      case CK_RLNCONJ:
+        vBoolPart(psRpnExpr, _pCard_RlnConj(pSubCard), 0);
+        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
         break;
       case CK_TERM:
         if (pSubCard->pSymbol()->bIs_Stm_Col() ||

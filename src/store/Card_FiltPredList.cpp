@@ -7,7 +7,7 @@
 #include "CardIter.hpp"
 
 #include "Card_BoolPred.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
@@ -59,7 +59,7 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
   auto bLambda = [&nFilters] (Card* p_card) {
 
-    if (!_pCard_CmpConj(p_card)->bIsJoinConj())
+    if (!_pCard_RlnConj(p_card)->bIsJoinConj())
       nFilters++;
 
     return C_CONTINUE_RECURSION;
@@ -75,7 +75,7 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
     Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
 
     nFilters = 0;
-    p_boolPred->bApplyRecursive(CK_CMPCONJ, bLambda);
+    p_boolPred->bApplyRecursive(CK_RLNCONJ, bLambda);
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;

@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Bound.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 
@@ -179,7 +179,7 @@ void Card_Bound::vX_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this bound logically equivalent to given compare?                       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpConj)
+bool Card_Bound::bEquivalent(Card_RlnConj* p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -187,9 +187,9 @@ bool Card_Bound::bEquivalent(Card_CmpConj* p_cmpConj)
   Symbol* pBnd_idxCol = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxCol);
   Symbol* pBnd_stmCol = pGetChild(1)->pSymbol();
 
-  Symbol* pCmp_rlnOpr = p_cmpConj->pSymbol();
-  Symbol* pCmp_arg_0  = p_cmpConj->pGetChild(0)->pSymbol();
-  Symbol* pCmp_arg_1  = p_cmpConj->pGetChild(1)->pSymbol();
+  Symbol* pCmp_rlnOpr = p_rlnConj->pSymbol();
+  Symbol* pCmp_arg_0  = p_rlnConj->pGetChild(0)->pSymbol();
+  Symbol* pCmp_arg_1  = p_rlnConj->pGetChild(1)->pSymbol();
 
   if (! pCmp_rlnOpr->bMatches(pBnd_rlnOpr))
     return false;

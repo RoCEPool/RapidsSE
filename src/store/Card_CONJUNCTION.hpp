@@ -29,7 +29,7 @@ namespace STORE
     bool bIsRelnOp(void);
     bool bIsSqyOp(void);
     void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
-    Card_CmpConj* pPredFindBound(Index* pIndex, ePB eBound);
+    Card_RlnConj* pPredFindBound(Index* pIndex, ePB eBound);
     bool bConjHasBounds (Index* pIndex);
     bool bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
     Symbol* pTable_WhichTableFor_Conj(CardIter* pCI);

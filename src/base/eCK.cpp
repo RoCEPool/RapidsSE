@@ -25,7 +25,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_CALLOP"_Stz,       // CK_CALLOP
   /* */ "CK_CAST"_Stz,         // CK_CAST
   /* */ "CK_CLAUSE"_Stz,       // CK_CLAUSE
-  /* */ "CK_CMPCONJ"_Stz,      // CK_CMPCONJ
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_CORRCOLS"_Stz,     // CK_CORRCOLS
@@ -103,7 +102,8 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
 
   /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
-  /* */ "CK_RQUIRED"_Stz,      // CK_REQUIRED
+  /* */ "CK_REQUIRED"_Stz,     // CK_REQUIRED
+  /* */ "CK_RLNCONJ"_Stz,      // CK_RLNCONJ
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
@@ -171,7 +171,6 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "callOp"_Stz,          // CK_CALLOP
   /* */ "cast"_Stz,            // CK_CAST
   /* */ "clause"_Stz,          // CK_CLAUSE
-  /* */ "cmpConj"_Stz,         // CK_CMPCONJ
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "corrCols"_Stz,        // CK_CORRCOLS
@@ -250,6 +249,7 @@ Stz* aCK_short[CK_ENUMS]
 
   /* */ "relnOp"_Stz,          // CK_RELNOP
   /* */ "required"_Stz,        // CK_REQUIRED
+  /* */ "rlnConj"_Stz,         // CK_RLNCONJ
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC

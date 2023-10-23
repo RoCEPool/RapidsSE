@@ -581,7 +581,7 @@ void CardCtl::vReset(void)
   vPrintValue(CK_ANDCONJ, false);
   vPrintProperties(CK_ANDCONJ, false);
 
-  //vPrintProperties(CK_CMPCONJ, false);
+  //vPrintProperties(CK_RLNCONJ, false);
 
 
 //  vPrintByKind(CK_KEY,true);

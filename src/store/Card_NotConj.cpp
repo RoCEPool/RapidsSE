@@ -52,9 +52,9 @@ void Card_NotConj::vEnsureTypesFor_stmCol(CardIter *pCI)
     switch (eCard) {
 
       case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_CMPCONJ: _pCard_CmpConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
       case CK_NOTCONJ: _pCard_NotConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
       case CK_ORCONJ:  _pCard_OrConj(pCard)->vEnsureTypesFor_stmCol(pCI);  break;
+      case CK_RLNCONJ: _pCard_RlnConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
 
       case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmCol(pCI);     break;
 
@@ -82,12 +82,12 @@ void Card_NotConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     switch (eCard) {
 
       case CK_ANDCONJ: _pCard_AndConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
-      case CK_CMPCONJ:
-        _pCard_CmpConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
       case CK_NOTCONJ:
         _pCard_NotConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
       case CK_ORCONJ:
         _pCard_OrConj(pCard)->vValidate(pCI, iDepth + 1, this);  break;
+      case CK_RLNCONJ:
+        _pCard_RlnConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
 
       case CK_TERM:    _pCard_Term(pCard)->vValidate(pCI,iDepth+1,this);    break;
 

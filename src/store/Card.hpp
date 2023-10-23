@@ -34,7 +34,7 @@ namespace STORE
   class Card_Caller;
   class Card_CallOp;
   class Card_Clause;
-  class Card_CmpConj;
+  class Card_RlnConj;
   class Card_Combined;
   class Card_CONJUNCTION;
   class Card_Constraint;
@@ -424,7 +424,7 @@ namespace STORE
     Card_Caller*        pSub_caller(void);
     Card_CallOp*        pSub_callOp(void);
     Card_Clause*        pSub_clause(void);
-    Card_CmpConj*       pSub_cmpConj(void);
+    Card_RlnConj*       pSub_cmpConj(void);
     Card_Constraint*    pSub_constraint(void);
     Card_CorrCols*      pSub_corrCols(void);
     Card_Correlation*   pSub_correlation(void);

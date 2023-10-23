@@ -247,7 +247,7 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
     //p_conj->vDump();
     bIsCorrPred = true;
 
-    Card_Term* pTerm_corrCol = static_cast<Card_CmpConj *>(p_conj)->pGetCorrCol();
+    Card_Term* pTerm_corrCol = static_cast<Card_RlnConj *>(p_conj)->pGetCorrCol();
     pCI->Sqy.m_pTerm_corrCol = pTerm_corrCol;
 
     p_conj->vMark1(MARK_AT);
@@ -445,7 +445,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred
     if (!Card_CONJUNCTION::bIsConj(p_conj))
       return; /* this effectively declares resolve as void */
 
-    if (p_conj->bIsCard(CK_CMPCONJ)) {
+    if (p_conj->bIsCard(CK_RLNCONJ)) {
 
       if (!p_conj->pSymbol()->Y_bHas(P_CrlKeyTest))
         return;
@@ -527,11 +527,11 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
     if (!Card_CONJUNCTION::bIsConj(p_conj))
       return; /* this effectively declares resolve as void */
 
-//    if (p_conj->bIsCard(CK_CMPCONJ)) {
+//    if (p_conj->bIsCard(CK_RLNCONJ)) {
 //      return;
 //    }
 //    else
-    if (p_conj->bIsCard(CK_CMPCONJ)) {
+    if (p_conj->bIsCard(CK_RLNCONJ)) {
 
       if (! p_conj->bContains_callToSubQuery(pCI))
         return;
@@ -542,7 +542,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
 
       RASSERT(!p_conj->pSymbol()->Y_bHas(P_CrlKeyPred));
 
-      p_conj->vCard(CK_CMPCONJ);
+      p_conj->vCard(CK_RLNCONJ);
       Kid xKid(p_conj);
       while (xKid.bEach()) {
         if (Card_CONJUNCTION::bIsConj(xKid.pChild())) {

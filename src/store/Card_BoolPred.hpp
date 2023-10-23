@@ -18,7 +18,7 @@ namespace STORE
     Card_BoolPred(void);
    ~Card_BoolPred(void) noexcept(false);
 
-    Card_CmpConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
+    Card_RlnConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_CONJUNCTION* pConj_root(void);

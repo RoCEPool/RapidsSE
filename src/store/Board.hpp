@@ -29,7 +29,7 @@
 #include "Card_Caller.hpp"
 #include "Card_CallOp.hpp"
 #include "Card_Clause.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_COLUMN.hpp"
 #include "Card_Combined.hpp"
 #include "Card_CONDITION.hpp"

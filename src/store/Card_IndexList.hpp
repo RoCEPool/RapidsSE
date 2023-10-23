@@ -26,11 +26,11 @@ namespace STORE
 
     Card_Index* pFindChosenIndex(void);
 
-    bool bHas_cmpPred_In_bounds(Card_CmpConj* p_cmpConj);
+    bool bHas_cmpPred_In_bounds(Card_RlnConj* p_rlnConj);
 
     void vTypes_For_stmCol(CardIter* pCI);
 
-    bool bHasEquivalentBound(Card_CmpConj* p_cmpConj);
+    bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);
 
     void vX_tblCol_To_stmCol(CardIter* pCI);

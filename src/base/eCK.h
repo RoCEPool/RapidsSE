@@ -22,7 +22,6 @@ enum eCK : i8 // card kind
   /* */ CK_CALLOP,
   /* */ CK_CAST,
   /* */ CK_CLAUSE,
-  /* */ CK_CMPCONJ,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
   /* */ CK_CORRCOLS,
@@ -101,6 +100,7 @@ enum eCK : i8 // card kind
 
   /* */ CK_RELNOP,
   /* */ CK_REQUIRED,
+  /* */ CK_RLNCONJ,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
   /* */ CK_RPNCALC,

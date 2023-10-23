@@ -712,7 +712,6 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_CALL:         pCI->G.p_call->vValidate(pCI, 1, this); break;
       case CK_CAST:         pCI->G.p_cast->vValidate(pCI, 1, this); break;
-      case CK_CMPCONJ:      pCI->G.p_cmpConj->vValidate(pCI, 1, this); break;
 
       case CK_COMBINED:     pCI->G.p_combined->vValidate(pCI, 1, this); break;
       case CK_CONSTRAINT:   pCI->G.p_constraint->vValidate(pCI, 1, this); break;
@@ -727,6 +726,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_DIRECTION:    pCI->G.p_direction->vValidate(pCI, 1, this); break;
 
+      case CK_EMIT:         pCI->G.p_emit->vValidate(pCI, 1, this); break;
       case CK_EXPR:         pCI->G.p_expr->vValidate(pCI, 1, this); break;
 
       case CK_FILTER:       pCI->G.p_filter->vValidate(pCI, 1, this); break;
@@ -781,8 +781,8 @@ void Card_Deck::vValidate(CardIter* pCI)
 
       case CK_PAYLOADCELLS: pCI->G.p_payloadCells->vValidate(pCI, 1, this); break;
       case CK_PROJECT:      pCI->G.p_project->vValidate(pCI, 1, this); break;
-      case CK_EMIT:   pCI->G.p_emit->vValidate(pCI, 1, this); break;
 
+      case CK_RLNCONJ:      pCI->G.p_rlnConj->vValidate(pCI, 1, this); break;
       case CK_ROWCOUNT:     pCI->G.p_rowCount->vValidate(pCI, 1, this); break;
       case CK_ROWSIZE:      pCI->G.p_rowSize->vValidate(pCI, 1, this); break;
       case CK_RPNCALC:      pCI->G.p_rpnCalc->vValidate(pCI, 1, this); break;

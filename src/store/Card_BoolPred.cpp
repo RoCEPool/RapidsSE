@@ -5,7 +5,7 @@
 #include "Card_BoolPred.hpp"
 
 #include "Card_CONJUNCTION.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
 #include "Card_AndConj.hpp"
@@ -51,18 +51,18 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpConj* Card_BoolPred::pCmpConj_whichCallsSubQuery(CardIter* pCI)
+Card_RlnConj* Card_BoolPred::pCmpConj_whichCallsSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpConj* pCmpConj = nullptr;
+  Card_RlnConj* pCmpConj = nullptr;
 
   auto bLambdaFn = [&pCmpConj,pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
   {
     UNUSED(bUpwards);
 
     if (p_conj->bContains_callToSubQuery(pCI)) {
-      pCmpConj = _pCard_CmpConj(p_conj);
+      pCmpConj = _pCard_RlnConj(p_conj);
       return C_TERMINATE_RECURSION;
     }
 
@@ -246,7 +246,7 @@ bool Card_BoolPred::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
     }
   }
   else
-  if (CK_CMPCONJ == eCard_conj) {
+  if (CK_RLNCONJ == eCard_conj) {
     if (p_conj->bMark1(szWithMark)) {
       this->vRemove_conj(p_conj);
       delete p_conj;
@@ -310,7 +310,7 @@ Card_CONJUNCTION* Card_BoolPred::pFindRemove_conj_corr(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CONJUNCTION* p_conj_corr =
-      static_cast<Card_CONJUNCTION*>(pFindPpyRecursive(P_CrlRslTest, CK_CMPCONJ));
+      static_cast<Card_CONJUNCTION*>(pFindPpyRecursive(P_CrlRslTest, CK_RLNCONJ));
 
   if (! p_conj_corr)
     return nullptr;
@@ -454,7 +454,7 @@ void Card_BoolPred::vMarkWrt_table(CardIter* pCI)
       continue;
     }
 
-    if (p_card->bIsCard(CK_CMPCONJ)) {
+    if (p_card->bIsCard(CK_RLNCONJ)) {
       p_card->vMark1(MARK_COMPARE);
       pCI->vDontDescend(true);
       if (((Card_CONJUNCTION *)p_card)->bContains_callToSubQuery(pCI))

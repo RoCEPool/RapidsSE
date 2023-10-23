@@ -11,7 +11,7 @@
 #include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
 #include "Card_Index.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Bounds.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Term.hpp"
@@ -282,7 +282,7 @@ void Card_Table::vBounds_AddConj(Card_Index* p_index,
     this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
   }
   else
-  if (p_conj->bIsCard(CK_CMPCONJ)) {
+  if (p_conj->bIsCard(CK_RLNCONJ)) {
     p_bound = Card_Bound::pCreateFrom_CONJ(p_conj, cTblSyn);
     p_bounds->vAppendChild(p_bound);
   }
@@ -353,7 +353,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       if (bUpwards)
         return C_CONTINUE_RECURSION;
 
-      if (! p_conj_Of_filter->bIsCard(CK_CMPCONJ))
+      if (! p_conj_Of_filter->bIsCard(CK_RLNCONJ))
         return C_CONTINUE_RECURSION;
 
       if (!p_conj_Of_filter->bIsIndexBounds_v3(p_index))

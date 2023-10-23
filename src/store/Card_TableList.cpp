@@ -5,7 +5,7 @@
 #include "Card_TableList.hpp"
 
 #include "CardIter.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_TableSize.hpp"
 #include "Card_Table.hpp"

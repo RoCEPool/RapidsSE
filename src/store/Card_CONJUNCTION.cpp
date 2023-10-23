@@ -6,7 +6,7 @@
 #include "Card_Term.hpp"
 #include "Card_OrConj.hpp"
 #include "Card_AndConj.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "CardIter.hpp"
 #include "Card_Table.hpp"
 #include "Card_Deck.hpp"
@@ -49,9 +49,9 @@ bool Card_CONJUNCTION::bIsConj(Card* p_card)
 
   switch (p_card->eCard()){
     case CK_ANDCONJ:
-    case CK_CMPCONJ:
     case CK_NOTCONJ:
     case CK_ORCONJ :
+    case CK_RLNCONJ:
       return true;
     default:
       return false;
@@ -113,9 +113,9 @@ void Card_CONJUNCTION::vEnsureTypesFor_stmCol(CardIter *pCI)
   switch (eCard) {
 
     case CK_ANDCONJ: _pCard_AndConj(this)->vEnsureTypesFor_stmCol(pCI); break;
-    case CK_CMPCONJ: _pCard_CmpConj(this)->vEnsureTypesFor_stmCol(pCI); break;
     case CK_NOTCONJ: _pCard_NotConj(this)->vEnsureTypesFor_stmCol(pCI); break;
     case CK_ORCONJ:  _pCard_OrConj(this)->vEnsureTypesFor_stmCol(pCI);  break;
+    case CK_RLNCONJ: _pCard_RlnConj(this)->vEnsureTypesFor_stmCol(pCI); break;
 
     case CK_TERM:    _pCard_Term(this)->vEnsureTypeFor_stmCol(pCI);     break;
 
@@ -418,7 +418,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
-Card_CmpConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
+Card_RlnConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -426,14 +426,14 @@ Card_CmpConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
 
   switch (eCard) {
 
-    case CK_ORCONJ:
-      return _pCard_OrConj(this)->pOrPredFindBound(pIndex, eBound);
-
     case CK_ANDCONJ:
       return _pCard_AndConj(this)->pAndConjFindBound(pIndex, eBound);
 
-    case CK_CMPCONJ:
-      return _pCard_CmpConj(this)->pCmpPredFindBound(pIndex, eBound);
+    case CK_ORCONJ:
+      return _pCard_OrConj(this)->pOrPredFindBound(pIndex, eBound);
+
+    case CK_RLNCONJ:
+      return _pCard_RlnConj(this)->pCmpPredFindBound(pIndex, eBound);
 
     default:
       vTrace("pPredFindBound: unexpected eCard %lld %s\n"_Stz
@@ -457,11 +457,11 @@ bool Card_CONJUNCTION::bConjHasBounds(Index* pIndex)
 
   switch (eCard) {
 
-    case CK_ORCONJ:  return _pCard_OrConj(this)->bOrPredHasBounds(pIndex);
-
     case CK_ANDCONJ: return _pCard_AndConj(this)->bAndPredHasBounds(pIndex);
 
-    case CK_CMPCONJ: return _pCard_CmpConj(this)->bCmpPredHasBounds(pIndex);
+    case CK_ORCONJ:  return _pCard_OrConj(this)->bOrPredHasBounds(pIndex);
+
+    case CK_RLNCONJ: return _pCard_RlnConj(this)->bCmpPredHasBounds(pIndex);
 
     default:
       vTrace("bConjHasBounds: unexpected eCard %lld %s\n"_Stz
@@ -571,7 +571,7 @@ void Card_CONJUNCTION::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //RASSERT(bIsOne(CK_ANDCONJ,CK_CMPCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE));
+  //RASSERT(bIsOne(CK_ANDCONJ,CK_RLNCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE));
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     if (xKid.eChild() == CK_TERM) {
@@ -586,7 +586,7 @@ void Card_CONJUNCTION::vShortForm(String* pString)
     pString->vConcat(" and"_Stz);
   }
   else
-  if (bIsCard(CK_CMPCONJ)) {
+  if (bIsCard(CK_RLNCONJ)) {
     pString->vCatSprint(" %s"_Stz, szFacet(SF_NONE));
   }
   else
@@ -614,12 +614,12 @@ void Card_CONJUNCTION::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   switch (eCard) {
 
     case CK_ANDCONJ: _pCard_AndConj(this)->vValidate(pCI, iDepth + 1, this); break;
-    case CK_CMPCONJ:
-      _pCard_CmpConj(this)->vValidate(pCI, iDepth + 1, this); break;
     case CK_NOTCONJ:
       _pCard_NotConj(this)->vValidate(pCI, iDepth + 1, this); break;
     case CK_ORCONJ:
       _pCard_OrConj(this)->vValidate(pCI, iDepth + 1, this);  break;
+    case CK_RLNCONJ:
+      _pCard_RlnConj(this)->vValidate(pCI, iDepth + 1, this); break;
 
     default:
      // pCI->vPrintBoard(__LINE__,true);

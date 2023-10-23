@@ -172,7 +172,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (! p_conj->bIsCard(CK_CMPCONJ))
+    if (! p_conj->bIsCard(CK_RLNCONJ))
       return C_CONTINUE_RECURSION;
 
     Stz* szValue_term = p_conj->szFacet(SF_NONE);
@@ -232,7 +232,7 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    RASSERT(p_conj->bIsCard(CK_CMPCONJ));
+    RASSERT(p_conj->bIsCard(CK_RLNCONJ));
 
     p_conj->pSymbol()->Y_vSet(P_SqyCall);
 

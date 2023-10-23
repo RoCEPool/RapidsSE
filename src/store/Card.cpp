@@ -875,7 +875,7 @@ bool Card::bIsConj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsOne(CK_ANDCONJ,CK_CMPCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE))
+  if (bIsOne(CK_ANDCONJ, CK_RLNCONJ, CK_NOTCONJ, CK_ORCONJ, CK_NONE))
     return true;
 
   return false;
@@ -2227,13 +2227,13 @@ Card_Clause* Card::pSub_clause(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CmpConj.hpp"
-Card_CmpConj* Card::pSub_cmpConj(void)
+#include "Card_RlnConj.hpp"
+Card_RlnConj* Card::pSub_cmpConj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CmpConj* p_conjCmp =
-      _pCard_CmpConj(pFindSubCard(CK_CMPCONJ));
+  Card_RlnConj* p_conjCmp =
+      _pCard_RlnConj(pFindSubCard(CK_RLNCONJ));
   return p_conjCmp;
 }
 

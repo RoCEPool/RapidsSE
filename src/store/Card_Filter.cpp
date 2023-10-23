@@ -7,7 +7,7 @@
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
 #include "Card_AndConj.hpp"

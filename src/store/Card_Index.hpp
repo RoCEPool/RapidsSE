@@ -24,7 +24,7 @@ namespace STORE
 
     void vDeleteBounds(void);
     void vX_tblCol_To_stmCol(CardIter* pCI);
-    bool bHasEquivalentBound(Card_CmpConj* p_cmpConj);
+    bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqlRsl(void);
     void vSet_Choose_index(void);
     bool bTblCol_IsKeyIn_index(Stz* szTblCol);
