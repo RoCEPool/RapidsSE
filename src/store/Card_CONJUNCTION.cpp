@@ -571,7 +571,7 @@ void Card_CONJUNCTION::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(bIsOne(CK_ANDCONJ,CK_CMPCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE));
+  //RASSERT(bIsOne(CK_ANDCONJ,CK_CMPCONJ,CK_NOTCONJ,CK_ORCONJ,CK_NONE));
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     if (xKid.eChild() == CK_TERM) {

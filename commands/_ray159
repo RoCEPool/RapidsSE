@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray158                                                                    */
+/* _ray159                                                                    */
 /*============================================================================*/
 
 
@@ -32,7 +32,8 @@ Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 /weaved
 /optimiser_trace
 /pipeline_def
-/pipelineName = "_ray158"
+/transliterated
+/pipelineName = "_ray159"
 select colb1, cola1, cole1, colg1, case
   when colg1 > 0 then cola1/colg1 else cola1 end,
   case when colf1 > 0 then cola1/colf1 else cola1 end from table1 where (cole1 between case when colg1 > 0 then cola1/colg1 else cola1 end and case when colf1 > 0 then cola1/colf1 else cola1 end) order by colb1, cola1;

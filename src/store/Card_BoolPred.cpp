@@ -227,6 +227,9 @@ bool Card_BoolPred::bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
 
   eCK eCard_conj = p_conj->eCard();
 
+  if (CK_TERM == eCard_conj)
+    return false;
+
   if (CK_ANDCONJ == eCard_conj) {
     if (p_conj->bMark1(szWithMark)) {
       this->vRemove_conj(p_conj);

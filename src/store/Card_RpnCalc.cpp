@@ -510,18 +510,20 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
 
   if (this->bHasTerm(&xWhen)) {
 
-    Card_CmpConj* p_cmpConj = new Card_CmpConj;
-    p_cmpConj->vTransferChildren(this);
+//    Card_CmpConj* p_cmpConj = new Card_CmpConj;
+//    p_cmpConj->vTransferChildren(this);
+//
+//    p_boolPred->vAppendChild(p_cmpConj);
+//
+//
+//    Card* p_last = p_cmpConj->pPeekChild_last();
+//    if (p_last->pSymbol()->bIs_Rln_Op()) {
+//      p_cmpConj->pSymbol()->vFacet(p_last->pSymbol()->eFacet(),p_last->pSymbol()->szSF_chrSeq(SF_RLN_OP));
+//      p_last = p_cmpConj->pPopChild_tail();
+//      delete p_last;
+//    }
 
-    p_boolPred->vAppendChild(p_cmpConj);
-
-
-    Card* p_last = p_cmpConj->pPeekChild_last();
-    if (p_last->pSymbol()->bIs_Rln_Op()) {
-      p_cmpConj->pSymbol()->vFacet(p_last->pSymbol()->eFacet(),p_last->pSymbol()->szSF_chrSeq(SF_RLN_OP));
-      p_last = p_cmpConj->pPopChild_tail();
-      delete p_last;
-    }
+    p_boolPred->vTransferChildren(this);
 
     return p_boolPred;
   }
