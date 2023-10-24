@@ -26,8 +26,6 @@ namespace BASE
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
 
-//    i8 m_iSyntheticKey; // Synthetic key used when we only append to the Skip List
-
     // Save the last usable offset for asserts
     PdsConvergentHeap_t<C_WSP_INTERNALHEAP,SkipListBlock,Stz> m_xWsp;
 
@@ -41,15 +39,10 @@ namespace BASE
     Pds(i8 nBytes, CompareFunc fpCompare);
     ~Pds(void) noexcept(false);
 
-
-
-    // Note: Only the public functions grab a lock
     // public:
-//    SkipListBlock*  pAppendWithSynthKey(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
     void            vDumpInUseList(void);
-    void            vInit(void* pKeyFirst, void* pKeySecond);
     SkipListBlock*  pInsert(void* pKey);
     SkipListBlock*  pFind(void* pKey);
     SkipListBlock*  pFindLessThan(void* pKey);

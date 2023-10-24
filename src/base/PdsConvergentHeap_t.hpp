@@ -27,23 +27,14 @@ namespace BASE
 
     HEAD* aAllotHead(i8 nBytes);
     TAIL* aAllotTail(void);
-    void  vDecTailItems(void);
-    TAIL* aFirstItem(void);
     i8    nFreeBytes(void);
     void  vGiveHead(i8 nBytes);
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
-    void  vIncTailItems(void);
     void  vInit(void);
-    TAIL* aItemAtOffset(i8 i_Offset);
     i8    nItems(void);
-    HEAD* aLastItem(void); // ayLasHead()
     byte* ayLatterHead(void);
     byte* ayLatterTail(void);
-    i8    iOffsetOfItem(TAIL* ayAllotted);
-    void  vResetHeads(void);
-    TAIL* aTailItem(i8 i_Tail);
-    void  vTailSize(i8 nSize);
     void  vTakeHead(i8 nBytes);
     void  vTakeTail(i8 nBytes);
     i8    nUsedBytes(void);
@@ -149,33 +140,6 @@ TAIL* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aAllotTail(void)
   return (TAIL*)ayAllottedTail;
 }
 
-//*---------------------------------------------------------------------------*/
-/* dec number of items in Tail                                                */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vDecTailItems(void)
-{
-  ASSERT(bStructurallyValid());
-
-  --m_nTailItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of byte area                                                   */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-TAIL* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aFirstItem(void)
-{
-  ASSERT(bStructurallyValid());
-
-  if (! m_nTailItems)
-    return nullptr;
-
-  TAIL* aTail = aTailItem(0);
-
-  return aTail;
-}
-
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes in byte area                                      */
 /*----------------------------------------------------------------------------*/
@@ -239,17 +203,6 @@ bool PdsConvergentHeap_t<AREA,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc number of items in Tail                                                */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vIncTailItems(void)
-{
-  ASSERT(bStructurallyValid());
-
-  ++m_nTailItems;
-}
-
-/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
@@ -272,19 +225,6 @@ void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail item at given offset                                              */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-TAIL* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aItemAtOffset(i8 i_Offset)
-{
-  ASSERT(bStructurallyValid());
-
-  TAIL* aTail = (TAIL*) & m_yaByteArea[i_Offset];
-
-  return aTail;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of items                                                        */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
@@ -296,19 +236,16 @@ i8 PdsConvergentHeap_t<AREA,HEAD,TAIL>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of last used byte in head area                                 */
+/* get address of the next available byte in head area                        */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
 byte* PdsConvergentHeap_t<AREA,HEAD,TAIL>::ayLatterHead(void)
 {
   ASSERT(bStructurallyValid());
 
-//  if(m_nUsedHead == 0)
-//    return &m_yaByteArea[0] - 1;
+  byte* ayBytes = &m_yaByteArea[m_nUsedHead];
 
-  byte* ayLastByte = &m_yaByteArea[m_nUsedHead];
-
-  return ayLastByte;
+  return ayBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -322,64 +259,6 @@ byte* PdsConvergentHeap_t<AREA,HEAD,TAIL>::ayLatterTail(void)
   byte* ayLastByte = &m_yaByteArea[AREA - m_nUsedTail];
 
   return ayLastByte;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get offset of an allotted                                                  */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-i8 PdsConvergentHeap_t<AREA,HEAD,TAIL>::iOffsetOfItem(TAIL* ayAllotted)
-{
-  ASSERT(bStructurallyValid());
-
-  i8 i_Ofs = nDifference(ayAllotted,m_yaByteArea);
-
-  return i_Ofs;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset                                                                      */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vResetHeads(void)
-{
-  ASSERT (m_nTailItems <= 1);
-
-  m_nUsedHead  = 0;
-
-  // !! !! !! !! !! !! !! !! !!
-  // used bytes were changed
-  ASSERT(bStructurallyValid());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of given tail item                                             */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-TAIL* PdsConvergentHeap_t<AREA,HEAD,TAIL>::aTailItem(i8 i_Tail)
-{
-  ASSERT(bStructurallyValid());
-
-  if (! m_nTailItems)
-    return nullptr;
-
-  RASSERT(C_UNKNOWN != m_nTailSize);
-
-  i8 i_Tail_area = (i_Tail + 1) * m_nTailSize;
-  byte* ayItem = &m_yaByteArea[AREA - i_Tail_area];
-
-  return (TAIL*)ayItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of given tail item                                             */
-/*----------------------------------------------------------------------------*/
-template<i8 AREA, class HEAD, class TAIL>
-void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vTailSize(i8 nSize)
-{
-  ASSERT(bStructurallyValid());
-
-  m_nTailSize = nSize;
 }
 
 /*----------------------------------------------------------------------------*/

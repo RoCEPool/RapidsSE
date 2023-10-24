@@ -75,14 +75,17 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   }
 
   m_iFreeListEntries = 0;
+
+  // Initialise the workspace
   m_xWsp.vInit();
 
   // Add dummy root nodes to the Free and In Use skip lists
-  // Note: Dummy root blocks have garbage values in their Item section
-  // Could this cause a problem?
+  // Note: Dummy root blocks are zeroed since we don't know what the key type is
+
   SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
+  // Assert the offset isn't some large garbage value
   RASSERT(m_uFreeListRootOffset < 100);
 
   SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
@@ -91,7 +94,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   RASSERT(m_uInUseRootOffset < 100);
 
 
-  // Reset the number of entries in both the lists
+  // Reset the number of entries to zero since we don't count the dummy blocks
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
@@ -121,6 +124,7 @@ bool Pds::bDelete(void* pKey)
 
 
   // -------------- Sanity check ----------------
+  // Assert the key is greater than the root dummy block key of zero
   SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
   i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
   RASSERT(iCompareRes == -1);
@@ -266,19 +270,7 @@ void Pds::vDumpInUseList(void) {
          "===================================================\n\n"_Stz);
 
 }
-/*----------------------------------------------------------------------------*/
-/* Insert Key                                                                 */
-/*----------------------------------------------------------------------------*/
-void Pds::vInit(void* pKeyFirst, void* pKeySecond)
-{
-  UNUSED(pKeyFirst);
-  UNUSED(pKeySecond);
-  void* aFreeListRootAddr = pGetAddrFromOffset(m_uFreeListRootOffset);
 
-  void* aInUseRootAddr = pGetAddrFromOffset(m_uInUseRootOffset);
-  UNUSED(aFreeListRootAddr);
-  UNUSED(aInUseRootAddr);
-}
 /*----------------------------------------------------------------------------*/
 /* Insert Key                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -287,6 +279,7 @@ SkipListBlock* Pds::pInsert(void* pKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
   // -------------- Sanity check ----------------
+  // Assert the key is greater than the root dummy block key of zero
   SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
   i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
   RASSERT(iCompareRes == -1);
@@ -298,8 +291,6 @@ SkipListBlock* Pds::pInsert(void* pKey)
     RASSERT(0);
     return nullptr;
   }
-
-//  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
 
   SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 
@@ -550,7 +541,7 @@ i8 Pds::iLastUsableOffset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Number of elements in this Skip List                                       */
+/* Number of elements at iLevel in this Skip List                             */
 /*----------------------------------------------------------------------------*/
 i8 Pds::iNumEntries(i8 iLevel)
 {
@@ -651,9 +642,6 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
     return nullptr;
   }
 
-//  pAllocBlock->vSetKey(iKey);
-
-//  vTrace("Block addr: %p\n"_Stz, pAllocBlock);
   return pAllocBlock;
 }
 
@@ -683,11 +671,8 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
   RASSERT((aAddr1 - aAddr0)%16 == 0);
   i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
 
-  if(! ((iOffset >= 0) && (iOffset <= iLastUsableOffset()))){
-    vTrace("Addr:%p Offset:%lld No. entries:%lld\n"_Stz, aAddress, iOffset, m_iNumEntries[0]);
-  }
   RASSERT((iOffset >= 0) && (iOffset <= iLastUsableOffset()));
-  // TODO: Assert offset is in the range [0, LastUsableOffset];
+
   return (u2) iOffset;
 }
 
@@ -703,7 +688,6 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLBlock)
     pSLBlock->m_xNode.vNext(i_Level, 0);
   }
 
-//  MemLib::vZero(pSLBlock,m_nBlockSize,  CN_NONE);
 
   SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 

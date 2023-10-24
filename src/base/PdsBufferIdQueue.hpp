@@ -7,7 +7,7 @@ namespace BASE
 {
   class PdsBufferIdQueue : public Object
   {
-  public:
+  private:
     i8                        m_iSynthKey;     // Synthetic key for the Pds
     Pds_t<PdsItem_BufferId>*  m_pPdsOfBufferIds;
 

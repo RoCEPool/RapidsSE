@@ -148,9 +148,6 @@ RowBuffer* ToKeyHshRow::pRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   RowBuffer* pRowBuffer = _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
-  if (m_pCurrRowBuffer != pRowBuffer) {
-    m_pBufferIdQueue->vDump();
-  }
   RASSERT(m_pCurrRowBuffer == pRowBuffer);
   return m_pCurrRowBuffer;
 }
@@ -198,19 +195,12 @@ void ToKeyHshRow::vNewRowBuffer(void)
 
   //  create a new buffer
   RowBuffer* pNewRowBuffer = new RowBuffer;
-  if (pNewRowBuffer->oGetBufferId().m_bIdFlag != 1) {
-    vTrace("%s\n"_Stz, __func__ );
-    m_pBufferIdQueue->vDump();
-  }
 
   // initialise the row slab inside the new row buffer
   pNewRowBuffer->vInitPix(m_pStreamDef,true);
 
   m_pBufferIdQueue->vAddBuffer(pNewRowBuffer);
   RowBuffer* pRowBuffer = _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
-  if (pNewRowBuffer != pRowBuffer) {
-    m_pBufferIdQueue->vDump();
-  }
   RASSERT(pNewRowBuffer == pRowBuffer);
 
   m_pCurrRowBuffer = pNewRowBuffer;
