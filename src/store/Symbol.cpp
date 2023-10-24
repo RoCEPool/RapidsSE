@@ -199,7 +199,7 @@ eSF Symbol::eEvalSymbol(Stz* szArg)
   if (bIs_Then(szArg))         return SF_THEN;
   if (bIs_Type(szArg))         return SF_TYPE;
   if (bIs_When(szArg))         return SF_WHEN;
-  if (bIs_Xrf_No(szArg))       return SF_LIST_CNT;
+  if (bIs_List_cnt(szArg))       return SF_LIST_CNT;
 
   return SF_NONE;
 }
@@ -616,6 +616,23 @@ bool Symbol::bIs_Ivl_Fn(Stz* szArg)
 	return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a list count  (i.e. #n)                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_List_cnt(Stz* szChrSeq)
+{
+  _static_
+
+  char acFirst  = szChrSeq->azChar()[0];
+  char acSecond = szChrSeq->azChar()[1];
+
+  if ('#' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1085,23 +1102,6 @@ bool Symbol::bIs_Xk_Cast(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a cross-reference?  (i.e. [n])                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Xrf_No(Stz* szArg)
-{
-  _static_
-
-  char acFirst  = szArg->azChar()[0];
-  char acSecond = szArg->azChar()[1];
-
-  if ('#' == acFirst &&
-      StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this an itemised column name?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsItemised(Stz* szArg)
@@ -1450,7 +1450,8 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
     case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
     case SF_STM_COL:    vFacet_Stm_Col(iInt);    break;
-    case SF_LIST_CNT:     vFacet_Xrf_No(iInt);     break;
+    case SF_LIST_CNT:
+      vFacet_List_Cnt(iInt);     break;
 
     default: NEVER_REACH;
   }
@@ -1538,7 +1539,8 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_TYPE:        vFacet_Type(szChrSeq);        break;
     case SF_WHEN:        vFacet_When(szChrSeq);        break;
     case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
-    case SF_LIST_CNT:      vFacet_Xrf_No(szChrSeq);      break;
+    case SF_LIST_CNT:
+      vFacet_List_Cnt(szChrSeq);      break;
 
     default: NEVER_REACH;
   }
@@ -2144,6 +2146,24 @@ bool Symbol::bIs_Ivl_Fn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a list count?  (i.e. #n)                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIs_List_Cnt(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(bHasFacets());
+
+  if (SF_LIST_CNT != xaFacet[0].m_eFacet)
+    return false;
+
+  if (bIs_List_cnt(xaFacet[0].m_sChrSeq))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Key_Col(void)
@@ -2589,24 +2609,6 @@ bool Symbol::bIs_Xk_Cast(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_Xrf_No(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bHasFacets());
-
-  if (SF_LIST_CNT != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_Xrf_No(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* strip itemisation                                                          */
 /*----------------------------------------------------------------------------*/
 void Symbol::vItemStrip(void)
@@ -2880,7 +2882,7 @@ bool Symbol::bValidate(void)
     case SF_TYPE:        b = bIs_Type();        break;
     case SF_WHEN:        b = bIs_When();        break;
     case SF_XK_CAST:     b = bIs_Xk_Cast();     break;
-    case SF_LIST_CNT: b = bIs_Xrf_No();      break;
+    case SF_LIST_CNT: b = bIs_List_Cnt();      break;
 
     default:
       NEVER_REACH
@@ -3683,6 +3685,34 @@ void Symbol::vFacet_Ivl_Fn(Stz* szIvlFn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given list count                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_List_Cnt(i8 nListCnt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_LIST_CNT, "#%lld"_Stz, nListCnt);
+
+  RASSERT(bIs_List_Cnt());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given list count                                        */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_List_Cnt(Stz* szListCnt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_LIST_CNT, "%s"_Stz, szListCnt);
+
+  RASSERT(bIs_List_Cnt());
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Key_Col(i8 iKeyCol)
@@ -4208,34 +4238,6 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
   vFacetSprint(SF_XK_CAST,"%s"_Stz,szXkCast);
 
   RASSERT(bIs_Xk_Cast());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given cross-reference no                                */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Xrf_No(i8 iXrefNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_LIST_CNT, "#%lld"_Stz, iXrefNo);
-
-  RASSERT(bIs_Xrf_No());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given cross-reference no                                */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_Xrf_No(Stz* szXrefNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_LIST_CNT, "%s"_Stz, szXrefNo);
-
-  RASSERT(bIs_Xrf_No());
 }
 
 /*----------------------------------------------------------------------------*/

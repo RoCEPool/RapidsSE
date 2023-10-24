@@ -74,6 +74,7 @@ namespace STORE
     static bool bIs_Interval_YM(Stz* szChrSeq);     // INTERVAL_YM
     static bool bIs_Itm_Col(Stz* szChrSeq);         // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Ivl_Fn(Stz* szChrSeq);          // extract_year etc
+    static bool bIs_List_cnt(Stz* szChrSeq);         // #n
     static bool bIs_Key_Col(Stz* szChrSeq);         // $Kn
     static bool bIs_Mth_Op(Stz* szChrSeq);          // +, -, *, /
     static bool bIs_Negate(Stz* szChrSeq);          // NULL
@@ -102,7 +103,6 @@ namespace STORE
     static bool bIs_Type(Stz* szChrSeq);            // TYPE
     static bool bIs_When(Stz* szChrSeq);            // WHEN
     static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
-    static bool bIs_Xrf_No(Stz* szChrSeq);          // #n
 
     static bool bIsItemised(Stz* szArg);
     static void vItemStrip(String* psArg);
@@ -182,6 +182,7 @@ namespace STORE
     bool bIs_Interval_YM(void);     // INTERVAL_YM
     bool bIs_Itm_Col(void);         // C_n
     bool bIs_Ivl_Fn(void);          // extract_year etc
+    bool bIs_List_Cnt(void);        // #n
     bool bIs_Key_Col(void);         // $Kn
     bool bIs_Mth_Op(void);          // +, -, *, /
     bool bIs_Negate(void);          // NEGATE
@@ -210,7 +211,6 @@ namespace STORE
     bool bIs_Type(void);            // TYPE
     bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
-    bool bIs_Xrf_No(void);          // #n
 
     void vItemStrip(void);
 
@@ -289,6 +289,8 @@ namespace STORE
     void vFacet_Itm_Col(i8 i_Child);
     void vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol);
     void vFacet_Ivl_Fn(Stz* szIvlFn);
+    void vFacet_List_Cnt(Stz* szListCnt);
+    void vFacet_List_Cnt(i8 nListCnt);
     void vFacet_Key_Col(Stz* szKeyCol);
     void vFacet_Key_Col(i8 iKeyCol);
     void vFacet_Mth_Op(Stz* szMthOp);
@@ -325,8 +327,6 @@ namespace STORE
     void vFacet_Type(Stz* szType);
     void vFacet_When(Stz* szWhen);
     void vFacet_Xk_Cast(Stz* szXkCast);
-    void vFacet_Xrf_No(Stz* szXrefNo);
-    void vFacet_Xrf_No(i8 iXrefNo);
 
     void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCopy(Symbol* pSymbol_arg);
