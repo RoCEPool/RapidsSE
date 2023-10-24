@@ -49,6 +49,7 @@ namespace BASE
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
     void            vDumpInUseList(void);
+    void            vInit(void* pKeyFirst, void* pKeySecond);
     SkipListBlock*  pInsert(void* pKey);
     SkipListBlock*  pFind(void* pKey);
     SkipListBlock*  pFindLessThan(void* pKey);

@@ -75,6 +75,8 @@ PdsConvergentHeap_t<AREA,HEAD,TAIL>::PdsConvergentHeap_t(void)
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
 
+  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
+
   // !! !! !! !! !! !! !! !! !!
   // used bytes were changed
   ASSERT(bStructurallyValid());

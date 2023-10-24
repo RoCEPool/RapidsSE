@@ -80,10 +80,16 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   // Note: Dummy root blocks have garbage values in their Item section
   // Could this cause a problem?
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
-  RASSERT(m_uFreeListRootOffset != 0);
+  RASSERT(m_uFreeListRootOffset < 100);
+  SkipListBlock* aFreeListRootOffset = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+//  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+//    aFreeListRootOffset->m_xNode.m_taNextSkipNode[i_Level] = 0;
+//  }
+  MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
-  RASSERT(m_uInUseRootOffset != 0);
-
+  RASSERT(m_uInUseRootOffset < 100);
+  SkipListBlock* aInUseRootOffset = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
   // Reset the number of entries in both the lists
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
@@ -112,6 +118,12 @@ bool Pds::bDelete(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
+
+  // -------------- Sanity check ----------------
+  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
+  RASSERT(iCompareRes == -1);
+  // --------------------------------------------
 
   // TODO: Add an assert to check that all the entries are deleted where
   // the entry to delete has a non-zero value in it's respective level.
@@ -253,13 +265,31 @@ void Pds::vDumpInUseList(void) {
          "===================================================\n\n"_Stz);
 
 }
+/*----------------------------------------------------------------------------*/
+/* Insert Key                                                                 */
+/*----------------------------------------------------------------------------*/
+void Pds::vInit(void* pKeyFirst, void* pKeySecond)
+{
+  UNUSED(pKeyFirst);
+  UNUSED(pKeySecond);
+  void* aFreeListRootAddr = pGetAddrFromOffset(m_uFreeListRootOffset);
 
+  void* aInUseRootAddr = pGetAddrFromOffset(m_uInUseRootOffset);
+  UNUSED(aFreeListRootAddr);
+  UNUSED(aInUseRootAddr);
+}
 /*----------------------------------------------------------------------------*/
 /* Insert Key                                                                 */
 /*----------------------------------------------------------------------------*/
 SkipListBlock* Pds::pInsert(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  // -------------- Sanity check ----------------
+  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
+  RASSERT(iCompareRes == -1);
+  // --------------------------------------------
 
   // try to allocate a block as mini-Heap may be full
   SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
