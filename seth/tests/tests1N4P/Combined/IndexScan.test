@@ -316,11 +316,8 @@ begin
     | sink
     | stageStart
 end ;
-
 rows: 5996
 
-// TODO FUSE :
-/*
 /optimise_passthru 
 pipeline unnamed
 begin
@@ -342,7 +339,6 @@ begin
 end ;
 
 rows: 1160
-*/
 
 //------------------------------------------------------------------------------
 // drop the tables
