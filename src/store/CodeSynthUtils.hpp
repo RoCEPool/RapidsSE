@@ -10,13 +10,15 @@ namespace STORE {
   class CodeSynthUtils {
   public:
     static bool bExtract(File *pFile, OpSketch *pOpSketch,
-                           Stz *szFunMkr,String *sCode, Column *pColumn, i8 iIndexColumn);
-			static bool bExtract(File *pFile, OpSketch *pOpSketch,
-													 Stz *szFunMkr,String *sCode, Column *pColumnFrom, Column *pColumnTo, i8 iIndexColumn);
+                         Stz *szFunMkr,String *sCode, Column *pColumn, i8 iIndexColumn);
+		static bool bExtract(File *pFile, OpSketch *pOpSketch,
+												 Stz *szFunMkr,String *sCode, Column *pColumnFrom, Column *pColumnTo, i8 iIndexColumn);
 
     static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, Column* pColumn, Stz *sReturnToLabel,
                                 Stz *szFunMkr, String *sCode);
 		static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, Column* pColumn, i8 iColumn, Stz *sReturnToLabel,
+																Stz *szFunMkr, String *sCode);
+		static bool bExtractInflate(File *pFile, OpSketch *pOpSketch, Column* pColumn, Column* pColumnPrior,
 																Stz *szFunMkr, String *sCode);
 
   private:
@@ -26,6 +28,7 @@ namespace STORE {
 		static void vReplaceColumnNo(String* sLine, i8 iCol);
 		static void vReplaceUnionType(String* sLine, Column* pColumn);
     static void vReplaceColumnFrom(String* sLine, Column* pColumn);
+		static void vReplaceColumnPrior(String* sLine, Column* pColumnPrior);
 		static void vReplaceColumnTo(String* sLine, Column* pColumn);
     static bool bReplaceIndexInfo(String* sLine, String* sReplacedLine, OpSketch *pOpSketch);
     static void vReplaceIndexPosition(String* sLine, OpSketch *pOpSketch);

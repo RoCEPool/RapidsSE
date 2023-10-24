@@ -78,6 +78,27 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vPriorCrwCol ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPriorCrwCol
+void vPriorCrwCol(Dynamic_T* aDynamicT) {
+
+	struct __STRUCT_TO__ {
+			union Int_T __COLUMN_TO__;
+			union Int_T __COLUMN_PRIOR__;
+	};
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+
+	// marker-start
+	// - - - - - - - - - - - -
+	p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = p__STRUCT_TO__->__COLUMN_PRIOR__.m_iAsI8;
+
+	// marker-end
+	return;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vSkipCrwCol -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vSkipCrwCol

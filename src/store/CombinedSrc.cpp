@@ -861,12 +861,26 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
   bool bExtracted;
 
 	Column* pColumn;
+	Column* pColumnPrior;
 	i8 i_StreamLeftCol = 0;
 
 	if ( ! pOpSketch->m_pColInj )
 		return;
 
 	for (i8 i_Col = 0; i_Col < pOpSketch->m_pColInj->m_nCols; i_Col++) {
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// same as prior column
+		if (pOpSketch->m_pColInj->m_axCol[i_Col].m_bPriorCrwCol) {
+			sCode = ""_Stz;
+			pOperatorFile->vSeekStart();
+			pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColInj->m_axCol[i_Col].m_i_StructCell);
+			pColumnPrior = pOpSketch->m_pStreamDefOut->pGetColumn(pOpSketch->m_pColInj->m_axCol[i_Col-1].m_i_StructCell);
+			bExtracted = CodeSynthUtils::bExtractInflate(pOperatorFile, pOpSketch, pColumn, pColumnPrior, "vPriorCrwCol"_Stz, sCode);
+			RASSERT(bExtracted);
+			StrLib::vAppendString(&m_azCodeCrs, azCodeLastChar(), sCode.azChar());
+			continue;
+		}
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// skip columns not required
