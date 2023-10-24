@@ -127,6 +127,44 @@ eCT Card_BoolPred::eColumnType(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this boolPred contain given term?                                     */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolPred::bContains(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_CONJUNCTION* p_conj_ROOT = this->pConj_root();
+
+  bool bDoesContain = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pSymbol_arg,&bDoesContain](Card_CONJUNCTION* p_conj, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+
+    if (! p_conj->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term = _pCard_Term(p_conj);
+
+    if (p_term->pSymbol()->bMatches(pSymbol_arg)) {
+      bDoesContain = true;
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  UNUSED(bIgnore);
+
+  return bDoesContain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <conjCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vCopyMarkedConjToTable(CardIter* pCI)

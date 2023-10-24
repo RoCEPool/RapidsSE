@@ -102,6 +102,21 @@ void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this expression list contain given term?                              */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pContains(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Kid xCI_this(this);
+  while (xCI_this.bEach(CK_EXPR))
+    if (xCI_this.p_expr()->bContains(pSymbol_arg))
+      return xCI_this.p_expr();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)

@@ -111,6 +111,20 @@ Card_RpnCalc* Card_RpnCalc::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this rpnCalc contain given term?                                      */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bContains(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->pSymbol()->bMatches(pSymbol_arg))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vCorrectStmCol(Card_Emit* p_emitted_prior)

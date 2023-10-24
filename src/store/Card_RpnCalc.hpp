@@ -20,6 +20,7 @@ namespace STORE
     void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
     Card_RpnCalc* pClone(void);
+    bool bContains(Symbol* pSymbol_arg);
     void vCorrectStmCol(Card_Emit* p_emitted_prior);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);

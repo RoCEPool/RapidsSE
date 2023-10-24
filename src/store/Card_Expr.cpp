@@ -227,6 +227,22 @@ Card_Expr* Card_Expr::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Expr::bContains(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    return p_boolPred->bContains(pSymbol_arg);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    return p_rpnCalc->bContains(pSymbol_arg);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

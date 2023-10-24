@@ -21,6 +21,7 @@ namespace STORE
     void vBump_stmCol_In_rpnCalc(CardIter* pCI);
     void vBump_Rightwards(i8 nBumpBy);
 
+    Card_Expr* pContains(Symbol* pSymbol_arg);
     Card_Expr* pContains(Card_Expr* p_expr_arg);
 
     Card_Term* pDecode_term0_Same_expr_stmCol(Symbol* pSymbol_stmCol);

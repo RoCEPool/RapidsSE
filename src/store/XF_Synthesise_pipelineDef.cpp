@@ -646,8 +646,10 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
   Card_Emit* p_arriving = m_pCI->Flux.m_pArriving;
   Card_Emit* p_emit  = pSubCard->pSub_emit();
 
-  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-    p_emit->vDump(__func__,"--EMITTED by SubCard--"_Stz);
+  if (AM::JOB::bHasTag(C_OPTIMISER_TRACE)) {
+    p_arriving->vDump(__func__, "--ARRIVING at SubCard--"_Stz);
+    p_emit->vDump(__func__, "--EMITTED by SubCard--"_Stz);
+  }
 
   if (m_pStageDef->i_Stage() == 1) {
     vDebugPoint();
@@ -677,7 +679,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     Symbol* pOutSym_e;
 
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-      p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
+      p_expr_a->vDump(__func__,"--EXPR ARRIVING at SubCard--"_Stz);
 
     if (m_pStageDef->i_Stage() == 4) {
       vDebugPoint();
@@ -743,11 +745,15 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     else {
       // - computed
 
-      if ((p_expr_e = p_emit->pGet_expr(pExprSym_a))) {
+      //if ((p_expr_e = p_emit->pGet_expr(pExprSym_a))) {
+      if ((p_expr_e = p_emit->pContains(pExprSym_a))) {
 
 //      p_emit->vDump(__func__);
 //      p_expr_a->vDump(__func__);
 //      p_expr_e->vDump(__func__);
+
+        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+          p_expr_e->vDump(__func__,"--EXPR EMITTED at SubCard--"_Stz);
 
         pColPpg->vAdd(pExprSym_a->iSF_ordinal() - 1,
                       p_expr_e->pSymbol()->iSF_ordinal() - 1,
