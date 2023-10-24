@@ -512,9 +512,9 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 
   if (0 == iDepth) {
     if (szTitle)
-      vTrace("^^%s [%s]\n"_Stz,szTitle,azFunc);
+      vTrace("^^%s [%s] %p\n"_Stz,szTitle,azFunc,this);
     else
-      vTrace("^^Card Dump [%s]\n"_Stz,azFunc);
+      vTrace("^^Card Dump [%s] %p\n"_Stz,azFunc,this);
   }
 
   s4K sFacets;

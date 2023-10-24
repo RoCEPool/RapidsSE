@@ -679,7 +679,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
       p_expr_a->vDump(__func__,"--ARRIVING at SubCard--"_Stz);
 
-    if (m_pStageDef->i_Stage() == 3) {
+    if (m_pStageDef->i_Stage() == 4) {
       vDebugPoint();
       if (m_pOpDef->i_Op() == 0)
         vDebugPoint();

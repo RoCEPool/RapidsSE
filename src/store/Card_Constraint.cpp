@@ -404,7 +404,7 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           CK_KEYNOTEXISTS == eParent );
 
   (void)eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);
-  
+
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
 

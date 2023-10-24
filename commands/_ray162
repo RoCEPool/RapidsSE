@@ -19,6 +19,7 @@ ColPpg 0x204873980040
              m_axCol[0] : m_i_CellIn [1] -> m_i_StructCell [2] $2 ($2 $2)
 */
 
+/optimiser_trace
 /pipeline_def
 /weaved
 /pipelineName = "_ray162"
