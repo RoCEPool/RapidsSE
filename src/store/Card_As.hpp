@@ -17,7 +17,6 @@ namespace STORE
    ~Card_As(void) noexcept(false);
 
     static void vItemise_colNm(CardIter* pCI);
-    static void vItemStrip_colNm(CardIter* pCI);
 
     Card_As* pClone(void);
 

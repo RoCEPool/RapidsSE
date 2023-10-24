@@ -1451,7 +1451,6 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_AS_NM_itm:  vFacet_As_Nm_itm(iInt);  break;
     case SF_AS_NM:      vFacet_As_Nm(iInt);      break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
@@ -1765,25 +1764,6 @@ bool Symbol::bIs_As_Nm(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (SF_AS_NM != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_As_Nm(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_As_Nm_itm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_AS_NM_itm != xaFacet[0].m_eFacet)
-    return false;
-
-  if (! Y_bHas(P_Itemised))
     return false;
 
   if (bIs_As_Nm(xaFacet[0].m_sChrSeq))
@@ -3367,21 +3347,6 @@ void Symbol::vFacet_As_Nm(i8 iAsNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given synthetic-as no                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_As_Nm_itm(i8 iAsNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_AS_NM == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_AS_NM_itm,"C%lld_%s"_Stz, iAsNo, xaFacet[0].m_sChrSeq.szStz());
-  Y_vSet(P_Itemised);
-
-  RASSERT(bIs_As_Nm_itm());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given boolean fn                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Bol_Fn(Stz* szBolFn)
@@ -3738,7 +3703,9 @@ void Symbol::vFacet_Itm_Col(i8 i_Child)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_NMD_COL == xaFacet[0].m_eFacet);
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet ||
+              SF_AS_NM == xaFacet[0].m_eFacet ||
+              SF_NMD_COL == xaFacet[0].m_eFacet);
 
   vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, xaFacet[0].m_sChrSeq.szStz());
 

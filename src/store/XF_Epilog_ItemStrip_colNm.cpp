@@ -64,7 +64,6 @@ void XF_Epilog_ItemStrip_colNm::vItemStrip(void)
 
   m_pCI->vTransform(__func__, XF_EPILOG_ITEMSTRIP_COLNM, "strip C_ suffix"_Stz);
 
-  Card_As::vItemStrip_colNm(m_pCI);
   Card_Term::vItemStrip_colNm(m_pCI);
 
   m_pCI->vEndTransform(__LINE__);

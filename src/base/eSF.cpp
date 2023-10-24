@@ -12,7 +12,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_AGG_FN"_Stz,
   /* */ "SF_AS"_Stz,
   /* */ "SF_AS_NM"_Stz,
-  /* */ "SF_AS_NM_itm"_Stz,
 
   /* */ "SF_BOL_FN"_Stz,
   /* */ "SF_BOL_LIT"_Stz,
