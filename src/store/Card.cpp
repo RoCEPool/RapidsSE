@@ -1794,11 +1794,11 @@ void Card::vCoord(void)
 //  strcat(md_Coord, " ");
 //  strcat(md_Coord, aCK[m_eCard]->azChar());
 
-  StrLib::vConcat(md_Coord,sizeof(md_Coord), "] ");
-  StrLib::vConcat(md_Coord, sizeof(md_Coord), szFacet(SF_NONE) ? szFacet(SF_NONE)->azChar() : "");
-
-  StrLib::vConcat(md_Coord,sizeof(md_Coord), " ");
-  StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eFacet()]->azChar());
+  StrLib::vConcat(md_Coord,sizeof(md_Coord), "]");
+//  StrLib::vConcat(md_Coord, sizeof(md_Coord), szFacet(SF_NONE) ? szFacet(SF_NONE)->azChar() : "");
+//
+//  StrLib::vConcat(md_Coord,sizeof(md_Coord), " ");
+//  StrLib::vConcat(md_Coord,sizeof(md_Coord), aSF[pSymbol()->eFacet()]->azChar());
 
   //  vTrace("%s\n"_Stz,md_Coord);
 }
@@ -1810,7 +1810,10 @@ void Card::vCoord(Card* pParentCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+
   if (pParentCard) {
+    MemLib::vZero(md_Coord, sizeof(md_Coord), CN_CARD);
+
     StrLib::vSprint(md_Coord, sizeof(md_Coord), nullptr,
                     "%s.%lld"_Stz, pParentCard->md_Coord, m_i_Child);
   }
