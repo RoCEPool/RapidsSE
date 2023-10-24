@@ -88,10 +88,10 @@ namespace STORE
     void             vCheckArgs     (i8 nArgs);
 
     i8               iGetInt        (i8 i_Arg);
-    Card_RpnExpr*   pGetRpnTerms   (i8 i_Arg);
+    Card_RpnExpr*   pGet_rpnExpr   (i8 i_Arg);
     Stz*             szGetStz       (i8 i_Arg);
 
-    Card_RpnExpr*   pToRpnTerms    (Stz* szRpnExpr);
+    Card_RpnExpr*   pToRpnExpr    (Stz* szRpnExpr);
 
   private:
     Footer* aFooter(void);

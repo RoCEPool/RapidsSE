@@ -235,7 +235,7 @@ Stz* aCK_short[CK_ENUMS]
 
   /* */ "needed"_Stz,          // CK_NEEDED
   /* */ "note"_Stz,            // CK_NOTE
-  /* */ "notPred"_Stz,         // CK_NOTCONJ
+  /* */ "notConj"_Stz,         // CK_NOTCONJ
 
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
