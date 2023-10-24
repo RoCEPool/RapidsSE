@@ -95,10 +95,7 @@ INCLUDE 'functions-substr.test';
 //INCLUDE 'functions-upper.test';
 
 LOG 'having.test ...';
-// TODO DEBUG CRASHING
-/*
 INCLUDE 'having.test';
-*/
 
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
