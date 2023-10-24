@@ -61,16 +61,6 @@ bool Card_RpnExpr::bIsInList(void)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* pop top term                                                               */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnExpr::pPop_term(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  return _pCard_Term(pPopChild());
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

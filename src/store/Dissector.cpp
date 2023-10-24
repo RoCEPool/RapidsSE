@@ -1267,15 +1267,15 @@ Card_Bounds* Dissector::pPopBounds(Card_RpnExpr* p_rpnTerms)
 /*----------------------------------------------------------------------------*/
 /* pop bound                                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Dissector::pPopBound(Card_RpnExpr* p_rpnTerms)
+Card_Bound* Dissector::pPopBound(Card_RpnExpr* p_rpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  //p_rpnTerms->vDump();
+  //p_rpnExpr->vDump();
 
   // is there a bound term sequence at the top of rpnTerms?
-  Card_Term* p_term_first = _pCard_Term(p_rpnTerms->pPeek(0));
-  if (! p_term_first || !p_term_first->pSymbol()->bIs_Bound())
+  Card* p_rpnItem = p_rpnExpr->pPeek(0);
+  if (! p_rpnItem || !p_rpnItem->pSymbol()->bIs_Bound())
     return nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1285,18 +1285,18 @@ Card_Bound* Dissector::pPopBound(Card_RpnExpr* p_rpnTerms)
 
   // the first term in sequence will be a LBOUND or UBOUND
   //   which is not transfered but should match last reln op in sequence
-  Card_Term* p_term_bound = p_rpnTerms->pPop_term();
-  RASSERT(p_term_bound->pSymbol()->bIs_Bound());
+  p_rpnItem = p_rpnExpr->pPopChild();
+  RASSERT(p_rpnItem->pSymbol()->bIs_Bound());
 
   // transfer terms for this bound sequence
-  Card_Term* p_term_xfr;
+  Card* p_term_xfr;
   for (i8 i_Loop = 0; ; i_Loop++) {
     UNUSED(i_Loop);
 
-    Card_Term* p_term_top = _pCard_Term(p_rpnTerms->pPeek(0));
+    Card_Term* p_term_top = _pCard_Term(p_rpnExpr->pPeek(0));
     if (! p_term_top || p_term_top->pSymbol()->bIs_Bound())
       break;
-    p_term_xfr = p_rpnTerms->pPop_term();
+    p_term_xfr = p_rpnExpr->pPopChild();
     p_bound->vAppendChild(p_term_xfr);
   }
 
@@ -1306,14 +1306,14 @@ Card_Bound* Dissector::pPopBound(Card_RpnExpr* p_rpnTerms)
   p_bound->pSymbol()->vFacets(p_term_last->pSymbol());
 
   // cross-check validity of bound symbol
-  RASSERT(Card_Bound::bValidBoundForRelnOp(p_term_bound->pSymbol(),
+  RASSERT(Card_Bound::bValidBoundForRelnOp(p_rpnItem->pSymbol(),
                                            p_term_last->pSymbol()));
 
-  delete p_term_bound;
+  delete p_rpnItem;
   p_bound->vDeleteChild(p_term_last);
 
   //p_bound->vDump();
-  //p_rpnTerms->vDump();
+  //p_rpnExpr->vDump();
 
   return p_bound;
 }
