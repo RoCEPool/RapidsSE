@@ -763,7 +763,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
         return C_CONTINUE_RECURSION;
       }
 
-      NEVER_REACH;
+      return C_CONTINUE_RECURSION;
     }
   };
 
