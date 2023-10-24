@@ -158,7 +158,7 @@ rows:
 
  //------------------------------------------------------------------------------
 
- // TODO FUSE : _ray142
+ // TODO FUSE : _ray142 (ALKA)
  /*
  select L_ORDERKEY, L_COMMENT, L_SHIPDATE,  L_DISCOUNT, L_ORDERKEY from lineitem;
  rows:

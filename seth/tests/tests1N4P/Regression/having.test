@@ -52,8 +52,6 @@ ordered rows:
 
 // Source file: ../queries/having/rhaving3.sql
 // Result file: ../queries/having/results/having3.res
-// TODO V2 _ray161 (crashes in debug)
-
 select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
 ordered rows:
   (95, 662, 'GREEN', 'aaa')
