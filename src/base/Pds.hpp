@@ -12,7 +12,7 @@ namespace BASE
 
   class Pds : public Object
   {
-    static const i8 C_WSP_INTERNALHEAP = C_SIZE_LARGE_OBJECT - C_2KB;
+    static const i8 C_WSP_INTERNALHEAP = C_SIZE_LARGE_OBJECT - C_10KB;
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
   public:
@@ -26,6 +26,8 @@ namespace BASE
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
 
+    RowPix m_oRowPix;
+
     // Save the last usable offset for asserts
     PdsConvergentHeap_t<C_WSP_INTERNALHEAP,SkipListBlock,Stz> m_xWsp;
 
@@ -36,10 +38,11 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Pds(i8 nBytes, CompareFunc fpCompare);
+    Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
     ~Pds(void) noexcept(false);
 
     // public:
+    void*           aAllotStzSet(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
     void            vDumpInUseList(void);
@@ -49,10 +52,13 @@ namespace BASE
     SkipListBlock*  pFindGreaterThan(void* pKey);
     SkipListBlock*  pFirstBlock(void);
     i8              nFreeBytes(void);
+    void            vInitPix(RowPix* pRowPix);
     i8              nItems(void);
-    void*           aLastUsableAddr(void);
+    void*           aLastUsableByteAddr(void);
     i8              iLastUsableOffset(void);
     i8              iNumEntries(i8 iLevel);
+    void            vStzSetSize(i8 nBytes);
+    i8              iStzSetSize(void);
     void            vValidate(void);
     bool            bVerify(void);
 
