@@ -82,7 +82,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
       if (p_term->pSymbol()->bIs_Nmd_Col()) {
         Symbol xSym_term_nm;
-        xSym_term_nm.vFacet(SF_AS_NM, p_term->szFacet(SF_NONE));
+        xSym_term_nm.vFacet(SF_NMD_COL, p_term->szFacet(SF_NONE));
 
         if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(&xSym_term_nm))) {
           pCI->G.p_as = pCI->G.p_expr->pSub_as();
@@ -573,7 +573,7 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
 
     if (pSymbol_this->bHasFacet(SF_NMD_COL)) {
       Symbol xAsNm_sym;
-      xAsNm_sym.vFacet(SF_AS_NM, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
+      xAsNm_sym.vFacet(SF_NMD_COL, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
 
       if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Via_as(&xAsNm_sym)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);

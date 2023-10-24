@@ -67,7 +67,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
     i8 iItemise = p_expr->iItemise();
-    p_as->pSymbol()->vFacet(SF_AS_NM_itm,iItemise);
+    p_as->pSymbol()->vFacet(SF_ITM_COL,iItemise);
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
 
     return C_CONTINUE_RECURSION;
@@ -81,36 +81,6 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_As::vItemStrip_colNm(CardIter* pCI)
-{
-  _static_
-
-  auto bfItemStrip_colNm = [pCI](Card* pCard)
-  {
-    UNUSED(pCI);
-
-    if (! pCard->bIsCard(CK_AS))
-      return C_CONTINUE_RECURSION;
-
-    //pCI->vAncestorDump(pCard);
-
-    Card_As* p_as = _pCard_As(pCard);
-
-    if (! p_as->pSymbol()->bIs_As_Nm_itm())
-      return C_CONTINUE_RECURSION;
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCI->G.pDeck->bApplyRecursive(CK_NONE,bfItemStrip_colNm);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
