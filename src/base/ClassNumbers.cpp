@@ -389,6 +389,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
     /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
     /* */ "STREAMSET"_Stz,            // CN_STREAMSET
+    /* */ "STRING_D"_Stz,             // CN_STRING_D
     /* */ "STRING_T"_Stz,             // CN_STRING_T
     /* */ "STRLIB"_Stz,               // CN_STRLIB
     /* */ "STZLIST"_Stz,              // CN_STZLIST
