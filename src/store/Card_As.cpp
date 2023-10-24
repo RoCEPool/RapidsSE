@@ -58,7 +58,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
     Card_As* p_as = _pCard_As(pCard);
 
-    if (! p_as->pSymbol()->bIs_As_Nm())
+    if (! p_as->pSymbol()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
     Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));

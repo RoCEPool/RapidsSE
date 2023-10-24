@@ -49,7 +49,6 @@ namespace STORE
 
     static bool bIs_Agg_Fn(Stz* szChrSeq);          // avg, count, ... sum
     static bool bIs_As(Stz* szChrSeq);              // AS
-    static bool bIs_As_Nm(Stz* szChrSeq);           // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Bol_Fn(Stz* szChrSeq);          // between, case ... matchTrailing
     static bool bIs_Bol_Lit(Stz* szChrSeq);         // FALSE, TRUE
     static bool bIs_Bol_Op(Stz* szChrSeq);          // and, not, or
@@ -158,7 +157,6 @@ namespace STORE
 
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
     bool bIs_As(void);              // AS
-    bool bIs_As_Nm(void);           //
     bool bIs_Bol_Fn(void);          // between, case ... matchTrailing
     bool bIs_Bol_Lit(void);         // FALSE, TRUE
     bool bIs_Bol_Op(void);          // and, not, or
@@ -263,8 +261,6 @@ namespace STORE
   private:
     void vFacet_Agg_Fn(Stz* szAggFn);
     void vFacet_As(Stz* szAs);
-    void vFacet_As_Nm(i8 iAsNo);
-    void vFacet_As_Nm(Stz* szAsNm);
     void vFacet_Bol_Fn(Stz* szBolFn);
     void vFacet_Bol_Lit(Stz* szBolLit);
     void vFacet_Bol_Op(Stz* szBolOp);
@@ -297,6 +293,7 @@ namespace STORE
     void vFacet_Key_Col(i8 iKeyCol);
     void vFacet_Mth_Op(Stz* szMthOp);
     void vFacet_Negate(Stz* szNegate);
+    void vFacet_Nmd_Col(i8 iColNo);
     void vFacet_Nmd_Col(Stz* szColNm);
     void vFacet_Note(Stz* szNote);
     void vFacet_Null(Stz* szNull);

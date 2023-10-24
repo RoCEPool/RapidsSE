@@ -247,19 +247,6 @@ bool Symbol::bIs_As(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a column name?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_As_Nm(Stz* szArg)
-{
-  _static_
-
-  if (!bIs_Nmd_Col(szArg))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this symbol a boolean function?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIs_Bol_Fn(Stz* szArg)
@@ -1451,7 +1438,8 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_NMD_COL:      vFacet_As_Nm(iInt);      break;
+    case SF_NMD_COL:
+      vFacet_Nmd_Col(iInt);      break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
@@ -1750,22 +1738,6 @@ bool Symbol::bIs_As(void)
     return false;
 
   if (bIs_As(xaFacet[0].m_sChrSeq))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIs_As_Nm(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (SF_NMD_COL != xaFacet[0].m_eFacet)
-    return false;
-
-  if (bIs_As_Nm(xaFacet[0].m_sChrSeq))
     return true;
 
   return false;
@@ -3317,34 +3289,6 @@ void Symbol::vFacet_As(Stz* szAs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol to given as-name                                           */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_As_Nm(Stz* szAsNm)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet || SF_NMD_COL == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_NMD_COL,"%s"_Stz,szAsNm);
-
-  RASSERT(bIs_As_Nm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given synthetic-as no                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacet_As_Nm(i8 iAsNo)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
-
-  vFacetSprint(SF_NMD_COL,"COL%lld"_Stz, iAsNo);
-
-  RASSERT(bIs_As_Nm());
-}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given boolean fn                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vFacet_Bol_Fn(Stz* szBolFn)
@@ -3792,6 +3736,20 @@ void Symbol::vFacet_Negate(Stz* szNegate)
   vFacetSprint(SF_NEGATE,"%s"_Stz,szNegate);
 
   RASSERT(bIs_Negate());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given synthetic-as no                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacet_Nmd_Col(i8 iColNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(SF_NONE == xaFacet[0].m_eFacet);
+
+  vFacetSprint(SF_NMD_COL, "COL%lld"_Stz, iColNo);
+
+  RASSERT(bIs_Nmd_Col());
 }
 
 /*----------------------------------------------------------------------------*/
