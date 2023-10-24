@@ -967,7 +967,7 @@ void Card_OP::vRpnIndexScan(String* psRpnExpr, Card_IndexScan* pCard_IndexScan)
 
     Card_Bound* p_bound = xKid.p_bound();
 
-    if (p_bound->bIsLBound() || p_bound->bIsUBound()) {
+    if (p_bound->bIsEBound() || p_bound->bIsLBound() || p_bound->bIsUBound()) {
 
       if (p_bound->bIsLBound())
         psRpnExpr->vCatSprint(" %s"_Stz, "LBOUND"_Stz);
