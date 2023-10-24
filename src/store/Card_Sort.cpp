@@ -74,7 +74,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if ((pCI->G.p_emit = pCI->G.p_sort->pSub_emit()))
     pCI->G.p_sort->vDeleteSub(pCI->G.p_emit);
 
-  Card_Emit* p_emitted_sort =  pCI->Flux.m_pArriving->pPropagate(pCI);
+  Card_Emit* p_emitted_sort =  pCI->Flux.m_pArriving->pPropagate();
   for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
     Card_Expr* p_expr_key = xKey_sort.p_expr();
 

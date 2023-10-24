@@ -14,7 +14,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Emit(i8 iCrossRef);
+    Card_Emit(void);
    ~Card_Emit(void) noexcept(false);
 
     static Card_Emit* pResolvePriorProjection(CardIter* pCI);
@@ -33,8 +33,8 @@ namespace STORE
     bool bIsLiterals(void);
     void vMapColumns(CardIter* pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    Card_Emit* pPropagate(CardIter* pCI);
-    Card_Emit* pReducedCopy(CardIter* pCI);
+    Card_Emit* pPropagate(void);
+    Card_Emit* pReducedCopy(void);
     Card_Expr* pResolve_expr(Card_Term* p_term);
 
     void vShortForm(String* pString);

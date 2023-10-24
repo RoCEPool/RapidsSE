@@ -25,7 +25,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy);
 
     void vComputeProjection(CardIter* pCI); // prototype
-    Card_Emit* pCraft_projection_early(CardIter* pCI);
+    Card_Emit* pCraft_emit_early(CardIter* pCI);
 
     void vDedupe_as(void);
 

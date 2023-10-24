@@ -69,7 +69,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   Card_Stream* p_stream = new Card_Stream;
   p_project_unproject->vAppendChild(p_stream);
 
-  Card_Emit* p_emitted_unproject = new Card_Emit(pCI->iXform());
+  Card_Emit* p_emitted_unproject = new Card_Emit;
   p_stream->vAppendChild(p_emitted_unproject);
 
   i8 i_Col = 0;
@@ -132,11 +132,11 @@ void Card_Project::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* craft projection for early project                                         */
 /*----------------------------------------------------------------------------*/
-Card_Emit* Card_Project::pCraft_projection_early(CardIter* pCI)
+Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Emit* p_emitted_early = new Card_Emit(pCI->iXform());
+  Card_Emit* p_emit_early = new Card_Emit;
 
   //pCI->Early.m_pNeeded_later->vDump();
 
@@ -157,17 +157,17 @@ Card_Emit* Card_Project::pCraft_projection_early(CardIter* pCI)
     Card_Expr* p_expr_clone = p_expr_needed->pClone();
 
     if (! p_expr_clone->pSub_as()) {
-      Card_As* p_as_new = (new Card_As) ->SYM(SF_NMD_COL,p_emitted_early->nChildCards());
+      Card_As* p_as_new = (new Card_As) ->SYM(SF_NMD_COL, p_emit_early->nChildCards());
       p_expr_clone->vAppendChild(p_as_new);
     }
 
-    p_emitted_early->vAppendChild(p_expr_clone);
+    p_emit_early->vAppendChild(p_expr_clone);
   }
 
 
-  p_emitted_early->vRenumberAll_expr();
+  p_emit_early->vRenumberAll_expr();
 
-  return p_emitted_early;
+  return p_emit_early;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +250,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   vEnsure_stream(pCI);
 
-  pCI->G.p_emit = pCraft_projection_early(pCI);
+  pCI->G.p_emit = pCraft_emit_early(pCI);
 
   pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
 

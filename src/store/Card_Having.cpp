@@ -156,7 +156,7 @@ void Card_Having::vUpdate_emitted(CardIter* pCI)
     if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit())) {
 
       pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
-      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pPropagate(pCI));
+      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pPropagate());
     }
   }
 

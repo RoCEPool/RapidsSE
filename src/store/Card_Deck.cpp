@@ -333,7 +333,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
-      Card_Emit* p_emit = pCI->Flux.m_pArriving->pPropagate(pCI);
+      Card_Emit* p_emit = pCI->Flux.m_pArriving->pPropagate();
       //p_emit->vDump(__func__ );
       pCI->G.p_stream->vAppendChild(p_emit);
 
@@ -353,7 +353,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_TOP,CK_NONE)) {
       pCI->G.p_OP->vEnsure_stream(pCI);
-      pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate(pCI);
+      pCI->G.p_emit = pCI->Flux.m_pArriving->pPropagate();
 
       pCI->G.p_stream->vAppendChild(pCI->G.p_emit);
     }
@@ -363,7 +363,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
       pCI->G.p_OP->vEnsure_stream(pCI);
 
       Card_Emit* p_emitted_propagated =
-          pCI->Flux.m_pArriving->pPropagate(pCI);
+          pCI->Flux.m_pArriving->pPropagate();
       p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
       pCI->G.p_stream->vAppendChild(p_emitted_propagated);
@@ -423,7 +423,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
     if (CK_KEYEXISTS    == pCI->G.e_MainCard ||
         CK_KEYNOTEXISTS == pCI->G.e_MainCard) {
 
-      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pPropagate(pCI));
+      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pPropagate());
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Flux.m_pArriving) {
@@ -480,7 +480,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
     else
     if (CK_SORT == pCI->G.e_MainCard || CK_TOP == pCI->G.e_MainCard) {
       Card_Emit* p_emitted_propagated =
-          pCI->Flux.m_pArriving->pPropagate(pCI);
+          pCI->Flux.m_pArriving->pPropagate();
       p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
 
       pCI->G.p_MainCard->vAppendChild(p_emitted_propagated);

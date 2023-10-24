@@ -588,11 +588,11 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
   if (pCI->Flux.m_pArriving) {
 //    p_emit = pCI->Flux.m_pArriving->pClone();
-    p_emit = pCI->Flux.m_pArriving->pReducedCopy(pCI);
+    p_emit = pCI->Flux.m_pArriving->pReducedCopy();
     //p_emit->vDump(__func__ );
   }
   else {
-    p_emit = new Card_Emit(pCI->iXform());
+    p_emit = new Card_Emit;
   }
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
