@@ -44,6 +44,8 @@ enum eSF // symbol facet
 
   /* */ SF_KEY_COL,     // Key Column no       : $Kn
 
+  /* */ SF_LIST_CNT,    // List item count     : #n
+
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
 
   /* */ SF_NEGATE,      // Negate              : NEGATE
@@ -76,8 +78,7 @@ enum eSF // symbol facet
 
   /* */ SF_WHEN,        // When                : WHEN
 
-  /* */ SF_XK_CAST,     // CrossRef No         : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
-  /* */ SF_XRF_NO,      // CrossRef No         : #n
+  /* */ SF_XK_CAST,     // XK_                 : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
   /* */ SF_ENUMS
 };

@@ -46,6 +46,8 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_KEY_COL"_Stz,
 
+  /* */ "SF_LIST_CNT"_Stz,
+
   /* */ "SF_MTH_OP"_Stz,
 
   /* */ "SF_NEGATE"_Stz,
@@ -79,7 +81,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_WHEN"_Stz,
 
   /* */ "SF_XK_CAST"_Stz,
-  /* */ "SF_XRF_NO"_Stz,
 
 //  /* */ "SF_ENUMS"_Stz
 };

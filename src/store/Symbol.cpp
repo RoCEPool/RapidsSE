@@ -199,7 +199,7 @@ eSF Symbol::eEvalSymbol(Stz* szArg)
   if (bIs_Then(szArg))         return SF_THEN;
   if (bIs_Type(szArg))         return SF_TYPE;
   if (bIs_When(szArg))         return SF_WHEN;
-  if (bIs_Xrf_No(szArg))       return SF_XRF_NO;
+  if (bIs_Xrf_No(szArg))       return SF_LIST_CNT;
 
   return SF_NONE;
 }
@@ -1450,7 +1450,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
     case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
     case SF_STM_COL:    vFacet_Stm_Col(iInt);    break;
-    case SF_XRF_NO:     vFacet_Xrf_No(iInt);     break;
+    case SF_LIST_CNT:     vFacet_Xrf_No(iInt);     break;
 
     default: NEVER_REACH;
   }
@@ -1538,7 +1538,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_TYPE:        vFacet_Type(szChrSeq);        break;
     case SF_WHEN:        vFacet_When(szChrSeq);        break;
     case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
-    case SF_XRF_NO:      vFacet_Xrf_No(szChrSeq);      break;
+    case SF_LIST_CNT:      vFacet_Xrf_No(szChrSeq);      break;
 
     default: NEVER_REACH;
   }
@@ -2597,7 +2597,7 @@ bool Symbol::bIs_Xrf_No(void)
 
   RASSERT(bHasFacets());
 
-  if (SF_XRF_NO != xaFacet[0].m_eFacet)
+  if (SF_LIST_CNT != xaFacet[0].m_eFacet)
     return false;
 
   if (bIs_Xrf_No(xaFacet[0].m_sChrSeq))
@@ -2880,7 +2880,7 @@ bool Symbol::bValidate(void)
     case SF_TYPE:        b = bIs_Type();        break;
     case SF_WHEN:        b = bIs_When();        break;
     case SF_XK_CAST:     b = bIs_Xk_Cast();     break;
-    case SF_XRF_NO:      b = bIs_Xrf_No();      break;
+    case SF_LIST_CNT: b = bIs_Xrf_No();      break;
 
     default:
       NEVER_REACH
@@ -4027,7 +4027,7 @@ void Symbol::vFacet_Stm_Col(Stz* szStmCol)
           SF_KEY_COL == xaFacet[0].m_eFacet ||  // todo: these need to be investigated
           SF_PARENTHESIS == xaFacet[0].m_eFacet ||
           SF_SQY_PRM == xaFacet[0].m_eFacet ||
-          SF_XRF_NO == xaFacet[0].m_eFacet
+              SF_LIST_CNT == xaFacet[0].m_eFacet
   );
 
   vFacetSprint(SF_STM_COL, "%s"_Stz, szStmCol);
@@ -4219,7 +4219,7 @@ void Symbol::vFacet_Xrf_No(i8 iXrefNo)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_XRF_NO,"#%lld"_Stz, iXrefNo);
+  vFacetSprint(SF_LIST_CNT, "#%lld"_Stz, iXrefNo);
 
   RASSERT(bIs_Xrf_No());
 }
@@ -4233,7 +4233,7 @@ void Symbol::vFacet_Xrf_No(Stz* szXrefNo)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_XRF_NO,"%s"_Stz,szXrefNo);
+  vFacetSprint(SF_LIST_CNT, "%s"_Stz, szXrefNo);
 
   RASSERT(bIs_Xrf_No());
 }
