@@ -34,6 +34,7 @@ namespace BASE
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
     void  vIncTailItems(void);
+    void  vInit(void);
     TAIL* aItemAtOffset(i8 i_Offset);
     i8    nItems(void);
     HEAD* aLastItem(void); // ayLasHead()
@@ -246,6 +247,28 @@ void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vIncTailItems(void)
   ASSERT(bStructurallyValid());
 
   ++m_nTailItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+template<i8 AREA, class HEAD, class TAIL>
+void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(void)
+{
+  m_nUsedHead  = 0;
+  m_nUsedTail  = 0;
+
+  m_nHeadItems = 0;
+  m_nHeadSize  = C_UNKNOWN;
+
+  m_nTailItems = 0;
+  m_nTailSize  = C_UNKNOWN;
+
+  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
+
+  // !! !! !! !! !! !! !! !! !!
+  // used bytes were changed
+  ASSERT(bStructurallyValid());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -75,21 +75,22 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
   }
 
   m_iFreeListEntries = 0;
+  m_xWsp.vInit();
 
   // Add dummy root nodes to the Free and In Use skip lists
   // Note: Dummy root blocks have garbage values in their Item section
   // Could this cause a problem?
-  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
-  RASSERT(m_uFreeListRootOffset < 100);
-  SkipListBlock* aFreeListRootOffset = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
-//  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-//    aFreeListRootOffset->m_xNode.m_taNextSkipNode[i_Level] = 0;
-//  }
+  SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
-  m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
-  RASSERT(m_uInUseRootOffset < 100);
-  SkipListBlock* aInUseRootOffset = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
+  RASSERT(m_uFreeListRootOffset < 100);
+
+  SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
   MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
+  m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
+  RASSERT(m_uInUseRootOffset < 100);
+
+
   // Reset the number of entries in both the lists
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
