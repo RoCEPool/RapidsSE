@@ -344,6 +344,7 @@ extern d8 C_D8_MID;
 #include "PdsCursor.hpp"
 #include "PdsItem_BufferId.h"
 #include "PdsBufferIdQueue.hpp"
+#include "PdsRowHelper.hpp"
 
 //------------------------------------------------------------------------------
 

@@ -187,9 +187,15 @@ Stz* Row::szColVal_ofs(i8 i_Col)
   if (i_Ofs == C_DATUM_NULL)
     return (Stz*)C_DATUM_NULL;
 
-  Stz* szStz = aAdd<Stz*>(amCellAddress,i_Ofs);
-  
-  return szStz;
+  Object* pObject = aAdd<Object*>(amCellAddress,i_Ofs);
+
+  if (pObject->eGetClassNo() == CN_STRING_D) {
+    String_d* szStringd = (String_d*) pObject;
+    return szStringd->szStz();
+  } else {
+    Stz* szStz = (Stz*) pObject;
+    return szStz;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3724,20 +3724,52 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   vTrace("%p\n"_Stz, pRowBufferRet);
   pBufferIdQueue->vDump();
 
+  delete pBufferIdQueue;
+  delete pNewRowBuffer1;
+  delete pNewRowBuffer2;
+  delete pNewRowBuffer3;
+  delete pNewRowBuffer4;
+  delete pNewRowBuffer5;
 
-//  PdsItem_BufferId oItem1;
 
-//  oItem1.iKey = 1;
-//  bResult = pPds->bDelete((void*) &oItem1);
-//  RASSERT(bResult);
-//
-//  oItem1.iKey = 3;
-//  bResult = pPds->bDelete((void*) &oItem1);
-//  RASSERT(bResult);
-//
-//  oItem1.iKey = 2;
-//  bResult = pPds->bDelete((void*) &oItem1);
-//  RASSERT(bResult);
+/*----------------------------------------------------------------------------*/
+                  // Test Case - String_d test
+/*----------------------------------------------------------------------------*/
+  RASSERT(String_d::iBytesToAlloc(3) == 48);
+  RASSERT(String_d::iBytesToAlloc(8) == 48);
+  RASSERT(String_d::iBytesToAlloc(10) == 48);
+  RASSERT(String_d::iBytesToAlloc(16) == 48);
+  RASSERT(String_d::iBytesToAlloc(21) == 64);
+  RASSERT(String_d::iBytesToAlloc(32) == 64);
+  RASSERT(String_d::iBytesToAlloc(37) == 80);
+  RASSERT(String_d::iBytesToAlloc(48) == 80);
+
+  // Store string somewhere inside a rowbuffer
+  RowBuffer* pBuffer = new RowBuffer;
+  void* aAddr = aAdd<void*>(pBuffer, C_64KB);
+
+  String_d* pStringDyn1 = new(aAddr) String_d(3);
+  Footer* aFooter1 = pStringDyn1->aFooter();
+  RASSERT(aFooter1->bValidFooter());
+
+  pStringDyn1->vCopy("1234"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn1->azChar());
+
+  String_d* pStringDyn2 = new(aAddr) String_d(8);
+  Footer* aFooter2 = pStringDyn2->aFooter();
+  RASSERT(aFooter2->bValidFooter());
+
+  pStringDyn1->vCopy("12"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn1->azChar());
+
+  String_d* pStringDyn3 = new(aAddr) String_d(21);
+  Footer* aFooter3 = pStringDyn3->aFooter();
+  RASSERT(aFooter3->bValidFooter());
+
+  pStringDyn3->vCopy("12345"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn3->azChar());
+
+  delete pBuffer;
 
   vTrace("Success!\n"_Stz);
   return true;
