@@ -107,7 +107,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
-  /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
+  /* */ "CK_RPNEXPR"_Stz,     // CK_RPNEXPR
 
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
   /* */ "CK_SECTION"_Stz,      // CK_SECTION
@@ -253,7 +253,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
-  /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
+  /* */ "rpnTerms"_Stz,        // CK_RPNEXPR
 
   /* */ "scan"_Stz,            // CK_SCAN
   /* */ "section"_Stz,         // CK_SECTION

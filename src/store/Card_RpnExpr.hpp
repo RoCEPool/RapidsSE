@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_RpnTerms.hpp -- RPN Sequence of Terms                                 */
+/* Card_RpnExpr.hpp -- RPN Sequence of Terms                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,21 +7,21 @@
 
 namespace STORE
 {
-  class Card_RpnTerms : public Card_symbol<Card_RpnTerms>
+  class Card_RpnExpr : public Card_symbol<Card_RpnExpr>
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_RpnTerms(void);
-   ~Card_RpnTerms(void) noexcept(false);
+    Card_RpnExpr(void);
+   ~Card_RpnExpr(void) noexcept(false);
 
     bool bIsInList(void);
 
     Card_Term* pPop_term(void);
   };
 
-  Card_RpnTerms* _pCard_RpnTerms(void* aAddr);
+  Card_RpnExpr* _pCard_RpnExpr(void* aAddr);
 }
 
 /*============================================================================*/

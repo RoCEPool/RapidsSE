@@ -6,7 +6,7 @@
 #include "Card_Term.hpp"
 #include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
-#include "Card_RpnTerms.hpp"
+#include "Card_RpnExpr.hpp"
 #include "Card_AndConj.hpp"
 #include "Card_OrConj.hpp"
 #include "Card_RlnConj.hpp"
@@ -538,7 +538,7 @@ Card_BoolPred* Card_RpnCalc::pTo_boolPred(CardIter* pCI)
   Card*  p_childA  = nullptr;
   Card*  p_childB  = nullptr;
 
-  Card_RpnTerms*  p_TermSeries = new Card_RpnTerms;
+  Card_RpnExpr*  p_TermSeries = new Card_RpnExpr;
 
   while (this->nChildCards()) {
     Card_Term* p_term_next = _pCard_Term(this->pPopChild());

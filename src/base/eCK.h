@@ -104,7 +104,7 @@ enum eCK : i8 // card kind
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
   /* */ CK_RPNCALC,
-  /* */ CK_RPNTERMS,
+  /* */ CK_RPNEXPR,
 
   /* */ CK_SCAN,
   /* */ CK_SECTION,

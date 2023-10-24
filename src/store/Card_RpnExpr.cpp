@@ -1,25 +1,24 @@
 /*============================================================================*/
-/* Card_RpnTerms.cpp -- RPN Sequence of Terms                                 */
+/* Card_RpnExpr.cpp -- RPN Expression                                         */
 /*============================================================================*/
 
-#include "Card_RpnTerms.hpp"
+#include "Card_RpnExpr.hpp"
 #include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//__pCastFunction(STORE,Card_RpnTerms,CN_CARD_TERMLIST)
-__pCastFunction_Card(STORE,Card_RpnTerms,CK_RPNTERMS)
-__aNewFunction(Card_RpnTerms,CN_CARD)
-__vDeleteFunction(Card_RpnTerms,CN_CARD)
+__pCastFunction_Card(STORE, Card_RpnExpr, CK_RPNEXPR)
+__aNewFunction(Card_RpnExpr, CN_CARD)
+__vDeleteFunction(Card_RpnExpr, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_RpnTerms::Card_RpnTerms(void)
-: Card_symbol(CK_RPNTERMS, C_UNKNOWN)
+Card_RpnExpr::Card_RpnExpr(void)
+: Card_symbol(CK_RPNEXPR, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -31,7 +30,7 @@ Card_RpnTerms::Card_RpnTerms(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_RpnTerms::~Card_RpnTerms(void) noexcept(false)
+Card_RpnExpr::~Card_RpnExpr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,7 +42,7 @@ Card_RpnTerms::~Card_RpnTerms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* test for in-list                                                           */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnTerms::bIsInList(void)
+bool Card_RpnExpr::bIsInList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,7 +64,7 @@ bool Card_RpnTerms::bIsInList(void)
 /*----------------------------------------------------------------------------*/
 /* pop top term                                                               */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnTerms::pPop_term(void)
+Card_Term* Card_RpnExpr::pPop_term(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
