@@ -1242,7 +1242,7 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* p_rpnTerms)
   p_term = _pCard_Term(p_rpnTerms->pPopChild());
   Stz* szAsNm = p_term->szFacet(SF_NONE);
 
-  Card_As* p_as = (new Card_As) ->SYM(SF_AS_NM,szAsNm);
+  Card_As* p_as = (new Card_As) ->SYM(SF_NMD_COL,szAsNm);
   delete p_term;
   p_term = nullptr;
 
@@ -1434,14 +1434,14 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* p_rpnTerms,
     if (p_expr->pSub_rpnCalc()->nChildCards() == 1) {
       Stz* AsNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
       if (Symbol::bIs_Nmd_Col(AsNm)) {
-        p_as = (new Card_As)->SYM(SF_AS_NM, AsNm);
+        p_as = (new Card_As)->SYM(SF_NMD_COL, AsNm);
       }
       else {
-        p_as = (new Card_As)->SYM(SF_AS_NM, ri_Expr);
+        p_as = (new Card_As)->SYM(SF_NMD_COL, ri_Expr);
       }
     }
     else {
-      p_as = (new Card_As)->SYM(SF_AS_NM, ri_Expr);
+      p_as = (new Card_As)->SYM(SF_NMD_COL, ri_Expr);
     }
     p_expr->vPushChild(p_as);
   }

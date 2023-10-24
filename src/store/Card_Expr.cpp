@@ -57,7 +57,7 @@ Card_Expr::Card_Expr(Card_As*      p_as_arg,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_As  *    p_as      = (new Card_As) ->SYM(SF_AS_NM, p_as_arg->szFacet(SF_NONE));
+  Card_As  *    p_as      = (new Card_As) ->SYM(SF_NMD_COL, p_as_arg->szFacet(SF_NONE));
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 
@@ -116,7 +116,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  Card_As*      p_as      = szAs ? (new Card_As) ->SYM(SF_AS_NM,szAs) : (new Card_As);
+  Card_As*      p_as      = szAs ? (new Card_As) ->SYM(SF_NMD_COL,szAs) : (new Card_As);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
@@ -249,7 +249,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   if (p_as)
     p_expr_early->vAppendChild(p_as->pClone());
   else {
-    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM,i_Expr);
+    Card_As* p_as_new = (new Card_As) ->SYM(SF_NMD_COL,i_Expr);
     p_expr_early->vAppendChild(p_as_new);
   }
 
@@ -603,7 +603,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   if (p_as)
     p_expr_propagation->vAppendChild(p_as->pClone());
   else {
-    Card_As* p_as_new = (new Card_As) ->SYM(SF_AS_NM, this->szFacet(SF_NONE));
+    Card_As* p_as_new = (new Card_As) ->SYM(SF_NMD_COL, this->szFacet(SF_NONE));
     p_expr_propagation->vAppendChild(p_as_new);
   }
 
