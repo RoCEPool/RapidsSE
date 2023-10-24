@@ -28,7 +28,7 @@
 ../../../seth/tests/tests1N4P/Transliterate/testList
 
 ../../../seth/tests/tests1N4P/BackEnd/testList
-////////////../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
+../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
 
 ../../../seth/tests/tests1N4P/Create/testList
 ../../../seth/tests/tests1N4P/Compiler/testList

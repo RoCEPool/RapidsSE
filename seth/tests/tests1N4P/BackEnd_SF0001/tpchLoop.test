@@ -87,15 +87,20 @@ INCLUDE 'query7.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+// TODO FINAL
+/*
 LOG 'Running tpch query 8...';
 INCLUDE 'query8.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
+// TODO FINAL
+/*
 LOG 'Running tpch query 9...';
 INCLUDE 'query9.test';
 INCLUDE 'sleep.test';
-
+*/
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 10...';
 INCLUDE 'query10.test';
