@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _ray162                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA
+
+
+// NOTE: expression for BOUND not come thru correctly.
+
+/weaved
+/pipeline_def
+/optimise_passthru
+ pipeline indexScanTest
+ begin
+   stage stageA on origin :
+     start
+     | pulse once
+     | stageB
+
+   stage stageB on all partitions :
+     indexScan orders IxO_ORDERKEY "BOUND $I1 5 =="
+     | combined 0
+     | stageC
+
+   stage stageC on origin :
+     output
+     | sink
+     | stageA
+
+ end ;
+
+ _tpchdrop;
