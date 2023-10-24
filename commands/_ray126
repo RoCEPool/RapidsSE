@@ -2,7 +2,13 @@
 /* _ray126                                                                    */
 /*============================================================================*/
 
-// NOTE: sort expr not correct
+// NOTE: sort expr not correct in S03
+// it is :
+//  expr type INTEGER as C0_COL1 $2 ASC
+// should be :
+//   expr  type INTEGER as C0_COL1 $3 ASC
+
+
 
 create table TABLE1 (
   pcol1   INTEGER NOT NULL,
