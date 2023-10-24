@@ -261,7 +261,6 @@
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
-#include "XF_Epilog_ItemStrip_colNm.hpp"
 #include "XF_Epilog_Itemise_Columns.hpp"
 #include "XF_Epilog_Map_Columns.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
@@ -803,7 +802,6 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EPILOG_FUSE_PROJECT,            sizeof(XF_Epilog_Fuse_project),            HT_T_TINY    , FILL },
   {CN_XF_EPILOG_HASH_COLUMNS,            sizeof(XF_Epilog_Hash_Columns),            HT_T_TINY    , FILL },
   {CN_XF_EPILOG_ITEMISE_COLUMNS,         sizeof(XF_Epilog_Itemise_Columns),         HT_T_TINY    , FILL },
-  {CN_XF_EPILOG_ITEMSTRIP_COLNM,         sizeof(XF_Epilog_ItemStrip_colNm),         HT_T_TINY    , FILL },
   {CN_XF_EPILOG_MAP_COLUMNS,             sizeof(XF_Epilog_Map_Columns),             HT_T_TINY    , FILL },
   {CN_XF_EPILOG_PROMOTE_FILTER,          sizeof(XF_Epilog_Promote_filter),          HT_T_TINY    , FILL },
   {CN_XF_EPILOG_REINSTATE_STAGE,         sizeof(XF_Epilog_Reinstate_stage),         HT_T_TINY    , FILL },

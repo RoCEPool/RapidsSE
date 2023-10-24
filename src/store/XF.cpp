@@ -15,7 +15,6 @@
 #include "XF_Epilog_Determine_Columns.hpp"
 #include "XF_Epilog_Fuse_project.hpp"
 #include "XF_Epilog_Hash_Columns.hpp"
-#include "XF_Epilog_ItemStrip_colNm.hpp"
 #include "XF_Epilog_Itemise_Columns.hpp"
 #include "XF_Epilog_Map_Columns.hpp"
 #include "XF_Epilog_Promote_filter.hpp"
