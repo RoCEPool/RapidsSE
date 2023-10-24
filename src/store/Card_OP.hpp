@@ -70,12 +70,12 @@ namespace STORE
     void vRpnTop         (String* psRpnExpr, Card_Top*       pCard_Top);
     void vRpnWhere       (String* psRpnExpr, Card_Where*     pCard_Where);
 
-    void vAs          (String* psRpnExpr, Card_As*        pCard_As);
-    void vBoolPred    (String* psRpnExpr, Card_BoolPred*  pCard_BoolPred);
-    void vBoolPart    (String* psRpnExpr, Card*           p_part, i8 i);
-    void vExpr        (String* psRpnExpr, Card_Expr*      pCard_Expr);
-    void vRpnCalc     (String* psRpnExpr, Card_RpnCalc*   pCard_RpnCalc);
-    void vTerm        (String* psRpnExpr, Card_Term*      pCard_Term);
+    void vRpnExpr_as          (String* psRpnExpr, Card_As*        p_as);
+    void vRpnExpr_boolPred    (String* psRpnExpr, Card_BoolPred*  p_boolPred);
+    void vRpnExpr_boolPart    (String* psRpnExpr, Card*           p_part, i8 i);
+    void vRpnExpr_expr        (String* psRpnExpr, Card_Expr*      p_expr);
+    void vRpnExpr_rpnCalc     (String* psRpnExpr, Card_RpnCalc*   p_rpnCalc);
+    void vRpnExpr_term        (String* psRpnExpr, Card_Term*      p_term);
 
     Index*    pGetIndex_chosenIndex(void);
     IndexDef* pCraftIndexDef_key(void);

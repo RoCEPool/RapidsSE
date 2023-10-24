@@ -669,7 +669,7 @@ void Card_OP::vRpnAggreg(String* psRpnExpr, Card_Aggreg* pCard_Aggreg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vExpr(psRpnExpr, pCard_Expr);
+    vRpnExpr_expr(psRpnExpr, pCard_Expr);
   }
 
 
@@ -734,11 +734,11 @@ void Card_OP::vRpnFilter(String* psRpnExpr, Card_Filter* pCard_Filter)
   Card* pCard_test = pCard_Filter->pSub_boolPred();
   if (CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolPred(psRpnExpr, pCard_CalcBool);
+    vRpnExpr_boolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_rpnCalc();
-    vRpnCalc(psRpnExpr, pCard_Calc);
+    vRpnExpr_rpnCalc(psRpnExpr, pCard_Calc);
   }
 }
 
@@ -775,7 +775,7 @@ void Card_OP::vRpnGbyAgg(String* psRpnExpr, Card_GbyAgg* pCard_GbyAgg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vExpr(psRpnExpr, pCard_Expr);
+    vRpnExpr_expr(psRpnExpr, pCard_Expr);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -806,7 +806,7 @@ void Card_OP::vRpnGbyAgg(String* psRpnExpr, Card_GbyAgg* pCard_GbyAgg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vExpr(psRpnExpr, pCard_Expr);
+    vRpnExpr_expr(psRpnExpr, pCard_Expr);
   }
 
 //  vTrace("%s\n"_Stz,szRpnExpr);
@@ -840,11 +840,11 @@ void Card_OP::vRpnHaving(String* psRpnExpr, Card_Having* pCard_Having)
   Card* pCard_test = pCard_Having->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolPred(psRpnExpr, pCard_CalcBool);
+    vRpnExpr_boolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Having->pSub_rpnCalc();
-    vRpnCalc(psRpnExpr, pCard_Calc);
+    vRpnExpr_rpnCalc(psRpnExpr, pCard_Calc);
   }
 }
 
@@ -933,11 +933,11 @@ void Card_OP::vRpnIndexJoin_constraint(String* psRpnExpr, Card_IndexJoin* pCard_
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolPred(psRpnExpr, pCard_CalcBool);
+    vRpnExpr_boolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
-    vRpnCalc(psRpnExpr, pCard_Calc);
+    vRpnExpr_rpnCalc(psRpnExpr, pCard_Calc);
   }
 
 }
@@ -1097,11 +1097,11 @@ void Card_OP::vRpnKeyExists_constraint(String* psRpnExpr, Card_KeyExists* pCard_
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolPred(psRpnExpr, pCard_CalcBool);
+    vRpnExpr_boolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
-    vRpnCalc(psRpnExpr, pCard_Calc);
+    vRpnExpr_rpnCalc(psRpnExpr, pCard_Calc);
   }
 
 }
@@ -1188,11 +1188,11 @@ void Card_OP::vRpnKeyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists* 
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolPred(psRpnExpr, pCard_CalcBool);
+    vRpnExpr_boolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
-    vRpnCalc(psRpnExpr, pCard_Calc);
+    vRpnExpr_rpnCalc(psRpnExpr, pCard_Calc);
   }
 
 }
@@ -1240,7 +1240,7 @@ void Card_OP::vRpnOrdAgg(String* psRpnExpr, Card_OrdAgg* pCard_OrdAgg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vExpr(psRpnExpr, pCard_Expr);
+    vRpnExpr_expr(psRpnExpr, pCard_Expr);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1271,7 +1271,7 @@ void Card_OP::vRpnOrdAgg(String* psRpnExpr, Card_OrdAgg* pCard_OrdAgg)
     }
 
     Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
-    vExpr(psRpnExpr, pCard_Expr);
+    vRpnExpr_expr(psRpnExpr, pCard_Expr);
   }
 }
 
@@ -1305,7 +1305,7 @@ void Card_OP::vRpnProject(String* psRpnExpr, Card_Project* pCard_Project)
       psRpnExpr->vConcat("  "_Stz);
     }
 
-    vExpr(psRpnExpr, pCard_Expr);
+    vRpnExpr_expr(psRpnExpr, pCard_Expr);
   }
 
 }
@@ -1344,7 +1344,7 @@ void Card_OP::vRpnSort(String* psRpnExpr, Card_Sort* pCard_Sort)
     if (i_Child)
       psRpnExpr->vConcat(" ,"_Stz);
 
-    vExpr(psRpnExpr, pCard_Expr);
+    vRpnExpr_expr(psRpnExpr, pCard_Expr);
 
     Card* p_direction = pCard_Expr->pSub_direction();
 
@@ -1370,7 +1370,7 @@ void Card_OP::vRpnTop(String* psRpnExpr, Card_Top* pCard_Top)
 
   psRpnExpr->vCatSprint(" type %s "_Stz, szColType->azChar());
 
-  vRpnCalc(psRpnExpr, pCard_Calc);
+  vRpnExpr_rpnCalc(psRpnExpr, pCard_Calc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1385,11 +1385,11 @@ void Card_OP::vRpnWhere(String* psRpnExpr, Card_Where* pCard_Where)
   Card* pCard_test = pCard_Where->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vBoolPred(psRpnExpr, pCard_CalcBool);
+    vRpnExpr_boolPred(psRpnExpr, pCard_CalcBool);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_Where->pSub_rpnCalc();
-    vRpnCalc(psRpnExpr, pCard_Calc);
+    vRpnExpr_rpnCalc(psRpnExpr, pCard_Calc);
   }
 }
 
@@ -1397,32 +1397,32 @@ void Card_OP::vRpnWhere(String* psRpnExpr, Card_Where* pCard_Where)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_As                                                */
+/* produce <expr> for p_as                                                    */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vAs(String* psRpnExpr, Card_As* pCard_As)
+void Card_OP::vRpnExpr_as(String* psRpnExpr, Card_As* p_as)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  psRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szFacet(SF_NONE));
+  psRpnExpr->vCatSprint(" as %s"_Stz, p_as->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <calcBool>                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vBoolPred(String* psRpnExpr, Card_BoolPred* pCard_BoolPred)
+void Card_OP::vRpnExpr_boolPred(String* psRpnExpr, Card_BoolPred* p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCard_BoolPred->bIsBraced())
+  if (p_boolPred->bIsBraced())
     psRpnExpr->vConcat(" }"_Stz);
 
-  vBoolPart(psRpnExpr, pCard_BoolPred, 0);
+  vRpnExpr_boolPart(psRpnExpr, p_boolPred, 0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append part                                                                */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
+void Card_OP::vRpnExpr_boolPart(String* psRpnExpr, Card* p_part, i8 i)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(i);
@@ -1435,19 +1435,19 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
 
     switch (eSubCard) {
       case CK_ANDCONJ:
-        vBoolPart(psRpnExpr, _pCard_AndConj(pSubCard), 0);
+        vRpnExpr_boolPart(psRpnExpr, _pCard_AndConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" and"_Stz);
         break;
        case CK_NOTCONJ:
-        vBoolPart(psRpnExpr, _pCard_NotConj(pSubCard), 0);
+         vRpnExpr_boolPart(psRpnExpr, _pCard_NotConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" not"_Stz);
         break;
       case CK_ORCONJ:
-        vBoolPart(psRpnExpr, _pCard_OrConj(pSubCard), 0);
+        vRpnExpr_boolPart(psRpnExpr, _pCard_OrConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_RLNCONJ:
-        vBoolPart(psRpnExpr, _pCard_RlnConj(pSubCard), 0);
+        vRpnExpr_boolPart(psRpnExpr, _pCard_RlnConj(pSubCard), 0);
         psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
         break;
       case CK_TERM:
@@ -1470,18 +1470,18 @@ void Card_OP::vBoolPart(String* psRpnExpr, Card* p_part, i8 i)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_Expr                                              */
+/* produce <expr> for p_expr                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vExpr(String* psRpnExpr, Card_Expr* pCard_Expr)
+void Card_OP::vRpnExpr_expr(String* psRpnExpr, Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_As*      p_as      = nullptr;
   Card_RpnCalc* p_rpnCalc = nullptr;
 
-  i8 nSubCards = pCard_Expr->nItems();
+  i8 nSubCards = p_expr->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pCard = pCard_Expr->pGet(i_Child);
+    Card *pCard = p_expr->pGet(i_Child);
 
     eCK eCard = pCard->eCard();
 
@@ -1503,36 +1503,36 @@ void Card_OP::vExpr(String* psRpnExpr, Card_Expr* pCard_Expr)
                         aCT[p_rpnCalc->pSymbol()->eColType()]);
 
   if (p_as)
-    vAs(psRpnExpr, p_as);
+    vRpnExpr_as(psRpnExpr, p_as);
 
   if (p_rpnCalc->bNeedsBrace()) {
     psRpnExpr->vConcat(" }"_Stz);
   }
-  vRpnCalc(psRpnExpr, p_rpnCalc);
+  vRpnExpr_rpnCalc(psRpnExpr, p_rpnCalc);
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_RpnCalc                                          */
+/* produce <expr> for p_rpnCalc                                               */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpnCalc(String* psRpnExpr, Card_RpnCalc* pCard_RpnCalc)
+void Card_OP::vRpnExpr_rpnCalc(String* psRpnExpr, Card_RpnCalc* p_rpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!pCard_RpnCalc->pSymbol()->bHasType()) {
-    pCard_RpnCalc->vDump(__func__);
-    RASSERT(pCard_RpnCalc->pSymbol()->bHasType());
+  if (!p_rpnCalc->pSymbol()->bHasType()) {
+    p_rpnCalc->vDump(__func__);
+    RASSERT(p_rpnCalc->pSymbol()->bHasType());
   }
 
-  i8 nSubCards = pCard_RpnCalc->nItems();
+  i8 nSubCards = p_rpnCalc->nItems();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard = pCard_RpnCalc->pGet(i_Child);
+    Card* pCard = p_rpnCalc->pGet(i_Child);
 
     eCK eCard = pCard->eCard();
 
     switch (eCard) {
 
       case CK_TERM:
-        vTerm(psRpnExpr, _pCard_Term(pCard));
+        vRpnExpr_term(psRpnExpr, _pCard_Term(pCard));
         break;
 
       default:
@@ -1546,22 +1546,22 @@ void Card_OP::vRpnCalc(String* psRpnExpr, Card_RpnCalc* pCard_RpnCalc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for pCard_Term                                              */
+/* produce <expr> for p_term                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vTerm(String* psRpnExpr, Card_Term* pCard_Term)
+void Card_OP::vRpnExpr_term(String* psRpnExpr, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (pCard_Term->pSymbol()->bIs_Stm_Col() ||
-      pCard_Term->pSymbol()->bIs_Tbl_Col()) {
+  if (p_term->pSymbol()->bIs_Stm_Col() ||
+      p_term->pSymbol()->bIs_Tbl_Col()) {
 
-    if (!pCard_Term->pSymbol()->bHasType()) {
-      pCard_Term->vDump(__func__);
-      RASSERT(pCard_Term->pSymbol()->bHasType());
+    if (!p_term->pSymbol()->bHasType()) {
+      p_term->vDump(__func__);
+      RASSERT(p_term->pSymbol()->bHasType());
     }
   }
 
-  psRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szFacet(SF_NONE));
+  psRpnExpr->vCatSprint(" %s"_Stz, p_term->szFacet(SF_NONE));
 }
 
 /*----------------------------------------------------------------------------*/
