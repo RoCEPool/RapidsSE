@@ -1667,17 +1667,6 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
       sCode = ""_Stz;
       m_pCommonCode->vSeekStart();
 
-      // get the index columns
-      //Column* pIndexColumn = pIndexDef->pGetColumn(i_Col);
-
-      // get the steamDef column No maching the indexColumn
-      //i8 iStreamDefCol = pIndexDef->iGetStreamDefCol(pIndexColumn->iColumnNo());
-
-      // make the column name
-      //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, iStreamDefCol);
-
-      //Column *pColumn = pStreamDefOut->pGetColumn(iStreamDefCol);
-
       if (pIndexDef->eKeyKind() == KE_GENERAL) {
         switch (pColumn->eColumnType()) {
 

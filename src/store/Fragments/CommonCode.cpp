@@ -410,7 +410,7 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vPotTubRowPix --------------------------------------------------------------*/
+/*-- vPotTubRowPix -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPotTubRowPix
 void vPotTubRowPix(Dynamic_T* aDynamicT) {
@@ -1031,11 +1031,18 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
   }
   else {
-    nSrcSize = strlen(szSrcStz) + 1;
-
     // get the destination string
     szDstStz = __ROW_INFO_TO__.m_acStrArea;
-    strncpy(szDstStz, szSrcStz, nSrcSize);
+
+		nSrcSize = strlen(szSrcStz) + 1;
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+    while (iBytesToCopy--)
+			*d++ = *s++;
+
+    *d = '\0';
 
     // copy the source to the destination
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
@@ -1092,7 +1099,15 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
 
     // get the destination string
     szDstStz = __ROW_INFO_TO__.m_acStrArea;
-    strncpy(szDstStz, szSrcStz, nSrcSize);
+
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+		while (iBytesToCopy--)
+			*d++ = *s++;
+
+		*d = '\0';
 
     // copy the source to the destination
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = (i8)szDstStz;
@@ -1205,9 +1220,18 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
    }
    else {
      nSrcSize = strlen(szSrcStz) + 1;
+
      // get the destination string
      szDstStz = __ROW_INFO_TO__.m_acStrArea;
-     strncpy(szDstStz, szSrcStz, sizeof(aDynamicT->m_xRowInfoTO.m_cStringArea));
+
+		 char *d = szDstStz;
+		 const char *s = (char*)szSrcStz;
+
+		 i8 iBytesToCopy = nSrcSize - 1;
+		 while (iBytesToCopy--)
+			 *d++ = *s++;
+
+		 *d = '\0';
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
@@ -1278,14 +1302,24 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = C_DATUM_NULL;
   }
   else {
-    nSrcSize = strlen(szSrcStz);
+    nSrcSize = strlen(szSrcStz) + 1;
 #ifdef WITH_CLANG
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = (i8)aExtern_IndexTreeAllotPayStr(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, szSrcStz);
 #endif
 
+		// get the destination string
     szDstStz = (char*)aDynamicT->m_aiPayload[__INDEX_COLUMN__];
-    strncpy(szDstStz, szSrcStz, 1024); // todo: discuss with Alka
+
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+		while (iBytesToCopy--)
+			*d++ = *s++;
+
+		*d = '\0';
+
   }
   // marker-end
 }

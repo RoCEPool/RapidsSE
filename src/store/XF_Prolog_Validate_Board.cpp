@@ -46,8 +46,13 @@ void XF_Prolog_Validate_Board::vValidate(CardIter* pCI)
 
   XF_Prolog_Validate_Board* pXF_Validate = new XF_Prolog_Validate_Board(pCI);
 
-  pXF_Validate->vValidate();
-
+  try {
+    pXF_Validate->vValidate();
+  }
+  catch (Error xError) {
+    delete pXF_Validate;
+    throw xError;
+  }
   delete pXF_Validate;
 }
 
