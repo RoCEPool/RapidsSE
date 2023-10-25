@@ -1319,7 +1319,6 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
 			*d++ = *s++;
 
 		*d = '\0';
-
   }
   // marker-end
 }

@@ -32,6 +32,7 @@ namespace BASE
 
     void operator =(i8 iArg);
     void operator =(Stz* szArg);
+    void operator =(const Stz* szArg);
     void operator =(char* asArg);
     void operator =(const char* asArg);
 
@@ -240,6 +241,19 @@ void String_t<AREA>::operator =(Stz* szArg)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   StrLib::vCopy(m_caCharArea, AREA, szArg->azChar());
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::operator =(const Stz* szArg)
+{
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+
+  StrLib::vCopy(m_caCharArea, AREA, (const char*) szArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
