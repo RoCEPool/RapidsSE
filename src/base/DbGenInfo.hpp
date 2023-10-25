@@ -14,13 +14,13 @@ enum eDBG // DB GEN Strings identification
   DBG_ORDER_LINE,
   DBG_NATION,
   DBG_REGION,
-  DBG_MAX
+  DBG_ENUMS,
 };
 
-static const i8 DBG_MAX_COL = 20;
+const i8 DBG_MAX_COL = 20;
 
-extern Stz *aDBG_TblNme[DBG_MAX];
-extern Stz *aDBG_Info[DBG_MAX][DBG_MAX_COL];
+extern Stz *aDBG_TblNme[DBG_ENUMS];
+extern Stz *aDBG_Info[DBG_ENUMS][DBG_MAX_COL];
 
 Stz* szGetDbgTblNme (i8 iTbl);
 Stz* szGetDbgColNme (i8 iTbl, i8 iCol);

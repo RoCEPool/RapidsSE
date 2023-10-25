@@ -6,7 +6,7 @@
 #include "DbGenInfo.hpp"
 
 
-Stz *aDBG_TblNme[DBG_MAX]
+Stz *aDBG_TblNme[DBG_ENUMS]
     {
         "NONE"_Stz,
         "PART"_Stz,
@@ -19,7 +19,7 @@ Stz *aDBG_TblNme[DBG_MAX]
         "REGION"_Stz,
     };
 
-Stz *aDBG_Info[DBG_MAX][DBG_MAX_COL]
+Stz *aDBG_Info[DBG_ENUMS][DBG_MAX_COL]
     {
         {
           "NONE"_Stz
@@ -54,11 +54,11 @@ Stz *aDBG_Info[DBG_MAX][DBG_MAX_COL]
 
 Stz* szGetDbgTblNme (i8 iTbl)
 {
-  return iTbl < DBG_MAX ? aDBG_TblNme[iTbl] : nullptr;
+  return iTbl < DBG_ENUMS ? aDBG_TblNme[iTbl] : nullptr;
 }
 
 Stz* szGetDbgColNme (i8 iTbl, i8 iCol) {
-  if (iTbl < DBG_MAX && iCol < DBG_MAX_COL) {
+  if (iTbl < DBG_ENUMS && iCol < DBG_MAX_COL) {
     return aDBG_Info[iTbl][iCol];
   } else {
     return nullptr;
