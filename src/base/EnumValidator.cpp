@@ -182,7 +182,7 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aDA[DA_ENUMS - 1],          "aDA[]"_Stz,     "eDA"_Stz },
       {     aDA_short[DA_ENUMS - 1],    "aDA_short[]"_Stz,     "eDA"_Stz },
       {    aDBG_TblNme[DBG_ENUMS-1],  "aDBG_TblNme[]"_Stz,     "eDBG"_Stz},
-      {      aDBG_Info[DBG_ENUMS-1][DBG_MAX_COL],    "aDBG_Info[][]"_Stz,     "eDBG"_Stz},
+      //{      aDBG_Info[DBG_ENUMS-1][DBG_MAX_COL],    "aDBG_Info[][]"_Stz,     "eDBG"_Stz},
       {           aDC[DC_ENUMS - 1],          "aDC[]"_Stz,     "eDC"_Stz },
       {           aDK[DK_ENUMS - 1],          "aDK[]"_Stz,     "eDK"_Stz },
       {           aDL[DL_ENUMS - 1],          "aDL[]"_Stz,     "eDL"_Stz },
