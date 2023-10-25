@@ -129,11 +129,17 @@
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
     if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-        nSrcSize = strlen((char*)iArg2) + 1;                                \
-        szDstStz = szAreaTo;                                                \
-        strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
-        iArgTo =  (i8)szDstStz;                                             \
-        szAreaTo += nSrcSize + 1;                                           \
+		  nSrcSize = strlen((char*)iArg2);                                      \
+			char *d = szAreaTo;                                                   \
+			const char *s = (char*)iArg2;                                         \
+                                                                            \
+			i8 iBytesToCopy = nSrcSize;                                           \
+      while (iBytesToCopy--)                                                \
+			  *d++ = *s++;                                                        \
+                                                                            \
+      *d = '\0';                                                            \
+      iArgTo =  (i8)szAreaTo;                                               \
+      szAreaTo += nSrcSize + 1;                                             \
     }                                                                       \
   }
 
@@ -660,18 +666,6 @@
   iArg1 = *(--paW);                                                         \
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
-
-#define _COPYSTR(szAreaTo)                                                  \
-  {                                                                         \
-    iArg1 = *(--paW);                                                       \
-    if (iArg1 == C_DATUM_NULL)                                              \
-      szAreaTo = (char*)iArg1;                                              \
-    else {                                                                  \
-        nSrcSize = strlen((char*)iArg1) + 1;                                \
-        szDstStz = szAreaTo;                                                \
-        strncpy(szDstStz, (char*)iArg1, nSrcSize);                          \
-      }                                                                     \
-  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT DAY
