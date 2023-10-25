@@ -76,8 +76,8 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Process row ?
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+    aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
@@ -158,7 +158,7 @@ i8 vNullCheck(Dynamic_T* aDynamicT) {
 
   // check null result
   if (bNullResult) {
-    aDynamicT->m_iProcessRow = 0;
+    aDynamicT->m_bProcessRow = false;
     goto __L_LABEL_OUTER_LOOP__;
   }
 
@@ -410,7 +410,7 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vPotTubRowPix --------------------------------------------------------------*/
+/*-- vPotTubRowPix -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPotTubRowPix
 void vPotTubRowPix(Dynamic_T* aDynamicT) {
@@ -451,8 +451,8 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // process the row ?
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+    aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_LOOP__;
   }
 
@@ -636,7 +636,7 @@ void vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
   // traverse the index
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
-    aDynamicT->m_iProcessRow = 1;
+    aDynamicT->m_bProcessRow = true;
 
     aDynamicT->m_xRowInfoPT.m_acStrArea = aDynamicT->m_xRowInfoPT.m_acStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
@@ -676,7 +676,7 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
   // traverse theindex
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
-    aDynamicT->m_iProcessRow = 1;
+    aDynamicT->m_bProcessRow = true;
 
     aDynamicT->m_xRowInfoPT.m_acStrArea = aDynamicT->m_xRowInfoPT.m_acStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
@@ -937,7 +937,6 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 		__ROW_INFO_TO__.m_nStringAreaSize -= nSrcSize;
 		__ROW_INFO_TO__.m_acStrArea += iDstLen;
 #ifdef WITH_CLANG
-    //vExtern_TubRowStrSize(aDynamicT->m_pTub,iDstLen);
     __EXTERN_ROWSTRSIZE__;
 #endif
 
@@ -1032,11 +1031,18 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
   }
   else {
-    nSrcSize = strlen(szSrcStz) + 1;
-
     // get the destination string
     szDstStz = __ROW_INFO_TO__.m_acStrArea;
-    strncpy(szDstStz, szSrcStz, nSrcSize);
+
+		nSrcSize = strlen(szSrcStz) + 1;
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+    while (iBytesToCopy--)
+			*d++ = *s++;
+
+    *d = '\0';
 
     // copy the source to the destination
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
@@ -1047,7 +1053,6 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 
 #ifdef WITH_CLANG
-    //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
     __EXTERN_ROWSTRSIZE__;
 #endif
   }
@@ -1094,7 +1099,15 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
 
     // get the destination string
     szDstStz = __ROW_INFO_TO__.m_acStrArea;
-    strncpy(szDstStz, szSrcStz, nSrcSize);
+
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+		while (iBytesToCopy--)
+			*d++ = *s++;
+
+		*d = '\0';
 
     // copy the source to the destination
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = (i8)szDstStz;
@@ -1115,7 +1128,6 @@ void vTubRowStr(Dynamic_T* aDynamicT) {
   {
   // marker-start
 #ifdef WITH_CLANG
-    //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
     __EXTERN_ROWSTRSIZE__;
 #endif
   }
@@ -1208,9 +1220,18 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
    }
    else {
      nSrcSize = strlen(szSrcStz) + 1;
+
      // get the destination string
      szDstStz = __ROW_INFO_TO__.m_acStrArea;
-     strncpy(szDstStz, szSrcStz, sizeof(aDynamicT->m_xRowInfoTO.m_cStringArea));
+
+		 char *d = szDstStz;
+		 const char *s = (char*)szSrcStz;
+
+		 i8 iBytesToCopy = nSrcSize - 1;
+		 while (iBytesToCopy--)
+			 *d++ = *s++;
+
+		 *d = '\0';
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
@@ -1220,7 +1241,6 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      // update the tub string size
      __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 #ifdef WITH_CLANG
-     //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
      __EXTERN_ROWSTRSIZE__;
 #endif
   }
@@ -1282,14 +1302,23 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = C_DATUM_NULL;
   }
   else {
-    nSrcSize = strlen(szSrcStz);
+    nSrcSize = strlen(szSrcStz) + 1;
 #ifdef WITH_CLANG
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = (i8)aExtern_IndexTreeAllotPayStr(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, szSrcStz);
 #endif
 
+		// get the destination string
     szDstStz = (char*)aDynamicT->m_aiPayload[__INDEX_COLUMN__];
-    strncpy(szDstStz, szSrcStz, nSrcSize); // todo: discuss with Alka
+
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+		while (iBytesToCopy--)
+			*d++ = *s++;
+
+		*d = '\0';
   }
   // marker-end
 }
@@ -1337,8 +1366,8 @@ i8 iResetPLKey(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process row ?
-  if ( ! aDynamicT->m_iProcessRow ) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+    aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_LOOP__;
   }
 

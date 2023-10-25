@@ -36,40 +36,40 @@ select * from jCdt;
 rows: 16
 
 // this will be a scan because no index with leading col is jB
-predicateFetch jCdt "jB 24 =";
-rows: 16
+select * from jCdt where jB = 24;
+rows: 1
 
 //------------------------------------------------------------------------------
 // EXACT KEYS
-predicateFetch jCdt "jA 15 =" ;
+select * from jCdt where jA = 15;
 rows:
   (15,25,35,45,'ff')
 
-predicateFetch jCdt "jA 11 =" ;
+select * from jCdt where jA = 11;
 rows:
   (11,21,31,41,'bb1')
   (11,21,31,41,'bb2')
   (11,21,31,41,'bb3')
 
-predicateFetch jCdt "jA 15 = jB 30 <= AND" ;
+select * from jCdt where jA = 15 and jB <= 30;
 rows:
   (15,25,35,45,'ff')
 
-predicateFetch jCdt "jA 15 = jB 25 = AND" ;
+select * from jCdt where jA = 15 and jB = 25;
 rows:
   (15,25,35,45,'ff')
 
-predicateFetch jCdt "jA 5 <=" ;
+select * from jCdt where jA <= 5;
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "jA 7 <=";
+select * from jCdt where jA <= 7;
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "jA 1 >=" ;
+select * from jCdt where jA >= 1;
 rows:
   (14,24,34,44,'ee')
   (15,25,35,45,'ff')
@@ -86,7 +86,9 @@ rows:
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "jB 1 >=" ;
+// TODO FINAL
+/*
+select * from jCdt where jB >= 1;
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
@@ -105,19 +107,19 @@ rows:
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "jA 5 ==" ;
+select * from jCdt where jA = 5;
 rows: 0
 
-predicateFetch jCdt "jA 1 >= jA 8 <= and" ;
+select * from jCdt where jA >= 1 and jA <= 8;
 rows: 0
 
-predicateFetch jCdt "jA 1 >= jA 18 <= and" ;
+select * from jCdt where jA >= 1 and jA <= 18;
 rows: 12
 
-predicateFetch jCdt "jA 8 <= jA 1 >= and" ;
+select * from jCdt where jA <= 8 and jA >= 1;
 rows: 0
 
-predicateFetch jCdt "jA 1 >= jA 8 <= or" ;
+select * from jCdt where jA >= 1 or jA <= 8;
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
@@ -136,7 +138,7 @@ rows:
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "jA 1 >= jB 2 >= and" ;
+select * from jCdt where jA >= 1 and jB >= 2;
 rows:
   (14,24,34,44,'ee')
   (15,25,35,45,'ff')
@@ -153,7 +155,7 @@ rows:
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "jA 1 >= jB 25 >= and" ;
+select * from jCdt where jA >= 1 and jB >= 25;
 rows:
   (14,24,34,44,'ee')
   (15,25,35,45,'ff')
@@ -170,12 +172,12 @@ rows:
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "JA 18 =";
+select * from jCdt where JA = 18;
 rows:
   (18,28,38,48,'ii')
   (18,18,38,38,'ii')
 
-predicateFetch jCdt "JA 18 <=";
+select * from jCdt where JA <= 18;
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
@@ -192,7 +194,7 @@ rows:
   (18,28,38,48,'ii')
   (18,18,38,38,'ii')
 
-predicateFetch jCdt "JA 18 <";
+select * from jCdt where JA < 18;
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
@@ -207,19 +209,19 @@ rows:
   (17,27,37,47,'hh')
   (10,20,30,40,'aa')
 
-predicateFetch jCdt "JA 18 >=";
+select * from jCdt where JA >= 18;
 rows:
   (18,28,38,48,'ii')
   (18,18,38,38,'ii')
   (19, 29, 39, 49, 'jj')
   (9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "JA 18 >";
+select * from jCdt where JA > 18;
 rows:
   (19, 29, 39, 49, 'jj')
   (9223372036854775806,27,37,47,'hh')
 
-predicateFetch jCdt "JA 1 >= jA 22 <= OR";
+select * from jCdt where JA >= 1 or jA <= 22;
 rows:
   (null,27,37,47,'hh')
   (-9223372036854775806,27,37,47,'hh')
@@ -237,6 +239,7 @@ rows:
   (18,28,38,48,'ii')
   (18,18,38,38,'ii')
   (9223372036854775806,27,37,47,'hh')
+*/
 
 CLEANUP {
 

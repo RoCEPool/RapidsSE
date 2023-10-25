@@ -56,7 +56,7 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(__func__,0,(Stz*)__func__);
+  vDump(__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -68,12 +68,12 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
     return;
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_emit = pSub_emit();
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = this;
   pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -90,7 +90,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -98,9 +98,9 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_emit = pSub_emit();
 
-  pCI->Prior.m_pProjection = pCI->G.p_projection;
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard();
 
@@ -110,22 +110,22 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
+void Card_OrdAgg::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->Prior.m_pProjection) {
-      pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+    if (pCI->Flux.m_pArriving) {
+      pCI->G.p_key->vTypes_For_stmCol(pCI);
       pCI->G.p_key->vRenumberAll_expr();
     }
   }
 
-  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+  if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
 
-    if (pCI->Prior.m_pProjection) {
-      pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
-      pCI->G.p_projection->vRenumberAll_expr();
+    if (pCI->Flux.m_pArriving) {
+      pCI->G.p_emit->vEnsureTypes_For_stmCol(pCI);
+      pCI->G.p_emit->vRenumberAll_expr();
     }
 
   }
@@ -138,7 +138,7 @@ void Card_OrdAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
+  vValidate_mustHave(CK_LEVEL,CK_STREAM,CK_NONE);
 
   UNUSED(pParent);
   Card::vValidate(pCI,iDepth,pParent);

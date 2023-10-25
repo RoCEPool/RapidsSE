@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* _ray_countStar                                                             */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+
+//create index Ix_O_CUSTKEY on Orders(O_CUSTKEY);
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_countStar"
+select count(*)
+  from Customer
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -6,7 +6,7 @@
 
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 
-#include "Fold.hpp"
+#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/

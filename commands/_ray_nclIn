@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* _ray_nclIn -- sub-query flattening test                                    */
+/*============================================================================*/
+
+// --initial _ray_nclIn
+
+_ray_create
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_nclIn"
+select count(*)
+  from orders
+ where O_ORDERKEY in (select L_ORDERKEY
+                        from Lineitem
+                       group by L_ORDERKEY
+                      having sum(l_quantity) > 100)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryLeaks;
+
+_ray_drop
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

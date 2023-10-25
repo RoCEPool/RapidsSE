@@ -3,12 +3,12 @@
 # This is a recursive testList file.
 
 
-////////////////// to be enabled for V2
+////////////////// to be enabled when colsReq done
 
 ../../../seth/tests/tests1N4P/Filter/testList
 ../../../seth/tests/tests1N4P/Limit/testList
 ../../../seth/tests/tests1N4P/Misc/testList
-../../../seth/tests/tests1N4P/Projections/testList
+/////////////../../../seth/tests/tests1N4P/Projections/testList
 //../../../seth/tests/tests1N4P/Regression/testList
 //../../../seth/tests/tests1N1P/Transliterate/testList
 

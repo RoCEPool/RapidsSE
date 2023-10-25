@@ -6,12 +6,10 @@
 
 #include "Card_Bound.hpp"
 #include "Card_COLUMN.hpp"
-#include "Card_Index.hpp"
-#include "Card_IdxCol.hpp"
-#include "Card_IdxColList.hpp"
 #include "Card_StreamPtn.hpp"
 #include "Card_TablePtn.hpp"
-#include "Card_Term.hpp"
+
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -144,11 +142,11 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
 void Card_Cast::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
-  UNUSED(pParent);
 
   vValidate_notHave(CK_LEVEL,CK_NONE);
+
+  Card::vValidate(pCI,iDepth,pParent);
+  pCI->vValidateChildren(this,iDepth+1);
 
   vValidationPassed();
 }

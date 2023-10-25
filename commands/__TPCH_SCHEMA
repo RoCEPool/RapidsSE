@@ -76,17 +76,18 @@ _supplier
 
 // Customer (partitioned on c_custkey)
 create        index IxC_CUSTKEY     on Customer (C_CUSTKEY);
+create        index IxC_NATIONKEY   on Customer (C_NATIONKEY);
 
 // Lineitem (partitioned on l_orderkey)
 create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
 create        index IxL_SHIPDATE    on Lineitem (L_SHIPDATE);
-create        index IxL_SUPPKEY     on Lineitem (L_SUPPKEY);
+//create        index IxL_SUPPKEY     on Lineitem (L_SUPPKEY);
 create        index IxL_PARTKEY     on Lineitem (L_PARTKEY);
 create        index IxL_RECEIPTDATE on Lineitem (L_RECEIPTDATE);
 
 // Nation (replicated)
 create        index IxN_NATIONKEY   on Nation   (N_NATIONKEY);
-//create      index IxN_REGIONKEY   on Nation   (N_REGIONKEY);
+create        index IxN_REGIONKEY   on Nation   (N_REGIONKEY);
 
 // Orders (partitioned on c_custkey)
 create        index IxO_CUSTKEY     on Orders   (O_CUSTKEY);
@@ -102,10 +103,11 @@ create        index IxP_PARTKEY     on part     (P_PARTKEY);
 
 // Region (replicated)
 create        index IxR_REGIONKEY   on Region   (R_REGIONKEY);
-create        index IxR_NAME        on Region   (R_NAME);
+//create        index IxR_NAME        on Region   (R_NAME);
 
 // Supplier (partitioned on s_suppkey)
 create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
+create        index IxS_NATIONKEY   on Supplier (S_NATIONKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

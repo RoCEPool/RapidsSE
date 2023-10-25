@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* _ray_scan_gbyAgg                                                           */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_orders
+
+load Orders   "<tpch_dir>/orders.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_scan_gbyAgg"
+select O_CUSTKEY, sum(O_TOTALPRICE)
+  from Orders
+ group by O_CUSTKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Orders;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

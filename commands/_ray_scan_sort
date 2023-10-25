@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* _ray_scan_sort                                                             */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_scan_sort"
+select C_MKTSEGMENT, C_NATIONKEY, C_CUSTKEY
+  from Customer
+ order by C_CUSTKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -89,29 +89,31 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 {
   _static_
 
-  pCI->G.p_projection = nullptr;
+  pCI->G.p_emit = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if ((pCI->G.p_projection = pMain->pSub_projection()))
+    if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
   }
-  if (! pCI->G.p_projection)
+  if (! pCI->G.p_emit)
     return;
 
 
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_AS_NM, "_SQ1RESULT_"_Stz));
+  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_NMD_COL, "__RESULT1"_Stz));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
+  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
 
   Card_Expr* p_expr_found =
-      pCI->Prior.m_pProjection->pGetExpr(0);
+      pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-  pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->szP_Type());
+  pCI->G.p_term->pSymbol()->vColType(p_expr_found->eColType());
 
-  pCI->G.p_rpnCalc->pSymbol()->Y_vColType(p_expr_found->szP_Type());
-  pCI->G.p_expr->pSymbol()->Y_vColType(p_expr_found->szP_Type());
+  pCI->G.p_rpnCalc->pSymbol()->vColType(p_expr_found->eColType());
+
+  pCI->G.p_expr-> SYM(SF_STM_COL,(i8)1);
+  pCI->G.p_expr->pSymbol()->vColType(p_expr_found->eColType());
 
 }
 
@@ -123,22 +125,22 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   _static_
 
 
-  pCI->G.p_projection = nullptr;
+  pCI->G.p_emit = nullptr;
   for (i8 i_Main = pCI->Sqy.m_i_FoldCard - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-    if ((pCI->G.p_projection = pMain->pSub_projection()))
+    if ((pCI->G.p_emit = pMain->pSub_emit()))
       break;
   }
-  if (! pCI->G.p_projection)
+  if (! pCI->G.p_emit)
     return;
 
   pCI->G.p_stream = new Card_Stream;
   pCI->G.p_fold->vAppendChild(pCI->G.p_stream);
-  pCI->G.p_stream->vAppendChild(pCI->G.p_projection->pDupCardRecursive());
+  pCI->G.p_stream->vAppendChild(pCI->G.p_emit->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
-/* find and mark possible call to subquery referenced in pCI->G.p_boolCalc    */
+/* find and mark possible call to subquery referenced in pCI->G.p_boolPred    */
 /*----------------------------------------------------------------------------*/
 bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 {
@@ -146,53 +148,52 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolPred->pConj_root();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI,&bFoundCall](Card_CONJUNCTION* p_pred, bool bUpwards)
+  auto bfMarkSqyCall = [pCI,&bFoundCall](Card_CONJUNCTION* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
     //  --  --  --  --  --  --  --  --  --  --  --  -- -- --
 
-    if (! (pCI->Sqy.m_pTerm_sqCall = p_pred->pGetTerm_boardNm(pCI)))
+    if (! (pCI->Sqy.m_pTerm_sqyCall = p_conj->pGetTerm_boardNm(pCI)))
       return C_CONTINUE_RECURSION;
 
-    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqCall->szSymbol(SF_NONE);
-    p_pred->vMark1(MARK_AT);
+    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqyCall->szFacet(SF_NONE);
+    pCI->Sqy.m_pConj_sqyCall = p_conj;
+    pCI->Sqy.m_pConj_sqyCall->vMark1(MARK_AT);
     bFoundCall = true;
 
-    if (p_pred->pSymbol()->bSame("exists"_Stz) ||
-        p_pred->pSymbol()->bSame("notExists"_Stz)) {
+    if (p_conj->pSymbol()->bSame("exists"_Stz) ||
+        p_conj->pSymbol()->bSame("notExists"_Stz)) {
 
-      RASSERT(p_pred->bIsSubQueryOp());
+      RASSERT(p_conj->bIsSqyOp());
 
-      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(0)->szSymbol(SF_NONE);
-      pCI->Sqy.m_sSqyNm  = p_pred->pGetTerm(1)->szSymbol(SF_NONE);
+      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(0)->szFacet(SF_NONE);
+      pCI->Sqy.m_sSqyNm  = p_conj->pGetTerm(1)->szFacet(SF_NONE);
       return C_TERMINATE_RECURSION;
     }
 
-    if (p_pred->pSymbol()->bSame("in"_Stz) || p_pred->pSymbol()->bSame("notIn"_Stz)) {
-      RASSERT(p_pred->bIsSubQueryOp());
-      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(2)->szSymbol(SF_NONE);
+    if (p_conj->pSymbol()->bSame("in"_Stz) || p_conj->pSymbol()->bSame("notIn"_Stz)) {
+      RASSERT(p_conj->bIsSqyOp());
+      pCI->Sqy.m_sSqyArg = p_conj->pGetTerm(2)->szFacet(SF_NONE);
       return C_TERMINATE_RECURSION;
     }
 
-    RASSERT(p_pred->bIsRelnOp());
+    RASSERT(p_conj->bIsRelnOp());
 
     return C_TERMINATE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bfMarkSqyCall);
   UNUSED(bIgnore);
 
-  if (bFoundCall)
-    return true;
-  return false;
+  return bFoundCall;
 }
 
 
@@ -401,6 +402,11 @@ TagSet* Board::pState(void)
 SubQuery* Board::pSubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+
+  RASSERT(! m_pDeck->pFindChild(CK_SUBQUERY) ||
+          ! m_pDeck->pFindChild(CK_SUBQUERY)->pSymbol()->Y_pGet(P_Pointer) ||
+            m_pDeck->pFindChild(CK_SUBQUERY)->pSymbol()->Y_pGet(P_Pointer) == m_pSubQuery);
 
   return m_pSubQuery;
 }

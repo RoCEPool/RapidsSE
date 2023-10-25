@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* _ray_FOLD_24_W_A_C_ro -- sub-query flattening test : refer Q2,17           */
+/*============================================================================*/
+
+// --initial _ray_FOLD_24_W_A_C_ro
+
+_ray_create
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_FOLD_24_W_A_C_ro"
+select count(*)
+  from Lineitem, Part, PartSupp
+ where P_PARTKEY  = L_PARTKEY
+   and PS_PARTKEY = P_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryLeaks;
+
+_ray_drop
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

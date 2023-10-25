@@ -5,8 +5,6 @@
 trackMemory;
 success;
 
-// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
-/*
 // no such table
 /optimise_passthru 
 pipeline is
@@ -22,8 +20,7 @@ begin
   stage stageC on origin :
     output | sink | stageA
 end ;
-failure contains: 'Table does not exist'
-*/
+failure contains: 'no such table'
 
 // create a table
 create table lineitem (
@@ -46,8 +43,6 @@ create table lineitem (
 );
 success
 
-// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
-/*
 // no such table
 /optimise_passthru 
 pipeline is
@@ -64,7 +59,6 @@ begin
     output | sink | stageA
 end ;
 failure contains: 'no such index'
-*/
 
 //------------------------------------------------------------------------------
 // create an index on shipdate(DATE)
@@ -253,8 +247,6 @@ end ;
 
 rows: 38
 
-// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
-/*
 //------------------------------------------------------------------------------
 // indexscan with indexjoin
 /optimise_passthru 
@@ -275,8 +267,7 @@ begin
     | stageStart
 end ;
 
-failure contains: 'Table does not exist'
-*/
+failure contains: 'no such table'
 
 create table orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
@@ -299,7 +290,7 @@ success
 
 //------------------------------------------------------------------------------
 // indexscan with indexjoin
-/optimise_passthru 
+/optimise_passthru
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -316,7 +307,6 @@ begin
     | sink
     | stageStart
 end ;
-
 rows: 5996
 
 /optimise_passthru 
@@ -356,6 +346,9 @@ rows: 0
 CLEANUP {
 
   drop table lineitem;
+  mute
+
+  drop table orders;
   mute
 
   bye;

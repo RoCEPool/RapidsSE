@@ -20,7 +20,7 @@ namespace STORE
     XF_Prolog_Move_on(CardIter* pCI);
    ~XF_Prolog_Move_on(void) noexcept(false);
 
-    static void vProlog(CardIter* pCI);
+    static void vMove(CardIter* pCI);
 
     void vXF_Move_on(void);
 

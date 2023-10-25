@@ -16,16 +16,16 @@ namespace STORE
     Card_Bound(void);
    ~Card_Bound(void) noexcept(false);
 
-    static Card_Bound*    pCreateFrom_PRED(Card_CONJUNCTION* p_PRED,
+    static Card_Bound*    pCreateFrom_CONJ(Card_CONJUNCTION* p_CONJ,
                                            char cTblSyn_boundedTo);
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 
     static bool bValidBoundForRelnOp(Symbol* pBound, Symbol* pRelnOp);
 
-    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
-    void vEnsureTypes_For_stmOdn(CardIter *pCI);
-    bool bEquivalent(Card_CmpConj* p_cmpPred);
+    void vEnsureTypes_For_stmCol(CardIter *pCI);
+    bool bEquivalent(Card_RlnConj* p_rlnConj);
 
     Card_Term* pGetTerm(i8 i_Term);
     Card_Term* pGetTerm_last(void);
@@ -36,10 +36,12 @@ namespace STORE
     bool bIsLBound(void);
     bool bIsUBound(void);
 
-    Card_Term* pGet_idxColOdn(void);
+    Card_Term* pGet_idxCol(void);
 
-    Card_Term* pGet_colOdn(void);
-    Card_Term* pGet_tblColOdn(void);
+    Card_Term* pGet_IfNot_idxCol(void);
+    Card_Term* pGet_tblCol(void);
+
+    void vShortForm(String* pString_b, Stz* szSep);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

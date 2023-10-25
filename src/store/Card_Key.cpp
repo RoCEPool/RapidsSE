@@ -69,7 +69,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   i8 i_Key = nChildCards() + 1;
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumberForm_keyOdn(i_Key);
+  p_expr_new->vRenumberForm_KeyCol(i_Key);
 
   if (Card_As* p_as = p_expr->pSub_as())
     p_expr_new->vAppendChild(p_as->pDupCardRecursive());
@@ -79,11 +79,11 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
   p_expr_new->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->Y_vColType(p_expr->szP_Type());
-  p_expr_new->pSymbol()->Y_vColType(p_expr->szP_Type());
+  p_rpnCalc->pSymbol()->vColType(p_expr->eColType());
+  p_expr_new->pSymbol()->vColType(p_expr->eColType());
 
   if (p_expr->pSub_direction()) {
-    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szSymbol(SF_NONE));
+    Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_NONE));
     p_expr_new->vAppendChild(p_direction);
   }
   else
@@ -102,9 +102,9 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(this->szP_Type());
+  RASSERT(CT_NONE != this->eColType());
 
-  if (! szP_Type()->bSame(p_key_arg->szP_Type()))
+  if (eColType() != p_key_arg->eColType())
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -153,12 +153,12 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vTypes_For_stmColOdn(CardIter *pCI)
+void Card_Key::vTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypes_For_stmOdn(pCI);
+    xKid.p_expr()->vEnsureTypes_For_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,7 +175,7 @@ void Card_Key::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
   // key is a set of expr
   for (Kid x_expr(this); x_expr.bEach(CK_EXPR); /**/) {
 
-    x_expr.p_expr()->vFactorAll_valOdn_IntoDistinct_expr(pCI);
+    x_expr.p_expr()->vFactorAll_ColSym_IntoDistinct_expr(pCI);
     p_subSet->vTransferChildren(pCI->G.p_subSet);
 
     DELETE_CARD(pCI->G.p_subSet);
@@ -185,18 +185,50 @@ void Card_Key::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* map the columns of this key                                                */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vMapColumns(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 i_Cell = 0;
+
+  for (Kid xKey(this); xKey.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_key = xKey.p_expr();
+
+    i_Cell++;
+    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
+    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card_Key::szP_Type(void)
+eCT Card_Key::eColType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szP_Type = nullptr;
+  eCT eColType = CT_NONE;
 
   if (Card_Expr* p_expr = pSub_expr())
-    szP_Type = p_expr->szP_Type();
+    eColType = p_expr->eColType();
 
-  return szP_Type;
+  return eColType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* short form                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vShortForm(String* pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pString->vCopy("k:"_Stz);
+  Card_EXPRLIST::vShortForm(pString);
+  //pString->vConcat("}"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,8 +252,8 @@ IndexDef* Card_Key::pToIndexDef(void)
     if (! p_term)
       continue;
 
-    Stz* szColNm  = p_term->szSymbol(SF_NONE);
-    eCT  eColType = p_term->pSymbol()->Y_eColType();
+    Stz* szColNm  = p_term->szFacet(SF_NONE);
+    eCT  eColType = p_term->pSymbol()->eColType();
 
     if (! szColNm || CT_NONE == eColType)
       continue;

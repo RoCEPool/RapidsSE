@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _ray_lessThan -- non-correlated sub-query                                  */
+/*============================================================================*/
+
+// --initial _ray_lessThan
+
+_ray_create
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_lessThan"
+select L_ORDERKEY, P_PARTKEY, l_quantity
+  from Lineitem, Part
+ where L_PARTKEY = P_PARTKEY
+  and l_quantity < 25.38
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryLeaks;
+
+_ray_drop
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

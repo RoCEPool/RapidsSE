@@ -16,7 +16,8 @@
 #include "eIV.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
-#include "ColsReq.hpp"
+#include "ColInj.hpp"
+
 #include "ColMap.hpp"
 #include "StageDef.hpp"
 
@@ -35,7 +36,7 @@ namespace STORE
   {
 
     friend class CombinedSrc;
-    friend class Stencil_v2;
+    friend class Stencil;
     friend class CodeSynthUtils;
 
   private:
@@ -62,9 +63,11 @@ namespace STORE
     Index*     m_pIndex;
     IndexDef*  m_pIndexDef;
 
-    ColsReq*   m_pColsReq;
-    ColMap*    m_pColMap;
 		ColHsh*    m_pColHsh;
+		ColInj*    m_pColInj;
+    ColMap*    m_pColMap;
+		ColPpg*    m_pColPpg;
+
 
     // stencils
     eSR m_eStencilFrom;
@@ -79,8 +82,9 @@ namespace STORE
 
     // labels
     s256 m_sLabel;
+		s256 m_sLabelLoop;
     s256 m_sLabelNext;
-    s256 m_sLabelLoop;
+		s256 m_sLabelOrdAgg;
     s256 m_sLabelOuterLoop;
 
     // expression stacks
@@ -113,16 +117,17 @@ namespace STORE
 
    ~OpSketch(void) noexcept(false);
 
-    void vCopyColsReq(ColsReq* pColsReq);
-    void vCopyColMap(ColMap* pColMap);
 		void vCopyColHsh(ColHsh* pColHsh);
-    void vCopyInitStack(TypedStack* pInitStack);
+		void vCopyColInj(ColInj* pColsInj);
+    void vCopyColMap(ColMap* pColMap);
+		void vCopyColPpg(ColPpg* pColPpg);
 
-    bool bColReq(i8 i_Col);
+    void vCopyInitStack(TypedStack* pInitStack);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);
 
     void vTable(Table* pTable);
+		bool bIsEmittedColPayload(i8 i_emittedCol);
     bool bIsPayload(i8 i_Col);
     void vIndex(Index* pIndex);
     void vIndexDef(IndexDef* pIndexDef);

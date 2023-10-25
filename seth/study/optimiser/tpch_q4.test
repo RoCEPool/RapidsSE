@@ -7,10 +7,6 @@ LOG 'TPC-H Q4...';
 trackMemory;
 success
 
-/transliterated
-/weaved
-/pipeline_def
-/optimiser_trace
 /pipelineName = "OptQ4"
 select o_orderpriority,
   count(*) as order_count

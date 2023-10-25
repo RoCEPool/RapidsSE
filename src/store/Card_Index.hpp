@@ -23,15 +23,15 @@ namespace STORE
     void vAdd_streamKey_exprs(CardIter* pCI);
 
     void vDeleteBounds(void);
-    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
-    bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
+    bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqlRsl(void);
     void vSet_Choose_index(void);
-    bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
+    bool bTblCol_IsKeyIn_index(Stz* szTblCol);
 
     Index*    pGetIndex(Card_TableNm* p_tableNm);
 
-    void vEnsureTypes_For_stmOdn(CardIter *pCI);
+    void vEnsureTypes_For_stmCol(CardIter *pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

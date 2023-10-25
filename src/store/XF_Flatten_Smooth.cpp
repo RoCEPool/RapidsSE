@@ -11,22 +11,22 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Smooth, CN_XF_SMOOTH)
-__aNewFunction(XF_Flatten_Smooth, CN_XF_SMOOTH)
-__vDeleteFunction(XF_Flatten_Smooth, CN_XF_SMOOTH)
+__pCastFunction(STORE, XF_Flatten_Smooth, CN_XF_FLATTEN_SMOOTH)
+__aNewFunction(XF_Flatten_Smooth, CN_XF_FLATTEN_SMOOTH)
+__vDeleteFunction(XF_Flatten_Smooth, CN_XF_FLATTEN_SMOOTH)
 __aFooterFunction(XF_Flatten_Smooth)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Smooth::XF_Flatten_Smooth(void)
-: Object(CN_XF_SMOOTH)
+: Object(CN_XF_FLATTEN_SMOOTH)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOTH, _FOOTER_);
 
-  _checkInitialised_(CN_XF_SMOOTH);
+  _checkInitialised_(CN_XF_FLATTEN_SMOOTH);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOTH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Flatten_Smooth::XF_Flatten_Smooth(void)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Smooth::~XF_Flatten_Smooth(void) noexcept(false)
 {
-_precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
+_precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOTH, _FOOTER_);
 }
 
 
@@ -47,23 +47,28 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOTH, _FOOTER_);
 
   // todo: REMOVE
   if (bEarlyExit)
     return;
 
 
+  pCI->vPrintBoard(__LINE__);
+
   pCI->vBeginEach();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
 
+  if(pCI->G_bIsNextMain(CK_SUBQUERY))
+    RASSERT(pCI->pAdvanceChild());
+
   // Table*
   while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     if (pCarryForward->Table.m_bSeen) {
       pCI->G.p_from->vSmooth(pCI, pCarryForward);
-     // pCI->vPrintBoard(__LINE__);
+      pCI->vPrintBoard(__LINE__);
     }
   }
 
@@ -72,6 +77,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   // [Where]
   if (pCI->G_bIsNextMain(CK_WHERE) && pCI->G_bEachMain(CK_WHERE)) {
     if (pCarryForward->Where_preAgg.m_bSeen) {
+      //pCI->Flux.m_pArriving->vDump(__func__,"Smooth where"_Stz);
       pCI->G.p_where->vSmooth(pCI, pCarryForward);
      // pCI->vPrintBoard(__LINE__);
     }
@@ -101,7 +107,7 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
      // pCI->vPrintBoard(__LINE__);
 
     }
-    pCI->Prior.m_pProjection = pCI->G.p_gbyAgg->pSub_projection();
+    pCI->Flux.m_pArriving = pCI->G.p_gbyAgg->pSub_emit();
   }
 
   // [project (avg)]
@@ -133,13 +139,13 @@ void XF_Flatten_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool
   if (pCarryForward->Project_postAgg.m_bSeen &&  pCI->G.p_having) {
     pCI->G.p_project->vInject_foldExpr(pCI);
     pCI->G.p_having->vAcclimate_foldExpr(pCI);
-    pCI->G.p_projection = pCI->G.p_project->pSub_projection();
+    pCI->G.p_emit = pCI->G.p_project->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
    // pCI->vPrintBoard(__LINE__);
   }
   else
   if (pCarryForward->Unproject.m_bUnproject_foldExpr) {
-    pCI->G.p_projection = pCI->G.p_gbyAgg->pSub_projection();
+    pCI->G.p_emit = pCI->G.p_gbyAgg->pSub_emit();
     Card_Project::vUnproject_foldExpr(pCI, pCarryForward);
    // pCI->vPrintBoard(__LINE__);
     vDebugPoint();

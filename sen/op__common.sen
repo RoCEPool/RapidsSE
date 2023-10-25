@@ -706,7 +706,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* find functions in DynamicLibrary                                            */
+/* find functions in DynamicLibrary                                           */
 /*----------------------------------------------------------------------------*/
 : LibInfo[].findFunctions
 
@@ -718,7 +718,6 @@
     "iEosHandler_" [op].stageNm@ str.cat LibInfo[].find to Fun3[]
     "iStreamDef_" [op].stageNm@ str.cat LibInfo[].find to Fun4[]
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

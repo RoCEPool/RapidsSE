@@ -1,0 +1,54 @@
+--------------------------------------------------------------------------------
+-- tpch query4
+--------------------------------------------------------------------------------
+
+/optimise_passthru
+pipeline Query4
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan orders
+    | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
+                            O_ORDERDATE DATE '1993-10-01' < and "
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+                                      "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+              aggregates
+              type VARCHAR as O_ORDERPRIORITY $K1 ,
+              type INTEGER as ORDER_COUNT ) countAll"
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg "groupby type VARCHAR O_ORDERPRIORITY
+            aggregates
+            type VARCHAR as O_ORDERPRIORITY $K1 ,
+            type INTEGER as ORDER_COUNT ) ORDER_COUNT sum"
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    output
+    | sink
+    | first
+end ;

@@ -20,9 +20,6 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy);
 
-    void vColumn_Mapping(CardIter* pCI);
-
-
     void vDerive_streamKey(CardIter* pCI);
 
     void vEarlyProject_root(CardIter* pCI);
@@ -34,7 +31,7 @@ namespace STORE
     void vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
-    void vUpdate_projection(CardIter* pCI);
+    void vUpdate_emitted(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

@@ -24,7 +24,7 @@ namespace STORE
 
     static void vMorph_table_To_keyNotExists(CardIter* pCI);
 
-    void vUpdate_projection(CardIter* pCI);
+    void vUpdate_emitted(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

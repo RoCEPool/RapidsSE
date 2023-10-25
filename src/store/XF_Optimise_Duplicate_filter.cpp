@@ -73,7 +73,7 @@ bool XF_Optimise_Duplicate_filter::bOptimise(void)
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_DUPLICATE_FILTER]);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;

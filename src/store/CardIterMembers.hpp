@@ -32,6 +32,12 @@ namespace STORE
     Card * p_MainCard;
     eCK    e_MainCard;
     i8     i_MainCard;
+
+    Card*                p_CARD;
+    Card*                p_NEW;
+    Card_OP *            p_OP;
+    Card_CONJUNCTION *   p_CONJ;
+
     Card * p_SubOfMain;
     eCK    e_SubOfMain;
     Card * p_Sub2OfMain;
@@ -42,19 +48,23 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - -
 
     Card_AbsJoin *       p_absJoin;
+    Card_Address *       p_address;
     Card_Aggreg *        p_aggreg;
     Card_AndConj *       p_andConj;
     Card_As *            p_as;
 
-    Card_BoolCalc *      p_boolCalc;
+    Card_BoolPred *      p_boolPred;
     Card_Bound *         p_bound;
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
+    Card_Caller *        p_caller;
+    Card_CallOp *        p_callOp;
     Card_Cast *          p_cast;
-    Card_CmpConj *       p_cmpConj;
+    Card_Clause *        p_clause;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
+    Card_CorrCols *      p_corrCols;
     Card_Correlation *   p_correlation;
     Card_CostJoining *   p_costJoining;
     Card_CostNetwork *   p_costNetwork;
@@ -63,8 +73,11 @@ namespace STORE
     Card_Count *         p_count;
     Card_CrossJoin *     p_crossJoin;
 
+    Card_Decision *      p_decision;
     Card_Direction *     p_direction;
+    Card_Disposition *   p_disposition;
 
+    Card_Emit *       p_emit;
     Card_Expr *          p_expr;
 
     Card_Filter *        p_filter;
@@ -89,6 +102,8 @@ namespace STORE
     Card_IndexList *     p_indexList;
     Card_IndexNm *       p_indexNm;
     Card_IndexScan *     p_indexScan;
+    Card_Inflate *       p_inflate;
+    Card_Injectable *      p_injected;
 
     Card_JoinCast *      p_joinCast;
     Card_JoinEstimate *  p_joinEstimate;
@@ -107,7 +122,6 @@ namespace STORE
     Card_Map *           p_map;
     Card_Mapping *       p_mapping;
 
-    Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
     Card_Note *          p_note;
     Card_NotConj *       p_notConj;
@@ -118,10 +132,13 @@ namespace STORE
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 
+    Card_Payload *       p_payload;
     Card_PayloadCells *  p_payloadCells;
     Card_Project *       p_project;
-    Card_Projection *    p_projection;
 
+    Card_RelnOp *        p_relnOp;
+    Card_Required *      p_required;
+    Card_RlnConj *       p_rlnConj;
     Card_RowCount *      p_rowCount;
     Card_RowSize *       p_rowSize;
     Card_RpnCalc *       p_rpnCalc;
@@ -131,6 +148,9 @@ namespace STORE
     Card_Send *          p_send;
     Card_Sort *          p_sort;
     Card_Spare *         p_spare;
+    Card_SqyCalls *      p_sqyCalls;
+    Card_SqyInfo *       p_sqyInfo;
+    Card_SqyNo *         p_sqyNo;
     Card_Stage *         p_stage;
     Card_Stream *        p_stream;
     Card_StreamHead *    p_streamHead;
@@ -141,6 +161,7 @@ namespace STORE
     Card_StreamSet *     p_streamSet;
     Card_SubQuery *      p_subQuery;
     Card_SubSet *        p_subSet;
+    Card_Synthesis *    p_synthesis;
 
     Card_Table *         p_table;
     Card_TableInfo *     p_tableInfo;
@@ -156,9 +177,7 @@ namespace STORE
 
     Card_Where *         p_where;
 
-    Card*                p_NEW;
-    Card_OP *            p_OP;
-    Card_CONJUNCTION *   p_CONJ;
+    Card_XCard *         p_xcard;
 
   private:
     // must be last

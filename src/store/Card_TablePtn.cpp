@@ -53,7 +53,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   _static_
 
   Card_TableNm* p_tableNm = p_table->pSub_tableNm();
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
   char cTableSyn = p_table->pSymbol()->cSF_char();
 
   PtnDef* pPtnDef = pTable->pPtnDef();
@@ -64,7 +64,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   i8 iStmColNo = pStmColumn->iColumnNo();
 
   Card_TablePtn* p_tablePtn = new Card_TablePtn;
-  p_tablePtn->SYM(SF_COL_TC,cTableSyn, iStmColNo + 1);
+  p_tablePtn->SYM(SF_TBL_COL, cTableSyn, iStmColNo + 1);
 
   return p_tablePtn;
 }
@@ -76,7 +76,7 @@ bool Card_TablePtn::bColumnMatchesPtn(Symbol* p_Y_tblPtn, Symbol* p_Y_tblCol)
 {
   _static_
 
-  if (p_Y_tblCol->bSame(p_Y_tblPtn))
+  if (p_Y_tblCol->bMatches(p_Y_tblPtn))
     return true;
 
   return false;

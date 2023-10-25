@@ -164,6 +164,17 @@
 ;
 
 
+/*----------------------------------------------------------------------------*/
+/* LibInfo cleanup                                                            */
+/*----------------------------------------------------------------------------*/
+: [LibInfo].cleanup
+
+  "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
+    false LibInfo[].delete
+  else
+    true LibInfo[].delete
+  then
+;
 
 
 

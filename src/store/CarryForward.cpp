@@ -38,7 +38,7 @@ CarryForward::CarryForward(void)
   Table.m_bReproject = false;
 
   Where_preAgg.m_bSeen  = false;
-  Where_preAgg.m_bMorph_sqlOp_To_Eq = false;
+  Where_preAgg.m_bMorph_sqlOp_To_EQ = false;
   Where_preAgg.bReplace_sqCall_With_result = false;
 
   Aggreg.m_bSeen   = false;
@@ -200,7 +200,11 @@ void CarryForward::vSetSeen(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
 
-  // Table*
+  // SubQuery
+  if (pCI->G_bIsNextMain(CK_SUBQUERY))
+    RASSERT(pCI->pAdvanceChild()->bIsCard(CK_SUBQUERY));
+
+  // From*
   while (pCI->G_bIsNextMain(CK_FROM) && pCI->G_bEachMain(CK_FROM)) {
     Table.m_bSeen = true;
     Table.m_nTables++;

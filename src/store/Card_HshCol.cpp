@@ -44,18 +44,18 @@ Card_HshCol::~Card_HshCol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_HshCol::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_HshCol::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (! xKid.p_term()->pSymbol()->bIs_Col_Tc())
+    if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       continue;
 
-    xKid.p_term()->vConvert_colOdn_To_stmOdn(pCI);
+    xKid.p_term()->vX_tblCol_To_stmCol(pCI);
   }
 }
 

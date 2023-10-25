@@ -18,20 +18,26 @@ __aFooterFunction(OpDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
+OpDef::OpDef(i8 i_Op, Card* pCard)
     : Object(CN_OPDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   vOp(i_Op);
-  vOpNm(szOpNm);
+  m_pCard = pCard;
 
-  MemLib::vZero(md_Bearing,sizeof(md_Bearing),CN_OPDEF);
-  if (szBearing)
-    StrLib::vCopy(md_Bearing, sizeof(md_Bearing), szBearing->azChar());
+  //vOpNm(szOpNm);
 
-  m_nCollapses = 0;
-  m_bCollapsed = false;
+       if (pCard->bIsCard(CK_HAVING)) vOpNm("filter"_Stz);
+  else if (pCard->bIsCard(CK_HASH))   vOpNm("hash"_Stz);
+  else if (pCard->bIsCard(CK_FROM))   vOpNm("scan"_Stz);
+  else if (pCard->bIsCard(CK_WHERE))  vOpNm("filter"_Stz);
+  else
+    vOpNm(pCard->szCardNm());
+
+
+  MemLib::vZero(md_Coord, sizeof(md_Coord), CN_OPDEF);
+  StrLib::vCopy(md_Coord, sizeof(md_Coord), pCard->szCoord()->azChar());
 
   m_pStreamDef_arriving = nullptr;
   m_pStreamDef_emitted  = nullptr;
@@ -49,7 +55,8 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
   m_pIndexDef_top       = nullptr;
   m_pColMap_top         = nullptr;
 
-  m_pColsReq            = nullptr;
+  m_pColPpg             = nullptr;
+  m_pColInj             = nullptr;
 
   m_pColHsh             = nullptr;
 
@@ -57,7 +64,6 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -78,7 +84,8 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pIndexDef_top;
   delete m_pColMap_top;
 
-  delete m_pColsReq;
+  delete m_pColPpg;
+  delete m_pColInj;
   delete m_pColHsh;
 }
 
@@ -184,21 +191,41 @@ ArgDef* OpDef::pArgDef_constraint(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-ColsReq* OpDef::pColsReq(void)
+ColInj* OpDef::pColInj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  return m_pColsReq;
+  return m_pColInj;
 }
 
-//*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void OpDef::vColsReq(ColsReq* pColsReq)
+void OpDef::vColInj(ColInj* pColInj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  m_pColsReq = pColsReq;
+  m_pColInj = pColInj;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ColPpg* OpDef::pColPpg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return m_pColPpg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vColPpg(ColPpg* pColPpg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  m_pColPpg = pColPpg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,13 +236,11 @@ void OpDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   i8 nTab_plus = 4;
-  vTrace("%sOpDef: [%lld] %s%s /%lld %s\n"_Stz,
+  vTrace("%sOpDef: [%lld] %s %s\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Op,
          m_sOpNm.szStz(),
-         m_bCollapsed ? " COLLAPSED" : "",
-         m_nCollapses,
-         md_Bearing);
+         md_Coord);
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {
@@ -225,7 +250,7 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pStreamDef_emitted) {
-    vTrace("%s%s : StreamDef_emitted  %p\n"_Stz,
+    vTrace("%s%s : StreamDef_emitted %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pStreamDef_emitted);
     m_pStreamDef_emitted->vDump(i_Tab + 4);
   }
@@ -253,44 +278,50 @@ void OpDef::vDump(i8 i_Tab)
   }
 
   if (m_pColMap_gbyAgg) {
-    vTrace("%s%s : ColMap_gbyAgg  %p\n"_Stz,
+    vTrace("%s%s : ColMap_gbyAgg %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_gbyAgg);
     m_pColMap_gbyAgg->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pIndexDef_sort) {
-    vTrace("%s%s : IndexDef_sort   %p\n"_Stz,
+    vTrace("%s%s : IndexDef_sort %p\n"_Stz,
            Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_sort);
     m_pIndexDef_sort->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pColMap_sort) {
-    vTrace("%s%s : ColMap_sort     %p\n"_Stz,
+    vTrace("%s%s : ColMap_sort %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_sort);
     m_pColMap_sort->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pIndexDef_top) {
-    vTrace("%s%s : IndexDef_top    %p\n"_Stz,
+    vTrace("%s%s : IndexDef_top %p\n"_Stz,
            Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_top);
     m_pIndexDef_top->vDump(i_Tab + nTab_plus);
   }
 
   if (m_pColMap_top) {
-    vTrace("%s%s : ColMap_top      %p\n"_Stz,
+    vTrace("%s%s : ColMap_top %p\n"_Stz,
            Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_top);
     m_pColMap_top->vDump(i_Tab + 1);
   }
 
-  if (m_pColsReq) {
-    vTrace("%s%s : ColsReq         %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq);
-    m_pColsReq->vDump(i_Tab + 1);
+  if (m_pColPpg) {
+    vTrace("%s%s : ColPpg %p\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColPpg);
+    m_pColPpg->vDump(i_Tab + 1);
+  }
+
+  if (m_pColInj) {
+    vTrace("%s%s : ColInj %p\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColInj);
+    m_pColInj->vDump(i_Tab + 1);
   }
 
   if (m_pColHsh) {
-    vTrace("%s%s : ColHsh         %p\n"_Stz,
-           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq);
+    vTrace("%s%s : ColHsh %p\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColHsh);
     m_pColHsh->vDump(i_Tab + 1);
   }
 
@@ -299,7 +330,6 @@ void OpDef::vDump(i8 i_Tab)
   i8 nArgs = nItems();
   for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
     ArgDef* pArgDef = pGet(i_Arg);
-
     pArgDef->vDump(i_Tab+1);
   }
 }
@@ -370,7 +400,7 @@ void OpDef::vValidate(void)
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexJoin);
-    RASSERT(m_pColsReq);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("FILTER"_Stz)) {
@@ -409,7 +439,7 @@ void OpDef::vValidate(void)
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexJoin);
-    RASSERT(m_pColsReq);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("INDEXSCAN"_Stz)) {
@@ -421,7 +451,16 @@ void OpDef::vValidate(void)
     //RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexScan);
-    RASSERT(m_pColsReq);
+    RASSERT(m_pColInj);
+  }
+  else
+  if (m_sOpNm.bSame("INFLATE"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+
+    //RASSERT(! m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("KEYEXISTS"_Stz)) {
@@ -480,7 +519,7 @@ void OpDef::vValidate(void)
 
     //RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
-    RASSERT(m_pColsReq);
+    RASSERT(m_pColInj);
   }
   else
   if (m_sOpNm.bSame("SORT"_Stz)) {
@@ -535,8 +574,11 @@ void OpDef::vValidate(void)
   if (m_pColMap_top)
     m_pColMap_top->vValidate();
 
-  if (m_pColsReq)
-    m_pColsReq->vValidate();
+  if (m_pColPpg)
+    m_pColPpg->vValidate();
+
+  if (m_pColInj)
+    m_pColInj->vValidate();
 
 //  i8 nArgs = nItems();
 //  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {

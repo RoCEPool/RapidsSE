@@ -1,0 +1,71 @@
+--------------------------------------------------------------------------------
+-- tpch query3
+--------------------------------------------------------------------------------
+
+// NOTE : CHANGE GBYAGG IN STAGE S04 to ORDAGG
+
+/optimise_passthru
+pipeline Query3
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan Customer
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | filter "type BOOLEAN O_ORDERDATE DATE '1995-03-15' <"
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type DATE as O_ORDERDATE O_ORDERDATE ,
+               type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    sort "type INTEGER O_ORDERKEY ASC"
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | filter "type BOOLEAN L_SHIPDATE DATE '1995-03-15' >"
+    //| ordAgg " ordGroupBy type INTEGER L_ORDERKEY
+    | gbyAgg " groupBy type INTEGER L_ORDERKEY
+               aggregates type INTEGER as L_ORDERKEY $K1 ,
+                          type DECIMAL as REVENUE ) L_EXTENDEDPRICE 1. L_DISCOUNT -  *  sum  ,
+                          type DATE as O_ORDERDATE  O_ORDERDATE ,
+                          type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY "
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage S06 on all nodes :
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    sort " type DECIMAL REVENUE DESC , type DATE O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    output
+    | sink
+    | first
+end ;

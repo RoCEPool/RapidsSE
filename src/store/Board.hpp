@@ -15,21 +15,26 @@
 #include "CardCtl.hpp"
 
 #include "Card_AbsJoin.hpp"
+#include "Card_Address.hpp"
 #include "Card_AGGREGATE.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndConj.hpp"
 #include "Card_As.hpp"
 
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 
 #include "Card_Call.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_Caller.hpp"
+#include "Card_CallOp.hpp"
+#include "Card_Clause.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_COLUMN.hpp"
 #include "Card_Combined.hpp"
 #include "Card_CONDITION.hpp"
 #include "Card_Constraint.hpp"
+#include "Card_CorrCols.hpp"
 #include "Card_Correlation.hpp"
 #include "Card_CostJoining.hpp"  //
 #include "Card_CostNetwork.hpp"  //
@@ -40,8 +45,10 @@
 
 #include "Card_Debug.hpp"
 #include "Card_Deck.hpp"
+#include "Card_Decision.hpp"
 #include "Card_Direction.hpp"
 
+#include "Card_Emit.hpp"
 #include "Card_Expr.hpp"         //
 
 #include "Card_Filter.hpp"       //
@@ -66,6 +73,8 @@
 #include "Card_IndexList.hpp"
 #include "Card_IndexNm.hpp"
 #include "Card_IndexScan.hpp"
+#include "Card_Inflate.hpp"
+#include "Card_Injectable.hpp"
 
 #include "Card_JoinCast.hpp"
 #include "Card_JoinEstimate.hpp" //
@@ -85,7 +94,7 @@
 #include "Card_Map.hpp"
 #include "Card_Mapping.hpp"      //
 
-#include "Card_NCorrCols.hpp"
+#include "Card_Disposition.hpp"
 #include "Card_Needed.hpp"
 #include "Card_Cast.hpp"
 #include "Card_Note.hpp"
@@ -97,20 +106,25 @@
 #include "Card_OuterColNm.hpp"
 #include "Card_OuterJoin.hpp"
 
+#include "Card_Payload.hpp"
 #include "Card_PayloadCells.hpp"
 #include "Card_Project.hpp"
-#include "Card_Projection.hpp"
 
+#include "Card_RelnOp.hpp"
+#include "Card_Required.hpp"
 #include "Card_RowCount.hpp"
 #include "Card_RowSize.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_RpnTerms.hpp"
+#include "Card_RpnExpr.hpp"
 
 #include "Card_Scan.hpp"
 #include "Card_Section.hpp"
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Spare.hpp"
+#include "Card_SqyCalls.hpp"
+#include "Card_SqyInfo.hpp"
+#include "Card_SqyNo.hpp"
 #include "Card_Stage.hpp"
 #include "Card_Stream.hpp"
 #include "Card_StreamHead.hpp"
@@ -121,6 +135,7 @@
 #include "Card_StreamSet.hpp"  //
 #include "Card_SubQuery.hpp"
 #include "Card_SubSet.hpp"
+#include "Card_Synthesis.hpp"
 
 #include "Card_Table.hpp"
 #include "Card_TableInfo.hpp"
@@ -136,6 +151,8 @@
 #include "Card_Unique.hpp"
 
 #include "Card_Where.hpp"
+
+#include "Card_XCard.hpp"
 
 #include "VertexSpec.hpp"
 #include "DeckSpec.hpp"
@@ -185,7 +202,7 @@ namespace STORE
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
-    static bool bFindAndMarkSubQryCall(CardIter* pCI);
+    static bool bFindAndMarkSubQryCall(CardIter* p_conj);
 
     Bench* pBench(void);
     i8   i_Board(void);

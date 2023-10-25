@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* _ray_crlSubQry -- correlated sub-query                                     */
+/*============================================================================*/
+
+// --initial _ray_crlSubQry
+
+_ray_create
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_crlSubQry"
+select count(*)
+  from Lineitem, Part
+ where P_PARTKEY  = L_PARTKEY
+   and l_quantity < (select avg(l_quantity)
+                       from lineitem
+                      where L_PARTKEY = P_PARTKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryLeaks;
+
+_ray_drop
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

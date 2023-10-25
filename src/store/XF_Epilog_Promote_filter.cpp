@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Epilog_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
-__aNewFunction(XF_Epilog_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
-__vDeleteFunction(XF_Epilog_Promote_filter, CN_XF_INDIVIDUATE_FILTER)
+__pCastFunction(STORE, XF_Epilog_Promote_filter, CN_XF_EPILOG_PROMOTE_FILTER)
+__aNewFunction(XF_Epilog_Promote_filter, CN_XF_EPILOG_PROMOTE_FILTER)
+__vDeleteFunction(XF_Epilog_Promote_filter, CN_XF_EPILOG_PROMOTE_FILTER)
 __aFooterFunction(XF_Epilog_Promote_filter)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Epilog_Promote_filter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Promote_filter::XF_Epilog_Promote_filter(CardIter* pCI)
-: XF_EPILOG(CN_XF_INDIVIDUATE_FILTER,pCI)
+: XF_EPILOG(CN_XF_EPILOG_PROMOTE_FILTER, pCI)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_PROMOTE_FILTER, _FOOTER_);
 
-  _checkInitialised_(CN_XF_INDIVIDUATE_FILTER);
+  _checkInitialised_(CN_XF_EPILOG_PROMOTE_FILTER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_PROMOTE_FILTER, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Epilog_Promote_filter::XF_Epilog_Promote_filter(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Epilog_Promote_filter::~XF_Epilog_Promote_filter(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_PROMOTE_FILTER, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,13 +43,13 @@ XF_Epilog_Promote_filter::~XF_Epilog_Promote_filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Promote_filter::vEpilog(CardIter* pCI)
+void XF_Epilog_Promote_filter::vPromote(CardIter* pCI)
 {
   _static_
 
   XF_Epilog_Promote_filter* pXF_Individuate_filter = new XF_Epilog_Promote_filter(pCI);
 
-  pXF_Individuate_filter->vXF_Individuate_filter();
+  pXF_Individuate_filter->vPromote_filter();
 
   delete pXF_Individuate_filter;
 }
@@ -62,9 +62,9 @@ void XF_Epilog_Promote_filter::vEpilog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Epilog_Promote_filter::vXF_Individuate_filter(void)
+void XF_Epilog_Promote_filter::vPromote_filter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_EPILOG_PROMOTE_FILTER, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_EPILOG_PROMOTE_FILTER, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
@@ -88,7 +88,7 @@ void XF_Epilog_Promote_filter::vXF_Individuate_filter(void)
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

@@ -14,11 +14,10 @@ namespace STORE
     Card_CONDITION(eCK eCard, i8 iFixedDepth);
    ~Card_CONDITION(void) noexcept(false);
 
-   void vAddTransients(CardIter* pCI);
-   void vConvert_colOdn_To_stmOdn(CardIter* pCI);
-   void vConvert_stmOdn_To_colOdn(CardIter* pCI);
-
-
+    void vAddTransients(CardIter* pCI);
+    void vShortForm(String* p_string);
+    void vX_stmCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
   };
 
   Card_CONDITION* _pCard_CONDITION(void* aAddr);
