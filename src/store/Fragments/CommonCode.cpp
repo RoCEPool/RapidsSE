@@ -410,7 +410,7 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vPotTubRowPix --------------------------------------------------------------*/
+/*-- vPotTubRowPix -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPotTubRowPix
 void vPotTubRowPix(Dynamic_T* aDynamicT) {
@@ -1099,7 +1099,15 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
 
     // get the destination string
     szDstStz = __ROW_INFO_TO__.m_acStrArea;
-    strncpy(szDstStz, szSrcStz, nSrcSize);
+
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+		while (iBytesToCopy--)
+			*d++ = *s++;
+
+		*d = '\0';
 
     // copy the source to the destination
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = (i8)szDstStz;
