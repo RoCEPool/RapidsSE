@@ -4,6 +4,7 @@
 
 #include "XF_Prolog_Validate_Board.hpp"
 
+#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -64,9 +65,38 @@ void XF_Prolog_Validate_Board::vValidate(void)
 
   m_pCI->vTransform(__func__, XF_PROLOG_VALIDATE_BOARD, "validate boards"_Stz);
 
+  Card_OP* p_OP = nullptr;
+  //Card_Scan* p_scan = nullptr;
+
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_NONE()) {
+    switch (m_pCI->G.e_MainCard) {
+
+      //case CK_SCAN: p_scan = m_pCI->G.p_scan; break;
+
+      case CK_COMBINED:
+      case CK_SEND:
+        if (! p_OP) {
+          Error xError(EC_MISSING_OP,(Stz*)__FILE__,__LINE__);
+          throw xError;
+        }
+        break;
+
+      case CK_STAGE:
+        //p_scan = nullptr;
+        p_OP   = nullptr;
+        break;
+
+      default:
+        p_OP = m_pCI->G.p_OP;
+        break;
+    }
   }
+
+//  if (! p_scan) {
+//    Error xError(EC_MISSING_SCAN_OP,(Stz*)__FILE__,__LINE__);
+//    throw xError;
+//  }
 
   m_pCI->vEndTransform(__LINE__);
 }
