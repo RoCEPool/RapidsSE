@@ -1302,14 +1302,24 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = C_DATUM_NULL;
   }
   else {
-    nSrcSize = strlen(szSrcStz);
+    nSrcSize = strlen(szSrcStz) + 1;
 #ifdef WITH_CLANG
     aDynamicT->m_aiPayload[__INDEX_COLUMN__] = (i8)aExtern_IndexTreeAllotPayStr(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, szSrcStz);
 #endif
 
+		// get the destination string
     szDstStz = (char*)aDynamicT->m_aiPayload[__INDEX_COLUMN__];
-    strncpy(szDstStz, szSrcStz, 1024); // todo: discuss with Alka
+
+		char *d = szDstStz;
+		const char *s = (char*)szSrcStz;
+
+		i8 iBytesToCopy = nSrcSize - 1;
+		while (iBytesToCopy--)
+			*d++ = *s++;
+
+		*d = '\0';
+
   }
   // marker-end
 }
