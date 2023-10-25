@@ -174,6 +174,8 @@ Stz* aEC[EC_ENUMS] =
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
+  /* EC_MISSING_OP                    */ (Stz*)"missing operator",
+  /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
@@ -449,6 +451,8 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"EC_MAX_TABLE_NAME_LENGTH",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"EC_MISSING_JOIN_INDEX",
+  /* EC_MISSING_OP                    */ (Stz*)"EC_MISSING_OP",
+  /* EC_MISSING_SCAN_OP               */ (Stz*)"EC_MISSING_SCAN_OP",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"EC_NO_COLUMNS_DIC",
@@ -732,6 +736,8 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
+  /* EC_MISSING_OP                    */ (Stz*)"missing operator",
+  /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
