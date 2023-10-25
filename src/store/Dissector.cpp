@@ -599,7 +599,7 @@ Card* Dissector::pOp_IndexJoin(void)
 
   //p_rpnTerms_bound->vDump();
 
-  Table* pTable = AM::pTableFind(szTableNm);
+  //Table* pTable = AM::pTableFind(szTableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -623,12 +623,12 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_IndexList* p_indexList = new Card_IndexList;
   p_table->vAppendChild(p_indexList);
 
-  Index* pIndex = pTable->pFindIndex(szIndexNm);
+ // Index* pIndex = pTable->pFindIndex(szIndexNm);
 
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppendChild(p_indexNm);
-  p_indexNm->SYM(SF_IDX_NM,pIndex->szIndexNm());
+  p_indexNm->SYM(SF_IDX_NM,szIndexNm);
 
   p_indexList->vAppendChild(p_index);
 
@@ -706,7 +706,7 @@ Card* Dissector::pOp_IndexScan(void)
   Stz* szIndexNm = szGetStz(1);
   Card_RpnExpr* p_rpnTerms_bounds = pGet_rpnExpr(2);
 
-  Table* pTable = AM::pTableFind(szTableNm);
+  //Table* pTable = AM::pTableFind(szTableNm);
 
   //p_rpnTerms_bounds->vDump();
 
@@ -735,8 +735,8 @@ Card* Dissector::pOp_IndexScan(void)
   Card_IndexList* p_indexList = new Card_IndexList;
   p_table->vAppendChild(p_indexList);
 
-  Index* pIndex = pTable->pFindIndex(szIndexNm);
-  UNUSED(pIndex);
+//  Index* pIndex = pTable->pFindIndex(szIndexNm);
+//  UNUSED(pIndex);
 
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
@@ -777,7 +777,7 @@ Card* Dissector::pOp_KeyExists(void)
   Card_RpnExpr* p_rpnTerms_bounds = pGet_rpnExpr(2);
   Card_RpnExpr* p_rpnTerms_constraint = pGet_rpnExpr(3);
 
-  Table* pTable = AM::pTableFind(szTableNm);
+  //Table* pTable = AM::pTableFind(szTableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keyExists
@@ -799,7 +799,7 @@ Card* Dissector::pOp_KeyExists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index list
 
-  Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
+  Card_IndexList* p_indexList = pFormIndex(szIndexNm);
   p_table->vAppendChild(p_indexList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -842,7 +842,7 @@ Card* Dissector::pOp_KeyNotExists(void)
   Card_RpnExpr* p_rpnTerms_bounds = pGet_rpnExpr(2);
   Card_RpnExpr* p_rpnTerms_constraint = pGet_rpnExpr(3);
 
-  Table* pTable = AM::pTableFind(szTableNm);
+  //Table* pTable = AM::pTableFind(szTableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keyExists
@@ -864,7 +864,7 @@ Card* Dissector::pOp_KeyNotExists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index list
 
-  Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
+  Card_IndexList* p_indexList = pFormIndex(szIndexNm);
   p_table->vAppendChild(p_indexList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1192,18 +1192,16 @@ Card* Dissector::pOp_Top(void)
 /*----------------------------------------------------------------------------*/
 /* form table                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm, Table* pTable)
+Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Index* pIndex = pTable->pFindIndex(szIndexNm);
 
   Card_IndexList* p_indexList = new Card_IndexList;
 
   Card_Index* p_index = new Card_Index;
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->SYM(SF_IDX_NM,pIndex->szIndexNm());
+  p_indexNm->SYM(SF_IDX_NM,szIndexNm);
 
   p_index->vAppendChild(p_indexNm);
   p_indexList->vAppendChild(p_index);
