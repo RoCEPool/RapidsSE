@@ -1220,9 +1220,18 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
    }
    else {
      nSrcSize = strlen(szSrcStz) + 1;
+
      // get the destination string
      szDstStz = __ROW_INFO_TO__.m_acStrArea;
-     strncpy(szDstStz, szSrcStz, sizeof(aDynamicT->m_xRowInfoTO.m_cStringArea));
+
+		 char *d = szDstStz;
+		 const char *s = (char*)szSrcStz;
+
+		 i8 iBytesToCopy = nSrcSize - 1;
+		 while (iBytesToCopy--)
+			 *d++ = *s++;
+
+		 *d = '\0';
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
