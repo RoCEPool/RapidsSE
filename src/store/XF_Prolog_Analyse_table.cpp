@@ -116,7 +116,7 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table(Symbol* pSymbol_tableSyn)
 
     Card_TableNm* p_tableNm = m_pCI->G.p_table->pSub_tableNm();
     Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
-    m_pCI->G.p_from->pSymbol()->Y_vSet(P_Pointer,pTable);
+    m_pCI->G.p_table->pSymbol()->Y_vSet(P_Pointer,pTable);
 
     i8 jTableSize;
     i8 jRowSize;
@@ -153,6 +153,14 @@ void XF_Prolog_Analyse_table::vXF_Analyse_table_passThru(Symbol* pSymbol_tableSy
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
   Card_Table::vAffixTableSyn_passThru(m_pCI, pSymbol_tableSyn);
+
+  m_pCI->vClearRestart();
+  while (m_pCI->G_bEachSubOfMain(CK_TABLE)) {
+
+    Card_TableNm *p_tableNm = m_pCI->G.p_table->pSub_tableNm();
+    Table *pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
+    m_pCI->G.p_table->pSymbol()->Y_vSet(P_Pointer, pTable);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table

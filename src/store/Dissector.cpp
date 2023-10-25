@@ -614,7 +614,7 @@ Card* Dissector::pOp_IndexJoin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
   
-  Card_Table* p_table = pFormTable(szTableNm,pTable);
+  Card_Table* p_table = pFormTable(szTableNm);
   p_indexJoin->vAppendChild(p_table);
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -724,7 +724,7 @@ Card* Dissector::pOp_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
 
-  Card_Table* p_table = pFormTable(szTableNm,pTable);
+  Card_Table* p_table = pFormTable(szTableNm);
 
   p_indexScan->vAppendChild(p_table);
 
@@ -793,7 +793,7 @@ Card* Dissector::pOp_KeyExists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
 
-  Card_Table* p_table = pFormTable(szTableNm,pTable);
+  Card_Table* p_table = pFormTable(szTableNm);
   p_keyExists->vAppendChild(p_table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -858,7 +858,7 @@ Card* Dissector::pOp_KeyNotExists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
 
-  Card_Table* p_table = pFormTable(szTableNm,pTable);
+  Card_Table* p_table = pFormTable(szTableNm);
   p_keyNotExists->vAppendChild(p_table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1045,7 +1045,7 @@ Card* Dissector::pOp_Scan(void)
     NEVER_REACH;
   }
 
-  Table* pTable = AM::pTableFind(szTableNm);
+  //Table* pTable = AM::pTableFind(szTableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // scan
@@ -1061,7 +1061,7 @@ Card* Dissector::pOp_Scan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form table
 
-  Card_Table* p_table = pFormTable(szTableNm,pTable);
+  Card_Table* p_table = pFormTable(szTableNm);
   pOp_Scan->vAppendChild(p_table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1214,12 +1214,11 @@ Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm, Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* form table                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Table* Dissector::pFormTable(Stz* szTableNm, Table* pTable)
+Card_Table* Dissector::pFormTable(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
   Card_Table* p_table = new Card_Table;
-  p_table->pSymbol()->Y_vSet(P_Pointer,pTable);
 
   Card_TableNm* p_tableNm = (new Card_TableNm) ->SYM(SF_TBL_NM,szTableNm);
   p_table->vAppendChild(p_tableNm);
