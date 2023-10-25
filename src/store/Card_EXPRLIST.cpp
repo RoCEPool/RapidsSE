@@ -141,8 +141,10 @@ Card_Term* Card_EXPRLIST::pDecode_term0_Same_expr_stmCol(Symbol* pSymbol_stmCol)
   RASSERT(pSymbol_stmCol->bIs_Stm_Col());
 
   if (Card_Expr* p_expr_stmCol = pGet_expr(pSymbol_stmCol)) {
-    Card_Term* p_term0 = p_expr_stmCol->pGet_term(0);
-    return p_term0;
+    if (p_expr_stmCol->bIsScalarCol()) {
+      Card_Term *p_term0 = p_expr_stmCol->pGet_term(0);
+      return p_term0;
+    }
   }
 
   return nullptr;
