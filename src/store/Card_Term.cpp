@@ -76,7 +76,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       pCI->G.p_emit  = pCI->G.p_indexJoin->pSub_emit();
       if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
-        p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
+        p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
         return C_CONTINUE_RECURSION;
       }
 
@@ -86,14 +86,14 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
         if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(&xSym_term_nm))) {
           pCI->G.p_as = pCI->G.p_expr->pSub_as();
-          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
+          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
           return C_CONTINUE_RECURSION;
         }
 
         pCI->G.p_injected = pCI->G.p_indexJoin->pSub_injected();
         if ((pCI->G.p_expr = pCI->G.p_injected->pFind_expr_Via_as_stripItem(&xSym_term_nm))) {
           pCI->G.p_as = pCI->G.p_expr->pSub_as();
-          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol());
+          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
           return C_CONTINUE_RECURSION;
         }
       }

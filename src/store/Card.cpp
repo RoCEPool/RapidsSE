@@ -567,7 +567,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
-  pCard_dup->pSymbol()->vFacetsPpy(pSymbol());
+  pCard_dup->pSymbol(true)->vFacetsPpy(pSymbol(true));
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1503,9 +1503,24 @@ bool Card::bSameSymbol(Card* pArg)
 /*----------------------------------------------------------------------------*/
 /* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
-Symbol* Card::pSymbol(void)
+Symbol* Card::pSymbol(bool bIgnore)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(bIgnore);
+  //RASSERT(bIgnore || CK_AS != m_eCard);
+
+  return &m_xSymbol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol                                                                 */
+/*----------------------------------------------------------------------------*/
+Symbol* Card::pSymbol_AS(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(CK_AS == m_eCard);
 
   return &m_xSymbol;
 }

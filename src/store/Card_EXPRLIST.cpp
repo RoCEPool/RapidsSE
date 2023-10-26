@@ -226,7 +226,7 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_as_stripItem(Symbol *pSymbol)
     if (! p_as)
       continue;
 
-    xSymbol_as_stripped.vFacets(p_as->pSymbol());
+    xSymbol_as_stripped.vFacets(p_as->pSymbol_AS());
     xSymbol_as_stripped.vItemStrip();
 
     if (xSymbol_as_stripped.bMatches(&xSymbol_arg_stripped))

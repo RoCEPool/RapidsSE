@@ -562,7 +562,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
     // get details of column injected (e.g. $b.1)
     Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
     Card_As*       p_as_i = p_expr_i->pSub_as();
-    Symbol*     pSym_as_i = p_as_i->pSymbol();
+    Symbol*     pSym_as_i = p_as_i->pSymbol_AS();
     i8         i_CrwCol_i = pSym_as_i->iSF_ordinal();
     Symbol* pSym_tblCol_i = p_expr_i->pFirstTblCol();
     Stz*       szTblCol_i = pSym_tblCol_i->szSF_chrSeq(SF_NONE);
@@ -587,7 +587,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
       // get details of emitted column
       i8 i_StructCell_e = p_expr_e->pSymbol()->iSF_ordinal() - 1;
       Card_As*   p_as_e = p_expr_e->pSub_as();
-      Symbol* pSym_as_e = p_as_e->pSymbol();
+      Symbol* pSym_as_e = p_as_e->pSymbol_AS();
 
       // add descriptor
       pColInj->vAdd(i_CrwCol_i, i_StructCell_e, pSym_as_e->szSF_chrSeq(SF_ITM_COL),
@@ -669,7 +669,7 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
     Symbol*  pExprSym_a = p_expr_a->pSymbol();
     Card_As*     p_as_a = p_expr_a->pSub_as();
-    Symbol*    pAsSym_a = p_as_a->pSymbol();
+    Symbol*    pAsSym_a = p_as_a->pSymbol_AS();
 
     i8 i_CellIn;
     i8 i_CellOut;
