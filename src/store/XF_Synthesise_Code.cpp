@@ -8,7 +8,7 @@
 #include "Board.hpp"
 #include "Optimiser.hpp"
 #include "PipelineDef.hpp"
-#include "Stencil_v2.hpp"
+#include "Stencil.hpp"
 
 #include "Symbol.hpp"
 #include "Table.hpp"
@@ -88,7 +88,7 @@ void XF_Synthesise_code::vSynthesise(void)
 
   PipelineDef* pPipelineDef = m_pCI->m_pBench->pOptimiser()->pPipelineDef();
 
-  eEC eError = Stencil_v2::eSynthesise(pPipelineDef);
+  eEC eError = Stencil::eSynthesise(pPipelineDef);
   UNUSED(eError);
 }
 

@@ -40,13 +40,25 @@ Card_KeyCells::~Card_KeyCells(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get key relating to symbol                                                 */
+/* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
-Card_Map* Card_KeyCells::pDecodeMap(Symbol* pSymbol)
+Card_Map* Card_KeyCells::pGetMap(i8 i_Map)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Map* p_map = _pCard_Map(pGetChild_bySym(pSymbol));
+  Card_Map* p_map = _pCard_Map(pGetChild(i_Map));
+
+  return p_map;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get key relating to symbol                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Map* Card_KeyCells::pGetMap(Symbol* pSymbol_ordinal)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Map* p_map = _pCard_Map(pGetChild_bySym(pSymbol_ordinal));
 
   return p_map;
 }

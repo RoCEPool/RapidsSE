@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Prolog_Move_on, CN_XF_MOVE_ON)
-__aNewFunction(XF_Prolog_Move_on, CN_XF_MOVE_ON)
-__vDeleteFunction(XF_Prolog_Move_on, CN_XF_MOVE_ON)
+__pCastFunction(STORE, XF_Prolog_Move_on, CN_XF_PROLOG_MOVE_ON)
+__aNewFunction(XF_Prolog_Move_on, CN_XF_PROLOG_MOVE_ON)
+__vDeleteFunction(XF_Prolog_Move_on, CN_XF_PROLOG_MOVE_ON)
 __aFooterFunction(XF_Prolog_Move_on)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Prolog_Move_on)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* pCI)
-: XF_PROLOG(CN_XF_MOVE_ON, pCI)
+: XF_PROLOG(CN_XF_PROLOG_MOVE_ON, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_MOVE_ON, _FOOTER_);
 
-  _checkInitialised_(CN_XF_MOVE_ON);
+  _checkInitialised_(CN_XF_PROLOG_MOVE_ON);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_MOVE_ON, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,13 +33,13 @@ XF_Prolog_Move_on::XF_Prolog_Move_on(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Prolog_Move_on::~XF_Prolog_Move_on(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_MOVE_ON, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Prolog_Move_on::vProlog(CardIter* pCI)
+void XF_Prolog_Move_on::vMove(CardIter* pCI)
 {
   _static_
 
@@ -60,7 +60,7 @@ void XF_Prolog_Move_on::vProlog(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Prolog_Move_on::vXF_Move_on(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_MOVE_ON, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_PROLOG_MOVE_ON, "move <on> in <absJoin>'s to <where>"_Stz);
 
@@ -121,7 +121,7 @@ void XF_Prolog_Move_on::vXF_Move_on(void)
     DELETE_CARD(m_pCI->G.p_on);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Delete_flat, CN_XF_DELETE_FLAT)
-__aNewFunction(XF_Flatten_Delete_flat, CN_XF_DELETE_FLAT)
-__vDeleteFunction(XF_Flatten_Delete_flat, CN_XF_DELETE_FLAT)
+__pCastFunction(STORE, XF_Flatten_Delete_flat, CN_XF_FLATTEN_DELETE_FLAT)
+__aNewFunction(XF_Flatten_Delete_flat, CN_XF_FLATTEN_DELETE_FLAT)
+__vDeleteFunction(XF_Flatten_Delete_flat, CN_XF_FLATTEN_DELETE_FLAT)
 __aFooterFunction(XF_Flatten_Delete_flat )
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_Delete_flat )
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Delete_flat::XF_Flatten_Delete_flat(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_DELETE_FLAT, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_DELETE_FLAT, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_FLAT, _FOOTER_);
 
-  _checkInitialised_(CN_XF_DELETE_FLAT);
+  _checkInitialised_(CN_XF_FLATTEN_DELETE_FLAT);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_FLAT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_Delete_flat::XF_Flatten_Delete_flat(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Delete_flat::~XF_Flatten_Delete_flat(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_FLAT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_Delete_flat::vXF_Delete_flat(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Delete_flat::vXF_Delete_flat(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_DELETE_FLAT, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_FLATTEN_DELETE_FLAT, "delete flast"_Stz);
 
@@ -68,7 +68,7 @@ void XF_Flatten_Delete_flat::vXF_Delete_flat(void)
   while (m_pCI->G_bEachMain(CK_FLAT))
     m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_flat);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

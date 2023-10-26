@@ -66,32 +66,32 @@ namespace STORE
     Card* pOp_Start       (void);
     Card* pOp_Top         (void);
 
-    Card_IndexList*  pFormIndex(Stz* szIndexNm, Table* pTable);
-    Card_Table*      pFormTable(Stz* szTableNm, Table* pTable);
+    Card_IndexList*  pFormIndex(Stz* szIndexNm);
+    Card_Table*      pFormTable(Stz* szTableNm);
 
-    Card_As*         pPopAs         (Card_RpnTerms* pCard_RpnTerms);
-    Card_Bounds*     pPopBounds     (Card_RpnTerms* pCard_RpnTerms);
-    Card_Bound*      pPopBound      (Card_RpnTerms* pCard_RpnTerms);
-    Card_Constraint* pPopConstraint (Card_RpnTerms* pCard_RpnTerms);
-    Card_Direction*  pPopDirection  (Card_RpnTerms* pCard_RpnTerms);
-    Card_Expr*       pPopExpr       (Card_RpnTerms* pCard_RpnTerms,
+    Card_As*         pPopAs         (Card_RpnExpr* pCard_RpnTerms);
+    Card_Bounds*     pPopBounds     (Card_RpnExpr* pCard_RpnTerms);
+    Card_Bound*      pPopBound      (Card_RpnExpr* p_rpnExpr);
+    Card_Constraint* pPopConstraint (Card_RpnExpr* pCard_RpnTerms);
+    Card_Direction*  pPopDirection  (Card_RpnExpr* pCard_RpnTerms);
+    Card_Expr*       pPopExpr       (Card_RpnExpr* pCard_RpnTerms,
                                      bool bIsKeyExpr, i8& ri_Expr,
                                      bool bEnsureDirection);
-    Card_HshCol*     pPopHshCol     (Card_RpnTerms* pCard_RpnTerms);
-    Card_HshColList* pPopHshColList (Card_RpnTerms* pCard_RpnTerms);
-    Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms,
+    Card_HshCol*     pPopHshCol     (Card_RpnExpr* pCard_RpnTerms);
+    Card_HshColList* pPopHshColList (Card_RpnExpr* pCard_RpnTerms);
+    Card_Key*        pPopKey        (Card_RpnExpr* pCard_RpnTerms,
                                      bool bEnsureDirection);
-    Card_Projection* pPopProjection (Card_RpnTerms* pCard_RpnTerms);
-    Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
-    Stz*             szPopType_char (Card_RpnTerms* pCard_RpnTerms);
+    Card_Emit*    pPopEmit    (Card_RpnExpr* p_rpnTerms);
+    Card_RpnCalc*    pPopRpnCalc    (Card_RpnExpr* pCard_RpnTerms);
+    eCT              ePopType       (Card_RpnExpr* pCard_RpnTerms);
 
     void             vCheckArgs     (i8 nArgs);
 
     i8               iGetInt        (i8 i_Arg);
-    Card_RpnTerms*   pGetRpnTerms   (i8 i_Arg);
+    Card_RpnExpr*   pGet_rpnExpr   (i8 i_Arg);
     Stz*             szGetStz       (i8 i_Arg);
 
-    Card_RpnTerms*   pToRpnTerms    (Stz* szRpnExpr);
+    Card_RpnExpr*   pToRpnExpr    (Stz* szRpnExpr);
 
   private:
     Footer* aFooter(void);

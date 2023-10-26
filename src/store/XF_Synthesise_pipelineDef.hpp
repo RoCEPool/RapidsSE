@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Synthesise_pipelineDef.hpp -- Craft Pipeline Definition                     */
+/* XF_Synthesise_pipelineDef.hpp -- Synthesise PipelineDef                    */
 /*============================================================================*/
 #pragma once
 
@@ -43,31 +43,18 @@ namespace STORE
     void vSynthesise(void);
 
   private:
-    void vCraftPipelineDef(Board* pBoard);
+    void vCraftPipelineDef(void);
+    void vCraftStageDef(void);
+    void vCraftOpDef(void);
 
-    void vCraftStageDef(Card_Stage*p_stage);
-    void vCraftOpDef(Card_OP* p_OP);
-    void vCraftArgDefs(Card_OP* p_OP);
-
-    void vCraftIndexes(Card_OP* p_OP);
-
-    void vCraftIndexDefs(Card_OP* p_OP);
-    void vCraftStreamDefs(Card_OP* p_OP);
-
-    void vUpdateColsReq(Card_OP* p_OP);
-
-    void vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq,
-                               Card_Filter* p_filter);
-    void vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq,
-                                Card_Project* p_project);
-
-    void vUpdateColsReq_Scan(Card_Table* p_table, ColsReq* pColsReq,
-                                Card_Scan* p_scan);
-    void vUpdateColsReq_IndexJoin(Card_Table* p_table, ColsReq* pColsReq,
-                           Card_IndexJoin* p_indexJoin);
-
-    void vUpdateColsReq_terms(Card_Table* p_table,
-                              ColsReq* pColsReq, Card* pSubCard);
+    void vCraftArgDefs(void);
+    void vCraftIndexes(void);
+    void vCraftIndexDefs(void);
+    void vCraftStreamDefs(void);
+    void vCraftColInj(void);
+    void vCraftColInj_FACETS(ColInj* pColInj, Card *pSubCard);
+    void vCraftColPpg(void);
+    void vCraftColPpg(ColPpg* pColPpg, Card *pSubCard);
 
   protected:
     Footer* aFooter(void);

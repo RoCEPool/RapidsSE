@@ -23,7 +23,7 @@
 #include "XF_Flatten_Delete_flat.hpp"
 #include "XF_Flatten_Left_subQuery.hpp"
 
-#include "XF_Flatten_stmCol_To_tblCol.hpp"
+#include "XF_Flatten_X_stmCol_To_tblCol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -111,7 +111,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // things before sub-queries
 
 
-  XF_Flatten_stmCol_To_tblCol::vFlatten(m_pCI);
+  XF_Flatten_X_stmCol_To_tblCol::vFlatten(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // flatten the sub-queries of this outer query
@@ -122,7 +122,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
     if (! m_pCI->G_bEachMain(CK_CALL))
       break;
 
-    s256 sSubQueryNm = m_pCI->G.p_call->szSymbol(SF_NONE);
+    s256 sSubQueryNm = m_pCI->G.p_call->szFacet(SF_NONE);
 
     Board *pOuterBoard_save = m_pCI->G.pBoard;
     m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
@@ -149,17 +149,18 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLCALC))
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-       if (!pCI->G_bIsBoardNm(p_term->szSymbol(SF_NONE)))
+      //p_term->vDump(__func__,"Looking for boardNm"_Stz);
+       if (!pCI->G_bIsBoardNm(p_term->szFacet(SF_NONE)))
          return C_CONTINUE_RECURSION;
 
-      s256 sSubQueryNm = p_term->szSymbol(SF_NONE);
+      s256 sSubQueryNm = p_term->szFacet(SF_NONE);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
@@ -184,7 +185,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn);
+    bool b = m_pCI->G.p_boolPred->bApplyRecursive_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);
@@ -195,17 +196,17 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   do {
     m_pCI->vBeginEachReverse();
 
-    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_HAVING, CK_BOOLCALC))
+    if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_HAVING, CK_BOOLPRED))
       break;
 
     CardIter* pCI = m_pCI;
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-      if (!pCI->G_bIsBoardNm(p_term->szSymbol(SF_NONE)))
+      if (!pCI->G_bIsBoardNm(p_term->szFacet(SF_NONE)))
         return C_CONTINUE_RECURSION;
 
-      s256 sSubQueryNm = p_term->szSymbol(SF_NONE);
+      s256 sSubQueryNm = p_term->szFacet(SF_NONE);
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
@@ -222,7 +223,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
       vFlattenByDecisionTree();
 
-     // pCI->vPrintBoard(__LINE__);
+      pCI->vPrintBoard(__LINE__);
 
      // XF_Flatten_Left_subQuery::vRemove_LeftMost(pCI);
 
@@ -232,7 +233,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
 
     bFound = false;
-    bool b = m_pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn);
+    bool b = m_pCI->G.p_boolPred->bApplyRecursive_term(bLambdaFn);
     UNUSED(b);
     vDebugPoint();
   } while (bFound);
@@ -240,13 +241,13 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
 
-  RASSERT(0 == m_pCI->pBoard()->pDeck()->nChildCards(CK_SUBQUERY));
+  //RASSERT(0 == m_pCI->pBoard()->pDeck()->nChildCards(CK_SUBQUERY));
 
-  //XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
+  XF_Flatten_Left_subQuery::vRemove_LeftMost(m_pCI);
 
   XF_Flatten_Join_Ordering::vXF_Join_Ordering(m_pCI);
 
-  //XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
+  XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sub-query has been flattened
@@ -336,7 +337,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
   else
     NEVER_REACH;
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 }
 
 /*============================================================================*/

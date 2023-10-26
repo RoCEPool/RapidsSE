@@ -5,7 +5,7 @@
 #include "Card_TableList.hpp"
 
 #include "CardIter.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_TableSize.hpp"
 #include "Card_Table.hpp"
@@ -59,14 +59,14 @@ Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
 
   Kid xKid(p_deck);
   xKid.vEnded();
-  xKid.vBeginEach_reverse();
+  xKid.vBegin_reverse();
 
   if (xKid.bEach_reverse(CK_FOLD)) {
     xKid.vForwards(true);
   }
   else {
     xKid.vEnded();
-    xKid.vBeginEach_forward();
+    xKid.vBegin();
   }
 
   while (xKid.bEach(CK_FROM,CK_TABLE)) {
@@ -211,7 +211,7 @@ Stz* Card_TableList::szToTableNm(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Table* p_table = pFind(cTblSyn))
-    return p_table->pSub_tableNm()->szSymbol(SF_NONE);
+    return p_table->pSub_tableNm()->szFacet(SF_NONE);
 
   return nullptr;
 }

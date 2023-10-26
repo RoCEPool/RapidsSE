@@ -7,7 +7,8 @@
 #include "IndexDef.hpp"
 #include "ColHsh.hpp"
 #include "ColMap.hpp"
-#include "ColsReq.hpp"
+#include "ColInj.hpp"
+#include "ColPpg.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"
 #include "ListExo2_t.hpp"
@@ -20,10 +21,9 @@ namespace STORE
   public:
     i8   m_i_Op;
     s32  m_sOpNm;
-    char md_Bearing[256];
+    char md_Coord[256];
 
-    i8   m_nCollapses;
-    bool m_bCollapsed;
+    Card* m_pCard;
 
     StreamDef* m_pStreamDef_arriving;
     StreamDef* m_pStreamDef_emitted;
@@ -41,7 +41,8 @@ namespace STORE
     IndexDef*  m_pIndexDef_top;
     ColMap*    m_pColMap_top;
 
-    ColsReq*   m_pColsReq;
+    ColPpg*    m_pColPpg;
+    ColInj*    m_pColInj;
 
     ColHsh*    m_pColHsh;
 
@@ -53,7 +54,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-     OpDef(i8 i_Op, Stz* szOpNm, Stz* zzBearing=nullptr);
+     OpDef(i8 i_Op, Card* pCard);
     ~OpDef(void) noexcept(false);
 
     i8      nArgs(void);
@@ -64,8 +65,11 @@ namespace STORE
     ArgDef* pArgDef_constraint(void);
     ArgDef* pArgDef_count(void);
 
-    ColsReq* pColsReq(void);
-    void vColsReq(ColsReq* ColsReq);
+    ColInj* pColInj(void);
+    void vColInj(ColInj* pColInj);
+
+    ColPpg* pColPpg(void);
+    void vColPpg(ColPpg* pColPpg);
 
     void vDump(i8 i_Tab=2);
 

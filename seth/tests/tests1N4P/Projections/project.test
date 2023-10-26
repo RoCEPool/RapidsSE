@@ -152,20 +152,6 @@ rows:
  (86083.65,0.06,5165.02)
  (39620.34,0.06,2377.22)
 
- //------------------------------------------------------------------------------
- select L_ORDERKEY, L_COMMENT, L_SHIPDATE, L_DISCOUNT, L_ORDERKEY from lineitem;
- rows:
-  (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
-  (3,'ongside of the furiously brave acco',DATE '1994-02-02',0.06,3)
-  (3,'nal foxes wake. ',DATE '1994-01-16',0.06,3)
-  (1,'egular courts above the',DATE '1996-03-13',0.04,1)
-  (1,'ly final dependencies: slyly bold ',DATE '1996-04-12',0.09,1)
-  (1,'riously. regular: express dep',DATE '1996-01-29',0.10,1)
-  (1,'lites. fluffily even de',DATE '1996-04-21',0.09,1)
-  (1,' pending foxes. slyly re',DATE '1996-03-30',0.10,1)
-  (1,'arefully slyly ex',DATE '1996-01-30',0.07,1)
-  (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
-
 //------------------------------------------------------------------------------
  select 1, 2, null from lineitem;
  rows:

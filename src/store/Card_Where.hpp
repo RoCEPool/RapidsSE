@@ -19,10 +19,10 @@ namespace STORE
     Card_Where(void);
    ~Card_Where(void) noexcept(false);
 
-    static void vCullMarkedCmpPred(CardIter* pCI);
+    static void vCullMarkedCmpConj(CardIter* pCI);
     static void vDeleteEmpyWhere(CardIter* pCI);
-    static void vMarkWherePredWrtTable(CardIter* pCI);
-    static void vMoveWherePredsToTableFilter(CardIter* pCI);
+    static void vMarkWhereConjWrtTable(CardIter* pCI);
+    static void vMoveWhereConjToTableFilter(CardIter* pCI);
 
     static Card_Where* pNewWhereAssembly(void);
 
@@ -30,7 +30,7 @@ namespace STORE
     void vEarlyProject_recurse_update(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
-    void vUpdate_projection(CardIter* pCI);
+    void vUpdate_emitted(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

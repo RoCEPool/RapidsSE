@@ -8,10 +8,10 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IndexList.hpp"
 #include "Card_Filter.hpp"
-#include "Card_BoolCalc.hpp"
+#include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
 #include "Card_Index.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Bounds.hpp"
 #include "Card_Bound.hpp"
 #include "Card_Term.hpp"
@@ -90,12 +90,12 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 
   _static_
 
-  while (pCI->G_bEachMainWith3Sub(CK_FROM,CK_TABLE,CK_PROJECTION,CK_INDEXLIST)) {
+  while (pCI->G_bEachMainWith3Sub(CK_FROM, CK_TABLE, CK_EMIT, CK_INDEXLIST)) {
 
     Kid xKid(pCI->G.p_indexList);
     while (xKid.bEach(CK_INDEX)) {
       pCI->G.p_idxColList = xKid.p_index()->pSub_idxColList();
-      pCI->G.p_idxColList->vAffix_tblColOdn(pCI->G.p_projection);
+      pCI->G.p_idxColList->vAffix_tblCol(pCI->G.p_emit);
     }
   }
 }
@@ -124,7 +124,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
   pCI->vBeginEach();
   while (pCI->G_bEachMainWithSub(CK_FROM, CK_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol(SF_NONE));
+    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szFacet(SF_NONE));
 
     pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
 
@@ -247,27 +247,27 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* move <where> to <table>/<filter>                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_PRED)
+void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_conj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_filter = this->pSub_filter())) {
-    pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-    pCI->G.p_boolCalc->vPushPred(p_PRED);
+    pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
+    pCI->G.p_boolPred->vPushConj(p_conj);
   }
   else {
     pCI->G_vAppendNewChild(this,CK_FILTER);
-    pCI->G_vAppendNewChild(pCI->G.p_filter,CK_BOOLCALC);
-    pCI->G_vAppendChild(CK_BOOLCALC,p_PRED);
+    pCI->G_vAppendNewChild(pCI->G.p_filter, CK_BOOLPRED);
+    pCI->G_vAppendChild(CK_BOOLPRED, p_conj);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vBounds_AddPred(Card_Index* p_index,
+void Card_Table::vBounds_AddConj(Card_Index* p_index,
                                  Card_Bounds* p_bounds,
-                                 Card_CONJUNCTION *p_PRED)
+                                 Card_CONJUNCTION *p_conj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -275,15 +275,15 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 
   Card_Bound* p_bound;
   Card_CONJUNCTION* p_childPRED;
-  if (p_PRED->bIsCard(CK_ANDCONJ)) {
-    p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(0);
-    this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
-    p_childPRED = (Card_CONJUNCTION*)p_PRED->pGetChild(1);
-    this->vBounds_AddPred(p_index,p_bounds,p_childPRED);
+  if (p_conj->bIsCard(CK_ANDCONJ)) {
+    p_childPRED = (Card_CONJUNCTION*)p_conj->pGetChild(0);
+    this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
+    p_childPRED = (Card_CONJUNCTION*)p_conj->pGetChild(1);
+    this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
   }
   else
-  if (p_PRED->bIsCard(CK_CMPCONJ)) {
-    p_bound = Card_Bound::pCreateFrom_PRED(p_PRED, cTblSyn);
+  if (p_conj->bIsCard(CK_RLNCONJ)) {
+    p_bound = Card_Bound::pCreateFrom_CONJ(p_conj, cTblSyn);
     p_bounds->vAppendChild(p_bound);
   }
   else {
@@ -300,7 +300,7 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 
   Card_TableNm* p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -309,6 +309,19 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
   Stz* szColNm = pColumn->szColNm();
 
   return szColNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find chosen index                                                          */
+/*----------------------------------------------------------------------------*/
+Card_Index* Card_Table::pFindChosenIndex(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_IndexList* p_indexList = pSub_indexList())
+    return p_indexList->pFindChosenIndex();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -322,9 +335,9 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
     vDebugPoint();
 
 
-  Card_BoolCalc* p_boolCalc = pCI->G.p_filter->pSub_boolCalc();
-  RASSERT(1 == p_boolCalc->nChildCards());
-  Card_CONJUNCTION* p_pred_root = p_boolCalc->pRootPred();
+  Card_BoolPred* p_boolPred = pCI->G.p_filter->pSub_boolPred();
+  RASSERT(1 == p_boolPred->nChildCards());
+  Card_CONJUNCTION* p_conj_root = p_boolPred->pConj_root();
 
   Kid xKid(pCI->G.p_indexList);
   while (xKid.bEach(CK_INDEX)) {
@@ -335,15 +348,15 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
     //p_index->vDump(__func__);
 
-    auto bLambdaFn = [this, p_index](Card_CONJUNCTION *p_pred_Of_filter, bool bUpwards)
+    auto bLambdaFn = [this, p_index](Card_CONJUNCTION *p_conj_Of_filter, bool bUpwards)
     {
       if (bUpwards)
         return C_CONTINUE_RECURSION;
 
-      if (! p_pred_Of_filter->bIsCard(CK_CMPCONJ))
+      if (! p_conj_Of_filter->bIsCard(CK_RLNCONJ))
         return C_CONTINUE_RECURSION;
 
-      if (!p_pred_Of_filter->bIsIndexBounds_v3(p_index))
+      if (!p_conj_Of_filter->bIsIndexBounds_v3(p_index))
         return C_CONTINUE_RECURSION;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -355,10 +368,10 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       }
 
       char cTblSyn = this->pSymbol()->cSF_char();
-      Card_Bound *p_bound = Card_Bound::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
+      Card_Bound *p_bound = Card_Bound::pCreateFrom_CONJ(p_conj_Of_filter, cTblSyn);
       p_bounds->vAppendChild(p_bound);
 
-      p_pred_Of_filter->vMark1(MARK_UP);
+      p_conj_Of_filter->vMark1(MARK_UP);
 
 //      if (p_bound->bIsEBound())
 //        p_index->vSet_Choose_index();
@@ -368,9 +381,21 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool bIgnore = p_pred_root->bPredRecursive(bLambdaFn);
+    bool bIgnore = p_conj_root->bConjRecursive(bLambdaFn);
     UNUSED(bIgnore);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* Card_Table::pGet_Table(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table* pTable = reinterpret_cast<Table*>(pSymbol()->Y_pGet(P_Pointer));
+
+  return pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,7 +469,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  if (m_xSymbol.bHasSymbol())
+  if (m_xSymbol.bHasFacets())
     sName.vCatSprint(" %c"_Stz, pSymbol()->cSF_tblSyn());
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
@@ -454,12 +479,12 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Table::bScopeContains_Pred(Card_CONJUNCTION* p_pred,
+bool Card_Table::bScopeContains_Conj(Card_CONJUNCTION* p_conj,
                                      Scope* pScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Kid xKid(p_pred);
+  Kid xKid(p_conj);
   while (xKid.bEach(CK_TERM)) {
     if (! this->bScopeContains_term(xKid.p_term(), pScope))
       return false;
@@ -481,7 +506,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
     return true;
 
   // literals are considered within scope
-  if (!p_term->pSymbol()->bIs_Col_Tc()) {
+  if (!p_term->pSymbol()->bIs_Tbl_Col()) {
     return true;
   }
 
@@ -505,11 +530,36 @@ void Card_Table::vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn)
   this->vMark1(MARK_CHANGED);
 
   Card_TableNm* p_tableNm = pSub_tableNm();
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
   if (pTable->bIsReplicated())
     SYM(SF_TBL_SYN_rep);
 
   pSymbol_tableSyn->vInc_Tbl_Syn();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vShortForm(String* pString_m, String* pString_b)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szSep = ""_Stz;
+  if (Card_TableNm* p_tableNm = pSub_tableNm()) {
+    pString_m->vCatSprint("%c.%s"_Stz,
+                          pSymbol()->bHasFacets() ? pSymbol()->cSF_char() : ' ',
+                          p_tableNm->szFacet(SF_NONE));
+    szSep = ","_Stz;
+  }
+
+  if (Card_Index* p_index = pFindChosenIndex()) {
+    if (Card_IndexNm* p_indexNm = p_index->pSub_indexNm())
+      pString_m->vCatSprint("%s%s"_Stz, szSep, p_indexNm->szFacet(SF_NONE));
+    if (Card_Bounds* p_bounds = p_index->pSub_bounds())
+      p_bounds->vShortForm(pString_b);
+  }
+
+
 }
 
 /*----------------------------------------------------------------------------*/

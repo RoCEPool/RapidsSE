@@ -16,14 +16,16 @@ namespace STORE
     Card_Bounds(void);
    ~Card_Bounds(void) noexcept(false);
 
-    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
     i8 nCullBound(Stz* szWithMark);
     Card_Bound* pFindChosenBound(void);
 
-    void vEnsureTypes_For_stmOdn(CardIter *pCI);
+    void vEnsureTypes_For_stmCol(CardIter *pCI);
 
-    bool bHasEquivalentBound(Card_CmpConj* p_cmpPred);
+    void vShortForm(String* pString_b);
+
+    bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

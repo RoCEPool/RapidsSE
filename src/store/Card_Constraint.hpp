@@ -16,15 +16,14 @@ namespace STORE
     Card_Constraint(void);
    ~Card_Constraint(void) noexcept(false);
 
-    static void vCullUsedBounds(CardIter* pCI);
-
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
-    i8 nCullPred(Stz* szWithMark);
-    void vConvert_stmColOdn_To_stmColNm(CardIter* pCI);
-    void vDisambiguate(CardIter* pCI);
+    i8 nCullConj(Stz* szWithMark);
+    void vConvert_stmCol_To_stmColNm(CardIter* pCI);
 
-    void vEnsureTypes_For_stmColOdn(CardIter *pCI);
+    void vEnsureTypes_For_stmCol(CardIter *pCI);
+
+    void vResolve_colNm_From_colSym(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

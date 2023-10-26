@@ -4,7 +4,7 @@
 
 #include "XF_Flatten_10_F.hpp"
 
-#include "Fold.hpp"
+#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Update_projection.hpp"
 
@@ -85,7 +85,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of from
 
-  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   CarryForward* pCarryForward = pFold->pFold_from("From"_Stz,m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -108,7 +108,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
     }
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   delete pSmooth;
   delete pCarryForward;

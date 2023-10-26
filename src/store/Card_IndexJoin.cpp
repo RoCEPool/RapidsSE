@@ -52,11 +52,11 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   RASSERT(bPeg_Projection(pCI));
   RASSERT(bPeg_Chosen_index(pCI));
-  pCI->G.p_projection->vDelete_streamKey(pCI);
+  pCI->G.p_emit->vDelete_streamKey(pCI);
 
 
-  if (pCI->StreamOrder.m_pStreamKey_running) {
-    pCI->G.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey_running->pDupCardRecursive());
+  if (pCI->StreamOrder.m_pStreamKey) {
+    pCI->G.p_streamKey = _pCard_StreamKey(pCI->StreamOrder.m_pStreamKey->pDupCardRecursive());
   }
   else {
     pCI->G.p_streamKey = new Card_StreamKey;
@@ -64,12 +64,12 @@ void Card_IndexJoin::vDerive_streamKey(CardIter* pCI)
 
   pCI->G.p_index->vAdd_streamKey_exprs(pCI);
 
-  pCI->G.p_projection->vAppendChild(pCI->G.p_streamKey);
+  pCI->G.p_emit->vAppendChild(pCI->G.p_streamKey);
 
 
   // set running projection for use by next op
-  pCI->StreamOrder.m_pProjection_running = pCI->G.p_projection;
-  pCI->StreamOrder.m_pStreamKey_running  = pCI->G.p_streamKey;
+  pCI->StreamOrder.m_pEmitted = pCI->G.p_emit;
+  pCI->StreamOrder.m_pStreamKey  = pCI->G.p_streamKey;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +85,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
       pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Prior.m_pProjection = pSub_projection();
+    pCI->Flux.m_pArriving = pSub_emit();
 
    // pCI->vPrintBoard();
     return;
@@ -116,14 +116,14 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 //  pCI->vPrintBoard();
 
   pCI->G.p_table = pSub_table();
-  vUpdate_projection(pCI);
+  vUpdate_emitted(pCI);
   vUpdate_constraint(pCI);
 
 //  pCI->vRenumberCards();
 //  pCI->vPrintBoard();
 
-  //pCI->Prior.m_pProjection->vDump(__func__);
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  //pCI->Flux.m_pArriving->vDump(__func__);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -131,7 +131,7 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Prior.m_pProjection = pSub_projection();
+  pCI->Flux.m_pArriving = pSub_emit();
 
 
 
@@ -153,18 +153,18 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
   pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
   //pCI->G.p_bound->vDump();
-  pCI->G.p_term      = pCI->G.p_bound->pGet_colOdn();
+  pCI->G.p_term      = pCI->G.p_bound->pGet_IfNot_idxCol();
 
   RASSERT(pCI->G.p_term);
   //pCI->G.p_term->vDump();
 
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_symbol(pCI->G.p_term->pSymbol())) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(pCI->G.p_term->pSymbol())) {
 
-    if (pCI->G.p_term->bIsStmOdn()) {
+    if (pCI->G.p_term->bIsStmCol()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-      p_rpnCalc->pSymbol()->Y_vColType(pCI->G.p_term->pSymbol()->Y_szColType());
+      p_rpnCalc->pSymbol()->vColType(pCI->G.p_term->pSymbol()->eColType());
       p_expr_stmCol->vAppendChild(p_rpnCalc);
       p_rpnCalc->vAppendChild(pCI->G.p_term->pDupCardRecursive());
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_stmCol);
@@ -189,10 +189,10 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   auto bLambda = [pCI] (Card_Term* p_term) {
 
-    if (!p_term->bIsValOdn())
+    if (!p_term->bIsColSym())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_symbol(p_term->pSymbol()))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(p_term->pSymbol()))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
@@ -208,8 +208,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   if (! (pCI->G.p_filter = pSub_filter()))
     return;
 
-  if ((pCI->G.p_boolCalc = pCI->G.p_filter->pSub_boolCalc()))
-    pCI->G.p_boolCalc->bApplyRecursive_term(bLambda);
+  if ((pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred()))
+    pCI->G.p_boolPred->bApplyRecursive_term(bLambda);
 
 }
 /*----------------------------------------------------------------------------*/
@@ -229,12 +229,12 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
     return;
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_emit = pSub_emit();
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = this;
   pCI->Early.m_pOP_leaf = nullptr;
-  pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
+  pCI->Early.m_pNeeded_later  = pCI->G.p_emit->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -251,7 +251,7 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -259,9 +259,9 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  pCI->G.p_projection = pSub_projection();
+  pCI->G.p_emit = pSub_emit();
 
-  pCI->Prior.m_pProjection = pCI->G.p_projection;
+  pCI->Flux.m_pArriving = pCI->G.p_emit;
 
  // pCI->vPrintBoard();
 
@@ -284,7 +284,7 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
     s256 sErrorMsg;
     sErrorMsg.vSprint("No index for table(%c) %s"_Stz,
                       pCI->G.p_table->pSymbol()->cSF_char(),
-                      pCI->G.p_table->pSub_tableNm()->szSymbol(SF_NONE));
+                      pCI->G.p_table->pSub_tableNm()->szFacet(SF_NONE));
     Error xError(EC_MISSING_JOIN_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
     throw xError;
   }

@@ -3,45 +3,43 @@
 /*============================================================================*/
 #pragma once
 
-//#define Z_REJIG_STREAMDEFS
-#define Z_CARD_STREAM
-
-#define Z_ITEMISED_NAMES
-
 #include "BASE.h"
 
 #include "eAL.h"
-#include "ePB.h"
 #include "eGC.h"
+#include "ePB.h"
 #include "eQO.h"
 #include "eRO.h"
 #include "eTE.h"
-#include "eYG.h"
 #include "eXK.h"
+#include "eYG.h"
 
 #include "ChildCards.hpp"
-
-#include "Ribbon.hpp"
-
 #include "Mark.hpp"
+#include "Ribbon.hpp"
 #include "Symbol.hpp"
 
 namespace STORE
 {
   class Card_AbsJoin;
+  class Card_Address;
   class Card_Aggreg;
   class Card_AndConj;
   class Card_As;
 
-  class Card_BoolCalc;
+  class Card_BoolPred;
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_CmpConj;
+  class Card_Caller;
+  class Card_CallOp;
+  class Card_Clause;
+  class Card_RlnConj;
   class Card_Combined;
+  class Card_CONJUNCTION;
   class Card_Constraint;
+  class Card_CorrCols;
   class Card_Correlation;
-  class Card_JoinEstimate;
   class Card_CostJoining;
   class Card_CostNetwork;
   class Card_CostStream;
@@ -49,11 +47,12 @@ namespace STORE
   class Card_Count;
   class Card_CrossJoin;
 
-  class Card_StreamHead;
   class Card_Debug;
   class Card_Deck;
+  class Card_Decision;
   class Card_Direction;
 
+  class Card_Emit;
   class Card_EXPRLIST;
   class Card_Expr;
 
@@ -79,12 +78,13 @@ namespace STORE
   class Card_IndexList;
   class Card_IndexNm;
   class Card_IndexScan;
+  class Card_Inflate;
+  class Card_Injectable;
 
   class Card_JoinCast;
   class Card_JoinOrder;
   class Card_JoinOrdering;
-  class Card_StreamSet;
-  class Card_StreamPer;
+  class Card_JoinEstimate;
   class Card_JoinPredList;
 
   class Card_Key;
@@ -98,7 +98,7 @@ namespace STORE
   class Card_Map;
   class Card_Mapping;
 
-  class Card_NCorrCols;
+  class Card_Disposition;
   class Card_Needed;
   class Card_Cast;
   class Card_Note;
@@ -111,28 +111,36 @@ namespace STORE
   class Card_OuterColNm;
   class Card_OuterJoin;
 
+  class Card_Payload;
   class Card_PayloadCells;
-  class Card_CONJUNCTION;
   class Card_Project;
-  class Card_Projection;
 
+  class Card_RelnOp;
+  class Card_Required;
   class Card_RowCount;
   class Card_RowSize;
   class Card_RpnCalc;
-  class Card_RpnTerms;
+  class Card_RpnExpr;
 
   class Card_Scan;
   class Card_Section;
   class Card_Send;
   class Card_Sort;
   class Card_Spare;
+  class Card_SqyCalls;
+  class Card_SqyInfo;
+  class Card_SqyNo;
   class Card_Stage;
   class Card_Stream;
+  class Card_StreamHead;
   class Card_StreamJoin;
   class Card_StreamKey;
+  class Card_StreamPer;
   class Card_StreamPtn;
+  class Card_StreamSet;
   class Card_SubQuery;
   class Card_SubSet;
+  class Card_Synthesis;
 
   class Card_Table;
   class Card_TableInfo;
@@ -149,13 +157,14 @@ namespace STORE
 
   class Card_Where;
 
+  class Card_XCard;
+
   class CardIter;
 }
 
 // These would really benefit from being const and being in a namespace
 // or class to avoid polluting the global namespace.
 extern Stz* P_AggOp;
-extern Stz* P_As;
 extern Stz* P_BreakPt;
 extern Stz* P_BumpedBy;
 extern Stz* P_Cell;
@@ -168,41 +177,29 @@ extern Stz* P_CrlKeyPred;
 extern Stz* P_CrlKeyTest;
 extern Stz* P_CrlRslTest;
 extern Stz* P_DebugOption;
-extern Stz* P_DisamCol;
 extern Stz* P_Early;
 extern Stz* P_EmittedCol;
 extern Stz* P_FixedPos;
+extern Stz* P_FusedProject;
 extern Stz* P_HashOf;
-extern Stz* P_HideHeat;
-extern Stz* P_Injected;
 extern Stz* P_InjCrlKey;
+extern Stz* P_Injected;
 extern Stz* P_Invalid;
 extern Stz* P_Itemised;
-extern Stz* P_JoinedBuff;
 extern Stz* P_Key;
+extern Stz* P_KeyCol;
 extern Stz* P_Level;
-extern Stz* P_Network;
-extern Stz* P_Payload;
 extern Stz* P_ParamOdn;
+extern Stz* P_Payload;
 extern Stz* P_Permutation;
 extern Stz* P_Pointer;
 extern Stz* P_ProjBump;
 extern Stz* P_ProjBumped;
-extern Stz* P_PtndJoin;
-extern Stz* P_ReqCol;
 extern Stz* P_SendKind;
-extern Stz* P_SentOut;
 extern Stz* P_Smoothed;
 extern Stz* P_StageTopo;
-extern Stz* P_StmCol;
-extern Stz* P_SubQryCall;
-extern Stz* P_Synthetic;
-extern Stz* P_TableUsed;
-extern Stz* P_TblCol;
-extern Stz* P_Type;
+extern Stz* P_SqyCall;
 extern Stz* P_Unproject;
-extern Stz* P_WasKeyCol;
-extern Stz* P_WasStmCol;
 
 extern Stz* C_CARD_HISTORY;
 extern Stz* C_CODE_BLOCK;
@@ -231,10 +228,11 @@ extern Stz* MARK_CHANGED;
 extern Stz* MARK_COMPARE;
 extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
+extern Stz* MARK_FOUND;
 extern Stz* MARK_NOT;
 extern Stz* MARK_OR;
-extern Stz* MARK_UP;
 extern Stz* MARK_UNVALID;
+extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
 
 extern Stz* C_SQCRLKEY;
@@ -254,28 +252,24 @@ namespace STORE
 
     eCK     m_eCard;
     i8      m_i_Child;
+    i8      m_iFixedDepth;
 
     Mark    m_xMark1;
     Mark    m_xMark2;
 
     Symbol  m_xSymbol;
 
-    Card*   m_pLastPrintParent;
-
-    i8      m_iFixedDepth;
-
-    i8      m_iItemise;
 
     i8 md__SeqNo;
     i8 md__FirstDetected;
     i8 md__LeakDetected;
-
     i8      m_iFirstPrint;
     eCK     m_eFirst;
     i8      m_iLastPrint;
-
     bool    m_bAddedCorrectly;
     bool    m_bRemovedCorrectly;
+    i8      m_iItemise;
+    Card*   m_pLastPrintParent;
 
   protected:
     // must be last
@@ -316,11 +310,12 @@ namespace STORE
     void vColType(Card* pCard_arg);
     Stz* szCoord(void);
 
-    void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
+    void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
     Card* pDupCard(void);
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
+    Stz* szFacet(eSF eFacet_xchk);
     Card* pFindCardRecursive(eCK eOfCard);
     Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
@@ -336,6 +331,7 @@ namespace STORE
     bool bHasSubRecursive(Card* pSubCard);
 
     bool bIsCard(eCK eCard);
+    bool bIsConj(void);
     bool bIsMain(void);
     bool bIsOne(i8 /*eCK*/ iCard, ...);
 
@@ -382,11 +378,10 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSameSymbol(Symbol* pSymbol);
+    bool bSymbol_Same(Symbol* pSymbol);
     bool bSameSymbol(Card* pArg);
 
     Symbol* pSymbol(void);
-    Stz* szSymbol(eSF eSymbol_xchk);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 
@@ -417,14 +412,19 @@ namespace STORE
 
   public:
 
+    Card_Address*       pSub_address(void);
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
-    Card_BoolCalc*      pSub_boolCalc(void);
+    Card_BoolPred*      pSub_boolPred(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_Cast*          pSub_next(void);
-    Card_CmpConj*       pSub_cmpPred(void);
+    Card_Cast*          pSub_cast(void);
+    Card_Caller*        pSub_caller(void);
+    Card_CallOp*        pSub_callOp(void);
+    Card_Clause*        pSub_clause(void);
+    Card_RlnConj*       pSub_cmpConj(void);
     Card_Constraint*    pSub_constraint(void);
+    Card_CorrCols*      pSub_corrCols(void);
     Card_Correlation*   pSub_correlation(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
@@ -432,7 +432,9 @@ namespace STORE
     Card_CostUnicast*   pSub_costUnicast(void);
     Card_Count*         pSub_count(void);
     Card_CrossJoin*     pSub_crossJoin(void);
+    Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
+    Card_Emit*       pSub_emit(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);
     Card_FiltPredList*  pSub_filtPredList(void);
@@ -449,7 +451,9 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_JoinCast*      pSub_locusCast(void);
+    Card_Inflate*       pSub_inflate(void);
+    Card_Injectable*      pSub_injected(void);
+    Card_JoinCast*      pSub_joinCast(void);
     Card_JoinEstimate*  pSub_joinEstimate(void);
     Card_Key*           pSub_key(void);
     Card_KeyCells*      pSub_keyCells(void);
@@ -458,21 +462,25 @@ namespace STORE
     Card_Level*         pSub_level(void);
     Card_Map*           pSub_map(void);
     Card_Mapping*       pSub_mapping(void);
-    Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);
-    Card_NotConj*       pSub_notPred(void);
+    Card_NotConj*       pSub_notConj(void);
     Card_Note*          pSub_note(void);
     Card_On*            pSub_on(void);
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
+    Card_Payload*       pSub_payload(void);
     Card_PayloadCells*  pSub_payloadCells(void);
-    Card_Projection*    pSub_projection(void);
+    Card_RelnOp*        pSub_relnOp(void);
+    Card_Required*      pSub_required(void);
     Card_RowCount*      pSub_rowCount(void);
     Card_RowSize*       pSub_rowSize(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
     Card_Spare*         pSub_spare(void);
+    Card_SqyCalls*      pSub_sqyCalls(void);
+    Card_SqyInfo*       pSub_sqyInfo(void);
+    Card_SqyNo*         pSub_sqyNo(void);
     Card_Stream*        pSub_stream(void);
     Card_StreamHead*    pSub_streamHead(void);
     Card_StreamJoin*    pSub_streamJoin(void);
@@ -481,6 +489,7 @@ namespace STORE
     Card_StreamPtn*     pSub_streamPtn(void);
     Card_StreamSet*     pSub_streamSet(void);
     Card_SubQuery*      pSub_subQuery(void);
+    Card_Synthesis*     pSub_synthesis(void);
     Card_Table*         pSub_table(void);
     Card_TableInfo*     pSub_tableInfo(void);
     Card_TableNm*       pSub_tableNm(void);
@@ -492,6 +501,7 @@ namespace STORE
     Card_Topology*      pSub_topology(void);
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
+    Card_XCard*         pSub_xcard(void);
 
   private:
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);

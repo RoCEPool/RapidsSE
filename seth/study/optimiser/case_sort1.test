@@ -8,10 +8,6 @@ LOG 'Case Sort 1 ...';
 select count(*) from customer;
 success
 
-/optimiser_trace
-/transliterated
-/pipeline_def
-/weaved
 /pipelineName = "OC_sort1"
 select *
   from Customer

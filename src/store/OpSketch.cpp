@@ -83,14 +83,16 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pIndex        = nullptr;
   m_pIndexDef     = nullptr;
 
-  m_pColsReq      = nullptr;
-  m_pColMap       = nullptr;
 	m_pColHsh       = nullptr;
+  m_pColInj       = nullptr;
+  m_pColMap       = nullptr;
+	m_pColPpg       = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
-  m_sLabelNext = ""_Stz;
   m_sLabelLoop = ""_Stz;
+	m_sLabelNext = ""_Stz;
+	m_sLabelOrdAgg = ""_Stz;
   m_sLabelOuterLoop = ""_Stz;
 
   // stencils
@@ -109,14 +111,15 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   m_pUpperStack  = new TypedStack(KK_DATA_STACK);
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
-  if (eSketchKind == SK_GBYAGG) {
+  if (eSketchKind == SK_GBYAGG ||
+			eSketchKind == SK_ORDAGG) {
     m_pGbyStack = new TypedStack(KK_DATA_STACK);
-    m_pOrdAggStack = new TypedStack(KK_DATA_STACK);    // ALKA COME BACK TO THIS
+		m_pOrdAggStack = new TypedStack(KK_DATA_STACK);
   }
-  else {
-    m_pGbyStack = nullptr;
-    m_pOrdAggStack = nullptr;
-  }
+	else {
+		m_pGbyStack = nullptr;
+		m_pOrdAggStack = nullptr;
+	}
 
   // duplicate the init stack
   if (pInitStack) {
@@ -148,9 +151,11 @@ OpSketch::~OpSketch(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  delete m_pColsReq;
-  delete m_pColMap;
 	delete m_pColHsh;
+  delete m_pColInj;
+  delete m_pColMap;
+	delete m_pColPpg;
+
   delete m_pConstraintStack;
   delete m_pExprStack;
   delete m_pInitStack;
@@ -209,40 +214,38 @@ void OpSketch::vCopyColHsh(ColHsh* pColHsh)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy columns required                                                      */
+/* copy columns injected                                                      */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vCopyColsReq(ColsReq* pColsReq)
+void OpSketch::vCopyColInj(ColInj* pColsInj)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  i8 nCols = 0;
+	m_pColInj = new ColInj(pColsInj->m_nCrwCols);
 
-  m_pColsReq = new ColsReq;
-
-  m_pColsReq->m_nCols = pColsReq->m_nCols;
-  for (i8 i_Col = 0; nCols < pColsReq->m_nCols; i_Col++) {
-    if (pColsReq->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
-      nCols++;
-      m_pColsReq->m_axCols[i_Col].m_i_EmittedCol = pColsReq->m_axCols[i_Col].m_i_EmittedCol;
-      m_pColsReq->m_axCols[i_Col].m_bPayload = pColsReq->m_axCols[i_Col].m_bPayload;
-      m_pColsReq->m_axCols[i_Col].m_i_Cell = pColsReq->m_axCols[i_Col].m_i_Cell;
-    }
-  }
+	m_pColInj->m_nCols = pColsInj->m_nCols;
+	for (i8 i_Col = 0; i_Col < pColsInj->m_nCols; i_Col++) {
+		m_pColInj->m_axCol[i_Col].m_i_CrwCol = pColsInj->m_axCol[i_Col].m_i_CrwCol;
+		m_pColInj->m_axCol[i_Col].m_bPriorCrwCol = pColsInj->m_axCol[i_Col].m_bPriorCrwCol;
+		m_pColInj->m_axCol[i_Col].m_i_StructCell = pColsInj->m_axCol[i_Col].m_i_StructCell;
+		m_pColInj->m_axCol[i_Col].m_sCn_memberNm = pColsInj->m_axCol[i_Col].m_sCn_memberNm;
+	}
 }
 
 /*----------------------------------------------------------------------------*/
-/* column required ?                                                          */
+/* copy columns propagated                                                    */
 /*----------------------------------------------------------------------------*/
-bool OpSketch::bColReq(i8 i_Col)
+void OpSketch::vCopyColPpg(ColPpg* pColPpg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  for (i8 iIndex = 0; iIndex < m_pColsReq->m_nCols; iIndex++) {
-    if (m_pColsReq->m_axCols[iIndex].m_i_Cell == i_Col)
-      return true;
-  }
+	m_pColPpg = new ColPpg(pColPpg->m_nArriving);
 
-  return false;
+	m_pColPpg->m_nPropagated = pColPpg->m_nPropagated;
+	for (i8 i_Col = 0; i_Col < pColPpg->m_nPropagated; i_Col++) {
+		m_pColPpg->m_axCol[i_Col].m_i_CellIn = pColPpg->m_axCol[i_Col].m_i_CellIn;
+		m_pColPpg->m_axCol[i_Col].m_i_StructCell = pColPpg->m_axCol[i_Col].m_i_StructCell;
+		m_pColPpg->m_axCol[i_Col].m_sCn_memberNm = pColPpg->m_axCol[i_Col].m_sCn_memberNm;
+	}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,6 +266,21 @@ bool OpSketch::bIsPayload(i8 i_Col)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   return m_pColMap->m_axCols[i_Col].m_bPayload ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check column mapping and see if given emitted column is a payload          */
+/*----------------------------------------------------------------------------*/
+bool OpSketch::bIsEmittedColPayload(i8 i_emittedCol)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+	for (i8 i_Col = 0; i_Col < m_pColMap->m_nCols; i_Col++) {
+		if (m_pColMap->m_axCols[i_Col].m_i_EmittedCol == i_emittedCol)
+		  return m_pColMap->m_axCols[i_Col].m_bPayload;
+	}
+	RASSERT(0);
+	return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1162,6 +1180,16 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 //    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
 //    vTrace("%s\n"_Stz, pTypedCell->szStz());
 //  }
+//
+//	// dump the m_pOrdAggStack stack
+//  vTrace("--------------------------------------\n"_Stz);
+//  vTrace("ORDAGGSTACK:\n"_Stz);
+//  nExpr = m_pGbyStack ? m_pOrdAggStack->nValues() - 1 : -1;
+//
+//  while ( nExpr >= 0) {
+//    pTypedCell = m_pOrdAggStack->aPeekItem(nExpr--);
+//    vTrace("%s\n"_Stz, pTypedCell->szStz());
+//  }
 
 #endif
 
@@ -1313,7 +1341,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
 
     RASSERT(m_eSketchKind == SK_AGGREG ||
             m_eSketchKind == SK_ORDAGG)
-    sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
+    sOperation.vSprint("_ASSIGN(%s)\n"_Stz, sStructColumn.azChar());
     m_pInitStack->vPushStr(sOperation);
   }
 
@@ -1802,12 +1830,14 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   s256 sPush;
 
   i8 i_ColumnOrdinal = C_UNKNOWN;
-  i8 nColumns = m_pStreamDefLft->nColumns();
+  i8 nColumns;
 
   // skip index column
   if (pTkn->szChars()->bContains("I"_Stz)) {
     return;
   }
+
+	nColumns = m_pStreamDefLft->nColumns();
 
   // ignore right columns
   if (pTkn->szChars()->bContains("R"_Stz)) {
@@ -1859,6 +1889,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   if (pExprStack == m_pGbyStack) {
     m_pOrdAggStack->vPushStz(sPush);
   }
+
 //  }
 
 
@@ -1991,6 +2022,8 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         sPush = aFM[eMacro_Eq[eDatum][eDatum]];
         sPush.vConcat("(aDynamicT->m_iErrorCode)"_Stz);
         m_pOrdAggStack->vPushStz(sPush);
+				sPush.vSprint("_ASSIGN(bKeyMatch)\n"_Stz);
+				m_pOrdAggStack->vPushStz(sPush);
         break;
       }
 
@@ -2372,6 +2405,7 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
   switch(m_eSketchKind) {
     case SK_AGGREG:
     case SK_GBYAGG:
+		case SK_ORDAGG:
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
@@ -2381,11 +2415,11 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
 
       return m_pInitStack;
 
-    case SK_ORDAGG:
-      if (ePreExp == PE_GBY)
-        return m_pGbyStack;
-      else
-        return m_pExprStack;
+//    case SK_ORDAGG:
+//      if (ePreExp == PE_GBY)
+//        return m_pGbyStack;
+//      else
+//        return m_pExprStack;
 
     case SK_FILTER:
     case SK_INDEXSCAN:

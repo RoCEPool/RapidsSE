@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
-__aNewFunction(XF_Optimise_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
-__vDeleteFunction(XF_Optimise_Derive_streamKey, CN_XF_DERIVE_STREAM_KEY)
+__pCastFunction(STORE, XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAM_KEY)
+__aNewFunction(XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAM_KEY)
+__vDeleteFunction(XF_Optimise_Derive_streamKey, CN_XF_OPTIMISE_DERIVE_STREAM_KEY)
 __aFooterFunction(XF_Optimise_Derive_streamKey)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Optimise_Derive_streamKey)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Derive_streamKey::XF_Optimise_Derive_streamKey(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_DERIVE_STREAM_KEY, OT_DERIVE_STREAMKEY, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_DERIVE_STREAM_KEY, OT_DERIVE_STREAMKEY, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_DERIVE_STREAM_KEY);
+  _checkInitialised_(CN_XF_OPTIMISE_DERIVE_STREAM_KEY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Optimise_Derive_streamKey::XF_Optimise_Derive_streamKey(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Derive_streamKey::~XF_Optimise_Derive_streamKey(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,21 +63,21 @@ void XF_Optimise_Derive_streamKey::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Derive_streamKey::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
 
   bool bOptRun = false;
 
   m_pCI->vTransform(__func__, XF_OPTIMISE_DERIVE_STREAMKEY, "Derive stream keys"_Stz);
 
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey_running);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pEmitted);
+  RASSERT(nullptr == m_pCI->StreamOrder.m_pStreamKey);
 
   if (bFindStart_streamKey()) {
     vPropagate_streamKey();
     bOptRun = true;
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;
@@ -92,7 +92,7 @@ bool XF_Optimise_Derive_streamKey::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
 
   bool bFoundKeyStart = false;
 
@@ -118,7 +118,7 @@ bool XF_Optimise_Derive_streamKey::bFindStart_streamKey(void)
 /*----------------------------------------------------------------------------*/
 void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_STREAM_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_DERIVE_STREAM_KEY, _FOOTER_);
 
   while (m_pCI->G_bEachMain_NONE()) {
 
@@ -136,7 +136,7 @@ void XF_Optimise_Derive_streamKey::vPropagate_streamKey(void)
 
    // m_pCI->vPrintBoard(__LINE__);
 
-    if (! m_pCI->StreamOrder.m_pStreamKey_running)
+    if (! m_pCI->StreamOrder.m_pStreamKey)
       break;
   }
 }

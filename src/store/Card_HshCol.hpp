@@ -16,7 +16,7 @@ namespace STORE
     Card_HshCol(void);
    ~Card_HshCol(void) noexcept(false);
 
-    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

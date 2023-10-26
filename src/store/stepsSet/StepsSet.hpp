@@ -1874,14 +1874,6 @@ void vJobIdLastJobIdFetch(void);
   void vStatsStartTimer(void);
   void vStatsUpdateTimer(void);
 
-  // stencil
-  void vStencilDelete_v2(void);
-  void vStencilGet_v2(void);
-  void vStencilNew_v2(void);
-  void vStencilSetup_v2(void);
-  void vStencilSketch_v2(void);
-  void vStencilSourceFetch_v2(void);
-
   // steps
   void vStepsReset(void);
   void vStepsStart(void);

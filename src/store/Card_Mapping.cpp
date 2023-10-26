@@ -42,13 +42,9 @@ Card_Mapping::~Card_Mapping(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
-ColMap* Card_Mapping::pToColMap(ColMap* pColMap,
-                                Card_Key* p_key,
-                                Card* p_OP)
+void Card_Mapping::vToColMap(ColMap* pColMap)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(p_key);
-  UNUSED(p_OP);
 
   for (Kid xKeyCells(pSub_keyCells()); xKeyCells.bEach(CK_MAP); /**/) {
     Card_Map* p_map = xKeyCells.p_map();
@@ -67,8 +63,6 @@ ColMap* Card_Mapping::pToColMap(ColMap* pColMap,
 
     pColMap->vAdd(i_EmittedCol, true, i_Cell);
   }
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

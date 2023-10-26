@@ -71,9 +71,9 @@ bool Card_StreamKey::bIsEquivalentTo(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(this->szP_Type());
+  RASSERT(CT_NONE != this->eColType());
 
-  if (! szP_Type()->bSame(p_key_arg->szP_Type()))
+  if (eColType() != p_key_arg->eColType())
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -127,7 +127,7 @@ void Card_StreamKey::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pParent->bIsCard(CK_PROJECTION));
+  RASSERT(pParent->bIsCard(CK_EMIT));
 
   vValidate_mustHave(CK_EXPR,CK_NONE);
 

@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_Early_projection, CN_XF_OT_EARLY_PROJECTION)
-__aNewFunction(XF_Optimise_Early_projection, CN_XF_OT_EARLY_PROJECTION)
-__vDeleteFunction(XF_Optimise_Early_projection, CN_XF_OT_EARLY_PROJECTION)
+__pCastFunction(STORE, XF_Optimise_Early_projection, CN_XF_OPTIMISE_EARLY_PROJECTION)
+__aNewFunction(XF_Optimise_Early_projection, CN_XF_OPTIMISE_EARLY_PROJECTION)
+__vDeleteFunction(XF_Optimise_Early_projection, CN_XF_OPTIMISE_EARLY_PROJECTION)
 __aFooterFunction(XF_Optimise_Early_projection)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Optimise_Early_projection)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Early_projection::XF_Optimise_Early_projection(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_OT_EARLY_PROJECTION, OT_EARLY_PROJECTION, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_EARLY_PROJECTION, OT_EARLY_PROJECTION, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
-  _checkInitialised_(CN_XF_OT_EARLY_PROJECTION);
+  _checkInitialised_(CN_XF_OPTIMISE_EARLY_PROJECTION);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Optimise_Early_projection::XF_Optimise_Early_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Early_projection::~XF_Optimise_Early_projection(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +67,7 @@ void XF_Optimise_Early_projection::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Early_projection::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_EARLY_PROJECTION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_EARLY_PROJECTION, _FOOTER_);
 
   bool bOptRun = false;
 
@@ -78,7 +78,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
 
   RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
 
-  m_pCI->vForward(false);
+  m_pCI->vForwards(false);
   m_pCI->vBeginEachReverse();
 
   for (;;) {
@@ -109,7 +109,7 @@ bool XF_Optimise_Early_projection::bOptimise(void)
     m_pCI->G_vMainResynch(m_pCI->Early.m_pOP_leaf);
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
 }

@@ -34,8 +34,13 @@ namespace STORE
     } Early;
 
     struct {
-      Card_Projection * m_pProjection;
-    } Prior;
+      Card_Emit * m_pArriving;
+    } Flux;
+
+    struct {
+      Card_Project * m_pProject;
+      Card_Emit * m_pEmitted;
+    } Next;
 
     struct {
       i8         m_i_SubQuery;
@@ -44,7 +49,8 @@ namespace STORE
       s32        m_sSqyNm;
       s32        m_sSqyArg;
       Card_Term* m_pTerm_corrCol;
-      Card_Term* m_pTerm_sqCall;
+      Card_Term* m_pTerm_sqyCall;
+      Card_CONJUNCTION* m_pConj_sqyCall;
       Card_Correlation* m_pCorrelation;
       i8         m_i_FoldCard;
       Card_Expr* m_pExpr_fold;
@@ -53,9 +59,15 @@ namespace STORE
     } Sqy;
 
     struct {
-     Card_StreamKey *  m_pStreamKey_running;
-      Card_Projection * m_pProjection_running;
+      Card_StreamKey * m_pStreamKey;
+      Card_Emit *   m_pEmitted;
     } StreamOrder;
+
+    struct {
+      Card_EXPRLIST * m_pExprList_a;
+      Card_EXPRLIST * m_pExprList_i;
+      Card_EXPRLIST * m_pExprList_k;
+    } X;
 
     i8 m_nAncestors;
     Card* m_apAncestry[C_CARD_ANCESTRY];
@@ -71,10 +83,12 @@ namespace STORE
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
 
+    Card* pAdvanceChild(void);
     bool bApplyRecursive(Card* pCard, eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
+    void G_vAppendNewChild(eCK eParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol* pSymbol);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol);
@@ -82,6 +96,7 @@ namespace STORE
     Card* pAncestor(i8 i_Ancestor);
     void  vAncestorDump(Card* pCard = nullptr);
     Card* pAncestorFind(eCK eCard);
+    bool  bAncestorIncludes(eCK eCard);
     void  vAncestorPop(void);
     void  vAncestorPush(Card* pCard);
     i8    nAncestors(void);
@@ -130,14 +145,14 @@ namespace STORE
 
     void vEnd(void);
     void vEndPhase(void);
-    void vEndTransform(void);
+    void vEndTransform(i8 iLineNo=C_UNKNOWN);
 
     Card_Expr* pExpr_For_col(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
     Card_Expr* pExpr_For_colNm(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
 
     void vFocusOnMain(void);
-    bool bForward(void);
-    void vForward(bool bForward);
+    bool bForwards(void);
+    void vForwards(bool bForward);
 
     Card* pGetChild(i8 i_Child);
     Card* G_pGetMember(eCK eMember);
@@ -167,7 +182,7 @@ namespace STORE
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN, bool bForce=false);
-    void vSnapPriorProjection(void);
+    void vSnapFluxArriving(void);
     void G_vPushBoard(Board* pBoard);
     void G_vPushBoard(Stz* szBoardNm);
     bool G_bPushBoard(i8 i_Board);
@@ -188,7 +203,7 @@ namespace STORE
     void vRenumberCards(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Expr* pResolvePrior_expr_prior(Card_Term* p_term);
-    Card_Projection* pResolvePrior_projection(void);
+    Card_Emit* pResolvePrior_projection(void);
     void vRestore(void);
     Card* pRewindChild(void);
     bool G_bRewindMain(void);

@@ -3,6 +3,9 @@
 # These tests are run in a single node, multi-partition configuration.
 # This is a recursive testList file.
 
+
+////////////////// to be enabled when colInj/ colPpg done
+
 ../../../seth/tests/dummyTests/testList
 
 ../../../seth/tests/tests1N4P/GbyAgg/testList
@@ -42,9 +45,7 @@
 
 ../../../seth/tests/tests1N4P/PartitionKey/testList
 ../../../seth/tests/tests1N4P/Queries/testList
-//../../../seth/tests/tests1N4P/Retrieve/testList
-//../../../seth/tests/tests1N4P/Select/testList
+../../../seth/tests/tests1N4P/Select/testList
 ../../../seth/tests/tests1N4P/Select_SF0001/testList
 ../../../seth/tests/tests1N4P/Table/testList
 ../../../seth/tests/tests1N4P/Index/testList
-//../../../seth/tests/tests1N4P/Tpch_SF0001/testList

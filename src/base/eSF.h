@@ -1,17 +1,14 @@
 /*============================================================================*/
-/* eSF.h - symbol form                                                        */
+/* eSF.h - symbol facet                                                       */
 /*============================================================================*/
 #pragma once
 
-enum eSF // symbol form
+enum eSF // symbol facet
 {
   /* */ SF_NONE = 0,    // none
 
   /* */ SF_AGG_FN,      // Aggregate Function  : AVG, COUNT, ... SUM
   /* */ SF_AS,          // As                  : AS
-  /* */ SF_AS_NM,       // As Name             : bIsName() but not bIs_Agg_Fn() etc
-  /* */ SF_AS_NM_itm,   // As Name (itemised)  : Cn_<col_nm>
-  /* */ SF_AS_NM_syn,   // As Name (synthetic) : __COLn
 
   /* */ SF_BOL_FN,      // Boolean Function    : BETWEEN, CASE ... MATCHTRAILING
   /* */ SF_BOL_LIT,     // Boolean Literal     : FALSE, TRUE
@@ -22,11 +19,6 @@ enum eSF // symbol form
   /* */ SF_CASE,        // Case                : CASE
   /* */ SF_CAST,        // Cast                : CAST
   /* */ SF_CASTTYPE,    // CastType            : CASTTYPE
-  /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
-  /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
-  /* */ SF_COL_NM_syn,  // " (synthetic)       : COLn
-  /* */ SF_COL_NO,      // Column Number       : $n
-  /* */ SF_COL_TC,      // (table) Column No   : $c.n
   /* */ SF_COL_TYPE,    // Column Type         : BOOLEAN, ... VARCHAR
   /* */ SF_COMMA,       // comma               : ,
   /* */ SF_CROSS,       // Cross               : CROSS
@@ -37,7 +29,7 @@ enum eSF // symbol form
   /* */ SF_ELSE,        // Else                : ELSE
   /* */ SF_ENDIF,       // EndIf               : ENDIF
 
-  /* */ SF_FLD_NM,      // Fold Name           :
+  /* */ SF_FLD_NM,      // XF_Fold Name           :
   /* */ SF_FLT_LIT,     // Float Literal       : StrLib::bIsFloat()
 
   /* */ SF_GROUPBY,     // GroupBy             : GROUPBY
@@ -47,30 +39,37 @@ enum eSF // symbol form
   /* */ SF_INT_LIT,     // Integer Literal     : StrLib::bIsInteger()
   /* */ SF_INTERVAL_DT, // INTERVAL_DT         : INTERVAL_DT
   /* */ SF_INTERVAL_YM, // INTERVAL_YM         : INTERVAL_YM
+  /* */ SF_ITM_COL,     // Itemised Col Name   : Cn_<col_nm>
   /* */ SF_IVL_FN,      // Interval Function   : extract_year etc
 
   /* */ SF_KEY_COL,     // Key Column no       : $Kn
 
+  /* */ SF_LIST_CNT,    // List item count     : #n
+
   /* */ SF_MTH_OP,      // Math Op             : +, -, *, /
 
   /* */ SF_NEGATE,      // Negate              : NEGATE
+  /* */ SF_NMD_COL,     // Named Column        : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_NOTE,        // Note Literal        : ...any...
   /* */ SF_NULL,        // Null                : NULL
 
   /* */ SF_PARENTHESIS, // Parenthesis         : (, )
+  /* */ SF_PAY_COL,     // Key Column no       : $Pn
   /* */ SF_PPE_NM,      // PipeName            : bIsName
-  /* */ SF_PRM_COL,     // Parameter Column    : %n
 
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
 
   /* */ SF_SQY_NM,      // SubQuery Nm         : __sq<n>
   /* */ SF_SQY_OP,      // SubQuery Op         :
+  /* */ SF_SQY_PRM,     // Parameter Column    : %n
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NO,      // Stage No            : Sn
+  /* */ SF_STM_COL,     // Stream Column No    : $n
   /* */ SF_STR_FN,      // String Function     : SUBSTRING2 ... SUBSTRING3
-  /* */ SF_STRING,      // String              : 'abc'
+  /* */ SF_STR_LIT,     // String              : 'abc'
 
+  /* */ SF_TBL_COL,     // Table Column No     : $t.c
   /* */ SF_TBL_NM,      // Table Name          : bIsName
   /* */ SF_TBL_SYN,     // Table Synonym       : c
   /* */ SF_TBL_SYN_rep, // " (replicated)      : C
@@ -79,8 +78,7 @@ enum eSF // symbol form
 
   /* */ SF_WHEN,        // When                : WHEN
 
-  /* */ SF_XK_CAST,     // CrossRef No         : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
-  /* */ SF_XRF_NO,      // CrossRef No         : #n
+  /* */ SF_XK_CAST,     // XK_                 : XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
   /* */ SF_ENUMS
 };

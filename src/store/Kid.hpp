@@ -28,10 +28,12 @@ namespace STORE
   public:
     Kid(void);
     Kid(Card *pParent);
+    Kid(Card *pParent, Card *pChild);
     ~Kid(void) noexcept(false);
 
-    void vBeginEach_forward(void);
-    void vBeginEach_reverse(void);
+    void vBackstep(void);
+    void vBegin(void);
+    void vBegin_reverse(void);
     bool bBegun(void);
 
     eCK  eChild(void);
@@ -41,12 +43,12 @@ namespace STORE
     void vDelete(void);
 
     bool bEach(void);
-    bool bEach(eCK eCard);
-    bool bEach(eCK eCard, eCK eSub1);
-    bool bEach(eCK eCard, eCK eSub1, eCK eSub2);
-    bool bEach(eCK eCard, eCK eSub1, eCK eSub2, eCK eSub3);
+    bool bEach(eCK eChild);
+    bool bEach(eCK eChild, eCK eSub1);
+    bool bEach(eCK eChild, eCK eSub1, eCK eSub2);
+    bool bEach(eCK eChild, eCK eSub1, eCK eSub2, eCK eSub3);
     bool bEach_reverse(void);
-    bool bEach_reverse(eCK eCard);
+    bool bEach_reverse(eCK eChild);
     bool bEnded(void);
     void vEnded(void);
 
@@ -67,9 +69,8 @@ namespace STORE
     Card *pPrev(void);
 
     void vRemove(void);
-    void vResynch(i8 i_Child);
-    void vResynch(Card* pCard);
-    void vRewind(void);
+    void vReposition(i8 i_Child);
+    void vReposition(Card* pChild);
 
     Card *pSub1(void);
     Card *pSub2(void);
@@ -78,7 +79,8 @@ namespace STORE
     bool bWithinRange(void);
 
     Card_Bound*       p_bound(void);
-    Card_CmpConj*     p_cmpPred(void);
+    Card_RlnConj*     p_rlnConj(void);
+    Card_CONJUNCTION* p_CONJUNCTION(void);
     Card_Correlation* p_correlation(void);
     Card_Expr*        p_expr(void);
     Card_Fold*        p_fold(void);

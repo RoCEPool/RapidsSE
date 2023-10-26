@@ -4,7 +4,7 @@
 
 #include "Card_AndConj.hpp"
 #include "Card_CONJUNCTION.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 
 #include "Kid.hpp"
 /*----------------------------------------------------------------------------*/
@@ -44,16 +44,16 @@ Card_AndConj::~Card_AndConj(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpConj* Card_AndConj::pAndPredFindBound(Index* pIndex, ePB eBound)
+Card_RlnConj* Card_AndConj::pAndConjFindBound(Index* pIndex, ePB eBound)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-Card_CONJUNCTION* pSubPred0 = (Card_CONJUNCTION*)this->pGet(0);
-if (Card_CmpConj* pFound = pSubPred0->pPredFindBound(pIndex, eBound))
+Card_CONJUNCTION* pSubConj0 = (Card_CONJUNCTION*)this->pGet(0);
+if (Card_RlnConj* pFound = pSubConj0->pPredFindBound(pIndex, eBound))
 return pFound;
 
-Card_CONJUNCTION* pSubPred1 = (Card_CONJUNCTION*)this->pGet(1);
-if (Card_CmpConj* pFound = pSubPred1->pPredFindBound(pIndex, eBound))
+Card_CONJUNCTION* pSubConj1 = (Card_CONJUNCTION*)this->pGet(1);
+if (Card_RlnConj* pFound = pSubConj1->pPredFindBound(pIndex, eBound))
 return pFound;
 
 return nullptr;
@@ -66,12 +66,12 @@ bool Card_AndConj::bAndPredHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* pSubPred0 = (Card_CONJUNCTION*)this->pGet(0);
-  if (pSubPred0->bPredHasBounds(pIndex))
+  Card_CONJUNCTION* pSubConj0 = (Card_CONJUNCTION*)this->pGet(0);
+  if (pSubConj0->bConjHasBounds(pIndex))
     return true;
 
-  Card_CONJUNCTION* pSubPred1 = (Card_CONJUNCTION*)this->pGet(1);
-  if (pSubPred1->bPredHasBounds(pIndex))
+  Card_CONJUNCTION* pSubConj1 = (Card_CONJUNCTION*)this->pGet(1);
+  if (pSubConj1->bConjHasBounds(pIndex))
     return true;
 
   return false;
@@ -80,26 +80,23 @@ bool Card_AndConj::bAndPredHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_AndConj::vEnsureTypesFor_stmOdn(CardIter *pCI)
+void Card_AndConj::vEnsureTypesFor_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Kid xAndPred(this);
-  while (xAndPred.bEach()) {
-    Card* pCard = xAndPred.pChild();
+  Kid xAndConj(this);
+  while (xAndConj.bEach()) {
+    Card* pCard = xAndConj.pChild();
     eCK eCard = pCard->eCard();
 
     switch (eCard) {
 
-      case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_CMPCONJ:
-        _pCard_CmpConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_NOTCONJ:
-        _pCard_NotConj(pCard)->vEnsureTypesFor_stmOdn(pCI); break;
-      case CK_ORCONJ:
-        _pCard_OrConj(pCard)->vEnsureTypesFor_stmOdn(pCI);  break;
+      case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
+      case CK_NOTCONJ: _pCard_NotConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
+      case CK_ORCONJ:  _pCard_OrConj(pCard)->vEnsureTypesFor_stmCol(pCI);  break;
+      case CK_RLNCONJ: _pCard_RlnConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
 
-      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmOdn(pCI);     break;
+      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmCol(pCI);     break;
 
       default:
         NEVER_REACH
@@ -125,12 +122,12 @@ void Card_AndConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     switch (eCard) {
 
       case CK_ANDCONJ: _pCard_AndConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
-      case CK_CMPCONJ:
-        _pCard_CmpConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
       case CK_NOTCONJ:
         _pCard_NotConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
       case CK_ORCONJ:
         _pCard_OrConj(pCard)->vValidate(pCI, iDepth + 1, this);  break;
+      case CK_RLNCONJ:
+        _pCard_RlnConj(pCard)->vValidate(pCI, iDepth + 1, this); break;
 
       case CK_TERM:    _pCard_Term(pCard)->vValidate(pCI,iDepth+1,this);    break;
 

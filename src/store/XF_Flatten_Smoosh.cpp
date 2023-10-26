@@ -11,20 +11,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Smoosh, CN_XF_SMOOSH)
-__aNewFunction(XF_Flatten_Smoosh, CN_XF_SMOOSH)
-__vDeleteFunction(XF_Flatten_Smoosh, CN_XF_SMOOSH)
+__pCastFunction(STORE, XF_Flatten_Smoosh, CN_XF_FLATTEN_SMOOSH)
+__aNewFunction(XF_Flatten_Smoosh, CN_XF_FLATTEN_SMOOSH)
+__vDeleteFunction(XF_Flatten_Smoosh, CN_XF_FLATTEN_SMOOSH)
 __aFooterFunction(XF_Flatten_Smoosh)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Smoosh::XF_Flatten_Smoosh(void)
-: Object(CN_XF_SMOOSH)
+: Object(CN_XF_FLATTEN_SMOOSH)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ XF_Flatten_Smoosh::XF_Flatten_Smoosh(void)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Smoosh::~XF_Flatten_Smoosh(void) noexcept(false)
 {
-_precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+_precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 }
 
 
@@ -45,7 +45,7 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
   UNUSED(pCI);
   UNUSED(Smoosh);
 }
@@ -55,7 +55,7 @@ void XF_Flatten_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_SMOOSH, _FOOTER_);
 
   pCI->vClearRestart();
   RASSERT(pCI->G_bEachMain_foldBreak(CK_FROM));
@@ -90,7 +90,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
 
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_FROM));
-  Card_Projection* p_projection_table = pCI->G.p_from->pSub_projection();
+  Card_Emit* p_emitted_table = pCI->G.p_from->pSub_emit();
 
   pCI->vBeginEachReverse();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak_b(CK_WHERE));
@@ -98,19 +98,19 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
 
-  pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
-  pCI->G.p_cmpConj = pCI->G.p_boolCalc->pCmpPred_whichCallsSubQuery(pCI);
+  pCI->G.p_boolPred = pCI->G.p_where->pSub_boolPred();
+  pCI->G.p_rlnConj = pCI->G.p_boolPred->pCmpConj_whichCallsSubQuery(pCI);
 
-  if (pCI->G.p_cmpConj->pSymbol()->bSame("in"_Stz) ||
-      pCI->G.p_cmpConj->pSymbol()->bSame("exists"_Stz))
+  if (pCI->G.p_rlnConj->pSymbol()->bSame("in"_Stz) ||
+      pCI->G.p_rlnConj->pSymbol()->bSame("exists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyExists);
   else
-  if (pCI->G.p_cmpConj->pSymbol()->bSame("notIn"_Stz) ||
-      pCI->G.p_cmpConj->pSymbol()->bSame("notExists"_Stz))
+  if (pCI->G.p_rlnConj->pSymbol()->bSame("notIn"_Stz) ||
+      pCI->G.p_rlnConj->pSymbol()->bSame("notExists"_Stz))
     p_from_exists->vAppendChild(new Card_KeyNotExists);
 
-  pCI->Prior.m_pProjection = p_projection_table;
-  pCI->G.p_cmpConj->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
+  pCI->Flux.m_pArriving = p_emitted_table;
+  pCI->G.p_rlnConj->vMorph_sqlOp_To_EQ(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
 
@@ -127,41 +127,41 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // todo: the %1 needs to be decoded... its a parameter
   Card* p_parent;
-  Symbol xPrmOrd(SF_PRM_COL,1);
+  Symbol xPrmOrd(SF_SQY_PRM, 1);
   Card_Term* p_term_sqyarg = _pCard_Term(p_from_exists->pFindSymbolRecursive(CK_TERM,&xPrmOrd,p_parent));
 
   Card_Expr* p_expr_found =
-      p_projection_table->pGetExpr(p_term_sqyarg->iGetOdn() - 1);
+      p_emitted_table->pGet_expr(p_term_sqyarg->iGetOdn() - 1);
 
   //p_expr_found->vDump();
-  Card_Term* p_term_found = p_expr_found->pGetTerm(0);
+  Card_Term* p_term_found = p_expr_found->pGet_term(0);
 
   eSF eSymbol = Symbol::eEvalSymbol(pCI->Sqy.m_sSqyArg);
-  RASSERT(SF_COL_TC == eSymbol);
+  RASSERT(SF_TBL_COL == eSymbol);
 
 
-  Card_Term* p_term_sqarg = (new Card_Term) ->SYM(SF_COL_TC,pCI->Sqy.m_sSqyArg);
-  p_term_sqarg->pSymbol()->Y_vColType(p_term_found->pSymbol()->Y_szColType());
+  Card_Term* p_term_sqarg = (new Card_Term) ->SYM(SF_TBL_COL, pCI->Sqy.m_sSqyArg);
+  p_term_sqarg->pSymbol()->vColType(p_term_found->pSymbol()->eColType());
   //p_term_sqarg->vDump();
 
 
   //Card_Term::bReplaceValueOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
-  Symbol xSymbol_prmOdn(SF_PRM_COL,1);
-  p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmOdn, p_term_sqarg->pSymbol());
+  Symbol xSymbol_prmCol(SF_SQY_PRM, 1);
+  p_from_exists->bUpdateSymbolRecursive(CK_TERM, &xSymbol_prmCol, p_term_sqarg->pSymbol());
 
   delete p_term_sqarg;
 
  // pCI->vPrintBoard();
 
   pCI->vClearRestart();
-  if (pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
-    pCI->G.p_boolCalc->nCullPred(MARK_AT);
+  if (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED)) {
+    pCI->G.p_boolPred->nCullConj(MARK_AT);
   }
 
  // pCI->vPrintBoard();
 
   pCI->vClearRestart();
-  pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
+  pCI->G_vDeleteWhenEmptySub(CK_WHERE, CK_BOOLPRED);
 
  // pCI->vRenumberCards();
  // pCI->vPrintBoard(__LINE__);

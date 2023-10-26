@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* _ray_FOLD_34_W_A_NC_ro -- sub-query flattening test : refer Q15            */
+/*============================================================================*/
+
+// --initial _ray_FOLD_34_W_A_NC_ro
+
+_ray_create
+
+trackMemory;
+
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+create index PS_idx1 on partsupp (PS_SUPPKEY );
+create index S_idx0  on supplier (S_SUPPKEY  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_FOLD_34_W_A_NC_ro"
+select ps_partkey,
+       sum(ps_supplycost * ps_availqty) as value
+  from Partsupp, Supplier
+ where PS_SUPPKEY = S_SUPPKEY
+   and (ps_supplycost * ps_availqty) >= (select avg(ps_supplycost * ps_availqty)
+                                           from Partsupp, Supplier
+                                          where PS_SUPPKEY = S_SUPPKEY)
+ group by ps_partkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryLeaks;
+
+_ray_drop
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -21,7 +21,6 @@ INCLUDE 'regrLoadData.test';
 //LOG 'Running regression tests...';
 
 //------------------------------------------------------------------------------
-
 LOG 'AndOrNot.test ...';
 INCLUDE 'AndOrNot.test';
 
@@ -59,6 +58,7 @@ INCLUDE 'between.test';
 
 LOG 'case.test ...';
 INCLUDE 'case.test';
+
 
 LOG 'cast.test ...';
 INCLUDE 'cast.test';

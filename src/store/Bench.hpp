@@ -8,7 +8,7 @@
 namespace STORE
 {
   class XF_Flatten;
-  class Fold;
+  class XF_Fold;
 
   class Bench : public Object
               , public ListExo2_t<Board>

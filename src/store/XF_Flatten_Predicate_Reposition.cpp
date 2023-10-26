@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
-__aNewFunction(XF_Flatten_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
-__vDeleteFunction(XF_Flatten_Predicate_Reposition, CN_XF_PREDICATE_REPOSITION)
+__pCastFunction(STORE, XF_Flatten_Predicate_Reposition, CN_XF_FLATTEN_PREDICATE_REPOSITION)
+__aNewFunction(XF_Flatten_Predicate_Reposition, CN_XF_FLATTEN_PREDICATE_REPOSITION)
+__vDeleteFunction(XF_Flatten_Predicate_Reposition, CN_XF_FLATTEN_PREDICATE_REPOSITION)
 __aFooterFunction(XF_Flatten_Predicate_Reposition)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_Predicate_Reposition)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Predicate_Reposition::XF_Flatten_Predicate_Reposition(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_PREDICATE_REPOSITION, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_PREDICATE_REPOSITION, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_PREDICATE_REPOSITION, _FOOTER_);
 
-  _checkInitialised_(CN_XF_PREDICATE_REPOSITION);
+  _checkInitialised_(CN_XF_FLATTEN_PREDICATE_REPOSITION);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_PREDICATE_REPOSITION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_Predicate_Reposition::XF_Flatten_Predicate_Reposition(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_Predicate_Reposition::~XF_Flatten_Predicate_Reposition(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_PREDICATE_REPOSITION, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PREDICATE_REPOSITION, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_PREDICATE_REPOSITION, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_FLATTEN_PREDICATE_REPOSITION, "predicate repositioning post join ordering"_Stz);
 
@@ -71,8 +71,8 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
   m_pCI->vBeginEachReverse();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI);
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
+    m_pCI->G.p_boolPred->vMarkWrt_table(m_pCI);
   }
 
  // m_pCI->vPrintBoard(__LINE__);
@@ -83,8 +83,8 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vClearRestart();
   m_pCI->vBeginEachReverse();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredsToTable(m_pCI);
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
+    m_pCI->G.p_boolPred->vCopyMarkedConjToTable(m_pCI);
   }
 
  // m_pCI->vPrintBoard(__LINE__);
@@ -92,8 +92,8 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vClearRestart();
   m_pCI->vBeginEachReverse();
 
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->nCullPred(MARK_AT);
+  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
+    m_pCI->G.p_boolPred->nCullConj(MARK_AT);
   }
 
  // m_pCI->vPrintBoard(__LINE__);
@@ -113,7 +113,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
 
  m_pCI->G.pDeck->vMarksClearRecursive();
 
- m_pCI->vEndTransform();
+ m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

@@ -67,13 +67,13 @@ bool XF_Optimise_Late_projection::bOptimise(void)
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_STATIC_CALC, "optimise one time calcs"_Stz);
+  m_pCI->vTransform(__func__, XF_OPTIMISE_LATE_PROJECTION, "late projection"_Stz);
 
   m_pCI->vClearRestart();
 
   //m_pCI->pBoard()->pState()->vInsert(aOT[OT_LATE_PROJECTION]);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;

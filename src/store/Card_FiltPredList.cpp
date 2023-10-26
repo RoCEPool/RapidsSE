@@ -6,8 +6,8 @@
 
 #include "CardIter.hpp"
 
-#include "Card_BoolCalc.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_BoolPred.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
@@ -59,7 +59,7 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
   auto bLambda = [&nFilters] (Card* p_card) {
 
-    if (!_pCard_CmpConj(p_card)->bIsJoinPred())
+    if (!_pCard_RlnConj(p_card)->bIsJoinConj())
       nFilters++;
 
     return C_CONTINUE_RECURSION;
@@ -72,14 +72,14 @@ Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 
     Card_Filter* p_filter = _pCard_Filter(xKid.pSub1());
 
-    Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+    Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
 
     nFilters = 0;
-    p_boolCalc->bApplyRecursive(CK_CMPCONJ, bLambda);
+    p_boolPred->bApplyRecursive(CK_RLNCONJ, bLambda);
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;
-      p_filtPred->SYM(SF_TBL_SYN,xKid.p_table()->szSymbol(SF_NONE));
+      p_filtPred->SYM(SF_TBL_SYN, xKid.p_table()->szFacet(SF_NONE));
       p_filtPred->pSymbol()->Y_vSet(P_Count,nFilters);
       p_filtPredList->vAppendChild(p_filtPred);
     }

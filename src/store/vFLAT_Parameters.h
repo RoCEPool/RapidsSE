@@ -18,31 +18,31 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // added for inflate
 
-  i8*    aiCellValue;
-  char** aacCellValue;
-  char*  azDst;
-  i8     nRoundedStrBytes;
-  byte*  ayDstByte;
-  char*  acStrArea;
-  char*  racStrArea;
-  i8     nStrSize;
-  u2     u_Tail_rel;
-  void*  aRow;
+  i8*    aiCellValue      __attribute__ ((unused));
+  char** aacCellValue     __attribute__ ((unused));
+  char*  azDst            __attribute__ ((unused));
+  i8     nRoundedStrBytes __attribute__ ((unused));
+  byte*  ayDstByte        __attribute__ ((unused));
+  char*  acStrArea        __attribute__ ((unused));
+  char*  racStrArea       __attribute__ ((unused));
+  i8     nStrSize         __attribute__ ((unused));
+  u2     u_Tail_rel       __attribute__ ((unused));
+  void*  aRow             __attribute__ ((unused));
 
-  struct TailLine_T* aTailLine;
+  struct TailLine_T* aTailLine __attribute__ ((unused));
 
-  union Edt_T* aEdt;
-  union Dte_T* aDte;
+  union Edt_T* aEdt __attribute__ ((unused));
+  union Dte_T* aDte __attribute__ ((unused));
 
-  i8 iHeadSize = aCombinedT->m_iHeadSize;
+  i8 iHeadSize = aDynamicT->m_iHeadSize;
 
-  struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
+  struct HeadLine_T* aHeadLine = aDynamicT->m_aHeadLine0;
   struct HeadLine_T* aHeadLineSav = aHeadLine;
-  enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;
+  enum eSI eStrInflateRule = aDynamicT->m_eStrInflateRule ;
 
   i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
                       + C_8B   // (ControlDate) 8 bytes for the perspective
-                      + aCombinedT->m_nCols; // metaSize
+                      + aDynamicT->m_nCols; // metaSize
 
 
   i8 i_Col;

@@ -23,26 +23,30 @@ namespace STORE
     static void vItemise_colNm(CardIter* pCI);
     static void vItemStrip_colNm(CardIter* pCI);
 
-    void vBumpKeyOdn(i8 nBy=1);
-    void vBump_stmOdn(i8 nBy= 1);
+    void vBumpKeyCol(i8 nBy=1);
+    void vBump_stmCol(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
-    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
-    void vConvert_stmOdn_To_colOdn(CardIter* pCI);
-    void vEnsureTypeFor_stmOdn(CardIter* pCI);
-    void vCorrectStmOdn(Card_Projection* p_projection_prior);
+     void vEnsureTypeFor_stmCol(CardIter* pCI);
+    void vCorrectStmCol(Card_Emit* p_emitted_prior);
+    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
     i8   iGetOdn(void);
     char cGetTblSyn(void);
     bool bIsColNm(void);    // name
-    bool bIsColOdn(void);   // $c.n
-    bool bIsKeyOdn(void);   // $Kn
-    bool bIsPrmOdn(void);   // %n
-    bool bIsStmOdn(void);   // $n
-    bool bIsValOdn(void);   // $n or $c.n
+    bool bIsColSym(void);   // $n or $c.n
+    bool bIsKeyCol(void);   // $Kn
+    bool bIsSqyPrm(void);   // %n
+    bool bIsStmCol(void);   // $n
+    bool bIsTblCol(void);   // $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
+
+    void vShortForm(String* pString, Stz* szSep);
+
+    void vX_stmCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_stmCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_from_To_OP, CN_XF_FROM_TO_OP)
-__aNewFunction(XF_Optimise_from_To_OP, CN_XF_FROM_TO_OP)
-__vDeleteFunction(XF_Optimise_from_To_OP, CN_XF_FROM_TO_OP)
+__pCastFunction(STORE, XF_Optimise_from_To_OP, CN_XF_OPTIMISE_FROM_TO_OP)
+__aNewFunction(XF_Optimise_from_To_OP, CN_XF_OPTIMISE_FROM_TO_OP)
+__vDeleteFunction(XF_Optimise_from_To_OP, CN_XF_OPTIMISE_FROM_TO_OP)
 __aFooterFunction(XF_Optimise_from_To_OP)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Optimise_from_To_OP)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_from_To_OP::XF_Optimise_from_To_OP(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_FROM_TO_OP, OT_FROM_TO_OP, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_FROM_TO_OP, OT_FROM_TO_OP, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FROM_TO_OP, _FOOTER_);
 
-  _checkInitialised_(CN_XF_FROM_TO_OP);
+  _checkInitialised_(CN_XF_OPTIMISE_FROM_TO_OP);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FROM_TO_OP, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Optimise_from_To_OP::XF_Optimise_from_To_OP(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_from_To_OP::~XF_Optimise_from_To_OP(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FROM_TO_OP, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ void XF_Optimise_from_To_OP::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_from_To_OP::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FROM_TO_OP, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FROM_TO_OP, _FOOTER_);
 
   bool bOptRun = false;
 
@@ -75,7 +75,7 @@ bool XF_Optimise_from_To_OP::bOptimise(void)
 
   bOptRun = true;
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
 }

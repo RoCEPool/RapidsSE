@@ -52,7 +52,7 @@ Stz* Card_From::szColNm(i8 i_Col_base0)
 
   Card_TableNm* p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -74,7 +74,7 @@ void Card_From::vSmooth(CardIter* pCI)
 
   pCI->G.p_table = pSub_table();
 
-  vUpdate_projection(pCI);
+  vUpdate_emitted(pCI);
  // pCI->vRenumberCards();
 }
 
@@ -90,7 +90,7 @@ void Card_From::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_table = pSub_table();
 
   RASSERT(pCarryForward->Table.m_bReproject);
-  vUpdate_projection(pCI);
+  vUpdate_emitted(pCI);
  // pCI->vRenumberCards();
 }
 

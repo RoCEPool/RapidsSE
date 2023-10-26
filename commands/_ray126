@@ -2,7 +2,13 @@
 /* _ray126                                                                    */
 /*============================================================================*/
 
-// NOTE: sort expr not correct
+// NOTE: sort expr not correct in S03
+// it is :
+//  expr type INTEGER as C0_COL1 $2 ASC
+// should be :
+//   expr  type INTEGER as C0_COL1 $3 ASC
+
+
 
 create table TABLE1 (
   pcol1   INTEGER NOT NULL,
@@ -20,8 +26,9 @@ create table TABLE1 (
 
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
-/keepCodeFile
+/optimiser_trace
 /weaved
+/transliterated
 /pipeline_def
 select colb1, colc1, extract(day from colc1) from table1 where
   colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1) ;

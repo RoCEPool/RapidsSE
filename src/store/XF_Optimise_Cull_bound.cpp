@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_Cull_bound, CN_XF_CULL_NONUSED_BOUND)
-__aNewFunction(XF_Optimise_Cull_bound, CN_XF_CULL_NONUSED_BOUND)
-__vDeleteFunction(XF_Optimise_Cull_bound, CN_XF_CULL_NONUSED_BOUND)
+__pCastFunction(STORE, XF_Optimise_Cull_bound, CN_XF_OPTIMISE_CULL_BOUND)
+__aNewFunction(XF_Optimise_Cull_bound, CN_XF_OPTIMISE_CULL_BOUND)
+__vDeleteFunction(XF_Optimise_Cull_bound, CN_XF_OPTIMISE_CULL_BOUND)
 __aFooterFunction(XF_Optimise_Cull_bound)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Optimise_Cull_bound)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Cull_bound::XF_Optimise_Cull_bound(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_CULL_NONUSED_BOUND, OT_CULL_BOUND, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_CULL_BOUND, OT_CULL_BOUND, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CULL_BOUND, _FOOTER_);
 
-  _checkInitialised_(CN_XF_CULL_NONUSED_BOUND);
+  _checkInitialised_(CN_XF_OPTIMISE_CULL_BOUND);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CULL_BOUND, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Optimise_Cull_bound::XF_Optimise_Cull_bound(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Cull_bound::~XF_Optimise_Cull_bound(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CULL_BOUND, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ void XF_Optimise_Cull_bound::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CULL_BOUND, _FOOTER_);
 
   bool bOptRun = false;
 
@@ -86,7 +86,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 
   }
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
 }
@@ -96,7 +96,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_NonUsed_bound(void)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_CULL_BOUND, _FOOTER_);
 
   bool bOptRun = false;
 
@@ -122,10 +122,10 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
       // have <bounds> & <filter> under <main>
 
       m_pCI->vRecurseBegin(m_pCI->G.p_filter);
-      while ((m_pCI->G.p_cmpConj = _pCard_CmpConj(m_pCI->pRecurseEach(CK_CMPCONJ)))) {
-        if (m_pCI->G.p_cmpConj->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
-          //RASSERT(m_pCI->G.p_cmpConj->bIsJoinPred());
-          m_pCI->G.p_cmpConj->vMark1(MARK_AT);
+      while ((m_pCI->G.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
+        if (m_pCI->G.p_rlnConj->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
+          //RASSERT(m_pCI->G.p_rlnConj->bIsJoinConj());
+          m_pCI->G.p_rlnConj->vMark1(MARK_AT);
         }
       }
       m_pCI->vRecurseEnd();
@@ -137,10 +137,10 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
       // have <bounds> & <filter> under <main>
 
        m_pCI->vRecurseBegin(m_pCI->G.p_constraint);
-      while ((m_pCI->G.p_cmpConj = _pCard_CmpConj(m_pCI->pRecurseEach(CK_CMPCONJ)))) {
-        if (m_pCI->G.p_cmpConj->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
-          //RASSERT(m_pCI->G.p_cmpConj->bIsJoinPred());
-          m_pCI->G.p_cmpConj->vMark1(MARK_AT);
+      while ((m_pCI->G.p_rlnConj = _pCard_RlnConj(m_pCI->pRecurseEach(CK_RLNCONJ)))) {
+        if (m_pCI->G.p_rlnConj->bSubsetOf_bounds(m_pCI->G.p_bounds)) {
+          //RASSERT(m_pCI->G.p_rlnConj->bIsJoinConj());
+          m_pCI->G.p_rlnConj->vMark1(MARK_AT);
         }
       }
 
@@ -158,9 +158,9 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   i8 nCulled = 0;
   while (m_pCI->G_bEachMain_NONE()) {
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      nCulled += m_pCI->G.p_filter->nCullPred(MARK_AT);
+      nCulled += m_pCI->G.p_filter->nCullConj(MARK_AT);
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      nCulled += m_pCI->G.p_constraint->nCullPred(MARK_AT);
+      nCulled += m_pCI->G.p_constraint->nCullConj(MARK_AT);
   }
 
   if (nCulled)
@@ -172,7 +172,7 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   m_pCI->vClearRestart();
   Card_Filter::vDeleteEmptyFilters(m_pCI);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
 }

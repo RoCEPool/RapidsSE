@@ -6,8 +6,8 @@
 
 #include "CardIter.hpp"
 
-#include "Card_BoolCalc.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_BoolPred.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Deck.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Term.hpp"
@@ -82,9 +82,9 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
       continue;
 
     if (! pString->nLength())
-      pString->vSprint("Tables: %s"_Stz,xKid.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vSprint("Tables: %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_NONE));
     else
-      pString->vCatSprint(", %s"_Stz,xKid.p_table()->pSub_tableNm()->szSymbol(SF_NONE));
+      pString->vCatSprint(", %s"_Stz, xKid.p_table()->pSub_tableNm()->szFacet(SF_NONE));
   }
 
 }
@@ -104,29 +104,29 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   auto bfConcat = [this, p_indexList](Card *pCard_cmpPred) {
-    Card_CmpConj* p_cmpPred_tst = _pCard_CmpConj(pCard_cmpPred);
+    Card_RlnConj* p_rlnConj_tst = _pCard_RlnConj(pCard_cmpPred);
 
-    if (! p_cmpPred_tst->bIsEqOp())
+    if (! p_rlnConj_tst->bIsEqOp())
       return C_CONTINUE_RECURSION;
 
-    Card_Term* p_term_0 = p_cmpPred_tst->pGetTerm(0);
-    Card_Term* p_term_1 = p_cmpPred_tst->pGetTerm(1);
-    if ( ! (p_term_0->bIsColOdn() && p_term_1->bIsColOdn()))
+    Card_Term* p_term_0 = p_rlnConj_tst->pGetTerm(0);
+    Card_Term* p_term_1 = p_rlnConj_tst->pGetTerm(1);
+    if ( ! (p_term_0->bIsTblCol() && p_term_1->bIsTblCol()))
       return C_CONTINUE_RECURSION;
 
-    if (!p_indexList->bHasEquivalentBound(p_cmpPred_tst))
+    if (!p_indexList->bHasEquivalentBound(p_rlnConj_tst))
       return C_CONTINUE_RECURSION;
 
-    Card_CmpConj* p_cmpPred_new = p_cmpPred_tst->pClone();
-    this->vAppendChild(p_cmpPred_new);
+    Card_RlnConj* p_rlnConj_new = p_rlnConj_tst->pClone();
+    this->vAppendChild(p_rlnConj_new);
 
     return C_CONTINUE_RECURSION;
   };
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  p_boolCalc->bApplyRecursive(CK_CMPCONJ, bfConcat);
+  Card_BoolPred* p_boolPred = p_filter->pSub_boolPred();
+  p_boolPred->bApplyRecursive(CK_RLNCONJ, bfConcat);
 }
 
 /*----------------------------------------------------------------------------*/

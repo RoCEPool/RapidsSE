@@ -38,8 +38,8 @@ void vLimit(Dynamic_T* aDynamicT) {
 	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
+  if (!aDynamicT->m_bProcessRow) {
+		aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_LOOP__;
   }
 

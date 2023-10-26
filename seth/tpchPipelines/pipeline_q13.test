@@ -1,0 +1,54 @@
+--------------------------------------------------------------------------------
+-- tpch query13
+--------------------------------------------------------------------------------
+
+// NOTE: Change gbyAgg to OrdAgg
+
+/optimise_passthru
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+           "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    //ordAgg " ordGroupBy  type INTEGER as c_custkey $1
+    //         aggregates  type INTEGER $K1 ,
+    //                     type INTEGER )  $9 count  "
+    gbyAgg " GroupBy     type INTEGER as c_custkey $1
+              aggregates
+                         type INTEGER $K1 ,
+                         type INTEGER )  $9 count  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    gbyAgg " GroupBy    type INTEGER as c_count $2
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    sort " type INTEGER $1  ,
+           type INTEGER as c_count $2  "
+    | combined 0
+    | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+ end ;

@@ -84,6 +84,7 @@ LOG 'Running tpch query 8...';
 INCLUDE 'OptQ8.test';
 INCLUDE 'sleep.test';
 
+
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 9...';
 INCLUDE 'OptQ9.test';

@@ -119,12 +119,12 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     Card_IdxCol* p_idxCol = new Card_IdxCol;
-    p_idxCol->SYM(SF_COL_NM, pColumn->szColNm());
+    p_idxCol->SYM(SF_NMD_COL, pColumn->szColNm());
 
     p_idxColList->vAppendChild(p_idxCol);
 
 //    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
-//    p_idxColNm->vSymbol(pColumn->szColNm());
+//    p_idxColNm->vFacets(pColumn->szColNm());
 //    p_idxCol->vAppendChild(p_idxColNm);
   }
 
@@ -149,14 +149,14 @@ void Card_Index::vAdd_streamKey_exprs(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_Index::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Bounds* p_bounds = pSub_bounds())
-    p_bounds->vConvert_colOdn_To_stmOdn(pCI);
+    p_bounds->vX_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,12 +174,12 @@ void Card_Index::vDeleteBounds(void)
 /*----------------------------------------------------------------------------*/
 /* does this index have a bound logically equivalent to given compare?        */
 /*----------------------------------------------------------------------------*/
-bool Card_Index::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
+bool Card_Index::bHasEquivalentBound(Card_RlnConj* p_rlnConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pSub_bounds())
-    if (pSub_bounds()->bHasEquivalentBound(p_cmpPred))
+    if (pSub_bounds()->bHasEquivalentBound(p_rlnConj))
       return true;
 
   return false;
@@ -212,7 +212,7 @@ void Card_Index::vSet_Choose_index(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
+bool Card_Index::bTblCol_IsKeyIn_index(Stz* szTblCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -222,7 +222,7 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   while (xKid.bEach(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xKid.pChild()->pSymbol()->bSame(szTblColOdn))
+    if (xKid.pChild()->pSymbol()->bHasFacet(szTblCol))
       return true;
   }
 
@@ -236,14 +236,14 @@ Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol(SF_NONE));
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szFacet(SF_NONE));
   if (! pTable)
     return nullptr;
 
-  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol(SF_NONE));
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szFacet(SF_NONE));
   if (! pIndex) {
     s256 sErrorMsg;
-    sErrorMsg.vSprint("index: %s"_Stz,pSub_indexNm()->szSymbol(SF_NONE));
+    sErrorMsg.vSprint("index: %s"_Stz, pSub_indexNm()->szFacet(SF_NONE));
     Error xError(EC_NO_SUCH_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
     throw xError;
   }
@@ -254,12 +254,12 @@ Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vEnsureTypes_For_stmOdn(CardIter *pCI)
+void Card_Index::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_bounds = pSub_bounds()))
-    pCI->G.p_bounds->vEnsureTypes_For_stmOdn(pCI);
+    pCI->G.p_bounds->vEnsureTypes_For_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

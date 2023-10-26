@@ -2,54 +2,132 @@
 /* _alka1                                                                     */
 /*============================================================================*/
 
-create table TABLE1 (
-  pcol1   INTEGER NOT NULL,
-  tcol1   INTEGER NOT NULL,
-  cola1   INTEGER,
-  colb1   VARCHAR(20),
-  colc1   TIMESTAMP,
-  cold1   FLOAT,
-  cole1   DECIMAL(15, 2),
-  colf1   INTEGER,
-  colg1   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
+create table part (
+  P_PARTKEY           INTEGER NOT NULL,
+  P_NAME              VARCHAR(55) NOT NULL,
+  P_MFGR              CHAR(25) NOT NULL,
+  P_BRAND             CHAR(10) NOT NULL,
+  P_TYPE              VARCHAR(25) NOT NULL,
+  P_SIZE              INTEGER NOT NULL,
+  P_CONTAINER         CHAR(10) NOT NULL,
+  P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+  P_COMMENT           VARCHAR(23) NOT NULL
 );
 
-create index TABLE1_PCOL1 on table1(pcol1);
+//------------------------------------------------------------------------------
+load part "../TPCH/SF_0001/part.csv";
 
-create index TABLE1_COLA1 on table1(cola1);
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
 
-create index TABLE1_COLB1 on table1(colb1);
 
-create index TABLE1_UCOL on table1(ucol);
+ load lineitem "../DATA/TPCH/lineitem10.csv";
 
-create index TABLE1_UCOLVC on table1(ucolvc);
 
-select colc1, extract(year from colc1) from table1 where ucol / 5 between 50 and 100;
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
 
-Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+load datums "../DATA/Transliterate/groupBy.csv" ;
 
-/keepCodeFile
+create table Nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+//------------------------------------------------------------------------------
+load nation "../DATA/TPCH/nation.tbl";
+
+create index IxN_NATIONKEY on nation (n_nationkey);
+
+create table Region (
+	 R_REGIONKEY       INTEGER      NOT NULL,
+	 R_NAME            CHAR(25)     NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+
+create index IxR_REGIONKEY on Region (R_REGIONKEY);
+
+create index IxR_NAME on Region (R_NAME);
+
+load Region "../DATA/TPCH/region.tbl";
+
+
+ /*
 /weaved
+/keepCodeFile
+///useCodeFile = '_unnamed__NODE1_2'
 /pipeline_def
-select colb1, colc1, extract(day from colc1) from table1 where
-  colb1 in ('pink','green','indigo','violet','yellow') order by extract(day from colc1);
+ SELECT n_regionkey , n_name FROM nation  where n_regionkey < 2 ;
+
+
+ (0 ,'ALGERIA')
+  (1 ,'ARGENTINA')
+  (1 ,'BRAZIL')
+  (1 ,'CANADA')
+  (0 ,'ETHIOPIA')
+  (0 ,'KENYA')
+  (0 ,'MOROCCO')
+  (0 ,'MOZAMBIQUE')
+  (1 ,'PERU')
+  (1 ,'UNITED STATES')
+  */
+
+
 /*
-unordered rows:
-  ('green',  TIMESTAMP '2015-02-01 00:00:00.0', 1)
-  ('indigo', TIMESTAMP '2015-03-03 00:00:00.0', 3)
-  ('green',  TIMESTAMP '2015-02-12 00:00:00.0', 12)
-  ('indigo', TIMESTAMP '2015-05-14 00:00:00.0', 14)
-  ('indigo', TIMESTAMP '2015-07-14 00:00:00.0', 14)
-  ('violet', TIMESTAMP '2015-12-15 00:00:00.0', 15)
-  ('violet', TIMESTAMP '2015-01-16 00:00:00.0', 16)
-  ('green',  TIMESTAMP '2015-01-19 00:00:00.0', 19)
-  ('yellow', TIMESTAMP '2015-10-19 00:00:00.0', 19)
-  ('pink',   TIMESTAMP '2015-03-19 00:00:00.0', 19)
-  ('green',  TIMESTAMP '2015-10-21 00:00:00.0', 21)
-  ('violet', TIMESTAMP '2015-09-22 00:00:00.0', 22)
-  ('violet', TIMESTAMP '2015-09-23 00:00:00.0', 23)
-  ('green',  TIMESTAMP '2015-07-26 00:00:00.0', 26)
-  ('indigo', TIMESTAMP '2015-03-26 00:00:00.0', 26)
-*/
+  /transliterated
+  /weaved
+  /keepCodeFile
+  ///useCodeFile = '_unnamed__NODE1_2'
+  /pipeline_def
+   SELECT n_regionkey +1 , n_name FROM nation;
+
+
+   /transliterated
+     /weaved
+     /keepCodeFile
+     ///useCodeFile = '_unnamed__NODE1_2'
+     /pipeline_def
+   select p_mfgr, p_brand,  count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
+   */
+
+   /transliterated
+     /weaved
+     /keepCodeFile
+     ///useCodeFile = '_unnamed__NODE1_2'
+     /pipeline_def
+      SELECT n_regionkey , n_name FROM nation , region where n_regionkey = r_regionkey;

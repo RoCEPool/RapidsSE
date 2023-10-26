@@ -20,18 +20,18 @@ success
 select * from T1;
 rows: 5
 
-predicateFetch T1 "jA 2 <=" ;
+select * from T1 where jA <= 2;
 rows: 2
 
-predicateFetch T1 "jC 2 <=" ;
+select * from T1 where jC <= 2;
 rows: 5
 
-predicateFetch T1 "jA 4 >= jC ddd >= and";
+select * from T1 where jA >= 4 and jC >= 'ddd';
 rows:
   (4,14,'ddd',' mood')
   (5,15,'eee',' boat')
 
-predicateFetch T1 "jA 4 == jC ddd == and";
+select * from T1 where jA = 4 and jC = 'ddd';
 rows:
   (4,14,'ddd',' mood')
 

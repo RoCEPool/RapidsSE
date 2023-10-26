@@ -30,7 +30,6 @@ namespace STORE
 
     ~PipelineDef(void) noexcept(false);
 
-    void vCollapseOps(void);
     void vDump(i8 i_Tab=0);
 
     Stz* szPipelineNm(void);

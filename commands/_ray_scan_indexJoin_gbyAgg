@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* _ray_scan_indexJoin_gbyAgg                                                 */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+_orders
+
+create index Ix_O_CUSTKEY on Orders(O_CUSTKEY);
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+load Orders   "<tpch_dir>/orders.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_scan_indexJoin_gbyAgg"
+select C_CUSTKEY, sum(O_TOTALPRICE)
+  from Customer, Orders
+ where Customer.C_CUSTKEY = Orders.O_CUSTKEY
+ group by C_CUSTKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Orders;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

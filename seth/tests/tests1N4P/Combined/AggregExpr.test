@@ -85,7 +85,7 @@ pipeline unnamed
                  type INTEGER as COL3 ) COL3 sum ,
                  type INTEGER as COL4 ) COL4 sum ,
                  type INTEGER as COL5 ) COL5 sum ,
-                 type INTEGER as COL6 ) COL5 sum"
+                 type INTEGER as COL6 ) COL6 sum"
       | combined 0
       | next
    stage stageC on origin :

@@ -20,9 +20,9 @@ namespace STORE
     XF_Epilog_Reinstate_stage(CardIter* pCI);
    ~XF_Epilog_Reinstate_stage(void) noexcept(false);
 
-    static void vEpilog(CardIter* pCI);
+    static void vReinstate(CardIter* pCI);
 
-    void vXF_Reinstate_stage(void);
+    void vReinstate_stage(void);
 
   private:
     Footer* aFooter(void);
