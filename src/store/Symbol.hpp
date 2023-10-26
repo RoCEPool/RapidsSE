@@ -114,6 +114,7 @@ namespace STORE
 
     // - - - - - -
 
+    void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
     eCT  eColType(void);

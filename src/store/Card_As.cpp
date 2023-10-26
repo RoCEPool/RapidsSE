@@ -70,6 +70,9 @@ void Card_As::vItemise_colNm(CardIter* pCI)
     p_as->pSymbol_AS()->vFacet(SF_ITM_COL,iItemise);
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
 
+    p_expr->pSymbol()->vAppendFacet(SF_ITM_COL,
+                                    p_as->pSymbol_AS()->szSF_chrSeq(SF_ITM_COL));
+
     return C_CONTINUE_RECURSION;
   };
 

@@ -1201,6 +1201,17 @@ eCT Symbol::eTo_eCT_char(Stz* szType)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! bHasFacet(eFacet_arg));
+  vFacetAppend(eFacet_arg, szChrSeq_arg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append facets                                                              */
 /*----------------------------------------------------------------------------*/
 void Symbol::vAppendFacets(Symbol* pSymbol_arg)
