@@ -1447,6 +1447,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_expr->vPushChild(p_as);
   }
 
+  p_expr->pSymbol()->vAppendFacets(p_as->pSymbol_AS());
+
   ri_Expr++;
   return p_expr;
 }

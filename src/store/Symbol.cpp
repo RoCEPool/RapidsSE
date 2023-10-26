@@ -2651,7 +2651,7 @@ bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
   if (!aFacet_this)
     return false;
 
-  if (szChrSeq_arg->bSame(szChrSeq_arg))
+  if (aFacet_this->m_sChrSeq.bSame(szChrSeq_arg))
     return true;
 
   return false;

@@ -22,6 +22,8 @@ INCLUDE 'create_supplier.test';
 
 //------------------------------------------------------------------------------
 LOG ' ';
+INCLUDE 'r_FOLD_74_H_A_NC_ro.test';
+
 INCLUDE 'r_FOLD_10_F.test';
 INCLUDE 'r_FOLD_24_W_A_C_ro.test';
 INCLUDE 'r_FOLD_32_W_A_NC_I.test';
@@ -29,8 +31,6 @@ INCLUDE 'r_FOLD_34_W_A_NC_ro.test';
 INCLUDE 'r_FOLD_40_W_L_C_E.test';
 INCLUDE 'r_FOLD_52_W_L_NC_I.test';
 INCLUDE 'r_FOLD_53_W_L_NC_NI.test';
-INCLUDE 'r_FOLD_74_H_A_NC_ro.test';
-
 //------------------------------------------------------------------------------
 LOG ' ';
 INCLUDE 'case_sort1.test';
