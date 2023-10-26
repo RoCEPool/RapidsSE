@@ -1168,6 +1168,22 @@ bool Symbol::bPossibleNm(Stz* szChrSeq)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are the two given facets the same?                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
+{
+  _static_
+
+  if (aFacet_a->m_eFacet != aFacet_b->m_eFacet)
+    return false;
+
+  if (! aFacet_a->m_sChrSeq.bSame(aFacet_b->m_sChrSeq))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find eCT by name                                                           */
 /*----------------------------------------------------------------------------*/
 eCT Symbol::eTo_eCT_str(Stz* szType)
@@ -1717,6 +1733,26 @@ bool Symbol::bHasType(void)
 
   if (CT_NONE == m_eColType)
     return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have identical facets with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIdenticalFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (pSymbol_arg->nFacets() != m_nFacets)
+    return false;
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    Facet* aFacet_this = this->aFacet(i_Facet);
+    Facet* aFacet_that = pSymbol_arg->aFacet(i_Facet);
+    if (! bSame(aFacet_this,aFacet_that))
+      return false;
+  }
 
   return true;
 }

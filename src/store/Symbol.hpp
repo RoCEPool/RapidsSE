@@ -109,6 +109,8 @@ namespace STORE
 
     static bool bPossibleNm(Stz* szChrSeq);
 
+    static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
+
     static eCT  eTo_eCT_str(Stz* szType);
     static eCT  eTo_eCT_char(Stz* szType);
 
@@ -154,6 +156,8 @@ namespace STORE
     bool bHasFacets(void);
     bool bHasProperties(void);
     bool bHasType(void);
+
+    bool bIdenticalFacets(Symbol* pSymbol_arg);
 
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
