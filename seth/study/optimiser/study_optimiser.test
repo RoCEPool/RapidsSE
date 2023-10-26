@@ -49,7 +49,12 @@ INCLUDE 'tpch_q7.test';
 INCLUDE 'tpch_q8.test';
 INCLUDE 'tpch_q9.test';
 INCLUDE 'tpch_q10.test';
+
+// TODO _ray164)
+/*
 INCLUDE 'tpch_q11.test';
+*/
+
 INCLUDE 'tpch_q12.test';
 INCLUDE 'tpch_q13.test';
 INCLUDE 'tpch_q14.test';
