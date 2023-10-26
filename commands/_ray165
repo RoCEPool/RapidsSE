@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 // NOTE : to execute with SF1 data
+
 // the join order changes and the following problem appears
 // in SF0001 it works correctly
 
