@@ -114,6 +114,8 @@ namespace STORE
 
     // - - - - - -
 
+    void vAppendFacets(Symbol* pSymbol_arg);
+
     eCT  eColType(void);
     void vColType(eCT eColType);
 
@@ -328,6 +330,7 @@ namespace STORE
     void vFacet_When(Stz* szWhen);
     void vFacet_Xk_Cast(Stz* szXkCast);
 
+    void vFacetAppend(eSF eFacet, Stz* szFacet);
     void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);
