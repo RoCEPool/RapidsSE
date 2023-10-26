@@ -216,6 +216,7 @@ namespace STORE
 
     void vItemStrip(void);
 
+    bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
     bool bMatches(Symbol* pSymbol_arg, eSF* aeFacet=nullptr);
     bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
 

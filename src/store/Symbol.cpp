@@ -2643,6 +2643,23 @@ void Symbol::vItemStrip(void)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Facet* aFacet_this = this->aFacet(eFacet_arg);
+  if (!aFacet_this)
+    return false;
+
+  if (szChrSeq_arg->bSame(szChrSeq_arg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bMatches(Symbol* pSymbol_arg, eSF* aeFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
