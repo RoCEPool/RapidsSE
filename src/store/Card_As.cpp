@@ -120,6 +120,14 @@ void Card_As::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(iDepth);
   UNUSED(pParent);
 
+//  if (Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))) {
+//    if (! pSymbol_AS()->bMatches(p_expr->pSymbol())) {
+//      p_expr->vDump(__func__, "EXPR"_Stz);
+//      this->vDump(__func__, "AS"_Stz);
+//      NEVER_REACH
+//    }
+//  }
+
   vValidationPassed();
 }
 

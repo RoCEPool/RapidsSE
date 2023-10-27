@@ -192,28 +192,6 @@ bool Card_GbyAgg::bMorph_gbyAgg_To_ordAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* smooth                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  pCI->G.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
-
-  if (bInject_foldExpr) {
-    pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
-  }
-
-  if (nBumpBy) {
-    pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
-  }
-
-  pCI->Flux.m_pArriving = pSub_emit();
-
- // pCI->vRenumberCards();
-}
-
-/*----------------------------------------------------------------------------*/
-/* smooth                                                                     */
-/*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

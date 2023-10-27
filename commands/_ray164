@@ -18,8 +18,10 @@ should have been
 
 // Query11.test
 
+/optimiser_trace
 /pipeline_def
 /weaved
+/transliterated
 /pipelineName = "_ray164"
 select
   ps_partkey,
