@@ -39,19 +39,16 @@ namespace STORE
 
     struct {
       bool m_bSeen;
-      i8   m_nBumpBy;
       bool m_bMorph_To_gbyAgg;
     } Aggreg;
 
     struct {
       bool m_bSeen;
-      i8   m_nBumpBy;
       bool m_bInject_foldExpr;
     } GbyAgg;
 
     struct {
       bool m_bSeen;
-      i8   m_nBumpBy;
     } Project_postAgg;
 
     struct {

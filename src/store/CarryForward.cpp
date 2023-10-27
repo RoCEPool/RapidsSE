@@ -42,15 +42,12 @@ CarryForward::CarryForward(void)
   Where_preAgg.bReplace_sqCall_With_result = false;
 
   Aggreg.m_bSeen   = false;
-  Aggreg.m_nBumpBy = 0;
   Aggreg.m_bMorph_To_gbyAgg = false;
 
   GbyAgg.m_bSeen   = false;
-  GbyAgg.m_nBumpBy = 0;
   GbyAgg.m_bInject_foldExpr = false;
 
   Project_postAgg.m_bSeen   = false;
-  Project_postAgg.m_nBumpBy = 0;
 
   Having.m_bSeen                 = false;
   Having.m_bCorrect_After_Inject = false;
