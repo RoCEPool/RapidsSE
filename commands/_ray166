@@ -13,6 +13,8 @@ Optimiser crashes in ~Optimiser
 
 */
 
+/optimiser_trace
+/transliterated
 /weaved
 /pipeline_def
 /pipelineName = "_ray166"

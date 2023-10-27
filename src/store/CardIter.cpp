@@ -73,6 +73,9 @@ CardIter::~CardIter(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  while (nItems())
+    bPopRecurseIter();
+
   RASSERT(0 == nItems());
 
 }
