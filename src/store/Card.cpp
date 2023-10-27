@@ -523,7 +523,7 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
   s4K sProperties;
   m_xSymbol.Y_vTo_String(sProperties);
 
-  vTrace("  %p %18s %s%s : %s%s %s {%s} %s\n"_Stz
+  vTrace("  %p %18s %s%s : %s%s %s {%s}\n"_Stz
         , this
         , aCK_short[m_eCard]
         , Stz::szTab(iDepth)
@@ -531,9 +531,8 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
         , md_Coord[0] ? md_Coord : (char*)aCK[m_eCard]
         , m_xMark1.szChrSeq()
         , m_xMark2.szChrSeq()
-        , m_xSymbol.bHasFacets() ? sFacets.szStz() : "??Symbol"_Stz
+        , m_xSymbol.bHasFacets() ? sFacets.szStz() : "<noFacets>"_Stz
         , sProperties.szStz()
-        , pSymbol()->szWhatIs()
   );
 
   i8 nSubCards = this->nChildCards();

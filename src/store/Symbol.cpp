@@ -1649,7 +1649,10 @@ void Symbol::vFacets_To_String(String* pString)
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (i_Facet)
       pString->vConcat(" "_Stz);
-    pString->vCatSprint("%s~%lld"_Stz,xaFacet[i_Facet].m_sChrSeq.szStz(),i_Facet);
+    pString->vCatSprint("%s %s~%lld"_Stz,
+                        aSF[xaFacet[i_Facet].m_eFacet],
+                        xaFacet[i_Facet].m_sChrSeq.szStz(),
+                        i_Facet);
   }
 
 }
@@ -4338,6 +4341,10 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
   i8 nFacets_arg = pSymbol_arg->m_nFacets;
   for (i8 i_Facet_arg = nFacets_arg - 1; i_Facet_arg >= 0; i_Facet_arg--) {
     Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
+
+    if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
+      vDebugPoint();
+
     vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
   }
 }

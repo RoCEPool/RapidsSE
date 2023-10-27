@@ -25,6 +25,8 @@ Card_AndConj::Card_AndConj(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
+
+  pSymbol()->vAppendFacet(SF_BOL_OP,"and"_Stz);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
