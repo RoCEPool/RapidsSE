@@ -69,6 +69,9 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_key = pCI->G.p_sort->pSub_key();
 
+  if (pCarryForward->Sort.m_bCorrect_After_Inject)
+    pCI->G.p_key->vBump_stmCol_In_rpnCalc(pCI);
+
   vEnsure_stream(pCI);
 
   if ((pCI->G.p_emit = pCI->G.p_sort->pSub_emit()))

@@ -455,6 +455,9 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
       pCarryForward->Where_preAgg.bReplace_sqCall_With_result = true;
   }
 
+  if (pCarryForward->Sort.m_bSeen)
+    pCarryForward->Sort.m_bCorrect_After_Inject = true;
+
  // pCI->vPrintBoard(__LINE__);
 
   return pCarryForward;
