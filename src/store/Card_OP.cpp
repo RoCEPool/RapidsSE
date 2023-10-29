@@ -1387,37 +1387,6 @@ void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* produce <expr> for p_as                                                    */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_as(String* psRpnExpr, Card_As* p_as, Card_Expr* p_expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eSF eFacet = p_as->pSymbol()->eFacet(0);
-  RASSERT(SF_ITM_COL == eFacet);
-  RASSERT(p_expr->pSymbol()->bHasFacet(eFacet));
-
-  psRpnExpr->vCatSprint(" as %s"_Stz, p_expr->szFacet(SF_ITM_COL));
-}
-/*----------------------------------------------------------------------------*/
-//void Card_OP::vRpn_as(String* psRpnExpr, Card_As* p_as, Card_Expr* p_expr)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  eSF eFacet = p_as->pSymbol()->eFacet(0);
-//  RASSERT(SF_ITM_COL == eFacet);
-//  RASSERT(p_expr->pSymbol()->bHasFacet(SF_ITM_COL));
-//
-//  Stz* szFacet_expr = p_expr->szFacet(SF_ITM_COL);
-//  Stz* szFacet_as = p_as->szFacet(SF_ITM_COL);
-//  RASSERT(szFacet_expr->bSame(szFacet_as));
-//
-//
-//
-//  psRpnExpr->vCatSprint(" as %s"_Stz, p_as->szFacet(SF_ITM_COL));
-//}
-
-/*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <calcBool>                                            */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpn_boolPred(String* psRpnExpr, Card_BoolPred* p_boolPred)
@@ -1486,7 +1455,6 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_As*      p_as      = nullptr;
   Card_RpnCalc* p_rpnCalc = nullptr;
 
   i8 nSubCards = p_expr->nItems();
@@ -1496,10 +1464,6 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
     eCK eCard = pCard->eCard();
 
     switch (eCard) {
-      case CK_AS:
-        p_as = _pCard_As(pCard);
-        break;
-
       case CK_RPNCALC:
         p_rpnCalc = _pCard_RpnCalc(pCard);
         break;
@@ -1509,15 +1473,17 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
     }
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   psRpnExpr->vCatSprint(" type %s"_Stz,
                         aCT[p_rpnCalc->pSymbol()->eColType()]);
 
-  if (p_as)
-    vRpn_as(psRpnExpr, p_as, p_expr);
+  if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL))
+    psRpnExpr->vCatSprint(" as %s"_Stz, p_expr->szFacet(SF_ITM_COL));
 
-  if (p_rpnCalc->bNeedsBrace()) {
+  if (p_rpnCalc->bNeedsBrace())
     psRpnExpr->vConcat(" }"_Stz);
-  }
+
   vRpn_rpnCalc(psRpnExpr, p_rpnCalc);
 }
 

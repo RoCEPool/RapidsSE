@@ -69,7 +69,6 @@ namespace STORE
     void vRpn_top         (String* psRpnExpr, Card_Top*       p_top);
     void vRpn_where       (String* psRpnExpr, Card_Where*     p_where);
 
-    void vRpn_as          (String* psRpnExpr, Card_As*        p_as, Card_Expr* p_expr);
     void vRpn_boolPred    (String* psRpnExpr, Card_BoolPred*  p_boolPred);
     void vRpn_boolPart    (String* psRpnExpr, Card*           p_part);
     void vRpn_expr        (String* psRpnExpr, Card_Expr*      p_expr);
