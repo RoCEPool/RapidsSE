@@ -580,57 +580,70 @@ bool Card_Expr::bHasTerm(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s32 sType_short = szCT_char[pSymbol()->eColType()];
-
-  pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,
-                          cMark1(),
-                          cMark2(),
-                          Stz::szDots(iDepth - 1),
-                          m_i_Child,
-                          szCardNm(),
-                          szFacet(SF_NONE),
-                          sType_short.szStz());
-}
-/*----------------------------------------------------------------------------*/
 //void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 //
-//  Symbol* pSymbol = this->pSymbol();
+//  s32 sType_short = szCT_char[pSymbol()->eColType()];
 //
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // primary facet
-//
-//  s32 sType_short = szCT_char[pSymbol->eColType()];
-//  if (pSymbol->bHasFacet(SF_STM_COL)) {
+//  pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,
+//                          cMark1(),
+//                          cMark2(),
+//                          Stz::szDots(iDepth - 1),
+//                          m_i_Child,
+//                          szCardNm(),
+//                          szFacet(SF_NONE),
+//                          sType_short.szStz());
+//}
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol = this->pSymbol();
+  i8 nFacets = pSymbol->nFacets();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // primary facet
+
+  s32 sType_short = szCT_char[pSymbol->eColType()];
+  i8 i_Facet = pSymbol->i_Facet(SF_STM_COL);
+
+  if (C_UNKNOWN != i_Facet) {
+    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s~%lld"_Stz,
+                            cMark1(),
+                            cMark2(),
+                            Stz::szDots(iDepth - 1),
+                            m_i_Child,
+                            szCardNm(),
+                            szFacet(SF_STM_COL),
+                            sType_short.szStz(),
+                            i_Facet);
+  }
+  else {
 //    pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,
 //                            cMark1(),
 //                            cMark2(),
 //                            Stz::szDots(iDepth - 1),
 //                            m_i_Child,
 //                            szCardNm(),
-//                            szFacet(SF_STM_COL),
+//                            szFacet(SF_NONE),
 //                            sType_short.szStz());
-//  }
-//  else {
-//    NEVER_REACH
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // secondary facets
-//
-//  i8 nFacets = pSymbol->nFacets();
-//  for (i8 i_Facet = 0; i_Facet < nFacets; i_Facet++) {
-//    Facet* aFacet = pSymbol->aFacet(i_Facet);
-//    if (SF_STM_COL == aFacet->m_eFacet)
-//      continue;
-//    pRibbon->vSprintSnippet(true, "%s"_Stz, aFacet->m_sChrSeq.szStz());
-//  }
-//}
+//    RASSERT(1 == nFacets);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // secondary facets
+
+  for (i_Facet = 0; i_Facet < nFacets; i_Facet++) {
+    Facet* aFacet = pSymbol->aFacet(i_Facet);
+    if (SF_STM_COL == aFacet->m_eFacet)
+      continue;
+    pRibbon->vSprintSnippet(true, "%s~%lld"_Stz,
+                            aFacet->m_sChrSeq.szStz(),
+                            i_Facet);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* craft propagated version of this expression                                */
