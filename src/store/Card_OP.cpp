@@ -1389,12 +1389,33 @@ void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for p_as                                                    */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_as(String* psRpnExpr, Card_As* p_as)
+void Card_OP::vRpn_as(String* psRpnExpr, Card_As* p_as, Card_Expr* p_expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  psRpnExpr->vCatSprint(" as %s"_Stz, p_as->szFacet(SF_NONE));
+  eSF eFacet = p_as->pSymbol()->eFacet(0);
+  RASSERT(SF_ITM_COL == eFacet);
+  RASSERT(p_expr->pSymbol()->bHasFacet(eFacet));
+
+  psRpnExpr->vCatSprint(" as %s"_Stz, p_expr->szFacet(SF_ITM_COL));
 }
+/*----------------------------------------------------------------------------*/
+//void Card_OP::vRpn_as(String* psRpnExpr, Card_As* p_as, Card_Expr* p_expr)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  eSF eFacet = p_as->pSymbol()->eFacet(0);
+//  RASSERT(SF_ITM_COL == eFacet);
+//  RASSERT(p_expr->pSymbol()->bHasFacet(SF_ITM_COL));
+//
+//  Stz* szFacet_expr = p_expr->szFacet(SF_ITM_COL);
+//  Stz* szFacet_as = p_as->szFacet(SF_ITM_COL);
+//  RASSERT(szFacet_expr->bSame(szFacet_as));
+//
+//
+//
+//  psRpnExpr->vCatSprint(" as %s"_Stz, p_as->szFacet(SF_ITM_COL));
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <calcBool>                                            */
@@ -1492,7 +1513,7 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
                         aCT[p_rpnCalc->pSymbol()->eColType()]);
 
   if (p_as)
-    vRpn_as(psRpnExpr, p_as);
+    vRpn_as(psRpnExpr, p_as, p_expr);
 
   if (p_rpnCalc->bNeedsBrace()) {
     psRpnExpr->vConcat(" }"_Stz);
