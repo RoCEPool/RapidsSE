@@ -65,46 +65,23 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
     if (p_term->pSymbol()->szSF_chrSeq(SF_NONE)->bSame("O_COMMENT"_Stz))
       vDebugPoint();
 
-    if (!pCard->pSymbol()->bIs_Nmd_Col())
+    if (! pCard->pSymbol()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
     if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
          (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
       //pCI->G.p_indexJoin->vDump(__func__);
 
-
-      pCI->G.p_emit  = pCI->G.p_indexJoin->pSub_emit();
+      pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
       if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
+        //Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
         pCI->G.p_as = pCI->G.p_expr->pSub_as();
-        p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
+        Symbol *pSymbol_as = pCI->G.p_as->pSymbol();
+
+        p_term->pSymbol()->vFacets(pSymbol_as);
         return C_CONTINUE_RECURSION;
       }
-
-      if (p_term->pSymbol()->bIs_Nmd_Col()) {
-        Symbol xSym_term_nm;
-        xSym_term_nm.vFacet(SF_NMD_COL, p_term->szFacet(SF_NONE));
-
-        if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(&xSym_term_nm))) {
-          pCI->G.p_as = pCI->G.p_expr->pSub_as();
-          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
-          return C_CONTINUE_RECURSION;
-        }
-
-        pCI->G.p_injected = pCI->G.p_indexJoin->pSub_injected();
-        if ((pCI->G.p_expr = pCI->G.p_injected->pFind_expr_Via_as_stripItem(&xSym_term_nm))) {
-          pCI->G.p_as = pCI->G.p_expr->pSub_as();
-          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
-          return C_CONTINUE_RECURSION;
-        }
-      }
-
-      return C_CONTINUE_RECURSION;
-    }
-    else
-    if (Card_BoolPred* p_boolPred = _pCard_BoolPred(pCI->pAncestorFind(CK_BOOLPRED))) {
-      i8 iItemise = p_boolPred->iItemise();
-      p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
-      return C_CONTINUE_RECURSION;
+      NEVER_REACH;
     }
     else
 		// getting build error on AWS. ALka changed this : 22/10/23
@@ -115,8 +92,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
       return C_CONTINUE_RECURSION;
     }
-
-    return C_CONTINUE_RECURSION;
+    NEVER_REACH;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -124,6 +100,90 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
   pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
 
 }
+/*----------------------------------------------------------------------------*/
+//void Card_Term::vItemise_colNm(CardIter* pCI)
+//{
+//  _static_
+//
+//  auto bfItemise_colNm = [pCI](Card* pCard)
+//  {
+//    UNUSED(pCI);
+//
+//    if (! pCard->bIsCard(CK_TERM))
+//      return C_CONTINUE_RECURSION;
+//
+//    if (pCI->pAncestorFind(CK_KEYEXISTS) || pCI->pAncestorFind(CK_KEYNOTEXISTS))
+//      return C_CONTINUE_RECURSION;
+////    if (pCI->pAncestorFind(CK_CONSTRAINT))ø
+////      return C_CONTINUE_RECURSION;
+//
+//    Card_Term* p_term = _pCard_Term(pCard);
+//
+//    if (p_term->pSymbol()->szSF_chrSeq(SF_NONE)->bSame("O_COMMENT"_Stz))
+//      vDebugPoint();
+//
+//    if (!pCard->pSymbol()->bIs_Nmd_Col())
+//      return C_CONTINUE_RECURSION;
+//
+//    if ( (pCI->G.p_indexJoin  = _pCard_IndexJoin(pCI->pAncestorFind(CK_INDEXJOIN))) &&
+//         (pCI->G.p_constraint = _pCard_Constraint(pCI->pAncestorFind(CK_CONSTRAINT))) ) {
+//      //pCI->G.p_indexJoin->vDump(__func__);
+//
+//
+//      pCI->G.p_emit  = pCI->G.p_indexJoin->pSub_emit();
+//      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
+//        //Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
+//        pCI->G.p_as = pCI->G.p_expr->pSub_as();
+//        Symbol* pSymbol_as = pCI->G.p_as->pSymbol();
+//
+//        p_term->pSymbol()->vFacets(pSymbol_as);
+//        return C_CONTINUE_RECURSION;
+//      }
+//
+//      if (p_term->pSymbol()->bIs_Nmd_Col()) {
+//        Symbol xSym_term_nm;
+//        xSym_term_nm.vFacet(SF_NMD_COL, p_term->szFacet(SF_NONE));
+//
+//        if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(&xSym_term_nm))) {
+//          pCI->G.p_as = pCI->G.p_expr->pSub_as();
+//          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
+//          return C_CONTINUE_RECURSION;
+//        }
+//
+//        pCI->G.p_injected = pCI->G.p_indexJoin->pSub_injected();
+//        if ((pCI->G.p_expr = pCI->G.p_injected->pFind_expr_Via_as_stripItem(&xSym_term_nm))) {
+//          pCI->G.p_as = pCI->G.p_expr->pSub_as();
+//          p_term->pSymbol()->vFacets(pCI->G.p_as->pSymbol_AS());
+//          return C_CONTINUE_RECURSION;
+//        }
+//      }
+//
+//      return C_CONTINUE_RECURSION;
+//    }
+//    else
+//    if (Card_BoolPred* p_boolPred = _pCard_BoolPred(pCI->pAncestorFind(CK_BOOLPRED))) {
+//      i8 iItemise = p_boolPred->iItemise();
+//      p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
+//      return C_CONTINUE_RECURSION;
+//    }
+//    else
+//      // getting build error on AWS. ALka changed this : 22/10/23
+//      //if (Card_RpnCalc* p_rpnCalc = _pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
+//    if (_pCard_RpnCalc(pCI->pAncestorFind(CK_RPNCALC))) {
+//      Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
+//      i8 iItemise = p_expr->iItemise();
+//      p_term->pSymbol()->vFacet(SF_ITM_COL, iItemise);
+//      return C_CONTINUE_RECURSION;
+//    }
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  pCI->bApplyRecursive(pCI->G.pDeck,CK_NONE,bfItemise_colNm);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
