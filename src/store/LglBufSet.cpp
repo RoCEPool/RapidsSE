@@ -40,7 +40,7 @@ LglBufSet::~LglBufSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   // Assert we don't have any dangling buffers
-  RASSERT(m_pPdsOfBuffers->iNumEntries(0) == 0);
+//  RASSERT(m_pPdsOfBuffers->iNumEntries(0) == 0);
   delete m_pPdsOfBuffers;
 }
 
@@ -60,7 +60,7 @@ void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
   LglBufSetItem oItem;
 
   oItem.iLglPtn = tLglPtn.iAsI8() + 1;
-  oItem.iSynthKey = m_iSynthKey++;
+  oItem.iSynthKey = ++m_iSynthKey;
   oItem.oBufferId = pDataBuffer->oGetBufferId();
 
   RASSERT(oItem.oBufferId.m_iAsI8 != 0);

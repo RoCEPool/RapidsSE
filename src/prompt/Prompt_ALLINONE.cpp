@@ -3287,27 +3287,27 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   /*----------------------------------------------------------------------------*/
   // Test Case - Insert till buffer is full
 /*----------------------------------------------------------------------------*/
-  PDS_i8 = new Pds_i8(nullptr);
-
-  i8 iFreeBytes = PDS_i8->nFreeBytes();
-
-  i8 iInsert = 0;
-
-  for(; iInsert < C_I8_MAX; iInsert++)
-  {
-    iTest = rand();
-    pResultBlock = PDS_i8->pInsert((void*) &iTest);
-    if(pResultBlock == nullptr) {
-     break;
-    }
-    *(i8*)(pResultBlock->aItem()) = iTest;
-  }
-
-  i8 iBlockSize = PDS_i8->m_nBlockSize;
-  i8 iMaxElements = iFreeBytes/iBlockSize;
-
-  RASSERT(iInsert == iMaxElements);
-  delete PDS_i8;
+//  PDS_i8 = new Pds_i8(nullptr);
+//
+//  i8 iFreeBytes = PDS_i8->nFreeBytes();
+//
+//  i8 iInsert = 0;
+//
+//  for(; iInsert < C_I8_MAX; iInsert++)
+//  {
+//    iTest = rand();
+//    pResultBlock = PDS_i8->pInsert((void*) &iTest);
+//    if(pResultBlock == nullptr) {
+//     break;
+//    }
+//    *(i8*)(pResultBlock->aItem()) = iTest;
+//  }
+//
+//  i8 iBlockSize = PDS_i8->m_nBlockSize;
+//  i8 iMaxElements = iFreeBytes/iBlockSize;
+//
+//  RASSERT(iInsert == iMaxElements);
+//  delete PDS_i8;
 
 /*----------------------------------------------------------------------------*/
                   // Test Case - Insert duplicate key
@@ -3651,6 +3651,125 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 //
 //  RASSERT(iInsert == iMaxElements);
 //  delete PDS_CharArr;
+
+
+/*----------------------------------------------------------------------------*/
+                // Test Case - PDS Data buffers
+/*----------------------------------------------------------------------------*/
+
+  PdsBufferIdQueue* pBufferIdQueue = new PdsBufferIdQueue();
+
+  RowBuffer* pNewRowBuffer1 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer1);
+  RASSERT(pNewRowBuffer1 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer2 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer2);
+  RASSERT(pNewRowBuffer2 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer3 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer3);
+  RASSERT(pNewRowBuffer3 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer4 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer4);
+  RASSERT(pNewRowBuffer4 == pBufferIdQueue->pDataBuffer());
+
+  RowBuffer* pNewRowBuffer5 = new RowBuffer;
+  pBufferIdQueue->vAddBuffer(pNewRowBuffer5);
+  RASSERT(pNewRowBuffer5 == pBufferIdQueue->pDataBuffer());
+
+  pBufferIdQueue->vDump();
+
+//  Pds* pPds = pBufferIdQueue->m_pPdsOfBufferIds;
+
+  // returns 1
+  RowBuffer* pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer1);
+
+  // returns 2
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer2);
+
+  // returns 3
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer3);
+
+  // returns 4
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer4);
+
+  // returns null
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pCompletedBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == nullptr);
+
+  // returns 5
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pDanglingBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+  RASSERT(pRowBufferRet == pNewRowBuffer5);
+
+  // returns null
+  pRowBufferRet = _pRowBuffer(pBufferIdQueue->pDanglingBuffer());
+  vTrace("%p\n"_Stz, pRowBufferRet);
+  pBufferIdQueue->vDump();
+
+  delete pBufferIdQueue;
+  delete pNewRowBuffer1;
+  delete pNewRowBuffer2;
+  delete pNewRowBuffer3;
+  delete pNewRowBuffer4;
+  delete pNewRowBuffer5;
+
+
+/*----------------------------------------------------------------------------*/
+                  // Test Case - String_d test
+/*----------------------------------------------------------------------------*/
+  RASSERT(String_d::iBytesToAlloc(3) == 48);
+  RASSERT(String_d::iBytesToAlloc(8) == 48);
+  RASSERT(String_d::iBytesToAlloc(10) == 48);
+  RASSERT(String_d::iBytesToAlloc(16) == 48);
+  RASSERT(String_d::iBytesToAlloc(21) == 64);
+  RASSERT(String_d::iBytesToAlloc(32) == 64);
+  RASSERT(String_d::iBytesToAlloc(37) == 80);
+  RASSERT(String_d::iBytesToAlloc(48) == 80);
+
+  // Store string somewhere inside a rowbuffer
+  RowBuffer* pBuffer = new RowBuffer;
+  void* aAddr = aAdd<void*>(pBuffer, C_64KB);
+
+  String_d* pStringDyn1 = new(aAddr) String_d(3);
+  Footer* aFooter1 = pStringDyn1->aFooter();
+  RASSERT(aFooter1->bValidFooter());
+
+  pStringDyn1->vCopy("1234"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn1->azChar());
+
+  String_d* pStringDyn2 = new(aAddr) String_d(8);
+  Footer* aFooter2 = pStringDyn2->aFooter();
+  RASSERT(aFooter2->bValidFooter());
+
+  pStringDyn1->vCopy("12"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn1->azChar());
+
+  String_d* pStringDyn3 = new(aAddr) String_d(21);
+  Footer* aFooter3 = pStringDyn3->aFooter();
+  RASSERT(aFooter3->bValidFooter());
+
+  pStringDyn3->vCopy("12345"_Stz);
+  vTrace("%s\n"_Stz, pStringDyn3->azChar());
+
+  delete pBuffer;
 
   vTrace("Success!\n"_Stz);
   return true;

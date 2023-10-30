@@ -200,6 +200,8 @@ void ToKeyHshRow::vNewRowBuffer(void)
   pNewRowBuffer->vInitPix(m_pStreamDef,true);
 
   m_pBufferIdQueue->vAddBuffer(pNewRowBuffer);
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pBufferIdQueue->pDataBuffer());
+  RASSERT(pNewRowBuffer == pRowBuffer);
 
   m_pCurrRowBuffer = pNewRowBuffer;
   return;
