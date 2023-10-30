@@ -84,11 +84,6 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     if (pCI->G.p_expr->pSymbol()->bMatches(SF_STM_COL,"$1"_Stz))
       continue;
 
-    pCI->G.p_as = pCI->G.p_expr->pSub_as();
-
-    if (pCI->G.p_as->pSymbol_AS()->bIs_Sqy_Rsl())
-      continue;
-
    // pCI->vPrintBoard(__LINE__);
 
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
