@@ -109,10 +109,15 @@ namespace STORE
 
     static bool bPossibleNm(Stz* szChrSeq);
 
+    static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
+
     static eCT  eTo_eCT_str(Stz* szType);
     static eCT  eTo_eCT_char(Stz* szType);
 
     // - - - - - -
+
+    void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
+    void vAppendFacets(Symbol* pSymbol_arg);
 
     eCT  eColType(void);
     void vColType(eCT eColType);
@@ -151,6 +156,8 @@ namespace STORE
     bool bHasFacets(void);
     bool bHasProperties(void);
     bool bHasType(void);
+
+    bool bIdenticalFacets(Symbol* pSymbol_arg);
 
     void vInc_Tbl_Syn(void);
     void vInit_Tbl_Syn(char cTblSyn);
@@ -214,6 +221,7 @@ namespace STORE
 
     void vItemStrip(void);
 
+    bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
     bool bMatches(Symbol* pSymbol_arg, eSF* aeFacet=nullptr);
     bool bMatches(Symbol* pSymbol_arg, eSF eFacet);
 
@@ -328,6 +336,7 @@ namespace STORE
     void vFacet_When(Stz* szWhen);
     void vFacet_Xk_Cast(Stz* szXkCast);
 
+    void vFacetAppend(eSF eFacet, Stz* szFacet);
     void vFacetConcat(Symbol* pSymbol_arg);
     void vFacetCopy(Symbol* pSymbol_arg);
     void vFacetCut(i8 i_Facet_cut);

@@ -66,9 +66,15 @@ void XF_Flatten_Join_Ordering::vXF_Join_Ordering(CardIter* pCI)
 
   XF_Flatten_Join_Ordering* pXF_Join_Ordering = new XF_Flatten_Join_Ordering(pCI);
 
-  pXF_Join_Ordering->vJoinOrdering();
+  try {
+    pXF_Join_Ordering->vJoinOrdering();
+    delete pXF_Join_Ordering;
+  }
+  catch (Error xError) {
+    delete pXF_Join_Ordering;
+    throw xError;
+  }
 
-  delete pXF_Join_Ordering;
 }
 
 

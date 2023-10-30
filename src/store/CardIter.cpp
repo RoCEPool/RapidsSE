@@ -73,6 +73,9 @@ CardIter::~CardIter(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  while (nItems())
+    bPopRecurseIter();
+
   RASSERT(0 == nItems());
 
 }
@@ -204,7 +207,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pChild->pSymbol()->vFacets(&xSymbol);
+  pChild->pSymbol(true)->vFacets(&xSymbol);
 
   pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
@@ -1241,7 +1244,7 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
             //p_as->vDump();
-            if (p_as->pSymbol()->bSame(p_term->szFacet(SF_NONE))) {
+            if (p_as->pSymbol_AS()->bSame(p_term->szFacet(SF_NONE))) {
               p_expr_col = p_expr_prj;
               break;
             }

@@ -442,24 +442,21 @@ CarryForward* XF_Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   if (CK_HAVING == eCardWithSQ) {
     pCarryForward->Table.m_bReproject = true;
-    //pCarryForward->Where_preAgg.m_nBumpBy = 1;
-    pCarryForward->GbyAgg.m_bInject_foldExpr = true;
+     pCarryForward->GbyAgg.m_bInject_foldExpr = true;
     pCarryForward->Having.m_bCorrect_After_Inject = true;
     pCarryForward->Unproject.m_bUnproject_foldExpr = true;
   }
   else {
     pCarryForward->Table.m_bReproject = true;
-    //pCarryForward->Where_preAgg.m_nBumpBy = 1;
     if (QO_IN_OP == eWhatOp || QO_NOT_IN_OP == eWhatOp)
       pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_EQ = true;
     else
     if (QO_RELN_OP == eWhatOp)
       pCarryForward->Where_preAgg.bReplace_sqCall_With_result = true;
-
-//    if (pCarryForward->GbyAgg.m_bSeen)
-//      pCarryForward->GbyAgg.m_nBumpBy = 1;
-
   }
+
+  if (pCarryForward->Sort.m_bSeen)
+    pCarryForward->Sort.m_bCorrect_After_Inject = true;
 
  // pCI->vPrintBoard(__LINE__);
 

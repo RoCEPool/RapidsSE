@@ -1159,10 +1159,26 @@ bool Symbol::bPossibleNm(Stz* szChrSeq)
   if (ST_NONE != SketchTkn::eEvalSketch(szChrSeq))
     return false;
 
-  if (bIs_Stm_Col(szChrSeq))   return false;
-  if (bIs_Tbl_Col(szChrSeq))   return false;
+  if (bIs_Stm_Col(szChrSeq))  return false;
+  if (bIs_Tbl_Col(szChrSeq))  return false;
   if (bIs_Sqy_Prm(szChrSeq))  return false;
   if (bIs_Sqy_Rsl(szChrSeq))  return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are the two given facets the same?                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
+{
+  _static_
+
+  if (aFacet_a->m_eFacet != aFacet_b->m_eFacet)
+    return false;
+
+  if (! aFacet_a->m_sChrSeq.bSame(aFacet_b->m_sChrSeq))
+    return false;
 
   return true;
 }
@@ -1199,6 +1215,35 @@ eCT Symbol::eTo_eCT_char(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! bHasFacet(eFacet_arg));
+  vFacetAppend(eFacet_arg, szChrSeq_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append facets                                                              */
+/*----------------------------------------------------------------------------*/
+void Symbol::vAppendFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 nFacets_arg = pSymbol_arg->m_nFacets;
+  for (i8 i_Facet_arg = 0; i_Facet_arg < nFacets_arg; i_Facet_arg++) {
+    Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
+
+    if (bHasFacet(aFacet_arg->m_eFacet))
+      continue;
+
+    vFacetAppend(aFacet_arg->m_eFacet, aFacet_arg->m_sChrSeq);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
@@ -1438,8 +1483,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
 
   switch (eFacet) {
 
-    case SF_NMD_COL:
-      vFacet_Nmd_Col(iInt);      break;
+    case SF_NMD_COL:    vFacet_Nmd_Col(iInt);    break;
     case SF_IDX_COL:    vFacet_Idx_Col(iInt);    break;
     case SF_INT_LIT:    vFacet_Int_Lit(iInt);    break;
     case SF_ITM_COL:    vFacet_Itm_Col(iInt);    break;
@@ -1450,8 +1494,7 @@ void Symbol::vFacet(eSF eFacet, i8 iInt)
     case SF_SQY_NM:     vFacet_Sqy_Nm(iInt);     break;
     case SF_STG_NO:     vFacet_Stg_Nm(iInt);     break;
     case SF_STM_COL:    vFacet_Stm_Col(iInt);    break;
-    case SF_LIST_CNT:
-      vFacet_List_Cnt(iInt);     break;
+    case SF_LIST_CNT:   vFacet_List_Cnt(iInt);   break;
 
     default: NEVER_REACH;
   }
@@ -1498,7 +1541,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_CASE:        vFacet_Case(szChrSeq);        break;
     case SF_CAST:        vFacet_Cast(szChrSeq);        break;
     case SF_CASTTYPE:    vFacet_CastType(szChrSeq);    break;
-     case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
+    case SF_COL_TYPE:    vFacet_Col_Type(szChrSeq);    break;
     case SF_COMMA:       vFacet_Comma(szChrSeq);       break;
     case SF_CROSS:       vFacet_Cross(szChrSeq);       break;
     case SF_DCM_LIT:     vFacet_Dcm_Lit(szChrSeq);     break;
@@ -1515,6 +1558,7 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_INTERVAL_DT: vFacet_Interval_DT(szChrSeq); break;
     case SF_INTERVAL_YM: vFacet_Interval_YM(szChrSeq); break;
     case SF_KEY_COL:     vFacet_Key_Col(szChrSeq);     break;
+    case SF_LIST_CNT:    vFacet_List_Cnt(szChrSeq);    break;
     case SF_MTH_OP:      vFacet_Mth_Op(szChrSeq);      break;
     case SF_NEGATE:      vFacet_Negate(szChrSeq);      break;
     case SF_NMD_COL:     vFacet_Nmd_Col(szChrSeq);     break;
@@ -1539,8 +1583,6 @@ void Symbol::vFacet(eSF eFacet, Stz* szChrSeq)
     case SF_TYPE:        vFacet_Type(szChrSeq);        break;
     case SF_WHEN:        vFacet_When(szChrSeq);        break;
     case SF_XK_CAST:     vFacet_Xk_Cast(szChrSeq);     break;
-    case SF_LIST_CNT:
-      vFacet_List_Cnt(szChrSeq);      break;
 
     default: NEVER_REACH;
   }
@@ -1607,7 +1649,10 @@ void Symbol::vFacets_To_String(String* pString)
   for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
     if (i_Facet)
       pString->vConcat(" "_Stz);
-    pString->vCatSprint("%s~%lld"_Stz,xaFacet[i_Facet].m_sChrSeq.szStz(),i_Facet);
+    pString->vCatSprint("%s %s~%lld"_Stz,
+                        aSF[xaFacet[i_Facet].m_eFacet],
+                        xaFacet[i_Facet].m_sChrSeq.szStz(),
+                        i_Facet);
   }
 
 }
@@ -1691,6 +1736,26 @@ bool Symbol::bHasType(void)
 
   if (CT_NONE == m_eColType)
     return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have identical facets with given arg?                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIdenticalFacets(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (pSymbol_arg->nFacets() != m_nFacets)
+    return false;
+
+  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
+    Facet* aFacet_this = this->aFacet(i_Facet);
+    Facet* aFacet_that = pSymbol_arg->aFacet(i_Facet);
+    if (! bSame(aFacet_this,aFacet_that))
+      return false;
+  }
 
   return true;
 }
@@ -2628,6 +2693,23 @@ void Symbol::vItemStrip(void)
 /*----------------------------------------------------------------------------*/
 /* does this symbol have a matching facet with given arg?                     */
 /*----------------------------------------------------------------------------*/
+bool Symbol::bMatches(eSF eFacet_arg, Stz* szChrSeq_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Facet* aFacet_this = this->aFacet(eFacet_arg);
+  if (!aFacet_this)
+    return false;
+
+  if (aFacet_this->m_sChrSeq.bSame(szChrSeq_arg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this symbol have a matching facet with given arg?                     */
+/*----------------------------------------------------------------------------*/
 bool Symbol::bMatches(Symbol* pSymbol_arg, eSF* aeFacet)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -2670,7 +2752,6 @@ bool Symbol::bMatches(Symbol* pSymbol_arg, eSF eFacet)
 
   return false;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -2858,8 +2939,9 @@ bool Symbol::bValidate(void)
     case SF_INTERVAL_YM: b = bIs_Interval_YM(); break;
     case SF_IVL_FN:      b = bIs_Ivl_Fn();      break;
     case SF_KEY_COL:     b = bIs_Key_Col();     break;
+    case SF_LIST_CNT:    b = bIs_List_Cnt();    break;
     case SF_MTH_OP:      b = bIs_Mth_Op();      break;
-    case SF_NMD_COL:     b = bIs_Nmd_Col();      break;
+    case SF_NMD_COL:     b = bIs_Nmd_Col();     break;
     case SF_NOTE:        b = bIs_Note();        break;
     case SF_NULL:        b = bIs_Null();        break;
     case SF_PARENTHESIS: b = bIs_Parenthesis(); break;
@@ -2882,7 +2964,6 @@ bool Symbol::bValidate(void)
     case SF_TYPE:        b = bIs_Type();        break;
     case SF_WHEN:        b = bIs_When();        break;
     case SF_XK_CAST:     b = bIs_Xk_Cast();     break;
-    case SF_LIST_CNT: b = bIs_List_Cnt();      break;
 
     default:
       NEVER_REACH
@@ -2915,8 +2996,8 @@ Stz* Symbol::szWhatIs(void)
   if (bIs_Agg_Fn())       return "AggOp"_Stz;
   if (bIs_Bol_Fn())       return "BoolFn"_Stz;
   if (bIs_Bound())        return "Bound"_Stz;
-  if (bIs_Stm_Col())       return "StreamOrdinal"_Stz;
-  if (bIs_Tbl_Col())       return "ColumnOrdinal"_Stz;
+  if (bIs_Stm_Col())      return "StreamOrdinal"_Stz;
+  if (bIs_Tbl_Col())      return "ColumnOrdinal"_Stz;
   if (bIs_Comma())        return "Comma"_Stz;
   if (bIs_Idx_Col())      return "IndexColumn"_Stz;
   if (bIs_Key_Col())      return "KeyOrdinal"_Stz;
@@ -4243,6 +4324,16 @@ void Symbol::vFacet_Xk_Cast(Stz* szXkCast)
 /*----------------------------------------------------------------------------*/
 /* concat facets                                                              */
 /*----------------------------------------------------------------------------*/
+void Symbol:: vFacetAppend(eSF eFacet, Stz* szFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vFacetSet(m_nFacets++,eFacet,szFacet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat facets                                                              */
+/*----------------------------------------------------------------------------*/
 void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -4250,6 +4341,10 @@ void Symbol:: vFacetConcat(Symbol* pSymbol_arg)
   i8 nFacets_arg = pSymbol_arg->m_nFacets;
   for (i8 i_Facet_arg = nFacets_arg - 1; i_Facet_arg >= 0; i_Facet_arg--) {
     Facet* aFacet_arg = pSymbol_arg->aFacet(i_Facet_arg);
+
+    if (aFacet_arg->m_sChrSeq.bSame("%1"_Stz))
+      vDebugPoint();
+
     vFacetRotateSet(aFacet_arg->m_eFacet,aFacet_arg->m_sChrSeq);
   }
 }

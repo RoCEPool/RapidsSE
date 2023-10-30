@@ -755,6 +755,20 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
   if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
     return false;
 
+//  if (Card_Direction* p_direction_this = pSub_direction()) {
+//    if (Card_Direction *p_direction_arg = p_expr_arg->pSub_direction()) {
+//      if (! p_direction_this->pSymbol()->bSame(p_direction_arg->pSymbol()))
+//        return false;
+//    }
+//    else {
+//      return false;
+//    }
+//  }
+//  else
+//  if (p_expr_arg->pSub_direction()) {
+//    return false;
+//  }
+
   return true;
 }
 

@@ -25,12 +25,12 @@ select
  order by custdist desc,
           c_count desc;
 
-rows:
-  (0,1)
-  (8,2)
-  (9,11)
+ordered rows:
   (10,135)
+  (9,11)
+  (8,2)
   (20,1)
+  (0,1)
 
 MemoryLeaks;
 rows: 0

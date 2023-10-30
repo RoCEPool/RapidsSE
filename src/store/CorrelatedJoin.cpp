@@ -259,6 +259,9 @@ bool CorrelatedJoin::bIdentify_Correlation_Key_Predicate(CardIter* pCI)
 
   pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
   Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pCI->G.p_boolPred->pGetChild(0));
+
+  //p_conj->vDump(__func__);
+
   bool bIgnore = p_conj->bConjRecursive(bMarkCorrPred);
   UNUSED(bIgnore);
 

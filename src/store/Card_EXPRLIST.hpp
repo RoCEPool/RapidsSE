@@ -41,6 +41,8 @@ namespace STORE
 
     void vRenumberAll_expr(void);
 
+    bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);
+
     void vShortForm(String* pString);
 
     StreamDef* pToStreamDef(ColMap* pColMap,

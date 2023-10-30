@@ -58,7 +58,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
     Card_As* p_as = _pCard_As(pCard);
 
-    if (! p_as->pSymbol()->bIs_Nmd_Col())
+    if (! p_as->pSymbol_AS()->bIs_Nmd_Col())
       return C_CONTINUE_RECURSION;
 
     Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
@@ -67,8 +67,11 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
     i8 iItemise = p_expr->iItemise();
-    p_as->pSymbol()->vFacet(SF_ITM_COL,iItemise);
+    p_as->pSymbol_AS()->vFacet(SF_ITM_COL,iItemise);
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
+
+    p_expr->pSymbol()->vAppendFacet(SF_ITM_COL,
+                                    p_as->pSymbol_AS()->szSF_chrSeq(SF_ITM_COL));
 
     return C_CONTINUE_RECURSION;
   };
@@ -99,7 +102,7 @@ bool Card_As::bIs_SQCRLKEY(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bSame(C_SQCRLKEY))
+  if (pSymbol_AS()->bSame(C_SQCRLKEY))
     return true;
 
   return false;
@@ -116,6 +119,14 @@ void Card_As::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
+
+//  if (Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))) {
+//    if (! pSymbol_AS()->bMatches(p_expr->pSymbol())) {
+//      p_expr->vDump(__func__, "EXPR"_Stz);
+//      this->vDump(__func__, "AS"_Stz);
+//      NEVER_REACH
+//    }
+//  }
 
   vValidationPassed();
 }
