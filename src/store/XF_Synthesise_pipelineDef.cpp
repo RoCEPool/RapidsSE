@@ -671,8 +671,8 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     // arriving related
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
     Symbol*  pExprSym_a = p_expr_a->pSymbol();
-    Card_As*     p_as_a = p_expr_a->pSub_as();
-    Symbol*    pAsSym_a = p_as_a->pSymbol_AS();
+    //Card_As*     p_as_a = p_expr_a->pSub_as();
+    //Symbol*    pAsSym_a = p_as_a->pSymbol_AS();
 
     i8 i_CellIn;
     i8 i_CellOut;
@@ -716,16 +716,16 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
           p_expr_e->vDump(__func__, sHow);
         pInSym_a = pExprSym_a;
       }
-      else
-      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pAsSym_a, &eViaFacet))) {
-        // 3) ARRIVING AS: Nm | C_Nn  [ nm ]
-        sHow.vSprint("--FOUND emitted expr for arriving Nm: %s~%s--"_Stz,
-                     pAsSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-          p_expr_e->vDump(__func__, sHow);
-        pInSym_a = pAsSym_a;
-      }
-       else {
+//      else
+//      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pAsSym_a, &eViaFacet))) {
+//        // 3) ARRIVING AS: Nm | C_Nn  [ nm ]
+//        sHow.vSprint("--FOUND emitted expr for arriving Nm: %s~%s--"_Stz,
+//                     pAsSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
+//        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
+//          p_expr_e->vDump(__func__, sHow);
+//        pInSym_a = pAsSym_a;
+//      }
+      else {
         // not propagated
         //vTrace("--NOT-FOUND expr\n"_Stz);
         return C_CONTINUE_RECURSION;
