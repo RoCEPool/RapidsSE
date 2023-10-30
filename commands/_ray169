@@ -1,0 +1,375 @@
+/*============================================================================*/
+/* _ray169                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+/*
+// NOTE: On a single node SF0001
+// the weaved pipeline is as follows and returns correct results
+
+pipeline OptQ18
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Lineitem
+  //| inflate   Lineitem // fused project
+  //| project   "   type INTEGER as C0_l_orderkey $1
+  //              , type DECIMAL as C1_L_QUANTITY $5 "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S03 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S04 on origin :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S05 on origin :
+  //  filter    " type BOOLEAN $2 100.00 > "
+      dynamic
+    | next
+
+  stage S06 on origin :
+  //  project   "   type INTEGER as C0_l_orderkey $1 "
+      dynamic
+    | next      broadcast
+
+  stage S07 on all partitions :
+  //  indexJoin Orders IxO_ORDERKEY " BOUND $I1 $1 == "
+  //| hash      "type INTEGER $1"
+      dynamic
+    | next      hashcast
+
+  stage S08 on all partitions :
+  //  indexJoin Lineitem IxL_ORDERKEY " BOUND $I1 $1 == "
+      dynamic
+    | next
+
+  stage S09 on all partitions :
+  //  project   "   type INTEGER as C0_o_orderkey $1
+  //              , type DATE as C1_o_orderdate $2
+  //              , type DECIMAL as C2_o_totalprice $3
+  //              , type DECIMAL as C3_L_QUANTITY $9
+  //              , type INTEGER as C4_O_CUSTKEY $4 "
+  //| hash      "type INTEGER $1"
+      dynamic
+    | next      hashcast
+
+  stage S10 on all partitions :
+  //  indexJoin Customer IxC_CUSTKEY " BOUND $I1 $5 == "
+      dynamic
+    | next
+
+  stage S11 on all partitions :
+  //  project   "   type VARCHAR as C0_c_name $7
+  //              , type INTEGER as C1_c_custkey $6
+  //              , type INTEGER as C2_o_orderkey $1
+  //              , type DATE as C3_o_orderdate $2
+  //              , type DECIMAL as C4_o_totalprice $3
+  //              , type DECIMAL as C5_L_QUANTITY $4 "
+      dynamic
+    | next
+
+  stage S12 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $3
+  //              , type DATE as C3_o_orderdate $4
+  //              , type DECIMAL as C4_o_totalprice $5
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type INTEGER as C1_COL2 $K2
+  //              , type INTEGER as C2_COL3 $K3
+  //              , type DATE as C3_COL4 $K4
+  //              , type DECIMAL as C4_COL5 $K5
+  //              , type DECIMAL as C5_COL6 ) $6 sum "
+      dynamic
+    | next
+
+  stage S13 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $3
+  //              , type DATE as C3_o_orderdate $4
+  //              , type DECIMAL as C4_o_totalprice $5
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type INTEGER as C1_COL2 $K2
+  //              , type INTEGER as C2_COL3 $K3
+  //              , type DATE as C3_COL4 $K4
+  //              , type DECIMAL as C4_COL5 $K5
+
+~~TextBlock[1] : 973 bytes
+  //              , type DECIMAL as C5_COL6 ) $6 sum "
+      dynamic
+    | next
+
+  stage S14 on origin :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $3
+  //              , type DATE as C3_o_orderdate $4
+  //              , type DECIMAL as C4_o_totalprice $5
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type INTEGER as C1_COL2 $K2
+  //              , type INTEGER as C2_COL3 $K3
+  //              , type DATE as C3_COL4 $K4
+  //              , type DECIMAL as C4_COL5 $K5
+  //              , type DECIMAL as C5_COL6 ) $6 sum "
+      dynamic
+    | next
+
+  stage S15 on origin :
+  //  sort      " type DECIMAL as C0_o_totalprice $6 DESC , type DATE as C1_o_orderdate $5 ASC "
+      dynamic
+    | next
+
+  stage S16 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+//
+// ON 2 NODES the following pipeline is weaved
+// Notice :
+//      Stage S07: hashcast is incorrect
+//      Stage S08: indexJoin and Filter are incorrect
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      lineitem
+  //| inflate   lineitem // fused project
+  //| project   "   type INTEGER as C0_l_orderkey $1
+  //              , type DECIMAL as C1_L_QUANTITY $5 "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S03 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S04 on origin :
+  //  gbyAgg    " groupBy
+  //                type INTEGER as C0_l_orderkey $1
+  //              aggregates
+  //                type INTEGER as C0_COL1 $K1
+  //              , type DECIMAL as C1_COL2 ) $2 sum "
+      dynamic
+    | next
+
+  stage S05 on origin :
+  //  filter    " type BOOLEAN $2 300.00 > "
+      dynamic
+    | next
+
+  stage S06 on origin :
+  //  project   "   type INTEGER as C0_l_orderkey $1 "
+      dynamic
+    | next      broadcast
+
+  stage S07 on all partitions :
+  //  indexJoin customer IxC_CUSTKEY " BOUND $I1 "
+  //| hash      "type VARCHAR $1"
+      dynamic
+    | next      hashcast
+
+  stage S08 on all partitions :
+  //  indexJoin orders IxO_CUSTKEY " BOUND $I1 $2 == "
+  //| filter    " type BOOLEAN $1 $4 == "
+      dynamic
+    | next
+
+  stage S09 on all partitions :
+  //  project   "   type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $4
+  //              , type DATE as C3_o_orderdate $8
+  //              , type DECIMAL as C4_o_totalprice $7 "
+  //| hash      "type VARCHAR $1"
+      dynamic
+    | next      hashcast
+
+  stage S10 on all partitions :
+  //  indexJoin lineitem IxL_ORDERKEY " BOUND $I1 $3 == "
+      dynamic
+    | next
+
+  stage S11 on all partitions :
+  //  project   "   type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $3
+  //              , type DATE as C3_o_orderdate $4
+  //              , type DECIMAL as C4_o_totalprice $5
+  //              , type DECIMAL as C5_L_QUANTITY $10 "
+      dynamic
+    | next
+
+  stage S12 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $3
+  //              , type DATE as C3_o_orderdate $4
+  //              , type DECIMAL as C4_o_totalprice $5
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type INTEGER as C1_COL2 $K2
+  //              , type INTEGER as C2_COL3 $K3
+  //              , type DATE as C3_COL4 $K4
+  //              , type DECIMAL as C4_COL5 $K5
+  //              , type DECIMAL as C5_COL6 ) $6 sum "
+      dynamic
+    | next
+
+  stage S13 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $3
+  //              , type DATE as C3_o_orderdate $4
+  //              , type DECIMAL as C4_o_totalprice $5
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type INTEGER as C1_COL2 $K2
+  //              , type INTEGER as C2_COL3 $K3
+  //              , type DATE as C3_COL4 $K4
+
+~~TextBlock[1] : 1042 bytes
+  //              , type DECIMAL as C4_COL5 $K5
+  //              , type DECIMAL as C5_COL6 ) $6 sum "
+      dynamic
+    | next
+
+  stage S14 on origin :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as C0_c_name $1
+  //              , type INTEGER as C1_c_custkey $2
+  //              , type INTEGER as C2_o_orderkey $3
+  //              , type DATE as C3_o_orderdate $4
+  //              , type DECIMAL as C4_o_totalprice $5
+  //              aggregates
+  //                type VARCHAR as C0_COL1 $K1
+  //              , type INTEGER as C1_COL2 $K2
+  //              , type INTEGER as C2_COL3 $K3
+  //              , type DATE as C3_COL4 $K4
+  //              , type DECIMAL as C4_COL5 $K5
+  //              , type DECIMAL as C5_COL6 ) $6 sum "
+      dynamic
+    | next
+
+  stage S15 on origin :
+  //  sort      " type DECIMAL as C0_o_totalprice $6 DESC , type DATE as C1_o_orderdate $5 ASC "
+  //| limit      100
+      dynamic
+    | next
+
+  stage S16 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/
+
+
+// Query18
+
+/weaved
+/pipeline_def
+/pipelineName = "_ray169"
+select
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice,
+  sum(l_quantity)
+from
+  orders,
+  customer,
+  lineitem
+where
+  o_orderkey in
+    (
+    select
+      l_orderkey
+    from
+      lineitem
+    group by
+      l_orderkey
+    having
+      sum(l_quantity) > 100
+    )
+  and c_custkey = o_custkey
+  and o_orderkey = l_orderkey
+group by
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice
+order by
+  o_totalprice desc,
+  o_orderdate;
+
+
+
+
+_tpchDrop;
