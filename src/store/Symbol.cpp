@@ -2777,6 +2777,17 @@ bool Symbol::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append facet                                                               */
+/*----------------------------------------------------------------------------*/
+void Symbol::vPushFacet(eSF eFacet_arg, Stz* szChrSeq_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! bHasFacet(eFacet_arg));
+  vFacetPush(eFacet_arg, szChrSeq_arg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSame(char cArg)
@@ -4399,6 +4410,27 @@ void Symbol::vFacetPush(eSF eFacet)
   }
 
   vFacetSet(0,eFacet,""_Stz);
+
+  RASSERT(m_nFacets);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push facet                                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vFacetPush(eSF eFacet, Stz* szFacet)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  UNUSED(eFacet);
+
+  m_nFacets++;
+
+  for (i8 i_Facet = nFacets() - 1; i_Facet >= 1; i_Facet--) {
+    xaFacet[i_Facet].m_eFacet  = xaFacet[i_Facet - 1].m_eFacet;
+    xaFacet[i_Facet].m_sChrSeq = xaFacet[i_Facet - 1].m_sChrSeq;
+  }
+
+  vFacetSet(0,eFacet,szFacet);
 
   RASSERT(m_nFacets);
 }

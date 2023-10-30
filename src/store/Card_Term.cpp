@@ -73,12 +73,25 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       //pCI->G.p_indexJoin->vDump(__func__);
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
-      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(p_term->pSymbol()))) {
+      Symbol* pSymbol_term = p_term->pSymbol();
+      pSymbol_term->vDump();
+      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(pSymbol_term))) {
         //Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
-        pCI->G.p_as = pCI->G.p_expr->pSub_as();
-        Symbol *pSymbol_as = pCI->G.p_as->pSymbol();
+        //pCI->G.p_as = pCI->G.p_expr->pSub_as();
+        //Symbol *pSymbol_as = pCI->G.p_as->pSymbol();
+        //pSymbol_as->vDump();
 
-        p_term->pSymbol()->vFacets(pSymbol_as);
+        //p_term->pSymbol()->vFacets(pSymbol_as);
+
+        Symbol oSymbol_itmCol;
+        s256 sItmCol;
+        sItmCol.vSprint("C%lld_%s"_Stz,
+                        pCI->G.p_expr->iItemise(),
+                        pCI->G.p_expr->szFacet(SF_NMD_COL));
+
+        if (! p_term->pSymbol()->bHasFacet(SF_ITM_COL))
+          p_term->pSymbol()->vPushFacet(SF_ITM_COL,sItmCol.szStz());
+
         return C_CONTINUE_RECURSION;
       }
       NEVER_REACH;
