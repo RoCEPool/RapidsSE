@@ -72,6 +72,9 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
     p_expr->pSymbol()->vAppendFacet(SF_ITM_COL,
                                     p_as->pSymbol_AS()->szSF_chrSeq(SF_ITM_COL));
+    if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL))
+      p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,
+                                      p_as->pSymbol_AS()->szSF_chrSeq(SF_NMD_COL));
 
     return C_CONTINUE_RECURSION;
   };

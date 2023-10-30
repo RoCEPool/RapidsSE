@@ -590,8 +590,11 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
       Symbol* pSym_as_e = p_as_e->pSymbol_AS();
 
       // add descriptor
-      pColInj->vAdd(i_CrwCol_i, i_StructCell_e, pSym_as_e->szSF_chrSeq(SF_ITM_COL),
-                    szTblCol_i, pSym_as_e->szSF_chrSeq(SF_NMD_COL));
+      pColInj->vAdd(i_CrwCol_i,
+                    i_StructCell_e,
+                    pSym_as_e->szSF_chrSeq(SF_ITM_COL),
+                    szTblCol_i,
+                    pSym_as_e->szSF_chrSeq(SF_NMD_COL));
 
       if (p_prior_expr_e) {
         pColInj->vRepeatsPrior();

@@ -1478,8 +1478,10 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
   psRpnExpr->vCatSprint(" type %s"_Stz,
                         aCT[p_rpnCalc->pSymbol()->eColType()]);
 
-  if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL))
+  if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
+    RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
     psRpnExpr->vCatSprint(" as %s"_Stz, p_expr->szFacet(SF_ITM_COL));
+  }
 
   if (p_rpnCalc->bNeedsBrace())
     psRpnExpr->vConcat(" }"_Stz);
