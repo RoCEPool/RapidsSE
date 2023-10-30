@@ -586,15 +586,18 @@ void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubC
 
       // get details of emitted column
       i8 i_StructCell_e = p_expr_e->pSymbol()->iSF_ordinal() - 1;
-      Card_As*   p_as_e = p_expr_e->pSub_as();
-      Symbol* pSym_as_e = p_as_e->pSymbol_AS();
+//      Card_As*   p_as_e = p_expr_e->pSub_as();
+//      Symbol* pSym_as_e = p_as_e->pSymbol_AS();
+
+//      RASSERT(p_expr_e->szFacet(SF_ITM_COL)->bSame(pSym_as_e->szSF_chrSeq(SF_ITM_COL)));
+//      RASSERT(p_expr_e->szFacet(SF_NMD_COL)->bSame(pSym_as_e->szSF_chrSeq(SF_NMD_COL)));
 
       // add descriptor
       pColInj->vAdd(i_CrwCol_i,
                     i_StructCell_e,
-                    pSym_as_e->szSF_chrSeq(SF_ITM_COL),
+                    p_expr_e->szFacet(SF_ITM_COL),
                     szTblCol_i,
-                    pSym_as_e->szSF_chrSeq(SF_NMD_COL));
+                    p_expr_e->szFacet(SF_NMD_COL));
 
       if (p_prior_expr_e) {
         pColInj->vRepeatsPrior();
@@ -671,8 +674,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
     // arriving related
     Card_Expr* p_expr_a = _pCard_Expr(pCard_expr_a);
     Symbol*  pExprSym_a = p_expr_a->pSymbol();
-    //Card_As*     p_as_a = p_expr_a->pSub_as();
-    //Symbol*    pAsSym_a = p_as_a->pSymbol_AS();
 
     i8 i_CellIn;
     i8 i_CellOut;
@@ -716,15 +717,6 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
           p_expr_e->vDump(__func__, sHow);
         pInSym_a = pExprSym_a;
       }
-//      else
-//      if ((p_expr_e = p_emit->pFind_expr_Via_term0(pAsSym_a, &eViaFacet))) {
-//        // 3) ARRIVING AS: Nm | C_Nn  [ nm ]
-//        sHow.vSprint("--FOUND emitted expr for arriving Nm: %s~%s--"_Stz,
-//                     pAsSym_a->szSF_chrSeq(eViaFacet),aSF[eViaFacet]);
-//        if (AM::JOB::bHasTag(C_OPTIMISER_TRACE))
-//          p_expr_e->vDump(__func__, sHow);
-//        pInSym_a = pAsSym_a;
-//      }
       else {
         // not propagated
         //vTrace("--NOT-FOUND expr\n"_Stz);
