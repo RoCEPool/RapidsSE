@@ -1371,6 +1371,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   Card_As* p_as = nullptr;
   Card_Expr* p_expr = new Card_Expr;
 
+  Symbol oSymbol_nmdCol;
+
   if (bIsKeyExpr) {
     Symbol xSymbol_stmCol(SF_KEY_COL,ri_Expr);
     p_expr->pSymbol()->vFacets(&xSymbol_stmCol);
@@ -1390,6 +1392,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
     p_as = pPopAs(p_rpnExpr);
     p_expr->vAppendChild(p_as);
+
+    oSymbol_nmdCol.vFacets(p_as->pSymbol());
   }
 
 
@@ -1412,6 +1416,8 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
     p_as = pPopAs(p_rpnExpr);
     p_expr->vAppendChild(p_as);
+
+    oSymbol_nmdCol.vFacets(p_as->pSymbol());
   }
 
 
@@ -1432,6 +1438,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   if (! p_expr->pSub_as()) {
     RASSERT(! p_as);
+    RASSERT(0 == oSymbol_nmdCol.nFacets());
     if (p_expr->pSub_rpnCalc()->nChildCards() == 1) {
       Stz* AsNm = p_expr->pGet_term(0)->szFacet(SF_NONE);
       if (Symbol::bIs_Nmd_Col(AsNm)) {
@@ -1446,8 +1453,9 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     }
     p_expr->vPushChild(p_as);
   }
+  oSymbol_nmdCol.vFacets(p_as->pSymbol());
 
-  p_expr->pSymbol()->vAppendFacets(p_as->pSymbol_AS());
+  p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
 
   ri_Expr++;
   return p_expr;
