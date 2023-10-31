@@ -71,9 +71,6 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   Card_Expr* p_expr_new = new Card_Expr;
   p_expr_new->vRenumberForm_KeyCol(i_Key);
 
-  if (Card_As* p_as = p_expr->pSub_as())
-    p_expr_new->vAppendChild(p_as->pDupCardRecursive());
-
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_rpnCalc())
     p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
