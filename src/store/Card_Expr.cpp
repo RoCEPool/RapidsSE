@@ -549,13 +549,13 @@ bool Card_Expr::bIsScalarKey(void)
 /*----------------------------------------------------------------------------*/
 /* is this an expression of given symbol ?                                    */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bMatching_term0(Symbol* pSymbol_arg, eSF* aeFacet)
+bool Card_Expr::bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol_0 = pGet_term(0)->pSymbol();
+  Symbol* pSymbol_term0 = pGet_term(0)->pSymbol();
 
-  if (pSymbol_0->bMatches(pSymbol_arg,aeFacet))
+  if (pSymbol_term0->bMatches(pSymbol_arg, aeFacet_arg))
     return true;
   return false;
 }

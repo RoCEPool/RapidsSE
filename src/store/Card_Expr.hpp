@@ -44,7 +44,7 @@ namespace STORE
     Card_Term* pGet_term0(void);
     bool bIsAggCalc(void);
     bool bIsDescending(void);
-    bool bMatching_term0(Symbol* pSymbol_arg, eSF* aeFacet=nullptr);
+    bool bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg= nullptr);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
