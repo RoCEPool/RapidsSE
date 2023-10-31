@@ -64,8 +64,8 @@ void Card_As::vItemise_colNm(CardIter* pCI)
       RASSERT(! p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
       return C_CONTINUE_RECURSION;
     }
-    //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
-    //RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
+//    p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
+//    RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
 
     i8 iItemise = p_expr->iItemise();
     p_as->pSymbol_AS()->vFacet(SF_ITM_COL,iItemise);

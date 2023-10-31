@@ -672,6 +672,8 @@ Card_Expr* Card_Expr::pPropagate(void)
     p_expr_propagation->vAppendChild(p_as_new);
   }
 
+  if (pSymbol()->bHasFacet(SF_NMD_COL))
+    p_expr_propagation->pSymbol()->vAppendFacet(SF_NMD_COL,pSymbol()->szSF_chrSeq(SF_NMD_COL));
 
 
 //  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
@@ -721,6 +723,10 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
     p_expr_reduced->vAppendChild(p_as->pClone());
     bIs_SQCRLKEY = p_as->bIs_SQCRLKEY();
   }
+
+  if (pSymbol()->bHasFacet(SF_NMD_COL))
+    p_expr_reduced->pSymbol()->vAppendFacet(SF_NMD_COL,pSymbol()->szSF_chrSeq(SF_NMD_COL));
+
   Card_RpnCalc* p_rpnCalc_reduced;
   if (bIsScalarKey())
     p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy_key();
