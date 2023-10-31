@@ -159,7 +159,10 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         if (p_needed->pFind_expr_Via_term0(pSymbol_tblCol))
           continue;
 
-        p_needed->vAppendChild(p_expr_key->pClone());
+        Card_Expr* p_expr_cloned = p_expr_key->pClone();
+        p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
+
+        p_needed->vAppendChild(p_expr_cloned);
       }
       else
       if (xCI_rpnCalc.p_term()->bIsColSym()) {
@@ -198,6 +201,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
           if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.p_term())) {
             Card_Expr *p_expr_cloned = p_expr_col->pClone();
             p_expr_cloned->pSymbol()->vDeleteFacet(SF_KEY_COL);
+            p_expr_cloned->vDump(__func__,"CLONED"_Stz);
             p_needed->vAppendChild(p_expr_cloned);
           }
         }
