@@ -4125,6 +4125,7 @@ void Symbol::vFacet_Stm_Col(i8 iStmCol)
     RASSERT(SF_NONE    == eFacet ||
             SF_SQY_RSL == eFacet ||
             SF_STM_COL == eFacet ||
+                SF_NMD_COL == eFacet ||
             SF_TBL_COL == eFacet ||
             SF_KEY_COL == eFacet);
   }
