@@ -152,8 +152,12 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
     Card_Expr* p_expr_clone = p_expr_needed->pClone();
 
     if (! p_expr_clone->pSub_as()) {
+      Symbol oSymbol_nmdCol;
+      oSymbol_nmdCol.vFacet(SF_NMD_COL, p_emit_early->nChildCards());
       Card_As* p_as_new = (new Card_As) ->SYM(SF_NMD_COL, p_emit_early->nChildCards());
       p_expr_clone->vAppendChild(p_as_new);
+
+      p_expr_clone->pSymbol()->vAppendFacet(oSymbol_nmdCol.aFacet(SF_NMD_COL));
     }
 
     p_emit_early->vAppendChild(p_expr_clone);
