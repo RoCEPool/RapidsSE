@@ -19,7 +19,6 @@ namespace STORE
     void vAcclimate_foldExpr(CardIter* pCI, Card_Expr* p_expr_fold);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     i8 nCullConj(Stz* szWithMark);
-    void vConvert_stmCol_To_stmColNm(CardIter* pCI);
 
     void vEnsureTypes_For_stmCol(CardIter *pCI);
 
