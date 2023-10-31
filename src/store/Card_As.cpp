@@ -100,20 +100,6 @@ Card_As* Card_As::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_As::bIs_SQCRLKEY(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol_AS()->bSame(C_SQCRLKEY))
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_As::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

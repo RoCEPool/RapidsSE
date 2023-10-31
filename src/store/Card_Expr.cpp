@@ -722,7 +722,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   bool bIs_SQCRLKEY = false;
   if (Card_As* p_as = pSub_as()) {
     p_expr_reduced->vAppendChild(p_as->pClone());
-    bIs_SQCRLKEY = p_as->bIs_SQCRLKEY();
+    bIs_SQCRLKEY = p_as->pSymbol_AS()->bSame(C_SQCRLKEY);
   }
 
   if (pSymbol()->bHasFacet(SF_NMD_COL))
