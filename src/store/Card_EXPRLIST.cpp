@@ -208,23 +208,6 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Matches_symbol(Symbol *pSymbol_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find expr of term                                                          */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_as(Symbol *pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    Card_As* p_as = xKid.p_expr()->pSub_as();
-    if (p_as && p_as->bSymbol_Same(pSymbol))
-      return xKid.p_expr();
-
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find expression which expresses the given symbol                           */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet)
