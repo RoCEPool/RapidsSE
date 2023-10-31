@@ -192,6 +192,22 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Same_stmCol(Symbol* pSymbol_stmCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find <expr> which has same symbol as given $n stream-column                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches_symbol(Symbol *pSymbol_arg)
+
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    if (xKid.p_expr()->pSymbol()->bMatches(pSymbol_arg))
+      return xKid.p_expr();
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_EXPRLIST::pFind_expr_Via_as(Symbol *pSymbol)
@@ -203,34 +219,6 @@ Card_Expr* Card_EXPRLIST::pFind_expr_Via_as(Symbol *pSymbol)
     if (p_as && p_as->bSymbol_Same(pSymbol))
       return xKid.p_expr();
 
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find expr of term                                                          */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Via_as_stripItem(Symbol *pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Symbol xSymbol_arg_stripped;
-  Symbol xSymbol_as_stripped;
-
-  xSymbol_arg_stripped.vFacets(pSymbol);
-  xSymbol_arg_stripped.vItemStrip();
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    Card_As* p_as = xKid.p_expr()->pSub_as();
-    if (! p_as)
-      continue;
-
-    xSymbol_as_stripped.vFacets(p_as->pSymbol_AS());
-    xSymbol_as_stripped.vItemStrip();
-
-    if (xSymbol_as_stripped.bMatches(&xSymbol_arg_stripped))
-      return xKid.p_expr();
   }
 
   return nullptr;
