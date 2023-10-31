@@ -177,7 +177,7 @@ i8 Card_EXPRLIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /* find <expr> which has same symbol as given $n stream-column                */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_EXPRLIST::pFind_expr_Matches_symbol(Symbol *pSymbol_arg)
+Card_Expr* Card_EXPRLIST::pFind_expr_Matches(Symbol *pSymbol_arg)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

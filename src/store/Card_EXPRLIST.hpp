@@ -30,7 +30,7 @@ namespace STORE
 
     i8 nExpr(void);
 
-    Card_Expr* pFind_expr_Matches_symbol(Symbol* pSymbol_arg);
+    Card_Expr* pFind_expr_Matches(Symbol* pSymbol_arg);
     Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet= nullptr);
     Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid);
 

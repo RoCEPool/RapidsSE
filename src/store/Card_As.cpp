@@ -68,14 +68,17 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 //    RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
 
     i8 iItemise = p_expr->iItemise();
+    Symbol oSymbol_itemise;
+    oSymbol_itemise.vFacet(SF_ITM_COL,iItemise);
     p_as->pSymbol_AS()->vFacet(SF_ITM_COL,iItemise);
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
 
-    p_expr->pSymbol()->vAppendFacet(SF_ITM_COL,
-                                    p_as->pSymbol_AS()->szSF_chrSeq(SF_ITM_COL));
-    if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL))
+    p_expr->pSymbol()->vAppendFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
+    if (! p_expr->pSymbol()->bHasFacet(SF_NMD_COL)) {
       p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,
                                       p_as->pSymbol_AS()->szSF_chrSeq(SF_NMD_COL));
+      //p_expr->pSymbol()->vAppendFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
+    }
 
     return C_CONTINUE_RECURSION;
   };

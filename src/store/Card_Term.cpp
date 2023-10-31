@@ -76,7 +76,7 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
       Symbol* pSymbol_term = p_term->pSymbol();
       //pSymbol_term->vDump();
       //if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(pSymbol_term))) {
-      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches_symbol(pSymbol_term))) {
+      if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term))) {
         //Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
         //pCI->G.p_as = pCI->G.p_expr->pSub_as();
         //Symbol *pSymbol_as = pCI->G.p_as->pSymbol();
@@ -565,7 +565,7 @@ void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
       Symbol xAsNm_sym;
       xAsNm_sym.vFacet(SF_NMD_COL, pSymbol_this->szSF_chrSeq(SF_NMD_COL));
 
-      if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches_symbol(&xAsNm_sym)) {
+      if (Card_Expr *p_expr_scalar_a = pCI->Flux.m_pArriving->pFind_expr_Matches(&xAsNm_sym)) {
         Stz *szStmCol_expr_a = p_expr_scalar_a->szFacet(SF_NONE);
         pSymbol_this->vFacet(SF_STM_COL, szStmCol_expr_a);
         this->vMark1(MARK_CHANGED);

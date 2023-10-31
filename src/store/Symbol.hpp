@@ -116,6 +116,7 @@ namespace STORE
 
     // - - - - - -
 
+    void vAppendFacet(Facet* aFacet_arg);
     void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
