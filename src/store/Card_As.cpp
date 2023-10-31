@@ -49,8 +49,6 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
   auto bfItemise_colNm = [pCI](Card* pCard)
   {
-    UNUSED(pCI);
-
     //pCI->vAncestorDump(pCard);
 
     if (! pCard->bIsCard(CK_AS))
@@ -58,14 +56,17 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
     Card_As* p_as = _pCard_As(pCard);
 
-    if (! p_as->pSymbol_AS()->bIs_Nmd_Col())
-      return C_CONTINUE_RECURSION;
-
     Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR));
     if (! p_expr)
       return C_CONTINUE_RECURSION;
 
+    if (! p_as->pSymbol_AS()->bIs_Nmd_Col()) {
+      RASSERT(! p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
+      return C_CONTINUE_RECURSION;
+    }
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
+    //RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
+
     i8 iItemise = p_expr->iItemise();
     p_as->pSymbol_AS()->vFacet(SF_ITM_COL,iItemise);
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
