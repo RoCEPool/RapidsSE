@@ -719,11 +719,11 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   p_expr_reduced->pSymbol()->vFacets(&xExprNo);
   p_expr_reduced->vColType(this);
 
-  bool bIs_SQCRLKEY = false;
   if (Card_As* p_as = pSub_as()) {
     p_expr_reduced->vAppendChild(p_as->pClone());
-    bIs_SQCRLKEY = p_as->pSymbol_AS()->bSame(C_SQCRLKEY);
   }
+
+  bool bIs_SQCRLKEY = pSymbol()->bHasFacet(C_SQCRLKEY);
 
   if (pSymbol()->bHasFacet(SF_NMD_COL))
     p_expr_reduced->pSymbol()->vAppendFacet(SF_NMD_COL,pSymbol()->szSF_chrSeq(SF_NMD_COL));

@@ -628,7 +628,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       if (sDollar[0] == '$') {
         char *sNext = (char*)(pTkn->szChars() + 1);
         if (StrLib::bIsDigit(sNext[0])) {
-          vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn);
+          vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn, bConstraint);
           continue;
         }
         else {
@@ -637,7 +637,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
           }
           char *sNextDigit = (char*)(pTkn->szChars() + 2);
           if (StrLib::bIsDigit(sNextDigit[0])) {
-            vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn);
+            vPushOrdCol(pExprStack, pExprType, ePreExp, pTkn, bConstraint);
             continue;
           }
         }
@@ -1078,7 +1078,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_VCH);
     }
     else {
-      vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn);
+      vPushColumn(pExprStack, pExprType, m_pStreamDefLft,  pTkn, bConstraint);
     }
 
   }
@@ -1599,7 +1599,7 @@ void OpSketch::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastT
 /*----------------------------------------------------------------------------*/
 /* push column                                                                */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamDef* pStreamDef, Token* pTkn) {
+void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamDef* pStreamDef, Token* pTkn, bool bConstraint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1634,7 +1634,7 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   }
 
   // if column nullable generate null check expressions
-  if (pColumn->bIsNullable()) {
+  if ( ! bConstraint && pColumn->bIsNullable() ) {
     sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
     m_pNullStack->vPushStz(sOperation);
     sOperation.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
@@ -1819,7 +1819,7 @@ void OpSketch::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp, Token* pTkn) {
+void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp, Token* pTkn, bool bConstaint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1906,7 +1906,7 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
 
   // if column nullable generate null check expressions
-  if (pColumn->bIsNullable()) {
+  if ( ! bConstaint && pColumn->bIsNullable() ) {
     sPush.vSprint("_PSH_COL(p%s->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], sColumn.azChar());
     m_pNullStack->vPushStz(sPush);
     sPush.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
