@@ -2201,6 +2201,9 @@ bool Symbol::bIs_Itm_Col(void)
   if (! bIs_Itm_Col(xaFacet[0].m_sChrSeq))
     return false;
 
+  if (xaFacet[0].m_sChrSeq.nLength() < 4)
+    return false;
+
   return true;
 }
 
@@ -3767,7 +3770,9 @@ void Symbol::vFacet_Itm_Col(i8 i_Child, Symbol* pSymbol)
 
   RASSERT(SF_NONE == xaFacet[0].m_eFacet);
 
-  vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz, i_Child, pSymbol->xaFacet[0].m_sChrSeq.szStz());
+  vFacetSprint(SF_ITM_COL,"C%lld_%s"_Stz,
+               i_Child,
+               pSymbol->szSF_chrSeq(SF_NMD_COL));
 
   RASSERT(bIs_Itm_Col());
 }

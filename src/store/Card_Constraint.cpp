@@ -142,6 +142,7 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     p_expr_resolved = pCI->G.p_injected->pFind_expr_Via_term0(pSymbol);
 
     if (p_expr_resolved) {
+//      szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
       Card_As* p_as = p_expr_resolved->pSub_as();
       szColNm = p_as->szFacet(SF_NONE);
     }

@@ -419,7 +419,6 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   RASSERT(CK_GBYAGG != p_OP->eCard());
   i_EmittedCol = 1;
 
-
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
     Card_Expr *p_expr = xProjection.p_expr();
 
@@ -432,11 +431,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       sColNm = p_expr->szFacet(SF_NMD_COL);
     }
     else {
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
-//      if (! p_expr->szFacet(SF_NMD_COL)->bSame(sColNm)) {
-//        p_expr->vDump(__func__,"ELSE"_Stz);
-//        NEVER_REACH
-//      }
+      sColNm = p_expr->szFacet(SF_ITM_COL);
     }
 
 

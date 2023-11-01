@@ -65,7 +65,7 @@ void Card_As::vItemise_colNm(CardIter* pCI)
 
     i8 iItemise = p_expr->iItemise();
     Symbol oSymbol_itemise;
-    oSymbol_itemise.vFacet(SF_ITM_COL,iItemise);
+    oSymbol_itemise.vFacet(SF_ITM_COL,iItemise,p_expr->pSymbol());
     p_as->pSymbol_AS()->vFacet(SF_ITM_COL,iItemise);
     //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
 
