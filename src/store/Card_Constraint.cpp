@@ -141,31 +141,10 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
     pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected();
     p_expr_resolved = pCI->G.p_injected->pFind_expr_Via_term0(pSymbol);
 
-    if (p_expr_resolved) {
-//      szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
-      Card_As* p_as = p_expr_resolved->pSub_as();
-      szColNm = p_as->szFacet(SF_NONE);
-    }
-    else {
-      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
-      i8 nExprs = pCI->G.p_emit->nChildCards();
-      i8 iOdn = p_term->iGetOdn();
-      i8 i_Col_base0 = iOdn - nExprs - 1;
+    szColNm = p_expr_resolved->szFacet(SF_NMD_COL);
 
-      if (i_Col_base0 >= 0)
-        szColNm = pCI->G.p_table->szColNm(i_Col_base0);
-
-      vDebugPoint();
-    }
-
-    if (szColNm) {
-      p_term->SYM(SF_NMD_COL, szColNm);
-      p_term->vMark1(MARK_CHANGED);
-    }
-    else {
-      vDebugPoint();
-    }
+    p_term->SYM(SF_NMD_COL, szColNm);
+    p_term->vMark1(MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };

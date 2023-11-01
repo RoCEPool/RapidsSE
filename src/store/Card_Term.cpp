@@ -74,18 +74,8 @@ void Card_Term::vItemise_colNm(CardIter* pCI)
 
       pCI->G.p_emit = pCI->G.p_indexJoin->pSub_emit();
       Symbol* pSymbol_term = p_term->pSymbol();
-      //pSymbol_term->vDump();
-      //if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_as_stripItem(pSymbol_term))) {
       if ((pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Matches(pSymbol_term))) {
-        //Symbol* pSymbol_expr = pCI->G.p_expr->pSymbol();
-        //pCI->G.p_as = pCI->G.p_expr->pSub_as();
-        //Symbol *pSymbol_as = pCI->G.p_as->pSymbol();
-        //pSymbol_as->vDump();
-
-        //p_term->pSymbol()->vFacets(pSymbol_as);
-
-        //pCI->G.p_expr->vDump(__func__, "FOUND"_Stz);
-        Symbol oSymbol_itmCol;
+         Symbol oSymbol_itmCol;
         s256 sItmCol;
         sItmCol.vSprint("C%lld_%s"_Stz,
                         pCI->G.p_expr->iItemise(),
