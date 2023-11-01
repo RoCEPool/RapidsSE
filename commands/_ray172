@@ -8,7 +8,7 @@ __TPCH_SCHEMA;
 
 /pipeline_def
 /optimise_passthru
-/pipelineName = "_alka1"
+/pipelineName = "_ray172"
 pipeline Q3
 begin
 
