@@ -349,31 +349,6 @@ Column* StreamDefBase::pFindColumn(Stz* szColumnNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find column with given name                                                */
-/*----------------------------------------------------------------------------*/
-Column* StreamDefBase::pFindColumn_stripItemise(Stz* szColumnNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  s32 szColNm_arg = szColumnNm;
-  Symbol::vItemStrip(szColNm_arg);
-
-  s32 szColNm_tst;
-  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
-
-    Column* pColumn = & m_xaColumn[i_Column];
-
-    szColNm_tst = pColumn->szColNm();
-    Symbol::vItemStrip(szColNm_tst);
-
-    if (szColNm_tst.bSame(szColNm_arg))
-      return pColumn;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get column at index                                                        */
 /*----------------------------------------------------------------------------*/
 Column* StreamDefBase::pGetColumn(i8 i_Column)

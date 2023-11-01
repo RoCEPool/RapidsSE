@@ -1102,51 +1102,6 @@ bool Symbol::bIs_Xk_Cast(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this an itemised column name?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsItemised(Stz* szArg)
-{
-  _static_
-
-  char* azCrs = szArg->azChar();
-
-  if ('C' != *azCrs++)
-    return false;
-
-  if (!StrLib::bIsDigit(*azCrs))
-    return false;
-
-  while(StrLib::bIsDigit(*azCrs))
-    azCrs++;
-
-  if ('_' != *azCrs)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* strip disambiguation                                                       */
-/*----------------------------------------------------------------------------*/
-void Symbol::vItemStrip(String* psArg)
-{
-  _static_
-
-  char* azCrs = psArg->azStr();
-
-  RASSERT(*azCrs++ == 'C');
-
-  RASSERT(StrLib::bIsDigit(*azCrs));
-
-  while(StrLib::bIsDigit(*azCrs))
-    azCrs++;
-
-  RASSERT(*azCrs++ == '_');
-
-  psArg->vCopy((Stz*)azCrs);
-}
-
-/*----------------------------------------------------------------------------*/
 /* strip disambiguation                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bPossibleNm(Stz* szChrSeq)
@@ -2684,23 +2639,6 @@ bool Symbol::bIs_Xk_Cast(void)
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* strip itemisation                                                          */
-/*----------------------------------------------------------------------------*/
-void Symbol::vItemStrip(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(bHasFacets());
-
-  for (i8 i_Facet = 0; i_Facet < m_nFacets; i_Facet++) {
-    if (!bIsItemised(xaFacet[i_Facet].m_sChrSeq))
-      continue;
-
-    vItemStrip(xaFacet[i_Facet].m_sChrSeq);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

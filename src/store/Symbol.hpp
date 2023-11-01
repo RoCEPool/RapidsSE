@@ -104,9 +104,6 @@ namespace STORE
     static bool bIs_When(Stz* szChrSeq);            // WHEN
     static bool bIs_Xk_Cast(Stz* szChrSeq);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
 
-    static bool bIsItemised(Stz* szArg);
-    static void vItemStrip(String* psArg);
-
     static bool bPossibleNm(Stz* szChrSeq);
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
@@ -142,8 +139,6 @@ namespace STORE
     void vFacet(eSF eFacet, i8 iInt);
     void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
-    void vFacet_X(eSF eFacet, i8 iInt);
-    void vFacet_X(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
     void vFacets(Symbol* pSymbol_arg);
     void vFacetsPpy(Symbol* pSymbol_arg);
@@ -219,8 +214,6 @@ namespace STORE
     bool bIs_Type(void);            // TYPE
     bool bIs_When(void);            // WHEN
     bool bIs_Xk_Cast(void);         // XK_BROADCAST, XK_HASHCAST, XK_UNICAST
-
-    void vItemStrip(void);
 
     bool bMatches(eSF eFacet_arg, Stz* szChrSeq);
     bool bMatches(Symbol* pSymbol_arg, eSF* aeFacet=nullptr);
