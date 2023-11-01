@@ -388,9 +388,11 @@ namespace STORE
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
+    void vValidate_hasChildren(void);
     void vValidate_mayHave(i8 /*eCK*/ iCard_first, ...);
     eCK  eValidate_mustEither(i8 /*eCK*/ iCard_first, ...);
     void vValidate_mustHave(i8 /*eCK*/ iCard_first, ...);
+    void vValidate_noChildren(void);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
 
     void vValidationFailed(Stz* szFormat, ...);

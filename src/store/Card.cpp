@@ -1571,6 +1571,17 @@ void Card::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate this card has child cards                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_hasChildren(void)
+{
+  if (! nChildCards()) {
+    vDump(__func__,"CARD FAILED: HASCHILDREN"_Stz);
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
@@ -1703,6 +1714,17 @@ eCK Card::eValidate_mustEither(i8 /*eCK*/ iCard_first, ...)
   delete pSubCard_I;
 
   return eFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate no child cards                                                    */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_noChildren(void)
+{
+  if (nChildCards()) {
+    vDump(__func__,"CARD FAILED: NOCHILDREN"_Stz);
+    NEVER_REACH
+  }
 }
 
 /*----------------------------------------------------------------------------*/
