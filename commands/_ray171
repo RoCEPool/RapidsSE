@@ -1,0 +1,14 @@
+/*============================================================================*/
+/* _ray171                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+// NOTE: Optimiser to copy all fields of the columns when generating the streamDef's
+
+/pipelineName = "_ray171"
+/pipeline_def
+/weaved
+select * from nation;
+
+_tpchDrop;

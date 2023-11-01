@@ -313,13 +313,19 @@ void StreamDefBase::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    vTrace("%sCol [%lld] : $%lld %s (%s)\n"_Stz,
+    vTrace("%sCol [%2lld] : $%2lld %20s (%8s length=%2lld scale=%2lld) %s %s %s %s\n"_Stz,
            Stz::szTab(i_Tab),
            i_Col,
 
            i_Col + 1,
            m_xaColumn[i_Col].szColNm(),
-           aCT[m_xaColumn[i_Col].eColumnType()]);
+           aCT[m_xaColumn[i_Col].eColumnType()],
+					 m_xaColumn[i_Col].iColumnLength(),
+					 m_xaColumn[i_Col].iColumnScale(),
+					 m_xaColumn[i_Col].bIsUnique() ? "UNIQUE"_Stz : ""_Stz,
+					 m_xaColumn[i_Col].bIsNullable() ? "NULLABLE"_Stz : " NOT-NULLABLE"_Stz,
+					 m_xaColumn[i_Col].bIsPtnKey() ? "PARTITIONKEY"_Stz : ""_Stz,
+					 m_xaColumn[i_Col].bIsAscending() ? "ASCENDING"_Stz : ""_Stz);
   }
 
 }

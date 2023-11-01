@@ -73,6 +73,45 @@ int vInflateRowIndexEnd(struct Dynamic_T* aDynamicT)
   // marker-end
 }
 
+
+// function-vInflateRowIndexEnd_OA
+/*--------------------------------------------------------------------*/
+/* vInflateRowIndexEnd_OA                                             */
+/*--------------------------------------------------------------------*/
+int vInflateRowIndexEnd_OA(struct Dynamic_T* aDynamicT)
+{
+	{
+
+		i8* paW;
+
+#include "vFLAT_Parameters.h"
+
+		__L_LABEL_LOOP__:
+		L_AddRowToTubPot:
+
+		aSubReturnLabel = && __L_LABEL_LOOP__;
+
+		// marker-start
+		goto __L_LABEL_LOOP__;
+
+		L_Return:
+		if (aDynamicT->m_bHasAggRow) {
+			aDynamicT->m_bHasAggRow = false;
+			goto L_AddRowToTubPot;
+		}
+		if (paW != &aDynamicT->m_aW[0])
+			NEVER_REACH;
+		goto L_ReturnFinal;
+
+#include "../src/store/vFLAT_InflateColumn.h"
+#include "../src/store/vFLAT_SkipColumn.h"
+
+		L_ReturnFinal:
+		return 1;
+	}
+	// marker-end
+}
+
 // function-vInflateRowEnd
 /*--------------------------------------------------------------------*/
 /* vInflateRowEnd                                                     */
