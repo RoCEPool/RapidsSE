@@ -179,6 +179,8 @@ Stz* aEC[EC_ENUMS] =
   /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"EC_MEMORY_ALREADY_TRACKED",
   /* EC_MEMORY_NOT_BEING_TRACKED      */ (Stz*)"EC_MEMORY_NOT_BEING_TRACKED",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
+  /* EC_MISSING_OP                    */ (Stz*)"missing operator",
+  /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
@@ -469,6 +471,8 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"EC_MEMORY_ALREADY_TRACKED",
   /* EC_MEMORY_NOT_BEING_TRACKED      */ (Stz*)"EC_MEMORY_NOT_BEING_TRACKED",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"EC_MISSING_JOIN_INDEX",
+  /* EC_MISSING_OP                    */ (Stz*)"EC_MISSING_OP",
+  /* EC_MISSING_SCAN_OP               */ (Stz*)"EC_MISSING_SCAN_OP",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"EC_NO_COLUMNS_DIC",
@@ -767,6 +771,8 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"memory is already being tracked",
   /* EC_MEMORY_NOT_BEING_TRACKED      */ (Stz*)"memory is not being tracked; Run trackMemory;",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
+  /* EC_MISSING_OP                    */ (Stz*)"missing operator",
+  /* EC_MISSING_SCAN_OP               */ (Stz*)"missing scan operator",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",

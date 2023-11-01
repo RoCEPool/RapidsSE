@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Fold.hpp -- Fold (delineates the two halves during flattening)        */
+/* Card_Fold.hpp -- XF_Fold (delineates the two halves during flattening)        */
 /*============================================================================*/
 #pragma once
 

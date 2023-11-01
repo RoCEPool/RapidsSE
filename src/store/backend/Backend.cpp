@@ -778,7 +778,6 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
 
   sScan.vCatSprint("scan %s %s %s"_Stz, szCatalogName, szSchemaName, szTableName);
   pBackend->vAppendNextOp(sScan);
-
 }
 
 /*----------------------------------------------------------------------------*/

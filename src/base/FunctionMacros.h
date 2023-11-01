@@ -12,7 +12,7 @@
     *paW++ = (i8)bFilterResult;                         \
   }                                                     \
   else {                                                \
-    aDynamicT->m_iProcessRow = 0;                       \
+    aDynamicT->m_bProcessRow = false;                   \
     goto sLabel;                                        \
   }
 
@@ -25,7 +25,7 @@
     *paW++ = (i8)bFilterResult;                         \
   }                                                     \
   else {                                                \
-    aDynamicT->m_iProcessRow = 0;                       \
+    aDynamicT->m_bProcessRow = false;                   \
     goto sLabel;                                        \
   }
 
@@ -75,6 +75,8 @@
 #define _PSH_VCH(szArg1)     \
   *paW++ = (i8)szArg1;
 
+// strncpy(szDstArea, szArg1, nSrcSize);
+
 #define _ALLOC_VCH(szDstArea)                   \
 {                                               \
   szArg1 = (char*)*(--paW);                     \
@@ -82,8 +84,16 @@
     *paW++ = C_DATUM_NULL;                      \
   }                                             \
   else {                                        \
-    nSrcSize = strlen(szArg1) + 1;              \
-    strncpy(szDstArea, szArg1, nSrcSize);       \
+    nSrcSize = strlen(szArg1);                  \
+    char *d = szDstArea;                        \
+    const char *s = szArg1;                     \
+                                                \
+	 i8 iBytesToCopy = nSrcSize;                  \
+   while (iBytesToCopy--)                       \
+     *d++ = *s++;                               \
+                                                \
+    *d = '\0';                                  \
+                                                \
     *paW++ = (i8)szDstArea;                     \
     szDstArea += nSrcSize + 1;                  \
   }                                             \
@@ -119,11 +129,17 @@
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
     if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-        nSrcSize = strlen((char*)iArg2) + 1;                                \
-        szDstStz = szAreaTo;                                                \
-        strncpy(szDstStz, (char*)iArg2, nSrcSize);                          \
-        iArgTo =  (i8)szDstStz;                                             \
-        szAreaTo += nSrcSize + 1;                                           \
+		  nSrcSize = strlen((char*)iArg2);                                      \
+			char *d = szAreaTo;                                                   \
+			const char *s = (char*)iArg2;                                         \
+                                                                            \
+			i8 iBytesToCopy = nSrcSize;                                           \
+      while (iBytesToCopy--)                                                \
+			  *d++ = *s++;                                                        \
+                                                                            \
+      *d = '\0';                                                            \
+      iArgTo =  (i8)szAreaTo;                                               \
+      szAreaTo += nSrcSize + 1;                                             \
     }                                                                       \
   }
 
@@ -650,18 +666,6 @@
   iArg1 = *(--paW);                                                         \
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
-
-#define _COPYSTR(szAreaTo)                                                  \
-  {                                                                         \
-    iArg1 = *(--paW);                                                       \
-    if (iArg1 == C_DATUM_NULL)                                              \
-      szAreaTo = (char*)iArg1;                                              \
-    else {                                                                  \
-        nSrcSize = strlen((char*)iArg1) + 1;                                \
-        szDstStz = szAreaTo;                                                \
-        strncpy(szDstStz, (char*)iArg1, nSrcSize);                          \
-      }                                                                     \
-  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT DAY

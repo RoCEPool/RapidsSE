@@ -94,9 +94,9 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_projection(pCI);
+  vUpdate_emitted(pCI);
 
-  vCorrectStmOdn(pCI->Prior.m_pProjection);
+  vCorrectStmCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 
@@ -104,7 +104,7 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
 
-  pCI->Prior.m_pProjection = pSub_projection();
+  pCI->Flux.m_pArriving = pSub_emit();
 
  // pCI->vPrintBoard();
 

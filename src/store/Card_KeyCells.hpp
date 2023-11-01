@@ -17,7 +17,8 @@ namespace STORE
     Card_KeyCells(void);
    ~Card_KeyCells(void) noexcept(false);
 
-    Card_Map* pDecodeMap(Symbol* pSymbol);
+    Card_Map* pGetMap(i8 i_Map);
+    Card_Map* pGetMap(Symbol* pSymbol_ordinal);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

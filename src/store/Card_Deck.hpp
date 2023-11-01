@@ -27,18 +27,17 @@ namespace STORE
                                   Card_Project*    p_project_prev,
                                   Card_Combined*   p_combined_prev,
                                   Card_Cast*       p_cast_prev,
-                                  Card_Projection* p_projection_prev,
+                                  Card_Emit* p_emitted_prev,
                                   Card_OP*         p_OP_curr);
 
     void vProjectionUpdate(CardIter* pCI);
 
-    Card_Projection* p_projection_fold(void);
+    Card_Emit* p_emitted_fold(void);
 
-    void vProjectionAnalysis(CardIter* pCI);
-    void vProjectionAnalysis_passThru(CardIter* pCI);
+    void vAnalyse_emitted(CardIter* pCI);
+    void vAnalyse_emitted_passThru(CardIter* pCI);
 
     void vValidate(CardIter* pCI);
-
   };
 
   Card_Deck* _pCard_Deck(void* aAddr);

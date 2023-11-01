@@ -66,7 +66,6 @@ namespace STORE
     void vArgAbsJoin     (String* psOpArgs, Card_AbsJoin*   pCard_AbsJoin);
     void vArgAggreg      (String* psOpArgs, Card_Aggreg*    pCard_Aggreg);
     void vArgCast        (String* psOpArgs, Card_Cast*      pCard_Next);
-    void vArgCombined    (String* psOpArgs, Card_Combined*  pCard_Combine);
     void vArgCrossJoin   (String* psOpArgs, Card_CrossJoin* pCard_CrossJoin);
     void vArgFilter      (String* psOpArgs, Card_Filter*    pCard_Filter);
     void vArgGbyAgg      (String* psOpArgs, Card_GbyAgg*    pCard_AggGby);
@@ -74,6 +73,7 @@ namespace STORE
     void vArgHaving      (String* psOpArgs, Card_Having*    pCard_Having);
     void vArgIndexJoin   (String* psOpArgs, Card_IndexJoin* pCard_IndexJoin);
     void vArgIndexScan   (String* psOpArgs, Card_IndexScan* pCard_IndexScan);
+    void vArgInflate     (String* psOpArgs, Card_Inflate*   pCard_Inflate);
     void vArgKeyExists   (String* psOpArgs, Card_KeyExists* pCard_KeyExists);
     void vArgKeyNotExists(String* psOpArgs, Card_KeyNotExists* pCard_KeyNotExists);
     void vArgLimit       (String* psOpArgs, Card_Limit*     pCard_Limit);
@@ -88,9 +88,6 @@ namespace STORE
 
     void vConcat_cmd(Stz* aFormat, ...);
     void vConcat_cmd_vargs(Stz* aFormat, va_list xArgs);
-
-    void vConcat_code(Stz* aFormat, ...);
-    void vConcat_code_vargs(Stz* aFormat, va_list xArgs);
 
     void vEolOp(void);
     void vEolStage(void);

@@ -35,7 +35,6 @@
 #include "eED.h"
 #include "eEK.h"
 #include "eEV.h"
-#include "eFF.h"
 #include "eFK.h"
 #include "eFM.h"
 #include "eFN.h"
@@ -138,6 +137,7 @@
 #include "eYG.h"
 #include "eYS.h"
 #include "eYX.h"
+#include "DbGenInfo.hpp"
 
 using namespace BASE;
 
@@ -181,6 +181,8 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aCX[CX_ENUMS - 1],          "aCX[]"_Stz,     "eCX"_Stz },
       {           aDA[DA_ENUMS - 1],          "aDA[]"_Stz,     "eDA"_Stz },
       {     aDA_short[DA_ENUMS - 1],    "aDA_short[]"_Stz,     "eDA"_Stz },
+      {    aDBG_TblNme[DBG_ENUMS-1],  "aDBG_TblNme[]"_Stz,     "eDBG"_Stz},
+      //{      aDBG_Info[DBG_ENUMS-1][DBG_MAX_COL],    "aDBG_Info[][]"_Stz,     "eDBG"_Stz},
       {           aDC[DC_ENUMS - 1],          "aDC[]"_Stz,     "eDC"_Stz },
       {           aDK[DK_ENUMS - 1],          "aDK[]"_Stz,     "eDK"_Stz },
       {           aDL[DL_ENUMS - 1],          "aDL[]"_Stz,     "eDL"_Stz },
@@ -195,7 +197,6 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aED[ED_ENUMS - 1],          "aED[]"_Stz,     "eED"_Stz },
       {           aEK[EK_ENUMS - 1],          "aEK[]"_Stz,     "eEK"_Stz },
       {           aEV[EV_ENUMS - 1],          "aEV[]"_Stz,     "eEV"_Stz },
-      {           aFF[FF_ENUMS - 1],          "aFF[]"_Stz,     "eFF"_Stz },
       {           aFK[FK_ENUMS - 1],          "aFK[]"_Stz,     "eFK"_Stz },
       {           aFM[FM_ENUMS - 1],          "aFM[]"_Stz,     "eFM"_Stz },
       {           aFN[FN_ENUMS - 1],          "aFN[]"_Stz,     "eFN"_Stz },

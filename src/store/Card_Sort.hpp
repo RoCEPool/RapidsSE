@@ -17,9 +17,7 @@ namespace STORE
     Card_Sort(void);
    ~Card_Sort(void) noexcept(false);
 
-    void vColumn_Mapping(CardIter* pCI);
-
-    void vDerive_streamKey(CardIter* pCI);
+     void vDerive_streamKey(CardIter* pCI);
 
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 

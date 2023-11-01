@@ -28,8 +28,6 @@ rows:
 
 // Source file: ../queries/alias/ralias-8.sql
 // Result file: ../queries/alias/results/alias-8.res
-// TODO V2 : RAY TO LOOK AT (_ray125)
-/*
 select * from table1 t where t.pcol1 < 10 order by pcol1;
 ordered rows:
   (0, 217, 260, 'grey', TIMESTAMP '2015-10-31 00:00:00.0', 73.44, 5.34, 8, -152, 81, 'lll')
@@ -42,7 +40,6 @@ ordered rows:
   (7, 118, 222, 'green', TIMESTAMP '2015-02-01 00:00:00.0', 100.34, 64.97, 12, 137, 62, 'yyy')
   (8, 122, 74, 'aqua', TIMESTAMP '2015-10-28 00:00:00.0', 127.91, 88.86, 7, 85, 101, 'bbb')
   (9, 56, 224, 'red', TIMESTAMP '2015-06-15 00:00:00.0', 82.49, 61.67, 12, 14, 246, 'rrr')
-*/
 
 // Source file: ../queries/alias/ralias-3.sql
 // Result file: ../queries/alias/results/alias-3.res

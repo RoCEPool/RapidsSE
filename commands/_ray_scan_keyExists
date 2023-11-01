@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* _ray_scan_keyExists                                                        */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+_orders
+
+create index Ix_O_CUSTKEY on Orders(O_CUSTKEY);
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+load Orders   "<tpch_dir>/orders.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_scan_keyExists"
+select C_CUSTKEY
+  from Customer
+ where exists (
+                select *
+                  from Orders
+                 where O_CUSTKEY = C_CUSTKEY
+                   and O_ORDERKEY > 0
+              )
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+drop table Orders;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

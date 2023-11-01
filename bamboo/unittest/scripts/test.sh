@@ -36,7 +36,7 @@ readonly DEBUG=0
 //readonly SETH_TIMEOUT="2700"
 
 // ALKA: increased timeout as added new tests
-readonly SETH_TIMEOUT="3600"
+readonly SETH_TIMEOUT="3800"
 
 # Maximum disk space utilisation % that we will accept on the current partition
 # before we forcibly stop the tests. This is trying to catch situations where

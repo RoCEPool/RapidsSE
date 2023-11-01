@@ -62,8 +62,6 @@ create index IxC_CUSTKEY  ON customer (C_CUSTKEY)  ;
 success;
 
 //------------------------------------------------------------------------------
-// TODO V2 : OPTIMISER TO DETECT INVLAID PIPELINES
-/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine
 /optimise_passthru 
@@ -86,7 +84,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+rows: 0
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -110,9 +108,9 @@ begin
      | first
 
 end ;
-affected: 0
+failure contains: 'missing operator'
 
-
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // multiple combinedOp's (scan and nothing to combine)
 /optimise_passthru 

@@ -4,7 +4,7 @@
 
 #include "XF_Flatten_40_W_L_C_E.hpp"
 
-#include "Fold.hpp"
+#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 #include "XF_Flatten_Smoosh.hpp"
 
@@ -80,7 +80,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
 
   m_pCI->vTransform(__func__, XF_FLATTEN_40_W_L_C_E, "((vFlatten_40_W_L_C_E))"_Stz);
 
-  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"40_W_L_C_E"_Stz,CK_WHERE);
  // m_pCI->vPrintBoard(__LINE__);
 
@@ -93,7 +93,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
   delete pSmoosh;
   delete pFold;
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

@@ -22,11 +22,14 @@ namespace STORE
 
     bool bIsEqual(Card_Key* p_key_arg);
 
-    void vTypes_For_stmColOdn(CardIter *pCI);
+    void vTypes_For_stmCol(CardIter *pCI);
 
     void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
 
-    Stz* szP_Type(void);
+    void vMapColumns(CardIter *pCI);
+    eCT  eColType(void);
+
+    void vShortForm(String* pString);
 
     IndexDef* pToIndexDef(void);
 

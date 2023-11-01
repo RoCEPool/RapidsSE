@@ -38,6 +38,33 @@ Card_SubQuery::~Card_SubQuery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_SubQuery::vPopulate_subQuery(CardIter* pCI, SubQuery* pSubQuery)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pCI);
+  UNUSED(pSubQuery);
+
+  s32 sAddress = "0x0"_Stz;
+  pCI->G_vAppendChild(CK_SUBQUERY, (new Card_SqyInfo));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_SqyNo)       ->SYM(SF_INT_LIT,pCI->G.pBoard->i_Board()));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_Disposition) ->SYM(SF_NOTE,   aQO[pSubQuery->eDisposition()]));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_Decision)    ->SYM(SF_NOTE,   "tbd"_Stz));
+  pCI->G_vAppendChild(CK_SQYINFO,  (new Card_SqyCalls)    ->SYM(SF_INT_LIT,pSubQuery->nSubQueries()));
+
+  pCI->G_vAppendChild(CK_SUBQUERY, (new Card_Caller));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_SqyNo)       ->SYM(SF_INT_LIT,pSubQuery->i_Caller()));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_XCard)       ->SYM(SF_NOTE,   aCK_short[CK_NONE]));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_Address)     ->SYM(SF_NOTE,   sAddress.szStz()));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_Clause)      ->SYM(SF_NOTE,   aQC[pSubQuery->eClause()]));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_CallOp)      ->SYM(SF_NOTE,   aQO[pSubQuery->eCallOp()]));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_RelnOp)      ->SYM(SF_NOTE,   aRO[pSubQuery->eRelnOp()]));
+  pCI->G_vAppendChild(CK_CALLER,   (new Card_CorrCols)    ->SYM(SF_INT_LIT,pSubQuery->nCorrCols()));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_SubQuery::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

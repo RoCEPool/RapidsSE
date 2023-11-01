@@ -69,7 +69,7 @@ bool XF_Optimise_aggreg_To_sort_ordAgg::bOptimise(void)
 
   m_pCI->vClearRestart();
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return true;

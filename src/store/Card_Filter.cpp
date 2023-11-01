@@ -6,8 +6,8 @@
 
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_BoolCalc.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_BoolPred.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
 #include "Card_AndConj.hpp"
@@ -49,19 +49,6 @@ Card_Filter::~Card_Filter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* cull non-used bounds                                                       */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vCullUsedBounds(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMain_NONE()) {
-    if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      pCI->G.p_filter->nCullPred(MARK_AT);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete empty filters                                                       */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
@@ -82,17 +69,17 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
-  if (! pCI->G.p_MainCard->pSub_projection())
+  if (!pCI->G.p_MainCard->pSub_emit())
     pCI->G.p_MainCard->vDump(__func__);
 
-  RASSERT(pCI->G.p_MainCard->pSub_projection());
+  RASSERT(pCI->G.p_MainCard->pSub_emit());
 
   pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
 
 
   pCI->G.p_filter->vEnsure_stream(pCI);
 
-  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_projection()->pClone());
+  pCI->G.p_stream->vAppendChild(pCI->G.p_MainCard->pSub_emit()->pClone());
 
   pCI->G.pDeck->vInsertChildAfter(pCI->G.p_filter, pCI->G.p_MainCard);
 
@@ -121,24 +108,24 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vAddPred(Card_CONJUNCTION *p_PRED)
+void Card_Filter::vAddConj(Card_CONJUNCTION *p_conj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_BoolCalc* p_calcBool = this->pSub_boolCalc();
+  Card_BoolPred* p_calcBool = this->pSub_boolPred();
 
   if (0 == p_calcBool->nChildCards()) {
-    p_calcBool->vAppendChild(p_PRED);
+    p_calcBool->vAppendChild(p_conj);
     return;
   }
 
   Card* p_top = p_calcBool->pPopChild();
 
-  Card_AndConj* pCard_predAnd = new Card_AndConj;
-  pCard_predAnd->vAppendChild(p_top);
-  pCard_predAnd->vAppendChild(p_PRED);
+  Card_AndConj* pCard_conjAnd = new Card_AndConj;
+  pCard_conjAnd->vAppendChild(p_top);
+  pCard_conjAnd->vAppendChild(p_conj);
 
-  p_calcBool->vAppendChild(pCard_predAnd);
+  p_calcBool->vAppendChild(pCard_conjAnd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,23 +140,23 @@ void Card_Filter::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vCorrectStmOdn(Card_Projection* p_projection_prior)
+void Card_Filter::vCorrectStmCol(Card_Emit* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vCorrectStmOdn(p_projection_prior);
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    p_boolPred->vCorrectStmCol(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Filter::nCullPred(Stz* szWithMark)
+i8 Card_Filter::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* p_boolCalc = pSub_boolCalc();
-  i8 nCulled = p_boolCalc->nCullPred(szWithMark);
+  Card_BoolPred* p_boolPred = pSub_boolPred();
+  i8 nCulled = p_boolPred->nCullConj(szWithMark);
 
   return nCulled;
 }
@@ -207,7 +194,7 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vUpdate_projection(pCI);
+  vUpdate_emitted(pCI);
 
  // pCI->vPrintBoard();
 
@@ -227,8 +214,8 @@ bool Card_Filter::bIsEmpty(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* pCard_calcBool =
-      _pCard_BoolCalc(this->pFindSubCard(CK_BOOLCALC));
+  Card_BoolPred* pCard_calcBool =
+      _pCard_BoolPred(this->pFindSubCard(CK_BOOLPRED));
 
   if (0 == pCard_calcBool->nChildCards())
     return true;
@@ -239,14 +226,14 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vUpdate_projection(CardIter* pCI)
+void Card_Filter::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
+  if ((pCI->G.p_emit = pCI->G.p_filter->pSub_emit())) {
 
-    pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
-    pCI->G.p_filter->vAppendChild(pCI->Prior.m_pProjection->pClone());
+    pCI->G.p_filter->vDeleteChild(pCI->G.p_emit);
+    pCI->G.p_filter->vAppendChild(pCI->Flux.m_pArriving->pClone());
 
   }
 }
@@ -259,7 +246,7 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_BOOLCALC,CK_NONE);
+  vValidate_mustHave(CK_BOOLPRED, CK_NONE);
 
   if (iDepth > 2) {
    // pCI->vPrintBoard();

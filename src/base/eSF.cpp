@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* eSF.cpp - symbol form                                                      */
+/* eSF.cpp - symbol facet                                                     */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -11,9 +11,6 @@ Stz* aSF[SF_ENUMS]
 
   /* */ "SF_AGG_FN"_Stz,
   /* */ "SF_AS"_Stz,
-  /* */ "SF_AS_NM"_Stz,
-  /* */ "SF_AS_NM_itm"_Stz,
-  /* */ "SF_AS_NM_syn"_Stz,
 
   /* */ "SF_BOL_FN"_Stz,
   /* */ "SF_BOL_LIT"_Stz,
@@ -24,11 +21,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_CASE"_Stz,
   /* */ "SF_CAST"_Stz,
   /* */ "SF_CASTTYPE"_Stz,
-  /* */ "SF_COL_NM"_Stz,
-  /* */ "SF_COL_NM_dis"_Stz,
-  /* */ "SF_COL_NM_syn"_Stz,
-  /* */ "SF_COL_NO"_Stz,
-  /* */ "SF_COL_TC"_Stz,
   /* */ "SF_COL_TYPE"_Stz,
   /* */ "SF_COMMA"_Stz,
   /* */ "SF_CROSS"_Stz,
@@ -49,30 +41,37 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_INT_LIT"_Stz,
   /* */ "SF_INTERVAL_DT"_Stz,
   /* */ "SF_INTERVAL_YM"_Stz,
+  /* */ "SF_ITM_COL"_Stz,
   /* */ "SF_IVL_FN"_Stz,
 
   /* */ "SF_KEY_COL"_Stz,
 
+  /* */ "SF_LIST_CNT"_Stz,
+
   /* */ "SF_MTH_OP"_Stz,
 
   /* */ "SF_NEGATE"_Stz,
+  /* */ "SF_NMD_COL"_Stz,
   /* */ "SF_NOTE"_Stz,
   /* */ "SF_NULL"_Stz,
 
   /* */ "SF_PARENTHESIS"_Stz,
+  /* */ "SF_PAY_COL"_Stz,
   /* */ "SF_PPE_NM"_Stz,
-  /* */ "SF_PRM_COL"_Stz,
 
   /* */ "SF_RLN_OP"_Stz,
 
   /* */ "SF_SQY_NM"_Stz,
   /* */ "SF_SQY_OP"_Stz,
+  /* */ "SF_SQY_PRM"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
   /* */ "SF_STG_CAST"_Stz,
   /* */ "SF_STG_NO"_Stz,
+  /* */ "SF_STM_COL"_Stz,
   /* */ "SF_STR_FN"_Stz,
-  /* */ "SF_STRING"_Stz,
+  /* */ "SF_STR_LIT"_Stz,
 
+  /* */ "SF_TBL_COL"_Stz,
   /* */ "SF_TBL_NM"_Stz,
   /* */ "SF_TBL_SYN"_Stz,
   /* */ "SF_TBL_SYN_rep"_Stz,
@@ -82,7 +81,6 @@ Stz* aSF[SF_ENUMS]
   /* */ "SF_WHEN"_Stz,
 
   /* */ "SF_XK_CAST"_Stz,
-  /* */ "SF_XRF_NO"_Stz,
 
 //  /* */ "SF_ENUMS"_Stz
 };

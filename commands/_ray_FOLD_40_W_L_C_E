@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* _ray_FOLD_40_W_L_C_E -- sub-query flattening test : refer Q4               */
+/*============================================================================*/
+
+// --initial _ray_FOLD_40_W_L_C_E
+
+_ray_create
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_FOLD_40_W_L_C_E"
+select count(*)
+  from orders
+ where exists (select *
+                 from lineitem
+                where L_ORDERKEY = O_ORDERKEY
+                  and l_commitdate < l_receiptdate)
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryLeaks;
+
+_ray_drop
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

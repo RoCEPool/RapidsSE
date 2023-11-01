@@ -34,8 +34,8 @@ __L_LABEL__:
 	p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 	szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+    aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_LOOP__;
   }
   // marker-end
@@ -49,9 +49,9 @@ void vFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
 
   // marker-start
   if (bFilterResult && bFilterResult != C_DATUM_NULL) {
-    aDynamicT->m_iProcessRow = 1;
+    aDynamicT->m_bProcessRow = true;
   } else {
-    aDynamicT->m_iProcessRow = 0;
+    aDynamicT->m_bProcessRow = false;
   }
   // marker-end
 

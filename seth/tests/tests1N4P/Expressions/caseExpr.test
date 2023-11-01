@@ -486,7 +486,6 @@ rows:
   (15,'MOROCCO',0,'rns. blithely bold courts among the closely regular packages use furiously bold platelets?')
   (21,'VIETNAM',2,'hely enticingly express accounts. even: final ')
 
-
 // CASE being part of a larger expression
 SELECT 1 + CASE n_name
         WHEN 'AUSTRALIA' THEN 2 * n_nationkey

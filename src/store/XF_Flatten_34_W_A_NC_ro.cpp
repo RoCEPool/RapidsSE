@@ -4,7 +4,7 @@
 
 #include "XF_Flatten_34_W_A_NC_ro.hpp"
 
-#include "Fold.hpp"
+#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
 
 
@@ -80,7 +80,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz,
                                CK_WHERE, QO_RELN_OP, SM_NONE);
@@ -90,10 +90,10 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing W_A_NC_ro
 
-  // Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
+  // XF_Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
 
   m_pCI->vBeginEach();
-  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_EMIT));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
@@ -109,7 +109,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   delete pCarryForward;
   delete pFold;
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

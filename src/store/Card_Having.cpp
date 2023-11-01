@@ -82,9 +82,9 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->G.p_having->vUpdate_projection(pCI);
+  pCI->G.p_having->vUpdate_emitted(pCI);
 
-  pCI->Prior.m_pProjection = pSub_projection();
+  pCI->Flux.m_pArriving = pSub_emit();
 
 
  // pCI->vRenumberCards();
@@ -97,7 +97,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_boolCalc = pSub_boolCalc();
+  pCI->G.p_boolPred = pSub_boolPred();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -105,8 +105,8 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   auto bLambdaFn_cmp = [](Card_Term *p_term)
   {
 
-    if (p_term->bIsStmOdn())
-      p_term->vBump_stmOdn();
+    if (p_term->bIsStmCol())
+      p_term->vBump_stmCol();
 
     return true;
   };
@@ -114,7 +114,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (bBump)
-    pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn_cmp);
+    pCI->G.p_boolPred->bApplyRecursive_term(bLambdaFn_cmp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -125,15 +125,15 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));
     pCard->vRemoveChild(p_term_1);
-    Symbol x_Symbol_stmCol1(SF_COL_NO,1);
-    pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_COL_NO, "$1"_Stz));
+    Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
+    pCI->G_vAppendNewChild(pCard, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
 
     Card_Expr* p_expr_found =
-        pCI->Prior.m_pProjection->pGetExpr(0);
+        pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    RASSERT(p_expr_found->szP_Type());
+    RASSERT(CT_NONE != p_expr_found->eColType());
 
-    pCI->G.p_term->pSymbol()->Y_vColType(p_expr_found->szP_Type());
+    pCI->G.p_term->pSymbol()->vColType(p_expr_found->eColType());
 
     DELETE_CARD(p_term_1);
 
@@ -142,25 +142,25 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPCONJ, bLambdaFn_ro);
+  pCI->G.p_boolPred->bApplyRecursive(CK_RLNCONJ, bLambdaFn_ro);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vUpdate_projection(CardIter* pCI)
+void Card_Having::vUpdate_emitted(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_stream = pCI->G.p_having->pSub_stream())) {
-    if ((pCI->G.p_projection = pCI->G.p_stream->pSub_projection())) {
+    if ((pCI->G.p_emit = pCI->G.p_stream->pSub_emit())) {
 
-      pCI->G.p_stream->vDeleteChild(pCI->G.p_projection);
-      pCI->G.p_stream->vAppendChild(pCI->Prior.m_pProjection->pPropagate(pCI));
+      pCI->G.p_stream->vDeleteChild(pCI->G.p_emit);
+      pCI->G.p_stream->vAppendChild(pCI->Flux.m_pArriving->pPropagate());
     }
   }
 
-  pCI->Prior.m_pProjection = pSub_projection();
+  pCI->Flux.m_pArriving = pSub_emit();
 }
 
 /*----------------------------------------------------------------------------*/

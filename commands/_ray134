@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* _ray134                                                                    */
+/*============================================================================*/
+
+// NOTE : nation is a replicated table
+//        optimiser to take that into consideration.
+//        this works correctly on 1P but not on 4P
+
+__TPCH_SCHEMA
+
+/optimiser_trace
+/pipeline_def
+/weaved
+/transliterated
+/pipelineName = "_ray134"
+SELECT n_regionkey AS region ,
+       COUNT(n_nationkey) AS nationcount
+ FROM nation
+ GROUP BY region
+ HAVING region > 1;
+
+/*
+rows:
+(3,5)
+(4,5)
+(2,5)
+*/
+
+
+_tpchDrop

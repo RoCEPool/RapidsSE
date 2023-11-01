@@ -26,11 +26,16 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
   i8* paW;
   i8  i_CurrentRow;
   i8* piColumn;
+	void* aSubReturnLabel;
 
   // marker-start
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
+
+	// dummy initialization of return label
+	// (caters to cases when no columns being inflated)
+	aSubReturnLabel = && __L_LABEL__;
 
   paW = &aDynamicT->m_aW[0];
 
@@ -41,7 +46,7 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
   aDynamicT->m_iJoinedRows = 0;
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   i_CurrentRow++;
   if (i_CurrentRow  >= aDynamicT->m_nRows) {

@@ -166,6 +166,7 @@ pipeline unnamed
 failure contains: 'invalid command'
 */
 //------------------------------------------------------------------------------
+
 /optimise_passthru 
 pipeline unnamed
  begin
@@ -193,6 +194,7 @@ pipeline unnamed
  end ;
  rows:
   (17)
+
 
 //------------------------------------------------------------------------------
 /optimise_passthru 

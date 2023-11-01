@@ -17,7 +17,6 @@ ordered rows:
   ('tan',    379, 38.38,  137, 2, 75)
   ('violet', 78, 27.74,   108, 0, 39)
 
-
 // Source file: ../queries/between/rbetween8.sql
 // Result file: ../queries/between/results/between8.res
 select ucol, ucolvc, case when cold9 > 0 then scol9 / cold9 else 0 end, case when pcol9 > 0 then ucol / pcol9 else 0 end from table9 where case when pcol9 !=0 and cold9 != 0 then ucol between scol9 / cold9 and ucol / pcol9 else ucol between 10 and 11 end order by ucolvc;

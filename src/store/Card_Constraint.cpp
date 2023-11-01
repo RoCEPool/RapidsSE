@@ -6,8 +6,8 @@
 
 #include "Card_Expr.hpp"
 #include "Card_RpnCalc.hpp"
-#include "Card_BoolCalc.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_BoolPred.hpp"
+#include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "Card_SubSet.hpp"
 #include "Card_AndConj.hpp"
@@ -50,19 +50,6 @@ Card_Constraint::~Card_Constraint(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* cull non-used bounds                                                        */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vCullUsedBounds(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMain_NONE()) {
-    if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint()))
-      pCI->G.p_constraint->nCullPred(MARK_AT);
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -88,36 +75,40 @@ void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
+    p_expr->vBump_stmCol(nBumpBy, bSkipFoldExpr);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
+void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  vResolve_colNm_From_colSym(pCI);
+  return;
+
   i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 
-  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-  RASSERT(1 == p_boolCalc->nChildCards());
+  Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
 
-  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pConj_root());
+  if (! p_conj_ROOT)
+    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI,i_Main](Card_CONJUNCTION* p_pred, bool bUpwards)
+  auto bLambdaFn = [pCI,i_Main](Card_CONJUNCTION* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
 
-    if (! p_pred->bIsCard(CK_TERM))
+    if (! p_conj->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Card_Term* p_term = _pCard_Term(p_pred);
-    if (!p_term->pSymbol()->bIs_Col_No())
+    Card_Term* p_term = _pCard_Term(p_conj);
+    if (! p_term->pSymbol()->bIs_Stm_Col())
       return C_CONTINUE_RECURSION;
 
 
@@ -127,8 +118,8 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     Card_Expr* p_expr_col;
 
     Symbol* pSymbol = p_term->pSymbol();
-    pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-    p_expr_col = pCI->G.p_projection->pFind_expr_By_Ordinal(pSymbol);
+    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+    p_expr_col = pCI->G.p_emit->pFind_expr_Same_stmCol(pSymbol);
 
 
 
@@ -136,15 +127,15 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     //p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
     if (p_expr_col) {
       Card_As* p_as = p_expr_col->pSub_as();
-      szColNm = p_as->szSymbol(SF_NONE);
+      szColNm = p_as->szFacet(SF_NONE);
     }
     else {
 
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-      i8 nExprs = pCI->G.p_projection->nChildCards();
-      i8 i_Odn = p_term->iGetOdn();
-      i8 i_Col_base0 = i_Odn - nExprs - 1;
+      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+      i8 nExprs = pCI->G.p_emit->nChildCards();
+      i8 iOdn = p_term->iGetOdn();
+      i8 i_Col_base0 = iOdn - nExprs - 1;
 
       if (i_Col_base0 >= 0)
         szColNm = pCI->G.p_table->szColNm(i_Col_base0);
@@ -154,7 +145,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     }
 
     if (szColNm) {
-      p_term->SYM(SF_COL_NM,szColNm);
+      p_term->SYM(SF_NMD_COL, szColNm);
       p_term->vMark1(MARK_CHANGED);
     }
     else {
@@ -166,34 +157,34 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 
 }
 /*----------------------------------------------------------------------------*/
-//void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
+//void Card_Constraint::vConvert_stmCol_To_stmColNm(CardIter* pCI)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 //
 //  i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
 //
-//  Card_BoolCalc* p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-//  RASSERT(1 == p_boolCalc->nChildCards());
+//  Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
+//  RASSERT(1 == p_boolPred->nChildCards());
 //
-//  Card_CONJUNCTION* p_pred_ROOT = static_cast<Card_CONJUNCTION*>(p_boolCalc->pGetChild(0));
+//  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pGetChild(0));
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  auto bLambdaFn = [pCI,i_Main](Card_CONJUNCTION* p_pred, bool bUpwards)
+//  auto bLambdaFn = [pCI,i_Main](Card_CONJUNCTION* p_conj, bool bUpwards)
 //  {
 //    if (bUpwards)
 //      return C_CONTINUE_RECURSION;
 //
-//    if (! p_pred->bIsCard(CK_TERM))
+//    if (! p_conj->bIsCard(CK_TERM))
 //      return C_CONTINUE_RECURSION;
 //
-//    Card_Term* p_term = _pCard_Term(p_pred);
-//    if (!p_term->pSymbol()->bIs_Col_No())
+//    Card_Term* p_term = _pCard_Term(p_conj);
+//    if (!p_term->pSymbol()->bIs_Stm_Col())
 //      return C_CONTINUE_RECURSION;
 //
 //    Stz* szColNm = nullptr;
@@ -201,13 +192,13 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 //    Card_Expr* p_expr_col = pCI->pExpr_For_col(p_term,i_Main + 1);
 //    if (p_expr_col) {
 //      Card_As* p_as = p_expr_col->pSub_as();
-//      szColNm = p_as->szSymbol(SF_NONE);
+//      szColNm = p_as->szFacet(SF_NONE);
 //    }
 //    else {
 //
 //      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-//      pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
-//      i8 nExprs = pCI->G.p_projection->nChildCards();
+//      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+//      i8 nExprs = pCI->G.p_emit->nChildCards();
 //      i8 i_Odn = p_term->iGetOdn();
 //      i8 i_Col_base0 = i_Odn - nExprs - 1;
 //
@@ -219,7 +210,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 //    }
 //
 //    if (szColNm) {
-//      p_term->SYM(SF_COL_NM,szColNm);
+//      p_term->SYM(SF_NMD_COL,szColNm);
 //      p_term->vMark1(MARK_CHANGED);
 //    }
 //
@@ -228,7 +219,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  bool bIgnore = p_pred_ROOT->bPredRecursive(bLambdaFn);
+//  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
 //  UNUSED(bIgnore);
 //
 //}
@@ -236,12 +227,12 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Constraint::nCullPred(Stz* szWithMark)
+i8 Card_Constraint::nCullConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_BoolCalc* p_boolCalc = pSub_boolCalc();
-  i8 nCulled = p_boolCalc->nCullPred(szWithMark);
+  Card_BoolPred* p_boolPred = pSub_boolPred();
+  i8 nCulled = p_boolPred->nCullConj(szWithMark);
 
   return nCulled;
 }
@@ -249,45 +240,153 @@ i8 Card_Constraint::nCullPred(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vDisambiguate(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(pCI->G.p_projection);
-  pCI->G.p_projection->vDump(__func__);
-
-  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
-    Card_Term* p_term = xRpnCalc.p_term();
-    if (! p_term->bIsColNm())
-      continue;
-
-    //vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol(SF_NONE));
-
-    Card_Expr* p_expr = pCI->G.p_projection->pFindExprOfAs(p_term->pSymbol());
-    if (p_expr) {
-      //p_expr->vDump(__func__);
-
-      i8 i_Child = p_expr->pSymbol()->iSF_ordinal() - 1;
-      p_term->SYM(SF_AS_NM_syn, i_Child, p_term->pSymbol());
-    }
-  }
-
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Constraint::vEnsureTypes_For_stmColOdn(CardIter *pCI)
+void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if ((pCI->G.p_boolCalc = pSub_boolCalc()))
-    pCI->G.p_boolCalc->vEnsureTypesFor_stmOdn(pCI);
+  if ((pCI->G.p_boolPred = pSub_boolPred()))
+    pCI->G.p_boolPred->vEnsureTypesFor_stmCol(pCI);
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+    pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
 }
+
+/*----------------------------------------------------------------------------*/
+/* resolve column name from column symbol ($n or $t.c)                        */
+/*----------------------------------------------------------------------------*/
+void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+
+  Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
+
+  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pConj_root());
+  if (! p_conj_ROOT)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  {
+    if (bUpwards)
+      return C_CONTINUE_RECURSION;
+    if (! p_conj->bIsCard(CK_TERM))
+      return C_CONTINUE_RECURSION;
+    Card_Term* p_term = _pCard_Term(p_conj);
+    if (! p_term->bIsColSym())
+      return C_CONTINUE_RECURSION;
+
+    Stz* szColNm = nullptr;
+
+    Card_Expr* p_expr_resolved;
+
+    Symbol* pSymbol = p_term->pSymbol();
+    pCI->G.p_injected = pCI->G.p_MainCard->pSub_injected();
+    p_expr_resolved = pCI->G.p_injected->pFind_expr_Via_term0(pSymbol);
+
+    if (p_expr_resolved) {
+      Card_As* p_as = p_expr_resolved->pSub_as();
+      szColNm = p_as->szFacet(SF_NONE);
+    }
+    else {
+      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+      i8 nExprs = pCI->G.p_emit->nChildCards();
+      i8 iOdn = p_term->iGetOdn();
+      i8 i_Col_base0 = iOdn - nExprs - 1;
+
+      if (i_Col_base0 >= 0)
+        szColNm = pCI->G.p_table->szColNm(i_Col_base0);
+
+      vDebugPoint();
+    }
+
+    if (szColNm) {
+      p_term->SYM(SF_NMD_COL, szColNm);
+      p_term->vMark1(MARK_CHANGED);
+    }
+    else {
+      vDebugPoint();
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  UNUSED(bIgnore);
+
+}
+/*----------------------------------------------------------------------------*/
+//void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  //i8 i_Main = pCI->G.pDeck->iFindChild(pCI->G.p_MainCard);
+//
+//  Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
+//
+//  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pConj_root());
+//  if (! p_conj_ROOT)
+//    return;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+//  {
+//    if (bUpwards)
+//      return C_CONTINUE_RECURSION;
+//    if (! p_conj->bIsCard(CK_TERM))
+//      return C_CONTINUE_RECURSION;
+//    Card_Term* p_term = _pCard_Term(p_conj);
+//    if (! p_term->bIsColSym())
+//      return C_CONTINUE_RECURSION;
+//
+//    Stz* szColNm = nullptr;
+//
+//    Card_Expr* p_expr_col;
+//
+//    Symbol* pSymbol = p_term->pSymbol();
+//    pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+//    p_expr_col = pCI->G.p_emit->pFind_expr_Via_term0(pSymbol);
+//
+//    if (p_expr_col) {
+//      Card_As* p_as = p_expr_col->pSub_as();
+//      szColNm = p_as->szFacet(SF_NONE);
+//    }
+//    else {
+//      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+//      pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit();
+//      i8 nExprs = pCI->G.p_emit->nChildCards();
+//      i8 iOdn = p_term->iGetOdn();
+//      i8 i_Col_base0 = iOdn - nExprs - 1;
+//
+//      if (i_Col_base0 >= 0)
+//        szColNm = pCI->G.p_table->szColNm(i_Col_base0);
+//
+//      vDebugPoint();
+//    }
+//
+//    if (szColNm) {
+//      p_term->SYM(SF_NMD_COL,szColNm);
+//      p_term->vMark1(MARK_CHANGED);
+//    }
+//    else {
+//      vDebugPoint();
+//    }
+//
+//    return C_CONTINUE_RECURSION;
+//  };
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+//  UNUSED(bIgnore);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -303,6 +402,8 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
           CK_INDEXJOIN    == eParent ||
           CK_KEYEXISTS    == eParent ||
           CK_KEYNOTEXISTS == eParent );
+
+  (void)eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

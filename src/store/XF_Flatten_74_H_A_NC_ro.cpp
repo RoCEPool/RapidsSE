@@ -4,8 +4,9 @@
 
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
-#include "Fold.hpp"
+#include "XF_Fold.hpp"
 #include "XF_Flatten_Smooth.hpp"
+#include "XF_Flatten_Left_subQuery.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -84,13 +85,17 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
 
-  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  XF_Fold* pFold = new XF_Fold(0, m_pCI->G.pDeck);
   CarryForward* pCarryForward =
       pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz,
                                CK_HAVING, QO_RELN_OP, SM_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having [Sort]
+  // smoothing of: subQuery | XF_Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having [Sort]
+
+  XF_Flatten_Left_subQuery::vRotate_Next(m_pCI);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   XF_Flatten_Smooth* pSmooth = new XF_Flatten_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
@@ -103,7 +108,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
   delete pCarryForward;
   delete pSmooth;
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 }
 

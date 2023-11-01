@@ -122,7 +122,7 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 //    iCountObjects[i_Index] = 0;
 //  }
   
-//  pHeap->vAnalyse(iCountObjects);
+//  pHeap->vAnalyse_injected(iCountObjects);
 //  
 //  vTrace("%s  Objects:\n"_Stz, aTab);
 //  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
@@ -413,6 +413,22 @@ void Heap::vFreeObject(Object* pObject)
 
   eCN eClassNo = pObject->eGetClassNo();
 
+  void* pvAddr = pObject;
+
+  // Adjust the address if we're dealing with a virtual object, to account
+  // for the hidden v-table pointer.
+  switch (gxaSizeHeap[eClassNo].m_eWhichHeap) {
+    case HT_V_TINY:   // fall through
+    case HT_V_SMALL:  // fall through
+    case HT_V_MEDIUM: // fall through
+    case HT_V_LARGE:
+      pvAddr = aAdd<Object*>(pObject,-8);
+      break;
+
+    default:
+      break;
+  }
+
   Job* pJob = MY::pJob();
   if(pJob && pJob->bObjectTracker())
   {
@@ -496,7 +512,7 @@ void Heap::vFreeObject(Object* pObject)
   
   m_okLock.vGrabWrite();
   
-  FreeChunk* aFreeChunk = reinterpret_cast<FreeChunk*>(pObject);
+  FreeChunk* aFreeChunk = reinterpret_cast<FreeChunk*>(pvAddr);
   vPushFree(aFreeChunk,eClassNo);
   
   m_nCurrAllocated--;

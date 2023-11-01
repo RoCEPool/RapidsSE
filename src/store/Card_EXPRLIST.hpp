@@ -1,33 +1,56 @@
 /*============================================================================*/
-/* Card_EXPRLIST.hpp -- Abstract Expression List                                 */
+/* Card_EXPRLIST.hpp -- Abstract Expression List                              */
 /*============================================================================*/
 #pragma once
 
 #include "Card_LIST.hpp"
 
+#include "ColMap.hpp"
+
 namespace STORE
 {
+  class Kid;
+
   class Card_EXPRLIST : public Card_LIST
-  {  
+  {
   public:
     Card_EXPRLIST(eCK eCard, i8 iFixedDepth);
    ~Card_EXPRLIST(void) noexcept(false);
 
-    void vBump_keyOdn_In_rpnCalc(CardIter* pCI);
-    void vBump_stmOdn_In_rpnCalc(CardIter* pCI);
+    void vBump_KeyCol_In_rpnCalc(CardIter* pCI);
+    void vBump_stmCol_In_rpnCalc(CardIter* pCI);
     void vBump_Rightwards(i8 nBumpBy);
-    Card_Expr* pContains(Card_Expr* p_expr_arg);
-    void vConvert_colOdn_To_stmOdn(CardIter* pCI);
-    void vConvert_stmOdn_To_colOdn(CardIter* pCI);
-    Card_Expr* pDecodeExpr(Symbol* pSymbol);
-    i8 nExpr(void);
-    Card_Expr* pFind_expr_Of_symbol(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_as(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_as_stripItem(Symbol* pSymbol);
-    Card_Expr* pFind_expr_By_Ordinal(Symbol* pSymbol);
 
-    Card_Expr* pGetExpr(i8 i_Expr);
+    Card_Expr* pContains(Symbol* pSymbol_arg);
+    Card_Expr* pContains(Card_Expr* p_expr_arg);
+
+    Card_Term* pDecode_term0_Same_expr_stmCol(Symbol* pSymbol_stmCol);
+
+    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
+
+    i8 nExpr(void);
+
+    Card_Expr* pFind_expr_Same_stmCol(Symbol* pSymbol_stmCol);
+    Card_Expr* pFind_expr_Via_as(Symbol* pSymbol);
+    Card_Expr* pFind_expr_Via_as_stripItem(Symbol* pSymbol);
+    Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, eSF* aeFacet= nullptr);
+    Card_Expr* pFind_expr_Via_term0(Symbol* pSymbol, Kid* aKid);
+
+    Card_Expr* pGet_expr(i8 i_Expr);
+    Card_Expr* pGet_expr(Symbol* pSymbol_ordinal);
+
     void vRenumberAll_expr(void);
+
+    bool bSame(Card_EXPRLIST* p_EXPRLIST_arg);
+
+    void vShortForm(String* pString);
+
+    StreamDef* pToStreamDef(ColMap* pColMap,
+                            Card_Key* p_key,
+                            Card* p_OP);
+
+    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_stmCol_To_tblCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* r_FOLD_74_H_A_NC_ro -- sub-query flattening test : refer Q11               */
+/*============================================================================*/
+
+LOG 'r_FOLD_74_H_A_NC_ro...';
+
+trackMemory;
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/pipelineName = "r_FOLD_74_H_A_NC_ro"
+select ps_partkey,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by ps_partkey
+having sum(ps_supplycost * ps_availqty) > (select avg(ps_supplycost * ps_availqty)
+                                             from partsupp, supplier
+                                            where PS_SUPPKEY = S_SUPPKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+ rows: 0
+
+CLEANUP {
+  bye;
+  mute
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

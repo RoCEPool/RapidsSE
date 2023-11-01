@@ -55,7 +55,7 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 
     pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->G.p_expr = pCI->G.p_projection->pFind_expr_Of_symbol(pCI->G.p_idxCol->pSymbol());
+     pCI->G.p_expr = pCI->G.p_emit->pFind_expr_Via_term0(pCI->G.p_idxCol->pSymbol());
     if (!pCI->G.p_expr)
       continue;
 
@@ -68,25 +68,25 @@ void Card_IdxColList::vAdd_streamKey_exprs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* affix each idxCol with it's $c.n of this table stream                      */
 /*----------------------------------------------------------------------------*/
-void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
+void Card_IdxColList::vAffix_tblCol(Card_Emit* p_emit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_IDXCOL)) {
-    Stz* szColNm = xKid.p_idxCol()->szSymbol(SF_NONE);
+    Stz* szColNm = xKid.p_idxCol()->szFacet(SF_NONE);
 
-    Kid xCI_p(p_projection);
+    Kid xCI_p(p_emit);
     xCI_p.vEnded();
-    xCI_p.vBeginEach_reverse();
+    xCI_p.vBegin_reverse();
     while (xCI_p.bEach_reverse(CK_EXPR)) {
-      if (xCI_p.p_expr()->pSub_as()->pSymbol()->bSame(szColNm)) {
-        Stz* szPrjCol = xCI_p.p_expr()->pGetTerm(0)->szSymbol(SF_NONE);
+      if (xCI_p.p_expr()->pSub_as()->pSymbol_AS()->bSame(szColNm)) {
+        Stz* szPrjCol = xCI_p.p_expr()->pGet_term(0)->szFacet(SF_NONE);
 
         eSF eSymbol = Symbol::eEvalSymbol(szPrjCol);
-        RASSERT(SF_COL_TC == eSymbol);
+        RASSERT(SF_TBL_COL == eSymbol);
 
-        xKid.p_idxCol()->SYM(SF_COL_TC,szPrjCol);
+        xKid.p_idxCol()->SYM(SF_TBL_COL, szPrjCol);
         xKid.p_idxCol()->vMark1(MARK_CHANGED);
       }
     }
@@ -96,11 +96,11 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol* Card_IdxColList::pGetIdxCol_byIdxColOdn(Stz* szIdxColOdn)
+Card_IdxCol* Card_IdxColList::pGetIdxCol_byIdxCol(Stz* szIdxCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_IdxCol = StrLib::iGleanInt(szIdxColOdn->azChar()) - 1;
+  i8 i_IdxCol = StrLib::iGleanInt(szIdxCol->azChar()) - 1;
 
   if (i_IdxCol < 0 || i_IdxCol >= nChildCards())
     return nullptr;

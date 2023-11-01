@@ -11,19 +11,23 @@ Stz* aCK[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
+  /* */ "CK_ADDRESS"_Stz,      // CK_ADDRESS
   /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
   /* */ "CK_ANDCONJ"_Stz,      // CK_ANDCONJ
   /* */ "CK_AS"_Stz,           // CK_AS
 
-  /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+  /* */ "CK_BOOLPRED"_Stz,     // CK_BOOLPRED
   /* */ "CK_BOUND"_Stz,        // CK_BOUND
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
+  /* */ "CK_CALLER"_Stz,       // CK_CALLER
+  /* */ "CK_CALLOP"_Stz,       // CK_CALLOP
   /* */ "CK_CAST"_Stz,         // CK_CAST
-  /* */ "CK_CMPCONJ"_Stz,      // CK_CMPCONJ
+  /* */ "CK_CLAUSE"_Stz,       // CK_CLAUSE
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
+  /* */ "CK_CORRCOLS"_Stz,     // CK_CORRCOLS
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
   /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
@@ -34,8 +38,11 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
+  /* */ "CK_DECISION"_Stz,     // CK_DECISION
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
+  /* */ "CK_DISPOSITION"_Stz,  // CK_DISPOSITION
 
+  /* */ "CK_EMIT"_Stz,      // CK_EMIT
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
@@ -43,7 +50,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_FILTPREDLIST"_Stz, // CK_FILTPREDLIST
   /* */ "CK_FLAT"_Stz,         // CK_FLAT
   /* */ "CK_FOLD"_Stz,         // CK_FOLD
-   /* */ "CK_FROM"_Stz,         // CK_FROM
+  /* */ "CK_FROM"_Stz,         // CK_FROM
 
   /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
 
@@ -60,6 +67,8 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
+  /* */ "CK_INFLATE"_Stz,      // CK_INFLATE
+  /* */ "CK_INJECTABLE"_Stz,     // CK_INJECTABLE
 
   /* */ "CK_JOINCAST"_Stz,     // CK_JOINCAST
   /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
@@ -78,7 +87,6 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_MAP"_Stz,          // CK_MAP
   /* */ "CK_MAPPING"_Stz,      // CK_MAPPING
 
-  /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
   /* */ "CK_NOTCONJ"_Stz,      // CK_NOTCONJ
@@ -89,21 +97,27 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
   /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
 
+  /* */ "CK_PAYLOAD"_Stz,      // CK_PAYLOAD
   /* */ "CK_PAYLOADCELLS"_Stz, // CK_PAYLOADCELLS
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
-  /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
+  /* */ "CK_RELNOP"_Stz,       // CK_RELNOP
+  /* */ "CK_REQUIRED"_Stz,     // CK_REQUIRED
+  /* */ "CK_RLNCONJ"_Stz,      // CK_RLNCONJ
   /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
   /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
-  /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
+  /* */ "CK_RPNEXPR"_Stz,     // CK_RPNEXPR
 
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
   /* */ "CK_SECTION"_Stz,      // CK_SECTION
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SORT"_Stz,         // CK_SORT
-  /* */ "CK_SPARET"_Stz,       // CK_SPARE
+  /* */ "CK_SPARE"_Stz,        // CK_SPARE
+  /* */ "CK_SQYCALLS"_Stz,     // CK_SQYCALLS
+  /* */ "CK_SQYINFO"_Stz,      // CK_SQYINFO
+  /* */ "CK_SQYNO"_Stz,        // CK_SQYNO
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STREAM"_Stz,       // CK_STREAM
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
@@ -114,6 +128,7 @@ Stz* aCK[CK_ENUMS]
   /* */ "CK_STREAMSET"_Stz,    // CK_STREAMSET
   /* */ "CK_SUBQUERY"_Stz,     // CK_SUBQUERY
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
+  /* */ "CK_SYNTHESIS"_Stz,   // CK_SYNTHESIS
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
   /* */ "CK_TABLEINFO"_Stz,    // CK_TABLEINFO
@@ -130,6 +145,8 @@ Stz* aCK[CK_ENUMS]
 
   /* */ "CK_WHERE"_Stz,        // CK_WHERE
 
+  /* */ "CK_XCARD"_Stz,        // CK_XCARD
+
 //  /* */ "ENUMS"_Stz
 };
 
@@ -140,20 +157,24 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "absJoin"_Stz,         // CK_ABSJOIN
+  /* */ "address"_Stz,         // CK_ADDRESS
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "andConj"_Stz,         // CK_ANDCONJ
   /* */ "as"_Stz,              // CK_AS
 
-  /* */ "boolCalc"_Stz,        // CK_BOOLCALC
+  /* */ "boolPred"_Stz,        // CK_BOOLPRED
   /* */ "bound"_Stz,           // CK_BOUND
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
   /* */ "call"_Stz,            // CK_CALL
+  /* */ "caller"_Stz,          // CK_CALLER
+  /* */ "callOp"_Stz,          // CK_CALLOP
   /* */ "cast"_Stz,            // CK_CAST
-  /* */ "cmpPred"_Stz,         // CK_CMPCONJ
+  /* */ "clause"_Stz,          // CK_CLAUSE
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
-  /* */ "correlation"_Stz,     // CK_CORRELATION
+  /* */ "corrCols"_Stz,        // CK_CORRCOLS
+  /* */ "correlation"_Stz,     // CK_CORRELATIO
   /* */ "costJoining"_Stz,     // CK_COSTJOINING
   /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
   /* */ "costQuery"_Stz,       // CK_COSTSTREAM
@@ -162,9 +183,12 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
   /* */ "debug"_Stz,           // CK_DEBUG
+  /* */ "decision"_Stz,        // CK_DECISION
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
+  /* */ "disp"_Stz,            // CK_DISPOSITION
 
+  /* */ "emit"_Stz,            // CK_EMIT
   /* */ "expr"_Stz,            // CK_EXPR
 
   /* */ "filter"_Stz,          // CK_FILTER
@@ -189,6 +213,8 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "indexList"_Stz,       // CK_INDEXLIST
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
+  /* */ "inflate"_Stz,         // CK_INFLATE
+  /* */ "injectable"_Stz,      // CK_INJECTABLE
 
   /* */ "joinCast"_Stz,        // CK_JOINCAST
   /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE
@@ -207,26 +233,27 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "map"_Stz,             // CK_MAP
   /* */ "mapping"_Stz,         // CK_MAPPING
 
-  /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED
   /* */ "note"_Stz,            // CK_NOTE
-  /* */ "notPred"_Stz,         // CK_NOTCONJ
+  /* */ "notConj"_Stz,         // CK_NOTCONJ
 
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
-  /* */ "orPred"_Stz,          // CK_ORCONJ
+  /* */ "orConj"_Stz,          // CK_ORCONJ
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 
-
+  /* */ "payload"_Stz,         // CK_PAYLOAD
   /* */ "payloadCells"_Stz,    // CK_PAYLOADCELLS
   /* */ "project"_Stz,         // CK_PROJECT
-  /* */ "projection"_Stz,      // CK_PROJECTION
 
+  /* */ "relnOp"_Stz,          // CK_RELNOP
+  /* */ "required"_Stz,        // CK_REQUIRED
+  /* */ "rlnConj"_Stz,         // CK_RLNCONJ
   /* */ "rowCount"_Stz,        // CK_ROWCOUNT
   /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
-  /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
+  /* */ "rpnTerms"_Stz,        // CK_RPNEXPR
 
   /* */ "scan"_Stz,            // CK_SCAN
   /* */ "section"_Stz,         // CK_SECTION
@@ -234,6 +261,9 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "spare"_Stz,           // CK_SPARE
+  /* */ "sqyCalls"_Stz,        // CK_SQYCALLS
+  /* */ "sqyInfo"_Stz,         // CK_SQYINFO
+  /* */ "sqyNo"_Stz,           // CK_SQYNO
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
@@ -244,6 +274,7 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
   /* */ "subQuery"_Stz,        // CK_SUBQUERY
   /* */ "subSet"_Stz,          // CK_SUBSET
+  /* */ "synthesise"_Stz,      // CK_SYNTHESIS
 
   /* */ "table"_Stz,           // CK_TABLE
   /* */ "tableInfo"_Stz,       // CK_TABLEINFO
@@ -259,6 +290,8 @@ Stz* aCK_short[CK_ENUMS]
   /* */ "unique"_Stz,          // CK_UNIQUE
 
   /* */ "where"_Stz,           // CK_WHERE
+
+  /* */ "xcard"_Stz,           // CK_XCARD
 
 //  /* */ "ENUMS"_Stz
 };

@@ -1,0 +1,79 @@
+--------------------------------------------------------------------------------
+-- tpch query19
+--------------------------------------------------------------------------------
+
+/optimise_passthru
+pipeline Query19
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public part
+   | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
+                } 'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
+                }  1  5  P_SIZE between  and
+                P_BRAND 'Brand#23'  ==
+                }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4 P_CONTAINER in and
+                }  1  10  P_SIZE between  and  or P_BRAND 'Brand#34'  ==
+                }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and
+                }  1  15  P_SIZE between  and or  "
+   | project " type INTEGER as P_PARTKEY P_PARTKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_CONTAINER P_CONTAINER ,
+               type INTEGER AS P_SIZE P_SIZE"
+   | combined 0
+   | next broadcast
+
+ stage S02 on all partitions :
+   indexJoin lineitem IxL_PARTKEY "BOUND $I1 p_partkey ==" //J1
+   | project " type INTEGER as L_PARTKEY l_partkey ,
+               type DECIMAL as L_QUANTITY L_QUANTITY ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type DECIMAL as l_extendedprice l_extendedprice  ,
+               type VARCHAR as L_SHIPMODE L_SHIPMODE ,
+               type VARCHAR as L_SHIPINSTRUCT L_SHIPINSTRUCT ,
+               type INTEGER as P_SIZE P_SIZE ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type varchar as P_CONTAINER P_CONTAINER"
+   | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
+                }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
+                }  L_QUANTITY 1.0 >= L_QUANTITY 11.0 <= and and
+                }  1  5  P_SIZE between  and
+                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and
+                P_BRAND 'Brand#23'  ==
+                }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4 P_CONTAINER in and
+                }  L_QUANTITY 10.0 >= L_QUANTITY 20.0 <= and and
+                }  1  10  P_SIZE between  and
+                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or
+                P_BRAND 'Brand#34'  ==
+                }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and
+                }  L_QUANTITY 20.0 >= L_QUANTITY 30.0 <= and and }  1  15  P_SIZE between  and
+                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or  "
+   | combined 0
+   | next
+
+stage S03 on all partitions :
+   aggreg " type DECIMAL )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  "
+   | combined 0
+   | next
+
+ stage S04 on all nodes :
+   aggreg " type DECIMAL )  $1 sum  "
+   | combined 0
+   | next
+
+ stage S05 on origin :
+   aggreg " type DECIMAL as revenue )  $1 sum  "
+   | combined 0
+   | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+end ;

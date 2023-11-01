@@ -33,25 +33,22 @@ namespace STORE
 
     struct {
       bool m_bSeen;
-      bool m_bMorph_sqlOp_To_Eq;
+      bool m_bMorph_sqlOp_To_EQ;
       bool bReplace_sqCall_With_result;
     } Where_preAgg;
 
     struct {
       bool m_bSeen;
-      i8   m_nBumpBy;
       bool m_bMorph_To_gbyAgg;
     } Aggreg;
 
     struct {
       bool m_bSeen;
-      i8   m_nBumpBy;
       bool m_bInject_foldExpr;
     } GbyAgg;
 
     struct {
       bool m_bSeen;
-      i8   m_nBumpBy;
     } Project_postAgg;
 
     struct {

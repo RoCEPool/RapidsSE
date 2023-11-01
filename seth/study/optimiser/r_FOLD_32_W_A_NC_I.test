@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* r_FOLD_32_W_A_NC_I -- sub-query flattening test : refer Q18                */
+/*============================================================================*/
+
+LOG 'r_FOLD_32_W_A_NC_I...';
+
+trackMemory;
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/pipelineName = "r_FOLD_32_W_A_NC_I"
+select count(*)
+  from orders, lineitem
+ where O_ORDERKEY = L_ORDERKEY
+   and O_ORDERKEY in (select L_ORDERKEY
+                        from lineitem
+                       group by L_ORDERKEY
+                      having sum(l_quantity) > 100)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+ rows: 0
+
+CLEANUP {
+  bye;
+  mute
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

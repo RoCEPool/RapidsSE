@@ -50,25 +50,6 @@ PipelineDef::~PipelineDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PipelineDef::vCollapseOps(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
-
-  RASSERT(StrLib::bIsSqlName(m_sPipelineNm.azChar()));
-
-  i8 nStages = nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    StageDef* pStageDef = pGet(i_Stage);
-    pStageDef->vCollapseOps();
-  }
-
-  vDebugPoint();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void PipelineDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);

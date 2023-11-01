@@ -19,7 +19,6 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   i8* paW;
   i8 i_CurrentRow;
-  i8 __COLUMNS_IN__;
 
   // marker-start
   struct __STRUCT_TO__* p__STRUCT_TO__;
@@ -31,9 +30,10 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   i_CurrentRow = -1;
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   // set the string area
+	p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
   __ROW_INFO_TO__.m_acStrArea  = __ROW_INFO_TO__.m_acStrAreaSav;
 
   // marker-end
@@ -46,12 +46,18 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   void* aSubReturnLabel;
+	byte* ayDstByte;
   u8 uMetaCode;
   u8* auMetaCode;
   u8 uHigh;
   u8 uLow;
   i8 i_Col;
   i8 __COLUMN_NO__;
+	struct __STRUCT_TO__ {
+			union Int_T __COLUMN_TO__;
+	};
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // marker-start
   // - - - - - - - - - - - -
@@ -60,7 +66,7 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
-
+	ayDstByte = (byte*)&p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
   goto L_InflateAColumn;
 
@@ -69,6 +75,27 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
   // marker-end
   L_InflateAColumn:
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPriorCrwCol ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPriorCrwCol
+void vPriorCrwCol(Dynamic_T* aDynamicT) {
+
+	struct __STRUCT_TO__ {
+			union Int_T __COLUMN_TO__;
+			union Int_T __COLUMN_PRIOR__;
+	};
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+
+	// marker-start
+	// - - - - - - - - - - - -
+	p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = p__STRUCT_TO__->__COLUMN_PRIOR__.m_iAsI8;
+
+	// marker-end
+	return;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +122,6 @@ void vSkipCrwCol(Dynamic_T* aDynamicT) {
   uLow  = uMetaCode & 0x0F;
 
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
-  ayDstByte += 8;
   goto L_SkipAColumn;
 
   __L_RETURN_TO_LABEL__:

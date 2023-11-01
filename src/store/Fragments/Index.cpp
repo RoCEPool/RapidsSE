@@ -23,7 +23,7 @@
 // function-vIndexDereferenceLB
 void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
 
-#include "vFLAT_Parameters_v2.h"
+#include "vFLAT_Parameters.h"
 
   i8 iIndexBuffer;
   i8 iIndexItem;
@@ -51,7 +51,7 @@ void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
   }
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+  aDynamicT->m_bProcessRow = true;
 
   // dereference the entry
   iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
@@ -83,7 +83,7 @@ void vIndexDereferenceLB(Dynamic_T* aDynamicT) {
 // function-vIndexDereferenceUB
 void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
 
-#include "vFLAT_Parameters_v2.h"
+#include "vFLAT_Parameters.h"
 
   i8 iIndexBuffer;
   i8 iIndexItem;
@@ -111,7 +111,7 @@ void vIndexDereferenceUB(Dynamic_T* aDynamicT) {
   }
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+  aDynamicT->m_bProcessRow = true;
 
   // dereference the entry
   iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
@@ -245,7 +245,7 @@ void vIndexCheckUpper(Dynamic_T* aDynamicT) {
   }
 
   // process the row
-  aDynamicT->m_iProcessRow = 1;
+	aDynamicT->m_bProcessRow = true;
 
   // marker-end
 

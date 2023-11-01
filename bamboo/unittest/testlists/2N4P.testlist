@@ -2,17 +2,19 @@
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
 
+////////////////// to be enabled when colsReq done
+
 //../../../seth/tests/tests1N4P/CombinedV2/testList
 ../../../seth/tests/tests1N4P/Filter/testList
 //../../../seth/tests/tests1N4P/JoinOrder/testList
-../../../seth/tests/tests1N4P/Limit/testList
-../../../seth/tests/tests1N4P/Projections/testList
+../../../seth/te/sts/tests1N4P/Limit/testList
+//////////////////../../../seth/tests/tests1N4P/Projections/testList
 //../../../seth/tests/tests2N4P/Transliterate/testList
 ../../../seth/tests/tests1N4P/BackEnd/testList
 
 //../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
 
-../../../seth/tests/tests1N4P/Compiler/testList
+//////////////////../../../seth/tests/tests1N4P/Compiler/testList
 ../../../seth/tests/tests2N4P/Datums/testList
 ../../../seth/tests/tests1N4P/Ddl/testList
 ../../../seth/tests/tests2N4P/Index/testList

@@ -5,7 +5,7 @@
 #include "Card_Bound.hpp"
 #include "Card_Bounds.hpp"
 #include "CardIter.hpp"
-#include "Card_CmpConj.hpp"
+#include "Card_RlnConj.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -46,15 +46,15 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert colOdn to stmOdn                                                   */
+/* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vConvert_colOdn_To_stmOdn(CardIter* pCI)
+void Card_Bounds::vX_tblCol_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_BOUND))
-    xKid.p_bound()->vConvert_colOdn_To_stmOdn(pCI);
+    xKid.p_bound()->vX_tblCol_To_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ i8 Card_Bounds::nCullBound(Stz* szWithMark)
 
     vDeleteChild(xCI_bounds.pChild());
     nCulled++;
-    xCI_bounds.vRewind();
+    xCI_bounds.vBackstep();
   }
 
   return nCulled;
@@ -98,24 +98,24 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vEnsureTypes_For_stmOdn(CardIter *pCI)
+void Card_Bounds::vEnsureTypes_For_stmCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
-    xKid.p_bound()->vEnsureTypes_For_stmOdn(pCI);
+    xKid.p_bound()->vEnsureTypes_For_stmCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
 /* does this bounds have a bound logically equivalent to given compare?       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bounds::bHasEquivalentBound(Card_CmpConj* p_cmpPred)
+bool Card_Bounds::bHasEquivalentBound(Card_RlnConj* p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xBounds(this);
   while (xBounds.bEach(CK_BOUND)) {
-    if (xBounds.p_bound()->bEquivalent(p_cmpPred))
+    if (xBounds.p_bound()->bEquivalent(p_rlnConj))
       return true;
   }
 
@@ -135,6 +135,22 @@ bool Card_Bounds::bUsesSqyRsl(void)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vShortForm(String* pString_b)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  UNUSED(pString_b);
+
+  Stz* szSep = ""_Stz;
+  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/) {
+    xKid.p_bound()->vShortForm(pString_b,szSep);
+    szSep = ","_Stz;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

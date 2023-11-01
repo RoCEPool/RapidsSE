@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* _ray_scan                                                                  */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimiser_trace
+/transliterated
+/pipeline_def
+/weaved
+/pipelineName = "_ray_scan"
+select C_MKTSEGMENT, C_NATIONKEY, C_CUSTKEY
+  from Customer
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

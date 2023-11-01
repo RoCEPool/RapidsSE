@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Optimise_Reduce_gbyAgg_key, CN_XF_OT_REDUCE_GBYAGG_KEY)
-__aNewFunction(XF_Optimise_Reduce_gbyAgg_key, CN_XF_OT_REDUCE_GBYAGG_KEY)
-__vDeleteFunction(XF_Optimise_Reduce_gbyAgg_key, CN_XF_OT_REDUCE_GBYAGG_KEY)
+__pCastFunction(STORE, XF_Optimise_Reduce_gbyAgg_key, CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY)
+__aNewFunction(XF_Optimise_Reduce_gbyAgg_key, CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY)
+__vDeleteFunction(XF_Optimise_Reduce_gbyAgg_key, CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY)
 __aFooterFunction(XF_Optimise_Reduce_gbyAgg_key)
 
 
@@ -20,13 +20,13 @@ __aFooterFunction(XF_Optimise_Reduce_gbyAgg_key)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Reduce_gbyAgg_key::XF_Optimise_Reduce_gbyAgg_key(CardIter* pCI)
-: XF_OPTIMISE(CN_XF_OT_REDUCE_GBYAGG_KEY, OT_REDUCE_GBYAGG_KEY, pCI)
+: XF_OPTIMISE(CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY, OT_REDUCE_GBYAGG_KEY, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY, _FOOTER_);
 
-  _checkInitialised_(CN_XF_OT_REDUCE_GBYAGG_KEY);
+  _checkInitialised_(CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Optimise_Reduce_gbyAgg_key::XF_Optimise_Reduce_gbyAgg_key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Optimise_Reduce_gbyAgg_key::~XF_Optimise_Reduce_gbyAgg_key(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,15 +67,15 @@ void XF_Optimise_Reduce_gbyAgg_key::vOptimise(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Optimise_Reduce_gbyAgg_key::bOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OT_REDUCE_GBYAGG_KEY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY, _FOOTER_);
 
   bool bOptRun = false;
 
-  m_pCI->vTransform(__func__, XF_OPTIMISE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
+  m_pCI->vTransform(__func__, XF_OPTIMISE_REDUCE_GBYAGG_KEY, "Reduce gbyAgg key"_Stz);
 
   ///m_pCI->pBoard()->pState()->vInsert(aOT[OT_REDUCE_GBYAGG_KEY]);
 
-  m_pCI->vEndTransform();
+  m_pCI->vEndTransform(__LINE__);
 //vValidateBench();
 
   return bOptRun;

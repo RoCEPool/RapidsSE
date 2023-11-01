@@ -1,0 +1,77 @@
+/*============================================================================*/
+/* _ray_indexJoin                                                             */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_customer
+_orders_custkey
+
+load Customer "<tpch_dir>/customer.<suffix>" ;
+load Orders "<tpch_dir>/orders.<suffix>" ;
+
+create index Ix_CUSTKEY on Orders(O_CUSTKEY);
+
+/optimiser_trace
+/optimise_passthru
+/keepCodeFile
+/weaved
+/pipeline_def
+/keepCodeFile
+pipeline _ray_indexJoin2
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Customer
+    | indexJoin Orders Ix_CUSTKEY " BOUND $I1 $1 == "
+    | project   "   type VARCHAR as c_mktsegment $7
+                  , type INTEGER as c_nationkey $4
+                  , type INTEGER as c_custkey $1
+                  , type INTEGER as o_custkey $10
+                  , type DATE as o_orderdate $13 "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+drop table Customer;
+drop table Orders;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/*
+m_axOp[0] : m_i_CrwCol [0] -> m_i_StructCell [2] C2_c_custkey
+m_axOp[1] : m_i_CrwCol [3] -> m_i_StructCell [1] C1_c_nationkey
+m_axOp[2] : m_i_CrwCol [6] -> m_i_StructCell [0] C0_c_mktsegment
+m_axOp[3] : m_i_CrwCol [9] -> m_i_StructCell [3] C3_o_custkey
+m_axOp[4] : m_i_CrwCol [12] -> m_i_StructCell [4] C4_o_orderdate
+
+
+m_pColsReq
+ColsReq (left)
+m_axOp[0] : m_i_CrwCol [0] -> m_i_StructCell [2] C2_c_custkey
+m_axOp[1] : m_i_CrwCol [3] -> m_i_StructCell [1] C1_c_nationkey
+m_axOp[2] : m_i_CrwCol [6] -> m_i_StructCell [0] C0_c_mktsegment
+
+m_pColsReqRht
+ColsReq (right)
+m_axOp[0] : m_i_CrwCol [1] -> m_i_StructCell [3] C3_o_custkey
+m_axOp[1] : m_i_CrwCol [4] -> m_i_StructCell [4] C4_o_orderdate
+
+*/

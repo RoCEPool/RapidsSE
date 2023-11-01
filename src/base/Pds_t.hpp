@@ -22,7 +22,7 @@ namespace BASE
     ~Pds_t(void) noexcept(false);
 
 
-    ITEM* aAllotEntry(void);
+//    ITEM* aAllotEntry(void);
 
   public:
     Footer* aFooter(void);
@@ -60,11 +60,11 @@ Pds_t<ITEM>::~Pds_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Allot an entry in this Skip List                                           */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-ITEM* Pds_t<ITEM>::aAllotEntry(void)
-{
-  return (ITEM*) Pds::aAllotSkipListBlock();
-}
+//template <class ITEM>
+//ITEM* Pds_t<ITEM>::aAllotEntry(void)
+//{
+//  return (ITEM*) Pds::aAllotSkipListBlock();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* compare two nodes                                          */

@@ -38,8 +38,8 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
 __L_LABEL__:
 
   // Process row ?
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
+  if ( ! aDynamicT->m_bProcessRow ) {
+		aDynamicT->m_bProcessRow = true;
     goto __L_LABEL_LOOP__;
   }
 

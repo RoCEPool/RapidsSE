@@ -7,7 +7,7 @@
 #include "Card_HshCol.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Term.hpp"
-#include "Card_Projection.hpp"
+#include "Card_Emit.hpp"
 #include "CardIter.hpp"
 
 
@@ -49,10 +49,10 @@ Card_Hash::~Card_Hash(void) noexcept(false)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
-                              Card_Projection* p_projection_prev)
+                              Card_Emit* p_emitted_prev)
 {
   _static_
-  UNUSED(p_projection_prev);
+  UNUSED(p_emitted_prev);
 
   Card_Hash* p_hash = new Card_Hash;
 
@@ -68,11 +68,11 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
   Card_HshCol* p_hshCol = new Card_HshCol;
   p_hshColList->vAppendChild(p_hshCol);
 
-  Card_Term* p_card_term = p_expr->pGetTerm(0)->pClone();
+  Card_Term* p_card_term = p_expr->pGet_term(0)->pClone();
   p_hshCol->vAppendChild(p_card_term);
 
-  if (p_projection_prev)
-    p_stream->vAppendChild(p_projection_prev->pClone());
+  if (p_emitted_prev)
+    p_stream->vAppendChild(p_emitted_prev->pClone());
 
   return p_hash;
 }

@@ -8,19 +8,23 @@ enum eCK : i8 // card kind
   /* */ CK_NONE=0,
 
   /* */ CK_ABSJOIN,
+  /* */ CK_ADDRESS,
   /* */ CK_AGGREG,
   /* */ CK_ANDCONJ,
   /* */ CK_AS,
 
-  /* */ CK_BOOLCALC,
+  /* */ CK_BOOLPRED,
   /* */ CK_BOUND,
   /* */ CK_BOUNDS,
 
   /* */ CK_CALL,
+  /* */ CK_CALLER,
+  /* */ CK_CALLOP,
   /* */ CK_CAST,
-  /* */ CK_CMPCONJ,
+  /* */ CK_CLAUSE,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
+  /* */ CK_CORRCOLS,
   /* */ CK_CORRELATION,
   /* */ CK_COSTJOINING,
   /* */ CK_COSTNETWORK,
@@ -30,9 +34,12 @@ enum eCK : i8 // card kind
   /* */ CK_CROSSJOIN,
 
   /* */ CK_DEBUG,
+  /* */ CK_DECISION,
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
+  /* */ CK_DISPOSITION,
 
+  /* */ CK_EMIT,
   /* */ CK_EXPR,
 
   /* */ CK_FILTER,
@@ -57,6 +64,8 @@ enum eCK : i8 // card kind
   /* */ CK_INDEXLIST,
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
+  /* */ CK_INFLATE,
+  /* */ CK_INJECTABLE,
 
   /* */ CK_JOINCAST,
   /* */ CK_JOINESTIMATE,
@@ -75,7 +84,6 @@ enum eCK : i8 // card kind
   /* */ CK_MAP,
   /* */ CK_MAPPING,
 
-  /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
   /* */ CK_NOTE,
   /* */ CK_NOTCONJ,
@@ -86,14 +94,17 @@ enum eCK : i8 // card kind
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
 
+  /* */ CK_PAYLOAD,
   /* */ CK_PAYLOADCELLS,
   /* */ CK_PROJECT,
-  /* */ CK_PROJECTION,
 
+  /* */ CK_RELNOP,
+  /* */ CK_REQUIRED,
+  /* */ CK_RLNCONJ,
   /* */ CK_ROWCOUNT,
   /* */ CK_ROWSIZE,
   /* */ CK_RPNCALC,
-  /* */ CK_RPNTERMS,
+  /* */ CK_RPNEXPR,
 
   /* */ CK_SCAN,
   /* */ CK_SECTION,
@@ -101,6 +112,9 @@ enum eCK : i8 // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SORT,
   /* */ CK_SPARE,
+  /* */ CK_SQYCALLS,
+  /* */ CK_SQYINFO,
+  /* */ CK_SQYNO,
   /* */ CK_STAGE,
   /* */ CK_STREAM,
   /* */ CK_STREAMHEAD,
@@ -111,6 +125,7 @@ enum eCK : i8 // card kind
   /* */ CK_STREAMSET,
   /* */ CK_SUBQUERY,
   /* */ CK_SUBSET,
+  /* */ CK_SYNTHESIS,
 
   /* */ CK_TABLE,
   /* */ CK_TABLEINFO,
@@ -126,6 +141,8 @@ enum eCK : i8 // card kind
   /* */ CK_UNIQUE,
 
   /* */ CK_WHERE,
+
+  /* */ CK_XCARD,
 
   /* */ CK_ENUMS
 };
