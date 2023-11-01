@@ -390,7 +390,6 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
   i8 i_Col = 0;
   i8 i_ColPL = 0;
-  i8 i_DupCtr = 1;
   i8 iGbyCols = 0;
   i8 iGkyCols = 0;
   eDM eCastType = DM_NONE;
@@ -448,18 +447,18 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // set working ExprStack to normal expstack
       if (ePreExp == PE_GBY) {
         // push assign column
-        vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL);
         iGbyCols++;
 
         if (m_eSketchKind == SK_ORDAGG && iGbyCols >= 2)
           m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
       else if (ePreExp == PE_GKY) {
-        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL);
         iGkyCols++;
       }
       else {
-        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col + iGkyCols, i_ColPL);
         i_Col++;
         i_ColPL++;
       }
@@ -511,7 +510,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       RASSERT(ePreExp == PE_GBY);
 
       // push assign column
-      vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+      vPushAssignCol(pExprStack, ePreExp, iGbyCols, i_ColPL);
       iGbyCols++;
 
       if (m_eSketchKind == SK_ORDAGG) {
@@ -575,7 +574,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
       // push upperBound assign column
       if (bUpperBound)
-        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
@@ -593,7 +592,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
       // push lowerBound assign column
       if (bLowerBound)
-        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL, i_DupCtr);
+        vPushAssignCol(pExprStack, ePreExp, i_Col, i_ColPL);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the upper bound stack
@@ -818,7 +817,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -829,7 +828,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       //eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, DM_INT, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, DM_INT, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -840,7 +839,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -851,7 +850,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -862,7 +861,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -873,7 +872,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
       eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL);
       continue;
     }
 
@@ -1089,107 +1088,107 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
   //RASSERT(pExprStack == m_pExprStack);
 
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
-    vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr, bConstraint);
+    vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, bConstraint);
 
 
 #ifdef WITH_DEBUG_VERSION
-//  TypeValueArea* pTypedCell;
-//	i8 nExpr;
-//
-//  vTrace("\n*****************************************************\n"_Stz);
-//  vTrace("* OP SKETCH: %15s                        *\n"_Stz, aSK[m_eSketchKind]);
-//  vTrace("*****************************************************\n"_Stz);
-//
-//  // dump the TypeStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("EXPRTYPE STACK:\n"_Stz);
-//  nExpr = pExprType->nItems() - 1;
-//
-//  while ( nExpr >= 0) {
-//    eDM eType = (eDM)pExprType->iPeek(nExpr--);
-//    vTrace("%s\n"_Stz, aDM[eType]);
-//  }
-//
-//  // dump the ExprStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("EXPRSTACK:\n"_Stz);
-//  nExpr = m_pExprStack->nValues() - 1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-// // dump the ConstraintStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("CONSTRAINTSTACK:\n"_Stz);
-//  nExpr = m_pConstraintStack->nValues() - 1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pConstraintStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the NullStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("NULLSTACK:\n"_Stz);
-//  nExpr = m_pNullStack ? m_pNullStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pNullStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the InitStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("INITSTACK:\n"_Stz);
-//  nExpr = m_pInitStack ? m_pInitStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pInitStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the LowerStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("LOWERSTACK:\n"_Stz);
-//  nExpr = m_pLowerStack ? m_pLowerStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//  // dump the UpperStack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("UPPERSTACK:\n"_Stz);
-//  nExpr = m_pUpperStack ? m_pUpperStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//  vTrace("--------------------------------------\n"_Stz);
-//
-//  // dump the m_pGbyStack stack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("GROUPBYSTACK:\n"_Stz);
-//  nExpr = m_pGbyStack ? m_pGbyStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
-//
-//	// dump the m_pOrdAggStack stack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("ORDAGGSTACK:\n"_Stz);
-//  nExpr = m_pGbyStack ? m_pOrdAggStack->nValues() - 1 : -1;
-//
-//  while ( nExpr >= 0) {
-//    pTypedCell = m_pOrdAggStack->aPeekItem(nExpr--);
-//    vTrace("%s\n"_Stz, pTypedCell->szStz());
-//  }
+  TypeValueArea* pTypedCell;
+	i8 nExpr;
+
+  vTrace("\n*****************************************************\n"_Stz);
+  vTrace("* OP SKETCH: %15s                        *\n"_Stz, aSK[m_eSketchKind]);
+  vTrace("*****************************************************\n"_Stz);
+
+  // dump the TypeStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("EXPRTYPE STACK:\n"_Stz);
+  nExpr = pExprType->nItems() - 1;
+
+  while ( nExpr >= 0) {
+    eDM eType = (eDM)pExprType->iPeek(nExpr--);
+    vTrace("%s\n"_Stz, aDM[eType]);
+  }
+
+  // dump the ExprStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("EXPRSTACK:\n"_Stz);
+  nExpr = m_pExprStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+ // dump the ConstraintStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("CONSTRAINTSTACK:\n"_Stz);
+  nExpr = m_pConstraintStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pConstraintStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the NullStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("NULLSTACK:\n"_Stz);
+  nExpr = m_pNullStack ? m_pNullStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pNullStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the InitStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("INITSTACK:\n"_Stz);
+  nExpr = m_pInitStack ? m_pInitStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pInitStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the LowerStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("LOWERSTACK:\n"_Stz);
+  nExpr = m_pLowerStack ? m_pLowerStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the UpperStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("UPPERSTACK:\n"_Stz);
+  nExpr = m_pUpperStack ? m_pUpperStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+  vTrace("--------------------------------------\n"_Stz);
+
+  // dump the m_pGbyStack stack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("GROUPBYSTACK:\n"_Stz);
+  nExpr = m_pGbyStack ? m_pGbyStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+	// dump the m_pOrdAggStack stack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("ORDAGGSTACK:\n"_Stz);
+  nExpr = m_pGbyStack ? m_pOrdAggStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pOrdAggStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
 
 #endif
 
@@ -1316,10 +1315,9 @@ void OpSketch::vInitAgg(ePE ePreExp)
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8 i_Col, i8 i_ColPL, i8& i_DupCtr) {
+void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8 i_Col, i8 i_ColPL) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
-  UNUSED(i_DupCtr);
 
   s256 sStructColumn;
   s256 sOperation;
@@ -1972,10 +1970,9 @@ void OpSketch::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push assign column on the exprStack                                        */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr, bool bConstraint) {
+void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL,  bool bConstraint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
-  UNUSED(i_DupCtr);
 
   s256 sPush;
   s256 sColumn;
@@ -1990,9 +1987,6 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
   switch(m_eSketchKind) {
 
     case SK_AGGREG:
-      // make the column name
-      //vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
           sPush.vSprint("_COPYSTR_IFTRUE(aDynamicT->m_xRowInfoAT.m_acStrArea, p%s->%s.m_iAsI8)\n"_Stz,

@@ -1647,9 +1647,6 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
     if (bIsPayload) {
 
-      // make the column name
-      //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_Cell);
-
 			switch (pColumn->eColumnType()) {
 
 				case CT_VARCHAR:
