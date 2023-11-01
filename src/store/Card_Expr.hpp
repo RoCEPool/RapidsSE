@@ -15,8 +15,6 @@ namespace STORE
   
     Card_Expr(void);
     Card_Expr(Symbol* pSymbol);
-    Card_Expr(Card_As*   p_as_arg,
-              Card_Term* p_term_0_arg);
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------

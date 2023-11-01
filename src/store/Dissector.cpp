@@ -1399,9 +1399,12 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
       && p_term_head->pSymbol()->bSame("AS"_Stz)) {
 
     p_as = pPopAs(p_rpnExpr);
-    p_expr->vAppendChild(p_as);
+    //p_expr->vAppendChild(p_as);
 
     oSymbol_nmdCol.vFacets(p_as->pSymbol());
+
+//    delete p_as;
+//    p_as = nullptr;
   }
 
 
@@ -1423,9 +1426,12 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
       && p_term_head->pSymbol()->bSame("AS"_Stz)) {
 
     p_as = pPopAs(p_rpnExpr);
-    p_expr->vAppendChild(p_as);
+    //p_expr->vAppendChild(p_as);
 
     oSymbol_nmdCol.vFacets(p_as->pSymbol());
+
+//    delete p_as;
+//    p_as = nullptr;
   }
 
 
@@ -1459,11 +1465,14 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     else {
       p_as = (new Card_As)->SYM(SF_NMD_COL, ri_Expr);
     }
-    p_expr->vPushChild(p_as);
+    //p_expr->vPushChild(p_as);
   }
   oSymbol_nmdCol.vFacets(p_as->pSymbol());
 
   p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
+
+  delete p_as;
+  p_as = nullptr;
 
   ri_Expr++;
   return p_expr;
