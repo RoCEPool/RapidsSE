@@ -454,7 +454,7 @@ bool Card_BoolPred::bHasTerm(Symbol* pSymbol)
 
   auto bLambdaFn = [pSymbol, &bHas](Card* p_card)
   {
-    if (p_card->pSymbol()->bSame(pSymbol)) {
+    if (p_card->pSymbol()->bMatches(pSymbol)) {
       bHas = true;
       return C_TERMINATE_RECURSION;
     }

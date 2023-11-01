@@ -780,7 +780,7 @@ Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (eOfCard == m_eCard && bSymbol_Same(pSymbol)) {
+  if (eOfCard == m_eCard && bSymbolMatches(pSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -1474,32 +1474,6 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
-bool Card::bSymbol_Same(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (m_xSymbol.bSame(pSymbol))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card's symbolic value the same as given arg?                       */
-/*----------------------------------------------------------------------------*/
-bool Card::bSameSymbol(Card* pArg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (m_xSymbol.bSame(pArg->pSymbol()))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
 Symbol* Card::pSymbol(bool bIgnore)
@@ -1507,21 +1481,34 @@ Symbol* Card::pSymbol(bool bIgnore)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   UNUSED(bIgnore);
-  //RASSERT(bIgnore || CK_AS != m_eCard);
 
   return &m_xSymbol;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol                                                                 */
+/* is this card's symbolic value the same as given arg?                       */
 /*----------------------------------------------------------------------------*/
-Symbol* Card::pSymbol_AS(void)
+bool Card::bSymbolMatches(Card* pCard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(CK_AS == m_eCard);
+  if (m_xSymbol.bMatches(pCard_arg->pSymbol()))
+    return true;
 
-  return &m_xSymbol;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this card have same symbol as given argument?                         */
+/*----------------------------------------------------------------------------*/
+bool Card::bSymbolMatches(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (m_xSymbol.bMatches(pSymbol_arg))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1537,7 +1524,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
 
   auto bfUpdateSymbol = [pSymbol, pWith, &bReplaced](Card *pCard)
   {
-    if (!pCard->bSymbol_Same(pSymbol))
+    if (!pCard->bSymbolMatches(pSymbol))
       return C_CONTINUE_RECURSION;
 
     pCard->m_xSymbol.vFacetsPpy(pWith);

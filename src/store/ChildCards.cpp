@@ -480,7 +480,7 @@ Card* ChildCards::pPopChildIf(Symbol xSymbol)
   if (! pChild)
     return nullptr;
 
-  if (!pChild->bSymbol_Same(&xSymbol))
+  if (!pChild->bSymbolMatches(&xSymbol))
     return nullptr;
 
   return pPopChild();
@@ -495,7 +495,7 @@ bool ChildCards::bPopDeleteChildIf(eCK eCard, Symbol xSymbol)
   if (! pChild)
     return false;
 
-  if (pChild->bIsCard(eCard) && pChild->bSymbol_Same(&xSymbol)) {
+  if (pChild->bIsCard(eCard) && pChild->bSymbolMatches(&xSymbol)) {
     pChild = pPopChild();
     RASSERT(pChild);
     delete pChild;

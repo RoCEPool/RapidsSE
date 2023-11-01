@@ -378,11 +378,9 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSymbol_Same(Symbol* pSymbol);
-    bool bSameSymbol(Card* pArg);
-
     Symbol* pSymbol(bool bIgnore=false);
-    Symbol* pSymbol_AS(void);
+    bool bSymbolMatches(Symbol* pSymbol_arg);
+    bool bSymbolMatches(Card* pCard_arg);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 

@@ -2833,22 +2833,6 @@ bool Symbol::bSame(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bSame(Symbol* pArg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(1 == nFacets());
-
-  if (xaFacet[0].m_sChrSeq.bSame(pArg->xaFacet[0].m_sChrSeq)) {
-    return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
 char Symbol::cSF_char(void)

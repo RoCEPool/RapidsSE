@@ -287,7 +287,7 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-//    if (xKid.p_term()->bSymbol_Same(pSymbol))
+//    if (xKid.p_term()->bSymbolMatches(pSymbol))
     if (xKid.p_term()->pSymbol()->bMatches(pSymbol))
       return true;
   }

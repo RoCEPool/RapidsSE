@@ -232,7 +232,6 @@ namespace STORE
 
     bool bSame(char cArg);
     bool bSame(Stz* szChrSeq);
-    bool bSame(Symbol* pArg);
 
     char cSF_char(void);
     Stz* szSF_chrSeq(eSF eSymbol_xchk);
