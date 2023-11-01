@@ -1242,12 +1242,9 @@ Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
         Card *pChild_prj = p_emit->pGetChild(i_Child);
         if (pChild_prj->bIsCard(CK_EXPR)) {
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-          if (Card_As* p_as = p_expr_prj->pSub_as()) {
-            //p_as->vDump();
-            if (p_as->pSymbol_AS()->bSame(p_term->szFacet(SF_NONE))) {
-              p_expr_col = p_expr_prj;
-              break;
-            }
+          if (p_expr_prj->pSymbol()->bMatches(p_term->pSymbol())) {
+            p_expr_col = p_expr_prj;
+            break;
           }
         }
       }
