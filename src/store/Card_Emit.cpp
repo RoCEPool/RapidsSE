@@ -221,22 +221,6 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vDedupe_as(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-    Card_As* p_as = xProjection.p_expr()->pSub_as();
-
-    p_as->SYM(SF_ITM_COL, xProjection.i_Child(), p_as->pSymbol());
-  }
-
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Emit::vDelete_streamKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

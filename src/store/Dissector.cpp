@@ -1436,7 +1436,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_expr->vAppendChild(p_direction);
   }
 
-  if (! p_expr->pSub_as()) {
+  if (! p_as) {
     RASSERT(! p_as);
     RASSERT(0 == oSymbol_nmdCol.nFacets());
     if (p_expr->pSub_rpnCalc()->nChildCards() == 1) {

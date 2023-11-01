@@ -246,56 +246,6 @@ bool Card_Expr::bContains(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-
-  /*
-   * produce the projection of this expression
-   */
-
-  Card_As*      p_as;
-  Card_RpnCalc* p_rpnCalc;
-  Card_Term*    p_term_0;
-
-  vDeconstruct(p_as,p_term_0);
-
-  p_rpnCalc = pSub_rpnCalc();
-
-  Card_Expr* p_expr_early = new Card_Expr;
-
-  if (p_as)
-    p_expr_early->vAppendChild(p_as->pClone());
-  else {
-    Card_As* p_as_new = (new Card_As) ->SYM(SF_NMD_COL,i_Expr);
-    p_expr_early->vAppendChild(p_as_new);
-  }
-
-  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
-  p_expr_early->vAppendChild(p_rpnCalc_early);
-
-  p_expr_early->vColType(p_rpnCalc_early);
-  return p_expr_early;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vDeconstruct(Card_As*&      rp_as,
-                             Card_Term*&    rp_term_0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  rp_as   = pSub_as();
-  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
-  rp_term_0  = p_rpnCalc ? p_rpnCalc->pSub_term() : nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -655,13 +605,8 @@ Card_Expr* Card_Expr::pPropagate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_As*      p_as;
-  Card_RpnCalc* p_rpnCalc;
-  Card_Term*    p_term_0;
-
-  vDeconstruct(p_as,p_term_0);
-
-  p_rpnCalc = pSub_rpnCalc();
+  Card_As*      p_as = pSub_as();
+  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
 
   Card_Expr* p_expr_propagation = new Card_Expr;
 
@@ -688,24 +633,6 @@ Card_Expr* Card_Expr::pPropagate(void)
   p_expr_propagation->vAppendChild(p_rpnCalc_propagated);
 
   return p_expr_propagation;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vReconstruct(Card_As*    p_as_arg,
-                             Card_Term*  p_term_0_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDeleteAllChildren();
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_term_0_arg->pClone();
-
-  vAppendChild(p_as_arg);
-  vAppendChild(p_rpnCalc);
-  p_rpnCalc->vAppendChild(p_term);
 }
 
 /*----------------------------------------------------------------------------*/

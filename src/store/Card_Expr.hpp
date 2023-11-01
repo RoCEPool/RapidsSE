@@ -29,9 +29,6 @@ namespace STORE
     eCT  eColumnType(void);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
-    Card_Expr* pCraft_expr_early(CardIter* pCI, i8 i_Expr=0);
-    void vDeconstruct(Card_As*&   rp_as,
-                      Card_Term*& rp_term_0);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypes_For_stmCol(CardIter* pCI);
     void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
@@ -53,8 +50,6 @@ namespace STORE
     bool bHasTerm(Symbol* pSymbol);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     Card_Expr* pPropagate(void);
-    void vReconstruct(Card_As*    p_as,
-                      Card_Term*  p_term_0);
     Card_Expr *pReducedCopy(i8 i_Expr);
 
     void vRenumberForm_KeyCol(i8 i_Expr);

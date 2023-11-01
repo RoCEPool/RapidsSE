@@ -164,18 +164,6 @@ Card_Emit* Card_Project::pCraft_emit_early(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dedupe as                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vDedupe_as(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vDedupe_as();
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Project::vDerive_streamKey(CardIter* pCI)

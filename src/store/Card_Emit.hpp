@@ -24,7 +24,6 @@ namespace STORE
     Card_Emit* pClone(void);
     void vCorrectStmCol(Card_Emit* p_emitted_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
-    void vDedupe_as(void);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
     void vEnsureTypes_For_stmCol(CardIter* pCI);
