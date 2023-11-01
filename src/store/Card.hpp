@@ -415,7 +415,6 @@ namespace STORE
 
     Card_Address*       pSub_address(void);
     Card_Aggreg*        pSub_aggreg(void);
-    Card_As*            pSub_as(void);
     Card_BoolPred*      pSub_boolPred(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
@@ -435,7 +434,7 @@ namespace STORE
     Card_CrossJoin*     pSub_crossJoin(void);
     Card_Decision*      pSub_decision(void);
     Card_Direction*     pSub_direction(void);
-    Card_Emit*       pSub_emit(void);
+    Card_Emit*          pSub_emit(void);
     Card_Expr*          pSub_expr(void);
     Card_FiltPred*      pSub_filtPred(void);
     Card_FiltPredList*  pSub_filtPredList(void);
@@ -453,7 +452,7 @@ namespace STORE
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
     Card_Inflate*       pSub_inflate(void);
-    Card_Injectable*      pSub_injected(void);
+    Card_Injectable*    pSub_injectable(void);
     Card_JoinCast*      pSub_joinCast(void);
     Card_JoinEstimate*  pSub_joinEstimate(void);
     Card_Key*           pSub_key(void);

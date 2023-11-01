@@ -1319,7 +1319,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_ADDRESS:          return G.p_address;
     case CK_AGGREG:           return G.p_aggreg;
     case CK_ANDCONJ:          return G.p_andConj;
-    case CK_AS:               return G.p_as;
 
     case CK_BOOLPRED:         return G.p_boolPred;
     case CK_BOUND:            return G.p_bound;
@@ -1541,7 +1540,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               G.p_OP               = (Card_OP*)pCard; break;
     case CK_ANDCONJ:          G.p_andConj          = _pCard_AndConj(pCard);
                               G.p_CONJ             = (Card_CONJUNCTION*)pCard; break;
-    case CK_AS:               G.p_as               = _pCard_As(pCard); break;
 
     case CK_BOOLPRED: G.p_boolPred         = _pCard_BoolPred(pCard); break;
     case CK_BOUND:            G.p_bound            = _pCard_Bound(pCard); break;
@@ -1796,7 +1794,6 @@ void CardIter::vNullMembers(bool bNull_OP)
   G.p_address          = nullptr;
   G.p_aggreg           = nullptr;
   G.p_andConj          = nullptr;
-  G.p_as               = nullptr;
 
   G.p_boolPred         = nullptr;
   G.p_bound            = nullptr;
@@ -2578,7 +2575,6 @@ void CardIter::vValidateChildren(Card* pCard, i8 iDepth)
       case CK_ADDRESS:      G.p_address->vValidate(this, iDepth, pCard);  break;
       case CK_AGGREG:       G.p_aggreg->vValidate(this, iDepth, pCard);  break;
       case CK_ANDCONJ:      G.p_andConj->vValidate(this, iDepth, pCard);  break;
-      case CK_AS:           G.p_as->vValidate(this, iDepth, pCard);  break;
 
       case CK_BOOLPRED:     G.p_boolPred->vValidate(this, iDepth, pCard);  break;
       case CK_BOUND:        G.p_bound->vValidate(this, iDepth, pCard);  break;

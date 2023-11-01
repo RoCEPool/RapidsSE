@@ -2138,19 +2138,6 @@ Card_Aggreg* Card::pSub_aggreg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_As.hpp"
-Card_As* Card::pSub_as(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_As* p_as =
-      _pCard_As(pFindSubCard(CK_AS));
-  return p_as;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "Card_BoolPred.hpp"
 Card_BoolPred* Card::pSub_boolPred(void)
 {
@@ -2620,7 +2607,7 @@ Card_IndexNm* Card::pSub_indexNm(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_Injectable.hpp"
-Card_Injectable* Card::pSub_injected(void)
+Card_Injectable* Card::pSub_injectable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

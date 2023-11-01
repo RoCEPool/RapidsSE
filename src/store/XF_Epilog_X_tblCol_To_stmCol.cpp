@@ -112,7 +112,7 @@ void XF_Epilog_X_tblCol_To_stmCol::vTo_stmCol(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->X.m_pExprList_i = m_pCI->G.p_OP->pSub_injected();
+  m_pCI->X.m_pExprList_i = m_pCI->G.p_OP->pSub_injectable();
   m_pCI->X.m_pExprList_k = m_pCI->G.p_OP->pSub_key();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

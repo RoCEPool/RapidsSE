@@ -704,7 +704,6 @@ void Card_Deck::vValidate(CardIter* pCI)
       case CK_ABSJOIN:      pCI->G.p_absJoin->vValidate(pCI, 1, this); break;
       case CK_AGGREG:       pCI->G.p_aggreg->vValidate(pCI, 1, this); break;
       case CK_ANDCONJ:      pCI->G.p_andConj->vValidate(pCI, 1, this); break;
-      case CK_AS:           pCI->G.p_as->vValidate(pCI, 1, this); break;
 
       case CK_BOOLPRED:     pCI->G.p_boolPred->vValidate(pCI, 1, this); break;
       case CK_BOUND:        pCI->G.p_bound->vValidate(pCI, 1, this); break;
