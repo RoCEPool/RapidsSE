@@ -537,8 +537,8 @@ Card* Dissector::pOp_gbyAgg(void)
   Card_Stream* p_stream = new Card_Stream;
   p_aggreg->vAppendChild(p_stream);
 
-  Card_Emit* p_projection = pPopEmit(p_rpnExpr);
-  p_stream->vAppendChild(p_projection);
+  Card_Emit* p_emit = pPopEmit(p_rpnExpr);
+  p_stream->vAppendChild(p_emit);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -936,11 +936,19 @@ Card* Dissector::pOp_ordAgg(void)
   Card_Level* p_aggLevel = new Card_Level(eAggLevel);
   p_ordAgg->vAppendChild(p_aggLevel);
 
+  if (p_rpnExpr->nItems()) {
+    Card_Key* p_key = pPopKey(p_rpnExpr, true);
+    p_ordAgg->vAppendChild(p_key);
+    //p_ordAgg->vCard(CK_GBYAGG);
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
-  Card_Emit* p_projection = pPopEmit(p_rpnExpr);
-  p_ordAgg->vAppendChild(p_projection);
+  Card_Stream* p_stream = new Card_Stream;
+  p_ordAgg->vAppendChild(p_stream);
+
+  Card_Emit* p_emit = pPopEmit(p_rpnExpr);
+  p_stream->vAppendChild(p_emit);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1004,8 +1012,8 @@ Card* Dissector::pOp_project(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // projElist : project expression list
 
-  Card_Emit* p_projection = pPopEmit(p_rpnExpr);
-  p_stream->vAppendChild(p_projection);
+  Card_Emit* p_emit = pPopEmit(p_rpnExpr);
+  p_stream->vAppendChild(p_emit);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1520,7 +1528,8 @@ Card_Key* Dissector::pPopKey(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
 
   // GROUPBY
   Card_Term* p_term_head = _pCard_Term(p_rpnExpr->pPeek(0));
-  if (p_term_head->pSymbol()->bSame("GROUPBY"_Stz)) {
+  if (p_term_head->pSymbol()->bSame("GROUPBY"_Stz) ||
+      p_term_head->pSymbol()->bSame("ORDGROUPBY"_Stz) ) {
     p_term_head = _pCard_Term(p_rpnExpr->pPopChild());
     delete p_term_head;
     p_term_head = nullptr;
