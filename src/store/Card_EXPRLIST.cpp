@@ -338,7 +338,9 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      p_expr->vDump(__func__,"GBYAGG"_Stz);
+      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      sColNm = p_expr->szFacet(SF_NMD_COL);
 
       p_key->vX();
 
@@ -356,7 +358,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      sColNm = p_expr->szFacet(SF_NMD_COL);
 
       p_key->vX();
 
@@ -374,7 +377,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      sColNm = p_expr->szFacet(SF_NMD_COL);
 
       p_key->vX();
 
@@ -393,7 +397,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      sColNm = p_expr->szFacet(SF_NMD_COL);
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -411,7 +416,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      sColNm = p_expr->szFacet(SF_NMD_COL);
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);

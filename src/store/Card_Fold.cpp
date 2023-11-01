@@ -81,6 +81,7 @@ void Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* 
 
   Card_Expr* p_expr_new = new Card_Expr;
 
+  p_expr_new->pSymbol()->vAppendFacet(p_expr_fold->pSymbol()->aFacet(SF_NMD_COL));
   p_expr_new->pSymbol()->Y_vSet(P_Injected);
 
   p_expr_new->vAppendChild(p_expr_fold->pSub_as()->pDupCardRecursive());
