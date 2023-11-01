@@ -566,7 +566,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
-  pCard_dup->pSymbol(true)->vFacetsPpy(pSymbol(true));
+  pCard_dup->pSymbol()->vFacetsPpy(pSymbol());
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1476,11 +1476,9 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 /*----------------------------------------------------------------------------*/
 /* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
-Symbol* Card::pSymbol(bool bIgnore)
+Symbol* Card::pSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  UNUSED(bIgnore);
 
   return &m_xSymbol;
 }

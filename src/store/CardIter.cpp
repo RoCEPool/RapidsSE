@@ -207,7 +207,7 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Symbol xSymbol)
 
   Card* pChild = new Card(eChild,C_UNKNOWN);
 
-  pChild->pSymbol(true)->vFacets(&xSymbol);
+  pChild->pSymbol()->vFacets(&xSymbol);
 
   pParent->vAppendChild(pChild);
   G_vMember(eChild, pChild, __func__);
