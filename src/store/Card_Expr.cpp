@@ -149,6 +149,8 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
+  p_expr_simple->pSymbol()->vFacets(p_expr->pSymbol());
+
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->pSymbol()->vColType(p_expr->eColType());
 
