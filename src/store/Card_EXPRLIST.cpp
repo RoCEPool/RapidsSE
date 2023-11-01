@@ -326,7 +326,6 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   StreamDef* pStreamDef = new StreamDef;
 
   s32 sColNm;
-  s32 sColNm_mapped;
   eCT eColType;
 
 
@@ -436,23 +435,18 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     Card_Expr *p_expr = xProjection.p_expr();
 
     if (CK_PROJECT == p_OP->eCard()) {
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
-
-      sColNm_mapped = sColNm;
+      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      sColNm = p_expr->szFacet(SF_NMD_COL);
 
     }
     else
     if (CK_SORT == p_OP->eCard()) {
-      sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
-
-      sColNm_mapped = sColNm;
-
+      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
+      sColNm = p_expr->szFacet(SF_NMD_COL);
     }
     else {
       sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
 
-
-      sColNm_mapped = sColNm;
     }
 
 
