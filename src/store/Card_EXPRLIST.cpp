@@ -338,10 +338,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       Card_Expr *p_expr = xProjection.p_expr();
 
       p_expr->vDump(__func__,"GBYAGG"_Stz);
-      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       sColNm = p_expr->szFacet(SF_NMD_COL);
-
-      p_key->vX();
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -357,10 +354,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       sColNm = p_expr->szFacet(SF_NMD_COL);
-
-      p_key->vX();
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -376,10 +370,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       sColNm = p_expr->szFacet(SF_NMD_COL);
-
-      p_key->vX();
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -396,7 +387,6 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       sColNm = p_expr->szFacet(SF_NMD_COL);
 
       eColType = p_expr->eColumnType();
@@ -415,7 +405,6 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
       Card_Expr *p_expr = xProjection.p_expr();
 
-      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       sColNm = p_expr->szFacet(SF_NMD_COL);
 
       eColType = p_expr->eColumnType();
@@ -435,18 +424,19 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     Card_Expr *p_expr = xProjection.p_expr();
 
     if (CK_PROJECT == p_OP->eCard()) {
-      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       sColNm = p_expr->szFacet(SF_NMD_COL);
 
     }
     else
     if (CK_SORT == p_OP->eCard()) {
-      //sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
       sColNm = p_expr->szFacet(SF_NMD_COL);
     }
     else {
       sColNm = p_expr->pSub_as()->szFacet(SF_NONE);
-
+//      if (! p_expr->szFacet(SF_NMD_COL)->bSame(sColNm)) {
+//        p_expr->vDump(__func__,"ELSE"_Stz);
+//        NEVER_REACH
+//      }
     }
 
 
