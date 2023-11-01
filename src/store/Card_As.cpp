@@ -72,8 +72,6 @@ void Card_As::vItemise_colNm(CardIter* pCI)
     i8 iItemise = p_expr->iItemise();
     Symbol oSymbol_itemise;
     oSymbol_itemise.vFacet(SF_ITM_COL,iItemise,p_expr->pSymbol());
-    //p_as->pSymbol_AS()->vFacet(SF_ITM_COL,iItemise);
-    //p_expr->vDump(__func__ ,"ITEMISE\n"_Stz);
 
     p_expr->pSymbol()->vAppendFacet(oSymbol_itemise.aFacet(SF_ITM_COL));
 
@@ -109,14 +107,6 @@ void Card_As::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   UNUSED(pCI);
   UNUSED(iDepth);
   UNUSED(pParent);
-
-//  if (Card_Expr* p_expr = _pCard_Expr(pCI->pAncestorFind(CK_EXPR))) {
-//    if (! pSymbol_AS()->bMatches(p_expr->pSymbol())) {
-//      p_expr->vDump(__func__, "EXPR"_Stz);
-//      this->vDump(__func__, "AS"_Stz);
-//      NEVER_REACH
-//    }
-//  }
 
   NEVER_REACH
 

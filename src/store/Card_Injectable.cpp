@@ -67,9 +67,6 @@ Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
 
     eCT eColumnType = pColumn->eColumnType();
 
-//    Card_As *p_as = (new Card_As) ->SYM(SF_NMD_COL,pColumn->szColNm());
-//    p_expr->vAppendChild(p_as);
-
     p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,pColumn->szColNm());
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
