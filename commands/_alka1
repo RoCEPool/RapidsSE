@@ -2,22 +2,23 @@
 /* _alka1                                                                     */
 /*============================================================================*/
 
-__TPCH_SCHEMA;
-
-/weaved
-/keepCodeFile
-/useCodeFile = "Q13_NODE1_2"
-/pipelineName = "Q13"
-/pipeline_def
-select c_custkey from customer left outer join orders  on c_custkey = o_custkey
-  and o_comment not like '%special%requests%';
-
+_nation;
+CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
+load nation "../TPCH/SF_0001/nation.csv";
 
 /*
+/weaved
+/pipeline_def
+select n_nationkey, max(n_regionkey) from nation where n_nationkey > 3 group by n_nationkey;
+*/
 
-SF0001
+/optimiser_trace
+/optimise_passthru
+/pipeline_def
+/keepCodeFile
+/pipelineName = "_alka1"
+/weaved
 pipeline _unnamed_
-  tag <optimised> = 1 endTag
 begin
 
   stage S00 on origin :
@@ -26,116 +27,70 @@ begin
     | next
 
   stage S01 on all partitions :
-      scan      Customer
-  //| inflate   Customer // fused project
-  //| project   " type INTEGER as C0_C_CUSTKEY $1 "
-    | dynamic
+    indexScan Nation IxN_NATIONKEY
+              " LBOUND $I1 3 > "
+    | project "type INTEGER $1 , type INTEGER $3"
+    | combined 0
     | next
 
   stage S02 on all partitions :
-  //  indexJoin Orders IxO_CUSTKEY " LEFT_OUTER BOUND $I1 $1 == "
-  //            " type BOOLEAN } C9_O_COMMENT '%special%requests%' 7 8 matchMiddle1 not "
-      dynamic
+    ordAgg    " OrdGroupBy
+                  type INTEGER as C0_n_nationkey $1
+                aggregates
+                  type INTEGER as C0_COL1 $K1
+                , type INTEGER as C1_COL2 ) $2 max "
+    | combined 0
     | next
 
-  stage S03 on all partitions :
-  //  project   " type INTEGER as C0_c_custkey $1 "
-  //| limit      5
-      dynamic
+  stage S03 on all nodes :
+    gbyAgg    " groupBy
+                  type INTEGER as C0_n_nationkey $1
+                aggregates
+                  type INTEGER as C0_COL1 $K1
+                , type INTEGER as C1_COL2 ) $2 max "
+    | combined 0
     | next
 
-  stage S04 on all nodes :
-  //  limit      5
-      dynamic
+  stage S04 on origin :
+    gbyAgg    " groupBy
+                  type INTEGER as C0_n_nationkey $1
+                aggregates
+                  type INTEGER as C0_COL1 $K1
+                , type INTEGER as C1_COL2 ) $2 max "
+    | combined 0
     | next
 
   stage S05 on origin :
-  //  limit      5
-      dynamic
-    | next
-
-  stage S06 on origin :
       output
     | sink
     | first
 
 end ;
 
+
+drop table nation;
+
+/*
+row: (4,4)
+row: (5,0)
+row: (6,3)
+row: (7,3)
+row: (8,2)
+row: (9,2)
+row: (10,4)
+row: (11,4)
+row: (12,2)
+row: (13,4)
+row: (14,0)
+row: (15,0)
+row: (16,0)
+row: (17,1)
+row: (18,2)
+row: (19,3)
+row: (20,4)
+row: (21,2)
+row: (22,3)
+row: (23,3)
+row: (24,1)
+
 */
-  /*
-pipeline OptQ13
-   tag <optimised> = 1 endTag
- begin
-
-   stage S00 on origin :
-       start
-     | pulse     once
-     | next
-
-   stage S01 on all partitions :
-       scan      Customer
-     | project   " type INTEGER as C0_c_custkey $1 "
-     | dynamic
-     | next
-
-   stage S02 on all partitions :
-     indexJoin Orders IxO_CUSTKEY " LEFT_OUTER BOUND $I1 $1 == "
-               " type BOOLEAN } C9_O_COMMENT '%special%requests%' 7 8 matchMiddle1 not "
-       dynamic
-     | next
-
-   stage S03 on all partitions :
-     project   "   type INTEGER as C0_c_custkey $1
-                 , type INTEGER as C1_O_ORDERKEY $2 "
-       dynamic
-     | next
-
-   stage S04 on all partitions :
-     gbyAgg    " groupBy
-                   type INTEGER as C0_c_custkey $1
-                 aggregates
-                   type INTEGER as C0_COL1 $K1
-                 , type INTEGER as C1_COL2 ) $2 count "
-       dynamic
-     | next
-
-   stage S05 on all nodes :
-     gbyAgg    " groupBy
-                   type INTEGER as C0_c_custkey $1
-                 aggregates
-                   type INTEGER as C0_COL1 $K1
-                 , type INTEGER as C1_COL2 ) $2 sum "
-       dynamic
-     | next
-
-   stage S06 on origin :
-   //  gbyAgg    " groupBy
-   //                type INTEGER as C0_c_custkey $1
-   //              aggregates
-   //                type INTEGER as C0_COL1 $K1
-   //              , type INTEGER as C1_c_count ) $2 sum "
-       dynamic
-     | next
-
-   stage S07 on origin :
-   //  gbyAgg    " groupBy
-   //                type INTEGER as C0_c_count $2
-   //              aggregates
-   //                type INTEGER as C0_COL1 $K1
-   //              , type INTEGER as C1_custdist ) countAll "
-       dynamic
-     | next
-
-   stage S08 on origin :
-   //  sort      " type INTEGER as C0_COL1 $2 DESC , type INTEGER as C1_c_count $1 DESC "
-       dynamic
-     | next
-
-   stage S09 on origin :
-       output
-     | sink
-     | first
-
- end ;
-
- */
