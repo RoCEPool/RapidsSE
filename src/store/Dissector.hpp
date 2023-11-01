@@ -66,32 +66,32 @@ namespace STORE
     Card* pOp_start       (void);
     Card* pOp_top         (void);
 
-    Card_IndexList*  pFormIndex(Stz* szIndexNm);
-    Card_Table*      pFormTable(Stz* szTableNm);
+    Card_IndexList*  pForm_indexList(Stz* szIndexNm);
+    Card_Table*      pForm_table    (Stz* szTableNm);
 
-    Card_As*         pPopAs         (Card_RpnExpr* pCard_RpnTerms);
-    Card_Bounds*     pPopBounds     (Card_RpnExpr* pCard_RpnTerms);
-    Card_Bound*      pPopBound      (Card_RpnExpr* p_rpnExpr);
-    Card_Constraint* pPopConstraint (Card_RpnExpr* pCard_RpnTerms);
-    Card_Direction*  pPopDirection  (Card_RpnExpr* pCard_RpnTerms);
-    Card_Expr*       pPop_expr       (Card_RpnExpr* p_rpnTerms,
-                                      bool bIsKeyExpr, i8& ri_Expr,
-                                      bool bEnsureDirection);
-    Card_HshCol*     pPopHshCol     (Card_RpnExpr* pCard_RpnTerms);
-    Card_HshColList* pPopHshColList (Card_RpnExpr* pCard_RpnTerms);
-    Card_Key*        pPopKey        (Card_RpnExpr* pCard_RpnTerms,
+    Card_As*         pPop_as        (Card_RpnExpr* p_rpnExpr);
+    Card_Bounds*     pPop_bounds    (Card_RpnExpr* p_rpnExpr);
+    Card_Bound*      pPop_bound     (Card_RpnExpr* p_rpnExpr);
+    Card_Constraint* pPop_constraint(Card_RpnExpr* p_rpnExpr);
+    Card_Direction*  pPop_direction (Card_RpnExpr* p_rpnExpr);
+    Card_Expr*       pPop_expr      (Card_RpnExpr* p_rpnExpr,
+                                     bool bIsKeyExpr, i8& ri_Expr,
                                      bool bEnsureDirection);
-    Card_Emit*       pPopEmit       (Card_RpnExpr* p_rpnTerms);
-    Card_RpnCalc*    pPopRpnCalc    (Card_RpnExpr* pCard_RpnTerms);
-    eCT              ePopType       (Card_RpnExpr* pCard_RpnTerms);
+    Card_HshCol*     pPop_hshCol    (Card_RpnExpr* p_rpnExpr);
+    Card_HshColList* pPop_hshColList(Card_RpnExpr* p_rpnExpr);
+    Card_Key*        pPop_key       (Card_RpnExpr* p_rpnExpr,
+                                     bool bEnsureDirection);
+    Card_Emit*       pPop_emit      (Card_RpnExpr* p_rpnExpr);
+    Card_RpnCalc*    pPop_rpnCalc   (Card_RpnExpr* p_rpnExpr);
+    eCT              ePopColType    (Card_RpnExpr* p_rpnExpr);
 
     void             vCheckArgs     (i8 nArgs);
 
-    i8               iGetInt        (i8 i_Arg);
-    Card_RpnExpr*    pGet_rpnExpr   (i8 i_Arg);
-    Stz*             szGetStz       (i8 i_Arg);
+    Card_RpnExpr*    pArg_rpnExpr   (i8 i_Arg);
+    i8               iArgValue      (i8 i_Arg);
+    Stz*             szArgValue     (i8 i_Arg);
 
-    Card_RpnExpr*   pToRpnExpr    (Stz* szRpnExpr);
+    Card_RpnExpr*    pTo_rpnExpr    (Stz* szRpnExpr);
 
   private:
     Footer* aFooter(void);
