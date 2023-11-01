@@ -1,0 +1,55 @@
+/*============================================================================*/
+/* _ray172                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+// NOTE: Stage S03 ordAgg streamDef_emitted has no columns
+
+/pipeline_def
+/optimise_passthru
+/pipelineName = "_alka1"
+pipeline Q3
+begin
+
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    indexScan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project expr type INTEGER as _custkey C_CUSTKEY
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+    | filter "type BOOLEAN O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+    | project "type INTEGER as _orderkey O_ORDERKEY ,
+         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+         type INTEGER as O_SHIPPRIORITY O_SHIPPRIORITY"
+    | hash expr type INTEGER _orderkey
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
+    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | ordAgg expr ordgroupby type INTEGER _orderkey
+        aggregates type INTEGER as _orderkey $K1 ,
+        type DECIMAL as Revenue ) L_EXTENDEDPRICE 1.0 L_DISCOUNT - * sum ,
+        type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+        type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+//rows: 10
+
+_tpchDrop;
