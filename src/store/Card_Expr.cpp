@@ -752,10 +752,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! pSymbol()->bHasType()) {
-    vDump(__func__);
-    RASSERT(0);
-  }
+  Card::vValidate_hasType();
 
   eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);
 

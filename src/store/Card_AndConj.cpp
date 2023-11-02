@@ -112,9 +112,11 @@ void Card_AndConj::vEnsureTypesFor_stmCol(CardIter *pCI)
 void Card_AndConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
+
   UNUSED(pParent);
+
+  Card::vValidate_hasChildren();
+  Card::eValidate_mustSome(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,CK_NONE);
 
   Kid xRpnCalc(this);
   while (xRpnCalc.bEach()) {

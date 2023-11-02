@@ -825,6 +825,9 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  Card::vValidate_hasType();
+  Card::vValidate_hasChildren();
+
   vValidate_mustHave(CK_TERM, CK_NONE);
 
   RASSERT(pParent->eCard() != CK_WHERE);

@@ -814,9 +814,9 @@ void Card_BoolPred::vX_tblCol_To_stmCol(CardIter* pCI)
 void Card_BoolPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  UNUSED(pCI);
-  UNUSED(iDepth);
-  UNUSED(pParent);
+
+//  Card::vValidate_hasChildren();
+//  Card::eValidate_mustEither(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

@@ -1567,6 +1567,18 @@ void Card::vValidate_hasChildren(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate this card has child cards                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_hasType(void)
+{
+  if (! pSymbol()->bHasType()) {
+    vDump(__func__);
+    NEVER_REACH
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vValidate_mayHave(i8 /*eCK*/ iCard_first, ...)
@@ -1695,6 +1707,52 @@ eCK Card::eValidate_mustEither(i8 /*eCK*/ iCard_first, ...)
   RASSERT(1 == nHas);
 
   va_end(xArgs);
+
+  delete pSubCard_I;
+
+  return eFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+eCK Card::eValidate_mustSome(i8 /*eCK*/ iCard_first, ...)
+{
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  i8 nHas = 0;
+  eCK eFound = CK_NONE;
+
+  va_start(xArgs, iCard_first);
+  eCK eCard_mustHave = (eCK) iCard_first;
+  while (CK_NONE != eCard_mustHave) {
+
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
+      if (eCard_test == eCard_mustHave) {
+        nHas++;
+        eFound = eCard_test;
+      }
+    }
+
+
+    eCard_mustHave = (eCK)va_arg(xArgs, i8);
+  }
+
+  va_end(xArgs);
+
+  if (! nHas)
+    vDump(__func__);
+  RASSERT(nHas);
 
   delete pSubCard_I;
 
