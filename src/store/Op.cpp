@@ -1528,7 +1528,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
 
       BufferId oBufferId;
       oBufferId.m_pvAsAddress = (void*)pPeekOperand;
-      if(1 == oBufferId.m_bIdFlag)
+      if(BufferId::bIsBufferId(oBufferId))
       {
         // Operand is a BufferId
         // Attempt to get its address
