@@ -134,7 +134,7 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* return term0 of <expr> with term0 matching given $n stream-column          */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_EXPRLIST::pDecode_term0_Same_expr_stmCol(Symbol* pSymbol_stmCol)
+Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_stmCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
