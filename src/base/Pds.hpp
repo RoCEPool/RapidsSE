@@ -10,9 +10,9 @@ namespace BASE
 {
   typedef i8 (*CompareFunc)(void* pKey_l, void* pKey_r);
 
-  class Pds : public Object,
-              public InternalHeap_t<SkipListBlock>
+  class Pds : public Object
   {
+    static const i8 C_WSP_INTERNALHEAP = C_SIZE_LARGE_OBJECT - C_10KB;
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
   public:
@@ -26,9 +26,10 @@ namespace BASE
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
 
-//    i8 m_iSyntheticKey; // Synthetic key used when we only append to the Skip List
+    RowPix m_oRowPix;
 
     // Save the last usable offset for asserts
+    PdsConvergentHeap_t<C_WSP_INTERNALHEAP,SkipListBlock,Stz> m_xWsp;
 
     // must be last
     Footer m_xFooter;
@@ -37,14 +38,11 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Pds(i8 nBytes, CompareFunc fpCompare);
+    Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
     ~Pds(void) noexcept(false);
 
-
-
-    // Note: Only the public functions grab a lock
     // public:
-//    SkipListBlock*  pAppendWithSynthKey(void);
+    void*           aAllotStzSet(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
     void            vDumpInUseList(void);
@@ -53,7 +51,14 @@ namespace BASE
     SkipListBlock*  pFindLessThan(void* pKey);
     SkipListBlock*  pFindGreaterThan(void* pKey);
     SkipListBlock*  pFirstBlock(void);
+    i8              nFreeBytes(void);
+    void            vInitPix(RowPix* pRowPix);
+    i8              nItems(void);
+    void*           aLastUsableByteAddr(void);
+    i8              iLastUsableOffset(void);
     i8              iNumEntries(i8 iLevel);
+    void            vStzSetSize(i8 nBytes);
+    i8              iStzSetSize(void);
     void            vValidate(void);
     bool            bVerify(void);
 

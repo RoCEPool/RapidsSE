@@ -47,12 +47,12 @@ void Pds::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pds::Pds(i8 nBytes, CompareFunc fpCompare)
+Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
     : Object(CN_PDS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  ASSERT(CacheLine::bOnCacheLineBoundary(this));
+  RASSERT(CacheLine::bOnCacheLineBoundary(this));
 
   // Assert that there is enough bytes for the default key (i8)
   RASSERT(nBytes >= C_MIN_KEY_LEN);
@@ -76,17 +76,32 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare)
 
   m_iFreeListEntries = 0;
 
-  // Add dummy root nodes to the Free and In Use skip lists
-  // Note: Dummy root blocks have garbage values in their Item section
-  // Could this cause a problem?
-  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
-  m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock());
+  // Initialise the workspace
+  m_xWsp.vInit(m_nBlockSize);
 
-  // Reset the number of entries in both the lists
+  // Add dummy root nodes to the Free and In Use skip lists
+  // Note: Dummy root blocks are zeroed since we don't know what the key type is
+
+  SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
+  MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
+  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
+  // Assert the offset isn't some large garbage value
+  RASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
+
+  SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
+  MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
+  m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
+  RASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
+
+
+  // Reset the number of entries to zero since we don't count the dummy blocks
   m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
   }
+
+  if (pRowPix)
+    vInitPix(pRowPix);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -104,12 +119,39 @@ Pds::~Pds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Allot space for Stz of fixed size, return dst str addr                     */
+/*----------------------------------------------------------------------------*/
+void* Pds::aAllotStzSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  RASSERT(iStzSetSize());
+  if (nFreeBytes() < iStzSetSize())
+    return nullptr;
+
+  void* aStzSet = (void*) m_xWsp.aAllotTail();
+
+  if(aStzSet == nullptr)
+    return nullptr;
+
+  RASSERT(DoubleWord::bOnDoubleWordBoundary(aStzSet));
+
+  return aStzSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove key from in use skip list and move to free list                     */
 /*----------------------------------------------------------------------------*/
 bool Pds::bDelete(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
+
+  // -------------- Sanity check ----------------
+  // Assert the key is greater than the root dummy block key of zero
+  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
+  RASSERT(iCompareRes == -1);
+  // --------------------------------------------
 
   // TODO: Add an assert to check that all the entries are deleted where
   // the entry to delete has a non-zero value in it's respective level.
@@ -259,14 +301,19 @@ SkipListBlock* Pds::pInsert(void* pKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
+  // -------------- Sanity check ----------------
+  // Assert the key is greater than the root dummy block key of zero
+  SkipListBlock* pRootCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  i8 iCompareRes = m_fpCompare(pRootCursor->aItem(), pKey);
+  RASSERT(iCompareRes == -1);
+  // --------------------------------------------
+
   // try to allocate a block as mini-Heap may be full
   SkipListBlock* pNewSLBlock = aAllotSkipListBlock();
   if(pNewSLBlock == nullptr) {
 //    RASSERT(0);
     return nullptr;
   }
-
-//  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
 
   SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 
@@ -475,7 +522,77 @@ SkipListBlock* Pds::pFirstBlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Number of free bytes                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pds::nFreeBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  return m_xWsp.nFreeBytes();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Init the RowPix structure                                                  */
+/*----------------------------------------------------------------------------*/
+void Pds::vInitPix(RowPix* pRowPix)
+{
+  RASSERT(pRowPix);
+
+  m_oRowPix.vCopyRowPix(pRowPix);
+
+  i8 nCols = m_oRowPix.m_nColumns;
+  i8 iTotalStzArea = 0;
+
+  // Calculate total size of string area needed per row
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+    if (DM_VCH == eDatum) {
+      i8 nBytes = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+
+      if (nBytes) {
+        iTotalStzArea += String_d::iBytesToAlloc(nBytes);
+      }
+    }
+  }
+  // Set size of StzSet area
+  vStzSetSize(iTotalStzArea);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pds::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  return m_iNumEntries[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Last usable address in this Pds                                            */
+/*----------------------------------------------------------------------------*/
+void* Pds::aLastUsableByteAddr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  return m_xWsp.aLastUsableByteAddr();
+}
+
+/*----------------------------------------------------------------------------*/
+/* return the last usable offset if we want to store a block of size m_nBlockSize*/
+/*----------------------------------------------------------------------------*/
+i8 Pds::iLastUsableOffset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  void* pLastUsableAddr = aAdd<void*>(aLastUsableByteAddr(), (1 - m_nBlockSize));
+
+  char* aAddr0 = reinterpret_cast<char*>(this);
+  char* aAddr1 = reinterpret_cast<char*>(pLastUsableAddr);
+
+  return aAddr1 - aAddr0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Number of elements at iLevel in this Skip List                             */
 /*----------------------------------------------------------------------------*/
 i8 Pds::iNumEntries(i8 iLevel)
 {
@@ -485,13 +602,32 @@ i8 Pds::iNumEntries(i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Set the size of the StringSet tail area                                    */
+/*----------------------------------------------------------------------------*/
+void Pds::vStzSetSize(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  m_xWsp.vTailSize(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the size of the StringSet tail area                                    */
+/*----------------------------------------------------------------------------*/
+i8 Pds::iStzSetSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  return m_xWsp.iTailSize();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Validate this Skip List                                                    */
 /*----------------------------------------------------------------------------*/
 void Pds::vValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  // Validate free list
+  // Validate in use list
+
   u2 uOffset = m_uInUseRootOffset;
   for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
 
@@ -567,7 +703,7 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
     m_iFreeListEntries--;
     RASSERT(m_iFreeListEntries >= 0);
   } else {
-    pAllocBlock = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
+    pAllocBlock = m_xWsp.aAllotHead();
   }
 
   if (! pAllocBlock) {
@@ -575,9 +711,6 @@ SkipListBlock* Pds::aAllotSkipListBlock(void)
     return nullptr;
   }
 
-//  pAllocBlock->vSetKey(iKey);
-
-//  vTrace("Block addr: %p\n"_Stz, pAllocBlock);
   return pAllocBlock;
 }
 
@@ -604,10 +737,11 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
   char* aAddr0 = reinterpret_cast<char*>(this);
   char* aAddr1 = reinterpret_cast<char*>(aAddress);
 
-  ASSERT((aAddr1 - aAddr0)%16 == 0);
+  RASSERT((aAddr1 - aAddr0)%16 == 0);
   i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
-  ASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
-  // TODO: Assert offset is in the range [0, LastUsableOffset];
+
+  RASSERT((iOffset >= 0) && (iOffset <= iLastUsableOffset()));
+
   return (u2) iOffset;
 }
 
@@ -623,7 +757,6 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLBlock)
     pSLBlock->m_xNode.vNext(i_Level, 0);
   }
 
-//  MemLib::vZero(pSLBlock,m_nBlockSize,  CN_NONE);
 
   SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 
@@ -724,7 +857,10 @@ i8 Pds::iIntCompare(void* aItem_l, void* aItem_r)
   i8 iKey_l = *(i8*) aItem_l;
   i8 iKey_r = *(i8*) aItem_r;
 
-  // do the node names match?
+  // Key value of 0 is used for the dummy root blocks
+  RASSERT(iKey_r != 0);
+
+  // do the node keys match?
   if (iKey_l == iKey_r)
     return 0;
 

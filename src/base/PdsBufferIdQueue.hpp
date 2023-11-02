@@ -27,6 +27,7 @@ namespace BASE
     DataBuffer* pCompletedBuffer(void);
     DataBuffer* pDanglingBuffer(void);
     DataBuffer* pDataBuffer(void);
+    void        vDump(void);
     bool        bIsEmpty(void);
 
     Footer* aFooter(void);

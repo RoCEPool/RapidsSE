@@ -132,6 +132,7 @@ extern d8 C_D8_MID;
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
+#include "String_d.hpp"
 #include "Atomic.hpp"
 #include "NextGid.hpp"
 #include "Numbering.hpp"
@@ -298,15 +299,6 @@ extern d8 C_D8_MID;
 
 // -- -- -- -- -- -- -- --
 
-#include "Pds.hpp"
-#include "Pds.hpp"
-#include "Pds_t.hpp"
-#include "Pds_t.hpp"
-#include "PdsCursor.hpp"
-#include "PdsItem_BufferId.h"
-#include "PdsBufferIdQueue.hpp"
-// -- -- -- -- -- -- -- --
-
 #include "Dir.hpp"
 #include "Fifo.hpp"
 #include "File.hpp"
@@ -343,6 +335,16 @@ extern d8 C_D8_MID;
 #include "RowPix.hpp"
 
 #include "Column.hpp"
+// -- -- -- -- -- -- -- --
+#include "PdsConvergentHeap_t.hpp"
+#include "Pds.hpp"
+#include "Pds.hpp"
+#include "Pds_t.hpp"
+#include "Pds_t.hpp"
+#include "PdsCursor.hpp"
+#include "PdsItem_BufferId.h"
+#include "PdsBufferIdQueue.hpp"
+#include "PdsRowHelper.hpp"
 
 //------------------------------------------------------------------------------
 
