@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* _T4 - refactor boolPred test                                               */
+/*============================================================================*/
+
+create table T4 (
+  a INTEGER NOT NULL,
+  b INTEGER NOT NULL,
+  c INTEGER NOT NULL,
+  d INTEGER NOT NULL
+)
+;
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/pipelineName = "_T4"
+select *
+  from T4
+ where (a = 1 and b = 2)
+    or (a = 1 and c = 3)
+    or (a = 1 and d = 4)
+;
+
+drop table T4;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
