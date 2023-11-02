@@ -351,7 +351,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     }
     else {
       //x_Symbol_stmCol1.vSet_Col_No(1);
-      p_term1->SYM(SF_STM_COL, (i8)1);
+      p_term1->SYM(SF_EXP_COL, (i8)1);
     }
 
     Card_Expr* p_expr_found =
@@ -380,7 +380,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
       p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
     }
     else {
-      Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
+      Symbol x_Symbol_stmCol1(SF_EXP_COL, 1);
       p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
     }
 
@@ -405,7 +405,7 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
 
-    Symbol x_Symbol_stmCol1(SF_STM_COL, 1);
+    Symbol x_Symbol_stmCol1(SF_EXP_COL, 1);
     if (p_term)
       x_Symbol_stmCol1.vFacetsPpy(p_term->pSymbol());
     p_term_head->pSymbol()->vFacetsPpy(&x_Symbol_stmCol1);

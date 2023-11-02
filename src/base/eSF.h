@@ -28,6 +28,7 @@ enum eSF // symbol facet
 
   /* */ SF_ELSE,        // Else                : ELSE
   /* */ SF_ENDIF,       // EndIf               : ENDIF
+  /* */ SF_EXP_COL,     // Expr Column No      : $n
 
   /* */ SF_FLD_NM,      // XF_Fold Name           :
   /* */ SF_FLT_LIT,     // Float Literal       : StrLib::bIsFloat()
@@ -65,7 +66,6 @@ enum eSF // symbol facet
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_STG_CAST,    // Stage Cast          : BROADCAST, HASHCAST
   /* */ SF_STG_NO,      // Stage No            : Sn
-  /* */ SF_STM_COL,     // Stream Column No    : $n
   /* */ SF_STR_FN,      // String Function     : SUBSTRING2 ... SUBSTRING3
   /* */ SF_STR_LIT,     // String              : 'abc'
 

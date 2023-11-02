@@ -102,7 +102,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
   //pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, Symbol(SF_NMD_COL, "__RESULT1"_Stz));
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_STM_COL, "$1"_Stz));
+  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
 
   Card_Expr* p_expr_found =
       pCI->Flux.m_pArriving->pGet_expr((i8) 0);
@@ -111,7 +111,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 
   pCI->G.p_rpnCalc->pSymbol()->vColType(p_expr_found->eColType());
 
-  pCI->G.p_expr-> SYM(SF_STM_COL,(i8)1);
+  pCI->G.p_expr-> SYM(SF_EXP_COL, (i8)1);
   pCI->G.p_expr->pSymbol()->vColType(p_expr_found->eColType());
 
   pCI->G.p_expr->pSymbol()->vAppendFacet(SF_NMD_COL, "__RESULT1"_Stz);

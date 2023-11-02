@@ -505,102 +505,6 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
   }
 }
-/*----------------------------------------------------------------------------*/
-//void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  pCI->vBeginEach();
-//  while (pCI->G_bEachSubOfMain(CK_TABLE))
-//    if ((pCI->G.p_emit = pCI->G.p_table->pSub_emit()))
-//      pCI->G.p_table->vDeleteChild(pCI->G.p_emit);
-//
-//  pCI->vClearRestart();
-//  while (pCI->G_bEachMain_NONE()) {
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//    if (CK_KEYEXISTS == pCI->G.e_MainCard ||
-//        CK_KEYNOTEXISTS == pCI->G.e_MainCard) {
-//
-//      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pPropagate(pCI));
-//
-//      if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
-//        if (pCI->Flux.m_pArriving) {
-//          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
-//        }
-//      }
-//
-//      continue;
-//    }
-//
-//    if (CK_SCAN == pCI->G.e_MainCard ||
-//        CK_INDEXJOIN == pCI->G.e_MainCard ||
-//        CK_INDEXSCAN == pCI->G.e_MainCard) {
-//      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
-//      pCI->G.p_OP->vUpdate_emitted(pCI);
-//
-//      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-//
-//      if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
-//        if (pCI->Flux.m_pArriving) {
-//          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
-//        }
-//      }
-//
-//      continue;
-//    }
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    if (pCI->G.p_MainCard->bIsCard(CK_HASH)) {
-//      pCI->G.p_hshCol = pCI->G.p_MainCard->pSub_hshCol();
-//      //pCI->G.p_hshCol->vDump(__func__);
-//      continue;
-//    }
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//    if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
-//      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-//        pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
-//
-//      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
-//
-//      //continue;
-//    }
-//
-//    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_NONE)) {
-//      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
-//    }
-//    else
-//    if (CK_SORT == pCI->G.e_MainCard || CK_TOP == pCI->G.e_MainCard) {
-//      Card_Emit* p_emitted_propagated =
-//          pCI->Flux.m_pArriving->pPropagate(pCI);
-//      p_emitted_propagated->vAdjust_Wrt_key(pCI->G.p_MainCard->pSub_key());
-//
-//      pCI->G.p_MainCard->vAppendChild(p_emitted_propagated);
-//    }
-//
-//    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-//      if (pCI->Flux.m_pArriving) {
-//        pCI->G.p_key->vTypes_For_stmCol(pCI);
-//        pCI->G.p_key->vRenumberAll_expr();
-//      }
-//    }
-//
-//    if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
-//
-//      if (pCI->Flux.m_pArriving) {
-//        pCI->G.p_emit->vEnsureTypes_For_stmCol(pCI);
-//        pCI->G.p_emit->vRenumberAll_expr();
-//      }
-//
-//      pCI->Flux.m_pArriving = pCI->G.p_MainCard->pSub_emit();
-//    }
-//
-//  }
-//}
-
 
 /*----------------------------------------------------------------------------*/
 /* update projections after some change                                       */
@@ -835,7 +739,6 @@ void Card_Deck::vValidate(CardIter* pCI)
 
   vMarksClearRecursive();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

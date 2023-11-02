@@ -61,7 +61,7 @@ Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr = new Card_Expr;
-    Symbol xSymbol(SF_STM_COL, i_Col + 1);
+    Symbol xSymbol(SF_EXP_COL, i_Col + 1);
     p_expr->pSymbol()->vFacets(&xSymbol);
     p_injected->vAppendChild(p_expr);
 

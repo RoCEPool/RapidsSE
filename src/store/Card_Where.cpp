@@ -192,7 +192,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     // replace sqCall with sqResult
     pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NM);
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_SQY_RSL, (i8)1);
-    pCI->Sqy.m_pTerm_sqyCall->SYM(SF_STM_COL, (i8)1);
+    pCI->Sqy.m_pTerm_sqyCall->SYM(SF_EXP_COL, (i8)1);
 
     Card_Expr* p_expr_0 = pCI->Flux.m_pArriving->pGet_expr((i8) 0);
     pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vColType(p_expr_0->eColType());

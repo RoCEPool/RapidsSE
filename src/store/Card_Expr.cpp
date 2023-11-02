@@ -122,7 +122,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   RASSERT(CT_NONE != p_expr->eColType());
 
-  Symbol xSymbol_Dn(SF_STM_COL, i_Col);
+  Symbol xSymbol_Dn(SF_EXP_COL, i_Col);
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
@@ -535,7 +535,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   // primary facet
 
   s32 sType_short = szCT_char[pSymbol->eColType()];
-  i8 i_Facet = pSymbol->i_Facet(SF_STM_COL);
+  i8 i_Facet = pSymbol->i_Facet(SF_EXP_COL);
 
   if (C_UNKNOWN != i_Facet) {
     pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s~%lld"_Stz,
@@ -544,7 +544,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
                             Stz::szDots(iDepth - 1),
                             m_i_Child,
                             szCardNm(),
-                            szFacet(SF_STM_COL),
+                            szFacet(SF_EXP_COL),
                             sType_short.szStz(),
                             i_Facet);
   }
@@ -565,7 +565,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   for (i_Facet = 0; i_Facet < nFacets; i_Facet++) {
     Facet* aFacet = pSymbol->aFacet(i_Facet);
-    if (SF_STM_COL == aFacet->m_eFacet)
+    if (SF_EXP_COL == aFacet->m_eFacet)
       continue;
     pRibbon->vSprintSnippet(true, "%s~%lld"_Stz,
                             aFacet->m_sChrSeq.szStz(),
@@ -604,7 +604,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol xExprNo(SF_STM_COL, i_Expr + 1);
+  Symbol xExprNo(SF_EXP_COL, i_Expr + 1);
 
   Card_Expr* p_expr_reduced = new Card_Expr;
   p_expr_reduced->pSymbol()->vFacets(&xExprNo);
@@ -643,7 +643,7 @@ void Card_Expr::vRenumberForm_stmCol(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  SYM(SF_STM_COL, i_Expr);
+  SYM(SF_EXP_COL, i_Expr);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -81,7 +81,7 @@ void Card_RpnCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
 
-    if (xKid.p_term()->pSymbol()->bIs_Stm_Col()) {
+    if (xKid.p_term()->pSymbol()->bIs_Exp_Col()) {
       xKid.p_term()->vBump_stmCol(nBumpBy);
       xKid.p_term()->vMark1(MARK_CHANGED);
     }
@@ -425,7 +425,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
   Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
   p_rpnCalc_reduced->vColType(this);
 
-  Card_Term* p_term =(new Card_Term) -> SYM(SF_STM_COL, i_Expr + 1);
+  Card_Term* p_term =(new Card_Term) -> SYM(SF_EXP_COL, i_Expr + 1);
   p_term->vColType(this);
 
   p_rpnCalc_reduced->vAppendChild(p_term);
@@ -458,8 +458,8 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
   p_rpnCalc_propagated->vColType(this);
 
   eSF eSymbol = Symbol::eEvalSymbol(p_expr_encasing->szFacet(SF_NONE));
-  RASSERT(SF_STM_COL == eSymbol);
-  Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_STM_COL, p_expr_encasing->szFacet(SF_NONE));
+  RASSERT(SF_EXP_COL == eSymbol);
+  Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_EXP_COL, p_expr_encasing->szFacet(SF_NONE));
   p_term_propagated->vColType(this);
 
   p_rpnCalc_propagated->vAppendChild(p_term_propagated);
@@ -795,7 +795,7 @@ void Card_RpnCalc::vX_stmCol_To_tblCol(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM)) {
-    if (!xKid.p_term()->pSymbol()->bIs_Stm_Col())
+    if (!xKid.p_term()->pSymbol()->bIs_Exp_Col())
       continue;
 
     xKid.p_term()->vX_stmCol_To_tblCol(pCI);

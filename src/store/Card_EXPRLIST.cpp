@@ -79,7 +79,7 @@ void Card_EXPRLIST::vBump_stmCol_In_rpnCalc(CardIter* )
     while (xCI2.bEach(CK_TERM)) {
 //      Stz *szTerm = xCI2.G.p_term->szFacet(SF_NONE);
 
-      if (xCI2.p_term()->pSymbol()->bIs_Stm_Col()) {
+      if (xCI2.p_term()->pSymbol()->bIs_Exp_Col()) {
         xCI2.p_term()->vBump_stmCol();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
@@ -138,7 +138,7 @@ Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_stmCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(pSymbol_stmCol->bIs_Stm_Col());
+  RASSERT(pSymbol_stmCol->bIs_Exp_Col());
 
   if (Card_Expr* p_expr_stmCol = pGet_expr(pSymbol_stmCol)) {
     if (p_expr_stmCol->bIsScalarCol()) {

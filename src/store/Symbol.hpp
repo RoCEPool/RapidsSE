@@ -64,6 +64,7 @@ namespace STORE
     static bool bIs_Direction(Stz* szChrSeq);       // asc, desc
     static bool bIs_Else(Stz* szChrSeq);            // ELSE
     static bool bIs_EndIf(Stz* szChrSeq);           // ENDIF
+    static bool bIs_Exp_Col(Stz* szArg);            // $n
     static bool bIs_Fld_Nm(Stz* szChrSeq);          // bIsName() but not bIs_Agg_Fn() etc
     static bool bIs_Flt_Lit(Stz* szChrSeq);         // StrLib::bIsFloat()
     static bool bIs_GroupBy(Stz* szChrSeq);         // GROUPBY
@@ -92,7 +93,6 @@ namespace STORE
     static bool bIs_Sqy_Rsl(Stz* szChrSeq);         // __n
     static bool bIs_Stg_Cast(Stz* szChrSeq);        // BROADCAST, HASHCAST
     static bool bIs_Stg_Nm(Stz* szArg);             // Sn
-    static bool bIs_Stm_Col(Stz* szArg);            // $n
     static bool bIs_Str_Fn(Stz* szChrSeq);          // SUBSTRING2 ... SUBSTRING3
     static bool bIs_String(Stz* szChrSeq);          // 'abc'
     static bool bIs_Tbl_Col(Stz* szArg);            // $c.n
@@ -175,6 +175,7 @@ namespace STORE
     bool bIs_Direction(void);       // asc, desc
     bool bIs_Else(void);            // ELSE
     bool bIs_EndIf(void);           // ENDIF
+    bool bIs_Exp_Col(void);         // $n
     bool bIs_Fld_Nm(void);          // bIsName() but not bIs_Agg_Fn() etc
     bool bIs_Flt_Lit(void);         // StrLib::bIsFloat()
     bool bIs_GroupBy(void);         // GROUPBY
@@ -203,7 +204,6 @@ namespace STORE
     bool bIs_Sqy_Rsl(void);         // __n
     bool bIs_Stg_Cast(void);        // BROADCAST, HASHCAST
     bool bIs_Stg_Nm(void);          // Sn
-    bool bIs_Stm_Col(void);         // $n
     bool bIs_Str_Fn(void);          // SUBSTRING2 ... SUBSTRING3
     bool bIs_String(void);          // 'abc''
     bool bIs_Tbl_Col(void);         // $t.c
@@ -279,6 +279,7 @@ namespace STORE
     void vFacet_Direction(Stz* szDirection);
     void vFacet_Else(Stz* szElse);
     void vFacet_EndIf(Stz* szEndIf);
+    void vFacet_Exp_Col(Stz* szExpCol);
     void vFacet_Fld_Nm(Stz* szFldNm);
     void vFacet_Flt_Lit(Stz* szFltLit);
     void vFacet_GroupBy(Stz* szGroupBy);
@@ -316,7 +317,6 @@ namespace STORE
     void vFacet_Sqy_Rsl(Stz* szSqyRsl);
     void vFacet_Stg_Cast(Stz* szStgCast);
     void vFacet_Stg_Nm(i8 iStgNo);
-    void vFacet_Stm_Col(Stz* szStmCol);
     void vFacet_Stm_Col(i8 iStmCol);
     void vFacet_Str_Fn(Stz* szStrFn);
     void vFacet_String(Stz* szString);

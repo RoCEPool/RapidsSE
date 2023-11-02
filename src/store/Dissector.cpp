@@ -1386,7 +1386,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_expr->pSymbol()->vFacets(&xSymbol_stmCol);
   }
   else {
-    Symbol xSymbol_stmCol(SF_STM_COL, ri_Expr);
+    Symbol xSymbol_stmCol(SF_EXP_COL, ri_Expr);
     p_expr->pSymbol()->vFacets(&xSymbol_stmCol);
   }
 
