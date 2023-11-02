@@ -118,6 +118,7 @@ public:
   // api
   void vApiDeleteJob(void);
   void vApiForkChild(void);
+  void vApiForkChildNestedSql(void);
   void vApiForkDemon(void);
   void vApiForkChild2PC(void);
   void vApiReapableJobFetch(void);

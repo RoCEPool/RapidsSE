@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_StartMarker
 
+  //STD_NORMALFORK_WAIT_TAG "select * from uniqueTable;" NestedSql[]
   0 locals| errorCode |
 
   PipeIn[].pipeOut
@@ -42,6 +43,69 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: dropTable_waitFinished_End \handler
+
+  //"EV_M_END" .verbose
+
+  true LogicUnit[].RcvdEnd!
+
+  // if received all child exits then pipeout END
+  //   else wait till all child exits have been received
+  LogicUnit[].RcvdChildExit@ if
+     PipeIn[].pipeout
+  else
+    PipeIn[].delete
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_X_CHILDEXIT ...                                       EV_X_CHILDEXIT */
+/*----------------------------------------------------------------------------*/
+: dropTable_ChildExit \handler
+
+  0 EV_X_CHILDEXIT EG_ZK LogicUnit[].diaryNote
+
+  true LogicUnit[].RcvdChildExit!
+
+  nullptr [job].responseOp!
+
+  LogicUnit[].RcvdEnd@ if
+    Marker[].newEndMarker
+    Marker[].pipeout
+  then
+
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: dropTable_StreamDef \handler
+
+  //"Operand:- EV_D_STREAMDEF" .verbose
+  PipeIn[].pipeToOutput
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_ROWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: dropTable_RowBuffer \handler
+
+  //"Operand:- EV_D_ROWBUFFER" .verbose
+  PipeIn[].pipeToOutput
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for dropTable req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : dropTable_op \operator
@@ -51,6 +115,10 @@
   op__topology
 
   find: dropTable_StartMarker   EV_M_START   [op].handler!
+  //find: dropTable_StreamDef     EV_D_STREAMDEF     [op].handler!
+  //find: dropTable_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  //find: dropTable_ChildExit    EV_X_CHILDEXIT     [op].handler!
+  //find: dropTable_waitFinished_End       EV_M_END       [op].handler!
   find: dropTable_DestroyMarker EV_M_DESTROY [op].handler!
 
   op__loop

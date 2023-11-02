@@ -128,6 +128,9 @@ Op::~Op(void) noexcept(false)
 
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
+      if (BufferId::bIsBufferId(pOperand)) {
+        pOperand = _pOperand(AM::pHashMap()->pValueAt(pOperand));
+      }
       if (pOperand->bIsMarker()) {
         if ((_pMarker(pOperand))->eOpMarker() == OM_CHILDEXIT)
           AM::vDeleteOperand(pOperand, nullptr);

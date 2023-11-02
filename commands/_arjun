@@ -20,9 +20,30 @@ create table uniqueTable (
   vch_col14  VARCHAR(32),
   vch_col15  VARCHAR(32)
 );
-
 load uniqueTable "../DATA/Datums/datums.csv" ;
+create table uniqueTable2 (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+load uniqueTable2 "../DATA/Datums/datums.csv" ;
+drop table uniqueTable2;
 select * from uniqueTable;
+
+drop table uniqueTable2;
 
 /time pipeline unamed
 begin
@@ -277,3 +298,19 @@ create table VchTbl (
 Load VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 
 select * from VchTbl;
+
+
+/optimise_passthru
+pipeline NestedSql
+begin
+ stage S00 on origin :
+   start | pulse once | next
+
+  stage S01 on all partitions :
+    | catfile "/Users/arjun/Boray/rapidsse/commands/_arjun"
+    | next
+
+  stage S02 on origin :
+    output | sink | stageA
+end ;
+
