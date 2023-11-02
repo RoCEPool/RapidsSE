@@ -619,23 +619,21 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 
   while (pCI->G_bEachMain_NONE()) {
 
-    if (CK_FOLD == pCI->G.e_MainCard) {
+    if (CK_FOLD == pCI->G.e_MainCard)
       continue;
-    }
 
     switch (pCI->G.e_MainCard) {
 
-      case CK_AGGREG:
-        pCI->G.p_aggreg->Card_Aggreg::vUpdate_emitted(pCI); break;
-      case CK_GBYAGG:
-        pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_emitted(pCI); break;
-      case CK_HAVING:
-        pCI->G.p_having->Card_Having::vUpdate_emitted(pCI); break;
-      case CK_ORDAGG:
-        pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_emitted(pCI); break;
-      case CK_PROJECT:
-        pCI->G.p_project->Card_Project::vUpdate_emitted(pCI); break;
+      case CK_LIMIT:   break;
       case CK_SORT:    break;
+
+      case CK_AGGREG:  pCI->G.p_aggreg->Card_Aggreg::vUpdate_emitted(pCI); break;
+      case CK_GBYAGG:  pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_emitted(pCI); break;
+      case CK_HAVING:  pCI->G.p_having->Card_Having::vUpdate_emitted(pCI); break;
+      case CK_ORDAGG:  pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_emitted(pCI); break;
+      case CK_PROJECT: pCI->G.p_project->Card_Project::vUpdate_emitted(pCI); break;
+      case CK_WHERE:   pCI->G.p_where->Card_Where::vUpdate_emitted(pCI); break;
+
       case CK_FROM:
         pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
         //pCI->vPrintBoard(__LINE__);
@@ -649,11 +647,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
             }
           }
         }
-
         break;
-
-      case CK_WHERE:
-        pCI->G.p_where->Card_Where::vUpdate_emitted(pCI); break;
 
       default:
         if (pCI->G.p_MainCard->pSub_emit()) {
