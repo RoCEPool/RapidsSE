@@ -152,7 +152,7 @@ void XF::vTransform(void)
   m_pCI->vBoardIteration();                        //
   while (m_pCI->bEachBoard()) {                    //
     XF_Prolog_X_board_To_sqyNm::vConvert(m_pCI);   //
-    //XF_Prolog_Validate_Board::vValidate(m_pCI);    //
+    XF_Prolog_Validate_Board::vValidate(m_pCI);    //
   }                                                //
                                                    //
   m_pCI->vBoardIteration();                        //
