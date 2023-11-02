@@ -522,7 +522,8 @@ class JobRunner:
             minutes_left = int((end_time - current_time).total_seconds() / 60)
             if minutes_left != last_minutes_left:
                 last_minutes_left = minutes_left
-                LOG.info(f"Job has approximately {minutes_left} minutes left to finish.")
+                LOG.info(f"Job has approximately {minutes_left} minutes left until job runtime limit "
+                         f"and forceful shutdown.")
 
             # Test thread still running and SE not crashed. Try again in a little bit.
             time.sleep(C_TEST_MONITORING_SLEEP_IVL)

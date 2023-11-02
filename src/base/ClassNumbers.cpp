@@ -260,6 +260,8 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "PDS"_Stz,                  // CN_PDS
 		/* */ "PDSBUFFERIDQUEUE"_Stz,     // CN_PDSBUFFERIDQUEUE
     /* */ "PDSCURSOR"_Stz,            // CN_PDSCURSOR
+    /* */ "PDSCONVERGENTHEAP_t"_Stz,  // CN_PDSCONVERGENTHEAP_t
+    /* */ "PDSROWHELPER"_Stz,         // CN_PDSROWHELPER
     /* */ "PERMGEN"_Stz,              // CN_PERMGEN
     /* */ "PERMIT"_Stz,               // CN_PERMIT
     /* */ "PERUSE"_Stz,               // CN_PERUSE
@@ -390,6 +392,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
     /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
     /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
     /* */ "STREAMSET"_Stz,            // CN_STREAMSET
+    /* */ "STRING_D"_Stz,             // CN_STRING_D
     /* */ "STRING_T"_Stz,             // CN_STRING_T
     /* */ "STRLIB"_Stz,               // CN_STRLIB
     /* */ "STZLIST"_Stz,              // CN_STZLIST
