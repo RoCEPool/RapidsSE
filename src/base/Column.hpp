@@ -5,6 +5,7 @@
 
 #include "eCT.h"
 #include "eDM.h"
+#include "TypeId.hpp"
 
 namespace STORE { class InfoSet; }
 
@@ -16,6 +17,7 @@ namespace BASE
     i8    m_iColumnNo;      // this columns subscript
     s32   m_sColumnNm;      // name of the column
     eCT   m_eColumnType;    // column type (CT_INTEGER etc)
+		Parser::TypeId m_xColumnTypeId; // column type id
 
     bool  m_bIsUnique;      // is column unique?
     bool  m_bIsLastColumn;  // is last column
@@ -65,6 +67,9 @@ namespace BASE
   
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);
+
+		Parser::TypeId xColumnTypeId(void);
+		void vColumnTypeId(Parser::TypeId xTypeId);
 
     void vCopy(Column* pCol);
     void vCopy(Column* pCol, Stz* sColPrefix);

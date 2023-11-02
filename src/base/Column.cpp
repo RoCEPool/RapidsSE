@@ -25,6 +25,7 @@ Column::Column(void)
   m_iColumnNo     = C_UNKNOWN;
   m_sColumnNm     = C_NO_NAME;
   m_eColumnType   = CT_NONE;
+	//m_xColumnTypeId;
 
   m_bIsUnique     = false;
   m_bIsLastColumn = false;
@@ -285,6 +286,28 @@ void Column::vColumnType(eCT eColumnType)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
   m_eColumnType = eColumnType;
+	m_xColumnTypeId = Parser::TypeId::xIdOf(eColumnType);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column typeId                                                          */
+/*----------------------------------------------------------------------------*/
+Parser::TypeId Column::xColumnTypeId(void)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+	return m_xColumnTypeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column typeId                                                          */
+/*----------------------------------------------------------------------------*/
+void Column::vColumnTypeId(Parser::TypeId xTypeId)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+	m_eColumnType = xTypeId.eCTVal();
+	m_xColumnTypeId = xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,6 +320,7 @@ void Column::vCopy(Column* pCol)
   m_iColumnNo       = pCol->m_iColumnNo;
   m_sColumnNm       = pCol->m_sColumnNm;
   m_eColumnType     = pCol->m_eColumnType;
+	m_xColumnTypeId   = pCol->m_xColumnTypeId;
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;
   m_eDatum          = pCol->m_eDatum;
@@ -324,6 +348,7 @@ void Column::vCopy(Column* pCol, Stz* sColPrefix)
   m_sColumnNm.vConcat(pCol->m_sColumnNm);
 
   m_eColumnType     = pCol->m_eColumnType;
+	m_xColumnTypeId   = pCol->m_xColumnTypeId;
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;
   m_eDatum          = pCol->m_eDatum;
@@ -446,13 +471,14 @@ void Column::vListContents(i8 i_Depth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
-  vTrace("%sColumn %02lld %s type %s"
+  vTrace("%sColumn %02lld %s type %s typeId %s"
          " length %lld scale %lld datum %s %s %s %s\n"_Stz,
          Stz::szTab(i_Depth),
 
          m_iColumnNo,
          m_sColumnNm.szStz(),
          aCT[m_eColumnType],
+				 m_xColumnTypeId.szTypeName(),
          m_iColumnLength,
          m_iColumnScale,
          aDM[m_eDatum],
@@ -469,6 +495,7 @@ void Column::vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnS
 
   m_sColumnNm     = sColumnNm;
   m_eColumnType   = eColumnType;
+	m_xColumnTypeId = Parser::TypeId::xIdOf(eColumnType);
   m_iColumnLength = iColumnLength;
   m_iColumnScale  = iColumnScale;
 
@@ -481,10 +508,11 @@ void Column::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
-  vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
+  vTrace("Column %02lld %s type %s typeId %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
          m_sColumnNm.szStz(),
          aCT[m_eColumnType],
+				 m_xColumnTypeId.szTypeName(),
          m_iColumnLength,
          m_iColumnScale,
          aDM[m_eDatum],
