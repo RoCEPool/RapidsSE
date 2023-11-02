@@ -26,6 +26,8 @@ Card_NotConj::Card_NotConj(void)
 
   _checkInitialised_(CN_CARD);
 
+  pSymbol()->vAppendFacet(SF_BOL_OP,"not"_Stz);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
