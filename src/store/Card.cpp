@@ -1813,6 +1813,45 @@ void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
+{
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  eCK eFound = CK_NONE;
+
+  va_start(xArgs, iCard_first);
+  eCK eCard_either = (eCK) iCard_first;
+  while (CK_NONE != eCard_either) {
+
+    if (pCI->pAncestorFind(eCard_either)) {
+      eFound = eCard_either;
+    }
+
+    eCard_either = (eCK)va_arg(xArgs, i8);
+  }
+
+  if (CK_NONE == eFound) {
+    pCI->vAncestorDump(this);
+    vValidationFailed("%s"_Stz,__func__);
+  }
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+
+  return eFound;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validation has failed                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vValidationFailed(Stz *szFormat, ...)
@@ -1826,9 +1865,7 @@ void Card::vValidationFailed(Stz *szFormat, ...)
   sError.vSprintVA(szFormat,xArgs);
   va_end(xArgs);
 
-  vTrace(sError);
-
-  vDump(__func__ );
+  vDump(__func__,sError);
 
   NEVER_REACH;
 }

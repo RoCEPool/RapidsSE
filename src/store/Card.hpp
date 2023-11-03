@@ -394,6 +394,7 @@ namespace STORE
     eCK  eValidate_mustSome(i8 /*eCK*/ iCard_first, ...);
     void vValidate_noChildren(void);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
+    eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);

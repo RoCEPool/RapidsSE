@@ -69,6 +69,9 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 
   m_pCI->vClearRestart();
 
+  while (m_pCI->G_bEachMain_NONE()) {
+  }
+
   m_pCI->vEndTransform(__LINE__);
 
   return bOptRun;
