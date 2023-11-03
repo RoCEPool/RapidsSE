@@ -176,6 +176,22 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(void)
 
   RASSERT(m_pCI->G.p_boolPred);
 
+  Card* pChild = m_pCI->G.p_boolPred->pPeekChild();
+  if (!pChild)
+    return;
+
+  eCK eChild = pChild->eCard();
+  switch (eChild) {
+    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild)); break;
+    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild)); break;
+    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild));  break;
+    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+
+    case CK_TERM: break;
+
+    default:
+      NEVER_REACH
+  }
 
   m_pCI->G.p_boolPred = nullptr;
 }
@@ -183,38 +199,119 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_andConj(void)
+void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
+  Card* pChild = p_andCon->pPeekChild();
+  if (!pChild)
+    return;
+
+  eCK eChild = pChild->eCard();
+  switch (eChild) {
+    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild)); break;
+    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild)); break;
+    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild));  break;
+    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+
+    case CK_TERM: break;
+
+    default:
+      NEVER_REACH
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_notConj(void)
+void XF_Optimise_Factor_boolPred::vFactor_notConj(Card_NotConj* p_notConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
+  Card* pChild = p_notConj->pPeekChild();
+  if (!pChild)
+    return;
+
+  eCK eChild = pChild->eCard();
+  switch (eChild) {
+    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild)); break;
+    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild)); break;
+    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild));  break;
+    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+
+    case CK_TERM: break;
+
+    default:
+      NEVER_REACH
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_orConj(void)
+void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
+  Card* pChild = p_orConj->pPeekChild();
+  if (!pChild)
+    return;
+
+  eCK eChild = pChild->eCard();
+  switch (eChild) {
+    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild)); break;
+    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild)); break;
+    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild));  break;
+    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+
+    case CK_TERM: break;
+
+    default:
+      NEVER_REACH
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_rlnConj(void)
+void XF_Optimise_Factor_boolPred::vFactor_rlnConj(Card_RlnConj* p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
+  Card* pChild = p_rlnConj->pPeekChild();
+  if (!pChild)
+    return;
+
+  eCK eChild = pChild->eCard();
+  switch (eChild) {
+    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild)); break;
+    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild)); break;
+    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild));  break;
+    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+
+    case CK_TERM: break;
+
+    default:
+      NEVER_REACH
+  }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Factor_boolPred::vRotate_a(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Factor_boolPred::vRotate_b(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
