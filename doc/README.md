@@ -207,3 +207,19 @@ On Craig's Mac, the alabaster theme is found in
 introduction to documentation as a whole.
 
 The railroad diagram generator came from [here](https://github.com/GuntherRademacher/rr)
+
+## AWS TexLive Generation
+These are the instructions for how to generate a TexLive portable installation
+that can then be placed in an S3 bucket (rapidsse-build-support) for use in 
+AWS EC2 instances.
+
+Refer to https://tug.org/texlive/
+
+1. `cd /tmp`
+2. `wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz`
+3. `tar xvzf install-tl-unx.tar.gz`
+4. `cd install-tl-*`
+5. `perl ./install-tl --no-interaction -no-doc-install -no-src-install -portable -texdir /mnt/disk1/tmp/texlive`
+6. `cd /tmp`
+7. `tar cvzf texlive.[version].[os].[platform].tar.gz texlive`
+
