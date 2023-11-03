@@ -830,7 +830,8 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   vValidate_mustHave(CK_TERM, CK_NONE);
 
-  RASSERT(pParent->eCard() != CK_WHERE);
+  (void)Card::eValidate_parentEither(pCI,CK_EMIT,CK_FOLD,CK_INJECTABLE,
+                                     CK_KEY,CK_NEEDED,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
