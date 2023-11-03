@@ -1,12 +1,13 @@
 /*============================================================================*/
-/* _T4 - refactor boolPred test                                               */
+/* _T5 - refactor boolPred test                                               */
 /*============================================================================*/
 
-create table T4 (
+create table T5 (
   a INTEGER NOT NULL,
   b INTEGER NOT NULL,
   c INTEGER NOT NULL,
-  d INTEGER NOT NULL
+  d INTEGER NOT NULL,
+  e INTEGER NOT NULL
 )
 ;
 
@@ -14,15 +15,15 @@ create table T4 (
 /transliterated
 /weaved
 /pipeline_def
-/pipelineName = "_T4"
+/pipelineName = "_T5"
 select *
-  from T4
- where (a = 1 and b = 2)
-    or (a = 1 and c = 3)
-    or (a = 1 and d = 4)
+  from T5
+ where (a = 1 and b = 2 and e = 1)
+    or (a = 1 and c = 3 and e = 2)
+    or (a = 1 and d = 4 and e = 3)
 ;
 
-drop table T4;
+drop table T5;
 
 /*============================================================================*/
 /* end                                                                        */
