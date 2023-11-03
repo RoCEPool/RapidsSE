@@ -253,6 +253,11 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     vValidationFailed("Filter is at depth %lld"_Stz, iDepth);
   }
 
+  if (iDepth > 1)
+    (void)Card::eValidate_parentEither(pCI,CK_CROSSJOIN,CK_FROM,CK_HAVING,
+                                           CK_INDEXJOIN,CK_INDEXSCAN,CK_SCAN,CK_WHERE,
+                                       CK_NONE);
+
   if (CK_DECK == pParent->eCard()) {
     vValidate_mustHave(CK_LEVEL, CK_STREAM, CK_NONE);
   }
