@@ -221,5 +221,5 @@ Refer to https://tug.org/texlive/
 4. `cd install-tl-*`
 5. `perl ./install-tl --no-interaction -no-doc-install -no-src-install -portable -texdir /mnt/disk1/tmp/texlive`
 6. `cd /tmp`
-7. `tar cvzf texlive.[version].[os].[platform].tar.gz texlive`
+7. `tar cvzf texlive.[version].[platform].[arch].tar.gz texlive`
 

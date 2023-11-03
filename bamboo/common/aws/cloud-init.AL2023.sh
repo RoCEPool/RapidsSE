@@ -307,7 +307,7 @@ EOF
     {
       echo
       echo 'TEXLIVEDIR="/usr/local/texlive"'
-      echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/${ARCH}-linux"'
+      echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/$(uname -p)-linux"'
       echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
       echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
       echo
@@ -326,7 +326,7 @@ EOF
   echo
 #  amazon-linux-extras install -y epel
   dnf update -y --releasever=latest
-  dnf install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip nmap-ncat ncurses openssl-devel parallel python3 python3-pip perl-Digest-MD5 perl-Env zip
+  dnf install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel libatomic-static unzip nmap-ncat ncurses openssl-devel parallel python3 python3-pip perl-Digest-MD5 perl-Env perl-File-Copy perl-Unicode-Normalize perl-sigtrap perl-Time-HiRes zip
   dnf install -y nethogs iftop iperf3 iotop jq telnet
   # Not supported: nload bmon
 
