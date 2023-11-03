@@ -173,8 +173,48 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 void XF_Optimise_Factor_boolPred::vFactor_boolPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  RASSERT(m_pCI->G.p_boolPred);
+
+
+  m_pCI->G.p_boolPred = nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Factor_boolPred::vFactor_andConj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Factor_boolPred::vFactor_notConj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Factor_boolPred::vFactor_orConj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Optimise_Factor_boolPred::vFactor_rlnConj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+}
 
 /*============================================================================*/
 /* end                                                                        */

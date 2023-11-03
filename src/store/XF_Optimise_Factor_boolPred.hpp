@@ -26,6 +26,11 @@ namespace STORE
 
     void vFactor_boolPred(void);
 
+    void vFactor_andConj(void);
+    void vFactor_notConj(void);
+    void vFactor_orConj(void);
+    void vFactor_rlnConj(void);
+
   private:
     Footer* aFooter(void);
   };

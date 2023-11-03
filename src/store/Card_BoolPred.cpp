@@ -817,7 +817,8 @@ void Card_BoolPred::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
 //  Card::vValidate_hasChildren();
   if (nChildCards())
-    Card::eValidate_mustEither(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,CK_NONE);
+    Card::eValidate_mustSome(CK_ANDCONJ,CK_NOTCONJ,CK_ORCONJ,CK_RLNCONJ,
+                               CK_TERM,CK_NONE);
 
   (void)Card::eValidate_parentEither(pCI,CK_CONSTRAINT,CK_FILTER,CK_NONE);
 
