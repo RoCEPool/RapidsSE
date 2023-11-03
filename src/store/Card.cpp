@@ -1832,8 +1832,11 @@ eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
   eCK eCard_either = (eCK) iCard_first;
   while (CK_NONE != eCard_either) {
 
-    if (pCI->pAncestorFind(eCard_either)) {
-      eFound = eCard_either;
+    if (Card* p_parent = pCI->pAncestorParent()) {
+      if (eCard_either == p_parent->eCard()) {
+        eFound = eCard_either;
+        break;
+      }
     }
 
     eCard_either = (eCK)va_arg(xArgs, i8);
