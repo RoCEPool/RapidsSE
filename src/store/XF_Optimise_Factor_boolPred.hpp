@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Optimise_Refactor_boolPred.hpp -- Refactor boolPred                     */
+/* XF_Optimise_Factor_boolPred.hpp -- Refactor boolPred                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Optimise_Refactor_boolPred : public XF_OPTIMISE
+  class XF_Optimise_Factor_boolPred : public XF_OPTIMISE
   {
   private:
     // must be last
@@ -17,8 +17,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Optimise_Refactor_boolPred(CardIter* pCI);
-   ~XF_Optimise_Refactor_boolPred(void) noexcept(false);
+    XF_Optimise_Factor_boolPred(CardIter* pCI);
+   ~XF_Optimise_Factor_boolPred(void) noexcept(false);
 
     static void vOptimise(CardIter* pCI);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Optimise_Refactor_boolPred* _pXF_Optimise_Refactor_boolPred(void* aAddr);
+  XF_Optimise_Factor_boolPred* _pXF_Optimise_Factor_boolPred(void* aAddr);
 }
 
 /*============================================================================*/

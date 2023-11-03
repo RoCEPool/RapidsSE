@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* _T5 - refactor boolPred test                                               */
+/* _factor5 - factor boolPred test                                            */
 /*============================================================================*/
 
-create table T5 (
+create table Factor5 (
   a INTEGER NOT NULL,
   b INTEGER NOT NULL,
   c INTEGER NOT NULL,
@@ -15,15 +15,39 @@ create table T5 (
 /transliterated
 /weaved
 /pipeline_def
-/pipelineName = "_T5"
+/pipelineName = "_factor5_a"
 select *
-  from T5
+  from Factor5
  where (a = 1 and b = 2 and e = 1)
     or (a = 1 and c = 3 and e = 2)
     or (a = 1 and d = 4 and e = 3)
 ;
 
-drop table T5;
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/pipelineName = "_factor5_b"
+select *
+  from Factor5
+ where (a = 1 and b = 2 and e = 1)
+    or (c = 3 and a = 1 and e = 2)
+    or (a = 1 and d = 4 and e = 3)
+;
+
+/optimiser_trace
+/transliterated
+/weaved
+/pipeline_def
+/pipelineName = "_factor5_c"
+select *
+  from Factor5
+ where (a = 1 and b = 2 and e = 1)
+    or (c = 3 and a = 1 and e = 2)
+    or (d = 4 and e = 3 and a = 1)
+;
+
+drop table Factor5;
 
 /*============================================================================*/
 /* end                                                                        */

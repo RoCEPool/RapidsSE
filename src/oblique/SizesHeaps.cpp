@@ -293,7 +293,7 @@
 #include "XF_Optimise_Early_projection.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
-#include "XF_Optimise_Refactor_boolPred.hpp"
+#include "XF_Optimise_Factor_boolPred.hpp"
 #include "XF_Optimise_Static_calc.hpp"
 #include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
@@ -842,22 +842,22 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_DUPLICATE_FILTER,      sizeof(XF_Optimise_Duplicate_filter),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_FILTER,          sizeof(XF_Optimise_Early_filter),          HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_PROJECTION,      sizeof(XF_Optimise_Early_projection),      HT_T_TINY    , FILL },
+  {CN_XF_OPTIMISE_FACTOR_BOOLPRED,       sizeof(XF_Optimise_Factor_boolPred),       HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_FROM_TO_OP,            sizeof(XF_Optimise_from_To_OP),            HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_GBYAGG_TO_ORDAGG,      sizeof(XF_Optimise_gbyAgg_To_ordAgg),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_LATE_PROJECTION,       sizeof(XF_Optimise_Late_projection),       HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_MAX_TO_TOP,            sizeof(XF_Optimise_max_To_top),            HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_REDUCE_GBYAGG_KEY,     sizeof(XF_Optimise_Reduce_gbyAgg_key),     HT_T_TINY    , FILL },
-  {CN_XF_OPTIMISE_REFACTOR_BOOLPRED,     sizeof(XF_Optimise_Refactor_boolPred),     HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_SCAN_TO_INDEXSCAN,     sizeof(XF_Optimise_scan_To_indexScan),     HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP, sizeof(XF_Optimise_sortDesc_limit_to_top), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS, sizeof(XF_Optimise_sort_limit_All_Levels), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_STATIC_CALC,           sizeof(XF_Optimise_Static_calc),           HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_EMITTED,         sizeof(XF_Prolog_Analyse_emitted),         HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ANALYSE_INDEX,           sizeof(XF_Prolog_Analyse_index),           HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_INJECTED,      sizeof(XF_Prolog_Analyse_injected),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_SUBQUERY,      sizeof(XF_Prolog_Analyse_subQuery),      HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ANALYSE_TABLE,         sizeof(XF_Prolog_Analyse_table),         HT_T_TINY    , FILL },
-  {CN_XF_PROLOG_ENSURE_COLTYPE,        sizeof(XF_Prolog_Ensure_colType),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_INJECTED,        sizeof(XF_Prolog_Analyse_injected),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_SUBQUERY,        sizeof(XF_Prolog_Analyse_subQuery),        HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ANALYSE_TABLE,           sizeof(XF_Prolog_Analyse_table),           HT_T_TINY    , FILL },
+  {CN_XF_PROLOG_ENSURE_COLTYPE,          sizeof(XF_Prolog_Ensure_colType),          HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ENSURE_LEVEL,          sizeof(XF_Prolog_Ensure_level),          HT_T_TINY    , FILL },
   {CN_XF_PROLOG_ERASE_CONSTRUCTION,    sizeof(XF_Prolog_Erase_construction),    HT_T_TINY    , FILL },
   {CN_XF_PROLOG_MOVE_ON,               sizeof(XF_Prolog_Move_on),               HT_T_TINY    , FILL },

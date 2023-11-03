@@ -57,7 +57,7 @@ Stz* aXF[XF_ENUMS]
   /* */ "XF_OPTIMISE_LATE_PROJECTION"_Stz,
   /* */ "XF_OPTIMISE_MAX_TO_TOP"_Stz,
   /* */ "XF_OPTIMISE_REDUCE_KEY_GBYAGG"_Stz,
-  /* */ "XF_OPTIMISE_REFACTOR_BOOLPRED"_Stz,
+  /* */ "XF_OPTIMISE_FACTOR_BOOLPRED"_Stz,
   /* */ "XF_OPTIMISE_SCAN_TO_INDEXSCAN"_Stz,
   /* */ "XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP"_Stz,
   /* */ "XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS"_Stz,
@@ -136,12 +136,12 @@ Stz* aXF_desc[XF_ENUMS]
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_DUPLICATE_FILTER
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_EARLY_FILTER
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_EARLY_PROJECTION
+  /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_FACTOR_BOOLPRED
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_FROM_TO_OP
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_GBYAGG_TO_ORDAGG
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_LATE_PROJECTION
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_MAX_TO_TOP
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_REDUCE_KEY_GBYAGG
-  /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_REFACTOR_BOOLPRED
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_SCAN_TO_INDEXSCAN
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_SORTDESC_LIMIT_TO_TOP
   /* */ "<to be supplied>"_Stz, // XF_OPTIMISE_SORT_LIMIT_ALL_LEVELS
