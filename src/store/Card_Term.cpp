@@ -599,17 +599,28 @@ void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card::vValidate_noChildren();
 
-  RASSERT(
-          pParent->eCard() == CK_HSHCOL || // todo: NO!
+//  RASSERT(
+//          pParent->eCard() == CK_HSHCOL || // todo: NO!
+//
+//          pParent->eCard() == CK_ANDCONJ ||
+//          pParent->eCard() == CK_BOUND || // todo: is a bound a boolPred?
+//          pParent->eCard() == CK_BOOLPRED ||
+//          pParent->eCard() == CK_RLNCONJ ||
+//          pParent->eCard() == CK_HASHING ||
+//          pParent->eCard() == CK_NOTCONJ ||
+//          pParent->eCard() == CK_ORCONJ ||
+//          pParent->eCard() == CK_RPNCALC);
 
-          pParent->eCard() == CK_ANDCONJ ||
-          pParent->eCard() == CK_BOUND || // todo: is a bound a boolPred?
-          pParent->eCard() == CK_BOOLPRED ||
-          pParent->eCard() == CK_RLNCONJ ||
-          pParent->eCard() == CK_HASHING ||
-          pParent->eCard() == CK_NOTCONJ ||
-          pParent->eCard() == CK_ORCONJ ||
-          pParent->eCard() == CK_RPNCALC);
+  (void)Card::eValidate_parentEither(pCI,CK_HSHCOL,// todo: NO!?
+                                     CK_ANDCONJ,
+                                     CK_BOUND,
+                                     CK_BOOLPRED,
+                                     CK_RLNCONJ,
+                                     CK_HASHING,
+                                     CK_NOTCONJ,
+                                     CK_ORCONJ,
+                                     CK_RPNCALC,
+                                     CK_NONE);
 
   if (pCI->G.pBoard->pState()->bHasName(aOH[OH_OPTIMISE])) {
     if (m_xSymbol.bIs_Exp_Col() || m_xSymbol.bIs_Tbl_Col()) {
