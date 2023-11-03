@@ -754,7 +754,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card::vValidate_hasType();
 
-  eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);
+  (void)Card::eValidate_parentEither(pCI,CK_EMIT,CK_FOLD,CK_INJECTABLE,
+                                     CK_KEY,CK_NEEDED,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);
