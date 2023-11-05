@@ -123,6 +123,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
+  m_eConjunction = FC_NONE;
+
   m_pLastPrintParent = nullptr;
 
   md__SeqNo = Card::m__iSeqGen++;

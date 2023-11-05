@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eAL.h"
+#include "eFC.h"
 #include "eGC.h"
 #include "ePB.h"
 #include "eQO.h"
@@ -260,6 +261,7 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
+    eFC     m_eConjunction; // form of conjunction
 
     i8 md__SeqNo;
     i8 md__FirstDetected;
