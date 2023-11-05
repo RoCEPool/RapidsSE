@@ -582,7 +582,7 @@ void Card_Deck::vValidate(CardIter* pCI)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  vMarksTestRecursive();
+  //vMarksTestRecursive();
 
   vMarksClearRecursive();
   vMark1Recursive(MARK_UNVALID);

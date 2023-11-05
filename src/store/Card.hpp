@@ -338,6 +338,8 @@ namespace STORE
     i8   iItemise(void);
     void vItemise(i8 iItemise);
 
+    void vMark(Stz* szMark1, Stz* szMark2);
+
     bool bMark1(Stz* szArg);
     char cMark1(void);
     Stz* szMark1(void);
