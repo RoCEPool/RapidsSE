@@ -8,6 +8,7 @@
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolPred.hpp"
 #include "CardIter.hpp"
+#include "TypeSystem.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -68,7 +69,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
-  RASSERT(CT_NONE != pExpr_corr->eColType());
+  RASSERT(CT_NONE != pExpr_corr->xColTypeId().eCTVal());
 
   Card_Expr*    p_expr_gby = new Card_Expr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
@@ -77,9 +78,9 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_expr_gby->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->vColType(pExpr_corr->eColType());
-  p_term->pSymbol()->vColType(pExpr_corr->eColType());
-  p_expr_gby->pSymbol()->vColType(pExpr_corr->eColType());
+  p_rpnCalc->pSymbol()->vColTypeId(pExpr_corr->xColTypeId());
+  p_term->pSymbol()->vColTypeId(pExpr_corr->xColTypeId());
+  p_expr_gby->pSymbol()->vColTypeId(pExpr_corr->xColTypeId());
 
   return p_expr_gby;
 }
@@ -91,7 +92,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
   _static_
 
-  RASSERT(CT_NONE != p_expr_gby->eColType());
+  RASSERT(CT_NONE != p_expr_gby->xColTypeId().eCTVal());
 
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
@@ -103,9 +104,9 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_expr->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->vColType(p_expr_gby->eColType());
-  p_term->pSymbol()->vColType(p_expr_gby->eColType());
-  p_expr->pSymbol()->vColType(p_expr_gby->eColType());
+  p_rpnCalc->pSymbol()->vColTypeId(p_expr_gby->xColTypeId());
+  p_term->pSymbol()->vColTypeId(p_expr_gby->xColTypeId());
+  p_expr->pSymbol()->vColTypeId(p_expr_gby->xColTypeId());
 
   return p_expr;
 }
@@ -120,7 +121,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   //p_expr->vDump();
 
-  RASSERT(CT_NONE != p_expr->eColType());
+  RASSERT(CT_NONE != p_expr->xColTypeId().eCTVal());
 
   Symbol xSymbol_Dn(SF_EXP_COL, i_Col);
 
@@ -129,10 +130,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_expr_simple->pSymbol()->vFacets(p_expr->pSymbol());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->pSymbol()->vColType(p_expr->eColType());
+  p_rpnCalc->pSymbol()->vColTypeId(p_expr->xColTypeId());
 
   Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  p_term->pSymbol()->vColType(p_expr->eColType());
+  p_term->pSymbol()->vColTypeId(p_expr->xColTypeId());
   //p_term->vDump();
 
   p_rpnCalc->vAppendChild(p_term);
@@ -176,18 +177,18 @@ void Card_Expr::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_Expr::eColumnType(void)
+Parser::TypeId Card_Expr::xColumnTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
 
-    eCT eColType = p_rpnCalc->eColumnType();
+    Parser::TypeId xColTypeId = p_rpnCalc->xColTypeId();
 
-    return eColType;
+    return xColTypeId;
   }
 
-  return CT_NONE;
+  return Parser::TypeId::xIdOf(CT_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,7 +535,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // primary facet
 
-  s32 sType_short = szCT_char[pSymbol->eColType()];
+  s32 sType_short = szCT_char[pSymbol->xColTypeId().eCTVal()];
   i8 i_Facet = pSymbol->i_Facet(SF_EXP_COL);
 
   if (C_UNKNOWN != i_Facet) {
@@ -653,7 +654,7 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (eColType() != p_expr_arg->eColType())
+  if (xColTypeId() != p_expr_arg->xColTypeId())
     return false;
 
   Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
@@ -696,19 +697,19 @@ void Card_Expr::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_Expr::eColType(void)
+Parser::TypeId Card_Expr::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eCT eColType = CT_NONE;
+  Parser::TypeId xColTypeId;
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    eColType = p_boolPred->eColType();
+		xColTypeId = p_boolPred->xColTypeId();
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    eColType = p_rpnCalc->eColType();
+    xColTypeId = p_rpnCalc->xColTypeId();
 
-  return eColType;
+  return xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

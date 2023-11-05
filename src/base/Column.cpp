@@ -286,7 +286,15 @@ void Column::vColumnType(eCT eColumnType)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
   m_eColumnType = eColumnType;
-	m_xColumnTypeId = Parser::TypeId::xIdOf(eColumnType);
+	if (m_eColumnType == CT_INTERVAL_DT) {
+		m_xColumnTypeId = Parser::TypeId::xIdOf(IV_DAY_TO_SECOND);
+	}
+	else
+	if (m_eColumnType == CT_INTERVAL_YM) {
+		m_xColumnTypeId = Parser::TypeId::xIdOf(IV_YEAR_TO_MONTH);
+	}
+	else
+	  m_xColumnTypeId = Parser::TypeId::xIdOf(eColumnType);
 }
 
 /*----------------------------------------------------------------------------*/

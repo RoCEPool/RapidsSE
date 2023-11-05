@@ -33,7 +33,7 @@ Stz* aIV_field[IV_ENUMS]
     /* IV_SUBCATEGORY_YEARMONTH_START */ ""_Stz,
     /* IV_YEAR                        */ "YEAR"_Stz,
     /* IV_MONTH                       */ "MONTH"_Stz,
-    /* IV_YEAR_TO_MONTH               */ "YEAR TO MONTH"_Stz,
+    /* IV_YEAR_TO_MONTH               */ "YEAR_TO_MONTH"_Stz,
     /* IV_SUBCATEGORY_YEARMONTH_END   */ ""_Stz,
     /* IV_SUBCATEGORY_DAYTIME_START   */ ""_Stz,
     /* IV_DAY                         */ "DAY"_Stz,
@@ -50,6 +50,28 @@ Stz* aIV_field[IV_ENUMS]
 //    /* IV_ENUMS                       */ ""_Stz
 };
 
+Stz* aIV_field2[IV_ENUMS]
+{
+		/* IV_NONE=0                      */ ""_Stz,
+		/* IV_SUBCATEGORY_YEARMONTH_START */ ""_Stz,
+		/* IV_YEAR                        */ "YEAR"_Stz,
+		/* IV_MONTH                       */ "MONTH"_Stz,
+		/* IV_YEAR_TO_MONTH               */ "YEAR_TO_MONTH"_Stz,
+		/* IV_SUBCATEGORY_YEARMONTH_END   */ ""_Stz,
+		/* IV_SUBCATEGORY_DAYTIME_START   */ ""_Stz,
+		/* IV_DAY                         */ "DAY"_Stz,
+		/* IV_HOUR                        */ "HOUR"_Stz,
+		/* IV_MINUTE                      */ "MINUTE"_Stz,
+		/* IV_SECOND                      */ "SECOND"_Stz,
+		/* IV_DAY_TO_HOUR                 */ "DAY_TO_HOUR"_Stz,
+		/* IV_DAY_TO_MINUTE               */ "DAY_TO_MINUTE"_Stz,
+		/* IV_DAY_TO_SECOND               */ "DAY_TO_SECOND"_Stz,
+		/* IV_HOUR_TO_MINUTE              */ "HOUR_TO_MINUTE"_Stz,
+		/* IV_HOUR_TO_SECOND              */ "HOUR_TO_SECOND"_Stz,
+		/* IV_MINUTE_TO_SECOND            */ "MINUTE_TO_SECOND"_Stz,
+		/* IV_SUBCATEGORY_DAYTIME_END     */ ""_Stz,
+//    /* IV_ENUMS                       */ ""_Stz
+				};
 
 /*----------------------------------------------------------------------------*/
 /* Returns the number of interval fields covered by a given interval type     */

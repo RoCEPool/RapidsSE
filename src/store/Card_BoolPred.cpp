@@ -119,11 +119,11 @@ void Card_BoolPred::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_BoolPred::eColumnType(void)
+Parser::TypeId Card_BoolPred::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return CT_BOOLEAN;
+  return Parser::TypeId::xIdOf(CT_BOOLEAN);
 }
 
 /*----------------------------------------------------------------------------*/

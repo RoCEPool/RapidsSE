@@ -91,13 +91,13 @@ void Card_RpnCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_RpnCalc::eColumnType(void)
+Parser::TypeId Card_RpnCalc::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eCT eColType = pSymbol()->eColType();
+	Parser::TypeId xTypeId = pSymbol()->xColTypeId();
 
-  return eColType;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@ void Card_RpnCalc::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
     Card_Term* p_term_ColSym = x_term.p_term();
 
     Card_Expr* p_expr_ColSym = new Card_Expr(p_term_ColSym->pSymbol());
-    p_expr_ColSym->pSymbol()->vColType(p_term_ColSym->pSymbol()->eColType());
+    p_expr_ColSym->pSymbol()->vColTypeId(p_term_ColSym->pSymbol()->xColTypeId());
 
     p_subSet->vAppendChild(p_expr_ColSym);
   }
@@ -398,7 +398,7 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s32 sType_short = szCT_char[pSymbol()->eColType()];
+  s32 sType_short = szCT_char[pSymbol()->xColTypeId().eCTVal()];
 
   pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s"_Stz,
                           cMark1(),
@@ -773,17 +773,6 @@ void Card_RpnCalc::vTransfer(STORE::Card_RpnCalc *p_rpnCalc, eSF eSymbol_limit)
     Card_Term *p_term_and = (new Card_Term) ->SYM(SF_BOL_OP,"and"_Stz);
     vAppendChild(p_term_and);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-eCT Card_RpnCalc::eColType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eCT eColType = pSymbol()->eColType();
-  return eColType;
 }
 
 /*----------------------------------------------------------------------------*/

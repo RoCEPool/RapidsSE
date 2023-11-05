@@ -26,7 +26,8 @@ namespace STORE
     i8 m_nFacets;
     Facet xaFacet[C_FACETS];
 
-    eCT m_eColType;
+    //eCT m_eColType;
+		Parser::TypeId m_xColTypeId;
 
     TagSet* m_pProperties;
 
@@ -108,8 +109,7 @@ namespace STORE
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
 
-    static eCT  eTo_eCT_str(Stz* szType);
-    static eCT  eTo_eCT_char(Stz* szType);
+    static Parser::TypeId  xTo_TypeId_str(Stz* szType);
 
     // - - - - - -
 
@@ -117,8 +117,11 @@ namespace STORE
     void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
-    eCT  eColType(void);
-    void vColType(eCT eColType);
+    //eCT  eColType(void);
+    //void vColType(eCT eColType);
+
+		Parser::TypeId  xColTypeId(void);
+		void vColTypeId(Parser::TypeId eColTypeId);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);

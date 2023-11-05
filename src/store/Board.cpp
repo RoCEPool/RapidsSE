@@ -107,12 +107,12 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   Card_Expr* p_expr_found =
       pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-  pCI->G.p_term->pSymbol()->vColType(p_expr_found->eColType());
+  pCI->G.p_term->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
 
-  pCI->G.p_rpnCalc->pSymbol()->vColType(p_expr_found->eColType());
+  pCI->G.p_rpnCalc->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
 
   pCI->G.p_expr-> SYM(SF_EXP_COL, (i8)1);
-  pCI->G.p_expr->pSymbol()->vColType(p_expr_found->eColType());
+  pCI->G.p_expr->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
 
   pCI->G.p_expr->pSymbol()->vAppendFacet(SF_NMD_COL, "__RESULT1"_Stz);
 

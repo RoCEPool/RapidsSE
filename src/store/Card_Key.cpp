@@ -76,8 +76,8 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
   p_expr_new->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->vColType(p_expr->eColType());
-  p_expr_new->pSymbol()->vColType(p_expr->eColType());
+  p_rpnCalc->pSymbol()->vColTypeId(p_expr->xColTypeId());
+  p_expr_new->pSymbol()->vColTypeId(p_expr->xColTypeId());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_NONE));
@@ -99,9 +99,9 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->eColType());
+  RASSERT(CT_NONE != this->xColTypeId().eCTVal());
 
-  if (eColType() != p_key_arg->eColType())
+  if (xColTypeId() != p_key_arg->xColTypeId())
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -203,16 +203,16 @@ void Card_Key::vMapColumns(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_Key::eColType(void)
+Parser::TypeId Card_Key::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eCT eColType = CT_NONE;
+	Parser::TypeId xColTypeId;
 
   if (Card_Expr* p_expr = pSub_expr())
-    eColType = p_expr->eColType();
+		xColTypeId = p_expr->xColTypeId();
 
-  return eColType;
+  return xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +250,7 @@ IndexDef* Card_Key::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    eCT  eColType = p_term->pSymbol()->eColType();
+    eCT  eColType = p_term->pSymbol()->xColTypeId().eCTVal();
 
     if (! szColNm || CT_NONE == eColType)
       continue;

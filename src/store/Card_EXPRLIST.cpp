@@ -340,7 +340,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
       p_expr->vDump(__func__,"GBYAGG"_Stz);
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      eColType = p_expr->eColumnType();
+      eColType = p_expr->xColumnTypeId().eCTVal();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
     }
 
@@ -356,7 +356,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      eColType = p_expr->eColumnType();
+      eColType = p_expr->xColumnTypeId().eCTVal();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
     }
 
@@ -372,7 +372,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      eColType = p_expr->eColumnType();
+      eColType = p_expr->xColumnTypeId().eCTVal();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
     }
 
@@ -389,7 +389,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      eColType = p_expr->eColumnType();
+      eColType = p_expr->xColumnTypeId().eCTVal();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
 
     }
@@ -407,7 +407,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
-      eColType = p_expr->eColumnType();
+      eColType = p_expr->xColumnTypeId().eCTVal();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
     }
 
@@ -438,7 +438,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream def column
 
-    eColType = p_expr->eColumnType();
+    eColType = p_expr->xColumnTypeId().eCTVal();
 
     pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
 

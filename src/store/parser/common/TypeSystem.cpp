@@ -238,8 +238,10 @@ TypeId TypeSystem::xIdOf(Stz* szNamespace, Stz* szTypeName)
 
   for (i8 i=0; i <= C_MAXTYPEID; i++) {
 
+		//vTrace("%s; %s; %s\n"_Stz, szTypeName, (*(axTypes[i].m_ppszTypeName)), aIV_field2[axTypes[i].m_eIVVal]);
     if (axTypes[i].m_szNamespace->bSame(szNamespace) &&
-        (*(axTypes[i].m_ppszTypeName))->bSame(szTypeName) ) {
+						((*(axTypes[i].m_ppszTypeName))->bSame(szTypeName)  ||
+						aIV_field2[axTypes[i].m_eIVVal]->bSame(szTypeName))) {
       return TypeId{axTypes[i].m_iTypeId};
     }
 

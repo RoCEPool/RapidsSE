@@ -5,6 +5,7 @@
 #include "Card.hpp"
 
 #include "SketchTkn.hpp"
+#include "TypeSystem.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
@@ -23,7 +24,7 @@ Symbol::Symbol(void)
 
   vFacetReset();
 
-  m_eColType = CT_NONE;
+  //m_xColTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -42,7 +43,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-  m_eColType = CT_NONE;
+	//m_xColTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -63,7 +64,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-  m_eColType = CT_NONE;
+	//m_xColTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -1141,31 +1142,36 @@ bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
 /*----------------------------------------------------------------------------*/
 /* find eCT by name                                                           */
 /*----------------------------------------------------------------------------*/
-eCT Symbol::eTo_eCT_str(Stz* szType)
-{
-  _static_
-
-  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (aCT[i_Type]->bSame(szType))
-      return (eCT)i_Type;
-
-  return CT_NONE;
-}
+//Parser::TypeId Symbol::xTo_TypeId_str(Stz* szType)
+//{
+//  _static_
+//
+//  for (i8 i_Type = 0; i_Type < Parser::TypeSystem::iMaxTypeId(); i_Type++)
+//    return Parser::TypeId::xIdOf("rapids"_Stz, szType);
+//
+//  return (Parser::TypeId)-1;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* find eCT by name                                                           */
 /*----------------------------------------------------------------------------*/
-eCT Symbol::eTo_eCT_char(Stz* szType)
+Parser::TypeId Symbol::xTo_TypeId_str(Stz* szType)
 {
-  _static_
+	_static_
 
-  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (szCT_char[i_Type]->bSame(szType))
-      return (eCT)i_Type;
+	for (i8 i_Type = 0; i_Type < Parser::TypeSystem::iMaxTypeId(); i_Type++) {
+		Parser::TypeId xTypeId =  Parser::TypeId::xIdOf("rapids"_Stz, szType);
+		if (xTypeId.eCTVal() == CT_INTERVAL_YM ||
+				xTypeId.eCTVal() == CT_INTERVAL_DT) {
+			return Parser::TypeId::xIdOf(xTypeId.eIVVal());
+		} else
+			return xTypeId;
 
-  return CT_NONE;
+	}
+
+
+	return (Parser::TypeId)-1;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -1213,21 +1219,41 @@ void Symbol::vAppendFacets(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Symbol::eColType(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//eCT Symbol::eColType(void)
+//{
+//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//
+//  return m_eColType;
+//}
 
-  return m_eColType;
+/*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+//void Symbol:: vColType(eCT eColType)
+//{
+//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//
+//  m_eColType = eColType;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* get column type                                                            */
+/*----------------------------------------------------------------------------*/
+Parser::TypeId Symbol::xColTypeId(void)
+{
+	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+	return m_xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set type                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vColType(eCT eColType)
+void Symbol:: vColTypeId(Parser::TypeId xColTypeId)
 {
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_eColType = eColType;
+	m_xColTypeId = xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1580,7 +1606,7 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
 
   vFacetConcat(pSymbol_arg);
 
-  m_eColType = pSymbol_arg->m_eColType;
+  m_xColTypeId = pSymbol_arg->m_xColTypeId;
 
   if (SF_EXP_COL == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Exp_Col(xaFacet[0].m_sChrSeq));
@@ -1700,10 +1726,7 @@ bool Symbol::bHasType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (CT_NONE == m_eColType)
-    return false;
-
-  return true;
+  return m_xColTypeId.bIsValid();
 }
 
 /*----------------------------------------------------------------------------*/

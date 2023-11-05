@@ -18,7 +18,7 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
-    eCT  eColumnType(void);
+		Parser::TypeId xColTypeId(void);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vCorrectStmCol(Card_Emit* p_emitted_prior);
@@ -45,7 +45,6 @@ namespace STORE
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolPred* pTo_boolPred(CardIter* pCI);
-    eCT  eColType(void);
      void vX_stmCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_stmCol(CardIter* pCI);
 
