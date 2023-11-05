@@ -7,7 +7,8 @@ enum eFC : i8 // card kind
 {
   /* */ FC_NONE=0,
 
-  /* */ FC_A,
+  /* */ FC_AND_RLN_TRIPLET,
+  /* */ FC_OR_2AND_RLN_TRIPLET,
 
   /* */ FC_ENUMS
 };

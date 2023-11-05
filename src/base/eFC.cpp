@@ -10,7 +10,7 @@ Stz* aFC[FC_ENUMS]
 {
   /* */ "NONE"_Stz,
 
-  /* */ "FC_A"_Stz,      // FC_A
+  /* */ "FC_AND_RLN_TRIPLET"_Stz,  // FC_AND_RLN_TRIPLET
 
 //  /* */ "ENUMS"_Stz
 };
