@@ -24,7 +24,7 @@ namespace STORE
 
     bool bOptimise(void);
 
-    void vFactor_boolPred(void);
+    void vFactor_boolPred(Card_BoolPred* p_boolPred);
 
     void vFactor_andConj(Card_AndConj* p_andConj);
     void vFactor_notConj(Card_NotConj* p_notConj);

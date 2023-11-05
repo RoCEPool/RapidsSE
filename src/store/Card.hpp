@@ -231,6 +231,7 @@ extern Stz* MARK_DUPLICATE;
 extern Stz* MARK_FOUND;
 extern Stz* MARK_NOT;
 extern Stz* MARK_OR;
+extern Stz* MARK_PREDICATE;
 extern Stz* MARK_UNVALID;
 extern Stz* MARK_UP;
 extern Stz* MARK_VALID;

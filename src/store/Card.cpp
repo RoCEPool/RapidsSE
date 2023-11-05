@@ -94,6 +94,7 @@ Stz* MARK_DUPLICATE  = "D"_Stz;
 Stz* MARK_FOUND      = "+"_Stz;
 Stz* MARK_NOT        = "!"_Stz;
 Stz* MARK_OR         = "|"_Stz;
+Stz* MARK_PREDICATE   = "?"_Stz;
 Stz* MARK_UP         = "^"_Stz;
 Stz* MARK_UNVALID    = "X"_Stz;
 Stz* MARK_VALID      = "Y"_Stz;

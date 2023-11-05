@@ -76,23 +76,23 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_FILTER:
         if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-          vFactor_boolPred();
+          vFactor_boolPred(m_pCI->G.p_boolPred);
         break;
 
       case CK_FROM:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -100,18 +100,18 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_INDEXJOIN:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -119,14 +119,14 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_KEYEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
@@ -134,7 +134,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
       case CK_KEYNOTEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
@@ -143,7 +143,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -151,7 +151,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred();
+            vFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -172,18 +172,18 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_boolPred(void)
+void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-
-  RASSERT(m_pCI->G.p_boolPred);
-  Card_BoolPred* p_boolPred = m_pCI->G.p_boolPred;
-
-  p_boolPred->vMark(MARK_AT,"?"_Stz);
+  
+  p_boolPred->vMark(MARK_AT,MARK_PREDICATE);
 
   Card* pChild = p_boolPred->pPeekChild();
   if (!pChild)
     return;
+
+  RASSERT(! m_pCI->nAncestors());
+  m_pCI->vAncestorPush(p_boolPred);
 
   eCK eChild = pChild->eCard();
   switch (eChild) {
@@ -197,6 +197,9 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(void)
     default:
       NEVER_REACH
   }
+
+  m_pCI->vAncestorPop();
+  RASSERT(! m_pCI->nAncestors());
 
   m_pCI->G.p_boolPred = nullptr;
 }
@@ -208,11 +211,13 @@ void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  p_andCon->vMark(MARK_AT,"&"_Stz);
+  p_andCon->vMark(MARK_AT,MARK_AND);
 
   Card* pChild_0 = p_andCon->pGetChild(0);
   if (!pChild_0)
     return;
+
+  m_pCI->vAncestorPush(p_andCon);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
@@ -227,9 +232,13 @@ void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
       NEVER_REACH
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Card* pChild_1 = p_andCon->pGetChild(1);
-  if (!pChild_1)
+  if (!pChild_1) {
+    m_pCI->vAncestorPop();
     return;
+  }
 
   eCK eChild_1 = pChild_1->eCard();
   switch (eChild_1) {
@@ -244,6 +253,7 @@ void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
       NEVER_REACH
   }
 
+  m_pCI->vAncestorPop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,11 +263,13 @@ void XF_Optimise_Factor_boolPred::vFactor_notConj(Card_NotConj* p_notConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  p_notConj->vMark(MARK_AT,"!"_Stz);
+  p_notConj->vMark(MARK_AT,MARK_NOT);
 
   Card* pChild_0 = p_notConj->pGetChild(0);
   if (! pChild_0)
     return;
+
+  m_pCI->vAncestorPush(p_notConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
@@ -271,6 +283,8 @@ void XF_Optimise_Factor_boolPred::vFactor_notConj(Card_NotConj* p_notConj)
     default:
       NEVER_REACH
   }
+
+  m_pCI->vAncestorPop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,11 +294,13 @@ void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  p_orConj->vMark(MARK_AT,"|"_Stz);
+  p_orConj->vMark(MARK_AT,MARK_OR);
 
   Card* pChild_0 = p_orConj->pGetChild(0);
   if (!pChild_0)
     return;
+
+  m_pCI->vAncestorPush(p_orConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
@@ -299,9 +315,13 @@ void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
       NEVER_REACH
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Card* pChild_1 = p_orConj->pGetChild(1);
-  if (!pChild_1)
+  if (!pChild_1) {
+    m_pCI->vAncestorPop();
     return;
+  }
 
   eCK eChild_1 = pChild_1->eCard();
   switch (eChild_1) {
@@ -315,6 +335,8 @@ void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
     default:
       NEVER_REACH
   }
+
+  m_pCI->vAncestorPop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,24 +346,28 @@ void XF_Optimise_Factor_boolPred::vFactor_rlnConj(Card_RlnConj* p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  p_rlnConj->vMark(MARK_AT,"="_Stz);
+  p_rlnConj->vMark(MARK_AT,MARK_COMPARE);
 
-  Card* pChild = p_rlnConj->pPeekChild();
-  if (!pChild)
+  Card* pChild_0 = p_rlnConj->pGetChild(0);
+  if (!pChild_0)
     return;
 
-  eCK eChild = pChild->eCard();
+  m_pCI->vAncestorPush(p_rlnConj);
+
+  eCK eChild = pChild_0->eCard();
   switch (eChild) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild_0)); break;
+    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild_0)); break;
+    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild_0));  break;
+    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
 
     case CK_TERM: break;
 
     default:
       NEVER_REACH
   }
+
+  m_pCI->vAncestorPop();
 }
 
 /*----------------------------------------------------------------------------*/
