@@ -492,9 +492,14 @@ bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_OrConj* p_orConj)
       Card_AndConj *p_1_0_andConj = _pCard_AndConj(pCard_1_0_andConj);
       UNUSED(p_1_0_andConj);
 
-      //Card_RlnConj* p_0_0_0_rlnConj;
-      //Card_RlnConj* p_1_0_0_rlnConj;
+      Card_RlnConj* p_0_0_0_rlnConj = p_0_0_andConj->pGet_rlnConj(0);
+      Card_RlnConj* p_1_0_0_rlnConj = p_1_0_andConj->pGet_rlnConj(0);
 
+      if (p_0_0_0_rlnConj->bIsEq(p_1_0_0_rlnConj)) {
+//        p_0_0_0_rlnConj->vDump(__func__ ,"p_0_0_0_rlnConj"_Stz);
+//        p_1_0_0_rlnConj->vDump(__func__ ,"p_1_0_0_rlnConj"_Stz);
+        return true;
+      }
     }
   }
 
