@@ -20,6 +20,12 @@ namespace STORE
     bool bContains_callToSubQuery(CardIter* pCI);
     bool bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
+
+    Card_AndConj* pGet_andConj(i8 i_Child);
+    Card_NotConj* pGet_notConj(i8 i_Child);
+    Card_OrConj*  pGet_orConj (i8 i_Child);
+    Card_RlnConj* pGet_rlnConj(i8 i_Child);
+
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblCol(void);
     Card_Term* pGetTerm(i8 i_Term);

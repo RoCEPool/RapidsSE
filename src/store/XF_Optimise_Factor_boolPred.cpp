@@ -76,23 +76,23 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_FILTER:
         if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-          vFactor_boolPred(m_pCI->G.p_boolPred);
+          bFactor_boolPred(m_pCI->G.p_boolPred);
         break;
 
       case CK_FROM:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -100,18 +100,18 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_INDEXJOIN:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -119,14 +119,14 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_KEYEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
@@ -134,7 +134,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
       case CK_KEYNOTEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
@@ -143,7 +143,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -151,7 +151,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            vFactor_boolPred(m_pCI->G.p_boolPred);
+            bFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -172,25 +172,31 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
+bool XF_Optimise_Factor_boolPred::bFactor_boolPred(Card_BoolPred* p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
-  
+
+  bool bFactored = false;
+
   p_boolPred->vMark(MARK_AT,MARK_PREDICATE);
 
   Card* pChild = p_boolPred->pPeekChild();
   if (!pChild)
-    return;
+    return bFactored;
 
   RASSERT(! m_pCI->nAncestors());
   m_pCI->vAncestorPush(p_boolPred);
 
   eCK eChild = pChild->eCard();
   switch (eChild) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+    case CK_ANDCONJ:
+      bFactor_andConj(_pCard_AndConj(pChild)); break;
+    case CK_NOTCONJ:
+      bFactor_notConj(_pCard_NotConj(pChild)); break;
+    case CK_ORCONJ:
+      bFactor_orConj(_pCard_OrConj(pChild));  break;
+    case CK_RLNCONJ:
+      bFactor_rlnConj(_pCard_RlnConj(pChild)); break;
 
     case CK_TERM: break;
 
@@ -202,29 +208,37 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
   RASSERT(! m_pCI->nAncestors());
 
   m_pCI->G.p_boolPred = nullptr;
+
+  return bFactored;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
+bool XF_Optimise_Factor_boolPred::bFactor_andConj(Card_AndConj* p_andConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  p_andCon->vMark(MARK_AT,MARK_AND);
+  bool bContinueRecursion = C_CONTINUE_RECURSION;
 
-  Card* pChild_0 = p_andCon->pGetChild(0);
+  p_andConj->vMark(MARK_AT, MARK_AND);
+
+  Card* pChild_0 = p_andConj->pGetChild(0);
   if (!pChild_0)
-    return;
+    return bContinueRecursion;
 
-  m_pCI->vAncestorPush(p_andCon);
+  m_pCI->vAncestorPush(p_andConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      bFactor_andConj(_pCard_AndConj(pChild_0)); break;
+    case CK_NOTCONJ:
+      bFactor_notConj(_pCard_NotConj(pChild_0)); break;
+    case CK_ORCONJ:
+      bFactor_orConj(_pCard_OrConj(pChild_0));  break;
+    case CK_RLNCONJ:
+      bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
 
     case CK_TERM: break;
 
@@ -234,18 +248,22 @@ void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card* pChild_1 = p_andCon->pGetChild(1);
+  Card* pChild_1 = p_andConj->pGetChild(1);
   if (!pChild_1) {
     m_pCI->vAncestorPop();
-    return;
+    return bContinueRecursion;
   }
 
   eCK eChild_1 = pChild_1->eCard();
   switch (eChild_1) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild_1)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild_1)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild_1));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild_1)); break;
+    case CK_ANDCONJ:
+      bFactor_andConj(_pCard_AndConj(pChild_1)); break;
+    case CK_NOTCONJ:
+      bFactor_notConj(_pCard_NotConj(pChild_1)); break;
+    case CK_ORCONJ:
+      bFactor_orConj(_pCard_OrConj(pChild_1));  break;
+    case CK_RLNCONJ:
+      bFactor_rlnConj(_pCard_RlnConj(pChild_1)); break;
 
     case CK_TERM: break;
 
@@ -254,47 +272,55 @@ void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
   }
 
   if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_RLNCONJ) {
-    p_andCon->vConjunction(FC_AND_RLN_DOUBLE);
-    p_andCon->vMark2(MARK_ENUM);
-    p_andCon->vMark1(StrLib::cToHex(FC_AND_RLN_DOUBLE));
+    p_andConj->vConjunction(FC_AND_RLN_DOUBLE);
+    p_andConj->vMark2(MARK_ENUM);
+    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_DOUBLE));
   }
   else
   if (pChild_0->eConjunction() == FC_AND_RLN_DOUBLE && eChild_1 == CK_RLNCONJ) {
-    p_andCon->vConjunction(FC_AND_RLN_TRIPLE);
-    p_andCon->vMark2(MARK_ENUM);
-    p_andCon->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
+    p_andConj->vConjunction(FC_AND_RLN_TRIPLE);
+    p_andConj->vMark2(MARK_ENUM);
+    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
   }
   else
   if (eChild_0 == CK_RLNCONJ &&  pChild_1->eConjunction() == FC_AND_RLN_DOUBLE) {
-    p_andCon->vConjunction(FC_AND_RLN_TRIPLE);
-    p_andCon->vMark2(MARK_ENUM);
-    p_andCon->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
+    p_andConj->vConjunction(FC_AND_RLN_TRIPLE);
+    p_andConj->vMark2(MARK_ENUM);
+    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
   }
 
   m_pCI->vAncestorPop();
+
+  return bContinueRecursion;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_notConj(Card_NotConj* p_notConj)
+bool XF_Optimise_Factor_boolPred::bFactor_notConj(Card_NotConj* p_notConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  bool bContinueRecursion = C_CONTINUE_RECURSION;
 
   p_notConj->vMark(MARK_AT,MARK_NOT);
 
   Card* pChild_0 = p_notConj->pGetChild(0);
   if (! pChild_0)
-    return;
+    return bContinueRecursion;
 
   m_pCI->vAncestorPush(p_notConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      bFactor_andConj(_pCard_AndConj(pChild_0)); break;
+    case CK_NOTCONJ:
+      bFactor_notConj(_pCard_NotConj(pChild_0)); break;
+    case CK_ORCONJ:
+      bFactor_orConj(_pCard_OrConj(pChild_0));  break;
+    case CK_RLNCONJ:
+      bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
 
     case CK_TERM: break;
 
@@ -303,29 +329,37 @@ void XF_Optimise_Factor_boolPred::vFactor_notConj(Card_NotConj* p_notConj)
   }
 
   m_pCI->vAncestorPop();
+
+  return bContinueRecursion;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
+bool XF_Optimise_Factor_boolPred::bFactor_orConj(Card_OrConj* p_orConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  bool bContinueRecursion = C_CONTINUE_RECURSION;
 
   p_orConj->vMark(MARK_AT,MARK_OR);
 
   Card* pChild_0 = p_orConj->pGetChild(0);
   if (!pChild_0)
-    return;
+    return bContinueRecursion;
 
   m_pCI->vAncestorPush(p_orConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      bFactor_andConj(_pCard_AndConj(pChild_0)); break;
+    case CK_NOTCONJ:
+      bFactor_notConj(_pCard_NotConj(pChild_0)); break;
+    case CK_ORCONJ:
+      bFactor_orConj(_pCard_OrConj(pChild_0));  break;
+    case CK_RLNCONJ:
+      bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
 
     case CK_TERM: break;
 
@@ -338,15 +372,19 @@ void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
   Card* pChild_1 = p_orConj->pGetChild(1);
   if (!pChild_1) {
     m_pCI->vAncestorPop();
-    return;
+    return bContinueRecursion;
   }
 
   eCK eChild_1 = pChild_1->eCard();
   switch (eChild_1) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild_1)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild_1)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild_1));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild_1)); break;
+    case CK_ANDCONJ:
+      bFactor_andConj(_pCard_AndConj(pChild_1)); break;
+    case CK_NOTCONJ:
+      bFactor_notConj(_pCard_NotConj(pChild_1)); break;
+    case CK_ORCONJ:
+      bFactor_orConj(_pCard_OrConj(pChild_1));  break;
+    case CK_RLNCONJ:
+      bFactor_rlnConj(_pCard_RlnConj(pChild_1)); break;
 
     case CK_TERM: break;
 
@@ -364,30 +402,44 @@ void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
 
   }
 
+  if (RC_FACTOR_OR_2AND_RLN_TRIPLE == p_orConj->eRotationConj()) {
+    if (bTest_Rotate_Or_2ar3(p_orConj)) {
+      vRotate_Or_2ar3(p_orConj);
+    }
+  }
+
   m_pCI->vAncestorPop();
+
+  return bContinueRecursion;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vFactor_rlnConj(Card_RlnConj* p_rlnConj)
+bool XF_Optimise_Factor_boolPred::bFactor_rlnConj(Card_RlnConj* p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  bool bContinueRecursion = C_CONTINUE_RECURSION;
 
   p_rlnConj->vMark(MARK_AT,MARK_COMPARE);
 
   Card* pChild_0 = p_rlnConj->pGetChild(0);
   if (!pChild_0)
-    return;
+    return bContinueRecursion;
 
   m_pCI->vAncestorPush(p_rlnConj);
 
   eCK eChild = pChild_0->eCard();
   switch (eChild) {
-    case CK_ANDCONJ: vFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ: vFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:  vFactor_orConj (_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ: vFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      bFactor_andConj(_pCard_AndConj(pChild_0)); break;
+    case CK_NOTCONJ:
+      bFactor_notConj(_pCard_NotConj(pChild_0)); break;
+    case CK_ORCONJ:
+      bFactor_orConj(_pCard_OrConj(pChild_0));  break;
+    case CK_RLNCONJ:
+      bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
 
     case CK_TERM: break;
 
@@ -396,6 +448,8 @@ void XF_Optimise_Factor_boolPred::vFactor_rlnConj(Card_RlnConj* p_rlnConj)
   }
 
   m_pCI->vAncestorPop();
+
+  return bContinueRecursion;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,7 +460,6 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_OrConj* p_orConj)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
   UNUSED(p_orConj);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,9 +479,27 @@ bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_OrConj* p_orConj)
 
   RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_orConj->eRotationConj());
 
+  Card_AndConj* p_0_andConj = _pCard_AndConj(p_orConj->pGetChild(0));
+  Card_AndConj* p_1_andConj = _pCard_AndConj(p_orConj->pGetChild(1));
+
+  Card* pCard_0_0_andConj;
+  if (CK_ANDCONJ == p_0_andConj->eGetChild(0, pCard_0_0_andConj)) {
+    Card_AndConj *p_0_0_andConj = _pCard_AndConj(pCard_0_0_andConj);
+    UNUSED(p_0_0_andConj);
+
+    Card* pCard_1_0_andConj;
+    if (CK_ANDCONJ == p_1_andConj->eGetChild(0, pCard_1_0_andConj)) {
+      Card_AndConj *p_1_0_andConj = _pCard_AndConj(pCard_1_0_andConj);
+      UNUSED(p_1_0_andConj);
+
+      //Card_RlnConj* p_0_0_0_rlnConj;
+      //Card_RlnConj* p_1_0_0_rlnConj;
+
+    }
+  }
+
   return false;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

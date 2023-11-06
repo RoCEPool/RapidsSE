@@ -246,6 +246,9 @@ namespace STORE
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_TERMINATE_RECURSION = false;
 
+  static const bool C_LEFT_ORIENTATION  = true;
+  static const bool C_RIGHT_ORIENTATION = false;
+
   class Card : public Object
              , public ChildCards
   {
