@@ -602,6 +602,11 @@ void CardCtl::vReset(void)
 
   vPrintByKind(CK_EMIT, true);
   vPrintByKind(CK_EXPR,true);
+  vPrintByKind(CK_ANDCONJ,true);
+  vPrintByKind(CK_NOTCONJ,true);
+  vPrintByKind(CK_ORCONJ,true);
+  vPrintByKind(CK_RLNCONJ,true);
+
   vPrintByKind(CK_RPNCALC,true);
   vPrintByKind(CK_TABLE,true);
   vPrintValue(CK_TABLE, false);

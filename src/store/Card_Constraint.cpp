@@ -163,12 +163,9 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  eCK eParent = pParent->eCard();
-
-  RASSERT(CK_FROM         == eParent ||
-          CK_INDEXJOIN    == eParent ||
-          CK_KEYEXISTS    == eParent ||
-          CK_KEYNOTEXISTS == eParent );
+  (void)Card::eValidate_parentEither(pCI,CK_FROM,CK_INDEXJOIN,
+                                     CK_KEYEXISTS,CK_KEYNOTEXISTS,
+                                     CK_NONE);
 
   (void)eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);
 

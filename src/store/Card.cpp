@@ -89,11 +89,13 @@ Stz* MARK_AT         = "@"_Stz;
 Stz* MARK_BLANK      = " "_Stz;
 Stz* MARK_CHANGED    = "`"_Stz;
 Stz* MARK_COMPARE    = "="_Stz;
+Stz* MARK_ENUM       = ":"_Stz;
 Stz* MARK_DELETED    = "Z"_Stz;
 Stz* MARK_DUPLICATE  = "D"_Stz;
 Stz* MARK_FOUND      = "+"_Stz;
 Stz* MARK_NOT        = "!"_Stz;
 Stz* MARK_OR         = "|"_Stz;
+Stz* MARK_PREDICATE  = "?"_Stz;
 Stz* MARK_UP         = "^"_Stz;
 Stz* MARK_UNVALID    = "X"_Stz;
 Stz* MARK_VALID      = "Y"_Stz;
@@ -121,6 +123,9 @@ Card::Card(eCK eCard, i8 iFixedDepth)
 
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
+
+  m_eConjunction = FC_NONE;
+  m_eRotationConj = RC_NONE;
 
   m_pLastPrintParent = nullptr;
 
@@ -491,6 +496,26 @@ void Card::vColType(Card* pCard_arg)
   //pCard_arg->vDump(__func__);
 
   m_xSymbol.vColTypeId(pCard_arg->pSymbol()->xColTypeId());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get conjunction                                                            */
+/*----------------------------------------------------------------------------*/
+eFC Card::eConjunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_eConjunction;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set conjunction                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vConjunction(eFC eConjunction)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_eConjunction = eConjunction;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -941,6 +966,17 @@ void Card::vItemise(i8 iItemise)
   RASSERT(CK_DECK != m_eCard);
 
   m_iItemise = iItemise;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 1                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vMark(Stz* szMark1, Stz* szMark2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vMark1(szMark1);
+  vMark2(szMark2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1474,6 +1510,26 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get rotationConj                                                           */
+/*----------------------------------------------------------------------------*/
+eRC Card::eRotationConj(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_eRotationConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set conjunction                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vRotationConj(eRC eRotationConj)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_eRotationConj = eRotationConj;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
 Symbol* Card::pSymbol(void)
@@ -1813,6 +1869,48 @@ void Card::vValidate_notHave(i8 /*eCK*/ iCard, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+eCK Card::eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...)
+{
+  // The first parameter before the varargs (...) must not undergo default
+  // argument promotion. This will occur if the enum type is smaller than
+  // a 64 bit integer. If that is the case then the result is undefined
+  // in va_start(). So let's make the first parameter an integer to avoid this.
+
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  eCK eFound = CK_NONE;
+
+  va_start(xArgs, iCard_first);
+  eCK eCard_either = (eCK) iCard_first;
+  while (CK_NONE != eCard_either) {
+
+    if (Card* p_parent = pCI->pAncestorParent()) {
+      if (eCard_either == p_parent->eCard()) {
+        eFound = eCard_either;
+        break;
+      }
+    }
+
+    eCard_either = (eCK)va_arg(xArgs, i8);
+  }
+
+  if (CK_NONE == eFound) {
+    pCI->vAncestorDump(this);
+    vValidationFailed("%s"_Stz,__func__);
+  }
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+
+  return eFound;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validation has failed                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vValidationFailed(Stz *szFormat, ...)
@@ -1826,9 +1924,7 @@ void Card::vValidationFailed(Stz *szFormat, ...)
   sError.vSprintVA(szFormat,xArgs);
   va_end(xArgs);
 
-  vTrace(sError);
-
-  vDump(__func__ );
+  vDump(__func__,sError);
 
   NEVER_REACH;
 }
@@ -1935,6 +2031,17 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_RPNCALC: _pCard_RpnCalc(this)->vPrint(pRibbon, iDepth); break;
     case CK_TABLE:   _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
     case CK_TERM:    _pCard_Term(this)->vPrint(pRibbon, iDepth);    break;
+
+    case CK_ANDCONJ:
+    case CK_NOTCONJ:
+    case CK_ORCONJ:
+    case CK_RLNCONJ:
+
+      if (RC_NONE != m_eRotationConj)
+        ((Card_CONJUNCTION*)this)->vPrint(pRibbon, iDepth);
+      else
+        vPrintCard_bySettings(pRibbon, iDepth);
+      break;
 
     default:
       vPrintCard_bySettings(pRibbon, iDepth);

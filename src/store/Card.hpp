@@ -6,9 +6,11 @@
 #include "BASE.h"
 
 #include "eAL.h"
+#include "eFC.h"
 #include "eGC.h"
 #include "ePB.h"
 #include "eQO.h"
+#include "eRC.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eXK.h"
@@ -226,11 +228,13 @@ extern Stz* MARK_AT;
 extern Stz* MARK_BLANK;
 extern Stz* MARK_CHANGED;
 extern Stz* MARK_COMPARE;
+extern Stz* MARK_ENUM;
 extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
 extern Stz* MARK_FOUND;
 extern Stz* MARK_NOT;
 extern Stz* MARK_OR;
+extern Stz* MARK_PREDICATE;
 extern Stz* MARK_UNVALID;
 extern Stz* MARK_UP;
 extern Stz* MARK_VALID;
@@ -259,6 +263,8 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
+    eFC     m_eConjunction;  // form of conjunction
+    eRC     m_eRotationConj; // rotation of conjunction
 
     i8 md__SeqNo;
     i8 md__FirstDetected;
@@ -308,6 +314,8 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     void vColType(Card* pCard_arg);
+    eFC  eConjunction(void);
+    void vConjunction(eFC eConjunction);
     Stz* szCoord(void);
 
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
@@ -337,6 +345,8 @@ namespace STORE
 
     i8   iItemise(void);
     void vItemise(i8 iItemise);
+
+    void vMark(Stz* szMark1, Stz* szMark2);
 
     bool bMark1(Stz* szArg);
     char cMark1(void);
@@ -377,6 +387,8 @@ namespace STORE
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
+    eRC  eRotationConj(void);
+    void vRotationConj(eRC eRotationConj);
 
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);
@@ -394,6 +406,7 @@ namespace STORE
     eCK  eValidate_mustSome(i8 /*eCK*/ iCard_first, ...);
     void vValidate_noChildren(void);
     void vValidate_notHave(i8 /*eCK*/ iCard, ...);
+    eCK  eValidate_parentEither(CardIter* pCI, i8 /*eCK*/ iCard_first, ...);
 
     void vValidationFailed(Stz* szFormat, ...);
     void vValidationPassed(void);

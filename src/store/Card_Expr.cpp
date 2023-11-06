@@ -509,22 +509,6 @@ bool Card_Expr::bHasTerm(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-//void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  s32 sType_short = szCT_char[pSymbol()->eColType()];
-//
-//  pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s %s %s"_Stz,
-//                          cMark1(),
-//                          cMark2(),
-//                          Stz::szDots(iDepth - 1),
-//                          m_i_Child,
-//                          szCardNm(),
-//                          szFacet(SF_NONE),
-//                          sType_short.szStz());
-//}
-/*----------------------------------------------------------------------------*/
 void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -755,7 +739,8 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   Card::vValidate_hasType();
 
-  eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);
+  (void)Card::eValidate_parentEither(pCI,CK_EMIT,CK_FOLD,CK_INJECTABLE,
+                                     CK_KEY,CK_NEEDED,CK_STREAMKEY,CK_NONE);
 
   Card::vValidate(pCI,iDepth,pParent);
   pCI->vValidateChildren(this,iDepth+1);

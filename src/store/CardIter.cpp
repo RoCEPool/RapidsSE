@@ -286,6 +286,19 @@ bool CardIter::bAncestorIncludes(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ancestor parent                                                        */
+/*----------------------------------------------------------------------------*/
+Card* CardIter::pAncestorParent(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  if (! m_nAncestors)
+    return nullptr;
+
+  return m_apAncestry[m_nAncestors-1];
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop ancestor                                                               */
 /*----------------------------------------------------------------------------*/
 void CardIter::vAncestorPop(void)
