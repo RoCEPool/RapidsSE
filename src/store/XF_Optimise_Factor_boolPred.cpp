@@ -253,16 +253,13 @@ void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
       NEVER_REACH
   }
 
-  if (pChild_0->eConjunction() == CK_RLNCONJ &&
-      pChild_1->eConjunction() == CK_RLNCONJ)
+  if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_RLNCONJ)
     p_andCon->vConjunction(FC_AND_RLN_DOUBLE);
   else
-  if (pChild_0->eConjunction() == FC_AND_RLN_DOUBLE &&
-      pChild_1->eConjunction() == CK_RLNCONJ)
+  if (pChild_0->eConjunction() == FC_AND_RLN_DOUBLE && eChild_1 == CK_RLNCONJ)
     p_andCon->vConjunction(FC_AND_RLN_TRIPLE);
   else
-  if (pChild_0->eConjunction() == CK_RLNCONJ &&
-      pChild_1->eConjunction() == FC_AND_RLN_DOUBLE)
+  if (eChild_0 == CK_RLNCONJ &&  pChild_1->eConjunction() == FC_AND_RLN_DOUBLE)
     p_andCon->vConjunction(FC_AND_RLN_TRIPLE);
 
   m_pCI->vAncestorPop();
