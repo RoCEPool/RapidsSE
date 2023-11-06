@@ -401,9 +401,12 @@ void XF_Optimise_Factor_boolPred::vFactor_rlnConj(Card_RlnConj* p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vRotate_a(void)
+void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_OrConj* p_orConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  UNUSED(p_orConj);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,6 +415,18 @@ void XF_Optimise_Factor_boolPred::vRotate_a(void)
 void XF_Optimise_Factor_boolPred::vRotate_b(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_OrConj* p_orConj)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_orConj->eRotationConj());
+
+  return false;
 }
 
 

@@ -31,8 +31,11 @@ namespace STORE
     void vFactor_orConj (Card_OrConj*  p_orConj);
     void vFactor_rlnConj(Card_RlnConj* p_rlnConj);
 
-    void vRotate_a(void);
+    void vRotate_Or_2ar3(Card_OrConj* p_orConj);
     void vRotate_b(void);
+
+    bool bTest_Rotate_Or_2ar3(Card_OrConj* p_orConj);
+
   private:
     Footer* aFooter(void);
   };
