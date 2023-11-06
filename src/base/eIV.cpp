@@ -50,6 +50,9 @@ Stz* aIV_field[IV_ENUMS]
 //    /* IV_ENUMS                       */ ""_Stz
 };
 
+// Note: variation of aIV_field without blank spaces
+// used by the backend and the optimiser in the pipelines
+
 Stz* aIV_field2[IV_ENUMS]
 {
 		/* IV_NONE=0                      */ ""_Stz,
