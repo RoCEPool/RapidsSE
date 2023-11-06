@@ -5,11 +5,11 @@
 
 enum eFC : i8 // form of conjunction
 {
-  /* */ FC_NONE=0,
+  /* 0 */ FC_NONE=0,
 
-  /* */ FC_AND_RLN_DOUBLE,
-  /* */ FC_AND_RLN_TRIPLE,
-  /* */ FC_OR_2AND_RLN_TRIPLE,
+  /* 1 */ FC_AND_RLN_DOUBLE,
+  /* 2 */ FC_AND_RLN_TRIPLE,
+  /* 3 */ FC_OR_2AND_RLN_TRIPLE,
 
   /* */ FC_ENUMS
 };

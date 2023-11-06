@@ -227,7 +227,7 @@ extern Stz* MARK_AT;
 extern Stz* MARK_BLANK;
 extern Stz* MARK_CHANGED;
 extern Stz* MARK_COMPARE;
-extern Stz* MARK_CONJUNCTION;
+extern Stz* MARK_ENUM;
 extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
 extern Stz* MARK_FOUND;

@@ -89,7 +89,7 @@ Stz* MARK_AT         = "@"_Stz;
 Stz* MARK_BLANK      = " "_Stz;
 Stz* MARK_CHANGED    = "`"_Stz;
 Stz* MARK_COMPARE    = "="_Stz;
-Stz* MARK_CONJUNCTION= "("_Stz;
+Stz* MARK_ENUM       = ":"_Stz;
 Stz* MARK_DELETED    = "Z"_Stz;
 Stz* MARK_DUPLICATE  = "D"_Stz;
 Stz* MARK_FOUND      = "+"_Stz;
