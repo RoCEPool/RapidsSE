@@ -65,6 +65,74 @@ bool Card_CONJUNCTION::bIsConj(Card* p_card)
 
 
 /*----------------------------------------------------------------------------*/
+/* does predicate have some bound wrt given index?                            */
+/*----------------------------------------------------------------------------*/
+bool Card_CONJUNCTION::bConjHasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+
+    case CK_ANDCONJ: return _pCard_AndConj(this)->bAndPredHasBounds(pIndex);
+
+    case CK_ORCONJ:  return _pCard_OrConj(this)->bOrPredHasBounds(pIndex);
+
+    case CK_RLNCONJ: return _pCard_RlnConj(this)->bCmpPredHasBounds(pIndex);
+
+    default:
+      vTrace("bConjHasBounds: unexpected eCard %lld %s\n"_Stz
+          ,(i8)eCard
+          ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visit all sub-cards of pred and apply lambda function                      */
+/*----------------------------------------------------------------------------*/
+bool Card_CONJUNCTION::bConjRecursive(std::function<bool(Card_CONJUNCTION* p_conj, bool bUpwards)> bfApply)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bContinue;
+
+  eCK eCard = this->eCard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // only call term once
+
+  if (CK_TERM == eCard) {
+    bContinue = bfApply(this,false);
+    return bContinue;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // apply pred function for downwards
+  bContinue = bfApply(this,false);
+  if (! bContinue)
+    return false;
+
+  // descend into children
+  i8 nSubCards = nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = pGetChild(i_Child);
+    bContinue = static_cast<Card_CONJUNCTION *>(pSubCard)->bConjRecursive(bfApply);
+    if (! bContinue)
+      return false;
+  }
+
+  // apply pred function for upwards
+  bContinue = bfApply(this,true);
+  return bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_CONJUNCTION::bContains_callToSubQuery(CardIter* pCI)
@@ -447,71 +515,20 @@ Card_RlnConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does predicate have some bound wrt given index?                            */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bConjHasBounds(Index* pIndex)
+void Card_CONJUNCTION::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eCK eCard = this->eCard();
+  pRibbon->vSprintSnippet(false, "%c%c%s%lld]%s"_Stz,
+                          cMark1(),
+                          cMark2(),
+                          Stz::szDots(iDepth - 1),
+                          m_i_Child,
 
-  switch (eCard) {
+                          aRC[m_eRotationConj]);
 
-    case CK_ANDCONJ: return _pCard_AndConj(this)->bAndPredHasBounds(pIndex);
-
-    case CK_ORCONJ:  return _pCard_OrConj(this)->bOrPredHasBounds(pIndex);
-
-    case CK_RLNCONJ: return _pCard_RlnConj(this)->bCmpPredHasBounds(pIndex);
-
-    default:
-      vTrace("bConjHasBounds: unexpected eCard %lld %s\n"_Stz
-          ,(i8)eCard
-          ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards of pred and apply lambda function                      */
-/*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bConjRecursive(std::function<bool(Card_CONJUNCTION* p_conj, bool bUpwards)> bfApply)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bContinue;
-
-  eCK eCard = this->eCard();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // only call term once
-
-  if (CK_TERM == eCard) {
-    bContinue = bfApply(this,false);
-    return bContinue;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // apply pred function for downwards
-  bContinue = bfApply(this,false);
-  if (! bContinue)
-    return false;
-
-  // descend into children
-  i8 nSubCards = nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = pGetChild(i_Child);
-    bContinue = static_cast<Card_CONJUNCTION *>(pSubCard)->bConjRecursive(bfApply);
-    if (! bContinue)
-      return false;
-  }
-
-  // apply pred function for upwards
-  bContinue = bfApply(this,true);
-  return bContinue;
 }
 
 /*----------------------------------------------------------------------------*/

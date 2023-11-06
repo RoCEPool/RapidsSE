@@ -15,6 +15,8 @@ namespace STORE
 
     static bool bIsConj(Card* p_card);
 
+    bool bConjHasBounds (Index* pIndex);
+    bool bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
     bool bContains_callToSubQuery(CardIter* pCI);
     bool bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
@@ -30,8 +32,7 @@ namespace STORE
     bool bIsSqyOp(void);
     void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
     Card_RlnConj* pPredFindBound(Index* pIndex, ePB eBound);
-    bool bConjHasBounds (Index* pIndex);
-    bool bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     Symbol* pTable_WhichTableFor_Conj(CardIter* pCI);
     void vShortForm(String* pString);
 

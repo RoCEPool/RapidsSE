@@ -2032,6 +2032,17 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_TABLE:   _pCard_Table(this)->vPrint(pRibbon, iDepth);   break;
     case CK_TERM:    _pCard_Term(this)->vPrint(pRibbon, iDepth);    break;
 
+    case CK_ANDCONJ:
+    case CK_NOTCONJ:
+    case CK_ORCONJ:
+    case CK_RLNCONJ:
+
+      if (RC_NONE != m_eRotationConj)
+        ((Card_CONJUNCTION*)this)->vPrint(pRibbon, iDepth);
+      else
+        vPrintCard_bySettings(pRibbon, iDepth);
+      break;
+
     default:
       vPrintCard_bySettings(pRibbon, iDepth);
       break;

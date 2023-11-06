@@ -359,6 +359,9 @@ void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
     p_orConj->vConjunction(FC_OR_2AND_RLN_TRIPLE);
     p_orConj->vMark2(MARK_ENUM);
     p_orConj->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_TRIPLE));
+
+    p_orConj->vRotationConj(RC_FACTOR_OR_2AND_RLN_TRIPLE);
+
   }
 
   m_pCI->vAncestorPop();
