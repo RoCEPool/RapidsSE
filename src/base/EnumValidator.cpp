@@ -96,6 +96,7 @@
 #include "eQN.h"
 #include "eQO.h"
 #include "eRA.h"
+#include "eRC.h"
 #include "eRF.h"
 #include "eRG.h"
 #include "eRK.h"
@@ -270,6 +271,7 @@ void EnumValidator::vValidateEnumStzArrays(void)
       {           aQO[QO_ENUMS - 1],          "aQO[]"_Stz,     "eQO"_Stz },
       {           aRA[RA_ENUMS - 1],          "aRA[]"_Stz,     "eRA"_Stz },
       {     aRA_short[RA_ENUMS - 1],    "aRA_short[]"_Stz,     "eRA"_Stz },
+      {           aRC[RC_ENUMS - 1],          "aRC[]"_Stz,     "eRC"_Stz },
       {           aRF[RF_ENUMS - 1],          "aRF[]"_Stz,     "eRF"_Stz },
       {           aRG[RG_ENUMS - 1],          "aRG[]"_Stz,     "eRG"_Stz },
       {           aRK[RK_ENUMS - 1],          "aRK[]"_Stz,     "eRK"_Stz },

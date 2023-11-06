@@ -10,6 +10,7 @@
 #include "eGC.h"
 #include "ePB.h"
 #include "eQO.h"
+#include "eRC.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eXK.h"
@@ -262,7 +263,8 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
-    eFC     m_eConjunction; // form of conjunction
+    eFC     m_eConjunction;  // form of conjunction
+    eRC     m_eRotationConj; // rotation of conjunction
 
     i8 md__SeqNo;
     i8 md__FirstDetected;
@@ -385,6 +387,8 @@ namespace STORE
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
+    eRC  eRotationConj(void);
+    void vRotationConj(eRC eRotationConj);
 
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);

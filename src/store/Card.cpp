@@ -125,6 +125,7 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_i_Child = C_UNKNOWN;
 
   m_eConjunction = FC_NONE;
+  m_eRotationConj = RC_NONE;
 
   m_pLastPrintParent = nullptr;
 
@@ -1506,6 +1507,26 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
   Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rotationConj                                                           */
+/*----------------------------------------------------------------------------*/
+eRC Card::eRotationConj(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_eRotationConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set conjunction                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vRotationConj(eRC eRotationConj)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_eRotationConj = eRotationConj;
 }
 
 /*----------------------------------------------------------------------------*/
