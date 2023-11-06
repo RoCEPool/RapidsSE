@@ -227,6 +227,7 @@ extern Stz* MARK_AT;
 extern Stz* MARK_BLANK;
 extern Stz* MARK_CHANGED;
 extern Stz* MARK_COMPARE;
+extern Stz* MARK_CONJUNCTION;
 extern Stz* MARK_DELETED;
 extern Stz* MARK_DUPLICATE;
 extern Stz* MARK_FOUND;
@@ -311,6 +312,8 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     void vColType(Card* pCard_arg);
+    eFC  eConjunction(void);
+    void vConjunction(eFC eConjunction);
     Stz* szCoord(void);
 
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);

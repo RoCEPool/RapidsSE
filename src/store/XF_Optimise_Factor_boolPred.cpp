@@ -253,6 +253,18 @@ void XF_Optimise_Factor_boolPred::vFactor_andConj(Card_AndConj* p_andCon)
       NEVER_REACH
   }
 
+  if (pChild_0->eConjunction() == CK_RLNCONJ &&
+      pChild_1->eConjunction() == CK_RLNCONJ)
+    p_andCon->vConjunction(FC_AND_RLN_DOUBLE);
+  else
+  if (pChild_0->eConjunction() == FC_AND_RLN_DOUBLE &&
+      pChild_1->eConjunction() == CK_RLNCONJ)
+    p_andCon->vConjunction(FC_AND_RLN_TRIPLE);
+  else
+  if (pChild_0->eConjunction() == CK_RLNCONJ &&
+      pChild_1->eConjunction() == FC_AND_RLN_DOUBLE)
+    p_andCon->vConjunction(FC_AND_RLN_TRIPLE);
+
   m_pCI->vAncestorPop();
 }
 
@@ -335,6 +347,10 @@ void XF_Optimise_Factor_boolPred::vFactor_orConj(Card_OrConj* p_orConj)
     default:
       NEVER_REACH
   }
+
+  if (pChild_0->eConjunction() == FC_AND_RLN_DOUBLE &&
+      pChild_1->eConjunction() == FC_AND_RLN_DOUBLE)
+    p_orConj->vConjunction(FC_OR_2AND_RLN_TRIPLE);
 
   m_pCI->vAncestorPop();
 }

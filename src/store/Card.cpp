@@ -89,12 +89,13 @@ Stz* MARK_AT         = "@"_Stz;
 Stz* MARK_BLANK      = " "_Stz;
 Stz* MARK_CHANGED    = "`"_Stz;
 Stz* MARK_COMPARE    = "="_Stz;
+Stz* MARK_CONJUNCTION= "("_Stz;
 Stz* MARK_DELETED    = "Z"_Stz;
 Stz* MARK_DUPLICATE  = "D"_Stz;
 Stz* MARK_FOUND      = "+"_Stz;
 Stz* MARK_NOT        = "!"_Stz;
 Stz* MARK_OR         = "|"_Stz;
-Stz* MARK_PREDICATE   = "?"_Stz;
+Stz* MARK_PREDICATE  = "?"_Stz;
 Stz* MARK_UP         = "^"_Stz;
 Stz* MARK_UNVALID    = "X"_Stz;
 Stz* MARK_VALID      = "Y"_Stz;
@@ -494,6 +495,26 @@ void Card::vColType(Card* pCard_arg)
   //pCard_arg->vDump(__func__);
 
   m_xSymbol.vColType(pCard_arg->pSymbol()->eColType());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get conjunction                                                            */
+/*----------------------------------------------------------------------------*/
+eFC Card::eConjunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_eConjunction;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set conjunction                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vConjunction(eFC eConjunction)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_eConjunction = eConjunction;
 }
 
 /*----------------------------------------------------------------------------*/

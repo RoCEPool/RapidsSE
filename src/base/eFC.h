@@ -3,12 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-enum eFC : i8 // card kind
+enum eFC : i8 // form of conjunction
 {
   /* */ FC_NONE=0,
 
-  /* */ FC_AND_RLN_TRIPLET,
-  /* */ FC_OR_2AND_RLN_TRIPLET,
+  /* */ FC_AND_RLN_DOUBLE,
+  /* */ FC_AND_RLN_TRIPLE,
+  /* */ FC_OR_2AND_RLN_TRIPLE,
 
   /* */ FC_ENUMS
 };
