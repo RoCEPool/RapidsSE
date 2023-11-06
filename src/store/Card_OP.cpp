@@ -1355,16 +1355,8 @@ void Card_OP::vRpn_top(String* psRpnExpr, Card_Top* p_top)
   Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
 
   Parser::TypeId xColTypeId = pCard_Calc->xColTypeId();
-	eCT eCTType = xColTypeId.eCTVal();
-	if (eCTType == CT_INTERVAL_YM || eCTType == CT_INTERVAL_DT) {
-		Stz *szColType = aIV_field[xColTypeId.eIVVal()];
-		psRpnExpr->vCatSprint(" type %s "_Stz, szColType->azChar());
-	}
-	else {
-		Stz *szColType = aCT[eCTType];
-		psRpnExpr->vCatSprint(" type %s "_Stz, szColType->azChar());
-	}
 
+	psRpnExpr->vCatSprint(" type %s "_Stz, xColTypeId.szTypeName());
   vRpn_rpnCalc(psRpnExpr, pCard_Calc);
 }
 

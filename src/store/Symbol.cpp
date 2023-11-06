@@ -1140,37 +1140,18 @@ bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
+/* find TypeId by name                                                        */
 /*----------------------------------------------------------------------------*/
-//Parser::TypeId Symbol::xTo_TypeId_str(Stz* szType)
-//{
-//  _static_
-//
+Parser::TypeId Symbol::xTo_TypeId_str(Stz* szType)
+{
+  _static_
+
 //  for (i8 i_Type = 0; i_Type < Parser::TypeSystem::iMaxTypeId(); i_Type++)
 //    return Parser::TypeId::xIdOf("rapids"_Stz, szType);
 //
 //  return (Parser::TypeId)-1;
-//}
 
-/*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
-/*----------------------------------------------------------------------------*/
-Parser::TypeId Symbol::xTo_TypeId_str(Stz* szType)
-{
-	_static_
-
-	for (i8 i_Type = 0; i_Type < Parser::TypeSystem::iMaxTypeId(); i_Type++) {
-		Parser::TypeId xTypeId =  Parser::TypeId::xIdOf("rapids"_Stz, szType);
-		if (xTypeId.eCTVal() == CT_INTERVAL_YM ||
-				xTypeId.eCTVal() == CT_INTERVAL_DT) {
-			return Parser::TypeId::xIdOf(xTypeId.eIVVal());
-		} else
-			return xTypeId;
-
-	}
-
-
-	return (Parser::TypeId)-1;
+	return Parser::TypeId::xIdOf("rapids"_Stz, szType);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -33,7 +33,7 @@ Stz* aIV_field[IV_ENUMS]
     /* IV_SUBCATEGORY_YEARMONTH_START */ ""_Stz,
     /* IV_YEAR                        */ "YEAR"_Stz,
     /* IV_MONTH                       */ "MONTH"_Stz,
-    /* IV_YEAR_TO_MONTH               */ "YEAR_TO_MONTH"_Stz,
+    /* IV_YEAR_TO_MONTH               */ "YEAR TO MONTH"_Stz,
     /* IV_SUBCATEGORY_YEARMONTH_END   */ ""_Stz,
     /* IV_SUBCATEGORY_DAYTIME_START   */ ""_Stz,
     /* IV_DAY                         */ "DAY"_Stz,
