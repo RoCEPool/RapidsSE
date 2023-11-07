@@ -528,8 +528,43 @@ void Card::vConjFormClearRecursive(void)
   vConjForm(FC_NONE);
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
-    pSubCard->vConjFormClearRecursive();
+    Card *pChild = xKid.pChild();
+    pChild->vConjFormClearRecursive();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rotationConj                                                           */
+/*----------------------------------------------------------------------------*/
+eRC Card::eConjRot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_eConjRot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set conjunction                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vConjRot(eRC eConjRot)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  m_eConjRot = eConjRot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear all m_eConjRot                                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vConjRotClearRecursive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vConjRot(RC_NONE);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card *pChild = xKid.pChild();
+    pChild->vConjRotClearRecursive();
   }
 }
 
@@ -1521,41 +1556,6 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
   Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rotationConj                                                           */
-/*----------------------------------------------------------------------------*/
-eRC Card::eConjRot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_eConjRot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set conjunction                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vConjRot(eRC eConjRot)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_eConjRot = eConjRot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear all m_eConjRot                                                       */
-/*----------------------------------------------------------------------------*/
-void Card::vConjRotClearRecursive(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vConjRot(RC_NONE);
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card *pSubCard = xKid.pChild();
-    pSubCard->vConjRotClearRecursive();
-  }
 }
 
 /*----------------------------------------------------------------------------*/

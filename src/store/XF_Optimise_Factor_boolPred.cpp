@@ -178,59 +178,67 @@ i8 XF_Optimise_Factor_boolPred::nFactor_boolPred(Card_BoolPred* p_boolPred)
 
   i8 nRotations = 0;
 
-  p_boolPred->vMark(MARK_AT,MARK_PREDICATE);
+  do {
+    nRotations = 0;
 
-  Card* pChild = p_boolPred->pPeekChild();
-  if (!pChild)
-    return nRotations;
-
-  RASSERT(! m_pCI->nAncestors());
-  m_pCI->vAncestorPush(p_boolPred);
-
-  eCK eChild = pChild->eCard();
-  switch (eChild) {
-    case CK_ANDCONJ:
-      nRotations += nFactor_andConj(_pCard_AndConj(pChild));
-      break;
-    case CK_NOTCONJ:
-      nRotations += nFactor_notConj(_pCard_NotConj(pChild));
-      break;
-    case CK_ORCONJ:
-      nRotations += nFactor_orConj(_pCard_OrConj(pChild));
-      break;
-    case CK_RLNCONJ:
-      nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild));
+    Card *pChild = p_boolPred->pPeekChild();
+    if (!pChild)
       break;
 
-    case CK_TERM: break;
+    p_boolPred->vMark(MARK_AT, MARK_PREDICATE);
 
-    default:
-      NEVER_REACH
-  }
 
-  if (! nRotations) {
-    if (pChild->eConjForm() == FC_OR_2AND_RLN_MIX) {
-      pChild->vConjForm(FC_OR_2AND_RLN_TRIPLE);
-      pChild->vMark2(MARK_ENUM);
-      pChild->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_MIX));
+    RASSERT(!m_pCI->nAncestors());
+    m_pCI->vAncestorPush(p_boolPred);
 
-      pChild->vConjRot(RC_FACTOR_OR_2AND_RLN_MIX);
+    eCK eChild = pChild->eCard();
+    switch (eChild) {
+      case CK_ANDCONJ:
+        nRotations += nFactor_andConj(_pCard_AndConj(pChild));
+        break;
+      case CK_NOTCONJ:
+        nRotations += nFactor_notConj(_pCard_NotConj(pChild));
+        break;
+      case CK_ORCONJ:
+        nRotations += nFactor_orConj(_pCard_OrConj(pChild));
+        break;
+      case CK_RLNCONJ:
+        nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild));
+        break;
+
+      case CK_TERM:
+        break;
+
+      default:
+        NEVER_REACH
     }
 
-    if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eConjRot()) {
-      if (bTest_Rotate_Or_2arm(p_boolPred)) {
-        vRotate_Or_2arm(p_boolPred);
-        nRotations++;
+    if (! nRotations) {
+      if (pChild->eConjForm() == FC_OR_2AND_RLN_MIX) {
+        pChild->vConjForm(FC_OR_2AND_RLN_TRIPLE);
+        pChild->vMark2(MARK_ENUM);
+        pChild->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_MIX));
 
-        p_boolPred->vMarksClearRecursive();
-        p_boolPred->vConjFormClearRecursive();
-        p_boolPred->vConjRotClearRecursive();
+        pChild->vConjRot(RC_FACTOR_OR_2AND_RLN_MIX);
+      }
+
+      if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eConjRot()) {
+        if (bTest_Rotate_Or_2arm(p_boolPred)) {
+          vRotate_Or_2arm(p_boolPred);
+          nRotations++;
+        }
       }
     }
-  }
 
-  m_pCI->vAncestorPop();
-  RASSERT(! m_pCI->nAncestors());
+    m_pCI->vAncestorPop();
+    RASSERT(!m_pCI->nAncestors());
+
+    //if (nRotations) {
+      p_boolPred->vMarksClearRecursive();
+      p_boolPred->vConjFormClearRecursive();
+      p_boolPred->vConjRotClearRecursive();
+    //}
+  } while (nRotations);
 
   m_pCI->G.p_boolPred = nullptr;
 
@@ -318,7 +326,7 @@ i8 XF_Optimise_Factor_boolPred::nFactor_andConj(Card_AndConj* p_andConj)
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
   }
   else
-  if (eChild_0 == CK_ANDCONJ && eChild_1 == CK_ORCONJ) {
+  if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_ORCONJ) {
     p_andConj->vConjForm(FC_AND_RLN_OR);
     p_andConj->vMark2(MARK_ENUM);
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_OR));
@@ -558,6 +566,8 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROO
 
   delete p_0_1_andConj;
   delete p_0_1_0_0_rlnConj;
+  m_pCI->vPrintBoard(__LINE__);
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -597,6 +607,9 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROO
 
   delete p_0_1_0_andConj;
   delete p_0_1_0_0_rlnConj;
+
+  m_pCI->vPrintBoard(__LINE__);
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
