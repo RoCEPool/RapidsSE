@@ -76,23 +76,23 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_FILTER:
         if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-          bFactor_boolPred(m_pCI->G.p_boolPred);
+          nFactor_boolPred(m_pCI->G.p_boolPred);
         break;
 
       case CK_FROM:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -100,18 +100,18 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_INDEXJOIN:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -119,14 +119,14 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
       case CK_KEYEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
@@ -134,7 +134,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
       case CK_KEYNOTEXISTS:
         if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_constraint->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         RASSERT(! m_pCI->G.p_MainCard->pSub_filter());
         break;
@@ -143,7 +143,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -151,7 +151,7 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
         RASSERT(! m_pCI->G.p_MainCard->pSub_constraint());
         if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
           if ((m_pCI->G.p_boolPred = m_pCI->G.p_filter->pSub_boolPred()))
-            bFactor_boolPred(m_pCI->G.p_boolPred);
+            nFactor_boolPred(m_pCI->G.p_boolPred);
         }
         break;
 
@@ -172,27 +172,35 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bFactor_boolPred(Card_BoolPred* p_boolPred)
+i8 XF_Optimise_Factor_boolPred::nFactor_boolPred(Card_BoolPred* p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  bool bFactored = false;
+  i8 nRotations = 0;
 
   p_boolPred->vMark(MARK_AT,MARK_PREDICATE);
 
   Card* pChild = p_boolPred->pPeekChild();
   if (!pChild)
-    return bFactored;
+    return nRotations;
 
   RASSERT(! m_pCI->nAncestors());
   m_pCI->vAncestorPush(p_boolPred);
 
   eCK eChild = pChild->eCard();
   switch (eChild) {
-    case CK_ANDCONJ: bFactor_andConj(_pCard_AndConj(pChild)); break;
-    case CK_NOTCONJ: bFactor_notConj(_pCard_NotConj(pChild)); break;
-    case CK_ORCONJ:  bFactor_orConj(_pCard_OrConj(pChild));  break;
-    case CK_RLNCONJ: bFactor_rlnConj(_pCard_RlnConj(pChild)); break;
+    case CK_ANDCONJ:
+      nRotations += nFactor_andConj(_pCard_AndConj(pChild));
+      break;
+    case CK_NOTCONJ:
+      nRotations += nFactor_notConj(_pCard_NotConj(pChild));
+      break;
+    case CK_ORCONJ:
+      nRotations += nFactor_orConj(_pCard_OrConj(pChild));
+      break;
+    case CK_RLNCONJ:
+      nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild));
+      break;
 
     case CK_TERM: break;
 
@@ -200,9 +208,12 @@ bool XF_Optimise_Factor_boolPred::bFactor_boolPred(Card_BoolPred* p_boolPred)
       NEVER_REACH
   }
 
-  if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eRotationConj()) {
+  if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eRotConj()) {
     if (bTest_Rotate_Or_2arm(p_boolPred)) {
       vRotate_Or_2arm(p_boolPred);
+      p_boolPred->vMarksClearRecursive();
+      p_boolPred->vConjClearRecursive();
+      p_boolPred->vRotConjClearRecursive();
     }
   }
 
@@ -211,32 +222,36 @@ bool XF_Optimise_Factor_boolPred::bFactor_boolPred(Card_BoolPred* p_boolPred)
 
   m_pCI->G.p_boolPred = nullptr;
 
-  return bFactored;
+  return nRotations;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bFactor_andConj(Card_AndConj* p_andConj)
+i8 XF_Optimise_Factor_boolPred::nFactor_andConj(Card_AndConj* p_andConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  bool bContinueRecursion = C_CONTINUE_RECURSION;
+  i8 nRotations = 0;
 
   p_andConj->vMark(MARK_AT, MARK_AND);
 
   Card* pChild_0 = p_andConj->pGetChild(0);
   if (!pChild_0)
-    return bContinueRecursion;
+    return nRotations;
 
   m_pCI->vAncestorPush(p_andConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
-    case CK_ANDCONJ: bFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ: bFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:  bFactor_orConj(_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ: bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      nFactor_andConj(_pCard_AndConj(pChild_0)); break;
+    case CK_NOTCONJ:
+      nFactor_notConj(_pCard_NotConj(pChild_0)); break;
+    case CK_ORCONJ:
+      nFactor_orConj(_pCard_OrConj(pChild_0));  break;
+    case CK_RLNCONJ:
+      nFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
 
     case CK_TERM: break;
 
@@ -249,15 +264,23 @@ bool XF_Optimise_Factor_boolPred::bFactor_andConj(Card_AndConj* p_andConj)
   Card* pChild_1 = p_andConj->pGetChild(1);
   if (!pChild_1) {
     m_pCI->vAncestorPop();
-    return bContinueRecursion;
+    return nRotations;
   }
 
   eCK eChild_1 = pChild_1->eCard();
   switch (eChild_1) {
-    case CK_ANDCONJ: bFactor_andConj(_pCard_AndConj(pChild_1)); break;
-    case CK_NOTCONJ: bFactor_notConj(_pCard_NotConj(pChild_1)); break;
-    case CK_ORCONJ:  bFactor_orConj(_pCard_OrConj(pChild_1));  break;
-    case CK_RLNCONJ: bFactor_rlnConj(_pCard_RlnConj(pChild_1)); break;
+    case CK_ANDCONJ:
+      nRotations += nFactor_andConj(_pCard_AndConj(pChild_1));
+      break;
+    case CK_NOTCONJ:
+      nRotations += nFactor_notConj(_pCard_NotConj(pChild_1));
+      break;
+    case CK_ORCONJ:
+      nRotations += nFactor_orConj(_pCard_OrConj(pChild_1));
+      break;
+    case CK_RLNCONJ:
+      nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild_1));
+      break;
 
     case CK_TERM: break;
 
@@ -266,51 +289,59 @@ bool XF_Optimise_Factor_boolPred::bFactor_andConj(Card_AndConj* p_andConj)
   }
 
   if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_RLNCONJ) {
-    p_andConj->vConjunction(FC_AND_RLN_DOUBLE);
+    p_andConj->vConj(FC_AND_RLN_DOUBLE);
     p_andConj->vMark2(MARK_ENUM);
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_DOUBLE));
   }
   else
-  if (pChild_0->eConjunction() == FC_AND_RLN_DOUBLE && eChild_1 == CK_RLNCONJ) {
-    p_andConj->vConjunction(FC_AND_RLN_TRIPLE);
+  if (pChild_0->eConj() == FC_AND_RLN_DOUBLE && eChild_1 == CK_RLNCONJ) {
+    p_andConj->vConj(FC_AND_RLN_TRIPLE);
     p_andConj->vMark2(MARK_ENUM);
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
   }
   else
-  if (eChild_0 == CK_RLNCONJ &&  pChild_1->eConjunction() == FC_AND_RLN_DOUBLE) {
-    p_andConj->vConjunction(FC_AND_RLN_TRIPLE);
+  if (eChild_0 == CK_RLNCONJ && pChild_1->eConj() == FC_AND_RLN_DOUBLE) {
+    p_andConj->vConj(FC_AND_RLN_TRIPLE);
     p_andConj->vMark2(MARK_ENUM);
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
   }
 
   m_pCI->vAncestorPop();
 
-  return bContinueRecursion;
+  return nRotations;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bFactor_notConj(Card_NotConj* p_notConj)
+i8 XF_Optimise_Factor_boolPred::nFactor_notConj(Card_NotConj* p_notConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  bool bContinueRecursion = C_CONTINUE_RECURSION;
+  i8 nRotations = 0;
 
   p_notConj->vMark(MARK_AT,MARK_NOT);
 
   Card* pChild_0 = p_notConj->pGetChild(0);
   if (! pChild_0)
-    return bContinueRecursion;
+    return nRotations;
 
   m_pCI->vAncestorPush(p_notConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
-    case CK_ANDCONJ: bFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ: bFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:  bFactor_orConj(_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ: bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      nRotations += nFactor_andConj(_pCard_AndConj(pChild_0));
+      break;
+    case CK_NOTCONJ:
+      nRotations += nFactor_notConj(_pCard_NotConj(pChild_0));
+      break;
+    case CK_ORCONJ:
+      nRotations += nFactor_orConj(_pCard_OrConj(pChild_0));
+      break;
+    case CK_RLNCONJ:
+      nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild_0));
+      break;
 
     case CK_TERM: break;
 
@@ -320,32 +351,40 @@ bool XF_Optimise_Factor_boolPred::bFactor_notConj(Card_NotConj* p_notConj)
 
   m_pCI->vAncestorPop();
 
-  return bContinueRecursion;
+  return nRotations;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bFactor_orConj(Card_OrConj* p_orConj)
+i8 XF_Optimise_Factor_boolPred::nFactor_orConj(Card_OrConj* p_orConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  bool bContinueRecursion = C_CONTINUE_RECURSION;
+  i8 nRotations = 0;
 
   p_orConj->vMark(MARK_AT,MARK_OR);
 
   Card* pChild_0 = p_orConj->pGetChild(0);
   if (!pChild_0)
-    return bContinueRecursion;
+    return nRotations;
 
   m_pCI->vAncestorPush(p_orConj);
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
-    case CK_ANDCONJ: bFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ: bFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:  bFactor_orConj(_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ: bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      nRotations += nFactor_andConj(_pCard_AndConj(pChild_0));
+      break;
+    case CK_NOTCONJ:
+      nRotations += nFactor_notConj(_pCard_NotConj(pChild_0));
+      break;
+    case CK_ORCONJ:
+      nRotations += nFactor_orConj(_pCard_OrConj(pChild_0));
+      break;
+    case CK_RLNCONJ:
+      nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild_0));
+      break;
 
     case CK_TERM: break;
 
@@ -358,15 +397,23 @@ bool XF_Optimise_Factor_boolPred::bFactor_orConj(Card_OrConj* p_orConj)
   Card* pChild_1 = p_orConj->pGetChild(1);
   if (!pChild_1) {
     m_pCI->vAncestorPop();
-    return bContinueRecursion;
+    return nRotations;
   }
 
   eCK eChild_1 = pChild_1->eCard();
   switch (eChild_1) {
-    case CK_ANDCONJ: bFactor_andConj(_pCard_AndConj(pChild_1)); break;
-    case CK_NOTCONJ: bFactor_notConj(_pCard_NotConj(pChild_1)); break;
-    case CK_ORCONJ:  bFactor_orConj(_pCard_OrConj(pChild_1));  break;
-    case CK_RLNCONJ: bFactor_rlnConj(_pCard_RlnConj(pChild_1)); break;
+    case CK_ANDCONJ:
+      nRotations += nFactor_andConj(_pCard_AndConj(pChild_1));
+      break;
+    case CK_NOTCONJ:
+      nRotations += nFactor_notConj(_pCard_NotConj(pChild_1));
+      break;
+    case CK_ORCONJ:
+      nRotations += nFactor_orConj(_pCard_OrConj(pChild_1));
+      break;
+    case CK_RLNCONJ:
+      nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild_1));
+      break;
 
     case CK_TERM: break;
 
@@ -374,50 +421,62 @@ bool XF_Optimise_Factor_boolPred::bFactor_orConj(Card_OrConj* p_orConj)
       NEVER_REACH
   }
 
-  if (pChild_0->eConjunction() == FC_AND_RLN_TRIPLE &&
-      pChild_1->eConjunction() == FC_AND_RLN_TRIPLE) {
-    p_orConj->vConjunction(FC_OR_2AND_RLN_TRIPLE);
+  if (pChild_0->eConj() == FC_AND_RLN_TRIPLE &&
+      pChild_1->eConj() == FC_AND_RLN_TRIPLE) {
+    p_orConj->vConj(FC_OR_2AND_RLN_TRIPLE);
     p_orConj->vMark2(MARK_ENUM);
     p_orConj->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_TRIPLE));
 
-    p_orConj->vRotationConj(RC_FACTOR_OR_2AND_RLN_TRIPLE);
+    p_orConj->vRotConj(RC_FACTOR_OR_2AND_RLN_TRIPLE);
 
   }
 
-  if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eRotationConj()) {
+  if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eRotConj()) {
     if (bTest_Rotate_Or_2ar3(p_orConj)) {
       vRotate_Or_2ar3(p_orConj);
+
+      pChild_0->vMarksClearRecursive();
+      pChild_0->vConjClearRecursive();
+      pChild_0->vRotConjClearRecursive();
     }
   }
 
   m_pCI->vAncestorPop();
 
-  return bContinueRecursion;
+  return nRotations;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bFactor_rlnConj(Card_RlnConj* p_rlnConj)
+i8 XF_Optimise_Factor_boolPred::nFactor_rlnConj(Card_RlnConj* p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  bool bContinueRecursion = C_CONTINUE_RECURSION;
+  i8 nRotations = 0;
 
   p_rlnConj->vMark(MARK_AT,MARK_COMPARE);
 
   Card* pChild_0 = p_rlnConj->pGetChild(0);
   if (!pChild_0)
-    return bContinueRecursion;
+    return nRotations;
 
   m_pCI->vAncestorPush(p_rlnConj);
 
   eCK eChild = pChild_0->eCard();
   switch (eChild) {
-    case CK_ANDCONJ:  bFactor_andConj(_pCard_AndConj(pChild_0)); break;
-    case CK_NOTCONJ:  bFactor_notConj(_pCard_NotConj(pChild_0)); break;
-    case CK_ORCONJ:   bFactor_orConj(_pCard_OrConj(pChild_0));  break;
-    case CK_RLNCONJ:  bFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+    case CK_ANDCONJ:
+      nRotations += nFactor_andConj(_pCard_AndConj(pChild_0));
+      break;
+    case CK_NOTCONJ:
+      nRotations += nFactor_notConj(_pCard_NotConj(pChild_0));
+      break;
+    case CK_ORCONJ:
+      nRotations += nFactor_orConj(_pCard_OrConj(pChild_0));
+      break;
+    case CK_RLNCONJ:
+      nRotations += nFactor_rlnConj(_pCard_RlnConj(pChild_0));
+      break;
 
     case CK_TERM: break;
 
@@ -427,7 +486,7 @@ bool XF_Optimise_Factor_boolPred::bFactor_rlnConj(Card_RlnConj* p_rlnConj)
 
   m_pCI->vAncestorPop();
 
-  return bContinueRecursion;
+  return nRotations;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,7 +582,7 @@ bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_CONJSUBROOT* p_CONJS
 
   Card_OrConj* p_0_orConj = p_CONJSUBROOT->pGet_orConj(0);
 
-  RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_0_orConj->eRotationConj());
+  RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_0_orConj->eRotConj());
 
   Card_AndConj* p_0_0_andConj = _pCard_AndConj(p_0_orConj->pGetChild(0));
   Card_AndConj* p_0_1_andConj = _pCard_AndConj(p_0_orConj->pGetChild(1));

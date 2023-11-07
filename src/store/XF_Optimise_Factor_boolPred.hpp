@@ -24,12 +24,12 @@ namespace STORE
 
     bool bOptimise(void);
 
-    bool bFactor_boolPred(Card_BoolPred* p_boolPred);
+    i8   nFactor_boolPred(Card_BoolPred* p_boolPred);
 
-    bool bFactor_andConj(Card_AndConj* p_andConj);
-    bool bFactor_notConj(Card_NotConj* p_notConj);
-    bool bFactor_orConj (Card_OrConj*  p_orConj);
-    bool bFactor_rlnConj(Card_RlnConj* p_rlnConj);
+    i8   nFactor_andConj(Card_AndConj* p_andConj);
+    i8   nFactor_notConj(Card_NotConj* p_notConj);
+    i8   nFactor_orConj (Card_OrConj*  p_orConj);
+    i8   nFactor_rlnConj(Card_RlnConj* p_rlnConj);
 
     void vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT);
     void vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT);

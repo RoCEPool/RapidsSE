@@ -124,8 +124,8 @@ Card::Card(eCK eCard, i8 iFixedDepth)
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
-  m_eConjunction = FC_NONE;
-  m_eRotationConj = RC_NONE;
+  m_eConj = FC_NONE;
+  m_eRotConj = RC_NONE;
 
   m_pLastPrintParent = nullptr;
 
@@ -501,21 +501,36 @@ void Card::vColType(Card* pCard_arg)
 /*----------------------------------------------------------------------------*/
 /* get conjunction                                                            */
 /*----------------------------------------------------------------------------*/
-eFC Card::eConjunction(void)
+eFC Card::eConj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_eConjunction;
+  return m_eConj;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set conjunction                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vConjunction(eFC eConjunction)
+void Card::vConj(eFC eConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_eConjunction = eConjunction;
+  m_eConj = eConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear all m_eConj                                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vConjClearRecursive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vConj(FC_NONE);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card *pSubCard = xKid.pChild();
+    pSubCard->vConjClearRecursive();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1245,7 +1260,6 @@ void Card::vMarksClearRecursive(void)
 
     pSubCard->vMarksClearRecursive();
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1512,21 +1526,36 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 /*----------------------------------------------------------------------------*/
 /* get rotationConj                                                           */
 /*----------------------------------------------------------------------------*/
-eRC Card::eRotationConj(void)
+eRC Card::eRotConj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_eRotationConj;
+  return m_eRotConj;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set conjunction                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vRotationConj(eRC eRotationConj)
+void Card::vRotConj(eRC eRotConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_eRotationConj = eRotationConj;
+  m_eRotConj = eRotConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear all m_eRotConj                                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vRotConjClearRecursive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vRotConj(RC_NONE);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card *pSubCard = xKid.pChild();
+    pSubCard->vRotConjClearRecursive();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2037,7 +2066,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_ORCONJ:
     case CK_RLNCONJ:
 
-      if (RC_NONE != m_eRotationConj)
+      if (RC_NONE != m_eRotConj)
         ((Card_CONJUNCTION*)this)->vPrint(pRibbon, iDepth);
       else
         vPrintCard_bySettings(pRibbon, iDepth);
