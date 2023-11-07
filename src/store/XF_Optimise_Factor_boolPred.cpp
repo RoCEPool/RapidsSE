@@ -460,6 +460,23 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_OrConj* p_orConj)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
   UNUSED(p_orConj);
+
+//  Card_RlnConj* p_0_0_0_rlnConj;
+//
+//  Card_AndConj *p_0_andConj = _pCard_AndConj(p_orConj->pGetChild(0));
+//  Card_AndConj *p_1_andConj = _pCard_AndConj(p_orConj->pGetChild(1));
+//
+//  Card *pCard_0_0_andConj;
+//  if (CK_ANDCONJ == p_0_andConj->eGetChild(0, pCard_0_0_andConj)) {
+//    Card_AndConj *p_0_0_andConj = _pCard_AndConj(pCard_0_0_andConj);
+//
+//    Card *pCard_1_0_andConj;
+//    if (CK_ANDCONJ == p_1_andConj->eGetChild(0, pCard_1_0_andConj)) {
+//      Card_AndConj *p_1_0_andConj = _pCard_AndConj(pCard_1_0_andConj);
+//
+//
+//    }
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -485,12 +502,10 @@ bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_OrConj* p_orConj)
   Card* pCard_0_0_andConj;
   if (CK_ANDCONJ == p_0_andConj->eGetChild(0, pCard_0_0_andConj)) {
     Card_AndConj *p_0_0_andConj = _pCard_AndConj(pCard_0_0_andConj);
-    UNUSED(p_0_0_andConj);
 
     Card* pCard_1_0_andConj;
     if (CK_ANDCONJ == p_1_andConj->eGetChild(0, pCard_1_0_andConj)) {
       Card_AndConj *p_1_0_andConj = _pCard_AndConj(pCard_1_0_andConj);
-      UNUSED(p_1_0_andConj);
 
       Card_RlnConj* p_0_0_0_rlnConj = p_0_0_andConj->pGet_rlnConj(0);
       Card_RlnConj* p_1_0_0_rlnConj = p_1_0_andConj->pGet_rlnConj(0);

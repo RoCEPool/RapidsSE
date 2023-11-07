@@ -532,6 +532,54 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop child andConj                                                          */
+/*----------------------------------------------------------------------------*/
+Card_AndConj* Card_CONJUNCTION::pPop_andConj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_AndConj* p_andConj = _pCard_AndConj(pPopChild());
+
+  return p_andConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop child notConj                                                          */
+/*----------------------------------------------------------------------------*/
+Card_NotConj* Card_CONJUNCTION::pPop_notConj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_NotConj* p_notConj = _pCard_NotConj(pPopChild());
+
+  return p_notConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop child orConj                                                           */
+/*----------------------------------------------------------------------------*/
+Card_OrConj* Card_CONJUNCTION::pPop_orConj (void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_OrConj* p_orConj = _pCard_OrConj(pPopChild());
+
+  return p_orConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop child rlnConj                                                          */
+/*----------------------------------------------------------------------------*/
+Card_RlnConj* Card_CONJUNCTION::pPop_rlnConj(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_RlnConj* p_rlnConj = _pCard_RlnConj(pPopChild());
+
+  return p_rlnConj;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
 Card_RlnConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)

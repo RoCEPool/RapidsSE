@@ -37,6 +37,12 @@ namespace STORE
     bool bIsRelnOp(void);
     bool bIsSqyOp(void);
     void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
+
+    Card_AndConj* pPop_andConj(void);
+    Card_NotConj* pPop_notConj(void);
+    Card_OrConj*  pPop_orConj (void);
+    Card_RlnConj* pPop_rlnConj(void);
+
     Card_RlnConj* pPredFindBound(Index* pIndex, ePB eBound);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     Symbol* pTable_WhichTableFor_Conj(CardIter* pCI);
