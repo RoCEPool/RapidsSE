@@ -404,7 +404,7 @@ bool XF_Optimise_Factor_boolPred::bFactor_orConj(Card_OrConj* p_orConj)
 
   if (RC_FACTOR_OR_2AND_RLN_TRIPLE == p_orConj->eRotationConj()) {
     if (bTest_Rotate_Or_2ar3(p_orConj)) {
-      vRotate_Or_2ar3(p_orConj);
+      //vRotate_Or_2ar3(p_orConj);
     }
   }
 
@@ -459,24 +459,40 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_OrConj* p_orConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  UNUSED(p_orConj);
+  Card_OrConj*  p_0_orConj        = p_orConj->pPop_orConj();
+  Card_AndConj* p_andConj         = p_orConj->pPop_andConj();
 
-//  Card_RlnConj* p_0_0_0_rlnConj;
-//
-//  Card_AndConj *p_0_andConj = _pCard_AndConj(p_orConj->pGetChild(0));
-//  Card_AndConj *p_1_andConj = _pCard_AndConj(p_orConj->pGetChild(1));
-//
-//  Card *pCard_0_0_andConj;
-//  if (CK_ANDCONJ == p_0_andConj->eGetChild(0, pCard_0_0_andConj)) {
-//    Card_AndConj *p_0_0_andConj = _pCard_AndConj(pCard_0_0_andConj);
-//
-//    Card *pCard_1_0_andConj;
-//    if (CK_ANDCONJ == p_1_andConj->eGetChild(0, pCard_1_0_andConj)) {
-//      Card_AndConj *p_1_0_andConj = _pCard_AndConj(pCard_1_0_andConj);
-//
-//
-//    }
-//  }
+  Card_AndConj* p_0_0_andConj     = p_0_orConj->pPop_andConj();
+  Card_AndConj* p_0_0_0_andConj   = p_0_0_andConj->pPop_andConj();
+  Card_RlnConj* p_0_0_0_0_rlnConj = p_0_0_0_andConj->pPop_rlnConj();
+  Card_RlnConj* p_0_0_0_1_rlnConj = p_0_0_0_andConj->pPop_rlnConj();
+  Card_RlnConj* p_0_0_1_rlnConj   = p_0_0_andConj->pPop_rlnConj();
+
+  Card_AndConj* p_0_1_andConj     = p_0_orConj->pPop_andConj();
+  Card_AndConj* p_0_1_0_andConj   = p_0_1_andConj->pPop_andConj();
+  Card_RlnConj* p_0_1_0_0_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
+  Card_RlnConj* p_0_1_0_1_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
+  Card_RlnConj* p_0_1_1_rlnConj   = p_0_1_andConj->pPop_rlnConj();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  p_orConj->vAppendChild(p_0_0_andConj);
+
+  p_0_0_andConj->vAppendChild(p_0_0_0_0_rlnConj);
+  p_0_0_andConj->vAppendChild(p_0_orConj);
+
+  p_0_orConj->vAppendChild(p_0_0_0_andConj);
+  p_0_0_0_andConj->vAppendChild(p_0_0_0_1_rlnConj);
+  p_0_0_0_andConj->vAppendChild(p_0_0_1_rlnConj);
+
+  p_0_orConj->vAppendChild(p_0_1_0_andConj);
+  p_0_1_0_andConj->vAppendChild(p_0_1_0_0_rlnConj);
+  p_0_1_0_andConj->vAppendChild(p_0_1_1_rlnConj);
+
+  p_orConj->vAppendChild(p_andConj);
+
+  delete p_0_1_0_1_rlnConj;
+  delete p_0_1_andConj;
 }
 
 /*----------------------------------------------------------------------------*/
