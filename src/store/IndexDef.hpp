@@ -46,7 +46,7 @@ namespace STORE
     static eEC eParseTableName(Stz* szCmd, String* psTableNm);
     static void vPostRecv(void* aIndexDef);
 
-    void    vAddColumn(Stz* szColumnNm, eCT eColumnType, bool bAscending=true);
+    void    vAddColumn(Stz* szColumnNm, Parser::TypeId xTypeId, bool bAscending=true);
 
     i8      nColumns(void);
     i8*     aiaColSet(void);

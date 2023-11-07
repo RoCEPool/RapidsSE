@@ -102,7 +102,7 @@ StreamDef* StreamDef::pStreamDefNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
 
   for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
       pStreamDef->vAddColumn((Stz*)&pColumnInfo[i_Col].m_cColumnNm[0],
-                             (eCT)pColumnInfo[i_Col].m_iColumnType,
+														 (Parser::TypeId)pColumnInfo[i_Col].m_iColumnTypeId,
                              pColumnInfo[i_Col].m_iColumnLength,
                              pColumnInfo[i_Col].m_iColumnScale);
   }

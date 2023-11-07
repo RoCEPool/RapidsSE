@@ -61,11 +61,11 @@ void Step::vIndexDefAddColumn(void)
   if ( ! pColumn )
     eError = EC_INVALID_COLUMN;
   else {
-    eCT eColType = pColumn->eColumnType();
+		Parser::TypeId xTypeId = pColumn->xColumnTypeId();
 
     IndexDef* pIndexDef = * m_pLogicUnit->m_xpIndexDef;
 
-    pIndexDef->vAddColumn(sColumnNm,eColType);
+    pIndexDef->vAddColumn(sColumnNm,xTypeId);
   }
 
   m_pDataStack->vPushInt(eError);

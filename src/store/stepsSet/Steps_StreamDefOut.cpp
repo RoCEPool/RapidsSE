@@ -28,7 +28,6 @@
 void Step::vAddSteps_StreamDefOut(void)
 {
   vAddStep("StreamDefOut[]"_Stz,            &Step::vStreamDefOutGet);
-  vAddStep("StreamDefOut[].addColumn"_Stz,  &Step::vStreamDefOutAddColumn);
   vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
   vAddStep("StreamDefOut[].duplicate"_Stz,  &Step::vStreamDefOutDuplicate);
   vAddStep("StreamDefOut[].isNull"_Stz,     &Step::vStreamDefOutIsNull);
@@ -38,27 +37,6 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].newFromTable"_Stz,&Step::vStreamDefOutNewFromTable);
   vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDefOut[].addColumn -- add a column                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefOutAddColumn(void)
-{
-  ENTRY();
-    
-  s32 sColNm;
-  m_pDataStack->vPopStr(sColNm,__func__);
-
-  eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
-  i8 eColLength = (eCT)m_pDataStack->iPopInt(__func__);
-  i8 eColScale = (eCT)m_pDataStack->iPopInt(__func__);
-  
-  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
-  
-  pStreamDefOut->vAddColumn(sColNm,eColType,eColLength,eColScale);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

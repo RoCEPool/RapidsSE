@@ -24,7 +24,7 @@ Column::Column(void)
   
   m_iColumnNo     = C_UNKNOWN;
   m_sColumnNm     = C_NO_NAME;
-  m_eColumnType   = CT_NONE;
+
 	//m_xColumnTypeId;
 
   m_bIsUnique     = false;
@@ -274,27 +274,18 @@ i8 Column::iColNmBufSize(void)
 eCT Column::eColumnType(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return m_eColumnType;
+
+  return m_xColumnTypeId.eCTVal();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set column type                                                            */
+/* set column typeId                                                          */
 /*----------------------------------------------------------------------------*/
-void Column::vColumnType(eCT eColumnType)
+void Column::vColumnTypeId(Parser::TypeId xTypeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
-  m_eColumnType = eColumnType;
-	if (m_eColumnType == CT_INTERVAL_DT) {
-		m_xColumnTypeId = Parser::TypeId::xIdOf(IV_DAY_TO_SECOND);
-	}
-	else
-	if (m_eColumnType == CT_INTERVAL_YM) {
-		m_xColumnTypeId = Parser::TypeId::xIdOf(IV_YEAR_TO_MONTH);
-	}
-	else
-	  m_xColumnTypeId = Parser::TypeId::xIdOf(eColumnType);
+	m_xColumnTypeId = xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,17 +299,6 @@ Parser::TypeId Column::xColumnTypeId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set column typeId                                                          */
-/*----------------------------------------------------------------------------*/
-void Column::vColumnTypeId(Parser::TypeId xTypeId)
-{
-	_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-
-	m_eColumnType = xTypeId.eCTVal();
-	m_xColumnTypeId = xTypeId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 void Column::vCopy(Column* pCol)
@@ -327,7 +307,6 @@ void Column::vCopy(Column* pCol)
 
   m_iColumnNo       = pCol->m_iColumnNo;
   m_sColumnNm       = pCol->m_sColumnNm;
-  m_eColumnType     = pCol->m_eColumnType;
 	m_xColumnTypeId   = pCol->m_xColumnTypeId;
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;
@@ -355,7 +334,6 @@ void Column::vCopy(Column* pCol, Stz* sColPrefix)
   m_sColumnNm       = sColPrefix;
   m_sColumnNm.vConcat(pCol->m_sColumnNm);
 
-  m_eColumnType     = pCol->m_eColumnType;
 	m_xColumnTypeId   = pCol->m_xColumnTypeId;
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;
@@ -485,7 +463,7 @@ void Column::vListContents(i8 i_Depth)
 
          m_iColumnNo,
          m_sColumnNm.szStz(),
-         aCT[m_eColumnType],
+         aCT[m_xColumnTypeId.eCTVal()],
 				 m_xColumnTypeId.szTypeName(),
          m_iColumnLength,
          m_iColumnScale,
@@ -498,12 +476,11 @@ void Column::vListContents(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 /* sset the column                                                            */
 /*----------------------------------------------------------------------------*/
-void Column::vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale) {
+void Column::vSet(Stz* sColumnNm, Parser::TypeId xTypeId, i8 iColumnLength, i8 iColumnScale) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLUMN, _FOOTER_);
 
   m_sColumnNm     = sColumnNm;
-  m_eColumnType   = eColumnType;
-	m_xColumnTypeId = Parser::TypeId::xIdOf(eColumnType);
+	m_xColumnTypeId = xTypeId;
   m_iColumnLength = iColumnLength;
   m_iColumnScale  = iColumnScale;
 
@@ -519,40 +496,13 @@ void Column::vShow(void)
   vTrace("Column %02lld %s type %s typeId %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
          m_sColumnNm.szStz(),
-         aCT[m_eColumnType],
+         aCT[m_xColumnTypeId.eCTVal()],
 				 m_xColumnTypeId.szTypeName(),
          m_iColumnLength,
          m_iColumnScale,
          aDM[m_eDatum],
          m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
          m_bIsPtnKey ? "partitionKey"_Stz : ""_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type short form                                                       */
-/*----------------------------------------------------------------------------*/
-char Column::cTypeShort(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  switch (m_eColumnType) {
-    case CT_BOOLEAN     : return 'b';
-    case CT_CHAR        : return 'c';
-    case CT_DATE        : return 'd';
-    case CT_DECIMAL     : return 'm';
-    case CT_FLOAT       : return 'f';
-    case CT_INTEGER     : return 'i';
-    case CT_INTERVAL_DT : return 'l';
-    case CT_INTERVAL_YM : return 'y';
-    case CT_TIME        : return 't';
-    case CT_TIMESTAMP   : return 's';
-    case CT_VARCHAR     : return 'v';
-    case CT_UNKNOWN     : return 'u';
-    default:
-      RASSERT(0);
-  }
-  
-  return '?';
 }
 
 /*============================================================================*/

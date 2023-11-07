@@ -4,14 +4,16 @@
 
 _nation;
 load nation "../DATA/TPCH/nation.tbl";
-//select * from nation;
-/*
+
+
 /pipeline_def
 /weaved
 /transliterated
+/keepCodeFile
+/pipelineName="XYZ"
 SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation;
 
-
+/*
 create table interval1(a timestamp);
 load interval1 "../DATA/QA/interval/interval1.csv";
 
@@ -32,10 +34,11 @@ SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
 
 /weaved
 SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
-*/
+
 explain stage transliterate
 SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
 
 /weaved
 SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
 
+*/
