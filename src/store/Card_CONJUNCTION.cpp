@@ -19,7 +19,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CONJUNCTION::Card_CONJUNCTION(eCK eCard, i8 iFixedDepth)
-: Card_symbol(eCard, iFixedDepth)
+: Card_CONJSUBROOT(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -190,54 +190,6 @@ void Card_CONJUNCTION::vEnsureTypesFor_stmCol(CardIter *pCI)
     default:
       NEVER_REACH
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get child andConj                                                          */
-/*----------------------------------------------------------------------------*/
-Card_AndConj* Card_CONJUNCTION::pGet_andConj(i8 i_Child)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_AndConj* p_andConj = _pCard_AndConj(pGetChild(i_Child));
-
-  return p_andConj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get child notConj                                                          */
-/*----------------------------------------------------------------------------*/
-Card_NotConj* Card_CONJUNCTION::pGet_notConj(i8 i_Child)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_NotConj* p_notConj = _pCard_NotConj(pGetChild(i_Child));
-
-  return p_notConj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get child orConj                                                           */
-/*----------------------------------------------------------------------------*/
-Card_OrConj* Card_CONJUNCTION::pGet_orConj(i8 i_Child)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_OrConj* p_orConj = _pCard_OrConj(pGetChild(i_Child));
-
-  return p_orConj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get child rlnConj                                                          */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_CONJUNCTION::pGet_rlnConj(i8 i_Child)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RlnConj* p_rlnConj = _pCard_RlnConj(pGetChild(i_Child));
-
-  return p_rlnConj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -529,54 +481,6 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
   }
 
   NEVER_REACH
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop child andConj                                                          */
-/*----------------------------------------------------------------------------*/
-Card_AndConj* Card_CONJUNCTION::pPop_andConj(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_AndConj* p_andConj = _pCard_AndConj(pPopChild());
-
-  return p_andConj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop child notConj                                                          */
-/*----------------------------------------------------------------------------*/
-Card_NotConj* Card_CONJUNCTION::pPop_notConj(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_NotConj* p_notConj = _pCard_NotConj(pPopChild());
-
-  return p_notConj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop child orConj                                                           */
-/*----------------------------------------------------------------------------*/
-Card_OrConj* Card_CONJUNCTION::pPop_orConj (void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_OrConj* p_orConj = _pCard_OrConj(pPopChild());
-
-  return p_orConj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop child rlnConj                                                          */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_CONJUNCTION::pPop_rlnConj(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RlnConj* p_rlnConj = _pCard_RlnConj(pPopChild());
-
-  return p_rlnConj;
 }
 
 /*----------------------------------------------------------------------------*/

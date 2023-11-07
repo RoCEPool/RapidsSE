@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
+#include "Card_CONJSUBROOT.hpp"
 
 namespace STORE
 {
-  class Card_CONJUNCTION : public Card_symbol<Card_CONJUNCTION>
+  class Card_CONJUNCTION : public Card_CONJSUBROOT
   {  
   public:
     Card_CONJUNCTION(eCK eCard, i8 iFixedDepth);
@@ -21,11 +21,6 @@ namespace STORE
     bool bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
 
-    Card_AndConj* pGet_andConj(i8 i_Child);
-    Card_NotConj* pGet_notConj(i8 i_Child);
-    Card_OrConj*  pGet_orConj (i8 i_Child);
-    Card_RlnConj* pGet_rlnConj(i8 i_Child);
-
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblCol(void);
     Card_Term* pGetTerm(i8 i_Term);
@@ -37,11 +32,6 @@ namespace STORE
     bool bIsRelnOp(void);
     bool bIsSqyOp(void);
     void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
-
-    Card_AndConj* pPop_andConj(void);
-    Card_NotConj* pPop_notConj(void);
-    Card_OrConj*  pPop_orConj (void);
-    Card_RlnConj* pPop_rlnConj(void);
 
     Card_RlnConj* pPredFindBound(Index* pIndex, ePB eBound);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
