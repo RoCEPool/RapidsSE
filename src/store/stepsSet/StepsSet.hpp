@@ -233,7 +233,7 @@ public:
   void vColumnLengthFetch(void);
   void vColumnNameFetch(void);
   void vColumnScaleFetch(void);
-  void vColumnTypeFetch(void);
+  void vColumnTypeIdFetch(void);
 
   // command processor
   void vCommandBlankLine(void);
