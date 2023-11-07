@@ -480,7 +480,36 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROO
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  UNUSED(p_CONJSUBROOT);
+  // disassemble (pop conjunctions apart)
+
+  Card_OrConj* p_0_orConj = p_CONJSUBROOT->pPop_orConj();
+
+  Card_AndConj* p_0_0_andConj   = p_0_orConj->pPop_andConj();
+  Card_RlnConj* p_0_0_0_rlnConj = p_0_0_andConj->pPop_rlnConj();
+  Card_OrConj*  p_0_0_1_orConj  = p_0_0_andConj->pPop_orConj();
+
+  Card_AndConj* p_0_1_andConj     = p_0_orConj->pPop_andConj();
+  Card_AndConj* p_0_1_0_andConj   = p_0_1_andConj->pPop_andConj();
+  Card_RlnConj* p_0_1_0_0_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
+  Card_RlnConj* p_0_1_0_1_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
+  Card_RlnConj* p_0_1_1_rlnConj   = p_0_1_andConj->pPop_rlnConj();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reassemble (append conjunctions together)
+
+  p_CONJSUBROOT->vAppendChild(p_0_0_andConj);
+    p_0_0_andConj->vAppendChild(p_0_0_0_rlnConj);
+    p_0_0_andConj->vAppendChild(p_0_orConj);
+      p_0_orConj->vAppendChild(p_0_0_1_orConj);
+      p_0_orConj->vAppendChild(p_0_1_andConj);
+        p_0_1_andConj->vAppendChild(p_0_1_0_1_rlnConj);
+       p_0_1_andConj->vAppendChild(p_0_1_1_rlnConj);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete unneeded conjunctions
+
+  delete p_0_1_0_andConj;
+  delete p_0_1_0_0_rlnConj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -526,7 +555,21 @@ bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2arm(Card_CONJSUBROOT* p_CONJS
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  UNUSED(p_CONJSUBROOT);
+  Card_OrConj* p_0_orConj = p_CONJSUBROOT->pGet_orConj(0);
+
+  Card_AndConj* p_0_0_andConj   = p_0_orConj->pGet_andConj(0);
+  Card_RlnConj* p_0_0_0_rlnConj = p_0_0_andConj->pGet_rlnConj(0);
+
+  Card_AndConj* p_0_1_andConj     = p_0_orConj->pGet_andConj(1);
+  Card_AndConj* p_0_1_0_andConj   = p_0_1_andConj->pGet_andConj(0);
+  Card_RlnConj* p_0_1_0_0_rlnConj = p_0_1_0_andConj->pGet_rlnConj(0);
+
+  if (p_0_0_0_rlnConj->bIsEq(p_0_1_0_0_rlnConj)) {
+//        p_0_0_0_rlnConj->vDump(__func__ ,"p_0_0_0_rlnConj"_Stz);
+//        p_0_1_0_0_rlnConj->vDump(__func__ ,"p_0_1_0_0_rlnConj"_Stz);
+    return true;
+  }
+
   return false;
 }
 
