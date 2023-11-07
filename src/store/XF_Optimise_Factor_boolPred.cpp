@@ -208,12 +208,24 @@ i8 XF_Optimise_Factor_boolPred::nFactor_boolPred(Card_BoolPred* p_boolPred)
       NEVER_REACH
   }
 
-  if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eRotConj()) {
-    if (bTest_Rotate_Or_2arm(p_boolPred)) {
-      vRotate_Or_2arm(p_boolPred);
-      p_boolPred->vMarksClearRecursive();
-      p_boolPred->vConjClearRecursive();
-      p_boolPred->vRotConjClearRecursive();
+  if (! nRotations) {
+    if (pChild->eConjForm() == FC_OR_2AND_RLN_MIX) {
+      pChild->vConjForm(FC_OR_2AND_RLN_TRIPLE);
+      pChild->vMark2(MARK_ENUM);
+      pChild->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_MIX));
+
+      pChild->vConjRot(RC_FACTOR_OR_2AND_RLN_MIX);
+    }
+
+    if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eConjRot()) {
+      if (bTest_Rotate_Or_2arm(p_boolPred)) {
+        vRotate_Or_2arm(p_boolPred);
+        nRotations++;
+
+        p_boolPred->vMarksClearRecursive();
+        p_boolPred->vConjFormClearRecursive();
+        p_boolPred->vConjRotClearRecursive();
+      }
     }
   }
 
@@ -289,21 +301,27 @@ i8 XF_Optimise_Factor_boolPred::nFactor_andConj(Card_AndConj* p_andConj)
   }
 
   if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_RLNCONJ) {
-    p_andConj->vConj(FC_AND_RLN_DOUBLE);
+    p_andConj->vConjForm(FC_AND_RLN_DOUBLE);
     p_andConj->vMark2(MARK_ENUM);
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_DOUBLE));
   }
   else
-  if (pChild_0->eConj() == FC_AND_RLN_DOUBLE && eChild_1 == CK_RLNCONJ) {
-    p_andConj->vConj(FC_AND_RLN_TRIPLE);
+  if (pChild_0->eConjForm() == FC_AND_RLN_DOUBLE && eChild_1 == CK_RLNCONJ) {
+    p_andConj->vConjForm(FC_AND_RLN_TRIPLE);
     p_andConj->vMark2(MARK_ENUM);
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
   }
   else
-  if (eChild_0 == CK_RLNCONJ && pChild_1->eConj() == FC_AND_RLN_DOUBLE) {
-    p_andConj->vConj(FC_AND_RLN_TRIPLE);
+  if (eChild_0 == CK_RLNCONJ && pChild_1->eConjForm() == FC_AND_RLN_DOUBLE) {
+    p_andConj->vConjForm(FC_AND_RLN_TRIPLE);
     p_andConj->vMark2(MARK_ENUM);
     p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_TRIPLE));
+  }
+  else
+  if (eChild_0 == CK_ANDCONJ && eChild_1 == CK_ORCONJ) {
+    p_andConj->vConjForm(FC_AND_RLN_OR);
+    p_andConj->vMark2(MARK_ENUM);
+    p_andConj->vMark1(StrLib::cToHex(FC_AND_RLN_OR));
   }
 
   m_pCI->vAncestorPop();
@@ -421,23 +439,31 @@ i8 XF_Optimise_Factor_boolPred::nFactor_orConj(Card_OrConj* p_orConj)
       NEVER_REACH
   }
 
-  if (pChild_0->eConj() == FC_AND_RLN_TRIPLE &&
-      pChild_1->eConj() == FC_AND_RLN_TRIPLE) {
-    p_orConj->vConj(FC_OR_2AND_RLN_TRIPLE);
-    p_orConj->vMark2(MARK_ENUM);
-    p_orConj->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_TRIPLE));
-
-    p_orConj->vRotConj(RC_FACTOR_OR_2AND_RLN_TRIPLE);
-
+  if (eChild_0 == CK_ANDCONJ && eChild_1 == CK_ANDCONJ) {
+    if (pChild_0->eConjForm() == FC_AND_RLN_OR &&
+        pChild_1->eConjForm() == FC_AND_RLN_TRIPLE  )
+      p_orConj->vConjForm(FC_OR_2AND_RLN_MIX);
   }
 
-  if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eRotConj()) {
-    if (bTest_Rotate_Or_2ar3(p_orConj)) {
-      vRotate_Or_2ar3(p_orConj);
+  if (! nRotations) {
+    if (pChild_0->eConjForm() == FC_AND_RLN_TRIPLE &&
+        pChild_1->eConjForm() == FC_AND_RLN_TRIPLE) {
+      p_orConj->vConjForm(FC_OR_2AND_RLN_TRIPLE);
+      p_orConj->vMark2(MARK_ENUM);
+      p_orConj->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_TRIPLE));
 
-      pChild_0->vMarksClearRecursive();
-      pChild_0->vConjClearRecursive();
-      pChild_0->vRotConjClearRecursive();
+      p_orConj->vConjRot(RC_FACTOR_OR_2AND_RLN_TRIPLE);
+    }
+
+    if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eConjRot()) {
+      if (bTest_Rotate_Or_2ar3(p_orConj)) {
+        vRotate_Or_2ar3(p_orConj);
+        nRotations++;
+
+        pChild_0->vMarksClearRecursive();
+        pChild_0->vConjFormClearRecursive();
+        pChild_0->vConjRotClearRecursive();
+      }
     }
   }
 
@@ -582,7 +608,7 @@ bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_CONJSUBROOT* p_CONJS
 
   Card_OrConj* p_0_orConj = p_CONJSUBROOT->pGet_orConj(0);
 
-  RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_0_orConj->eRotConj());
+  RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_0_orConj->eConjRot());
 
   Card_AndConj* p_0_0_andConj = _pCard_AndConj(p_0_orConj->pGetChild(0));
   Card_AndConj* p_0_1_andConj = _pCard_AndConj(p_0_orConj->pGetChild(1));

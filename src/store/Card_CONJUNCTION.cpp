@@ -527,7 +527,7 @@ void Card_CONJUNCTION::vPrint(Ribbon* pRibbon, i8 iDepth)
                           Stz::szDots(iDepth - 1),
                           m_i_Child,
 
-                          aRC[m_eRotConj]);
+                          aRC[m_eConjRot]);
 
 }
 

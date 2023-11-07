@@ -10,7 +10,10 @@ enum eFC : i8 // form of conjunction
   /* 1 */ FC_AND_RLN_DOUBLE,
   /* 2 */ FC_AND_RLN_TRIPLE,
   /* 3 */ FC_OR_2AND_RLN_TRIPLE,
+
+  /* 4 */ FC_AND_RLN_OR,
   /* 4 */ FC_OR_2AND_RLN_MIX,
+
 
   /* */ FC_ENUMS
 };
