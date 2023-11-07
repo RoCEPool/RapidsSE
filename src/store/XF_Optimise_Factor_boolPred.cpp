@@ -427,14 +427,14 @@ bool XF_Optimise_Factor_boolPred::bFactor_rlnConj(Card_RlnConj* p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_OrConj* p_orConj_yellow)
+void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
   // disassemble (pop conjunctions apart)
 
-  Card_OrConj*  p_0_orConj        = p_orConj_yellow->pPop_orConj();
-  Card_AndConj* p_andConj         = p_orConj_yellow->pPop_andConj();
+  Card_OrConj*  p_0_orConj        = p_CONJSUBROOT->pPop_orConj();
+  Card_AndConj* p_andConj         = p_CONJSUBROOT->pPop_andConj();
 
   Card_AndConj* p_0_0_andConj     = p_0_orConj->pPop_andConj();
   Card_AndConj* p_0_0_0_andConj   = p_0_0_andConj->pPop_andConj();
@@ -451,7 +451,7 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_OrConj* p_orConj_yellow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reassemble (append conjunctions together)
 
-  p_orConj_yellow->vAppendChild(p_0_0_andConj);
+  p_CONJSUBROOT->vAppendChild(p_0_0_andConj);
 
   p_0_0_andConj->vAppendChild(p_0_0_0_0_rlnConj);
   p_0_0_andConj->vAppendChild(p_0_orConj);
@@ -464,7 +464,7 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_OrConj* p_orConj_yellow)
   p_0_1_0_andConj->vAppendChild(p_0_1_0_1_rlnConj);
   p_0_1_0_andConj->vAppendChild(p_0_1_1_rlnConj);
 
-  p_orConj_yellow->vAppendChild(p_andConj);
+  p_CONJSUBROOT->vAppendChild(p_andConj);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete unneeded conjunctions
@@ -484,11 +484,11 @@ void XF_Optimise_Factor_boolPred::vRotate_b(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_OrConj* p_orConj_yellow)
+bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  Card_OrConj* p_0_orConj = p_orConj_yellow->pGet_orConj(0);
+  Card_OrConj* p_0_orConj = p_CONJSUBROOT->pGet_orConj(0);
 
   RASSERT(RC_FACTOR_OR_2AND_RLN_TRIPLE == p_0_orConj->eRotationConj());
 
