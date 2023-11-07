@@ -182,7 +182,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
     eRotation = RC_NONE;
 
     Card *pChild = p_boolPred->pPeekChild();
-    if (!pChild)
+    if (! pChild)
       break;
 
     p_boolPred->vMark(MARK_AT, MARK_PREDICATE);
@@ -223,8 +223,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 
       if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eConjRot()) {
         if (bTest_Rotate_Or_2arm(p_boolPred)) {
-          vRotate_Or_2arm(p_boolPred);
-          eRotation = RC_FACTOR_OR_2AND_RLN_MIX;
+          eRotation = eRotate_Or_2arm(p_boolPred);
         }
       }
     }
@@ -251,12 +250,13 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
   eRC eRotation = RC_NONE;
 
   p_andConj->vMark(MARK_AT, MARK_AND);
+  m_pCI->vAncestorPush(p_andConj);
 
   Card* pChild_0 = p_andConj->pGetChild(0);
-  if (!pChild_0)
+  if (! pChild_0) {
+    m_pCI->vAncestorPop();
     return eRotation;
-
-  m_pCI->vAncestorPush(p_andConj);
+  }
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
@@ -275,10 +275,15 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
       NEVER_REACH
   }
 
+  if (RC_NONE != eRotation) {
+    m_pCI->vAncestorPop();
+    return eRotation;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card* pChild_1 = p_andConj->pGetChild(1);
-  if (!pChild_1) {
+  if (! pChild_1) {
     m_pCI->vAncestorPop();
     return eRotation;
   }
@@ -302,6 +307,11 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
 
     default:
       NEVER_REACH
+  }
+
+  if (RC_NONE != eRotation) {
+    m_pCI->vAncestorPop();
+    return eRotation;
   }
 
   if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_RLNCONJ) {
@@ -329,7 +339,6 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
   }
 
   m_pCI->vAncestorPop();
-
   return eRotation;
 }
 
@@ -343,12 +352,13 @@ eRC XF_Optimise_Factor_boolPred::eFactor_notConj(Card_NotConj* p_notConj)
   eRC eRotation = RC_NONE;
 
   p_notConj->vMark(MARK_AT,MARK_NOT);
+  m_pCI->vAncestorPush(p_notConj);
 
   Card* pChild_0 = p_notConj->pGetChild(0);
-  if (! pChild_0)
+  if (! pChild_0) {
+    m_pCI->vAncestorPop();
     return eRotation;
-
-  m_pCI->vAncestorPush(p_notConj);
+  }
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
@@ -372,7 +382,6 @@ eRC XF_Optimise_Factor_boolPred::eFactor_notConj(Card_NotConj* p_notConj)
   }
 
   m_pCI->vAncestorPop();
-
   return eRotation;
 }
 
@@ -386,12 +395,13 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
   eRC eRotation = RC_NONE;
 
   p_orConj->vMark(MARK_AT,MARK_OR);
+  m_pCI->vAncestorPush(p_orConj);
 
   Card* pChild_0 = p_orConj->pGetChild(0);
-  if (!pChild_0)
+  if (! pChild_0) {
+    m_pCI->vAncestorPop();
     return eRotation;
-
-  m_pCI->vAncestorPush(p_orConj);
+  }
 
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
@@ -412,6 +422,11 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
 
     default:
       NEVER_REACH
+  }
+
+  if (RC_NONE != eRotation) {
+    m_pCI->vAncestorPop();
+    return eRotation;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -443,13 +458,18 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
       NEVER_REACH
   }
 
+  if (RC_NONE != eRotation) {
+    m_pCI->vAncestorPop();
+    return eRotation;
+  }
+
   if (eChild_0 == CK_ANDCONJ && eChild_1 == CK_ANDCONJ) {
     if (pChild_0->eConjForm() == FC_AND_RLN_OR &&
-        pChild_1->eConjForm() == FC_AND_RLN_TRIPLE  )
+        pChild_1->eConjForm() == FC_AND_RLN_TRIPLE)
       p_orConj->vConjForm(FC_OR_2AND_RLN_MIX);
   }
 
-  if (! eRotation) {
+  if (!eRotation) {
     if (pChild_0->eConjForm() == FC_AND_RLN_TRIPLE &&
         pChild_1->eConjForm() == FC_AND_RLN_TRIPLE) {
       p_orConj->vConjForm(FC_OR_2AND_RLN_TRIPLE);
@@ -461,8 +481,7 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
 
     if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eConjRot()) {
       if (bTest_Rotate_Or_2ar3(p_orConj)) {
-        vRotate_Or_2ar3(p_orConj);
-        eRotation = RC_FACTOR_OR_2AND_RLN_TRIPLE;
+        eRotation = eRotate_Or_2ar3(p_orConj);
 
         pChild_0->vMarksClearRecursive();
         pChild_0->vConjFormClearRecursive();
@@ -472,7 +491,6 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
   }
 
   m_pCI->vAncestorPop();
-
   return eRotation;
 }
 
@@ -485,13 +503,14 @@ eRC XF_Optimise_Factor_boolPred::eFactor_rlnConj(Card_RlnConj* p_rlnConj)
 
   eRC eRotation = RC_NONE;
 
+  m_pCI->vAncestorPush(p_rlnConj);
   p_rlnConj->vMark(MARK_AT,MARK_COMPARE);
 
   Card* pChild_0 = p_rlnConj->pGetChild(0);
-  if (!pChild_0)
+  if (! pChild_0) {
+    m_pCI->vAncestorPop();
     return eRotation;
-
-  m_pCI->vAncestorPush(p_rlnConj);
+  }
 
   eCK eChild = pChild_0->eCard();
   switch (eChild) {
@@ -515,14 +534,13 @@ eRC XF_Optimise_Factor_boolPred::eFactor_rlnConj(Card_RlnConj* p_rlnConj)
   }
 
   m_pCI->vAncestorPop();
-
   return eRotation;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT)
+eRC XF_Optimise_Factor_boolPred::eRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
@@ -564,12 +582,14 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROO
   delete p_0_1_0_0_rlnConj;
   m_pCI->vPrintBoard(__LINE__);
   vDebugPoint();
+
+  return RC_FACTOR_OR_2AND_RLN_TRIPLE;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT)
+eRC XF_Optimise_Factor_boolPred::eRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
@@ -606,6 +626,8 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROO
 
   m_pCI->vPrintBoard(__LINE__);
   vDebugPoint();
+
+  return RC_FACTOR_OR_2AND_RLN_MIX;
 }
 
 /*----------------------------------------------------------------------------*/
