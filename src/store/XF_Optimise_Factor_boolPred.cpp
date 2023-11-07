@@ -200,6 +200,12 @@ bool XF_Optimise_Factor_boolPred::bFactor_boolPred(Card_BoolPred* p_boolPred)
       NEVER_REACH
   }
 
+  if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eRotationConj()) {
+    if (bTest_Rotate_Or_2arm(p_boolPred)) {
+      vRotate_Or_2arm(p_boolPred);
+    }
+  }
+
   m_pCI->vAncestorPop();
   RASSERT(! m_pCI->nAncestors());
 
@@ -452,18 +458,14 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROO
   // reassemble (append conjunctions together)
 
   p_CONJSUBROOT->vAppendChild(p_0_0_andConj);
-
-  p_0_0_andConj->vAppendChild(p_0_0_0_0_rlnConj);
-  p_0_0_andConj->vAppendChild(p_0_orConj);
-
-  p_0_orConj->vAppendChild(p_0_0_0_andConj);
-  p_0_0_0_andConj->vAppendChild(p_0_0_0_1_rlnConj);
-  p_0_0_0_andConj->vAppendChild(p_0_0_1_rlnConj);
-
-  p_0_orConj->vAppendChild(p_0_1_0_andConj);
-  p_0_1_0_andConj->vAppendChild(p_0_1_0_1_rlnConj);
-  p_0_1_0_andConj->vAppendChild(p_0_1_1_rlnConj);
-
+    p_0_0_andConj->vAppendChild(p_0_0_0_0_rlnConj);
+    p_0_0_andConj->vAppendChild(p_0_orConj);
+      p_0_orConj->vAppendChild(p_0_0_0_andConj);
+        p_0_0_0_andConj->vAppendChild(p_0_0_0_1_rlnConj);
+        p_0_0_0_andConj->vAppendChild(p_0_0_1_rlnConj);
+      p_0_orConj->vAppendChild(p_0_1_0_andConj);
+        p_0_1_0_andConj->vAppendChild(p_0_1_0_1_rlnConj);
+        p_0_1_0_andConj->vAppendChild(p_0_1_1_rlnConj);
   p_CONJSUBROOT->vAppendChild(p_andConj);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -494,7 +496,7 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROO
   Card_RlnConj* p_0_1_0_1_rlnConj = p_0_1_0_andConj->pPop_rlnConj();
   Card_RlnConj* p_0_1_1_rlnConj   = p_0_1_andConj->pPop_rlnConj();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reassemble (append conjunctions together)
 
   p_CONJSUBROOT->vAppendChild(p_0_0_andConj);
@@ -503,7 +505,7 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROO
       p_0_orConj->vAppendChild(p_0_0_1_orConj);
       p_0_orConj->vAppendChild(p_0_1_andConj);
         p_0_1_andConj->vAppendChild(p_0_1_0_1_rlnConj);
-       p_0_1_andConj->vAppendChild(p_0_1_1_rlnConj);
+        p_0_1_andConj->vAppendChild(p_0_1_1_rlnConj);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete unneeded conjunctions
