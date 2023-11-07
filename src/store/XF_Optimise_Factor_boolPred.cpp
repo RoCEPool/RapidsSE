@@ -476,9 +476,11 @@ void XF_Optimise_Factor_boolPred::vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROO
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Optimise_Factor_boolPred::vRotate_b(void)
+void XF_Optimise_Factor_boolPred::vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  UNUSED(p_CONJSUBROOT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -514,6 +516,17 @@ bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2ar3(Card_CONJSUBROOT* p_CONJS
     }
   }
 
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool XF_Optimise_Factor_boolPred::bTest_Rotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  UNUSED(p_CONJSUBROOT);
   return false;
 }
 

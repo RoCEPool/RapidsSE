@@ -11,6 +11,7 @@ Stz* aRC[RC_ENUMS]
   /* */ "NONE"_Stz,
 
   /* */ "OR_FAC_2ar3"_Stz,     // RC_FACTOR_OR_2AND_RLN_TRIPLE
+  /* */ "OR_FAC_2arm"_Stz,     // RC_FACTOR_OR_2AND_RLN_MIX
 
 //  /* */ "ENUMS"_Stz
 };

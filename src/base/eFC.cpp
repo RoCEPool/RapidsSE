@@ -13,6 +13,7 @@ Stz* aFC[FC_ENUMS]
   /* */ "FC_AND_RLN_DOUBLE"_Stz,     // FC_AND_RLN_DOUBLE
   /* */ "FC_AND_RLN_TRIPLE"_Stz,     // FC_AND_RLN_TRIPLE
   /* */ "FC_OR_2AND_RLN_TRIPLE"_Stz, // FC_OR_2AND_RLN_TRIPLE
+  /* */ "FC_OR_2AND_RLN_MIX"_Stz,    // FC_OR_2AND_RLN_MIX
 
 //  /* */ "ENUMS"_Stz
 };

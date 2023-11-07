@@ -32,9 +32,10 @@ namespace STORE
     bool bFactor_rlnConj(Card_RlnConj* p_rlnConj);
 
     void vRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT);
-    void vRotate_b(void);
+    void vRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT);
 
     bool bTest_Rotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT);
+    bool bTest_Rotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT);
 
   private:
     Footer* aFooter(void);
