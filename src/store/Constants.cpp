@@ -710,7 +710,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_COMPILEERRORS"_Stz,   EV_I_COMPILEERRORS);
   /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
   /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
-  /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
   /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
   /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
   /*  0 */ vAddConstant("EV_I_NODEINFO"_Stz,        EV_I_NODEINFO);
