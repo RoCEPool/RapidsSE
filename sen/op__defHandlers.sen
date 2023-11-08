@@ -468,7 +468,6 @@
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
   abnormalHandler EV_I_COMMAND          [op].handler!
-  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
@@ -496,7 +495,6 @@
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
   abnormalHandler EV_I_COMMAND          [op].handler!
-  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
