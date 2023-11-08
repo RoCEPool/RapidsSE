@@ -1638,7 +1638,6 @@ void Job::vPipeoutResponse(Operand* pOperand)
         }
       }
 
-//      pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
       // pipe the operand to the responseOP of parentJob
       if(bHasTag(C_TAG_NESTEDSQL) && pOperand->eGetClassNo() == CN_ROWBUFFER) {
         PdsRowHelper* pPdsRowHelper = new PdsRowHelper();
