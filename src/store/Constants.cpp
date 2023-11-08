@@ -706,7 +706,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
   /*  0 */ vAddConstant("EV_D_PAGINGMETRICS"_Stz,   EV_D_PAGINGMETRICS);
 
-  /*  0 */ vAddConstant("EV_I_CALLPIPELINE"_Stz,    EV_I_CALLPIPELINE);
   /*  0 */ vAddConstant("EV_I_COMMAND"_Stz,         EV_I_COMMAND);
   /*  0 */ vAddConstant("EV_I_COMPILEERRORS"_Stz,   EV_I_COMPILEERRORS);
   /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);

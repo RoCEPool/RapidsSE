@@ -31,12 +31,11 @@ enum eEV // events
   /*    */ EV_D_TABLE,
   /*    */ EV_D_TABLEPTN,
 
-  /*    */ EV_I_CALLPIPELINE,
-  /*    */ EV_I_COMMAND,
+  /*    */ EV_I_COMMAND,       // used by dload
   /*    */ EV_I_COMPILEERRORS,
   /*    */ EV_I_COUNT,
   /*    */ EV_I_EXECERRORS,
-  /*    */ EV_I_FORKCOMMAND,
+  /*    */ EV_I_FORKCOMMAND,  // to go
   /*    */ EV_I_LOADRESULT,
   /*    */ EV_I_LOCKSTATS,
   /*    */ EV_I_NODEINFO,
