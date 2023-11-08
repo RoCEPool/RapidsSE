@@ -562,12 +562,10 @@ void Constants::vAddConstantsCpp(void)
 
   // OI_ : operator infoset
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
-  /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
   /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
   /*  0 */ vAddConstant("OI_COMPILEERRORS"_Stz, OI_COMPILEERRORS);
   /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
-  /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
