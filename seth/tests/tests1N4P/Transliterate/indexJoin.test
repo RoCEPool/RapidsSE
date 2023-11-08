@@ -11,7 +11,7 @@ success;
 // PtnKey[nation] = n_negionkey
 // PtnKey[region] = r_regionkey
 
-create table nation (
+create table ${testName}_nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
@@ -29,7 +29,7 @@ success
 create index IxR_REGIONKEY on REGION (R_REGIONKEY);
 success
 
-load nation "../DATA/TPCH/nation.tbl" ;
+load ${testName}_nation "../DATA/TPCH/nation.tbl" ;
 success
 
 load region "../DATA/TPCH/region.tbl" ;
@@ -37,7 +37,7 @@ success
 
 //------------------------------------------------------------------------------
 // JOIN
-select n_nationkey, r_name from nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
+select n_nationkey, r_name from ${testName}_nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
   join region ON n_nationkey = r_regionkey;
 rows:
   (0,'AFRICA')
@@ -48,7 +48,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // JOIN
-select n_nationkey, r_name from nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
+select n_nationkey, r_name from ${testName}_nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
   join region ON n_nationkey = r_regionkey where n_nationkey < 3;
 rows:
   (0,'AFRICA')
@@ -57,7 +57,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table nation;
+drop table ${testName}_nation;
 success
 
 drop table region;
@@ -68,7 +68,7 @@ rows: 0
 
 CLEANUP {
   
-  drop table nation;
+  drop table ${testName}_nation;
   mute
 
   drop table region;

@@ -7,7 +7,7 @@ trackMemory;
 success
 
 // (1) create a table
-create table bolTbl (
+create table ${testName}_bolTbl (
   bol_col1   BOOLEAN     NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
@@ -20,151 +20,151 @@ create table bolTbl (
 success
 
 // create indexes
-create index bol_idx1 on bolTbl (bol_col1);
+create index bol_idx1 on ${testName}_bolTbl (bol_col1);
 success
 
 // create indexes
-create index bol_idx2 on bolTbl (bol_col8);
+create index bol_idx2 on ${testName}_bolTbl (bol_col8);
 success
 
 // check existence of index
-lsidx bolTbl;
+lsidx ${testName}_bolTbl;
 rows:
   ('bol_idx1', false, false)
   ('bol_idx2', false, false)
 
 // check columns of index
-lsidxcol bolTbl bol_idx1;
+lsidxcol ${testName}_bolTbl bol_idx1;
 rows:
   ('bol_col1', 'BOOLEAN', 0, 0, false, true)
 
 // check columns of index
-lsidxcol bolTbl bol_idx2;
+lsidxcol ${testName}_bolTbl bol_idx2;
 rows:
   ('bol_col8', 'BOOLEAN', 0, 0, true, false)
 
-load bolTbl "../DATA/Datums/boolean.csv" ;
+load ${testName}_bolTbl "../DATA/Datums/boolean.csv" ;
 failure contains: '18 invalid'
 
 // check no of rows
-select * from bolTbl;
+select * from ${testName}_bolTbl;
 rows: 102
 
 /*
-partitionScan bolTbl 0;
+partitionScan ${testName}_bolTbl 0;
 rows: 0
 
-partitionScan bolTbl 1;
+partitionScan ${testName}_bolTbl 1;
 rows: 87
 
-partitionScan bolTbl 2;
+partitionScan ${testName}_bolTbl 2;
 rows: 0
 
-partitionScan bolTbl 3;
+partitionScan ${testName}_bolTbl 3;
 rows: 13
 
-partitionScan bolTbl 4;
+partitionScan ${testName}_bolTbl 4;
 rows: 0
 
-partitionScan bolTbl 5;
+partitionScan ${testName}_bolTbl 5;
 rows: 1
 
-partitionScan bolTbl 6;
+partitionScan ${testName}_bolTbl 6;
 rows: 0
 
-partitionScan bolTbl 7;
+partitionScan ${testName}_bolTbl 7;
 rows: 0
 */
 // dump index bol_idx1
-dumpidx bolTbl bol_idx1;
+dumpidx ${testName}_bolTbl bol_idx1;
 
 // dump index bol_idx2
-//dumpidx bolTbl bol_idx2;
+//dumpidx ${testName}_bolTbl bol_idx2;
 
 // export to non-existent dir
-export bolTbl "/noDir/bolTbl.csv";
+export ${testName}_bolTbl "/noDir/${testName}_bolTbl.csv";
 failure contains: 'File does not exist'
 
 // export a non-existent table
-export bolTbl1 "/tmp/bolTbl.csv";
+export ${testName}_bolTbl1 "/tmp/${testName}_bolTbl.csv";
 failure contains: 'Table does not exist'
 
 // export a non-existent table to a non-existent dir
-export bolTbl1 "/noDir/bolTbl.csv";
+export ${testName}_bolTbl1 "/noDir/${testName}_bolTbl.csv";
 failure contains: ' does not exist'
 
 // export the table
-export bolTbl "/tmp/bolTbl.csv";
+export ${testName}_bolTbl "/tmp/${testName}_bolTbl.csv";
 success
 
 // truncate the table
-truncate bolTbl;
+truncate ${testName}_bolTbl;
 success
 
-select * from bolTbl;
+select * from ${testName}_bolTbl;
 rows: 0
 
 /*
-partitionScan bolTbl 0;
+partitionScan ${testName}_bolTbl 0;
 rows: 0
 
-partitionScan bolTbl 1;
+partitionScan ${testName}_bolTbl 1;
 rows: 0
 
-partitionScan bolTbl 2;
+partitionScan ${testName}_bolTbl 2;
 rows: 0
 
-partitionScan bolTbl 3;
+partitionScan ${testName}_bolTbl 3;
 rows: 0
 
-partitionScan bolTbl 4;
+partitionScan ${testName}_bolTbl 4;
 rows: 0
 
-partitionScan bolTbl 5;
+partitionScan ${testName}_bolTbl 5;
 rows: 0
 
-partitionScan bolTbl 6;
+partitionScan ${testName}_bolTbl 6;
 rows: 0
 
-partitionScan bolTbl 7;
+partitionScan ${testName}_bolTbl 7;
 rows: 0
 */
 
-load bolTbl "/tmp/bolTbl.csv" ;
+load ${testName}_bolTbl "/tmp/${testName}_bolTbl.csv" ;
 success
 
 // check no of rows
-select * from bolTbl;
+select * from ${testName}_bolTbl;
 rows: 102
 
 /*
-partitionScan bolTbl 0;
+partitionScan ${testName}_bolTbl 0;
 rows: 0
 
-partitionScan bolTbl 1;
+partitionScan ${testName}_bolTbl 1;
 rows: 88
 
-partitionScan bolTbl 2;
+partitionScan ${testName}_bolTbl 2;
 rows: 0
 
-partitionScan bolTbl 3;
+partitionScan ${testName}_bolTbl 3;
 rows: 13
 
-partitionScan bolTbl 4;
+partitionScan ${testName}_bolTbl 4;
 rows: 0
 
-partitionScan bolTbl 5;
+partitionScan ${testName}_bolTbl 5;
 rows: 0
 
-partitionScan bolTbl 6;
+partitionScan ${testName}_bolTbl 6;
 rows: 0
 
-partitionScan bolTbl 7;
+partitionScan ${testName}_bolTbl 7;
 rows: 0
 */
 
 // drop the table
-drop table bolTbl;
+drop table ${testName}_bolTbl;
 success
 
 // check existence of table
@@ -178,7 +178,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table bolTbl;
+  drop table ${testName}_bolTbl;
   mute
   
   bye;

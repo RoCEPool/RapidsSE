@@ -4,7 +4,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -24,11 +24,11 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/date.csv" ;
+load ${testName}_datums "../DATA/Transliterate/date.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '2010-11-01';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '2010-11-01';
 rows:
 (1)
 (2)
@@ -41,7 +41,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '1998-12-01';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '1998-12-01';
 rows:
 (1)
 (2)
@@ -54,7 +54,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '2010-12-01' AND dte_col5 > DATE '2031-12-01';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '2010-12-01' AND dte_col5 > DATE '2031-12-01';
 rows:
 (1)
 (2)
@@ -64,7 +64,7 @@ rows:
 (8)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 > DATE '2010-12-01' AND dte_col4 > DATE '2031-12-01';
+select int_col0 from ${testName}_datums where dte_col5 > DATE '2010-12-01' AND dte_col4 > DATE '2031-12-01';
 rows:
 (1)
 (2)
@@ -74,7 +74,7 @@ rows:
 (8)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 > DATE '2031-12-01' AND dte_col4 > DATE '1967-12-01';
+select int_col0 from ${testName}_datums where dte_col5 > DATE '2031-12-01' AND dte_col4 > DATE '1967-12-01';
 rows:
 (1)
 (2)
@@ -85,7 +85,7 @@ rows:
 (8)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '2041-12-01' AND dte_col4 > DATE '1967-12-01';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '2041-12-01' AND dte_col4 > DATE '1967-12-01';
 rows:
 (2)
 (6)
@@ -94,7 +94,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '2010-12-01' OR dte_col5 > DATE '2031-12-01';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '2010-12-01' OR dte_col5 > DATE '2031-12-01';
 rows:
 (1)
 (2)
@@ -109,7 +109,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '2041-12-02' OR dte_col4 > DATE '2068-12-01';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '2041-12-02' OR dte_col4 > DATE '2068-12-01';
 rows:
 (2)
 (6)
@@ -118,7 +118,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '2041-12-02' OR dte_col5 > DATE '2068-12-01';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '2041-12-02' OR dte_col5 > DATE '2068-12-01';
 rows:
 (2)
 (6)
@@ -127,7 +127,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > DATE '2041-12-02' OR dte_col5 > DATE '2052-12-03';
+select int_col0 from ${testName}_datums where dte_col4 > DATE '2041-12-02' OR dte_col5 > DATE '2052-12-03';
 rows:
 (2)
 (6)
@@ -136,12 +136,12 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 >= DATE '2068-10-20';
+select int_col0 from ${testName}_datums where dte_col4 >= DATE '2068-10-20';
 rows:
 (6)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 >= DATE '1998-12-01';
+select int_col0 from ${testName}_datums where dte_col4 >= DATE '1998-12-01';
 rows:
 (1)
 (2)
@@ -154,12 +154,12 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 >= DATE '2042-12-01';
+select int_col0 from ${testName}_datums where dte_col5 >= DATE '2042-12-01';
 rows:
 (5)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 >= DATE '2010-12-01' AND dte_col5 >= DATE '2031-12-01';
+select int_col0 from ${testName}_datums where dte_col4 >= DATE '2010-12-01' AND dte_col5 >= DATE '2031-12-01';
 rows:
 (1)
 (2)
@@ -169,12 +169,12 @@ rows:
 (8)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 >= DATE '2068-12-01' AND dte_col4 >= DATE '2068-12-01';
+select int_col0 from ${testName}_datums where dte_col5 >= DATE '2068-12-01' AND dte_col4 >= DATE '2068-12-01';
 rows: 
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 >= DATE '2000-12-01' AND dte_col4 >= DATE '2000-12-01';
+select int_col0 from ${testName}_datums where dte_col5 >= DATE '2000-12-01' AND dte_col4 >= DATE '2000-12-01';
 rows:
 (1)
 (2)
@@ -186,7 +186,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 >= DATE '2041-12-01' AND dte_col4 >= DATE '1967-12-01';
+select int_col0 from ${testName}_datums where dte_col4 >= DATE '2041-12-01' AND dte_col4 >= DATE '1967-12-01';
 rows:
 (2)
 (6)
@@ -195,18 +195,18 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 > DATE '2069-12-01' OR dte_col4 > DATE '2050-12-01';
+select int_col0 from ${testName}_datums where dte_col5 > DATE '2069-12-01' OR dte_col4 > DATE '2050-12-01';
 rows:
 (6)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 >= DATE '2047-01-01' OR dte_col4 >= DATE '2047-01-01';
+select int_col0 from ${testName}_datums where dte_col5 >= DATE '2047-01-01' OR dte_col4 >= DATE '2047-01-01';
 rows:
 (5)
 (6)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 >= DATE '2041-12-02' OR dte_col4 >= DATE '2068-12-01';
+select int_col0 from ${testName}_datums where dte_col4 >= DATE '2041-12-02' OR dte_col4 >= DATE '2068-12-01';
 rows:
 (2)
 (6)
@@ -215,7 +215,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 >= DATE '2041-12-02' OR dte_col5 >= DATE '2068-12-01';
+select int_col0 from ${testName}_datums where dte_col4 >= DATE '2041-12-02' OR dte_col5 >= DATE '2068-12-01';
 rows:
 (2)
 (6)
@@ -224,7 +224,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 >= DATE '2041-12-02' OR dte_col5 >= DATE '2052-12-03';
+select int_col0 from ${testName}_datums where dte_col4 >= DATE '2041-12-02' OR dte_col5 >= DATE '2052-12-03';
 rows:
 (2)
 (6)
@@ -233,7 +233,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 <= DATE '2068-10-20';
+select int_col0 from ${testName}_datums where dte_col4 <= DATE '2068-10-20';
 rows:
 (1)
 (2)
@@ -247,7 +247,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 <= DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col5 <= DATE '2041-01-01';
 rows:
 (1)
 (3)
@@ -258,12 +258,12 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 <= DATE '2010-12-01' AND dte_col5 <= DATE '2031-12-01';
+select int_col0 from ${testName}_datums where dte_col4 <= DATE '2010-12-01' AND dte_col5 <= DATE '2031-12-01';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 <= DATE '2068-12-01' AND dte_col4 <= DATE '2068-12-01';
+select int_col0 from ${testName}_datums where dte_col5 <= DATE '2068-12-01' AND dte_col4 <= DATE '2068-12-01';
 rows:
 (1)
 (2)
@@ -277,17 +277,17 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 <= DATE '2000-12-01' AND dte_col4 <= DATE '2000-12-01';
+select int_col0 from ${testName}_datums where dte_col5 <= DATE '2000-12-01' AND dte_col4 <= DATE '2000-12-01';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 <= DATE '2041-12-01' AND dte_col4 <= DATE '1967-12-01';
+select int_col0 from ${testName}_datums where dte_col4 <= DATE '2041-12-01' AND dte_col4 <= DATE '1967-12-01';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 != DATE '2042-01-19';
+select int_col0 from ${testName}_datums where dte_col4 != DATE '2042-01-19';
 rows:
 (1)
 (2)
@@ -299,7 +299,7 @@ rows:
 (9)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col5 != DATE '2041-01-01';
 rows:
 (2)
 (4)
@@ -311,7 +311,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 != DATE '2041-01-01' AND dte_col5 != DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col4 != DATE '2041-01-01' AND dte_col5 != DATE '2041-01-01';
 rows:
 (2)
 (4)
@@ -323,7 +323,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != DATE '2041-01-01' AND dte_col4 != DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col5 != DATE '2041-01-01' AND dte_col4 != DATE '2041-01-01';
 rows:
 (2)
 (4)
@@ -335,7 +335,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != DATE '2000-12-01' AND dte_col4 != DATE '2000-12-01';
+select int_col0 from ${testName}_datums where dte_col5 != DATE '2000-12-01' AND dte_col4 != DATE '2000-12-01';
 rows:
 (1)
 (2)
@@ -349,7 +349,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 != DATE '2041-01-01' AND dte_col4 != DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col4 != DATE '2041-01-01' AND dte_col4 != DATE '2041-01-01';
 rows:
 (2)
 (4)
@@ -361,44 +361,44 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col4 = DATE '2041-01-01';
 rows:
 (1)
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 = DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col5 = DATE '2041-01-01';
 rows:
 (1)
 (3)
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = DATE '1998-12-01';
+select int_col0 from ${testName}_datums where dte_col4 = DATE '1998-12-01';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = DATE '2041-01-01' AND dte_col5 = DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col4 = DATE '2041-01-01' AND dte_col5 = DATE '2041-01-01';
 rows:
 (1)
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 = DATE '2041-01-01' AND dte_col4 = DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col5 = DATE '2041-01-01' AND dte_col4 = DATE '2041-01-01';
 rows:
 (1)
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = DATE '2042-11-01' AND dte_col5 = DATE '2041-11-01';
+select int_col0 from ${testName}_datums where dte_col4 = DATE '2042-11-01' AND dte_col5 = DATE '2041-11-01';
 rows:
 (8)
 
 //------------------------------------------------------------------------------
 // TODO: check
 /*
-select int_col0 from datums where dte_col4 = NULL OR dte_col5 = DATE '2041-11-01';
+select int_col0 from ${testName}_datums where dte_col4 = NULL OR dte_col5 = DATE '2041-11-01';
 rows:
 (2)
 (4)
@@ -406,13 +406,13 @@ rows:
 (8)
 */
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 = DATE '2047-01-01' OR dte_col4 = DATE '2068-10-20';
+select int_col0 from ${testName}_datums where dte_col5 = DATE '2047-01-01' OR dte_col4 = DATE '2068-10-20';
 rows:
 (5)
 (6)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 = DATE '2041-01-01' OR dte_col4 = DATE '1998-11-02';
+select int_col0 from ${testName}_datums where dte_col5 = DATE '2041-01-01' OR dte_col4 = DATE '1998-11-02';
 rows:
 (1)
 (3)
@@ -420,12 +420,12 @@ rows:
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = DATE '2047-01-01' OR dte_col4 = DATE '2041-01-10';
+select int_col0 from ${testName}_datums where dte_col4 = DATE '2047-01-01' OR dte_col4 = DATE '2041-01-10';
 rows:
 (9)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = dte_col4;
+select int_col0 from ${testName}_datums where dte_col4 = dte_col4;
 rows:
 (1)
 (2)
@@ -439,19 +439,19 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = dte_col5;
+select int_col0 from ${testName}_datums where dte_col4 = dte_col5;
 rows:
 (1)
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 = dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 = dte_col4;
 rows:
 (1)
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > dte_col5;
+select int_col0 from ${testName}_datums where dte_col4 > dte_col5;
 rows:
 (2)
 (6)
@@ -461,21 +461,13 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 > dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 > dte_col4;
 rows:
 (4)
 (5)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 >= dte_col4;
-rows:
-(1)
-(4)
-(5)
-(7)
-
-//------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 <= dte_col5;
+select int_col0 from ${testName}_datums where dte_col5 >= dte_col4;
 rows:
 (1)
 (4)
@@ -483,7 +475,15 @@ rows:
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 <= dte_col4;
+select int_col0 from ${testName}_datums where dte_col4 <= dte_col5;
+rows:
+(1)
+(4)
+(5)
+(7)
+
+//------------------------------------------------------------------------------
+select int_col0 from ${testName}_datums where dte_col5 <= dte_col4;
 rows:
 (1)
 (2)
@@ -495,7 +495,7 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 != dte_col5;
+select int_col0 from ${testName}_datums where dte_col4 != dte_col5;
 rows:
 (2)
 (4)
@@ -507,12 +507,12 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 > dte_col5 AND dte_col5 > dte_col4;
+select int_col0 from ${testName}_datums where dte_col4 > dte_col5 AND dte_col5 > dte_col4;
 rows:
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 = dte_col5 OR dte_col5 >= dte_col4;
+select int_col0 from ${testName}_datums where dte_col4 = dte_col5 OR dte_col5 >= dte_col4;
 rows:
 (1)
 (4)
@@ -520,18 +520,18 @@ rows:
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != dte_col4 AND dte_col5 >= dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 != dte_col4 AND dte_col5 >= dte_col4;
 rows:
 (4)
 (5)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != dte_col4 AND dte_col5 = dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 != dte_col4 AND dte_col5 = dte_col4;
 rows:
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != dte_col4 OR dte_col5 > dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 != dte_col4 OR dte_col5 > dte_col4;
 rows:
 (2)
 (4)
@@ -546,23 +546,23 @@ rows:
 ////////////////////----------Less than < Tests ---------------------///////////////////////////////////////////
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < DATE '2010-11-01';
+select int_col0 from ${testName}_datums where dte_col4 < DATE '2010-11-01';
 rows:
 (5)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 < DATE '1998-12-01';
+select int_col0 from ${testName}_datums where dte_col5 < DATE '1998-12-01';
 rows:
 0
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < DATE '2010-12-01' AND dte_col5 < DATE '2031-12-01';
+select int_col0 from ${testName}_datums where dte_col4 < DATE '2010-12-01' AND dte_col5 < DATE '2031-12-01';
 rows:
 0
 
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 < DATE '2041-11-01' AND dte_col4 < DATE '2041-11-01';
+select int_col0 from ${testName}_datums where dte_col5 < DATE '2041-11-01' AND dte_col4 < DATE '2041-11-01';
 rows:
 (1)
 (7)
@@ -570,19 +570,19 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < DATE '2041-12-01' AND dte_col4 < DATE '2041-01-01';
+select int_col0 from ${testName}_datums where dte_col4 < DATE '2041-12-01' AND dte_col4 < DATE '2041-01-01';
 rows:
 (5)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 < DATE '2031-12-01' OR dte_col4 < DATE '1967-12-01';
+select int_col0 from ${testName}_datums where dte_col5 < DATE '2031-12-01' OR dte_col4 < DATE '1967-12-01';
 rows:
 (9)
 (10)
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < DATE '2041-12-01' OR dte_col4 < DATE '1967-12-01';
+select int_col0 from ${testName}_datums where dte_col4 < DATE '2041-12-01' OR dte_col4 < DATE '1967-12-01';
 rows:
 (1)
 (4)
@@ -591,7 +591,7 @@ rows:
 (9)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < DATE '2041-12-02' OR dte_col5 < DATE '2052-12-03';
+select int_col0 from ${testName}_datums where dte_col4 < DATE '2041-12-02' OR dte_col5 < DATE '2052-12-03';
 rows:
 (1)
 (2)
@@ -606,13 +606,13 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < dte_col5;
+select int_col0 from ${testName}_datums where dte_col4 < dte_col5;
 rows:
 (4)
 (5)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 < dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 < dte_col4;
 rows:
 (2)
 (6)
@@ -622,13 +622,13 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < dte_col5 AND dte_col5 > dte_col4;
+select int_col0 from ${testName}_datums where dte_col4 < dte_col5 AND dte_col5 > dte_col4;
 rows:
 (4)
 (5)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != dte_col4 AND dte_col5 <= dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 != dte_col4 AND dte_col5 <= dte_col4;
 rows:
 (2)
 (6)
@@ -638,13 +638,13 @@ rows:
 (11)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 <= dte_col4 AND dte_col5 = dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 <= dte_col4 AND dte_col5 = dte_col4;
 rows:
 (1)
 (7)
 
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col5 != dte_col4 OR dte_col5 < dte_col4;
+select int_col0 from ${testName}_datums where dte_col5 != dte_col4 OR dte_col5 < dte_col4;
 rows:
 (2)
 (4)
@@ -657,7 +657,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName}_datums;
 success;
 
 MemoryLeaks;
@@ -665,7 +665,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName}_datums;
   mute
 
   bye;

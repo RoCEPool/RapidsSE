@@ -5,7 +5,7 @@ success
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -25,10 +25,10 @@ create table datums (
 );
 success
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+load ${testName}_datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
-select int_col0 from datums order by int_col0;
+select int_col0 from ${testName}_datums order by int_col0;
 ordered rows:
  (1)
  (2)
@@ -44,7 +44,7 @@ ordered rows:
  (12)
  (13)
 
-select int_col0 from datums order by int_col0 desc;
+select int_col0 from ${testName}_datums order by int_col0 desc;
 ordered rows:
  (13)
  (12)
@@ -60,7 +60,7 @@ ordered rows:
  (2)
  (1)
 
-select bol_col2 from datums order by bol_col2;
+select bol_col2 from ${testName}_datums order by bol_col2;
 ordered rows:
  (null)
  (false)
@@ -76,7 +76,7 @@ ordered rows:
  (true)
  (true)
 
-select bol_col2 from datums order by bol_col2 desc;
+select bol_col2 from ${testName}_datums order by bol_col2 desc;
 ordered rows:
  (true)
  (true)
@@ -92,7 +92,7 @@ ordered rows:
  (false)
  (null)
 
-select dte_col4 from datums order by dte_col4;
+select dte_col4 from ${testName}_datums order by dte_col4;
 ordered rows:
  (null)
  (DATE '1941-01-01')
@@ -108,7 +108,7 @@ ordered rows:
  (DATE '1976-10-20')
  (DATE '1998-11-02')
 
-select dte_col4 from datums order by dte_col4 desc;
+select dte_col4 from ${testName}_datums order by dte_col4 desc;
 ordered rows:
  (DATE '1998-11-02')
  (DATE '1976-10-20')
@@ -124,7 +124,7 @@ ordered rows:
  (DATE '1941-01-01')
  (null)
 
-select dec_col6 from datums order by dec_col6;
+select dec_col6 from ${testName}_datums order by dec_col6;
 ordered rows:
  (null)
  (null)
@@ -140,7 +140,7 @@ ordered rows:
  (477.04)
  (4001.04)
 
-select dec_col6 from datums order by dec_col6 desc;
+select dec_col6 from ${testName}_datums order by dec_col6 desc;
 ordered rows:
  (4001.04)
  (477.04)
@@ -156,7 +156,7 @@ ordered rows:
  (null)
  (null)
 
-select tme_col10 from datums order by tme_col10;
+select tme_col10 from ${testName}_datums order by tme_col10;
 ordered rows:
  (null)
  (TIME '10:23:31')
@@ -172,7 +172,7 @@ ordered rows:
  (TIME '11:23:31')
  (TIME '11:23:31')
 
-select tme_col10 from datums order by tme_col10 desc;
+select tme_col10 from ${testName}_datums order by tme_col10 desc;
 ordered rows:
  (TIME '11:23:31')
  (TIME '11:23:31')
@@ -188,7 +188,7 @@ ordered rows:
  (TIME '10:23:31')
  (null)
 
-select tsp_col12 from datums order by tsp_col12;
+select tsp_col12 from ${testName}_datums order by tsp_col12;
 ordered rows:
  (null)
  (TIMESTAMP '1941-01-01 00:00:00')
@@ -204,7 +204,7 @@ ordered rows:
  (TIMESTAMP '1972-01-01 12:00:00')
  (TIMESTAMP '1972-01-01 12:00:00')
 
-select tsp_col12 from datums order by tsp_col12 desc;
+select tsp_col12 from ${testName}_datums order by tsp_col12 desc;
 ordered rows:
  (TIMESTAMP '1972-01-01 12:00:00')
  (TIMESTAMP '1972-01-01 12:00:00')
@@ -223,7 +223,7 @@ ordered rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName}_datums;
 success;
 
 memoryleaks;
@@ -231,7 +231,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName}_datums;
   mute
 
   bye;

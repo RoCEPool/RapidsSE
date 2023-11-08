@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 // create table lineitem
-create table LineItem
+create table ${testName}_Lineitem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -26,49 +26,49 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-select l_discount from lineitem limit 3;
+select l_discount from ${testName}_Lineitem limit 3;
 rows: 0
 
 // load data
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName}_Lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 //------------------------------------------------------------------------------
-select l_partkey from lineitem limit 3;
+select l_partkey from ${testName}_Lineitem limit 3;
 rows: 3
 
 //------------------------------------------------------------------------------
-select l_returnflag from lineitem limit 5;
+select l_returnflag from ${testName}_Lineitem limit 5;
 rows: 5
 
 //------------------------------------------------------------------------------
-select SUM(l_discount) FROM lineitem WHERE l_orderkey < 20 limit 3;
+select SUM(l_discount) FROM ${testName}_Lineitem WHERE l_orderkey < 20 limit 3;
 rows:
   (84.16)
 
 //------------------------------------------------------------------------------
-SELECT l_orderkey, SUM(l_discount) FROM lineitem GROUP BY l_orderkey limit 3;
+SELECT l_orderkey, SUM(l_discount) FROM ${testName}_Lineitem GROUP BY l_orderkey limit 3;
 rows:
   (0,4.24)
   (1,4.13)
   (2,4.22)
 
 //------------------------------------------------------------------------------
-SELECT l_discount FROM lineitem order by l_discount limit 3;
+SELECT l_discount FROM ${testName}_Lineitem order by l_discount limit 3;
 rows:
   (1.00)
   (1.00)
   (1.00)
 
 //------------------------------------------------------------------------------
-SELECT L_QUANTITY FROM lineitem where L_QUANTITY > 10.0 order by L_QUANTITY limit 3;
+SELECT L_QUANTITY FROM ${testName}_Lineitem where L_QUANTITY > 10.0 order by L_QUANTITY limit 3;
 rows:
   (11.00)
   (11.00)
   (11.00)
 
 //------------------------------------------------------------------------------
-SELECT L_QUANTITY FROM lineitem order by L_ORDERKEY limit 8;
+SELECT L_QUANTITY FROM ${testName}_Lineitem order by L_ORDERKEY limit 8;
 rows:
   (6.00)
   (30.00)
@@ -81,12 +81,12 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table lineitem;
+drop table ${testName}_Lineitem;
 success;
 
 CLEANUP {
   
-  drop table lineitem;
+  drop table ${testName}_Lineitem;
   mute
   
   bye;

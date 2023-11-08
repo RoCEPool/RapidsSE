@@ -10,7 +10,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -36,7 +36,7 @@ success
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName}_datums;
 success;
 reap;
 success
@@ -48,7 +48,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName}_datums;
   mute
 
   bye;
