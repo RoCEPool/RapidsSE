@@ -48,7 +48,6 @@ namespace STORE
     eCK   eGetChild(i8 i_Child, Card*& rpChild);
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reChild);
-    Card* pGetChild_bySym(Symbol* pSymbol);
 
     void  vInsertChildAfter(Card* pChild, Card* pAfter);
     void  vInsertChildBefore(Card* pChild, Card* pBefore);

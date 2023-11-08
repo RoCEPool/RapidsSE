@@ -358,18 +358,6 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get expr relating to term                                                  */
-/*----------------------------------------------------------------------------*/
-Card* ChildCards::pGetChild_bySym(STORE::Symbol *pSymbol)
-{
-  i8 i_Child  = pSymbol->iSF_ordinal() - 1;
-
-  Card* pChild = pGetChild(i_Child);
-
-  return pChild;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert child card after given card                                         */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vInsertChildAfter(Card* pChild, Card* pAfter)
