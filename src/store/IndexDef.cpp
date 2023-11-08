@@ -31,8 +31,8 @@ extern "C" void* aExtern_IndexDefNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
 
   for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
     pIndexDef->vAddColumn((Stz*)&pColumnInfo[i_Col].m_cColumnNm[0],
-                           (eCT)pColumnInfo[i_Col].m_iColumnType,
-                           pColumnInfo[i_Col].m_bIsAscending);
+													(TypeId)pColumnInfo[i_Col].m_iColumnTypeId,
+													pColumnInfo[i_Col].m_bIsAscending);
 
     if (pColumnInfo[i_Col].m_bIsAscending == 0)
       pIndexDef->vHasDescending(true);
@@ -178,14 +178,14 @@ void IndexDef::vPostRecv(void* aIndexDef)
 /*----------------------------------------------------------------------------*/
 /* add a column to the indexDef                                               */
 /*----------------------------------------------------------------------------*/
-void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType, bool bAscending)
+void IndexDef::vAddColumn(Stz* szColumnNm, TypeId xTypeId, bool bAscending)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
   m_xaColumn[m_nColumns].vColumnNm(szColumnNm);
-  m_xaColumn[m_nColumns].vColumnType(eColumnType);
-  m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
+  m_xaColumn[m_nColumns].vColumnTypeId(xTypeId);
+  m_xaColumn[m_nColumns].vDatum(Column::eDatum(xTypeId.eCTVal()));
   m_xaColumn[m_nColumns].vIsAscending(bAscending);
 
   m_iaColSet[m_nColumns] = m_nColumns;
@@ -197,7 +197,9 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType, bool bAscending)
     m_eKeyKind = KE_GENERAL;
     return;
   }
-  
+
+	eCT eColumnType = xTypeId.eCTVal();
+
   if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
     m_eKeyKind = KE_GENERAL;
     return;

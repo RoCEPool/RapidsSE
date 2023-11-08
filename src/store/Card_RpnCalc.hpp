@@ -18,7 +18,7 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
-		Parser::TypeId xColTypeId(void);
+		TypeId xColTypeId(void);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vCorrectStmCol(Card_Emit* p_emitted_prior);

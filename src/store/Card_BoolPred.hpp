@@ -19,7 +19,7 @@ namespace STORE
 
     Card_RlnConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
-    Parser::TypeId xColTypeId(void);
+    TypeId xColTypeId(void);
     Card_CONJUNCTION* pConj_root(void);
     bool bContains(Symbol* pSymbol_arg);
     void vCopyMarkedConjToTable(CardIter* pCI);

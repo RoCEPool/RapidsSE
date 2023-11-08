@@ -217,9 +217,9 @@ IndexDef* Card_Payload::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    eCT  eColType = p_term->pSymbol()->xColTypeId().eCTVal();
+    TypeId xTypeId = p_term->pSymbol()->xColTypeId();
 
-    if (! szColNm || CT_NONE == eColType)
+    if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;
 
     bool bAscending = true;
@@ -227,7 +227,7 @@ IndexDef* Card_Payload::pToIndexDef(void)
       bAscending = false;
       bHasDescending = true;
     }
-    pIndexDef->vAddColumn(szColNm,eColType,bAscending);
+    pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
   }
 
   if (bHasDescending)

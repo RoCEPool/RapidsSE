@@ -17,7 +17,7 @@
 //       other types (e.g eCT). It is expected that this class will be passed by
 //       value, hence it is not a proper object.
 
-namespace Parser
+namespace STORE
 {
   class TypeId
   {

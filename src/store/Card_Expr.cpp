@@ -177,18 +177,18 @@ void Card_Expr::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Parser::TypeId Card_Expr::xColumnTypeId(void)
+TypeId Card_Expr::xColumnTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
 
-    Parser::TypeId xColTypeId = p_rpnCalc->xColTypeId();
+    TypeId xColTypeId = p_rpnCalc->xColTypeId();
 
     return xColTypeId;
   }
 
-  return Parser::TypeId::xIdOf(CT_NONE);
+  return TypeId::xIdOf(CT_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -681,11 +681,11 @@ void Card_Expr::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Parser::TypeId Card_Expr::xColTypeId(void)
+TypeId Card_Expr::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Parser::TypeId xColTypeId;
+  TypeId xColTypeId;
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
 		xColTypeId = p_boolPred->xColTypeId();

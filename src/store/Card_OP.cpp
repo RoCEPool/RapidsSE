@@ -612,21 +612,21 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     p_expr->pSymbol()->vFacets(&xSymbol);
     p_emit->vAppendChild(p_expr);
 
-    eCT eColumnType = pColumn->eColumnType();
+		TypeId xColumnTypeId = pColumn->xColumnTypeId();
 
     p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,pColumn->szColNm());
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->pSymbol()->vColTypeId(Parser::TypeId::xIdOf(eColumnType));
-    p_expr->pSymbol()->vColTypeId(Parser::TypeId::xIdOf(eColumnType));
+    p_rpnCalc->pSymbol()->vColTypeId(xColumnTypeId);
+    p_expr->pSymbol()->vColTypeId(xColumnTypeId);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
     p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->vColTypeId(Parser::TypeId::xIdOf(eColumnType));
+    p_term->pSymbol()->vColTypeId(xColumnTypeId);
   }
 
   pCI->G.p_stream->vAppendChild(p_emit);
@@ -1354,7 +1354,7 @@ void Card_OP::vRpn_top(String* psRpnExpr, Card_Top* p_top)
   Card_Key *pCard_key = p_top->pSub_key();
   Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
 
-  Parser::TypeId xColTypeId = pCard_Calc->xColTypeId();
+  TypeId xColTypeId = pCard_Calc->xColTypeId();
 
 	psRpnExpr->vCatSprint(" type %s "_Stz, xColTypeId.szTypeName());
   vRpn_rpnCalc(psRpnExpr, pCard_Calc);

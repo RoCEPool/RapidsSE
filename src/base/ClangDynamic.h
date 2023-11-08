@@ -6,7 +6,7 @@
 struct ColumnInfo {
   i8    m_iColumnNo;      // this columns subscript
   char  m_cColumnNm[32];  // name of the column
-  i8    m_iColumnType;    // column type (CT_INTEGER etc) // ALKA COME BACK TO THIS
+  i8    m_iColumnTypeId;    // column typeId (CT_INTEGER etc) // ALKA COME BACK TO THIS
   i8    m_iColumnLength;  // logical length of the column
   i8    m_iColumnScale;   // logical scale of the column
   bool  m_bIsNullable;    // is column nullable?
