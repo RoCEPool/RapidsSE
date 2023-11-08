@@ -203,11 +203,11 @@ void Card_Key::vMapColumns(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Parser::TypeId Card_Key::xColTypeId(void)
+TypeId Card_Key::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-	Parser::TypeId xColTypeId;
+	TypeId xColTypeId;
 
   if (Card_Expr* p_expr = pSub_expr())
 		xColTypeId = p_expr->xColTypeId();
@@ -250,7 +250,7 @@ IndexDef* Card_Key::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    Parser::TypeId xTypeId = p_term->pSymbol()->xColTypeId();
+    TypeId xTypeId = p_term->pSymbol()->xColTypeId();
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;

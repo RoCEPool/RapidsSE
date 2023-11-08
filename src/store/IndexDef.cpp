@@ -31,7 +31,7 @@ extern "C" void* aExtern_IndexDefNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
 
   for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
     pIndexDef->vAddColumn((Stz*)&pColumnInfo[i_Col].m_cColumnNm[0],
-													(Parser::TypeId)pColumnInfo[i_Col].m_iColumnTypeId,
+													(TypeId)pColumnInfo[i_Col].m_iColumnTypeId,
 													pColumnInfo[i_Col].m_bIsAscending);
 
     if (pColumnInfo[i_Col].m_bIsAscending == 0)
@@ -178,7 +178,7 @@ void IndexDef::vPostRecv(void* aIndexDef)
 /*----------------------------------------------------------------------------*/
 /* add a column to the indexDef                                               */
 /*----------------------------------------------------------------------------*/
-void IndexDef::vAddColumn(Stz* szColumnNm, Parser::TypeId xTypeId, bool bAscending)
+void IndexDef::vAddColumn(Stz* szColumnNm, TypeId xTypeId, bool bAscending)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   

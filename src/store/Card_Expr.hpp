@@ -24,7 +24,7 @@ namespace STORE
     static Card_Expr* pProj_Simple_expr_Of_key(Card_Expr* p_expr_key);
 
     void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
-    Parser::TypeId xColumnTypeId(void);
+    TypeId xColumnTypeId(void);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
@@ -57,7 +57,7 @@ namespace STORE
 
     void vShortForm(String* pString, Stz* szSep);
 
-    Parser::TypeId xColTypeId(void);
+    TypeId xColTypeId(void);
 
     void vX_tblCol_To_stmCol(CardIter* pCI);
     void vX_stmCol_To_tblCol(CardIter* pCI);

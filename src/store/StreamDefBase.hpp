@@ -44,7 +44,7 @@ namespace STORE
     static eDM eDatum(Stz* szType);
     static void vPostRecv(void* aStreamDef);
 
-    void    vAddColumn(Stz* sColumnNm, Parser::TypeId xTypeId,
+    void    vAddColumn(Stz* sColumnNm, TypeId xTypeId,
                        i8 iColumnLength, i8 iColumnScale);
     void    vAddOrder(i8 i_Column, eSD eDirection=SD_ASC);
     void    vAppendStreamDef(StreamDefBase* pStreamDef);

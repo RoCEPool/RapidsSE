@@ -91,11 +91,11 @@ void Card_RpnCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Parser::TypeId Card_RpnCalc::xColTypeId(void)
+TypeId Card_RpnCalc::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-	Parser::TypeId xTypeId = pSymbol()->xColTypeId();
+	TypeId xTypeId = pSymbol()->xColTypeId();
 
   return xTypeId;
 }

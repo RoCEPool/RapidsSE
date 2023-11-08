@@ -217,7 +217,7 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
     // name
     axColPixDst->m_uKind     = (u8)CX_USERCOL;
     axColPixDst->m_uTypeId   = (u8)pColumnInfo[i_Col].m_iColumnTypeId;
-    axColPixDst->m_uDatum    = (u8)Column::eDatum((eCT)((Parser::TypeId)pColumnInfo[i_Col].m_iColumnTypeId).eCTVal());
+    axColPixDst->m_uDatum    = (u8)Column::eDatum((eCT)((TypeId)pColumnInfo[i_Col].m_iColumnTypeId).eCTVal());
     axColPixDst->m_uLength   = (u8)pColumnInfo[i_Col].m_iColumnLength;
     axColPixDst->m_uScale    = (u8)pColumnInfo[i_Col].m_iColumnScale;
     axColPixDst->m_bNullable = (u8)pColumnInfo[i_Col].m_bIsNullable;

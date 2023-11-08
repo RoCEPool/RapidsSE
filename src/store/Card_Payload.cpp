@@ -217,7 +217,7 @@ IndexDef* Card_Payload::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    Parser::TypeId xTypeId = p_term->pSymbol()->xColTypeId();
+    TypeId xTypeId = p_term->pSymbol()->xColTypeId();
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;

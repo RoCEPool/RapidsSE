@@ -2347,7 +2347,7 @@ void vCmdLineTest0(void)
   printf("vCmdLineTest0\n");
 
   IndexDef* pIndexDef = new IndexDef;
-  pIndexDef->vAddColumn("Int"_Stz,Parser::TypeId::xIdOf(CT_INTEGER));
+  pIndexDef->vAddColumn("Int"_Stz,TypeId::xIdOf(CT_INTEGER));
 
   Index* pIndex = new Index("Flat"_Stz);
   pIndex->vIndexDef(pIndexDef);

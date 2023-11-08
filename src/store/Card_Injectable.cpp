@@ -65,7 +65,7 @@ Card_Injectable* Card_Injectable::pNew_injected(CardIter* pCI)
     p_expr->pSymbol()->vFacets(&xSymbol);
     p_injected->vAppendChild(p_expr);
 
-    Parser::TypeId xColumnTypeId = pColumn->xColumnTypeId();
+    TypeId xColumnTypeId = pColumn->xColumnTypeId();
 
     p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,pColumn->szColNm());
 

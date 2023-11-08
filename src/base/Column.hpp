@@ -16,7 +16,7 @@ namespace BASE
     private:
     i8    m_iColumnNo;      // this columns subscript
     s32   m_sColumnNm;      // name of the column
-		Parser::TypeId m_xColumnTypeId; // column type id
+		TypeId m_xColumnTypeId; // column type id
 
     bool  m_bIsUnique;      // is column unique?
     bool  m_bIsLastColumn;  // is last column
@@ -66,8 +66,8 @@ namespace BASE
   
     eCT  eColumnType(void);
 
-		Parser::TypeId xColumnTypeId(void);
-		void vColumnTypeId(Parser::TypeId xTypeId);
+		TypeId xColumnTypeId(void);
+		void vColumnTypeId(TypeId xTypeId);
 
     void vCopy(Column* pCol);
     void vCopy(Column* pCol, Stz* sColPrefix);
@@ -90,7 +90,7 @@ namespace BASE
   
     void vListContents(i8 i_Depth);
   
-    void vSet(Stz* sColumnNm, Parser::TypeId xTypeId, i8 iColumnLength, i8 iColumnScale);
+    void vSet(Stz* sColumnNm, TypeId xTypeId, i8 iColumnLength, i8 iColumnScale);
     void vShow(void);
     
     Footer* aFooter(void);

@@ -281,7 +281,7 @@ eCT Column::eColumnType(void)
 /*----------------------------------------------------------------------------*/
 /* set column typeId                                                          */
 /*----------------------------------------------------------------------------*/
-void Column::vColumnTypeId(Parser::TypeId xTypeId)
+void Column::vColumnTypeId(TypeId xTypeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
@@ -291,7 +291,7 @@ void Column::vColumnTypeId(Parser::TypeId xTypeId)
 /*----------------------------------------------------------------------------*/
 /* get column typeId                                                          */
 /*----------------------------------------------------------------------------*/
-Parser::TypeId Column::xColumnTypeId(void)
+TypeId Column::xColumnTypeId(void)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
@@ -476,7 +476,7 @@ void Column::vListContents(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 /* sset the column                                                            */
 /*----------------------------------------------------------------------------*/
-void Column::vSet(Stz* sColumnNm, Parser::TypeId xTypeId, i8 iColumnLength, i8 iColumnScale) {
+void Column::vSet(Stz* sColumnNm, TypeId xTypeId, i8 iColumnLength, i8 iColumnScale) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLUMN, _FOOTER_);
 
   m_sColumnNm     = sColumnNm;

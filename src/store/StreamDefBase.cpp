@@ -146,7 +146,7 @@ eDM StreamDefBase::eDatum(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vAddColumn(Stz* sColumnNm, Parser::TypeId xTypeId, i8 iColumnLength, i8 iColumnScale)
+void StreamDefBase::vAddColumn(Stz* sColumnNm, TypeId xTypeId, i8 iColumnLength, i8 iColumnScale)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -625,7 +625,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uTypeId   = (u8)(Parser::TypeId::xIdOf(CT_INTEGER).iIdVal());
+    axColPixDst->m_uTypeId   = (u8)(TypeId::xIdOf(CT_INTEGER).iIdVal());
     axColPixDst->m_uDatum    = (u8)DM_INT;
     axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
     axColPixDst->m_uScale    = (u8)0;
@@ -951,7 +951,7 @@ eEC StreamDefBase::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
   
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_BOOLEAN));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_BOOLEAN));
   pCol->vDatum(DM_BOL);
   
   return EC_NONE;
@@ -965,7 +965,7 @@ eEC StreamDefBase::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_DATE));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_DATE));
   pCol->vDatum(DM_DTE);
   
   return EC_NONE;
@@ -983,7 +983,7 @@ eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   i8 iScale = 2;
   
   // set column type in column
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_DECIMAL));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_DECIMAL));
   pCol->vDatum(DM_BCD);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -1048,7 +1048,7 @@ eEC StreamDefBase::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   i8 iSize = C_MAX_FLT_PRECISION;
   
   // set column type
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_FLOAT));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_FLOAT));
   pCol->vDatum(DM_FLT);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -1096,7 +1096,7 @@ eEC StreamDefBase::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_INTEGER));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_INTEGER));
   pCol->vDatum(DM_INT);
   pCol->vColumnLength(C_MAX_INT_PRECISION);
   
@@ -1128,7 +1128,7 @@ eEC StreamDefBase::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_TIME));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_TIME));
   pCol->vDatum(DM_TME);
   
   return EC_NONE;
@@ -1142,7 +1142,7 @@ eEC StreamDefBase::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_TIMESTAMP));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_TIMESTAMP));
   pCol->vDatum(DM_TSP);
   
   return EC_NONE;
@@ -1159,7 +1159,7 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   i8 iSize = C_64K;
   
   // set column type
-  pCol->vColumnTypeId(Parser::TypeId::xIdOf(CT_VARCHAR));
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_VARCHAR));
   pCol->vDatum(DM_VCH);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
