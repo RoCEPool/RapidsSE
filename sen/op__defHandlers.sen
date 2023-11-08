@@ -67,6 +67,8 @@
 : EV_D_TABLE_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
 
+
+: EV_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_COMMAND_handler          \handler STANDARD_PIPEOUT ;
 : EV_I_COMPILEERRORS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_COUNT_handler            \handler STANDARD_PIPEOUT ;
@@ -466,6 +468,7 @@
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
   abnormalHandler EV_I_COMMAND          [op].handler!
+  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
@@ -493,6 +496,7 @@
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
   abnormalHandler EV_I_COMMAND          [op].handler!
+  abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!

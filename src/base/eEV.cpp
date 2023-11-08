@@ -31,6 +31,7 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_TABLE"_Stz,
   /*    */ "EV_D_TABLEPTN"_Stz,
 
+  /*    */ "EV_I_CALLPIPELINE"_Stz,
   /*    */ "EV_I_COMMAND"_Stz,
   /*    */ "EV_I_COMPILEERRORS"_Stz,
   /*    */ "EV_I_COUNT"_Stz,
