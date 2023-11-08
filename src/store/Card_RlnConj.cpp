@@ -303,22 +303,43 @@ bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
-  Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
+  if (nChildCards() != p_rlnConj_arg->nChildCards())
+    return false;
 
-  Card_Term* p_term_arg_0 = _pCard_Term(p_rlnConj_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
-  Card_Term* p_term_arg_1 = _pCard_Term(p_rlnConj_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card_Term* p_term_this = xKid.p_term();
+    Card_Term* p_term_that = p_rlnConj_arg->pGetTerm(xKid.i_Child());
 
-  if (cTableSyn_this_0 == cTableSyn_arg_0 &&
-      cTableSyn_this_1 == cTableSyn_arg_1)
-    return true;
+    Symbol* pSymbol_this = p_term_this->pSymbol();
+    Symbol* pSymbol_that = p_term_that->pSymbol();
 
-  return false;
+    if (! pSymbol_this->bMatches(pSymbol_that))
+      return false;
+  }
+
+  return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
+//  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
+//  Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
+//  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
+//
+//  Card_Term* p_term_arg_0 = _pCard_Term(p_rlnConj_arg->pGetChild(0));
+//  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
+//  Card_Term* p_term_arg_1 = _pCard_Term(p_rlnConj_arg->pGetChild(1));
+//  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
+//
+//  if (cTableSyn_this_0 == cTableSyn_arg_0 &&
+//      cTableSyn_this_1 == cTableSyn_arg_1)
+//    return true;
+//
+//  return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

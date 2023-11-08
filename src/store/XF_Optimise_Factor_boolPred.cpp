@@ -576,6 +576,8 @@ eRC XF_Optimise_Factor_boolPred::eRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
+  m_pCI->vPrintBoard(__LINE__);
+
   // disassemble (pop conjunctions apart)
 
   Card_OrConj*  p_0_orConj        = p_CONJSUBROOT->pPop_orConj();
@@ -613,7 +615,6 @@ eRC XF_Optimise_Factor_boolPred::eRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT
   delete p_0_1_andConj;
   delete p_0_1_0_0_rlnConj;
   m_pCI->vPrintBoard(__LINE__);
-  vDebugPoint();
 
   return RC_FACTOR_OR_2AND_RLN_TRIPLE;
 }
@@ -624,6 +625,8 @@ eRC XF_Optimise_Factor_boolPred::eRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT
 eRC XF_Optimise_Factor_boolPred::eRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  m_pCI->vPrintBoard(__LINE__);
 
   // disassemble (pop conjunctions apart)
 
@@ -657,7 +660,6 @@ eRC XF_Optimise_Factor_boolPred::eRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT
   delete p_0_1_0_0_rlnConj;
 
   m_pCI->vPrintBoard(__LINE__);
-  vDebugPoint();
 
   return RC_FACTOR_OR_2AND_RLN_MIX;
 }
