@@ -21,8 +21,6 @@
 #include "Ribbon.hpp"
 #include "Symbol.hpp"
 
-#define Z_BOOLPRED_NARY
-
 namespace STORE
 {
   class Card_AbsJoin;

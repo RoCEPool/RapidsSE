@@ -17,7 +17,7 @@ namespace STORE
     Card_BoolPred(void);
    ~Card_BoolPred(void) noexcept(false);
 
-    static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc);
+    static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc_arg);
 
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
     TypeId xColTypeId(void);
