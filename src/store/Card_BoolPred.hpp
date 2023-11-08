@@ -18,6 +18,8 @@ namespace STORE
    ~Card_BoolPred(void) noexcept(false);
 
     static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc);
+    void vRpn_boolPred(String* psRpnExpr, Card_BoolPred* p_boolPred);
+    void vRpn_boolPart(String* psRpnExpr, Card* p_part);
 
     Card_RlnConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);

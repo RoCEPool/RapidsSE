@@ -284,6 +284,68 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCal
   return p_boolPred;
 }
 
+/*----------------------------------------------------------------------------*/
+/* append <rpnExpr> for <calcBool>                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vRpn_boolPred(String* psRpnExpr, Card_BoolPred* p_boolPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (p_boolPred->bIsBraced())
+    psRpnExpr->vConcat(" }"_Stz);
+
+  vRpn_boolPart(psRpnExpr, p_boolPred);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append part                                                                */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vRpn_boolPart(String* psRpnExpr, Card* p_part)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards = p_part->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = p_part->pGet(i_Child);
+
+    eCK eSubCard = pSubCard->eCard();
+
+    switch (eSubCard) {
+      case CK_ANDCONJ:
+        vRpn_boolPart(psRpnExpr, _pCard_AndConj(pSubCard));
+        psRpnExpr->vCatSprint(" and"_Stz);
+        break;
+      case CK_NOTCONJ:
+        vRpn_boolPart(psRpnExpr, _pCard_NotConj(pSubCard));
+        psRpnExpr->vCatSprint(" not"_Stz);
+        break;
+      case CK_ORCONJ:
+        vRpn_boolPart(psRpnExpr, _pCard_OrConj(pSubCard));
+        psRpnExpr->vCatSprint(" or"_Stz);
+        break;
+      case CK_RLNCONJ:
+        vRpn_boolPart(psRpnExpr, _pCard_RlnConj(pSubCard));
+        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
+        break;
+      case CK_TERM:
+        if (pSubCard->pSymbol()->bIs_Exp_Col() ||
+            pSubCard->pSymbol()->bIs_Tbl_Col()) {
+
+          if (!pSubCard->pSymbol()->bHasType()) {
+            //p_part->vDump();
+            //pSubCard->vDump();
+            RASSERT(pSubCard->pSymbol()->bHasType());
+          }
+        }
+        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
+        break;
+      default:
+        NEVER_REACH
+    }
+  }
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
