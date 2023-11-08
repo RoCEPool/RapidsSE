@@ -378,8 +378,7 @@ bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambd
       return C_TERMINATE_RECURSION;
   }
 
-  Kid xKid(this);
-  while (xKid.bEach()) {
+  for (Kid xKid(this); xKid.bEach(); /**/) {
     bool bContinue = xKid.pChild()->bApplyRecursive(eToSubs, bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
@@ -401,8 +400,7 @@ bool Card::bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaF
       return false;
   }
 
-  Kid xKid(this);
-  while (xKid.bEach()) {
+  for (Kid xKid(this); xKid.bEach(); /**/) {
     if (!xKid.pChild()->bApplyRecursive_term(bfLambdaFn))
       return false;
   }
@@ -610,9 +608,8 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
         , sProperties.szStz()
   );
 
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
-    pGetChild(i_Sub)->vDump(azFunc, nullptr, iDepth + 1);
+  for (Kid xKid(this); xKid.bEach(); /**/)
+    xKid.pChild()->vDump(azFunc, nullptr, iDepth + 1);
 
   if (0 == iDepth)
     vTrace("$$\n"_Stz);
@@ -643,9 +640,8 @@ Card* Card::pDupCardRecursive(void)
   Card* pCard_dup = new Card(m_eCard,m_iFixedDepth);
   pCard_dup->pSymbol()->vFacetsPpy(pSymbol());
 
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChild(i_Child);
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card* pSubCard = xKid.pChild();
     
     Card* pSubCard_dup = pSubCard->pDupCardRecursive();
     pCard_dup->vAppendChild(pSubCard_dup);
@@ -704,9 +700,8 @@ Card* Card::pFindParentRecursive(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nSubCards = nItems();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* pTestCard = pGetChild(i_Sub);
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card* pTestCard = xKid.pChild();
 
     if (pSubCard == pTestCard)
       return this;
