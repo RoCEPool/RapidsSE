@@ -42,7 +42,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_I_PATH"_Stz,
   /*    */ "EV_I_PROGRESSUNITS"_Stz,
   /*    */ "EV_I_PROMPTOUT"_Stz,
-  /*    */ "EV_I_RETURNPIPELINE"_Stz,
   /*    */ "EV_I_SEEKOFFSETS"_Stz,
   /*    */ "EV_I_TOTALUNITS"_Stz,
 

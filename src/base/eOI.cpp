@@ -19,7 +19,6 @@ Stz* aOI[OI_ENUMS]
   /*    */ "OI_PATH"_Stz,
   /*    */ "OI_PROGRESSUNITS"_Stz,
   /*    */ "OI_PROMPTOUT"_Stz,
-  /*    */ "OI_RETURNPIPELINE"_Stz,
   /*    */ "OI_SEEKOFFSETS"_Stz,
   /*    */ "OI_TOTALUNITS"_Stz,
 

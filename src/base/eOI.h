@@ -18,7 +18,6 @@ enum eOI // operator Infoset
   /*    */ OI_PATH,
   /*    */ OI_PROGRESSUNITS,
   /*    */ OI_PROMPTOUT,
-  /*    */ OI_RETURNPIPELINE,
   /*    */ OI_SEEKOFFSETS,
   /*    */ OI_TOTALUNITS,
  

@@ -571,7 +571,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
   /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
   /*  0 */ vAddConstant("OI_PROGRESSUNITS"_Stz, OI_PROGRESSUNITS);
-  /*  0 */ vAddConstant("OI_RETURNPIPELINE"_Stz,OI_RETURNPIPELINE);
   /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
   /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
 
@@ -715,7 +714,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
   /*  0 */ vAddConstant("EV_I_PROGRESSUNITS"_Stz,   EV_I_PROGRESSUNITS);
   /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);
-  /*  0 */ vAddConstant("EV_I_RETURNPIPELINE"_Stz,  EV_I_RETURNPIPELINE);
   /*  0 */ vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
   /*  0 */ vAddConstant("EV_I_TOTALUNITS"_Stz,      EV_I_TOTALUNITS);
 
