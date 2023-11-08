@@ -562,18 +562,15 @@ void Constants::vAddConstantsCpp(void)
 
   // OI_ : operator infoset
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
-  /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
   /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
   /*  0 */ vAddConstant("OI_COMPILEERRORS"_Stz, OI_COMPILEERRORS);
   /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
-  /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
   /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
   /*  0 */ vAddConstant("OI_PROGRESSUNITS"_Stz, OI_PROGRESSUNITS);
-  /*  0 */ vAddConstant("OI_RETURNPIPELINE"_Stz,OI_RETURNPIPELINE);
   /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
   /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
 
@@ -706,12 +703,10 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
   /*  0 */ vAddConstant("EV_D_PAGINGMETRICS"_Stz,   EV_D_PAGINGMETRICS);
 
-  /*  0 */ vAddConstant("EV_I_CALLPIPELINE"_Stz,    EV_I_CALLPIPELINE);
   /*  0 */ vAddConstant("EV_I_COMMAND"_Stz,         EV_I_COMMAND);
   /*  0 */ vAddConstant("EV_I_COMPILEERRORS"_Stz,   EV_I_COMPILEERRORS);
   /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
   /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
-  /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
   /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
   /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
   /*  0 */ vAddConstant("EV_I_NODEINFO"_Stz,        EV_I_NODEINFO);
@@ -719,7 +714,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
   /*  0 */ vAddConstant("EV_I_PROGRESSUNITS"_Stz,   EV_I_PROGRESSUNITS);
   /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);
-  /*  0 */ vAddConstant("EV_I_RETURNPIPELINE"_Stz,  EV_I_RETURNPIPELINE);
   /*  0 */ vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
   /*  0 */ vAddConstant("EV_I_TOTALUNITS"_Stz,      EV_I_TOTALUNITS);
 

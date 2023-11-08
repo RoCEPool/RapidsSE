@@ -6,13 +6,11 @@
 enum eOI // operator Infoset
 {
   /*  0 */ OI_NONE=0,
-  
-  /*    */ OI_CALLPIPELINE,
+
   /*    */ OI_COMMAND,
   /*    */ OI_COMPILEERRORS,
   /*    */ OI_COUNT,
   /*    */ OI_EXECERRORS,
-  /*    */ OI_FORKCOMMAND,
   /*    */ OI_LOADRESULT,
   /*    */ OI_LOCKSTATS,
   /*    */ OI_NODEINFO,
@@ -20,7 +18,6 @@ enum eOI // operator Infoset
   /*    */ OI_PATH,
   /*    */ OI_PROGRESSUNITS,
   /*    */ OI_PROMPTOUT,
-  /*    */ OI_RETURNPIPELINE,
   /*    */ OI_SEEKOFFSETS,
   /*    */ OI_TOTALUNITS,
  

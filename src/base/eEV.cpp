@@ -31,12 +31,10 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_TABLE"_Stz,
   /*    */ "EV_D_TABLEPTN"_Stz,
 
-  /*    */ "EV_I_CALLPIPELINE"_Stz,
   /*    */ "EV_I_COMMAND"_Stz,
   /*    */ "EV_I_COMPILEERRORS"_Stz,
   /*    */ "EV_I_COUNT"_Stz,
   /*    */ "EV_I_EXECERRORS"_Stz,
-  /*    */ "EV_I_FORKCOMMAND"_Stz,
   /*    */ "EV_I_LOADRESULT"_Stz,
   /*    */ "EV_I_LOCKSTATS"_Stz,
   /*    */ "EV_I_NODEINFO"_Stz,
@@ -44,7 +42,6 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_I_PATH"_Stz,
   /*    */ "EV_I_PROGRESSUNITS"_Stz,
   /*    */ "EV_I_PROMPTOUT"_Stz,
-  /*    */ "EV_I_RETURNPIPELINE"_Stz,
   /*    */ "EV_I_SEEKOFFSETS"_Stz,
   /*    */ "EV_I_TOTALUNITS"_Stz,
 
