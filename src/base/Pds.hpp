@@ -10,12 +10,13 @@ namespace BASE
 {
   typedef i8 (*CompareFunc)(void* pKey_l, void* pKey_r);
 
-  class Pds : public Object
+  class Pds : public Operand
   {
     static const i8 C_WSP_INTERNALHEAP = C_SIZE_LARGE_OBJECT - C_10KB;
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
   public:
+    BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
     i8 m_nBlockSize; // Size of SLN + Item in bytes
     i8 m_nPaddingPerBlk; // Size of padding for each Skip List Block
     u2 m_uFreeListRootOffset;
@@ -42,6 +43,8 @@ namespace BASE
     ~Pds(void) noexcept(false);
 
     // public:
+    Row*            pAllotRow(void);
+    Row*            pAllotRow(Row* pRow);
     void*           aAllotStzSet(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);

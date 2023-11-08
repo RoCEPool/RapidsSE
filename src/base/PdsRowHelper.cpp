@@ -45,7 +45,8 @@ PdsRowHelper::~PdsRowHelper(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDSROWHELPER,_FOOTER_);
 
-  delete m_pPdsOfRows;
+  if(m_pPdsOfRows)
+    delete m_pPdsOfRows;
 }
 
 

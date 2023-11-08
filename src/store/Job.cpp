@@ -1638,8 +1638,18 @@ void Job::vPipeoutResponse(Operand* pOperand)
         }
       }
 
+//      pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
       // pipe the operand to the responseOP of parentJob
-      pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+      if(bHasTag(C_TAG_NESTEDSQL) && pOperand->eGetClassNo() == CN_ROWBUFFER) {
+        PdsRowHelper* pPdsRowHelper = new PdsRowHelper();
+        pPdsRowHelper->vCopyRows(_pRowBuffer(pOperand));
+        pParentJob->m_p_ResponseOp->vPipeToThis(_pOperand(pPdsRowHelper->m_pPdsOfRows), pCurTask);
+        pPdsRowHelper->m_pPdsOfRows = nullptr;
+        delete pPdsRowHelper;
+      }
+      else {
+        pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+      }
 
     } else {
 

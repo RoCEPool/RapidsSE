@@ -21,6 +21,7 @@ enum eEV // events
   /*    */ EV_D_OTHEROPERAND,
   /*    */ EV_D_PAGINGMETRICS,
   /*    */ EV_D_PARCEL,
+  /*    */ EV_D_PDSROWBUFFER,
   /*    */ EV_D_PLANOPERAND,
   /*    */ EV_D_PROFILE,
   /*    */ EV_D_ROWBUFFER,

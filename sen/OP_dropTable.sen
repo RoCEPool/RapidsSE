@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_StartMarker
 
-  //STD_NORMALFORK_WAIT_TAG "select * from uniqueTable;" NestedSql[]
+  STD_NORMALFORK_WAIT_TAG "select * from uniqueTable;" NestedSql[]
   0 locals| errorCode |
 
   PipeIn[].pipeOut
@@ -36,8 +36,8 @@
   PipeIn[].delete
 
   // pipeout an EOSMARKER
-  Marker[].newEosMarker
-  Marker[].pipeOut
+  //Marker[].newEosMarker
+  //Marker[].pipeOut
 
   true
 ;
@@ -106,6 +106,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_PDSROWBUFFER ...                                          */
+/*----------------------------------------------------------------------------*/
+: dropTable_PdsRowBuffer \handler
+
+  //"Operand:- EV_D_ROWBUFFER" .verbose
+  //PipeIn[].pipeToOutput
+  "Got PdsRowBuffer" .
+
+  PipeIn[].pipeToOutput
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for dropTable req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : dropTable_op \operator
@@ -115,10 +129,11 @@
   op__topology
 
   find: dropTable_StartMarker   EV_M_START   [op].handler!
-  //find: dropTable_StreamDef     EV_D_STREAMDEF     [op].handler!
-  //find: dropTable_RowBuffer     EV_D_ROWBUFFER     [op].handler!
-  //find: dropTable_ChildExit    EV_X_CHILDEXIT     [op].handler!
-  //find: dropTable_waitFinished_End       EV_M_END       [op].handler!
+  find: dropTable_StreamDef     EV_D_STREAMDEF     [op].handler!
+  find: dropTable_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: dropTable_PdsRowBuffer     EV_D_PDSROWBUFFER     [op].handler!
+  find: dropTable_ChildExit    EV_X_CHILDEXIT     [op].handler!
+  find: dropTable_waitFinished_End       EV_M_END       [op].handler!
   find: dropTable_DestroyMarker EV_M_DESTROY [op].handler!
 
   op__loop

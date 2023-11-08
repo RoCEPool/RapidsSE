@@ -21,6 +21,7 @@ Stz* aEV[EV_ENUMS]
   /*    */ "EV_D_OTHEROPERAND"_Stz,
   /*    */ "EV_D_PAGINGMETRICS"_Stz,
   /*    */ "EV_D_PARCEL"_Stz,
+  /*    */ "EV_D_PDSROWBUFFER"_Stz,
   /*    */ "EV_D_PLANOPERAND"_Stz,
   /*    */ "EV_D_PROFILE"_Stz,
   /*    */ "EV_D_ROWBUFFER"_Stz,

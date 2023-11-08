@@ -38,6 +38,7 @@ Stz* C_TAG_LASTJOBID    = "<lastJobId>"_Stz;
 Stz* C_TAG_LIFE         = "<life>"_Stz;
 Stz* C_TAG_LOWMEMORY    = "<lowMemory>"_Stz;
 Stz* C_TAG_MEMORYLOG    = "<memoryLog>"_Stz;
+Stz* C_TAG_NESTEDSQL    = "<nestedSql>"_Stz;
 Stz* C_TAG_NODE         = "<node>"_Stz;
 Stz* C_TAG_NOTE         = "<note>"_Stz;
 Stz* C_TAG_NOWAIT       = "<noWait>"_Stz;

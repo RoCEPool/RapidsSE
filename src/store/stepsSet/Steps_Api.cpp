@@ -180,6 +180,10 @@ void Step::vApiForkChildNestedSql(void)
       pCmdTagSet->bHasName(C_TAG_WAIT))
     pCmdTagSet->vDelete(C_TAG_WAIT);
 
+  if (! pCmdTagSet->bHasName(C_TAG_NESTEDSQL)) {
+    pCmdTagSet->vInsert(C_TAG_NESTEDSQL, 1);
+  }
+
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -211,7 +215,7 @@ void Step::vApiForkChildNestedSql(void)
   bool bIsPipeline;
 //  pCmdTknVec->vDumpVec();
 //  pCmdTagSet->vDumpSet();
-  eEC eError = Api::eForkJobChild(tChildJobId,
+  eEC eError = Api::eForkJobChildNested(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
                                   pCodeBlock,
                                   tParentId,tOriginId,tDistId,

@@ -7,7 +7,7 @@ namespace BASE
 {
   class PdsRowHelper : public Object
   {
-  private:
+  public:
     i8    m_iSynthKey;     // Synthetic key for the Pds
 
     RowPix* m_pRowPix;

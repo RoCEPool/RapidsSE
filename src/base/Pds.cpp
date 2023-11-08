@@ -48,7 +48,7 @@ void Pds::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
-    : Object(CN_PDS)
+    : Operand(CN_PDS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -57,9 +57,11 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
   // Assert that there is enough bytes for the default key (i8)
   RASSERT(nBytes >= C_MIN_KEY_LEN);
 
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
+  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
   m_nPaddingPerBlk = 0;
-//  m_iSyntheticKey = 0;
 
   // Ensure block size is a multiple of 16 bytes
   i8 iMod = m_nBlockSize % 16;
@@ -102,6 +104,8 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
 
   if (pRowPix)
     vInitPix(pRowPix);
+  else
+    m_oRowPix.m_bInitialised = false;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 }
@@ -111,12 +115,41 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
 /*----------------------------------------------------------------------------*/
 Pds::~Pds(void) noexcept(false)
 {
+  if(m_oBufferId.m_iAsI8 != 0)
+    AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Allot a row                                                                */
+/*----------------------------------------------------------------------------*/
+Row* Pds::pAllotRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+//  if (nFreeBytes() < iStzSetSize())
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Allot a row and copy given row into it                                     */
+/*----------------------------------------------------------------------------*/
+Row* Pds::pAllotRow(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  RASSERT(m_oRowPix.m_bInitialised);
+
+  UNUSED(pRow);
+//  Row* pNewRow = pAllotRow();
+//  if (! pNewRow)
+    return nullptr;
+
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* Allot space for Stz of fixed size, return dst str addr                     */

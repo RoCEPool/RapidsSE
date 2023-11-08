@@ -3787,6 +3787,12 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
+    case CN_PDS: {
+      Pds* pPds = _pPds(pOperand);
+      delete pPds;
+      break;
+    }
+
     case CN_PLANOPERAND: {
       PlanOperand* pPlanOperand = _pPlanOperand(pOperand);
       delete pPlanOperand;
@@ -4493,6 +4499,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_OP:           eOperand = EV_D_OP;             break;
     case CN_OTHEROPERAND: eOperand = EV_D_OTHEROPERAND;   break;
     case CN_PAGINGMETRICS:eOperand = EV_D_PAGINGMETRICS;  break;
+    case CN_PDS:          eOperand = EV_D_PDSROWBUFFER;   break;
     case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = EV_D_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;

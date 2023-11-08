@@ -1,7 +1,7 @@
 /*============================================================================*/
 /* _arjun                                                                     */
 /*============================================================================*/
-/*
+
 create table uniqueTable (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -44,7 +44,7 @@ drop table uniqueTable2;
 select * from uniqueTable;
 
 drop table uniqueTable2;
-
+/*
 /time pipeline unamed
 begin
   stage stageStart on origin :
@@ -167,7 +167,7 @@ dload lineitem paths
   "/mnt/disk2/data1/tpch/sf10/lineitem/lineitem.tbl"
 ;
 */
-
+/*
 tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
 _nation;
@@ -179,6 +179,7 @@ tag default <suffix>   = "tbl";
 _orders
 load Orders   "<tpch_dir>/orders.<suffix>"   ;
 select * from orders;
+*/
 // Pipeline to page out row buffers
 /*
 pipeline __pageout
@@ -205,7 +206,7 @@ pipeline __pageout
   end ;
 */
 //select * from nation;
-
+/*
 // pipeline to page out crw buffers
 pipeline __pageout
   begin
@@ -313,4 +314,4 @@ begin
   stage S02 on origin :
     output | sink | stageA
 end ;
-
+*/

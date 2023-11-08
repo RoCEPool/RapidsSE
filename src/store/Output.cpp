@@ -517,6 +517,26 @@ bool Output::bProcessOperand(Operand* pOperand)
 //      goto L_EXIT;
 //      break;
 //    }
+      // -- -- -- -- -- --
+
+    case CN_PDS: {
+      Pds* pPds = _pPds(pOperand);
+//        if (AM::bDeveloper())
+//          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
+//                 spDataBuffer.sz(pRowBuffer),
+//                 pRowBuffer->nRows());
+      if ( ! m_bHasError ) {
+        m_ixRowsProcessed += pPds->nItems();
+        vTrace("\n"_Stz);
+        PdsRowHelper* pPdsRowHelper = new PdsRowHelper;
+        pPdsRowHelper->m_pPdsOfRows = pPds;
+        pPdsRowHelper->vPrintRows(nullptr, nullptr);
+        delete pPdsRowHelper;
+      } else {
+        AM::vDeleteOperand(pOperand, nullptr);
+      }
+      break;
+    }
 
     // -- -- -- -- -- --
       
