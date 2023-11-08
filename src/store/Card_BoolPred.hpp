@@ -47,9 +47,6 @@ namespace STORE
     void vX_stmCol_To_tblCol(CardIter* p_conj);
     void vX_tblCol_To_stmCol(CardIter* p_conj);
 
-
-    eCT  eColType(void);
-
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
   };
