@@ -246,6 +246,9 @@ namespace STORE
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_TERMINATE_RECURSION = false;
 
+  static const bool C_LEFT_ORIENTATION  = true;
+  static const bool C_RIGHT_ORIENTATION = false;
+
   class Card : public Object
              , public ChildCards
   {
@@ -263,8 +266,8 @@ namespace STORE
 
     Symbol  m_xSymbol;
 
-    eFC     m_eConjunction;  // form of conjunction
-    eRC     m_eRotationConj; // rotation of conjunction
+    eFC     m_eConjForm;  // form of conjunction
+    eRC     m_eConjRot;   // rotation of conjunction
 
     i8 md__SeqNo;
     i8 md__FirstDetected;
@@ -314,8 +317,12 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     void vColType(Card* pCard_arg);
-    eFC  eConjunction(void);
-    void vConjunction(eFC eConjunction);
+    eFC  eConjForm(void);
+    void vConjForm(eFC eConjForm);
+    void vConjFormClearRecursive(void);
+    eRC  eConjRot(void);
+    void vConjRot(eRC eConjRot);
+    void vConjRotClearRecursive(void);
     Stz* szCoord(void);
 
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
@@ -387,8 +394,6 @@ namespace STORE
     void vRenumberRoot(i8 i_Parent);
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
-    eRC  eRotationConj(void);
-    void vRotationConj(eRC eRotationConj);
 
     Symbol* pSymbol(void);
     bool bSymbolMatches(Symbol* pSymbol_arg);

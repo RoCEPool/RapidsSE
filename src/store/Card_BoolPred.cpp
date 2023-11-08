@@ -27,7 +27,7 @@ __vDeleteFunction(Card_BoolPred, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_BoolPred::Card_BoolPred(void)
-: Card_TERMLIST(CK_BOOLPRED, C_UNKNOWN)
+: Card_CONJSUBROOT(CK_BOOLPRED, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       

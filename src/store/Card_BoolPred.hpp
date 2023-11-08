@@ -3,13 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_CONJUNCTION.hpp"
-#include "Card_TERMLIST.hpp"
+#include "Card_CONJSUBROOT.hpp"
 #include "Card_Correlation.hpp"
 
 namespace STORE
 {
-  class Card_BoolPred : public Card_TERMLIST
+  class Card_BoolPred : public Card_CONJSUBROOT
   {  
   public:
     void* operator new(size_t);

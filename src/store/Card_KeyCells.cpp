@@ -58,7 +58,9 @@ Card_Map* Card_KeyCells::pGetMap(Symbol* pSymbol_ordinal)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Map* p_map = _pCard_Map(pGetChild_bySym(pSymbol_ordinal));
+  i8 i_Child  = pSymbol_ordinal->iSF_ordinal() - 1;
+
+  Card_Map* p_map = _pCard_Map(pGetChild(i_Child));
 
   return p_map;
 }

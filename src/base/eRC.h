@@ -8,6 +8,7 @@ enum eRC : i8 // form of conjunction
   /* 0 */ RC_NONE=0,
 
   /* 1 */ RC_FACTOR_OR_2AND_RLN_TRIPLE,
+  /* 2 */ RC_FACTOR_OR_2AND_RLN_MIX,
 
   /* */ RC_ENUMS
 };

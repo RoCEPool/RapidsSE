@@ -26,15 +26,17 @@ namespace STORE
 
     void vFactor_boolPred(Card_BoolPred* p_boolPred);
 
-    void vFactor_andConj(Card_AndConj* p_andConj);
-    void vFactor_notConj(Card_NotConj* p_notConj);
-    void vFactor_orConj (Card_OrConj*  p_orConj);
-    void vFactor_rlnConj(Card_RlnConj* p_rlnConj);
+    eRC eFactor_boolPred(Card_BoolPred* p_boolPred);
+    eRC eFactor_andConj(Card_AndConj* p_andConj);
+    eRC eFactor_notConj(Card_NotConj* p_notConj);
+    eRC eFactor_orConj (Card_OrConj*  p_orConj);
+    eRC eFactor_rlnConj(Card_RlnConj* p_rlnConj);
 
-    void vRotate_Or_2ar3(Card_OrConj* p_orConj);
-    void vRotate_b(void);
+    eRC eRotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT);
+    eRC eRotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT);
 
-    bool bTest_Rotate_Or_2ar3(Card_OrConj* p_orConj);
+    bool bTest_Rotate_Or_2ar3(Card_CONJSUBROOT* p_CONJSUBROOT);
+    bool bTest_Rotate_Or_2arm(Card_CONJSUBROOT* p_CONJSUBROOT);
 
   private:
     Footer* aFooter(void);

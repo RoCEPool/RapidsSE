@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_symbol.hpp"
+#include "Card_CONJSUBROOT.hpp"
 
 namespace STORE
 {
-  class Card_CONJUNCTION : public Card_symbol<Card_CONJUNCTION>
+  class Card_CONJUNCTION : public Card_CONJSUBROOT
   {  
   public:
     Card_CONJUNCTION(eCK eCard, i8 iFixedDepth);
@@ -20,6 +20,7 @@ namespace STORE
     bool bContains_callToSubQuery(CardIter* pCI);
     bool bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
+
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblCol(void);
     Card_Term* pGetTerm(i8 i_Term);
@@ -31,6 +32,7 @@ namespace STORE
     bool bIsRelnOp(void);
     bool bIsSqyOp(void);
     void vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term= nullptr);
+
     Card_RlnConj* pPredFindBound(Index* pIndex, ePB eBound);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     Symbol* pTable_WhichTableFor_Conj(CardIter* pCI);

@@ -45,9 +45,9 @@ namespace STORE
     Card* pFindSubCard(eCK eCard);
     Card_Table* pFindTableCard(char cTableSyn, Card*& rpMainCard);
 
+    eCK   eGetChild(i8 i_Child, Card*& rpChild);
     Card* pGetChild(i8 i_Child);
-    Card* pGetChild(i8 i_Child, eCK& reCard);
-    Card* pGetChild_bySym(Symbol* pSymbol);
+    Card* pGetChild(i8 i_Child, eCK& reChild);
 
     void  vInsertChildAfter(Card* pChild, Card* pAfter);
     void  vInsertChildBefore(Card* pChild, Card* pBefore);

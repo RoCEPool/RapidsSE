@@ -19,7 +19,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CONJUNCTION::Card_CONJUNCTION(eCK eCard, i8 iFixedDepth)
-: Card_symbol(eCard, iFixedDepth)
+: Card_CONJSUBROOT(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -527,7 +527,7 @@ void Card_CONJUNCTION::vPrint(Ribbon* pRibbon, i8 iDepth)
                           Stz::szDots(iDepth - 1),
                           m_i_Child,
 
-                          aRC[m_eRotationConj]);
+                          aRC[m_eConjRot]);
 
 }
 

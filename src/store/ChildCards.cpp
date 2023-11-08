@@ -323,37 +323,38 @@ Card_Table* ChildCards::pFindTableCard(char cTableSyn, Card*& rpMainCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pGetChild(i8 i_Child)
+eCK ChildCards::eGetChild(i8 i_Child, Card*& rpChild)
 {
-  Card* pCard = pGet(i_Child);
-  return pCard;
+  rpChild = pGet(i_Child);
+  if (! rpChild)
+    return CK_NONE;
+
+  eCK eChild = rpChild->eCard();
+  return eChild;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pGetChild(i8 i_Child, eCK& reCard)
+Card* ChildCards::pGetChild(i8 i_Child)
 {
-  Card* pCard = pGet(i_Child);
-
-  if (pCard)
-    reCard = pCard->eCard();
-  else
-    reCard = CK_NONE;
-
-  return pCard;
+  Card* pChild = pGet(i_Child);
+  return pChild;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get expr relating to term                                                  */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pGetChild_bySym(STORE::Symbol *pSymbol)
+Card* ChildCards::pGetChild(i8 i_Child, eCK& reChild)
 {
-  i8 i_Child  = pSymbol->iSF_ordinal() - 1;
+  Card* pChild = pGet(i_Child);
 
-  Card* pCard = pGetChild(i_Child);
+  if (pChild)
+    reChild = pChild->eCard();
+  else
+    reChild = CK_NONE;
 
-  return pCard;
+  return pChild;
 }
 
 /*----------------------------------------------------------------------------*/
