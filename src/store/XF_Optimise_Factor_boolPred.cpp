@@ -177,67 +177,83 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
   eRC eRotation;
-
   do {
-    eRotation = RC_NONE;
-
-    Card *pChild = p_boolPred->pPeekChild();
-    if (! pChild)
-      break;
-
-    p_boolPred->vMark(MARK_AT, MARK_PREDICATE);
-    
     RASSERT(!m_pCI->nAncestors());
-    m_pCI->vAncestorPush(p_boolPred);
-
-    eCK eChild = pChild->eCard();
-    switch (eChild) {
-      case CK_ANDCONJ:
-        eRotation = eFactor_andConj(_pCard_AndConj(pChild));
-        break;
-      case CK_NOTCONJ:
-        eRotation = eFactor_notConj(_pCard_NotConj(pChild));
-        break;
-      case CK_ORCONJ:
-        eRotation = eFactor_orConj(_pCard_OrConj(pChild));
-        break;
-      case CK_RLNCONJ:
-        eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild));
-        break;
-
-      case CK_TERM:
-        break;
-
-      default:
-        NEVER_REACH
-    }
-
-    if (! eRotation) {
-      if (pChild->eConjForm() == FC_OR_2AND_RLN_MIX) {
-        pChild->vConjForm(FC_OR_2AND_RLN_TRIPLE);
-        pChild->vMark2(MARK_ENUM);
-        pChild->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_MIX));
-
-        pChild->vConjRot(RC_FACTOR_OR_2AND_RLN_MIX);
-      }
-
-      if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eConjRot()) {
-        if (bTest_Rotate_Or_2arm(p_boolPred)) {
-          eRotation = eRotate_Or_2arm(p_boolPred);
-        }
-      }
-    }
-
-    m_pCI->vAncestorPop();
+    eRotation = eFactor_boolPred(p_boolPred);
     RASSERT(!m_pCI->nAncestors());
 
     p_boolPred->vMarksClearRecursive();
     p_boolPred->vConjFormClearRecursive();
     p_boolPred->vConjRotClearRecursive();
-
   } while (eRotation);
 
   m_pCI->G.p_boolPred = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eRC XF_Optimise_Factor_boolPred::eFactor_boolPred(Card_BoolPred* p_boolPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  eRC eRotation = RC_NONE;
+
+  m_pCI->vAncestorPush(p_boolPred);
+  p_boolPred->vMark(MARK_AT, MARK_PREDICATE);
+
+  Card *pChild = p_boolPred->pPeekChild();
+  if (! pChild) {
+    m_pCI->vAncestorPop();
+    return eRotation;
+  }
+
+  eCK eChild = pChild->eCard();
+  switch (eChild) {
+    case CK_ANDCONJ:
+      eRotation = eFactor_andConj(_pCard_AndConj(pChild));
+      break;
+    case CK_NOTCONJ:
+      eRotation = eFactor_notConj(_pCard_NotConj(pChild));
+      break;
+    case CK_ORCONJ:
+      eRotation = eFactor_orConj(_pCard_OrConj(pChild));
+      break;
+    case CK_RLNCONJ:
+      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild));
+      break;
+
+    case CK_TERM:
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  if (RC_NONE != eRotation) {
+    m_pCI->vAncestorPop();
+    return eRotation;
+  }
+
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // possible rotation
+
+  if (pChild->eConjForm() == FC_OR_2AND_RLN_MIX) {
+    pChild->vConjForm(FC_OR_2AND_RLN_TRIPLE);
+    pChild->vMark2(MARK_ENUM);
+    pChild->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_MIX));
+
+    pChild->vConjRot(RC_FACTOR_OR_2AND_RLN_MIX);
+  }
+
+  if (RC_FACTOR_OR_2AND_RLN_MIX == pChild->eConjRot()) {
+    if (bTest_Rotate_Or_2arm(p_boolPred)) {
+      eRotation = eRotate_Or_2arm(p_boolPred);
+    }
+  }
+
+  m_pCI->vAncestorPop();
+  return eRotation;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,15 +277,20 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
   eCK eChild_0 = pChild_0->eCard();
   switch (eChild_0) {
     case CK_ANDCONJ:
-      eFactor_andConj(_pCard_AndConj(pChild_0)); break;
+      eRotation = eFactor_andConj(_pCard_AndConj(pChild_0));
+      break;
     case CK_NOTCONJ:
-      eFactor_notConj(_pCard_NotConj(pChild_0)); break;
+      eRotation = eFactor_notConj(_pCard_NotConj(pChild_0));
+      break;
     case CK_ORCONJ:
-      eFactor_orConj(_pCard_OrConj(pChild_0));  break;
+      eRotation = eFactor_orConj(_pCard_OrConj(pChild_0));
+      break;
     case CK_RLNCONJ:
-      eFactor_rlnConj(_pCard_RlnConj(pChild_0)); break;
+      eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_0));
+      break;
 
-    case CK_TERM: break;
+    case CK_TERM:
+      break;
 
     default:
       NEVER_REACH
@@ -303,7 +324,8 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
       eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_1));
       break;
 
-    case CK_TERM: break;
+    case CK_TERM:
+      break;
 
     default:
       NEVER_REACH
@@ -313,6 +335,9 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
     m_pCI->vAncestorPop();
     return eRotation;
   }
+
+  // : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
+  // markup conjunction form
 
   if (eChild_0 == CK_RLNCONJ && eChild_1 == CK_RLNCONJ) {
     p_andConj->vConjForm(FC_AND_RLN_DOUBLE);
@@ -375,7 +400,8 @@ eRC XF_Optimise_Factor_boolPred::eFactor_notConj(Card_NotConj* p_notConj)
       eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_0));
       break;
 
-    case CK_TERM: break;
+    case CK_TERM:
+      break;
 
     default:
       NEVER_REACH
@@ -418,7 +444,8 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
       eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_0));
       break;
 
-    case CK_TERM: break;
+    case CK_TERM:
+      break;
 
     default:
       NEVER_REACH
@@ -452,7 +479,8 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
       eRotation = eFactor_rlnConj(_pCard_RlnConj(pChild_1));
       break;
 
-    case CK_TERM: break;
+    case CK_TERM:
+      break;
 
     default:
       NEVER_REACH
@@ -463,30 +491,34 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
     return eRotation;
   }
 
+  // : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
+  // markup conjunction form
+
   if (eChild_0 == CK_ANDCONJ && eChild_1 == CK_ANDCONJ) {
     if (pChild_0->eConjForm() == FC_AND_RLN_OR &&
         pChild_1->eConjForm() == FC_AND_RLN_TRIPLE)
       p_orConj->vConjForm(FC_OR_2AND_RLN_MIX);
   }
 
-  if (!eRotation) {
-    if (pChild_0->eConjForm() == FC_AND_RLN_TRIPLE &&
-        pChild_1->eConjForm() == FC_AND_RLN_TRIPLE) {
-      p_orConj->vConjForm(FC_OR_2AND_RLN_TRIPLE);
-      p_orConj->vMark2(MARK_ENUM);
-      p_orConj->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_TRIPLE));
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // possible rotation
 
-      p_orConj->vConjRot(RC_FACTOR_OR_2AND_RLN_TRIPLE);
-    }
+  if (pChild_0->eConjForm() == FC_AND_RLN_TRIPLE &&
+      pChild_1->eConjForm() == FC_AND_RLN_TRIPLE) {
+    p_orConj->vConjForm(FC_OR_2AND_RLN_TRIPLE);
+    p_orConj->vMark2(MARK_ENUM);
+    p_orConj->vMark1(StrLib::cToHex(FC_OR_2AND_RLN_TRIPLE));
 
-    if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eConjRot()) {
-      if (bTest_Rotate_Or_2ar3(p_orConj)) {
-        eRotation = eRotate_Or_2ar3(p_orConj);
+    p_orConj->vConjRot(RC_FACTOR_OR_2AND_RLN_TRIPLE);
+  }
 
-        pChild_0->vMarksClearRecursive();
-        pChild_0->vConjFormClearRecursive();
-        pChild_0->vConjRotClearRecursive();
-      }
+  if (RC_FACTOR_OR_2AND_RLN_TRIPLE == pChild_0->eConjRot()) {
+    if (bTest_Rotate_Or_2ar3(p_orConj)) {
+      eRotation = eRotate_Or_2ar3(p_orConj);
+
+      pChild_0->vMarksClearRecursive();
+      pChild_0->vConjFormClearRecursive();
+      pChild_0->vConjRotClearRecursive();
     }
   }
 

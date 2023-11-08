@@ -26,6 +26,7 @@ namespace STORE
 
     void vFactor_boolPred(Card_BoolPred* p_boolPred);
 
+    eRC eFactor_boolPred(Card_BoolPred* p_boolPred);
     eRC eFactor_andConj(Card_AndConj* p_andConj);
     eRC eFactor_notConj(Card_NotConj* p_notConj);
     eRC eFactor_orConj (Card_OrConj*  p_orConj);
