@@ -18,10 +18,7 @@ namespace STORE
    ~Card_BoolPred(void) noexcept(false);
 
     static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc);
-    void vRpn_boolPred(String* psRpnExpr, Card_BoolPred* p_boolPred);
-    void vRpn_boolPart(String* psRpnExpr, Card* p_part);
 
-    Card_RlnConj* pCmpConj_whichCallsSubQuery(CardIter* pCI);
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
     TypeId xColTypeId(void);
     Card_CONJUNCTION* pConj_root(void);
@@ -43,6 +40,10 @@ namespace STORE
     void vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION* p_conj);
     void vPushConj(Card_CONJUNCTION* p_conj_toBeAdded);
     void vRemove_conj(Card_CONJUNCTION* p_conj);
+    Card_RlnConj* pRlnConj_whichCallsSubQuery(CardIter* pCI);
+    void vRpn_boolPred(String* psRpnExpr);
+    void vRpn_boolPred_conj(String* psRpnExpr,
+                            Card_CONJSUBROOT *p_CONJSUBROOT);
     void vShortForm(String* pString);
 
     bool bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked);

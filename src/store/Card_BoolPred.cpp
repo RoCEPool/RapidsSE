@@ -284,103 +284,10 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCal
   return p_boolPred;
 }
 
-/*----------------------------------------------------------------------------*/
-/* append <rpnExpr> for <calcBool>                                            */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vRpn_boolPred(String* psRpnExpr, Card_BoolPred* p_boolPred)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (p_boolPred->bIsBraced())
-    psRpnExpr->vConcat(" }"_Stz);
-
-  vRpn_boolPart(psRpnExpr, p_boolPred);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append part                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vRpn_boolPart(String* psRpnExpr, Card* p_part)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nSubCards = p_part->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = p_part->pGet(i_Child);
-
-    eCK eSubCard = pSubCard->eCard();
-
-    switch (eSubCard) {
-      case CK_ANDCONJ:
-        vRpn_boolPart(psRpnExpr, _pCard_AndConj(pSubCard));
-        psRpnExpr->vCatSprint(" and"_Stz);
-        break;
-      case CK_NOTCONJ:
-        vRpn_boolPart(psRpnExpr, _pCard_NotConj(pSubCard));
-        psRpnExpr->vCatSprint(" not"_Stz);
-        break;
-      case CK_ORCONJ:
-        vRpn_boolPart(psRpnExpr, _pCard_OrConj(pSubCard));
-        psRpnExpr->vCatSprint(" or"_Stz);
-        break;
-      case CK_RLNCONJ:
-        vRpn_boolPart(psRpnExpr, _pCard_RlnConj(pSubCard));
-        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
-        break;
-      case CK_TERM:
-        if (pSubCard->pSymbol()->bIs_Exp_Col() ||
-            pSubCard->pSymbol()->bIs_Tbl_Col()) {
-
-          if (!pSubCard->pSymbol()->bHasType()) {
-            //p_part->vDump();
-            //pSubCard->vDump();
-            RASSERT(pSubCard->pSymbol()->bHasType());
-          }
-        }
-        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
-        break;
-      default:
-        NEVER_REACH
-    }
-  }
-
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_BoolPred::pCmpConj_whichCallsSubQuery(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RlnConj* pCmpConj = nullptr;
-
-  auto bLambdaFn = [&pCmpConj,pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
-  {
-    UNUSED(bUpwards);
-
-    if (p_conj->bContains_callToSubQuery(pCI)) {
-      pCmpConj = _pCard_RlnConj(p_conj);
-      return C_TERMINATE_RECURSION;
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Card_CONJUNCTION* p_conj_ROOT = this->pConj_root();
-
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
-  UNUSED(bIgnore);
-
-  return pCmpConj;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -429,6 +336,20 @@ TypeId Card_BoolPred::xColTypeId(void)
   return TypeId::xIdOf(CT_BOOLEAN);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_CONJUNCTION* Card_BoolPred::pConj_root(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! nChildCards())
+    return nullptr;
+
+  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+
+  return p_conj;
+}
 /*----------------------------------------------------------------------------*/
 /* does this boolPred contain given term?                                     */
 /*----------------------------------------------------------------------------*/
@@ -890,16 +811,93 @@ void Card_BoolPred::vRemove_conj(Card_CONJUNCTION* p_conj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION* Card_BoolPred::pConj_root(void)
+Card_RlnConj* Card_BoolPred::pRlnConj_whichCallsSubQuery(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! nChildCards())
-    return nullptr;
+  Card_RlnConj* pCmpConj = nullptr;
 
-  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+  auto bLambdaFn = [&pCmpConj,pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  {
+    UNUSED(bUpwards);
 
-  return p_conj;
+    if (p_conj->bContains_callToSubQuery(pCI)) {
+      pCmpConj = _pCard_RlnConj(p_conj);
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_CONJUNCTION* p_conj_ROOT = this->pConj_root();
+
+  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  UNUSED(bIgnore);
+
+  return pCmpConj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append <rpnExpr> for <boolPred>                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vRpn_boolPred(String* psRpnExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (bIsBraced())
+    psRpnExpr->vConcat(" }"_Stz);
+
+  vRpn_boolPred_conj(psRpnExpr, this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append part                                                                */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vRpn_boolPred_conj(String* psRpnExpr,
+                                       Card_CONJSUBROOT *p_CONJSUBROOT)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(p_CONJSUBROOT); xKid.bEach(); /**/) {
+    Card *pChild = xKid.pChild();
+
+    eCK eChild = pChild->eCard();
+    switch (eChild) {
+      case CK_ANDCONJ:
+        vRpn_boolPred_conj(psRpnExpr, _pCard_AndConj(pChild));
+        psRpnExpr->vCatSprint(" and"_Stz);
+        break;
+      case CK_NOTCONJ:
+        vRpn_boolPred_conj(psRpnExpr, _pCard_NotConj(pChild));
+        psRpnExpr->vCatSprint(" not"_Stz);
+        break;
+      case CK_ORCONJ:
+        vRpn_boolPred_conj(psRpnExpr, _pCard_OrConj(pChild));
+        psRpnExpr->vCatSprint(" or"_Stz);
+        break;
+      case CK_RLNCONJ:
+        vRpn_boolPred_conj(psRpnExpr, _pCard_RlnConj(pChild));
+        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
+        break;
+      case CK_TERM:
+        if (pChild->pSymbol()->bIs_Exp_Col() ||
+            pChild->pSymbol()->bIs_Tbl_Col()) {
+
+          // TODO: this rule should be in validate?
+          if (!pChild->pSymbol()->bHasType()) {
+            //p_part->vDump();
+            //pChild->vDump();
+            RASSERT(pChild->pSymbol()->bHasType());
+          }
+        }
+        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
+        break;
+      default:
+        NEVER_REACH
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
