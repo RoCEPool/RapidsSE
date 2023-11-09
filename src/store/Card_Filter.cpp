@@ -134,7 +134,7 @@ void Card_Filter::vCorrectStmCol(Card_Emit* p_emitted_prior)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vCorrectStmCol(p_emitted_prior);
+    p_boolPred->vCorrect_expCol(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/

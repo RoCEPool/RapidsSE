@@ -95,7 +95,7 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI) {
   pCI->vBeginEachReverse();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
-    pCI->G.p_boolPred->vCopyMarkedConjToTable(pCI);
+    pCI->G.p_boolPred->vCopyMarked_rlnConj_ToTable(pCI);
   }
 }
 

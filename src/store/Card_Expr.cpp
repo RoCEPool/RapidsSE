@@ -498,7 +498,7 @@ bool Card_Expr::bHasTerm(Symbol* pSymbol)
   bool bHas = false;
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    bHas = p_boolPred->bHasTerm(pSymbol);
+    bHas = p_boolPred->bHas_term(pSymbol);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     bHas = p_rpnCalc->bHasTerm(pSymbol);

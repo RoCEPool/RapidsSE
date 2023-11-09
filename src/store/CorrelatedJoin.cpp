@@ -608,9 +608,11 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_corr = p_boolPred->pFindRemove_conj_corr();
+  Card_CONJUNCTION* p_conj_corr = p_boolPred->pFind_rlnConj(P_CrlRslTest);
   if (! p_conj_corr)
     return;
+
+  p_boolPred->vRemove_conj(p_conj_corr);
 
   //p_conj_corr->vDump();
 

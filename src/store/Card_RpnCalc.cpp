@@ -132,7 +132,7 @@ void Card_RpnCalc::vCorrectStmCol(Card_Emit* p_emitted_prior)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    xKid.p_term()->vCorrectStmCol(p_emitted_prior);
+    xKid.p_term()->vCorrect_expCol(p_emitted_prior);
 }
 
 /*----------------------------------------------------------------------------*/

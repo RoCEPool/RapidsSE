@@ -206,26 +206,6 @@ i8 Card_Table::nTables(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Table::nTables_foldBreak(CardIter* pCI)
-{
-  _static_
-
-  i8 nTables = 0;
-
-  pCI->vBeginEach();
-  while (pCI->G_bEachMain_NONE()) {
-    if (pCI->G.p_MainCard->bIsCard(CK_FOLD))
-      break;
-    if (pCI->G.p_MainCard->bIsCard(CK_TABLE))
-    nTables++;
-  }
-
-  return nTables;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 {
   _static_
@@ -243,24 +223,6 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<filter>                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Table::vAddPredToTableFilter(CardIter* pCI, Card_CONJUNCTION* p_conj)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if ((pCI->G.p_filter = this->pSub_filter())) {
-    pCI->G.p_boolPred = pCI->G.p_filter->pSub_boolPred();
-    pCI->G.p_boolPred->vPushConj(p_conj);
-  }
-  else {
-    pCI->G_vAppendNewChild(this,CK_FILTER);
-    pCI->G_vAppendNewChild(pCI->G.p_filter, CK_BOOLPRED);
-    pCI->G_vAppendChild(CK_BOOLPRED, p_conj);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -407,22 +369,6 @@ bool Card_Table::bUsesSqyRsl(void)
 
   if (Card_IndexList* p_indexList = pSub_indexList())
     return p_indexList->bUsesSqyRsl();
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given symbol a $c.n of this table?                                      */
-/*----------------------------------------------------------------------------*/
-bool Card_Table::bIsTblColOf(Stz* szTblCol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  char cTbl_this = pSymbol()->cSF_char();
-  char cTbl_arg  = *(szTblCol->azChar()+1);
-
-  if (cTbl_this == cTbl_arg)
-    return true;
 
   return false;
 }

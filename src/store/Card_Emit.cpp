@@ -117,7 +117,7 @@ void Card_Emit::vCorrectStmCol(Card_Emit* p_emitted_prior)
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     if (Card_BoolPred* p_boolPred = xKid.p_expr()->pSub_boolPred())
-      p_boolPred->vCorrectStmCol(p_emitted_prior);
+      p_boolPred->vCorrect_expCol(p_emitted_prior);
     else
     if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
       p_rpnCalc->vCorrectStmCol(p_emitted_prior);
