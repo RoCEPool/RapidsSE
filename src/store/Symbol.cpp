@@ -1633,11 +1633,11 @@ void Symbol::vFacets_To_String(String* pString)
 /*----------------------------------------------------------------------------*/
 /* true if symbol is given form                                               */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bFormIs(eSF eSymbol)
+bool Symbol::bFacetIs(eSF eFacet_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (eSymbol == xaFacet[0].m_eFacet)
+  if (eFacet_arg == xaFacet[0].m_eFacet)
     return true;
 
   return false;

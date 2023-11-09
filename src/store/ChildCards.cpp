@@ -144,7 +144,7 @@ void ChildCards::vEnsureLast(eCK eChild)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pChild_last = pPeekChild_last();
+  Card* pChild_last = pPeekChild_tail();
   if (! pChild_last)
     return;
   if (eChild == pChild_last->eCard())
@@ -238,7 +238,7 @@ Card* ChildCards::pFindChild(eCK eCard, Stz* szFacet, i8& i_Child)
 /*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pFindChildWithSub(eCK eChild, eCK eSub, Stz* szValue, i8& i_Child)
+Card* ChildCards::pFindChildWithSub(eCK eChild, eCK eSub, Stz* szFacet, i8& i_Child)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -253,7 +253,7 @@ Card* ChildCards::pFindChildWithSub(eCK eChild, eCK eSub, Stz* szValue, i8& i_Ch
       continue;
 
     i8 i_Sub;
-    if (! pChildCard->pFindChild(eSub,szValue,i_Sub))
+    if (! pChildCard->pFindChild(eSub, szFacet, i_Sub))
       continue;
 
     pFoundChild = pChildCard;
@@ -266,7 +266,7 @@ Card* ChildCards::pFindChildWithSub(eCK eChild, eCK eSub, Stz* szValue, i8& i_Ch
 /*----------------------------------------------------------------------------*/
 /* find sub-card                                                              */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pFindSubCard(eCK eCard)
+Card* ChildCards::pFindSubCard(eCK eSub)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -276,12 +276,12 @@ Card* ChildCards::pFindSubCard(eCK eCard)
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
 
-    if (eCard == pSubCard->eCard()) {
+    if (eSub == pSubCard->eCard()) {
       pFoundCard = pSubCard;
       break;
     }
 
-    pFoundCard = pSubCard->pFindSubCard(eCard);
+    pFoundCard = pSubCard->pFindSubCard(eSub);
     if (pFoundCard)
       break;
   }
@@ -400,21 +400,6 @@ void ChildCards::vMorphChildrenTo(eCK eFrom, eCK eTo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert child values to an stz list                                        */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vOntoStzList(StzList* pStzList)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  i8 nSubCards = nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card* p_child = pGetChild(i_Sub);
-    if (p_child->szFacet(SF_NONE))
-      pStzList->vAppend(p_child->szFacet(SF_NONE));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card* ChildCards::pPeekChild(void)
@@ -427,7 +412,7 @@ Card* ChildCards::pPeekChild(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pPeekChild_last(void)
+Card* ChildCards::pPeekChild_tail(void)
 {
   i8 i_Last = nChildCards() - 1;
   if (i_Last < 0)
@@ -470,21 +455,6 @@ Card* ChildCards::pPopChild_tail(void)
   vRemoveChild(pChild);
 
   return pChild;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop top child if it matches given symbol                                   */
-/*----------------------------------------------------------------------------*/
-Card* ChildCards::pPopChildIf(Symbol xSymbol)
-{
-  Card* pChild = pPeekChild();
-  if (! pChild)
-    return nullptr;
-
-  if (!pChild->bSymbolMatches(&xSymbol))
-    return nullptr;
-
-  return pPopChild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -555,24 +525,24 @@ void ChildCards::vRemoveChild(Card* pChild)
 /*----------------------------------------------------------------------------*/
 /* remove given subCard (recursive)                                           */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vRemoveSub(Card* pSubCard)
+void ChildCards::vRemoveSub(Card* pSub)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
-  RASSERT(pSubCard);
+  RASSERT(pSub);
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
   while (pSubCard_I->bHasNext()) {
     Card* pSub_test = pSubCard_I->pNext();
 
-    if (pSub_test == pSubCard) {
+    if (pSub_test == pSub) {
       RASSERT(bRemoveChild(pSub_test));
       pSub_test->vRemovedCorrectly();
       pSub_test->vOnRemove_child();
       break;
     }
-    pSub_test->vRemoveSub(pSubCard);
+    pSub_test->vRemoveSub(pSub);
   }
 
   delete pSubCard_I;
@@ -647,14 +617,14 @@ void ChildCards::vTransferChildren(Card* pFrom)
 /*----------------------------------------------------------------------------*/
 /* transfer all child card (incl. sub-cards) from given card set to this card */
 /*----------------------------------------------------------------------------*/
-void ChildCards::vTransferChildren(Card* pFrom, eSF eSymbol_limit)
+void ChildCards::vTransferChildren(Card* pFrom, eSF eFacet_stopAfter)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
 
   while (Card *pPoppedChild = pFrom->pPopChild()) {
     vAppendChild(pPoppedChild);
 
-    if (pPoppedChild->pSymbol()->bFormIs(eSymbol_limit))
+    if (pPoppedChild->pSymbol()->bFacetIs(eFacet_stopAfter))
       break;
   }
 }

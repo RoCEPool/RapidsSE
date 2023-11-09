@@ -148,7 +148,7 @@ namespace STORE
 
     void vFacets_To_String(String* pString);
 
-    bool bFormIs(eSF eSymbol);
+    bool bFacetIs(eSF eFacet_arg);
 
     bool bHasFacet(eSF eFacet);
     bool bHasFacet(Stz* szChrSeq);
