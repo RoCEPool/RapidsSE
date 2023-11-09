@@ -51,7 +51,8 @@ namespace STORE
 
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
 
-    Card* pPeekChild(void);
+    eCK   ePeekChild(i8 i_Child=0);
+    Card* pPeekChild(i8 i_Child=0);
     Card* pPeekChild_tail(void);
     Card* pPopChild(void);
     Card* pPopChild_tail(void);

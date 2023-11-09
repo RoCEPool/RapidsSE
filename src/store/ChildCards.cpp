@@ -402,11 +402,24 @@ void ChildCards::vMorphChildrenTo(eCK eFrom, eCK eTo)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* ChildCards::pPeekChild(void)
+Card* ChildCards::pPeekChild(i8 i_Child)
 {
-  Card* pChild = pPeek(0);
+  Card* pChild = pPeek(i_Child);
 
   return pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eCK ChildCards::ePeekChild(i8 i_Child)
+{
+  Card* pChild = pPeekChild(i_Child);
+
+  if (pChild)
+    return pChild->eCard();
+
+  return CK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
