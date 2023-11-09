@@ -49,15 +49,15 @@
 
   //"EV_M_END" .verbose
 
-  true LogicUnit[].RcvdEnd!
+  //true LogicUnit[].RcvdEnd!
 
   // if received all child exits then pipeout END
   //   else wait till all child exits have been received
-  LogicUnit[].RcvdChildExit@ if
+  //LogicUnit[].RcvdChildExit@ if
      PipeIn[].pipeout
-  else
-    PipeIn[].delete
-  then
+  //else
+    //PipeIn[].delete
+  //then
 
   true
 ;
