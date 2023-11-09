@@ -98,9 +98,9 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
           p_boolPred_new->pPeekChild()->vAppendChild(pTail_a_boolPred);
         }
         else {
-          p_andConj = new Card_AndConj;
           pTail_b_boolPred = p_boolPred_new->pPopChild_tail();
           pTail_a_boolPred = p_boolPred_new->pPopChild_tail();
+          p_andConj = new Card_AndConj;
           p_andConj->vAppendChild(pTail_a_boolPred);
           p_andConj->vAppendChild(pTail_b_boolPred);
           p_boolPred_new->vAppendChild(p_andConj);
@@ -113,14 +113,20 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
 
       case TE_OR:
         // <boolPred> = <or>/<boolPred>
-        pTail_b_boolPred = p_boolPred_new->pPopChild_tail();
-        pTail_a_boolPred = p_boolPred_new->pPopChild_tail();
 
-        p_orConj = new Card_OrConj;
-        p_orConj->vAppendChild(pTail_a_boolPred);
-        p_orConj->vAppendChild(pTail_b_boolPred);
+        if (CK_ORCONJ == p_boolPred_new->ePeekChild(0)) {
+          pTail_a_boolPred = p_boolPred_new->pPopChild_tail();
+          p_boolPred_new->pPeekChild()->vAppendChild(pTail_a_boolPred);
+        }
+        else {
+          pTail_b_boolPred = p_boolPred_new->pPopChild_tail();
+          pTail_a_boolPred = p_boolPred_new->pPopChild_tail();
+          p_orConj = new Card_OrConj;
+          p_orConj->vAppendChild(pTail_a_boolPred);
+          p_orConj->vAppendChild(pTail_b_boolPred);
+          p_boolPred_new->vAppendChild(p_orConj);
+        }
 
-        p_boolPred_new->vAppendChild(p_orConj);
         p_boolPred_new->vDump(0,"TE_OR"_Stz);
 
         DELETE_CARD(p_term_rpnCalc_next);
