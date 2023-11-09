@@ -19,23 +19,24 @@ namespace STORE
 
     static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc_arg);
 
+    void vAddConj(Card_CONJUNCTION *p_CONJUNCTION);
     void vBump_stmCol(i8 p_conj, bool bSkipFoldExpr=false);
     TypeId xColTypeId(void);
     Card_CONJUNCTION* pConj_root(void);
     bool bContains(Symbol* pSymbol_arg);
     void vCopyMarkedConjToTable(CardIter* pCI);
     void vCorrectStmCol(Card_Emit* p_emitted_prior);
-    i8 nCullConj(Stz* szWithMark);
-    bool bCullConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
+    bool bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
     Card_CONJUNCTION* pFindRemove_conj_corr(void);
+    bool bHasTerm(Symbol* pWithSymbol);
     bool bIsBraced(void);
     bool bIsCompound(void);
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
-    bool bHasTerm(Symbol* pSymbol);
+    i8   nMarked_conj(Stz* szWithMark);
     void vMarkWrt_table(CardIter* pCI);
     void vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION* p_conj);
     void vPushConj(Card_CONJUNCTION* p_conj_toBeAdded);

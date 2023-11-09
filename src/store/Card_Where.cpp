@@ -51,7 +51,7 @@ void Card_Where::vCullMarkedCmpConj(CardIter* pCI) {
   pCI->vBeginEachReverse();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
-    pCI->G.p_boolPred->nCullConj(MARK_AT);
+    pCI->G.p_boolPred->nMarked_conj(MARK_AT);
   }
 }
 

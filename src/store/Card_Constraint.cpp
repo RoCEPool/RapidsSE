@@ -87,7 +87,7 @@ i8 Card_Constraint::nCullConj(Stz* szWithMark)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolPred* p_boolPred = pSub_boolPred();
-  i8 nCulled = p_boolPred->nCullConj(szWithMark);
+  i8 nCulled = p_boolPred->nMarked_conj(szWithMark);
 
   return nCulled;
 }

@@ -108,24 +108,13 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vAddConj(Card_CONJUNCTION *p_conj)
+void Card_Filter::vAddConj(Card_CONJUNCTION *p_CONJUNCTION)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_BoolPred* p_calcBool = this->pSub_boolPred();
 
-  if (0 == p_calcBool->nChildCards()) {
-    p_calcBool->vAppendChild(p_conj);
-    return;
-  }
-
-  Card* p_top = p_calcBool->pPopChild();
-
-  Card_AndConj* pCard_conjAnd = new Card_AndConj;
-  pCard_conjAnd->vAppendChild(p_top);
-  pCard_conjAnd->vAppendChild(p_conj);
-
-  p_calcBool->vAppendChild(pCard_conjAnd);
+  p_calcBool->vAddConj(p_CONJUNCTION);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +145,7 @@ i8 Card_Filter::nCullConj(Stz* szWithMark)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolPred* p_boolPred = pSub_boolPred();
-  i8 nCulled = p_boolPred->nCullConj(szWithMark);
+  i8 nCulled = p_boolPred->nMarked_conj(szWithMark);
 
   return nCulled;
 }
