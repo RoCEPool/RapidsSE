@@ -68,9 +68,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_rpnCalc_arg->bHasTerm(&xWhen)) {
-
     p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
-
     return p_boolPred_new;
   }
 
@@ -274,7 +272,6 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
   delete pTermSeries_tmp;
 
   //p_boolPred_new->vDump();
-
   return p_boolPred_new;
 }
 
@@ -292,9 +289,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
 
   Symbol xWhen(SF_WHEN,"WHEN"_Stz);
   if (p_rpnCalc_arg->bHasTerm(&xWhen)) {
-
     p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
-
     return p_boolPred_new;
   }
 
@@ -311,10 +306,10 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
     Card_NotConj* p_notConj = nullptr;
     Card_OrConj*  p_orConj  = nullptr;
 
-    Card_Term* p_term_next = _pCard_Term(p_rpnCalc_arg->pPopChild());
+    Card_Term* p_term_rpnCalc_next = _pCard_Term(p_rpnCalc_arg->pPopChild());
 
-    eTE eTerm_next = p_term_next->eEvalTerm();
-    switch (eTerm_next) {
+    eTE eTerm_rpnCalc_next = p_term_rpnCalc_next->eEvalTerm();
+    switch (eTerm_rpnCalc_next) {
 
       case TE_AND:
         // <boolPred> = <and>/<boolPred>
@@ -328,7 +323,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         p_boolPred_new->vAppendChild(p_andConj);
         //p_boolPred_new->vDump(0,"AND"_Stz);
 
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
       case TE_OR:
@@ -343,7 +338,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         p_boolPred_new->vAppendChild(p_orConj);
         //p_boolPred_new->vDump(0,"OR"_Stz);
 
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
       case TE_NOT:
@@ -355,7 +350,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         p_boolPred_new->vAppendChild(p_notConj);
         //p_boolPred_new->vDump(0,"NOT"_Stz);
 
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
       case TE_RELNOP:
@@ -363,10 +358,10 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         RASSERT(pTermSeries_tmp->nChildCards() > 0);
         p_rlnConj = new Card_RlnConj;
         {
-          eSF eSymbol = Symbol::eEvalSymbol(p_term_next->szFacet(SF_NONE));
+          eSF eSymbol = Symbol::eEvalSymbol(p_term_rpnCalc_next->szFacet(SF_NONE));
           RASSERT(SF_RLN_OP == eSymbol);
         }
-        p_rlnConj->SYM(SF_RLN_OP, p_term_next->szFacet(SF_NONE));
+        p_rlnConj->SYM(SF_RLN_OP, p_term_rpnCalc_next->szFacet(SF_NONE));
         p_rlnConj->vTransferChildren(pTermSeries_tmp);
         RASSERT(p_rlnConj->bIsRelnOp())
         if (p_rlnConj->bContains_callToSubQuery(pCI)) {
@@ -382,7 +377,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         p_boolPred_new->vAppendChild(p_rlnConj);
         //p_boolPred_new->vDump(0,"COMPARE"_Stz);
 
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
       case TE_EXISTS:
@@ -390,31 +385,31 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         // <boolPred> = <exists><boolPred>
         p_rlnConj = new Card_RlnConj;
         {
-          eSF eSymbol = Symbol::eEvalSymbol(p_term_next->szFacet(SF_NONE));
+          eSF eSymbol = Symbol::eEvalSymbol(p_term_rpnCalc_next->szFacet(SF_NONE));
           RASSERT(SF_SQY_OP == eSymbol);
         }
-        p_rlnConj->SYM(SF_SQY_OP, p_term_next->szFacet(SF_NONE));
+        p_rlnConj->SYM(SF_SQY_OP, p_term_rpnCalc_next->szFacet(SF_NONE));
         p_rlnConj->vTransferChildren(pTermSeries_tmp);
         RASSERT(p_rlnConj->bIsSqyOp())
 
         p_boolPred_new->vAppendChild(p_rlnConj);
         //p_boolPred_new->vDump(0,"EXISTS"_Stz);
 
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
       case TE_IN:
         // <boolPred> = <in><boolPred>
         if (pTermSeries_tmp->bIsInList()) {
           p_rlnConj = new Card_RlnConj;
-          p_rlnConj->SYM(SF_SQY_OP, p_term_next->szFacet(SF_NONE));
+          p_rlnConj->SYM(SF_SQY_OP, p_term_rpnCalc_next->szFacet(SF_NONE));
           p_rlnConj->vTransferChildren(pTermSeries_tmp);
           RASSERT(p_rlnConj->bIsSqyOp())
 
           p_boolPred_new->vAppendChild(p_rlnConj);
           //p_boolPred_new->vDump(0,"BOOLFN/IN"_Stz);
 
-          DELETE_CARD(p_term_next);
+          DELETE_CARD(p_term_rpnCalc_next);
         }
         else {
           p_rlnConj = new Card_RlnConj;
@@ -424,7 +419,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
           p_boolPred_new->vAppendChild(p_rlnConj);
           //p_boolPred_new->vDump(0,"IN"_Stz);
 
-          DELETE_CARD(p_term_next);
+          DELETE_CARD(p_term_rpnCalc_next);
         }
         break;
 
@@ -445,36 +440,36 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         }
         else {
           p_rlnConj = new Card_RlnConj;
-          p_rlnConj->SYM(SF_SQY_OP, p_term_next->szFacet(SF_NONE));
+          p_rlnConj->SYM(SF_SQY_OP, p_term_rpnCalc_next->szFacet(SF_NONE));
           p_rlnConj->vTransferChildren(pTermSeries_tmp);
           RASSERT(p_rlnConj->bIsSqyOp())
           p_boolPred_new->vAppendChild(p_rlnConj);
           //p_boolPred_new->vDump(0,"NOTIN"_Stz);
         }
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
       case TE_BOOLFN:
         p_rlnConj = new Card_RlnConj;
-        p_rlnConj->SYM(SF_BOL_FN, p_term_next->szFacet(SF_NONE));
+        p_rlnConj->SYM(SF_BOL_FN, p_term_rpnCalc_next->szFacet(SF_NONE));
         p_rlnConj->vTransferChildren(pTermSeries_tmp);
         RASSERT(p_rlnConj->bIsBoolFn())
 
         p_boolPred_new->vAppendChild(p_rlnConj);
         //p_boolPred_new->vDump(0,"BOOLFN"_Stz);
 
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // <termSeries>
 
       case TE_EXECUTE:
-        DELETE_CARD(p_term_next);
+        DELETE_CARD(p_term_rpnCalc_next);
         break;
 
       case TE_OTHER:
-        pTermSeries_tmp->vAppendChild(p_term_next);
+        pTermSeries_tmp->vAppendChild(p_term_rpnCalc_next);
         //pTermSeries_tmp->vDump(0,"TERM_SERIES"_Stz);
         break;
 
@@ -498,7 +493,6 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
   delete pTermSeries_tmp;
 
   //p_boolPred_new->vDump();
-
   return p_boolPred_new;
 }
 
