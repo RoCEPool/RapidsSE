@@ -60,6 +60,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
   m_oBufferId = AM::pFileMap()->oGetNewBufferId();
   AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 
+  // Calculate block size and padding ------------------
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
   m_nPaddingPerBlk = 0;
 
@@ -70,6 +71,17 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
     m_nBlockSize += m_nPaddingPerBlk;
   }
 
+  m_iSynthRowKey  = 0;
+
+  // Init temp variables -------------------------------
+  m_aRowCur  = nullptr;
+  m_i_RowCrs = C_UNKNOWN;
+  m_i_ColCrs = C_UNKNOWN;
+  m_aStzSet  = nullptr;
+  m_iCurStzSetSpace = 0;
+
+
+  // Set compare function ------------------------------
   if(fpCompare) {
     m_fpCompare = fpCompare;
   } else {
@@ -78,7 +90,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
 
   m_iFreeListEntries = 0;
 
-  // Initialise the workspace
+  // Initialise the workspace --------------------------
   m_xWsp.vInit(m_nBlockSize);
 
   // Add dummy root nodes to the Free and In Use skip lists
@@ -102,6 +114,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
     m_iNumEntries[i_Level] = 0;
   }
 
+  // Init RowPix object -------------------------------
   if (pRowPix)
     vInitPix(pRowPix);
   else
@@ -131,24 +144,85 @@ Row* Pds::pAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-//  if (nFreeBytes() < iStzSetSize())
+  // Do we have space for the row?
+  if (nFreeBytes() < m_nBlockSize)
     return nullptr;
+
+  // Pass an integer key to Pds that we increment each time we insert
+  // Essentially append
+  SkipListBlock* pSkipListBlock = pInsert((void*) &(++m_iSynthRowKey));
+  i8* pKey = (i8*)pSkipListBlock->aItem();
+  *pKey = m_iSynthRowKey;
+
+  // Calculate the address of the Row
+  // <(i8)key><Row>
+  Row* aRowCur = aAdd<Row*>(pSkipListBlock->aItem(), sizeof(m_iSynthRowKey));
+
+  // Initialise the row at the given addr
+  new(aRowCur) Row();
+
+  m_aRowCur = aRowCur;
+
+  return aRowCur;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Allot a row and copy given row into it                                     */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pAllotRow(Row* pRow)
+Row* Pds::pCopyRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   RASSERT(m_oRowPix.m_bInitialised);
 
-  UNUSED(pRow);
-//  Row* pNewRow = pAllotRow();
-//  if (! pNewRow)
+  Row* pNewRow = pAllotRow();
+  if (! pNewRow) {
+    vTrace("%s: Unable to copy row as the Pds is full\n"_Stz, __func__ );
     return nullptr;
+  }
 
+  // If this Row contains strings,
+  // allot a String Set from the tail of the Pds
+  if(iStzSetSize()) {
+    if (aAllotStzSet() == nullptr) {
+      vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
+      vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
+      return nullptr;
+    }
+  }
 
+  i8 iVal;
+  Stz* szSrcStz;
+
+  i8 nCols = m_oRowPix.m_nColumns;
+  i8 i_Col;
+  m_i_ColCrs = 0;
+  for (i_Col = 0; i_Col < nCols; i_Col++) {
+
+    eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+
+    if (DM_VCH == eDatum) {
+      // vch datum
+
+      if (C_DATUM_NULL == pRow->iColVal_int(i_Col)) {
+        vDepositColVal(C_DATUM_NULL);
+      }
+      else {
+        RASSERT(m_aStzSet != nullptr);
+        szSrcStz = pRow->szColVal_ofs(i_Col);
+        vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
+      }
+    }
+    else {
+      // all others
+
+      iVal = pRow->iColVal_int(i_Col);
+      vDepositColVal(iVal);
+    }
+  }
+
+  vReset();
+
+  return pNewRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,6 +242,8 @@ void* Pds::aAllotStzSet(void)
 
   RASSERT(DoubleWord::bOnDoubleWordBoundary(aStzSet));
 
+  m_iCurStzSetSpace = iStzSetSize();
+  m_aStzSet = aStzSet;
   return aStzSet;
 }
 
@@ -588,6 +664,12 @@ void Pds::vInitPix(RowPix* pRowPix)
   }
   // Set size of StzSet area
   vStzSetSize(iTotalStzArea);
+
+  i8 iRowSizeProper = Row::nRowProper(m_oRowPix.m_nColumns);
+
+  // Assert the space we are allocating for the row + key is less than or equal to the block size
+  RASSERT((iRowSizeProper + (i8)sizeof(m_iSynthRowKey)) <= m_nBlockSize);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -632,6 +714,19 @@ i8 Pds::iNumEntries(i8 iLevel)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   RASSERT(iLevel >= 0 && iLevel < C_MAX_LVL_LEVELS);
   return m_iNumEntries[iLevel];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Reset tmp variables                                                        */
+/*----------------------------------------------------------------------------*/
+void Pds::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  m_aRowCur  = nullptr;
+  m_i_RowCrs = C_UNKNOWN;
+  m_i_ColCrs = C_UNKNOWN;
+  m_aStzSet  = nullptr;
+  m_iCurStzSetSpace = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -903,6 +998,112 @@ i8 Pds::iIntCompare(void* aItem_l, void* aItem_r)
     return 1;
   else
     return -1;
+}
+
+/*--------------------------------------------------------------------------*/
+/* Row helper                                                               */
+/*--------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------*/
+/* advance cursor                                                           */
+/*--------------------------------------------------------------------------*/
+void Pds::vAdvanceCursor(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(m_i_ColCrs != C_UNKNOWN);
+  m_i_ColCrs++;
+}
+
+
+/*--------------------------------------------------------------------------*/
+/* deposit an d8 value into next cell                                       */
+/*--------------------------------------------------------------------------*/
+void Pds::vDepositColVal(d8 dColVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(m_i_ColCrs != C_UNKNOWN);
+  m_aRowCur->vColVal_flt(m_i_ColCrs,dColVal);
+
+  vAdvanceCursor();
+
+}
+
+/*--------------------------------------------------------------------------*/
+/* deposit an i8 value into next cell                                       */
+/*--------------------------------------------------------------------------*/
+void Pds::vDepositColVal(i8 iColVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(m_i_ColCrs != C_UNKNOWN);
+  m_aRowCur->vColVal_int(m_i_ColCrs,iColVal);
+
+  vAdvanceCursor();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get datum value of given column                                            */
+/*----------------------------------------------------------------------------*/
+void Pds::vDepositColVal(i8 i_Col, i8 iColVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  m_aRowCur->vColVal_int(i_Col,iColVal);
+}
+
+/*--------------------------------------------------------------------------*/
+/* deposit an stz value into next cell                                      */
+/*--------------------------------------------------------------------------*/
+void Pds::vDepositColVal(Stz* szColVal, i8 iMaxStzLen)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(m_iCurStzSetSpace > 0);
+
+  String_d* azStringDyn = azDepositString_begin(iMaxStzLen);
+
+  azStringDyn->vCopy(szColVal);
+  i8 iTotalSize = azStringDyn->iTotalSize();
+  RASSERT((m_iCurStzSetSpace - iTotalSize) >= 0);
+
+  m_iCurStzSetSpace -= iTotalSize;
+
+  // TODO: Arjun - Check with Ray: nLen or iMaxStzLen?
+  vDepositString_end(iTotalSize);
+}
+
+/*--------------------------------------------------------------------------*/
+/* begin deposit of string                                                  */
+/*--------------------------------------------------------------------------*/
+String_d* Pds::azDepositString_begin(i8 nSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(m_i_ColCrs != C_UNKNOWN);
+
+  String_d* szDeposited = new(m_aStzSet) String_d(nSize);
+
+  // TODO: Arjun - Check type conversion with Ray
+  i8 i_Ofs = nDifference(m_aRowCur->aColCell(m_i_ColCrs),szDeposited);
+
+  m_aRowCur->vColVal_ofs(m_i_ColCrs,i_Ofs);
+
+  vAdvanceCursor();
+
+
+  return szDeposited;
+}
+
+/*--------------------------------------------------------------------------*/
+/* take bytes for deposited string                                          */
+/*--------------------------------------------------------------------------*/
+void Pds::vDepositString_end(i8 nSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  m_aStzSet = aAdd<void*>(m_aStzSet, nSize);
 }
 
 /*----------------------------------------------------------------------------*/

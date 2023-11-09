@@ -29,6 +29,16 @@ namespace BASE
 
     RowPix m_oRowPix;
 
+    // ---------------------------
+    i8    m_iSynthRowKey;     // Synthetic key for rows added to Pds
+
+    // temporary variables
+    Row* m_aRowCur;     // current dst row
+    i8   m_i_RowCrs;    // current logical row number
+    i8   m_i_ColCrs;    // current working column
+    void* m_aStzSet;     // current pointer to string set area
+    i8   m_iCurStzSetSpace; // current space left for string set area
+
     // Save the last usable offset for asserts
     PdsConvergentHeap_t<C_WSP_INTERNALHEAP,SkipListBlock,Stz> m_xWsp;
 
@@ -44,7 +54,7 @@ namespace BASE
 
     // public:
     Row*            pAllotRow(void);
-    Row*            pAllotRow(Row* pRow);
+    Row*            pCopyRow(Row* pRow);
     void*           aAllotStzSet(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
@@ -60,6 +70,7 @@ namespace BASE
     void*           aLastUsableByteAddr(void);
     i8              iLastUsableOffset(void);
     i8              iNumEntries(i8 iLevel);
+    void            vReset(void);
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);
     void            vValidate(void);
@@ -76,6 +87,15 @@ namespace BASE
     bool            bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
 
     static i8     iIntCompare(void* aItem_l, void* aItem_r);
+
+    // Row helper
+    void      vAdvanceCursor(void);
+    void      vDepositColVal(d8 dColVal);
+    void      vDepositColVal(i8 iColVal);
+    void      vDepositColVal(i8 i_Col, i8 iColVal);
+    void      vDepositColVal(Stz* szColVal, i8 iMaxStzLen);
+    String_d* azDepositString_begin(i8 nSize);
+    void      vDepositString_end(i8 nSize);
 
   public:
     Footer* aFooter(void);

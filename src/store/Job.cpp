@@ -1640,11 +1640,29 @@ void Job::vPipeoutResponse(Operand* pOperand)
 
       // pipe the operand to the responseOP of parentJob
       if(bHasTag(C_TAG_NESTEDSQL) && pOperand->eGetClassNo() == CN_ROWBUFFER) {
-        PdsRowHelper* pPdsRowHelper = new PdsRowHelper();
-        pPdsRowHelper->vCopyRows(_pRowBuffer(pOperand));
-        pParentJob->m_p_ResponseOp->vPipeToThis(_pOperand(pPdsRowHelper->m_pPdsOfRows), pCurTask);
-        pPdsRowHelper->m_pPdsOfRows = nullptr;
-        delete pPdsRowHelper;
+        RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+        vTrace("RowBuffer Rows: %lld\n"_Stz, pRowBuffer->nRows());
+
+        i8 nRows = pRowBuffer->nRows();
+        RowPix* pRowPix = pRowBuffer->pRowPix();
+        i8 iRowSizeProper = Row::nRowProper(pRowPix->m_nColumns);
+
+        Pds* pPds = new Pds(iRowSizeProper + sizeof(i8), nullptr, pRowPix);
+
+        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+
+          Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
+
+          Row* pRowDst = pPds->pCopyRow(aRowSrc);
+          if (pRowDst == nullptr) {
+            pParentJob->m_p_ResponseOp->vPipeToThis(_pOperand(pPds), pCurTask);
+            pPds = new Pds(iRowSizeProper + sizeof(i8), nullptr, pRowPix);
+            pRowDst = pPds->pCopyRow(aRowSrc);
+            RASSERT(pRowDst);
+          }
+        }
+
+        pParentJob->m_p_ResponseOp->vPipeToThis(_pOperand(pPds), pCurTask);
       }
       else {
         pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
