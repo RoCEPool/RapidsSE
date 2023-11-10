@@ -8,9 +8,9 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST+HASHCAST
 select count(*)
-  from Customer,
-       Orders,
-       Lineitem
+  from ${testName}_Customer,
+       ${testName}_Orders,
+       ${testName}_Lineitem
  where C_CUSTKEY  = O_CUSTKEY
    and L_ORDERKEY = O_ORDERKEY;
 rows:
@@ -19,9 +19,9 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST+BROADCAST
 select count(*)
-  from Lineitem,
-       PartSupp,
-       Part
+  from ${testName}_Lineitem,
+       ${testName}_PartSupp,
+       ${testName}_Part
  where P_PARTKEY = PS_PARTKEY
    and L_SUPPKEY  = PS_SUPPKEY;
 rows:
@@ -30,9 +30,9 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // HASHCAST+BROADCAST
 select count(*)
-  from Part,
-       Lineitem,
-       PartSupp
+  from ${testName}_Part,
+       ${testName}_Lineitem,
+       ${testName}_PartSupp
  where P_PARTKEY = L_PARTKEY
    and L_SUPPKEY  = PS_SUPPKEY;
 rows:

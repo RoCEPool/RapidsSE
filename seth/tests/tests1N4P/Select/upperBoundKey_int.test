@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create table jCdt
-create table jCdt (
+create table ${testName}_jCdt (
 jA  INTEGER,
 jB  INTEGER,
 jC  INTEGER,
@@ -12,152 +12,152 @@ jE  VARCHAR(32)
 );
 success
 
-create index jCdt_idx1 on jCdt (jA);
+create index jCdt_idx1 on ${testName}_jCdt (jA);
 success
 
-load jCdt "../DATA/Select/range2.csv";
+load ${testName}_jCdt "../DATA/Select/range2.csv";
 success
 
 //------------------------------------------------------------------------------
 // SCAN
-select * from jCdt;
+select * from ${testName}_jCdt;
 rows: 26
 
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-select * from jCdt where jA < 9223372036854775806;
+select * from ${testName}_jCdt where jA < 9223372036854775806;
 rows: 25
 
-select * from jCdt where jA <= 9223372036854775806;
+select * from ${testName}_jCdt where jA <= 9223372036854775806;
 rows: 26
 
-select * from jCdt where jA < 19 ;
+select * from ${testName}_jCdt where jA < 19 ;
 rows: 20
 
-select * from jCdt where jA <= 19;
+select * from ${testName}_jCdt where jA <= 19;
 rows: 21
 
-select * from jCdt where jA < 18;
+select * from ${testName}_jCdt where jA < 18;
 rows: 19
 
-select * from jCdt where jA <= 18;
+select * from ${testName}_jCdt where jA <= 18;
 rows: 20
 
-select * from jCdt where jA < 17;
+select * from ${testName}_jCdt where jA < 17;
 rows: 18
 
-select * from jCdt where jA <= 17;
+select * from ${testName}_jCdt where jA <= 17;
 rows: 19
 
-select * from jCdt where jA < 16;
+select * from ${testName}_jCdt where jA < 16;
 rows: 17
 
-select * from jCdt where jA <= 16;
+select * from ${testName}_jCdt where jA <= 16;
 rows: 18
 
-select * from jCdt where jA < 15;
+select * from ${testName}_jCdt where jA < 15;
 rows: 16
 
-select * from jCdt where jA <= 15;
+select * from ${testName}_jCdt where jA <= 15;
 rows: 17
 
-select * from jCdt where jA < 14;
+select * from ${testName}_jCdt where jA < 14;
 rows: 15
 
-select * from jCdt where jA <= 14;
+select * from ${testName}_jCdt where jA <= 14;
 rows: 16
 
-select * from jCdt where jA < 13;
+select * from ${testName}_jCdt where jA < 13;
 rows: 14
 
-select * from jCdt where jA <= 13;
+select * from ${testName}_jCdt where jA <= 13;
 rows: 15
 
-select * from jCdt where jA < 12;
+select * from ${testName}_jCdt where jA < 12;
 rows: 13
 
-select * from jCdt where jA <= 12;
+select * from ${testName}_jCdt where jA <= 12;
 rows: 14
 
-select * from jCdt where jA < 11;
+select * from ${testName}_jCdt where jA < 11;
 rows: 12
 
-select * from jCdt where jA <= 11;
+select * from ${testName}_jCdt where jA <= 11;
 rows: 13
 
-select * from jCdt where jA < 10;
+select * from ${testName}_jCdt where jA < 10;
 rows: 11
 
-select * from jCdt where jA <= 10;
+select * from ${testName}_jCdt where jA <= 10;
 rows: 12
 
-select * from jCdt where jA < 9;
+select * from ${testName}_jCdt where jA < 9;
 rows: 10
 
-select * from jCdt where jA <= 9;
+select * from ${testName}_jCdt where jA <= 9;
 rows: 11
 
-select * from jCdt where jA < 8;
+select * from ${testName}_jCdt where jA < 8;
 rows: 9
 
-select * from jCdt where jA <= 8;
+select * from ${testName}_jCdt where jA <= 8;
 rows: 10
 
-select * from jCdt where jA < 7;
+select * from ${testName}_jCdt where jA < 7;
 rows: 8
 
-select * from jCdt where jA <= 7;
+select * from ${testName}_jCdt where jA <= 7;
 rows: 9
 
-select * from jCdt where jA < 6;
+select * from ${testName}_jCdt where jA < 6;
 rows: 7
 
-select * from jCdt where jA <= 6;
+select * from ${testName}_jCdt where jA <= 6;
 rows: 8
 
-select * from jCdt where jA < 5;
+select * from ${testName}_jCdt where jA < 5;
 rows: 6
 
-select * from jCdt where jA <= 5;
+select * from ${testName}_jCdt where jA <= 5;
 rows: 7
 
-select * from jCdt where jA < 4;
+select * from ${testName}_jCdt where jA < 4;
 rows: 5
 
-select * from jCdt where jA <= 4;
+select * from ${testName}_jCdt where jA <= 4;
 rows: 6
 
-select * from jCdt where jA < 3;
+select * from ${testName}_jCdt where jA < 3;
 rows: 4
 
-select * from jCdt where jA <= 3;
+select * from ${testName}_jCdt where jA <= 3;
 rows: 5
 
-select * from jCdt where jA < 2;
+select * from ${testName}_jCdt where jA < 2;
 rows: 3
 
-select * from jCdt where jA <= 2;
+select * from ${testName}_jCdt where jA <= 2;
 rows: 4
 
-select * from jCdt where jA < 1;
+select * from ${testName}_jCdt where jA < 1;
 rows: 2
 
-select * from jCdt where jA <= 1;
+select * from ${testName}_jCdt where jA <= 1;
 rows: 3
 
-select * from jCdt where jA < -9223372036854775806;
+select * from ${testName}_jCdt where jA < -9223372036854775806;
 rows: 1
 
-select * from jCdt where jA <= -9223372036854775806;
+select * from ${testName}_jCdt where jA <= -9223372036854775806;
 rows: 2
 
-drop table jCdt;
+drop table ${testName}_jCdt;
 success
 
 CLEANUP {
 
-drop table jCdt;
+drop table ${testName}_jCdt;
 mute
 
 bye;

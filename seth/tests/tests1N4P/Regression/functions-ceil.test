@@ -1,7 +1,7 @@
 
 // Source file: ../queries/functions/ceil/rceil26.sql
 // Result file: ../queries/functions/ceil/results/ceil26.res
-select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from table1 a /*+HASH*/ join table9 b on a.ucolvc = b.ucolvc join table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by ceiling(TotVal) desc;
+select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from ${testName}_table1 a /*+HASH*/ join ${testName}_table9 b on a.ucolvc = b.ucolvc join ${testName}_table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by ceiling(TotVal) desc;
 ordered rows:
   (0, 33, 382, -146.140000000000, 5.340000000000, -3594.113520599136330000000000)
   (0, 84, 420, -134.670000000000, 5.340000000000, -3680.979999999926200000000000)
@@ -12,7 +12,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil16.sql
 // Result file: ../queries/functions/ceil/results/ceil16.res
-select colb9, ceiling(cold9), ucolvc from table9 where cole9 > 15 and cole9 < 20 order by pcol9;
+select colb9, ceiling(cold9), ucolvc from ${testName}_table9 where cole9 > 15 and cole9 < 20 order by pcol9;
 ordered rows:
   ('PURPLE', -129.0, 'kkk')
   ('grey', NULL, 'nnn')
@@ -27,7 +27,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil22.sql
 // Result file: ../queries/functions/ceil/results/ceil22.res
-select a.pcol1, b.pcol9, b.cole9, a.cole1, b.cole9 + a.cole1 from table1 a join table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9 + a.cole1) > 176 order by pcol1;
+select a.pcol1, b.pcol9, b.cole9, a.cole1, b.cole9 + a.cole1 from ${testName}_table1 a join ${testName}_table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9 + a.cole1) > 176 order by pcol1;
 ordered rows:
   (12, 12, 119.570000000000, 135.410000000000, 254.980000000000)
   (24, 24, 129.350000000000, 94.490000000000, 223.840000000000)
@@ -47,7 +47,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil23.sql
 // Result file: ../queries/functions/ceil/results/ceil23.res
-select a.pcol1, b.pcol9, b.cole9, a.cole1, b.cole9 / a.cole1 from table1 a join table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9 / a.cole1) < -1 order by pcol1;
+select a.pcol1, b.pcol9, b.cole9, a.cole1, b.cole9 / a.cole1 from ${testName}_table1 a join ${testName}_table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9 / a.cole1) < -1 order by pcol1;
 ordered rows:
   (0, 0, -17.120000000000, 5.340000000000, -3.205992509363)
   (17, 17, -146.900000000000, 27.740000000000, -5.295602018745)
@@ -66,7 +66,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil28.sql
 // Result file: ../queries/functions/ceil/results/ceil28.res
-select a.ucolvc, b.ucolvc, a.cold1, b.cold9, ceiling(a.cold1 + b.cold9) from table1 a join table9 b using(ucolvc) where a.ucolvc = 'zzz' and cold1 > 60.1 order by a.ucolvc, b.cold9;
+select a.ucolvc, b.ucolvc, a.cold1, b.cold9, ceiling(a.cold1 + b.cold9) from ${testName}_table1 a join ${testName}_table9 b using(ucolvc) where a.ucolvc = 'zzz' and cold1 > 60.1 order by a.ucolvc, b.cold9;
 ordered rows:
   ('zzz', 'zzz', 65.27, NULL, NULL)
   ('zzz', 'zzz', 65.27, NULL, NULL)
@@ -90,7 +90,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil5.sql
 // Result file: ../queries/functions/ceil/results/ceil5.res
-select colf9, ceiling(colf9) from table9 where colf9 < -13 order by pcol9;
+select colf9, ceiling(colf9) from ${testName}_table9 where colf9 < -13 order by pcol9;
 ordered rows:
   (-14, -14)
   (-14, -14)
@@ -122,7 +122,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil19.sql
 // Result file: ../queries/functions/ceil/results/ceil19.res
-select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) - -.5 < -145 order by pcol1;
+select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from ${testName}_table1 a join ${testName}_table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) - -.5 < -145 order by pcol1;
 ordered rows:
   (17, 17, 'violet', 'blue', -146.900000000000)
   (33, 33, 'GREEN', 'gold', -146.140000000000)
@@ -130,7 +130,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil30.sql
 // Result file: ../queries/functions/ceil/results/ceil30.res
-select a.ucolvc, b.ucolvc, a.cold1, b.cold9, ceiling(null + b.cold9) from table1 a join table9 b using(ucolvc) where a.ucolvc = 'zzz' order by a.ucolvc, a.cold1, b.cold9;
+select a.ucolvc, b.ucolvc, a.cold1, b.cold9, ceiling(null + b.cold9) from ${testName}_table1 a join ${testName}_table9 b using(ucolvc) where a.ucolvc = 'zzz' order by a.ucolvc, a.cold1, b.cold9;
 ordered rows:
   ('zzz', 'zzz', 22.23, NULL, NULL)
   ('zzz', 'zzz', 22.23, NULL, NULL)
@@ -172,7 +172,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil33.sql
 // Result file: ../queries/functions/ceil/results/ceil33.res
-select a.colf9, a.ucolvc, ceiling(b.cole9 / a.colf9), b.pcol9 from (select a.colf9, b.ucolvc from table9 a join table1 b using(ucol) where ceiling(cole9 / cole1 ) > 13) as a join table9 as b using(ucolvc) order by b.pcol9;
+select a.colf9, a.ucolvc, ceiling(b.cole9 / a.colf9), b.pcol9 from (select a.colf9, b.ucolvc from ${testName}_table9 a join ${testName}_table1 b using(ucol) where ceiling(cole9 / cole1 ) > 13) as a join ${testName}_table9 as b using(ucolvc) order by b.pcol9;
 ordered rows:
   (15, 'bbb', 5, 11)
   (15, 'bbb', 1, 19)
@@ -204,7 +204,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil18.sql
 // Result file: ../queries/functions/ceil/results/ceil18.res
-select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) - -75 < -50 order by pcol1;
+select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from ${testName}_table1 a join ${testName}_table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) - -75 < -50 order by pcol1;
 ordered rows:
   (2, 2, 'green', 'maroon', -145.190000000000)
   (5, 5, 'PINK', 'yellow', -140.700000000000)
@@ -222,13 +222,13 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/nrceil1.sql
 // Result file: none
-select colb9, ceiling(colb9) from table9;
+select colb9, ceiling(colb9) from ${testName}_table9;
 failure: 'Result file missing'
 
 
 // Source file: ../queries/functions/ceil/rceil24.sql
 // Result file: ../queries/functions/ceil/results/ceil24.res
-select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 from table1 a join table9 b on a.ucolvc = b.ucolvc join table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by pcol1, pcol9 limit 10;
+select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 from ${testName}_table1 a join ${testName}_table9 b on a.ucolvc = b.ucolvc join ${testName}_table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by pcol1, pcol9 limit 10;
 ordered rows:
   (0, 33, 420, -146.140000000000, 5.340000000000, -3994.493333333205960000000000)
   (0, 33, 403, -146.140000000000, 5.340000000000, -3778.293707865048060000000000)
@@ -239,7 +239,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil31.sql
 // Result file: ../queries/functions/ceil/results/ceil31.res
-select colf9, ucolvc from (select a.colf9, b.ucolvc from table9 a join table1 b using(ucol) where ceiling(cole9 / cole1 ) > 1) as a order by ucolvc, colf9 limit 5;
+select colf9, ucolvc from (select a.colf9, b.ucolvc from ${testName}_table9 a join ${testName}_table1 b using(ucol) where ceiling(cole9 / cole1 ) > 1) as a order by ucolvc, colf9 limit 5;
 ordered rows:
   (15, 'bbb')
   (-7, 'ggg')
@@ -250,7 +250,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil2.sql
 // Result file: ../queries/functions/ceil/results/ceil2.res
-select cole9, ceiling(cole9) from table9 where cole9 < -140 order by pcol9;
+select cole9, ceiling(cole9) from ${testName}_table9 where cole9 < -140 order by pcol9;
 ordered rows:
   (-143.590000000000, -143)
   (-146.140000000000, -146)
@@ -274,14 +274,14 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil20.sql
 // Result file: ../queries/functions/ceil/results/ceil20.res
-select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9 - -.5) < -145 order by pcol1;
+select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from ${testName}_table1 a join ${testName}_table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9 - -.5) < -145 order by pcol1;
 ordered rows:
   (17, 17, 'violet', 'blue', -146.900000000000)
 
 
 // Source file: ../queries/functions/ceil/rceil3.sql
 // Result file: ../queries/functions/ceil/results/ceil3.res
-select cold9, ceiling(cold9) from table9 where cold9 < -220.00 order by pcol9;
+select cold9, ceiling(cold9) from ${testName}_table9 where cold9 < -220.00 order by pcol9;
 ordered rows:
   (-232.64, -232.0)
   (-249.08, -249.0)
@@ -311,7 +311,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil12.sql
 // Result file: ../queries/functions/ceil/results/ceil12.res
-select colb9, cole9, ceiling(cole9), ceiling(cole9) + 1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
+select colb9, cole9, ceiling(cole9), ceiling(cole9) + 1.25 from ${testName}_table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
 ordered rows:
   ('BLUE', -4.500000000000, -4.000000000000, -2.750000000000)
   ('black', 2.540000000000, 3.000000000000, 4.250000000000)
@@ -329,7 +329,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil17.sql
 // Result file: ../queries/functions/ceil/results/ceil17.res
-select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) > 75 order by pcol1;
+select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from ${testName}_table1 a join ${testName}_table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) > 75 order by pcol1;
 ordered rows:
   (3, 3, 'green', 'green', 126.740000000000)
   (7, 7, 'green', 'gold', 103.340000000000)
@@ -359,7 +359,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil34.sql
 // Result file: ../queries/functions/ceil/results/ceil34.res
-select sum(ceiling(cole9)), ucolvc from table9 group by ucolvc order by ucolvc;
+select sum(ceiling(cole9)), ucolvc from ${testName}_table9 group by ucolvc order by ucolvc;
 ordered rows:
   (541, 'aaa')
   (-55, 'bbb')
@@ -391,7 +391,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil21.sql
 // Result file: ../queries/functions/ceil/results/ceil21.res
-select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) + a.cole1 < 10 order by pcol1;
+select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from ${testName}_table1 a join ${testName}_table9 b on a.pcol1 = b.pcol9 where ceiling(b.cole9) + a.cole1 < 10 order by pcol1;
 ordered rows:
   (0, 0, 'grey', 'BLACK', -17.120000000000)
   (2, 2, 'green', 'maroon', -145.190000000000)
@@ -422,7 +422,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil25.sql
 // Result file: ../queries/functions/ceil/results/ceil25.res
-select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from table1 a join table9 b on a.ucolvc = b.ucolvc join table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by ceiling(TotVal) desc;
+select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from ${testName}_table1 a join ${testName}_table9 b on a.ucolvc = b.ucolvc join ${testName}_table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by ceiling(TotVal) desc;
 ordered rows:
   (0, 33, 382, -146.140000000000, 5.340000000000, -3594.113520599136330000000000)
   (0, 84, 420, -134.670000000000, 5.340000000000, -3680.979999999926200000000000)
@@ -433,7 +433,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil4.sql
 // Result file: ../queries/functions/ceil/results/ceil4.res
-select colg9, ceiling(colg9) from table9 where colg9 < -150 order by pcol9;
+select colg9, ceiling(colg9) from ${testName}_table9 where colg9 < -150 order by pcol9;
 ordered rows:
   (-152, -152)
   (-174, -174)
@@ -472,13 +472,13 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil32.sql
 // Result file: none
-select a.colf9, a.ucolvc, ceiling(b.cole9 / a.colf9), b.pcol9 from (select a.colf9, b.ucolvc from table9 a join table1 b using(ucol) where ceiling(cole9 / cole1 ) > 13) as a join table9 as b using(ucolvc) order by b.pcol9;
+select a.colf9, a.ucolvc, ceiling(b.cole9 / a.colf9), b.pcol9 from (select a.colf9, b.ucolvc from ${testName}_table9 a join ${testName}_table1 b using(ucol) where ceiling(cole9 / cole1 ) > 13) as a join ${testName}_table9 as b using(ucolvc) order by b.pcol9;
 failure: 'Result file missing'
 
 
 // Source file: ../queries/functions/ceil/rceil27.sql
 // Result file: ../queries/functions/ceil/results/ceil27.res
-select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from table1 a /*+HASH*/ join table9 b on a.ucolvc = b.ucolvc /*+HASH*/ join table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by ceiling(TotVal) desc;
+select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from ${testName}_table1 a /*+HASH*/ join ${testName}_table9 b on a.ucolvc = b.ucolvc /*+HASH*/ join ${testName}_table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500 order by ceiling(TotVal) desc;
 ordered rows:
   (0, 33, 382, -146.140000000000, 5.340000000000, -3594.113520599136330000000000)
   (0, 84, 420, -134.670000000000, 5.340000000000, -3680.979999999926200000000000)
@@ -489,7 +489,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil7.sql
 // Result file: ../queries/functions/ceil/results/ceil7.res
-select colb9, cold9, ceiling(cold9 + 0.35) from table9 where cold9 > -5.0 and cold9 < 5.0 order by pcol9;
+select colb9, cold9, ceiling(cold9 + 0.35) from ${testName}_table9 where cold9 > -5.0 and cold9 < 5.0 order by pcol9;
 ordered rows:
   ('green', 3.7, 5.0)
   ('peach', 0.41, 1.0)
@@ -501,7 +501,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil11.sql
 // Result file: ../queries/functions/ceil/results/ceil11.res
-select colb9, cole9, ceiling(cole9), ceiling(cole9) - 1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
+select colb9, cole9, ceiling(cole9), ceiling(cole9) - 1.25 from ${testName}_table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
 ordered rows:
   ('BLUE', -4.500000000000, -4.000000000000, -5.250000000000)
   ('black', 2.540000000000, 3.000000000000, 1.750000000000)
@@ -519,7 +519,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil13.sql
 // Result file: ../queries/functions/ceil/results/ceil13.res
-select colb9, cole9, ceiling(cole9), ceiling(cole9) + -1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
+select colb9, cole9, ceiling(cole9), ceiling(cole9) + -1.25 from ${testName}_table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
 ordered rows:
   ('BLUE', -4.500000000000, -4.000000000000, -5.250000000000)
   ('black', 2.540000000000, 3.000000000000, 1.750000000000)
@@ -537,7 +537,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil10.sql
 // Result file: ../queries/functions/ceil/results/ceil10.res
-select colb9, cole9, ceiling(cole9 - 1.25) from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
+select colb9, cole9, ceiling(cole9 - 1.25) from ${testName}_table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
 ordered rows:
   ('BLUE', -4.500000000000, -5.000000000000)
   ('black', 2.540000000000, 2.000000000000)
@@ -555,13 +555,13 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/nrceil2.sql
 // Result file: ../queries/functions/ceil/results/nrceil2.res
-select sum(ceiling(colf9)), colb9 from table9 where sum(ceiling(colf9)) < 100 group by colb9 order by colb9;
+select sum(ceiling(colf9)), colb9 from ${testName}_table9 where sum(ceiling(colf9)) < 100 group by colb9 order by colb9;
 failure: 'Aggregate expression not allowed in WHERE predicate'
 
 
 // Source file: ../queries/functions/ceil/rceil8.sql
 // Result file: ../queries/functions/ceil/results/ceil8.res
-select pcol9, colb9, cole9, ceiling(cole9) * 1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
+select pcol9, colb9, cole9, ceiling(cole9) * 1.25 from ${testName}_table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
 ordered rows:
   (13, 'BLUE', -4.50, -5.00)
   (36, 'black', 2.54, 3.75)
@@ -579,7 +579,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil1.sql
 // Result file: ../queries/functions/ceil/results/ceil1.res
-select cole1, ceiling(cole1), ceiling(cole1) + 2.5 from table1 where cole1 between 3.0 and 11.5 order by cole1;
+select cole1, ceiling(cole1), ceiling(cole1) + 2.5 from ${testName}_table1 where cole1 between 3.0 and 11.5 order by cole1;
 ordered rows:
   (5.340000000000, 6, 8.5)
   (6.360000000000, 7, 9.5)
@@ -591,7 +591,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil6.sql
 // Result file: ../queries/functions/ceil/results/ceil6.res
-select colb9, cold9, ceiling(cold9) + 0.35 from table9 where cold9 > -5.0 and cold9 < 5.0 order by pcol9;
+select colb9, cold9, ceiling(cold9) + 0.35 from ${testName}_table9 where cold9 > -5.0 and cold9 < 5.0 order by pcol9;
 ordered rows:
   ('green', 3.7, 4.35)
   ('peach', 0.41, 1.35)
@@ -603,7 +603,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil15.sql
 // Result file: ../queries/functions/ceil/results/ceil15.res
-select pcol9, colb9, cold9, ceiling(cold9) / -3.12 from table9 where ceiling(cold9) / -3.12 < -75.5 order by colb9, pcol9;
+select pcol9, colb9, cold9, ceiling(cold9) / -3.12 from ${testName}_table9 where ceiling(cold9) / -3.12 < -75.5 order by colb9, pcol9;
 ordered rows:
   (239, NULL, 245.26, -78.84615384615384)
   (181, 'BLUE', 238.29, -76.6025641025641)
@@ -627,7 +627,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil29.sql
 // Result file: ../queries/functions/ceil/results/ceil29.res
-select a.ucolvc, b.ucolvc, a.cold1, b.cold9, ceiling(a.cold1 + b.cold9) from table1 a join table9 b using(ucolvc) where a.ucolvc = 'zzz' and cold9 is null order by a.ucolvc, b.cold9, a.cold1;
+select a.ucolvc, b.ucolvc, a.cold1, b.cold9, ceiling(a.cold1 + b.cold9) from ${testName}_table1 a join ${testName}_table9 b using(ucolvc) where a.ucolvc = 'zzz' and cold9 is null order by a.ucolvc, b.cold9, a.cold1;
 ordered rows:
   ('zzz', 'zzz', 22.23, NULL, NULL)
   ('zzz', 'zzz', 22.23, NULL, NULL)
@@ -637,7 +637,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil9.sql
 // Result file: ../queries/functions/ceil/results/ceil9.res
-select colb9, cole9, ceiling(cole9 * 1.25) from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
+select colb9, cole9, ceiling(cole9 * 1.25) from ${testName}_table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
 ordered rows:
   ('BLUE', -4.500000000000, -5.000000000000)
   ('black', 2.540000000000, 4.000000000000)
@@ -655,7 +655,7 @@ ordered rows:
 
 // Source file: ../queries/functions/ceil/rceil14.sql
 // Result file: ../queries/functions/ceil/results/ceil14.res
-select pcol9, colb9, cold9 from table9 where ceiling(cold9) > -11 and ceiling(cold9) < 15 order by pcol9;
+select pcol9, colb9, cold9 from ${testName}_table9 where ceiling(cold9) > -11 and ceiling(cold9) < 15 order by pcol9;
 ordered rows:
   (33, 'gold', 5.31)
   (91, 'green', 3.7)
