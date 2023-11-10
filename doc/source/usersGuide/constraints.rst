@@ -28,6 +28,11 @@ RapidsSE has several system limitations. These are documented below:
    represent one character. This will affect expression operators that
    manipulate string values such as ``SUBSTRING``.
 
+#. **Maximum of 255 characters for table, index and column names**
+
+   RapidsSE does not support table, index and column names greater than
+   255 characters.
+
 #. **Maximum of 48 columns per table**
 
    RapidsSE does not support tables having more than 48 columns.
