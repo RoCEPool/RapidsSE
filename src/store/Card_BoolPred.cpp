@@ -1121,11 +1121,11 @@ bool Card_BoolPred::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-Card_RlnConj * Card_BoolPred::pYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked)
+Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  p_conj_yanked = nullptr;
+  Card_CONJUNCTION* p_conj_yanked = nullptr;
 
   if (! this->nChildCards()) {
     RASSERT(! p_conj_yanked);
@@ -1186,10 +1186,11 @@ Card_RlnConj * Card_BoolPred::pYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_c
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                   */
 /*----------------------------------------------------------------------------*/
-Card_RlnConj * Card_BoolPred::pYank_conj(Stz* szWithMark, Card* p_test,
-                                         Card_CONJUNCTION*& p_conj_yanked)
+Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark, Card* p_test)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CONJUNCTION* p_conj_yanked = nullptr;
 
   if (Card_CONJUNCTION::bIsConj(p_test)) {
     if (p_test->bMark1(szWithMark)) {
@@ -1203,7 +1204,7 @@ Card_RlnConj * Card_BoolPred::pYank_conj(Stz* szWithMark, Card* p_test,
 
   Kid xKid(this);
   while (xKid.bEach()) {
-    if ((p_conj_yanked = this->pYank_conj(szWithMark, xKid.pChild(), p_conj_yanked))) {
+    if ((p_conj_yanked = this->pYank_rlnConj(szWithMark, xKid.pChild()))) {
       RASSERT(p_conj_yanked);
       RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
       return _pCard_RlnConj(p_conj_yanked);
