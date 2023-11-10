@@ -624,7 +624,9 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
 
   Card_OP* p_OP = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 
-  p_OP->vAdd_Conj_Under_filter(p_conj_corr);
+  pCI->G.p_filter = p_OP->pEnsure_filter();
+
+  pCI->G.p_filter->vAddConj(p_conj_corr);
 }
 
 

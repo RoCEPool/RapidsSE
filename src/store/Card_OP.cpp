@@ -80,23 +80,6 @@ bool Card_OP::bIsOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vAdd_Conj_Under_filter(Card_CONJUNCTION *p_CONJ)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Filter* p_filter = this->pSub_filter();
-  if (! p_filter) {
-    p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
-    Card_BoolPred* p_boolPred = _pCard_BoolPred(p_filter->pAppendNewCard(CK_BOOLPRED));
-    UNUSED(p_boolPred);
-  }
-
-  p_filter->vAddConj(p_CONJ);
-}
-
-/*----------------------------------------------------------------------------*/
 /* analyse from for injected columns                                          */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vAnalyse_injected(CardIter* pCI)
@@ -295,6 +278,24 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
   }
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Filter* Card_OP::pEnsure_filter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Filter* p_filter = this->pSub_filter();
+  if (p_filter)
+    return p_filter;
+
+  p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
+  Card_BoolPred* p_boolPred = _pCard_BoolPred(p_filter->pAppendNewCard(CK_BOOLPRED));
+  UNUSED(p_boolPred);
+
+  return p_filter;
 }
 
 /*----------------------------------------------------------------------------*/

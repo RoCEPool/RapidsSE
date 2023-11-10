@@ -683,12 +683,11 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI)
     if (! p_table)
       continue;
 
-    ((Card_OP *) pMainCard)->vAdd_Conj_Under_filter((Card_CONJUNCTION *) p_conj->pDupCardRecursive());
+    pCI->G.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
+    pCI->G.p_filter->vAddConj((Card_CONJUNCTION *) p_conj->pDupCardRecursive());
 
-    // todo: is this needed?
-    Card_Filter* p_filter = pMainCard->pSub_filter();
-    p_filter->vMark1(p_table->cMark1());
-    p_filter->vMark2(p_table->cMark2());
+    pCI->G.p_filter->vMark1(p_table->cMark1());
+    pCI->G.p_filter->vMark2(p_table->cMark2());
   }
 
   pCI->vRecurseEnd();

@@ -17,7 +17,6 @@ namespace STORE
 
     static bool bIsOp(Card* pCard);
 
-    void vAdd_Conj_Under_filter(Card_CONJUNCTION *p_CONJ);
     void vAnalyse_injected(CardIter* pCI);
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
@@ -29,6 +28,7 @@ namespace STORE
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);
 
+    Card_Filter* pEnsure_filter(void);
     void vEnsure_stream(CardIter* pCI);
 
     bool bIsEarlyLeaf(CardIter* pCI);
