@@ -181,7 +181,10 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
 
-  pCI->G.p_boolPred->vPush_CrlKeyConj_As_CrlKeyTest(p_conj_corr);
+  p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyPred);
+  p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
+
+  pCI->G.p_boolPred->vAddConj(p_conj_corr);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred

@@ -70,27 +70,27 @@ void Card_CONDITION::vAddTransients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert all stmCol to tblCol                                               */
 /*----------------------------------------------------------------------------*/
-void Card_CONDITION::vX_stmCol_To_tblCol(CardIter* pCI)
+void Card_CONDITION::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vX_stmCol_To_tblCol(pCI);
+    pCI->G.p_boolPred->vX_expCol_To_tblCol(pCI);
   else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vX_stmCol_To_tblCol(pCI);
+    pCI->G.p_rpnCalc->vX_expCol_To_tblCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert all tblCol to stmCol                                               */
 /*----------------------------------------------------------------------------*/
-void Card_CONDITION::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_CONDITION::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vX_tblCol_To_stmCol(pCI);
+    pCI->G.p_boolPred->vX_tblCol_To_expCol(pCI);
   else if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vX_tblCol_To_stmCol(pCI);
+    pCI->G.p_rpnCalc->vX_tblCol_To_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

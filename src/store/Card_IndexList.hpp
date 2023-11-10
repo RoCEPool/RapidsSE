@@ -33,7 +33,7 @@ namespace STORE
     bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqyRsl(void);
 
-    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

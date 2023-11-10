@@ -41,8 +41,6 @@ namespace STORE
     void vOntoRpnExpr_boolPred(String* psRpnExpr);
     void vOntoRpnExpr_boolPred_conj(String* psRpnExpr,
                                     Card_CONJSUBROOT *p_CONJSUBROOT);
-    void vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION* p_conj);
-    void vPush_rlnConj(Card_CONJUNCTION* p_conj);
     void vRemove_conj(Card_CONJUNCTION* p_conj);
     Card_RlnConj* pRlnConj_whichCallsSubQuery(CardIter* pCI);
     void vShortForm(String* pString);
@@ -50,8 +48,8 @@ namespace STORE
     bool bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked);
     bool bYank_conj(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_conj_yanked);
 
-    void vX_stmCol_To_tblCol(CardIter* p_conj);
-    void vX_tblCol_To_stmCol(CardIter* p_conj);
+    void vX_expCol_To_tblCol(CardIter* p_conj);
+    void vX_tblCol_To_expCol(CardIter* p_conj);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

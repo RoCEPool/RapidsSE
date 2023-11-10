@@ -48,13 +48,13 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_Bounds::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_BOUND))
-    xKid.p_bound()->vX_tblCol_To_stmCol(pCI);
+    xKid.p_bound()->vX_tblCol_To_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

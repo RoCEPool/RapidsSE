@@ -59,8 +59,8 @@ namespace STORE
 
     TypeId xColTypeId(void);
 
-    void vX_tblCol_To_stmCol(CardIter* pCI);
-    void vX_stmCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
+    void vX_expCol_To_tblCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

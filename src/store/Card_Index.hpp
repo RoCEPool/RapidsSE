@@ -23,7 +23,7 @@ namespace STORE
     void vAdd_streamKey_exprs(CardIter* pCI);
 
     void vDeleteBounds(void);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
     bool bHasEquivalentBound(Card_RlnConj* p_rlnConj);
     bool bUsesSqlRsl(void);
     void vSet_Choose_index(void);

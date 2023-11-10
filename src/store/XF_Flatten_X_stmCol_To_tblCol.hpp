@@ -22,7 +22,7 @@ namespace STORE
 
     static void vFlatten(CardIter* pCI);
 
-    void vX_stmCol_To_tblCol(void);
+    void vX_expCol_To_tblCol(void);
 
   private:
 

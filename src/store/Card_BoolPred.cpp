@@ -1069,43 +1069,6 @@ void Card_BoolPred::vOntoRpnExpr_boolPred_conj(String* psRpnExpr,
 }
 
 /*----------------------------------------------------------------------------*/
-/* move <where> to <table>/<filter>                                           */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vPush_CrlKeyConj_As_CrlKeyTest(Card_CONJUNCTION *p_conj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  p_conj->pSymbol()->Y_vCut(P_CrlKeyPred);
-  p_conj->pSymbol()->Y_vSet(P_CrlKeyTest);
-
-  if (this->nChildCards()) {
-    this->vPush_rlnConj(p_conj);
-  }
-  else {
-    this->vAppendChild(p_conj);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vPush_rlnConj(Card_CONJUNCTION* p_conj)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(p_conj->bIsCard(CK_RLNCONJ));
-
-  Card_CONJUNCTION* p_conj_oldTop = static_cast<Card_CONJUNCTION*>(this->pPopChild());
-  RASSERT(! this->nChildCards());
-
-  Card_AndConj* p_andPred_new = new Card_AndConj;
-  p_andPred_new->vAppendChild(p_conj_oldTop);
-  p_andPred_new->vAppendChild(p_conj);
-
-  this->vPushChild(p_andPred_new);
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vRemove_conj(Card_CONJUNCTION* p_conj)
@@ -1302,7 +1265,7 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card* p_test,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vX_stmCol_To_tblCol(CardIter* pCI)
+void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1323,7 +1286,7 @@ void Card_BoolPred::vX_stmCol_To_tblCol(CardIter* pCI)
     if (!pSymbol->bIs_Exp_Col())
       return C_CONTINUE_RECURSION;
 
-    p_term->vX_stmCol_To_tblCol(pCI);
+    p_term->vX_expCol_To_tblCol(pCI);
 
     return C_CONTINUE_RECURSION;
   };
@@ -1337,7 +1300,7 @@ void Card_BoolPred::vX_stmCol_To_tblCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1360,7 +1323,7 @@ void Card_BoolPred::vX_tblCol_To_stmCol(CardIter* pCI)
     if (!pSymbol->bIs_Tbl_Col())
       return C_CONTINUE_RECURSION;
 
-    p_term->vX_tblCol_To_stmCol(pCI);
+    p_term->vX_tblCol_To_expCol(pCI);
 
     return C_CONTINUE_RECURSION;
   };

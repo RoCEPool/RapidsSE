@@ -467,25 +467,25 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 /*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vX_stmCol_To_tblCol(CardIter* pCI)
+void Card_EXPRLIST::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_stmCol_To_tblCol(pCI);
+    xKid.p_expr()->vX_expCol_To_tblCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_EXPRLIST::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_tblCol_To_stmCol(pCI);
+    xKid.p_expr()->vX_tblCol_To_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

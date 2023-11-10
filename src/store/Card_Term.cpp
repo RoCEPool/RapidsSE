@@ -474,7 +474,7 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
+void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -507,7 +507,7 @@ void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert table-column term to stream-column                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
