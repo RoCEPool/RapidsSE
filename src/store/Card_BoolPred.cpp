@@ -515,7 +515,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add given rlnConj to this boolPred                                         */
 /*----------------------------------------------------------------------------*/
 
 #ifdef Z_BOOLPRED_NARY
@@ -556,10 +556,10 @@ void Card_BoolPred::vAdd_rlnConj(Card_RlnConj *p_rlnConj)
     return;
   }
 
-  Card* p_top = pPopChild();
+  Card* pChild_0 = pPopChild();
 
   Card_AndConj* pCard_conjAnd = new Card_AndConj;
-  pCard_conjAnd->vAppendChild(p_top);
+  pCard_conjAnd->vAppendChild(pChild_0);
   pCard_conjAnd->vAppendChild(p_rlnConj);
 
   vAppendChild(pCard_conjAnd);
@@ -568,7 +568,7 @@ void Card_BoolPred::vAdd_rlnConj(Card_RlnConj *p_rlnConj)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* bump any expCol by given amount                                            */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
@@ -605,7 +605,7 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get typeID                                                                 */
 /*----------------------------------------------------------------------------*/
 TypeId Card_BoolPred::xColTypeId(void)
 {
@@ -615,7 +615,7 @@ TypeId Card_BoolPred::xColTypeId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this boolPred contain given term?                                     */
+/* does this boolPred contain given symbol?                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
 {
@@ -653,7 +653,7 @@ bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect all <filter> and attempt to assign <conjCmp> after <scan>/<absJoin>*/
+/* copy any marked rlnCon to its <OP/filter>                                  */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark)
 {
@@ -717,6 +717,36 @@ void Card_BoolPred::vCorrect_expCol(Card_Emit* p_arriving)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calculate number of conjunctions with given mark                           */
+/*----------------------------------------------------------------------------*/
+i8 Card_BoolPred::nCullMarked_rlnConj(Stz* szWithMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nCulled = 0;
+
+  if (! this->nChildCards())
+    return 0;
+
+  Card_CONJUNCTION* pCard_conj = this->pRoot_conj();
+
+  while (pCard_conj) {
+
+    if (!bCullMarked_rlnConj(pCard_conj, szWithMark))
+      break;
+
+    nCulled++;
+
+    if (! this->nChildCards())
+      break;
+
+    pCard_conj = static_cast<Card_CONJUNCTION*>(this->pGetChild(0));
+  }
+
+  return nCulled;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
@@ -730,7 +760,7 @@ bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMar
 
   if (CK_RLNCONJ == eCard_conj) {
     if (p_conj->bMark1(szWithMark)) {
-      this->vRemove_rlnConj(_pCard_RlnConj(p_conj));
+      vRemove_rlnConj(_pCard_RlnConj(p_conj));
       delete p_conj;
       return true;
     }
@@ -940,39 +970,9 @@ bool Card_BoolPred::bIsScalarKey(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate number of conjunctions with given mark                           */
+/* inspect <boolPred> and mark any <conj> which could be moved                */
 /*----------------------------------------------------------------------------*/
-i8 Card_BoolPred::nMarked_conj(Stz* szWithMark)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nCulled = 0;
-
-  if (! this->nChildCards())
-    return 0;
-
-  Card_CONJUNCTION* pCard_conj = this->pRoot_conj();
-
-  while (pCard_conj) {
-
-    if (!bCullMarked_rlnConj(pCard_conj, szWithMark))
-      break;
-
-    nCulled++;
-
-    if (! this->nChildCards())
-      break;
-
-    pCard_conj = static_cast<Card_CONJUNCTION*>(this->pGetChild(0));
-  }
-
-  return nCulled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <boolPred>> and mark any <conj> which could be moved               */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark)
+void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -981,13 +981,20 @@ void Card_BoolPred::vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark)
 
     //p_card->vDump(__func__);
 
+    if (p_card->bIsCard(CK_ANDCONJ)) {
+      p_card->vMark1(MARK_AND);
+      continue;
+    }
+
     if (p_card->bIsCard(CK_NOTCONJ)) {
       p_card->vMark1(MARK_NOT);
       pCI->vDontDescend(true);
       continue;
     }
-    if (p_card->bIsCard(CK_ANDCONJ)) {
-      p_card->vMark1(MARK_AND);
+
+    if (p_card->bIsCard(CK_ORCONJ)) {
+      p_card->vMark1(MARK_OR);
+      pCI->vDontDescend(true);
       continue;
     }
 
@@ -1004,13 +1011,6 @@ void Card_BoolPred::vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark)
       continue;
     }
 
-    if (p_card->bIsCard(CK_ORCONJ)) {
-      p_card->vMark1(MARK_OR);
-      pCI->vDontDescend(true);
-      continue;
-    }
-
-
     if (p_card->bIsCard(CK_TERM))
       continue;
 
@@ -1018,7 +1018,6 @@ void Card_BoolPred::vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark)
   }
 
   pCI->vRecurseEnd();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1035,29 +1034,30 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given conjunction                                                     */
+/* remove given rlnConj from this boolPred                                    */
 /*----------------------------------------------------------------------------*/
 void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pParentCard = this->pFindParentRecursive(p_rlnConj);
+  Card* pParent_rlnConj = pFindParentRecursive(p_rlnConj);
 
-  pParentCard->vRemoveSub(p_rlnConj);
+  pParent_rlnConj->vRemoveSub(p_rlnConj);
 
-  if (CK_ANDCONJ == pParentCard->eCard() || CK_ORCONJ == pParentCard->eCard()) {
+  if (CK_ANDCONJ == pParent_rlnConj->eCard() ||
+      CK_ORCONJ  == pParent_rlnConj->eCard()) {
 
-    if (0 == pParentCard->nChildCards()) {
-      this->vRemoveSub(pParentCard);
+    if (0 == pParent_rlnConj->nChildCards()) {
+      this->vRemoveSub(pParent_rlnConj);
     }
     else {
-      Card* pSiblingCard = pParentCard->pGetChild(0);
-      Card* pGrandCard = this->pFindParentRecursive((pParentCard));
-      pParentCard->vRemoveSub(pSiblingCard);
-      pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
+      Card* pSibling_rlnConj = pParent_rlnConj->pGetChild(0);
+      Card* pGrand_rlnConj = this->pFindParentRecursive((pParent_rlnConj));
+      pParent_rlnConj->vRemoveSub(pSibling_rlnConj);
+      pGrand_rlnConj->vReplaceChild(pParent_rlnConj, pSibling_rlnConj);
     }
 
-    delete pParentCard;
+    delete pParent_rlnConj;
   }
 }
 

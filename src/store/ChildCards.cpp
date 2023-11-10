@@ -303,13 +303,8 @@ Card_Table* ChildCards::pFindTableCard(char cTableSyn, Card*& rpMainCard)
   i8 nMains = nChildCards();
   for (i8 i_Main = 0; i_Main < nMains; i_Main++) {
     rpMainCard = pGetChild(i_Main);
-    eCK eMainCard = rpMainCard->eCard();
 
-    if (CK_TABLE == eMainCard)
-      p_table = _pCard_Table(rpMainCard);
-    else
-      p_table = rpMainCard->pSub_table();
-
+    p_table = rpMainCard->pSub_table();
     if (! p_table)
       continue;
 

@@ -613,22 +613,22 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
   // todo: this should be Card_RlnConj
-  Card_CONJUNCTION* p_conj_corr = p_boolPred->pFind_rlnConj(P_CrlRslTest);
-  if (! p_conj_corr)
+  Card_RlnConj* p_rlnConj_corr = p_boolPred->pFind_rlnConj(P_CrlRslTest);
+  if (! p_rlnConj_corr)
     return;
 
-  p_boolPred->vRemove_rlnConj(_pCard_RlnConj(p_conj_corr));
+  p_boolPred->vRemove_rlnConj(p_rlnConj_corr);
 
-  //p_conj_corr->vDump();
+  //p_rlnConj_corr->vDump();
 
-  Card_Term* p_term_tblCol = p_conj_corr->pGetFirstTerm_tblCol();
+  Card_Term* p_term_tblCol = p_rlnConj_corr->pGetFirstTerm_tblCol();
   char cTblSyn = p_term_tblCol->cGetTblSyn();
 
   Card_OP* p_OP = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 
   pCI->G.p_filter = p_OP->pEnsure_filter();
 
-  pCI->G.p_filter->vAdd_rlnConj(_pCard_RlnConj(p_conj_corr));
+  pCI->G.p_filter->vAdd_rlnConj(p_rlnConj_corr);
 }
 
 

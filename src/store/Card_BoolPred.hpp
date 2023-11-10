@@ -25,6 +25,7 @@ namespace STORE
     bool bContains(Symbol* pGivenSymbol);
     void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
     void vCorrect_expCol(Card_Emit* p_arriving);
+    i8   nCullMarked_rlnConj(Stz* szWithMark);
     bool bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_expCol(CardIter* pCI);
@@ -36,8 +37,7 @@ namespace STORE
     bool bIsLiterals(void);
     bool bIsScalarCol(void);
     bool bIsScalarKey(void);
-    i8   nMarked_conj(Stz* szWithMark);
-    void vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark);
+    void vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark);
     void vOntoRpnExpr(String* psRpnExpr);
     void vRemove_rlnConj(Card_RlnConj *p_rlnConj);
     Card_CONJUNCTION* pRoot_conj(void);
