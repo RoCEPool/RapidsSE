@@ -14,19 +14,19 @@ create table | (i integer);
 failure contains: 'invalid command'
 
 // create a table
-create table t (i integer);
+create table ${testName}_t (i integer);
 success
 
 // no key
-create unique index idx on t();
+create unique index idx on ${testName}_t();
 failure contains: 'invalid columns'
 
 // no index
-drop index t idx;
+drop index ${testName}_t idx;
 failure contains: 'no such index'
 
 // no table / no index
-//drop index t1 idx;
+//drop index ${testName}_t1 idx;
 //failure contains: 'no such index'
 
 create table;
@@ -41,12 +41,12 @@ failure contains: 'invalid command'
 sleep a;
 failure contains: 'invalid command'
 
-drop table t;
+drop table ${testName}_t;
 success
 
 CLEANUP {
 
-  drop table t;
+  drop table ${testName}_t;
   mute
 
   bye;

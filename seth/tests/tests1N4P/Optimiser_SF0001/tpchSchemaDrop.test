@@ -2,28 +2,28 @@
 -- tpch drop schema tables (SF1)
 -------------------------------------------------------------------------------
 
-drop table customer;
+drop table ${testName}_customer;
 success
 
-drop table supplier;
+drop table ${testName}_supplier;
 success
 
-drop table orders;
+drop table ${testName}_orders;
 success
 
-drop table partsupp;
+drop table ${testName}_partsupp;
 success
 
-drop table part;
+drop table ${testName}_part;
 success
 
-drop table region;
+drop table ${testName}_region;
 success
 
-drop table lineitem;
+drop table ${testName}_lineitem;
 success
 
-drop table nation;
+drop table ${testName}_nation;
 success
 
 CLEANUP {

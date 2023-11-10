@@ -7,7 +7,7 @@ trackMemory;
 success
 
 // create a table
-create table dataTable (
+create table ${testName}_dataTable (
   key     INTEGER NOT NULL,
   name    VARCHAR(32) NOT NULL,
   value1  INTEGER,
@@ -16,21 +16,21 @@ create table dataTable (
 success
 
 // check columns of partition key
-lsPtncol dataTable;
+lsPtncol ${testName}_dataTable;
 rows:
   ('key','INTEGER',19,0,false,true)
 
 // load data into the table
-load dataTable "../DATA/PartitionKey/data.csv";
+load ${testName}_dataTable "../DATA/PartitionKey/data.csv";
 success
 
 // select rows from the table
-select * from dataTable;
+select * from ${testName}_dataTable;
 rows:
 1000
 
 // drop the table
-drop table dataTable;
+drop table ${testName}_dataTable;
 success
 
 // get memory leaks
@@ -39,7 +39,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table dataTable;
+  drop table ${testName}_dataTable;
   mute
 
   bye;

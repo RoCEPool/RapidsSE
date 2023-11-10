@@ -168,28 +168,28 @@ INCLUDE 'tpchSchemaDrop.test';
 
 CLEANUP {
 
-  drop table customer;
+  drop table ${testName}_customer;
   mute
 
-  drop table supplier;
+  drop table ${testName}_supplier;
   mute
 
-  drop table orders;
+  drop table ${testName}_orders;
   mute
 
-  drop table partsupp;
+  drop table ${testName}_partsupp;
   mute
 
-  drop table part;
+  drop table ${testName}_part;
   mute
 
-  drop table region;
+  drop table ${testName}_region;
   mute
 
-  drop table lineitem;
+  drop table ${testName}_lineitem;
   mute
 
-  drop table nation;
+  drop table ${testName}_nation;
   mute
 
   bye;

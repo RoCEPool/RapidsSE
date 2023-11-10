@@ -2,7 +2,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table partsupp (
+create table ${testName}_partsupp (
 PS_PARTKEY      INTEGER NOT NULL,
 PS_SUPPKEY      INTEGER NOT NULL,
 PS_AVAILQTY     INTEGER NOT NULL,
@@ -13,20 +13,20 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on suppkey
-CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_suppkey);
+CREATE INDEX IxPS_SUPPKEY ON ${testName}_partsupp(ps_suppkey);
 affected: 0
 
-CREATE INDEX IxPS_PARTKEY ON partsupp(ps_partkey);
+CREATE INDEX IxPS_PARTKEY ON ${testName}_partsupp(ps_partkey);
 affected: 0
 
 // load the table
-load partsupp "../TPCH/SF_0001/partsupp.csv";
+load ${testName}_partsupp "../TPCH/SF_0001/partsupp.csv";
 success
 
-select count(*) from partsupp;
+select count(*) from ${testName}_partsupp;
 rows: (800)
 
-compactidx partsupp IxPS_SUPPKEY;
+compactidx ${testName}_partsupp IxPS_SUPPKEY;
 success
 
 CLEANUP {

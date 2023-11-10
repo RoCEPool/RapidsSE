@@ -2,61 +2,61 @@
 /* spaces -- leading and trailing spaces tests                                */
 /*----------------------------------------------------------------------------*/
 
-create table T1 (
+create table ${testName}_t1 (
   col_id       INTEGER,
   col_vch      VARCHAR(50)
 );
 success
 
 // create an index
-create index idx on T1 (col_id);
+create index idx on ${testName}_t1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-load T1 "../seth/tests/load/terminatorVch_rev6.csv"
+load ${testName}_t1 "../seth/tests/load/terminatorVch_rev6.csv"
   record_terminator "|"
   record_ends "\n"
 ;
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName}_t1;
 rows: 1
 
-select * from T1;
+select * from ${testName}_t1;
 rows:
   (300,'ABC')
 
 // drop the table
-drop table T1;
+drop table ${testName}_t1;
 success
 
-create table T1 (
+create table ${testName}_t1 (
   col_id       INTEGER,
   col_int      INTEGER
 );
 success
 
 // create an index
-create index idx on T1 (col_id);
+create index idx on ${testName}_t1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-load T1 ".../DATA/Load/terminatorInt_rev6.csv" record_terminator "|" record_ends "\n";
+load ${testName}_t1 ".../DATA/Load/terminatorInt_rev6.csv" record_terminator "|" record_ends "\n";
 success
 
 // predicateFetch rows
-select * from T1;
+select * from ${testName}_t1;
 rows: 1
 
 // drop the table
-drop table T1;
+drop table ${testName}_t1;
 success
 
 
 CLEANUP {
   
-  drop table T1;
+  drop table ${testName}_t1;
   mute
 
   bye;

@@ -4,7 +4,7 @@
 
 // create the table
 
-create table terminator (
+create table ${testName}_terminator (
   pcol1 integer not null,
   tcol1 integer,
   cola1 integer,
@@ -19,28 +19,28 @@ create table terminator (
 success
 
 // create an index
-create index idx on terminator(pcol1);
+create index idx on ${testName}_terminator(pcol1);
 success
 
 // load data into the table with default formatter settings
-load terminator "../seth/tests/load/terminator.csv"
+load ${testName}_terminator "../seth/tests/load/terminator.csv"
   field_delimiter "|"
   record_terminator "|";
 success
 
-select * from terminator;
+select * from ${testName}_terminator;
 rows: 11
 
 // fetch
-predicateFetch terminator "pcol1 0 =";
+predicateFetch ${testName}_terminator "pcol1 0 =";
 rows:
  (0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
 
 // drop table terminator;
-drop table terminator;
+drop table ${testName}_terminator;
 success;
 
-create table terminator (
+create table ${testName}_terminator (
   pcol1 integer not null,
   tcol1 integer,
   cola1 integer,
@@ -55,28 +55,28 @@ create table terminator (
 success
 
 // create an index
-create index idx on terminator(pcol1);
+create index idx on ${testName}_terminator(pcol1);
 success
 
 // load data into the table with default formatter settings
-load terminator "../DATA/Load/terminator.csv"  field_delimiter "|";
+load ${testName}_terminator "../DATA/Load/terminator.csv"  field_delimiter "|";
 success
 
-select * from terminator;
+select * from ${testName}_terminator;
 rows: 11
 
 // fetch
-predicateFetch terminator "pcol1 0 =";
+predicateFetch ${testName}_terminator "pcol1 0 =";
 rows:
 (0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
 
 // drop table terminator;
-drop table terminator;
+drop table ${testName}_terminator;
 success;
 
 CLEANUP {
   
-  drop table terminator;
+  drop table ${testName}_terminator;
   mute
 
   bye;

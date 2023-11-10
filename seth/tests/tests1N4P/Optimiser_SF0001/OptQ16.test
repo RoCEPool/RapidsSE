@@ -14,8 +14,8 @@ select
   p_size,
   count(*) as supplier_cnt
 from
-  partsupp,
-  part
+  ${testName}_partsupp,
+  ${testName}_part
 where p_partkey = ps_partkey
    and p_brand <> 'Brand#45'
    and p_type not like 'MEDIUM POLISHED%'
@@ -25,7 +25,7 @@ where p_partkey = ps_partkey
     select
       s_suppkey
     from
-      supplier
+      ${testName}_supplier
     where
       s_comment like '%Customer%Complaints%'
   )

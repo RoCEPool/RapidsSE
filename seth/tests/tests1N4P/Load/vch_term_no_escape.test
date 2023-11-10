@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the tables
-create table vch (
+create table ${testName}_vch (
   vch_testno  INTEGER     NOT NULL,
   vch_field   VARCHAR(32),
   vch_comment VARCHAR(64) NOT NULL
@@ -11,97 +11,97 @@ create table vch (
 success
 
 // create an index
-create index idx on vch (vch_testno);
+create index idx on ${testName}_vch (vch_testno);
 success;
 
 // load data into the table with default formatter settings
-Load vch "../DATA/Load/vch_term_no_escape.csv"
+Load ${testName}_vch "../DATA/Load/vch_term_no_escape.csv"
   <record_terminator> = ";"
   <escape_char> = "\0"
   <enclosed_by_leading> =  "'" ;
 success
 
-//select * from vch;
+//select * from ${testName}_vch;
 //rows: 18
 
-predicateFetch vch "vch_testno 801 =";
+predicateFetch ${testName}_vch "vch_testno 801 =";
 rows:
   ( 801, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 802 =";
+predicateFetch ${testName}_vch "vch_testno 802 =";
 rows:
   ( 802, 'quick, brown fox', *)
 
-predicateFetch vch "vch_testno 803 =";
+predicateFetch ${testName}_vch "vch_testno 803 =";
 rows:
   ( 803, 'quick brown fox\', *)
 
-predicateFetch vch "vch_testno 804 =";
+predicateFetch ${testName}_vch "vch_testno 804 =";
 rows:
   ( 804, 'quick brown fox''s', *)
 
-predicateFetch vch "vch_testno 805 =";
+predicateFetch ${testName}_vch "vch_testno 805 =";
 rows:
   ( 805, 'quick brow\\n foxs', *)
 
-predicateFetch vch "vch_testno 806 =";
+predicateFetch ${testName}_vch "vch_testno 806 =";
 rows:
   ( 806, 'quick brown fox\ns', *)
 
-predicateFetch vch "vch_testno 807 =";
+predicateFetch ${testName}_vch "vch_testno 807 =";
 rows:
   ( 807, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 808 =";
+predicateFetch ${testName}_vch "vch_testno 808 =";
 rows:
   ( 808, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 809 =";
+predicateFetch ${testName}_vch "vch_testno 809 =";
 rows:
   ( 809, '', *)
 
-predicateFetch vch "vch_testno 810 =";
+predicateFetch ${testName}_vch "vch_testno 810 =";
 rows:
   ( 810, 'null', *)
 
-predicateFetch vch "vch_testno 811 =";
+predicateFetch ${testName}_vch "vch_testno 811 =";
 rows:
   ( 811, '\N', *)
 
-predicateFetch vch "vch_testno 812 =";
+predicateFetch ${testName}_vch "vch_testno 812 =";
 rows:
   ( 812, 'quick brown fox', *)
 
-predicateFetch vch "vch_testno 813 =";
+predicateFetch ${testName}_vch "vch_testno 813 =";
 rows:
   ( 813, '   quick brown fox   ', *)
 
-predicateFetch vch "vch_testno 814 =";
+predicateFetch ${testName}_vch "vch_testno 814 =";
 rows:
   ( 814, 'quick brown fox''s''', *)
 
-predicateFetch vch "vch_testno 815 =";
+predicateFetch ${testName}_vch "vch_testno 815 =";
 rows:
   ( 815, null, *)
 
-predicateFetch vch "vch_testno 816 =";
+predicateFetch ${testName}_vch "vch_testno 816 =";
 rows:
   ( 816, null, *)
 
-predicateFetch vch "vch_testno 817 =";
+predicateFetch ${testName}_vch "vch_testno 817 =";
 rows:
   ( 817, '\N', *)
 
-predicateFetch vch "vch_testno 818 =";
+predicateFetch ${testName}_vch "vch_testno 818 =";
 rows:
   ( 818, 'quick brown fox\ns', *)
 
-drop table vch;
+drop table ${testName}_vch;
 success
 
 CLEANUP {
   
-  drop table vch;
+  drop table ${testName}_vch;
   mute
 
   bye;
