@@ -789,14 +789,14 @@ void Card_BoolPred::vEnsureTypesFor_expCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* inspect <boolPred>> and mark any <conj> which could be moved               */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION* Card_BoolPred::pFind_rlnConj(Stz* szWithPpy)
+Card_RlnConj * Card_BoolPred::pFind_rlnConj(Stz* szWithPpy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_corr =
-      static_cast<Card_CONJUNCTION*>(pFindPpyRecursive(szWithPpy, CK_RLNCONJ));
+  Card_RlnConj* p_rlnConj =
+      _pCard_RlnConj(pFindPpyRecursive(szWithPpy, CK_RLNCONJ));
 
-  return p_conj_corr;
+  return p_rlnConj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -806,14 +806,14 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_RlnConj* pCmpConj = nullptr;
+  Card_RlnConj* p_rlnConj = nullptr;
 
-  auto bLambdaFn = [&pCmpConj,pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bLambdaFn = [&p_rlnConj,pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
   {
     UNUSED(bUpwards);
 
     if (p_conj->bContains_sqyCall(pCI)) {
-      pCmpConj = _pCard_RlnConj(p_conj);
+      p_rlnConj = _pCard_RlnConj(p_conj);
       return C_TERMINATE_RECURSION;
     }
 
@@ -827,7 +827,7 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(CardIter* pCI)
   bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 
-  return pCmpConj;
+  return p_rlnConj;
 }
 
 /*----------------------------------------------------------------------------*/
