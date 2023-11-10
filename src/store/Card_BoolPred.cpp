@@ -725,14 +725,14 @@ i8 Card_BoolPred::nCullMarked_rlnConj(Stz* szWithMark)
 
   i8 nCulled = 0;
 
-  if (! this->nChildCards())
+  if (! nChildCards())
     return 0;
 
-  Card_CONJUNCTION* pCard_conj = this->pRoot_conj();
+  Card_CONJUNCTION* p_conj_root = pRoot_conj();
 
-  while (pCard_conj) {
+  while (p_conj_root) {
 
-    if (!bCullMarked_rlnConj(pCard_conj, szWithMark))
+    if (!bCullMarked_rlnConj(p_conj_root, szWithMark))
       break;
 
     nCulled++;
@@ -740,7 +740,7 @@ i8 Card_BoolPred::nCullMarked_rlnConj(Stz* szWithMark)
     if (! this->nChildCards())
       break;
 
-    pCard_conj = static_cast<Card_CONJUNCTION*>(this->pGetChild(0));
+    p_conj_root = pRoot_conj();
   }
 
   return nCulled;

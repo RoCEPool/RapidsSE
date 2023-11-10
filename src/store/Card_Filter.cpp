@@ -140,7 +140,7 @@ void Card_Filter::vCorrect_expCol(Card_Emit* p_arriving)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Filter::nCullConj(Stz* szWithMark)
+i8 Card_Filter::nCullMarked_rlnConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

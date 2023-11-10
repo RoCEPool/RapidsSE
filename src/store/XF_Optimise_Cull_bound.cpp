@@ -158,9 +158,9 @@ bool XF_Optimise_Cull_bound::bXF_Cull_Used_bound(void)
   i8 nCulled = 0;
   while (m_pCI->G_bEachMain_NONE()) {
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter()))
-      nCulled += m_pCI->G.p_filter->nCullConj(MARK_AT);
+      nCulled += m_pCI->G.p_filter->nCullMarked_rlnConj(MARK_AT);
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint()))
-      nCulled += m_pCI->G.p_constraint->nCullConj(MARK_AT);
+      nCulled += m_pCI->G.p_constraint->nCullMarked_rlnConj(MARK_AT);
   }
 
   if (nCulled)

@@ -26,7 +26,7 @@ namespace STORE
     void vComputeProjection(CardIter* pCI); // prototype
     void vCorrect_expCol(Card_Emit* p_arriving);
 
-    i8 nCullConj(Stz* szWithMark);
+    i8 nCullMarked_rlnConj(Stz* szWithMark);
 
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);
