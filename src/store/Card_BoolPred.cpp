@@ -605,16 +605,6 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get typeID                                                                 */
-/*----------------------------------------------------------------------------*/
-TypeId Card_BoolPred::xColTypeId(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  return TypeId::xIdOf(CT_BOOLEAN);
-}
-
-/*----------------------------------------------------------------------------*/
 /* does this boolPred contain given symbol?                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
@@ -782,16 +772,16 @@ bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* delete facet if                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
+void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  auto fvDeleteFacetIf = [eFacet,eAlsoFacet,cTblSyn](Card* pCard_term)
+  auto fvDeleteFacetIf = [eFacet,eIfFacet,cTblSyn](Card* pCard_term)
   {
     Card_Term* p_term = _pCard_Term(pCard_term);
 
-    p_term->vDeleteFacetIf(eFacet,eAlsoFacet,cTblSyn);
+    p_term->vDeleteFacetIf(eFacet, eIfFacet, cTblSyn);
     return C_CONTINUE_RECURSION;
   };
 
@@ -804,11 +794,11 @@ void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vEnsureTypesFor_expCol(CardIter* pCI)
+void Card_BoolPred::vEnsureType_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJ* p_conj = static_cast<Card_CONJ*>(pGetChild(0));
+  Card_CONJ* p_conj = pRoot_conj();
 
   if (p_conj)
     p_conj->vEnsureTypesFor_stmCol(pCI);
@@ -1086,9 +1076,19 @@ void Card_BoolPred::vShortForm(String* pString)
   if (! nChildCards())
     return;
 
-  Card_CONJ* p_CONJUNCTION = static_cast<Card_CONJ*>(pGetChild(0));
+  Card_CONJ* p_conj = pRoot_conj();
 
-  p_CONJUNCTION->vShortForm(pString);
+  p_conj->vShortForm(pString);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get typeID                                                                 */
+/*----------------------------------------------------------------------------*/
+TypeId Card_BoolPred::xTypeId(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return TypeId::xIdOf(CT_BOOLEAN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1177,7 +1177,7 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
+  Card_CONJ* p_conj_root = this->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1201,7 +1201,7 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
+  bool bIgnore = p_conj_root->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
 }
 

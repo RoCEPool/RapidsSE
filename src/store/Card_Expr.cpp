@@ -183,7 +183,7 @@ TypeId Card_Expr::xColumnTypeId(void)
 
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
 
-    TypeId xColTypeId = p_rpnCalc->xColTypeId();
+    TypeId xColTypeId = p_rpnCalc->xTypeId();
 
     return xColTypeId;
   }
@@ -688,10 +688,10 @@ TypeId Card_Expr::xColTypeId(void)
   TypeId xColTypeId;
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-		xColTypeId = p_boolPred->xColTypeId();
+		xColTypeId = p_boolPred->xTypeId();
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    xColTypeId = p_rpnCalc->xColTypeId();
+    xColTypeId = p_rpnCalc->xTypeId();
 
   return xColTypeId;
 }

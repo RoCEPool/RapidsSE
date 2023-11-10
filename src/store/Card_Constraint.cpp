@@ -100,7 +100,7 @@ void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vEnsureTypesFor_expCol(pCI);
+    pCI->G.p_boolPred->vEnsureType_expCol(pCI);
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
     pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);

@@ -21,14 +21,13 @@ namespace STORE
 
     void vAdd_rlnConj(Card_RlnConj *p_rlnConj);
     void vBump_expCol(i8 p_conj, bool bSkipFoldExpr=false);
-    TypeId xColTypeId(void);
     bool bContains(Symbol* pGivenSymbol);
     void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
     void vCorrect_expCol(Card_Emit* p_arriving);
     i8   nCullMarked_rlnConj(Stz* szWithMark);
     bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
-    void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsureTypesFor_expCol(CardIter* pCI);
+    void vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn);
+    void vEnsureType_expCol(CardIter* pCI);
     Card_RlnConj * pFind_rlnConj(Stz* szWithPpy);
     Card_RlnConj* pFind_rlnConj_With_sqyCall(CardIter* pCI);
     bool bHas_term(Symbol* pWithSymbol);
@@ -42,14 +41,12 @@ namespace STORE
     void vRemove_rlnConj(Card_RlnConj *p_rlnConj);
     Card_CONJ* pRoot_conj(void);
     void vShortForm(String* pString);
-
+    TypeId xTypeId(void);
     Card_RlnConj * pYank_rlnConj(Stz* szWithMark);
-
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
-
   };
 
   Card_BoolPred* _pCard_BoolPred(void* aAddr);

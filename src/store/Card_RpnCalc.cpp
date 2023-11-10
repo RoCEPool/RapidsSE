@@ -91,7 +91,7 @@ void Card_RpnCalc::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-TypeId Card_RpnCalc::xColTypeId(void)
+TypeId Card_RpnCalc::xTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
