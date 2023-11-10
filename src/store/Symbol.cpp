@@ -24,7 +24,7 @@ Symbol::Symbol(void)
 
   vFacetReset();
 
-  //m_xColTypeId;
+  //m_xTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -43,7 +43,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-	//m_xColTypeId;
+	//m_xTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -64,7 +64,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-	//m_xColTypeId;
+	//m_xTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -1224,7 +1224,7 @@ TypeId Symbol::xColTypeId(void)
 {
 	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-	return m_xColTypeId;
+	return m_xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1234,7 +1234,7 @@ void Symbol:: vColTypeId(TypeId xColTypeId)
 {
 	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-	m_xColTypeId = xColTypeId;
+  m_xTypeId = xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1587,7 +1587,7 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
 
   vFacetConcat(pSymbol_arg);
 
-  m_xColTypeId = pSymbol_arg->m_xColTypeId;
+  m_xTypeId = pSymbol_arg->m_xTypeId;
 
   if (SF_EXP_COL == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Exp_Col(xaFacet[0].m_sChrSeq));
@@ -1707,7 +1707,7 @@ bool Symbol::bHasType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return m_xColTypeId.bIsValid();
+  return m_xTypeId.bIsValid();
 }
 
 /*----------------------------------------------------------------------------*/

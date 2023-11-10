@@ -213,7 +213,7 @@ void Card_IndexList::vTypes_For_stmCol(CardIter *pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/)
-    xKid.p_index()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_index()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

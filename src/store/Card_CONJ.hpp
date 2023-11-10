@@ -19,7 +19,7 @@ namespace STORE
     bool bConjRecursive(std::function<bool(Card_CONJ* p_pred, bool bUpwards)> bfApply);
     bool bContains_sqyCall(CardIter* pCI);
     bool bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn);
-    void vEnsureTypesFor_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblCol(void);
     Card_Term* pGetTerm(i8 i_Term);

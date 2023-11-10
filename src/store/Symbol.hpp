@@ -26,8 +26,7 @@ namespace STORE
     i8 m_nFacets;
     Facet xaFacet[C_FACETS];
 
-    //eCT m_eColType;
-		TypeId m_xColTypeId;
+		TypeId m_xTypeId;
 
     TagSet* m_pProperties;
 

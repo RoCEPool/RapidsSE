@@ -150,12 +150,12 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vTypes_For_stmCol(CardIter *pCI)
+void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

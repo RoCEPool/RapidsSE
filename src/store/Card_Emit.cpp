@@ -264,12 +264,12 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

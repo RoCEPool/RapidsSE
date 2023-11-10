@@ -204,12 +204,12 @@ bool Card_Bound::bEquivalent(Card_RlnConj* p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Bound::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vEnsureTypeFor_stmCol(pCI);
+    xKid.p_term()->vEnsureTypeId_expCol(pCI);
   }
 
 }

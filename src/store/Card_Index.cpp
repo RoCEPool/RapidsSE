@@ -254,12 +254,12 @@ Index* Card_Index::pGetIndex(Card_TableNm* p_tableNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Index::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Index::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_bounds = pSub_bounds()))
-    pCI->G.p_bounds->vEnsureTypes_For_stmCol(pCI);
+    pCI->G.p_bounds->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -24,7 +24,7 @@ namespace STORE
 
     void vX_tblCol_To_expCol(CardIter* pCI);
 
-    void vEnsureTypes_For_stmCol(CardIter *pCI);
+    void vEnsureTypeId_expCol(CardIter *pCI);
     bool bEquivalent(Card_RlnConj* p_rlnConj);
 
     Card_Term* pGetTerm(i8 i_Term);

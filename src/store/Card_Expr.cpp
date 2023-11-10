@@ -236,13 +236,13 @@ void Card_Expr::vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vEnsureTypes_For_stmCol(CardIter* pCI)
+void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->G.p_rpnCalc = pSub_rpnCalc();
 
-  pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
+  pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

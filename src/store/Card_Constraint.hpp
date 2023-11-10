@@ -20,7 +20,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     i8 nCullMarked_rlnConj(Stz* szWithMark);
 
-    void vEnsureTypes_For_stmCol(CardIter *pCI);
+    void vEnsureTypeId_expCol(CardIter *pCI);
 
     void vResolve_colNm_From_colSym(CardIter* pCI);
 

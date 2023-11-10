@@ -172,7 +172,7 @@ bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJ::vEnsureTypesFor_stmCol(CardIter *pCI)
+void Card_CONJ::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -180,12 +180,16 @@ void Card_CONJ::vEnsureTypesFor_stmCol(CardIter *pCI)
 
   switch (eCard) {
 
-    case CK_ANDCONJ: _pCard_AndConj(this)->vEnsureTypesFor_stmCol(pCI); break;
-    case CK_NOTCONJ: _pCard_NotConj(this)->vEnsureTypesFor_stmCol(pCI); break;
-    case CK_ORCONJ:  _pCard_OrConj(this)->vEnsureTypesFor_stmCol(pCI);  break;
-    case CK_RLNCONJ: _pCard_RlnConj(this)->vEnsureTypesFor_stmCol(pCI); break;
+    case CK_ANDCONJ:
+      _pCard_AndConj(this)->vEnsureTypeId_expCol(pCI); break;
+    case CK_NOTCONJ:
+      _pCard_NotConj(this)->vEnsureTypeId_expCol(pCI); break;
+    case CK_ORCONJ:
+      _pCard_OrConj(this)->vEnsureTypeId_expCol(pCI);  break;
+    case CK_RLNCONJ:
+      _pCard_RlnConj(this)->vEnsureTypeId_expCol(pCI); break;
 
-    case CK_TERM:    _pCard_Term(this)->vEnsureTypeFor_stmCol(pCI);     break;
+    case CK_TERM:    _pCard_Term(this)->vEnsureTypeId_expCol(pCI);     break;
 
     default:
       NEVER_REACH

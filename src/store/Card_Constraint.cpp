@@ -95,15 +95,15 @@ i8 Card_Constraint::nCullMarked_rlnConj(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Constraint::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vEnsureType_expCol(pCI);
+    pCI->G.p_boolPred->vEnsureTypeId_expCol(pCI);
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
+    pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

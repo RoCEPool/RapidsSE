@@ -794,14 +794,14 @@ void Card_BoolPred::vDeleteFacetIf(eSF eFacet, eSF eIfFacet, char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vEnsureType_expCol(CardIter* pCI)
+void Card_BoolPred::vEnsureTypeId_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CONJ* p_conj = pRoot_conj();
 
   if (p_conj)
-    p_conj->vEnsureTypesFor_stmCol(pCI);
+    p_conj->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

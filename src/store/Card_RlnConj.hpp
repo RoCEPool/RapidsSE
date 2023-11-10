@@ -24,7 +24,7 @@ namespace STORE
     Card_RlnConj* pCmpPredFindBound(Index* pIndex, ePB eBound);
     bool bCmpPredHasBounds(Index* pIndex);
     bool bCoPtnWith(Card_RlnConj* p_rlnConj_arg);
-    void vEnsureTypesFor_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
 
     Card_Term* pGetCorrCol(void);
     Card_Term* pExtractParamTerm(void);

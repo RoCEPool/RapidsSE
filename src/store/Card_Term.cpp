@@ -180,7 +180,7 @@ void Card_Term::vBump_expCol(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
+void Card_Term::vEnsureTypeId_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

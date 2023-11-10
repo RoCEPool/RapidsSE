@@ -28,7 +28,7 @@ namespace STORE
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsureTypes_For_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
     void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);

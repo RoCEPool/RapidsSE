@@ -26,7 +26,7 @@ namespace STORE
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);
-    void vEnsureTypes_For_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     bool bIsCompound(void);
     bool bIsLiterals(void);

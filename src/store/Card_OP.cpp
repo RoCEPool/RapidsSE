@@ -549,7 +549,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
   if (CK_PROJECT == eCard() && pCI->Flux.m_pArriving) {
     p_emit = pSub_emit();
-    p_emit->vEnsureTypes_For_stmCol(pCI);
+    p_emit->vEnsureTypeId_expCol(pCI);
     return;
   }
 
