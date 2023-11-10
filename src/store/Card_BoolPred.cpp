@@ -551,8 +551,6 @@ void Card_BoolPred::vAdd_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(p_rlnConj->bIsCard(CK_RLNCONJ));
-
   if (0 == nChildCards()) {
     vAppendChild(p_rlnConj);
     return;
@@ -1043,8 +1041,6 @@ void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(p_rlnConj->bIsCard(CK_RLNCONJ));
-
   Card* pParentCard = this->pFindParentRecursive(p_rlnConj);
 
   pParentCard->vRemoveSub(p_rlnConj);
@@ -1125,45 +1121,37 @@ Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* p_conj_yanked = nullptr;
-
-  if (! this->nChildCards()) {
-    RASSERT(! p_conj_yanked);
+  if (! this->nChildCards())
     return nullptr;
-  }
+
+  Card_RlnConj* p_rlnConj_yanked = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   auto bYank = [](Card_BoolPred* p_boolPred,
                   Stz* szWithMark,
                   Card* p_test,
-                  Card_CONJUNCTION*& p_conj_yanked,
+                  Card_RlnConj*& p_conj_yanked,
                   auto&& bYank /*oddity permits recursive lambda*/)
   {
     //p_test->vDump();
 
     if (Card_CONJUNCTION::bIsConj(p_test)) {
       if (p_test->bMark1(szWithMark)) {
-        p_conj_yanked = static_cast<Card_CONJUNCTION*>(p_test);
-        p_boolPred->vRemove_rlnConj(_pCard_RlnConj(p_conj_yanked));
-        RASSERT(p_conj_yanked);
-        RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-        return true;
+        p_conj_yanked = _pCard_RlnConj(p_test);
+        p_boolPred->vRemove_rlnConj(p_conj_yanked);
+         return true;
       }
     }
 
     Kid xKid(p_test);
     while (xKid.bEach()) {
       if (bYank(p_boolPred,szWithMark,xKid.pChild(),p_conj_yanked,bYank)) {
-        RASSERT(p_conj_yanked);
-        RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
         return true;
       }
     }
 
     RASSERT(! p_conj_yanked);
-    RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-
     return false;
   };
 
@@ -1172,14 +1160,12 @@ Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark)
 
   Kid xKid(this);
   while (xKid.bEach()) {
-    if (bYank(this, szWithMark, xKid.pChild(), p_conj_yanked, bYank)) {
-      RASSERT(p_conj_yanked);
-      RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-      return _pCard_RlnConj(p_conj_yanked);
+    if (bYank(this, szWithMark, xKid.pChild(), p_rlnConj_yanked, bYank)) {
+      return _pCard_RlnConj(p_rlnConj_yanked);
     }
   }
 
-  RASSERT(! p_conj_yanked);
+  RASSERT(! p_rlnConj_yanked);
   return nullptr;
 }
 
