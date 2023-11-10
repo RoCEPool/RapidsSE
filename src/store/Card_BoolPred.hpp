@@ -44,7 +44,6 @@ namespace STORE
     void vShortForm(String* pString);
 
     Card_RlnConj * pYank_rlnConj(Stz* szWithMark);
-    Card_RlnConj * pYank_rlnConj(Stz* szWithMark, Card* p_test);
 
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);

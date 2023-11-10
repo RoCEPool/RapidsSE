@@ -1183,37 +1183,6 @@ Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark)
   return nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/* remove given conjunction                                                   */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark, Card* p_test)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CONJUNCTION* p_conj_yanked = nullptr;
-
-  if (Card_CONJUNCTION::bIsConj(p_test)) {
-    if (p_test->bMark1(szWithMark)) {
-      p_conj_yanked = static_cast<Card_CONJUNCTION*>(p_test);
-      this->vRemove_rlnConj(_pCard_RlnConj(p_conj_yanked));
-      RASSERT(p_conj_yanked);
-      RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-      return _pCard_RlnConj(p_conj_yanked);
-    }
-  }
-
-  Kid xKid(this);
-  while (xKid.bEach()) {
-    if ((p_conj_yanked = this->pYank_rlnConj(szWithMark, xKid.pChild()))) {
-      RASSERT(p_conj_yanked);
-      RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-      return _pCard_RlnConj(p_conj_yanked);
-    }
-  }
-
-  RASSERT(! p_conj_yanked);
-  return nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
