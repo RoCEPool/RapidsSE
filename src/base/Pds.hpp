@@ -70,6 +70,7 @@ namespace BASE
     void*           aLastUsableByteAddr(void);
     i8              iLastUsableOffset(void);
     i8              iNumEntries(i8 iLevel);
+    void            vPrintRows(File* pFilePtr, Stz* szLabel);
     void            vReset(void);
     void            vStzSetSize(i8 nBytes);
     i8              iStzSetSize(void);

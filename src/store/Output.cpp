@@ -521,17 +521,11 @@ bool Output::bProcessOperand(Operand* pOperand)
 
     case CN_PDS: {
       Pds* pPds = _pPds(pOperand);
-//        if (AM::bDeveloper())
-//          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
-//                 spDataBuffer.sz(pRowBuffer),
-//                 pRowBuffer->nRows());
+
       if ( ! m_bHasError ) {
         m_ixRowsProcessed += pPds->nItems();
         vTrace("\n"_Stz);
-        PdsRowHelper* pPdsRowHelper = new PdsRowHelper;
-        pPdsRowHelper->m_pPdsOfRows = pPds;
-        pPdsRowHelper->vPrintRows(nullptr, nullptr);
-        delete pPdsRowHelper;
+        pPds->vPrintRows(nullptr, nullptr);
       } else {
         AM::vDeleteOperand(pOperand, nullptr);
       }
@@ -549,9 +543,6 @@ bool Output::bProcessOperand(Operand* pOperand)
       if ( ! m_bHasError ) {
         m_ixRowsProcessed += pRowBuffer->nRows();
         vTrace("\n"_Stz);
-//        PdsRowHelper* pPdsOfRows = new PdsRowHelper;
-//        pPdsOfRows->vCopyRows(pRowBuffer);
-//        pPdsOfRows->vPrintRows(nullptr, nullptr);
         pRowBuffer->vPrintRows(m_pFileOut, nullptr);
       }
       AM::vDeleteOperand(pOperand, nullptr);

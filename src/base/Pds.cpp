@@ -717,6 +717,32 @@ i8 Pds::iNumEntries(i8 iLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print rows                                                                 */
+/*----------------------------------------------------------------------------*/
+void Pds::vPrintRows(File* pFilePtr, Stz* szLabel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+  UNUSED(pFilePtr);
+
+  RASSERT(m_oRowPix.m_bInitialised);
+
+  HV_Record hvRecord(&m_oRowPix);
+
+  PdsCursor* pCursor = new PdsCursor(this);
+
+  i8 iKeySize = sizeof(m_iSynthRowKey);
+
+  while( ! pCursor->bIsCurrNull()) {
+    SkipListBlock* pSkipListBlock = pCursor->m_pCurrentBlock;
+    Row* aRowCur = aAdd<Row*>(pSkipListBlock->aItem(), iKeySize);
+
+    hvRecord->vToCsvRecord(aRowCur);
+    hvRecord->vPrintAsRow(szLabel);
+    pCursor->vNext();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Reset tmp variables                                                        */
 /*----------------------------------------------------------------------------*/
 void Pds::vReset(void)
