@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Card_OP.hpp"
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 
 namespace STORE
 {

@@ -77,7 +77,7 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
 //  m_pCI->vPrintBoard(__LINE__);
 
   // cull @ marked where predicates
-  Card_Where::vCullMarkedCmpConj(m_pCI);
+  Card_Where::vCullMarked_rlnConj(m_pCI);
 
 //  m_pCI->vRenumberCards();
 //  m_pCI->vPrintBoard(__LINE__);

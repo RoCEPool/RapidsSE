@@ -155,7 +155,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->vClearRestart();
   if (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED)) {
-    pCI->G.p_boolPred->nMarked_conj(MARK_AT);
+    (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
  // pCI->vPrintBoard();

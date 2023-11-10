@@ -229,18 +229,18 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_Table::vBounds_AddConj(Card_Index* p_index,
                                  Card_Bounds* p_bounds,
-                                 Card_CONJUNCTION *p_conj)
+                                 Card_CONJ *p_conj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   char cTblSyn = this->pSymbol()->cSF_char();
 
   Card_Bound* p_bound;
-  Card_CONJUNCTION* p_childPRED;
+  Card_CONJ* p_childPRED;
   if (p_conj->bIsCard(CK_ANDCONJ)) {
-    p_childPRED = (Card_CONJUNCTION*)p_conj->pGetChild(0);
+    p_childPRED = (Card_CONJ*)p_conj->pGetChild(0);
     this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
-    p_childPRED = (Card_CONJUNCTION*)p_conj->pGetChild(1);
+    p_childPRED = (Card_CONJ*)p_conj->pGetChild(1);
     this->vBounds_AddConj(p_index, p_bounds, p_childPRED);
   }
   else
@@ -299,7 +299,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
   Card_BoolPred* p_boolPred = pCI->G.p_filter->pSub_boolPred();
   RASSERT(1 == p_boolPred->nChildCards());
-  Card_CONJUNCTION* p_conj_root = p_boolPred->pRoot_conj();
+  Card_CONJ* p_conj_root = p_boolPred->pRoot_conj();
 
   Kid xKid(pCI->G.p_indexList);
   while (xKid.bEach(CK_INDEX)) {
@@ -310,7 +310,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
     //p_index->vDump(__func__);
 
-    auto bLambdaFn = [this, p_index](Card_CONJUNCTION *p_conj_Of_filter, bool bUpwards)
+    auto bLambdaFn = [this, p_index](Card_CONJ *p_conj_Of_filter, bool bUpwards)
     {
       if (bUpwards)
         return C_CONTINUE_RECURSION;
@@ -425,7 +425,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Table::bScopeContains_Conj(Card_CONJUNCTION* p_conj,
+bool Card_Table::bScopeContains_Conj(Card_CONJ* p_conj,
                                      Scope* pScope)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

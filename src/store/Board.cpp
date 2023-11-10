@@ -149,11 +149,11 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolPred->pRoot_conj();
+  Card_CONJ* p_conj_ROOT = pCI->G.p_boolPred->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfMarkSqyCall = [pCI,&bFoundCall](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bfMarkSqyCall = [pCI,&bFoundCall](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;

@@ -334,8 +334,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   if (CK_GBYAGG == p_OP->eCard()) {
 
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       p_expr->vDump(__func__,"GBYAGG"_Stz);
       sColNm = p_expr->szFacet(SF_ITM_COL);
@@ -351,8 +351,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   if (CK_SORT == p_OP->eCard()) {
 
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
@@ -367,8 +367,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   if (CK_TOP == p_OP->eCard()) {
 
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
@@ -384,14 +384,13 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   i8 i_EmittedCol = 1;
   UNUSED(i_EmittedCol);
   if (CK_PROJECT == p_OP->eCard()) {
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
 			TypeId xTypeId = p_expr->xColumnTypeId();
       pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
-
     }
 
     return pStreamDef;
@@ -402,8 +401,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   i_EmittedCol = 1;
   if (CK_SCAN == p_OP->eCard()) {
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
@@ -419,8 +418,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   RASSERT(CK_GBYAGG != p_OP->eCard());
   i_EmittedCol = 1;
 
-  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-    Card_Expr *p_expr = xProjection.p_expr();
+  for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
+    Card_Expr *p_expr = xExprList.p_expr();
 
     if (CK_PROJECT == p_OP->eCard()) {
       sColNm = p_expr->szFacet(SF_ITM_COL);
@@ -456,8 +455,6 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
         pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
                       true,
                       p_expr->pSymbol()->Y_iGet(P_Cell));
-
-
     }
   }
 
