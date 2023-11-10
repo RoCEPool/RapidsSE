@@ -2041,7 +2041,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_RLNCONJ:
 
       if (RC_NONE != m_eConjRot)
-        ((Card_CONJUNCTION*)this)->vPrint(pRibbon, iDepth);
+        ((Card_CONJ*)this)->vPrint(pRibbon, iDepth);
       else
         vPrintCard_bySettings(pRibbon, iDepth);
       break;

@@ -4,7 +4,7 @@
 
 #include "Card_BoolPred.hpp"
 
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 #include "Card_RlnConj.hpp"
 #include "Card_Term.hpp"
 #include "CardIter.hpp"
@@ -520,7 +520,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
 
 #ifdef Z_BOOLPRED_NARY
 
-void Card_BoolPred::vAdd_rlnConj(Card_CONJUNCTION *p_CONJUNCTION)
+void Card_BoolPred::vAdd_rlnConj(Card_CONJ *p_CONJUNCTION)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -574,11 +574,11 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* p_conj_ROOT = this->pRoot_conj();
+  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfBump = [nBumpBy,bSkipFoldExpr](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bfBump = [nBumpBy,bSkipFoldExpr](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -621,12 +621,12 @@ bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_ROOT = this->pRoot_conj();
+  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
 
   bool bDoesContain = false;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfContains = [pGivenSymbol,&bDoesContain](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bfContains = [pGivenSymbol,&bDoesContain](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -665,7 +665,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
   pCI->vRecurseBegin(this);
   s32 sTimes;
   for (i8 nTimes = 0;
-       Card_CONJUNCTION* p_conj = (Card_CONJUNCTION*)pCI->pRecurseEach();
+       Card_CONJ* p_conj = (Card_CONJ*)pCI->pRecurseEach();
        nTimes++) {
 
     sTimes = nTimes;
@@ -728,7 +728,7 @@ i8 Card_BoolPred::nCullMarked_rlnConj(Stz* szWithMark)
   if (! nChildCards())
     return 0;
 
-  Card_CONJUNCTION* p_conj_root = pRoot_conj();
+  Card_CONJ* p_conj_root = pRoot_conj();
 
   while (p_conj_root) {
 
@@ -749,7 +749,7 @@ i8 Card_BoolPred::nCullMarked_rlnConj(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMark)
+bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -771,7 +771,7 @@ bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMar
 
   i8 nChildren = p_conj->nChildCards();
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
-    Card_CONJUNCTION* pCard_conj_child = static_cast<Card_CONJUNCTION*>(p_conj->pGetChild(i_Child));
+    Card_CONJ* pCard_conj_child = static_cast<Card_CONJ*>(p_conj->pGetChild(i_Child));
     if (this->bCullMarked_rlnConj(pCard_conj_child, szWithMark))
       return true;
   }
@@ -808,7 +808,7 @@ void Card_BoolPred::vEnsureTypesFor_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+  Card_CONJ* p_conj = static_cast<Card_CONJ*>(pGetChild(0));
 
   if (p_conj)
     p_conj->vEnsureTypesFor_stmCol(pCI);
@@ -836,7 +836,7 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(CardIter* pCI)
 
   Card_RlnConj* p_rlnConj = nullptr;
 
-  auto bLambdaFn = [&p_rlnConj,pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bLambdaFn = [&p_rlnConj,pCI](Card_CONJ* p_conj, bool bUpwards)
   {
     UNUSED(bUpwards);
 
@@ -850,7 +850,7 @@ Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_CONJUNCTION* p_conj_ROOT = this->pRoot_conj();
+  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
 
   bool bIgnore = p_conj_ROOT->bConjRecursive(bLambdaFn);
   UNUSED(bIgnore);
@@ -1001,9 +1001,9 @@ void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
     if (p_card->bIsCard(CK_RLNCONJ)) {
       p_card->vMark1(MARK_COMPARE);
       pCI->vDontDescend(true);
-      if (((Card_CONJUNCTION *) p_card)->bContains_sqyCall(pCI))
+      if (((Card_CONJ *) p_card)->bContains_sqyCall(pCI))
         continue;
-      Symbol* pWhichTable = ((Card_CONJUNCTION *) p_card)->pTable_WhichTableFor_Conj(pCI);
+      Symbol* pWhichTable = ((Card_CONJ *) p_card)->pTable_WhichTableFor_Conj(pCI);
       if (pWhichTable) {
         p_card->vMark1(szWithMark);
         p_card->vMark2(pWhichTable->cSF_char());
@@ -1064,14 +1064,14 @@ void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION* Card_BoolPred::pRoot_conj(void)
+Card_CONJ* Card_BoolPred::pRoot_conj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! nChildCards())
     return nullptr;
 
-  Card_CONJUNCTION* p_conj = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+  Card_CONJ* p_conj = static_cast<Card_CONJ*>(pGetChild(0));
 
   return p_conj;
 }
@@ -1086,7 +1086,7 @@ void Card_BoolPred::vShortForm(String* pString)
   if (! nChildCards())
     return;
 
-  Card_CONJUNCTION* p_CONJUNCTION = static_cast<Card_CONJUNCTION*>(pGetChild(0));
+  Card_CONJ* p_CONJUNCTION = static_cast<Card_CONJ*>(pGetChild(0));
 
   p_CONJUNCTION->vShortForm(pString);
 }
@@ -1136,7 +1136,7 @@ Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark)
   {
     //p_test->vDump();
 
-    if (Card_CONJUNCTION::bIsConj(p_test)) {
+    if (Card_CONJ::bIsConj(p_test)) {
       if (p_test->bMark1(szWithMark)) {
         p_conj_yanked = _pCard_RlnConj(p_test);
         p_boolPred->vRemove_rlnConj(p_conj_yanked);
@@ -1177,11 +1177,11 @@ void Card_BoolPred::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_ROOT = this->pRoot_conj();
+  Card_CONJ* p_conj_ROOT = this->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bLambdaFn = [pCI](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -1212,13 +1212,13 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_root = this->pRoot_conj();
+  Card_CONJ* p_conj_root = this->pRoot_conj();
   if (! p_conj_root)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfTo_stmCol = [pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bfTo_stmCol = [pCI](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;

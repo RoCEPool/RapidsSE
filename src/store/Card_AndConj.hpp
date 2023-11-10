@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 
 namespace STORE
 {
-  class Card_AndConj : public Card_CONJUNCTION
+  class Card_AndConj : public Card_CONJ
   {  
   public:
     void* operator new(size_t);

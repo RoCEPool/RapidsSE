@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_OuterJoin.hpp"
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 #include "CardIter.hpp"
 
 

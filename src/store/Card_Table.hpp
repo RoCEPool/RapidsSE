@@ -34,14 +34,14 @@ namespace STORE
     static i8 nTables_reverse_foldBreak(CardIter* pCI);
 
     void vBounds_AddConj(Card_Index* p_index,
-                         Card_Bounds* p_bounds, Card_CONJUNCTION *p_PRED);
+                         Card_Bounds* p_bounds, Card_CONJ *p_PRED);
     Stz* szColNm(i8 i_Col_base0);
     Card_Index* pFindChosenIndex(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vDeriveBoundsFrom_filter(CardIter *pCI);
     bool bUsesSqyRsl(void);
     void vMorph_table_To_EEop(CardIter *pCI);
-    bool bScopeContains_Conj(Card_CONJUNCTION* p_pred, Scope* pScope);
+    bool bScopeContains_Conj(Card_CONJ* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(CardIter *pCI, Symbol* pSymbol_tableSyn);
     void vShortForm(String* pString_m, String* pString_b);

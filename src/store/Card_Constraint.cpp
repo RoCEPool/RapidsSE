@@ -117,13 +117,13 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
 
-  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pRoot_conj());
+  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
   if (! p_conj_ROOT)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bLambdaFn = [pCI](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;

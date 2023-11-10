@@ -43,7 +43,7 @@ Card_Bound::~Card_Bound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a (e|l|u) index bound given PRED                                    */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Card_Bound::pCreateFrom_CONJ(Card_CONJUNCTION* p_CONJ,
+Card_Bound* Card_Bound::pCreateFrom_CONJ(Card_CONJ* p_CONJ,
                                          char cTblSyn_boundedTo)
 {
   _static_

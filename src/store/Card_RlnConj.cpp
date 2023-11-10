@@ -23,7 +23,7 @@ __vDeleteFunction(Card_RlnConj, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RlnConj::Card_RlnConj(void)
-: Card_CONJUNCTION(CK_RLNCONJ, C_UNKNOWN)
+: Card_CONJ(CK_RLNCONJ, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

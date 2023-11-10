@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_AndConj.hpp"
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 #include "Card_RlnConj.hpp"
 
 #include "Kid.hpp"
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_AndConj, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AndConj::Card_AndConj(void)
-: Card_CONJUNCTION(CK_ANDCONJ, C_UNKNOWN)
+: Card_CONJ(CK_ANDCONJ, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -50,11 +50,11 @@ Card_RlnConj* Card_AndConj::pAndConjFindBound(Index* pIndex, ePB eBound)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-Card_CONJUNCTION* pSubConj0 = (Card_CONJUNCTION*)this->pGet(0);
+Card_CONJ* pSubConj0 = (Card_CONJ*)this->pGet(0);
 if (Card_RlnConj* pFound = pSubConj0->pPredFindBound(pIndex, eBound))
 return pFound;
 
-Card_CONJUNCTION* pSubConj1 = (Card_CONJUNCTION*)this->pGet(1);
+Card_CONJ* pSubConj1 = (Card_CONJ*)this->pGet(1);
 if (Card_RlnConj* pFound = pSubConj1->pPredFindBound(pIndex, eBound))
 return pFound;
 
@@ -68,11 +68,11 @@ bool Card_AndConj::bAndPredHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CONJUNCTION* pSubConj0 = (Card_CONJUNCTION*)this->pGet(0);
+  Card_CONJ* pSubConj0 = (Card_CONJ*)this->pGet(0);
   if (pSubConj0->bConjHasBounds(pIndex))
     return true;
 
-  Card_CONJUNCTION* pSubConj1 = (Card_CONJUNCTION*)this->pGet(1);
+  Card_CONJ* pSubConj1 = (Card_CONJ*)this->pGet(1);
   if (pSubConj1->bConjHasBounds(pIndex))
     return true;
 

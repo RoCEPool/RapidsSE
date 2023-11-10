@@ -26,7 +26,7 @@ namespace STORE
     void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
     void vCorrect_expCol(Card_Emit* p_arriving);
     i8   nCullMarked_rlnConj(Stz* szWithMark);
-    bool bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
+    bool bCullMarked_rlnConj(Card_CONJ* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_expCol(CardIter* pCI);
     Card_RlnConj * pFind_rlnConj(Stz* szWithPpy);
@@ -40,7 +40,7 @@ namespace STORE
     void vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark);
     void vOntoRpnExpr(String* psRpnExpr);
     void vRemove_rlnConj(Card_RlnConj *p_rlnConj);
-    Card_CONJUNCTION* pRoot_conj(void);
+    Card_CONJ* pRoot_conj(void);
     void vShortForm(String* pString);
 
     Card_RlnConj * pYank_rlnConj(Stz* szWithMark);
