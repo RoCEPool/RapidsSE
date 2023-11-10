@@ -18,7 +18,7 @@ namespace STORE
    ~Card_EXPRLIST(void) noexcept(false);
 
     void vBump_KeyCol_In_rpnCalc(CardIter* pCI);
-    void vBump_stmCol_In_rpnCalc(CardIter* pCI);
+    void vBump_expCol_In_rpnCalc(CardIter* pCI);
     void vBump_Rightwards(i8 nBumpBy);
 
     Card_Expr* pContains(Symbol* pSymbol_arg);

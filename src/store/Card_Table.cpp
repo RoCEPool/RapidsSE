@@ -299,7 +299,7 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
 
   Card_BoolPred* p_boolPred = pCI->G.p_filter->pSub_boolPred();
   RASSERT(1 == p_boolPred->nChildCards());
-  Card_CONJUNCTION* p_conj_root = p_boolPred->pConj_root();
+  Card_CONJUNCTION* p_conj_root = p_boolPred->pRoot_conj();
 
   Kid xKid(pCI->G.p_indexList);
   while (xKid.bEach(CK_INDEX)) {

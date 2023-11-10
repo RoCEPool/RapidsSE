@@ -73,7 +73,7 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_RpnCalc::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(bSkipFoldExpr);
@@ -82,7 +82,7 @@ void Card_RpnCalc::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
   while (xKid.bEach(CK_TERM)) {
 
     if (xKid.p_term()->pSymbol()->bIs_Exp_Col()) {
-      xKid.p_term()->vBump_stmCol(nBumpBy);
+      xKid.p_term()->vBump_expCol(nBumpBy);
       xKid.p_term()->vMark1(MARK_CHANGED);
     }
   }

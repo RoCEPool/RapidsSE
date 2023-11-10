@@ -63,7 +63,7 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_stmCol_In_rpnCalc(CardIter* )
+void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -80,7 +80,7 @@ void Card_EXPRLIST::vBump_stmCol_In_rpnCalc(CardIter* )
 //      Stz *szTerm = xCI2.G.p_term->szFacet(SF_NONE);
 
       if (xCI2.p_term()->pSymbol()->bIs_Exp_Col()) {
-        xCI2.p_term()->vBump_stmCol();
+        xCI2.p_term()->vBump_expCol();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }
@@ -98,7 +98,7 @@ void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vBump_stmCol(nBumpBy);
+    xKid.p_expr()->vBump_expCol(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -176,7 +176,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED));
-  pCI->G.p_boolPred->vBump_stmCol(2);
+  pCI->G.p_boolPred->vBump_expCol(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolPred>
@@ -359,7 +359,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
 
 
     if (AL_PARTITION != e_Level) {
-      pCI->G.p_emit->vBump_stmCol_In_rpnCalc(pCI);
+      pCI->G.p_emit->vBump_expCol_In_rpnCalc(pCI);
       //pCI->G.p_key->Y_vCut(P_ProjBump);
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBumped);
     }
@@ -391,7 +391,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   RASSERT(CT_NONE != pCI->G.p_key->xColTypeId().eCTVal());
 
   pCI->G.p_emit = pCI->G.p_project->pSub_emit();
-  pCI->G.p_emit->vBump_stmCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
+  pCI->G.p_emit->vBump_expCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
 
 
   // push <project>/_SQCRLKEY_
@@ -540,7 +540,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
 //    else
     if (p_conj->bIsCard(CK_RLNCONJ)) {
 
-      if (! p_conj->bContains_callToSubQuery(pCI))
+      if (!p_conj->bContains_sqyCall(pCI))
         return;
 
       RASSERT(p_conj->bIsBoolFn() ||
@@ -558,7 +558,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-        if (pCI->m_pBench->bIsSubQueryNm(xKid.pChild()->szFacet(SF_NONE))) {
+        if (pCI->m_pBench->bIsSqyNm(xKid.pChild()->szFacet(SF_NONE))) {
           Card* p_arg = xKid.pPrev();
 
           Card_Term* p_term_new = (new Card_Term) ->SYM(SF_EXP_COL, "$2"_Stz);

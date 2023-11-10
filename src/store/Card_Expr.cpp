@@ -162,15 +162,15 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of_key(Card_Expr* p_expr_key)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_Expr::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vBump_stmCol(nBumpBy, bSkipFoldExpr);
+    p_boolPred->vBump_expCol(nBumpBy, bSkipFoldExpr);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vBump_stmCol(nBumpBy, bSkipFoldExpr);
+    p_rpnCalc->vBump_expCol(nBumpBy, bSkipFoldExpr);
 
 }
 

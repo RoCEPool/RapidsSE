@@ -24,7 +24,7 @@ namespace STORE
     static void vItemStrip_colNm(CardIter* pCI);
 
     void vBumpKeyCol(i8 nBy=1);
-    void vBump_stmCol(i8 nBy= 1);
+    void vBump_expCol(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
      void vEnsureTypeFor_stmCol(CardIter* pCI);

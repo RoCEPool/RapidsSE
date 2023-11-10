@@ -17,7 +17,7 @@ namespace STORE
 
     bool bConjHasBounds (Index* pIndex);
     bool bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
-    bool bContains_callToSubQuery(CardIter* pCI);
+    bool bContains_sqyCall(CardIter* pCI);
     bool bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
 

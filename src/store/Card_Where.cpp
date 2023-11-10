@@ -81,7 +81,7 @@ void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
   pCI->vBeginEachReverse();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
-    pCI->G.p_boolPred->vMarkWrt_table(pCI);
+    pCI->G.p_boolPred->vMark_conj_Wrt_table(pCI,MARK_AT);
   }
 }
 
@@ -95,7 +95,7 @@ void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI) {
   pCI->vBeginEachReverse();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
-    pCI->G.p_boolPred->vCopyMarked_rlnConj_ToTable(pCI);
+    pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(pCI);
   }
 }
 

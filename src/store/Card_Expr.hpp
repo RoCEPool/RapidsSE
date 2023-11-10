@@ -23,7 +23,7 @@ namespace STORE
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
     static Card_Expr* pProj_Simple_expr_Of_key(Card_Expr* p_expr_key);
 
-    void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     TypeId xColumnTypeId(void);
     Card_Expr* pClone(void);
     bool bContains(Symbol* pSymbol_arg);

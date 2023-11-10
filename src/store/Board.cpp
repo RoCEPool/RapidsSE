@@ -149,7 +149,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolPred->pConj_root();
+  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolPred->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
