@@ -5,8 +5,8 @@
 
 struct ColumnInfo {
   i8    m_iColumnNo;      // this columns subscript
-  char  m_cColumnNm[32];  // name of the column
-  i8    m_iColumnTypeId;    // column typeId (CT_INTEGER etc) // ALKA COME BACK TO THIS
+  char  m_cColumnNm[256]; // name of the column
+  i8    m_iColumnTypeId;  // column typeId (CT_INTEGER etc) // ALKA COME BACK TO THIS
   i8    m_iColumnLength;  // logical length of the column
   i8    m_iColumnScale;   // logical scale of the column
   bool  m_bIsNullable;    // is column nullable?
@@ -26,8 +26,8 @@ struct RowInfo {
 
 struct IndexInfo {
   bool  m_bInitialize;
-  char  m_cTableName[32];
-  char  m_cIndexName[32];
+  char  m_cTableName[256];
+  char  m_cIndexName[256];
   void* m_aTable;
   void* m_aIndex;
   void* m_aIndexTree;

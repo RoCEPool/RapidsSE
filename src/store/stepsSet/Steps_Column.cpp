@@ -83,7 +83,7 @@ void Step::vColumnNameFetch(void)
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eGetClassNo());
   
-  s32 sColNm(pColumn->szColNm());
+  s256 sColNm(pColumn->szColNm());
   
   m_pDataStack->vPushStr(sColNm);
   

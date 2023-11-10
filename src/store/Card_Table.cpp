@@ -410,7 +410,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s32 sName;
+  s256 sName;
   sName = aCK_short[m_eCard];
   if (0 == iDepth)
     sName.vToUpper();

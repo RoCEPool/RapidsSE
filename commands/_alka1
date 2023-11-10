@@ -11,7 +11,7 @@ load nation "../DATA/TPCH/nation.tbl";
 /transliterated
 /keepCodeFile
 /pipelineName="XYZ"
-SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation;
+SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
 
 /*
 create table interval1(a timestamp);

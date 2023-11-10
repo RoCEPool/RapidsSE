@@ -154,7 +154,7 @@ void Step::vWordCategoryString(void)
 
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  s32 eCategory = aWC[pWord->eCategoryEnum()];
+	s256 eCategory = aWC[pWord->eCategoryEnum()];
 
   m_pDataStack->vPushStr(eCategory);
 
@@ -233,8 +233,8 @@ void Step::vWordExitHookGet(void)
   ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  s32 sExitHook(pWord->szExitHook());
+
+	s256 sExitHook(pWord->szExitHook());
   
   m_pDataStack->vPushStr(sExitHook);
   
@@ -249,8 +249,8 @@ void Step::vWordExitHookSet(void)
   ENTRY();
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  s32 sExitHook;
+
+	s256 sExitHook;
   m_pDataStack->vPopStr(sExitHook,__func__);
   
   pWord->vExitHook(sExitHook);
@@ -265,7 +265,7 @@ void Step::vWordFind(void)
 {
   ENTRY();
   
-  s32 sWordNm;
+  s256 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
     
   Word* pWordFound = m_oDicStack.pFindWord(sWordNm);
@@ -405,7 +405,7 @@ void Step::vWordLocate(void)
   Word* pLocatedWord = m_oDicStack.pLocateRoutine(aHasCell);
   
   if (pLocatedWord) {
-    s32 sName;
+    s256 sName;
     sName = pLocatedWord->szWordNm();
     m_pDataStack->vPushStr(sName);
   }
@@ -426,7 +426,7 @@ void Step::vWordNameFetch(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  s32 sWordName(pWord->szWordNm());
+  s256 sWordName(pWord->szWordNm());
   
   m_pDataStack->vPushStr(sWordName);
   

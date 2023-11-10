@@ -53,7 +53,7 @@ void Step::vIndexDefAddColumn(void)
 
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  s32 sColumnNm;
+  s256 sColumnNm;
   m_pDataStack->vPopStr(sColumnNm,__func__);
 
   Column* pColumn = pStreamDef->pFindColumn(sColumnNm);
@@ -120,7 +120,7 @@ void Step::vIndexDefNameStore(void)
 {
   ENTRY();
   
-  s32 sName;
+  s256 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
   m_pLogicUnit->m_xpIndexDef->vIndexNm(sName);
@@ -227,7 +227,7 @@ void Step::vIndexDefParseTableName(void)
   //  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
   //  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   
-  s32 sTableNm;
+  s256 sTableNm;
   
   eEC eResult = IndexDef::eParseTableName(sCmd, sTableNm);
   
@@ -260,7 +260,7 @@ void Step::vIndexDefTableNameFetch(void)
   
   IndexDef* pIndexDef = *m_pLogicUnit->m_xpIndexDef;
   
-  s32 sTableNm = pIndexDef->szTableNm();
+  s256 sTableNm = pIndexDef->szTableNm();
   
   m_pDataStack->vPushStr(sTableNm);
   
