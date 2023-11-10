@@ -110,17 +110,17 @@ Card_Emit* Card_Emit::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vCorrect_expCol(Card_Emit* p_emitted_prior)
+void Card_Emit::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     if (Card_BoolPred* p_boolPred = xKid.p_expr()->pSub_boolPred())
-      p_boolPred->vCorrect_expCol(p_emitted_prior);
+      p_boolPred->vCorrect_expCol(p_arriving);
     else
     if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
-      p_rpnCalc->vCorrect_expCol(p_emitted_prior);
+      p_rpnCalc->vCorrect_expCol(p_arriving);
   }
 }
 

@@ -19,12 +19,12 @@ namespace STORE
 
     static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc_arg);
 
-    void vAddConj(Card_CONJUNCTION *p_CONJUNCTION);
+    void vAdd_conj(Card_CONJUNCTION *p_CONJUNCTION);
     void vBump_expCol(i8 p_conj, bool bSkipFoldExpr=false);
     TypeId xColTypeId(void);
     bool bContains(Symbol* pGivenSymbol);
-    void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI);
-    void vCorrect_expCol(Card_Emit* p_emitted_prior);
+    void vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark);
+    void vCorrect_expCol(Card_Emit* p_arriving);
     bool bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMark);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_expCol(CardIter* pCI);
@@ -38,9 +38,7 @@ namespace STORE
     bool bIsScalarKey(void);
     i8   nMarked_conj(Stz* szWithMark);
     void vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark);
-    void vOntoRpnExpr_boolPred(String* psRpnExpr);
-    void vOntoRpnExpr_boolPred_conj(String* psRpnExpr,
-                                    Card_CONJSUBROOT *p_CONJSUBROOT);
+    void vOntoRpnExpr(String* psRpnExpr);
     void vRemove_conj(Card_CONJUNCTION* p_conj);
     Card_CONJUNCTION* pRoot_conj(void);
     void vShortForm(String* pString);

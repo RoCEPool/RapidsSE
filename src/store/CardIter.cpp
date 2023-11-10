@@ -2347,13 +2347,13 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emit* p_emitted_prior = pResolvePrior_projection();
-  if (! p_emitted_prior)
+  Card_Emit* p_arriving = pResolvePrior_projection();
+  if (! p_arriving)
     return nullptr;
 
-  //RASSERT(p_emitted_prior == this->Flux.m_pArriving);
+  //RASSERT(p_arriving == this->Flux.m_pArriving);
 
-  Card_Expr* p_expr_resolved = p_emitted_prior->pResolve_expr(p_term);
+  Card_Expr* p_expr_resolved = p_arriving->pResolve_expr(p_term);
   return p_expr_resolved;
 }
 
@@ -2378,9 +2378,9 @@ Card_Emit* CardIter::pResolvePrior_projection(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Card_Emit* p_emitted_prior = Card_Emit::pResolvePriorProjection(this);
+  Card_Emit* p_arriving = Card_Emit::pResolvePriorProjection(this);
 
-  return p_emitted_prior;
+  return p_arriving;
 }
 
 /*----------------------------------------------------------------------------*/

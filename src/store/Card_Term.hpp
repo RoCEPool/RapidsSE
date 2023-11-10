@@ -28,7 +28,7 @@ namespace STORE
     Card_Term* pClone(void);
     Card_Term* pClone(Symbol* pDiffSymbol);
      void vEnsureTypeFor_stmCol(CardIter* pCI);
-    void vCorrect_expCol(Card_Emit* p_emitted_prior);
+    void vCorrect_expCol(Card_Emit* p_arriving);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);

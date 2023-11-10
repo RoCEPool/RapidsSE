@@ -18,6 +18,8 @@ namespace STORE
     Card_OrConj*  pGet_orConj (i8 i_Child);
     Card_RlnConj* pGet_rlnConj(i8 i_Child);
 
+    void vOntoRpnExpr(String* psRpnExpr);
+
     Card_AndConj* pPop_andConj(void);
     Card_NotConj* pPop_notConj(void);
     Card_OrConj*  pPop_orConj (void);

@@ -88,14 +88,14 @@ void Card_Where::vMarkWhereConjWrtTable(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* move where predicate to table filter                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI) {
+void Card_Where::vMoveWhereConjToTableFilter(CardIter* pCI, Stz* szWithMark) {
 
   _static_
 
   pCI->vBeginEachReverse();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_WHERE, CK_BOOLPRED)) {
-    pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(pCI);
+    pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(pCI, szWithMark);
   }
 }
 

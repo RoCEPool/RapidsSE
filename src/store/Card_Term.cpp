@@ -435,7 +435,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vCorrect_expCol(Card_Emit* p_emitted_prior)
+void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -443,7 +443,7 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_emitted_prior)
     return;
 
   Symbol* pSym = pSymbol();
-  if (Card_Expr* p_expr = p_emitted_prior->pFindExprOfSymbol(pSym)) {
+  if (Card_Expr* p_expr = p_arriving->pFindExprOfSymbol(pSym)) {
     pSym->vFacets(p_expr->pSymbol());
     vMark1(MARK_CHANGED);
   }

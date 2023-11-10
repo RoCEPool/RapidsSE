@@ -184,7 +184,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyPred);
   p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->G.p_boolPred->vAddConj(p_conj_corr);
+  pCI->G.p_boolPred->vAdd_conj(p_conj_corr);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred

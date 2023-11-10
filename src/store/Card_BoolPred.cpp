@@ -547,7 +547,7 @@ void Card_BoolPred::vAddConj(Card_CONJUNCTION *p_CONJUNCTION)
 
 #else
 
-void Card_BoolPred::vAddConj(Card_CONJUNCTION *p_CONJUNCTION)
+void Card_BoolPred::vAdd_conj(Card_CONJUNCTION *p_CONJUNCTION)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -657,7 +657,7 @@ bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
 /*----------------------------------------------------------------------------*/
 /* inspect all <filter> and attempt to assign <conjCmp> after <scan>/<absJoin>*/
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI)
+void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWithMark)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -673,7 +673,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI)
     sTimes = nTimes;
     //p_conj->vDump(__func__,0,sTimes);
 
-    if (! p_conj->bMark1(MARK_AT))
+    if (! p_conj->bMark1(szWithMark))
       continue;
 
     RASSERT(p_conj->bIsCard(CK_RLNCONJ));
@@ -698,16 +698,16 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vCorrect_expCol(Card_Emit* p_emitted_prior)
+void Card_BoolPred::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfCorrect = [p_emitted_prior](Card* p_card)
+  auto bfCorrect = [p_arriving](Card* p_card)
   {
     if (p_card->pSymbol()->bIs_Exp_Col())
-      _pCard_Term(p_card)->vCorrect_expCol(p_emitted_prior);
+      _pCard_Term(p_card)->vCorrect_expCol(p_arriving);
 
     return C_CONTINUE_RECURSION;
   };
@@ -1026,62 +1026,14 @@ void Card_BoolPred::vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /* append <rpnExpr> for <boolPred>                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vOntoRpnExpr_boolPred(String* psRpnExpr)
+void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (bIsBraced())
     psRpnExpr->vConcat(" }"_Stz);
 
-  vOntoRpnExpr_boolPred_conj(psRpnExpr, this);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append part                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_BoolPred::vOntoRpnExpr_boolPred_conj(String* psRpnExpr,
-                                               Card_CONJSUBROOT *p_CONJSUBROOT)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xKid(p_CONJSUBROOT); xKid.bEach(); /**/) {
-    Card *pChild = xKid.pChild();
-
-    eCK eChild = pChild->eCard();
-    switch (eChild) {
-      case CK_ANDCONJ:
-        vOntoRpnExpr_boolPred_conj(psRpnExpr, _pCard_AndConj(pChild));
-        psRpnExpr->vCatSprint(" and"_Stz);
-        break;
-      case CK_NOTCONJ:
-        vOntoRpnExpr_boolPred_conj(psRpnExpr, _pCard_NotConj(pChild));
-        psRpnExpr->vCatSprint(" not"_Stz);
-        break;
-      case CK_ORCONJ:
-        vOntoRpnExpr_boolPred_conj(psRpnExpr, _pCard_OrConj(pChild));
-        psRpnExpr->vCatSprint(" or"_Stz);
-        break;
-      case CK_RLNCONJ:
-        vOntoRpnExpr_boolPred_conj(psRpnExpr, _pCard_RlnConj(pChild));
-        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
-        break;
-      case CK_TERM:
-        if (pChild->pSymbol()->bIs_Exp_Col() ||
-            pChild->pSymbol()->bIs_Tbl_Col()) {
-
-          // TODO: this rule should be in validate?
-          if (!pChild->pSymbol()->bHasType()) {
-            //p_part->vDump();
-            //pChild->vDump();
-            RASSERT(pChild->pSymbol()->bHasType());
-          }
-        }
-        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
-        break;
-      default:
-        NEVER_REACH
-    }
-  }
+  Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
 }
 
 /*----------------------------------------------------------------------------*/

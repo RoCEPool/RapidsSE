@@ -127,12 +127,12 @@ bool Card_RpnCalc::bContains(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vCorrect_expCol(Card_Emit* p_emitted_prior)
+void Card_RpnCalc::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    xKid.p_term()->vCorrect_expCol(p_emitted_prior);
+    xKid.p_term()->vCorrect_expCol(p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/

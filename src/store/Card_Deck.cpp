@@ -50,7 +50,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   Card_OP*         p_OP_prev          = nullptr;
   Card_Project*    p_project_prior    = nullptr;
-  Card_Emit* p_emitted_prior = nullptr;
+  Card_Emit* p_arriving = nullptr;
   Card_Cast*       p_cast_prior       = nullptr;
   Card_Combined*   p_combined_prior   = nullptr;
 
@@ -79,7 +79,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_project_prior,
                                                              p_combined_prior,
                                                              p_cast_prior,
-                                                             p_emitted_prior,
+                                                             p_arriving,
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
         pCI->G_vMainResynch();
@@ -107,7 +107,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
     // -- -- -- -- --
     if (pCI->G.p_OP->pSub_emit())
-      p_emitted_prior = pCI->G.p_OP->pSub_emit();
+      p_arriving = pCI->G.p_OP->pSub_emit();
   }
 
   delete p_streamPtn;

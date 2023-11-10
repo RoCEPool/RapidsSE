@@ -114,7 +114,7 @@ void Card_Filter::vAddConj(Card_CONJUNCTION *p_CONJUNCTION)
 
   Card_BoolPred* p_calcBool = this->pSub_boolPred();
 
-  p_calcBool->vAddConj(p_CONJUNCTION);
+  p_calcBool->vAdd_conj(p_CONJUNCTION);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,12 +129,12 @@ void Card_Filter::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vCorrect_expCol(Card_Emit* p_emitted_prior)
+void Card_Filter::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    p_boolPred->vCorrect_expCol(p_emitted_prior);
+    p_boolPred->vCorrect_expCol(p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/

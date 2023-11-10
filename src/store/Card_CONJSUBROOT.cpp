@@ -92,6 +92,52 @@ Card_RlnConj* Card_CONJSUBROOT::pGet_rlnConj(i8 i_Child)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append part                                                                */
+/*----------------------------------------------------------------------------*/
+void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card *pChild = xKid.pChild();
+
+    eCK eChild = pChild->eCard();
+    switch (eChild) {
+      case CK_ANDCONJ:
+        _pCard_AndConj(pChild)->vOntoRpnExpr(psRpnExpr);
+        psRpnExpr->vCatSprint(" and"_Stz);
+        break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pChild)->vOntoRpnExpr(psRpnExpr);
+        psRpnExpr->vCatSprint(" not"_Stz);
+        break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pChild)->vOntoRpnExpr(psRpnExpr);
+        psRpnExpr->vCatSprint(" or"_Stz);
+        break;
+      case CK_RLNCONJ:
+        _pCard_RlnConj(pChild)->vOntoRpnExpr(psRpnExpr);
+        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
+        break;
+      case CK_TERM:
+        if (pChild->pSymbol()->bIs_Exp_Col() ||
+            pChild->pSymbol()->bIs_Tbl_Col()) {
+
+          // TODO: this rule should be in validate?
+          if (!pChild->pSymbol()->bHasType()) {
+            //p_part->vDump();
+            //pChild->vDump();
+            RASSERT(pChild->pSymbol()->bHasType());
+          }
+        }
+        psRpnExpr->vCatSprint(" %s"_Stz, pChild->szFacet(SF_NONE));
+        break;
+      default:
+        NEVER_REACH
+    }
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* pop child andConj                                                          */
 /*----------------------------------------------------------------------------*/
 Card_AndConj* Card_CONJSUBROOT::pPop_andConj(void)

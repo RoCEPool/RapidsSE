@@ -84,7 +84,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vBeginEachReverse();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
-    m_pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(m_pCI);
+    m_pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(m_pCI,MARK_AT);
   }
 
  // m_pCI->vPrintBoard(__LINE__);

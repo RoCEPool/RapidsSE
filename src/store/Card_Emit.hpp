@@ -22,7 +22,7 @@ namespace STORE
     void vAdjust_Wrt_key(Card_Key* p_key);
 
     Card_Emit* pClone(void);
-    void vCorrect_expCol(Card_Emit* p_emitted_prior);
+    void vCorrect_expCol(Card_Emit* p_arriving);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDelete_streamKey(CardIter* pCI);
     void vDerive_streamKey(CardIter* pCI);

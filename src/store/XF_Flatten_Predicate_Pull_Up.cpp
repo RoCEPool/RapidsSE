@@ -71,7 +71,7 @@ void XF_Flatten_Predicate_Pull_Up::vXF_Predicate_Pull_Up(void)
 //  m_pCI->vPrintBoard(__LINE__);
 
   // move @ marked where predicates to table filter
-  Card_Where::vMoveWhereConjToTableFilter(m_pCI);
+  Card_Where::vMoveWhereConjToTableFilter(m_pCI, MARK_AT);
 
 //  m_pCI->vRenumberCards();
 //  m_pCI->vPrintBoard(__LINE__);
