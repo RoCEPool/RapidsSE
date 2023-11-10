@@ -732,7 +732,7 @@ bool Card_BoolPred::bCullMarked_rlnConj(Card_CONJUNCTION* p_conj, Stz* szWithMar
 
   if (CK_RLNCONJ == eCard_conj) {
     if (p_conj->bMark1(szWithMark)) {
-      this->vRemove_conj(p_conj);
+      this->vRemove_rlnConj(_pCard_RlnConj(p_conj));
       delete p_conj;
       return true;
     }
@@ -1039,15 +1039,15 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_BoolPred::vRemove_conj(Card_CONJUNCTION* p_conj)
+void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(p_conj->bIsCard(CK_RLNCONJ));
+  RASSERT(p_rlnConj->bIsCard(CK_RLNCONJ));
 
-  Card* pParentCard = this->pFindParentRecursive(p_conj);
+  Card* pParentCard = this->pFindParentRecursive(p_rlnConj);
 
-  pParentCard->vRemoveSub(p_conj);
+  pParentCard->vRemoveSub(p_rlnConj);
 
   if (CK_ANDCONJ == pParentCard->eCard() || CK_ORCONJ == pParentCard->eCard()) {
 
@@ -1145,7 +1145,7 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
     if (Card_CONJUNCTION::bIsConj(p_test)) {
       if (p_test->bMark1(szWithMark)) {
         p_conj_yanked = static_cast<Card_CONJUNCTION*>(p_test);
-        p_boolPred->vRemove_conj(p_conj_yanked);
+        p_boolPred->vRemove_rlnConj(_pCard_RlnConj(p_conj_yanked));
         RASSERT(p_conj_yanked);
         RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
         return true;
@@ -1194,7 +1194,7 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card* p_test,
   if (Card_CONJUNCTION::bIsConj(p_test)) {
     if (p_test->bMark1(szWithMark)) {
       p_conj_yanked = static_cast<Card_CONJUNCTION*>(p_test);
-      this->vRemove_conj(p_conj_yanked);
+      this->vRemove_rlnConj(_pCard_RlnConj(p_conj_yanked));
       RASSERT(p_conj_yanked);
       RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
       return true;
@@ -1256,8 +1256,8 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_conj = this->pRoot_conj();
-  if (! p_conj_conj)
+  Card_CONJUNCTION* p_conj_root = this->pRoot_conj();
+  if (! p_conj_root)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1282,7 +1282,7 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_conj->bConjRecursive(bfTo_stmCol);
+  bool bIgnore = p_conj_root->bConjRecursive(bfTo_stmCol);
   UNUSED(bIgnore);
 }
 

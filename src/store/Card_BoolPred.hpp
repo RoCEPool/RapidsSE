@@ -39,15 +39,15 @@ namespace STORE
     i8   nMarked_conj(Stz* szWithMark);
     void vMark_conj_Wrt_table(CardIter* pCI,Stz* szWithMark);
     void vOntoRpnExpr(String* psRpnExpr);
-    void vRemove_conj(Card_CONJUNCTION* p_conj);
+    void vRemove_rlnConj(Card_RlnConj *p_rlnConj);
     Card_CONJUNCTION* pRoot_conj(void);
     void vShortForm(String* pString);
 
     bool bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked);
     bool bYank_conj(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_conj_yanked);
 
-    void vX_expCol_To_tblCol(CardIter* p_conj);
-    void vX_tblCol_To_expCol(CardIter* p_conj);
+    void vX_expCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

@@ -617,7 +617,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
   if (! p_conj_corr)
     return;
 
-  p_boolPred->vRemove_conj(p_conj_corr);
+  p_boolPred->vRemove_rlnConj(_pCard_RlnConj(p_conj_corr));
 
   //p_conj_corr->vDump();
 
