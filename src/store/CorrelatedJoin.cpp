@@ -153,7 +153,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
 
   // tidy up empty SQ:<table>/<filter>
-  pCI->G.p_from->vDeleteFilterIfEmpty(pCI->G.p_filter);
+  pCI->G.p_from->vCullIfEmpty_filter(pCI->G.p_filter);
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred

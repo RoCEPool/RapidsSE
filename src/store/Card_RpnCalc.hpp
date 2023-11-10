@@ -21,7 +21,7 @@ namespace STORE
 		TypeId xColTypeId(void);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
+    void vCorrect_expCol(Card_Emit* p_emitted_prior);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypesFor_stmCol(CardIter* pCI);
     void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);

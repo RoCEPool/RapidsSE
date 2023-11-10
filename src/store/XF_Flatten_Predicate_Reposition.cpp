@@ -106,7 +106,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vBeginEachReverse();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_FILTER)) {
-    m_pCI->G.p_from->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
+    m_pCI->G.p_from->vCullIfEmpty_filter(m_pCI->G.p_filter);
   }
 
  // m_pCI->vPrintBoard(__LINE__);

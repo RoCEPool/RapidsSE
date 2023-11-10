@@ -21,9 +21,9 @@ namespace STORE
     void vApply_lambdaFn_ToAll_term(CardIter* pCI,
                                     std::function<bool(Card* pCard)> bfLambdaFn);
 
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
+    void vCorrect_expCol(Card_Emit* p_emitted_prior);
 
-    void vDeleteFilterIfEmpty(Card_Filter* p_filter);
+    void vCullIfEmpty_filter(Card_Filter* p_filter);
 
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);

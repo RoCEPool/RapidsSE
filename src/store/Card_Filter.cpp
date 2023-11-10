@@ -57,7 +57,7 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
 
   while (pCI->G_bEachMain_NONE()) {
     if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      pCI->G.p_OP->vDeleteFilterIfEmpty(pCI->G.p_filter);
+      pCI->G.p_OP->vCullIfEmpty_filter(pCI->G.p_filter);
   }
 }
 
@@ -129,7 +129,7 @@ void Card_Filter::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vCorrectStmCol(Card_Emit* p_emitted_prior)
+void Card_Filter::vCorrect_expCol(Card_Emit* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

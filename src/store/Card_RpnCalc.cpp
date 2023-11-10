@@ -127,7 +127,7 @@ bool Card_RpnCalc::bContains(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vCorrectStmCol(Card_Emit* p_emitted_prior)
+void Card_RpnCalc::vCorrect_expCol(Card_Emit* p_emitted_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
