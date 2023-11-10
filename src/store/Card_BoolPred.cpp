@@ -1121,7 +1121,7 @@ bool Card_BoolPred::bIsBraced(void)
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked)
+Card_RlnConj * Card_BoolPred::pYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1129,7 +1129,7 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
 
   if (! this->nChildCards()) {
     RASSERT(! p_conj_yanked);
-    return false;
+    return nullptr;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1175,19 +1175,19 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked
     if (bYank(this, szWithMark, xKid.pChild(), p_conj_yanked, bYank)) {
       RASSERT(p_conj_yanked);
       RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-      return true;
+      return _pCard_RlnConj(p_conj_yanked);
     }
   }
 
   RASSERT(! p_conj_yanked);
-  return false;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove given conjunction                                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card* p_test,
-                               Card_CONJUNCTION*& p_conj_yanked)
+Card_RlnConj * Card_BoolPred::pYank_conj(Stz* szWithMark, Card* p_test,
+                                         Card_CONJUNCTION*& p_conj_yanked)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1197,21 +1197,21 @@ bool Card_BoolPred::bYank_conj(Stz* szWithMark, Card* p_test,
       this->vRemove_rlnConj(_pCard_RlnConj(p_conj_yanked));
       RASSERT(p_conj_yanked);
       RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-      return true;
+      return _pCard_RlnConj(p_conj_yanked);
     }
   }
 
   Kid xKid(this);
   while (xKid.bEach()) {
-    if (this->bYank_conj(szWithMark, xKid.pChild(), p_conj_yanked)) {
+    if ((p_conj_yanked = this->pYank_conj(szWithMark, xKid.pChild(), p_conj_yanked))) {
       RASSERT(p_conj_yanked);
       RASSERT(p_conj_yanked->bIsCard(CK_RLNCONJ));
-      return true;
+      return _pCard_RlnConj(p_conj_yanked);
     }
   }
 
   RASSERT(! p_conj_yanked);
-  return false;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

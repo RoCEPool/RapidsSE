@@ -149,7 +149,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // todo: this should be Card_RlnConj
   Card_CONJUNCTION* p_conj_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_FILTER, CK_BOOLPRED))
-    if (pCI->G.p_boolPred->bYank_conj(MARK_AT, p_conj_corr))
+    if ((p_conj_corr = pCI->G.p_boolPred->pYank_conj(MARK_AT, p_conj_corr)))
       break;
   RASSERT(p_conj_corr->pSymbol()->Y_bHas(P_CrlKeyPred));
 

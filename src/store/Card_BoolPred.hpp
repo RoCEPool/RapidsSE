@@ -43,8 +43,8 @@ namespace STORE
     Card_CONJUNCTION* pRoot_conj(void);
     void vShortForm(String* pString);
 
-    bool bYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked);
-    bool bYank_conj(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_conj_yanked);
+    Card_RlnConj * pYank_conj(Stz* szWithMark, Card_CONJUNCTION*& p_conj_yanked);
+    Card_RlnConj * pYank_conj(Stz* szWithMark, Card* p_test, Card_CONJUNCTION*& p_conj_yanked);
 
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
