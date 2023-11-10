@@ -520,7 +520,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
 
 #ifdef Z_BOOLPRED_NARY
 
-void Card_BoolPred::vAddConj(Card_CONJUNCTION *p_CONJUNCTION)
+void Card_BoolPred::vAdd_rlnConj(Card_CONJUNCTION *p_CONJUNCTION)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -547,14 +547,14 @@ void Card_BoolPred::vAddConj(Card_CONJUNCTION *p_CONJUNCTION)
 
 #else
 
-void Card_BoolPred::vAdd_conj(Card_CONJUNCTION *p_CONJUNCTION)
+void Card_BoolPred::vAdd_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(p_CONJUNCTION->bIsCard(CK_RLNCONJ));
+  RASSERT(p_rlnConj->bIsCard(CK_RLNCONJ));
 
   if (0 == nChildCards()) {
-    vAppendChild(p_CONJUNCTION);
+    vAppendChild(p_rlnConj);
     return;
   }
 
@@ -562,7 +562,7 @@ void Card_BoolPred::vAdd_conj(Card_CONJUNCTION *p_CONJUNCTION)
 
   Card_AndConj* pCard_conjAnd = new Card_AndConj;
   pCard_conjAnd->vAppendChild(p_top);
-  pCard_conjAnd->vAppendChild(p_CONJUNCTION);
+  pCard_conjAnd->vAppendChild(p_rlnConj);
 
   vAppendChild(pCard_conjAnd);
 }
@@ -684,7 +684,7 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
       continue;
 
     pCI->G.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
-    pCI->G.p_filter->vAddConj((Card_CONJUNCTION *) p_conj->pDupCardRecursive());
+    pCI->G.p_filter->vAdd_rlnConj(_pCard_RlnConj(p_conj->pDupCardRecursive()));
 
     pCI->G.p_filter->vMark1(p_table->cMark1());
     pCI->G.p_filter->vMark2(p_table->cMark2());

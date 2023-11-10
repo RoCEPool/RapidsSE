@@ -21,7 +21,7 @@ namespace STORE
     static void vIndividuate_filter(CardIter* pCI);
     static Card_Filter* pNew(Card_Constraint* p_constraint);
 
-    void vAddConj(Card_CONJUNCTION *p_CONJUNCTION);
+    void vAdd_rlnConj(Card_RlnConj *p_rlnConj);
 
     void vComputeProjection(CardIter* pCI); // prototype
     void vCorrect_expCol(Card_Emit* p_arriving);

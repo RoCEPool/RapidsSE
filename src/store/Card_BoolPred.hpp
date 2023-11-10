@@ -19,7 +19,7 @@ namespace STORE
 
     static Card_BoolPred* pTo_boolPred(CardIter* pCI, Card_RpnCalc* p_rpnCalc_arg);
 
-    void vAdd_conj(Card_CONJUNCTION *p_CONJUNCTION);
+    void vAdd_rlnConj(Card_RlnConj *p_rlnConj);
     void vBump_expCol(i8 p_conj, bool bSkipFoldExpr=false);
     TypeId xColTypeId(void);
     bool bContains(Symbol* pGivenSymbol);

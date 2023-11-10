@@ -146,6 +146,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // f                             //           $d.2  ((pCI->m_pTerm_corrCol))
   //                               //             %1
 
+  // todo: this should be Card_RlnConj
   Card_CONJUNCTION* p_conj_corr = nullptr;
   while (pCI->G_bEachMainWith2Sub(CK_FROM, CK_FILTER, CK_BOOLPRED))
     if (pCI->G.p_boolPred->bYank_conj(MARK_AT, p_conj_corr))
@@ -184,7 +185,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   p_conj_corr->pSymbol()->Y_vCut(P_CrlKeyPred);
   p_conj_corr->pSymbol()->Y_vSet(P_CrlKeyTest);
 
-  pCI->G.p_boolPred->vAdd_conj(p_conj_corr);
+  pCI->G.p_boolPred->vAdd_rlnConj(_pCard_RlnConj(p_conj_corr));
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolPred
@@ -611,6 +612,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CORRELATEDJOIN, _FOOTER_);
 
+  // todo: this should be Card_RlnConj
   Card_CONJUNCTION* p_conj_corr = p_boolPred->pFind_rlnConj(P_CrlRslTest);
   if (! p_conj_corr)
     return;
@@ -626,7 +628,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolPred
 
   pCI->G.p_filter = p_OP->pEnsure_filter();
 
-  pCI->G.p_filter->vAddConj(p_conj_corr);
+  pCI->G.p_filter->vAdd_rlnConj(_pCard_RlnConj(p_conj_corr));
 }
 
 

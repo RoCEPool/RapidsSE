@@ -108,13 +108,13 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vAddConj(Card_CONJUNCTION *p_CONJUNCTION)
+void Card_Filter::vAdd_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_BoolPred* p_calcBool = this->pSub_boolPred();
 
-  p_calcBool->vAdd_conj(p_CONJUNCTION);
+  p_calcBool->vAdd_rlnConj(p_rlnConj);
 }
 
 /*----------------------------------------------------------------------------*/
