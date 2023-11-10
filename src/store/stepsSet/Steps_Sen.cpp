@@ -113,7 +113,7 @@ void Step::vSenCreateFromInRoot(void)
 {
   ENTRY();
   
-  s32 sName;
+  s256 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
   Dic* pDic = AM::DIC::pRoot();
@@ -289,7 +289,7 @@ void Step::vSenFind(void)
   b = m_pInput->bReadToken(eError);
   UNUSED(b);
 
-  s32 sWordNm;
+  s256 sWordNm;
   sWordNm = m_pInput->szChars();
   
   Word* pWord = m_oDicStack.pFindWord(sWordNm);
@@ -915,7 +915,7 @@ void Step::vSenSeriesName(void)
 {
   ENTRY();
   
-  s32 sName;
+  s256 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -927,8 +927,8 @@ void Step::vSenSeriesName(void)
   Word* pWord = nullptr;
   while ( (pWord = pDicRoot->pEachWord(pWord)) ) {
 
-    s32 sStr;
-    s32 sInt;
+		s256 sStr;
+		s256 sInt;
     
     StrLib::vSplitSeries(sStr.azChar(), sStr.nAreaBytes(),
                          sInt.azChar(), sInt.nAreaBytes(),
@@ -942,7 +942,7 @@ void Step::vSenSeriesName(void)
     }
   }
 
-  s32 sNextName(sName);
+	s256 sNextName(sName);
   sNextName.vCatSprint("%02lld"_Stz,iNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

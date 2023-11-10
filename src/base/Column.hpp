@@ -15,7 +15,7 @@ namespace BASE
   {
     private:
     i8    m_iColumnNo;      // this columns subscript
-    s32   m_sColumnNm;      // name of the column
+    s256  m_sColumnNm;      // name of the column
 		TypeId m_xColumnTypeId; // column type id
 
     bool  m_bIsUnique;      // is column unique?
@@ -77,7 +77,7 @@ namespace BASE
     bool bIsLastColumn(void);
     void vIsLastColumn(bool bIsLastColumn);
     
-    bool bIsName(s32& sName);
+    bool bIsName(s256& sName);
   
     bool bIsUnique(void);
     void vIsUnique(bool bIsUnique);

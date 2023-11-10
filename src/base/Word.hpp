@@ -17,7 +17,7 @@ namespace BASE
   private:
     SkipNode* m_pSkipNode;    // the node of this word in dic skiplist
 
-    s32       m_sWordNm;      // the name of this word
+    s256      m_sWordNm;      // the name of this word
     eWK       m_eWord;        // kind of word
     eWC       m_eWordCategory;// category of word enum
 
@@ -99,7 +99,7 @@ namespace BASE
     bool  bHasCell(CodeCell* aCell);
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
-    bool  bIsName(s32& sName);
+    bool  bIsName(s256& sName);
     CodeCell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);

@@ -482,7 +482,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__I__,                     'I' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_INDEX,                    sizeof(Index),              HT_T_TINY    ,FILL },
-  { CN_INDEXDEF,                 sizeof(IndexDef),           HT_T_SMALL   ,FILL },
+  { CN_INDEXDEF,                 sizeof(IndexDef),           HT_T_MEDIUM  ,FILL },
   { CN_INDEXSTREAM,              sizeof(IndexStream),        HT_T_TINY    ,FILL },
   { CN_INDEXTREE,                sizeof(IndexTree),          HT_T_TINY    ,FILL },
   { CN_INDEXTREEVEC,             sizeof(IndexTreeVec),       HT_T_TINY    ,FILL },
@@ -615,7 +615,7 @@ SizeHeap gxaSizeHeap[]
   {CN_PROCEDURE,            sizeof(Procedure),              HT_T_MEDIUM  , FILL },
   {CN_PROFILE,              sizeof(Profile),                HT_T_MEDIUM  , FILL },
   {CN_PSXTHD,               sizeof(PsxThd),                 HT_T_TINY    , FILL },
-  {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_MEDIUM  , FILL },
+  {CN_PTNDEF,               sizeof(PtnDef),                 HT_T_LARGE   , FILL },
   {CN_PTNID,                sizeof(LglPtn),                 HT_T_TINY    , FILL },
   {CN_PTRVAL,               sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 

@@ -327,7 +327,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   StreamDef* pStreamDef = new StreamDef;
 
-  s32 sColNm;
+  s256 sColNm;
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
