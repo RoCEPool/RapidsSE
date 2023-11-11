@@ -75,42 +75,6 @@ void Card_OrConj::vEnsureTypeId_expCol(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the E_eTerm_Bound of given index                 */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_OrConj::pOrPredFindBound(Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CONJ* pSubConj0 = (Card_CONJ*)this->pGet(0);
-  if (Card_RlnConj* pFound = pSubConj0->pPredFindBound(pIndex, eBound))
-    return pFound;
-
-  Card_CONJ* pSubConj1 = (Card_CONJ*)this->pGet(1);
-  if (Card_RlnConj* pFound = pSubConj1->pPredFindBound(pIndex, eBound))
-    return pFound;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does orPred have some bound on given index?                                */
-/*----------------------------------------------------------------------------*/
-//bool Card_OrConj::bOrPredHasBounds(Index* pIndex)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Card_CONJ* pSubConj0 = (Card_CONJ*)this->pGet(0);
-//  if (pSubConj0->bConjHasBounds(pIndex))
-//    return true;
-//
-//  Card_CONJ* pSubConj1 = (Card_CONJ*)this->pGet(1);
-//  if (pSubConj1->bConjHasBounds(pIndex))
-//    return true;
-//
-//  return false;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_OrConj::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)

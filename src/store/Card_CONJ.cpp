@@ -405,37 +405,6 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the E_eTerm_Bound of given index               */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_CONJ::pPredFindBound(Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-
-    case CK_ANDCONJ:
-      return _pCard_AndConj(this)->pAndConjFindBound(pIndex, eBound);
-
-    case CK_ORCONJ:
-      return _pCard_OrConj(this)->pOrPredFindBound(pIndex, eBound);
-
-    case CK_RLNCONJ:
-      return _pCard_RlnConj(this)->pCmpPredFindBound(pIndex, eBound);
-
-    default:
-      vTrace("pPredFindBound: unexpected eCard %lld %s\n"_Stz
-          ,(i8)eCard
-          ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_CONJ::vPrint(Ribbon* pRibbon, i8 iDepth)

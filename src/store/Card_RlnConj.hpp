@@ -19,7 +19,6 @@ namespace STORE
    ~Card_RlnConj(void) noexcept(false);
 
     Card_RlnConj* pClone(void);
-    Card_RlnConj* pCmpPredFindBound(Index* pIndex, ePB eBound);
      void vEnsureTypeId_expCol(CardIter* pCI);
 
     Card_Term* pGetCorrCol(void);

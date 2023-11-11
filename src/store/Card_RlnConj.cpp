@@ -56,26 +56,6 @@ Card_RlnConj* Card_RlnConj::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the E_eTerm_Bound of given index               */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_RlnConj::pCmpPredFindBound(Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* pTerm2 = _pCard_Term(this->pGet(2));
-  if (eBound != pTerm2->eEvalBound())
-    return nullptr;
-
-  Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->szFacet(SF_NONE);
-  Column* pCol0 = pIndex->pGetColumn(0);
-  if (! pCol0->szColNm()->bSame(szTerm0))
-    return nullptr;
-
-  return _pCard_RlnConj(this);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_RlnConj::pGetCorrCol(void)
