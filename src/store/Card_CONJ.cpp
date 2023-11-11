@@ -65,34 +65,6 @@ bool Card_CONJ::bIsConj(Card* p_card)
 
 
 /*----------------------------------------------------------------------------*/
-/* does predicate have some bound wrt given index?                            */
-/*----------------------------------------------------------------------------*/
-bool Card_CONJ::bConjHasBounds(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-
-    case CK_ANDCONJ: return _pCard_AndConj(this)->bAndPredHasBounds(pIndex);
-
-    case CK_ORCONJ:  return _pCard_OrConj(this)->bOrPredHasBounds(pIndex);
-
-    case CK_RLNCONJ: return _pCard_RlnConj(this)->bCmpPredHasBounds(pIndex);
-
-    default:
-      vTrace("bConjHasBounds: unexpected eCard %lld %s\n"_Stz
-          ,(i8)eCard
-          ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* visit all sub-cards of pred and apply lambda function                      */
 /*----------------------------------------------------------------------------*/
 bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwards)> bfApply)

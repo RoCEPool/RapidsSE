@@ -17,7 +17,6 @@ namespace STORE
    ~Card_AndConj(void) noexcept(false);
 
     Card_RlnConj* pAndConjFindBound(Index* pIndex, ePB eBound);
-    bool bAndPredHasBounds(Index* pIndex);
     void vEnsureTypeId_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

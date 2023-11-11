@@ -95,20 +95,20 @@ Card_RlnConj* Card_OrConj::pOrPredFindBound(Index* pIndex, ePB eBound)
 /*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_OrConj::bOrPredHasBounds(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CONJ* pSubConj0 = (Card_CONJ*)this->pGet(0);
-  if (pSubConj0->bConjHasBounds(pIndex))
-    return true;
-
-  Card_CONJ* pSubConj1 = (Card_CONJ*)this->pGet(1);
-  if (pSubConj1->bConjHasBounds(pIndex))
-    return true;
-
-  return false;
-}
+//bool Card_OrConj::bOrPredHasBounds(Index* pIndex)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  Card_CONJ* pSubConj0 = (Card_CONJ*)this->pGet(0);
+//  if (pSubConj0->bConjHasBounds(pIndex))
+//    return true;
+//
+//  Card_CONJ* pSubConj1 = (Card_CONJ*)this->pGet(1);
+//  if (pSubConj1->bConjHasBounds(pIndex))
+//    return true;
+//
+//  return false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */

@@ -10,7 +10,7 @@
 namespace STORE
 {
   class Card_RlnConj : public Card_CONJ
-  {  
+  {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -18,13 +18,9 @@ namespace STORE
     Card_RlnConj(void);
    ~Card_RlnConj(void) noexcept(false);
 
-    eXK eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
-                  char cTblSyn_r, Card_TablePtn* p_tablePtn_r);
     Card_RlnConj* pClone(void);
     Card_RlnConj* pCmpPredFindBound(Index* pIndex, ePB eBound);
-    bool bCmpPredHasBounds(Index* pIndex);
-    bool bCoPtnWith(Card_RlnConj* p_rlnConj_arg);
-    void vEnsureTypeId_expCol(CardIter* pCI);
+     void vEnsureTypeId_expCol(CardIter* pCI);
 
     Card_Term* pGetCorrCol(void);
     Card_Term* pExtractParamTerm(void);

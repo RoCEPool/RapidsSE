@@ -46,31 +46,6 @@ Card_RlnConj::~Card_RlnConj(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate cast kind of this cmpPred given the l & r table partitions       */
-/*----------------------------------------------------------------------------*/
-eXK Card_RlnConj::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
-                            char cTblSyn_r, Card_TablePtn* p_tablePtn_r)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  UNUSED(cTblSyn_l);
-  UNUSED(cTblSyn_r);
-
-  // todo: alka and ray to discuss
-
-  Card_Term* p_term_0 = pGetTerm_0();
-  Card_Term* p_term_1 = pGetTerm_1();
-
-  if ((p_tablePtn_r->bSymbolMatches(p_term_0) && p_tablePtn_l->bSymbolMatches(p_term_1)) ||
-      (p_tablePtn_r->bSymbolMatches(p_term_1) && p_tablePtn_l->bSymbolMatches(p_term_0)))
-      return XK_UNICAST;
-  else
-  if (p_tablePtn_r->bSymbolMatches(p_term_0) || p_tablePtn_r->bSymbolMatches(p_term_1))
-    return XK_HASHCAST;
-  else
-    return XK_BROADCAST;
-}
-
-/*----------------------------------------------------------------------------*/
 /* clone this compare predicate                                               */
 /*----------------------------------------------------------------------------*/
 Card_RlnConj* Card_RlnConj::pClone(void)
@@ -98,62 +73,6 @@ Card_RlnConj* Card_RlnConj::pCmpPredFindBound(Index* pIndex, ePB eBound)
     return nullptr;
 
   return _pCard_RlnConj(this);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this comparePred a bound on given index?                                */
-/*----------------------------------------------------------------------------*/
-bool Card_RlnConj::bCmpPredHasBounds(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
-
-  Card_Term* pTerm2 = _pCard_Term(this->pGet(2));
-  if (PB_NONE == pTerm2->eEvalBound())
-    return false;
-
-  Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->szFacet(SF_NONE);
-  Column* pCol0 = pIndex->pGetColumn(0);
-  if (! pCol0->szColNm()->bSame(szTerm0))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this predCmp co-partitionable with given arg?                           */
-/*----------------------------------------------------------------------------*/
-bool Card_RlnConj::bCoPtnWith(Card_RlnConj* p_rlnConj_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
-  Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
-
-  Card_Term* p_term_arg_0 = _pCard_Term(p_rlnConj_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
-  Card_Term* p_term_arg_1 = _pCard_Term(p_rlnConj_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
-
-  bool bAreCoPtn = false;
-
-  if (   cTableSyn_arg_0 == cTableSyn_this_0
-         || cTableSyn_arg_0 == cTableSyn_this_1
-         || cTableSyn_arg_1 == cTableSyn_this_0
-         || cTableSyn_arg_1 == cTableSyn_this_1
-      )
-    bAreCoPtn = true;
-
-  vTrace("(%c,%c) - (%c,%c) are%s co-partitioned\n"_Stz,
-         cTableSyn_this_0,cTableSyn_this_1,
-         cTableSyn_arg_0,cTableSyn_arg_1,
-         bAreCoPtn ? "" : " NOT");
-
-  return bAreCoPtn;
 }
 
 /*----------------------------------------------------------------------------*/
