@@ -22,20 +22,16 @@ namespace STORE
      void vEnsureTypeId_expCol(CardIter* pCI);
 
     Card_Term* pGetCorrCol(void);
-    Card_Term* pExtractParamTerm(void);
     char cGetTable_a(void);
     char cGetTable_b(void);
-    void vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b);
     Card_Term* pGetTerm_0(void);
     Card_Term* pGetTerm_1(void);
     bool bIsEq(Card_RlnConj* p_rlnConj_arg);
     bool bIsEqOp(void);
     bool bIsIndexBound(Card_Index* p_index);
     char cOtherTable(char cTblSyn);
-    bool bOverlapsWith(Card_RlnConj* p_rlnConj_arg);
     bool bSubsetOf_bounds(Card_Bounds* p_bounds);
     bool bUsesTable(char cTblSyn);
-    bool bUsesTables(char cTblSyn_a, char cTblSyn_b);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

@@ -114,31 +114,6 @@ void Card_RlnConj::vEnsureTypeId_expCol(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RlnConj::pExtractParamTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nChildren = this->nChildCards();
-  RASSERT(2 == nChildren);
-
-  Card* p_child_0 = this->pGetChild(0);
-  Card* p_child_1 = this->pGetChild(1);
-
-  if (p_child_0->pSymbol()->bIs_Sqy_Prm())
-    return _pCard_Term(p_child_0);
-
-  else
-  if (p_child_1->pSymbol()->bIs_Sqy_Prm())
-    return _pCard_Term(p_child_1);
-
-  else
-    NEVER_REACH;
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the first table                                                        */
 /*----------------------------------------------------------------------------*/
 char Card_RlnConj::cGetTable_a(void)
@@ -162,17 +137,6 @@ char Card_RlnConj::cGetTable_b(void)
   char cTableSyn_this_b = p_term_this_b->szFacet(SF_NONE)->azChar()[1];
 
   return cTableSyn_this_b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get both tables                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RlnConj::vGetTables_a_b(char& rcTblSyn_a, char& rcTblSyn_b)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  rcTblSyn_a = cGetTable_a();
-  rcTblSyn_b = cGetTable_b();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,27 +186,6 @@ bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
 
   return true;
 }
-/*----------------------------------------------------------------------------*/
-//bool Card_RlnConj::bIsEq(Card_RlnConj* p_rlnConj_arg)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-//  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
-//  Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-//  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
-//
-//  Card_Term* p_term_arg_0 = _pCard_Term(p_rlnConj_arg->pGetChild(0));
-//  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
-//  Card_Term* p_term_arg_1 = _pCard_Term(p_rlnConj_arg->pGetChild(1));
-//  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
-//
-//  if (cTableSyn_this_0 == cTableSyn_arg_0 &&
-//      cTableSyn_this_1 == cTableSyn_arg_1)
-//    return true;
-//
-//  return false;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -330,33 +273,6 @@ char Card_RlnConj::cOtherTable(char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_RlnConj::bOverlapsWith(Card_RlnConj* p_conjCmp_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szFacet(SF_NONE)->azChar()[1];
-  Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
-
-  Card_Term* p_term_arg_0 = _pCard_Term(p_conjCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szFacet(SF_NONE)->azChar()[1];
-  Card_Term* p_term_arg_1 = _pCard_Term(p_conjCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szFacet(SF_NONE)->azChar()[1];
-
-  if (   cTableSyn_this_0 == cTableSyn_arg_0
-      || cTableSyn_this_0 == cTableSyn_arg_1
-      || cTableSyn_this_1 == cTableSyn_arg_0
-      || cTableSyn_this_1 == cTableSyn_arg_1
-      )
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given cmpPred a subset of bounds?                                       */
 /*----------------------------------------------------------------------------*/
 bool Card_RlnConj::bSubsetOf_bounds(Card_Bounds* p_bounds)
@@ -404,19 +320,6 @@ bool Card_RlnConj::bUsesTable(char cTblSyn)
   char cTableSyn_this_1 = p_term_this_1->szFacet(SF_NONE)->azChar()[1];
 
   if (cTableSyn_this_0 == cTblSyn || cTableSyn_this_1 == cTblSyn)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this cmpPred reference given both tables?                             */
-/*----------------------------------------------------------------------------*/
-bool Card_RlnConj::bUsesTables(char cTblSyn_a, char cTblSyn_b)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bUsesTable(cTblSyn_a) && bUsesTable(cTblSyn_b))
     return true;
 
   return false;
