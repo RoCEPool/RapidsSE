@@ -653,26 +653,21 @@ void Card_BoolPred::vCopyMarked_rlnConj_To_table_filter(CardIter* pCI, Stz* szWi
   Card *pMainCard;
 
   pCI->vRecurseBegin(this);
-  s32 sTimes;
-  for (i8 nTimes = 0;
-       Card_CONJ* p_conj = (Card_CONJ*)pCI->pRecurseEach();
-       nTimes++) {
 
-    sTimes = nTimes;
-    //p_conj->vDump(__func__,0,sTimes);
-
+  while (Card_CONJ* p_conj = (Card_CONJ*)pCI->pRecurseEach()) {
     if (! p_conj->bMark1(szWithMark))
       continue;
 
     RASSERT(p_conj->bIsCard(CK_RLNCONJ));
+    Card_RlnConj* p_rlnConj = _pCard_RlnConj(p_conj);
 
-    char cTableSyn = p_conj->cMark2();
-    Card_Table *p_table = pDeck->pFindTableCard(cTableSyn, pMainCard);
+    char cTableSyn = p_rlnConj->cMark2();
+    Card_Table *p_table = pDeck->pFind_table(cTableSyn, pMainCard);
     if (! p_table)
       continue;
 
     pCI->G.p_filter = ((Card_OP *) pMainCard)->pEnsure_filter();
-    pCI->G.p_filter->vAdd_rlnConj(_pCard_RlnConj(p_conj->pDupCardRecursive()));
+    pCI->G.p_filter->vAdd_rlnConj(p_rlnConj->pClone());
 
     pCI->G.p_filter->vMark1(p_table->cMark1());
     pCI->G.p_filter->vMark2(p_table->cMark2());

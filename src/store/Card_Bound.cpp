@@ -43,8 +43,8 @@ Card_Bound::~Card_Bound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a (e|l|u) index bound given PRED                                    */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Card_Bound::pCreateFrom_CONJ(Card_CONJ* p_CONJ,
-                                         char cTblSyn_boundedTo)
+Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
+                                            char cTblSyn_boundedTo)
 {
   _static_
 
@@ -52,10 +52,10 @@ Card_Bound* Card_Bound::pCreateFrom_CONJ(Card_CONJ* p_CONJ,
 
   Card_Term* p_term;
 
-  Card_Term* pTerm_0 = _pCard_Term(p_CONJ->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(p_CONJ->pGetChild(1));
+  Card_Term* pTerm_0 = _pCard_Term(p_rlnConj->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_rlnConj->pGetChild(1));
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_CONJ->szFacet(SF_NONE));
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_rlnConj->szFacet(SF_NONE));
 
   Symbol xSymbol_idxCol(SF_IDX_COL,1);
 

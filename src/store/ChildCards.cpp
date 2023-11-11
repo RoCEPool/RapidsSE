@@ -294,7 +294,7 @@ Card* ChildCards::pFindSubCard(eCK eSub)
 /*----------------------------------------------------------------------------*/
 /* find table card by synonym                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Table* ChildCards::pFindTableCard(char cTableSyn, Card*& rpMainCard)
+Card_Table* ChildCards::pFind_table(char cTableSyn, Card*& rpMainCard)
 {
   //_precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
 

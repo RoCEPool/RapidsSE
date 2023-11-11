@@ -359,6 +359,60 @@ bool Card_RlnConj::bIsEqOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this predicate a bounds for given index                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_index)
+    return false;
+
+  i8 nChildren = nChildCards();
+  if (2 != nChildren)
+    return false;
+
+  Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
+
+  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
+    // + term_0 is $c.n
+
+    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+      // + both are term:$c.n
+
+      // ? is either term_0:$c.n or term_1:$c.n an index column
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)) ||
+          p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
+        return true;
+
+      return false;
+    }
+    else {
+      // + only term_0 is $c.n
+
+      // ? is term_0:$c.n an index column
+      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)))
+        return true;
+
+      return false;
+    }
+  }
+  else
+  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
+    // + only term_1 is $c.n
+
+    // ? is term_0:$c.n an index column
+    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
+      return true;
+
+    return false;
+  }
+
+  // + neither term_0 nor term_1 is $c.n
+  return false;
+}
+/*----------------------------------------------------------------------------*/
 /* get the other table referenced by this join/cmpPred given a first table    */
 /*----------------------------------------------------------------------------*/
 char Card_RlnConj::cOtherTable(char cTblSyn)

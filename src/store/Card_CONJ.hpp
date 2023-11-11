@@ -26,7 +26,6 @@ namespace STORE
     Card_Term* pGetTerm_boardNm(CardIter* pCI);
     bool bIsBoolFn(void);
     bool bIsCorrConj(void);
-    bool bIsIndexBounds_v3(Card_Index* p_index);
     bool bIsJoinConj(void);
     bool bIsRelnOp(void);
     bool bIsSqyOp(void);

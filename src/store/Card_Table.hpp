@@ -38,7 +38,7 @@ namespace STORE
     Stz* szColNm(i8 i_Col_base0);
     Card_Index* pFindChosenIndex(void);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    void vDeriveBoundsFrom_filter(CardIter *pCI);
+    void vDerive_bounds_From_filter(CardIter *pCI);
     bool bUsesSqyRsl(void);
     void vMorph_table_To_EEop(CardIter *pCI);
     bool bScopeContains_Conj(Card_CONJ* p_pred, Scope* pScope);

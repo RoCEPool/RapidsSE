@@ -145,7 +145,7 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
 
   pCI->vBeginEach();
   while (pCI->G_bEachMainWith3Sub(CK_FROM, CK_TABLE, CK_FILTER, CK_INDEXLIST))
-    pCI->G.p_table->vDeriveBoundsFrom_filter(pCI);
+    pCI->G.p_table->vDerive_bounds_From_filter(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +245,7 @@ void Card_Table::vBounds_AddConj(Card_Index* p_index,
   }
   else
   if (p_conj->bIsCard(CK_RLNCONJ)) {
-    p_bound = Card_Bound::pCreateFrom_CONJ(p_conj, cTblSyn);
+    p_bound = Card_Bound::pCreateFrom_rlnConj(_pCard_RlnConj(p_conj), cTblSyn);
     p_bounds->vAppendChild(p_bound);
   }
   else {
@@ -289,7 +289,7 @@ Card_Index* Card_Table::pFindChosenIndex(void)
 /*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
+void Card_Table::vDerive_bounds_From_filter(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -318,7 +318,8 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       if (! p_conj_Of_filter->bIsCard(CK_RLNCONJ))
         return C_CONTINUE_RECURSION;
 
-      if (!p_conj_Of_filter->bIsIndexBounds_v3(p_index))
+      Card_RlnConj* p_rlnConj_filter = _pCard_RlnConj(p_conj_Of_filter);
+      if (!p_rlnConj_filter->bIsIndexBound(p_index))
         return C_CONTINUE_RECURSION;
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -330,13 +331,10 @@ void Card_Table::vDeriveBoundsFrom_filter(CardIter *pCI)
       }
 
       char cTblSyn = this->pSymbol()->cSF_char();
-      Card_Bound *p_bound = Card_Bound::pCreateFrom_CONJ(p_conj_Of_filter, cTblSyn);
+      Card_Bound *p_bound = Card_Bound::pCreateFrom_rlnConj(p_rlnConj_filter, cTblSyn);
       p_bounds->vAppendChild(p_bound);
 
-      p_conj_Of_filter->vMark1(MARK_UP);
-
-//      if (p_bound->bIsEBound())
-//        p_index->vSet_Choose_index();
+      p_rlnConj_filter->vMark1(MARK_UP);
 
       return C_CONTINUE_RECURSION;
     };

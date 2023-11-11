@@ -35,6 +35,7 @@ namespace STORE
     Card_Term* pGetTerm_1(void);
     bool bIsEq(Card_RlnConj* p_rlnConj_arg);
     bool bIsEqOp(void);
+    bool bIsIndexBound(Card_Index* p_index);
     char cOtherTable(char cTblSyn);
     bool bOverlapsWith(Card_RlnConj* p_rlnConj_arg);
     bool bSubsetOf_bounds(Card_Bounds* p_bounds);
