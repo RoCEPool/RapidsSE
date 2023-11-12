@@ -1382,12 +1382,12 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
   Symbol oSymbol_nmdCol;
 
   if (bIsKeyExpr) {
-    Symbol xSymbol_stmCol(SF_KEY_COL,ri_Expr);
-    p_expr->pSymbol()->vFacets(&xSymbol_stmCol);
+    Symbol xSymbol_expCol(SF_KEY_COL, ri_Expr);
+    p_expr->pSymbol()->vFacets(&xSymbol_expCol);
   }
   else {
-    Symbol xSymbol_stmCol(SF_EXP_COL, ri_Expr);
-    p_expr->pSymbol()->vFacets(&xSymbol_stmCol);
+    Symbol xSymbol_expCol(SF_EXP_COL, ri_Expr);
+    p_expr->pSymbol()->vFacets(&xSymbol_expCol);
   }
 
 	TypeId xColTypeId = this->xPopColTypeId(p_rpnExpr);

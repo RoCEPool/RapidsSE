@@ -180,14 +180,10 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
   if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_EQ) {
-//    pCI->G.p_rlnConj = pCI->G.p_where->pSub_cmpConj();
-//    pCI->G.p_rlnConj->vMorph_sqlOp_To_EQ(pCI);
     pCI->Sqy.m_pConj_sqyCall->vMorph_sqlOp_To_EQ(pCI);
   }
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
-    //Symbol x_Symbol_stmCol1;
-    //x_Symbol_stmCol1.vSet_Col_No(1);
 
     // replace sqCall with sqResult
     pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vDeleteFacet(SF_SQY_NM);
