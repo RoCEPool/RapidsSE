@@ -106,18 +106,6 @@ Card_Filter* Card_Filter::pNew(Card_Constraint* p_constraint)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vAdd_rlnConj(Card_RlnConj *p_rlnConj)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_BoolPred* p_calcBool = this->pSub_boolPred();
-
-  p_calcBool->vAdd_rlnConj(p_rlnConj);
-}
-
-/*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vComputeProjection(CardIter* pCI)
@@ -194,6 +182,18 @@ void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
  // pCI->vPrintBoard();
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vExtend_rlnConj(Card_RlnConj *p_rlnConj)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_BoolPred* p_calcBool = this->pSub_boolPred();
+
+  p_calcBool->vExtend_andConj(p_rlnConj);
 }
 
 /*----------------------------------------------------------------------------*/

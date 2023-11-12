@@ -21,19 +21,14 @@ namespace STORE
     static void vIndividuate_filter(CardIter* pCI);
     static Card_Filter* pNew(Card_Constraint* p_constraint);
 
-    void vAdd_rlnConj(Card_RlnConj *p_rlnConj);
 
     void vComputeProjection(CardIter* pCI); // prototype
     void vCorrect_expCol(Card_Emit* p_arriving);
-
     i8 nCullMarked_rlnConj(Stz* szWithMark);
-
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_update(CardIter* pCI);
-
+    void vExtend_rlnConj(Card_RlnConj *p_rlnConj);
     bool bIsEmpty(void);
-
-
     void vUpdate_emitted(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
