@@ -195,7 +195,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCI->Sqy.m_pTerm_sqyCall->SYM(SF_EXP_COL, (i8)1);
 
     Card_Expr* p_expr_0 = pCI->Flux.m_pArriving->pGet_expr((i8) 0);
-    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vColTypeId(p_expr_0->xColTypeId());
+    pCI->Sqy.m_pTerm_sqyCall->pSymbol()->vTypeId(p_expr_0->xTypeId());
 
   }
 

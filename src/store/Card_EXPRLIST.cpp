@@ -134,15 +134,15 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* return term0 of <expr> with term0 matching given $n stream-column          */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_stmCol)
+Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_expCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(pSymbol_stmCol->bIs_Exp_Col());
+  RASSERT(pSymbol_expCol->bIs_Exp_Col());
 
-  if (Card_Expr* p_expr_stmCol = pGet_expr(pSymbol_stmCol)) {
-    if (p_expr_stmCol->bIsScalarCol()) {
-      Card_Term *p_term0 = p_expr_stmCol->pGet_term(0);
+  if (Card_Expr* p_expr_expCol = pGet_expr(pSymbol_expCol)) {
+    if (p_expr_expCol->bIsScalarCol()) {
+      Card_Term *p_term0 = p_expr_expCol->pGet_term(0);
       return p_term0;
     }
   }
@@ -258,9 +258,9 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
   i8 i_Expr = 1;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     if (bIsKeyExpr)
-      xKid.p_expr()->vRenumberForm_KeyCol(i_Expr++);
+      xKid.p_expr()->vRenumberForm_keyCol(i_Expr++);
     else
-      xKid.p_expr()->vRenumberForm_stmCol(i_Expr++);
+      xKid.p_expr()->vRenumberForm_expCol(i_Expr++);
   }
 }
 

@@ -427,7 +427,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Flux.m_pArriving) {
-          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
+          pCI->G.p_indexList->vTypes_For_expCol(pCI);
         }
       }
 
@@ -447,7 +447,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Flux.m_pArriving) {
-          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
+          pCI->G.p_indexList->vTypes_For_expCol(pCI);
         }
       }
 

@@ -358,8 +358,8 @@ void Card_Emit::vMapColumns(CardIter* pCI)
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
     pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
-    if (Symbol* pSymbol_stmCol_projection = p_expr_projection->pFirstStmCol()) {
-      i_Cell_payload = pSymbol_stmCol_projection->iSF_ordinal() - nExpr_key;
+    if (Symbol* pSymbol_expCol_projection = p_expr_projection->pFirst_expCol()) {
+      i_Cell_payload = pSymbol_expCol_projection->iSF_ordinal() - nExpr_key;
       p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_expr_projection->pSymbol()->Y_vSet(P_Payload);
       p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);

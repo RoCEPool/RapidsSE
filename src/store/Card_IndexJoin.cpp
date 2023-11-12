@@ -161,14 +161,14 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   if (!pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(pCI->G.p_term->pSymbol())) {
 
-    if (pCI->G.p_term->bIsStmCol()) {
-      Card_Expr* p_expr_stmCol = new Card_Expr;
-      p_expr_stmCol->pSymbol()->vColTypeId(pCI->G.p_term->pSymbol()->xColTypeId());
+    if (pCI->G.p_term->bIs_expCol()) {
+      Card_Expr* p_expr_expCol = new Card_Expr;
+      p_expr_expCol->pSymbol()->vTypeId(pCI->G.p_term->pSymbol()->xTypeId());
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-      p_rpnCalc->pSymbol()->vColTypeId(pCI->G.p_term->pSymbol()->xColTypeId());
-      p_expr_stmCol->vAppendChild(p_rpnCalc);
+      p_rpnCalc->pSymbol()->vTypeId(pCI->G.p_term->pSymbol()->xTypeId());
+      p_expr_expCol->vAppendChild(p_rpnCalc);
       p_rpnCalc->vAppendChild(pCI->G.p_term->pDupCardRecursive());
-      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_stmCol);
+      pCI->Early.m_pNeeded_later->vAppendChild(p_expr_expCol);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
     else

@@ -1220,7 +1220,7 @@ void Symbol::vAppendFacets(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
-TypeId Symbol::xColTypeId(void)
+TypeId Symbol::xTypeId(void)
 {
 	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1230,7 +1230,7 @@ TypeId Symbol::xColTypeId(void)
 /*----------------------------------------------------------------------------*/
 /* set type                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vColTypeId(TypeId xColTypeId)
+void Symbol:: vTypeId(TypeId xColTypeId)
 {
 	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

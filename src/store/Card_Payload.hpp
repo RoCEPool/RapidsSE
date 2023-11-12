@@ -15,16 +15,10 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Payload(void);
-    Card_Payload(eCK eCard, i8 iMaxDepth);
    ~Card_Payload(void) noexcept(false);
 
     bool bIsEqual(Card_Payload* p_key_arg);
 
-    void vTypes_For_stmCol(CardIter *pCI);
-
-    void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
-
-    void vMapColumns(CardIter *pCI);
     eCT  eColType(void);
 
     void vShortForm(String* pString);

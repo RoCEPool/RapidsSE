@@ -119,8 +119,8 @@ namespace STORE
     //eCT  eColType(void);
     //void vColType(eCT eColType);
 
-		TypeId  xColTypeId(void);
-		void vColTypeId(TypeId eColTypeId);
+		TypeId  xTypeId(void);
+		void vTypeId(TypeId xColTypeId);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);

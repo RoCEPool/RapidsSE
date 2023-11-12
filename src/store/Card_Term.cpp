@@ -195,7 +195,7 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI)
   if (bIsKeyCol())
     p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
   else
-  if (bIsStmCol())
+  if (bIs_expCol())
     p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
   else
     return;
@@ -373,7 +373,7 @@ bool Card_Term::bIsSqyPrm(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a stream-value ordinal? $n                                    */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsStmCol(void)
+bool Card_Term::bIs_expCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -412,7 +412,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s256 sTerm = szFacet(SF_NONE);
-  s32 sType_short = szCT_char[pSymbol()->xColTypeId().eCTVal()];
+  s32 sType_short = szCT_char[pSymbol()->xTypeId().eCTVal()];
 
   //pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
@@ -439,7 +439,7 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (!bIsStmCol())
+  if (!bIs_expCol())
     return;
 
   Symbol* pSym = pSymbol();

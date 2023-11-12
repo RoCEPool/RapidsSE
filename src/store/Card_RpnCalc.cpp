@@ -95,7 +95,7 @@ TypeId Card_RpnCalc::xTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-	TypeId xTypeId = pSymbol()->xColTypeId();
+	TypeId xTypeId = pSymbol()->xTypeId();
 
   return xTypeId;
 }
@@ -166,7 +166,7 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
     if (xTerm.p_term()->bIsKeyCol())
       p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
     else
-    if (xTerm.p_term()->bIsStmCol()) {
+    if (xTerm.p_term()->bIs_expCol()) {
       //pCI->Flux.m_pArriving->vDump(__func__);
       p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
     }
@@ -199,7 +199,7 @@ void Card_RpnCalc::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
     Card_Term* p_term_ColSym = x_term.p_term();
 
     Card_Expr* p_expr_ColSym = new Card_Expr(p_term_ColSym->pSymbol());
-    p_expr_ColSym->pSymbol()->vColTypeId(p_term_ColSym->pSymbol()->xColTypeId());
+    p_expr_ColSym->pSymbol()->vTypeId(p_term_ColSym->pSymbol()->xTypeId());
 
     p_subSet->vAppendChild(p_expr_ColSym);
   }
@@ -243,7 +243,7 @@ Symbol* Card_RpnCalc::pFirstStmCol(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsStmCol())
+    if (xKid.p_term()->bIs_expCol())
       return xKid.p_term()->pSymbol();
 
   return nullptr;
@@ -398,7 +398,7 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s32 sType_short = szCT_char[pSymbol()->xColTypeId().eCTVal()];
+  s32 sType_short = szCT_char[pSymbol()->xTypeId().eCTVal()];
 
   pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s"_Stz,
                           cMark1(),

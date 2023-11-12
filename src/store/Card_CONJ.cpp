@@ -260,8 +260,8 @@ bool Card_CONJ::bIsCorrConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsSqyPrm() && (p_term_1->bIsStmCol() || p_term_1->bIsTblCol())) ||
-      (p_term_1->bIsSqyPrm() && (p_term_0->bIsStmCol() || p_term_0->bIsTblCol())))
+  if ((p_term_0->bIsSqyPrm() && (p_term_1->bIs_expCol() || p_term_1->bIsTblCol())) ||
+      (p_term_1->bIsSqyPrm() && (p_term_0->bIs_expCol() || p_term_0->bIsTblCol())))
     return true;
 
   return false;
@@ -284,8 +284,8 @@ bool Card_CONJ::bIsJoinConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsStmCol() || p_term_0->bIsTblCol()) &&
-      (p_term_1->bIsStmCol() || p_term_1->bIsTblCol()))
+  if ((p_term_0->bIs_expCol() || p_term_0->bIsTblCol()) &&
+      (p_term_1->bIs_expCol() || p_term_1->bIsTblCol()))
     return true;
 
   return false;
@@ -333,20 +333,20 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     Card_Term* p_term1 = _pCard_Term(pGetChild(1));
     ASSERT(pCI->m_pBench->bIsSqyNm(p_term1->szFacet(SF_NONE))); //temp
 
-    Symbol x_Symbol_stmCol1;
+    Symbol x_Symbol_expCol1;
     if (p_term) {
-      x_Symbol_stmCol1.vFacets(p_term->pSymbol());
-      p_term1->pSymbol()->vFacets(&x_Symbol_stmCol1);
+      x_Symbol_expCol1.vFacets(p_term->pSymbol());
+      p_term1->pSymbol()->vFacets(&x_Symbol_expCol1);
     }
     else {
-      //x_Symbol_stmCol1.vSet_Col_No(1);
+      //x_Symbol_expCol1.vSet_Col_No(1);
       p_term1->SYM(SF_EXP_COL, (i8)1);
     }
 
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term1->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
+    p_term1->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
    // pCI->vPrintBoard(__LINE__);
     return;
@@ -364,19 +364,19 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
 
     if (p_term) {
-      Symbol x_Symbol_stmCol1;
-      x_Symbol_stmCol1.vFacets(p_term->pSymbol());
-      p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
+      Symbol x_Symbol_expCol1;
+      x_Symbol_expCol1.vFacets(p_term->pSymbol());
+      p_term_head->pSymbol()->vFacets(&x_Symbol_expCol1);
     }
     else {
-      Symbol x_Symbol_stmCol1(SF_EXP_COL, 1);
-      p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
+      Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
+      p_term_head->pSymbol()->vFacets(&x_Symbol_expCol1);
     }
 
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term_head->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
+    p_term_head->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
    // pCI->vPrintBoard(__LINE__);
 
@@ -394,10 +394,10 @@ void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
 
-    Symbol x_Symbol_stmCol1(SF_EXP_COL, 1);
+    Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
     if (p_term)
-      x_Symbol_stmCol1.vFacetsPpy(p_term->pSymbol());
-    p_term_head->pSymbol()->vFacetsPpy(&x_Symbol_stmCol1);
+      x_Symbol_expCol1.vFacetsPpy(p_term->pSymbol());
+    p_term_head->pSymbol()->vFacetsPpy(&x_Symbol_expCol1);
     return;
   }
 

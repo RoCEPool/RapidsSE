@@ -1213,7 +1213,7 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfTo_stmCol = [pCI](Card_CONJ* p_conj, bool bUpwards)
+  auto bfTo_expCol = [pCI](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -1233,7 +1233,7 @@ void Card_BoolPred::vX_tblCol_To_expCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bool bIgnore = p_conj_root->bConjRecursive(bfTo_stmCol);
+  bool bIgnore = p_conj_root->bConjRecursive(bfTo_expCol);
   UNUSED(bIgnore);
 }
 

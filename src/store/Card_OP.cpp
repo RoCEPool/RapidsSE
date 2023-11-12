@@ -619,15 +619,15 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->pSymbol()->vColTypeId(xColumnTypeId);
-    p_expr->pSymbol()->vColTypeId(xColumnTypeId);
+    p_rpnCalc->pSymbol()->vTypeId(xColumnTypeId);
+    p_expr->pSymbol()->vTypeId(xColumnTypeId);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
     p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->vColTypeId(xColumnTypeId);
+    p_term->pSymbol()->vTypeId(xColumnTypeId);
   }
 
   pCI->G.p_stream->vAppendChild(p_emit);
@@ -815,7 +815,7 @@ void Card_OP::vRpn_hash(String* psRpnExpr, Card_Hash* p_hash)
   Card_Term* p_term = p_hash->pSub_term();
 
   psRpnExpr->vCatSprint("type %s %s"_Stz,
-                        aCT[p_term->pSymbol()->xColTypeId().eCTVal()],
+                        aCT[p_term->pSymbol()->xTypeId().eCTVal()],
                         p_term->szFacet(SF_NONE));
 }
 
@@ -1412,7 +1412,7 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   psRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[p_rpnCalc->pSymbol()->xColTypeId().eCTVal()]);
+                        aCT[p_rpnCalc->pSymbol()->xTypeId().eCTVal()]);
 
   if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
     RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));

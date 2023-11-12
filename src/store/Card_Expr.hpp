@@ -32,7 +32,7 @@ namespace STORE
     void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
-    Symbol* pFirstStmCol(void);
+    Symbol* pFirst_expCol(void);
     Symbol* pFirstTblCol(void);
     Symbol* pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
@@ -50,14 +50,14 @@ namespace STORE
     Card_Expr* pPropagate(void);
     Card_Expr *pReducedCopy(i8 i_Expr);
 
-    void vRenumberForm_KeyCol(i8 i_Expr);
-    void vRenumberForm_stmCol(i8 i_Expr);
+    void vRenumberForm_keyCol(i8 i_Expr);
+    void vRenumberForm_expCol(i8 i_Expr);
 
     bool bSameAs(Card_Expr* pExpr_arg);
 
     void vShortForm(String* pString, Stz* szSep);
 
-    TypeId xColTypeId(void);
+    TypeId xTypeId(void);
 
     void vX_tblCol_To_expCol(CardIter* pCI);
     void vX_expCol_To_tblCol(CardIter* pCI);

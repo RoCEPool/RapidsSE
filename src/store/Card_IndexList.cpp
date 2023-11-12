@@ -208,7 +208,7 @@ bool Card_IndexList::bUsesSqyRsl(void)
 /*----------------------------------------------------------------------------*/
 /* ensure types for all stream-columns                                        */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vTypes_For_stmCol(CardIter *pCI)
+void Card_IndexList::vTypes_For_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

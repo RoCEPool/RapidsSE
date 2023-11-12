@@ -24,7 +24,7 @@ namespace STORE
     Card_Expr* pContains(Symbol* pSymbol_arg);
     Card_Expr* pContains(Card_Expr* p_expr_arg);
 
-    Card_Term* pDecode_expr_term0(Symbol* pSymbol_stmCol);
+    Card_Term* pDecode_expr_term0(Symbol* pSymbol_expCol);
 
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
 
