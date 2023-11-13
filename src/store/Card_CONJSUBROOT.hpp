@@ -13,6 +13,8 @@ namespace STORE
     Card_CONJSUBROOT(eCK eCard, i8 iFixedDepth);
    ~Card_CONJSUBROOT(void) noexcept(false);
 
+    static void vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj);
+
     Card_AndConj* pGet_andConj(i8 i_Child);
     Card_NotConj* pGet_notConj(i8 i_Child);
     Card_OrConj*  pGet_orConj (i8 i_Child);

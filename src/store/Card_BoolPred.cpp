@@ -873,6 +873,29 @@ bool Card_BoolPred::bHas_term(Symbol* pWithSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolPred::bIsBraced(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bBraced = false;
+  auto bTestBraced=[&bBraced](Card* p_card) {
+
+    if (p_card->pSymbol()->bNeedsBrace()) {
+      bBraced = true;
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  bApplyRecursive(CK_NONE,bTestBraced);
+
+  return bBraced;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a compound boolPred                                                */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bIsCompound(void)
@@ -1016,7 +1039,11 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
   if (bIsBraced())
     psRpnExpr->vConcat(" }"_Stz);
 
+#ifdef Z_BOOLPRED_NARY
+  Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr,pRoot_conj());
+#else
   Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1118,29 +1145,6 @@ TypeId Card_BoolPred::xTypeId(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return TypeId::xIdOf(CT_BOOLEAN);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bIsBraced(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bBraced = false;
-  auto bTestBraced=[&bBraced](Card* p_card) {
-
-    if (p_card->pSymbol()->bNeedsBrace()) {
-      bBraced = true;
-      return C_TERMINATE_RECURSION;
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  bApplyRecursive(CK_NONE,bTestBraced);
-
-  return bBraced;
 }
 
 /*----------------------------------------------------------------------------*/
