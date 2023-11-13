@@ -4,6 +4,8 @@
 
 __TPCH_SCHEMA;
 
+// QUERY 20
+
 // NOTE: Optimiser crashes.
 //       One of the subquery pipelines takes 2 parameters.
 //       I think we may not be catering to > 1 parameter.
@@ -12,6 +14,7 @@ __TPCH_SCHEMA;
 /optimsier_trace
 /pipeline_def
 /weaved
+/pipelineName = "_ray173"
 select s_name, s_address
      from supplier, nation
      where s_suppkey in (

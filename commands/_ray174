@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* _ray174                                                                    */
+/*============================================================================*/
+
+__TPCH_SCHEMA;
+
+// QUERY 21
+
+// NOTE: Optimiser crashes.
+//       One of the subquery pipelines takes 2 parameters.
+//       I think we may not be catering to > 1 parameter.
+
+/transliterated
+/optimsier_trace
+/pipeline_def
+/pipelineName = "_ray174"
+/weaved
+select
+  s_name,
+  count(*) as numwait
+
+  from Supplier, LineItem l1, Orders, Nation
+
+ where     s_suppkey        = l1.l_suppkey
+       and o_orderkey       = l1.l_orderkey
+       and o_orderstatus    = 'F'
+       and l1.l_receiptdate > l1.l_commitdate
+       and exists
+
+             ( select *
+
+                 from LineItem l2
+
+                where     L2.L_ORDERKEY =  L1.L_ORDERKEY
+                      and L2.L_SUPPKEY  <> L1.L_SUPPKEY )
+                      and not exists
+
+             ( select *
+
+                 from LineItem l3
+
+                where     L3.L_ORDERKEY    =  L1.L_ORDERKEY
+                      and L3.L_SUPPKEY     <> L1.L_SUPPKEY
+                      and L3.L_RECEIPTDATE >  L3.L_COMMITDATE )
+
+       and s_nationkey = n_nationkey
+       and n_name = 'SAUDI ARABIA'
+
+ group by s_name
+
+ order by numwait desc, s_name
+ limit 100;
+
+//rows: 100
+
+_tpchDrop;
