@@ -870,12 +870,21 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   
   eEC eError = EC_NONE;
   
-  Token* pTkn = pTknVec->pCurrToken(); dPT();
+//  Token* pTkn = pTknVec->pCurrToken(); dPT();
+//
+//  // Check if the column name is a reserved word
+//  if (ReservedWords::bIsAReservedWord(pTkn->szChars())) {
+//    return EC_RESERVED_WORD;
+//  }
 
-  // Check if the column name is a reserved word
-  if (ReservedWords::bIsAReservedWord(pTkn->szChars())) {
-    return EC_RESERVED_WORD;
-  }
+	// -- -- -- --
+	// validate column name
+	eError = eValidateColumnName(pTknVec);
+	if (EC_NONE != eError) {
+		return eError;
+	}
+
+	Token* pTkn = pTknVec->pCurrToken(); dPT();
 
   // -- -- -- --
   
@@ -1460,6 +1469,59 @@ eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
   m_jTableSize = pTkn->iToI8();
     
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate column name                                                       */
+/*----------------------------------------------------------------------------*/
+eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
+{
+	_precondition_(_ADDRESS_,_MAGIC_);
+
+	// next token should be column name
+	Stz* szColumnNm = pTknVec->pCurrToken()->szChars();
+
+	if (szColumnNm->nLength() > C_MAX_COLUMN_NAME_LENGTH - 1) {
+		return EC_MAX_COLUMN_NAME_LENGTH;
+	}
+
+	// Check starting character of table name
+	char cStartChar = szColumnNm->azChar()[0];
+
+	if( !(cStartChar >= 'A' && cStartChar <= 'Z') &&
+			!(cStartChar >= 'a' && cStartChar <= 'z') &&
+			!(cStartChar == '_'))
+	{
+		return EC_SYNTAX_ERROR;
+	}
+
+	// Check for special characters in column name
+	for(i8 i = 33; i <= 47 ; i++)
+	{
+		if( szColumnNm->bContains(StrLib::szCharToStr(i))) {
+			return EC_SYNTAX_ERROR;
+		}
+	}
+
+	for(i8 i = 58; i <= 64 ; i++)
+	{
+		if( szColumnNm->bContains(StrLib::szCharToStr(i))) {
+			return EC_SYNTAX_ERROR;
+		}
+	}
+
+	if( szColumnNm->bContains("|"_Stz) ||
+			szColumnNm->bContains("^"_Stz) ||
+			szColumnNm->bContains("~"_Stz)) {
+		return EC_SYNTAX_ERROR;
+	}
+
+	// Check if the table name is a reserved word
+	if (ReservedWords::bIsAReservedWord(szColumnNm)) {
+		return EC_RESERVED_WORD;
+	}
+
+	return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

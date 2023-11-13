@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+static const i8 C_MAX_COLUMN_NAME_LENGTH = 256; // max column name length including null terminator
 static const i8 C_MAX_COLUMNS       = 64;     // max columns per table
 static const i8 C_MAX_CONN_RETRIES  = 5;      // max connection retries on node failure
 static const i8 C_MAX_DECKS         = 256;

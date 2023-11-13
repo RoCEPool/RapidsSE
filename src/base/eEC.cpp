@@ -170,6 +170,7 @@ Stz* aEC[EC_ENUMS] =
   /* _M_ */
   /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 255 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
+	/* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"max column name length allowed is 255 bytes",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 255 bytes",
@@ -447,6 +448,7 @@ Stz* aEC2[EC_ENUMS] = // error code
   /* _M_ */
   /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"EC_MAX_INDEX_NAME_LENGTH",
   /* EC_MAX_INDEXES                   */ (Stz*)"EC_MAX_INDEXES",
+	/* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"EC_MAX_COLUMN_NAME_LENGTH",
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"EC_MAX_TABLE_NAME_LENGTH",
@@ -732,6 +734,7 @@ Stz* aErrorMsg[EC_ENUMS] =
   /* _M_ */
   /* EC_MAX_INDEX_NAME_LENGTH         */ (Stz*)"max index name length allowed is 255 bytes",
   /* EC_MAX_INDEXES                   */ (Stz*)"max allowed indexes already created",
+	/* EC_MAX_COLUMN_NAME_LENGTH        */ (Stz*)"max column name length allowed is 255 bytes",
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 255 bytes",
