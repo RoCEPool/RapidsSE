@@ -160,7 +160,7 @@ void Card_Term::vBumpKeyCol(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vBump_stmCol(i8 nBy)
+void Card_Term::vBump_expCol(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -180,7 +180,7 @@ void Card_Term::vBump_stmCol(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
+void Card_Term::vEnsureTypeId_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -195,7 +195,7 @@ void Card_Term::vEnsureTypeFor_stmCol(CardIter* pCI)
   if (bIsKeyCol())
     p_expr_found = pCI->G.p_key->pGet_expr(iOdn - 1);
   else
-  if (bIsStmCol())
+  if (bIs_expCol())
     p_expr_found = pCI->Flux.m_pArriving->pGet_expr(iOdn - 1);
   else
     return;
@@ -373,7 +373,7 @@ bool Card_Term::bIsSqyPrm(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a stream-value ordinal? $n                                    */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsStmCol(void)
+bool Card_Term::bIs_expCol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -412,7 +412,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s256 sTerm = szFacet(SF_NONE);
-  s32 sType_short = szCT_char[pSymbol()->xColTypeId().eCTVal()];
+  s32 sType_short = szCT_char[pSymbol()->xTypeId().eCTVal()];
 
   //pRibbon->vSprintSnippet(true,"%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
@@ -435,15 +435,15 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* correct stmCol                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vCorrectStmCol(Card_Emit* p_emitted_prior)
+void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (!bIsStmCol())
+  if (!bIs_expCol())
     return;
 
   Symbol* pSym = pSymbol();
-  if (Card_Expr* p_expr = p_emitted_prior->pFindExprOfSymbol(pSym)) {
+  if (Card_Expr* p_expr = p_arriving->pFindExprOfSymbol(pSym)) {
     pSym->vFacets(p_expr->pSymbol());
     vMark1(MARK_CHANGED);
   }
@@ -474,7 +474,7 @@ void Card_Term::vShortForm(String* pString, Stz* szSep)
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
+void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -507,7 +507,7 @@ void Card_Term::vX_stmCol_To_tblCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert table-column term to stream-column                                 */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

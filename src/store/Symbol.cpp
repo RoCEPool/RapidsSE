@@ -24,7 +24,7 @@ Symbol::Symbol(void)
 
   vFacetReset();
 
-  //m_xColTypeId;
+  //m_xTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -43,7 +43,7 @@ Symbol::Symbol(eSF eFacet, i8 iInt)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-	//m_xColTypeId;
+	//m_xTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -64,7 +64,7 @@ Symbol::Symbol(eSF eFacet, Stz* szChrSeq)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vFacetReset();
-	//m_xColTypeId;
+	//m_xTypeId;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -1220,21 +1220,21 @@ void Symbol::vAppendFacets(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* get column type                                                            */
 /*----------------------------------------------------------------------------*/
-TypeId Symbol::xColTypeId(void)
+TypeId Symbol::xTypeId(void)
 {
 	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-	return m_xColTypeId;
+	return m_xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set type                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vColTypeId(TypeId xColTypeId)
+void Symbol:: vTypeId(TypeId xColTypeId)
 {
 	_precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-	m_xColTypeId = xColTypeId;
+  m_xTypeId = xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1587,7 +1587,7 @@ void Symbol::vFacets(Symbol* pSymbol_arg)
 
   vFacetConcat(pSymbol_arg);
 
-  m_xColTypeId = pSymbol_arg->m_xColTypeId;
+  m_xTypeId = pSymbol_arg->m_xTypeId;
 
   if (SF_EXP_COL == xaFacet[0].m_eFacet)
     RASSERT(Symbol::bIs_Exp_Col(xaFacet[0].m_sChrSeq));
@@ -1633,11 +1633,11 @@ void Symbol::vFacets_To_String(String* pString)
 /*----------------------------------------------------------------------------*/
 /* true if symbol is given form                                               */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bFormIs(eSF eSymbol)
+bool Symbol::bFacetIs(eSF eFacet_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (eSymbol == xaFacet[0].m_eFacet)
+  if (eFacet_arg == xaFacet[0].m_eFacet)
     return true;
 
   return false;
@@ -1707,7 +1707,7 @@ bool Symbol::bHasType(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return m_xColTypeId.bIsValid();
+  return m_xTypeId.bIsValid();
 }
 
 /*----------------------------------------------------------------------------*/

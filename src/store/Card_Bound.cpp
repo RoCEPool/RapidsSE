@@ -43,8 +43,8 @@ Card_Bound::~Card_Bound(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a (e|l|u) index bound given PRED                                    */
 /*----------------------------------------------------------------------------*/
-Card_Bound* Card_Bound::pCreateFrom_CONJ(Card_CONJUNCTION* p_CONJ,
-                                         char cTblSyn_boundedTo)
+Card_Bound* Card_Bound::pCreateFrom_rlnConj(Card_RlnConj *p_rlnConj,
+                                            char cTblSyn_boundedTo)
 {
   _static_
 
@@ -52,10 +52,10 @@ Card_Bound* Card_Bound::pCreateFrom_CONJ(Card_CONJUNCTION* p_CONJ,
 
   Card_Term* p_term;
 
-  Card_Term* pTerm_0 = _pCard_Term(p_CONJ->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(p_CONJ->pGetChild(1));
+  Card_Term* pTerm_0 = _pCard_Term(p_rlnConj->pGetChild(0));
+  Card_Term* pTerm_1 = _pCard_Term(p_rlnConj->pGetChild(1));
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_CONJ->szFacet(SF_NONE));
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_rlnConj->szFacet(SF_NONE));
 
   Symbol xSymbol_idxCol(SF_IDX_COL,1);
 
@@ -163,7 +163,7 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_Bound::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -172,7 +172,7 @@ void Card_Bound::vX_tblCol_To_stmCol(CardIter* pCI)
     if (!xKid.p_term()->pSymbol()->bIs_Tbl_Col())
       continue;
 
-    xKid.p_term()->vX_tblCol_To_stmCol(pCI);
+    xKid.p_term()->vX_tblCol_To_expCol(pCI);
   }
 }
 
@@ -185,7 +185,7 @@ bool Card_Bound::bEquivalent(Card_RlnConj* p_rlnConj)
 
   Symbol* pBnd_rlnOpr = pSymbol();
   Symbol* pBnd_idxCol = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxCol);
-  Symbol* pBnd_stmCol = pGetChild(1)->pSymbol();
+  Symbol* pBnd_expCol = pGetChild(1)->pSymbol();
 
   Symbol* pCmp_rlnOpr = p_rlnConj->pSymbol();
   Symbol* pCmp_arg_0  = p_rlnConj->pGetChild(0)->pSymbol();
@@ -194,8 +194,8 @@ bool Card_Bound::bEquivalent(Card_RlnConj* p_rlnConj)
   if (! pCmp_rlnOpr->bMatches(pBnd_rlnOpr))
     return false;
 
-  if (pBnd_stmCol->bMatches(pCmp_arg_0) ||
-      pBnd_stmCol->bMatches(pCmp_arg_1))
+  if (pBnd_expCol->bMatches(pCmp_arg_0) ||
+      pBnd_expCol->bMatches(pCmp_arg_1))
     return true;
 
   return false;
@@ -204,12 +204,12 @@ bool Card_Bound::bEquivalent(Card_RlnConj* p_rlnConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bound::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Bound::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    xKid.p_term()->vEnsureTypeFor_stmCol(pCI);
+    xKid.p_term()->vEnsureTypeId_expCol(pCI);
   }
 
 }
@@ -336,7 +336,7 @@ bool Card_Bound::bUsesSqyRsl(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    if (xKid.p_term()->bIsStmCol() && 1 == xKid.p_term()->iGetOdn())
+    if (xKid.p_term()->bIs_expCol() && 1 == xKid.p_term()->iGetOdn())
       return true;
   }
 

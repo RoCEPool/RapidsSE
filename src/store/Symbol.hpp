@@ -26,8 +26,7 @@ namespace STORE
     i8 m_nFacets;
     Facet xaFacet[C_FACETS];
 
-    //eCT m_eColType;
-		TypeId m_xColTypeId;
+		TypeId m_xTypeId;
 
     TagSet* m_pProperties;
 
@@ -120,8 +119,8 @@ namespace STORE
     //eCT  eColType(void);
     //void vColType(eCT eColType);
 
-		TypeId  xColTypeId(void);
-		void vColTypeId(TypeId eColTypeId);
+		TypeId  xTypeId(void);
+		void vTypeId(TypeId xColTypeId);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
@@ -148,7 +147,7 @@ namespace STORE
 
     void vFacets_To_String(String* pString);
 
-    bool bFormIs(eSF eSymbol);
+    bool bFacetIs(eSF eFacet_arg);
 
     bool bHasFacet(eSF eFacet);
     bool bHasFacet(Stz* szChrSeq);

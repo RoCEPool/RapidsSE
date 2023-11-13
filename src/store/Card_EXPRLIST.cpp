@@ -63,7 +63,7 @@ void Card_EXPRLIST::vBump_KeyCol_In_rpnCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vBump_stmCol_In_rpnCalc(CardIter* )
+void Card_EXPRLIST::vBump_expCol_In_rpnCalc(CardIter* )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -80,7 +80,7 @@ void Card_EXPRLIST::vBump_stmCol_In_rpnCalc(CardIter* )
 //      Stz *szTerm = xCI2.G.p_term->szFacet(SF_NONE);
 
       if (xCI2.p_term()->pSymbol()->bIs_Exp_Col()) {
-        xCI2.p_term()->vBump_stmCol();
+        xCI2.p_term()->vBump_expCol();
         xCI2.p_term()->vMark1(MARK_CHANGED);
         continue;
       }
@@ -98,7 +98,7 @@ void Card_EXPRLIST::vBump_Rightwards(i8 nBumpBy)
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vBump_stmCol(nBumpBy);
+    xKid.p_expr()->vBump_expCol(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,15 +134,15 @@ Card_Expr* Card_EXPRLIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* return term0 of <expr> with term0 matching given $n stream-column          */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_stmCol)
+Card_Term* Card_EXPRLIST::pDecode_expr_term0(Symbol* pSymbol_expCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(pSymbol_stmCol->bIs_Exp_Col());
+  RASSERT(pSymbol_expCol->bIs_Exp_Col());
 
-  if (Card_Expr* p_expr_stmCol = pGet_expr(pSymbol_stmCol)) {
-    if (p_expr_stmCol->bIsScalarCol()) {
-      Card_Term *p_term0 = p_expr_stmCol->pGet_term(0);
+  if (Card_Expr* p_expr_expCol = pGet_expr(pSymbol_expCol)) {
+    if (p_expr_expCol->bIsScalarCol()) {
+      Card_Term *p_term0 = p_expr_expCol->pGet_term(0);
       return p_term0;
     }
   }
@@ -258,9 +258,9 @@ void Card_EXPRLIST::vRenumberAll_expr(void)
   i8 i_Expr = 1;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     if (bIsKeyExpr)
-      xKid.p_expr()->vRenumberForm_KeyCol(i_Expr++);
+      xKid.p_expr()->vRenumberForm_keyCol(i_Expr++);
     else
-      xKid.p_expr()->vRenumberForm_stmCol(i_Expr++);
+      xKid.p_expr()->vRenumberForm_expCol(i_Expr++);
   }
 }
 
@@ -327,15 +327,15 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   StreamDef* pStreamDef = new StreamDef;
 
-  s32 sColNm;
+  s256 sColNm;
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (CK_GBYAGG == p_OP->eCard()) {
 
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       p_expr->vDump(__func__,"GBYAGG"_Stz);
       sColNm = p_expr->szFacet(SF_ITM_COL);
@@ -351,8 +351,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   if (CK_SORT == p_OP->eCard()) {
 
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
@@ -367,8 +367,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   if (CK_TOP == p_OP->eCard()) {
 
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
@@ -384,14 +384,13 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   i8 i_EmittedCol = 1;
   UNUSED(i_EmittedCol);
   if (CK_PROJECT == p_OP->eCard()) {
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
 			TypeId xTypeId = p_expr->xColumnTypeId();
       pStreamDef->vAddColumn(sColNm, xTypeId, C_UNKNOWN, C_UNKNOWN);
-
     }
 
     return pStreamDef;
@@ -402,8 +401,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 
   i_EmittedCol = 1;
   if (CK_SCAN == p_OP->eCard()) {
-    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-      Card_Expr *p_expr = xProjection.p_expr();
+    for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
+      Card_Expr *p_expr = xExprList.p_expr();
 
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
@@ -419,8 +418,8 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
   RASSERT(CK_GBYAGG != p_OP->eCard());
   i_EmittedCol = 1;
 
-  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
-    Card_Expr *p_expr = xProjection.p_expr();
+  for (Kid xExprList(this); xExprList.bEach(CK_EXPR); i_EmittedCol++) {
+    Card_Expr *p_expr = xExprList.p_expr();
 
     if (CK_PROJECT == p_OP->eCard()) {
       sColNm = p_expr->szFacet(SF_ITM_COL);
@@ -456,8 +455,6 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
         pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
                       true,
                       p_expr->pSymbol()->Y_iGet(P_Cell));
-
-
     }
   }
 
@@ -467,25 +464,25 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
 /*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vX_stmCol_To_tblCol(CardIter* pCI)
+void Card_EXPRLIST::vX_expCol_To_tblCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_stmCol_To_tblCol(pCI);
+    xKid.p_expr()->vX_expCol_To_tblCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_EXPRLIST::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_EXPRLIST::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_EXPR))
-    xKid.p_expr()->vX_tblCol_To_stmCol(pCI);
+    xKid.p_expr()->vX_tblCol_To_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

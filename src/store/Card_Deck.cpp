@@ -50,7 +50,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
   Card_OP*         p_OP_prev          = nullptr;
   Card_Project*    p_project_prior    = nullptr;
-  Card_Emit* p_emitted_prior = nullptr;
+  Card_Emit* p_arriving = nullptr;
   Card_Cast*       p_cast_prior       = nullptr;
   Card_Combined*   p_combined_prior   = nullptr;
 
@@ -79,7 +79,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_project_prior,
                                                              p_combined_prior,
                                                              p_cast_prior,
-                                                             p_emitted_prior,
+                                                             p_arriving,
                                                              pCI->G.p_OP);
         UNUSED(eStageCast);
         pCI->G_vMainResynch();
@@ -107,7 +107,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
     // -- -- -- -- --
     if (pCI->G.p_OP->pSub_emit())
-      p_emitted_prior = pCI->G.p_OP->pSub_emit();
+      p_arriving = pCI->G.p_OP->pSub_emit();
   }
 
   delete p_streamPtn;
@@ -321,7 +321,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
         if (pCI->Flux.m_pArriving) {
-          pCI->G.p_constraint->vEnsureTypes_For_stmCol(pCI);
+          pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
         }
       }
 
@@ -330,7 +330,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-        pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
+        pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
       pCI->G.p_OP->vEnsure_stream(pCI);
       Card_Emit* p_emit = pCI->Flux.m_pArriving->pPropagate();
@@ -371,7 +371,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Flux.m_pArriving) {
-        pCI->G.p_key->vTypes_For_stmCol(pCI);
+        pCI->G.p_key->vEnsureTypeId_expCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
       }
     }
@@ -380,7 +380,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
       if (pCI->Flux.m_pArriving) {
         //pCI->G.p_emit->vDump(__func__);
-        pCI->G.p_emit->vEnsureTypes_For_stmCol(pCI);
+        pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
         //pCI->G.p_emit->vDump(__func__);
         pCI->G.p_emit->vRenumberAll_expr();
         //pCI->G.p_emit->vDump(__func__);
@@ -392,7 +392,7 @@ void Card_Deck::vAnalyse_emitted(CardIter* pCI)
 
     if ((pCI->G.p_constraint = pCI->G.p_MainCard->pSub_constraint())) {
       if (pCI->Flux.m_pArriving) {
-        pCI->G.p_constraint->vEnsureTypes_For_stmCol(pCI);
+        pCI->G.p_constraint->vEnsureTypeId_expCol(pCI);
       }
     }
 
@@ -427,7 +427,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Flux.m_pArriving) {
-          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
+          pCI->G.p_indexList->vTypes_For_expCol(pCI);
         }
       }
 
@@ -447,7 +447,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Flux.m_pArriving) {
-          pCI->G.p_indexList->vTypes_For_stmCol(pCI);
+          pCI->G.p_indexList->vTypes_For_expCol(pCI);
         }
       }
 
@@ -467,7 +467,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-        pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
+        pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
       pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
 
@@ -488,7 +488,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Flux.m_pArriving) {
-        pCI->G.p_key->vTypes_For_stmCol(pCI);
+        pCI->G.p_key->vEnsureTypeId_expCol(pCI);
         pCI->G.p_key->vRenumberAll_expr();
       }
     }
@@ -496,7 +496,7 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
     if ((pCI->G.p_emit = pCI->G.p_MainCard->pSub_emit())) {
 
       if (pCI->Flux.m_pArriving) {
-        pCI->G.p_emit->vEnsureTypes_For_stmCol(pCI);
+        pCI->G.p_emit->vEnsureTypeId_expCol(pCI);
         pCI->G.p_emit->vRenumberAll_expr();
       }
 

@@ -38,7 +38,7 @@ namespace STORE
   class Card_Clause;
   class Card_RlnConj;
   class Card_Combined;
-  class Card_CONJUNCTION;
+  class Card_CONJ;
   class Card_Constraint;
   class Card_CorrCols;
   class Card_Correlation;
@@ -326,6 +326,7 @@ namespace STORE
     Stz* szCoord(void);
 
     void  vDump(const char* azFunc, Stz* szTitle=nullptr, i8 iDepth=0);
+    void  vDumpShort(const char* azFunc, Stz* szTitle);
     Card* pDupCard(void);
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);

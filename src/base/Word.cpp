@@ -455,7 +455,7 @@ void Word::vImmediate(bool bImmediate)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Word::bIsName(s32& sName)
+bool Word::bIsName(s256& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

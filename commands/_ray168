@@ -49,9 +49,11 @@ where p_partkey = l_partkey
 ;
 */
 
-/pipelineName = "_ray168"
+/optimiser_trace
+/transliterated
 /weaved
 /pipeline_def
+/pipelineName = "_ray168"
 select
   sum(l_extendedprice * (1 - l_discount) ) as revenue
 from

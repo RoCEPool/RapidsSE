@@ -175,6 +175,7 @@ void XF::vTransform(void)
                                                    //
     // preliminary conversions                     //
     XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
+    //XF_Optimise_Factor_boolPred::vOptimise(m_pCI);     //
     XF_Prolog_Review_as::vReview(m_pCI);           //
   }                                                //
                                                    //
@@ -213,7 +214,6 @@ void XF::vTransform(void)
   XF_Optimise_Cull_bound::vOptimise(m_pCI);            //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
                                                        //
-  XF_Optimise_Factor_boolPred::vOptimise(m_pCI);     //
   XF_Optimise_Reduce_gbyAgg_key::vOptimise(m_pCI);     //
   XF_Optimise_Static_calc::vOptimise(m_pCI);           //
   XF_Optimise_max_To_top::vOptimise(m_pCI);            //

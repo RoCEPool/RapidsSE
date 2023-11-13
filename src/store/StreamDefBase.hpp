@@ -14,7 +14,7 @@ namespace STORE
                         public WspConvergent_t<C_64KB,void,void>
   {
   private:
-    s256 m_sStreamDefNm;  // streamDef name
+		s2K m_sStreamDefNm;  // streamDef name
     
     bool m_bReplicated;   // replicated stream/table?
   
@@ -117,6 +117,7 @@ namespace STORE
     eEC eParseRowSize        (TokenVec* pTknVec);
     eEC eParseTableSize      (TokenVec* pTknVec);
 
+		eEC eValidateColumnName   (TokenVec* pTknVec);
     eEC eValidateTableName   (TokenVec* pTknVec);
 
   };

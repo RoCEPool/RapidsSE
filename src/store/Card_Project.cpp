@@ -218,7 +218,7 @@ void Card_Project::vEarlyProject_recurse_needed(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Flux.m_pArriving);
+  vCorrect_expCol(pCI->Flux.m_pArriving);
 
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
@@ -255,8 +255,8 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_expr->vAppendChild(pCI->G.p_rpnCalc);
   pCI->G.p_expr->vColType(pCI->G.p_rpnCalc);
 
-  Symbol x_Symbol_stmCol1(SF_EXP_COL, 1);
-  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_stmCol1);
+  Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
+  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_expCol1);
 
   pCI->G.p_rpnCalc->vAppendChild(pCI->G.p_term);
 
@@ -329,7 +329,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmCol(pCI->Flux.m_pArriving);
+  vCorrect_expCol(pCI->Flux.m_pArriving);
 
  // pCI->vPrintBoard();
 

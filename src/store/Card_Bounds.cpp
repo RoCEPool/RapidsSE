@@ -35,6 +35,8 @@ Card_Bounds::Card_Bounds(void)
 Card_Bounds::~Card_Bounds(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vDumpShort(__func__,"BOUNDS"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,13 +50,13 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_Bounds::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_BOUND))
-    xKid.p_bound()->vX_tblCol_To_stmCol(pCI);
+    xKid.p_bound()->vX_tblCol_To_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,12 +100,12 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Bounds::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Bounds::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
-    xKid.p_bound()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_bound()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

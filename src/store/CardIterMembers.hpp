@@ -36,7 +36,7 @@ namespace STORE
     Card*                p_CARD;
     Card*                p_NEW;
     Card_OP *            p_OP;
-    Card_CONJUNCTION *   p_CONJ;
+    Card_CONJ *   p_CONJ;
 
     Card * p_SubOfMain;
     eCK    e_SubOfMain;

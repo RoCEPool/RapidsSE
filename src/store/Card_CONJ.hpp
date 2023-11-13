@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CONJUNCTION.hpp -- Abstract Conjunction                                        */
+/* Card_CONJ.hpp -- Abstract Conjunction                                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,27 +7,24 @@
 
 namespace STORE
 {
-  class Card_CONJUNCTION : public Card_CONJSUBROOT
+  class Card_CONJ : public Card_CONJSUBROOT
   {  
   public:
-    Card_CONJUNCTION(eCK eCard, i8 iFixedDepth);
-   ~Card_CONJUNCTION(void) noexcept(false);
+    Card_CONJ(eCK eCard, i8 iFixedDepth);
+   ~Card_CONJ(void) noexcept(false);
 
     static bool bIsConj(Card* p_card);
 
-    bool bConjHasBounds (Index* pIndex);
-    bool bConjRecursive(std::function<bool(Card_CONJUNCTION* p_pred, bool bUpwards)> bfApply);
-    bool bContains_callToSubQuery(CardIter* pCI);
-    bool bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn);
-    void vEnsureTypesFor_stmCol(CardIter* pCI);
-
+    bool bConjRecursive(std::function<bool(Card_CONJ* p_pred, bool bUpwards)> bfApply);
+    bool bContains_sqyCall(CardIter* pCI);
+    bool bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn);
+    void vEnsureTypeId_expCol(CardIter* pCI);
     Stz* szGetBoardNmInTerm(CardIter* pCI);
     Card_Term* pGetFirstTerm_tblCol(void);
     Card_Term* pGetTerm(i8 i_Term);
     Card_Term* pGetTerm_boardNm(CardIter* pCI);
     bool bIsBoolFn(void);
     bool bIsCorrConj(void);
-    bool bIsIndexBounds_v3(Card_Index* p_index);
     bool bIsJoinConj(void);
     bool bIsRelnOp(void);
     bool bIsSqyOp(void);

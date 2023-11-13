@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_CONJUNCTION.cpp -- Abstract Conjunction                               */
+/* Card_CONJ.cpp -- Abstract Conjunction                               */
 /*============================================================================*/
 
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 #include "Card_Term.hpp"
 #include "Card_OrConj.hpp"
 #include "Card_AndConj.hpp"
@@ -18,7 +18,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION::Card_CONJUNCTION(eCK eCard, i8 iFixedDepth)
+Card_CONJ::Card_CONJ(eCK eCard, i8 iFixedDepth)
 : Card_CONJSUBROOT(eCard, iFixedDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -31,7 +31,7 @@ Card_CONJUNCTION::Card_CONJUNCTION(eCK eCard, i8 iFixedDepth)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CONJUNCTION::~Card_CONJUNCTION(void) noexcept(false)
+Card_CONJ::~Card_CONJ(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,7 +43,7 @@ Card_CONJUNCTION::~Card_CONJUNCTION(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is card a PRED ?                                                           */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsConj(Card* p_card)
+bool Card_CONJ::bIsConj(Card* p_card)
 {
   _static_;
 
@@ -65,37 +65,9 @@ bool Card_CONJUNCTION::bIsConj(Card* p_card)
 
 
 /*----------------------------------------------------------------------------*/
-/* does predicate have some bound wrt given index?                            */
-/*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bConjHasBounds(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-
-    case CK_ANDCONJ: return _pCard_AndConj(this)->bAndPredHasBounds(pIndex);
-
-    case CK_ORCONJ:  return _pCard_OrConj(this)->bOrPredHasBounds(pIndex);
-
-    case CK_RLNCONJ: return _pCard_RlnConj(this)->bCmpPredHasBounds(pIndex);
-
-    default:
-      vTrace("bConjHasBounds: unexpected eCard %lld %s\n"_Stz
-          ,(i8)eCard
-          ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* visit all sub-cards of pred and apply lambda function                      */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bConjRecursive(std::function<bool(Card_CONJUNCTION* p_conj, bool bUpwards)> bfApply)
+bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwards)> bfApply)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -122,7 +94,7 @@ bool Card_CONJUNCTION::bConjRecursive(std::function<bool(Card_CONJUNCTION* p_con
   i8 nSubCards = nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *pSubCard = pGetChild(i_Child);
-    bContinue = static_cast<Card_CONJUNCTION *>(pSubCard)->bConjRecursive(bfApply);
+    bContinue = static_cast<Card_CONJ *>(pSubCard)->bConjRecursive(bfApply);
     if (! bContinue)
       return false;
   }
@@ -135,7 +107,7 @@ bool Card_CONJUNCTION::bConjRecursive(std::function<bool(Card_CONJUNCTION* p_con
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bContains_callToSubQuery(CardIter* pCI)
+bool Card_CONJ::bContains_sqyCall(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -143,7 +115,7 @@ bool Card_CONJUNCTION::bContains_callToSubQuery(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (pCI->m_pBench->bIsSubQueryNm(xKid.p_term()->szFacet(SF_NONE)))
+    if (pCI->m_pBench->bIsSqyNm(xKid.p_term()->szFacet(SF_NONE)))
       return true;
 
   return false;
@@ -152,16 +124,16 @@ bool Card_CONJUNCTION::bContains_callToSubQuery(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambdaFn)
+bool Card_CONJ::bDescend(std::function<bool(Card_CONJ* )> bfLambdaFn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach()) {
-    if (!Card_CONJUNCTION::bIsConj(xKid.pChild()))
+    if (!Card_CONJ::bIsConj(xKid.pChild()))
       continue;
 
-    bool bContinue = ((Card_CONJUNCTION*)xKid.pChild())->bDescend(bfLambdaFn);
+    bool bContinue = ((Card_CONJ*)xKid.pChild())->bDescend(bfLambdaFn);
     if (! bContinue)
       return C_TERMINATE_RECURSION;
   }
@@ -172,7 +144,7 @@ bool Card_CONJUNCTION::bDescend(std::function<bool(Card_CONJUNCTION* )> bfLambda
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJUNCTION::vEnsureTypesFor_stmCol(CardIter *pCI)
+void Card_CONJ::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -180,12 +152,16 @@ void Card_CONJUNCTION::vEnsureTypesFor_stmCol(CardIter *pCI)
 
   switch (eCard) {
 
-    case CK_ANDCONJ: _pCard_AndConj(this)->vEnsureTypesFor_stmCol(pCI); break;
-    case CK_NOTCONJ: _pCard_NotConj(this)->vEnsureTypesFor_stmCol(pCI); break;
-    case CK_ORCONJ:  _pCard_OrConj(this)->vEnsureTypesFor_stmCol(pCI);  break;
-    case CK_RLNCONJ: _pCard_RlnConj(this)->vEnsureTypesFor_stmCol(pCI); break;
+    case CK_ANDCONJ:
+      _pCard_AndConj(this)->vEnsureTypeId_expCol(pCI); break;
+    case CK_NOTCONJ:
+      _pCard_NotConj(this)->vEnsureTypeId_expCol(pCI); break;
+    case CK_ORCONJ:
+      _pCard_OrConj(this)->vEnsureTypeId_expCol(pCI);  break;
+    case CK_RLNCONJ:
+      _pCard_RlnConj(this)->vEnsureTypeId_expCol(pCI); break;
 
-    case CK_TERM:    _pCard_Term(this)->vEnsureTypeFor_stmCol(pCI);     break;
+    case CK_TERM:    _pCard_Term(this)->vEnsureTypeId_expCol(pCI);     break;
 
     default:
       NEVER_REACH
@@ -195,7 +171,7 @@ void Card_CONJUNCTION::vEnsureTypesFor_stmCol(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* attempt to get board name from one of the terms of this predicate          */
 /*----------------------------------------------------------------------------*/
-Stz* Card_CONJUNCTION::szGetBoardNmInTerm(CardIter* pCI)
+Stz* Card_CONJ::szGetBoardNmInTerm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -208,7 +184,7 @@ Stz* Card_CONJUNCTION::szGetBoardNmInTerm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CONJUNCTION::pGetFirstTerm_tblCol(void)
+Card_Term* Card_CONJ::pGetFirstTerm_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -223,7 +199,7 @@ Card_Term* Card_CONJUNCTION::pGetFirstTerm_tblCol(void)
 /*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CONJUNCTION::pGetTerm(i8 i_Term)
+Card_Term* Card_CONJ::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -239,7 +215,7 @@ Card_Term* Card_CONJUNCTION::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /* attempt to get term which is a board name from this predicate              */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_CONJUNCTION::pGetTerm_boardNm(CardIter* pCI)
+Card_Term* Card_CONJ::pGetTerm_boardNm(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -257,7 +233,7 @@ Card_Term* Card_CONJUNCTION::pGetTerm_boardNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a bool fn?                                               */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsBoolFn(void)
+bool Card_CONJ::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -270,7 +246,7 @@ bool Card_CONJUNCTION::bIsBoolFn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a correlation conjunction? (a conjunction in a sub-query)          */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsCorrConj(void)
+bool Card_CONJ::bIsCorrConj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -284,72 +260,17 @@ bool Card_CONJUNCTION::bIsCorrConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsSqyPrm() && (p_term_1->bIsStmCol() || p_term_1->bIsTblCol())) ||
-      (p_term_1->bIsSqyPrm() && (p_term_0->bIsStmCol() || p_term_0->bIsTblCol())))
+  if ((p_term_0->bIsSqyPrm() && (p_term_1->bIs_expCol() || p_term_1->bIsTblCol())) ||
+      (p_term_1->bIsSqyPrm() && (p_term_0->bIs_expCol() || p_term_0->bIsTblCol())))
     return true;
 
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this predicate a bounds for given index                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsIndexBounds_v3(Card_Index* p_index)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (! p_index)
-    return false;
-
-  i8 nChildren = nChildCards();
-  if (2 != nChildren)
-    return false;
-
-  Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
-  Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
-
-  if (pTerm_0->pSymbol()->bIs_Tbl_Col()) {
-    // + term_0 is $c.n
-
-    if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
-      // + both are term:$c.n
-
-      // ? is either term_0:$c.n or term_1:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)) ||
-          p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
-        return true;
-
-      return false;
-    }
-    else {
-      // + only term_0 is $c.n
-
-      // ? is term_0:$c.n an index column
-      if (p_index->bTblCol_IsKeyIn_index(pTerm_0->szFacet(SF_NONE)))
-        return true;
-
-      return false;
-    }
-  }
-  else
-  if (pTerm_1->pSymbol()->bIs_Tbl_Col()) {
-    // + only term_1 is $c.n
-
-    // ? is term_0:$c.n an index column
-    if (p_index->bTblCol_IsKeyIn_index(pTerm_1->szFacet(SF_NONE)) )
-      return true;
-
-    return false;
-  }
-
-  // + neither term_0 nor term_1 is $c.n
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a potential join conjunction?                                      */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsJoinConj(void)
+bool Card_CONJ::bIsJoinConj(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -363,8 +284,8 @@ bool Card_CONJUNCTION::bIsJoinConj(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsStmCol() || p_term_0->bIsTblCol()) &&
-      (p_term_1->bIsStmCol() || p_term_1->bIsTblCol()))
+  if ((p_term_0->bIs_expCol() || p_term_0->bIsTblCol()) &&
+      (p_term_1->bIs_expCol() || p_term_1->bIsTblCol()))
     return true;
 
   return false;
@@ -373,7 +294,7 @@ bool Card_CONJUNCTION::bIsJoinConj(void)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a relational operator?                                   */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsRelnOp(void)
+bool Card_CONJ::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -386,7 +307,7 @@ bool Card_CONJUNCTION::bIsRelnOp(void)
 /*----------------------------------------------------------------------------*/
 /* is this predicate a subquery operator?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJUNCTION::bIsSqyOp(void)
+bool Card_CONJ::bIsSqyOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -399,7 +320,7 @@ bool Card_CONJUNCTION::bIsSqyOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
+void Card_CONJ::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -410,22 +331,22 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term1 = _pCard_Term(pGetChild(1));
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term1->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bIsSqyNm(p_term1->szFacet(SF_NONE))); //temp
 
-    Symbol x_Symbol_stmCol1;
+    Symbol x_Symbol_expCol1;
     if (p_term) {
-      x_Symbol_stmCol1.vFacets(p_term->pSymbol());
-      p_term1->pSymbol()->vFacets(&x_Symbol_stmCol1);
+      x_Symbol_expCol1.vFacets(p_term->pSymbol());
+      p_term1->pSymbol()->vFacets(&x_Symbol_expCol1);
     }
     else {
-      //x_Symbol_stmCol1.vSet_Col_No(1);
+      //x_Symbol_expCol1.vSet_Col_No(1);
       p_term1->SYM(SF_EXP_COL, (i8)1);
     }
 
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term1->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
+    p_term1->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
    // pCI->vPrintBoard(__LINE__);
     return;
@@ -436,26 +357,26 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bIsSqyNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
 
     if (p_term) {
-      Symbol x_Symbol_stmCol1;
-      x_Symbol_stmCol1.vFacets(p_term->pSymbol());
-      p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
+      Symbol x_Symbol_expCol1;
+      x_Symbol_expCol1.vFacets(p_term->pSymbol());
+      p_term_head->pSymbol()->vFacets(&x_Symbol_expCol1);
     }
     else {
-      Symbol x_Symbol_stmCol1(SF_EXP_COL, 1);
-      p_term_head->pSymbol()->vFacets(&x_Symbol_stmCol1);
+      Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
+      p_term_head->pSymbol()->vFacets(&x_Symbol_expCol1);
     }
 
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    p_term_head->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
+    p_term_head->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
    // pCI->vPrintBoard(__LINE__);
 
@@ -467,16 +388,16 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
     SYM(SF_RLN_OP,"=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
-    ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szFacet(SF_NONE))); //temp
+    ASSERT(pCI->m_pBench->bIsSqyNm(p_term_popped->szFacet(SF_NONE))); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->pSymbol()->bSame("#1"_Stz)); //temp
 
-    Symbol x_Symbol_stmCol1(SF_EXP_COL, 1);
+    Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
     if (p_term)
-      x_Symbol_stmCol1.vFacetsPpy(p_term->pSymbol());
-    p_term_head->pSymbol()->vFacetsPpy(&x_Symbol_stmCol1);
+      x_Symbol_expCol1.vFacetsPpy(p_term->pSymbol());
+    p_term_head->pSymbol()->vFacetsPpy(&x_Symbol_expCol1);
     return;
   }
 
@@ -484,40 +405,9 @@ void Card_CONJUNCTION::vMorph_sqlOp_To_EQ(CardIter* pCI, Card_Term* p_term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a comparePred which is the E_eTerm_Bound of given index               */
-/*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_CONJUNCTION::pPredFindBound(Index* pIndex, ePB eBound)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eCK eCard = this->eCard();
-
-  switch (eCard) {
-
-    case CK_ANDCONJ:
-      return _pCard_AndConj(this)->pAndConjFindBound(pIndex, eBound);
-
-    case CK_ORCONJ:
-      return _pCard_OrConj(this)->pOrPredFindBound(pIndex, eBound);
-
-    case CK_RLNCONJ:
-      return _pCard_RlnConj(this)->pCmpPredFindBound(pIndex, eBound);
-
-    default:
-      vTrace("pPredFindBound: unexpected eCard %lld %s\n"_Stz
-          ,(i8)eCard
-          ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJUNCTION::vPrint(Ribbon* pRibbon, i8 iDepth)
+void Card_CONJ::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -534,7 +424,7 @@ void Card_CONJUNCTION::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_CONJUNCTION::pTable_WhichTableFor_Conj(CardIter* pCI)
+Symbol* Card_CONJ::pTable_WhichTableFor_Conj(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -584,7 +474,7 @@ Symbol* Card_CONJUNCTION::pTable_WhichTableFor_Conj(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* concat short form of this conjunction                                      */
 /*----------------------------------------------------------------------------*/
-void Card_CONJUNCTION::vShortForm(String* pString)
+void Card_CONJ::vShortForm(String* pString)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -619,7 +509,7 @@ void Card_CONJUNCTION::vShortForm(String* pString)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_CONJUNCTION::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+void Card_CONJ::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pCI);

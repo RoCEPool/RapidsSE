@@ -734,7 +734,7 @@ void CodeSynthUtils::vReplaceColumnFrom(String* sLine, Column* pColumn) {
 	_static_
 
 	if (StrLib::bContains(sLine->azStr(), "__COLUMN_FROM__")) {
-		s32 sColNm(pColumn->szColNm());
+		s256 sColNm(pColumn->szColNm());
 		sColNm.vToUpper();
 		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_FROM__", sColNm.azChar());
 		RASSERT(bResult);
@@ -749,7 +749,7 @@ void CodeSynthUtils::vReplaceColumnPrior(String* sLine, Column* pColumnPrior) {
 	_static_
 
 	if (StrLib::bContains(sLine->azStr(), "__COLUMN_PRIOR__")) {
-		s32 sColNm(pColumnPrior->szColNm());
+		s256 sColNm(pColumnPrior->szColNm());
 		sColNm.vToUpper();
 		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_PRIOR__", sColNm.azChar());
 		RASSERT(bResult);
@@ -764,7 +764,7 @@ void CodeSynthUtils::vReplaceColumnTo(String* sLine, Column* pColumn) {
 	_static_
 
 	if (StrLib::bContains(sLine->azStr(), "__COLUMN_TO__")) {
-		s32 sColNm(pColumn->szColNm());
+		s256 sColNm(pColumn->szColNm());
 		sColNm.vToUpper();
 		bool bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__COLUMN_TO__", sColNm.azChar());
 		RASSERT(bResult);

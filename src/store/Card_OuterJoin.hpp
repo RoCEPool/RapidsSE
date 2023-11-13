@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 
 namespace STORE
 {

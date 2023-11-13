@@ -12,7 +12,7 @@ namespace BASE
     s32 m_sTenant;
     s32 m_sCatalog;
     s32 m_sSchema;
-    s32 m_sTable;
+    s256 m_sTable;
 
     // must be last
     Footer m_xFooter;

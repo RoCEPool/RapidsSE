@@ -33,7 +33,7 @@ MetaGet::MetaGet(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaGet::MetaGet(s32 sTableNm)
+MetaGet::MetaGet(s256 sTableNm)
 : Operand(CN_METAGET)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_METAGET, _FOOTER_);

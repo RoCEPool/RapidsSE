@@ -46,13 +46,13 @@ Card_HshColList::~Card_HshColList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_HshColList::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_HshColList::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_HSHCOL)) {
-    xKid.p_hshCol()->vX_tblCol_To_stmCol(pCI);
+    xKid.p_hshCol()->vX_tblCol_To_expCol(pCI);
   }
 }
 

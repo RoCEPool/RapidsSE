@@ -493,7 +493,7 @@ void Card::vColType(Card* pCard_arg)
 
   //pCard_arg->vDump(__func__);
 
-  m_xSymbol.vColTypeId(pCard_arg->pSymbol()->xColTypeId());
+  m_xSymbol.vTypeId(pCard_arg->pSymbol()->xTypeId());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -615,6 +615,20 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
     vTrace("$$\n"_Stz);
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump card (short form)                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vDumpShort(const char* azFunc, Stz* szTitle)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vTrace("--%s [%s] %p %s\n"_Stz,
+         szTitle,
+         azFunc,
+         this,
+         md_Coord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2041,7 +2055,7 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
     case CK_RLNCONJ:
 
       if (RC_NONE != m_eConjRot)
-        ((Card_CONJUNCTION*)this)->vPrint(pRibbon, iDepth);
+        ((Card_CONJ*)this)->vPrint(pRibbon, iDepth);
       else
         vPrintCard_bySettings(pRibbon, iDepth);
       break;

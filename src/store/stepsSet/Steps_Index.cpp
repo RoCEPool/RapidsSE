@@ -495,7 +495,7 @@ void Step::vIndexNameFetch(void)
   Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
-  s32 sIndexName = pIndex->szIndexNm();
+  s256 sIndexName = pIndex->szIndexNm();
   
   m_pDataStack->vPushStr(sIndexName);
   
@@ -509,7 +509,7 @@ void Step::vIndexNew(void)
 {
   ENTRY();
   
-  s32 sIndexNm;
+  s256 sIndexNm;
   m_pDataStack->vPopStr(sIndexNm,__func__);
 
   Index* pIndex = new Index(sIndexNm);

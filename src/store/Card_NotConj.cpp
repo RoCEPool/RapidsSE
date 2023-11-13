@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_NotConj.hpp"
-#include "Card_CONJUNCTION.hpp"
+#include "Card_CONJ.hpp"
 
 #include "Kid.hpp"
 
@@ -20,7 +20,7 @@ __vDeleteFunction(Card_NotConj, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_NotConj::Card_NotConj(void)
-: Card_CONJUNCTION(CK_NOTCONJ, C_UNKNOWN)
+: Card_CONJ(CK_NOTCONJ, C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -42,7 +42,7 @@ Card_NotConj::~Card_NotConj(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_NotConj::vEnsureTypesFor_stmCol(CardIter *pCI)
+void Card_NotConj::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -53,12 +53,16 @@ void Card_NotConj::vEnsureTypesFor_stmCol(CardIter *pCI)
 
     switch (eCard) {
 
-      case CK_ANDCONJ: _pCard_AndConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_NOTCONJ: _pCard_NotConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
-      case CK_ORCONJ:  _pCard_OrConj(pCard)->vEnsureTypesFor_stmCol(pCI);  break;
-      case CK_RLNCONJ: _pCard_RlnConj(pCard)->vEnsureTypesFor_stmCol(pCI); break;
+      case CK_ANDCONJ:
+        _pCard_AndConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+      case CK_NOTCONJ:
+        _pCard_NotConj(pCard)->vEnsureTypeId_expCol(pCI); break;
+      case CK_ORCONJ:
+        _pCard_OrConj(pCard)->vEnsureTypeId_expCol(pCI);  break;
+      case CK_RLNCONJ:
+        _pCard_RlnConj(pCard)->vEnsureTypeId_expCol(pCI); break;
 
-      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeFor_stmCol(pCI);     break;
+      case CK_TERM:    _pCard_Term(pCard)->vEnsureTypeId_expCol(pCI);     break;
 
       default:
         NEVER_REACH

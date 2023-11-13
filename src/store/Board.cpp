@@ -107,12 +107,12 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   Card_Expr* p_expr_found =
       pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-  pCI->G.p_term->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
+  pCI->G.p_term->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
-  pCI->G.p_rpnCalc->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
+  pCI->G.p_rpnCalc->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
   pCI->G.p_expr-> SYM(SF_EXP_COL, (i8)1);
-  pCI->G.p_expr->pSymbol()->vColTypeId(p_expr_found->xColTypeId());
+  pCI->G.p_expr->pSymbol()->vTypeId(p_expr_found->xTypeId());
 
   pCI->G.p_expr->pSymbol()->vAppendFacet(SF_NMD_COL, "__RESULT1"_Stz);
 
@@ -149,11 +149,11 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 
   bool bFoundCall = false;
 
-  Card_CONJUNCTION* p_conj_ROOT = pCI->G.p_boolPred->pConj_root();
+  Card_CONJ* p_conj_ROOT = pCI->G.p_boolPred->pRoot_conj();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfMarkSqyCall = [pCI,&bFoundCall](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bfMarkSqyCall = [pCI,&bFoundCall](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
