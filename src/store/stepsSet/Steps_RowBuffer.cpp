@@ -7,6 +7,8 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Table.hpp"
+#include "Grid.hpp"
 
 #include "LogicUnit.hpp"
 #include "RowBuffer.hpp"
@@ -18,6 +20,7 @@ void Step::vAddSteps_RowBuffer(void)
 {
   vAddStep("rowBuffer.operandDump"_Stz,      &Step::vRowBufferOperandDump);
   vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
+	vAddStep("RowBuffer[].addAnalyzeTable"_Stz,&Step::vRowBufferAddAnalyzeTable);
   vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
   vAddStep("RowBuffer[].bufferId"_Stz,       &Step::vRowBufferGetBufferIdAsAddr);
   vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
@@ -28,6 +31,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].iterate"_Stz,        &Step::vRowBufferIterate);
+	vAddStep("RowBuffer[].new"_Stz,            &Step::vRowBufferNew);
   vAddStep("RowBuffer[].print"_Stz,          &Step::vRowBufferPrint);
   vAddStep("RowBuffer[].ptnId"_Stz,          &Step::vRowBufferPtnId);
   vAddStep("RowBuffer[].rows"_Stz,           &Step::vRowBufferRows);
@@ -121,6 +125,49 @@ void Step::vRowBufferGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* RowBuffer[].addAnalyzeTable -- add a row to the streamSet table analysis   */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferAddAnalyzeTable(void)
+{
+	ENTRY();
+
+	// get the analyze table
+	Table* pAnalyzeTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the table to be analyzed
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	// get the tablePtn
+	i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+
+	// get the streamDef from the table
+	StreamDef* pStreamDef = pAnalyzeTable->pStreamDef();
+
+	// get the row buffer
+	RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
+
+	i8 nBuffers = 0;
+	i8 nRows = 0;
+	i8 njRowSize = 0;
+
+	pTable->vAnalyze(i_TablePtn, nBuffers, nRows, njRowSize);
+
+	Row* pRow = pRowBuffer->pAllotRow(pStreamDef,
+																		C_VARGS_BEGIN,
+																		AM::pGrid()->pThisNode()->szNodeNm(),
+																		pAnalyzeTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
+																		nBuffers,
+																		nRows,
+																		C_VARGS_END);
+
+	//ASSERT(pRow);
+	//pRow->vDump(pStreamDef);
+
+	m_pDataStack->vPushInt(pRow ? true : false);
+	EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* RowBuffer[].getAndClear -- fetch operand and set to nullptr                */
 /*----------------------------------------------------------------------------*/
 void Step::vRowBufferGetAndClear(void)
@@ -211,6 +258,23 @@ void Step::vRowBufferIterate(void)
   }
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].new -- new a row buffer                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferNew(void)
+{
+	ENTRY();
+
+	Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+	StreamDef* pStreamDef = pTable->pStreamDef();
+
+	m_pLogicUnit->m_xpRowBuffer = new RowBuffer();
+	m_pLogicUnit->m_xpRowBuffer->vCopyRowPix(pStreamDef->pRowPix());
+
+	EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

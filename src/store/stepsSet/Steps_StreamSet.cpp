@@ -38,7 +38,7 @@ void Step::vAddSteps_StreamSet(void)
 {
   vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
   vAddStep("StreamSet[].addAnalyzeIndex"_Stz,&Step::vStreamSetAddAnalyzeIndex);
-  vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
+  //vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
   vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
   vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
@@ -114,25 +114,26 @@ void Step::vStreamSetAddAnalyzeIndex(void)
 /*----------------------------------------------------------------------------*/
 /* StreamSet[].addAnalyzeTable -- add a row to the streamSet table analysis   */
 /*----------------------------------------------------------------------------*/
+/*
 void Step::vStreamSetAddAnalyzeTable(void)
 {
   ENTRY();
-  
+
   // get the streamSet table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  // get the index to be analyzed
+
+  // get the table to be analyzed
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
+
   // get the tablePtn
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
-  
+
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
-  
+
   // get the stream set
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
-  
+
   i8 nBuffers = 0;
   i8 nRows = 0;
   i8 njRowSize = 0;
@@ -149,10 +150,11 @@ void Step::vStreamSetAddAnalyzeTable(void)
 
   //ASSERT(pRow);
   //pRow->vDump(pStreamDef);
-  
+
   m_pDataStack->vPushInt(pRow ? true : false);
   EXIT();
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* StreamSet[].addColumnDef -- add a row to the streamSet with the column def */

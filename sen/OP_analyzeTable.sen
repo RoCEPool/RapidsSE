@@ -24,22 +24,22 @@
   StreamDefLft[].pipeOut
 
   // create an infoSet operand
-  streamSetTable[] StreamSet[].new
+  streamSetTable[] RowBuffer[].new
 
   // add a row for each table ptn
   [grid].ptnsPerNode 0
   do
     // analyze table
-    I Table[] streamSetTable[] StreamSet[].addAnalyzeTable  not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
-      I Table[] streamSetTable[] StreamSet[].addAnalyzeTable assert
+    I Table[] streamSetTable[] RowBuffer[].addAnalyzeTable  not if
+      RowBuffer[].pipeOut
+      streamSetTable[] RowBuffer[].new
+      I Table[] streamSetTable[] RowBuffer[].addAnalyzeTable assert
     then
 
   loop
 
-  // pipeout the infoset
-  StreamSet[].pipeOut
+  // pipeout the rowBuffer
+  RowBuffer[].pipeOut
 
   true
 ;
