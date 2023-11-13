@@ -117,6 +117,7 @@ namespace STORE
     eEC eParseRowSize        (TokenVec* pTknVec);
     eEC eParseTableSize      (TokenVec* pTknVec);
 
+		eEC eValidateColumnName   (TokenVec* pTknVec);
     eEC eValidateTableName   (TokenVec* pTknVec);
 
   };
