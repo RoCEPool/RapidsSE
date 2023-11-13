@@ -46,17 +46,69 @@ void Card_CONJSUBROOT::vOntoRpnExpr(String* psRpnExpr, Card_CONJSUBROOT* p_conj)
   _static_;
 
   UNUSED(psRpnExpr);
-  UNUSED(p_conj);
+
+  Kid xKid(p_conj);
+
+  eCK eConj = p_conj->eCard();
+  switch (eConj) {
+
+    case CK_ANDCONJ:
+      RASSERT(xKid.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xKid.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      psRpnExpr->vCatSprint(" and"_Stz);
+
+      while (xKid.bEach()) {
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+        psRpnExpr->vCatSprint(" and"_Stz);
+      }
+      break;
+
+    case CK_NOTCONJ:
+      RASSERT(xKid.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      psRpnExpr->vCatSprint(" not"_Stz);
+      break;
+
+    case CK_ORCONJ:
+      RASSERT(xKid.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xKid.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      psRpnExpr->vCatSprint(" or"_Stz);
+
+      while (xKid.bEach()) {
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+        psRpnExpr->vCatSprint(" or"_Stz);
+      }
+      break;
+
+    case CK_RLNCONJ:
+      RASSERT(xKid.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      RASSERT(xKid.bEach());
+      vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      while (xKid.bEach())
+        vOntoRpnExpr(psRpnExpr,(Card_CONJSUBROOT*)xKid.pChild());
+      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->szFacet(SF_NONE));
+      break;
+
+    case CK_TERM:
+      psRpnExpr->vCatSprint(" %s"_Stz, p_conj->szFacet(SF_NONE));
+      break;
+
+    default:
+      NEVER_REACH
+  }
 
   vDebugPoint();
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* get child andConj                                                          */
