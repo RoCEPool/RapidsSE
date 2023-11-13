@@ -56,8 +56,7 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 #ifdef Z_BOOLPRED_NARY
-Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(CardIter* pCI,
-                                              Card_RpnCalc* p_rpnCalc_arg)
+Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(Card_RpnCalc* p_rpnCalc_arg)
 {
   _static_
 
@@ -74,51 +73,83 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(CardIter* pCI,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_RpnExpr* pTermStack_tmp = new Card_RpnExpr;
+  Card_RpnExpr* pStack_op     = new Card_RpnExpr;
+  Card_RpnExpr* pStack_term   = new Card_RpnExpr;
 
-  while (Card_Term* pRpnItem = _pCard_Term(p_rpnCalc_arg->pPopChild_tail())) {
+//  Card_CONJ*    p_conj    = nullptr;
+//  Card_AndConj* p_andConj = nullptr;
+//  Card_RlnConj* p_rlnConj = nullptr;
+//  Card_NotConj* p_notConj = nullptr;
+//  Card_OrConj*  p_orConj  = nullptr;
 
-    eTE eTerm_rpnItem = pRpnItem->eEvalTerm();
-    switch (eTerm_rpnItem) {
+
+  while (Card_Term* p_term_rpn = _pCard_Term(p_rpnCalc_arg->pPopChild_tail())) {
+
+    bool bPushedOp = true;
+    eTE eTerm_rpn = p_term_rpn->eEvalTerm();
+    switch (eTerm_rpn) {
 
       case TE_AND:
+        pStack_op->vPush(p_term_rpn->pCard(CK_ANDCONJ));
         break;
 
       case TE_NOT:
+//        p_notConj = _pCard_NotConj(p_term_rpn->pCard(CK_NOTCONJ));
+//        p_rlnConj = _pCard_RlnConj(pStack_term->pPopChild());
+//        p_boolPred_new->vPushChild(p_notConj);
+        pStack_op->vPush(p_term_rpn->pCard(CK_NOTCONJ));
         break;
 
       case TE_OR:
+        pStack_op->vPush(p_term_rpn->pCard(CK_ORCONJ));
         break;
 
       case TE_RELNOP:
+        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
         break;
 
       case TE_EXISTS:
+        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
+        break;
+
       case TE_NOTEXISTS:
+        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
         break;
 
       case TE_IN:
+        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
         break;
 
       case TE_NOTIN:
+        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
         break;
 
       case TE_EXECUTE:
+        DELETE_CARD(p_term_rpn);
+        bPushedOp = false;
         break;
 
       case TE_OTHER:
+        pStack_term->vAppend(p_term_rpn->pCard(CK_TERM));
+        bPushedOp = false;
         break;
 
       default:
         NEVER_REACH
     }
+
+    if (bPushedOp) {
+    }
+
   }
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(0 == pTermStack_tmp->nChildCards());
-  delete pTermStack_tmp;
+  RASSERT(0 == pStack_op->nChildCards());
+  delete pStack_op;
+  RASSERT(0 == pStack_term->nChildCards());
+  delete pStack_term;
 
   //p_boolPred_new->vDump();
   return p_boolPred_new;
@@ -126,8 +157,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(CardIter* pCI,
 
 
 
-Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
-                                           Card_RpnCalc* p_rpnCalc_arg)
+Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 {
   _static_
 
@@ -225,7 +255,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         p_rlnConj->SYM(SF_RLN_OP, p_term_rpnCalc_next->szFacet(SF_NONE));
         p_rlnConj->vTransferChildren(pTermSeries_tmp);
         RASSERT(p_rlnConj->bIsRelnOp())
-        if (p_rlnConj->bContains_sqyCall(pCI)) {
+        if (p_rlnConj->bContains_sqyCall()) {
           p_rlnConj->vCard(CK_RLNCONJ);
           RASSERT(p_rlnConj->bIsRelnOp())
         }

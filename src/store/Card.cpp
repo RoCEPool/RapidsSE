@@ -993,6 +993,32 @@ bool Card::bIsOne(i8 /*eCK*/ iCard, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPeek(eCK eCard_1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard_1 == this->ePeekChild(0))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPeek(eCK eCard_1, eCK eCard_2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard_1 == this->ePeekChild(0) && eCard_2 == this->ePeekChild(1))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get itemise                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Card::iItemise(void)

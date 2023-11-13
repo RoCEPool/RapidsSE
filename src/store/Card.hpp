@@ -331,7 +331,7 @@ namespace STORE
     Card* pDupCardRecursive(void);
     Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
-    Stz* szFacet(eSF eFacet_xchk);
+    Stz*  szFacet(eSF eFacet_xchk);
     Card* pFindCardRecursive(eCK eOfCard);
     Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
@@ -350,6 +350,8 @@ namespace STORE
     bool bIsConj(void);
     bool bIsMain(void);
     bool bIsOne(i8 /*eCK*/ iCard, ...);
+    bool bIsPeek(eCK eCard);
+    bool bIsPeek(eCK eCard_1,eCK eCard_22);
 
     i8   iItemise(void);
     void vItemise(i8 iItemise);
