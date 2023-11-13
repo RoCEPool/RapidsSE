@@ -2,6 +2,8 @@
 /* Card_BoolPred.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
+//#define Z_BOOLPRED_NARY
+
 #include "Card_BoolPred.hpp"
 
 #include "Card_CONJ.hpp"
@@ -52,7 +54,6 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolPred>                                            */
 /*----------------------------------------------------------------------------*/
-//#define Z_BOOLPRED_NARY
 
 #ifdef Z_BOOLPRED_NARY
 
@@ -1021,6 +1022,37 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
 /*----------------------------------------------------------------------------*/
 /* remove given rlnConj from this boolPred                                    */
 /*----------------------------------------------------------------------------*/
+
+#ifdef Z_BOOLPRED_NARY
+
+void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vDump(__func__,"BEFORE"_Stz);
+  p_rlnConj->vDump(__func__,"REMOVE"_Stz);
+  Card* p_rlnConj_parent = pFindParentRecursive(p_rlnConj);
+
+  p_rlnConj_parent->vRemoveSub(p_rlnConj);
+
+  if (CK_ANDCONJ == p_rlnConj_parent->eCard() ||
+      CK_ORCONJ  == p_rlnConj_parent->eCard()) {
+
+    if (1 == p_rlnConj_parent->nChildCards()) {
+      Card* p_rlnConj_sibling = p_rlnConj_parent->pPopChild();
+      Card* p_rlnConj_grand = this->pFindParentRecursive((p_rlnConj_parent));
+      p_rlnConj_grand->vReplaceChild(p_rlnConj_parent,p_rlnConj_sibling);
+      delete p_rlnConj_parent;
+    }
+
+    vDump(__func__,"AFTER"_Stz);
+    vDebugPoint();
+  }
+
+}
+
+#else
+
 void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -1045,6 +1077,8 @@ void Card_BoolPred::vRemove_rlnConj(Card_RlnConj *p_rlnConj)
     delete p_rlnConj_parent;
   }
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

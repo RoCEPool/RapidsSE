@@ -35,6 +35,8 @@ Card_Bounds::Card_Bounds(void)
 Card_Bounds::~Card_Bounds(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vDumpShort(__func__,"BOUNDS"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

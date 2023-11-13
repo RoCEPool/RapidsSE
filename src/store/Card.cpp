@@ -618,6 +618,20 @@ void Card::vDump(const char* azFunc, Stz* szTitle, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump card (short form)                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vDumpShort(const char* azFunc, Stz* szTitle)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vTrace("--%s [%s] %p %s\n"_Stz,
+         szTitle,
+         azFunc,
+         this,
+         md_Coord);
+}
+
+/*----------------------------------------------------------------------------*/
 /* duplicate this card, along with its symbolic value and properties          */
 /*----------------------------------------------------------------------------*/
 Card* Card::pDupCard(void)
