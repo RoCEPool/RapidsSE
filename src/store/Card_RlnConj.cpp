@@ -201,6 +201,23 @@ bool Card_RlnConj::bIsEqOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_RlnConj::bIsRlnOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->bHasFacet("<"_Stz))  return true;
+  if (pSymbol()->bHasFacet("<="_Stz)) return true;
+  if (pSymbol()->bHasFacet("=="_Stz)) return true;
+  if (pSymbol()->bHasFacet("!="_Stz)) return true;
+  if (pSymbol()->bHasFacet(">="_Stz)) return true;
+  if (pSymbol()->bHasFacet(">"_Stz))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this predicate a bounds for given index                                 */
 /*----------------------------------------------------------------------------*/
 bool Card_RlnConj::bIsIndexBound(Card_Index* p_index)

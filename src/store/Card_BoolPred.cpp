@@ -2,7 +2,7 @@
 /* Card_BoolPred.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
-//#define Z_BOOLPRED_NARY
+#define Z_BOOLPRED_NARY
 
 #include "Card_BoolPred.hpp"
 
@@ -139,6 +139,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(Card_RpnCalc* p_rpnCalc_arg)
     }
 
     if (bPushedOp) {
+
     }
 
   }
