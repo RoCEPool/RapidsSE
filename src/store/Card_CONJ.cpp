@@ -107,7 +107,7 @@ bool Card_CONJ::bConjRecursive(std::function<bool(Card_CONJ* p_conj, bool bUpwar
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_CONJ::bContains_sqyCall(CardIter* pCI)
+bool Card_CONJ::bContains_sqyCall(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -115,8 +115,9 @@ bool Card_CONJ::bContains_sqyCall(CardIter* pCI)
 
   Kid xKid(this);
   while (xKid.bEach(CK_TERM))
-    if (pCI->m_pBench->bIsSqyNm(xKid.p_term()->szFacet(SF_NONE)))
+    if (xKid.p_term()->pSymbol()->bHasFacet(SF_SQY_NM)) {
       return true;
+    }
 
   return false;
 }

@@ -7,6 +7,9 @@ LOG 'TPC-H Q7...';
 trackMemory;
 success
 
+/weaved
+/optimiser_trace
+/pipeline_def
 /pipelineName = "OptQ7"
 select supp_nation,
   cust_nation,

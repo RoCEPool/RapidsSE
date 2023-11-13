@@ -541,7 +541,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
 //    else
     if (p_conj->bIsCard(CK_RLNCONJ)) {
 
-      if (!p_conj->bContains_sqyCall(pCI))
+      if (!p_conj->bContains_sqyCall())
         return;
 
       RASSERT(p_conj->bIsBoolFn() ||

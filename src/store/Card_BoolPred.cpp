@@ -56,6 +56,75 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 #ifdef Z_BOOLPRED_NARY
+Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(CardIter* pCI,
+                                              Card_RpnCalc* p_rpnCalc_arg)
+{
+  _static_
+
+  Card_BoolPred* p_boolPred_new = new Card_BoolPred;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // does the rpn calc have a when in it?
+
+  Symbol xWhen(SF_WHEN,"WHEN"_Stz);
+  if (p_rpnCalc_arg->bHasTerm(&xWhen)) {
+    p_boolPred_new->vTransferChildren(p_rpnCalc_arg);
+    return p_boolPred_new;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_RpnExpr* pTermStack_tmp = new Card_RpnExpr;
+
+  while (Card_Term* pRpnItem = _pCard_Term(p_rpnCalc_arg->pPopChild_tail())) {
+
+    eTE eTerm_rpnItem = pRpnItem->eEvalTerm();
+    switch (eTerm_rpnItem) {
+
+      case TE_AND:
+        break;
+
+      case TE_NOT:
+        break;
+
+      case TE_OR:
+        break;
+
+      case TE_RELNOP:
+        break;
+
+      case TE_EXISTS:
+      case TE_NOTEXISTS:
+        break;
+
+      case TE_IN:
+        break;
+
+      case TE_NOTIN:
+        break;
+
+      case TE_EXECUTE:
+        break;
+
+      case TE_OTHER:
+        break;
+
+      default:
+        NEVER_REACH
+    }
+  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(0 == pTermStack_tmp->nChildCards());
+  delete pTermStack_tmp;
+
+  //p_boolPred_new->vDump();
+  return p_boolPred_new;
+}
+
+
 
 Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
                                            Card_RpnCalc* p_rpnCalc_arg)
@@ -290,8 +359,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
 
 #else
 
-Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
-                                           Card_RpnCalc* p_rpnCalc_arg)
+Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 {
   _static_
 
@@ -377,7 +445,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(CardIter* pCI,
         p_rlnConj->SYM(SF_RLN_OP, p_term_rpnCalc_next->szFacet(SF_NONE));
         p_rlnConj->vTransferChildren(pTermSeries_tmp);
         RASSERT(p_rlnConj->bIsRelnOp())
-        if (p_rlnConj->bContains_sqyCall(pCI)) {
+        if (p_rlnConj->bContains_sqyCall()) {
           p_rlnConj->vCard(CK_RLNCONJ);
           RASSERT(p_rlnConj->bIsRelnOp())
         }
@@ -816,17 +884,17 @@ Card_RlnConj * Card_BoolPred::pFind_rlnConj(Stz* szWithPpy)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(CardIter* pCI)
+Card_RlnConj* Card_BoolPred::pFind_rlnConj_With_sqyCall(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_RlnConj* p_rlnConj = nullptr;
 
-  auto bLambdaFn = [&p_rlnConj,pCI](Card_CONJ* p_conj, bool bUpwards)
+  auto bLambdaFn = [&p_rlnConj](Card_CONJ* p_conj, bool bUpwards)
   {
     UNUSED(bUpwards);
 
-    if (p_conj->bContains_sqyCall(pCI)) {
+    if (p_conj->bContains_sqyCall()) {
       p_rlnConj = _pCard_RlnConj(p_conj);
       return C_TERMINATE_RECURSION;
     }
@@ -1010,7 +1078,7 @@ void Card_BoolPred::vMark_rlnConj_Wrt_table(CardIter* pCI, Stz* szWithMark)
     if (p_card->bIsCard(CK_RLNCONJ)) {
       p_card->vMark1(MARK_COMPARE);
       pCI->vDontDescend(true);
-      if (((Card_CONJ *) p_card)->bContains_sqyCall(pCI))
+      if (((Card_CONJ *) p_card)->bContains_sqyCall())
         continue;
       Symbol* pWhichTable = ((Card_CONJ *) p_card)->pTable_WhichTableFor_Conj(pCI);
       if (pWhichTable) {
