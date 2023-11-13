@@ -9,7 +9,7 @@ select nation, o_year, sum(amount) as sum_profit
     select n_name as nation,
     extract(year from o_orderdate) as o_year,
     l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
-    from part, supplier, lineitem, partsupp, orders, nation
+    from ${testName}_part, ${testName}_supplier, ${testName}_lineitem, ${testName}_partsupp, ${testName}_orders, ${testName}_nation
     where s_suppkey = l_suppkey
     and ps_suppkey = l_suppkey
     and ps_partkey = l_partkey
@@ -36,7 +36,7 @@ select nation, o_year, sum(amount) as sum_profit
     from ( select n_name as nation,
     extract(year from o_orderdate) as o_year,
     l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
-    from part, supplier, lineitem, partsupp, orders, nation
+    from ${testName}_part, ${testName}_supplier, ${testName}_lineitem, ${testName}_partsupp, ${testName}_orders, ${testName}_nation
     where s_suppkey = l_suppkey
     and ps_suppkey = l_suppkey
     and ps_partkey = l_partkey
@@ -56,26 +56,26 @@ begin
       | pulse once
       | stageMarker2566
     stage stageMarker2566 on all partitions :
-      scan rapidsse public part
+      scan rapidsse public ${testName}_part
       | stageMarker2569 broadcast
     stage stageMarker2569 on all partitions :
-      scan rapidsse public supplier
+      scan rapidsse public ${testName}_supplier
       | abstractJoin "CROSS true  "
       | stageMarker2572 broadcast
     stage stageMarker2572 on all partitions :
-      scan rapidsse public LineItem
+      scan rapidsse public ${TestName}_LineItem
       | abstractJoin "CROSS true  "
       | stageMarker2575 broadcast
     stage stageMarker2575 on all partitions :
-      scan rapidsse public partsupp
+      scan rapidsse public ${testName}_partsupp
       | abstractJoin "CROSS true  "
       | stageMarker2578 broadcast
     stage stageMarker2578 on all partitions :
-      scan rapidsse public orders
+      scan rapidsse public ${testName}_orders
       | abstractJoin "CROSS true  "
       | stageMarker2581 broadcast
     stage stageMarker2581 on all partitions :
-      scan rapidsse public nation
+      scan rapidsse public ${testName}_nation
       | abstractJoin "CROSS true  "
       | stageMarker2584
     stage stageMarker2584 on all partitions :
@@ -127,14 +127,14 @@ pipeline unamed
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
     | project "type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
@@ -142,7 +142,7 @@ pipeline unamed
     | next broadcast
 
   stage S03 on all partitions :
-    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${TESTNAME}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
     | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                type INTEGER as L_SUPPKEY L_SUPPKEY ,
@@ -152,7 +152,7 @@ pipeline unamed
     | next hashcast
 
   stage S04 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+    indexJoin ${testName}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
     | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as L_ORDERKEY L_ORDERKEY ,
                type DECIMAL as AMOUNT AMOUNT "
@@ -160,7 +160,7 @@ pipeline unamed
     | next broadcast
 
   stage S05 on all partitions :
-    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    indexJoin ${TESTNAME}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as O_YEAR O_ORDERDATE extract_year ,
                type DECIMAL as AMOUNT AMOUNT"
@@ -168,7 +168,7 @@ pipeline unamed
     | next
 
   stage S06 on all partitions :
-    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    indexJoin ${TESTNAME}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project "type VARCHAR as NATION N_NAME ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as AMOUNT AMOUNT"
@@ -230,40 +230,40 @@ pipeline Query9
     | next
 
   stage stageMarker2566 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
     | project "type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
     | hash "type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2575 on all partitions :
-     indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
+     indexJoin ${testName}_supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
      | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as S_SUPPKEY S_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
      | combined 0
      | next
 
   stage stageMarker2581 on all partitions :
-    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    indexJoin ${TESTNAME}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION N_NAME , type INTEGER as S_SUPPKEY S_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage stageMarker2572 on all partitions :
-      indexJoin LINEITEM IxL_SUPPKEY "bound $I1 S_SUPPKEY =="
+      indexJoin ${TESTNAME}_LINEITEM IxL_SUPPKEY "bound $I1 S_SUPPKEY =="
       | filter "type BOOLEAN P_PARTKEY L_PARTKEY =="
       | project " type VARCHAR as NATION NATION , type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
       | combined 0
       | next broadcast
 
   stage stageMarker2578 on all partitions :
-    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    indexJoin ${TESTNAME}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project " type VARCHAR as NATION NATION , type INTEGER as O_YEAR O_ORDERDATE extract_year , type DECIMAL as AMOUNT AMOUNT"
     | combined 0
     | next
@@ -308,28 +308,28 @@ pipeline Query9
     | next
 
   stage stageMarker2578 on all partitions :
-    scan ORDERS
+    scan ${TESTNAME}_ORDERS
     | project " type INTEGER as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2572 on all partitions :
-    indexJoin LINEITEM IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    indexJoin ${TESTNAME}_LINEITEM IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
     | project "type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
     | hash "type INTEGER L_PARTKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2566 on all partitions :
-    indexJoin PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    indexJoin ${TESTNAME}_PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
     | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN PS_SUPPKEY L_SUPPKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  -"
     | hash "type INTEGER L_SUPPKEY"
@@ -337,13 +337,13 @@ pipeline Query9
     | next hashcast
 
   stage stageMarker2575_a on all partitions :
-     indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+     indexJoin ${testName}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
      | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
      | combined 0
      | next
 
   stage stageMarker2581 on all partitions :
-    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    indexJoin ${TESTNAME}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
     | combined 0
     | next
@@ -388,13 +388,13 @@ pipeline Query9
     | next
 
   stage stageMarker2572 on all partitions :
-    scan LINEITEM
+    scan ${TESTNAME}_LINEITEM
     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
     | combined 0
     | next
 
   stage stageMarker2578 on all partitions :
-    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    indexJoin ${TESTNAME}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
     | hash "type INTEGER L_PARTKEY"
     | combined 0
@@ -402,14 +402,14 @@ pipeline Query9
 
 
   stage stageMarker2566 on all partitions :
-    indexJoin PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    indexJoin ${TESTNAME}_PART IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
     | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE , type DECIMAL as L_DISCOUNT L_DISCOUNT , type DECIMAL as L_QUANTITY L_QUANTITY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN PS_SUPPKEY L_SUPPKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  -"
     | hash "type INTEGER L_SUPPKEY"
@@ -417,13 +417,13 @@ pipeline Query9
     | next hashcast
 
   stage stageMarker2575_a on all partitions :
-     indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+     indexJoin ${testName}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
      | project " type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
      | combined 0
      | next
 
   stage stageMarker2581 on all partitions :
-    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    indexJoin ${TESTNAME}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project " type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
     | combined 0
     | next
@@ -469,40 +469,40 @@ pipeline unamed
     | next
 
   stage stageMarker2566 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter "type BOOLEAN }  P_NAME '%green%'  5 matchMiddle"
     | project "type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage stageMarker2575 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
     | combined 0
     | next broadcast
 
   stage stageMarker2572 on all partitions :
-    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${TESTNAME}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
     | combined 0
     | next
 
   stage stageMarker2578 on all partitions :
-    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    indexJoin ${TESTNAME}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project " type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year , type DECIMAL as AMOUNT AMOUNT"
     | hash "type INTEGER L_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2575 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+    indexJoin ${testName}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
     | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT "
     | combined 0
     | next broadcast
 
   stage stageMarker2581 on all partitions :
-    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    indexJoin ${TESTNAME}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project " type VARCHAR as NATION N_NAME , type INTEGER as O_YEAR O_YEAR , type DECIMAL as AMOUNT AMOUNT"
     | combined 0
     | next
@@ -545,14 +545,14 @@ pipeline Query9
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
     | project "type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
@@ -561,7 +561,7 @@ pipeline Query9
     | next hashcast
 
   stage S03 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
+    indexJoin ${testName}_supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
     | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
@@ -570,7 +570,7 @@ pipeline Query9
     | next broadcast
 
   stage S04 on all partitions :
-    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${TESTNAME}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
     | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                type INTEGER as S_NATIONKEY S_NATIONKEY ,
@@ -580,7 +580,7 @@ pipeline Query9
     | next broadcast
 
   stage S05 on all partitions :
-    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    indexJoin ${TESTNAME}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as O_YEAR O_ORDERDATE extract_year ,
                type DECIMAL as AMOUNT AMOUNT"
@@ -616,7 +616,7 @@ pipeline Query9
     | next hashcast
 
   stage S09 on all partitions :
-    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    indexJoin ${TESTNAME}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project "type VARCHAR as NATION N_NAME ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as SUM_PROFIT SUM_PROFIT"
@@ -646,14 +646,14 @@ pipeline Query9
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
     | project "type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next
 
   stage S02 on all partitions :
-    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
     | project "type INTEGER as P_PARTKEY P_PARTKEY ,
                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
@@ -661,7 +661,7 @@ pipeline Query9
     | next broadcast
 
   stage S03 on all partitions :
-    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${TESTNAME}_LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
     | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                type INTEGER as L_SUPPKEY L_SUPPKEY ,
@@ -671,7 +671,7 @@ pipeline Query9
     | next hashcast
 
   stage S04 on all partitions :
-    indexJoin supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
+    indexJoin ${testName}_supplier IxS_SUPPKEY "bound $I1 L_SUPPKEY =="
     | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as L_ORDERKEY L_ORDERKEY ,
                type DECIMAL as AMOUNT AMOUNT "
@@ -679,7 +679,7 @@ pipeline Query9
     | next broadcast
 
   stage S05 on all partitions :
-    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    indexJoin ${TESTNAME}_ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
     | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
                type INTEGER as O_YEAR O_ORDERDATE extract_year ,
                type DECIMAL as AMOUNT AMOUNT"
@@ -687,7 +687,7 @@ pipeline Query9
     | next
 
   stage S06 on all partitions :
-    indexJoin NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    indexJoin ${TESTNAME}_NATION IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | project "type VARCHAR as NATION N_NAME ,
                type INTEGER as O_YEAR O_YEAR ,
                type DECIMAL as AMOUNT AMOUNT"

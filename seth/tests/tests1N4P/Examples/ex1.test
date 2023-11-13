@@ -19,7 +19,7 @@ rows: 0
 
 // Example where we expect the command to not fail, but we don't care whether
 // it returns rows or not.
-create table j10 (
+create table ${testName}_j10 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
@@ -32,30 +32,30 @@ rows: 1
 
 lstbl;
 rows:
-  ('j10')
+  ('${testName}_j10')
 
 
 // Example where we not only expect the command to succeed, but it should
 // also tell us that it affected zero rows.
 // This expected result also implies that a result set must not be returned.
-create index keyIdx on j10 (key);
+create index keyIdx on ${testName}_j10 (key);
 affected: 0
 
-lsidx j10;
+lsidx ${testName}_j10;
 rows:
   ('keyIdx',false,false)
 
 // Example of a row with multiple columns being expected.
-lsidxcol j10 keyIdx;
+lsidxcol ${testName}_j10 keyIdx;
 rows:
   ('key', 'INTEGER', 19, 0, false, true)
 
-load j10 "../seth/tests/Examples/j10.csv";
+load ${testName}_j10 "../seth/tests/Examples/j10.csv";
 success
 
 
 // Example of multiple rows with multiple columns expected to be returned.
-antbl j10;
+antbl ${testName}_j10;
 unordered rows:
   ( 'NODE1', 0, *, *)
   ( 'NODE1', 1, *, *)
@@ -66,7 +66,7 @@ unordered rows:
 // Expected rows can be ordered or unordered. Unless explicitly specified,
 // expected rows are unordered by default.
 // put - ordered rows: instead of rows:
-select * from j10;
+select * from ${testName}_j10;
 rows:
   (2, 'two')
   (3, 'three')
@@ -80,11 +80,11 @@ rows:
   (9, 'nine')
 
 // Example of expecting a failure.
-drop index j10 badIndex;
+drop index ${testName}_j10 badIndex;
 failure contains: 'no such index'
 
 // Example of expecting a failure and only matching the leading substring.
-drop index j10 badIndex;
+drop index ${testName}_j10 badIndex;
 failure contains: 'no such'
 
 CLEANUP {
@@ -93,7 +93,7 @@ CLEANUP {
 
   -- Ensure that table j10 is dropped.
   -- We can set the expected result to mute if we don't want to see any warnings.
-  drop table j10;
+  drop table ${testName}_j10;
   mute
 }
 

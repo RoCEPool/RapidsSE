@@ -7,7 +7,7 @@ trackMemory;
 success
 
 -- create a table
-create table createT1 (
+create table ${testName}_createT1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
@@ -16,27 +16,27 @@ success
 LOOP 10  {
 
 // create an index
-create index keyIdx on createT1 (key);
+create index keyIdx on ${testName}_createT1 (key);
 affected: 0
 
 // check existence of index
-lsidx createT1;
+lsidx ${testName}_createT1;
 rows:
   ('keyIdx',false,false)
 
 // check columns of index
-lsidxcol createT1 keyIdx;
+lsidxcol ${testName}_createT1 keyIdx;
 rows:
   ('key','INTEGER',19,0,false,true)
 
 // drop the index keyIdx;
-drop index createT1 keyIdx;
+drop index ${testName}_createT1 keyIdx;
 success
 
 } -- end of loop
 
 // now drop the table
-drop table createT1;
+drop table ${testName}_createT1;
 success
 
 // get memory leaks
@@ -44,7 +44,7 @@ memoryLeaks;
 rows: 0
 
 CLEANUP {
-  drop table createT1;
+  drop table ${testName}_createT1;
   mute
 
   bye;

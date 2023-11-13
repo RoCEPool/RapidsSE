@@ -4,7 +4,7 @@
 /*  (original Query)
 
 select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
-     from partsupp, part
+     from ${testName}_partsupp, ${testName}_part
      where p_partkey = ps_partkey
      and p_brand <> 'Brand#45'
      and p_type not like 'MEDIUM POLISHED%'
@@ -12,7 +12,7 @@ select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
      and ps_suppkey not in
      (
      select s_suppkey
-     from supplier
+     from ${testName}_supplier
      where s_comment like '%Customer%Complaints%' )
 
      group by p_brand, p_type, p_size
@@ -28,14 +28,14 @@ select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
 
 EXPLAIN STAGE TRANSLITERATE
   select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
-     from partsupp, part
+     from ${testName}_partsupp, ${testName}_part
      where p_partkey = ps_partkey
      and p_brand <> 'Brand#45'
      and p_type not like 'MEDIUM POLISHED%'
      and p_size in (49,14,23,45,19,3,36,9)
      and ps_suppkey not in (
      select s_suppkey
-     from supplier
+     from ${testName}_supplier
      where s_comment like '%Customer%Complaints%' )
      group by p_brand, p_type, p_size
      order by supplier_cnt desc, p_brand, p_type, p_size;
@@ -49,7 +49,7 @@ begin
       | pulse once
       | stageMarker3068
     stage stageMarker3068 on all partitions :
-      scan rapidsse public supplier
+      scan rapidsse public ${testName}_supplier
       | filter " type BOOLEAN  }  $7 '%Customer%Complaints%'  8 10 matchMiddle1  "
       | project " type INTEGER as s_suppkey $1 "
       | combined 0
@@ -68,10 +68,10 @@ begin
     | pulse once
     | stageMarker3074
   stage stageMarker3074 on all partitions :
-    scan rapidsse public partsupp
+    scan rapidsse public ${testName}_partsupp
     | stageMarker3077 broadcast
   stage stageMarker3077 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | abstractJoin " 1  "
     | stageMarker3080
   stage stageMarker3080 on all partitions :
@@ -109,7 +109,7 @@ begin
       | pulse once
       | next
     stage stageMarker3068 on all partitions :
-      scan rapidsse public supplier
+      scan rapidsse public ${testName}_supplier
       | filter " type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1  "
       | project " type INTEGER as S_SUPPKEY S_SUPPKEY "
       | combined 0
@@ -127,12 +127,12 @@ begin
     | pulse once
     | next
   stage stageMarker3074 on all partitions :
-    scan rapidsse public partsupp
+    scan rapidsse public ${testName}_partsupp
     | stageMarker3077 broadcast
   stage stageMarker3077 on all partitions :
-    //scan rapidsse public part
+    //scan rapidsse public ${testName}_part
     //| abstractJoin " 1  "
-    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    indexjoin ${TestName}_Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
     | next
   stage stageMarker3080 on all partitions :
     filter " type BOOLEAN  P_PARTKEY PS_PARTKEY ==  P_BRAND 'Brand#45'  !=  and
@@ -169,7 +169,7 @@ begin
       | pulse once
       | next
     stage stageMarker3068 on all partitions :
-      scan rapidsse public supplier
+      scan rapidsse public ${testName}_supplier
       | filter " type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1  "
       | project " type INTEGER as S_SUPPKEY S_SUPPKEY "
       | combined 0
@@ -200,12 +200,12 @@ begin
     | pulse once
     | next
   stage stageMarker3074 on all partitions :
-    scan rapidsse public partsupp
+    scan rapidsse public ${testName}_partsupp
     | stageMarker3077 broadcast
   stage stageMarker3077 on all partitions :
-    //scan rapidsse public part
+    //scan rapidsse public ${testName}_part
     //| abstractJoin " 1  "
-    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    indexjoin ${TestName}_Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
     | next
   stage stageMarker3080 on all partitions :
     filter " type BOOLEAN  P_BRAND 'Brand#45'  !=  and
@@ -236,11 +236,11 @@ begin
     | next
 
   stage stageMarker2543 on all partitions :
-    scan rapidsse public partsupp
+    scan rapidsse public ${testName}_partsupp
     | next
 
   stage stageMarker2546 on all partitions :
-    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    indexjoin ${TestName}_Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -249,7 +249,7 @@ begin
     filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
                  }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
                  }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
+    | keyNotExists ${TESTNAME}_SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand $9 ,
                type VARCHAR as p_type $10 ,
@@ -327,11 +327,11 @@ begin
     | next
 
   stage stageMarker2543 on all partitions :
-    scan rapidsse public partsupp
+    scan rapidsse public ${testName}_partsupp
     | next
 
   stage stageMarker2546 on all partitions :
-    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    indexjoin ${TestName}_Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -340,7 +340,7 @@ begin
     filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
                  }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
                  }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
+    | keyNotExists ${TESTNAME}_SUPPLIER IxS_SUPPKEY  "BOUND $I1 $2 =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand $9 ,
                type VARCHAR as p_type $10 ,
@@ -478,11 +478,11 @@ begin
     | next
 
   stage stageMarker2543 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | next
 
   stage stageMarker2546 on all partitions :
-    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
+    indexjoin ${TestName}_PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -491,7 +491,7 @@ begin
     filter " type BOOLEAN  P_BRAND 'Brand#45'  !=
                  }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
                  }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
+    | keyNotExists ${TESTNAME}_SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand P_BRAND ,
                type VARCHAR as p_type P_TYPE ,
@@ -629,11 +629,11 @@ begin
     | next
 
   stage stageMarker2543 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | next
 
   stage stageMarker2546 on all partitions :
-    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
+    indexjoin ${TestName}_PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="  // J1 - PARTSUPP
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
@@ -642,7 +642,7 @@ begin
     filter " type BOOLEAN  P_BRAND 'Brand#45'  != !f
                  }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not !f and
                  }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
-    | keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
+    | keyNotExists ${TESTNAME}_SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy  type VARCHAR as p_brand P_BRAND ,
                type VARCHAR as p_type P_TYPE ,
@@ -781,7 +781,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter " type BOOLEAN  P_BRAND 'Brand#45' !=
               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not  and
               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
@@ -793,7 +793,7 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    indexjoin ${TestName}_PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
@@ -803,7 +803,7 @@ begin
     | next hashcast
 
   stage S03 on all partitions :
-    keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
+    keyNotExists ${TESTNAME}_SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy type VARCHAR as P_BRAND P_BRAND ,
                        type VARCHAR as P_TYPE P_TYPE ,
@@ -940,7 +940,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter " type BOOLEAN }  49  14  23  45  19  3  36  9  #8  P_SIZE in"
     | filter " type BOOLEAN  P_BRAND 'Brand#45' !="
     | filter " type BOOLEAN }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not"
@@ -952,7 +952,7 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    indexjoin ${TestName}_PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
@@ -962,7 +962,7 @@ begin
     | next hashcast
 
   stage S03 on all partitions :
-    keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
+    keyNotExists ${TESTNAME}_SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | gbyAgg " groupBy   type VARCHAR as P_TYPE P_TYPE ,
                          type INTEGER as P_SIZE P_SIZE ,
@@ -1095,14 +1095,14 @@ pipeline unamed
       | next
 
   stage stageMarker2543 on all partitions :
-    scan partSupp
+    scan ${testName}_partSupp
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
     | hash " type INTEGER PS_SUPPKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker2546 on all partitions :
-    indexjoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="  // J1 - SUPPLIER
+    indexjoin ${testName}_supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="  // J1 - SUPPLIER
     | filter "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1 not"
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
     | hash " type INTEGER PS_PARTKEY"
@@ -1110,7 +1110,7 @@ pipeline unamed
     | next hashcast
 
     stage stageMarker2543 on all partitions :
-      indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+      indexjoin ${TestName}_Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
       | filter " type BOOLEAN  P_BRAND 'Brand#45'  != }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
       | project "type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
       | combined 0
@@ -1171,14 +1171,14 @@ pipeline unamed
       | next
 
   stage stageMarker2543 on all partitions :
-      scan partSupp
+      scan ${testName}_partSupp
       | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
       | hash " type INTEGER PS_SUPPKEY"
       | combined 0
       | next hashcast
 
   stage stageMarker2546 on all partitions :
-    indexjoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="  // J1 - SUPPLIER
+    indexjoin ${testName}_supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="  // J1 - SUPPLIER
     | filter "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1 not"
     | project "type INTEGER as PS_PARTKEY PS_PARTKEY , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
     | hash " type INTEGER PS_PARTKEY"
@@ -1186,7 +1186,7 @@ pipeline unamed
     | next hashcast
 
   stage stageMarker2543 on all partitions :
-    indexjoin Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
+    indexjoin ${TestName}_Part IxP_PARTKEY "BOUND $I1 PS_PARTKEY =="  // J1 - PART
     | filter " type BOOLEAN  P_BRAND 'Brand#45'  != }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and }  49  14  23  45  19  3  36  9  #8  P_SIZE in and"
     | project "type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE , type INTEGER as PS_SUPPKEY PS_SUPPKEY"
     | hash " type INTEGER PS_SUPPKEY"
@@ -1258,7 +1258,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | filter " type BOOLEAN }  49  14  23  45  19  3  36  9  #8  P_SIZE in"
     | filter " type BOOLEAN  P_BRAND 'Brand#45' !="
     | filter " type BOOLEAN }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not"
@@ -1270,7 +1270,7 @@ begin
     | next
 
   stage S02 on all partitions :
-    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    indexjoin ${TestName}_PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
     | project "type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                type VARCHAR as P_BRAND P_BRAND ,
                type VARCHAR as P_TYPE P_TYPE ,
@@ -1308,7 +1308,7 @@ begin
     | next hashcast
 
   stage S05 on all partitions :
-     keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
+     keyNotExists ${TESTNAME}_SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
                "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
     | combined 0
     | next

@@ -26,11 +26,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -57,11 +57,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -86,11 +86,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -116,11 +116,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -147,13 +147,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -179,13 +179,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -211,13 +211,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -244,13 +244,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -276,11 +276,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -307,11 +307,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -338,11 +338,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -369,11 +369,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -398,13 +398,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -429,13 +429,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -460,13 +460,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -491,13 +491,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -524,14 +524,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -567,14 +567,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -600,14 +600,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -633,14 +633,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | combined 0
     | stageD
 
@@ -666,14 +666,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | project "type integer $1 , type integer $2 , type integer $4"
     | combined 0
     | stageD
@@ -701,14 +701,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "BOUND $I1 $2 =="
     | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
@@ -736,14 +736,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageD
@@ -769,14 +769,14 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan orders
+    scan ${testName}_orders
     | filter "type boolean $1 4 >= "
     | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
+    indexJoin ${testName}_customer IxC_CUSTKEY "LEFT_OUTER BOUND $I1 $2 =="
     | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
@@ -805,11 +805,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
@@ -847,11 +847,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $9 4 >= "
     | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
@@ -877,14 +877,14 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
@@ -910,14 +910,14 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
@@ -938,14 +938,14 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan customer
+    scan ${testName}_customer
     | filter "type boolean $4 4 >= "
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin orders IxO_CUSTKEY "BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "BOUND $I1 $1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0

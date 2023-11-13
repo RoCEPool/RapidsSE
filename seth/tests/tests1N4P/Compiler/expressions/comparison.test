@@ -8,7 +8,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table nation (
+create table ${testName}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -24,298 +24,298 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Compare single field: YEAR
-EXPLAIN SELECT INTERVAL '1' YEAR < INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR < INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR < INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR < INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR < INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR < INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MONTH <
-EXPLAIN SELECT INTERVAL '1' MONTH < INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MONTH < INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MONTH < INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MONTH < INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MONTH < INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' MONTH < INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: DAY <
-EXPLAIN SELECT INTERVAL '1' DAY < INTERVAL '2' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' DAY < INTERVAL '2' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' DAY < INTERVAL ''2'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' DAY < INTERVAL ''2'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' DAY < INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''1'' DAY < INTERVAL ''2'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: HOUR <
-EXPLAIN SELECT INTERVAL '1' HOUR < INTERVAL '2' HOUR FROM nation;
+EXPLAIN SELECT INTERVAL '1' HOUR < INTERVAL '2' HOUR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' HOUR < INTERVAL ''2'' HOUR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' HOUR < INTERVAL ''2'' HOUR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' HOUR < INTERVAL ''2'' HOUR ; Ordinal Expr = INTERVAL ''1'' HOUR < INTERVAL ''2'' HOUR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MINUTE <
-EXPLAIN SELECT INTERVAL '1' MINUTE < INTERVAL '2' MINUTE FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE < INTERVAL '2' MINUTE FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE < INTERVAL ''2'' MINUTE FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE < INTERVAL ''2'' MINUTE FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE < INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE < INTERVAL ''2'' MINUTE)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: SECOND <
-EXPLAIN SELECT INTERVAL '1' SECOND < INTERVAL '2' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' SECOND < INTERVAL '2' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' SECOND < INTERVAL ''2'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' SECOND < INTERVAL ''2'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' SECOND < INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND < INTERVAL ''2'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and MONTH <
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH < INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH < INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR <
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH < INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH < INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR-MONTH <
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH < INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH < INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH < INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR and YEAR-MONTH <
-EXPLAIN SELECT INTERVAL '1' YEAR < INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR < INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR < INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR < INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR < INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR < INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY <
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE < INTERVAL '1' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE < INTERVAL '1' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' DAY ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and SECOND <
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE < INTERVAL '1' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE < INTERVAL '1' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY-SECOND <
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE < INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE < INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: MINUTE and DAY-SECOND <
-EXPLAIN SELECT INTERVAL '1' MINUTE < INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE < INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE < INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Cannot compare YM and DT intervals < /1
-EXPLAIN SELECT INTERVAL '1' MINUTE < INTERVAL '1' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE < INTERVAL '1' MONTH FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Cannot compare YM and DT intervals < /2
-EXPLAIN SELECT INTERVAL '1' YEAR < INTERVAL '366' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR < INTERVAL '366' DAY FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Single field intervals are automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY < 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY < 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' DAY < 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' DAY < 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 < 40 ; Ordinal Expr = 30 < 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR < 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR < 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' YEAR < 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' YEAR < 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 < 40 ; Ordinal Expr = 30 < 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND < 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND < 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' SECOND < 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' SECOND < 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 < 40 ; Ordinal Expr = 30 < 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
 // Multiple field intervals cannot be automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH < 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH < 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR < 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR < 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE < 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE < 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND < 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND < 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -323,297 +323,297 @@ failure contains: 'Expression type combination is invalid or unsupported'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Compare single field: YEAR
-EXPLAIN SELECT INTERVAL '1' YEAR <= INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR <= INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR <= INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR <= INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR <= INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR <= INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MONTH <=
-EXPLAIN SELECT INTERVAL '1' MONTH <= INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MONTH <= INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MONTH <= INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MONTH <= INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MONTH <= INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' MONTH <= INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: DAY <=
-EXPLAIN SELECT INTERVAL '1' DAY <= INTERVAL '2' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' DAY <= INTERVAL '2' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' DAY <= INTERVAL ''2'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' DAY <= INTERVAL ''2'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' DAY <= INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''1'' DAY <= INTERVAL ''2'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: HOUR <=
-EXPLAIN SELECT INTERVAL '1' HOUR <= INTERVAL '2' HOUR FROM nation;
+EXPLAIN SELECT INTERVAL '1' HOUR <= INTERVAL '2' HOUR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' HOUR <= INTERVAL ''2'' HOUR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' HOUR <= INTERVAL ''2'' HOUR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' HOUR <= INTERVAL ''2'' HOUR ; Ordinal Expr = INTERVAL ''1'' HOUR <= INTERVAL ''2'' HOUR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MINUTE <=
-EXPLAIN SELECT INTERVAL '1' MINUTE <= INTERVAL '2' MINUTE FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE <= INTERVAL '2' MINUTE FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE <= INTERVAL ''2'' MINUTE FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE <= INTERVAL ''2'' MINUTE FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE <= INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE <= INTERVAL ''2'' MINUTE)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: SECOND <=
-EXPLAIN SELECT INTERVAL '1' SECOND <= INTERVAL '2' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' SECOND <= INTERVAL '2' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' SECOND <= INTERVAL ''2'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' SECOND <= INTERVAL ''2'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' SECOND <= INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND <= INTERVAL ''2'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and MONTH <=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH <= INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH <= INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR <=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH <= INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH <= INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR-MONTH <=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH <= INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH <= INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH <= INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR and YEAR-MONTH <=
-EXPLAIN SELECT INTERVAL '1' YEAR <= INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR <= INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR <= INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR <= INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR <= INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR <= INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY <=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE <= INTERVAL '1' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE <= INTERVAL '1' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' DAY ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and SECOND <=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE <= INTERVAL '1' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE <= INTERVAL '1' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY-SECOND <=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE <= INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE <= INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: MINUTE and DAY-SECOND <=
-EXPLAIN SELECT INTERVAL '1' MINUTE <= INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE <= INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE <= INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Cannot compare YM and DT intervals <= /1
-EXPLAIN SELECT INTERVAL '1' MINUTE <= INTERVAL '1' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE <= INTERVAL '1' MONTH FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Cannot compare YM and DT intervals <= /2
-EXPLAIN SELECT INTERVAL '1' YEAR <= INTERVAL '366' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR <= INTERVAL '366' DAY FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Single field intervals are automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY <= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY <= 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' DAY <= 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' DAY <= 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 <= 40 ; Ordinal Expr = 30 <= 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR <= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR <= 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' YEAR <= 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' YEAR <= 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 <= 40 ; Ordinal Expr = 30 <= 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND <= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND <= 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' SECOND <= 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' SECOND <= 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 <= 40 ; Ordinal Expr = 30 <= 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
 // Multiple field intervals cannot be automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH <= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH <= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR <= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR <= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE <= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE <= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND <= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND <= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
@@ -622,298 +622,298 @@ failure contains: 'Expression type combination is invalid or unsupported'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Compare single field: YEAR
-EXPLAIN SELECT INTERVAL '1' YEAR > INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR > INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR > INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR > INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR > INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR > INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MONTH >
-EXPLAIN SELECT INTERVAL '1' MONTH > INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MONTH > INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MONTH > INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MONTH > INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MONTH > INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' MONTH > INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: DAY >
-EXPLAIN SELECT INTERVAL '1' DAY > INTERVAL '2' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' DAY > INTERVAL '2' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' DAY > INTERVAL ''2'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' DAY > INTERVAL ''2'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' DAY > INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''1'' DAY > INTERVAL ''2'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: HOUR >
-EXPLAIN SELECT INTERVAL '1' HOUR > INTERVAL '2' HOUR FROM nation;
+EXPLAIN SELECT INTERVAL '1' HOUR > INTERVAL '2' HOUR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' HOUR > INTERVAL ''2'' HOUR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' HOUR > INTERVAL ''2'' HOUR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' HOUR > INTERVAL ''2'' HOUR ; Ordinal Expr = INTERVAL ''1'' HOUR > INTERVAL ''2'' HOUR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MINUTE >
-EXPLAIN SELECT INTERVAL '1' MINUTE > INTERVAL '2' MINUTE FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE > INTERVAL '2' MINUTE FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE > INTERVAL ''2'' MINUTE FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE > INTERVAL ''2'' MINUTE FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE > INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE > INTERVAL ''2'' MINUTE)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: SECOND >
-EXPLAIN SELECT INTERVAL '1' SECOND > INTERVAL '2' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' SECOND > INTERVAL '2' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' SECOND > INTERVAL ''2'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' SECOND > INTERVAL ''2'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' SECOND > INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND > INTERVAL ''2'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and MONTH >
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR >
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR-MONTH >
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH > INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH > INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR and YEAR-MONTH >
-EXPLAIN SELECT INTERVAL '1' YEAR > INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR > INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR > INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR > INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR > INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR > INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY >
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE > INTERVAL '1' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE > INTERVAL '1' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' DAY ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and SECOND >
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE > INTERVAL '1' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE > INTERVAL '1' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY-SECOND >
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE > INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE > INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: MINUTE and DAY-SECOND >
-EXPLAIN SELECT INTERVAL '1' MINUTE > INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE > INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE > INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Cannot compare YM and DT intervals > /1
-EXPLAIN SELECT INTERVAL '1' MINUTE > INTERVAL '1' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE > INTERVAL '1' MONTH FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Cannot compare YM and DT intervals > /2
-EXPLAIN SELECT INTERVAL '1' YEAR > INTERVAL '366' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR > INTERVAL '366' DAY FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Single field intervals are automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY > 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY > 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' DAY > 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' DAY > 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 > 40 ; Ordinal Expr = 30 > 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR > 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR > 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' YEAR > 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' YEAR > 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 > 40 ; Ordinal Expr = 30 > 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND > 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND > 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' SECOND > 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' SECOND > 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 > 40 ; Ordinal Expr = 30 > 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
 // Multiple field intervals cannot be automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH > 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH > 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR > 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR > 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE > 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE > 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND > 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND > 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
@@ -922,298 +922,298 @@ failure contains: 'Expression type combination is invalid or unsupported'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Compare single field: YEAR
-EXPLAIN SELECT INTERVAL '1' YEAR >= INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR >= INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR >= INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR >= INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR >= INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR >= INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MONTH >=
-EXPLAIN SELECT INTERVAL '1' MONTH >= INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MONTH >= INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MONTH >= INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MONTH >= INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MONTH >= INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' MONTH >= INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: DAY >=
-EXPLAIN SELECT INTERVAL '1' DAY >= INTERVAL '2' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' DAY >= INTERVAL '2' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' DAY >= INTERVAL ''2'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' DAY >= INTERVAL ''2'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' DAY >= INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''1'' DAY >= INTERVAL ''2'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: HOUR >=
-EXPLAIN SELECT INTERVAL '1' HOUR >= INTERVAL '2' HOUR FROM nation;
+EXPLAIN SELECT INTERVAL '1' HOUR >= INTERVAL '2' HOUR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' HOUR >= INTERVAL ''2'' HOUR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' HOUR >= INTERVAL ''2'' HOUR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' HOUR >= INTERVAL ''2'' HOUR ; Ordinal Expr = INTERVAL ''1'' HOUR >= INTERVAL ''2'' HOUR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MINUTE >=
-EXPLAIN SELECT INTERVAL '1' MINUTE >= INTERVAL '2' MINUTE FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE >= INTERVAL '2' MINUTE FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE >= INTERVAL ''2'' MINUTE FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE >= INTERVAL ''2'' MINUTE FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE >= INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE >= INTERVAL ''2'' MINUTE)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: SECOND >=
-EXPLAIN SELECT INTERVAL '1' SECOND >= INTERVAL '2' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' SECOND >= INTERVAL '2' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' SECOND >= INTERVAL ''2'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' SECOND >= INTERVAL ''2'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' SECOND >= INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND >= INTERVAL ''2'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and MONTH >=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH >= INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH >= INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR >=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH >= INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH >= INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR-MONTH >=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH >= INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH >= INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH >= INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR and YEAR-MONTH >=
-EXPLAIN SELECT INTERVAL '1' YEAR >= INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR >= INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR >= INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR >= INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR >= INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR >= INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY >=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE >= INTERVAL '1' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE >= INTERVAL '1' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' DAY ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and SECOND >=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE >= INTERVAL '1' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE >= INTERVAL '1' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY-SECOND >=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE >= INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE >= INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: MINUTE and DAY-SECOND >=
-EXPLAIN SELECT INTERVAL '1' MINUTE >= INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE >= INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE >= INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Cannot compare YM and DT intervals >= /1
-EXPLAIN SELECT INTERVAL '1' MINUTE >= INTERVAL '1' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE >= INTERVAL '1' MONTH FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Cannot compare YM and DT intervals >= /2
-EXPLAIN SELECT INTERVAL '1' YEAR >= INTERVAL '366' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR >= INTERVAL '366' DAY FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Single field intervals are automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY >= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY >= 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' DAY >= 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' DAY >= 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 >= 40 ; Ordinal Expr = 30 >= 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR >= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR >= 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' YEAR >= 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' YEAR >= 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 >= 40 ; Ordinal Expr = 30 >= 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND >= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND >= 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' SECOND >= 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' SECOND >= 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 >= 40 ; Ordinal Expr = 30 >= 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
 // Multiple field intervals cannot be automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH >= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH >= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR >= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR >= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE >= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE >= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND >= 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND >= 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
@@ -1222,298 +1222,298 @@ failure contains: 'Expression type combination is invalid or unsupported'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Compare single field: YEAR
-EXPLAIN SELECT INTERVAL '1' YEAR = INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR = INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR = INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR = INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR = INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR = INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MONTH =
-EXPLAIN SELECT INTERVAL '1' MONTH = INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MONTH = INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MONTH = INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MONTH = INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MONTH = INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' MONTH = INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: DAY =
-EXPLAIN SELECT INTERVAL '1' DAY = INTERVAL '2' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' DAY = INTERVAL '2' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' DAY = INTERVAL ''2'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' DAY = INTERVAL ''2'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' DAY = INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''1'' DAY = INTERVAL ''2'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: HOUR =
-EXPLAIN SELECT INTERVAL '1' HOUR = INTERVAL '2' HOUR FROM nation;
+EXPLAIN SELECT INTERVAL '1' HOUR = INTERVAL '2' HOUR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' HOUR = INTERVAL ''2'' HOUR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' HOUR = INTERVAL ''2'' HOUR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' HOUR = INTERVAL ''2'' HOUR ; Ordinal Expr = INTERVAL ''1'' HOUR = INTERVAL ''2'' HOUR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MINUTE =
-EXPLAIN SELECT INTERVAL '1' MINUTE = INTERVAL '2' MINUTE FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE = INTERVAL '2' MINUTE FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE = INTERVAL ''2'' MINUTE FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE = INTERVAL ''2'' MINUTE FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE = INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE = INTERVAL ''2'' MINUTE)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: SECOND =
-EXPLAIN SELECT INTERVAL '1' SECOND = INTERVAL '2' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' SECOND = INTERVAL '2' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' SECOND = INTERVAL ''2'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' SECOND = INTERVAL ''2'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' SECOND = INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND = INTERVAL ''2'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and MONTH =
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR =
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR-MONTH =
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH = INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH = INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR and YEAR-MONTH =
-EXPLAIN SELECT INTERVAL '1' YEAR = INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR = INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR = INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR = INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR = INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR = INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY =
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE = INTERVAL '1' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE = INTERVAL '1' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' DAY ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and SECOND =
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE = INTERVAL '1' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE = INTERVAL '1' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY-SECOND =
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE = INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE = INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: MINUTE and DAY-SECOND =
-EXPLAIN SELECT INTERVAL '1' MINUTE = INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE = INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE = INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Cannot compare YM and DT intervals = /1
-EXPLAIN SELECT INTERVAL '1' MINUTE = INTERVAL '1' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE = INTERVAL '1' MONTH FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Cannot compare YM and DT intervals = /2
-EXPLAIN SELECT INTERVAL '1' YEAR = INTERVAL '366' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR = INTERVAL '366' DAY FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Single field intervals are automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY = 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY = 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' DAY = 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' DAY = 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 = 40 ; Ordinal Expr = 30 = 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR = 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR = 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' YEAR = 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' YEAR = 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 = 40 ; Ordinal Expr = 30 = 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND = 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND = 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' SECOND = 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' SECOND = 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 = 40 ; Ordinal Expr = 30 = 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
 // Multiple field intervals cannot be automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH = 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH = 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR = 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR = 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE = 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE = 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND = 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND = 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1521,298 +1521,298 @@ failure contains: 'Expression type combination is invalid or unsupported'
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Compare single field: YEAR
-EXPLAIN SELECT INTERVAL '1' YEAR != INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR != INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR != INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR != INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR != INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1'' YEAR != INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MONTH !=
-EXPLAIN SELECT INTERVAL '1' MONTH != INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MONTH != INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MONTH != INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MONTH != INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MONTH != INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1'' MONTH != INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: DAY !=
-EXPLAIN SELECT INTERVAL '1' DAY != INTERVAL '2' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' DAY != INTERVAL '2' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' DAY != INTERVAL ''2'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' DAY != INTERVAL ''2'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' DAY != INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''1'' DAY != INTERVAL ''2'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: HOUR !=
-EXPLAIN SELECT INTERVAL '1' HOUR != INTERVAL '2' HOUR FROM nation;
+EXPLAIN SELECT INTERVAL '1' HOUR != INTERVAL '2' HOUR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' HOUR != INTERVAL ''2'' HOUR FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' HOUR != INTERVAL ''2'' HOUR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' HOUR != INTERVAL ''2'' HOUR ; Ordinal Expr = INTERVAL ''1'' HOUR != INTERVAL ''2'' HOUR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: MINUTE !=
-EXPLAIN SELECT INTERVAL '1' MINUTE != INTERVAL '2' MINUTE FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE != INTERVAL '2' MINUTE FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE != INTERVAL ''2'' MINUTE FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE != INTERVAL ''2'' MINUTE FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE != INTERVAL ''2'' MINUTE ; Ordinal Expr = INTERVAL ''1'' MINUTE != INTERVAL ''2'' MINUTE)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare single field: SECOND !=
-EXPLAIN SELECT INTERVAL '1' SECOND != INTERVAL '2' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' SECOND != INTERVAL '2' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' SECOND != INTERVAL ''2'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' SECOND != INTERVAL ''2'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' SECOND != INTERVAL ''2'' SECOND ; Ordinal Expr = INTERVAL ''1'' SECOND != INTERVAL ''2'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and MONTH !=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '2' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '2' MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR !=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '2' YEAR FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '2' YEAR FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' YEAR FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' YEAR FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2'' YEAR)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR-MONTH and YEAR-MONTH !=
-EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH != INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-2'' YEAR TO MONTH != INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: YEAR and YEAR-MONTH !=
-EXPLAIN SELECT INTERVAL '1' YEAR != INTERVAL '2-4' YEAR TO MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR != INTERVAL '2-4' YEAR TO MONTH FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' YEAR != INTERVAL ''2-4'' YEAR TO MONTH FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' YEAR != INTERVAL ''2-4'' YEAR TO MONTH FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' YEAR != INTERVAL ''2-4'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1'' YEAR != INTERVAL ''2-4'' YEAR TO MONTH)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY !=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE != INTERVAL '1' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE != INTERVAL '1' DAY FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' DAY FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' DAY FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' DAY ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' DAY)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and SECOND !=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE != INTERVAL '1' SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE != INTERVAL '1' SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1'' SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: HOUR-MINUTE and DAY-SECOND !=
-EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE != INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE != INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1:2'' HOUR TO MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Compare multiple fields: MINUTE and DAY-SECOND !=
-EXPLAIN SELECT INTERVAL '1' MINUTE != INTERVAL '1 2:3:4' DAY TO SECOND FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE != INTERVAL '1 2:3:4' DAY TO SECOND FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''1'' MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND FROM nation"
+   » queryText: "SELECT INTERVAL ''1'' MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = INTERVAL ''1'' MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''1'' MINUTE != INTERVAL ''1 2:3:4'' DAY TO SECOND)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Cannot compare YM and DT intervals != /1
-EXPLAIN SELECT INTERVAL '1' MINUTE != INTERVAL '1' MONTH FROM nation;
+EXPLAIN SELECT INTERVAL '1' MINUTE != INTERVAL '1' MONTH FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // Cannot compare YM and DT intervals != /2
-EXPLAIN SELECT INTERVAL '1' YEAR != INTERVAL '366' DAY FROM nation;
+EXPLAIN SELECT INTERVAL '1' YEAR != INTERVAL '366' DAY FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // Single field intervals are automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY != 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY != 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' DAY != 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' DAY != 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 != 40 ; Ordinal Expr = 30 != 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR != 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR != 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' YEAR != 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' YEAR != 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 != 40 ; Ordinal Expr = 30 != 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND != 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND != 40 FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT INTERVAL ''30'' SECOND != 40 FROM nation"
+   » queryText: "SELECT INTERVAL ''30'' SECOND != 40 FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = 30 != 40 ; Ordinal Expr = 30 != 40) ; type: BOOLEAN
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
 // Multiple field intervals cannot be automatically coerced to an integer
-EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH != 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH != 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR != 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR != 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE != 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE != 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND != 40 FROM nation;
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND != 40 FROM ${testName}_nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1827,6 +1827,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
+  DROP TABLE ${testName}_nation;
   mute
 }

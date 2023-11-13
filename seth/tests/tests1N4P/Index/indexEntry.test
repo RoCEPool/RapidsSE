@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // create a table
-create table TABLE9 (
+create table ${testName}_TABLE9 (
   pcol9 integer not null,
   scol9 integer,
   tcol9 integer,
@@ -17,29 +17,29 @@ create table TABLE9 (
 partition by (pcol9,colb9);
 success
 
-create index tbl9idx1 on table9(pcol9);
+create index tbl9idx1 on ${testName}_table9(pcol9);
 
-load TABLE9 "../DATA/Index/tbl9data.csv" ;
+load ${testName}_TABLE9 "../DATA/Index/tbl9data.csv" ;
 success
 
-create index tbl9idx2 on table9(scol9);
+create index tbl9idx2 on ${testName}_table9(scol9);
 success
 
-create index tblidx6 on table9(cole9);
+create index tblidx6 on ${testName}_table9(cole9);
 success
 
 //ALKA: UNCOMMENT
-//predicateFetch TABLE9 "cole9 -5.0 > cole9 5.0 < and";
-//select * from TABLE9 where cole9 -5.0 > and cole9 5.0 <;
+//predicateFetch ${testName}_TABLE9 "cole9 -5.0 > cole9 5.0 < and";
+//select * from ${testName}_TABLE9 where cole9 -5.0 > and cole9 5.0 <;
 //rows: 12
 
 // now drop the table
-drop table table9;
+drop table ${testName}_table9;
 success
 
 CLEANUP {
 
-  drop table table9;
+  drop table ${testName}_table9;
   mute
 
   bye;

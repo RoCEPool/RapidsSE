@@ -10,7 +10,7 @@
 trackmemory;
 success
 
-CREATE TABLE nation (
+CREATE TABLE ${testName}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -18,14 +18,14 @@ CREATE TABLE nation (
 );
 success
 
-CREATE TABLE region (
+CREATE TABLE ${testName}_region (
 	 R_REGIONKEY       INTEGER NOT NULL,
 	 R_NAME            CHAR(25) NOT NULL,
 	 R_COMMENT         VARCHAR(152)
 );
 success
 
-create table datums (
+create table ${testName}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -45,13 +45,13 @@ create table datums (
 );
 success
 
-load region "../TPCH/SF_0001/region.csv";
+load ${testName}_region "../TPCH/SF_0001/region.csv";
 success
 
-load nation "../TPCH/SF_0001/nation.csv";
+load ${testName}_nation "../TPCH/SF_0001/nation.csv";
 success
 
-load datums "../DATA/Datums/datums.csv" ;
+load ${testName}_datums "../DATA/Datums/datums.csv" ;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,7 +64,7 @@ SELECT CASE n_name
         WHEN 'INDIA' THEN 'there'
         ELSE 'everywhere'
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   ('everywhere')
@@ -100,7 +100,7 @@ SELECT CASE
         WHEN n_name = 'INDIA' THEN 'there'
         ELSE 'everywhere'
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   ('everywhere')
@@ -135,7 +135,7 @@ SELECT CASE
         WHEN n_name = 'AUSTRALIA' THEN 'here'
         WHEN n_name = 'INDIA' THEN 'there'
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   (null)
@@ -170,7 +170,7 @@ SELECT CASE
         WHEN n_name = 'INDIA' THEN false
         ELSE NULL
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   (null)
@@ -205,7 +205,7 @@ SELECT CASE n_name
         WHEN 'INDIA' THEN 'there'
         ELSE NULL
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   (null)
@@ -240,7 +240,7 @@ SELECT CASE n_name
         WHEN 'INDIA' THEN 'there'
         ELSE 'everywhere'
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   ('everywhere')
@@ -276,7 +276,7 @@ SELECT CASE n_name
         WHEN 'INDIA' THEN NULL
         ELSE 'everywhere'
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   ('everywhere')
@@ -311,7 +311,7 @@ SELECT CASE n_name
         WHEN 'INDIA' THEN NULL
         ELSE NULL
       END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   (null)
@@ -347,7 +347,7 @@ SELECT CASE n_name
         WHEN 'INDIA' THEN 1.0e0
         ELSE NULL
       END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   (null)
@@ -382,7 +382,7 @@ SELECT vch_col14, int_col1, dec_col6, CASE vch_col14
         WHEN 'blue'  THEN dec_col6
         ELSE NULL
       END
-FROM datums;
+FROM ${testName}_datums;
 
 rows:
   ('hello',1000,41.04,1000.00)
@@ -402,7 +402,7 @@ SELECT vch_col14, flt_col8, dec_col6, CASE vch_col14
         WHEN 'blue'  THEN dec_col6
         ELSE NULL
       END
-FROM datums;
+FROM ${testName}_datums;
 
 rows:
   ('hello',10.22,41.04,10.22)
@@ -422,7 +422,7 @@ SELECT CASE n_name
         WHEN 'INDIA' THEN TIMESTAMP '2001-01-01 13:00:00'
         ELSE NULL
       END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   (null)
@@ -453,7 +453,7 @@ rows:
 
 // CASE in a WHERE clause
 SELECT *
-FROM nation
+FROM ${testName}_nation
 WHERE CASE
         WHEN n_name = 'AUSTRALIA' THEN 'here'
         WHEN n_name = 'INDIA' THEN 'there'
@@ -492,7 +492,7 @@ SELECT 1 + CASE n_name
         WHEN 'INDIA' THEN 3 * n_nationkey
         ELSE n_nationkey
       END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   (1)
@@ -525,11 +525,11 @@ rows:
 /*
 TODO: ENABLE WHEN SUBQUERY
 SELECT CASE n_name
-         WHEN (SELECT n_name FROM nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM nation)) THEN 'here'
+         WHEN (SELECT n_name FROM ${testName}_nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM ${testName}_nation)) THEN 'here'
          WHEN 'INDIA' THEN 'there'
          ELSE 'everywhere'
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   ('everywhere')
@@ -570,7 +570,7 @@ SELECT CASE n_name
             ELSE 'everywhere'
           END
        END
-FROM nation;
+FROM ${testName}_nation;
 
 rows:
   ('everywhere')
@@ -599,13 +599,13 @@ rows:
   ('everywhere')
   ('everywhere')
 
-CREATE TABLE caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
+CREATE TABLE ${testName}_caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
 success
 
-load caseExpr "../DATA/Expressions/caseExpr.csv";
+load ${testName}_caseExpr "../DATA/Expressions/caseExpr.csv";
 success
 
-select * from caseExpr where case  when true then d<0  end;
+select * from ${testName}_caseExpr where case  when true then d<0  end;
 rows:
  ('zzs','L14',43772.00,-44.76,2023-02-01 00:00:00,false,1)
  ('xfs','M15',58777.34,-143.10,2023-01-01 00:00:00,true,0)
@@ -616,7 +616,7 @@ select case
   when f then 'woman'
   else 'man' end xb,
   f
-from caseExpr a;
+from ${testName}_caseExpr a;
 rows:
  ('woman',true)
  ('man',false)
@@ -664,7 +664,7 @@ rows:
    when true then 'woman'
    else 'man' end xb,
    f
- from caseExpr a;
+ from ${testName}_caseExpr a;
  rows:
   ('woman',true)
   ('man',false)
@@ -713,22 +713,22 @@ rows:
 select
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end,
   sum(c)
-  from caseExpr
+  from ${testName}_caseExpr
   group by
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end;
 failure contains: 'EC_NOT_IMPLEMENTED'
 */
 
-DROP TABLE nation;
+DROP TABLE ${testName}_nation;
 success
 
-DROP TABLE region;
+DROP TABLE ${testName}_region;
 success
 
-DROP TABLE datums;
+DROP TABLE ${testName}_datums;
 success
 
-DROP TABLE caseExpr;
+DROP TABLE ${testName}_caseExpr;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -743,15 +743,15 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
+  DROP TABLE ${testName}_nation;
   mute
 
-  DROP TABLE region;
+  DROP TABLE ${testName}_region;
   mute
 
-  DROP TABLE datums;
+  DROP TABLE ${testName}_datums;
   mute
 
-  DROP TABLE caseExpr;
+  DROP TABLE ${testName}_caseExpr;
   mute
 }

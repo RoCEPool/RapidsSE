@@ -8,7 +8,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName}_datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
   bol_col2   BOOLEAN,
@@ -28,11 +28,11 @@ create table datums (
 );
 success
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+load ${testName}_datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select vch_col15 from datums;
+select vch_col15 from ${testName}_datums;
 rows:
  ('world')
  ('exists')
@@ -50,27 +50,27 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select vch_col14 from datums where vch_col14 != null;
+select vch_col14 from ${testName}_datums where vch_col14 != null;
 rows: 0
 
-select vch_col14 from datums where vch_col14 = null;
+select vch_col14 from ${testName}_datums where vch_col14 = null;
 rows: 0
 
-select vch_col14 from datums where vch_col14 > null;
+select vch_col14 from ${testName}_datums where vch_col14 > null;
 rows: 0
 
-select vch_col14 from datums where vch_col14 >= null;
+select vch_col14 from ${testName}_datums where vch_col14 >= null;
 rows: 0
 
-select vch_col14 from datums where vch_col14 < null;
+select vch_col14 from ${testName}_datums where vch_col14 < null;
 rows: 0
 
-select vch_col14 from datums where vch_col14 <= null;
+select vch_col14 from ${testName}_datums where vch_col14 <= null;
 rows: 0
 
 
 //------------------------------------------------------------------------------
-select 'literal' from datums;
+select 'literal' from ${testName}_datums;
 rows:
  ('literal')
  ('literal')
@@ -87,7 +87,7 @@ rows:
  ('literal')
 
 // drop the table
-drop table datums;
+drop table ${testName}_datums;
 success
 
 // get memory leaks
@@ -97,7 +97,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table datums;
+  drop table ${testName}_datums;
   mute
   
   bye;

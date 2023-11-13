@@ -9,27 +9,27 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-CREATE TABLE unionTbl1 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
+CREATE TABLE ${testName}_unionTbl1 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
 success
 
 -- same signature as tbl1
-CREATE TABLE unionTbl2 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
+CREATE TABLE ${testName}_unionTbl2 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
 success
 
 -- same column names as tbl1 but different column types
-CREATE TABLE unionTbl3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 INTEGER);
+CREATE TABLE ${testName}_unionTbl3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 INTEGER);
 success
 
 -- different number of columns as tbl3 and different names
-CREATE TABLE unionTbl4 (alpha VARCHAR, bravo BOOLEAN, charlie DATE);
+CREATE TABLE ${testName}_unionTbl4 (alpha VARCHAR, bravo BOOLEAN, charlie DATE);
 success
 
 -- same signature as tbl4 but different column name case
-CREATE TABLE unionTbl5 (ALPHA VARCHAR, bRaVo BOOLEAN, CHARlie DATE);
+CREATE TABLE ${testName}_unionTbl5 (ALPHA VARCHAR, bRaVo BOOLEAN, CHARlie DATE);
 success
 
 -- Mixed column names and types to partially match tbl1 and tbl4
-CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
+CREATE TABLE ${testName}_unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
 
 -- memory leak testing not enabled due to memory leaks in the transliteration / back end
 -- trackmemory;
@@ -39,16 +39,16 @@ CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
 //  Basic union all statements
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT col1 FROM uniontbl1 UNION ALL SELECT col1 FROM uniontbl2;
+EXPLAIN SELECT col1 FROM ${testName}_uniontbl1 UNION ALL SELECT col1 FROM ${testName}_uniontbl2;
 success
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION ALL SELECT * FROM ${testName}_unionTbl2;
 success
 
-EXPLAIN SELECT col2, col4, col3 FROM UNIONTBL1 UNION ALL SELECT col2, col4, col3 FROM unionTbl2;
+EXPLAIN SELECT col2, col4, col3 FROM ${testName}_UNIONTBL1 UNION ALL SELECT col2, col4, col3 FROM ${testName}_unionTbl2;
 success
 
-EXPLAIN SELECT col1, col2 from uniontbl1 union all select col4, col1 FROM unionTbl3;
+EXPLAIN SELECT col1, col2 from ${testName}_uniontbl1 union all select col4, col1 FROM ${testName}_unionTbl3;
 success
 
 
@@ -56,10 +56,10 @@ success
 //  Union distinct not yet implemented
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl1 UNION DISTINCT SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION DISTINCT SELECT * FROM ${testName}_unionTbl2;
 failure contains: 'Feature not yet implemented: UNION DISTINCT'
 
-EXPLAIN SELECT * FROM unionTbl1 UNION SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION SELECT * FROM ${testName}_unionTbl2;
 failure contains: 'Feature not yet implemented: UNION DISTINCT'
 
 
@@ -67,10 +67,10 @@ failure contains: 'Feature not yet implemented: UNION DISTINCT'
 //  Union all number of columns not matching
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl3 UNION ALL SELECT * FROM unionTbl4;
+EXPLAIN SELECT * FROM ${testName}_unionTbl3 UNION ALL SELECT * FROM ${testName}_unionTbl4;
 failure contains: 'The number of columns of each subquery do not match: 4 vs 3, UNION operator'
 
-EXPLAIN select col1, col2 from unionTbl1 union all select col1 from unionTbl2;
+EXPLAIN select col1, col2 from ${testName}_unionTbl1 union all select col1 from ${testName}_unionTbl2;
 failure contains: 'The number of columns of each subquery do not match: 2 vs 1, UNION operator'
 
 
@@ -78,10 +78,10 @@ failure contains: 'The number of columns of each subquery do not match: 2 vs 1, 
 //  Union all types not matching
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl3;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION ALL SELECT * FROM ${testName}_unionTbl3;
 failure contains: 'Column types do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
 
-EXPLAIN SELECT col1, col2 FROM unionTbl1 UNION ALL SELECT col1, col2 FROM unionTbl3;
+EXPLAIN SELECT col1, col2 FROM ${testName}_unionTbl1 UNION ALL SELECT col1, col2 FROM ${testName}_unionTbl3;
 failure contains: 'Column types do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
 
 
@@ -89,14 +89,14 @@ failure contains: 'Column types do not match: INTEGER vs VARCHAR, column ordinal
 //  Non-empty CORRESPONDING BY clause with valid columns
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM ${testName}_unionTbl2;
 success
 
 -- case insensitive tests
-EXPLAIN SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM unionTbl5;
+EXPLAIN SELECT * FROM ${testName}_unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM ${testName}_unionTbl5;
 success
 
-EXPLAIN SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (BRAVO, CHARLIE) SELECT * FROM unionTbl5;
+EXPLAIN SELECT * FROM ${testName}_unionTbl4 UNION ALL CORRESPONDING BY (BRAVO, CHARLIE) SELECT * FROM ${testName}_unionTbl5;
 success
 
 
@@ -104,10 +104,10 @@ success
 //  Non-empty CORRESPONDING BY clause with invalid columns
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, badColumn) SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING BY (col1, badColumn) SELECT * FROM ${testName}_unionTbl2;
 failure contains: 'Column in CORRESPONDING BY list is not found in select list: badColumn'
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (badColumn, col1) SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING BY (badColumn, col1) SELECT * FROM ${testName}_unionTbl2;
 failure contains: 'Column in CORRESPONDING BY list is not found in select list: badColumn'
 
 
@@ -115,19 +115,19 @@ failure contains: 'Column in CORRESPONDING BY list is not found in select list: 
 //  Empty CORRESPONDING BY clause with matching column types
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl2;
+SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl2;
 rows:
   ['col1', 'col2', 'col3', 'col4']
 
-SELECT * FROM unionTbl4 UNION ALL CORRESPONDING SELECT * FROM unionTbl5;
+SELECT * FROM ${testName}_unionTbl4 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl5;
 rows:
   ['alpha', 'bravo', 'charlie']
 
-SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl1;
+SELECT * FROM ${testName}_unionTbl6 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl1;
 rows:
   ['col3', 'col1']
 
-SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
+SELECT * FROM ${testName}_unionTbl6 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl4;
 rows:
   ['bRaVo']
 
@@ -136,7 +136,7 @@ rows:
 //  Empty CORRESPONDING BY clause with non-matching column types
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl3;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl3;
 failure contains: 'Column in CORRESPONDING BY list has mismatched types in child queries: col1'
 
 
@@ -144,7 +144,7 @@ failure contains: 'Column in CORRESPONDING BY list has mismatched types in child
 //  Empty CORRESPONDING BY clause with no common column names
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
+EXPLAIN SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl4;
 failure contains: 'No common column names of the subqueries could be found for the CORRESPONDING list'
 
 
@@ -153,31 +153,31 @@ failure contains: 'No common column names of the subqueries could be found for t
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXPLAIN
-  SELECT * FROM unionTbl1
+  SELECT * FROM ${testName}_unionTbl1
 UNION ALL
-  SELECT * FROM unionTbl2
+  SELECT * FROM ${testName}_unionTbl2
 UNION ALL
-  SELECT * FROM unionTbl1
+  SELECT * FROM ${testName}_unionTbl1
 ;
 success
 
 
 EXPLAIN
-  SELECT col4 FROM unionTbl1
+  SELECT col4 FROM ${testName}_unionTbl1
 UNION ALL (
-  SELECT * FROM unionTbl4
+  SELECT * FROM ${testName}_unionTbl4
 UNION ALL CORRESPONDING
-  SELECT * FROM unionTbl6 )
+  SELECT * FROM ${testName}_unionTbl6 )
 ;
 success
 
 
 EXPLAIN
-  SELECT * FROM unionTbl4
+  SELECT * FROM ${testName}_unionTbl4
 UNION ALL CORRESPONDING
-  SELECT * FROM unionTbl6
+  SELECT * FROM ${testName}_unionTbl6
 UNION ALL
-  SELECT col4 FROM unionTbl1
+  SELECT col4 FROM ${testName}_unionTbl1
 ;
 success
 
@@ -194,21 +194,21 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE unionTbl1;
+  DROP TABLE ${testName}_unionTbl1;
   mute
 
-  DROP TABLE unionTbl2;
+  DROP TABLE ${testName}_unionTbl2;
   mute
 
-  DROP TABLE unionTbl3;
+  DROP TABLE ${testName}_unionTbl3;
   mute
 
-  DROP TABLE unionTbl4;
+  DROP TABLE ${testName}_unionTbl4;
   mute
 
-  DROP TABLE unionTbl5;
+  DROP TABLE ${testName}_unionTbl5;
   mute
 
-  DROP TABLE unionTbl6;
+  DROP TABLE ${testName}_unionTbl6;
   mute
 }

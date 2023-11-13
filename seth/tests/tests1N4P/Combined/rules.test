@@ -4,7 +4,7 @@
 trackmemory;
 success
 
-create table lineitem (
+create table ${testName}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -24,10 +24,10 @@ create table lineitem (
 );
 success
 
-create index IxL_ORDERKEY  ON Lineitem (l_SHIPDATE)  ;
+create index IxL_ORDERKEY  ON ${TestName}_Lineitem (l_SHIPDATE)  ;
 success;
 
-create table orders (
+create table ${testName}_orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -40,13 +40,13 @@ create table orders (
 );
 success
 
-create index IxO_ORDERKEY  ON orders (O_ORDERKEY)  ;
+create index IxO_ORDERKEY  ON ${testName}_orders (O_ORDERKEY)  ;
 success;
 
-create index IxO_CUSTKEY  ON orders (O_CUSTKEY)  ;
+create index IxO_CUSTKEY  ON ${testName}_orders (O_CUSTKEY)  ;
 success;
 
-create table customer (
+create table ${testName}_customer (
 	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
 	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
 	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
@@ -58,7 +58,7 @@ create table customer (
 );
 success
 
-create index IxC_CUSTKEY  ON customer (C_CUSTKEY)  ;
+create index IxC_CUSTKEY  ON ${testName}_customer (C_CUSTKEY)  ;
 success;
 
 //------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-   scan lineitem
+   scan ${testName}_lineitem
     | combined 0
     | next
 
@@ -123,7 +123,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | combined 0
     | combined 0
     | next
@@ -148,7 +148,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | combined 0
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | next
@@ -173,7 +173,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | hash 2 "type INTEGER $1"
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | combined 0
@@ -199,7 +199,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | hash 2 "type INTEGER $1"
     | combined 0
@@ -225,7 +225,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | combined 0
@@ -251,7 +251,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1  , type INTEGER )  $2 sum "
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | combined 0
@@ -278,7 +278,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
-    | scan lineitem
+    | scan ${testName}_lineitem
     | combined 0
     | next
 
@@ -302,8 +302,8 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
-    | scan lineitem
+    scan ${testName}_orders
+    | scan ${testName}_lineitem
     | combined 0
     | next
 
@@ -328,7 +328,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
-    | indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexscan ${testName}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | combined 0
     | next
 
@@ -352,12 +352,12 @@ begin
    | next
 
  stage S01 on all partitions :
-   scan customer
+   scan ${testName}_customer
   | next
 
  stage S02 on all partitions :
-   indexJoin orders IxO_CUSTKEY "bound $I1 $1 =="
-   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
+   indexJoin ${testName}_orders IxO_CUSTKEY "bound $I1 $1 =="
+   | keyExists ${testName}_lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
    | combined 0
    | next
@@ -382,8 +382,8 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexscan orders IxO_ORDERKEY "lbound $I1 0 >="
+    indexscan ${testName}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexscan ${testName}_orders IxO_ORDERKEY "lbound $I1 0 >="
     | combined 0
     | next
 
@@ -408,9 +408,9 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
-    | indexJoin customer IxC_CUSTKEY "bound $I1 $2 =="
+    indexscan ${testName}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin ${testName}_orders IxO_ORDERKEY "bound $I1 $1 =="
+    | indexJoin ${testName}_customer IxC_CUSTKEY "bound $I1 $2 =="
     | combined 0
     | next
 
@@ -434,7 +434,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | project " type INTEGER as l_orderkey $1"
     | combined 0
@@ -460,8 +460,8 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    indexscan ${testName}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin ${testName}_orders IxO_ORDERKEY "bound $I1 $1 =="
     | limit 3
     | limit 3
     | combined 0
@@ -487,14 +487,14 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-      scan orders
+      scan ${testName}_orders
       | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                                 O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
       | project expr type INTEGER as _orderkey O_ORDERKEY ,
                        type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-      | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+      | keyExists ${testName}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                            "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-      | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+      | keyExists ${testName}_lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                               "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
       | combined 0
       | next
@@ -520,8 +520,8 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    indexscan ${testName}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin ${testName}_orders IxO_ORDERKEY "bound $I1 $1 =="
     | sort "type INTEGER L_PARTKEY ASC"
     | sort "type INTEGER L_ORDERKEY ASC"
     | combined 0
@@ -548,8 +548,8 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    indexscan ${testName}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin ${testName}_orders IxO_ORDERKEY "bound $I1 $1 =="
     | top "type INTEGER L_PARTKEY" 2
     | top "type INTEGER L_PARTKEY" 2
     | combined 0
@@ -576,8 +576,8 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | indexJoin orders IxO_ORDERKEY "bound $I1 $1 =="
+    indexscan ${testName}_lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin ${testName}_orders IxO_ORDERKEY "bound $I1 $1 =="
     | sort "type INTEGER L_PARTKEY ASC"
     | top "type INTEGER L_PARTKEY" 2
     | combined 0
@@ -602,7 +602,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates type INTEGER $K1  , type INTEGER )  $2 sum "
     | sort "type INTEGER $1 ASC"
     | combined 0
@@ -627,7 +627,7 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-    scan orders
+    scan ${testName}_orders
     | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates type INTEGER $K1  , type INTEGER )  $2 sum "
     | top "type INTEGER $1 ASC" 3
     | combined 0
@@ -647,13 +647,13 @@ failure contains: 'EC_INVALID_PIPELINE'
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-DROP TABLE lineitem;
+DROP TABLE ${testName}_lineitem;
 success
 
-DROP TABLE orders;
+DROP TABLE ${testName}_orders;
 success
 
-DROP TABLE customer;
+DROP TABLE ${testName}_customer;
 success
 
 memoryleaks;
@@ -665,12 +665,12 @@ rows: 0
 
 CLEANUP {
 
-  DROP TABLE lineitem;
+  DROP TABLE ${testName}_lineitem;
   mute
 
-  DROP TABLE orders;
+  DROP TABLE ${testName}_orders;
   mute
 
-  DROP TABLE customer;
+  DROP TABLE ${testName}_customer;
   mute
 }

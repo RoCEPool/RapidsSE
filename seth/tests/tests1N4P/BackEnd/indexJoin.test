@@ -12,7 +12,7 @@ success;
 // PtnKey[T2] = a
 // IdxKey[T2] = a
 
-create table T1 (
+create table ${TESTNAME}_T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -20,7 +20,7 @@ create table T1 (
 );
 success
 
-create table T2 (
+create table ${TESTNAME}_T2 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -28,10 +28,10 @@ create table T2 (
 );
 success
 
-create index T2_idx on T2 (a);
+create index T2_idx on ${TESTNAME}_T2 (a);
 success
 
-load T2 "../DATA/Joins/T2.csv" ;
+load ${TESTNAME}_T2 "../DATA/Joins/T2.csv" ;
 success
 
 /optimise_passthru 
@@ -43,11 +43,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -68,11 +68,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -95,12 +95,12 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 ==" | stageD
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -119,12 +119,12 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -145,11 +145,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -170,11 +170,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -195,12 +195,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -219,12 +219,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -247,13 +247,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -273,13 +273,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -301,11 +301,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "BOUND $I1 $1 == "
+    indexJoin ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 == "
     | filter "type boolean $6 500 >= "
     | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
@@ -328,11 +328,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
+    indexJoin ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter "type boolean $6 500 >= "
     | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
@@ -355,14 +355,14 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter "type boolean $2 500 >= "
     | project "type integer $1 , type varchar $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter "type boolean $4 500 >= "
     | project "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | combined 0
@@ -383,14 +383,14 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter "type boolean $2 500 >= "
     | project "type integer $1 , type varchar $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter "type boolean $4 500 >= "
     | project "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | combined 0
@@ -404,10 +404,10 @@ end ;
 
 rows: 0
 
-drop table T1;
+drop table ${TESTNAME}_T1;
 success
 
-drop table T2;
+drop table ${TESTNAME}_T2;
 success
 
 //------------------------------------------------------------------------------
@@ -417,7 +417,7 @@ success
 // PtnKey[T2] = a
 // IdxKey[T2] = a
 
-create table T1 (
+create table ${TESTNAME}_T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -425,10 +425,10 @@ create table T1 (
 );
 success
 
-load T1 "../DATA/Joins/T1.csv" ;
+load ${TESTNAME}_T1 "../DATA/Joins/T1.csv" ;
 success
 
-create table T2 (
+create table ${TESTNAME}_T2 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -436,7 +436,7 @@ create table T2 (
 );
 success
 
-create index T2_idx on T2 (a);
+create index T2_idx on ${TESTNAME}_T2 (a);
 success
 
 /optimise_passthru 
@@ -448,11 +448,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -474,11 +474,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -509,13 +509,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter "type boolean $2 500 >= "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | combined 0
     | stageD
 
@@ -537,12 +537,12 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -568,11 +568,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -593,11 +593,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -618,12 +618,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -642,12 +642,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -670,13 +670,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -697,13 +697,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -731,11 +731,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 == "
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -757,11 +757,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -783,13 +783,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -809,13 +809,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -828,10 +828,10 @@ end ;
 
 rows: 0
 
-drop table T1;
+drop table ${TESTNAME}_T1;
 success
 
-drop table T2;
+drop table ${TESTNAME}_T2;
 success
 
 //------------------------------------------------------------------------------
@@ -841,7 +841,7 @@ success
 // PtnKey[T2] = a
 // IdxKey[T2] = a
 
-create table T1 (
+create table ${TESTNAME}_T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -849,7 +849,7 @@ create table T1 (
 );
 success
 
-create table T2 (
+create table ${TESTNAME}_T2 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -857,7 +857,7 @@ create table T2 (
 );
 success
 
-create index T2_idx on T2 (a);
+create index T2_idx on ${TESTNAME}_T2 (a);
 success
 
 /optimise_passthru 
@@ -869,11 +869,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -894,11 +894,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -921,12 +921,12 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 ==" | stageD
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -945,12 +945,12 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -971,11 +971,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -996,11 +996,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1021,12 +1021,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1045,12 +1045,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1073,13 +1073,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1099,13 +1099,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1127,11 +1127,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 == "
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1153,11 +1153,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1179,13 +1179,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -1205,13 +1205,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -1225,10 +1225,10 @@ end ;
 rows: 0
 
 // drop the tables
-drop table T1;
+drop table ${TESTNAME}_T1;
 success
 
-drop table T2;
+drop table ${TESTNAME}_T2;
 success
 
 //------------------------------------------------------------------------------
@@ -1238,7 +1238,7 @@ success
 // PtnKey[T2] = a
 // IdxKey[T2] = a
 
-create table T1 (
+create table ${TESTNAME}_T1 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -1246,10 +1246,10 @@ create table T1 (
 );
 success
 
-load T1 "../DATA/Joins/T1.csv" ;
+load ${TESTNAME}_T1 "../DATA/Joins/T1.csv" ;
 success
 
-create table T2 (
+create table ${TESTNAME}_T2 (
 	 a       INTEGER,
 	 b       INTEGER,
 	 c       INTEGER,
@@ -1257,10 +1257,10 @@ create table T2 (
 );
 success
 
-create index T2_idx on T2 (a);
+create index T2_idx on ${TESTNAME}_T2 (a);
 success
 
-load T2 "../DATA/Joins/T2.csv" ;
+load ${TESTNAME}_T2 "../DATA/Joins/T2.csv" ;
 success
 
 /optimise_passthru 
@@ -1272,11 +1272,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1303,11 +1303,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1337,12 +1337,12 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 ==" | stageD
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -1364,12 +1364,12 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 ==" | stageD
 
   stage stageD on origin :
     output
@@ -1395,11 +1395,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1422,11 +1422,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1449,12 +1449,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1474,12 +1474,12 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $6 500 >= "
     | stageD
 
@@ -1503,13 +1503,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1532,13 +1532,13 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | stageD
 
   stage stageD on origin :
@@ -1565,11 +1565,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 == "
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1593,11 +1593,11 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 == "
     | filter 0 "type boolean $6 500 >= "
     | project 1 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | stageD
@@ -1621,13 +1621,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -1648,13 +1648,13 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1
+    scan ${TESTNAME}_T1
     | filter 0 "type boolean $2 500 >= "
     | project 0 "type integer $1 , type varchar $4 "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin 0 ${TESTNAME}_T2 T2_idx "LEFT_OUTER BOUND $I1 $1 =="
     | filter 0 "type boolean $4 500 >= "
     | project 1 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | stageD
@@ -1670,10 +1670,10 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table T1;
+drop table ${TESTNAME}_T1;
 success
 
-drop table T2;
+drop table ${TESTNAME}_T2;
 success
 
 MemoryLeaks;

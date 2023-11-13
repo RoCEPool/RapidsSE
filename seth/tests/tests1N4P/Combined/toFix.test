@@ -5,7 +5,7 @@
 //trackMemory;
 //success;
 
-create table lineitem (
+create table ${testName}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,10 +25,10 @@ create table lineitem (
 );
 success
 
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
-create table nation (
+create table ${testName}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -36,13 +36,13 @@ create table nation (
 );
 success;
 
-create index idx on nation (n_nationkey);
+create index idx on ${testName}_nation (n_nationkey);
 success;
 
-load nation "../TPCH/SF1/nation.tbl" ;
+load ${testName}_nation "../TPCH/SF1/nation.tbl" ;
 success
 
-projectColumns lineitem type integer 1, type integer 2, type null null;
+projectColumns ${testName}_lineitem type integer 1, type integer 2, type null null;
 rows:
  (1,2,null)
  (1,2,null)
@@ -57,7 +57,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName}_lineitem;
 success
 
 //MemoryLeaks;
@@ -65,7 +65,7 @@ success
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName}_lineitem;
   mute
 
   bye;

@@ -5,7 +5,7 @@
 trackMemory;
 success;
 
-create table lineitem (
+create table ${testName}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,10 +25,10 @@ create table lineitem (
 );
 success
 
-create index IxL_SHIPDATE ON Lineitem (L_SHIPDATE)   ;
+create index IxL_SHIPDATE ON ${TestName}_Lineitem (L_SHIPDATE)   ;
 success;
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+load ${testName}_lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 /optimise_passthru 
@@ -41,7 +41,7 @@ begin
     | next
 
   stage Gs_LINEITEM on all partitions :
-    indexScan lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+    indexScan ${testName}_lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
                                        UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
     | filter "type BOOLEAN L_DISCOUNT 1.01 0.01 - >=
                               L_DISCOUNT 1.01 0.01 + <=
@@ -78,7 +78,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName}_lineitem;
 success
 
 MemoryLeaks;
@@ -86,7 +86,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName}_lineitem;
   mute
 
   bye;

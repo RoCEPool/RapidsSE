@@ -7,7 +7,7 @@ trackMemory;
 success
 
 // (1) create a table
-create table bolTbl (
+create table ${testName}_bolTbl (
   bol_col1   BOOLEAN     NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
@@ -20,48 +20,48 @@ create table bolTbl (
 success
 
 // create indexes
-create index bol_idx1 on bolTbl (bol_col1);
+create index bol_idx1 on ${testName}_bolTbl (bol_col1);
 success
 
 // create indexes
-create index bol_idx2 on bolTbl (bol_col8);
+create index bol_idx2 on ${testName}_bolTbl (bol_col8);
 success
 
 // check existence of index
-lsidx bolTbl;
+lsidx ${testName}_bolTbl;
 rows:
   ('bol_idx1', false, false)
   ('bol_idx2', false, false)
 
 // check columns of index
-lsidxcol bolTbl bol_idx1;
+lsidxcol ${testName}_bolTbl bol_idx1;
 rows:
   ('bol_col1', 'BOOLEAN', 0, 0, false, true)
 
 // check columns of index
-lsidxcol bolTbl bol_idx2;
+lsidxcol ${testName}_bolTbl bol_idx2;
 rows:
   ('bol_col8', 'BOOLEAN', 0, 0, true, false)
 
-load bolTbl "../DATA/Datums/boolean.csv" ;
+load ${testName}_bolTbl "../DATA/Datums/boolean.csv" ;
 failure contains: '18 invalid'
 
 tableSizes;
 rows:
-  (*, 'botTbl', '1MB');
+  (*, '${testName}_bolTbl', '1MB');
   
 // check no of rows
-select * from bolTbl;
+select * from ${testName}_bolTbl;
 rows: 102
 
 // dump index bol_idx1
-dumpidx bolTbl bol_idx1;
+dumpidx ${testName}_bolTbl bol_idx1;
 
 // dump index bol_idx2
-dumpidx bolTbl bol_idx2;
+dumpidx ${testName}_bolTbl bol_idx2;
 
 // drop the table
-drop table bolTbl;
+drop table ${testName}_bolTbl;
 success
 
 // check existence of table
@@ -75,7 +75,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table bolTbl;
+  drop table ${testName}_bolTbl;
   mute
   
   bye;

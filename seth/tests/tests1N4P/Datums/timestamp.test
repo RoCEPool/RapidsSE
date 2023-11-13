@@ -6,7 +6,7 @@
 trackMemory;
 success
 
-create table tspTbl (
+create table ${testName}_tspTbl (
   tsp_col1   TIMESTAMP   NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
@@ -18,42 +18,42 @@ create table tspTbl (
 success
 
 // create index tsp_idx1
-create index tsp_idx1 on tspTbl (tsp_col1);
+create index tsp_idx1 on ${testName}_tspTbl (tsp_col1);
 success
 
 // create index tsp_idx2
-create index tsp_idx2 on tspTbl (tsp_col7);
+create index tsp_idx2 on ${testName}_tspTbl (tsp_col7);
 success
 
 // check existence of index
-lsidx tspTbl;
+lsidx ${testName}_tspTbl;
 rows:
 ('tsp_idx1', false, false)
 ('tsp_idx2', false, false)
 
 // check columns of index
-lsidxcol tspTbl tsp_idx1;
+lsidxcol ${testName}_tspTbl tsp_idx1;
 rows:
 ('tsp_col1', 'TIMESTAMP', 0, 0, false, true)
 
 // check columns of index
-lsidxcol tspTbl tsp_idx2;
+lsidxcol ${testName}_tspTbl tsp_idx2;
 rows:
 ('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
 
-Load tspTbl "../DATA/Datums/timestamp.csv" ;
+Load ${testName}_tspTbl "../DATA/Datums/timestamp.csv" ;
 failure contains: '27 invalid'
 
 // check no of rows
-select * from tspTbl;
+select * from ${testName}_tspTbl;
 rows: 100
 
 // dump index tsp_idx1
-dumpidx tspTbl tsp_idx1;
+dumpidx ${testName}_tspTbl tsp_idx1;
 success
 
 // dump index tsp_idx2
-dumpidx tspTbl tsp_idx2;
+dumpidx ${testName}_tspTbl tsp_idx2;
 success
 
 // fetch
@@ -62,7 +62,7 @@ success
 //  ('1904-01-01 00:00:00',four,104,4,4.004,1004.004,null)
 
 // drop the table
-drop table tspTbl;
+drop table ${testName}_tspTbl;
 success
 
 // check existence of table
@@ -76,7 +76,7 @@ rows: 0
 CLEANUP {
   
   // drop the table
-  drop table tspTbl;
+  drop table ${testName}_tspTbl;
   mute
   
   bye;

@@ -14,7 +14,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table nation (
+create table ${testName}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -30,225 +30,225 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Expr pushdown required because n_nationkey is not being projected (ORDER BY clause)
-EXPLAIN SELECT n_name FROM nation ORDER BY n_nationkey;
+EXPLAIN SELECT n_name FROM ${testName}_nation ORDER BY n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name FROM nation ORDER BY n_nationkey"
+   » queryText: "SELECT n_name FROM ${testName}_nation ORDER BY n_nationkey"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
 
 -> -> -> orderOp
-         » order expr: ((rapidsse.public.nation.n_nationkey) ASC)
+         » order expr: ((rapidsse.public.${testName}_nation.n_nationkey) ASC)
          » ordinal order expr: (($2) ASC)
 
 -> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- OrderOp with more than one order item (both to be pushed down)
-EXPLAIN SELECT n_name FROM nation ORDER BY n_nationkey, n_regionkey;
+EXPLAIN SELECT n_name FROM ${testName}_nation ORDER BY n_nationkey, n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name FROM nation ORDER BY n_nationkey, n_regionkey"
+   » queryText: "SELECT n_name FROM ${testName}_nation ORDER BY n_nationkey, n_regionkey"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
 
 -> -> -> orderOp
-         » order expr: ((rapidsse.public.nation.n_nationkey) ASC, (rapidsse.public.nation.n_regionkey) ASC)
+         » order expr: ((rapidsse.public.${testName}_nation.n_nationkey) ASC, (rapidsse.public.${testName}_nation.n_regionkey) ASC)
          » ordinal order expr: (($2) ASC, ($3) ASC)
 
 -> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- OrderOp with more than one order item (first to be pushed down)
-EXPLAIN SELECT n_name, n_regionkey FROM nation ORDER BY n_nationkey, n_regionkey;
+EXPLAIN SELECT n_name, n_regionkey FROM ${testName}_nation ORDER BY n_nationkey, n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, n_regionkey FROM nation ORDER BY n_nationkey, n_regionkey"
+   » queryText: "SELECT n_name, n_regionkey FROM ${testName}_nation ORDER BY n_nationkey, n_regionkey"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $2)
 
 -> -> -> orderOp
-         » order expr: ((rapidsse.public.nation.n_nationkey) ASC, (rapidsse.public.nation.n_regionkey) ASC)
+         » order expr: ((rapidsse.public.${testName}_nation.n_nationkey) ASC, (rapidsse.public.${testName}_nation.n_regionkey) ASC)
          » ordinal order expr: (($3) ASC, ($2) ASC)
 
 -> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- OrderOp with more than one order item (last to be pushed down)
-EXPLAIN SELECT n_name, n_nationkey FROM nation ORDER BY n_nationkey, n_regionkey;
+EXPLAIN SELECT n_name, n_nationkey FROM ${testName}_nation ORDER BY n_nationkey, n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, n_nationkey FROM nation ORDER BY n_nationkey, n_regionkey"
+   » queryText: "SELECT n_name, n_nationkey FROM ${testName}_nation ORDER BY n_nationkey, n_regionkey"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $2)
 
 -> -> -> orderOp
-         » order expr: ((rapidsse.public.nation.n_nationkey) ASC, (rapidsse.public.nation.n_regionkey) ASC)
+         » order expr: ((rapidsse.public.${testName}_nation.n_nationkey) ASC, (rapidsse.public.${testName}_nation.n_regionkey) ASC)
          » ordinal order expr: (($2) ASC, ($3) ASC)
 
 -> -> -> -> projectOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)')
+               » table: (rapidsse.public.${testName}_nation)')
 
 
 -- HAVING expression to be pushed down (1)
-EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+EXPLAIN SELECT n_name FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0"
+   » queryText: "SELECT n_name FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
 
 -> -> -> filterOp
-         » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+         » expr: ((SUM(rapidsse.public.${testName}_nation.n_nationkey)) > 0)
          » ordinal expr: ($2 > 0)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- HAVING expression to be pushed down (1)
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+         » expr: ((SUM(rapidsse.public.${testName}_nation.n_nationkey)) > 0)
          » ordinal expr: ($3 > 0)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- HAVING expression with grand total
-EXPLAIN SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+EXPLAIN SELECT 1 FROM ${testName}_nation HAVING SUM(n_nationkey) > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0"
+   » queryText: "SELECT 1 FROM ${testName}_nation HAVING SUM(n_nationkey) > 0"
 
 -> -> projectOp
       » column: (Expr = 1 ; Ordinal Expr = $1)
 
 -> -> -> filterOp
-         » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+         » expr: ((SUM(rapidsse.public.${testName}_nation.n_nationkey)) > 0)
          » ordinal expr: ($2 > 0)
 
 -> -> -> -> projectOp
             » column: (Expr = 1 ; Ordinal Expr = 1)
-            » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- Both ORDER BY and HAVING expressions to be pushed down
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0 ORDER BY SUM(n_nationkey);
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0 ORDER BY SUM(n_nationkey);
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0 ORDER BY SUM(n_nationkey)"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_nationkey) > 0 ORDER BY SUM(n_nationkey)"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> orderOp
-         » order expr: ((SUM(rapidsse.public.nation.n_nationkey)) ASC)
+         » order expr: ((SUM(rapidsse.public.${testName}_nation.n_nationkey)) ASC)
          » ordinal order expr: (($3) ASC)
 
 -> -> -> -> filterOp
-            » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+            » expr: ((SUM(rapidsse.public.${testName}_nation.n_nationkey)) > 0)
             » ordinal expr: ($3 > 0)
 
 -> -> -> -> -> aggregateOp
-               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-               » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-               » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-               » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+               » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+               » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($1))
+               » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.nation)'
+                  » table: (rapidsse.public.${testName}_nation)'
 )
 
 
@@ -257,216 +257,216 @@ rows: (*,'explainPlan','
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- ORDER BY partial expression to be pushed down (1)
--- EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name ORDER BY SUM(n_regionkey);  -- <--- does not leak
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name ORDER BY SUM(n_regionkey) / COUNT(n_nationkey);
+-- EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name ORDER BY SUM(n_regionkey);  -- <--- does not leak
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name ORDER BY SUM(n_regionkey) / COUNT(n_nationkey);
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name ORDER BY SUM(n_regionkey) / COUNT(n_nationkey)"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name ORDER BY SUM(n_regionkey) / COUNT(n_nationkey)"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> orderOp
-         » order expr: (((SUM(rapidsse.public.nation.n_regionkey)) / (COUNT(rapidsse.public.nation.n_nationkey))) ASC)
+         » order expr: (((SUM(rapidsse.public.${testName}_nation.n_regionkey)) / (COUNT(rapidsse.public.${testName}_nation.n_nationkey))) ASC)
          » ordinal order expr: (($2 / $3) ASC)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- ORDER BY partial expression to be pushed down (2)
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name ORDER BY COUNT(n_nationkey) * (1 + SUM(n_regionkey));
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name ORDER BY COUNT(n_nationkey) * (1 + SUM(n_regionkey));
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name ORDER BY COUNT(n_nationkey) * (1 + SUM(n_regionkey))"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name ORDER BY COUNT(n_nationkey) * (1 + SUM(n_regionkey))"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> orderOp
-         » order expr: (((COUNT(rapidsse.public.nation.n_nationkey)) * (1 + (SUM(rapidsse.public.nation.n_regionkey)))) ASC)
+         » order expr: (((COUNT(rapidsse.public.${testName}_nation.n_nationkey)) * (1 + (SUM(rapidsse.public.${testName}_nation.n_regionkey)))) ASC)
          » ordinal order expr: (($3 * (1 + $2)) ASC)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- ORDER BY partial expression to be pushed down (3)
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name ORDER BY SUM(n_regionkey) / ( SUM(n_regionkey) + COUNT(n_nationkey) );
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name ORDER BY SUM(n_regionkey) / ( SUM(n_regionkey) + COUNT(n_nationkey) );
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name ORDER BY SUM(n_regionkey) / ( SUM(n_regionkey) + COUNT(n_nationkey) )"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name ORDER BY SUM(n_regionkey) / ( SUM(n_regionkey) + COUNT(n_nationkey) )"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> orderOp
-         » order expr: (((SUM(rapidsse.public.nation.n_regionkey)) / ((SUM(rapidsse.public.nation.n_regionkey)) + (COUNT(rapidsse.public.nation.n_nationkey)))) ASC)
+         » order expr: (((SUM(rapidsse.public.${testName}_nation.n_regionkey)) / ((SUM(rapidsse.public.${testName}_nation.n_regionkey)) + (COUNT(rapidsse.public.${testName}_nation.n_nationkey)))) ASC)
          » ordinal order expr: (($2 / ($2 + $3)) ASC)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- HAVING partial expression to be pushed down (1)
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_regionkey) > COUNT(n_nationkey);
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_regionkey) > COUNT(n_nationkey);
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_regionkey) > COUNT(n_nationkey)"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_regionkey) > COUNT(n_nationkey)"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((SUM(rapidsse.public.nation.n_regionkey)) > (COUNT(rapidsse.public.nation.n_nationkey)))
+         » expr: ((SUM(rapidsse.public.${testName}_nation.n_regionkey)) > (COUNT(rapidsse.public.${testName}_nation.n_nationkey)))
          » ordinal expr: ($2 > $3)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = COUNT(rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = COUNT($1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- HAVING partial expression to be pushed down (2)
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name, n_regionkey, n_nationkey HAVING SUM(n_regionkey) > (n_regionkey + n_nationkey);
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name, n_regionkey, n_nationkey HAVING SUM(n_regionkey) > (n_regionkey + n_nationkey);
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name, n_regionkey, n_nationkey HAVING SUM(n_regionkey) > (n_regionkey + n_nationkey)"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name, n_regionkey, n_nationkey HAVING SUM(n_regionkey) > (n_regionkey + n_nationkey)"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((SUM(rapidsse.public.nation.n_regionkey)) > (rapidsse.public.nation.n_regionkey + rapidsse.public.nation.n_nationkey))
+         » expr: ((SUM(rapidsse.public.${testName}_nation.n_regionkey)) > (rapidsse.public.${testName}_nation.n_regionkey + rapidsse.public.${testName}_nation.n_nationkey))
          » ordinal expr: ($2 > $3)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = rapidsse.public.nation.n_regionkey + rapidsse.public.nation.n_nationkey ; Ordinal Expr = $3 + $1)
-            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-            » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey + rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $3 + $1)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 -- SUM() with two columnRefs
-EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_regionkey + n_nationkey) > 0;
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_regionkey + n_nationkey) > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name HAVING SUM(n_regionkey + n_nationkey) > 0"
+   » queryText: "SELECT n_name, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_name HAVING SUM(n_regionkey + n_nationkey) > 0"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((SUM(rapidsse.public.nation.n_regionkey + rapidsse.public.nation.n_nationkey)) > 0)
+         » expr: ((SUM(rapidsse.public.${testName}_nation.n_regionkey + rapidsse.public.${testName}_nation.n_nationkey)) > 0)
          » ordinal expr: ($3 > 0)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey + rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($3 + $1))
-            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey + rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($3 + $1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 -- SUM(columnRef1 + columnRef2) + columnRef
-EXPLAIN SELECT n_regionkey, SUM(n_regionkey) FROM nation GROUP BY n_regionkey HAVING SUM(n_regionkey + n_nationkey) + n_regionkey> 0;
+EXPLAIN SELECT n_regionkey, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_regionkey HAVING SUM(n_regionkey + n_nationkey) + n_regionkey> 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_regionkey, SUM(n_regionkey) FROM nation GROUP BY n_regionkey HAVING SUM(n_regionkey + n_nationkey) + n_regionkey> 0"
+   » queryText: "SELECT n_regionkey, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_regionkey HAVING SUM(n_regionkey + n_nationkey) + n_regionkey> 0"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: (((SUM(rapidsse.public.nation.n_regionkey + rapidsse.public.nation.n_nationkey)) + rapidsse.public.nation.n_regionkey) > 0)
+         » expr: (((SUM(rapidsse.public.${testName}_nation.n_regionkey + rapidsse.public.${testName}_nation.n_nationkey)) + rapidsse.public.${testName}_nation.n_regionkey) > 0)
          » ordinal expr: (($3 + $1) > 0)
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey + rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($3 + $1))
-            » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey + rapidsse.public.${testName}_nation.n_nationkey) ; Ordinal Expr = SUM($3 + $1))
+            » group by: (Expr = rapidsse.public.${testName}_nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)'
+               » table: (rapidsse.public.${testName}_nation)'
 )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Grouping expressions that need to be pushed down
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-EXPLAIN SELECT n_nationkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+EXPLAIN SELECT n_nationkey + 1, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_nationkey;
 rows:
 (
 *,
@@ -476,23 +476,23 @@ rows:
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT n_nationkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey"
+   » queryText: "SELECT n_nationkey + 1, SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_nationkey"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey + 1 ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> aggregateOp
-         » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
-         » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-         » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+         » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
+         » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+         » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
+         » group by: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName}_nation)'
 )
 
-EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_nationkey;
 rows:
 (
 *,
@@ -502,20 +502,20 @@ rows:
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey"
+   » queryText: "SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM ${testName}_nation GROUP BY n_nationkey"
 
 -> -> projectOp
-      » column: (Expr = 2 * (rapidsse.public.nation.n_nationkey + 1) ; Ordinal Expr = $1)
-      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+      » column: (Expr = 2 * (rapidsse.public.${testName}_nation.n_nationkey + 1) ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = $2)
 
 -> -> -> aggregateOp
-         » column: (Expr = 2 * (rapidsse.public.nation.n_nationkey + 1) ; Ordinal Expr = 2 * ($1 + 1))
-         » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-         » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+         » column: (Expr = 2 * (rapidsse.public.${testName}_nation.n_nationkey + 1) ; Ordinal Expr = 2 * ($1 + 1))
+         » column: (Expr = SUM(rapidsse.public.${testName}_nation.n_regionkey) ; Ordinal Expr = SUM($3))
+         » column: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
+         » group by: (Expr = rapidsse.public.${testName}_nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)'
+            » table: (rapidsse.public.${testName}_nation)'
 )
 
 
@@ -538,6 +538,6 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  drop table nation ;
+  drop table ${testName}_nation ;
   mute
 }

@@ -5,7 +5,7 @@
 trackMemory;
 success;
 
-create table lineitem (
+create table ${testName}_lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -25,7 +25,7 @@ create table lineitem (
 );
 success
 
-load lineitem "../DATA/TPCH/lineitem10.csv";
+load ${testName}_lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ begin
     | pulse once
     | next
   stage scanL on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName}_lineitem
     | combined 0
     | next
   stage stageLast on origin :
@@ -59,7 +59,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | filter "type BOOLEAN L_ORDERKEY 2 >="
      | combined 0
      | stageLast
@@ -84,7 +84,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | filter " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
      | combined 0
      | stageLast
@@ -105,7 +105,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | filter " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
      | project " type INTEGER as orderkey L_ORDERKEY ,
                    type DATE as shipdate L_SHIPDATE"
@@ -128,7 +128,7 @@ pipeline unnamed
      | pulse once
      | stageA
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | project " type INTEGER as orderkey L_ORDERKEY ,
                    type DATE as L_SHIPDATE L_SHIPDATE"
      | filter " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
@@ -152,7 +152,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | aggreg " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
                    type DATE as shipdate L_SHIPDATE"
 
@@ -175,7 +175,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | aggreg " type INTEGER as sum_orderkey ) L_ORDERKEY sum "
      | combined 0
      | next
@@ -205,7 +205,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | aggreg " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
                    type INTEGER as cnt_orderkey ) L_ORDERKEY count"
      | combined 0
@@ -237,7 +237,7 @@ pipeline unnamed
      | pulse once
      | next
    stage stageA on all partitions :
-     scan rapidsse public LineItem
+     scan rapidsse public ${TestName}_LineItem
      | aggreg " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
                    type INTEGER as min_orderkey ) L_ORDERKEY min ,
                    type INTEGER as max_orderkey ) L_ORDERKEY max"
@@ -265,7 +265,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lineitem;
+drop table ${testName}_lineitem;
 success
 
 MemoryLeaks;
@@ -273,7 +273,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName}_lineitem;
   mute
 
   bye;

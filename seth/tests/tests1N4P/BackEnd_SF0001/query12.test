@@ -6,7 +6,7 @@
 select l_shipmode,
     sum(case when o_orderpriority ='1-URGENT' or o_orderpriority ='2-HIGH' then 1 else 0 end) as high_line_count,
     sum(case when o_orderpriority <> '1-URGENT' and o_orderpriority <> '2-HIGH' then 1 else 0 end) as low_line_count
-    from orders, lineitem
+    from ${testName}_orders, ${testName}_lineitem
     where o_orderkey = l_orderkey
     and l_shipmode in ('MAIL', 'SHIP')
     and l_commitdate < l_receiptdate
@@ -27,7 +27,7 @@ EXPLAIN STAGE TRANSLITERATE
 select l_shipmode,
     sum(case when o_orderpriority ='1-URGENT' or o_orderpriority ='2-HIGH' then 1 else 0 end) as high_line_count,
     sum(case when o_orderpriority <> '1-URGENT' and o_orderpriority <> '2-HIGH' then 1 else 0 end) as low_line_count
-    from orders, lineitem
+    from ${testName}_orders, ${testName}_lineitem
     where o_orderkey = l_orderkey
     and l_shipmode in ('MAIL', 'SHIP')
     and l_commitdate < l_receiptdate
@@ -44,10 +44,10 @@ begin
     | pulse once
     | stageMarker31060
   stage stageMarker31060 on all partitions :
-    scan rapidsse public orders
+    scan rapidsse public ${testName}_orders
     | stageMarker31063 broadcast
   stage stageMarker31063 on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName}_lineitem
     | abstractJoin " 1  "
     | stageMarker31066
   stage stageMarker31066 on all partitions :
@@ -94,15 +94,15 @@ begin
     | next
 
   stage stageMarker31060 on all partitions :
-    scan rapidsse public orders
+    scan rapidsse public ${testName}_orders
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast //broadcast
 
   stage stageMarker31063 on all partitions :
-    //scan rapidsse public lineitem
+    //scan rapidsse public ${testName}_lineitem
     //| abstractJoin " 1  "
-    indexJoin Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
+    indexJoin ${TestName}_Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
     | combined 0
     | next
 
@@ -175,13 +175,13 @@ begin
     | next
 
   stage stageMarker31060 on all partitions :
-    scan rapidsse public orders
+    scan rapidsse public ${testName}_orders
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
   stage stageMarker31063 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
+    indexJoin ${TestName}_Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
     | filter " type BOOLEAN
                  }  'MAIL'  'SHIP'  #2  L_SHIPMODE in
                  L_COMMITDATE L_RECEIPTDATE <  and
@@ -254,7 +254,7 @@ pipeline unamed
      | next
 
    stage stageMarker31060 on all partitions :
-     scan rapidsse public orders
+     scan rapidsse public ${testName}_orders
      | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
      | hash "type INTEGER O_ORDERKEY"
@@ -262,7 +262,7 @@ pipeline unamed
      | next hashcast
 
    stage stageMarker31063 on all partitions :
-     indexJoin Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
+     indexJoin ${TestName}_Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
      | filter " type BOOLEAN
                   }  'MAIL'  'SHIP'  #2  L_SHIPMODE in
                   L_COMMITDATE L_RECEIPTDATE <  and
@@ -319,7 +319,7 @@ pipeline unamed
      | next
 
    stage S01 on all partitions :
-     scan rapidsse public orders
+     scan rapidsse public ${testName}_orders
      | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
                 type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
      | hash "type INTEGER O_ORDERKEY"
@@ -327,7 +327,7 @@ pipeline unamed
      | next hashcast
 
    stage S02 on all partitions :
-     indexJoin Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
+     indexJoin ${TestName}_Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
      | filter " type BOOLEAN L_RECEIPTDATE DATE '1994-01-01'  >=  L_RECEIPTDATE DATE '1995-01-01'  <  and  "
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
@@ -380,7 +380,7 @@ pipeline unamed
      | next
 
    stage S01 on all partitions :
-     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01'  <"
+     indexScan ${testName}_lineitem IxL_RECEIPTDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01'  <"
      | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
      | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
      | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
@@ -389,7 +389,7 @@ pipeline unamed
      | next broadcast
 
    stage S02 on all partitions :
-     indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
+     indexJoin ${TestName}_Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
      | project "type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next

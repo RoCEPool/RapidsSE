@@ -54,37 +54,37 @@ success
 lssch;
 rows: ('public')
 
-create schema mySchema;
+create schema ${testName}_mySchema;
 success
 
 lssch;
 rows:
   ('public')
-  ('mySchema')
+  ('${testName}_mySchema')
 
-drop schema mySchema;
+drop schema ${testName}_mySchema;
 success
 
-create schema mySchema;
-success
-
-lssch;
-rows:
-('public')
-('mySchema')
-
-drop schema mySchema;
-success
-
-create schema mySchema;
+create schema ${testName}_mySchema;
 success
 
 lssch;
 rows:
 ('public')
-('mySchema')
+('${testName}_mySchema')
 
-cf mySchema;
+drop schema ${testName}_mySchema;
+success
+
+create schema ${testName}_mySchema;
+success
+
+lssch;
+rows:
+('public')
+('${testName}_mySchema')
+
+cf ${testName}_mySchema;
 success
 
 cf tables;
@@ -100,10 +100,10 @@ pwf;
 rows: ('/schemas/rapidsse/catalogs/boray/tenants/')
 
 //! ALKA ENABLE once empty folder test in place
-//drop schema mySchema;
+//drop schema ${testName}_mySchema;
 //failure contains: 'folder not empty'
 
-cf mySchema;
+cf ${testName}_mySchema;
 success
 
 cf tables;
@@ -116,7 +116,7 @@ cf ..;
 success
 
 pwf;
-rows: ('/mySchema/schemas/rapidsse/catalogs/boray/tenants/')
+rows: ('/${testName}_mySchema/schemas/rapidsse/catalogs/boray/tenants/')
 
 cf ..;
 success
@@ -124,7 +124,7 @@ success
 pwf;
 rows: ('/schemas/rapidsse/catalogs/boray/tenants/')
 
-drop schema mySchema;
+drop schema ${testName}_mySchema;
 success
 
 cf "~tables";
@@ -140,7 +140,7 @@ rows: 0
 
 CLEANUP {
   
-  drop schema mySchema;
+  drop schema ${testName}_mySchema;
   mute
   
   cf "~tables";

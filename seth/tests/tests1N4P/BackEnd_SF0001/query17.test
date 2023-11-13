@@ -4,11 +4,11 @@
 /*  (original Query)
 
 select sum(l_extendedprice) / 7.0 as avg_yearly
-     from lineitem, part
+     from ${testName}_lineitem, ${testName}_part
      where p_partkey = l_partkey
      and p_brand = 'Brand#23'
      and p_container = 'MED BOX'
-     and l_quantity < ( select 0.2 * avg(l_quantity) from lineitem where l_partkey = p_partkey );
+     and l_quantity < ( select 0.2 * avg(l_quantity) from ${testName}_lineitem where l_partkey = p_partkey );
 
 */
 
@@ -19,11 +19,11 @@ select sum(l_extendedprice) / 7.0 as avg_yearly
 /*
 EXPLAIN STAGE TRANSLITERATE
 select sum(l_extendedprice) / 7.0 as avg_yearly
-     from lineitem, part
+     from ${testName}_lineitem, ${testName}_part
      where p_partkey = l_partkey
      and p_brand = 'Brand#23'
      and p_container = 'MED BOX'
-     and l_quantity < ( select 0.2 * avg(l_quantity) from lineitem where l_partkey = p_partkey );
+     and l_quantity < ( select 0.2 * avg(l_quantity) from ${testName}_lineitem where l_partkey = p_partkey );
 
 pipeline unamed
 begin
@@ -35,7 +35,7 @@ begin
       | pulse once
       | stageMarker1222
     stage stageMarker1222 on all partitions :
-      scan rapidsse public LineItem
+      scan rapidsse public ${TestName}_LineItem
       | filter " type BOOLEAN  $2 ==  "
       | aggreg " type DECIMAL )  $5 sum  , type INTEGER )  $5 count  "
       | combined 0
@@ -66,10 +66,10 @@ begin
     | pulse once
     | stageMarker1234
   stage stageMarker1234 on all partitions :
-    scan rapidsse public LineItem
+    scan rapidsse public ${TestName}_LineItem
     | stageMarker1237 broadcast
   stage stageMarker1237 on all partitions :
-    scan rapidsse public part
+    scan rapidsse public ${testName}_part
     | abstractJoin "CROSS true  "
     | stageMarker1240
   stage stageMarker1240 on all partitions :
@@ -109,14 +109,14 @@ begin
     | next
 
  stage S01 on all partitions :
-     scan rapidsse public part
+     scan rapidsse public ${testName}_part
      | filter " type BOOLEAN  P_BRAND 'Brand#23'  ==  P_CONTAINER 'MED BAG'  ==  and"
      | project "type INTEGER as P_PARTKEY P_PARTKEY"
      | combined 0
      | next broadcast
 
   stage S02 on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    indexJoin ${testName}_lineitem IxL_PARTKEY "bound $I1 P_PARTKEY =="
     | ordagg " ordgroupBy type integer P_PARTKEY
                aggregates type integer as P_PARTKEY $K1 ,
                           type DECIMAL )  L_QUANTITY sum  ,
@@ -147,7 +147,7 @@ begin
     | next broadcast
 
   stage S06 on all partitions :
-    indexJoin lineitem IxL_PARTKEY "bound $I1 $1 =="
+    indexJoin ${testName}_lineitem IxL_PARTKEY "bound $I1 $1 =="
     | filter " type BOOLEAN  L_QUANTITY AV <  "
     | aggreg " type decimal as avg_yearly ) L_EXTENDEDPRICE sum  "
     | combined 0

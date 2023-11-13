@@ -11,7 +11,7 @@
         avg(l_extendedprice) as avg_price,
         avg(l_discount) as avg_disc,
         count(*) as count_order
-        from lineitem
+        from ${testName}_lineitem
         where l_shipdate <= DATE '1998-09-01'
         group by l_returnflag, l_linestatus
         order by l_returnflag, l_linestatus;
@@ -34,7 +34,7 @@ select
          avg(l_extendedprice)                                as avg_price,
          avg(l_discount)                                     as avg_disc,
          count(*)                                            as count_order
-  from LineItem where l_shipdate <= TIMESTAMP '1998-09-01 00:00:00'
+  from ${TestName}_LineItem where l_shipdate <= TIMESTAMP '1998-09-01 00:00:00'
   group by l_returnflag, l_linestatus
   order by l_returnflag, l_linestatus;
 
@@ -46,7 +46,7 @@ begin
     | pulse once
     | stageMarker4857
   stage stageMarker4857 on all partitions :
-    scan rapidsse public LineItem
+    scan rapidsse public ${TestName}_LineItem
     | filter " type BOOLEAN  $11 casttype TIMESTAMP CAST  TIMESTAMP ''1998-09-01 00:00:00''  <=  "
     | gbyAgg " groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type DECIMAL )  $6 1.00  $7 -  *  sum  , type DECIMAL )  $6 1.00  $7 -  *  1.00  $8 +  *  sum  , type INTEGER )  $5 count  , type INTEGER )  $6 count  , type DECIMAL )  $7 sum  , type INTEGER )  $7 count  , type INTEGER )  countAll  "
     | combined 0
@@ -88,7 +88,7 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public lineitem
+    scan rapidsse public ${testName}_lineitem
     | filter " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
     | gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates

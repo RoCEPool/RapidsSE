@@ -12,7 +12,7 @@ from (
               c_custkey,
               count(o_orderkey) as c_count
        from
-              customer left outer join orders on
+              ${testName}_customer left outer join ${testName}_orders on
                      c_custkey = o_custkey
               and o_comment not like '%special%requests%'
        group by
@@ -50,7 +50,7 @@ from (
               c_custkey,
               count(o_orderkey) as c_count
        from
-              customer left outer join orders on
+              ${testName}_customer left outer join ${testName}_orders on
                       c_custkey = o_custkey
                   and o_comment not like '%special%requests%'
        group by
@@ -72,10 +72,10 @@ pipeline c_orders
       | pulse once
       | stageMarker1080
     stage stageMarker1080 on all partitions :
-      scan rapidsse public customer
+      scan rapidsse public ${testName}_customer
       | stageMarker1083 broadcast
     stage stageMarker1083 on all partitions :
-      scan rapidsse public orders
+      scan rapidsse public ${testName}_orders
       | abstractJoin "LEFT_OUTER $1 $R2 ==  }  $R9 ''%special%requests%''  7 8 matchMiddle1  not  and  "
       | stageMarker1086
     stage stageMarker1086 on all partitions :
@@ -130,11 +130,11 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName}_customer
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
                                  "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | combined 0
     | next
@@ -197,11 +197,11 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName}_customer
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
            "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | combined 0
     | next
@@ -249,11 +249,11 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName}_customer
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
         "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY ,
@@ -304,11 +304,11 @@ begin
     | next
 
   stage S01 on all partitions :
-    scan rapidsse public customer
+    scan rapidsse public ${testName}_customer
     | next
 
   stage S02 on all partitions :
-    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
+    indexJoin ${testName}_orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $1 =="
         "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
                type INTEGER as O_ORDERKEY O_ORDERKEY"

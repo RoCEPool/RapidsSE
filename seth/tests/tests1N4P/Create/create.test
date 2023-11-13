@@ -3,104 +3,104 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create table test starting character
-create table _test (
+create table _test_${testName} (
   jA  INTEGER
 );
 success
 
-create table 1test (
+create table 1test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table ~test (
+create table ~test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table &test (
+create table &test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table %test (
+create table %test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table ^test (
+create table ^test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table !test (
+create table !test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table *test (
+create table *test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table :test (
+create table :test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
-create table ?test (
+create table ?test_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_SYNTAX_ERROR'
 
 // (2) create table test special characters within the name
 
-create table t1est (
+create table t1est_${testName} (
   jA  INTEGER
 );
 success
 
-create table t~est (
+create table t~est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t&est (
+create table t&est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t%est (
+create table t%est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t^est (
+create table t^est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t!est (
+create table t!est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t*est (
+create table t*est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t:est (
+create table t:est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t?est (
+create table t?est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
 
-create table t est (
+create table t est_${testName} (
   jA  INTEGER
 );
 failure contains: 'EC_INVALID_COMMAND'
@@ -120,13 +120,13 @@ create table abcabcabcabcabcabcabcabcabcabcab (
 failure contains: 'EC_MAX_TABLE_NAME_LENGTH'
 
 // 0 length for varchar
-create table t (
+create table t_${testName} (
   c VARCHAR(0)) (
 );
 failure contains: 'EC_INVALID_COMMAND'
 
 // 0 length for char
-create table t (
+create table t_${testName} (
   c CHAR(0)) (
 );
 failure contains: 'EC_INVALID_COMMAND'
@@ -148,20 +148,20 @@ failure contains: 'EC_RESERVED_WORD'
 
 
 // index names are also checked against the reserved word list
-create index left on _test (jA);
+create index left on _test_${testName} (jA);
 failure contains: 'EC_RESERVED_WORD'
 
-create index JOIN on _test (jA);
+create index JOIN on _test_${testName} (jA);
 failure contains: 'EC_RESERVED_WORD'
 
-create index join on _test (jA);
+create index join on _test_${testName} (jA);
 failure contains: 'EC_RESERVED_WORD'
 
 
 CLEANUP {
 
-  drop table _test;
-  drop table t1est;
+  drop table _test_${testName};
+  drop table t1est_${testName};
   drop table abcabcabcabcabcabcabcabcabcabca;
   mute
 
