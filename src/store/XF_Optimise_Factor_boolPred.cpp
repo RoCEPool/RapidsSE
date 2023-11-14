@@ -4,7 +4,7 @@
 
 #include "XF_Optimise_Factor_boolPred.hpp"
 
-//#define Z_FACTOR_NARY
+#define Z_FACTOR_NARY
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -189,13 +189,58 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
   if (!p_conj_root->bAllChildren(CK_ANDCONJ))
     return;
 
-  for (Kid xKid_or(p_conj_root); xKid_or.bEach(); /**/) {
+  Kid xOrConj(p_conj_root);
+  RASSERT(xOrConj.bEach());
 
-    for (Kid xKid_and(p_conj_root); xKid_and.bEach(); /**/) {
+  bool bFoundFactor = true;
+  for (Kid xAndConj_ref(xOrConj.p_andConj()); xAndConj_ref.bEach(); /**/) {
+    if (CK_RLNCONJ != xAndConj_ref.eChild()) {
+      xAndConj_ref.pChild()->vMark1(MARK_UNVALID);
+      continue;
+    }
+    Card_RlnConj* p_rlnConj_ref = xAndConj_ref.p_rlnConj();
+    p_rlnConj_ref->vMark1(MARK_AT);
+
+    while (xOrConj.bEach()) {
+
+      i8 nAltMatchesRef = 0;
+      for (Kid xAndConj_alt(xOrConj.p_andConj()); xAndConj_alt.bEach(); /**/) {
+        if (CK_RLNCONJ != xAndConj_alt.eChild()) {
+          xAndConj_ref.pChild()->vMark1(MARK_UNVALID);
+          continue;
+        }
+        Card_RlnConj* p_rlnConj_alt = xAndConj_alt.p_rlnConj();
+        p_rlnConj_alt->vMark1(MARK_VALID);
+
+        if (p_rlnConj_alt->bIsEq(p_rlnConj_ref)) {
+          p_rlnConj_alt->vMark1(MARK_AT);
+          nAltMatchesRef++;
+          break;
+        }
+      }
+
+      if (! nAltMatchesRef) {
+        bFoundFactor = false;
+        break;
+      }
 
     }
 
+    if (bFoundFactor)
+      break;
   }
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  if (! bFoundFactor)
+    return;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
 }
 
 
@@ -290,10 +335,6 @@ eRC XF_Optimise_Factor_boolPred::eFactor_boolPred(Card_BoolPred* p_boolPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-
-#ifdef Z_FACTOR_NARY
-
-#else
 
 eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
 {
@@ -403,8 +444,6 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
   return eRotation;
 }
 
-#endif
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -452,10 +491,6 @@ eRC XF_Optimise_Factor_boolPred::eFactor_notConj(Card_NotConj* p_notConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-
-#ifdef Z_FACTOR_NARY
-
-#else
 
 eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
 {
@@ -568,8 +603,6 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
   m_pCI->vAncestorPop();
   return eRotation;
 }
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
