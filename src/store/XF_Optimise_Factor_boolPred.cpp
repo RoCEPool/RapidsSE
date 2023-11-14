@@ -181,19 +181,22 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
 
-  Card_CONJ* p_conj = p_boolPred->pRoot_conj();
+  Card_CONJ *p_conj_root = p_boolPred->pRoot_conj();
 
-  if (! p_conj->bIsCard(CK_ORCONJ))
+  if (!p_conj_root->bIsCard(CK_ORCONJ))
     return;
 
-  if (! p_conj->bAllChildren(CK_ANDCONJ))
+  if (!p_conj_root->bAllChildren(CK_ANDCONJ))
     return;
 
+  for (Kid xKid_or(p_conj_root); xKid_or.bEach(); /**/) {
+
+    for (Kid xKid_and(p_conj_root); xKid_and.bEach(); /**/) {
+
+    }
+
+  }
 }
-
-
-
-
 
 
 

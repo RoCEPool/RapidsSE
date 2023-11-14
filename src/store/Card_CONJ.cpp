@@ -486,7 +486,7 @@ void Card_CONJ::vShortForm(String* pString)
       xKid.p_term()->vShortForm(pString, " "_Stz);
     }
     else {
-      xKid.p_CONJUNCTION()->vShortForm(pString);
+      xKid.p_CONJ()->vShortForm(pString);
     }
   }
 
