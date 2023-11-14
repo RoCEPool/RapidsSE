@@ -221,7 +221,7 @@ create table ${testName}_SHIPPING (
 );
 success
 
-create table ${testName}_SHIPPING (
+create table ${testName}_SHIPADDRESS (
   sa_orderkey INTEGER NOT NULL,
   sa_shipline INTEGER NOT NULL,
   sa_address VARCHAR(75),
@@ -309,7 +309,7 @@ success
 Load ${testName}_SHIPPING "../DATA/Load/shipping.csv" ;
 success
 
-Load ${testName}_SHIPPING "../DATA/Load/shipaddr.csv" ;
+Load ${testName}_SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
 success
 
 Load ${testName}_SUPPLIER "../DATA/Load/supplier.csv" ;
@@ -415,7 +415,7 @@ CLEANUP {
   drop table ${testName}_SHIPPING;
   mute
   
-  drop table ${testName}_SHIPPING;
+  drop table ${testName}_SHIPADDRESS;
   mute
   
   drop table ${testName}_SUPPLIER;
