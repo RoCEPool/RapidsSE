@@ -174,6 +174,31 @@ bool XF_Optimise_Factor_boolPred::bOptimise(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+
+#ifdef Z_FACTOR_NARY
+
+void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
+
+  Card_CONJ* p_conj = p_boolPred->pRoot_conj();
+
+  if (! p_conj->bIsCard(CK_ORCONJ))
+    return;
+
+  if (! p_conj->bAllChildren(CK_ANDCONJ))
+    return;
+
+}
+
+
+
+
+
+
+
+#else
+
 void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
@@ -192,6 +217,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
   m_pCI->G.p_boolPred = nullptr;
 }
 
+#endif
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/

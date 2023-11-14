@@ -352,6 +352,21 @@ void Card::vAddedCorrectly(bool bAppended)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are all children given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bAllChildren(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (! xKid.pChild()->bIsCard(eCard))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
 Card* Card::pAppendNewCard(eCK eCard)
