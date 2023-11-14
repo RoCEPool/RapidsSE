@@ -10,38 +10,38 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-CREATE TABLE t1 (col1 INTEGER, col2 FLOAT, col3 DECIMAL, col4 VARCHAR, col5 BOOLEAN, col6 DATE, col7 TIME, col8 TIMESTAMP);
+CREATE TABLE ${testName}_t1 (col1 INTEGER, col2 FLOAT, col3 DECIMAL, col4 VARCHAR, col5 BOOLEAN, col6 DATE, col7 TIME, col8 TIMESTAMP);
 success
 
-load t1 "../DATA/Transliterate/table_t1.csv" ;
+load ${testName}_t1 "../DATA/Transliterate/table_t1.csv" ;
 failure contains: "invalid"
 
 // same signature as tbl1 but with an extra column
-CREATE TABLE t2 (col1 INTEGER, col2 FLOAT, col3 DECIMAL, col4 VARCHAR, col5 BOOLEAN, col6 DATE, col7 TIME, col8 TIMESTAMP, col9 INTEGER);
+CREATE TABLE ${testName}_t2 (col1 INTEGER, col2 FLOAT, col3 DECIMAL, col4 VARCHAR, col5 BOOLEAN, col6 DATE, col7 TIME, col8 TIMESTAMP, col9 INTEGER);
 success
 
-load t2 "../DATA/Transliterate/table_t2.csv" ;
+load ${testName}_t2 "../DATA/Transliterate/table_t2.csv" ;
 failure contains: "invalid"
 
 // same column names as t1 but different column types
-CREATE TABLE t3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 TIME, col5 TIMESTAMP, col6 INTEGER, col7 FLOAT, col8 DECIMAL);
+CREATE TABLE ${testName}_t3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 TIME, col5 TIMESTAMP, col6 INTEGER, col7 FLOAT, col8 DECIMAL);
 success
 
-load t3 "../DATA/Transliterate/table_t3.csv" ;
+load ${testName}_t3 "../DATA/Transliterate/table_t3.csv" ;
 failure contains: "invalid"
 
 // same column types as t1 but different column names
-CREATE TABLE t4 (alpha INTEGER, bravo FLOAT, charlie DECIMAL, delta VARCHAR, echo BOOLEAN, foxtrot DATE, golf TIME, hotel TIMESTAMP);
+CREATE TABLE ${testName}_t4 (alpha INTEGER, bravo FLOAT, charlie DECIMAL, delta VARCHAR, echo BOOLEAN, foxtrot DATE, golf TIME, hotel TIMESTAMP);
 success
 
-load t4 "../DATA/Transliterate/table_t4.csv" ;
+load ${testName}_t4 "../DATA/Transliterate/table_t4.csv" ;
 failure contains: "invalid"
 
 // same column types as t1 but different column names
-CREATE TABLE t5 (colA INTEGER, colB FLOAT, colC DECIMAL, colD VARCHAR, colE BOOLEAN, colF DATE, colG TIME, colH TIMESTAMP);
+CREATE TABLE ${testName}_t5 (colA INTEGER, colB FLOAT, colC DECIMAL, colD VARCHAR, colE BOOLEAN, colF DATE, colG TIME, colH TIMESTAMP);
 success
 
-load t5 "../DATA/Transliterate/table_t5.csv" ;
+load ${testName}_t5 "../DATA/Transliterate/table_t5.csv" ;
 failure contains: "invalid"
 
 trackmemory;
@@ -52,14 +52,14 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-SELECT * FROM t1
+SELECT * FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
-SELECT * FROM t2;
+SELECT * FROM ${testName}_t2;
 
 /*
-SELECT col2, col4, col6 FROM t1
+SELECT col2, col4, col6 FROM ${testName}_t1
 UNION ALL
-SELECT col2, col4, col6 FROM t2;
+SELECT col2, col4, col6 FROM ${testName}_t2;
 */
 
 rows:
@@ -87,13 +87,13 @@ rows:
 
 //------------------------------------------------------------------------------
 
-SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4
+SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM ${testName}_t4
 UNION ALL CORRESPONDING BY (col2, col4, col6)
-SELECT * FROM t1;
+SELECT * FROM ${testName}_t1;
 /*
-SELECT bravo as col2, delta as col4, foxtrot as col6 FROM t4
+SELECT bravo as col2, delta as col4, foxtrot as col6 FROM ${testName}_t4
 UNION ALL
-SELECT col2,col4,col6 FROM t1;
+SELECT col2,col4,col6 FROM ${testName}_t1;
 */
 rows:
   (null,'duck',DATE '1942-01-01')
@@ -119,14 +119,14 @@ rows:
   
 //------------------------------------------------------------------------------
 
-SELECT * FROM t1
+SELECT * FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
-SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4;
+SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM ${testName}_t4;
 
 /*
-SELECT col2, col4, col6 FROM t1
+SELECT col2, col4, col6 FROM ${testName}_t1
 UNION ALL
-SELECT bravo as col2,delta as col4, foxtrot as col6 FROM t4;
+SELECT bravo as col2,delta as col4, foxtrot as col6 FROM ${testName}_t4;
 */
 
 rows:
@@ -155,14 +155,14 @@ rows:
 //------------------------------------------------------------------------------
 
 
-SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1
+SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (c2, c4, c6)
-SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
+SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM ${testName}_t4;
 
 /*
-SELECT col2 as c2, col4 as c4, col6 as c6 FROM t1
+SELECT col2 as c2, col4 as c4, col6 as c6 FROM ${testName}_t1
 UNION ALL
-SELECT bravo as c2, delta as c4, foxtrot as c6 FROM t4;
+SELECT bravo as c2, delta as c4, foxtrot as c6 FROM ${testName}_t4;
 */
 
 rows:
@@ -194,26 +194,26 @@ rows:
 -- Test these aliases without the BY column list (just the CORRESPONDING clause)
 
 /*
-SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM ${testName}_t1
 UNION ALL
-SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t2;
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM ${testName}_t2;
 */
 
 
-SELECT * FROM t1
+SELECT * FROM ${testName}_t1
 UNION ALL CORRESPONDING
-SELECT * FROM t2;
+SELECT * FROM ${testName}_t2;
 rows: 20
 
 
 //------------------------------------------------------------------------------
-SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4
+SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM ${testName}_t4
 UNION ALL CORRESPONDING
-SELECT * FROM t1;
+SELECT * FROM ${testName}_t1;
 /*
-SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4
+SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM ${testName}_t4
 UNION ALL
-SELECT col2, col4, col6 FROM t1;
+SELECT col2, col4, col6 FROM ${testName}_t1;
 */
 rows:
 
@@ -239,37 +239,37 @@ rows:
     (  38.01 , 'ostrich' , DATE '2000-12-29')
 
 //------------------------------------------------------------------------------
-SELECT * FROM t1
+SELECT * FROM ${testName}_t1
 UNION ALL CORRESPONDING
-SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4;
+SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM ${testName}_t4;
 /*
-SELECT * FROM t1
+SELECT * FROM ${testName}_t1
 UNION ALL
-SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4;
+SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM ${testName}_t4;
 */
 rows: 20
 
 //------------------------------------------------------------------------------
-SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1
+SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM ${testName}_t1
 UNION ALL CORRESPONDING
-SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
+SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM ${testName}_t4;
 /*
-SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1
+SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM ${testName}_t1
 UNION ALL
-SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
+SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM ${testName}_t4;
 */
 rows: 20
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Project squashing into AggregateOps
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1
+SELECT col1, SUM(col2), COUNT(col3) FROM ${testName}_t1 GROUP BY col1
 UNION ALL CORRESPONDING
-SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1, SUM(col2), COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 /*
-SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1
+SELECT col1, SUM(col2), COUNT(col3) FROM ${testName}_t1 GROUP BY col1
 UNION ALL
-SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1, SUM(col2), COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 */
 rows:
   (9)
@@ -294,13 +294,13 @@ rows:
   (8)
 
 //------------------------------------------------------------------------------
-SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY col1
 UNION ALL CORRESPONDING
-SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 /*
-SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY col1
 UNION ALL
-SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 */
 rows:
   (9,11.111)
@@ -326,13 +326,13 @@ rows:
 
 /*
 //------------------------------------------------------------------------------
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1
 UNION ALL CORRESPONDING
-SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 ?*
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1
 UNION ALL
-SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 *?
 rows:
   (9,11.111,1)
@@ -358,13 +358,13 @@ rows:
 
 //------------------------------------------------------------------------------
 
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1
 UNION ALL CORRESPONDING
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 ?*
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1
 UNION ALL
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 *?
 rows:
   (9,11.111,1)
@@ -393,13 +393,13 @@ rows:
 //  Project squashing above a non-ProjectOp
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1 HAVING s2 > 0
 UNION ALL CORRESPONDING
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 ?*
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2)> 0
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1 HAVING SUM(col2)> 0
 UNION ALL
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1;
 *?
 rows:
   (9,11.111,1)
@@ -423,13 +423,13 @@ rows:
   (8,324.333,1)
 
 //------------------------------------------------------------------------------
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1
 UNION ALL CORRESPONDING
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1 HAVING s2 > 0;
 ?*
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1
 UNION ALL
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1 HAVING SUM(col2) > 0;
 *?
 rows:
   (9,11.111,1)
@@ -454,13 +454,13 @@ rows:
   (8,324.333,1)
 
 //------------------------------------------------------------------------------
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1 HAVING s2 > 0
 UNION ALL CORRESPONDING
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1 HAVING s2 > 0;
 ?*
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t1 GROUP BY c1 HAVING SUM(col2) > 0
 UNION ALL
-SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0;
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM ${testName}_t2 GROUP BY col1 HAVING SUM(col2) > 0;
 *?
 rows:
   (9,11.111,1)
@@ -487,13 +487,13 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Project squashing into a post-ProjectOp
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0
+SELECT col1 as c1, COUNT(col3) FROM ${testName}_t1 GROUP BY c1 HAVING SUM(col2) > 0
 UNION ALL CORRESPONDING
-SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0;
+SELECT col1 as c1, COUNT(col3) FROM ${testName}_t2 GROUP BY col1 HAVING SUM(col2) > 0;
 /*
-SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0
+SELECT col1 as c1, COUNT(col3) FROM ${testName}_t1 GROUP BY c1 HAVING SUM(col2) > 0
 UNION ALL
-SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0;
+SELECT col1 as c1, COUNT(col3) FROM ${testName}_t2 GROUP BY col1 HAVING SUM(col2) > 0;
 */
 rows:
   (9)
@@ -519,21 +519,21 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Nested union all statements
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
 (
-  SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4
+  SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM ${testName}_t4
   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)
-  SELECT * FROM t2
+  SELECT * FROM ${testName}_t2
 );
 
 /*
-SELECT col2, col4, col6 FROM t1
+SELECT col2, col4, col6 FROM ${testName}_t1
 UNION ALL
 (
-  SELECT bravo as col2, delta as col4, foxtrot as col6 FROM t4
+  SELECT bravo as col2, delta as col4, foxtrot as col6 FROM ${testName}_t4
   UNION ALL
-  SELECT col2, col4, col6 FROM t2
+  SELECT col2, col4, col6 FROM ${testName}_t2
 );
 */
 
@@ -571,17 +571,17 @@ rows:
 
 
 //------------------------------------------------------------------------------
-SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (col2, col4, col6, col8)
-SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4
+SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM ${testName}_t4
 UNION ALL CORRESPONDING BY (col2, col4, col6)
-SELECT * FROM t2;
+SELECT * FROM ${testName}_t2;
 /*
-SELECT col2, col4, col6 FROM t1
+SELECT col2, col4, col6 FROM ${testName}_t1
 UNION ALL
-SELECT bravo as col2, delta as col4, foxtrot as col6 FROM t4
+SELECT bravo as col2, delta as col4, foxtrot as col6 FROM ${testName}_t4
 UNION ALL
-SELECT col2, col4, col6 FROM t2;
+SELECT col2, col4, col6 FROM ${testName}_t2;
 */
 rows:
   (null,*,*)
@@ -618,11 +618,11 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Nesting unions without CORRESPONDING BY clauses
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
-SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4
+SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM ${testName}_t4
 UNION ALL
-SELECT colB, colD, colF FROM t5;
+SELECT colB, colD, colF FROM ${testName}_t5;
 rows:
   (null,*,*)
   (32.001,*,*)
@@ -656,24 +656,24 @@ rows:
   (56.01,*,*)
 
 //------------------------------------------------------------------------------
-SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
 (
   SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8
-  FROM t4
+  FROM ${testName}_t4
   UNION ALL
   SELECT colB, colD, colF, colH
-  FROM t5
+  FROM ${testName}_t5
 );
 /*
-SELECT col2, col4, col6 FROM t1
+SELECT col2, col4, col6 FROM ${testName}_t1
 UNION ALL
 (
   SELECT bravo AS col2, delta AS col4, foxtrot AS col6
-  FROM t4
+  FROM ${testName}_t4
   UNION ALL
   SELECT colB, colD, colF
-  FROM t5
+  FROM ${testName}_t5
 );
 */
 rows:
@@ -709,24 +709,24 @@ rows:
 (56.01,*,*)
 
 //------------------------------------------------------------------------------
-SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM ${testName}_t1
 UNION ALL CORRESPONDING BY (col2, col4, col6)
 (
   SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6
-  FROM t4
+  FROM ${testName}_t4
   UNION ALL
   SELECT colB, colC, colD, colF
-  FROM t5
+  FROM ${testName}_t5
 );
 /*
-SELECT col2, col4, col6 FROM t1
+SELECT col2, col4, col6 FROM ${testName}_t1
 UNION ALL
 (
   SELECT bravo AS col2, delta AS col4, foxtrot AS col6
-  FROM t4
+  FROM ${testName}_t4
   UNION ALL
   SELECT colB, colD, colF
-  FROM t5
+  FROM ${testName}_t5
 );
 */
 rows:
@@ -775,19 +775,19 @@ rows: 0
 
 CLEANUP {
 
-  DROP TABLE t1;
+  DROP TABLE ${testName}_t1;
   mute
 
-  DROP TABLE t2;
+  DROP TABLE ${testName}_t2;
   mute
 
-  DROP TABLE t3;
+  DROP TABLE ${testName}_t3;
   mute
 
-  DROP TABLE t4;
+  DROP TABLE ${testName}_t4;
   mute
 
-  DROP TABLE t5;
+  DROP TABLE ${testName}_t5;
   mute
 
 }

@@ -3,7 +3,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -23,95 +23,95 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/timestamp.csv" ;
+load ${testName}_datums "../DATA/Transliterate/timestamp.csv" ;
 success
 
 //--------------------------SUM INT TESTS---------------------------------------
-select SUM(int_col1) from datums;
+select SUM(int_col1) from ${testName}_datums;
 rows:
 (52000)
 
 //------------------------------------------------------------------------------
-select SUM(3) from datums;
+select SUM(3) from ${testName}_datums;
 rows:
 (33)
 
 //------------------------------------------------------------------------------
-select SUM(int_col1) * 3 from datums;
+select SUM(int_col1) * 3 from ${testName}_datums;
 rows:
 (156000)
 
 //------------------------------------------------------------------------------
-select SUM(int_col1 + 3) from datums;
+select SUM(int_col1 + 3) from ${testName}_datums;
 rows:
 (52030)
 
 //------------------------------------------------------------------------------
-select SUM(int_col1) + 2 from datums;
+select SUM(int_col1) + 2 from ${testName}_datums;
 rows:
 (52002)
 
 //------------------------------------------------------------------------------
-select SUM(int_col1 * 33) - 21 from datums;
+select SUM(int_col1 * 33) - 21 from ${testName}_datums;
 rows:
 (1715979)
 
 //------------------------------------------------------------------------------
-select 3 * SUM(int_col1) / 2 + 33 from datums;
+select 3 * SUM(int_col1) / 2 + 33 from ${testName}_datums;
 rows:
 (78033)
 
 //--------------------------SUM DECIMAL TESTS---------------------------------------
-select SUM(dec_col7) from datums;
+select SUM(dec_col7) from ${testName}_datums;
 rows:
 (5265.44)
 
 //------------------------------------------------------------------------------
 /*
-select SUM(dec_col7) * 2 from datums;
+select SUM(dec_col7) * 2 from ${testName}_datums;
 rows:
 (10530.88)
 
 //------------------------------------------------------------------------------
-select SUM(dec_col7 + 3) from datums;
+select SUM(dec_col7 + 3) from ${testName}_datums;
 rows:
 (5300.74)
 
 //------------------------------------------------------------------------------
-select SUM(dec_col7) + 2.2 from datums;
+select SUM(dec_col7) + 2.2 from ${testName}_datums;
 rows:
 (5267.64)
 
 //------------------------------------------------------------------------------
-select SUM(dec_col7 * 33.21) - 21.0 from datums;
+select SUM(dec_col7 * 33.21) - 21.0 from ${testName}_datums;
 rows:
 (174844.2624)
 
 //------------------------------------------------------------------------------
-select 3.2 * SUM(dec_col7) / 2.1 + 33.10 from datums;
+select 3.2 * SUM(dec_col7) / 2.1 + 33.10 from ${testName}_datums;
 rows:
 (8056.6276190476190476)
 
 //------------------------------------------------------------------------------
-select SUM(3.456) from datums;
+select SUM(3.456) from ${testName}_datums;
 rows:
 (38.016)
 
 */
 //--------------------------SUM FLOAT TESTS---------------------------------------
-select SUM(flt_col9) from datums;
+select SUM(flt_col9) from ${testName}_datums;
 rows:
  (8.530160e+02)
 
 
 //------------------------------------------------------------------------------
-select SUM(flt_col9) * 2 from datums;
+select SUM(flt_col9) * 2 from ${testName}_datums;
 rows:
 (1706.03)
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName}_datums;
 success;
 
 memoryleaks;
@@ -119,7 +119,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName}_datums;
   mute
 
   bye;

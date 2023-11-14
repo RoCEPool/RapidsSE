@@ -11,51 +11,51 @@
 trackmemory;
 success
 
-CREATE TABLE unionTbl1 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
+CREATE TABLE ${testName}_unionTbl1 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
 success
 
-load unionTbl1 "../DATA/Transliterate/unionTbl1.csv";
+load ${testName}_unionTbl1 "../DATA/Transliterate/unionTbl1.csv";
 success
 
 -- same signature as tbl1
-CREATE TABLE unionTbl2 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
+CREATE TABLE ${testName}_unionTbl2 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
 success
 
-load unionTbl2 "../DATA/Transliterate/unionTbl2.csv";
+load ${testName}_unionTbl2 "../DATA/Transliterate/unionTbl2.csv";
 success
 
 -- same column names as tbl1 but different column types
-CREATE TABLE unionTbl3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 INTEGER);
+CREATE TABLE ${testName}_unionTbl3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 INTEGER);
 success
 
-load unionTbl3 "../DATA/Transliterate/unionTbl3.csv";
+load ${testName}_unionTbl3 "../DATA/Transliterate/unionTbl3.csv";
 success
 
 -- different number of columns as tbl3 and different names
-CREATE TABLE unionTbl4 (alpha VARCHAR, bravo BOOLEAN, charlie DATE);
+CREATE TABLE ${testName}_unionTbl4 (alpha VARCHAR, bravo BOOLEAN, charlie DATE);
 success
 
-load unionTbl4 "../DATA/Transliterate/unionTbl4.csv";
+load ${testName}_unionTbl4 "../DATA/Transliterate/unionTbl4.csv";
 success
 
 -- same signature as tbl4 but different column name case
-CREATE TABLE unionTbl5 (ALPHA VARCHAR, bRaVo BOOLEAN, CHARlie DATE);
+CREATE TABLE ${testName}_unionTbl5 (ALPHA VARCHAR, bRaVo BOOLEAN, CHARlie DATE);
 success
 
-load unionTbl5 "../DATA/Transliterate/unionTbl5.csv";
+load ${testName}_unionTbl5 "../DATA/Transliterate/unionTbl5.csv";
 success
 
 -- Mixed column names and types to partially match tbl1 and tbl4
-CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
+CREATE TABLE ${testName}_unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
 
-load unionTbl6 "../DATA/Transliterate/unionTbl6.csv";
+load ${testName}_unionTbl6 "../DATA/Transliterate/unionTbl6.csv";
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic union all statements
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT col1 FROM uniontbl1 UNION ALL SELECT col1 FROM uniontbl2;
+SELECT col1 FROM ${testName}_uniontbl1 UNION ALL SELECT col1 FROM ${testName}_uniontbl2;
 rows:
   (1)
   (2)
@@ -65,7 +65,7 @@ rows:
   (3)
 
 //------------------------------------------------------------------------------
-SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl2;
+SELECT * FROM ${testName}_unionTbl1 UNION ALL SELECT * FROM ${testName}_unionTbl2;
 rows:
   (1,'dog',DATE '1942-01-01' ,false)
   (2,'monkey',DATE '1955-02-02' , true)
@@ -75,7 +75,7 @@ rows:
   (3,'pig',DATE '1924-11-21' , true)
 
 //------------------------------------------------------------------------------
-SELECT col2, col4, col3 FROM unionTbl1 UNION ALL SELECT col2, col4, col3 FROM unionTbl2;
+SELECT col2, col4, col3 FROM ${testName}_unionTbl1 UNION ALL SELECT col2, col4, col3 FROM ${testName}_unionTbl2;
 rows:
  ('dog',false,DATE '1942-01-01')
  ('monkey',true,DATE '1955-02-02')
@@ -85,7 +85,7 @@ rows:
  ('pig',true,DATE '1924-11-21')
 
 //------------------------------------------------------------------------------
-SELECT col1, col2 from uniontbl1 union all select col4, col1 FROM unionTbl3;
+SELECT col1, col2 from ${testName}_uniontbl1 union all select col4, col1 FROM ${testName}_unionTbl3;
 rows:
   (1,'dog')
   (2,'monkey')
@@ -98,8 +98,8 @@ rows:
 //  Non-empty CORRESPONDING BY clause with valid columns
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM unionTbl2;
-//SELECT col1, col3 FROM unionTbl1 UNION ALL SELECT col1, col3 FROM unionTbl2;
+SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM ${testName}_unionTbl2;
+//SELECT col1, col3 FROM ${testName}_unionTbl1 UNION ALL SELECT col1, col3 FROM ${testName}_unionTbl2;
 rows:
   (1,DATE '1942-01-01')
   (2,DATE '1955-02-02')
@@ -111,8 +111,8 @@ rows:
 
 //------------------------------------------------------------------------------
 -- case insensitive tests
-SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM unionTbl5;
-//SELECT alpha, bravo FROM unionTbl4 UNION ALL  SELECT alpha, bravo FROM unionTbl5;
+SELECT * FROM ${testName}_unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM ${testName}_unionTbl5;
+//SELECT alpha, bravo FROM ${testName}_unionTbl4 UNION ALL  SELECT alpha, bravo FROM ${testName}_unionTbl5;
 rows:
   ('lion',true)
   (null,false)
@@ -122,8 +122,8 @@ rows:
   ('zebra',true)
 
 //------------------------------------------------------------------------------
-SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (BRAVO, CHARLIE) SELECT * FROM unionTbl5;
-//SELECT BRAVO, CHARLIE FROM unionTbl4 UNION ALL SELECT BRAVO, CHARLIE FROM unionTbl5;
+SELECT * FROM ${testName}_unionTbl4 UNION ALL CORRESPONDING BY (BRAVO, CHARLIE) SELECT * FROM ${testName}_unionTbl5;
+//SELECT BRAVO, CHARLIE FROM ${testName}_unionTbl4 UNION ALL SELECT BRAVO, CHARLIE FROM ${testName}_unionTbl5;
 rows:
   (true,DATE '1945-09-09')
   (false,DATE '1946-08-08')
@@ -136,8 +136,8 @@ rows:
 //  Empty CORRESPONDING BY clause with matching column types
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl2;
-//SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl2;
+SELECT * FROM ${testName}_unionTbl1 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl2;
+//SELECT * FROM ${testName}_unionTbl1 UNION ALL SELECT * FROM ${testName}_unionTbl2;
 rows:
   (1,'dog',DATE '1942-01-01',false)
   (2,'monkey',DATE '1955-02-02',true)
@@ -147,8 +147,8 @@ rows:
   (3,'pig',DATE '1924-11-21',true)
 
 //------------------------------------------------------------------------------
-SELECT * FROM unionTbl4 UNION ALL CORRESPONDING SELECT * FROM unionTbl5;
-//SELECT * FROM unionTbl4 UNION ALL SELECT * FROM unionTbl5;
+SELECT * FROM ${testName}_unionTbl4 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl5;
+//SELECT * FROM ${testName}_unionTbl4 UNION ALL SELECT * FROM ${testName}_unionTbl5;
 rows:
    ('lion', true, DATE '1945-09-09')
    (null, false, DATE '1946-08-08')
@@ -158,8 +158,8 @@ rows:
    ('zebra', true, DATE '1946-08-08')
 
 //------------------------------------------------------------------------------
-SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl1;
-//SELECT col3, col1 FROM unionTbl6 UNION ALL SELECT col3, col1 FROM unionTbl1;
+SELECT * FROM ${testName}_unionTbl6 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl1;
+//SELECT col3, col1 FROM ${testName}_unionTbl6 UNION ALL SELECT col3, col1 FROM ${testName}_unionTbl1;
 rows:
   (DATE '1988-10-12',1)
   (DATE '1930-05-12',null)
@@ -169,8 +169,8 @@ rows:
   (DATE '1933-12-22',3)
 
 //------------------------------------------------------------------------------
-SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
-//SELECT bRaVo FROM unionTbl6 UNION ALL SELECT bRaVo FROM unionTbl4;
+SELECT * FROM ${testName}_unionTbl6 UNION ALL CORRESPONDING SELECT * FROM ${testName}_unionTbl4;
+//SELECT bRaVo FROM ${testName}_unionTbl6 UNION ALL SELECT bRaVo FROM ${testName}_unionTbl4;
 rows:
   (false)
   (true)
@@ -183,11 +183,11 @@ rows:
 //  Multiple nested UNIONS (SAME TABLE SCANNED TWICE)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
-  SELECT * FROM unionTbl1
+  SELECT * FROM ${testName}_unionTbl1
 UNION ALL
-  SELECT * FROM unionTbl2
+  SELECT * FROM ${testName}_unionTbl2
 UNION ALL
-  SELECT * FROM unionTbl1;
+  SELECT * FROM ${testName}_unionTbl1;
 rows:
   (1,*,*,*)
   (2,*,*,*)
@@ -201,17 +201,17 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-  SELECT col4 FROM unionTbl1
+  SELECT col4 FROM ${testName}_unionTbl1
 UNION ALL (
-  SELECT * FROM unionTbl4
+  SELECT * FROM ${testName}_unionTbl4
 UNION ALL CORRESPONDING
-  SELECT * FROM unionTbl6 );
+  SELECT * FROM ${testName}_unionTbl6 );
 /*
-SELECT col4 FROM unionTbl1
+SELECT col4 FROM ${testName}_unionTbl1
 UNION ALL (
-  SELECT bRaVo FROM unionTbl4
+  SELECT bRaVo FROM ${testName}_unionTbl4
 UNION ALL
-  SELECT bRaVo FROM unionTbl6 );
+  SELECT bRaVo FROM ${testName}_unionTbl6 );
 */
 rows:
   (false)
@@ -225,17 +225,17 @@ rows:
   (true)
 
 //------------------------------------------------------------------------------
-  SELECT * FROM unionTbl4
+  SELECT * FROM ${testName}_unionTbl4
 UNION ALL CORRESPONDING
-  SELECT * FROM unionTbl6
+  SELECT * FROM ${testName}_unionTbl6
 UNION ALL
-  SELECT col4 FROM unionTbl1;
+  SELECT col4 FROM ${testName}_unionTbl1;
 /*
-  SELECT bRaVo FROM unionTbl4
+  SELECT bRaVo FROM ${testName}_unionTbl4
 UNION ALL
-  SELECT bRaVo FROM unionTbl6
+  SELECT bRaVo FROM ${testName}_unionTbl6
 UNION ALL
-  SELECT col4 FROM unionTbl1;
+  SELECT col4 FROM ${testName}_unionTbl1;
 */
 rows:
   (true)
@@ -248,22 +248,22 @@ rows:
   (true)
   (false)
 
-DROP TABLE unionTbl1;
+DROP TABLE ${testName}_unionTbl1;
 success
 
-DROP TABLE unionTbl2;
+DROP TABLE ${testName}_unionTbl2;
 success
 
-DROP TABLE unionTbl3;
+DROP TABLE ${testName}_unionTbl3;
 success
 
-DROP TABLE unionTbl4;
+DROP TABLE ${testName}_unionTbl4;
 success
 
-DROP TABLE unionTbl5;
+DROP TABLE ${testName}_unionTbl5;
 success
 
-DROP TABLE unionTbl6;
+DROP TABLE ${testName}_unionTbl6;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -277,21 +277,21 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE unionTbl1;
+  DROP TABLE ${testName}_unionTbl1;
   mute
 
-  DROP TABLE unionTbl2;
+  DROP TABLE ${testName}_unionTbl2;
   mute
 
-  DROP TABLE unionTbl3;
+  DROP TABLE ${testName}_unionTbl3;
   mute
 
-  DROP TABLE unionTbl4;
+  DROP TABLE ${testName}_unionTbl4;
   mute
 
-  DROP TABLE unionTbl5;
+  DROP TABLE ${testName}_unionTbl5;
   mute
 
-  DROP TABLE unionTbl6;
+  DROP TABLE ${testName}_unionTbl6;
   mute
 }

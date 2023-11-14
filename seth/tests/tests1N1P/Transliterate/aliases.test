@@ -9,7 +9,7 @@
 trackmemory;
 success
 
-create table nation (
+create table ${testName}_nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -17,7 +17,7 @@ create table nation (
 );
 success
 
-load nation "../DATA/Transliterate/nationAggGby.tbl";
+load ${testName}_nation "../DATA/Transliterate/nationAggGby.tbl";
 success
 
 create table nation2 (
@@ -37,7 +37,7 @@ success
 
 -- Columns are named appropriately
 -- With the AS keyword
-SELECT n_nationkey AS nationkey, n_name AS name FROM nation;
+SELECT n_nationkey AS nationkey, n_name AS name FROM ${testName}_nation;
 rows:
   (0,'ALGERIA')
   (0,'ETHIOPIA')
@@ -56,8 +56,8 @@ rows:
   (7,'JORDAN')
 
 -- Without the AS keyword
-//SELECT n_nationkey nationkey, n_name name FROM nation;
-SELECT n_nationkey nationkey, n_name AS name FROM nation;
+//SELECT n_nationkey nationkey, n_name name FROM ${testName}_nation;
+SELECT n_nationkey nationkey, n_name AS name FROM ${testName}_nation;
 rows:
   (0,'ALGERIA')
   (0,'ETHIOPIA')
@@ -87,7 +87,7 @@ rows:
 
 -- GROUP BY clause
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region;
 rows:
   (3,2)
@@ -98,12 +98,12 @@ rows:
 
 -- HAVING clause
 /*SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region
 HAVING nationcount > 1;*/
 
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region
 HAVING COUNT(n_nationkey) > 1;
 rows:
@@ -114,12 +114,12 @@ rows:
   (1,4)
 
 /*SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region
 HAVING region > 1;*/
 
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY n_regionkey
 HAVING n_regionkey > 1;
 rows:
@@ -131,14 +131,14 @@ rows:
 -- ORDER BY clause
 -- Commented out until ORDER BY is supported in the execution engine
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region
 ORDER BY region;
 failure contains: "order by currently not supported";
 */
 
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region;
 rows:
   (0,2)
@@ -148,7 +148,7 @@ rows:
   (4,4)
 
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region;
 rows:
   (3,2)
@@ -160,7 +160,7 @@ rows:
 
 -- UNION clause
 
-SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM ${testName}_nation GROUP BY n_regionkey
 UNION ALL
 SELECT n_regionkey, COUNT(n_nationkey) FROM nation2 GROUP BY n_regionkey;
 rows:
@@ -177,7 +177,7 @@ rows:
 
 
 -- ORDER BY above a UNION using an alias
-SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM ${testName}_nation GROUP BY n_regionkey
 UNION ALL
 SELECT n_regionkey, COUNT(n_nationkey) FROM nation2 GROUP BY n_regionkey
 ORDER BY region;
@@ -194,7 +194,7 @@ rows:
   (4,4)
 
 
-SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
+SELECT n_regionkey, COUNT(n_nationkey) FROM ${testName}_nation GROUP BY n_regionkey
 UNION ALL
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation2 GROUP BY n_regionkey;
 rows:
@@ -216,12 +216,12 @@ rows:
 
 -- An alias can be a subset of an expression
 /*SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region
 HAVING (2*nationcount) > 1;*/
 
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY n_regionkey
 HAVING (2 * COUNT(n_nationkey)) > 1;
 rows:
@@ -232,12 +232,12 @@ rows:
   (1,4)
 
 /*SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region
 HAVING (nationcount + 1) > 1;*/
 
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
-FROM nation
+FROM ${testName}_nation
 GROUP BY region
 HAVING (COUNT(n_nationkey) + 1) > 1;
 rows:
@@ -247,7 +247,7 @@ rows:
   (2,3)
   (1,4)
 
-DROP TABLE nation;
+DROP TABLE ${testName}_nation;
 success
 
 DROP TABLE nation2;
@@ -265,7 +265,7 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE nation;
+  DROP TABLE ${testName}_nation;
   mute
   DROP TABLE nation2;
   mute

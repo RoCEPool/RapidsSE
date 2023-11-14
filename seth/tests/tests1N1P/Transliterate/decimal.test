@@ -4,7 +4,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -24,11 +24,11 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/decimal.csv" ;
+load ${testName}_datums "../DATA/Transliterate/decimal.csv" ;
 failure contains: "10 invalid rows"
 
 //------------------------------------------------------------------------------
-select dec_col6 from datums;
+select dec_col6 from ${testName}_datums;
 rows:
 (41.04)
 (47.04)
@@ -43,7 +43,7 @@ rows:
 (477.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 + null from datums;
+select dec_col6 + null from ${testName}_datums;
 rows:
  (null)
  (null)
@@ -58,7 +58,7 @@ rows:
  (null)
 
 //------------------------------------------------------------------------------
-select null + dec_col6 from datums;
+select null + dec_col6 from ${testName}_datums;
 rows:
  (null)
  (null)
@@ -73,7 +73,7 @@ rows:
  (null)
 
 //------------------------------------------------------------------------------
-select dec_col6 + dec_col7 from datums;
+select dec_col6 + dec_col7 from ${testName}_datums;
 rows:
 (1082.08)
 (57.08)
@@ -88,7 +88,7 @@ rows:
 (487.08)
 
 //------------------------------------------------------------------------------
-select dec_col6 + flt_col8 from datums;
+select dec_col6 + flt_col8 from ${testName}_datums;
 rows:
 (51.26)
 (47.26)
@@ -104,7 +104,7 @@ rows:
 
 //------------------------------------------------------------------------------
 /*
-select dec_col6 + int_col0 from datums;
+select dec_col6 + int_col0 from ${testName}_datums;
 rows:
 (42.04)
 (49.04)
@@ -120,7 +120,7 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-select dec_col6 / dec_col7 from datums;
+select dec_col6 / dec_col7 from ${testName}_datums;
 rows:
 (0.03)
 (4.68)
@@ -135,7 +135,7 @@ rows:
 (47.51)
 
 //------------------------------------------------------------------------------
-select dec_col6 / flt_col8 from datums;
+select dec_col6 / flt_col8 from ${testName}_datums;
 rows:
 (4.01566)
 (213.818)
@@ -150,7 +150,7 @@ rows:
 (2168.36)
 
 //------------------------------------------------------------------------------
-select dec_col6 / int_col0 from datums;
+select dec_col6 / int_col0 from ${testName}_datums;
 rows:
 (41.04)
 (23.52)
@@ -165,7 +165,7 @@ rows:
 (43.36) // 36.69
 
 //------------------------------------------------------------------------------
-select -dec_col6 from datums;
+select -dec_col6 from ${testName}_datums;
 rows:
 (-41.04)
 (-47.04)
@@ -180,7 +180,7 @@ rows:
 (-477.04)
 
 //------------------------------------------------------------------------------
-select vch_col15 , min(dec_col6) from datums group by vch_col15;
+select vch_col15 , min(dec_col6) from ${testName}_datums group by vch_col15;
 rows:
 (null,41.04)
 ('yellow',477.04)
@@ -190,7 +190,7 @@ rows:
 ('orange',41.04)
 
 //------------------------------------------------------------------------------
-select vch_col15 , max(dec_col6) from datums group by vch_col15;
+select vch_col15 , max(dec_col6) from ${testName}_datums group by vch_col15;
 rows:
 (null,41.04)
 ('yellow',477.04)
@@ -200,7 +200,7 @@ rows:
 ('orange',4001.04)
 
 //------------------------------------------------------------------------------
-select vch_col15 , count(dec_col6) from datums group by vch_col15;
+select vch_col15 , count(dec_col6) from ${testName}_datums group by vch_col15;
 rows:
 (null,1)
 ('yellow',1)
@@ -210,7 +210,7 @@ rows:
 ('orange',3)
 
 //------------------------------------------------------------------------------
-select vch_col15 , min(dec_col6) from datums group by vch_col15;
+select vch_col15 , min(dec_col6) from ${testName}_datums group by vch_col15;
 rows:
 (null,41.04)
 ('yellow',477.04)
@@ -220,7 +220,7 @@ rows:
 ('orange',41.04)
 
 //------------------------------------------------------------------------------
-select vch_col15 , max(dec_col6) from datums group by vch_col15;
+select vch_col15 , max(dec_col6) from ${testName}_datums group by vch_col15;
 rows:
 (null,41.04)
 ('yellow',477.04)
@@ -230,23 +230,23 @@ rows:
 ('orange',4001.04)
 
 //------------------------------------------------------------------------------
-select min(dec_col6) from datums;
+select min(dec_col6) from ${testName}_datums;
 rows:
 (23.04)
 
 //------------------------------------------------------------------------------
-select max(dec_col6) from datums;
+select max(dec_col6) from ${testName}_datums;
 rows:
 (4001.04)
 
 
 //------------------------------------------------------------------------------
-select count(dec_col6) from datums;
+select count(dec_col6) from ${testName}_datums;
 rows:
 (9)
 
 //------------------------------------------------------------------------------
-select dec_col6 , min(dec_col7) from datums group by dec_col6;
+select dec_col6 , min(dec_col7) from ${testName}_datums group by dec_col6;
 rows:
 (null,10.04)
 (477.04,10.04)
@@ -256,7 +256,7 @@ rows:
 (4001.04,1041.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 , max(dec_col7) from datums group by dec_col6;
+select dec_col6 , max(dec_col7) from ${testName}_datums group by dec_col6;
 rows:
 (null,10.04)
 (477.04,10.04)
@@ -266,7 +266,7 @@ rows:
 (4001.04,1041.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 , count(dec_col7) from datums group by dec_col6;
+select dec_col6 , count(dec_col7) from ${testName}_datums group by dec_col6;
 rows:
 (null,2)
 (477.04,2)
@@ -276,7 +276,7 @@ rows:
 (4001.04,1)
 
 //------------------------------------------------------------------------------
-select dec_col6 , min(dec_col7) from datums group by dec_col6;
+select dec_col6 , min(dec_col7) from ${testName}_datums group by dec_col6;
 rows:
 (null,10.04)
 (477.04,10.04)
@@ -286,7 +286,7 @@ rows:
 (4001.04,1041.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 , max(dec_col7) from datums group by dec_col6;
+select dec_col6 , max(dec_col7) from ${testName}_datums group by dec_col6;
 rows:
 (null,10.04)
 (477.04,10.04)
@@ -296,7 +296,7 @@ rows:
 (4001.04,1041.04)
 
 //------------------------------------------------------------------------------
-select dec_col7 , count(dec_col6) from datums group by dec_col7;
+select dec_col7 , count(dec_col6) from ${testName}_datums group by dec_col7;
 rows:
 (1041.04,5)
 (10.04,4)
@@ -304,7 +304,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName}_datums;
 success;
 
 memoryleaks;
@@ -312,7 +312,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName}_datums;
   mute
 
   bye;

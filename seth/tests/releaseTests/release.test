@@ -21,7 +21,7 @@ rows: 0
 
 
 // Create a simple table
-create table nation (
+create table ${testName}_nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
@@ -33,11 +33,11 @@ success
 // Table should exist
 lstbl;
 rows:
-  ('nation')
+  ('${testName}_nation')
 
 
 // Describe the columns in the table
-lscol nation;
+lscol ${testName}_nation;
 unordered rows:
   ('N_NATIONKEY', 'INTEGER', 19,  0, false, true)
   ('N_NAME',      'VARCHAR', 25,  0, false, false)
@@ -46,77 +46,77 @@ unordered rows:
 
 
 // Create an index on the table
-CREATE INDEX nation_idx1 ON nation(n_nationkey, n_regionkey);
+CREATE INDEX nation_idx1 ON ${testName}_nation(n_nationkey, n_regionkey);
 success
 
 
 // Index should exist
-lsidx nation;
+lsidx ${testName}_nation;
 rows:
   ('nation_idx1',false,false)
 
 
 // Index has the right columns
-lsidxcol nation nation_idx1;
+lsidxcol ${testName}_nation nation_idx1;
 rows:
   ('N_NATIONKEY', 'INTEGER', 19, 0, false, true)
   ('N_REGIONKEY', 'INTEGER', 19, 0, false, false)
 
 
 // Can we explain a SELECT from this table?
-EXPLAIN SELECT * FROM nation;
+EXPLAIN SELECT * FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT * FROM nation"
+   » queryText: "SELECT * FROM ${testName}_nation"
 
 -> -> projectOp
-      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.${testName}_nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.${testName}_nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.${testName}_nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.${testName}_nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 // Can we run a basic SELECT against this table (no data)?
-SELECT * FROM nation;
+SELECT * FROM ${testName}_nation;
 rows: 0
 
 
 // Can we explain a basic aggregate?
-EXPLAIN SELECT COUNT(*) FROM nation;
+EXPLAIN SELECT COUNT(*) FROM ${testName}_nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT COUNT(*) FROM nation"
+   » queryText: "SELECT COUNT(*) FROM ${testName}_nation"
 
 -> -> projectOp
       » column: (Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.${testName}_nation)')
 
 
 // Can we run a basic aggregate (no data)?
-SELECT COUNT(*) FROM nation;
+SELECT COUNT(*) FROM ${testName}_nation;
 rows:
   (0)
 
 
 // Now lets load some basic data
-load nation "../DATA/TPCH/nation.tbl";
+load ${testName}_nation "../DATA/TPCH/nation.tbl";
 success
 
 
 // Can we run a simple SELECT (with data)
-SELECT * FROM nation;
+SELECT * FROM ${testName}_nation;
 unordered rows:
   (0,'ALGERIA',0,' haggle. carefully final deposits detect slyly agai')
   (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
@@ -146,34 +146,34 @@ unordered rows:
 
 
 // Can we run a basic aggregate (with data)
-SELECT COUNT(*) FROM nation;
+SELECT COUNT(*) FROM ${testName}_nation;
 rows:
   (25)
 
 
 // Truncate the table
-TRUNCATE nation;
+TRUNCATE ${testName}_nation;
 success
 
 
 // Validate that there are no more rows in the table
-SELECT COUNT(*) FROM nation;
+SELECT COUNT(*) FROM ${testName}_nation;
 rows:
   (0)
 
 
 // Drop an index
-DROP INDEX nation nation_idx1;
+DROP INDEX ${testName}_nation nation_idx1;
 success
 
 
 // Index should no longer exist
-lsidx nation;
+lsidx ${testName}_nation;
 rows: 0
 
 
 // Drop a table
-DROP TABLE nation;
+DROP TABLE ${testName}_nation;
 success
 
 
@@ -184,7 +184,7 @@ rows: 0
 
 CLEANUP {
 
-  DROP TABLE nation;
+  DROP TABLE ${testName}_nation;
   mute
 
   bye;

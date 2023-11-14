@@ -6,8 +6,8 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-// create table lineitem
-create table LineItem
+// create table ${testName}_lineitem
+create table ${TestName}_LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
  L_PARTKEY       INTEGER       NOT NULL,
@@ -28,73 +28,73 @@ create table LineItem
  );
 success
 
-load lineitem "../DATA/TPCH/lineitem_100k.csv";
+load ${testName}_lineitem "../DATA/TPCH/lineitem_100k.csv";
 success
 
 //------------------------------------------------------------------------------------
-select SUM(L_LINENUMBER) from lineitem;
+select SUM(L_LINENUMBER) from ${testName}_lineitem;
 rows:
   (300364)
 
 //------------------------------------------------------------------------------------
-select MIN(L_EXTENDEDPRICE) from lineitem;
+select MIN(L_EXTENDEDPRICE) from ${testName}_lineitem;
 rows:
   (926.00)
 
 //------------------------------------------------------------------------------------
-select MAX(L_EXTENDEDPRICE) from lineitem;
+select MAX(L_EXTENDEDPRICE) from ${testName}_lineitem;
 rows:
   (104899.50)
 
 //------------------------------------------------------------------------------------
-select SUM(L_SUPPKEY) from lineitem;
+select SUM(L_SUPPKEY) from ${testName}_lineitem;
 rows:
   (501274869)
 
 //------------------------------------------------------------------------------------
-select MIN(L_SUPPKEY) from lineitem;
+select MIN(L_SUPPKEY) from ${testName}_lineitem;
 rows:
   (1)
 
 //------------------------------------------------------------------------------------
-select MIN(L_PARTKEY) from lineitem;
+select MIN(L_PARTKEY) from ${testName}_lineitem;
 rows:
   (2)
 
 //
 //------------------------------------------------------------------------------------
-select -SUM(L_LINENUMBER) / 66 from lineitem;
+select -SUM(L_LINENUMBER) / 66 from ${testName}_lineitem;
 rows:
   (-4550)
 
 //------------------------------------------------------------------------------------
-select MIN(L_EXTENDEDPRICE + 1) * 1 from lineitem;
+select MIN(L_EXTENDEDPRICE + 1) * 1 from ${testName}_lineitem;
 rows:
   (927.00)
 
 //------------------------------------------------------------------------------------
-select MAX(L_EXTENDEDPRICE) * 33 * (-12) from lineitem;
+select MAX(L_EXTENDEDPRICE) * 33 * (-12) from ${testName}_lineitem;
 rows:
   (-41540202.00)
 
 /*
 //------------------------------------------------------------------------------------
-select SUM(L_SUPPKEY) + MIN(L_EXTENDEDPRICE) from lineitem;
+select SUM(L_SUPPKEY) + MIN(L_EXTENDEDPRICE) from ${testName}_lineitem;
 rows:
   (501275795.00)
 
 //------------------------------------------------------------------------------------
-select MIN(L_SUPPKEY) * MIN(L_PARTKEY) - MAX(L_PARTKEY) from lineitem;
+select MIN(L_SUPPKEY) * MIN(L_PARTKEY) - MAX(L_PARTKEY) from ${testName}_lineitem;
 rows:
   (-199998)
 
 //------------------------------------------------------------------------------------
-select MIN(L_PARTKEY) / MAX(L_EXTENDEDPRICE) from lineitem;
+select MIN(L_PARTKEY) / MAX(L_EXTENDEDPRICE) from ${testName}_lineitem;
 rows:
   (0.0000)
 */
 
-drop table lineitem;
+drop table ${testName}_lineitem;
 mute
 
 memoryleaks;
@@ -102,7 +102,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table ${testName}_lineitem;
   mute
 
   bye;

@@ -4,7 +4,7 @@ success
 
 //------------------------------------------------------------------------------
 // create table
-create table datums (
+create table ${testName}_datums (
 int_col0   INTEGER,
 int_col1  INTEGER,
 bol_col2   BOOLEAN,
@@ -24,184 +24,184 @@ vch_col15  VARCHAR(32)
 );
 success
 
-load datums "../DATA/Transliterate/timestamp.csv" ;
+load ${testName}_datums "../DATA/Transliterate/timestamp.csv" ;
 success
 
 //--------------------------MIN/MAX INT TESTS---------------------------------------
-select MAX(int_col1) from datums;
+select MAX(int_col1) from ${testName}_datums;
 rows:
 (10000)
 
 //------------------------------------------------------------------------------
-select MAX(3) from datums;
+select MAX(3) from ${testName}_datums;
 rows:
 (3)
 
 //------------------------------------------------------------------------------
-select 3 * MAX(int_col1) from datums;
+select 3 * MAX(int_col1) from ${testName}_datums;
 rows:
 (30000)
 
 //------------------------------------------------------------------------------
-select MAX(int_col1 + 2) from datums;
+select MAX(int_col1 + 2) from ${testName}_datums;
 rows:
 (10002)
 
 //------------------------------------------------------------------------------
-select MAX(int_col1) + 2 from datums;
+select MAX(int_col1) + 2 from ${testName}_datums;
 rows:
 (10002)
 
 //------------------------------------------------------------------------------
-select 44 * (MAX(int_col1) - 22) / 12 from datums;
+select 44 * (MAX(int_col1) - 22) / 12 from ${testName}_datums;
 rows:
 (36586)
 
 //------------------------------------------------------------------------------
-select MIN(int_col1) from datums;
+select MIN(int_col1) from ${testName}_datums;
 rows:
 (0)
 
 //------------------------------------------------------------------------------
-select MIN(3) from datums;
+select MIN(3) from ${testName}_datums;
 rows:
 (3)
 
 //------------------------------------------------------------------------------
-select 3 * MIN(int_col1) from datums;
+select 3 * MIN(int_col1) from ${testName}_datums;
 rows:
 (0)
 
 //------------------------------------------------------------------------------
-select MIN(int_col1 + 2) from datums;
+select MIN(int_col1 + 2) from ${testName}_datums;
 rows:
 (2)
 
 //------------------------------------------------------------------------------
-select MIN(int_col1) + 2 from datums;
+select MIN(int_col1) + 2 from ${testName}_datums;
 rows:
 (2)
 
 //------------------------------------------------------------------------------
-select MIN(int_col1 +30 ) * 22 + 2 from datums;
+select MIN(int_col1 +30 ) * 22 + 2 from ${testName}_datums;
 rows:
 (662)
 
 //------------------------------------------------------------------------------
-select 44 * (MIN(int_col1) - 22) / 12 from datums;
+select 44 * (MIN(int_col1) - 22) / 12 from ${testName}_datums;
 rows:
 (-80)
 
 //--------------------------MIN/MAX DECIMAL TESTS---------------------------------
-select MAX(dec_col7) from datums;
+select MAX(dec_col7) from ${testName}_datums;
 rows:
 (1041.04)
 
 /*
 //------------------------------------------------------------------------------
-select 3.2 * MAX(dec_col7) from datums;
+select 3.2 * MAX(dec_col7) from ${testName}_datums;
 rows:
 (3331.328)
 
 //------------------------------------------------------------------------------
-select MAX(dec_col7 + 2.2) from datums;
+select MAX(dec_col7 + 2.2) from ${testName}_datums;
 rows:
 (1043.24)
 
 //------------------------------------------------------------------------------
-select MAX(dec_col7) + 2.4 from datums;
+select MAX(dec_col7) + 2.4 from ${testName}_datums;
 rows:
 (1043.44)
 
 //------------------------------------------------------------------------------
-select 44.01 * (MAX(dec_col7) - 22.1) / 12.55 from datums;
+select 44.01 * (MAX(dec_col7) - 22.1) / 12.55 from ${testName}_datums;
 rows:
 (3573.1911872509960159)
 */
 
 //------------------------------------------------------------------------------
-select MIN(dec_col7) from datums;
+select MIN(dec_col7) from ${testName}_datums;
 rows:
 (10.04)
 
 //--------------------------MIN/MAX FLOAT TESTS---------------------------------
-select MAX(flt_col9) from datums;
+select MAX(flt_col9) from ${testName}_datums;
 rows:
 (108.456)
 
 //------------------------------------------------------------------------------
-select 3 * MAX(flt_col9) from datums;
+select 3 * MAX(flt_col9) from ${testName}_datums;
 rows:
 (325.368)
 
 //------------------------------------------------------------------------------
-select MAX(flt_col9 + 2) from datums;
+select MAX(flt_col9 + 2) from ${testName}_datums;
 rows:
 (110.456)
 
 //------------------------------------------------------------------------------
-select MIN(flt_col9) from datums;
+select MIN(flt_col9) from ${testName}_datums;
 rows:
 (31.456)
 
 //------------------------------------------------------------------------------
-select MIN(flt_col9) + 2 from datums;
+select MIN(flt_col9) + 2 from ${testName}_datums;
 rows:
 (33.456)
 
 //--------------------------MIN/MAX DATE TESTS---------------------------------
-select MAX(dte_col5) from datums;
+select MAX(dte_col5) from ${testName}_datums;
 rows:
 (DATE '1947-01-01')
 
 //------------------------------------------------------------------------------
-select MAX(DATE '2068-10-20') from datums;
+select MAX(DATE '2068-10-20') from ${testName}_datums;
 rows:
 (DATE '2068-10-20')
 
 //------------------------------------------------------------------------------
-select MIN(dte_col4) from datums;
+select MIN(dte_col4) from ${testName}_datums;
 rows:
 (DATE '1941-01-01')
 
 //------------------------------------------------------------------------------
-select MIN(DATE '1941-01-01') from datums;
+select MIN(DATE '1941-01-01') from ${testName}_datums;
 rows:
 (DATE '1941-01-01')
 
 //--------------------------MIN/MAX TIME TESTS---------------------------------
-select MAX(tme_col10) from datums;
+select MAX(tme_col10) from ${testName}_datums;
 rows:
 (TIME '11:23:31')
 
 //------------------------------------------------------------------------------
-select MIN(tme_col10) from datums;
+select MIN(tme_col10) from ${testName}_datums;
 rows:
 (TIME '10:23:31')
 
 //--------------------------MIN/MAX TIMESTAMP TESTS---------------------------------
-select MAX(tsp_col12) from datums;
+select MAX(tsp_col12) from ${testName}_datums;
 rows:
 (TIMESTAMP '1972-01-01 12:00:59')
 
 //------------------------------------------------------------------------------
-select MIN(tsp_col12) from datums;
+select MIN(tsp_col12) from ${testName}_datums;
 rows:
 (TIMESTAMP '1941-01-01 00:00:00')
 
 //--------------------------MIN/MAX VARCHAR TESTS---------------------------------
-select MAX(vch_col14) from datums;
+select MAX(vch_col14) from ${testName}_datums;
 rows:
 ('x')
 
 //------------------------------------------------------------------------------
-select MIN(vch_col14) from datums;
+select MIN(vch_col14) from ${testName}_datums;
 rows:
 ('124')
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table ${testName}_datums;
 success;
 
 memoryleaks;
@@ -209,7 +209,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table ${testName}_datums;
   mute
 
   bye;
