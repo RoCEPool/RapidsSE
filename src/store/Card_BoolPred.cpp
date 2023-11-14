@@ -78,7 +78,6 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
   Card_RpnExpr* pStack_conj   = new Card_RpnExpr;
   Card_RpnExpr* pStack_term   = new Card_RpnExpr;
 
-  //Card_CONJ*    p_conj    = nullptr;
   Card_AndConj* p_andConj = nullptr;
   Card_RlnConj* p_rlnConj = nullptr;
   Card_NotConj* p_notConj = nullptr;
@@ -144,8 +143,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 
       case TE_NOT:
         p_notConj = _pCard_NotConj(p_term_rpn->pCard(CK_NOTCONJ));
-        p_rlnConj = _pCard_RlnConj(p_boolPred_new->pPopChild());
-        p_notConj->vAppend(p_rlnConj);
+        p_notConj->vAppend(p_boolPred_new->pPopChild());
         p_boolPred_new->vPush(p_notConj);
         break;
 
