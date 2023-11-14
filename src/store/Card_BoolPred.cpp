@@ -2,7 +2,7 @@
 /* Card_BoolPred.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
-//#define Z_BOOLPRED_NARY
+#define Z_BOOLPRED_NARY
 
 #include "Card_BoolPred.hpp"
 
@@ -102,6 +102,14 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
           p_andConj->vAppendChild(p_rlnConj);
           p_boolPred_new->vPush(p_andConj);
         }
+        else
+        if (p_boolPred_new->bIsPeek(CK_NOTCONJ, CK_ANDCONJ)) {
+          DELETE_CARD(p_term_rpn);
+          p_notConj = _pCard_NotConj(p_boolPred_new->pPopChild());
+          p_andConj = _pCard_AndConj(p_boolPred_new->pPopChild());
+          p_andConj->vAppendChild(p_notConj);
+          p_boolPred_new->vPush(p_andConj);
+        }
         else {
           p_andConj  = _pCard_AndConj(p_term_rpn->pCard(CK_ANDCONJ));
           p_andConj->vAppendChild(p_boolPred_new->pPopChild());
@@ -118,8 +126,16 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
           p_orConj->vAppendChild(p_rlnConj);
           p_boolPred_new->vPush(p_orConj);
         }
+        else
+        if (p_boolPred_new->bIsPeek(CK_NOTCONJ, CK_ORCONJ)) {
+          DELETE_CARD(p_term_rpn);
+          p_notConj = _pCard_NotConj(p_boolPred_new->pPopChild());
+          p_orConj  = _pCard_OrConj(p_boolPred_new->pPopChild());
+          p_orConj->vAppendChild(p_notConj);
+          p_boolPred_new->vPush(p_orConj);
+        }
         else {
-          p_orConj  = _pCard_OrConj(p_term_rpn->pCard(CK_ORCONJ));
+          p_orConj = _pCard_OrConj(p_term_rpn->pCard(CK_ORCONJ));
           p_orConj->vAppendChild(p_boolPred_new->pPopChild());
           p_orConj->vAppendChild(p_boolPred_new->pPopChild());
          p_boolPred_new->vPush(p_orConj);
@@ -129,7 +145,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
       case TE_NOT:
         p_notConj = _pCard_NotConj(p_term_rpn->pCard(CK_NOTCONJ));
         p_rlnConj = _pCard_RlnConj(p_boolPred_new->pPopChild());
-        p_notConj->vTransferChildren(p_rlnConj);
+        p_notConj->vAppend(p_rlnConj);
         p_boolPred_new->vPush(p_notConj);
         break;
 
@@ -138,6 +154,11 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
       case TE_NOTEXISTS:
       case TE_IN:
       case TE_NOTIN:
+        p_rlnConj = _pCard_RlnConj(p_term_rpn->pCard(CK_RLNCONJ));
+        p_rlnConj->vTransferChildren(pStack_term);
+        p_boolPred_new->vPush(p_rlnConj);
+        break;
+
       case TE_BOOLFN:
         p_rlnConj = _pCard_RlnConj(p_term_rpn->pCard(CK_RLNCONJ));
         p_rlnConj->vTransferChildren(pStack_term);
