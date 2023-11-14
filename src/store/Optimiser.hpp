@@ -32,9 +32,9 @@ namespace STORE
     Dissector*   m_pDissector;
 
     i8           m_nJoinPermutations;
-    s256         m_sJoinPermutation[C_PERMUTATIONS]; // join permutation string
+    String_t<512> m_sJoinPermutation[C_PERMUTATIONS]; // join permutation string
 
-    s256         m_sJoinOrder; // join order string
+    String_t<512> m_sJoinOrder; // join order string
 
     CardIter*     m_pCI;
     PipelineDef*  m_pPipelineDef;
