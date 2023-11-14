@@ -2,7 +2,7 @@
 /* Card_BoolPred.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
-#define Z_BOOLPRED_NARY
+//#define Z_BOOLPRED_NARY
 
 #include "Card_BoolPred.hpp"
 
@@ -56,9 +56,11 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 #ifdef Z_BOOLPRED_NARY
-Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(Card_RpnCalc* p_rpnCalc_arg)
+Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 {
   _static_
+
+  p_rpnCalc_arg->vDump(__func__,"RPNCALC_ARG"_Stz);
 
   Card_BoolPred* p_boolPred_new = new Card_BoolPred;
 
@@ -73,92 +75,157 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred_v2(Card_RpnCalc* p_rpnCalc_arg)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_RpnExpr* pStack_op     = new Card_RpnExpr;
+  Card_RpnExpr* pStack_conj   = new Card_RpnExpr;
   Card_RpnExpr* pStack_term   = new Card_RpnExpr;
 
-//  Card_CONJ*    p_conj    = nullptr;
-//  Card_AndConj* p_andConj = nullptr;
-//  Card_RlnConj* p_rlnConj = nullptr;
-//  Card_NotConj* p_notConj = nullptr;
-//  Card_OrConj*  p_orConj  = nullptr;
+  //Card_CONJ*    p_conj    = nullptr;
+  Card_AndConj* p_andConj = nullptr;
+  Card_RlnConj* p_rlnConj = nullptr;
+  Card_NotConj* p_notConj = nullptr;
+  Card_OrConj*  p_orConj  = nullptr;
 
 
-  while (Card_Term* p_term_rpn = _pCard_Term(p_rpnCalc_arg->pPopChild_tail())) {
+  while (Card_Term* p_term_rpn = _pCard_Term(p_rpnCalc_arg->pPopChild())) {
 
-    bool bPushedOp = true;
+    p_boolPred_new->vDump(__func__,"BOOLPRED_NEW"_Stz);
+    pStack_conj->vDump(__func__, "STACK_OP"_Stz);
+    pStack_term->vDump(__func__,"STACK_TERM"_Stz);
+
     eTE eTerm_rpn = p_term_rpn->eEvalTerm();
     switch (eTerm_rpn) {
 
       case TE_AND:
-        pStack_op->vPush(p_term_rpn->pCard(CK_ANDCONJ));
-        break;
-
-      case TE_NOT:
-//        p_notConj = _pCard_NotConj(p_term_rpn->pCard(CK_NOTCONJ));
-//        p_rlnConj = _pCard_RlnConj(pStack_term->pPopChild());
-//        p_boolPred_new->vPushChild(p_notConj);
-        pStack_op->vPush(p_term_rpn->pCard(CK_NOTCONJ));
+        if (p_boolPred_new->bIsPeek(CK_RLNCONJ, CK_ANDCONJ)) {
+          DELETE_CARD(p_term_rpn);
+          p_rlnConj = _pCard_RlnConj(p_boolPred_new->pPopChild());
+          p_andConj = _pCard_AndConj(p_boolPred_new->pPopChild());
+          p_andConj->vAppendChild(p_rlnConj);
+          p_boolPred_new->vPush(p_andConj);
+        }
+        else {
+          p_andConj  = _pCard_AndConj(p_term_rpn->pCard(CK_ANDCONJ));
+          p_andConj->vAppendChild(p_boolPred_new->pPopChild());
+          p_andConj->vAppendChild(p_boolPred_new->pPopChild());
+          p_boolPred_new->vPush(p_andConj);
+        }
         break;
 
       case TE_OR:
-        pStack_op->vPush(p_term_rpn->pCard(CK_ORCONJ));
+        if (p_boolPred_new->bIsPeek(CK_RLNCONJ, CK_ORCONJ)) {
+          DELETE_CARD(p_term_rpn);
+          p_rlnConj = _pCard_RlnConj(p_boolPred_new->pPopChild());
+          p_orConj  = _pCard_OrConj(p_boolPred_new->pPopChild());
+          p_orConj->vAppendChild(p_rlnConj);
+          p_boolPred_new->vPush(p_orConj);
+        }
+        else {
+          p_orConj  = _pCard_OrConj(p_term_rpn->pCard(CK_ORCONJ));
+          p_orConj->vAppendChild(p_boolPred_new->pPopChild());
+          p_orConj->vAppendChild(p_boolPred_new->pPopChild());
+         p_boolPred_new->vPush(p_orConj);
+        }
+        break;
+
+      case TE_NOT:
+        p_notConj = _pCard_NotConj(p_term_rpn->pCard(CK_NOTCONJ));
+        p_rlnConj = _pCard_RlnConj(p_boolPred_new->pPopChild());
+        p_notConj->vTransferChildren(p_rlnConj);
+        p_boolPred_new->vPush(p_notConj);
         break;
 
       case TE_RELNOP:
-        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
-        break;
-
       case TE_EXISTS:
-        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
-        break;
-
       case TE_NOTEXISTS:
-        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
-        break;
-
       case TE_IN:
-        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
-        break;
-
       case TE_NOTIN:
-        pStack_op->vPush(p_term_rpn->pCard(CK_RLNCONJ));
-        break;
-
-      case TE_EXECUTE:
-        DELETE_CARD(p_term_rpn);
-        bPushedOp = false;
+      case TE_BOOLFN:
+        p_rlnConj = _pCard_RlnConj(p_term_rpn->pCard(CK_RLNCONJ));
+        p_rlnConj->vTransferChildren(pStack_term);
+        p_boolPred_new->vPush(p_rlnConj);
         break;
 
       case TE_OTHER:
         pStack_term->vAppend(p_term_rpn->pCard(CK_TERM));
-        bPushedOp = false;
+        break;
+
+      case TE_EXECUTE:
+        DELETE_CARD(p_term_rpn);
         break;
 
       default:
         NEVER_REACH
     }
-
-    if (bPushedOp) {
-
-    }
-
   }
 
+  // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+
+//  while (pStack_conj->nChildCards() && pStack_term->nChildCards()) {
+//
+//    if (pStack_conj->bIsPeek(CK_RLNCONJ)) {
+//      p_rlnConj = _pCard_RlnConj(pStack_conj->pPopChild());
+//      p_rlnConj->vTransferChildren(p_boolPred_new);
+//      p_boolPred_new->vPushChild(p_rlnConj);
+//    }
+//
+//
+//    else
+//    if (pStack_conj->bIsPeek(CK_NOTCONJ)) {
+//      p_notConj = _pCard_NotConj(pStack_conj->pPopChild());
+//      p_notConj->vTransferChildren(p_boolPred_new);
+//      p_boolPred_new->vPush(p_notConj);
+//    }
+//    else
+//    if (pStack_conj->bIsPeek(CK_ANDCONJ)) {
+//      if (p_boolPred_new->bIsPeek(CK_RLNCONJ,CK_ANDCONJ)) {
+//        p_rlnConj = _pCard_RlnConj(p_boolPred_new->pPopChild());
+//        p_andConj = _pCard_AndConj(p_boolPred_new->pPopChild());
+//        p_andConj->vAppendChild(p_rlnConj);
+//        p_boolPred_new->vAppendChild(p_andConj);
+//
+//        p_andConj = _pCard_AndConj(pStack_conj->pPopChild());
+//        DELETE_CARD(p_andConj);
+//      }
+//      else {
+//        p_andConj = _pCard_AndConj(pStack_conj->pPopChild());
+//        p_andConj->vTransferChildren(p_boolPred_new);
+//        p_boolPred_new->vPushChild(p_andConj);
+//      }
+//    }
+//    else
+//    if (pStack_conj->bIsPeek(CK_ORCONJ)) {
+//      if (p_boolPred_new->bIsPeek(CK_RLNCONJ,CK_ORCONJ)) {
+//        p_rlnConj = _pCard_RlnConj(p_boolPred_new->pPopChild());
+//        p_orConj  = _pCard_OrConj(p_boolPred_new->pPopChild());
+//        p_orConj->vAppendChild(p_rlnConj);
+//        p_boolPred_new->vAppendChild(p_orConj);
+//
+//        p_orConj = _pCard_OrConj(pStack_conj->pPopChild());
+//        DELETE_CARD(p_orConj);
+//      }
+//      else {
+//        p_orConj = _pCard_OrConj(pStack_conj->pPopChild());
+//        p_orConj->vTransferChildren(p_boolPred_new);
+//        p_boolPred_new->vPushChild(p_orConj);
+//      }
+//    }
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  p_boolPred_new->vDump(__func__,"BOOLPRED_NEW"_Stz);
+  pStack_conj->vDump(__func__, "STACK_OP"_Stz);
+  pStack_term->vDump(__func__,"STACK_TERM"_Stz);
 
-  RASSERT(0 == pStack_op->nChildCards());
-  delete pStack_op;
+  RASSERT(0 == pStack_conj->nChildCards());
+  DELETE_CARD(pStack_conj);
   RASSERT(0 == pStack_term->nChildCards());
-  delete pStack_term;
+  DELETE_CARD(pStack_term);
 
-  //p_boolPred_new->vDump();
   return p_boolPred_new;
 }
 
 
 
-Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
+Card_BoolPred* Card_BoolPred::pTo_boolPred_v1(Card_RpnCalc* p_rpnCalc_arg)
 {
   _static_
 
