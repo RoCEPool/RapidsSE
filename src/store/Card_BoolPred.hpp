@@ -17,8 +17,7 @@ namespace STORE
     Card_BoolPred(void);
    ~Card_BoolPred(void) noexcept(false);
 
-    static Card_BoolPred* pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg);
-    static Card_BoolPred* pTo_boolPred_v1(Card_RpnCalc* p_rpnCalc_arg);
+    static Card_BoolPred*pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg);
 
     void vBump_expCol(i8 p_conj, bool bSkipFoldExpr=false);
     bool bContains(Symbol* pGivenSymbol);
