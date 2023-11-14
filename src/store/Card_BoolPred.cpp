@@ -1225,10 +1225,16 @@ void Card_BoolPred::vOntoRpnExpr(String* psRpnExpr)
     psRpnExpr->vConcat(" }"_Stz);
 
 #ifdef Z_BOOLPRED_NARY
-  if (pRoot_conj()->pSymbol()->bIs_Brace())
-    Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
-  else
+//  if (pRoot_conj()->pSymbol()->bIs_Brace())
+//    Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
+//  else
+//    Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr,pRoot_conj());
+
+  if (pPeekChild()->bIsConj())
     Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr,pRoot_conj());
+  else
+    Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
+
 #else
   Card_CONJSUBROOT::vOntoRpnExpr(psRpnExpr);
 #endif
