@@ -337,7 +337,7 @@ StreamDef* Card_EXPRLIST::pToStreamDef(ColMap* pColMap,
     for (Kid xExprList(this); xExprList.bEach(CK_EXPR); /**/) {
       Card_Expr *p_expr = xExprList.p_expr();
 
-      p_expr->vDump(__func__,"GBYAGG"_Stz);
+      //p_expr->vDump(__func__,"GBYAGG"_Stz);
       sColNm = p_expr->szFacet(SF_ITM_COL);
 
       TypeId xTypeId = p_expr->xColumnTypeId();
