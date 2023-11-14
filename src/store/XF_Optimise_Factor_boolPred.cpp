@@ -1,8 +1,10 @@
 /*============================================================================*/
-/* XF_Optimise_Factor_boolPred.cpp -- Refactor boolPred                     */
+/* XF_Optimise_Factor_boolPred.cpp -- Refactor boolPred                       */
 /*============================================================================*/
 
 #include "XF_Optimise_Factor_boolPred.hpp"
+
+//#define Z_FACTOR_NARY
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -259,6 +261,11 @@ eRC XF_Optimise_Factor_boolPred::eFactor_boolPred(Card_BoolPred* p_boolPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+
+#ifdef Z_FACTOR_NARY
+
+#else
+
 eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
@@ -367,6 +374,8 @@ eRC XF_Optimise_Factor_boolPred::eFactor_andConj(Card_AndConj* p_andConj)
   return eRotation;
 }
 
+#endif
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -414,6 +423,11 @@ eRC XF_Optimise_Factor_boolPred::eFactor_notConj(Card_NotConj* p_notConj)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+
+#ifdef Z_FACTOR_NARY
+
+#else
+
 eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_OPTIMISE_FACTOR_BOOLPRED, _FOOTER_);
@@ -525,6 +539,8 @@ eRC XF_Optimise_Factor_boolPred::eFactor_orConj(Card_OrConj* p_orConj)
   m_pCI->vAncestorPop();
   return eRotation;
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

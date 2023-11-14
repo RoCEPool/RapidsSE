@@ -107,8 +107,8 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
         }
         else {
           p_andConj  = _pCard_AndConj(p_term_rpn->pCard(CK_ANDCONJ));
-          p_andConj->vAppendChild(p_boolPred_new->pPopChild());
-          p_andConj->vAppendChild(p_boolPred_new->pPopChild());
+          p_andConj->vPushChild(p_boolPred_new->pPopChild());
+          p_andConj->vPushChild(p_boolPred_new->pPopChild());
           p_boolPred_new->vPush(p_andConj);
         }
         break;
