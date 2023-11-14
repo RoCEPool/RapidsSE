@@ -1019,6 +1019,19 @@ bool Card::bIsPeek(eCK eCard_1, eCK eCard_2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPeek(i8 i_Child, eCK eCard_1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard_1 == this->ePeekChild(i_Child))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get itemise                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Card::iItemise(void)
