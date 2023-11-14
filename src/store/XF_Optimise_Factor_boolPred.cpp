@@ -192,13 +192,15 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
   Kid xOrConj(p_conj_root);
   RASSERT(xOrConj.bEach());
 
+  Card_AndConj *p_andConj_ref = xOrConj.p_andConj();
+
   bool bFoundFactor = true;
-  for (Kid xAndConj_ref(xOrConj.p_andConj()); xAndConj_ref.bEach(); /**/) {
+  for (Kid xAndConj_ref(p_andConj_ref); xAndConj_ref.bEach(); /**/) {
     if (CK_RLNCONJ != xAndConj_ref.eChild()) {
       xAndConj_ref.pChild()->vMark1(MARK_UNVALID);
       continue;
     }
-    Card_RlnConj* p_rlnConj_ref = xAndConj_ref.p_rlnConj();
+    Card_RlnConj *p_rlnConj_ref = xAndConj_ref.p_rlnConj();
     p_rlnConj_ref->vMark1(MARK_AT);
 
     while (xOrConj.bEach()) {
@@ -209,7 +211,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
           xAndConj_ref.pChild()->vMark1(MARK_UNVALID);
           continue;
         }
-        Card_RlnConj* p_rlnConj_alt = xAndConj_alt.p_rlnConj();
+        Card_RlnConj *p_rlnConj_alt = xAndConj_alt.p_rlnConj();
         p_rlnConj_alt->vMark1(MARK_VALID);
 
         if (p_rlnConj_alt->bIsEq(p_rlnConj_ref)) {
@@ -219,7 +221,7 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
         }
       }
 
-      if (! nAltMatchesRef) {
+      if (!nAltMatchesRef) {
         bFoundFactor = false;
         break;
       }
@@ -232,18 +234,57 @@ void XF_Optimise_Factor_boolPred::vFactor_boolPred(Card_BoolPred* p_boolPred)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  if (! bFoundFactor)
+  if (!bFoundFactor)
     return;
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // find @rln in reference andConj
+
+  Card_RlnConj* p_rlnConj_factored = nullptr;
+  for (Kid xAndConj_ref(p_andConj_ref); xAndConj_ref.bEach(); /**/) {
+    if (CK_RLNCONJ != xAndConj_ref.eChild() ||
+        ! xAndConj_ref.pChild()->bMark1(MARK_AT))
+      continue;
+
+    p_rlnConj_factored = xAndConj_ref.p_rlnConj();
+  }
+
+  RASSERT(p_rlnConj_factored);
+
+  p_andConj_ref->vRemoveChild(p_rlnConj_factored);
+
+  xOrConj.vBegin();
+  RASSERT(xOrConj.bEach());
+
+  while (xOrConj.bEach()) {
+    for (Kid xAndConj_alt(xOrConj.p_andConj()); xAndConj_alt.bEach(); /**/) {
+
+      if (CK_RLNCONJ != xAndConj_alt.eChild() ||
+          !xAndConj_alt.pChild()->bMark1(MARK_AT))
+        continue;
+
+      xOrConj.p_andConj()->vDeleteChild(xAndConj_alt.pChild());
+    }
+  }
+
+  m_pCI->vPrintBoard(__LINE__);
 
 
 
+  Card_AndConj* p_andConj_new = new Card_AndConj;
+  p_andConj_new->vAppendChild(p_rlnConj_factored);
+
+  Card_OrConj* p_orConj_top = p_boolPred->pPop_orConj();
+  p_andConj_new->vAppendChild(p_orConj_top);
+
+  p_boolPred->vAppendChild(p_andConj_new);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  vDebugPoint();
 }
-
-
 
 #else
 
