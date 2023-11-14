@@ -10,7 +10,7 @@ namespace BASE
 {
   typedef i8 (*CompareFunc)(void* pKey_l, void* pKey_r);
 
-  class Pds : public Operand
+  class Pds : public DataBuffer
   {
     static const i8 C_WSP_INTERNALHEAP = C_SIZE_LARGE_OBJECT - C_10KB;
     static const i8 C_MIN_KEY_LEN = sizeof(i8);

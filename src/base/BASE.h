@@ -365,17 +365,6 @@ extern d8 C_D8_MID;
 #include "TaskQueue.hpp"
 
 //------------------------------------------------------------------------------
-#include "PdsConvergentHeap_t.hpp"
-#include "Pds.hpp"
-#include "Pds.hpp"
-#include "Pds_t.hpp"
-#include "Pds_t.hpp"
-#include "PdsCursor.hpp"
-#include "PdsItem_BufferId.h"
-#include "PdsBufferIdQueue.hpp"
-#include "PdsRowHelper.hpp"
-
-//------------------------------------------------------------------------------
 
 #include "DataChunk.hpp"
 #include "RecordChunk.hpp"
@@ -411,6 +400,16 @@ extern d8 C_D8_MID;
 
 #include "ClassPlaceHolder.hpp"
 
+//------------------------------------------------------------------------------
+#include "PdsConvergentHeap_t.hpp"
+#include "Pds.hpp"
+#include "Pds.hpp"
+#include "Pds_t.hpp"
+#include "Pds_t.hpp"
+#include "PdsCursor.hpp"
+#include "PdsItem_BufferId.h"
+#include "PdsBufferIdQueue.hpp"
+#include "PdsRowHelper.hpp"
 //------------------------------------------------------------------------------
 
 #include "Scheduler.hpp"

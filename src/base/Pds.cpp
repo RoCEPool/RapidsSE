@@ -48,7 +48,7 @@ void Pds::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
-    : Operand(CN_PDS)
+    : DataBuffer(CN_PDS, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 

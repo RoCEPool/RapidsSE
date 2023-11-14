@@ -90,7 +90,8 @@ bool DataBuffer::bIsDataBuffer(eCN eClass)
       || eClass == CN_CRVBUFFER
       || eClass == CN_OBJBUFFER
       || eClass == CN_CRWBUFFER
-      || eClass == CN_ENTBUFFER ) {
+      || eClass == CN_ENTBUFFER
+      || eClass == CN_PDS ) {
     return true;
   }
 
