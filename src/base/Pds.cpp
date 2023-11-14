@@ -47,6 +47,72 @@ void Pds::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Pds::Pds(RowPix* pRowPix)
+    : DataBuffer(CN_PDS, false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  RASSERT(CacheLine::bOnCacheLineBoundary(this));
+
+  i8 iRowSizeProper = Row::nRowProper(pRowPix->m_nColumns);
+
+  // Calculate block size and padding ------------------
+  m_nBlockSize = sizeof(SkipListNode) + iRowSizeProper + sizeof(m_iSynthRowKey);
+  m_nPaddingPerBlk = 0;
+
+  // Ensure block size is a multiple of 16 bytes
+  i8 iMod = m_nBlockSize % 16;
+  if(iMod != 0) {
+    m_nPaddingPerBlk = 16 - iMod;
+    m_nBlockSize += m_nPaddingPerBlk;
+  }
+
+  m_iSynthRowKey  = 0;
+
+  // Init temp variables -------------------------------
+  m_aRowCur  = nullptr;
+  m_i_RowCrs = C_UNKNOWN;
+  m_i_ColCrs = C_UNKNOWN;
+  m_aStzSet  = nullptr;
+  m_iCurStzSetSpace = 0;
+
+  // Set compare function ------------------------------
+  m_fpCompare = iIntCompare;
+
+  // Initialise the workspace --------------------------
+  m_iFreeListEntries = 0;
+  m_xWsp.vInit(m_nBlockSize);
+
+  // Add dummy root nodes to the Free and In Use skip lists
+  // Note: Dummy root blocks are zeroed since we don't know what the key type is
+
+  SkipListBlock* aFreeListRootOffset = aAllotSkipListBlock();
+  MemLib::vZero(aFreeListRootOffset,m_nBlockSize,CN_NONE);
+  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aFreeListRootOffset);
+  // Assert the offset isn't some large garbage value
+  RASSERT((m_uFreeListRootOffset != 0) && (m_uFreeListRootOffset < 1000));
+
+  SkipListBlock* aInUseRootOffset = aAllotSkipListBlock();
+  MemLib::vZero(aInUseRootOffset,m_nBlockSize,CN_NONE);
+  m_uInUseRootOffset = uGetOffsetFromBase((void*)aInUseRootOffset);
+  RASSERT((m_uInUseRootOffset != 0) && (m_uInUseRootOffset < 1000));
+
+
+  // Reset the number of entries to zero since we don't count the dummy blocks
+  m_iFreeListEntries = 0;
+  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+    m_iNumEntries[i_Level] = 0;
+  }
+
+  // Init RowPix object -------------------------------
+  vInitPix(pRowPix);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
     : DataBuffer(CN_PDS, false)
 {
@@ -56,9 +122,6 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
 
   // Assert that there is enough bytes for the default key (i8)
   RASSERT(nBytes >= C_MIN_KEY_LEN);
-
-  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 
   // Calculate block size and padding ------------------
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
@@ -128,8 +191,6 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
 /*----------------------------------------------------------------------------*/
 Pds::~Pds(void) noexcept(false)
 {
-  if(m_oBufferId.m_iAsI8 != 0)
-    AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 }
 
 

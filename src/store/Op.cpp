@@ -303,9 +303,6 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
       BufferId oBufferId = pDataBuffer->oGetBufferId();
       pOperand = (Operand *) oBufferId.m_pvAsAddress;
       AM::pHashMap()->vDropKeyLock(pOperand);
-    } else if (pOperand->eGetClassNo() == CN_PDS) {
-      Pds* pPds = _pPds(pOperand);
-      AM::pHashMap()->vDropKeyLock(pPds->m_oBufferId.m_pvAsAddress);
     }
   }
 //  else

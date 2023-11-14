@@ -16,7 +16,6 @@ namespace BASE
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
   public:
-    BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
     i8 m_nBlockSize; // Size of SLN + Item in bytes
     i8 m_nPaddingPerBlk; // Size of padding for each Skip List Block
     u2 m_uFreeListRootOffset;
@@ -49,6 +48,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
 
+    Pds(RowPix* pRowPix);
     Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix = nullptr);
     ~Pds(void) noexcept(false);
 

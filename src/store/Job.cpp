@@ -1645,9 +1645,8 @@ void Job::vPipeoutResponse(Operand* pOperand)
 
         i8 nRows = pRowBuffer->nRows();
         RowPix* pRowPix = pRowBuffer->pRowPix();
-        i8 iRowSizeProper = Row::nRowProper(pRowPix->m_nColumns);
 
-        Pds* pPds = new Pds(iRowSizeProper + sizeof(i8), nullptr, pRowPix);
+        Pds* pPds = new Pds(pRowPix);
 
         for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
@@ -1656,7 +1655,7 @@ void Job::vPipeoutResponse(Operand* pOperand)
           Row* pRowDst = pPds->pCopyRow(aRowSrc);
           if (pRowDst == nullptr) {
             pParentJob->m_p_ResponseOp->vPipeToThis(_pOperand(pPds), pCurTask);
-            pPds = new Pds(iRowSizeProper + sizeof(i8), nullptr, pRowPix);
+            pPds = new Pds(pRowPix);
             pRowDst = pPds->pCopyRow(aRowSrc);
             RASSERT(pRowDst);
           }

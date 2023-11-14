@@ -18,7 +18,7 @@ namespace BASE
     i8    m_nTailItems;   // number of fixed-size tail items in this wsp
     i8    m_nTailSize;    // size of each fixed-size tail item
 
-    PadWord m__PadToCacheLine[1];
+//    PadWord m__PadToCacheLine[1];
 
     byte  m_yaByteArea[AREA]; // allottable area
 
