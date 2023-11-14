@@ -20,7 +20,7 @@ namespace STORE
       i8   m_i_CellIn;     // in cell of struct (base 0)
       i8   m_i_StructCell; // out cell of struct (base 0)
 
-      s32  m_sCn_memberNm; // member name
+      s256 m_sCn_memberNm; // member name
 
       s32  m_sNote1;       // note
       s32  m_sNote2;       // note

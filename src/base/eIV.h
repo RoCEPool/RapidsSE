@@ -28,6 +28,7 @@ enum eIV : i1 // Interval Type
 
 extern Stz* aIV[IV_ENUMS];
 extern Stz* aIV_field[IV_ENUMS];
+extern Stz* aIV_field2[IV_ENUMS];
 
 // Returns the number of interval fields covered by a given interval type
 extern i8 iIV_numFields[IV_ENUMS];

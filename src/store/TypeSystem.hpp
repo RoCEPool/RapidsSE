@@ -15,15 +15,19 @@ namespace Parser
 {
   class TypeSystem
   {
-    friend class TypeId;
-    friend class TypeMap1D;
-    friend class TypeMap2D;
-    friend class ExtractMap;
+
+// CRAIG TO LOOK AT : Alka commented because TypeSystem was moved from Parser to Store namespace
+
+//    friend class TypeId;
+//    friend class TypeMap1D;
+//    friend class TypeMap2D;
+//    friend class ExtractMap;
 
     public:
     static i8 iMaxTypeId();
 
-    private:
+  // CRAIG TO LOOK AT : Alka commented because TypeSystem was moved from Parser to Store namespace
+  //private:
     TypeSystem(); // Not to be initialised. Static class only
 
     static b1 bIsValid(TypeId xTypeId);

@@ -69,15 +69,15 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   i8 i_Key = nChildCards() + 1;
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumberForm_KeyCol(i_Key);
+  p_expr_new->vRenumberForm_keyCol(i_Key);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   if (p_expr->pSub_rpnCalc())
     p_rpnCalc->vAppendChild(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
   p_expr_new->vAppendChild(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->vColType(p_expr->eColType());
-  p_expr_new->pSymbol()->vColType(p_expr->eColType());
+  p_rpnCalc->pSymbol()->vTypeId(p_expr->xTypeId());
+  p_expr_new->pSymbol()->vTypeId(p_expr->xTypeId());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = (new Card_Direction) ->SYM(SF_DIRECTION, p_expr->pSub_direction()->szFacet(SF_NONE));
@@ -99,9 +99,9 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->eColType());
+  RASSERT(CT_NONE != this->xColTypeId().eCTVal());
 
-  if (eColType() != p_key_arg->eColType())
+  if (xColTypeId() != p_key_arg->xColTypeId())
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -150,12 +150,12 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Key::vTypes_For_stmCol(CardIter *pCI)
+void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,16 +203,16 @@ void Card_Key::vMapColumns(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eCT Card_Key::eColType(void)
+TypeId Card_Key::xColTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eCT eColType = CT_NONE;
+	TypeId xColTypeId;
 
   if (Card_Expr* p_expr = pSub_expr())
-    eColType = p_expr->eColType();
+		xColTypeId = p_expr->xTypeId();
 
-  return eColType;
+  return xColTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,9 +250,9 @@ IndexDef* Card_Key::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    eCT  eColType = p_term->pSymbol()->eColType();
+    TypeId xTypeId = p_term->pSymbol()->xTypeId();
 
-    if (! szColNm || CT_NONE == eColType)
+    if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;
 
     bool bAscending = true;
@@ -260,7 +260,7 @@ IndexDef* Card_Key::pToIndexDef(void)
       bAscending = false;
       bHasDescending = true;
     }
-    pIndexDef->vAddColumn(szColNm,eColType,bAscending);
+    pIndexDef->vAddColumn(szColNm,xTypeId,bAscending);
   }
 
   if (bHasDescending)

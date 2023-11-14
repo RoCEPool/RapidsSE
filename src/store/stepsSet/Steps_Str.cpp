@@ -664,8 +664,8 @@ void Step::vStrToStrVec(void)
   m_pDataStack->vPopStr(sPath,__func__);
   
   i8 nStrings = 0;
-  
-  s32 sDicNm;
+
+	s256 sDicNm;
   
   char* azPath  = sPath.azChar() + 1;
   char* azDicNm = sDicNm.azChar();

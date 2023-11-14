@@ -110,17 +110,17 @@ Card_Emit* Card_Emit::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vCorrectStmCol(Card_Emit* p_emitted_prior)
+void Card_Emit::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     if (Card_BoolPred* p_boolPred = xKid.p_expr()->pSub_boolPred())
-      p_boolPred->vCorrectStmCol(p_emitted_prior);
+      p_boolPred->vCorrect_expCol(p_arriving);
     else
     if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
-      p_rpnCalc->vCorrectStmCol(p_emitted_prior);
+      p_rpnCalc->vCorrect_expCol(p_arriving);
   }
 }
 
@@ -264,12 +264,12 @@ void Card_Emit::vDerive_streamKey(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Emit::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Emit::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_expr()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -358,8 +358,8 @@ void Card_Emit::vMapColumns(CardIter* pCI)
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
     pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 
-    if (Symbol* pSymbol_stmCol_projection = p_expr_projection->pFirstStmCol()) {
-      i_Cell_payload = pSymbol_stmCol_projection->iSF_ordinal() - nExpr_key;
+    if (Symbol* pSymbol_expCol_projection = p_expr_projection->pFirst_expCol()) {
+      i_Cell_payload = pSymbol_expCol_projection->iSF_ordinal() - nExpr_key;
       p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
       p_expr_projection->pSymbol()->Y_vSet(P_Payload);
       p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
@@ -443,7 +443,7 @@ Card_Expr* Card_Emit::pResolve_expr(Card_Term* p_term)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (p_term->pSymbol()->bIs_Stm_Col()) {
+  if (p_term->pSymbol()->bIs_Exp_Col()) {
     Card_Expr *p_expr_prior = this->pGet_expr(p_term->pSymbol());
     return p_expr_prior;
   }

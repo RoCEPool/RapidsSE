@@ -208,24 +208,24 @@ bool Card_IndexList::bUsesSqyRsl(void)
 /*----------------------------------------------------------------------------*/
 /* ensure types for all stream-columns                                        */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vTypes_For_stmCol(CardIter *pCI)
+void Card_IndexList::vTypes_For_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/)
-    xKid.p_index()->vEnsureTypes_For_stmCol(pCI);
+    xKid.p_index()->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert tblCol to stmCol                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vX_tblCol_To_stmCol(CardIter* pCI)
+void Card_IndexList::vX_tblCol_To_expCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Kid xKid(this);
   while (xKid.bEach(CK_INDEX))
-    xKid.p_index()->vX_tblCol_To_stmCol(pCI);
+    xKid.p_index()->vX_tblCol_To_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

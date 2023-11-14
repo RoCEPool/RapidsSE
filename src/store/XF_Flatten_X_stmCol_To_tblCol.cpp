@@ -45,7 +45,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vFlatten(CardIter* m_pCI)
 
   XF_Flatten_X_stmCol_To_tblCol* pXF_stmCol_To_tblCol = new XF_Flatten_X_stmCol_To_tblCol(m_pCI);
 
-  pXF_stmCol_To_tblCol->vX_stmCol_To_tblCol();
+  pXF_stmCol_To_tblCol->vX_expCol_To_tblCol();
 
   delete pXF_stmCol_To_tblCol;
 }
@@ -58,7 +58,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vFlatten(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 /* all $n become $c.n                                                         */
 /*----------------------------------------------------------------------------*/
-void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
+void XF_Flatten_X_stmCol_To_tblCol::vX_expCol_To_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_X_STMCOL_TO_TBLCOL, _FOOTER_);
 
@@ -78,11 +78,11 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
 
     if ((m_pCI->G.p_key = m_pCI->G.p_OP->pSub_key())) {
       if (m_pCI->Flux.m_pArriving)
-        m_pCI->G.p_key->vX_stmCol_To_tblCol(m_pCI);
+        m_pCI->G.p_key->vX_expCol_To_tblCol(m_pCI);
     }
 
     if ((m_pCI->G.p_filter = m_pCI->G.p_MainCard->pSub_filter())) {
-      m_pCI->G.p_filter->vX_stmCol_To_tblCol(m_pCI);
+      m_pCI->G.p_filter->vX_expCol_To_tblCol(m_pCI);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -90,7 +90,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
 
     if ((m_pCI->G.p_emit = m_pCI->G.p_MainCard->pSub_emit())) {
       if (m_pCI->Flux.m_pArriving)
-        m_pCI->G.p_emit->vX_stmCol_To_tblCol(m_pCI);
+        m_pCI->G.p_emit->vX_expCol_To_tblCol(m_pCI);
       m_pCI->Flux.m_pArriving = m_pCI->G.p_emit;
     }
 
@@ -99,7 +99,7 @@ void XF_Flatten_X_stmCol_To_tblCol::vX_stmCol_To_tblCol(void)
 
     if ((m_pCI->G.p_constraint = m_pCI->G.p_MainCard->pSub_constraint())) {
       if (m_pCI->Flux.m_pArriving)
-        m_pCI->G.p_constraint->vX_stmCol_To_tblCol(m_pCI);
+        m_pCI->G.p_constraint->vX_expCol_To_tblCol(m_pCI);
     }
 
   }

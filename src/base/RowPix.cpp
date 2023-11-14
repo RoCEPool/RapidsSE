@@ -104,7 +104,7 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_USERCOL;
-    axColPixDst->m_uType     = (u8)pRowPix->m_xaColPix[i_Col].m_uType;
+    axColPixDst->m_uTypeId    = (u8)pRowPix->m_xaColPix[i_Col].m_uTypeId;
     axColPixDst->m_uDatum    = (u8)pRowPix->m_xaColPix[i_Col].m_uDatum;
     axColPixDst->m_uLength   = (u8)pRowPix->m_xaColPix[i_Col].m_uLength;
     axColPixDst->m_uScale    = (u8)pRowPix->m_xaColPix[i_Col].m_uScale;
@@ -141,7 +141,7 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uType     = (u8)CT_INTEGER;
+    axColPixDst->m_uTypeId   = (u8)CT_INTEGER;
     axColPixDst->m_uDatum    = (u8)DM_INT;
     axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
     axColPixDst->m_uScale    = (u8)0;
@@ -216,8 +216,8 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_USERCOL;
-    axColPixDst->m_uType     = (u8)pColumnInfo[i_Col].m_iColumnType;
-    axColPixDst->m_uDatum    = (u8)Column::eDatum((eCT)pColumnInfo[i_Col].m_iColumnType);
+    axColPixDst->m_uTypeId   = (u8)pColumnInfo[i_Col].m_iColumnTypeId;
+    axColPixDst->m_uDatum    = (u8)Column::eDatum((eCT)((TypeId)pColumnInfo[i_Col].m_iColumnTypeId).eCTVal());
     axColPixDst->m_uLength   = (u8)pColumnInfo[i_Col].m_iColumnLength;
     axColPixDst->m_uScale    = (u8)pColumnInfo[i_Col].m_iColumnScale;
     axColPixDst->m_bNullable = (u8)pColumnInfo[i_Col].m_bIsNullable;
@@ -315,7 +315,7 @@ void RowPix::vCopyRowPix(RowPix* pSrcRowPix)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_USERCOL;
-    axColPixDst->m_uType     = (u8)pSrcRowPix->m_xaColPix[i_Col].m_uType;
+    axColPixDst->m_uTypeId   = (u8)pSrcRowPix->m_xaColPix[i_Col].m_uTypeId;
     axColPixDst->m_uDatum    = (u8)pSrcRowPix->m_xaColPix[i_Col].m_uDatum;
     axColPixDst->m_uLength   = (u8)pSrcRowPix->m_xaColPix[i_Col].m_uLength;
     axColPixDst->m_uScale    = (u8)pSrcRowPix->m_xaColPix[i_Col].m_uScale;
@@ -353,7 +353,7 @@ void RowPix::vCopyRowPix(RowPix* pSrcRowPix)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uType     = (u8)CT_INTEGER;
+    axColPixDst->m_uTypeId   = (u8)CT_INTEGER;
     axColPixDst->m_uDatum    = (u8)DM_INT;
     axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
     axColPixDst->m_uScale    = (u8)0;

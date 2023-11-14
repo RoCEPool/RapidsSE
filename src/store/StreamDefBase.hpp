@@ -14,7 +14,7 @@ namespace STORE
                         public WspConvergent_t<C_64KB,void,void>
   {
   private:
-    s256 m_sStreamDefNm;  // streamDef name
+		s2K m_sStreamDefNm;  // streamDef name
     
     bool m_bReplicated;   // replicated stream/table?
   
@@ -44,7 +44,7 @@ namespace STORE
     static eDM eDatum(Stz* szType);
     static void vPostRecv(void* aStreamDef);
 
-    void    vAddColumn(Stz* sColumnNm, eCT eColumnType,
+    void    vAddColumn(Stz* sColumnNm, TypeId xTypeId,
                        i8 iColumnLength, i8 iColumnScale);
     void    vAddOrder(i8 i_Column, eSD eDirection=SD_ASC);
     void    vAppendStreamDef(StreamDefBase* pStreamDef);
@@ -117,6 +117,7 @@ namespace STORE
     eEC eParseRowSize        (TokenVec* pTknVec);
     eEC eParseTableSize      (TokenVec* pTknVec);
 
+		eEC eValidateColumnName   (TokenVec* pTknVec);
     eEC eValidateTableName   (TokenVec* pTknVec);
 
   };

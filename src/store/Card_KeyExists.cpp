@@ -125,7 +125,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
  // pCI->vPrintBoard();
 
-  vCorrectStmCol(pCI->Flux.m_pArriving);
+  vCorrect_expCol(pCI->Flux.m_pArriving);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

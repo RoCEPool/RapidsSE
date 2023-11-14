@@ -109,7 +109,7 @@ void Step::vMetaGetNew(void)
 {
   ENTRY();
   
-  s32 sTableNm;
+  s256 sTableNm;
   m_pDataStack->vPopStr(sTableNm, __func__);
 
   MetaGet *pMetaGet = new MetaGet(sTableNm);
@@ -207,7 +207,7 @@ void Step::vMetaGetTableNameFetch(void)
 
   MetaGet* pMetaGet = *m_pLogicUnit->m_xpMetaGet;
 
-  s32 sTableNm = pMetaGet->sTableName();
+  s256 sTableNm = pMetaGet->sTableName();
 
   m_pDataStack->vPushStz(sTableNm);
 

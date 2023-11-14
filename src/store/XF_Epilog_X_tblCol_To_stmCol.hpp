@@ -22,7 +22,7 @@ namespace STORE
 
     static void vConvert(CardIter* pCI);
 
-    void vX_tblCol_To_stmCol(void);
+    void vX_tblCol_To_expCol(void);
 
   private:
 

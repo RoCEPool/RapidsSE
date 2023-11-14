@@ -10,7 +10,7 @@ __TPCH_SCHEMA;
 // NOTE: First variation works. Second variation gives error "missing index"
 
 /*
-/pipelineName = "_ray167"
+/pipelineName = "_ray168"
 select
   sum(l_extendedprice * (1 - l_discount) ) as revenue
 from
@@ -49,9 +49,11 @@ where p_partkey = l_partkey
 ;
 */
 
-/pipelineName = "_ray167"
+/optimiser_trace
+/transliterated
 /weaved
 /pipeline_def
+/pipelineName = "_ray168"
 select
   sum(l_extendedprice * (1 - l_discount) ) as revenue
 from

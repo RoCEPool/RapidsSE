@@ -99,7 +99,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G.pDeck->vInsertChildBefore(p_from_exists,pCI->G.p_where);
 
   pCI->G.p_boolPred = pCI->G.p_where->pSub_boolPred();
-  pCI->G.p_rlnConj = pCI->G.p_boolPred->pCmpConj_whichCallsSubQuery(pCI);
+  pCI->G.p_rlnConj = pCI->G.p_boolPred->pFind_rlnConj_With_sqyCall(pCI);
 
   if (pCI->G.p_rlnConj->pSymbol()->bSame("in"_Stz) ||
       pCI->G.p_rlnConj->pSymbol()->bSame("exists"_Stz))
@@ -141,7 +141,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
 
   Card_Term* p_term_sqarg = (new Card_Term) ->SYM(SF_TBL_COL, pCI->Sqy.m_sSqyArg);
-  p_term_sqarg->pSymbol()->vColType(p_term_found->pSymbol()->eColType());
+  p_term_sqarg->pSymbol()->vTypeId(p_term_found->pSymbol()->xTypeId());
   //p_term_sqarg->vDump();
 
 
@@ -155,7 +155,7 @@ void XF_Flatten_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->vClearRestart();
   if (pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLPRED)) {
-    pCI->G.p_boolPred->nCullConj(MARK_AT);
+    (void)pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
  // pCI->vPrintBoard();

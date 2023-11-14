@@ -547,7 +547,7 @@ bool SePrompt::bIsPromptWord(void)
   
   Token* pTkn0 = m_pInpTknVec->pGet(0);
 
-  s32 sWordNm;
+  s256 sWordNm;
   sWordNm = pTkn0->szChars();
   
   Dic* pDicRoot = AM::DIC::pRoot();

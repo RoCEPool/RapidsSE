@@ -83,7 +83,7 @@ namespace STORE
                                      bool bEnsureDirection);
     Card_Emit*       pPop_emit      (Card_RpnExpr* p_rpnExpr);
     Card_RpnCalc*    pPop_rpnCalc   (Card_RpnExpr* p_rpnExpr);
-    eCT              ePopColType    (Card_RpnExpr* p_rpnExpr);
+		TypeId   xPopColTypeId  (Card_RpnExpr* p_rpnExpr);
 
     void             vCheckArgs     (i8 nArgs);
 

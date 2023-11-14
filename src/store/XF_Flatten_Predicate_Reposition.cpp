@@ -72,7 +72,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vBeginEachReverse();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
-    m_pCI->G.p_boolPred->vMarkWrt_table(m_pCI);
+    m_pCI->G.p_boolPred->vMark_rlnConj_Wrt_table(m_pCI, MARK_AT);
   }
 
  // m_pCI->vPrintBoard(__LINE__);
@@ -84,7 +84,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vBeginEachReverse();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
-    m_pCI->G.p_boolPred->vCopyMarkedConjToTable(m_pCI);
+    m_pCI->G.p_boolPred->vCopyMarked_rlnConj_To_table_filter(m_pCI,MARK_AT);
   }
 
  // m_pCI->vPrintBoard(__LINE__);
@@ -93,7 +93,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vBeginEachReverse();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_BOOLPRED)) {
-    m_pCI->G.p_boolPred->nCullConj(MARK_AT);
+    (void)m_pCI->G.p_boolPred->nCullMarked_rlnConj(MARK_AT);
   }
 
  // m_pCI->vPrintBoard(__LINE__);
@@ -106,7 +106,7 @@ void XF_Flatten_Predicate_Reposition::vXF_Predicate_Reposition(void)
   m_pCI->vBeginEachReverse();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak_b(CK_FROM, CK_FILTER)) {
-    m_pCI->G.p_from->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
+    m_pCI->G.p_from->vCullIfEmpty_filter(m_pCI->G.p_filter);
   }
 
  // m_pCI->vPrintBoard(__LINE__);

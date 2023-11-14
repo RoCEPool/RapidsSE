@@ -20,7 +20,7 @@ namespace STORE
       i8   m_i_Col;
       eCT  m_eColumnType;
 
-      s32  m_sHashOf;
+			s256  m_sHashOf;
 
     } m_axCols[C_COLHSH];
 

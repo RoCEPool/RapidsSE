@@ -9,6 +9,7 @@
 #include "CardIter.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
+#include "Expr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -79,23 +80,6 @@ bool Card_OP::bIsOp(Card* pCard)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vAdd_Conj_Under_filter(Card_CONJUNCTION *p_CONJ)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Filter* p_filter = this->pSub_filter();
-  if (! p_filter) {
-    p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
-    Card_BoolPred* p_boolPred = _pCard_BoolPred(p_filter->pAppendNewCard(CK_BOOLPRED));
-    UNUSED(p_boolPred);
-  }
-
-  p_filter->vAddConj(p_CONJ);
-}
-
-/*----------------------------------------------------------------------------*/
 /* analyse from for injected columns                                          */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vAnalyse_injected(CardIter* pCI)
@@ -123,24 +107,24 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 /*----------------------------------------------------------------------------*/
 /* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vCorrectStmCol(Card_Emit* p_emitted_prior)
+void Card_OP::vCorrect_expCol(Card_Emit* p_arriving)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! p_emitted_prior)
+  if (! p_arriving)
     return;
 
   if (Card_Filter* p_filter = pSub_filter())
-    p_filter->vCorrectStmCol(p_emitted_prior);
+    p_filter->vCorrect_expCol(p_arriving);
 
   if (Card_Emit* p_emit = pSub_emit())
-    p_emit->vCorrectStmCol(p_emitted_prior);
+    p_emit->vCorrect_expCol(p_arriving);
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete filter if it's empty                                                */
+/* remove and delete filter if it's empty                                     */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vDeleteFilterIfEmpty(Card_Filter* p_filter)
+void Card_OP::vCullIfEmpty_filter(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -294,6 +278,24 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
   }
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Filter* Card_OP::pEnsure_filter(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Filter* p_filter = this->pSub_filter();
+  if (p_filter)
+    return p_filter;
+
+  p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
+  Card_BoolPred* p_boolPred = _pCard_BoolPred(p_filter->pAppendNewCard(CK_BOOLPRED));
+  UNUSED(p_boolPred);
+
+  return p_filter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -547,7 +549,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
   if (CK_PROJECT == eCard() && pCI->Flux.m_pArriving) {
     p_emit = pSub_emit();
-    p_emit->vEnsureTypes_For_stmCol(pCI);
+    p_emit->vEnsureTypeId_expCol(pCI);
     return;
   }
 
@@ -607,25 +609,25 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr = new Card_Expr;
-    Symbol xSymbol(SF_STM_COL, i_Expr++);
+    Symbol xSymbol(SF_EXP_COL, i_Expr++);
     p_expr->pSymbol()->vFacets(&xSymbol);
     p_emit->vAppendChild(p_expr);
 
-    eCT eColumnType = pColumn->eColumnType();
+		TypeId xColumnTypeId = pColumn->xColumnTypeId();
 
     p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,pColumn->szColNm());
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->pSymbol()->vColType(eColumnType);
-    p_expr->pSymbol()->vColType(eColumnType);
+    p_rpnCalc->pSymbol()->vTypeId(xColumnTypeId);
+    p_expr->pSymbol()->vTypeId(xColumnTypeId);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
     p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->vColType(eColumnType);
+    p_term->pSymbol()->vTypeId(xColumnTypeId);
   }
 
   pCI->G.p_stream->vAppendChild(p_emit);
@@ -697,7 +699,7 @@ void Card_OP::vRpn_crossJoin(String* psRpnExpr, Card_CrossJoin* p_crossJoin)
 
     Card_Term* p_term = _pCard_Term(pChildCard);
 
-    if (p_term->pSymbol()->bIs_Stm_Col() ||
+    if (p_term->pSymbol()->bIs_Exp_Col() ||
         p_term->pSymbol()->bIs_Tbl_Col()) {
 
       if (!p_term->pSymbol()->bHasType()) {
@@ -723,7 +725,7 @@ void Card_OP::vRpn_filter(String* psRpnExpr, Card_Filter* p_filter)
   Card* pCard_test = p_filter->pSub_boolPred();
   if (CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vRpn_boolPred(psRpnExpr, pCard_CalcBool);
+    pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
     Card_RpnCalc *pCard_Calc = p_filter->pSub_rpnCalc();
@@ -813,7 +815,7 @@ void Card_OP::vRpn_hash(String* psRpnExpr, Card_Hash* p_hash)
   Card_Term* p_term = p_hash->pSub_term();
 
   psRpnExpr->vCatSprint("type %s %s"_Stz,
-                        aCT[p_term->pSymbol()->eColType()],
+                        aCT[p_term->pSymbol()->xTypeId().eCTVal()],
                         p_term->szFacet(SF_NONE));
 }
 
@@ -829,7 +831,7 @@ void Card_OP::vRpn_having(String* psRpnExpr, Card_Having* p_having)
   Card* pCard_test = p_having->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vRpn_boolPred(psRpnExpr, pCard_CalcBool);
+    pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
     Card_RpnCalc *pCard_Calc = p_having->pSub_rpnCalc();
@@ -881,7 +883,7 @@ void Card_OP::vRpn_indexJoin(String* psRpnExpr, Card_IndexJoin* p_indexJoin)
 
     Card_Term* p_term = _pCard_Term(pSubCard);
 
-    if (p_term->pSymbol()->bIs_Stm_Col() ||
+    if (p_term->pSymbol()->bIs_Exp_Col() ||
         p_term->pSymbol()->bIs_Tbl_Col()) {
 
       if (!p_term->pSymbol()->bHasType()) {
@@ -922,7 +924,7 @@ void Card_OP::vRpn_indexJoin_constraint(String* psRpnExpr, Card_IndexJoin* p_ind
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vRpn_boolPred(psRpnExpr, pCard_CalcBool);
+    pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
@@ -975,7 +977,7 @@ void Card_OP::vRpn_indexScan(String* psRpnExpr, Card_IndexScan* p_indexScan)
 
         Card_Term* p_term = _pCard_Term(pSubCard);
 
-        if (p_term->pSymbol()->bIs_Stm_Col() ||
+        if (p_term->pSymbol()->bIs_Exp_Col() ||
             p_term->pSymbol()->bIs_Tbl_Col()) {
 
           if (!p_term->pSymbol()->bHasType()) {
@@ -1043,7 +1045,7 @@ void Card_OP::vRpn_keyExists(String* psRpnExpr, Card_KeyExists* p_keyExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Stm_Col() ||
+      if (p_term->pSymbol()->bIs_Exp_Col() ||
           p_term->pSymbol()->bIs_Tbl_Col()) {
 
         if (!p_term->pSymbol()->bHasType()) {
@@ -1086,7 +1088,7 @@ void Card_OP::vRpn_keyExists_constraint(String* psRpnExpr, Card_KeyExists* p_key
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vRpn_boolPred(psRpnExpr, pCard_CalcBool);
+    pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
@@ -1134,7 +1136,7 @@ void Card_OP::vRpn_keyNotExists(String* psRpnExpr, Card_KeyNotExists* p_keyNotEx
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIs_Stm_Col() ||
+      if (p_term->pSymbol()->bIs_Exp_Col() ||
           p_term->pSymbol()->bIs_Tbl_Col()) {
 
         if (!p_term->pSymbol()->bHasType()) {
@@ -1177,7 +1179,7 @@ void Card_OP::vRpn_keyNotExists_constraint(String* psRpnExpr, Card_KeyNotExists*
   Card* pCard_test = pCard_constraint->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vRpn_boolPred(psRpnExpr, pCard_CalcBool);
+    pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
     Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
@@ -1353,12 +1355,9 @@ void Card_OP::vRpn_top(String* psRpnExpr, Card_Top* p_top)
   Card_Key *pCard_key = p_top->pSub_key();
   Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
 
-  eCT eColumnType = pCard_Calc->eColumnType();
+  TypeId xColTypeId = pCard_Calc->xTypeId();
 
-  Stz* szColType = aCT[eColumnType];
-
-  psRpnExpr->vCatSprint(" type %s "_Stz, szColType->azChar());
-
+	psRpnExpr->vCatSprint(" type %s "_Stz, xColTypeId.szTypeName());
   vRpn_rpnCalc(psRpnExpr, pCard_Calc);
 }
 
@@ -1374,7 +1373,7 @@ void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
   Card* pCard_test = p_where->pSub_boolPred();
   if (pCard_test && CK_BOOLPRED == pCard_test->eCard()) {
     Card_BoolPred *pCard_CalcBool = _pCard_BoolPred(pCard_test);
-    vRpn_boolPred(psRpnExpr, pCard_CalcBool);
+    pCard_CalcBool->vOntoRpnExpr(psRpnExpr);
   }
   else {
     Card_RpnCalc *pCard_Calc = p_where->pSub_rpnCalc();
@@ -1384,68 +1383,6 @@ void Card_OP::vRpn_where(String* psRpnExpr, Card_Where* p_where)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* append <rpnExpr> for <calcBool>                                            */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_boolPred(String* psRpnExpr, Card_BoolPred* p_boolPred)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (p_boolPred->bIsBraced())
-    psRpnExpr->vConcat(" }"_Stz);
-
-  vRpn_boolPart(psRpnExpr, p_boolPred);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append part                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_OP::vRpn_boolPart(String* psRpnExpr, Card* p_part)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nSubCards = p_part->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pSubCard = p_part->pGet(i_Child);
-
-    eCK eSubCard = pSubCard->eCard();
-
-    switch (eSubCard) {
-      case CK_ANDCONJ:
-        vRpn_boolPart(psRpnExpr, _pCard_AndConj(pSubCard));
-        psRpnExpr->vCatSprint(" and"_Stz);
-        break;
-       case CK_NOTCONJ:
-         vRpn_boolPart(psRpnExpr, _pCard_NotConj(pSubCard));
-        psRpnExpr->vCatSprint(" not"_Stz);
-        break;
-      case CK_ORCONJ:
-        vRpn_boolPart(psRpnExpr, _pCard_OrConj(pSubCard));
-        psRpnExpr->vCatSprint(" or"_Stz);
-        break;
-      case CK_RLNCONJ:
-        vRpn_boolPart(psRpnExpr, _pCard_RlnConj(pSubCard));
-        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
-        break;
-      case CK_TERM:
-        if (pSubCard->pSymbol()->bIs_Stm_Col() ||
-            pSubCard->pSymbol()->bIs_Tbl_Col()) {
-
-          if (!pSubCard->pSymbol()->bHasType()) {
-            //p_part->vDump();
-            //pSubCard->vDump();
-            RASSERT(pSubCard->pSymbol()->bHasType());
-          }
-        }
-        psRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szFacet(SF_NONE));
-        break;
-      default:
-        NEVER_REACH
-    }
-  }
-
-}
 
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for p_expr                                                  */
@@ -1475,7 +1412,7 @@ void Card_OP::vRpn_expr(String* psRpnExpr, Card_Expr* p_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   psRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[p_rpnCalc->pSymbol()->eColType()]);
+                        aCT[p_rpnCalc->pSymbol()->xTypeId().eCTVal()]);
 
   if (p_expr->pSymbol()->bHasFacet(SF_ITM_COL)) {
     RASSERT(p_expr->pSymbol()->bHasFacet(SF_NMD_COL));
@@ -1529,7 +1466,7 @@ void Card_OP::vRpn_term(String* psRpnExpr, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (p_term->pSymbol()->bIs_Stm_Col() ||
+  if (p_term->pSymbol()->bIs_Exp_Col() ||
       p_term->pSymbol()->bIs_Tbl_Col()) {
 
     if (!p_term->pSymbol()->bHasType()) {

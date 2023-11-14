@@ -32,6 +32,7 @@
 #include "XF_Optimise_Early_projection.hpp"
 #include "XF_Optimise_Late_projection.hpp"
 #include "XF_Optimise_Reduce_gbyAgg_key.hpp"
+#include "XF_Optimise_Factor_boolPred.hpp"
 #include "XF_Optimise_Static_calc.hpp"
 #include "XF_Optimise_aggreg_To_sort_ordAgg.hpp"
 #include "XF_Optimise_from_To_OP.hpp"
@@ -174,6 +175,7 @@ void XF::vTransform(void)
                                                    //
     // preliminary conversions                     //
     XF_Prolog_X_rpnCalc_To_boolPred::vConvert(m_pCI); //
+    //XF_Optimise_Factor_boolPred::vOptimise(m_pCI);     //
     XF_Prolog_Review_as::vReview(m_pCI);           //
   }                                                //
                                                    //
@@ -208,7 +210,7 @@ void XF::vTransform(void)
   XF_Optimise_scan_To_indexScan::vOptimise(m_pCI);     //
   XF_Optimise_Derive_streamKey::vOptimise(m_pCI);      //
   XF_Optimise_Cut_sort::vOptimise(m_pCI);              //
-  //XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);      //
+  //XF_Optimise_gbyAgg_To_ordAgg::vOptimise(m_pCI);    //
   XF_Optimise_Cull_bound::vOptimise(m_pCI);            //
   XF_Optimise_Early_projection::vOptimise(m_pCI);      //
                                                        //
@@ -221,7 +223,7 @@ void XF::vTransform(void)
   XF_Optimise_Early_filter::vOptimise(m_pCI);          //
   XF_Optimise_Late_projection::vOptimise(m_pCI);       //
   XF_Optimise_Duplicate_filter::vOptimise(m_pCI);      //
-                                                       //
+  //
   m_pCI->vEndPhase();                                  //
                                                        //
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

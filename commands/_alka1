@@ -3,94 +3,42 @@
 /*============================================================================*/
 
 _nation;
-CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
-load nation "../TPCH/SF_0001/nation.csv";
+load nation "../DATA/TPCH/nation.tbl";
 
-/*
+
+/pipeline_def
 /weaved
-/pipeline_def
-select n_nationkey, max(n_regionkey) from nation where n_nationkey > 3 group by n_nationkey;
-*/
-
-/optimiser_trace
-/optimise_passthru
-/pipeline_def
+/transliterated
 /keepCodeFile
-/pipelineName = "_alka1"
-/weaved
-pipeline _unnamed_
-begin
-
-  stage S00 on origin :
-      start
-    | pulse     once
-    | next
-
-  stage S01 on all partitions :
-    indexScan Nation IxN_NATIONKEY
-              " LBOUND $I1 3 > "
-    | project "type INTEGER $1 , type INTEGER $3"
-    | combined 0
-    | next
-
-  stage S02 on all partitions :
-    ordAgg    " OrdGroupBy
-                  type INTEGER as C0_n_nationkey $1
-                aggregates
-                  type INTEGER as C0_COL1 $K1
-                , type INTEGER as C1_COL2 ) $2 max "
-    | combined 0
-    | next
-
-  stage S03 on all nodes :
-    gbyAgg    " groupBy
-                  type INTEGER as C0_n_nationkey $1
-                aggregates
-                  type INTEGER as C0_COL1 $K1
-                , type INTEGER as C1_COL2 ) $2 max "
-    | combined 0
-    | next
-
-  stage S04 on origin :
-    gbyAgg    " groupBy
-                  type INTEGER as C0_n_nationkey $1
-                aggregates
-                  type INTEGER as C0_COL1 $K1
-                , type INTEGER as C1_COL2 ) $2 max "
-    | combined 0
-    | next
-
-  stage S05 on origin :
-      output
-    | sink
-    | first
-
-end ;
-
-
-drop table nation;
+/pipelineName="XYZ"
+SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
 
 /*
-row: (4,4)
-row: (5,0)
-row: (6,3)
-row: (7,3)
-row: (8,2)
-row: (9,2)
-row: (10,4)
-row: (11,4)
-row: (12,2)
-row: (13,4)
-row: (14,0)
-row: (15,0)
-row: (16,0)
-row: (17,1)
-row: (18,2)
-row: (19,3)
-row: (20,4)
-row: (21,2)
-row: (22,3)
-row: (23,3)
-row: (24,1)
+create table interval1(a timestamp);
+load interval1 "../DATA/QA/interval/interval1.csv";
+
+/weaved
+/transliterated
+/pipeline_def
+SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-01-19 23:58:19.123' FROM interval1;
+
+explain stage transliterate
+SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+
+/weaved
+SELECT INTERVAL '1' YEAR + INTERVAL '2' YEAR FROM nation where n_nationkey = 2;
+
+
+explain stage transliterate
+SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
+
+/weaved
+SELECT INTERVAL '1' YEAR + INTERVAL '2' MONTH FROM nation where n_nationkey = 2;
+
+explain stage transliterate
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
+
+/weaved
+SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '4:5:6' HOUR TO SECOND FROM nation where n_nationkey = 2;
 
 */

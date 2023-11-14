@@ -146,16 +146,16 @@ eDM StreamDefBase::eDatum(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale)
+void StreamDefBase::vAddColumn(Stz* sColumnNm, TypeId xTypeId, i8 iColumnLength, i8 iColumnScale)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
   m_xaColumn[m_nColumns].vColumnNm(sColumnNm);
-  m_xaColumn[m_nColumns].vColumnType(eColumnType);
+  m_xaColumn[m_nColumns].vColumnTypeId(xTypeId);
   m_xaColumn[m_nColumns].vColumnLength(iColumnLength);
   m_xaColumn[m_nColumns].vColumnScale(iColumnScale);
-  m_xaColumn[m_nColumns].vDatum(Column::eDatum(eColumnType));
+  m_xaColumn[m_nColumns].vDatum(Column::eDatum(xTypeId.eCTVal()));
 
   m_nColumns++;
 }
@@ -313,13 +313,14 @@ void StreamDefBase::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    vTrace("%sCol [%2lld] : $%2lld %20s (%8s length=%2lld scale=%2lld) %s %s %s %s\n"_Stz,
+    vTrace("%sCol [%2lld] : $%2lld %20s (%8s %8s length=%2lld scale=%2lld) %s %s %s %s\n"_Stz,
            Stz::szTab(i_Tab),
            i_Col,
 
            i_Col + 1,
            m_xaColumn[i_Col].szColNm(),
            aCT[m_xaColumn[i_Col].eColumnType()],
+					 m_xaColumn[i_Col].xColumnTypeId().szTypeName(),
 					 m_xaColumn[i_Col].iColumnLength(),
 					 m_xaColumn[i_Col].iColumnScale(),
 					 m_xaColumn[i_Col].bIsUnique() ? "UNIQUE"_Stz : ""_Stz,
@@ -589,7 +590,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_USERCOL;
-    axColPixDst->m_uType     = (u8)pColumn->eColumnType();
+    axColPixDst->m_uTypeId   = (u8)pColumn->xColumnTypeId().iIdVal();
     axColPixDst->m_uDatum    = (u8)pColumn->eDatum();
     axColPixDst->m_uLength   = (u8)pColumn->iColumnLength();
     axColPixDst->m_uScale    = (u8)pColumn->iColumnScale();
@@ -624,7 +625,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uType     = (u8)CT_INTEGER;
+    axColPixDst->m_uTypeId   = (u8)(TypeId::xIdOf(CT_INTEGER).iIdVal());
     axColPixDst->m_uDatum    = (u8)DM_INT;
     axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
     axColPixDst->m_uScale    = (u8)0;
@@ -703,9 +704,17 @@ void StreamDefBase::vToMetadata(String* psMetadata)
     if (i_DefColumn != 0)
       psMetadata->vConcat(","_Stz);
 
-    psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                           aCT[m_xaColumn[i_DefColumn].eColumnType()]);
-  }
+		/****************************************************************************
+		// CHANGE TO BE MADE TO RETURN THE INTERVAL TYPES
+
+      psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
+                           m_xaColumn[i_DefColumn].xColumnTypeId().szTypeName());
+    ****************************************************************************/
+
+		psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
+													 aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+
+	}
 
   psMetadata->vConcat(")"_Stz);
 }
@@ -861,12 +870,21 @@ eEC StreamDefBase::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   
   eEC eError = EC_NONE;
   
-  Token* pTkn = pTknVec->pCurrToken(); dPT();
+//  Token* pTkn = pTknVec->pCurrToken(); dPT();
+//
+//  // Check if the column name is a reserved word
+//  if (ReservedWords::bIsAReservedWord(pTkn->szChars())) {
+//    return EC_RESERVED_WORD;
+//  }
 
-  // Check if the column name is a reserved word
-  if (ReservedWords::bIsAReservedWord(pTkn->szChars())) {
-    return EC_RESERVED_WORD;
-  }
+	// -- -- -- --
+	// validate column name
+	eError = eValidateColumnName(pTknVec);
+	if (EC_NONE != eError) {
+		return eError;
+	}
+
+	Token* pTkn = pTknVec->pCurrToken(); dPT();
 
   // -- -- -- --
   
@@ -942,7 +960,7 @@ eEC StreamDefBase::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
   
-  pCol->vColumnType(CT_BOOLEAN);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_BOOLEAN));
   pCol->vDatum(DM_BOL);
   
   return EC_NONE;
@@ -956,7 +974,7 @@ eEC StreamDefBase::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_DATE);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_DATE));
   pCol->vDatum(DM_DTE);
   
   return EC_NONE;
@@ -974,7 +992,7 @@ eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   i8 iScale = 2;
   
   // set column type in column
-  pCol->vColumnType(CT_DECIMAL);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_DECIMAL));
   pCol->vDatum(DM_BCD);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -1039,7 +1057,7 @@ eEC StreamDefBase::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   i8 iSize = C_MAX_FLT_PRECISION;
   
   // set column type
-  pCol->vColumnType(CT_FLOAT);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_FLOAT));
   pCol->vDatum(DM_FLT);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -1087,7 +1105,7 @@ eEC StreamDefBase::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_INTEGER);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_INTEGER));
   pCol->vDatum(DM_INT);
   pCol->vColumnLength(C_MAX_INT_PRECISION);
   
@@ -1119,7 +1137,7 @@ eEC StreamDefBase::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_TIME);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_TIME));
   pCol->vDatum(DM_TME);
   
   return EC_NONE;
@@ -1133,7 +1151,7 @@ eEC StreamDefBase::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_TIMESTAMP);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_TIMESTAMP));
   pCol->vDatum(DM_TSP);
   
   return EC_NONE;
@@ -1150,7 +1168,7 @@ eEC StreamDefBase::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   i8 iSize = C_64K;
   
   // set column type
-  pCol->vColumnType(CT_VARCHAR);
+  pCol->vColumnTypeId(TypeId::xIdOf(CT_VARCHAR));
   pCol->vDatum(DM_VCH);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -1451,6 +1469,59 @@ eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
   m_jTableSize = pTkn->iToI8();
     
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate column name                                                       */
+/*----------------------------------------------------------------------------*/
+eEC StreamDefBase::eValidateColumnName(TokenVec *pTknVec)
+{
+	_precondition_(_ADDRESS_,_MAGIC_);
+
+	// next token should be column name
+	Stz* szColumnNm = pTknVec->pCurrToken()->szChars();
+
+	if (szColumnNm->nLength() > C_MAX_COLUMN_NAME_LENGTH - 1) {
+		return EC_MAX_COLUMN_NAME_LENGTH;
+	}
+
+	// Check starting character of table name
+	char cStartChar = szColumnNm->azChar()[0];
+
+	if( !(cStartChar >= 'A' && cStartChar <= 'Z') &&
+			!(cStartChar >= 'a' && cStartChar <= 'z') &&
+			!(cStartChar == '_'))
+	{
+		return EC_SYNTAX_ERROR;
+	}
+
+	// Check for special characters in column name
+	for(i8 i = 33; i <= 47 ; i++)
+	{
+		if( szColumnNm->bContains(StrLib::szCharToStr(i))) {
+			return EC_SYNTAX_ERROR;
+		}
+	}
+
+	for(i8 i = 58; i <= 64 ; i++)
+	{
+		if( szColumnNm->bContains(StrLib::szCharToStr(i))) {
+			return EC_SYNTAX_ERROR;
+		}
+	}
+
+	if( szColumnNm->bContains("|"_Stz) ||
+			szColumnNm->bContains("^"_Stz) ||
+			szColumnNm->bContains("~"_Stz)) {
+		return EC_SYNTAX_ERROR;
+	}
+
+	// Check if the table name is a reserved word
+	if (ReservedWords::bIsAReservedWord(szColumnNm)) {
+		return EC_RESERVED_WORD;
+	}
+
+	return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

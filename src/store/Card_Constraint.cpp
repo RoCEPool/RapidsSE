@@ -75,19 +75,19 @@ void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_stmCol(nBumpBy, bSkipFoldExpr);
+    p_expr->vBump_expCol(nBumpBy, bSkipFoldExpr);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Constraint::nCullConj(Stz* szWithMark)
+i8 Card_Constraint::nCullMarked_rlnConj(Stz* szWithMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_BoolPred* p_boolPred = pSub_boolPred();
-  i8 nCulled = p_boolPred->nCullConj(szWithMark);
+  i8 nCulled = p_boolPred->nCullMarked_rlnConj(szWithMark);
 
   return nCulled;
 }
@@ -95,15 +95,15 @@ i8 Card_Constraint::nCullConj(Stz* szWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Constraint::vEnsureTypes_For_stmCol(CardIter *pCI)
+void Card_Constraint::vEnsureTypeId_expCol(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_boolPred = pSub_boolPred()))
-    pCI->G.p_boolPred->vEnsureTypesFor_stmCol(pCI);
+    pCI->G.p_boolPred->vEnsureTypeId_expCol(pCI);
   else
   if ((pCI->G.p_rpnCalc = pSub_rpnCalc()))
-    pCI->G.p_rpnCalc->vEnsureTypesFor_stmCol(pCI);
+    pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,13 +117,13 @@ void Card_Constraint::vResolve_colNm_From_colSym(CardIter* pCI)
 
   Card_BoolPred* p_boolPred = pCI->G.p_constraint->pSub_boolPred();
 
-  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(p_boolPred->pConj_root());
+  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(p_boolPred->pRoot_conj());
   if (! p_conj_ROOT)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card_CONJUNCTION* p_conj, bool bUpwards)
+  auto bLambdaFn = [pCI](Card_CONJ* p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -163,12 +163,9 @@ void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
   UNUSED(pParent);
 
-  eCK eParent = pParent->eCard();
-
-  RASSERT(CK_FROM         == eParent ||
-          CK_INDEXJOIN    == eParent ||
-          CK_KEYEXISTS    == eParent ||
-          CK_KEYNOTEXISTS == eParent );
+  (void)Card::eValidate_parentEither(pCI,CK_FROM,CK_INDEXJOIN,
+                                     CK_KEYEXISTS,CK_KEYNOTEXISTS,
+                                     CK_NONE);
 
   (void)eValidate_mustEither(CK_BOOLPRED,CK_RPNCALC,CK_NONE);
 

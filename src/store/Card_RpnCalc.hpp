@@ -17,13 +17,13 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    void vBump_stmCol(i8 nBumpBy, bool bSkipFoldExpr=false);
-    eCT  eColumnType(void);
+    void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
+		TypeId xTypeId(void);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
-    void vCorrectStmCol(Card_Emit* p_emitted_prior);
+    void vCorrect_expCol(Card_Emit* p_arriving);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
-    void vEnsureTypesFor_stmCol(CardIter* pCI);
+    void vEnsureTypeId_expCol(CardIter* pCI);
     void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstColSym(void);
     Symbol* pFirstKeyCol(void);
@@ -45,9 +45,8 @@ namespace STORE
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
     Card_BoolPred* pTo_boolPred(CardIter* pCI);
-    eCT  eColType(void);
-     void vX_stmCol_To_tblCol(CardIter* pCI);
-    void vX_tblCol_To_stmCol(CardIter* pCI);
+    void vX_expCol_To_tblCol(CardIter* pCI);
+    void vX_tblCol_To_expCol(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

@@ -163,11 +163,11 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_having_boolPred(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolPred->pGetChild(0));
+  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(m_pCI->G.p_boolPred->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [m_pCI](Card_CONJUNCTION *p_conj, bool bUpwards)
+  auto bLambdaFn = [m_pCI](Card_CONJ *p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;
@@ -210,11 +210,11 @@ void XF_Prolog_Analyse_subQuery::vAnalysis_Of_where_boolPred(CardIter* m_pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROLOG_ANALYSE_SUBQUERY, _FOOTER_);
 
-  Card_CONJUNCTION* p_conj_ROOT = static_cast<Card_CONJUNCTION*>(m_pCI->G.p_boolPred->pGetChild(0));
+  Card_CONJ* p_conj_ROOT = static_cast<Card_CONJ*>(m_pCI->G.p_boolPred->pGetChild(0));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [m_pCI](Card_CONJUNCTION *p_conj, bool bUpwards)
+  auto bLambdaFn = [m_pCI](Card_CONJ *p_conj, bool bUpwards)
   {
     if (bUpwards)
       return C_CONTINUE_RECURSION;

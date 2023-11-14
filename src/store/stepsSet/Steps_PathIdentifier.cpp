@@ -180,7 +180,7 @@ void Step::vPathIdentifierIndexNmFetch(void)
   
   Index* pChosenIndex = mpChosenPath->pIndex();
   
-  s32 sIndexNm = pChosenIndex->szIndexNm();
+  s256 sIndexNm = pChosenIndex->szIndexNm();
   m_pDataStack->vPushStr(sIndexNm);
   
   EXIT();
