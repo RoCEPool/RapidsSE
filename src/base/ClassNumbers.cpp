@@ -177,6 +177,7 @@ Stz* BASE::aCN[CN_ENUMS+1]
 
     /* */ "_K__"_Stz,                 // CN__K__
     /* */ "KEY"_Stz,                  // CN_KEY
+    /* */ "KEYMAP"_Stz,               // CN_KEYMAP
     /* */ "KID"_Stz,                  // CN_KID
 
     /* */ "_L__"_Stz,                 // CN__L__

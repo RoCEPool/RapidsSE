@@ -157,6 +157,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__K__,
   /* */ CN_KEY,
+  /* */ CN_KEYMAP,
   /* */ CN_KID,
 
   /* */ CN__L__,
