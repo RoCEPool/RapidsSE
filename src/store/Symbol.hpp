@@ -113,7 +113,7 @@ namespace STORE
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
 
-    static TypeId  xTo_TypeId_str(Stz* szType);
+    static TypeId xTo_TypeId(Stz* szTypeName);
 
     // - - - - - -
 
@@ -122,7 +122,10 @@ namespace STORE
     void vAppendFacets(Symbol* pSymbol_arg);
 
     Cast* aCast(void);
+    Cast xCast(void);
     void vCast(Cast* aCast);
+    void vCast(Cast xCast);
+    void vCast(TypeId xTypeId);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);

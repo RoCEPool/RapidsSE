@@ -1113,18 +1113,13 @@ bool Symbol::bSame(Facet* aFacet_a, Facet* aFacet_b)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find TypeId by name                                                        */
+/* convert type name to typeId                                                */
 /*----------------------------------------------------------------------------*/
-TypeId Symbol::xTo_TypeId_str(Stz* szType)
+TypeId Symbol::xTo_TypeId(Stz* szTypeName)
 {
   _static_
 
-//  for (i8 i_Type = 0; i_Type < Parser::TypeSystem::iMaxTypeId(); i_Type++)
-//    return TypeId::xIdOf("rapids"_Stz, szType);
-//
-//  return (TypeId)-1;
-
-	return TypeId::xIdOf("rapids"_Stz, szType);
+	return TypeId::xIdOf("rapids"_Stz, szTypeName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1181,6 +1176,16 @@ Cast* Symbol::aCast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get cast                                                                   */
+/*----------------------------------------------------------------------------*/
+Cast Symbol::xCast(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set cast                                                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol::vCast(Cast* aCast)
@@ -1188,6 +1193,26 @@ void Symbol::vCast(Cast* aCast)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_xCast = * aCast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cast                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCast(Cast xCast)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast = xCast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCast(TypeId xTypeId)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_xCast.m_xTypeId = xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2821,7 +2846,7 @@ TypeId Symbol::xTypeId(void)
 /*----------------------------------------------------------------------------*/
 /* set type                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol:: vTypeId(TypeId xTypeId)
+void Symbol::vTypeId(TypeId xTypeId)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
