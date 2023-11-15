@@ -27,6 +27,13 @@ extern "C" void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorC
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy a new row                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_TubCopyRow(void* pTub, void* pRowSrc, i8* piErrorCode) {
+  return Tub::vCopyRow((Tub*)pTub, (Row*)pRowSrc, piErrorCode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
 extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
@@ -139,6 +146,38 @@ void* Tub::aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode)
   catch (LowMemory xLowMemory) {
     *piErrorCode = EC_LOW_MEMORY;
     return nullptr;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Copy row                                                                   */
+/*----------------------------------------------------------------------------*/
+void Tub::vCopyRow(Tub *pTub, Row *pRowSrc, i8 *piErrorCode)
+{
+  _static_
+
+  try {
+    RASSERT(CN_TUB == pTub->eGetClassNo());
+    RowPix* pRowPix = pTub->pRowPix();
+
+    Pds* pPdsRowBuffer = _pPds(pTub->pWorkingBuffer());
+
+    if (! pPdsRowBuffer) {
+      pPdsRowBuffer = new Pds(pRowPix);
+      pTub->vAddBuffer(pPdsRowBuffer);
+    }
+
+    Row* pRowDst = pPdsRowBuffer->pCopyRow(pRowSrc, false);
+    if (pRowDst == nullptr) {
+      pPdsRowBuffer = new Pds(pRowPix);
+      pTub->vAddBuffer(pPdsRowBuffer);
+      pRowDst = pPdsRowBuffer->pCopyRow(pRowSrc, false);
+      RASSERT(pRowDst);
+    }
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return;
   }
 }
 

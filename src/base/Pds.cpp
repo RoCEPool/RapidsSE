@@ -230,7 +230,7 @@ Row* Pds::pAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* Allot a row and copy given row into it                                     */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pCopyRow(Row* pRow)
+Row* Pds::pCopyRow(Row* pRow, bool bOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   RASSERT(m_oRowPix.m_bInitialised);
@@ -269,8 +269,13 @@ Row* Pds::pCopyRow(Row* pRow)
       }
       else {
         RASSERT(m_aStzSet != nullptr);
-        szSrcStz = pRow->szColVal_ofs(i_Col);
-        vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
+        if (bOffset) {
+          szSrcStz = pRow->szColVal_ofs(i_Col);
+          vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
+        } else {
+          szSrcStz = (Stz*) pRow->iColVal_int(i_Col);
+          vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
+        }
       }
     }
     else {

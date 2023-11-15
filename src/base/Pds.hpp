@@ -54,7 +54,7 @@ namespace BASE
 
     // public:
     Row*            pAllotRow(void);
-    Row*            pCopyRow(Row* pRow);
+    Row*            pCopyRow(Row* pRow, bool bOffset = true);
     void*           aAllotStzSet(void);
     bool            bDelete(void* pKey);
     void            vDumpFreeList(void);
