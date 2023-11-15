@@ -475,6 +475,45 @@ i8 iPotTubContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iPotTubContinue_pds -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iPotTubContinue_pds
+i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
+
+	char* szStrArea;
+	ColumnInfo xColumnInfo;
+
+	i8 __COLUMNS_OUT__;
+	RowInfo __ROW_INFO_TO__;
+
+	__L_LABEL_LOOP__:
+
+	// marker-start
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+
+	// process the row ?
+	if ( ! aDynamicT->m_bProcessRow ) {
+		aDynamicT->m_bProcessRow = true;
+		goto __L_LABEL_LOOP__;
+	}
+
+	// allocate a row from the tub
+#ifdef WITH_CLANG
+	__EXTERN_COPYROW__();
+#endif
+
+	// check for error
+	if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+		return 0;
+	}
+
+	// marker-end
+
+	return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- iEosPotTubBegin ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosPotTubBegin
@@ -541,6 +580,44 @@ i8 iEosPotTubBody(Dynamic_T* aDynamicT) {
   // marker-end
   L_Return:
   return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iEosPotTubBody_pds ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosPotTubBody_pds
+i8 iEosPotTubBody_pds(Dynamic_T* aDynamicT) {
+
+	struct __STRUCT_TO__* p__STRUCT_TO__;
+	RowInfo __ROW_INFO_TO__;
+
+	{
+		// marker-start
+
+		// check for error
+		if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+			return 0;
+		}
+
+		aDynamicT->m_iRowsProcessed = 1;
+		aDynamicT->m_xRowInfoAT.m_bInitialize = false;
+	}
+
+	// any rows processed ?
+	if (!aDynamicT->m_iRowsProcessed)
+		goto L_Return;
+
+	// allocate a row from the tub
+#ifdef WITH_CLANG
+	__EXTERN_COPYROW__();
+#endif
+	if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+		return 0;
+	}
+
+	// marker-end
+	L_Return:
+	return 0;
 }
 
 /*----------------------------------------------------------------------------*/

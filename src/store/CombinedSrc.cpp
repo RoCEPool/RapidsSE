@@ -664,6 +664,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
       case SK_TUB:
       case SK_POT:
 
+#ifdef WITH_ROWBUFFER
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
@@ -715,6 +716,58 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
           vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
         }
         break;
+
+#endif
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// operator stub
+				vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+				vAppendStencilTo(pOpSketch);
+
+				vAppendCodeFragment(pOpSketch, "iPotTubBegin"_Stz);
+				vAppendCodePixCols(pOpSketch);
+				vAppendCodeFragment(pOpSketch, "vPotTubRowPix"_Stz);
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// POT/TUB in EOS handler
+				if (pOpSketch->m_eHandlerKind == HK_EOS) {
+					if (pOpSketch->m_eStencilFrom == SR_PL) {
+
+						if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+							vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
+						else
+							vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
+
+						// generate code for the hash value
+						if (pOpSketch->eSketchKind() == SK_POT)
+							vAppendCodePLToHashCols(pOpSketch);
+
+						if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
+							vAppendCodeFragment(pOpSketch, "vEosPotTubLimit"_Stz);
+						}
+
+						vAppendCodeFragment(pOpSketch, "iEosPLPotTub"_Stz);
+						vAppendCodeToTubCols(pOpSketch);
+						vAppendCodeFragment(pOpSketch, "vEosPLPotTubEnd"_Stz);
+					}
+					else {
+						vAppendCodeFragment(pOpSketch, "iEosPotTubBegin"_Stz);
+						vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+						vAppendCodeFragment(pOpSketch, "iEosPotTubBody_pds"_Stz);
+					}
+
+				}
+				else {
+					// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+					// POT/TUB in CRW/ROW/INDEX handler
+
+					// generate code for the hash value
+					if (pOpSketch->eSketchKind() == SK_POT)
+						vAppendCodeHashCols(pOpSketch);
+
+					vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
+				}
+				break;
 
       default:
         NEVER_REACH
