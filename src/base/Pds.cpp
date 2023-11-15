@@ -238,9 +238,64 @@ Row* Pds::pAllotRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Allot a row and the string set space. Init the string set space and return addr */
+/*----------------------------------------------------------------------------*/
+Row* Pds::pAllotRowFull(void** aaStzSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  *aaStzSet = nullptr;
+  // Do we have space for the row?
+  if (nFreeBytes() < (m_nBlockSize + iStzSetSize()))
+    return nullptr;
+
+  // Pass an integer key to Pds that we increment each time we insert
+  // Essentially append
+  SkipListBlock* pSkipListBlock = pInsert((void*) &(++m_iSynthRowKey));
+  i8* pKey = (i8*)pSkipListBlock->aItem();
+  *pKey = m_iSynthRowKey;
+
+  // Calculate the address of the Row
+  // <(i8)key><Row>
+  Row* aRowCur = aAdd<Row*>(pSkipListBlock->aItem(), sizeof(m_iSynthRowKey));
+
+  // Initialise the row at the given addr
+  new(aRowCur) Row();
+
+  m_aRowCur = aRowCur;
+
+  // If this Row contains strings,
+  // allot a String Set from the tail of the Pds
+  if(iStzSetSize()) {
+    if (aAllotStzSet() == nullptr) {
+      vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
+      vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
+      return nullptr;
+    }
+    *aaStzSet = m_aStzSet;
+
+    RASSERT(m_oRowPix.m_bInitialised);
+
+    // do a new() for each string area inside the string set where the column is of type VCH
+    i8 nCols = m_oRowPix.m_nColumns;
+    for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+      eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+
+      if (DM_VCH == eDatum) {
+        i8 nSize = m_oRowPix.m_xaColPix[i_Col].m_uLength;
+        String_d* azStringDyn = new(m_aStzSet) String_d(nSize);
+        m_aStzSet = aAdd<void*>(m_aStzSet, azStringDyn->iTotalSize());
+      }
+    }
+  }
+
+  return aRowCur;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Allot a row and copy given row into it                                     */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pCopyRow(Row* pRow, bool bOffset)
+Row* Pds::pCopyRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
   RASSERT(m_oRowPix.m_bInitialised);
@@ -269,13 +324,9 @@ Row* Pds::pCopyRow(Row* pRow, bool bOffset)
       }
       else {
         RASSERT(m_aStzSet != nullptr);
-        if (bOffset) {
-          szSrcStz = pRow->szColVal_ofs(i_Col);
-          vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
-        } else {
-          szSrcStz = (Stz*) pRow->iColVal_int(i_Col);
-          vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
-        }
+        szSrcStz = pRow->szColVal_ofs(i_Col);
+        vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
+
       }
     }
     else {
@@ -303,16 +354,6 @@ Row* Pds::pCopyRowArray(i8* pRowArray)
 	if (! pNewRow) {
 		vTrace("%s: Unable to copy row as the Pds is full\n"_Stz, __func__ );
 		return nullptr;
-	}
-
-	// If this Row contains strings,
-	// allot a String Set from the tail of the Pds
-	if(iStzSetSize()) {
-		if (aAllotStzSet() == nullptr) {
-			vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
-			vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
-			return nullptr;
-		}
 	}
 
 	i8 iVal;

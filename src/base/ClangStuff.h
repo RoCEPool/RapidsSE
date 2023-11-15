@@ -53,6 +53,7 @@ extern i8    iExtern_StrLibWordFlipBack(char* psDst, i8 iDstBufSize, char* psSrc
 extern i8    iExtern_StrLibWordFlipSize(char* psSrc) __attribute__((weak_import));
 
 extern void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
+extern void* aExtern_TubAllotRowPds(void* pTub, void** aazStrArea, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_TubCopyRow(void* pTub, void* pRowSrc, i8* piErrorCode) __attribute__((weak_import));
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_TubRowPix(void* pTub, void* pRowPix) __attribute__((weak_import));
