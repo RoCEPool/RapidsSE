@@ -281,7 +281,7 @@
 #include "XF_Flatten_Delete_flat.hpp"
 #include "XF_Flatten_Derive_bounds.hpp"
 #include "XF_Flatten_Anchor_table.hpp"
-#include "XF_Flatten_Predicate_Pull_Up.hpp"
+#include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Flatten_Predicate_Reposition.hpp"
 #include "XF_Flatten_Update_projection.hpp"
 #include "XF_Flatten_X_stmCol_To_tblCol.hpp"
@@ -311,7 +311,7 @@
 #include "XF_Prolog_Ensure_level.hpp"
 #include "XF_Prolog_Erase_construction.hpp"
 #include "XF_Prolog_Move_on.hpp"
-#include "XF_Flatten_Predicate_Pull_Up.hpp"
+#include "XF_Flatten_Pullup_rlnConj.hpp"
 #include "XF_Prolog_Reduce_not.hpp"
 #include "XF_Prolog_Review_as.hpp"
 #include "XF_Prolog_Validate_Board.hpp"
@@ -828,8 +828,8 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_ANCHOR_TABLE,           sizeof(XF_Flatten_Anchor_table),           HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_JOIN_ORDERING,          sizeof(XF_Flatten_Join_Ordering),          HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_LEFT_SUBQUERY,          sizeof(XF_Flatten_Left_subQuery),          HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_PREDICATE_PULLUP,       sizeof(XF_Flatten_Predicate_Pull_Up),      HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_PREDICATE_REPOSITION,   sizeof(XF_Flatten_Predicate_Reposition),   HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_PULLUP_RLNCONJ,         sizeof(XF_Flatten_Pullup_rlnConj),         HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SMOOSH,                 sizeof(XF_Flatten_Smoosh),                 HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_SMOOTH,                 sizeof(XF_Flatten_Smooth),                 HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_UPDATE_PROJECTION,      sizeof(XF_Flatten_Update_projection),      HT_T_TINY    , FILL },
@@ -838,7 +838,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_OPTIMISE_AGGREG_TO_SORT_ORDAGG, sizeof(XF_Optimise_aggreg_To_sort_ordAgg), HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_CULL_BOUND,            sizeof(XF_Optimise_Cull_bound),            HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_CUT_SORT,              sizeof(XF_Optimise_Cut_sort),              HT_T_TINY    , FILL },
-  {CN_XF_OPTIMISE_DERIVE_STREAM_KEY,     sizeof(XF_Optimise_Derive_streamKey),      HT_T_TINY    , FILL },
+  {CN_XF_OPTIMISE_DERIVE_STREAMKEY,      sizeof(XF_Optimise_Derive_streamKey),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_DUPLICATE_FILTER,      sizeof(XF_Optimise_Duplicate_filter),      HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_FILTER,          sizeof(XF_Optimise_Early_filter),          HT_T_TINY    , FILL },
   {CN_XF_OPTIMISE_EARLY_PROJECTION,      sizeof(XF_Optimise_Early_projection),      HT_T_TINY    , FILL },
