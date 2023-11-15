@@ -2846,12 +2846,12 @@ TypeId Symbol::xTypeId(void)
 /*----------------------------------------------------------------------------*/
 /* set type                                                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vTypeId(TypeId xTypeId)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast.m_xTypeId = xTypeId;
-}
+//void Symbol::vTypeId(TypeId xTypeId)
+//{
+//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//
+//  m_xCast.m_xTypeId = xTypeId;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* validate symbol                                                            */

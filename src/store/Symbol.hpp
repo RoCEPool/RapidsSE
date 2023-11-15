@@ -240,7 +240,7 @@ namespace STORE
     char cSF_tblSyn(void);
 
     TypeId xTypeId(void);
-    void vTypeId(TypeId xTypeId);
+//    void vTypeId(TypeId xTypeId);
 
     bool bValidate(void);
     void vValidate(void);

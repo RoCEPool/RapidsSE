@@ -199,7 +199,7 @@ void Card_RpnCalc::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
     Card_Term* p_term_ColSym = x_term.p_term();
 
     Card_Expr* p_expr_ColSym = new Card_Expr(p_term_ColSym->pSymbol());
-    p_expr_ColSym->pSymbol()->vTypeId(p_term_ColSym->pSymbol()->xTypeId());
+    p_expr_ColSym->pSymbol()->vCast(p_term_ColSym->pSymbol()->xTypeId());
 
     p_subSet->vAppendChild(p_expr_ColSym);
   }

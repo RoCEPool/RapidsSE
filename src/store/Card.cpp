@@ -508,7 +508,7 @@ void Card::vColType(Card* pCard_arg)
 
   //pCard_arg->vDump(__func__);
 
-  m_xSymbol.vTypeId(pCard_arg->pSymbol()->xTypeId());
+  m_xSymbol.vCast(pCard_arg->pSymbol()->xTypeId());
 }
 
 /*----------------------------------------------------------------------------*/

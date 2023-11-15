@@ -133,7 +133,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     RASSERT(CT_NONE != p_expr_found->xTypeId().eCTVal());
 
-    pCI->G.p_term->pSymbol()->vTypeId(p_expr_found->xTypeId());
+    pCI->G.p_term->pSymbol()->vCast(p_expr_found->xTypeId());
 
     DELETE_CARD(p_term_1);
 

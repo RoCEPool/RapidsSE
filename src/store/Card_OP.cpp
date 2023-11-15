@@ -619,15 +619,15 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->pSymbol()->vTypeId(xColumnTypeId);
-    p_expr->pSymbol()->vTypeId(xColumnTypeId);
+    p_rpnCalc->pSymbol()->vCast(xColumnTypeId);
+    p_expr->pSymbol()->vCast(xColumnTypeId);
 
     Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
     p_rpnCalc->vAppendChild(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->pSymbol()->vTypeId(xColumnTypeId);
+    p_term->pSymbol()->vCast(xColumnTypeId);
   }
 
   pCI->G.p_stream->vAppendChild(p_emit);
