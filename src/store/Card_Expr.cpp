@@ -188,7 +188,7 @@ Cast Card_Expr::xCast(void)
     xTypeId = p_boolPred->xTypeId();
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    xTypeId = p_rpnCalc->xTypeId();
+    xTypeId = p_rpnCalc->xCast().m_xTypeId;
 
   xCast.m_xTypeId = xTypeId;
 
@@ -205,9 +205,9 @@ TypeId Card_Expr::xColumnTypeId(void)
 
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
 
-    TypeId xColTypeId = p_rpnCalc->xTypeId();
+    TypeId xTypeId = p_rpnCalc->xCast().m_xTypeId;
 
-    return xColTypeId;
+    return xTypeId;
   }
 
   return TypeId::xIdOf(CT_NONE);

@@ -541,19 +541,6 @@ void Card_RpnCalc::vTransfer(STORE::Card_RpnCalc *p_rpnCalc, eSF eSymbol_limit)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-TypeId Card_RpnCalc::xTypeId(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  TypeId xTypeId = pSymbol()->xTypeId();
-
-  return xTypeId;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vX_expCol_To_tblCol(CardIter* pCI)
