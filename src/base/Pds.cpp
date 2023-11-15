@@ -81,7 +81,7 @@ Pds::Pds(RowPix* pRowPix)
 
   // Initialise the workspace --------------------------
   m_iFreeListEntries = 0;
-  m_xWsp.vInit(m_nBlockSize);
+  m_xWsp.vInit(m_nBlockSize, 0);
 
   // Add dummy root nodes to the Free and In Use skip lists
   // Note: Dummy root blocks are zeroed since we don't know what the key type is
@@ -154,7 +154,7 @@ Pds::Pds(i8 nBytes, CompareFunc fpCompare, RowPix* pRowPix)
   m_iFreeListEntries = 0;
 
   // Initialise the workspace --------------------------
-  m_xWsp.vInit(m_nBlockSize);
+  m_xWsp.vInit(m_nBlockSize, 0);
 
   // Add dummy root nodes to the Free and In Use skip lists
   // Note: Dummy root blocks are zeroed since we don't know what the key type is

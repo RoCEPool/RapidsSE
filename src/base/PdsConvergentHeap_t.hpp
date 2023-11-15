@@ -31,7 +31,7 @@ namespace BASE
     void  vGiveHead(i8 nBytes);
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
-    void  vInit(i8 nHeadSize);
+    void  vInit(i8 nHeadSize, i8 nTailSize);
     i8    nItems(void);
     void* aLastUsableByteAddr(void);
     byte* ayLatterHead(void);
@@ -205,7 +205,7 @@ bool PdsConvergentHeap_t<AREA,HEAD,TAIL>::bHasSpaceFor(i8 nSizeBytes)
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(i8 nHeadSize)
+void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(i8 nHeadSize, i8 nTailSize)
 {
   m_nUsedHead  = 0;
   m_nUsedTail  = 0;
@@ -214,7 +214,7 @@ void PdsConvergentHeap_t<AREA,HEAD,TAIL>::vInit(i8 nHeadSize)
   m_nHeadSize  = nHeadSize;
 
   m_nTailItems = 0;
-  m_nTailSize  = C_UNKNOWN;
+  m_nTailSize  = nTailSize;
 
   MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
 
