@@ -91,13 +91,15 @@ void Card_RpnCalc::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-TypeId Card_RpnCalc::xTypeId(void)
+Cast Card_RpnCalc::xCast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 	TypeId xTypeId = pSymbol()->xTypeId();
+  Cast xCast;
+  xCast.m_xTypeId = xTypeId;
 
-  return xTypeId;
+  return xCast;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -537,6 +539,19 @@ void Card_RpnCalc::vTransfer(STORE::Card_RpnCalc *p_rpnCalc, eSF eSymbol_limit)
     vAppendChild(p_term_and);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+TypeId Card_RpnCalc::xTypeId(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  TypeId xTypeId = pSymbol()->xTypeId();
+
+  return xTypeId;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* convert stmCol to tblCol                                                   */

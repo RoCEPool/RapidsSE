@@ -18,7 +18,7 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
-		TypeId xTypeId(void);
+    Cast xCast(void);
     Card_RpnCalc* pClone(void);
     bool bContains(Symbol* pSymbol_arg);
     void vCorrect_expCol(Card_Emit* p_arriving);
@@ -44,6 +44,7 @@ namespace STORE
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     void vShortForm(String* pString, Stz* szSep);
     void vTransfer(Card_RpnCalc* p_rpnCalc, eSF eSymbol_limit);
+    TypeId xTypeId(void);
     Card_BoolPred* pTo_boolPred(void);
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
