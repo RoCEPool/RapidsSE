@@ -28,7 +28,7 @@ namespace STORE
     static void vRepair(Object* pObject);
 
     static void* aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode);
-    static void  vCopyRow(Tub* pTub, Row* pRowSrc, i8* piErrorCode);
+    static void  vCopyRowArray(Tub* pTub, i8* pRowCellArray, i8* piErrorCode);
     static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
     static void  vSetRowPix(Tub* pTub, RowPix* pRowPix);
 

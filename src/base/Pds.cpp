@@ -292,6 +292,65 @@ Row* Pds::pCopyRow(Row* pRow, bool bOffset)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Allot a row and copy given row into it                                     */
+/*----------------------------------------------------------------------------*/
+Row* Pds::pCopyRowArray(i8* pRowCellArray)
+{
+	_precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+	RASSERT(m_oRowPix.m_bInitialised);
+
+	Row* pNewRow = pAllotRow();
+	if (! pNewRow) {
+		vTrace("%s: Unable to copy row as the Pds is full\n"_Stz, __func__ );
+		return nullptr;
+	}
+
+	// If this Row contains strings,
+	// allot a String Set from the tail of the Pds
+	if(iStzSetSize()) {
+		if (aAllotStzSet() == nullptr) {
+			vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
+			vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
+			return nullptr;
+		}
+	}
+
+	i8 iVal;
+	Stz* szSrcStz;
+
+	i8 nCols = m_oRowPix.m_nColumns;
+	i8 i_Col;
+	m_i_ColCrs = 0;
+	for (i_Col = 0; i_Col < nCols; i_Col++) {
+
+		eDM eDatum = (eDM)m_oRowPix.m_xaColPix[i_Col].m_uDatum;
+
+		if (DM_VCH == eDatum) {
+			// vch datum
+
+			if (C_DATUM_NULL == pRowCellArray[i_Col]) {
+				vDepositColVal(C_DATUM_NULL);
+			}
+			else {
+				RASSERT(m_aStzSet != nullptr);
+				szSrcStz = (Stz*) pRowCellArray[i_Col];
+				vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
+			}
+		}
+		else {
+			// all others
+
+			iVal = pRowCellArray[i_Col];
+			vDepositColVal(iVal);
+		}
+	}
+
+	vReset();
+
+	return pNewRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Allot space for Stz of fixed size, return dst str addr                     */
 /*----------------------------------------------------------------------------*/
 void* Pds::aAllotStzSet(void)

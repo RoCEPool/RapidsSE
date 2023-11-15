@@ -30,7 +30,7 @@ extern "C" void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorC
 /* copy a new row                                                            */
 /*----------------------------------------------------------------------------*/
 extern "C" void vExtern_TubCopyRow(void* pTub, void* pRowSrc, i8* piErrorCode) {
-  return Tub::vCopyRow((Tub*)pTub, (Row*)pRowSrc, piErrorCode);
+  return Tub::vCopyRowArray((Tub*)pTub, (i8*)pRowSrc, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +152,7 @@ void* Tub::aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode)
 /*----------------------------------------------------------------------------*/
 /* Copy row                                                                   */
 /*----------------------------------------------------------------------------*/
-void Tub::vCopyRow(Tub *pTub, Row *pRowSrc, i8 *piErrorCode)
+void Tub::vCopyRowArray(Tub *pTub, i8 *pRowCellArray, i8 *piErrorCode)
 {
   _static_
 
@@ -167,11 +167,11 @@ void Tub::vCopyRow(Tub *pTub, Row *pRowSrc, i8 *piErrorCode)
       pTub->vAddBuffer(pPdsRowBuffer);
     }
 
-    Row* pRowDst = pPdsRowBuffer->pCopyRow(pRowSrc, false);
+    Row* pRowDst = pPdsRowBuffer->pCopyRowArray(pRowCellArray);
     if (pRowDst == nullptr) {
       pPdsRowBuffer = new Pds(pRowPix);
       pTub->vAddBuffer(pPdsRowBuffer);
-      pRowDst = pPdsRowBuffer->pCopyRow(pRowSrc, false);
+      pRowDst = pPdsRowBuffer->pCopyRowArray(pRowCellArray);
       RASSERT(pRowDst);
     }
   }

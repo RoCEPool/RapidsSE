@@ -109,6 +109,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_D_PDSROWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: output_PdsRowBuffer \handler
+
+  //"Operand:- EV_D_PDSROWBUFFER" .verbose
+  PipeIn[].pipeToOutput
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_RowBuffer \handler
@@ -165,6 +177,7 @@
   find: output_CsvBuffer     EV_D_CSVBUFFER     [op].handler!
   find: output_EntBuffer     EV_D_ENTBUFFER     [op].handler!
   find: output_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: output_PdsRowBuffer     EV_D_PDSROWBUFFER     [op].handler!
   find: output_SrtBuffer     EV_D_SRTBUFFER     [op].handler!
   find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
   find: output_StreamDef     EV_D_STREAMSET     [op].handler!
