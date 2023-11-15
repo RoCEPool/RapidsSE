@@ -59,6 +59,7 @@ OpDef::OpDef(i8 i_Op, Card* pCard)
   m_pColInj             = nullptr;
 
   m_pColHsh             = nullptr;
+  m_pKeyMap             = nullptr;
 
   _checkInitialised_(CN_OPDEF);
 
@@ -87,6 +88,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pColPpg;
   delete m_pColInj;
   delete m_pColHsh;
+  delete m_pKeyMap;
 }
 
 /*----------------------------------------------------------------------------*/
