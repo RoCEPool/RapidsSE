@@ -31,6 +31,13 @@ extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iKeyHash, char** aazStrArea,
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_PotCopyRow(void* pPot, i8 iKeyHash, void* pRowSrc, i8* piErrorCode) {
+  return Pot::vCopyRowArray((Pot*)pPot, iKeyHash, (i8*)pRowSrc, piErrorCode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
 extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iKeyHash, i8 nRowStrSize) {
@@ -135,6 +142,50 @@ void* Pot::aAllotRow(Pot* pPot, i8 iKeyHash, char** aazStrArea, i8* piErrorCode)
   catch (LowMemory xLowMemory) {
     *piErrorCode = EC_LOW_MEMORY;
     return nullptr;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create new destination row (possible new row slab)                         */
+/*----------------------------------------------------------------------------*/
+void Pot::vCopyRowArray(Pot* pPot, i8 iKeyHash, i8* pRowSrc, i8* piErrorCode)
+{
+  _static_
+
+  try {
+    Row* aDstRow;
+
+    LglPtnMap* pPtnMap = AM::pLglPtnMap();
+    //i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHash);
+
+    RowPix* pRowPix = pPot->m_pRowPix;
+
+    // get pds row buffer for given partition (new a first buffer if ncessary)
+    Pds* pPdsRowBuffer = _pPds(pPot->pBuffer(tLglPtn));
+    if (! pPdsRowBuffer) {
+      pPdsRowBuffer = new Pds(pRowPix);
+      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
+    }
+
+    // new a row in row buffer (new another row buffer if necessary)
+    aDstRow = pPdsRowBuffer->pCopyRowArray(pRowSrc);
+    if (! aDstRow) {
+      pPdsRowBuffer = new Pds(pRowPix);
+      pPot->vAddBuffer(tLglPtn,pPdsRowBuffer);
+      //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+      aDstRow = pPdsRowBuffer->pCopyRowArray(pRowSrc);
+      ASSERT(aDstRow);
+    }
+
+    pPdsRowBuffer->vLglPtn(tLglPtn);
+
+    return;
+
+  }
+  catch (LowMemory xLowMemory) {
+    *piErrorCode = EC_LOW_MEMORY;
+    return;
   }
 }
 

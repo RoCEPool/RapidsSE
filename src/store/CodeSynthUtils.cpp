@@ -587,6 +587,21 @@ void CodeSynthUtils::vReplaceTubPot(String* sLine, OpSketch* pOpSketch) {
     }
   }
 
+  if (StrLib::bContains(sLine->azStr(), "__EXTERN_COPYROW__()")) {
+    if (pOpSketch->m_eSketchKind == SK_TUB) {
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_COPYROW__()",
+                                 "aExtern_TubCopyRow((void*)aDynamicT->m_pTub,(void*)aDynamicT->m_xRowInfoIT.m_aRowCellArray,&aDynamicT->m_iErrorCode)");
+      RASSERT(bResult);
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_POT);
+      bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_COPYROW__()",
+                                 "aExtern_PotCopyRow((void*)aDynamicT->m_pPot,iKeyHash,(void*)aDynamicT->m_xRowInfoIT.m_aRowCellArray,&aDynamicT->m_iErrorCode)");
+
+      RASSERT(bResult);
+    }
+  }
+
   if (StrLib::bContains(sLine->azStr(), "__EXTERN_ROWSTRSIZE")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
       bResult = StrLib::bReplace(sLine->azStr(), sLine->nAreaBytes(), "__EXTERN_ROWSTRSIZE__",
