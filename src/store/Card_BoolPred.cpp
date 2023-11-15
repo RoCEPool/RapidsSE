@@ -762,7 +762,7 @@ TypeId Card_BoolPred::xTypeId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given conjunction                                                     */
+/* remove given conjunction                                                   */
 /*----------------------------------------------------------------------------*/
 Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark)
 {

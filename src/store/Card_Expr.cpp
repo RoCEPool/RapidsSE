@@ -177,6 +177,28 @@ void Card_Expr::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Cast Card_Expr::xCast(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Cast xCast;
+  TypeId xTypeId;
+
+  if (Card_BoolPred* p_boolPred = pSub_boolPred())
+    xTypeId = p_boolPred->xTypeId();
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    xTypeId = p_rpnCalc->xTypeId();
+
+  xCast.m_xTypeId = xTypeId;
+
+  return xCast;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 TypeId Card_Expr::xColumnTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -685,15 +707,15 @@ TypeId Card_Expr::xTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  TypeId xColTypeId;
+  TypeId xTypeId;
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-		xColTypeId = p_boolPred->xTypeId();
+    xTypeId = p_boolPred->xTypeId();
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    xColTypeId = p_rpnCalc->xTypeId();
+    xTypeId = p_rpnCalc->xTypeId();
 
-  return xColTypeId;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
