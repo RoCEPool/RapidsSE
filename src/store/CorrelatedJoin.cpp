@@ -350,9 +350,9 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, &xSymbol_KeyCol);
 
-      pCI->G.p_rpnCalc->pSymbol()->vCast(pCI->G.p_key->xColTypeId());
-      pCI->G.p_term->pSymbol()->vCast(pCI->G.p_key->xColTypeId());
-      pCI->G.p_expr->pSymbol()->vCast(pCI->G.p_key->xColTypeId());
+      pCI->G.p_rpnCalc->pSymbol()->vCast(pCI->G.p_key->xTypeId());
+      pCI->G.p_term->pSymbol()->vCast(pCI->G.p_key->xTypeId());
+      pCI->G.p_expr->pSymbol()->vCast(pCI->G.p_key->xTypeId());
     }
 
     pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);
@@ -389,7 +389,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   // pre-fold sq <project>
 
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
-  RASSERT(CT_NONE != pCI->G.p_key->xColTypeId().eCTVal());
+  RASSERT(CT_NONE != pCI->G.p_key->xTypeId().eCTVal());
 
   pCI->G.p_emit = pCI->G.p_project->pSub_emit();
   pCI->G.p_emit->vBump_expCol_In_rpnCalc(pCI);// TODO: ,nBumpBy);
@@ -404,9 +404,9 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   Symbol x_Symbol_expCol1(SF_EXP_COL, 1);
 
 
-  pCI->G.p_rpnCalc->pSymbol()->vCast(pCI->G.p_key->xColTypeId());
-  pCI->G.p_term->pSymbol()->vCast(pCI->G.p_key->xColTypeId());
-  pCI->G.p_expr->pSymbol()->vCast(pCI->G.p_key->xColTypeId());
+  pCI->G.p_rpnCalc->pSymbol()->vCast(pCI->G.p_key->xTypeId());
+  pCI->G.p_term->pSymbol()->vCast(pCI->G.p_key->xTypeId());
+  pCI->G.p_expr->pSymbol()->vCast(pCI->G.p_key->xTypeId());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added

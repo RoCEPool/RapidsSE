@@ -78,9 +78,9 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_expr_gby->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->vCast(pExpr_corr->xTypeId());
-  p_term->pSymbol()->vCast(pExpr_corr->xTypeId());
-  p_expr_gby->pSymbol()->vCast(pExpr_corr->xTypeId());
+  p_rpnCalc->pSymbol()->vCast(pExpr_corr->xCast());
+  p_term->pSymbol()->vCast(pExpr_corr->xCast());
+  p_expr_gby->pSymbol()->vCast(pExpr_corr->xCast());
 
   return p_expr_gby;
 }
@@ -104,9 +104,9 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_expr->vAppendChild(p_rpnCalc);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_rpnCalc->pSymbol()->vCast(p_expr_gby->xTypeId());
-  p_term->pSymbol()->vCast(p_expr_gby->xTypeId());
-  p_expr->pSymbol()->vCast(p_expr_gby->xTypeId());
+  p_rpnCalc->pSymbol()->vCast(p_expr_gby->xCast());
+  p_term->pSymbol()->vCast(p_expr_gby->xCast());
+  p_expr->pSymbol()->vCast(p_expr_gby->xCast());
 
   return p_expr;
 }
@@ -130,10 +130,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_expr_simple->pSymbol()->vFacets(p_expr->pSymbol());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->pSymbol()->vCast(p_expr->xTypeId());
+  p_rpnCalc->pSymbol()->vCast(p_expr->xCast());
 
   Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
-  p_term->pSymbol()->vCast(p_expr->xTypeId());
+  p_term->pSymbol()->vCast(p_expr->xCast());
   //p_term->vDump();
 
   p_rpnCalc->vAppendChild(p_term);
@@ -660,7 +660,7 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (xTypeId() != p_expr_arg->xTypeId())
+  if (xTypeId() != p_expr_arg->xCast().m_xTypeId)
     return false;
 
   Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
