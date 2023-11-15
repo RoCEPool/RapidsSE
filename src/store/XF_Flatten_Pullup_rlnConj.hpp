@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Flatten_Predicate_Pull_Up.hpp -- Predicate Pull Up                              */
+/* XF_Flatten_Pullup_rlnConj.hpp -- Predicate Pull Up                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Flatten_Predicate_Pull_Up : public XF_TRANSFORM
+  class XF_Flatten_Pullup_rlnConj : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Flatten_Predicate_Pull_Up(CardIter* pCI);
-   ~XF_Flatten_Predicate_Pull_Up(void) noexcept(false);
+    XF_Flatten_Pullup_rlnConj(CardIter* pCI);
+   ~XF_Flatten_Pullup_rlnConj(void) noexcept(false);
 
-    static void vXF_Predicate_Pull_Up(CardIter* pCI);
+    static void vXF_Pullup_rlnConj(CardIter* pCI);
 
-    void vXF_Predicate_Pull_Up(void);
+    void vXF_Pullup_rlnConj(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Flatten_Predicate_Pull_Up* _pXF_Flatten_Predicate_Pull_Up(void* aAddr);
+  XF_Flatten_Pullup_rlnConj* _pXF_Flatten_Pullup_rlnConj(void* aAddr);
 }
 
 /*============================================================================*/
