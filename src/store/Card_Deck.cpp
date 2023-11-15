@@ -469,7 +469,8 @@ void Card_Deck::vAnalyse_emitted_passThru(CardIter* pCI)
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypeId_expCol(pCI);
 
-      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
+      //pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pClone());
+      pCI->G.p_MainCard->vAppendChild(pCI->Flux.m_pArriving->pPropagate());
 
       //continue;
     }
