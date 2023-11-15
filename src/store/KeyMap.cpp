@@ -74,7 +74,7 @@ void KeyMap::vDump(i8 i_Tab)
   UNUSED(i_Tab);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("               [%lld] %lld -> $%lld\n"_Stz,
+    vTrace("               [%lld] Cell %lld -> Emitted %lld\n"_Stz,
            i_Col,
            m_axCols[i_Col].m_i_Cell,
            m_axCols[i_Col].m_i_EmittedCol

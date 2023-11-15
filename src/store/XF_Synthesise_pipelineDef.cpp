@@ -772,6 +772,21 @@ void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
   if (! m_pCI->G.p_OP->bIsOne(CK_ORDAGG, CK_NONE))
     return;
 
+  m_pOpDef->m_pKeyMap = new KeyMap;
+
+  m_pCI->G.p_emit = m_pCI->G.p_OP->pSub_emit();
+  for (Kid xKey(m_pCI->G.p_OP->pSub_key()); xKey.bEach(); /**/) {
+    //xKey.p_expr()->vDump(__func__,"KEY EXPR"_Stz);
+    if ((m_pCI->G.p_expr = m_pCI->G.p_emit->pFind_expr_Via_term0(xKey.p_expr()->pSymbol()))) {
+      //m_pCI->G.p_expr->vDump(__func__, "EMIT EXPR"_Stz);
+
+      i8 i_EmittedCol = m_pCI->G.p_expr->pSymbol()->iSF_ordinal() - 1;
+      i8 i_Cell = xKey.p_expr()->pSymbol()->iSF_ordinal() - 1;
+      m_pOpDef->m_pKeyMap->vAdd(i_EmittedCol,i_Cell);
+    }
+    else
+      NEVER_REACH
+  }
   vDebugPoint();
 }
 

@@ -327,6 +327,13 @@ void OpDef::vDump(i8 i_Tab)
     m_pColHsh->vDump(i_Tab + 1);
   }
 
+  if (m_pKeyMap) {
+    vTrace("%s%s : KeyMap %p\n"_Stz,
+           Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColHsh);
+    m_pKeyMap->vDump(i_Tab + 1);
+  }
+
+
   // - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nArgs = nItems();

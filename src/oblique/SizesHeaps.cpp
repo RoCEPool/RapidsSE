@@ -508,7 +508,7 @@ SizeHeap gxaSizeHeap[]
 
   {CN__K__,                     'K' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_KEY,                      sizeof(Key),                    HT_INVALID   , FILL },
-  {CN_KEYMAP,                   sizeof(Key),                    HT_T_MEDIUM  , FILL },
+  {CN_KEYMAP,                   sizeof(KeyMap),                 HT_T_MEDIUM  , FILL },
   {CN_KID,                      sizeof(Kid),                    HT_T_TINY    , FILL },
 
   {CN__L__,                     'L' - ('A' - 1),                HT_INVALID   , FILL },
