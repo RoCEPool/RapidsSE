@@ -206,7 +206,7 @@ Row* Pds::pAllotRow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
   // Do we have space for the row?
-  if (nFreeBytes() < m_nBlockSize)
+  if (nFreeBytes() < (m_nBlockSize + iStzSetSize()))
     return nullptr;
 
   // Pass an integer key to Pds that we increment each time we insert
@@ -224,6 +224,16 @@ Row* Pds::pAllotRow(void)
 
   m_aRowCur = aRowCur;
 
+  // If this Row contains strings,
+  // allot a String Set from the tail of the Pds
+  if(iStzSetSize()) {
+    if (aAllotStzSet() == nullptr) {
+      vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
+      vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
+      return nullptr;
+    }
+  }
+
   return aRowCur;
 }
 
@@ -239,16 +249,6 @@ Row* Pds::pCopyRow(Row* pRow, bool bOffset)
   if (! pNewRow) {
     vTrace("%s: Unable to copy row as the Pds is full\n"_Stz, __func__ );
     return nullptr;
-  }
-
-  // If this Row contains strings,
-  // allot a String Set from the tail of the Pds
-  if(iStzSetSize()) {
-    if (aAllotStzSet() == nullptr) {
-      vTrace("%s: Unable to copy rows as the Pds string area is full\n"_Stz, __func__ );
-      vTrace("Pds Rows: %lld\n"_Stz, (m_iSynthRowKey));
-      return nullptr;
-    }
   }
 
   i8 iVal;
@@ -294,7 +294,7 @@ Row* Pds::pCopyRow(Row* pRow, bool bOffset)
 /*----------------------------------------------------------------------------*/
 /* Allot a row and copy given row into it                                     */
 /*----------------------------------------------------------------------------*/
-Row* Pds::pCopyRowArray(i8* pRowCellArray)
+Row* Pds::pCopyRowArray(i8* pRowArray)
 {
 	_precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 	RASSERT(m_oRowPix.m_bInitialised);
@@ -328,19 +328,19 @@ Row* Pds::pCopyRowArray(i8* pRowCellArray)
 		if (DM_VCH == eDatum) {
 			// vch datum
 
-			if (C_DATUM_NULL == pRowCellArray[i_Col]) {
+			if (C_DATUM_NULL == pRowArray[i_Col]) {
 				vDepositColVal(C_DATUM_NULL);
 			}
 			else {
 				RASSERT(m_aStzSet != nullptr);
-				szSrcStz = (Stz*) pRowCellArray[i_Col];
+				szSrcStz = (Stz*) pRowArray[i_Col];
 				vDepositColVal(szSrcStz, m_oRowPix.m_xaColPix[i_Col].m_uLength);
 			}
 		}
 		else {
 			// all others
 
-			iVal = pRowCellArray[i_Col];
+			iVal = pRowArray[i_Col];
 			vDepositColVal(iVal);
 		}
 	}
