@@ -4,7 +4,7 @@
 
 __TPCH_SCHEMA;
 
-// NOTE: Optimiser to copy all fields of the columns when generating the streamDef's
+// NOTE: Optimiser to copy all information (length...) of the columns when generating the streamDef's
 
 /optimiser_trace
 /pipeline_def
