@@ -207,6 +207,7 @@ void XF_Synthesise_pipelineDef::vCraftOpDef(void)
 
   vCraftColPpg();
   vCraftColInj();
+  vCraftKeyMap();
 
   vCraftIndexes();
   vCraftIndexDefs();
@@ -529,7 +530,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
       CK_INDEXJOIN == eCard_OP ||
       CK_CROSSJOIN == eCard_OP ||
       CK_INDEXSCAN == eCard_OP) {
-    vCraftColInj_FACETS(pColInj, p_OP_curr);
+    vCraftColInj(pColInj, p_OP_curr);
   }
 
   pColInj->vValidate();
@@ -538,7 +539,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(void)
 /*----------------------------------------------------------------------------*/
 /* craft the columns injected to emitted map for given card                   */
 /*----------------------------------------------------------------------------*/
-void XF_Synthesise_pipelineDef::vCraftColInj_FACETS(ColInj* pColInj, Card *pSubCard)
+void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
 
@@ -760,6 +761,20 @@ void XF_Synthesise_pipelineDef::vCraftColPpg(ColPpg* pColPpg, Card *pSubCard)
 
   p_arriving->bApplyRecursive(CK_EXPR, bfAddPropagatedArriving);
 }
+
+/*----------------------------------------------------------------------------*/
+/* craft the key mapping                                                      */
+/*----------------------------------------------------------------------------*/
+void XF_Synthesise_pipelineDef::vCraftKeyMap(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_PIPELINEDEF, _FOOTER_);
+
+  if (! m_pCI->G.p_OP->bIsOne(CK_ORDAGG, CK_NONE))
+    return;
+
+  vDebugPoint();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

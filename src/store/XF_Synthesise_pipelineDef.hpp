@@ -52,9 +52,10 @@ namespace STORE
     void vCraftIndexDefs(void);
     void vCraftStreamDefs(void);
     void vCraftColInj(void);
-    void vCraftColInj_FACETS(ColInj* pColInj, Card *pSubCard);
+    void vCraftColInj(ColInj* pColInj, Card *pSubCard);
     void vCraftColPpg(void);
     void vCraftColPpg(ColPpg* pColPpg, Card *pSubCard);
+    void vCraftKeyMap(void);
 
   protected:
     Footer* aFooter(void);

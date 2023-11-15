@@ -14,6 +14,7 @@ __TPCH_SCHEMA;
    	pOpSketch->m_pKeyMap->m_axCols[1].m_i_Cell = 1;
 */
 
+/optimiser_trace
 /optimise_passthru
 /keepCodeFile
 /pipelineName = "_ray176"
