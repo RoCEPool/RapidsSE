@@ -323,12 +323,12 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
-      pCI->G.p_term->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xTypeId());
+      pCI->G.p_term->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
 
-      pCI->G.p_rpnCalc->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xTypeId());
-      pCI->G.p_term->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xTypeId());
-      pCI->G.p_expr->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xTypeId());
+      pCI->G.p_rpnCalc->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_term->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
+      pCI->G.p_expr->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
 
     }
     // TODO: hack...
@@ -472,7 +472,7 @@ void CorrelatedJoin::vConvert_CrlSqyPrm_Into_StmCol(CardIter* pCI, Card_BoolPred
           Card_Expr* p_expr_found =
               pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-          xKid.pChild()->pSymbol()->vCast(p_expr_found->xTypeId());
+          xKid.pChild()->pSymbol()->vCast(p_expr_found->xCast());
 
         }
         else
@@ -569,7 +569,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmCol(CardIter* pCI, Card_BoolPre
           Card_Expr* p_expr_found =
               pCI->Flux.m_pArriving->pGet_expr(1);
 
-          p_term_new->pSymbol()->vCast(p_expr_found->xTypeId());
+          p_term_new->pSymbol()->vCast(p_expr_found->xCast());
 
 
           p_conj->vRemoveChild(p_arg);

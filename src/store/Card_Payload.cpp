@@ -111,7 +111,7 @@ eCT Card_Payload::eColType(void)
   eCT eColType = CT_NONE;
 
   if (Card_Expr* p_expr = pSub_expr())
-    eColType = p_expr->xTypeId().eCTVal();
+    eColType = p_expr->xCast().m_xTypeId.eCTVal();
 
   return eColType;
 }

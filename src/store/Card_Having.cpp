@@ -131,9 +131,9 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pGet_expr((i8) 0);
 
-    RASSERT(CT_NONE != p_expr_found->xTypeId().eCTVal());
+    RASSERT(CT_NONE != p_expr_found->xCast().m_xTypeId.eCTVal());
 
-    pCI->G.p_term->pSymbol()->vCast(p_expr_found->xTypeId());
+    pCI->G.p_term->pSymbol()->vCast(p_expr_found->xCast());
 
     DELETE_CARD(p_term_1);
 
