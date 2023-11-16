@@ -140,7 +140,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
 
   p_expr_simple->vAppendChild(p_rpnCalc);
-  p_expr_simple->vColType(p_rpnCalc);
+  p_expr_simple->vCast(p_rpnCalc);
 
   return p_expr_simple;
 }
@@ -495,7 +495,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   Card_Expr* p_expr_propagation = new Card_Expr;
 
   //vDump(__func__);
-  p_expr_propagation->vColType(this);
+  p_expr_propagation->vCast(this);
 
   if (pSymbol()->bHasFacet(SF_NMD_COL))
     p_expr_propagation->pSymbol()->vAppendFacet(SF_NMD_COL,pSymbol()->szSF_chrSeq(SF_NMD_COL));
@@ -518,7 +518,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
 
   Card_Expr* p_expr_reduced = new Card_Expr;
   p_expr_reduced->pSymbol()->vFacets(&xExprNo);
-  p_expr_reduced->vColType(this);
+  p_expr_reduced->vCast(this);
   bool bIs_SQCRLKEY = pSymbol()->bHasFacet(C_SQCRLKEY);
 
   if (pSymbol()->bHasFacet(SF_NMD_COL))

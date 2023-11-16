@@ -456,6 +456,18 @@ void Card::vCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vCast(Card* pCard_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  //pCard_arg->vDump(__func__);
+
+  m_xSymbol.vCast(pCard_arg->xCast().m_xTypeId);
+}
+
+/*----------------------------------------------------------------------------*/
 /* visit all sub-cards and check correctness                                   */
 /*----------------------------------------------------------------------------*/
 void Card::vCheckCorrectness(void)
@@ -509,18 +521,6 @@ Cast Card::xCast(void)
   Cast xCast = pSymbol()->xCast();
 
   return xCast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set type of symbol                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vColType(Card* pCard_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  //pCard_arg->vDump(__func__);
-
-  m_xSymbol.vCast(pCard_arg->xCast().m_xTypeId);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -202,7 +202,7 @@ void Card_Term::vEnsureTypeId_expCol(CardIter* pCI)
 
   Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-  vColType(p_rpnCalc_found);
+  vCast(p_rpnCalc_found);
 }
 
 /*----------------------------------------------------------------------------*/

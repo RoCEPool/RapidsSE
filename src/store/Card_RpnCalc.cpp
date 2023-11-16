@@ -45,7 +45,7 @@ Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
   Card_Term* p_term = (new Card_Term) ->SYMPPY(pSymbol);
   vAppendChild(p_term);
 
-  vColType(p_term);
+  vCast(p_term);
 
   _checkInitialised_(CN_CARD);
 
@@ -163,7 +163,7 @@ void Card_RpnCalc::vEnsureTypeId_expCol(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-    xTerm.p_term()->vColType(p_rpnCalc_found);
+    xTerm.p_term()->vCast(p_rpnCalc_found);
   }
 }
 
@@ -411,10 +411,10 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr, bool bIs_SQCRLKEY)
   }
 
   Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
-  p_rpnCalc_reduced->vColType(this);
+  p_rpnCalc_reduced->vCast(this);
 
   Card_Term* p_term =(new Card_Term) -> SYM(SF_EXP_COL, i_Expr + 1);
-  p_term->vColType(this);
+  p_term->vCast(this);
 
   p_rpnCalc_reduced->vAppendChild(p_term);
 
@@ -443,12 +443,12 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
 
   Card_RpnCalc* p_rpnCalc_propagated = new Card_RpnCalc;
 
-  p_rpnCalc_propagated->vColType(this);
+  p_rpnCalc_propagated->vCast(this);
 
   eSF eSymbol = Symbol::eEvalSymbol(p_expr_encasing->szFacet(SF_NONE));
   RASSERT(SF_EXP_COL == eSymbol);
   Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_EXP_COL, p_expr_encasing->szFacet(SF_NONE));
-  p_term_propagated->vColType(this);
+  p_term_propagated->vCast(this);
 
   p_rpnCalc_propagated->vAppendChild(p_term_propagated);
 

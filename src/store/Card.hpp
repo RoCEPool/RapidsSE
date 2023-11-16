@@ -315,10 +315,10 @@ namespace STORE
     void vCard(eCK eCard);
     Stz* szCardNm(void);
     Cast xCast(void);
+    void vCast(Card* pCard_arg);
     void vCheckCorrectness(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
-    void vColType(Card* pCard_arg);
     eFC  eConjForm(void);
     void vConjForm(eFC eConjForm);
     void vConjFormClearRecursive(void);
