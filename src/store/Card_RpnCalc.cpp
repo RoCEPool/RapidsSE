@@ -95,9 +95,7 @@ Cast Card_RpnCalc::xCast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-	TypeId xTypeId = pSymbol()->xCast().m_xTypeId;
-  Cast xCast;
-  xCast.m_xTypeId = xTypeId;
+  Cast xCast = pSymbol()->xCast();
 
   return xCast;
 }

@@ -172,13 +172,7 @@ Cast Card_Expr::xCast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Cast xCast;
-
-  if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    xCast = p_boolPred->xCast();
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    xCast = p_rpnCalc->xCast();
+  Cast xCast = this->pSymbol()->xCast();
 
   return xCast;
 }
