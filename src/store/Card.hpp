@@ -314,6 +314,7 @@ namespace STORE
     Card* pCard(eCK eCard);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
+    Cast xCast(void);
     void vCheckCorrectness(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
