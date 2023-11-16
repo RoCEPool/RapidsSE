@@ -182,24 +182,20 @@ Cast Card_Expr::xCast(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Cast xCast;
-  TypeId xTypeId;
 
   if (Card_BoolPred* p_boolPred = pSub_boolPred())
-    xTypeId = p_boolPred->xTypeId();
+    xCast = p_boolPred->xCast();
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    xTypeId = p_rpnCalc->xCast().m_xTypeId;
-
-  xCast.m_xTypeId = xTypeId;
+    xCast = p_rpnCalc->xCast();
 
   return xCast;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-TypeId Card_Expr::xColumnTypeId(void)
+TypeId Card_Expr::xTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

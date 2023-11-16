@@ -708,7 +708,7 @@ void StreamDefBase::vToMetadata(String* psMetadata)
 		// CHANGE TO BE MADE TO RETURN THE INTERVAL TYPES
 
       psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                           m_xaColumn[i_DefColumn].xColumnTypeId().szTypeName());
+                           m_xaColumn[i_DefColumn].xTypeId().szTypeName());
     ****************************************************************************/
 
 		psMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),

@@ -235,7 +235,7 @@ Cast Card_BoolPred::xCast(void)
 
   xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
 
-  return xCast
+  return xCast;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -763,16 +763,6 @@ void Card_BoolPred::vShortForm(String* pString)
   Card_CONJ* p_conj = pRoot_conj();
 
   p_conj->vShortForm(pString);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get typeID                                                                 */
-/*----------------------------------------------------------------------------*/
-TypeId Card_BoolPred::xTypeId(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  return TypeId::xIdOf(CT_BOOLEAN);
 }
 
 /*----------------------------------------------------------------------------*/

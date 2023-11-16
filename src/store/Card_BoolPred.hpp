@@ -42,7 +42,6 @@ namespace STORE
     void vRemove_rlnConj(Card_RlnConj *p_rlnConj);
     Card_CONJ* pRoot_conj(void);
     void vShortForm(String* pString);
-    TypeId xTypeId(void);
     Card_RlnConj * pYank_rlnConj(Stz* szWithMark);
     void vX_expCol_To_tblCol(CardIter* pCI);
     void vX_tblCol_To_expCol(CardIter* pCI);
