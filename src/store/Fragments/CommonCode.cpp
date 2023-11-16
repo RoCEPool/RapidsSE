@@ -500,13 +500,15 @@ i8 iPotTubContinue_pds(Dynamic_T* aDynamicT) {
 
 	// allocate a row from the tub
 #ifdef WITH_CLANG
-	__EXTERN_COPYROW__();
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
 #endif
 
 	// check for error
 	if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
 		return 0;
 	}
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
 
 	// marker-end
 
@@ -609,11 +611,13 @@ i8 iEosPotTubBody_pds(Dynamic_T* aDynamicT) {
 
 	// allocate a row from the tub
 #ifdef WITH_CLANG
-	__EXTERN_COPYROW__();
+  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__();
 #endif
 	if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
 		return 0;
 	}
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
 
 	// marker-end
 	L_Return:
@@ -1097,6 +1101,8 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   char* __STRING_AREA_TO__;
   RowInfo __ROW_INFO_TO__;
 
+  char* azStringDyn;
+
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column __COLUMN_NO__
@@ -1109,7 +1115,8 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
   }
   else {
     // get the destination string
-    szDstStz = __ROW_INFO_TO__.m_acStrArea;
+    i8* piMaxLen = (i8*)(azStringDyn + 8);
+    szDstStz = azStringDyn + 16;
 
 		nSrcSize = strlen(szSrcStz) + 1;
 		char *d = szDstStz;
@@ -1123,15 +1130,11 @@ void vPotTubVchCol(Dynamic_T* aDynamicT) {
 
     // copy the source to the destination
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
-    iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
+    iOffset = nDifference(amCellAddress, azStringDyn);
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
-    // update the tub string size
-    __ROW_INFO_TO__.m_acStrArea += nSrcSize;
-
-#ifdef WITH_CLANG
-    __EXTERN_ROWSTRSIZE__;
-#endif
+    // update String_d address to point to the next String_d in the StringSet
+    azStringDyn = azStringDyn + *piMaxLen + 32;
   }
 
   // marker-end

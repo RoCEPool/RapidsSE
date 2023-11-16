@@ -5,6 +5,7 @@
   char *szSrcStz    __attribute__ ((unused));
   char *szDstStz    __attribute__ ((unused));
   char *szStrArea   __attribute__ ((unused));
+  char *azStringDyn __attribute__ ((unused));
   char *szArg1      __attribute__ ((unused));
   char *szArg2      __attribute__ ((unused));
   char *szArg3      __attribute__ ((unused));

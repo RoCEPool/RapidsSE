@@ -754,6 +754,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 						vAppendCodeFragment(pOpSketch, "iEosPotTubBegin"_Stz);
 						vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
 						vAppendCodeFragment(pOpSketch, "iEosPotTubBody_pds"_Stz);
+						vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
 					}
 
 				}
@@ -766,6 +767,7 @@ void CombinedSrc::vSynthesizeCode(Stencil* pStencil, bool bFirstStage, bool bLas
 						vAppendCodeHashCols(pOpSketch);
 
 					vAppendCodeFragment(pOpSketch, "iPotTubContinue_pds"_Stz);
+					vAppendCodeTubCols(pOpSketch, "vPotTubVchCol"_Stz);
 				}
 				break;
 
