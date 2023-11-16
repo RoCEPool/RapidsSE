@@ -24,6 +24,7 @@ namespace STORE
 
     static Card_Expr* pCast_expr_Column(Column *pColumn, i8 iExpCol,
                                         char cTblSyn, i8 iColOdn);
+    static Card_Expr* pCast_expr_term_expCol(Card_Term* p_term);
 
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(void);

@@ -162,12 +162,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   if (!pCI->Early.m_pNeeded_later->pFind_expr_Via_term0(pCI->G.p_term->pSymbol())) {
 
     if (pCI->G.p_term->bIs_expCol()) {
-      Card_Expr* p_expr_expCol = new Card_Expr;
-      p_expr_expCol->vCast_typeId(pCI->G.p_term->xTypeId());
-      Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-      p_rpnCalc->vCast_typeId(pCI->G.p_term->xTypeId());
-      p_expr_expCol->vAppendChild(p_rpnCalc);
-      p_rpnCalc->vAppendChild(pCI->G.p_term->pDupCardRecursive());
+      Card_Expr* p_expr_expCol = Card_Expr::pCast_expr_term_expCol(pCI->G.p_term);
       pCI->Early.m_pNeeded_later->vAppendChild(p_expr_expCol);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }

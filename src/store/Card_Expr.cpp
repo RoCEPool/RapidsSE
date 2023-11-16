@@ -161,19 +161,39 @@ Card_Expr* Card_Expr::pCast_expr_Column(Column *pColumn, i8 iExpCol,
 
   Stz* szNmdCol = pColumn->szColNm();
 
-  Card_Expr* p_expr_Column = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
-  p_expr_Column->vCast(xCast);
-  p_expr_Column->pSymbol()->vAppendFacet(SF_NMD_COL, szNmdCol);
+  Card_Expr* p_expr_new = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
+  p_expr_new->vCast(xCast);
+  p_expr_new->pSymbol()->vAppendFacet(SF_NMD_COL, szNmdCol);
 
-  Card_RpnCalc *p_rpnCalc = (new Card_RpnCalc);
-  p_rpnCalc->vCast(xCast);
-  p_expr_Column->vAppendChild(p_rpnCalc);
+  Card_RpnCalc *p_rpnCalc_new = (new Card_RpnCalc);
+  p_rpnCalc_new->vCast(xCast);
+  p_expr_new->vAppendChild(p_rpnCalc_new);
 
-  Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iColOdn);
-  p_term->vCast(xCast);
-  p_rpnCalc->vAppendChild(p_term);
+  Card_Term *p_term_new = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iColOdn);
+  p_term_new->vCast(xCast);
+  p_rpnCalc_new->vAppendChild(p_term_new);
 
-  return p_expr_Column;
+  return p_expr_new;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft a casted expr for given expCol term                                  */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pCast_expr_term_expCol(Card_Term* p_term)
+{
+  _static_
+
+  Card_Expr* p_expr_new = new Card_Expr;
+  p_expr_new->vCast(p_term->xCast());
+
+  Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
+  p_rpnCalc_new->vCast(p_term->xCast());
+  p_expr_new->vAppendChild(p_rpnCalc_new);
+
+  Card_Term *p_term_new = p_term->pClone();
+  p_rpnCalc_new->vAppendChild(p_term_new);
+
+  return p_expr_new;
 }
 
 /*----------------------------------------------------------------------------*/
