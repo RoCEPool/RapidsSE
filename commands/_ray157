@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray157                                                                    */
+/* _ray157 ( alka to look at )                                                */
 /*============================================================================*/
 
 __TPCH_SCHEMA
@@ -33,6 +33,11 @@ begin
     | combined 0
     | next
 /*
+stage S03 on all partitions :
+    top "type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
 stage S03 on all nodes :
     top "type DECIMAL Revenue" 10
     | combined 0
