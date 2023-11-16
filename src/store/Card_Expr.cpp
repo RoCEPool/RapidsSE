@@ -153,19 +153,24 @@ Card_Expr* Card_Expr::pCast_expr_Column(Column *pColumn, i8 iExpCol,
 {
   _static_
 
-  Stz* szNmdCol  = pColumn->szColNm();
-  TypeId xTypeId = pColumn->xColumnTypeId();
+  Cast xCast;
+  xCast.m_xTypeId       = pColumn->xColumnTypeId();
+  xCast.m_nTypeLength   = pColumn->iColumnLength();
+  xCast.m_nTypeScale    = pColumn->iColumnScale();
+  xCast.m_bTypeNullable = pColumn->bIsNullable();
+
+  Stz* szNmdCol = pColumn->szColNm();
 
   Card_Expr* p_expr_Column = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
+  p_expr_Column->vCast(xCast);
   p_expr_Column->pSymbol()->vAppendFacet(SF_NMD_COL, szNmdCol);
-  p_expr_Column->vCast_typeId(xTypeId);
 
   Card_RpnCalc *p_rpnCalc = (new Card_RpnCalc);
-  p_rpnCalc->vCast_typeId(xTypeId);
+  p_rpnCalc->vCast(xCast);
   p_expr_Column->vAppendChild(p_rpnCalc);
 
   Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iColOdn);
-  p_term->vCast_typeId(xTypeId);
+  p_term->vCast(xCast);
   p_rpnCalc->vAppendChild(p_term);
 
   return p_expr_Column;
