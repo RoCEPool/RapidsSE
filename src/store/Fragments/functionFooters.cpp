@@ -86,13 +86,18 @@ int vInflateRowIndexEnd_OA(struct Dynamic_T* aDynamicT)
 
 #include "vFLAT_Parameters.h"
 
-		__L_LABEL_LOOP__:
+		__LABEL_ORDAGG__:
+		__L_LABEL_OUTER_LOOP__:
 		L_AddRowToTubPot:
 
-		aSubReturnLabel = && __L_LABEL_LOOP__;
+		aSubReturnLabel = && __L_LABEL_OUTER_LOOP__;
 
 		// marker-start
-		goto __L_LABEL_LOOP__;
+		//goto __L_LABEL_LOOP__;
+		if (aDynamicT->m_bHasRowToAgg)
+			goto __LABEL_ORDAGG__;
+		if (aDynamicT->m_bHasAggRow)
+			goto __L_LABEL_OUTER_LOOP__;
 
 		L_Return:
 		if (aDynamicT->m_bHasAggRow) {

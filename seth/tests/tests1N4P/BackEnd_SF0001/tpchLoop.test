@@ -133,12 +133,9 @@ INCLUDE 'sleep.test';
 
 
 //------------------------------------------------------------------------------
-// TODO V2 : ORDAGG
-/*
 LOG 'Running tpch query 17...';
 INCLUDE 'query17.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 // TODO V2 : ORDAGG
@@ -147,7 +144,6 @@ LOG 'Running tpch query 18...';
 INCLUDE 'query18.test';
 INCLUDE 'sleep.test';
 */
-
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 19...';
 INCLUDE 'query19.test';
