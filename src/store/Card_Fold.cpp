@@ -77,7 +77,7 @@ void Card_Fold::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_Expr* 
 
   //pCI->G_vNewMember(CK_EXPR);
 
-  RASSERT(CT_NONE != p_expr_fold->xCast().m_xTypeId.eCTVal());
+  RASSERT(CT_NONE != p_expr_fold->xTypeId().eCTVal());
 
   Card_Expr* p_expr_new = new Card_Expr;
 

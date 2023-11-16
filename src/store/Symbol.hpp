@@ -20,9 +20,9 @@ namespace STORE
 
   struct Cast {
     TypeId m_xTypeId;
-    i8     m_nLength;
-    i8     m_nScale;
-    b8     m_bNullable;
+    i8     m_nTypeLength;
+    i8     m_nTypeScale;
+    b8     m_bTypeNullable;
   };
 
   class Symbol : public Object
@@ -238,6 +238,8 @@ namespace STORE
     i8   iSF_number(void);
     i8   iSF_ordinal(void);
     char cSF_tblSyn(void);
+
+    TypeId xTypeId(void);
 
     bool bValidate(void);
     void vValidate(void);

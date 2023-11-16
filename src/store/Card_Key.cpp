@@ -102,9 +102,9 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->xCast().m_xTypeId.eCTVal());
+  RASSERT(CT_NONE != this->xTypeId().eCTVal());
 
-  if (xCast().m_xTypeId != p_key_arg->xCast().m_xTypeId)
+  if (xTypeId() != p_key_arg->xTypeId())
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -215,7 +215,7 @@ IndexDef* Card_Key::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    TypeId xTypeId = p_term->xCast().m_xTypeId;
+    TypeId xTypeId = p_term->xTypeId();
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;

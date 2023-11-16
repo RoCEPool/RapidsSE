@@ -69,7 +69,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
-  RASSERT(CT_NONE != pExpr_corr->xCast().m_xTypeId.eCTVal());
+  RASSERT(CT_NONE != pExpr_corr->xTypeId().eCTVal());
 
   Card_Expr*    p_expr_gby = new Card_Expr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
@@ -92,7 +92,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
   _static_
 
-  RASSERT(CT_NONE != p_expr_gby->xCast().m_xTypeId.eCTVal());
+  RASSERT(CT_NONE != p_expr_gby->xTypeId().eCTVal());
 
   Symbol xSymbol_Kn(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
@@ -121,7 +121,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   //p_expr->vDump();
 
-  RASSERT(CT_NONE != p_expr->xCast().m_xTypeId.eCTVal());
+  RASSERT(CT_NONE != p_expr->xTypeId().eCTVal());
 
   Symbol xSymbol_Dn(SF_EXP_COL, i_Col);
 
@@ -444,7 +444,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // primary facet
 
-  s32 sType_short = szCT_char[pSymbol->xCast().m_xTypeId.eCTVal()];
+  s32 sType_short = szCT_char[pSymbol->xTypeId().eCTVal()];
   i8 i_Facet = pSymbol->i_Facet(SF_EXP_COL);
 
   if (C_UNKNOWN != i_Facet) {
@@ -563,7 +563,7 @@ bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (xCast().m_xTypeId != p_expr_arg->xCast().m_xTypeId)
+  if (xTypeId() != p_expr_arg->xTypeId())
     return false;
 
   Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();

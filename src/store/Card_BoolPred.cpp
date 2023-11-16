@@ -60,7 +60,7 @@ Card_BoolPred* Card_BoolPred::pTo_boolPred(Card_RpnCalc* p_rpnCalc_arg)
 
   Card_BoolPred* p_boolPred_new = new Card_BoolPred;
 
-  p_boolPred_new->xCast().m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
+  p_boolPred_new->xTypeId() = TypeId::xIdOf(CT_BOOLEAN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the rpn calc have a when in it?

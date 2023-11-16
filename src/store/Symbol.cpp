@@ -2834,6 +2834,16 @@ char Symbol::cSF_tblSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get cast                                                                   */
+/*----------------------------------------------------------------------------*/
+TypeId Symbol::xTypeId(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_xTypeId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate symbol                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bValidate(void)
@@ -3281,9 +3291,9 @@ void Symbol::vCastReset(void)
 
   m_xCast.m_xTypeId = TypeId();
 
-  m_xCast.m_nLength   = C_UNKNOWN;
-  m_xCast.m_nScale    = C_UNKNOWN;
-  m_xCast.m_bNullable = true;
+  m_xCast.m_nTypeLength   = C_UNKNOWN;
+  m_xCast.m_nTypeScale    = C_UNKNOWN;
+  m_xCast.m_bTypeNullable = true;
 }
 
 /*----------------------------------------------------------------------------*/
