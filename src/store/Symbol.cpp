@@ -2790,13 +2790,43 @@ char Symbol::cSF_tblSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cast                                                                   */
+/* get typeId                                                                 */
 /*----------------------------------------------------------------------------*/
 TypeId Symbol::xTypeId(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_xCast.m_xTypeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get typeLength                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::nTypeLength(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_nTypeLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get typeNullable                                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bTypeNullable(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_bTypeNullable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get typeScale                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::nTypeScale(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_xCast.m_nTypeScale;
 }
 
 /*----------------------------------------------------------------------------*/

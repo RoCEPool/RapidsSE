@@ -237,6 +237,9 @@ namespace STORE
     char cSF_tblSyn(void);
 
     TypeId xTypeId(void);
+    i8     nTypeLength(void);
+    bool   bTypeNullable(void);
+    i8     nTypeScale(void);
 
     bool bValidate(void);
     void vValidate(void);
