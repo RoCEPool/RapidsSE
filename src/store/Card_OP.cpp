@@ -88,7 +88,7 @@ void Card_OP::vAnalyse_injected(CardIter* pCI)
 
   UNUSED(pCI);
 
-  pCI->G.p_injected = Card_Injectable::pNew_injected(pCI);
+  pCI->G.p_injected = Card_Injectable::pNew_injectable(pCI);
 
   vAppendChild(pCI->G.p_injected);
 }
@@ -608,26 +608,10 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
-    Card_Expr* p_expr = new Card_Expr;
-    Symbol xSymbol(SF_EXP_COL, i_Expr++);
-    p_expr->pSymbol()->vFacets(&xSymbol);
-    p_emit->vAppendChild(p_expr);
+    Card_Expr* p_expr_Column =
+        Card_Expr::pCraft_expr_Column(pColumn, cTblSyn, i_Expr++ ,i_Col + 1);
 
-		TypeId xColumnTypeId = pColumn->xColumnTypeId();
-
-    p_expr->pSymbol()->vAppendFacet(SF_NMD_COL,pColumn->szColNm());
-
-    Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
-    p_expr->vAppendChild(p_rpnCalc);
-    p_rpnCalc->vCast_typeId(xColumnTypeId);
-    p_expr->vCast_typeId(xColumnTypeId);
-
-    Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, i_Col + 1);
-    p_rpnCalc->vAppendChild(p_term);
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    p_term->pSymbol()->Y_vSet(P_Column);
-    p_term->vCast_typeId(xColumnTypeId);
+    p_emit->vAppendChild(p_expr_Column);
   }
 
   pCI->G.p_stream->vAppendChild(p_emit);

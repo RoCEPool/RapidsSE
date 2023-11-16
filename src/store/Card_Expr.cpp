@@ -145,6 +145,37 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   return p_expr_simple;
 }
 
+/*----------------------------------------------------------------------------*/
+/* craft an expr for given column                                             */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pCraft_expr_Column(Column *pColumn, char cTblSyn,
+                                         i8 iExpr, i8 iCol)
+{
+  _static_
+
+  Card_Expr* p_expr_Column = new Card_Expr;
+  Symbol xSymbol(SF_EXP_COL, iExpr);
+  p_expr_Column->pSymbol()->vFacets(&xSymbol);
+
+  TypeId xTypeId = pColumn->xColumnTypeId();
+
+  p_expr_Column->pSymbol()->vAppendFacet(SF_NMD_COL, pColumn->szColNm());
+
+  Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
+  p_expr_Column->vAppendChild(p_rpnCalc);
+  p_rpnCalc->vCast_typeId(xTypeId);
+  p_expr_Column->vCast_typeId(xTypeId);
+
+  Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iCol);
+  p_rpnCalc->vAppendChild(p_term);
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  p_term->pSymbol()->Y_vSet(P_Column);
+  p_term->vCast_typeId(xTypeId);
+
+
+  return p_expr_Column;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
