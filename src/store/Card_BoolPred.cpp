@@ -225,6 +225,20 @@ void Card_BoolPred::vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get typeID                                                                 */
+/*----------------------------------------------------------------------------*/
+Cast Card_BoolPred::xCast(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Cast xCast;
+
+  xCast.m_xTypeId = TypeId::xIdOf(CT_BOOLEAN);
+
+  return xCast
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this boolPred contain given symbol?                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bContains(Symbol* pGivenSymbol)
@@ -762,7 +776,7 @@ TypeId Card_BoolPred::xTypeId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove given conjunction                                                     */
+/* remove given conjunction                                                   */
 /*----------------------------------------------------------------------------*/
 Card_RlnConj * Card_BoolPred::pYank_rlnConj(Stz* szWithMark)
 {

@@ -18,6 +18,13 @@ namespace STORE
     s256 m_sChrSeq;
   };
 
+  struct Cast {
+    TypeId m_xTypeId;
+    i8     m_nLength;
+    i8     m_nScale;
+    b8     m_bNullable;
+  };
+
   class Symbol : public Object
   {
   private:
@@ -26,7 +33,7 @@ namespace STORE
     i8 m_nFacets;
     Facet xaFacet[C_FACETS];
 
-		TypeId m_xTypeId;
+    Cast m_xCast;
 
     TagSet* m_pProperties;
 
@@ -40,8 +47,6 @@ namespace STORE
     Symbol(eSF eFacet, Stz* szChrSeq);
 
     ~Symbol(void);
-
-    static i8   iOrdDiff(Stz* szSeq1, Stz* szSeq2);
 
     static eRO  eEvalRelnOp(Stz* szSymbol);
     static eQO  eEvalSubQryOp(Stz* szArg);
@@ -108,7 +113,7 @@ namespace STORE
 
     static bool bSame(Facet* aFacet_a, Facet* aFacet_b);
 
-    static TypeId  xTo_TypeId_str(Stz* szType);
+    static TypeId xTo_TypeId(Stz* szTypeName);
 
     // - - - - - -
 
@@ -116,11 +121,11 @@ namespace STORE
     void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
-    //eCT  eColType(void);
-    //void vColType(eCT eColType);
-
-		TypeId  xTypeId(void);
-		void vTypeId(TypeId xColTypeId);
+    Cast* aCast(void);
+    Cast xCast(void);
+    void vCast(Cast* aCast);
+    void vCast(Cast xCast);
+    void vCast(TypeId xTypeId);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
@@ -264,6 +269,8 @@ namespace STORE
     void Y_vTo_String(String* pString);
 
   private:
+    void vCastReset(void);
+
     void vFacet_Agg_Fn(Stz* szAggFn);
     void vFacet_As(Stz* szAs);
     void vFacet_Bol_Fn(Stz* szBolFn);

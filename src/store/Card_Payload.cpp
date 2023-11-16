@@ -111,7 +111,7 @@ eCT Card_Payload::eColType(void)
   eCT eColType = CT_NONE;
 
   if (Card_Expr* p_expr = pSub_expr())
-    eColType = p_expr->xTypeId().eCTVal();
+    eColType = p_expr->xCast().m_xTypeId.eCTVal();
 
   return eColType;
 }
@@ -151,7 +151,7 @@ IndexDef* Card_Payload::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    TypeId xTypeId = p_term->pSymbol()->xTypeId();
+    TypeId xTypeId = p_term->pSymbol()->xCast().m_xTypeId;
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;
