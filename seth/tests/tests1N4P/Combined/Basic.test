@@ -515,7 +515,7 @@ contains rows:
 
 // TODO V2 : ORDAGG
 /*
-// multi-column ordagg with muli-col indexscan
+// multi-column ordagg with multi-col indexscan
 /optimise_passthru 
 pipeline Q
 begin
