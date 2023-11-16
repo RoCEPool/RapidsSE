@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray172                                                                    */
+/* _ray172  - ( for alka to look at )                                         */
 /*============================================================================*/
 
 __TPCH_SCHEMA;
@@ -42,6 +42,8 @@ begin
         type DECIMAL as Revenue ) L_EXTENDEDPRICE 1.0 L_DISCOUNT - * sum ,
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+    | combined 0
+    | next
 
   stage S04 on origin :
     output
