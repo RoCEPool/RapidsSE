@@ -1569,6 +1569,9 @@ Card_Key* Dissector::pPop_key(Card_RpnExpr* p_rpnExpr, bool bEnsureDirection)
 //    }
 
     p_key->vAppendChild(p_expr);
+
+    if (1 == p_key->nChildCards())
+      p_key->pSymbol()->vCast(p_expr->xCast());
   }
 
   return p_key;

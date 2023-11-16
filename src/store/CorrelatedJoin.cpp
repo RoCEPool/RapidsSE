@@ -318,17 +318,21 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     if (AL_PARTITION == e_Level) {
       pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_pExpr_corr);
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
+      if (1 == pCI->G.p_key->nChildCards())
+        pCI->G.p_key->pSymbol()->vCast(pCI->G.p_expr->xCast());
     }
     else {
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
+      pCI->G.p_expr->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, Symbol(SF_EXP_COL, "$1"_Stz));
       pCI->G.p_term->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
       pCI->G.p_key->vAppendChild(pCI->G.p_expr);
+      if (1 == pCI->G.p_key->nChildCards())
+        pCI->G.p_key->pSymbol()->vCast(pCI->G.p_expr->xCast());
 
       pCI->G.p_rpnCalc->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
       pCI->G.p_term->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
-      pCI->G.p_expr->pSymbol()->vCast(pCI->Sqy.m_pExpr_corr->xCast());
 
     }
     // TODO: hack...

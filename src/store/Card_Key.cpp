@@ -89,6 +89,9 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_expr_new->vAppendChild(p_direction);
   }
 
+  if (0 == i_Key)
+    pSymbol()->vCast(p_expr->xCast());
+
   vAppendChild(p_expr_new);
 }
 
@@ -99,16 +102,11 @@ Cast Card_Key::xCast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Cast xCast;
-
-  if (Card_Expr* p_expr = pSub_expr())
-    xCast = p_expr->xCast();
-  else {
-    NEVER_REACH
-  }
+  Cast xCast = pSymbol()->xCast();
 
   return xCast;
 }
+
 /*----------------------------------------------------------------------------*/
 /* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
