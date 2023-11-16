@@ -22,8 +22,8 @@ namespace STORE
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
-    static Card_Expr* pCraft_expr_Column(Column *pColumn, i8 iExpCol,
-                                         char cTblSyn, i8 iColOdn);
+    static Card_Expr* pCast_expr_Column(Column *pColumn, i8 iExpCol,
+                                        char cTblSyn, i8 iColOdn);
 
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(void);

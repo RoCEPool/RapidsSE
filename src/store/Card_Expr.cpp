@@ -146,33 +146,29 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft an expr for given column                                             */
+/* craft a casted expr for given column                                       */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_Column(Column *pColumn, i8 iExpCol,
-                                         char cTblSyn, i8 iColOdn)
+Card_Expr* Card_Expr::pCast_expr_Column(Column *pColumn, i8 iExpCol,
+                                        char cTblSyn, i8 iColOdn)
 {
   _static_
 
-  Card_Expr* p_expr_Column = new Card_Expr;
-  Symbol xSymbol(SF_EXP_COL, iExpCol);
-  p_expr_Column->pSymbol()->vFacets(&xSymbol);
-
+  Stz* szNmdCol  = pColumn->szColNm();
   TypeId xTypeId = pColumn->xColumnTypeId();
 
-  p_expr_Column->pSymbol()->vAppendFacet(SF_NMD_COL, pColumn->szColNm());
-
-  Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
-  p_expr_Column->vAppendChild(p_rpnCalc);
-  p_rpnCalc->vCast_typeId(xTypeId);
+  Card_Expr* p_expr_Column = (new Card_Expr) -> SYM(SF_EXP_COL, iExpCol);
+  p_expr_Column->pSymbol()->vAppendFacet(SF_NMD_COL, szNmdCol);
   p_expr_Column->vCast_typeId(xTypeId);
 
+  Card_RpnCalc *p_rpnCalc = (new Card_RpnCalc);
+  p_rpnCalc->vCast_typeId(xTypeId);
+  p_expr_Column->vAppendChild(p_rpnCalc);
+
   Card_Term *p_term = (new Card_Term) -> SYM(SF_TBL_COL, cTblSyn, iColOdn);
+  p_term->vCast_typeId(xTypeId);
   p_rpnCalc->vAppendChild(p_term);
 
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   p_term->pSymbol()->Y_vSet(P_Column);
-  p_term->vCast_typeId(xTypeId);
-
 
   return p_expr_Column;
 }

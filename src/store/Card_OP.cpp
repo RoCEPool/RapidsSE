@@ -609,7 +609,7 @@ void Card_OP::vUpdate_emitted(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr_Column =
-        Card_Expr::pCraft_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
+        Card_Expr::pCast_expr_Column(pColumn, iExpCol++, cTblSyn, i_Col + 1);
 
     p_emit->vAppendChild(p_expr_Column);
   }

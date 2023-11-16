@@ -61,7 +61,7 @@ Card_Injectable* Card_Injectable::pNew_injectable(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr_Column =
-        Card_Expr::pCraft_expr_Column(pColumn, i_Col + 1, cTblSyn, i_Col + 1);
+        Card_Expr::pCast_expr_Column(pColumn, i_Col + 1, cTblSyn, i_Col + 1);
 
     p_injectable->vAppendChild(p_expr_Column);
   }
