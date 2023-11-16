@@ -95,7 +95,7 @@ Cast Card_RpnCalc::xCast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-	TypeId xTypeId = pSymbol()->xTypeId();
+	TypeId xTypeId = pSymbol()->xCast().m_xTypeId;
   Cast xCast;
   xCast.m_xTypeId = xTypeId;
 
@@ -201,7 +201,7 @@ void Card_RpnCalc::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
     Card_Term* p_term_ColSym = x_term.p_term();
 
     Card_Expr* p_expr_ColSym = new Card_Expr(p_term_ColSym->pSymbol());
-    p_expr_ColSym->pSymbol()->vCast(p_term_ColSym->pSymbol()->xTypeId());
+    p_expr_ColSym->pSymbol()->vCast(p_term_ColSym->pSymbol()->xCast().m_xTypeId);
 
     p_subSet->vAppendChild(p_expr_ColSym);
   }
@@ -400,7 +400,7 @@ void Card_RpnCalc::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s32 sType_short = szCT_char[pSymbol()->xTypeId().eCTVal()];
+  s32 sType_short = szCT_char[pSymbol()->xCast().m_xTypeId.eCTVal()];
 
   pRibbon->vSprintSnippet(false,"%c%c%s%lld]%s %s"_Stz,
                           cMark1(),

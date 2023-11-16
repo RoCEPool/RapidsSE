@@ -541,7 +541,7 @@ void Card_Expr::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // primary facet
 
-  s32 sType_short = szCT_char[pSymbol->xTypeId().eCTVal()];
+  s32 sType_short = szCT_char[pSymbol->xCast().m_xTypeId.eCTVal()];
   i8 i_Facet = pSymbol->i_Facet(SF_EXP_COL);
 
   if (C_UNKNOWN != i_Facet) {

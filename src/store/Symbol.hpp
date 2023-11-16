@@ -239,8 +239,6 @@ namespace STORE
     i8   iSF_ordinal(void);
     char cSF_tblSyn(void);
 
-    TypeId xTypeId(void);
-
     bool bValidate(void);
     void vValidate(void);
 

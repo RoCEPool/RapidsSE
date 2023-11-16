@@ -93,7 +93,24 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get cast information                                                       */
+/*----------------------------------------------------------------------------*/
+Cast Card_Key::xCast(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Cast xCast;
+
+  if (Card_Expr* p_expr = pSub_expr())
+    xCast = p_expr->xCast();
+  else {
+    NEVER_REACH
+  }
+
+  return xCast;
+}
+/*----------------------------------------------------------------------------*/
+/* test if this key equal to given arg                                        */
 /*----------------------------------------------------------------------------*/
 bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
@@ -148,7 +165,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* ensure cast info                                                           */
 /*----------------------------------------------------------------------------*/
 void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 {
@@ -156,29 +173,6 @@ void Card_Key::vEnsureTypeId_expCol(CardIter *pCI)
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
     xKid.p_expr()->vEnsureTypeId_expCol(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Key::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(! pCI->G.p_subSet);
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  // key is a set of expr
-  for (Kid x_expr(this); x_expr.bEach(CK_EXPR); /**/) {
-
-    x_expr.p_expr()->vFactorAll_ColSym_IntoDistinct_expr(pCI);
-    p_subSet->vTransferChildren(pCI->G.p_subSet);
-
-    DELETE_CARD(pCI->G.p_subSet);
-  }
-
-  pCI->G.p_subSet = p_subSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +195,7 @@ void Card_Key::vMapColumns(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get typeId                                                                 */
 /*----------------------------------------------------------------------------*/
 TypeId Card_Key::xTypeId(void)
 {
@@ -211,6 +205,9 @@ TypeId Card_Key::xTypeId(void)
 
   if (Card_Expr* p_expr = pSub_expr())
     xTypeId = p_expr->xCast().m_xTypeId;
+  else {
+    NEVER_REACH
+  }
 
   return xTypeId;
 }
@@ -250,7 +247,7 @@ IndexDef* Card_Key::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    TypeId xTypeId = p_term->pSymbol()->xTypeId();
+    TypeId xTypeId = p_term->pSymbol()->xCast().m_xTypeId;
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;
@@ -274,7 +271,7 @@ IndexDef* Card_Key::pToIndexDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {

@@ -151,7 +151,7 @@ IndexDef* Card_Payload::pToIndexDef(void)
       continue;
 
     Stz* szColNm  = p_term->szFacet(SF_NONE);
-    TypeId xTypeId = p_term->pSymbol()->xTypeId();
+    TypeId xTypeId = p_term->pSymbol()->xCast().m_xTypeId;
 
     if (! szColNm || CT_NONE == xTypeId.eCTVal())
       continue;
