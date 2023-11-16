@@ -520,7 +520,7 @@ void Card::vColType(Card* pCard_arg)
 
   //pCard_arg->vDump(__func__);
 
-  m_xSymbol.vCast(pCard_arg->pSymbol()->xCast().m_xTypeId);
+  m_xSymbol.vCast(pCard_arg->xCast().m_xTypeId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1655,7 +1655,7 @@ TypeId Card::xTypeId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  TypeId xTypeId = pSymbol()->xCast().m_xTypeId;
+  TypeId xTypeId = xCast().m_xTypeId;
 
   return xTypeId;
 }
