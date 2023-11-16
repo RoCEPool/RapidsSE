@@ -116,9 +116,9 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(CT_NONE != this->xTypeId().eCTVal());
+  RASSERT(CT_NONE != this->xCast().m_xTypeId.eCTVal());
 
-  if (xTypeId() != p_key_arg->xTypeId())
+  if (xCast().m_xTypeId != p_key_arg->xCast().m_xTypeId)
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,24 +192,6 @@ void Card_Key::vMapColumns(CardIter *pCI)
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* get typeId                                                                 */
-/*----------------------------------------------------------------------------*/
-TypeId Card_Key::xTypeId(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-	TypeId xTypeId;
-
-  if (Card_Expr* p_expr = pSub_expr())
-    xTypeId = p_expr->xCast().m_xTypeId;
-  else {
-    NEVER_REACH
-  }
-
-  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
