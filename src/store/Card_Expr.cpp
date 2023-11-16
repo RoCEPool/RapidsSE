@@ -186,23 +186,6 @@ Cast Card_Expr::xCast(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-TypeId Card_Expr::xTypeId(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-
-    TypeId xTypeId = p_rpnCalc->xCast().m_xTypeId;
-
-    return xTypeId;
-  }
-
-  return TypeId::xIdOf(CT_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
