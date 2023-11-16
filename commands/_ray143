@@ -6,6 +6,7 @@ __TPCH_SCHEMA;
 
 // NOTE: project went missing.
 //       looks like project got fused with filter
+//       passthru's should not get optimised
 
 // (Combined/indexJoin.test)
 
