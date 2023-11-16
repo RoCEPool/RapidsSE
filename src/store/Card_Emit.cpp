@@ -152,7 +152,7 @@ Card_Needed* Card_Emit::pCraftRoot_needed(CardIter* pCI)
         RASSERT(pCI->G.p_streamKey);
 
         Card_Expr* p_expr_key = pCI->G.p_streamKey->pGet_expr(xCI_rpnCalc.p_term()->pSymbol());
-        Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
+        Symbol* pSymbol_tblCol = p_expr_key->pFirst_tblCol();
 
         vDebugPoint();
 
@@ -340,7 +340,7 @@ void Card_Emit::vMapColumns(CardIter* pCI)
 
       nExpr_key++;
 
-      Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
+      Symbol *pSymbol_keyCol = p_expr_projection->pFirst_keyCol();
       Card_Map* p_map_keyCell = pCI->G.p_keyCells->pGetMap(pSymbol_keyCol);
       p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_EmittedCol);
 

@@ -145,15 +145,6 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   return p_expr_simple;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pProj_Simple_expr_Of_key(Card_Expr* p_expr_key)
-{
-  _static_
-  UNUSED(p_expr_key);
-  return nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -264,53 +255,6 @@ void Card_Expr::vEnsureTypeId_expCol(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vFactorAll_ColSym_IntoDistinct_expr(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(! pCI->G.p_subSet);
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  // an expr is an rpnCalc (shouldn't be boolPred)
-  if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
-
-    pCI->G.p_rpnCalc->vFactorAll_ColSym_IntoDistinct_expr(pCI);
-    p_subSet->vTransferChildren(pCI->G.p_subSet);
-
-    DELETE_CARD(pCI->G.p_subSet);
-  }
-
-  pCI->G.p_subSet = p_subSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get first col symbol                                                       */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirstColSym(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* p_colSym = pSub_rpnCalc()->pFirstColSym();
-
-  return p_colSym;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get first key col                                                          */
-/*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirstKeyCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* p_keyCol = pSub_rpnCalc()->pFirstKeyCol();
-
-  return p_keyCol;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get first stm col                                                          */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_Expr::pFirst_expCol(void)
@@ -323,9 +267,21 @@ Symbol* Card_Expr::pFirst_expCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first key col                                                          */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pFirst_keyCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* p_keyCol = pSub_rpnCalc()->pFirstKeyCol();
+
+  return p_keyCol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get first tbl col                                                          */
 /*----------------------------------------------------------------------------*/
-Symbol* Card_Expr::pFirstTblCol(void)
+Symbol* Card_Expr::pFirst_tblCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -372,20 +328,6 @@ Card_Term* Card_Expr::pGet_term0(void)
   Card_Term* p_term0 = pSub_rpnCalc()->pGetTerm(0);
 
   return p_term0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this expression an aggregate function ?                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsAggCalc(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    return p_rpnCalc->bIsAggCalc();
-  }
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

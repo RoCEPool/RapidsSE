@@ -571,7 +571,7 @@ void Card_Term::vX_tblCol_To_expCol(CardIter* pCI)
     //pCI->X.m_pExprList_k->vDump(__func__);
     //pSymbol_this->vDump();
     if (Card_Expr *p_expr_scalar_k = pCI->X.m_pExprList_k->pFind_expr_Via_term0(&xTblCol_sym)) {
-      Symbol *pSymbol_k = p_expr_scalar_k->pFirstKeyCol();
+      Symbol *pSymbol_k = p_expr_scalar_k->pFirst_keyCol();
       if (! pSymbol_k)
         return;
       if (Card_Expr *p_expr_scalar_a = pCI->X.m_pExprList_a->pFind_expr_Via_term0(&xTblCol_sym)) {

@@ -111,7 +111,7 @@ void XF_Prolog_X_colNm_By_stmCol::vX_colNm_By_stmCol(void)
       //p_expr_arriving->vDump(__func__);
       p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
       p_term_colNm->pSymbol()->vFacetsPpy(p_expr_arriving->pSymbol());
-//      if (Symbol* pSymbol_found = p_expr_arriving->pFirstTblCol()) {
+//      if (Symbol* pSymbol_found = p_expr_arriving->pFirst_tblCol()) {
 //        //pSymbol_found->vDump();
 //        p_term_colNm->pSymbol()->vDeleteFacet(SF_NMD_COL);
 //        p_term_colNm->pSymbol()->vFacet(SF_TBL_COL, pSymbol_found->szSF_chrSeq(SF_NONE));

@@ -21,7 +21,6 @@ namespace STORE
     static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
-    static Card_Expr* pProj_Simple_expr_Of_key(Card_Expr* p_expr_key);
 
     void vBump_expCol(i8 nBumpBy, bool bSkipFoldExpr=false);
     Cast xCast(void);
@@ -31,15 +30,12 @@ namespace STORE
     bool bContains(Symbol* pSymbol_arg);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
     void vEnsureTypeId_expCol(CardIter* pCI);
-    void vFactorAll_ColSym_IntoDistinct_expr(CardIter* pCI);
-    Symbol* pFirstColSym(void);
-    Symbol* pFirstKeyCol(void);
     Symbol* pFirst_expCol(void);
-    Symbol* pFirstTblCol(void);
+    Symbol* pFirst_keyCol(void);
+    Symbol* pFirst_tblCol(void);
     Symbol* pGet_Symbol(i8 i_Term);
     Card_Term* pGet_term(i8 i_Term);
     Card_Term* pGet_term0(void);
-    bool bIsAggCalc(void);
     bool bIsDescending(void);
     bool bMatches_term0(Symbol* pSymbol_arg, eSF* aeFacet_arg= nullptr);
     bool bIsCompound(void);

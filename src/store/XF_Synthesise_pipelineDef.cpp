@@ -564,7 +564,7 @@ void XF_Synthesise_pipelineDef::vCraftColInj(ColInj* pColInj, Card *pSubCard)
     Card_Expr*   p_expr_i = _pCard_Expr(pCard_expr_i);
     i8    i_CrwCol_expr_i = StrLib::iGleanInt(p_expr_i->szFacet(SF_ITM_COL)->azChar());
 
-    Symbol* pSym_tblCol_i = p_expr_i->pFirstTblCol();
+    Symbol* pSym_tblCol_i = p_expr_i->pFirst_tblCol();
     Stz*       szTblCol_i = pSym_tblCol_i->szSF_chrSeq(SF_NONE);
     //pSym_tblCol_i->vDump();
 
