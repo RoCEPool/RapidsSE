@@ -65,6 +65,7 @@ cp "${ROOT_DIR}/src/store/Fragments/IndexJoin.cpp"       "${LAYOUT_DIR}/src/stor
 cp "${ROOT_DIR}/src/store/Fragments/IndexScan.cpp"       "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/InflateCrw.cpp"      "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/InflateRow.cpp"      "${LAYOUT_DIR}/src/store/Fragments"
+cp "${ROOT_DIR}/src/store/Fragments/OrdAgg.cpp"          "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/Project.cpp"         "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/Stencil.cpp"         "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/vFLAT_FunctionLocals.h" "${LAYOUT_DIR}/src/store/Fragments"
