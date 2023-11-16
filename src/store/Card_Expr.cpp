@@ -168,8 +168,6 @@ Card_Expr* Card_Expr::pCast_expr_Column(Column *pColumn, i8 iExpCol,
   p_term->vCast_typeId(xTypeId);
   p_rpnCalc->vAppendChild(p_term);
 
-  p_term->pSymbol()->Y_vSet(P_Column);
-
   return p_expr_Column;
 }
 

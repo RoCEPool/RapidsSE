@@ -404,11 +404,6 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   UNUSED(iDepth);
 
-//  if (!pSymbol()->Y_bHas(P_Column)) {
-//    vPrintCard_bySettings(pRibbon, iDepth);
-//    return;
-//  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s256 sTerm = szFacet(SF_NONE);
