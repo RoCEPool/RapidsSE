@@ -155,7 +155,6 @@ int vInflateRowEnd_OA(struct Dynamic_T* aDynamicT)
 
 		__LABEL_ORDAGG__:
 		__L_LABEL_OUTER_LOOP__:
-		__L_LABEL_LOOP__:
 		L_AddRowToTubPot:
 
 		// marker-start
