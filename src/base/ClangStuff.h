@@ -58,7 +58,6 @@ extern void  vExtern_TubCopyRow(void* pTub, void* pRowSrc, i8* piErrorCode) __at
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_TubRowPix(void* pTub, void* pRowPix) __attribute__((weak_import));
 
-extern i8 iExtern_TotalStringdSize(i8 nBytes) __attribute__((weak_import));
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
