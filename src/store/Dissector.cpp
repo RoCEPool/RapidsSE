@@ -647,7 +647,7 @@ Card* Dissector::pOp_indexJoin(void)
   Card_Term* p_term_first = p_bound->pGetTerm(0);
   if (p_term_first->pSymbol()->bSame("LEFT_OUTER"_Stz)) {
     Card_OuterJoin* p_outerJoin = new Card_OuterJoin;
-    p_outerJoin->pSymbol()->vFacets(p_term_first->pSymbol());
+    p_outerJoin->pSymbol()->vCastFacets(p_term_first->pSymbol());
     p_indexJoin->vAppendChild(p_outerJoin);
   }
   p_bound->vDeleteChild(p_term_first);
@@ -662,7 +662,7 @@ Card* Dissector::pOp_indexJoin(void)
   i8 nTerms = p_bound->nChildCards();
 
   Card_Term* p_term_last = p_bound->pGetTerm(nTerms-1);
-  p_bound->pSymbol()->vFacets(p_term_last->pSymbol());
+  p_bound->pSymbol()->vCastFacets(p_term_last->pSymbol());
   p_bound->vDeleteChild(p_term_last);
 
   p_bounds->vAppendChild(p_bound);
@@ -1312,7 +1312,7 @@ Card_Bound* Dissector::pPop_bound(Card_RpnExpr* p_rpnExpr)
 
   // use last term to set bound symbol
   Card_Term* p_term_last = p_bound->pGetTerm_last();
-  p_bound->pSymbol()->vFacets(p_term_last->pSymbol());
+  p_bound->pSymbol()->vCastFacets(p_term_last->pSymbol());
 
   // cross-check validity of bound symbol
   RASSERT(Card_Bound::bValidBoundForRelnOp(p_rpnItem->pSymbol(),
@@ -1384,11 +1384,11 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
 
   if (bIsKeyExpr) {
     Symbol xSymbol_expCol(SF_KEY_COL, ri_Expr);
-    p_expr->pSymbol()->vFacets(&xSymbol_expCol);
+    p_expr->pSymbol()->vCastFacets(&xSymbol_expCol);
   }
   else {
     Symbol xSymbol_expCol(SF_EXP_COL, ri_Expr);
-    p_expr->pSymbol()->vFacets(&xSymbol_expCol);
+    p_expr->pSymbol()->vCastFacets(&xSymbol_expCol);
   }
 
   Cast xCast;
@@ -1403,7 +1403,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_as = pPop_as(p_rpnExpr);
     //p_expr->vAppendChild(p_as);
 
-    oSymbol_nmdCol.vFacets(p_as->pSymbol());
+    oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
 
 //    delete p_as;
 //    p_as = nullptr;
@@ -1430,7 +1430,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     p_as = pPop_as(p_rpnExpr);
     //p_expr->vAppendChild(p_as);
 
-    oSymbol_nmdCol.vFacets(p_as->pSymbol());
+    oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
 
 //    delete p_as;
 //    p_as = nullptr;
@@ -1469,7 +1469,7 @@ Card_Expr* Dissector::pPop_expr(Card_RpnExpr* p_rpnExpr,
     }
     //p_expr->vPushChild(p_as);
   }
-  oSymbol_nmdCol.vFacets(p_as->pSymbol());
+  oSymbol_nmdCol.vCastFacets(p_as->pSymbol());
 
   p_expr->pSymbol()->vAppendFacets(&oSymbol_nmdCol);
 

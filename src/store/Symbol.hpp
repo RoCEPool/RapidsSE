@@ -121,11 +121,10 @@ namespace STORE
     void vAppendFacet(eSF eFacet_arg, Stz* szChrSeq_arg);
     void vAppendFacets(Symbol* pSymbol_arg);
 
-    Cast* aCast(void);
     Cast xCast(void);
-    void vCast(Cast* aCast);
     void vCast(Cast xCast);
-    void vCast(TypeId xTypeId);
+    void vCastFacets(Symbol* pSymbol_arg);
+    void vCastFacetsPpy(Symbol* pSymbol_arg);
 
     void vDeleteFacet(eSF eFacet);
     void vDeleteFacetIf(eSF eFacet, eSF eAlsoFacet, char cTblSyn);
@@ -147,8 +146,6 @@ namespace STORE
     void vFacet(eSF eFacet, i8 iInt, Symbol* pSymbol);
     void vFacet(eSF eFacet, Stz* szChrSeq);
     i8   nFacets(void);
-    void vFacets(Symbol* pSymbol_arg);
-    void vFacetsPpy(Symbol* pSymbol_arg);
 
     void vFacets_To_String(String* pString);
 

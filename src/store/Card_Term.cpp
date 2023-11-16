@@ -314,7 +314,7 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->pSymbol()->vFacets(pDiffSymbol);
+  p_term_clone->pSymbol()->vCastFacets(pDiffSymbol);
 
   return p_term_clone;
 }
@@ -439,7 +439,7 @@ void Card_Term::vCorrect_expCol(Card_Emit* p_arriving)
 
   Symbol* pSym = pSymbol();
   if (Card_Expr* p_expr = p_arriving->pFindExprOfSymbol(pSym)) {
-    pSym->vFacets(p_expr->pSymbol());
+    pSym->vCastFacets(p_expr->pSymbol());
     vMark1(MARK_CHANGED);
   }
 }
@@ -483,7 +483,7 @@ void Card_Term::vX_expCol_To_tblCol(CardIter* pCI)
 
     if (pSymbol_term0->bIs_Tbl_Col()) {
       pSymbol_this->vDeleteFacet(SF_EXP_COL);
-      pSymbol_this->vFacets(pSymbol_term0);
+      pSymbol_this->vCastFacets(pSymbol_term0);
       vMark1(MARK_CHANGED);
     }
     else {

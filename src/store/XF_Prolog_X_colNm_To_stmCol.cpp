@@ -113,7 +113,7 @@ void XF_Prolog_X_colNm_To_stmCol::vX_colNm_To_stmCol(void)
     if (Card_Expr* p_expr_found =
         pCI->Flux.m_pArriving->pFind_expr_Matches(p_term_colNm->pSymbol())) {
       //p_expr_found->vDump(__func__);
-      p_term_colNm->pSymbol()->vFacetsPpy(p_expr_found->pSymbol());
+      p_term_colNm->pSymbol()->vCastFacetsPpy(p_expr_found->pSymbol());
       if (Symbol* pSymbol_found = p_expr_found->pFirst_tblCol()) {
         //pSymbol_found->vDump();
         p_term_colNm->pSymbol()->vFacet(SF_TBL_COL, pSymbol_found->szSF_chrSeq(SF_NONE));

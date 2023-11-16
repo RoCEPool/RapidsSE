@@ -93,7 +93,7 @@ void Card_Emit::vAdjust_Wrt_key(Card_Key* p_key)
     if (! p_expr_sole_key)
       continue;
 
-    pSymbol_expr_sole->vFacets(p_expr_sole_key->pSymbol());
+    pSymbol_expr_sole->vCastFacets(p_expr_sole_key->pSymbol());
   }
 }
 

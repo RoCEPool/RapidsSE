@@ -127,7 +127,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
-  p_expr_simple->pSymbol()->vFacets(p_expr->pSymbol());
+  p_expr_simple->pSymbol()->vCastFacets(p_expr->pSymbol());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->vCast(p_expr->xCast());
@@ -567,7 +567,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   Symbol xExprNo(SF_EXP_COL, i_Expr + 1);
 
   Card_Expr* p_expr_reduced = new Card_Expr;
-  p_expr_reduced->pSymbol()->vFacets(&xExprNo);
+  p_expr_reduced->pSymbol()->vCastFacets(&xExprNo);
   p_expr_reduced->vCast(this);
   bool bIs_SQCRLKEY = pSymbol()->bHasFacet(C_SQCRLKEY);
 

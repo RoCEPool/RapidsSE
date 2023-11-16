@@ -1168,31 +1168,11 @@ void Symbol::vAppendFacets(Symbol* pSymbol_arg)
 /*----------------------------------------------------------------------------*/
 /* get cast                                                                   */
 /*----------------------------------------------------------------------------*/
-Cast* Symbol::aCast(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  return & m_xCast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cast                                                                   */
-/*----------------------------------------------------------------------------*/
 Cast Symbol::xCast(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_xCast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cast                                                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol::vCast(Cast* aCast)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast = * aCast;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1206,13 +1186,25 @@ void Symbol::vCast(Cast xCast)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set type                                                                   */
+/* set cast & facets from arg                                                 */
 /*----------------------------------------------------------------------------*/
-void Symbol::vCast(TypeId xTypeId)
+void Symbol::vCastFacets(Symbol* pSymbol_arg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_xCast.m_xTypeId = xTypeId;
+  m_xCast = pSymbol_arg->m_xCast;
+  vFacetConcat(pSymbol_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cast, facets and properties from arg                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol::vCastFacetsPpy(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vCastFacets(pSymbol_arg);
+  Y_vAll(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1550,28 +1542,6 @@ i8 Symbol::nFacets(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_nFacets;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set facets from arg                                                        */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacets(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_xCast = pSymbol_arg->m_xCast;
-  vFacetConcat(pSymbol_arg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set facets and properties from arg                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::vFacetsPpy(Symbol* pSymbol_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  vFacets(pSymbol_arg);
-  Y_vAll(pSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
